@@ -159,6 +159,22 @@ Actionsの `Windows verification` は実FFmpegテスト、カバレッジ、oned
 `constraints-windows.txt` はWindows/Python 3.12で検証する直接依存関係を固定し、通常起動・
 ビルド・CIのすべてで同じ制約を使用します。
 
+## Windows実動画E2EとMacへの結果共有
+
+動画はWindowsローカルだけに置き、既存E2Eの結果を軽量JSONとして共有できます。
+初回にValidation Packを別途展開し、`VALORANT_E2E_PACK`を設定してください。
+
+```powershell
+.\run_e2e_windows.ps1 -Video 'D:\ValorantData\videos\match_001.mp4' -VideoId match_001
+```
+
+`datasets/manifests/match_001.json` は既存v3検証録画をSHA-256で識別します。
+別動画を同名にしても一致しなければ解析を開始しません。新規登録は明示的な
+`-Register` と、その動画に対応するValidation Packが必要です。
+出力はローカル詳細 `outputs/e2e/` と共有用 `e2e_reports/` に分離します。
+runnerはGitへのcommit/pushをしません。結果・privacyを確認してから利用者が実行します。
+パスの優先順位、環境確認、FAILの解釈、最小5ステップは [WINDOWS_E2E.md](WINDOWS_E2E.md)。
+
 ## 実HUDの設定
 
 未加工の1920x1080通常一人称スクリーンショットから、参照用のアンカー画像を作れます。

@@ -1,5 +1,24 @@
 # E2E Validation Pack v3 導入状況（2026-09-29）
 
+## 2026-09-30: Windowsローカル実動画 / Git共有レポート
+
+`run_e2e_windows.ps1` と薄い `scripts/e2e/run_dataset_case.py` を追加。
+既存の実動画runner・trace adapter・正本evaluatorを順に呼び出す。
+動画SHA、manifest、packの識別情報が不一致ならAnalyzerは起動しない。
+詳細データはignoredの `outputs/e2e/<id>/<run-id>/`、共有用の許可項目だけを
+`e2e_reports/<id>/` に保存する。画像は明示指定時のみ、最大10枚のHUD crop。
+runnerによるcommit/push、動画転送、有料API呼び出しは行わない。
+
+検証結果: **428 passed / 3 skipped**。既存407件と追加21件が通過。
+skipは既存の実動画アンカーテスト1件と、このMacにPowerShellがないための
+PowerShell実行テスト2件。Ruff成功、mypyは72ソースファイル成功。
+正本evaluatorと共有集計の一致は空のSchema適合traceで検証しており、
+これを実動画の認識成功とは扱わない。今回、全動画解析は再実行していない。
+Windows実機でのbootstrap・PowerShell動作・exeビルドは未確認。
+従来の実動画ベースライン65不一致は未解決のまま。
+
+設定・manifest・privacy・履歴・コマンドは [WINDOWS_E2E.md](WINDOWS_E2E.md) を参照。
+
 ## 完了範囲
 
 - ZIPをプロジェクトの隣の `valorant_e2e_validation_pack_v3/` に展開。

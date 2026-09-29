@@ -7,7 +7,7 @@ import hashlib
 from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
-DIRECTORIES = {"src", "tests", "config", "schemas", ".github", "scripts"}
+DIRECTORIES = {"src", "tests", "config", "schemas", ".github", "scripts", "datasets"}
 ROOT_EXTENSIONS = {".md", ".toml", ".ps1", ".spec", ".txt"}
 EXCLUDED_PARTS = {"__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache"}
 

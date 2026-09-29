@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "E2E dataset manifest (not training data)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "video_id", "filename", "sha256", "duration_sec", "width", "height", "fps", "audio_tracks", "validation_pack", "validation_pack_sha256", "assertions_sha256"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "video_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"},
+    "filename": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$"},
+    "sha256": {"$ref": "#/$defs/hash"},
+    "duration_sec": {"type": "number", "exclusiveMinimum": 0},
+    "width": {"type": "integer", "minimum": 1},
+    "height": {"type": "integer", "minimum": 1},
+    "fps": {"type": "number", "exclusiveMinimum": 0},
+    "audio_tracks": {"type": "integer", "minimum": 0},
+    "validation_pack": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"},
+    "validation_pack_sha256": {"$ref": "#/$defs/hash"},
+    "assertions_sha256": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {"hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}
+}
