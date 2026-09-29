@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "roles": [
+    "controller",
+    "duelist",
+    "initiator",
+    "sentinel",
+    "unknown"
+  ],
+  "resolution_policy": "Round Packageではplayer_roleを明示する。Agent→Roleの対応表は実装側の設定ファイル/更新可能なregistryで解決し、未登録Agentはunknown。Role固有ルールはunknown時に候補化しない。",
+  "agent_mapping": {},
+  "note": "このbundleでは最新Agent一覧を固定しない。テストはplayer_roleを直接与える。"
+}

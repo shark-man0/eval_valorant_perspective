@@ -1,0 +1,206 @@
+{
+  "version": "2.0",
+  "event_types": {
+    "round_start": {
+      "description": "",
+      "common_attributes": []
+    },
+    "round_end": {
+      "description": "",
+      "common_attributes": []
+    },
+    "state_snapshot": {
+      "description": "",
+      "common_attributes": []
+    },
+    "kill": {
+      "description": "Kill Feed等から確認したキル。",
+      "common_attributes": [
+        "killer_side",
+        "victim_side",
+        "weapon"
+      ]
+    },
+    "player_death": {
+      "description": "対象プレイヤーの死亡。",
+      "common_attributes": [
+        "cause_known"
+      ]
+    },
+    "enemy_spotted": {
+      "description": "",
+      "common_attributes": []
+    },
+    "enemy_lost": {
+      "description": "",
+      "common_attributes": []
+    },
+    "engagement_start": {
+      "description": "",
+      "common_attributes": []
+    },
+    "engagement_end": {
+      "description": "",
+      "common_attributes": []
+    },
+    "shot": {
+      "description": "プレイヤーの射撃。",
+      "common_attributes": [
+        "moving",
+        "speed_class",
+        "distance_class",
+        "fire_mode",
+        "first_shot"
+      ]
+    },
+    "movement_state": {
+      "description": "",
+      "common_attributes": []
+    },
+    "preaim_started": {
+      "description": "",
+      "common_attributes": []
+    },
+    "peek": {
+      "description": "プレイヤーが遮蔽から射線へ出る行動。",
+      "common_attributes": [
+        "peek_style",
+        "exposed_directions",
+        "target_known",
+        "distance_class"
+      ]
+    },
+    "info_peek": {
+      "description": "",
+      "common_attributes": []
+    },
+    "position_change": {
+      "description": "ミニマップ等で確認した位置変更。",
+      "common_attributes": [
+        "from",
+        "to"
+      ]
+    },
+    "position_hold": {
+      "description": "",
+      "common_attributes": []
+    },
+    "rotation_started": {
+      "description": "サイト間等のローテーション開始。",
+      "common_attributes": [
+        "from",
+        "to",
+        "known_enemy_info_count"
+      ]
+    },
+    "rotation_completed": {
+      "description": "",
+      "common_attributes": []
+    },
+    "spike_pickup": {
+      "description": "",
+      "common_attributes": []
+    },
+    "spike_dropped": {
+      "description": "",
+      "common_attributes": []
+    },
+    "spike_planted": {
+      "description": "Spike設置完了。",
+      "common_attributes": [
+        "site"
+      ]
+    },
+    "spike_defuse_started": {
+      "description": "",
+      "common_attributes": []
+    },
+    "spike_defused": {
+      "description": "",
+      "common_attributes": []
+    },
+    "utility_used": {
+      "description": "アビリティ使用。",
+      "common_attributes": [
+        "ability_name",
+        "purpose_observed"
+      ]
+    },
+    "ability_state": {
+      "description": "アビリティ残数等の状態変化。",
+      "common_attributes": [
+        "ability_name",
+        "charges_remaining"
+      ]
+    },
+    "ally_entry_start": {
+      "description": "",
+      "common_attributes": []
+    },
+    "ally_enter_site": {
+      "description": "",
+      "common_attributes": []
+    },
+    "enemy_reengage": {
+      "description": "",
+      "common_attributes": []
+    },
+    "buy_phase": {
+      "description": "",
+      "common_attributes": []
+    },
+    "purchase": {
+      "description": "",
+      "common_attributes": []
+    },
+    "save_decision": {
+      "description": "ラウンド継続/セーブに関する行動事実。結論評価は含めない。",
+      "common_attributes": [
+        "weapon_value_class",
+        "remaining_time_sec"
+      ]
+    },
+    "weapon_pickup": {
+      "description": "",
+      "common_attributes": []
+    },
+    "hold_angle": {
+      "description": "",
+      "common_attributes": []
+    },
+    "audio_cue": {
+      "description": "",
+      "common_attributes": []
+    },
+    "site_state": {
+      "description": "サイト内の安全性等、観測可能な状態。",
+      "common_attributes": [
+        "visible_enemy_count",
+        "active_crossfire",
+        "incoming_damage_risk_observed"
+      ]
+    },
+    "objective_state": {
+      "description": "",
+      "common_attributes": []
+    },
+    "status_effect": {
+      "description": "フラッシュ、スロー、抑制等の状態効果を映像/音/UIから観測したイベント。判定不能なら生成しない。",
+      "common_attributes": [
+        "effect_type",
+        "source_side",
+        "affected_side",
+        "duration_sec"
+      ]
+    },
+    "utility_effect_observed": {
+      "description": "Utilityが誰/どの領域へ効果を与えたかを観測できた場合のみ記録する。",
+      "common_attributes": [
+        "ability_name",
+        "affected_side",
+        "affected_count",
+        "duration_sec"
+      ]
+    }
+  }
+}

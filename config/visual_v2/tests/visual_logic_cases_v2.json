@@ -1,0 +1,493 @@
+{
+  "version": "2.0",
+  "cases": [
+    {
+      "id": "VA-001",
+      "name": "ammo delta + recoil => shot",
+      "inputs": {
+        "hud_state": "live_first_person",
+        "ammo_delta": -1,
+        "recoil_score": 0.86
+      },
+      "expected": {
+        "event": "shot",
+        "status": "confirmed"
+      }
+    },
+    {
+      "id": "VA-002",
+      "name": "ammo change in buy menu is not a shot",
+      "inputs": {
+        "hud_state": "buy_menu_open",
+        "ammo_delta": 12,
+        "recoil_score": 0.05
+      },
+      "expected": {
+        "event": "shot",
+        "status": "suppressed"
+      }
+    },
+    {
+      "id": "VA-003",
+      "name": "camera turn without minimap displacement remains stationary/unknown translation",
+      "inputs": {
+        "hud_state": "live_first_person",
+        "map_displacement": 0.0,
+        "camera_motion_score": 0.8
+      },
+      "expected": {
+        "movement_state_not": "moving"
+      }
+    },
+    {
+      "id": "VA-004",
+      "name": "minimap displacement confirms movement",
+      "inputs": {
+        "hud_state": "live_first_person",
+        "map_displacement": 0.025,
+        "camera_motion_score": 0.3
+      },
+      "expected": {
+        "event": "movement_state",
+        "state": "moving"
+      }
+    },
+    {
+      "id": "VA-005",
+      "name": "enemy appearance + combat cue starts engagement",
+      "inputs": {
+        "hud_state": "live_first_person",
+        "enemy_visible_transition": true,
+        "shot_within_sec": 0.4
+      },
+      "expected": {
+        "event": "engagement_start"
+      }
+    },
+    {
+      "id": "VA-006",
+      "name": "single occluded frame does not end engagement",
+      "inputs": {
+        "engagement_active": true,
+        "enemy_missing_sec": 0.1,
+        "smoke_or_occlusion": true
+      },
+      "expected": {
+        "event_absent": "engagement_end"
+      }
+    },
+    {
+      "id": "VA-007",
+      "name": "remote view suppresses target-player aim/peek",
+      "inputs": {
+        "hud_state": "remote_control_view",
+        "peek_geometry_score": 0.95
+      },
+      "expected": {
+        "events_absent": [
+          "peek",
+          "preaim_started",
+          "movement_state"
+        ]
+      }
+    },
+    {
+      "id": "VA-008",
+      "name": "spectator suppresses target-player mechanics",
+      "inputs": {
+        "hud_state": "spectator_first_person",
+        "shot_visual_score": 0.95
+      },
+      "expected": {
+        "events_absent": [
+          "shot",
+          "peek",
+          "movement_state"
+        ]
+      }
+    },
+    {
+      "id": "VA-009",
+      "name": "near-static visible/static reference can support preaim timing without back-projection",
+      "inputs": {
+        "hud_state": "live_first_person",
+        "motion_state": "stationary",
+        "map_displacement_norm_per_sec": 0.001,
+        "reference_mode": "static_corner_reference",
+        "crosshair_aligned_since_sec": 10.0,
+        "peek_sec": 10.65,
+        "reference_confidence": 0.93
+      },
+      "expected": {
+        "event": "preaim_started",
+        "lead_sec_approx": 0.65,
+        "reference_mode": "static_corner_reference"
+      }
+    },
+    {
+      "id": "VA-010",
+      "name": "peek without supported exposure count does not invent PEEK-04 fact",
+      "inputs": {
+        "hud_state": "live_first_person",
+        "peek_confirmed": true,
+        "exposed_directions_count": null
+      },
+      "expected": {
+        "event": "peek",
+        "exposed_directions": null
+      }
+    },
+    {
+      "id": "VA-011",
+      "name": "ability charge drop plus cast cue => utility_used",
+      "inputs": {
+        "hud_state": "live_first_person",
+        "ability_charge_delta": -1,
+        "cast_animation_score": 0.88
+      },
+      "expected": {
+        "event": "utility_used"
+      }
+    },
+    {
+      "id": "VA-012",
+      "name": "zone unavailable => no named rotation destination fabrication",
+      "inputs": {
+        "movement_macro": true,
+        "from_zone": "A_MAIN",
+        "to_zone": null
+      },
+      "expected": {
+        "rotation_to": null,
+        "must_not_invent_zone": true
+      }
+    },
+    {
+      "id": "VA-013",
+      "name": "stable position + stable view => hold_angle",
+      "inputs": {
+        "hud_state": "live_first_person",
+        "position_stable_sec": 3.0,
+        "crosshair_drift_score": 0.08,
+        "weapon_ready": true
+      },
+      "expected": {
+        "event": "hold_angle"
+      }
+    },
+    {
+      "id": "VA-014",
+      "name": "brief peek gets new info and retreats with no shot => info_peek candidate",
+      "inputs": {
+        "peek_confirmed": true,
+        "duration_sec": 0.7,
+        "shot_fired": false,
+        "new_enemy_info": true,
+        "returned_to_cover": true
+      },
+      "expected": {
+        "event": "info_peek",
+        "semantic_confirmation": "required"
+      }
+    },
+    {
+      "id": "VA-015",
+      "name": "utility effect unknown side stays unknown",
+      "inputs": {
+        "world_effect_visible": true,
+        "affected_side_evidence": false
+      },
+      "expected": {
+        "utility_effect_observed": "absent_or_unknown",
+        "must_not_guess_side": true
+      }
+    },
+    {
+      "id": "VA-016",
+      "name": "low-confidence semantic result becomes unknown, not fabricated",
+      "inputs": {
+        "semantic_confidence": 0.52,
+        "requested_field": "cover_available"
+      },
+      "expected": {
+        "cover_available": null
+      }
+    },
+    {
+      "id": "VA-017",
+      "name": "reload ammo increase is not a shot",
+      "inputs": {
+        "hud_state": "live_first_person",
+        "ammo_delta": 12,
+        "reload_detected": true,
+        "recoil_score": 0.02
+      },
+      "expected": {
+        "event_absent": "shot"
+      }
+    },
+    {
+      "id": "VA-018",
+      "name": "weapon switch ammo discontinuity is not a shot",
+      "inputs": {
+        "hud_state": "live_first_person",
+        "weapon_changed": true,
+        "ammo_delta": -17,
+        "recoil_score": 0.01
+      },
+      "expected": {
+        "event_absent": "shot"
+      }
+    },
+    {
+      "id": "VA-019",
+      "name": "full-auto burst emits burst start not one event per bullet",
+      "inputs": {
+        "hud_state": "live_first_person",
+        "ammo_series": [
+          25,
+          23,
+          21,
+          18,
+          16
+        ],
+        "window_sec": 0.5,
+        "recoil_score": 0.91
+      },
+      "expected": {
+        "shot_events_max": 1,
+        "first_shot": true,
+        "burst_active": true
+      }
+    },
+    {
+      "id": "VA-020",
+      "name": "shot-time movement uses local micro evidence over minimap",
+      "inputs": {
+        "hud_state": "live_first_person",
+        "minimap_displacement_confidence": 0.55,
+        "local_optical_flow_translation_confidence": 0.92,
+        "weapon_bob_moving_confidence": 0.9,
+        "at_shot": true
+      },
+      "expected": {
+        "movement_state": "moving",
+        "evidence_priority": "micro"
+      }
+    },
+    {
+      "id": "VA-021",
+      "name": "moving preaim candidate falls back and cannot become deterministic high-confidence timing",
+      "inputs": {
+        "hud_state": "live_first_person",
+        "motion_state": "moving",
+        "map_displacement_norm_per_sec": 0.08,
+        "semantic_alignment_confidence": 0.88
+      },
+      "expected": {
+        "reference_mode": "semantic_corner_headline",
+        "confidence_max": 0.69,
+        "deterministic_allowed": false
+      }
+    },
+    {
+      "id": "VA-022",
+      "name": "PEEK-04 exposure count only from static registry",
+      "inputs": {
+        "peek_confirmed": true,
+        "semantic_exposure_guess": 4,
+        "static_peek_registry_match": false
+      },
+      "expected": {
+        "exposed_directions_count": null,
+        "must_ignore_semantic_guess": true
+      }
+    },
+    {
+      "id": "VA-023",
+      "name": "static peek registry match supports exposure count",
+      "inputs": {
+        "peek_confirmed": true,
+        "static_peek_registry_match": true,
+        "registry_match_confidence": 0.94,
+        "registry_exposed_directions_count": 3
+      },
+      "expected": {
+        "exposed_directions_count": 3,
+        "exposed_directions_source": "static_peek_registry",
+        "deterministic_fact_eligible": true
+      }
+    },
+    {
+      "id": "VA-024",
+      "name": "coarse zone happy path creates named rotation",
+      "inputs": {
+        "map_zone_provider": "static_polygon_registry",
+        "from_zone": "A_MAIN",
+        "to_zone": "B_SITE",
+        "zone_confidence": 0.93,
+        "sustained_macro_movement": true
+      },
+      "expected": {
+        "event": "rotation_started",
+        "from": "A_MAIN",
+        "to": "B_SITE"
+      }
+    },
+    {
+      "id": "VA-025",
+      "name": "ally enters resolved site zone emits TEAM-02 path event",
+      "inputs": {
+        "map_zone_provider": "static_polygon_registry",
+        "ally_marker_crosses_site_boundary": true,
+        "site": "A",
+        "track_confidence": 0.91
+      },
+      "expected": {
+        "event": "ally_enter_site",
+        "site": "A"
+      }
+    },
+    {
+      "id": "VA-026",
+      "name": "smoke does not suppress factual shot detection",
+      "inputs": {
+        "hud_state": "live_first_person",
+        "vision_obscured_smoke": true,
+        "ammo_delta": -1,
+        "recoil_score": 0.87
+      },
+      "expected": {
+        "event": "shot",
+        "status": "confirmed",
+        "coaching_exception_context_preserved": true
+      }
+    },
+    {
+      "id": "VA-027",
+      "name": "multiple enemies use engagement primary target for head alignment scalar",
+      "inputs": {
+        "visible_enemy_head_refs": [
+          "e1",
+          "e2"
+        ],
+        "primary_target_ref": "e2",
+        "head_alignment_errors": {
+          "e1": 0.1,
+          "e2": 0.03
+        }
+      },
+      "expected": {
+        "head_alignment_error_norm": 0.03,
+        "primary_target_ref": "e2"
+      }
+    },
+    {
+      "id": "VA-028",
+      "name": "cross-agent remote fallback suppresses player mechanics",
+      "inputs": {
+        "spectator": false,
+        "buy_menu": false,
+        "normal_weapon_hud_missing": true,
+        "ability_slot_active_control": true,
+        "remote_overlay_signature": true
+      },
+      "expected": {
+        "hud_state": "remote_control_view",
+        "subtype": "unknown",
+        "events_absent": [
+          "shot",
+          "peek",
+          "movement_state"
+        ]
+      }
+    },
+    {
+      "id": "VA-029",
+      "name": "ambiguous remote/live state becomes unknown not live",
+      "inputs": {
+        "normal_weapon_hud_missing": true,
+        "ability_slot_active_control": false,
+        "remote_overlay_signature": false
+      },
+      "expected": {
+        "hud_state": "unknown",
+        "events_absent": [
+          "shot",
+          "peek",
+          "movement_state"
+        ]
+      }
+    },
+    {
+      "id": "VA-030",
+      "name": "semantic per-match budget exhaustion returns unknown",
+      "inputs": {
+        "semantic_calls_this_match": 96,
+        "requested_field": "cover_available"
+      },
+      "expected": {
+        "cover_available": null,
+        "additional_api_call": false
+      }
+    },
+    {
+      "id": "VA-031",
+      "name": "tier A cross-check promotes candidate",
+      "inputs": {
+        "tier": "A",
+        "confidence": 0.78,
+        "independent_sources": [
+          "ammo_delta",
+          "recoil_score"
+        ]
+      },
+      "expected": {
+        "status": "confirmed"
+      }
+    },
+    {
+      "id": "VA-032",
+      "name": "spatial intermediate-only fields stripped before v3 projection",
+      "inputs": {
+        "spatial": {
+          "cover_available": true,
+          "escape_route_available": false,
+          "line_of_sight_state": "unknown",
+          "exposed_directions_count": null,
+          "view_target_zone_id": "A_MAIN",
+          "cover_edge_score": 0.82,
+          "confidence": 0.88,
+          "exposed_directions_source": "none"
+        }
+      },
+      "expected": {
+        "v3_spatial_keys": [
+          "cover_available",
+          "escape_route_available",
+          "line_of_sight_state",
+          "exposed_directions_count",
+          "view_target_zone_id"
+        ],
+        "must_drop": [
+          "cover_edge_score",
+          "confidence",
+          "exposed_directions_source"
+        ]
+      }
+    },
+    {
+      "id": "VA-033",
+      "name": "logical ability slot ignores rebound key label",
+      "inputs": {
+        "slot_index": "E",
+        "displayed_key_text": "MB4",
+        "ability_charge_delta": -1
+      },
+      "expected": {
+        "logical_slot": "E",
+        "must_not_match_displayed_key": "MB4"
+      }
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "version": "2.0",
+  "role": "Semantic visual inference is an observation helper, not the coach and not a source of GOOD/IMPROVE labels.",
+  "allowed_questions": [
+    "Locate visible enemy body/head when classical/template detection is insufficient.",
+    "Determine whether a sequence shows a player emerging from cover (peek candidate).",
+    "Classify visible cover/escape-route availability only when supported by frames.",
+    "Classify remote utility/world effect and whether it visibly affected ally/enemy/self.",
+    "Interpret minimap/site entry or rotation context when geometry registry is unavailable, with reduced confidence.",
+    "For a selected low-motion keyframe sequence, estimate whether crosshair was already near the visible/semantic corner headline before exposure; output low-confidence factual alignment only, not timing claims unsupported by frames."
+  ],
+  "forbidden_questions": [
+    "Was this play good/bad?",
+    "What should the player have done?",
+    "Was the decision correct?",
+    "Infer hidden enemy positions not shown by the recording.",
+    "Count or infer exposed attack directions from hidden/off-screen enemy possibilities.",
+    "Author exposed_directions_count; that field may only come from static map/peek registry.",
+    "Use AI Coach labels/rule IDs/coaching output as context for fact extraction."
+  ],
+  "invocation_policy": {
+    "default": "classical_cv_and_hud_fusion_first",
+    "semantic_fallback": "only_on_candidate_windows_or_missing_semantic_field",
+    "max_keyframes_per_micro_window": 12,
+    "max_keyframes_per_round_context_pass": 24,
+    "temperature": "low/deterministic where supported",
+    "schema_required": true,
+    "max_calls_per_round": 8,
+    "max_calls_per_match": 96,
+    "budget_exhaustion_action": "return unknown/null; do not expand the budget automatically",
+    "session_isolation": "Semantic adapter calls are independent API requests/contexts from AI Coach. Do not include evaluation rules, prior GOOD/IMPROVE labels, or coaching text."
+  },
+  "confidence_policy": {
+    "semantic_fact_accept": 0.8,
+    "semantic_fact_review": 0.6,
+    "below": 0.6,
+    "below_action": "leave field unknown/null; never fabricate",
+    "semantic_only_cap_for_preaim": 0.69,
+    "semantic_only_action": "llm_contextual evidence only; never deterministic_if_confident"
+  }
+}

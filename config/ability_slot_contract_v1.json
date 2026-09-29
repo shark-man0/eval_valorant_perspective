@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Agent-independent HUD slot semantics for standard VALORANT ability HUD.",
+  "slots": [
+    {
+      "slot": 0,
+      "keybind_role": "C",
+      "semantic_role": "ability_c",
+      "is_ultimate": false
+    },
+    {
+      "slot": 1,
+      "keybind_role": "Q",
+      "semantic_role": "ability_q",
+      "is_ultimate": false
+    },
+    {
+      "slot": 2,
+      "keybind_role": "E",
+      "semantic_role": "ability_e",
+      "is_ultimate": false
+    },
+    {
+      "slot": 3,
+      "keybind_role": "X",
+      "semantic_role": "ultimate",
+      "is_ultimate": true
+    }
+  ],
+  "policy": {
+    "ability_name_required_for_mvp": false,
+    "ultimate_available_derivation": "read slot with is_ultimate=true; available=true with sufficient HUD confidence",
+    "agent_metadata": "optional enrichment only; do not block ultimate_available when agent name mapping is absent",
+    "nonstandard_or_unreadable_layout": "emit null/unknown rather than guessing"
+  }
+}

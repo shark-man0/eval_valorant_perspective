@@ -1,0 +1,34 @@
+{
+  "version": "2.0",
+  "supersedes": "valorant_visual_analyzer_patch_v2/config/map_spatial_fact_policy_v1.json",
+  "exposed_directions_count": {
+    "authoritative_source": "static_peek_exposure_registry_only",
+    "semantic_vlm_allowed": false,
+    "default_when_unmatched": null,
+    "deterministic_rule_gate": {
+      "required_source": "static_peek_registry",
+      "min_match_confidence": 0.9
+    },
+    "matching": "Match normalized self position to human-authored peek anchor only."
+  },
+  "coarse_zone_resolution": {
+    "canonical_runtime_contract": "config/map_zone_runtime_contract_v4.json",
+    "preferred": "polygon",
+    "fallback": "coarse_fallback",
+    "fallback_confidence_cap": 0.7,
+    "forbidden": "Do not use fallback for exact callout, exact exposure topology, or deterministic PEEK-04."
+  },
+  "event_ownership": {
+    "map_zone_resolver": "ZoneResolution timeline only",
+    "minimap_spatial_tracker": [
+      "position_change",
+      "rotation_started",
+      "rotation_completed"
+    ],
+    "team_entry_analyzer": [
+      "ally_entry_start",
+      "ally_enter_site"
+    ]
+  },
+  "missing_geometry_behavior": "Emit feature_unavailable(map_geometry_missing); do not fabricate."
+}

@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "map_registry_schema_v1.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "selection_policy",
+    "minimap_policy",
+    "maps",
+    "test_fixtures"
+  ],
+  "properties": {
+    "version": {
+      "type": "string"
+    },
+    "selection_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "priority",
+        "manual_fallback_required",
+        "on_unresolved",
+        "map_template_match_min_confidence"
+      ],
+      "properties": {
+        "priority": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "manual_fallback_required": {
+          "type": "boolean"
+        },
+        "on_unresolved": {
+          "type": "string"
+        },
+        "map_template_match_min_confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "minimap_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mvp_required_profile",
+        "dynamic_rotation",
+        "keep_player_centered_or_dynamic_crop",
+        "zoom_or_hud_scale_change",
+        "calibration_required_conditions"
+      ],
+      "properties": {
+        "mvp_required_profile": {
+          "type": "string"
+        },
+        "dynamic_rotation": {
+          "type": "string"
+        },
+        "keep_player_centered_or_dynamic_crop": {
+          "type": "string"
+        },
+        "zoom_or_hud_scale_change": {
+          "type": "string"
+        },
+        "calibration_required_conditions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "maps": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "map_file",
+          "callout_registry_file",
+          "peek_registry_file",
+          "coverage_mask_file",
+          "geometry_version",
+          "reference_asset",
+          "reference_sha256",
+          "production"
+        ],
+        "properties": {
+          "map_file": {
+            "type": "string"
+          },
+          "callout_registry_file": {
+            "type": "string"
+          },
+          "peek_registry_file": {
+            "type": "string"
+          },
+          "coverage_mask_file": {
+            "type": "string"
+          },
+          "geometry_version": {
+            "type": "string"
+          },
+          "reference_asset": {
+            "type": "string"
+          },
+          "reference_sha256": {
+            "type": "string"
+          },
+          "production": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "test_fixtures": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "map_file"
+        ],
+        "properties": {
+          "map_file": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

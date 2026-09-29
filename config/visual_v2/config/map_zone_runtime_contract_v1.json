@@ -1,0 +1,36 @@
+{
+  "version": "1.0",
+  "purpose": "Runtime contract for coarse zone/site resolution needed by rotation/team-entry. Full callout geometry is optional; coarse macro zones are required for full MVP coverage.",
+  "providers": [
+    {
+      "id": "static_polygon_registry",
+      "priority": 1,
+      "description": "Per-map normalized minimap polygons for coarse A/B/Mid/Spawn/Main groups. Preferred and required for high-confidence named macro events."
+    },
+    {
+      "id": "auto_site_anchor_macro_groups",
+      "priority": 2,
+      "description": "Optional fallback: detect A/B site label anchors on the minimap and use conservative proximity/persistence bands for macro site grouping only.",
+      "confidence_cap": 0.75,
+      "persistence_frames_min": 3
+    }
+  ],
+  "production_readiness": {
+    "zone_dependent_features": [
+      "rotation_started",
+      "rotation_completed",
+      "ally_entry_start",
+      "ally_enter_site",
+      "named position_change"
+    ],
+    "when_no_provider_resolves": "mark feature_unavailable(map_geometry_missing); no named event fabrication"
+  },
+  "map_entry_schema": {
+    "map_id": "stable map slug",
+    "minimap_calibration": "normalized coordinate transform/version",
+    "zones": "array of {zone_id, macro_group, polygon_norm}",
+    "sites": "array of {site_id, polygon_norm or anchor_norm+radius_norm}",
+    "peek_exposure_anchors": "optional separate registry; never inferred by VLM"
+  },
+  "maps": {}
+}

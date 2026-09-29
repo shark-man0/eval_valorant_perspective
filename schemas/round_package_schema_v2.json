@@ -1,0 +1,679 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "round_package_schema_v2.json",
+  "title": "VALORANT Round Package v2",
+  "description": "Video/HUD Analyzer + deterministic fact builder から AI Coach へ渡す正式入力。評価結論は禁止し、観測事実・正規化された非評価事実のみを格納する。3D座標の推測は行わない。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "match_id",
+    "round_no",
+    "source_video",
+    "round_window",
+    "round_meta",
+    "observation_quality",
+    "events",
+    "state_snapshots",
+    "deterministic_facts",
+    "frames"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "2.0"
+    },
+    "match_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "round_no": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "source_video": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "fps",
+        "width",
+        "height",
+        "duration_sec"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "fps": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "duration_sec": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "round_window": {
+      "$ref": "#/$defs/time_range"
+    },
+    "round_meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "side",
+        "map",
+        "player_agent",
+        "player_role",
+        "round_result"
+      ],
+      "properties": {
+        "side": {
+          "type": "string",
+          "enum": [
+            "attack",
+            "defense",
+            "unknown"
+          ]
+        },
+        "map": {
+          "type": "string"
+        },
+        "player_agent": {
+          "type": "string"
+        },
+        "player_role": {
+          "type": "string",
+          "enum": [
+            "controller",
+            "duelist",
+            "initiator",
+            "sentinel",
+            "unknown"
+          ],
+          "description": "Agent→Role resolverで確定。解決不能ならunknown。Role評価はunknown時に発火させない。"
+        },
+        "round_result": {
+          "type": "string",
+          "enum": [
+            "win",
+            "loss",
+            "unknown"
+          ]
+        },
+        "score_before": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "ally": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "enemy": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "ally",
+            "enemy"
+          ],
+          "additionalProperties": false
+        },
+        "economy_context": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/economy_context"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "observation_quality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "hud_confidence",
+        "visual_confidence",
+        "timeline_completeness",
+        "missing_intervals"
+      ],
+      "properties": {
+        "hud_confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "visual_confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "timeline_completeness": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "missing_intervals": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/time_range"
+          }
+        }
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/event"
+      }
+    },
+    "state_snapshots": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/state_snapshot"
+      }
+    },
+    "deterministic_facts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/deterministic_fact"
+      },
+      "description": "プログラムで正規化/導出した事実。GOOD/BAD等の評価結論は禁止。"
+    },
+    "frames": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/frame_ref"
+      }
+    },
+    "previous_round_context": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/previous_round"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "time_range": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "start_sec",
+        "end_sec"
+      ],
+      "properties": {
+        "start_sec": {
+          "type": "number",
+          "minimum": 0
+        },
+        "end_sec": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "location_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "zone_id",
+        "zone_name"
+      ],
+      "properties": {
+        "zone_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "正規化Zone ID。未知ならnull。"
+        },
+        "zone_name": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "人間向けCallout/Zone名。未知ならnull。"
+        },
+        "map_x_norm": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1,
+          "description": "ミニマップ基準の正規化2D座標。推定できる場合のみ。"
+        },
+        "map_y_norm": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1,
+          "description": "ミニマップ基準の正規化2D座標。推定できる場合のみ。"
+        }
+      }
+    },
+    "spatial_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cover_available",
+        "escape_route_available",
+        "line_of_sight_state",
+        "exposed_directions_count",
+        "view_target_zone_id"
+      ],
+      "properties": {
+        "cover_available": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "escape_route_available": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "line_of_sight_state": {
+          "type": "string",
+          "enum": [
+            "confirmed_clear",
+            "confirmed_blocked",
+            "unknown"
+          ]
+        },
+        "exposed_directions_count": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "view_target_zone_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "description": "動画/ミニマップから確認できた範囲の空間事実。Z座標や3D LOSを推測で生成しない。"
+    },
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_id",
+        "time_sec",
+        "type",
+        "actor",
+        "attributes",
+        "confidence"
+      ],
+      "properties": {
+        "event_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "time_sec": {
+          "type": "number",
+          "minimum": 0
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "round_start",
+            "round_end",
+            "state_snapshot",
+            "kill",
+            "player_death",
+            "enemy_spotted",
+            "enemy_lost",
+            "engagement_start",
+            "engagement_end",
+            "shot",
+            "movement_state",
+            "preaim_started",
+            "peek",
+            "info_peek",
+            "position_change",
+            "position_hold",
+            "rotation_started",
+            "rotation_completed",
+            "spike_pickup",
+            "spike_dropped",
+            "spike_planted",
+            "spike_defuse_started",
+            "spike_defused",
+            "utility_used",
+            "ability_state",
+            "ally_entry_start",
+            "ally_enter_site",
+            "enemy_reengage",
+            "buy_phase",
+            "purchase",
+            "save_decision",
+            "weapon_pickup",
+            "hold_angle",
+            "audio_cue",
+            "site_state",
+            "objective_state",
+            "status_effect",
+            "utility_effect_observed"
+          ]
+        },
+        "actor": {
+          "type": "string",
+          "enum": [
+            "player",
+            "ally",
+            "enemy",
+            "team",
+            "system",
+            "unknown"
+          ]
+        },
+        "attributes": {
+          "type": "object",
+          "description": "イベント固有の観測値。評価語(good/bad/appropriate等)は禁止。"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "state_snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "time_sec",
+        "ally_alive",
+        "enemy_alive",
+        "hp",
+        "armor",
+        "weapon",
+        "spike_state",
+        "round_time_remaining_sec",
+        "utility_available_count",
+        "player_location",
+        "known_enemy_locations",
+        "spatial_context"
+      ],
+      "properties": {
+        "time_sec": {
+          "type": "number",
+          "minimum": 0
+        },
+        "ally_alive": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 5
+        },
+        "enemy_alive": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 5
+        },
+        "hp": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 100
+        },
+        "armor": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 50
+        },
+        "weapon": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "spike_state": {
+          "type": "string",
+          "enum": [
+            "not_carried",
+            "carried_by_player",
+            "carried_by_ally",
+            "dropped",
+            "planted",
+            "defusing",
+            "resolved",
+            "unknown"
+          ]
+        },
+        "round_time_remaining_sec": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "utility_available_count": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "player_location": {
+          "$ref": "#/$defs/location_ref"
+        },
+        "known_enemy_locations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/location_ref"
+          }
+        },
+        "spatial_context": {
+          "$ref": "#/$defs/spatial_context"
+        }
+      }
+    },
+    "fact_value": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "deterministic_fact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fact_id",
+        "key",
+        "value",
+        "confidence",
+        "source",
+        "provenance_event_ids"
+      ],
+      "properties": {
+        "fact_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]+$"
+        },
+        "value": {
+          "$ref": "#/$defs/fact_value"
+        },
+        "time_sec": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "time_range": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/time_range"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "hud",
+            "visual",
+            "event_normalization",
+            "derived_code",
+            "config",
+            "audio"
+          ]
+        },
+        "provenance_event_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "frame_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "time_sec",
+        "path",
+        "purpose"
+      ],
+      "properties": {
+        "time_sec": {
+          "type": "number",
+          "minimum": 0
+        },
+        "path": {
+          "type": "string"
+        },
+        "purpose": {
+          "type": "string",
+          "enum": [
+            "sparse_round_context",
+            "dense_candidate_context",
+            "hud_evidence",
+            "minimap_evidence"
+          ]
+        }
+      }
+    },
+    "economy_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "team_buy_class": {
+          "type": "string",
+          "enum": [
+            "full_buy",
+            "light_buy",
+            "eco",
+            "mixed",
+            "unknown"
+          ]
+        },
+        "player_buy_class": {
+          "type": "string",
+          "enum": [
+            "full_buy",
+            "light_buy",
+            "eco",
+            "hero_buy",
+            "unknown"
+          ]
+        },
+        "player_credits": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "next_round_buy_impact_known": {
+          "type": "boolean"
+        }
+      }
+    },
+    "previous_round": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "round_no",
+        "result",
+        "economy"
+      ],
+      "properties": {
+        "round_no": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "result": {
+          "type": "string",
+          "enum": [
+            "win",
+            "loss",
+            "unknown"
+          ]
+        },
+        "economy": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

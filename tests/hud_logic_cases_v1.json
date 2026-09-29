@@ -1,0 +1,174 @@
+{
+  "schema_version": "1.0",
+  "cases": [
+    {
+      "id": "HL-001",
+      "name": "buy banner vs round-end: buy",
+      "signals": {
+        "shared_banner": true,
+        "score_changed": false,
+        "next_stable_state": "live_first_person",
+        "text_hint": "購入フェーズ"
+      },
+      "expect": {
+        "flag": "buy_phase_banner",
+        "not_flag": "round_end_banner"
+      }
+    },
+    {
+      "id": "HL-002",
+      "name": "buy banner vs round-end: round end",
+      "signals": {
+        "shared_banner": true,
+        "score_changed_within_sec": 2.0,
+        "next_stable_state": "buy_phase"
+      },
+      "expect": {
+        "flag": "round_end_banner",
+        "not_flag": "buy_phase_banner"
+      }
+    },
+    {
+      "id": "HL-003",
+      "name": "spectator detection",
+      "signals": {
+        "spectated_player_panel": true,
+        "self_hud_identity_trustworthy": false,
+        "recent_player_death_candidate": true
+      },
+      "expect": {
+        "primary_state": "spectator_first_person",
+        "player_specific_hud_valid": false
+      }
+    },
+    {
+      "id": "HL-004",
+      "name": "remote view Astra",
+      "signals": {
+        "astral_geometry": true,
+        "purple_palette": true,
+        "astra_hand_interface": true
+      },
+      "expect": {
+        "primary_state": "remote_control_view",
+        "remote_view_type": "astra_astral",
+        "world_view_trustworthy": false
+      }
+    },
+    {
+      "id": "HL-005",
+      "name": "kill victim ally by roster delta",
+      "signals": {
+        "kill_feed_row_added": true,
+        "ally_alive_before": 4,
+        "ally_alive_after": 3,
+        "enemy_alive_before": 4,
+        "enemy_alive_after": 4,
+        "killfeed_color_agrees": true
+      },
+      "expect": {
+        "victim_side": "ally",
+        "killer_side": "enemy"
+      }
+    },
+    {
+      "id": "HL-006",
+      "name": "kill victim enemy by roster delta",
+      "signals": {
+        "kill_feed_row_added": true,
+        "ally_alive_before": 4,
+        "ally_alive_after": 4,
+        "enemy_alive_before": 4,
+        "enemy_alive_after": 3,
+        "killfeed_color_agrees": true
+      },
+      "expect": {
+        "victim_side": "enemy",
+        "killer_side": "ally"
+      }
+    },
+    {
+      "id": "HL-007",
+      "name": "ambiguous kill side",
+      "signals": {
+        "kill_feed_row_added": true,
+        "ally_alive_before": 4,
+        "ally_alive_after": 3,
+        "enemy_alive_before": 4,
+        "enemy_alive_after": 3
+      },
+      "expect": {
+        "victim_side": "unknown",
+        "killer_side": "unknown"
+      }
+    },
+    {
+      "id": "HL-008",
+      "name": "flash not smoke",
+      "signals": {
+        "abrupt_luminance_spike": true,
+        "scene_detail_collapse": true,
+        "rapid_decay": true,
+        "hud_anchors_stable": true
+      },
+      "expect": {
+        "flag": "vision_obscured_flash",
+        "not_flag": "vision_obscured_smoke"
+      }
+    },
+    {
+      "id": "HL-009",
+      "name": "tactical map transition",
+      "signals": {
+        "partial_expanded_map": true,
+        "transition_duration_sec": 0.18
+      },
+      "expect": {
+        "flag": "visual_transition",
+        "sensitive_visual_readers_suspended": true
+      }
+    },
+    {
+      "id": "HL-010",
+      "name": "ultimate slot without agent metadata",
+      "signals": {
+        "slot": 3,
+        "semantic_role": "ultimate",
+        "available": true,
+        "confidence": 0.93,
+        "agent_metadata_available": false
+      },
+      "expect": {
+        "ultimate_available": true
+      }
+    },
+    {
+      "id": "HL-011",
+      "name": "round quality aggregation",
+      "signals": {
+        "frame_hud_confidences": [
+          0.95,
+          0.9,
+          0.8
+        ],
+        "valid_timeline_fraction": 0.8
+      },
+      "expect": {
+        "formula": "median(frame_hud_confidences)*valid_timeline_fraction",
+        "result_approx": 0.72
+      }
+    },
+    {
+      "id": "HL-012",
+      "name": "HUD scale mismatch",
+      "signals": {
+        "detected_anchor_count": 4,
+        "median_position_error_norm": 0.05,
+        "median_size_relative_error": 0.15
+      },
+      "expect": {
+        "calibration_required": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,772 @@
+{
+  "schema_version": "3.0",
+  "profile_id": "valorant_1920x1080_user_capture_v2",
+  "reference_resolution": {
+    "width": 1920,
+    "height": 1080,
+    "aspect_ratio": "16:9"
+  },
+  "validated_against": {
+    "screenshots": 12,
+    "video": {
+      "filename": "Valorant_09-25-2026_0-37-29-379.mp4",
+      "width": 1920,
+      "height": 1080,
+      "fps": 60.0,
+      "duration_sec": 171.019336,
+      "video_codec": "h264",
+      "audio_stream_count": 3
+    }
+  },
+  "coordinate_policy": {
+    "storage": "normalized_first",
+    "pixel_reference": "1920x1080",
+    "scale_mode": "anchor_calibrated_normalized",
+    "letterbox_policy": "reject_or_require_manual_calibration",
+    "crop_padding_px_default": 10,
+    "hud_scale_policy": "validate anchors before ROI use; do not assume resolution-only scaling",
+    "crop_padding_policy": "scale from reference resolution, minimum 6 px, maximum 16 px"
+  },
+  "screen_states": {
+    "live_first_person": {
+      "priority": 10
+    },
+    "spectator_first_person": {
+      "priority": 40
+    },
+    "remote_control_view": {
+      "priority": 70
+    },
+    "expanded_tactical_map": {
+      "priority": 80
+    },
+    "buy_menu_open": {
+      "priority": 90
+    },
+    "unknown": {
+      "priority": 0
+    }
+  },
+  "rois": {
+    "location_label": {
+      "px": [
+        145,
+        0,
+        410,
+        58
+      ],
+      "norm": [
+        0.075521,
+        0.0,
+        0.213542,
+        0.053704
+      ]
+    },
+    "minimap_normal": {
+      "px": [
+        20,
+        48,
+        475,
+        475
+      ],
+      "norm": [
+        0.010417,
+        0.044444,
+        0.247396,
+        0.439815
+      ]
+    },
+    "top_match_bar": {
+      "px": [
+        385,
+        0,
+        1540,
+        120
+      ],
+      "norm": [
+        0.200521,
+        0.0,
+        0.802083,
+        0.111111
+      ]
+    },
+    "ally_roster": {
+      "px": [
+        385,
+        0,
+        790,
+        100
+      ],
+      "norm": [
+        0.200521,
+        0.0,
+        0.411458,
+        0.092593
+      ]
+    },
+    "enemy_roster": {
+      "px": [
+        1130,
+        0,
+        1540,
+        100
+      ],
+      "norm": [
+        0.588542,
+        0.0,
+        0.802083,
+        0.092593
+      ]
+    },
+    "ally_score": {
+      "px": [
+        785,
+        5,
+        900,
+        80
+      ],
+      "norm": [
+        0.408854,
+        0.00463,
+        0.46875,
+        0.074074
+      ]
+    },
+    "round_timer": {
+      "px": [
+        900,
+        0,
+        1025,
+        85
+      ],
+      "norm": [
+        0.46875,
+        0.0,
+        0.533854,
+        0.078704
+      ]
+    },
+    "enemy_score": {
+      "px": [
+        1020,
+        5,
+        1138,
+        80
+      ],
+      "norm": [
+        0.53125,
+        0.00463,
+        0.592708,
+        0.074074
+      ]
+    },
+    "spike_top_center": {
+      "px": [
+        875,
+        0,
+        1045,
+        125
+      ],
+      "norm": [
+        0.455729,
+        0.0,
+        0.544271,
+        0.115741
+      ]
+    },
+    "spike_carrier_indicator": {
+      "px": [
+        545,
+        55,
+        650,
+        145
+      ],
+      "norm": [
+        0.283854,
+        0.050926,
+        0.338542,
+        0.134259
+      ]
+    },
+    "kill_feed": {
+      "px": [
+        1440,
+        45,
+        1918,
+        188
+      ],
+      "norm": [
+        0.75,
+        0.041667,
+        0.998958,
+        0.174074
+      ]
+    },
+    "performance_overlay_ignore": {
+      "px": [
+        1735,
+        175,
+        1918,
+        285
+      ],
+      "norm": [
+        0.903646,
+        0.162037,
+        0.998958,
+        0.263889
+      ]
+    },
+    "center_phase_banner": {
+      "px": [
+        690,
+        105,
+        1230,
+        340
+      ],
+      "norm": [
+        0.359375,
+        0.097222,
+        0.640625,
+        0.314815
+      ]
+    },
+    "round_end_banner": {
+      "px": [
+        705,
+        105,
+        1225,
+        335
+      ],
+      "norm": [
+        0.367188,
+        0.097222,
+        0.638021,
+        0.310185
+      ]
+    },
+    "player_hp_armor": {
+      "px": [
+        500,
+        925,
+        720,
+        1078
+      ],
+      "norm": [
+        0.260417,
+        0.856481,
+        0.375,
+        0.998148
+      ]
+    },
+    "abilities": {
+      "px": [
+        710,
+        855,
+        1210,
+        1078
+      ],
+      "norm": [
+        0.369792,
+        0.791667,
+        0.630208,
+        0.998148
+      ]
+    },
+    "ammo_current_weapon": {
+      "px": [
+        1210,
+        900,
+        1440,
+        1078
+      ],
+      "norm": [
+        0.630208,
+        0.833333,
+        0.75,
+        0.998148
+      ]
+    },
+    "weapon_inventory": {
+      "px": [
+        1670,
+        600,
+        1918,
+        1015
+      ],
+      "norm": [
+        0.869792,
+        0.555556,
+        0.998958,
+        0.939815
+      ]
+    },
+    "status_effects_center_bottom": {
+      "px": [
+        1110,
+        765,
+        1435,
+        990
+      ],
+      "norm": [
+        0.578125,
+        0.708333,
+        0.747396,
+        0.916667
+      ]
+    },
+    "combat_report": {
+      "px": [
+        1480,
+        270,
+        1918,
+        770
+      ],
+      "norm": [
+        0.770833,
+        0.25,
+        0.998958,
+        0.712963
+      ]
+    },
+    "spectated_player_panel": {
+      "px": [
+        0,
+        715,
+        620,
+        1055
+      ],
+      "norm": [
+        0.0,
+        0.662037,
+        0.322917,
+        0.976852
+      ]
+    },
+    "chat_broadcast": {
+      "px": [
+        0,
+        915,
+        650,
+        1078
+      ],
+      "norm": [
+        0.0,
+        0.847222,
+        0.338542,
+        0.998148
+      ]
+    },
+    "buy_menu_grid": {
+      "px": [
+        360,
+        90,
+        1510,
+        960
+      ],
+      "norm": [
+        0.1875,
+        0.083333,
+        0.786458,
+        0.888889
+      ]
+    },
+    "buy_menu_close_anchor": {
+      "px": [
+        1825,
+        0,
+        1918,
+        95
+      ],
+      "norm": [
+        0.950521,
+        0.0,
+        0.998958,
+        0.087963
+      ]
+    },
+    "expanded_tactical_map": {
+      "px": [
+        530,
+        160,
+        1375,
+        860
+      ],
+      "norm": [
+        0.276042,
+        0.148148,
+        0.716146,
+        0.796296
+      ]
+    },
+    "center_crosshair_area": {
+      "px": [
+        760,
+        350,
+        1160,
+        750
+      ],
+      "norm": [
+        0.395833,
+        0.324074,
+        0.604167,
+        0.694444
+      ]
+    }
+  },
+  "state_detection": {
+    "buy_phase_banner": {
+      "positive_rois": [
+        "center_phase_banner"
+      ],
+      "shared_roi_group": "phase_or_round_end_banner",
+      "classification_signals": [
+        "short_text_if_available",
+        "round_timer_transition",
+        "score_stability",
+        "next_state_live"
+      ],
+      "hints": [
+        "ROI overlaps round-end banner by design; ROI presence alone must never decide class",
+        "buy phase is favored when score is unchanged and the sequence transitions into live round state",
+        "Japanese text 購入フェーズ is supportive, not required"
+      ],
+      "usable_rois": [
+        "top_match_bar",
+        "round_timer",
+        "ally_roster",
+        "enemy_roster",
+        "minimap_normal",
+        "player_hp_armor",
+        "abilities",
+        "ammo_current_weapon"
+      ]
+    },
+    "buy_menu_open": {
+      "positive_rois": [
+        "buy_menu_grid",
+        "buy_menu_close_anchor"
+      ],
+      "hints": [
+        "full-screen weapon grid",
+        "large X close button at top-right"
+      ],
+      "usable_rois": [
+        "top_match_bar",
+        "round_timer",
+        "ally_roster",
+        "enemy_roster"
+      ],
+      "suspend_rois": [
+        "minimap_normal",
+        "player_hp_armor",
+        "abilities",
+        "ammo_current_weapon",
+        "weapon_inventory",
+        "kill_feed"
+      ]
+    },
+    "combat_report_visible": {
+      "positive_rois": [
+        "combat_report"
+      ],
+      "hints": [
+        "right-side Battle Report panel"
+      ],
+      "usable_rois": [
+        "top_match_bar",
+        "round_timer",
+        "ally_roster",
+        "enemy_roster",
+        "kill_feed"
+      ]
+    },
+    "expanded_tactical_map": {
+      "positive_rois": [
+        "expanded_tactical_map"
+      ],
+      "hints": [
+        "large centered tactical map with callout labels"
+      ],
+      "usable_rois": [
+        "top_match_bar",
+        "round_timer",
+        "ally_roster",
+        "enemy_roster",
+        "combat_report"
+      ],
+      "suspend_rois": [
+        "minimap_normal"
+      ],
+      "transition_policy": {
+        "flag": "visual_transition",
+        "suppress_sensitive_readers_sec": 0.25,
+        "rule": "during fade-in/out or partial-map frames, keep previous stable primary state only for non-sensitive top HUD; otherwise primary_state=unknown"
+      }
+    },
+    "round_end_banner": {
+      "positive_rois": [
+        "round_end_banner"
+      ],
+      "shared_roi_group": "phase_or_round_end_banner",
+      "classification_signals": [
+        "short_text_if_available",
+        "score_change_within_window",
+        "timer_freeze_or_disappear",
+        "next_state_buy_phase"
+      ],
+      "hints": [
+        "ROI overlaps buy-phase banner by design; ROI presence alone must never decide class",
+        "round end is favored when score increments within the correlation window or sequence transitions to buy phase",
+        "large win/loss/team-ace text is supportive, not required"
+      ],
+      "usable_rois": [
+        "top_match_bar",
+        "kill_feed",
+        "combat_report"
+      ]
+    },
+    "vision_obscured_smoke": {
+      "positive_rois": [
+        "center_crosshair_area"
+      ],
+      "hints": [
+        "require low edge density/spatial entropy AND broad color uniformity while HUD anchors remain stable",
+        "reject near-wall/dark-scene candidates when edge structure or depth boundaries remain strong",
+        "do not classify flash-white frames as smoke"
+      ],
+      "suspend_visual_inference": [
+        "crosshair_target_context",
+        "line_of_sight_from_world_view"
+      ]
+    },
+    "spectator_first_person": {
+      "positive_rois": [
+        "spectated_player_panel"
+      ],
+      "negative_or_changed_rois": [
+        "player_hp_armor",
+        "abilities"
+      ],
+      "hints": [
+        "spectated player name/agent panel visible in lower-left",
+        "self HUD identity cannot be trusted; combat report may also be visible",
+        "require at least two signals: spectated panel plus self-HUD disappearance/change or recent player_death candidate"
+      ],
+      "usable_rois": [
+        "top_match_bar",
+        "round_timer",
+        "ally_roster",
+        "enemy_roster",
+        "kill_feed",
+        "combat_report",
+        "minimap_normal"
+      ],
+      "suspend_player_specific_rois": [
+        "player_hp_armor",
+        "abilities",
+        "ammo_current_weapon",
+        "weapon_inventory"
+      ]
+    },
+    "remote_control_view": {
+      "positive_rois": [
+        "center_crosshair_area"
+      ],
+      "subtypes": [
+        "astra_astral",
+        "cypher_camera",
+        "sova_drone",
+        "skye_trailblazer",
+        "other",
+        "unknown"
+      ],
+      "hints": [
+        "do not classify only by color; use structural UI/geometry and temporal entry/exit cues",
+        "astra_astral: map-like astral geometry + hand/interface structure + purple/pink palette",
+        "other subtypes may require future templates; unknown subtype is valid"
+      ],
+      "usable_rois": [
+        "top_match_bar",
+        "round_timer",
+        "ally_roster",
+        "enemy_roster",
+        "minimap_normal",
+        "player_hp_armor",
+        "abilities"
+      ],
+      "suspend_visual_inference": [
+        "crosshair_placement",
+        "world_position_from_main_view",
+        "peek_from_main_view",
+        "movement_from_main_view"
+      ]
+    },
+    "vision_obscured_flash": {
+      "positive_rois": [
+        "center_crosshair_area"
+      ],
+      "hints": [
+        "abrupt luminance/saturation excursion over most of world-view area",
+        "HUD anchors remain stable while scene detail collapses",
+        "short temporal duration; distinguish from smoke by rapid onset/decay and luminance profile"
+      ],
+      "suspend_visual_inference": [
+        "crosshair_target_context",
+        "line_of_sight_from_world_view",
+        "enemy_visibility_from_world_view"
+      ]
+    }
+  },
+  "roi_methods": {
+    "round_timer": {
+      "method": "digits_template_or_ocr",
+      "format": "M:SS",
+      "sample_fps": 2.0,
+      "primary": "template_matching_digits",
+      "fallback": "digits_only_ocr",
+      "disagreement_policy": "prefer temporally consistent value; lower confidence when disagreement persists"
+    },
+    "ally_score": {
+      "method": "digits_template_or_ocr",
+      "sample_fps": 1.0,
+      "primary": "template_matching_digits",
+      "fallback": "digits_only_ocr",
+      "disagreement_policy": "prefer temporally consistent value; lower confidence when disagreement persists"
+    },
+    "enemy_score": {
+      "method": "digits_template_or_ocr",
+      "sample_fps": 1.0,
+      "primary": "template_matching_digits",
+      "fallback": "digits_only_ocr",
+      "disagreement_policy": "prefer temporally consistent value; lower confidence when disagreement persists"
+    },
+    "player_hp_armor": {
+      "method": "digits_plus_icon_state",
+      "sample_fps_base": 2.0,
+      "sample_fps_burst": 10.0
+    },
+    "ammo_current_weapon": {
+      "method": "digits_plus_inventory_icon",
+      "sample_fps_base": 2.0,
+      "sample_fps_burst": 10.0,
+      "weapon_resolution": {
+        "primary": "inventory_icon_template_registry",
+        "fallback": "short_text_ocr_if_visible",
+        "on_disagreement": "set weapon_text=null unless one source exceeds the other by configured confidence margin"
+      }
+    },
+    "ally_roster": {
+      "method": "portrait_liveness_state",
+      "sample_fps": 2.0
+    },
+    "enemy_roster": {
+      "method": "portrait_liveness_state",
+      "sample_fps": 2.0
+    },
+    "kill_feed": {
+      "method": "change_detection_then_crop_parse",
+      "sample_fps": 4.0,
+      "mask_rois": [
+        "performance_overlay_ignore"
+      ]
+    },
+    "spike_top_center": {
+      "method": "template_state_detection",
+      "sample_fps": 4.0
+    },
+    "spike_carrier_indicator": {
+      "method": "template_state_detection",
+      "sample_fps": 2.0
+    },
+    "abilities": {
+      "method": "slot_icon_state_and_charge_detection",
+      "sample_fps": 4.0
+    },
+    "location_label": {
+      "method": "optional_text_recognition",
+      "sample_fps": 1.0,
+      "required_for_mvp": false
+    },
+    "minimap_normal": {
+      "method": "crop_and_visual_feature_extraction",
+      "sample_fps": 2.0,
+      "required_for_mvp": false
+    },
+    "combat_report": {
+      "method": "panel_presence_then_optional_parse",
+      "sample_fps": 2.0
+    },
+    "spectated_player_panel": {
+      "method": "panel_presence_and_identity_layout",
+      "sample_fps": 2.0
+    },
+    "center_phase_banner": {
+      "method": "shared_banner_presence_then_context_classification",
+      "sample_fps": 4.0
+    },
+    "round_end_banner": {
+      "method": "shared_banner_presence_then_context_classification",
+      "sample_fps": 4.0
+    },
+    "status_effects_center_bottom": {
+      "method": "status_icon_presence_optional_parse",
+      "sample_fps": 4.0
+    }
+  },
+  "external_overlay_handling": {
+    "known_non_game_overlays": [
+      "Client FPS text/top-left",
+      "performance graph/top-right",
+      "voice/chat overlay/left side"
+    ],
+    "policy": "mask known fixed overlays where they intersect an ROI; do not treat them as VALORANT HUD",
+    "performance_overlay_roi": "performance_overlay_ignore"
+  },
+  "confidence_policy": {
+    "layer": "hud_observation_acceptance",
+    "accept": 0.85,
+    "accept_with_cross_check_min": 0.65,
+    "unknown_below": 0.65,
+    "temporal_debounce_frames": 2,
+    "require_two_source_agreement_for": [
+      "player_death",
+      "spike_planted",
+      "round_boundary",
+      "kill_side_assignment"
+    ],
+    "relationship_to_final_evaluation": {
+      "final_ai_coach_thresholds_source": "valorant_codex_ready_bundle_v3/CODEX_MASTER_SPEC.md section 11",
+      "note": "HUD thresholds decide whether an observation/fact is trustworthy enough to emit. Final evaluation thresholds 0.55/0.75 decide whether an AI Coach evaluation is shown. They are intentionally different layers.",
+      "fact_confidence_rule": "derived fact confidence is the minimum confidence of required observations/sources after cross-check; do not remap HUD confidence to the final-evaluation scale."
+    }
+  },
+  "notes": [
+    "Validated against the user-provided 171 s Outplayed/OBS capture and 12 1920x1080 screenshots.",
+    "This layout is specific to 16:9 1920x1080 VALORANT capture with the observed HUD scale. Other HUD scales require calibration.",
+    "Do not attempt to infer 3D world coordinates from these ROIs.",
+    "Audio is not required for MVP HUD analysis. Preserve source audio streams when generating clips."
+  ],
+  "calibration_policy": {
+    "required_anchors": [
+      "round_timer",
+      "top_match_bar",
+      "player_hp_armor",
+      "abilities"
+    ],
+    "min_detected_anchors": 3,
+    "position_tolerance_norm": 0.03,
+    "size_relative_tolerance": 0.12,
+    "on_failure": "calibration_required",
+    "notes": [
+      "detect HUD scale changes even at the same 16:9 resolution",
+      "do not silently stretch ROIs when anchor geometry differs materially"
+    ]
+  },
+  "audio_playback_policy": {
+    "preserve_all_tracks": true,
+    "default_track": "container_default_if_present_else_first",
+    "user_track_selection": "required in playback/settings UI when multiple tracks exist",
+    "persist_user_choice": true,
+    "automatic_game_mic_mix_identification_mvp": false
+  }
+}

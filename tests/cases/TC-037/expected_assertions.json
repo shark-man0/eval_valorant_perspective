@@ -1,0 +1,17 @@
+{
+  "case_id": "TC-037",
+  "description": "明確な評価対象イベントがない通常区間は評価を生成しない",
+  "expected_evaluations": [],
+  "expected_candidate_rule_ids": [],
+  "forbidden_candidate_rule_ids": [],
+  "expected_evaluation_count_min": 0,
+  "expected_evaluation_count_max": 0,
+  "forbidden_input_conclusion_terms": [
+    "good",
+    "bad",
+    "適切",
+    "不適切",
+    "例外に該当",
+    "〜すべき"
+  ]
+}

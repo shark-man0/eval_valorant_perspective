@@ -1,0 +1,242 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "map_zone_runtime_contract_schema_v1.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "purpose",
+    "canonical_provider_ids",
+    "fusion_thresholds",
+    "fusion_decision_table",
+    "boundary_policy",
+    "temporal_debounce",
+    "map_selection",
+    "minimap_profile",
+    "consumer_contract",
+    "calibration_failure_behavior",
+    "missing_geometry_behavior"
+  ],
+  "properties": {
+    "version": {
+      "type": "string"
+    },
+    "purpose": {
+      "type": "string"
+    },
+    "canonical_provider_ids": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "location_label",
+        "polygon",
+        "coarse_fallback"
+      ],
+      "properties": {
+        "location_label": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "priority",
+            "requirements"
+          ],
+          "properties": {
+            "priority": {
+              "type": "integer"
+            },
+            "requirements": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "polygon": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "priority",
+            "requirements",
+            "confidence_rule"
+          ],
+          "properties": {
+            "priority": {
+              "type": "integer"
+            },
+            "requirements": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "confidence_rule": {
+              "type": "string"
+            }
+          }
+        },
+        "coarse_fallback": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "priority",
+            "confidence_cap",
+            "scope"
+          ],
+          "properties": {
+            "priority": {
+              "type": "integer"
+            },
+            "confidence_cap": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "scope": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "fusion_thresholds": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "accept",
+        "support",
+        "named_zone_min"
+      ],
+      "properties": {
+        "accept": {
+          "type": "number"
+        },
+        "support": {
+          "type": "number"
+        },
+        "named_zone_min": {
+          "type": "number"
+        }
+      }
+    },
+    "fusion_decision_table": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "case",
+          "result",
+          "source",
+          "confidence"
+        ],
+        "properties": {
+          "case": {
+            "type": "string"
+          },
+          "result": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "confidence": {
+            "type": [
+              "string",
+              "number"
+            ]
+          }
+        }
+      }
+    },
+    "boundary_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "margin_norm",
+        "state",
+        "previous_zone_hold_sec",
+        "confidence_decay_per_sec",
+        "without_previous_zone"
+      ],
+      "properties": {
+        "margin_norm": {
+          "type": "number"
+        },
+        "state": {
+          "type": "string"
+        },
+        "previous_zone_hold_sec": {
+          "type": "number"
+        },
+        "confidence_decay_per_sec": {
+          "type": "number"
+        },
+        "without_previous_zone": {
+          "type": "string"
+        }
+      }
+    },
+    "temporal_debounce": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "zone_transition_persistence_sec",
+        "site_entry_persistence_sec",
+        "rotation_destination_persistence_sec"
+      ],
+      "properties": {
+        "zone_transition_persistence_sec": {
+          "type": "number"
+        },
+        "site_entry_persistence_sec": {
+          "type": "number"
+        },
+        "rotation_destination_persistence_sec": {
+          "type": "number"
+        }
+      }
+    },
+    "map_selection": {
+      "type": "string"
+    },
+    "minimap_profile": {
+      "type": "string"
+    },
+    "consumer_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "resolver_output",
+        "position_change",
+        "rotation",
+        "team_entry",
+        "topology_source_of_truth"
+      ],
+      "properties": {
+        "resolver_output": {
+          "type": "string"
+        },
+        "position_change": {
+          "type": "string"
+        },
+        "rotation": {
+          "type": "string"
+        },
+        "team_entry": {
+          "type": "string"
+        },
+        "topology_source_of_truth": {
+          "type": "string"
+        }
+      }
+    },
+    "calibration_failure_behavior": {
+      "type": "string"
+    },
+    "missing_geometry_behavior": {
+      "type": "string"
+    }
+  }
+}

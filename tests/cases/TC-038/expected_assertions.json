@@ -1,0 +1,40 @@
+{
+  "case_id": "TC-038",
+  "description": "遮蔽・退路の空間情報が取れないためPOS-01はUNSCORED",
+  "expected_evaluations": [
+    {
+      "primary_rule_id": "POS-01",
+      "label": "unscored",
+      "allowed_related_rule_ids": [],
+      "required_concept_tags": [
+        "cover",
+        "escape_route"
+      ],
+      "confidence_range": [
+        0,
+        0.6
+      ],
+      "expect_clip": false,
+      "expect_missing_information": true,
+      "expected_unscored_reason_codes": [
+        "insufficient_visual_evidence",
+        "missing_required_fact",
+        "low_confidence"
+      ]
+    }
+  ],
+  "expected_candidate_rule_ids": [
+    "POS-01"
+  ],
+  "forbidden_candidate_rule_ids": [],
+  "expected_evaluation_count_min": 1,
+  "expected_evaluation_count_max": 3,
+  "forbidden_input_conclusion_terms": [
+    "good",
+    "bad",
+    "適切",
+    "不適切",
+    "例外に該当",
+    "〜すべき"
+  ]
+}

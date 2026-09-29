@@ -1,0 +1,184 @@
+{
+  "version": "3.0",
+  "cases": [
+    {
+      "id": "MZ3-001",
+      "kind": "schema_validation"
+    },
+    {
+      "id": "MZ3-002",
+      "kind": "polygon_point",
+      "point_norm": [
+        0.9,
+        0.42
+      ],
+      "expected_zone_id": "summit_a_site"
+    },
+    {
+      "id": "MZ3-003",
+      "kind": "polygon_point",
+      "point_norm": [
+        0.08,
+        0.42
+      ],
+      "expected_zone_id": "summit_b_site"
+    },
+    {
+      "id": "MZ3-004",
+      "kind": "fusion_same",
+      "label_zone": "summit_a_site",
+      "label_conf": 0.92,
+      "poly_zone": "summit_a_site",
+      "poly_conf": 0.88,
+      "expected": "summit_a_site",
+      "source": "fused_label_polygon"
+    },
+    {
+      "id": "MZ3-005",
+      "kind": "fusion_conflict_high",
+      "label_zone": "summit_a_site",
+      "label_conf": 0.93,
+      "poly_zone": "summit_a_link",
+      "poly_conf": 0.91,
+      "expected": null,
+      "source": "unknown"
+    },
+    {
+      "id": "MZ3-006",
+      "kind": "fusion_conflict_boundary_hold",
+      "label_zone": "summit_a_site",
+      "label_conf": 0.93,
+      "poly_zone": "summit_a_link",
+      "poly_conf": 0.91,
+      "previous_zone": "summit_a_link",
+      "boundary": true,
+      "expected": "summit_a_link",
+      "source": "held_previous_boundary"
+    },
+    {
+      "id": "MZ3-007",
+      "kind": "rotation_summit",
+      "sequence": [
+        "summit_a_site",
+        "summit_a_link",
+        "summit_mid",
+        "summit_b_link",
+        "summit_b_site"
+      ],
+      "expect": true
+    },
+    {
+      "id": "MZ3-008",
+      "kind": "no_rotation_same_affinity",
+      "sequence": [
+        "summit_a_approach",
+        "summit_a_link",
+        "summit_a_site"
+      ],
+      "expect": false
+    },
+    {
+      "id": "MZ3-009",
+      "kind": "rotation_three_site_fixture",
+      "fixture": "three_site_fixture",
+      "sequence": [
+        "tri_a_site",
+        "tri_a_app",
+        "tri_hub",
+        "tri_c_app",
+        "tri_c_site"
+      ],
+      "expect": true
+    },
+    {
+      "id": "MZ3-010",
+      "kind": "special_link_fixture",
+      "fixture": "special_link_fixture",
+      "sequence": [
+        "sl_a_site",
+        "sl_a_app",
+        "sl_tp",
+        "sl_b_app",
+        "sl_b_site"
+      ],
+      "expect": true,
+      "required_edge_kind": "teleporter_link"
+    },
+    {
+      "id": "MZ3-011",
+      "kind": "team_entry",
+      "from": "summit_a_approach",
+      "to": "summit_a_site",
+      "dwell": 0.35,
+      "expect_start": true,
+      "expect_enter": true
+    },
+    {
+      "id": "MZ3-012",
+      "kind": "team_entry_not_site",
+      "from": "summit_mid",
+      "to": "summit_a_link",
+      "dwell": 1.0,
+      "expect": null
+    },
+    {
+      "id": "MZ3-013",
+      "kind": "geometry_confidence",
+      "calibration": 0.99,
+      "marker": 0.97,
+      "geometry_cap": 0.9,
+      "expected": 0.9
+    },
+    {
+      "id": "MZ3-014",
+      "kind": "callout_alias",
+      "alias": "A メイン",
+      "expected": "A Main"
+    },
+    {
+      "id": "MZ3-015",
+      "kind": "calibration_required_profile",
+      "dynamic_rotation_detected": true,
+      "expect": "calibration_required"
+    },
+    {
+      "id": "MZ3-016",
+      "kind": "map_unresolved",
+      "expect_zone_events": false
+    },
+    {
+      "id": "MZ3-017",
+      "kind": "peek_unmatched",
+      "expected": null
+    },
+    {
+      "id": "MZ3-018",
+      "kind": "topology_single_source"
+    },
+    {
+      "id": "MZ3-019",
+      "kind": "provider_ids"
+    },
+    {
+      "id": "MZ3-020",
+      "kind": "operational_mask_independent"
+    },
+    {
+      "id": "MZ3-021",
+      "kind": "callout_single_source"
+    },
+    {
+      "id": "MZ3-022",
+      "kind": "duration_based_stability"
+    },
+    {
+      "id": "MZ3-023",
+      "kind": "visual_override"
+    },
+    {
+      "id": "MZ3-024",
+      "kind": "boundary_ambiguous_no_previous",
+      "expect": null
+    }
+  ]
+}

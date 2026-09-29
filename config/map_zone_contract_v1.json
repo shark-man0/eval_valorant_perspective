@@ -1,0 +1,8 @@
+{
+  "version": "1.0",
+  "purpose": "生の座標をAIへ直接解釈させず、可能ならzone_id/zone_nameへ正規化する。",
+  "zone_id_format": "<map_slug>_<stable_zone_slug>",
+  "unknown_policy": "認識できなければzone_id/zone_nameはnull。推測で埋めない。",
+  "3d_policy": "動画からZ座標や完全な3D Line-of-Sightを再構築しない。確認可能なcover/escape_route/line_of_sight_stateのみspatial_contextへ格納する。",
+  "maps": {}
+}

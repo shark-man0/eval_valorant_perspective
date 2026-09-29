@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0",
+  "notes": [
+    "Implementation profile example, not a replacement for the authoritative HUD schema or layout.",
+    "Asset files are not supplied. Create anchors with the calibration command, then merge selected readers/signals into that profile.",
+    "Reader field/slot coordinates below are illustrative fractions within their parent ROI; calibrate them from unannotated screenshots.",
+    "Missing templates and conflicting OCR results remain unknown. Do not lower thresholds to hide calibration failures."
+  ],
+  "anchors": {},
+  "readers": {
+    "round_timer": {
+      "kind": "digits",
+      "format": "timer_mmss",
+      "templates": {"0": "digits/0.png", "1": "digits/1.png", "2": "digits/2.png", "3": "digits/3.png", "4": "digits/4.png", "5": "digits/5.png", "6": "digits/6.png", "7": "digits/7.png", "8": "digits/8.png", "9": "digits/9.png"},
+      "glyph_threshold": 0.85,
+      "psm": 7,
+      "whitelist": "0123456789:",
+      "executable": "tesseract"
+    },
+    "ally_score": {"kind": "digits", "format": "integer", "executable": "tesseract"},
+    "enemy_score": {"kind": "digits", "format": "integer", "executable": "tesseract"},
+    "location_label": {
+      "kind": "text", "language": "jpn+eng", "psm": 7,
+      "executable": "tesseract"
+    },
+    "player_hp_armor": {
+      "kind": "fields",
+      "fields": {"hp": [0.5, 0, 1, 1], "armor": [0, 0, 0.5, 1]},
+      "executable": "tesseract"
+    },
+    "ammo_current_weapon": {
+      "kind": "fields",
+      "fields": {"ammo_current": [0, 0, 0.5, 1], "ammo_reserve": [0.5, 0, 1, 1]},
+      "executable": "tesseract"
+    },
+    "spike_top_center": {"kind": "template_values", "threshold": 0.90, "values": {"planted": "icons/spike_planted.png", "resolved": "icons/spike_resolved.png"}},
+    "spike_carrier_indicator": {"kind": "template_values", "threshold": 0.90, "values": {"carried_by_player": "icons/spike_carried.png"}},
+    "weapon_inventory": {"kind": "weapon_templates", "threshold": 0.90, "values": {"Vandal": "weapons/vandal.png", "Phantom": "weapons/phantom.png"}},
+    "abilities": {
+      "kind": "ability_slots",
+      "slots": [
+        {"slot": 0, "roi": [0, 0, 0.25, 1], "available_template": "abilities/c_ready.png", "unavailable_template": "abilities/c_unavailable.png"},
+        {"slot": 1, "roi": [0.25, 0, 0.5, 1], "available_template": "abilities/q_ready.png", "unavailable_template": "abilities/q_unavailable.png"},
+        {"slot": 2, "roi": [0.5, 0, 0.75, 1], "available_template": "abilities/e_ready.png", "unavailable_template": "abilities/e_unavailable.png"},
+        {"slot": 3, "roi": [0.75, 0, 1, 1], "available_template": "abilities/x_ready.png", "unavailable_template": "abilities/x_unavailable.png"}
+      ]
+    }
+  },
+  "signals": {
+    "spectated_player_panel": {"roi": "spectated_player_panel", "template": "states/spectated_panel.png"},
+    "self_hud_identity_lost": {"roi": "combat_report", "template": "states/player_dead.png"},
+    "buy_phase_template": {"roi": "center_phase_banner", "template": "states/buy_phase.png"},
+    "round_end_template": {"roi": "center_phase_banner", "template": "states/round_end.png"},
+    "plant_timer_visible": {"roi": "spike_top_center", "template": "states/plant_timer.png"},
+    "cypher_camera_template": {"roi": "center_crosshair_area", "template": "states/cypher_camera.png"},
+    "sova_drone_template": {"roi": "center_crosshair_area", "template": "states/sova_drone.png"},
+    "skye_trailblazer_template": {"roi": "center_crosshair_area", "template": "states/skye_trailblazer.png"}
+  }
+}

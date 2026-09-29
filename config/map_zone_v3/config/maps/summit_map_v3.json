@@ -1,0 +1,498 @@
+{
+  "version": "3.0",
+  "map_id": "summit",
+  "display_name": "Summit",
+  "geometry_version": "summit_coarse_2026-09-28_v3",
+  "geometry_status": "provisional_coarse_mvp_v3",
+  "geometry_confidence_cap": 0.9,
+  "observed_client_builds": [
+    "13.06.00.5435758"
+  ],
+  "validity_policy": {
+    "status": "provisional_until_runtime_alignment_passes",
+    "invalidate_when": "reference minimap mask alignment fails persistently or known map geometry changes",
+    "on_invalidate": "calibration_required; do not resolve named zones"
+  },
+  "coordinate_system": {
+    "space": "normalized_map_canvas",
+    "definition": "Normalize to detected static minimap map-mask bounding box, not full video frame or full minimap ROI.",
+    "x_range": [
+      0,
+      1
+    ],
+    "y_range": [
+      0,
+      1
+    ],
+    "origin": "top_left",
+    "orientation": "fixed screen orientation observed in provided captures",
+    "reference_minimap_roi_px_1920x1080": [
+      20,
+      48,
+      475,
+      475
+    ],
+    "reference_map_mask_bbox_within_roi_px": [
+      38,
+      18,
+      430,
+      422
+    ],
+    "calibration_note": "Authoring reference only. Runtime must align the static map mask and reject large mismatch instead of blindly reusing pixels."
+  },
+  "minimap_runtime_profile": {
+    "mvp_supported_orientation": "fixed_map_orientation",
+    "require_full_static_map_mask_visible": true,
+    "dynamic_rotation_supported": false,
+    "player_centered_dynamic_crop_supported": false,
+    "zoom_or_hud_scale_change_behavior": "recalibrate static mask; if stable alignment cannot be recovered -> calibration_required",
+    "runtime_alignment_reference_asset": "assets/summit_minimap_reference.png"
+  },
+  "coverage_mask_file": "config/maps/summit_operational_mask_v1.json",
+  "resolution_priority": [
+    "location_label",
+    "polygon",
+    "coarse_fallback",
+    "unknown"
+  ],
+  "zones": [
+    {
+      "zone_id": "summit_defender_spawn",
+      "zone_name": "Defender Spawn",
+      "kind": "spawn",
+      "site_id": null,
+      "site_affinity": [],
+      "priority": 100,
+      "polygon_norm": [
+        [
+          0.32,
+          0
+        ],
+        [
+          0.68,
+          0
+        ],
+        [
+          0.69,
+          0.22
+        ],
+        [
+          0.61,
+          0.28
+        ],
+        [
+          0.39,
+          0.28
+        ],
+        [
+          0.31,
+          0.2
+        ]
+      ],
+      "display_group": "DEFENDER_SPAWN",
+      "geometry_confidence_cap": 0.9
+    },
+    {
+      "zone_id": "summit_b_site",
+      "zone_name": "B Site",
+      "kind": "site",
+      "site_id": "B",
+      "site_affinity": [
+        "B"
+      ],
+      "priority": 120,
+      "polygon_norm": [
+        [
+          0,
+          0.28
+        ],
+        [
+          0.22,
+          0.27
+        ],
+        [
+          0.26,
+          0.38
+        ],
+        [
+          0.24,
+          0.5
+        ],
+        [
+          0,
+          0.55
+        ]
+      ],
+      "display_group": "B_SIDE",
+      "geometry_confidence_cap": 0.9
+    },
+    {
+      "zone_id": "summit_b_link",
+      "zone_name": "B Link / Trophy",
+      "kind": "connector",
+      "site_id": null,
+      "site_affinity": [
+        "B"
+      ],
+      "priority": 115,
+      "polygon_norm": [
+        [
+          0.22,
+          0.27
+        ],
+        [
+          0.39,
+          0.28
+        ],
+        [
+          0.4,
+          0.5
+        ],
+        [
+          0.24,
+          0.5
+        ],
+        [
+          0.26,
+          0.38
+        ]
+      ],
+      "display_group": "B_SIDE",
+      "geometry_confidence_cap": 0.9
+    },
+    {
+      "zone_id": "summit_b_approach",
+      "zone_name": "B Approach",
+      "kind": "site_approach",
+      "site_id": null,
+      "site_affinity": [
+        "B"
+      ],
+      "priority": 110,
+      "polygon_norm": [
+        [
+          0,
+          0.55
+        ],
+        [
+          0.24,
+          0.5
+        ],
+        [
+          0.4,
+          0.5
+        ],
+        [
+          0.43,
+          0.64
+        ],
+        [
+          0.34,
+          0.74
+        ],
+        [
+          0.14,
+          0.74
+        ],
+        [
+          0,
+          0.63
+        ]
+      ],
+      "display_group": "B_SIDE",
+      "geometry_confidence_cap": 0.9
+    },
+    {
+      "zone_id": "summit_mid",
+      "zone_name": "Mid / Transit",
+      "kind": "transit",
+      "site_id": null,
+      "site_affinity": [],
+      "priority": 105,
+      "polygon_norm": [
+        [
+          0.39,
+          0.28
+        ],
+        [
+          0.61,
+          0.28
+        ],
+        [
+          0.6,
+          0.5
+        ],
+        [
+          0.57,
+          0.64
+        ],
+        [
+          0.43,
+          0.64
+        ],
+        [
+          0.4,
+          0.5
+        ]
+      ],
+      "display_group": "MID",
+      "geometry_confidence_cap": 0.9
+    },
+    {
+      "zone_id": "summit_a_link",
+      "zone_name": "A Link / Hall / Art",
+      "kind": "connector",
+      "site_id": null,
+      "site_affinity": [
+        "A"
+      ],
+      "priority": 115,
+      "polygon_norm": [
+        [
+          0.61,
+          0.28
+        ],
+        [
+          0.78,
+          0.28
+        ],
+        [
+          0.76,
+          0.47
+        ],
+        [
+          0.6,
+          0.5
+        ]
+      ],
+      "display_group": "A_SIDE",
+      "geometry_confidence_cap": 0.9
+    },
+    {
+      "zone_id": "summit_a_site",
+      "zone_name": "A Site",
+      "kind": "site",
+      "site_id": "A",
+      "site_affinity": [
+        "A"
+      ],
+      "priority": 120,
+      "polygon_norm": [
+        [
+          0.78,
+          0.28
+        ],
+        [
+          1,
+          0.29
+        ],
+        [
+          1,
+          0.59
+        ],
+        [
+          0.76,
+          0.58
+        ],
+        [
+          0.76,
+          0.47
+        ]
+      ],
+      "display_group": "A_SIDE",
+      "geometry_confidence_cap": 0.9
+    },
+    {
+      "zone_id": "summit_a_approach",
+      "zone_name": "A Approach",
+      "kind": "site_approach",
+      "site_id": null,
+      "site_affinity": [
+        "A"
+      ],
+      "priority": 110,
+      "polygon_norm": [
+        [
+          0.6,
+          0.5
+        ],
+        [
+          0.76,
+          0.47
+        ],
+        [
+          0.76,
+          0.58
+        ],
+        [
+          1,
+          0.59
+        ],
+        [
+          0.94,
+          0.7
+        ],
+        [
+          0.8,
+          0.76
+        ],
+        [
+          0.66,
+          0.72
+        ],
+        [
+          0.57,
+          0.64
+        ]
+      ],
+      "display_group": "A_SIDE",
+      "geometry_confidence_cap": 0.9
+    },
+    {
+      "zone_id": "summit_attacker_spawn",
+      "zone_name": "Attacker Spawn",
+      "kind": "spawn",
+      "site_id": null,
+      "site_affinity": [],
+      "priority": 100,
+      "polygon_norm": [
+        [
+          0.43,
+          0.64
+        ],
+        [
+          0.57,
+          0.64
+        ],
+        [
+          0.66,
+          0.72
+        ],
+        [
+          0.78,
+          1
+        ],
+        [
+          0.34,
+          1
+        ],
+        [
+          0.34,
+          0.74
+        ]
+      ],
+      "display_group": "ATTACKER_SPAWN",
+      "geometry_confidence_cap": 0.9
+    }
+  ],
+  "topology_edges": [
+    {
+      "from_zone_id": "summit_defender_spawn",
+      "to_zone_id": "summit_mid",
+      "edge_kind": "walkable_boundary",
+      "active_by_default": true
+    },
+    {
+      "from_zone_id": "summit_b_site",
+      "to_zone_id": "summit_b_link",
+      "edge_kind": "walkable_boundary",
+      "active_by_default": true
+    },
+    {
+      "from_zone_id": "summit_b_site",
+      "to_zone_id": "summit_b_approach",
+      "edge_kind": "walkable_boundary",
+      "active_by_default": true
+    },
+    {
+      "from_zone_id": "summit_b_link",
+      "to_zone_id": "summit_b_approach",
+      "edge_kind": "walkable_boundary",
+      "active_by_default": true
+    },
+    {
+      "from_zone_id": "summit_b_link",
+      "to_zone_id": "summit_mid",
+      "edge_kind": "walkable_boundary",
+      "active_by_default": true
+    },
+    {
+      "from_zone_id": "summit_b_approach",
+      "to_zone_id": "summit_mid",
+      "edge_kind": "walkable_boundary",
+      "active_by_default": true
+    },
+    {
+      "from_zone_id": "summit_mid",
+      "to_zone_id": "summit_a_link",
+      "edge_kind": "walkable_boundary",
+      "active_by_default": true
+    },
+    {
+      "from_zone_id": "summit_mid",
+      "to_zone_id": "summit_a_approach",
+      "edge_kind": "walkable_boundary",
+      "active_by_default": true
+    },
+    {
+      "from_zone_id": "summit_a_link",
+      "to_zone_id": "summit_a_site",
+      "edge_kind": "walkable_boundary",
+      "active_by_default": true,
+      "note": "Coarse topology only; exact reactive-wall subarea state is out of scope."
+    },
+    {
+      "from_zone_id": "summit_a_link",
+      "to_zone_id": "summit_a_approach",
+      "edge_kind": "conditional_wall",
+      "active_by_default": true,
+      "dynamic_state_supported": false,
+      "note": "A Art/A Garden reactive-wall area; MVP topology is static."
+    },
+    {
+      "from_zone_id": "summit_a_site",
+      "to_zone_id": "summit_a_approach",
+      "edge_kind": "walkable_boundary",
+      "active_by_default": true
+    },
+    {
+      "from_zone_id": "summit_b_approach",
+      "to_zone_id": "summit_attacker_spawn",
+      "edge_kind": "walkable_boundary",
+      "active_by_default": true
+    },
+    {
+      "from_zone_id": "summit_mid",
+      "to_zone_id": "summit_attacker_spawn",
+      "edge_kind": "walkable_boundary",
+      "active_by_default": true
+    },
+    {
+      "from_zone_id": "summit_a_approach",
+      "to_zone_id": "summit_attacker_spawn",
+      "edge_kind": "walkable_boundary",
+      "active_by_default": true
+    }
+  ],
+  "sites": [
+    {
+      "site_id": "A",
+      "zone_ids": [
+        "summit_a_site"
+      ]
+    },
+    {
+      "site_id": "B",
+      "zone_ids": [
+        "summit_b_site"
+      ]
+    }
+  ],
+  "authoring_limits": [
+    "Polygons are coarse operational regions, not official Riot geometry.",
+    "macro_group is retained for backward compatibility/display only; generic runtime logic MUST use kind/site_affinity/sites[] instead of A_SIDE/B_SIDE/MID string names.",
+    "Reactive-wall subareas may need future finer zone splits; current MVP topology is static.",
+    "Exact LOS, exact callout boundaries and PEEK-04 exposed-directions counting are out of scope.",
+    "If polygon match confidence is low or calibration fails, return unknown rather than guessing."
+  ]
+}

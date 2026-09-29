@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "operational_mask_schema_v1.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "mask_id",
+    "map_id",
+    "purpose",
+    "authoring_basis",
+    "reference_asset",
+    "reference_sha256",
+    "polygon_norm",
+    "limits"
+  ],
+  "properties": {
+    "version": {
+      "type": "string"
+    },
+    "mask_id": {
+      "type": "string"
+    },
+    "map_id": {
+      "type": "string"
+    },
+    "purpose": {
+      "type": "string"
+    },
+    "authoring_basis": {
+      "type": "string"
+    },
+    "reference_asset": {
+      "type": "string"
+    },
+    "reference_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "polygon_norm": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        ],
+        "minItems": 2,
+        "maxItems": 2
+      }
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "not_official_geometry",
+        "not_for_los",
+        "not_for_gameplay_event_generation"
+      ],
+      "properties": {
+        "not_official_geometry": {
+          "const": true
+        },
+        "not_for_los": {
+          "const": true
+        },
+        "not_for_gameplay_event_generation": {
+          "const": true
+        }
+      }
+    }
+  }
+}

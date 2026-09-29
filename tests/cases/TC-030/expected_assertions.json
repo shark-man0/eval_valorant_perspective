@@ -1,0 +1,35 @@
+{
+  "case_id": "TC-030",
+  "description": "Duelistロールでサイトへ入りスペースを広げる",
+  "expected_evaluations": [
+    {
+      "primary_rule_id": "ROLE-06",
+      "label": "good",
+      "allowed_related_rule_ids": [],
+      "required_concept_tags": [
+        "space_creation",
+        "duelist_survival"
+      ],
+      "confidence_range": [
+        0.55,
+        1
+      ],
+      "expect_clip": true,
+      "expect_missing_information": false
+    }
+  ],
+  "expected_candidate_rule_ids": [
+    "ROLE-06"
+  ],
+  "forbidden_candidate_rule_ids": [],
+  "expected_evaluation_count_min": 1,
+  "expected_evaluation_count_max": 3,
+  "forbidden_input_conclusion_terms": [
+    "good",
+    "bad",
+    "適切",
+    "不適切",
+    "例外に該当",
+    "〜すべき"
+  ]
+}

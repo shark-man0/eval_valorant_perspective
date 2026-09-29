@@ -1,0 +1,14 @@
+{
+  "version": "2.0",
+  "map_id": "summit",
+  "status": "intentionally_empty_for_mvp",
+  "purpose": "Authoritative static source for PEEK-04 exposed_directions_count.",
+  "anchors": [],
+  "policy": {
+    "semantic_vlm_allowed": false,
+    "default_when_unmatched": null,
+    "reason_empty": "No human-authored per-peek exposure ground truth is available; do not fabricate anchors.",
+    "anchor_scope": "Specific normalized peek coordinate/landmark only; never an entire zone.",
+    "future_authoring_requirement": "Human review required. Each anchor needs coordinate, radius, zone/site compatibility, exposed_directions_count, and provenance."
+  }
+}

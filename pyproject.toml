@@ -1,0 +1,72 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "valorant-ai-coach"
+version = "0.1.0"
+description = "Windows desktop app for evidence-based VALORANT VOD coaching"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "PySide6>=6.8,<7",
+  "jsonschema>=4.23,<5",
+  "keyring>=25.6,<26",
+  "openai>=1.68,<3",
+  "opencv-python>=4.10,<5",
+  "shapely>=2.1,<3",
+  "pywin32-ctypes>=0.2.3,<1; sys_platform == 'win32'",
+]
+
+[project.optional-dependencies]
+dev = [
+  "mypy>=1.14,<2",
+  "pytest>=8.3,<10",
+  "pytest-cov>=6,<8",
+  "ruff>=0.9,<1",
+]
+build = ["pyinstaller>=6.11,<7"]
+
+[project.scripts]
+valorant-ai-coach = "valorant_ai_coach.main:main"
+
+[project.gui-scripts]
+valorant-ai-coach-gui = "valorant_ai_coach.main:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.coverage.run]
+branch = true
+source = ["valorant_ai_coach"]
+
+[tool.coverage.report]
+fail_under = 75
+show_missing = true
+skip_covered = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+exclude = ["build", "dist", "tests/validate_dataset.py"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+module = ["jsonschema", "jsonschema.*", "shapely", "shapely.*"]
+ignore_missing_imports = true

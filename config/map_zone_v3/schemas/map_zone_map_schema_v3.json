@@ -1,0 +1,361 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "map_zone_map_schema_v3.json",
+  "title": "VALORANT Map Zone Map v3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "map_id",
+    "display_name",
+    "geometry_version",
+    "geometry_status",
+    "geometry_confidence_cap",
+    "coordinate_system",
+    "minimap_runtime_profile",
+    "coverage_mask_file",
+    "resolution_priority",
+    "zones",
+    "topology_edges",
+    "sites"
+  ],
+  "properties": {
+    "version": {
+      "type": "string"
+    },
+    "map_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "display_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "geometry_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "geometry_status": {
+      "type": "string"
+    },
+    "geometry_confidence_cap": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "observed_client_builds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "validity_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "invalidate_when",
+        "on_invalidate"
+      ],
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "invalidate_when": {
+          "type": "string"
+        },
+        "on_invalidate": {
+          "type": "string"
+        }
+      }
+    },
+    "coordinate_system": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "space",
+        "definition",
+        "x_range",
+        "y_range",
+        "origin",
+        "orientation",
+        "reference_minimap_roi_px_1920x1080",
+        "reference_map_mask_bbox_within_roi_px",
+        "calibration_note"
+      ],
+      "properties": {
+        "space": {
+          "type": "string"
+        },
+        "definition": {
+          "type": "string"
+        },
+        "x_range": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "const": 0
+            },
+            {
+              "const": 1
+            }
+          ],
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "y_range": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "const": 0
+            },
+            {
+              "const": 1
+            }
+          ],
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "origin": {
+          "const": "top_left"
+        },
+        "orientation": {
+          "type": "string"
+        },
+        "reference_minimap_roi_px_1920x1080": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "reference_map_mask_bbox_within_roi_px": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "calibration_note": {
+          "type": "string"
+        }
+      }
+    },
+    "minimap_runtime_profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mvp_supported_orientation",
+        "require_full_static_map_mask_visible",
+        "dynamic_rotation_supported",
+        "player_centered_dynamic_crop_supported",
+        "zoom_or_hud_scale_change_behavior",
+        "runtime_alignment_reference_asset"
+      ],
+      "properties": {
+        "mvp_supported_orientation": {
+          "type": "string"
+        },
+        "require_full_static_map_mask_visible": {
+          "type": "boolean"
+        },
+        "dynamic_rotation_supported": {
+          "type": "boolean"
+        },
+        "player_centered_dynamic_crop_supported": {
+          "type": "boolean"
+        },
+        "zoom_or_hud_scale_change_behavior": {
+          "type": "string"
+        },
+        "runtime_alignment_reference_asset": {
+          "type": "string"
+        }
+      }
+    },
+    "coverage_mask_file": {
+      "type": "string"
+    },
+    "resolution_priority": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "location_label",
+          "polygon",
+          "coarse_fallback",
+          "unknown"
+        ]
+      },
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "zones": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "zone_id",
+          "zone_name",
+          "kind",
+          "site_id",
+          "site_affinity",
+          "priority",
+          "polygon_norm",
+          "display_group",
+          "geometry_confidence_cap"
+        ],
+        "properties": {
+          "zone_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "zone_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "display_group": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "kind": {
+            "enum": [
+              "site",
+              "site_approach",
+              "connector",
+              "transit",
+              "spawn",
+              "special_link",
+              "other"
+            ]
+          },
+          "site_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "site_affinity": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "priority": {
+            "type": "integer"
+          },
+          "geometry_confidence_cap": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "polygon_norm": {
+            "type": "array",
+            "minItems": 3,
+            "items": {
+              "type": "array",
+              "prefixItems": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              ],
+              "minItems": 2,
+              "maxItems": 2
+            }
+          }
+        }
+      }
+    },
+    "topology_edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "from_zone_id",
+          "to_zone_id",
+          "edge_kind",
+          "active_by_default"
+        ],
+        "properties": {
+          "from_zone_id": {
+            "type": "string"
+          },
+          "to_zone_id": {
+            "type": "string"
+          },
+          "edge_kind": {
+            "enum": [
+              "walkable_boundary",
+              "special_link",
+              "teleporter_link",
+              "conditional_wall",
+              "other"
+            ]
+          },
+          "active_by_default": {
+            "type": "boolean"
+          },
+          "note": {
+            "type": "string"
+          },
+          "condition_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "dynamic_state_supported": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "sites": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "site_id",
+          "zone_ids"
+        ],
+        "properties": {
+          "site_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "zone_ids": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "authoring_limits": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

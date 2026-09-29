@@ -1,0 +1,35 @@
+{
+  "case_id": "TC-006",
+  "description": "約0.7秒前からプリエイム",
+  "expected_evaluations": [
+    {
+      "primary_rule_id": "AIM-02",
+      "label": "good",
+      "allowed_related_rule_ids": [],
+      "required_concept_tags": [
+        "preaim",
+        "crosshair_placement"
+      ],
+      "confidence_range": [
+        0.75,
+        1.0
+      ],
+      "expect_clip": true,
+      "expect_missing_information": false
+    }
+  ],
+  "expected_candidate_rule_ids": [
+    "AIM-02"
+  ],
+  "forbidden_candidate_rule_ids": [],
+  "expected_evaluation_count_min": 1,
+  "expected_evaluation_count_max": 3,
+  "forbidden_input_conclusion_terms": [
+    "good",
+    "bad",
+    "適切",
+    "不適切",
+    "例外に該当",
+    "〜すべき"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "purpose": "Defines logical ability slots independent of user keybind text.",
+  "logical_slots": [
+    "C",
+    "Q",
+    "E",
+    "X"
+  ],
+  "meaning": "C/Q/E/X are canonical ability-slot identities/positions in the game data model, not literal keyboard labels rendered in the HUD.",
+  "implementation_rule": "Determine slot by fixed HUD slot position/index and state transitions. Never OCR the displayed key label and compare it to C/Q/E/X.",
+  "rebind_safe": true
+}

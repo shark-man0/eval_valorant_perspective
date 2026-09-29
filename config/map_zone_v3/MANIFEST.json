@@ -1,0 +1,22 @@
+{
+  "patch_id": "valorant_map_zone_patch_v3",
+  "replaces": "valorant_map_zone_patch_v2",
+  "target": [
+    "valorant_codex_ready_bundle_v3",
+    "valorant_hud_analyzer_patch_v2",
+    "valorant_visual_analyzer_patch_v2"
+  ],
+  "canonical_runtime_contract": "config/map_zone_runtime_contract_v4.json",
+  "canonical_map_contract": "config/map_zone_contract_v4.json",
+  "map_registry": "config/map_registry_v1.json",
+  "production_maps": [
+    "summit"
+  ],
+  "test_fixtures": [
+    "three_site_fixture",
+    "special_link_fixture"
+  ],
+  "schema_validation": "jsonschema draft 2020-12",
+  "peek_exposure_supported": false,
+  "event_ownership": "Visual Analyzer v2 consumers only"
+}

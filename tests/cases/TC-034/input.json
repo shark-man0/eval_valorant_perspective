@@ -1,0 +1,256 @@
+{
+  "schema_version": "2.0",
+  "match_id": "MOCK-TC-034",
+  "round_no": 5,
+  "source_video": {
+    "path": "mock/TC-034.mp4",
+    "fps": 60,
+    "width": 1920,
+    "height": 1080,
+    "duration_sec": 120
+  },
+  "round_window": {
+    "start_sec": 0,
+    "end_sec": 100
+  },
+  "round_meta": {
+    "side": "attack",
+    "map": "Ascent",
+    "player_agent": "MOCK_AGENT",
+    "player_role": "controller",
+    "round_result": "unknown",
+    "score_before": {
+      "ally": 4,
+      "enemy": 4
+    },
+    "economy_context": null
+  },
+  "observation_quality": {
+    "hud_confidence": 0.98,
+    "visual_confidence": 0.98,
+    "timeline_completeness": 1.0,
+    "missing_intervals": []
+  },
+  "events": [
+    {
+      "time_sec": 40,
+      "type": "status_effect",
+      "attributes": {
+        "effect_type": "flash",
+        "source_side": "enemy",
+        "affected_side": "player",
+        "duration_sec": 1.5
+      },
+      "event_id": "TC-034-E01",
+      "actor": "player",
+      "confidence": 0.98
+    },
+    {
+      "time_sec": 41,
+      "type": "position_change",
+      "attributes": {
+        "from": "A Main",
+        "to": "A Main Retreat"
+      },
+      "event_id": "TC-034-E02",
+      "actor": "player",
+      "confidence": 0.98
+    },
+    {
+      "time_sec": 43,
+      "type": "engagement_end",
+      "attributes": {},
+      "event_id": "TC-034-E03",
+      "actor": "player",
+      "confidence": 0.98
+    }
+  ],
+  "state_snapshots": [
+    {
+      "time_sec": 40,
+      "ally_alive": 4,
+      "enemy_alive": 4,
+      "hp": 100,
+      "armor": 50,
+      "weapon": "Vandal",
+      "spike_state": "not_carried",
+      "round_time_remaining_sec": null,
+      "utility_available_count": null,
+      "player_location": {
+        "zone_id": "ascent_a_main",
+        "zone_name": "A Main",
+        "map_x_norm": null,
+        "map_y_norm": null
+      },
+      "known_enemy_locations": [],
+      "spatial_context": {
+        "cover_available": null,
+        "escape_route_available": null,
+        "line_of_sight_state": "unknown",
+        "exposed_directions_count": null,
+        "view_target_zone_id": null
+      }
+    },
+    {
+      "time_sec": 45,
+      "ally_alive": 4,
+      "enemy_alive": 4,
+      "hp": 100,
+      "armor": 50,
+      "weapon": "Vandal",
+      "spike_state": "not_carried",
+      "round_time_remaining_sec": null,
+      "utility_available_count": null,
+      "player_location": {
+        "zone_id": "ascent_a_main_retreat",
+        "zone_name": "A Main Retreat",
+        "map_x_norm": null,
+        "map_y_norm": null
+      },
+      "known_enemy_locations": [],
+      "spatial_context": {
+        "cover_available": null,
+        "escape_route_available": null,
+        "line_of_sight_state": "unknown",
+        "exposed_directions_count": null,
+        "view_target_zone_id": null
+      }
+    }
+  ],
+  "deterministic_facts": [
+    {
+      "fact_id": "F001",
+      "key": "side",
+      "value": "attack",
+      "time_sec": null,
+      "time_range": null,
+      "confidence": 1.0,
+      "source": "config",
+      "provenance_event_ids": []
+    },
+    {
+      "fact_id": "F002",
+      "key": "player_role",
+      "value": "controller",
+      "time_sec": null,
+      "time_range": null,
+      "confidence": 1.0,
+      "source": "config",
+      "provenance_event_ids": []
+    },
+    {
+      "fact_id": "F003",
+      "key": "numbers_state",
+      "value": "even",
+      "time_sec": 40,
+      "time_range": null,
+      "confidence": 0.99,
+      "source": "derived_code",
+      "provenance_event_ids": []
+    },
+    {
+      "fact_id": "F004",
+      "key": "weapon",
+      "value": "Vandal",
+      "time_sec": 40,
+      "time_range": null,
+      "confidence": 0.98,
+      "source": "hud",
+      "provenance_event_ids": []
+    },
+    {
+      "fact_id": "F005",
+      "key": "spike_carried_by_player",
+      "value": false,
+      "time_sec": 40,
+      "time_range": null,
+      "confidence": 0.98,
+      "source": "derived_code",
+      "provenance_event_ids": []
+    },
+    {
+      "fact_id": "F006",
+      "key": "spike_planted",
+      "value": false,
+      "time_sec": 40,
+      "time_range": null,
+      "confidence": 0.98,
+      "source": "derived_code",
+      "provenance_event_ids": []
+    },
+    {
+      "fact_id": "F007",
+      "key": "zone_id",
+      "value": "ascent_a_main",
+      "time_sec": 40,
+      "time_range": null,
+      "confidence": 0.9,
+      "source": "visual",
+      "provenance_event_ids": []
+    },
+    {
+      "fact_id": "F008",
+      "key": "numbers_state",
+      "value": "even",
+      "time_sec": 45,
+      "time_range": null,
+      "confidence": 0.99,
+      "source": "derived_code",
+      "provenance_event_ids": []
+    },
+    {
+      "fact_id": "F009",
+      "key": "weapon",
+      "value": "Vandal",
+      "time_sec": 45,
+      "time_range": null,
+      "confidence": 0.98,
+      "source": "hud",
+      "provenance_event_ids": []
+    },
+    {
+      "fact_id": "F010",
+      "key": "spike_carried_by_player",
+      "value": false,
+      "time_sec": 45,
+      "time_range": null,
+      "confidence": 0.98,
+      "source": "derived_code",
+      "provenance_event_ids": []
+    },
+    {
+      "fact_id": "F011",
+      "key": "spike_planted",
+      "value": false,
+      "time_sec": 45,
+      "time_range": null,
+      "confidence": 0.98,
+      "source": "derived_code",
+      "provenance_event_ids": []
+    },
+    {
+      "fact_id": "F012",
+      "key": "zone_id",
+      "value": "ascent_a_main_retreat",
+      "time_sec": 45,
+      "time_range": null,
+      "confidence": 0.9,
+      "source": "visual",
+      "provenance_event_ids": []
+    },
+    {
+      "fact_id": "F013",
+      "key": "disadvantageous_effect_active",
+      "value": true,
+      "time_sec": 40,
+      "time_range": null,
+      "confidence": 0.98,
+      "source": "event_normalization",
+      "provenance_event_ids": [
+        "TC-034-E01"
+      ]
+    }
+  ],
+  "frames": [],
+  "previous_round_context": null
+}

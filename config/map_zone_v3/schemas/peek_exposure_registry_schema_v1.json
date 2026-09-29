@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "peek_exposure_registry_schema_v1.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "map_id",
+    "status",
+    "purpose",
+    "anchors",
+    "policy"
+  ],
+  "properties": {
+    "version": {
+      "type": "string"
+    },
+    "map_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "purpose": {
+      "type": "string"
+    },
+    "anchors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "anchor_id",
+          "position_norm",
+          "radius_norm",
+          "zone_id",
+          "site_id",
+          "exposed_directions_count",
+          "confidence_cap",
+          "provenance"
+        ],
+        "properties": {
+          "anchor_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "position_norm": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            ],
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "radius_norm": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1
+          },
+          "zone_id": {
+            "type": "string"
+          },
+          "site_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "exposed_directions_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "confidence_cap": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "provenance": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "semantic_vlm_allowed",
+        "default_when_unmatched",
+        "reason_empty",
+        "anchor_scope",
+        "future_authoring_requirement"
+      ],
+      "properties": {
+        "semantic_vlm_allowed": {
+          "const": false
+        },
+        "default_when_unmatched": {
+          "type": "null"
+        },
+        "reason_empty": {
+          "type": "string"
+        },
+        "anchor_scope": {
+          "type": "string"
+        },
+        "future_authoring_requirement": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

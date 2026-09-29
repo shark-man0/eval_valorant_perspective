@@ -1,0 +1,106 @@
+{
+  "version": "1.0",
+  "map_id": "TEST_MAP",
+  "minimap_calibration": "test_fixture_normalized",
+  "zones": [
+    {
+      "zone_id": "A_MAIN",
+      "macro_group": "A",
+      "polygon_norm": [
+        [
+          0.05,
+          0.35
+        ],
+        [
+          0.3,
+          0.35
+        ],
+        [
+          0.3,
+          0.65
+        ],
+        [
+          0.05,
+          0.65
+        ]
+      ]
+    },
+    {
+      "zone_id": "MID",
+      "macro_group": "MID",
+      "polygon_norm": [
+        [
+          0.3,
+          0.3
+        ],
+        [
+          0.7,
+          0.3
+        ],
+        [
+          0.7,
+          0.7
+        ],
+        [
+          0.3,
+          0.7
+        ]
+      ]
+    },
+    {
+      "zone_id": "B_SITE",
+      "macro_group": "B",
+      "polygon_norm": [
+        [
+          0.7,
+          0.3
+        ],
+        [
+          0.95,
+          0.3
+        ],
+        [
+          0.95,
+          0.7
+        ],
+        [
+          0.7,
+          0.7
+        ]
+      ]
+    }
+  ],
+  "sites": [
+    {
+      "site_id": "A",
+      "anchor_norm": [
+        0.18,
+        0.5
+      ],
+      "radius_norm": 0.1
+    },
+    {
+      "site_id": "B",
+      "anchor_norm": [
+        0.84,
+        0.5
+      ],
+      "radius_norm": 0.1
+    }
+  ],
+  "peek_exposure_anchors": [
+    {
+      "anchor_id": "TEST_A_CHOKE",
+      "zone_id": "A_MAIN",
+      "x_norm": 0.28,
+      "y_norm": 0.5,
+      "radius_norm": 0.03,
+      "exposed_directions_count": 3,
+      "direction_labels": [
+        "front",
+        "left",
+        "right"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "version": "1.0",
+  "purpose": "Cross-Agent fallback detection for remote_control_view when agent-specific templates are absent.",
+  "classifier_order": [
+    "spectator_first_person",
+    "buy_menu_open",
+    "expanded_tactical_map",
+    "agent_specific_remote_template",
+    "cross_agent_remote_fallback",
+    "live_first_person_or_unknown"
+  ],
+  "cross_agent_remote_fallback": {
+    "required_combination": "At least two independent signals and no spectator/buy/tactical conflict.",
+    "signals": [
+      "normal weapon/ammo HUD disappears or becomes structurally invalid",
+      "one ability slot transitions to active/controlling/cooldown state",
+      "dedicated remote reticle/overlay or non-player locomotion signature appears",
+      "normal player hands/weapon model absent for sustained frames"
+    ],
+    "confidence_cap_without_agent_template": 0.78,
+    "subtype": "unknown when no agent-specific template matches"
+  },
+  "unverified_real_samples": [
+    "cypher_camera",
+    "sova_drone",
+    "skye_trailblazer"
+  ],
+  "safety": "If remote-vs-live remains ambiguous, primary_state=unknown and suppress target-player mechanics."
+}

@@ -1,0 +1,11 @@
+{
+  "validated": false,
+  "minimap_north_up_calibrated": false,
+  "rois": {},
+  "outline_colors_hsv": {},
+  "minimap_colors_hsv": {},
+  "remote_templates": {},
+  "map_registry": null,
+  "peek_registry": null,
+  "notes": "Implementation profile, not a replacement for canonical Visual v2 contracts. Supply calibrated normalized ROIs, templates and map geometry. Do not mark validated until checked on representative actual recordings. Empty data deliberately yields unknown."
+}

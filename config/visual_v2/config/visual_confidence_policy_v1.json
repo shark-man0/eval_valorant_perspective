@@ -1,0 +1,42 @@
+{
+  "version": "1.0",
+  "purpose": "Defines acceptance thresholds for Visual Analyzer detector/fusion confidence. Separate from HUD confidence and AI Coach confidence.",
+  "tiers": {
+    "A": {
+      "direct_confirm_min": 0.85,
+      "cross_checked_confirm_min": 0.75,
+      "cross_checked_min_independent_sources": 2,
+      "below_candidate_min": 0.65,
+      "below_action": "suppress_or_unknown"
+    },
+    "B": {
+      "direct_confirm_min": 0.88,
+      "cross_checked_confirm_min": 0.8,
+      "cross_checked_min_independent_sources": 2,
+      "below_candidate_min": 0.65,
+      "below_action": "candidate_or_unknown"
+    },
+    "C": {
+      "direct_confirm_min": 0.9,
+      "cross_checked_confirm_min": 0.82,
+      "cross_checked_min_independent_sources": 2,
+      "below_candidate_min": 0.7,
+      "below_action": "candidate_or_unknown",
+      "semantic_required_when_contract_says_required": true
+    }
+  },
+  "semantic_only_rules": {
+    "preaim_moving_case_max_confidence": 0.69,
+    "semantic_only_never_deterministic": true
+  },
+  "independent_source_examples": [
+    "HUD ammo delta",
+    "visual recoil/muzzle score",
+    "minimap displacement",
+    "world optical flow",
+    "weapon-bob",
+    "static map registry",
+    "semantic adapter"
+  ],
+  "fusion_rule": "Do not count two measurements from the same underlying signal as independent sources."
+}

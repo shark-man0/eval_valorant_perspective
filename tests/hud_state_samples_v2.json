@@ -1,0 +1,100 @@
+{
+  "schema_version": "2.0",
+  "source_video": "Valorant_09-25-2026_0-37-29-379.mp4",
+  "samples": [
+    {
+      "time_sec": 2.0,
+      "expect_primary": "live_first_person",
+      "expect_flags": [
+        "buy_phase_banner"
+      ],
+      "expect_remote_view_type": "none"
+    },
+    {
+      "time_sec": 8.0,
+      "expect_primary": "live_first_person",
+      "expect_flags": [],
+      "expect_remote_view_type": "none"
+    },
+    {
+      "time_sec": 22.0,
+      "expect_primary": "remote_control_view",
+      "expect_flags": [],
+      "expect_remote_view_type": "astra_astral"
+    },
+    {
+      "time_sec": 54.0,
+      "expect_primary": "remote_control_view",
+      "expect_flags": [],
+      "expect_remote_view_type": "astra_astral"
+    },
+    {
+      "time_sec": 62.0,
+      "expect_primary": "live_first_person",
+      "expect_flags": [
+        "vision_obscured_smoke"
+      ],
+      "expect_remote_view_type": "none"
+    },
+    {
+      "time_sec": 78.0,
+      "expect_primary": "live_first_person",
+      "expect_flags": [
+        "round_end_banner",
+        "combat_report_visible"
+      ],
+      "expect_remote_view_type": "none"
+    },
+    {
+      "time_sec": 86.0,
+      "expect_primary": "buy_menu_open",
+      "expect_flags": [],
+      "expect_remote_view_type": "none"
+    },
+    {
+      "time_sec": 94.0,
+      "expect_primary": "live_first_person",
+      "expect_flags": [
+        "buy_phase_banner",
+        "combat_report_visible"
+      ],
+      "expect_remote_view_type": "none"
+    },
+    {
+      "time_sec": 110.0,
+      "expect_primary": "buy_menu_open",
+      "expect_flags": [],
+      "expect_remote_view_type": "none"
+    },
+    {
+      "time_sec": 118.0,
+      "expect_primary": "remote_control_view",
+      "expect_flags": [],
+      "expect_remote_view_type": "astra_astral"
+    },
+    {
+      "time_sec": 126.0,
+      "expect_primary": "live_first_person",
+      "expect_flags": [],
+      "expect_remote_view_type": "none"
+    },
+    {
+      "time_sec": 150.0,
+      "expect_primary": "expanded_tactical_map",
+      "expect_flags": [
+        "combat_report_visible"
+      ],
+      "expect_remote_view_type": "none"
+    },
+    {
+      "time_sec": 158.0,
+      "expect_primary": "spectator_first_person",
+      "expect_flags": [
+        "combat_report_visible"
+      ],
+      "expect_remote_view_type": "none"
+    }
+  ],
+  "tolerance_sec": 0.25,
+  "note": "Integration anchors from manual inspection. Astra samples are now generic remote_control_view subtype astra_astral. Transition frames may be unknown/visual_transition."
+}

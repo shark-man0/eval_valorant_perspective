@@ -1,0 +1,26 @@
+{
+  "version": "1.0",
+  "exposed_directions_count": {
+    "authoritative_source": "static_peek_exposure_registry_only",
+    "semantic_vlm_allowed": false,
+    "default_when_unmatched": null,
+    "deterministic_rule_gate": {
+      "required_source": "static_peek_registry",
+      "min_match_confidence": 0.9
+    },
+    "matching": "Match current normalized minimap/self position to a registered peek anchor within anchor.radius_norm and compatible zone/site. Confidence is position/zone calibration confidence, not VLM opinion."
+  },
+  "coarse_zone_resolution": {
+    "preferred": "static_polygon_registry",
+    "fallback": "auto_site_anchor_macro_groups",
+    "fallback_confidence_cap": 0.75,
+    "fallback_scope": [
+      "site_A",
+      "site_B",
+      "mid",
+      "spawn_or_other"
+    ],
+    "forbidden": "Use fallback to create exposed_directions_count or exact callout/peek topology."
+  },
+  "missing_geometry_behavior": "Emit feature availability diagnostics; leave zone-dependent hard facts null and do not silently fabricate."
+}

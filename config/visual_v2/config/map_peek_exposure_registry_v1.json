@@ -1,0 +1,15 @@
+{
+  "version": "1.0",
+  "purpose": "Optional static per-map authoring for PEEK-04 exposure counts. This is the only production source for exposed_directions_count.",
+  "maps": {},
+  "anchor_schema": {
+    "anchor_id": "stable id",
+    "zone_id": "zone id",
+    "x_norm": "0..1",
+    "y_norm": "0..1",
+    "radius_norm": "matching radius",
+    "exposed_directions_count": "integer >=0",
+    "direction_labels": "optional factual labels",
+    "authoring_note": "human/static map knowledge; not generated from VLM per play"
+  }
+}

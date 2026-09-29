@@ -1,0 +1,4087 @@
+{
+  "version": "4.0",
+  "game": "VALORANT",
+  "purpose": "個人プレイ動画から、根拠付きのGOOD/改善クリップを生成するための評価ルール。",
+  "schema_authority": {
+    "input": "schemas/round_package_schema_v2.json",
+    "output": "schemas/ai_coach_output_schema_v3.json",
+    "trigger_registry": "config/rule_trigger_registry_v2.json",
+    "fact_engine": "config/deterministic_rule_engine_v1.json"
+  },
+  "global_evaluation_principles": [
+    "結果だけでGOOD/BADを決めず、行動選択時点で見えていた情報・人数差・味方位置・敵情報・残り時間・Utility・武器状況を優先する。",
+    "人間が記入した human_policy と human_exceptions を最優先する。一般論と衝突する場合はユーザー方針を優先する。",
+    "映像から必要情報が確認できない場合は推測せず unscored にする。",
+    "同じ種類の軽微なミスを大量にクリップ化しない。繰り返し傾向は集約し、代表例だけをクリップとして残す。",
+    "良いプレイも、判断理由を映像上の具体的証拠とともに説明できる場合にのみGOODとして提示する。",
+    "単発の撃ち合い結果より、再現可能な判断・位置取り・操作上の改善を優先して指摘する。",
+    "例外条件が成立する可能性が高い場合は断定を避け、confidence を下げる。",
+    "1つのクリップに複数ルールが該当する場合は、最も改善価値の高い1〜3項目に絞る。",
+    "AI入力には評価結論を先書きせず、観測事実のみを渡す。",
+    "候補ルールはrule_trigger_registry_v1.jsonで事前フィルタし、1回のAI評価へ全44ルールを投入しない。",
+    "概念の自動テストは自由文の同義語判定ではなくconcept_tagsで行う。",
+    "候補外のルールはNOT_APPLICABLEとして出力せず、evaluation自体を生成しない。",
+    "可もなく不可もない通常行動もNEUTRALラベルを作らず、明確なGOOD/IMPROVE根拠がなければ出力しない。",
+    "UNSCOREDは候補ルールに該当したが証拠不足・必要Fact欠落・例外曖昧性で判断不能な場合だけ使用する。",
+    "Z座標・完全な3D射線を動画から推測しない。Zoneと観測可能なspatial_contextを利用する。",
+    "人間基準に数値が明示されていない定性的判断を、都合のよい固定秒数/距離へ勝手に変換しない。",
+    "明示的な閾値や二値事実はコード側で正規化し、LLMは文脈・例外・理由・改善案に集中する。"
+  ],
+  "confidence_policy": {
+    "display_normal_min": 0.75,
+    "display_review_min": 0.55,
+    "below_0_55": "原則unscoredまたはUI非表示。HUD/映像不足とルール曖昧性を区別してmissing_information/reasonへ記録する。"
+  },
+  "temporal_tolerance_policy": {
+    "micro": {
+      "evidence_sec": 0.75,
+      "clip_sec": 1.5
+    },
+    "local": {
+      "evidence_sec": 2.0,
+      "clip_sec": 3.0
+    },
+    "phase": {
+      "evidence_sec": 4.0,
+      "clip_sec": 5.0
+    },
+    "round": {
+      "evidence_sec": 6.0,
+      "clip_sec": 8.0
+    },
+    "cross_round": {
+      "evidence_sec": 10.0,
+      "clip_sec": 12.0
+    },
+    "match": {
+      "evidence_sec": 3.0,
+      "clip_sec": 4.0
+    }
+  },
+  "deduplication_groups": {
+    "save_decision": {
+      "members": [
+        "ECO-02",
+        "ADV-07"
+      ],
+      "primary_order": [
+        "ECO-02",
+        "ADV-07"
+      ],
+      "note": "同一セーブ判断ではEconomy基準をprimary、追加分析のADV-07をrelatedにする。"
+    },
+    "numbers_advantage": {
+      "members": [
+        "INFO-03",
+        "DEC-01",
+        "DEC-02"
+      ],
+      "primary_order": [
+        "DEC-01",
+        "DEC-02",
+        "INFO-03"
+      ],
+      "note": "意思決定をprimary、人数認識をrelatedにする。"
+    },
+    "movement_shooting": {
+      "members": [
+        "AIM-03",
+        "MOV-01",
+        "MOV-02"
+      ],
+      "primary_order": [
+        "AIM-03",
+        "MOV-02",
+        "MOV-01"
+      ],
+      "note": "同一初弾なら初弾/ストッピングを優先し、重複クリップを避ける。"
+    }
+  },
+  "rules": [
+    {
+      "id": "AIM-01",
+      "category": "Aim",
+      "item": "ヘッドライン維持",
+      "priority": "mvp_required",
+      "detection_difficulty": "medium",
+      "evaluation_scope": "whole_match_with_exemplars",
+      "required_visual_signals": [
+        "クロスヘアの高さ",
+        "敵が出る想定位置"
+      ],
+      "human_policy": "ヘッドラインを合わせたまま接敵したとき、そのラインが頭に合っていなかったらBAD(頭の少し上だったり、首に合っていたり)。",
+      "human_exceptions": "ローテーションしてる時や武器を構えずに移動してる時のヘッドラインは評価しない。また毎回合っていないことを指摘されても仕方ないので全体通してどうだったかという評価方法にしたい。特にひどいところはクリップしてもいい。",
+      "evaluation_instruction": "「ヘッドラインを合わせたまま接敵したとき、そのラインが頭に合っていなかったらBAD(頭の少し上だったり、首に合っていたり)。」を最優先の評価方針として使用する。 ただし「ローテーションしてる時や武器を構えずに移動してる時のヘッドラインは評価しない。また毎回合っていないことを指摘されても仕方ないので全体通してどうだったかという評価方法にしたい。特にひどいところはクリップしてもいい。」に該当する場合は減点・指摘を抑制または除外する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "接敵時のクロスヘア高さが頭部ラインから明確に外れた代表例、または非常に良い代表例。",
+      "suggested_clip_window_seconds": {
+        "before_event": 6,
+        "after_event": 4
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "どの程度ヘッドラインを外した状態をBADとする？",
+      "temporal_context": {
+        "level_code": "match",
+        "level_label": "試合全体集計",
+        "analysis_scope": "試合全体を複数サンプルで集計し、単発ではなく傾向として評価する。",
+        "event_window_seconds": null,
+        "requires_round_timeline": true,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": true,
+        "display_clip_strategy": "代表例8〜15秒を最大3本程度",
+        "classification_reason": "ヘッドラインは単発の成否より継続的な癖を見たいという人間基準のため。極端な例だけクリップ化する。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "engagement_start",
+          "shot"
+        ],
+        "required_state_predicates": [],
+        "supporting_fact_keys": [
+          "weapon",
+          "zone_id"
+        ],
+        "priority": "mvp_required",
+        "temporal_level": "match",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "head_level",
+        "crosshair_placement"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 3.0,
+        "clip_sec": 4.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": true,
+        "deduplicate_same_rule_within_seconds": 35,
+        "max_display_exemplars_per_match": 3,
+        "summary_required_if_occurrences_at_least": 3
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "AIM-02",
+      "category": "Aim",
+      "item": "プリエイム",
+      "priority": "mvp_required",
+      "detection_difficulty": "medium",
+      "evaluation_scope": "hybrid",
+      "required_visual_signals": [
+        "角へ入る前後のクロスヘア位置"
+      ],
+      "human_policy": "だいたい0.5秒前には合わせておいてほしい。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「だいたい0.5秒前には合わせておいてほしい。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "角への進入・接敵の約0.5秒以上前から想定敵位置へクロスヘアを置けているかが確認できる場面。",
+      "suggested_clip_window_seconds": {
+        "before_event": 6,
+        "after_event": 4
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "敵が出る可能性の高い位置へ、どの程度事前に合わせてほしい？",
+      "temporal_context": {
+        "level_code": "micro",
+        "level_label": "瞬間",
+        "analysis_scope": "イベント前後およそ5〜12秒。射撃・照準・ピークそのものを中心に見る。",
+        "event_window_seconds": {
+          "before": 6,
+          "after": 4
+        },
+        "requires_round_timeline": false,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": true,
+        "display_clip_strategy": "原則8〜15秒の1クリップ",
+        "classification_reason": "接敵直前〜射撃中の技術判断が中心で、長い戦術文脈を必要としない。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "preaim_started",
+          "peek",
+          "engagement_start"
+        ],
+        "required_state_predicates": [],
+        "supporting_fact_keys": [
+          "preaim_lead_sec"
+        ],
+        "priority": "mvp_required",
+        "temporal_level": "micro",
+        "label_mode": "deterministic_if_confident_else_llm"
+      },
+      "concept_tags": [
+        "preaim",
+        "crosshair_placement"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 0.75,
+        "clip_sec": 1.5
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": true,
+        "deduplicate_same_rule_within_seconds": 20,
+        "max_display_exemplars_per_match": 3,
+        "summary_required_if_occurrences_at_least": 3
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "deterministic_if_confident_else_llm",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "AIM-03",
+      "category": "Aim",
+      "item": "初弾の撃ち方",
+      "priority": "mvp_required",
+      "detection_difficulty": "medium",
+      "evaluation_scope": "hybrid",
+      "required_visual_signals": [
+        "射撃開始時の移動状態",
+        "初弾のズレ"
+      ],
+      "human_policy": "基本は完全に止まっている状態をGOODとする。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「基本は完全に止まっている状態をGOODとする。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "通常交戦で初弾直前の移動状態と射撃開始が確認できる場面。",
+      "suggested_clip_window_seconds": {
+        "before_event": 6,
+        "after_event": 4
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "初弾を撃つ前に、どの状態になっていることをGOODとする？",
+      "temporal_context": {
+        "level_code": "micro",
+        "level_label": "瞬間",
+        "analysis_scope": "イベント前後およそ5〜12秒。射撃・照準・ピークそのものを中心に見る。",
+        "event_window_seconds": {
+          "before": 6,
+          "after": 4
+        },
+        "requires_round_timeline": false,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": true,
+        "display_clip_strategy": "原則8〜15秒の1クリップ",
+        "classification_reason": "接敵直前〜射撃中の技術判断が中心で、長い戦術文脈を必要としない。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "shot"
+        ],
+        "required_state_predicates": [],
+        "supporting_fact_keys": [
+          "first_shot_stationary"
+        ],
+        "priority": "mvp_required",
+        "temporal_level": "micro",
+        "label_mode": "deterministic_if_confident_else_llm"
+      },
+      "concept_tags": [
+        "first_shot",
+        "stationary_shooting"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 0.75,
+        "clip_sec": 1.5
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": true,
+        "deduplicate_same_rule_within_seconds": 20,
+        "max_display_exemplars_per_match": 3,
+        "summary_required_if_occurrences_at_least": 3
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "deterministic_if_confident_else_llm",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "AIM-04",
+      "category": "Aim",
+      "item": "射撃方法の選択",
+      "priority": "important",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "hybrid",
+      "required_visual_signals": [
+        "距離",
+        "連射時間",
+        "バースト",
+        "タップ",
+        "スプレー"
+      ],
+      "human_policy": "近距離は走り打ちだったり、なんでもいい。遠距離はタップ打ちが好ましく、フルオートしているときはあんまり良くない。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「近距離は走り打ちだったり、なんでもいい。遠距離はタップ打ちが好ましく、フルオートしているときはあんまり良くない。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "交戦距離とタップ/バースト/スプレー等の射撃方法が判断できる場面。",
+      "suggested_clip_window_seconds": {
+        "before_event": 6,
+        "after_event": 4
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "距離ごとに、どんな撃ち方を望ましいとする？",
+      "temporal_context": {
+        "level_code": "micro",
+        "level_label": "瞬間",
+        "analysis_scope": "イベント前後およそ5〜12秒。射撃・照準・ピークそのものを中心に見る。",
+        "event_window_seconds": {
+          "before": 6,
+          "after": 4
+        },
+        "requires_round_timeline": false,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": true,
+        "display_clip_strategy": "原則8〜15秒の1クリップ",
+        "classification_reason": "接敵直前〜射撃中の技術判断が中心で、長い戦術文脈を必要としない。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "shot"
+        ],
+        "required_state_predicates": [],
+        "supporting_fact_keys": [
+          "weapon"
+        ],
+        "priority": "important",
+        "temporal_level": "micro",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "distance_based_fire_mode"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 0.75,
+        "clip_sec": 1.5
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": true,
+        "deduplicate_same_rule_within_seconds": 20,
+        "max_display_exemplars_per_match": 3,
+        "summary_required_if_occurrences_at_least": 3
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "MOV-01",
+      "category": "Movement",
+      "item": "移動撃ち",
+      "priority": "mvp_required",
+      "detection_difficulty": "medium",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "移動中の射撃",
+        "着弾前後の動き"
+      ],
+      "human_policy": "遠距離で止まって打てばちゃんと殺せるときに走り打ちしていたらBAD。壁から遠い場所で、すぐに被弾を防げない位置で撃っていたらBAD。",
+      "human_exceptions": "近距離ならどんな武器でもok。中距離でもサブマシンガン系ならok。遠距離でも威嚇射撃ならok。",
+      "evaluation_instruction": "「遠距離で止まって打てばちゃんと殺せるときに走り打ちしていたらBAD。壁から遠い場所で、すぐに被弾を防げない位置で撃っていたらBAD。」を最優先の評価方針として使用する。 ただし「近距離ならどんな武器でもok。中距離でもサブマシンガン系ならok。遠距離でも威嚇射撃ならok。」に該当する場合は減点・指摘を抑制または除外する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "移動撃ちの良し悪しが映像から判断でき、結果ではなく行動選択の妥当性を説明できる場面。",
+      "suggested_clip_window_seconds": {
+        "before_event": 6,
+        "after_event": 4
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "どの程度の移動撃ちをBADとする？",
+      "temporal_context": {
+        "level_code": "micro",
+        "level_label": "瞬間",
+        "analysis_scope": "イベント前後およそ5〜12秒。射撃・照準・ピークそのものを中心に見る。",
+        "event_window_seconds": {
+          "before": 6,
+          "after": 4
+        },
+        "requires_round_timeline": false,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": true,
+        "display_clip_strategy": "原則8〜15秒の1クリップ",
+        "classification_reason": "射撃時の移動状態・停止状態は接敵前後の短い映像で直接確認できる。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "shot",
+          "movement_state"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "shot_while_moving",
+            "op": "eq",
+            "value": true,
+            "missing_policy": "exclude"
+          }
+        ],
+        "supporting_fact_keys": [],
+        "priority": "mvp_required",
+        "temporal_level": "micro",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "movement_shooting",
+        "cover_distance"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 0.75,
+        "clip_sec": 1.5
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": true,
+        "deduplicate_same_rule_within_seconds": 20,
+        "max_display_exemplars_per_match": 3,
+        "summary_required_if_occurrences_at_least": 3
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "MOV-02",
+      "category": "Movement",
+      "item": "ストッピング",
+      "priority": "mvp_required",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "射撃直前の停止",
+        "切り返し"
+      ],
+      "human_policy": "完全停止。",
+      "human_exceptions": "スモーク抜きの時は滅多打ちが必要なので、そのタイミングは評価しない。",
+      "evaluation_instruction": "「完全停止。」を最優先の評価方針として使用する。 ただし「スモーク抜きの時は滅多打ちが必要なので、そのタイミングは評価しない。」に該当する場合は減点・指摘を抑制または除外する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "通常交戦で射撃直前の停止有無が確認できる場面。スモーク抜きは対象外。",
+      "suggested_clip_window_seconds": {
+        "before_event": 6,
+        "after_event": 4
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "撃つ前にどの程度しっかり停止していることを求める？",
+      "temporal_context": {
+        "level_code": "micro",
+        "level_label": "瞬間",
+        "analysis_scope": "イベント前後およそ5〜12秒。射撃・照準・ピークそのものを中心に見る。",
+        "event_window_seconds": {
+          "before": 6,
+          "after": 4
+        },
+        "requires_round_timeline": false,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": true,
+        "display_clip_strategy": "原則8〜15秒の1クリップ",
+        "classification_reason": "射撃時の移動状態・停止状態は接敵前後の短い映像で直接確認できる。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "shot",
+          "movement_state"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "first_shot_detected",
+            "op": "eq",
+            "value": true,
+            "missing_policy": "exclude"
+          }
+        ],
+        "supporting_fact_keys": [],
+        "priority": "mvp_required",
+        "temporal_level": "micro",
+        "label_mode": "deterministic_if_confident_else_llm"
+      },
+      "concept_tags": [
+        "stopping",
+        "first_shot"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 0.75,
+        "clip_sec": 1.5
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": true,
+        "deduplicate_same_rule_within_seconds": 20,
+        "max_display_exemplars_per_match": 3,
+        "summary_required_if_occurrences_at_least": 3
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "deterministic_if_confident_else_llm",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "MOV-03",
+      "category": "Movement",
+      "item": "不要な露出",
+      "priority": "important",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "移動ルートと敵射線への露出時間"
+      ],
+      "human_policy": "マップに敵が写っているにも関わらず、移動のためにその位置に体を出す。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「マップに敵が写っているにも関わらず、移動のためにその位置に体を出す。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "不要な露出の良し悪しが映像から判断でき、結果ではなく行動選択の妥当性を説明できる場面。",
+      "suggested_clip_window_seconds": {
+        "before_event": 6,
+        "after_event": 4
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "移動中にどんな露出を『不要』と判定する？",
+      "temporal_context": {
+        "level_code": "local",
+        "level_label": "短時間シーケンス",
+        "analysis_scope": "イベント前後およそ15〜30秒。直前の情報取得・移動・交戦後までを含める。",
+        "event_window_seconds": {
+          "before": 15,
+          "after": 8
+        },
+        "requires_round_timeline": false,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "原則10〜20秒。必要なら直前情報を説明文で補足",
+        "classification_reason": "敵位置を認識していたかと、その後なぜ露出する移動を選んだかを直前情報まで含めて確認する必要がある。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "peek",
+          "position_change"
+        ],
+        "required_state_predicates": [],
+        "supporting_fact_keys": [
+          "zone_id"
+        ],
+        "priority": "important",
+        "temporal_level": "local",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "exposure",
+        "cover"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 2.0,
+        "clip_sec": 3.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 20,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "MOV-04",
+      "category": "Movement",
+      "item": "交戦後のリポジション",
+      "priority": "important",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "キル",
+        "接敵後の位置変更"
+      ],
+      "human_policy": "位置変更をしないと圧倒的不利になるような場面で変えないこと。",
+      "human_exceptions": "位置変更しないことが作戦になったりする。",
+      "evaluation_instruction": "「位置変更をしないと圧倒的不利になるような場面で変えないこと。」を最優先の評価方針として使用する。 ただし「位置変更しないことが作戦になったりする。」に該当する場合は減点・指摘を抑制または除外する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "接敵・キル・位置露見後、同位置に留まるか移動するかの判断が結果に影響した場面。",
+      "suggested_clip_window_seconds": {
+        "before_event": 6,
+        "after_event": 4
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "交戦後、どんな条件なら同じ場所に残るのをBADとする？",
+      "temporal_context": {
+        "level_code": "local",
+        "level_label": "短時間シーケンス",
+        "analysis_scope": "イベント前後およそ15〜30秒。直前の情報取得・移動・交戦後までを含める。",
+        "event_window_seconds": {
+          "before": 12,
+          "after": 12
+        },
+        "requires_round_timeline": false,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "原則10〜20秒。必要なら直前情報を説明文で補足",
+        "classification_reason": "交戦後に位置変更が必要だったかは、交戦内容と直後の圧力・退路まで見ないと判断できない。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "engagement_end",
+          "position_change",
+          "enemy_reengage"
+        ],
+        "required_state_predicates": [],
+        "supporting_fact_keys": [
+          "cover_available",
+          "escape_route_available"
+        ],
+        "priority": "important",
+        "temporal_level": "local",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "reposition",
+        "anti_repeek"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 2.0,
+        "clip_sec": 3.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 20,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "PEEK-01",
+      "category": "Peek",
+      "item": "単独ピーク",
+      "priority": "mvp_required",
+      "detection_difficulty": "medium",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "味方との距離",
+        "味方視線",
+        "接敵タイミング"
+      ],
+      "human_policy": "敵に位置がバレているときや人数有利のとき、防衛のとき情報がないところをピークするとき",
+      "human_exceptions": "敵の位置を知るために行うピークもある。人数不利のときワンチャンスを狙うための挑戦的なピークもある。",
+      "evaluation_instruction": "「敵に位置がバレているときや人数有利のとき、防衛のとき情報がないところをピークするとき」を最優先の評価方針として使用する。 ただし「敵の位置を知るために行うピークもある。人数不利のときワンチャンスを狙うための挑戦的なピークもある。」に該当する場合は減点・指摘を抑制または除外する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "敵に位置が把握されている、人数有利、防衛時の未確認エリアなどで単独ピークした場面。情報取り・人数不利の挑戦は例外判定。",
+      "suggested_clip_window_seconds": {
+        "before_event": 7,
+        "after_event": 4
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "どんな状況での単独ピークをBADとする？",
+      "temporal_context": {
+        "level_code": "round",
+        "level_label": "ラウンド全体",
+        "analysis_scope": "ラウンド開始〜終了。評価時はラウンド内の情報変化・人数変化・味方位置を時系列で保持する。",
+        "event_window_seconds": null,
+        "requires_round_timeline": true,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "根拠となる場面10〜25秒。必要なら複数クリップ",
+        "classification_reason": "単独ピークの善悪は人数差、防衛/攻撃、取得済み情報、情報取り目的などラウンド状況に強く依存する。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "peek",
+          "info_peek"
+        ],
+        "required_state_predicates": [],
+        "supporting_fact_keys": [
+          "tradeable_ally_nearby",
+          "numbers_state"
+        ],
+        "priority": "mvp_required",
+        "temporal_level": "round",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "solo_peek",
+        "tradeability"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 6.0,
+        "clip_sec": 8.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 35,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "PEEK-02",
+      "category": "Peek",
+      "item": "ピーク方法の選択",
+      "priority": "important",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "ワイド",
+        "小刻み",
+        "情報取りなどの動き"
+      ],
+      "human_policy": "基本は小刻みなピーク、敵がいそうなところは肩出しピーク/ジグルピーク/ジャンプピーク、敵がいるとわかっているところにオーバーピーク",
+      "human_exceptions": "撃ち合いのときに体一個分だけピークして撃ち合うのか、オーバーピークして撃ち合うのかはじゃんけんである。",
+      "evaluation_instruction": "「基本は小刻みなピーク、敵がいそうなところは肩出しピーク/ジグルピーク/ジャンプピーク、敵がいるとわかっているところにオーバーピーク」を最優先の評価方針として使用する。 ただし「撃ち合いのときに体一個分だけピークして撃ち合うのか、オーバーピークして撃ち合うのかはじゃんけんである。」に該当する場合は減点・指摘を抑制または除外する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "敵存在の確度に応じてピーク方法を選んだ場面。単純な勝敗ではなく選択の妥当性を評価。",
+      "suggested_clip_window_seconds": {
+        "before_event": 7,
+        "after_event": 4
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "状況ごとに、どんなピーク方法を望ましいとする？",
+      "temporal_context": {
+        "level_code": "micro",
+        "level_label": "瞬間",
+        "analysis_scope": "イベント前後およそ5〜12秒。射撃・照準・ピークそのものを中心に見る。",
+        "event_window_seconds": {
+          "before": 7,
+          "after": 5
+        },
+        "requires_round_timeline": false,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "原則8〜15秒の1クリップ",
+        "classification_reason": "ピーク方法そのものの選択は、角との距離と接敵状況を含む短い場面で判断できる。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "peek",
+          "info_peek"
+        ],
+        "required_state_predicates": [],
+        "supporting_fact_keys": [
+          "tradeable_ally_nearby"
+        ],
+        "priority": "important",
+        "temporal_level": "micro",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "peek_selection",
+        "information_peek"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 0.75,
+        "clip_sec": 1.5
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 20,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "max_confidence_when_only_body_width_choice_is_observed": 0.6,
+        "prefer_unscored_when_exception_cannot_be_disambiguated": true,
+        "note": "人間基準自身がじゃんけん要素を認めているため断定しない。"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "PEEK-04",
+      "category": "Peek",
+      "item": "複数射線への露出",
+      "priority": "mvp_required",
+      "detection_difficulty": "medium",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "一度のピークで見える敵方向の数"
+      ],
+      "human_policy": "3方向",
+      "human_exceptions": null,
+      "evaluation_instruction": "「3方向」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "一度のピークで3方向以上の射線へ同時露出し得る場面。",
+      "suggested_clip_window_seconds": {
+        "before_event": 7,
+        "after_event": 4
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "同時に何方向から撃たれ得る状態をBADとする？",
+      "temporal_context": {
+        "level_code": "micro",
+        "level_label": "瞬間",
+        "analysis_scope": "イベント前後およそ5〜12秒。射撃・照準・ピークそのものを中心に見る。",
+        "event_window_seconds": {
+          "before": 6,
+          "after": 5
+        },
+        "requires_round_timeline": false,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "原則8〜15秒の1クリップ",
+        "classification_reason": "一度のピークで何方向の射線に身体を晒したかは瞬間的な画面情報で判定できる。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "peek"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "exposed_directions_count",
+            "op": "gte",
+            "value": 3,
+            "missing_policy": "exclude"
+          }
+        ],
+        "supporting_fact_keys": [],
+        "priority": "mvp_required",
+        "temporal_level": "micro",
+        "label_mode": "deterministic_if_confident_else_llm"
+      },
+      "concept_tags": [
+        "multi_angle_exposure"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 0.75,
+        "clip_sec": 1.5
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 20,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "deterministic_if_confident_else_llm",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "PEEK-05",
+      "category": "Peek",
+      "item": "リピーク",
+      "priority": "important",
+      "detection_difficulty": "medium",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "一度接敵した場所への再ピーク"
+      ],
+      "human_policy": "オペレーターで味方が死んだところにピークしたり、武器不利なのにリピークしたりがBAD。通常のピークからオーバーピークでリピークすることはGOOD。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「オペレーターで味方が死んだところにピークしたり、武器不利なのにリピークしたりがBAD。通常のピークからオーバーピークでリピークすることはGOOD。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "一度接敵した角へ再度ピークした場面。相手武器・自武器・ピーク方法を併記。",
+      "suggested_clip_window_seconds": {
+        "before_event": 7,
+        "after_event": 4
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "どんな条件のリピークをBAD／GOODとする？",
+      "temporal_context": {
+        "level_code": "local",
+        "level_label": "短時間シーケンス",
+        "analysis_scope": "イベント前後およそ15〜30秒。直前の情報取得・移動・交戦後までを含める。",
+        "event_window_seconds": {
+          "before": 15,
+          "after": 8
+        },
+        "requires_round_timeline": false,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "原則10〜20秒。必要なら直前情報を説明文で補足",
+        "classification_reason": "リピークは一度目の接敵、敵武器や位置、自分の武器不利など直前の交戦履歴が必要。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "peek",
+          "enemy_reengage"
+        ],
+        "required_state_predicates": [],
+        "supporting_fact_keys": [
+          "weapon"
+        ],
+        "priority": "important",
+        "temporal_level": "local",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "repeek",
+        "timing"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 2.0,
+        "clip_sec": 3.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 20,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "POS-01",
+      "category": "Positioning",
+      "item": "遮蔽と退路",
+      "priority": "mvp_required",
+      "detection_difficulty": "medium",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "遮蔽物との距離",
+        "逃げ道"
+      ],
+      "human_policy": "逃げスキルもなく、安全に退くことができない状態をBAD。",
+      "human_exceptions": "味方のスキルがあれば帰れるだったり、敵が思いっきり突っ込んできて逃げ切れない場合は例外。また気づかれていないならok。",
+      "evaluation_instruction": "「逃げスキルもなく、安全に退くことができない状態をBAD。」を最優先の評価方針として使用する。 ただし「味方のスキルがあれば帰れるだったり、敵が思いっきり突っ込んできて逃げ切れない場合は例外。また気づかれていないならok。」に該当する場合は減点・指摘を抑制または除外する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "遮蔽と退路の良し悪しが映像から判断でき、結果ではなく行動選択の妥当性を説明できる場面。",
+      "suggested_clip_window_seconds": {
+        "before_event": 10,
+        "after_event": 6
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "どんな立ち位置なら『逃げられない』としてBADとする？",
+      "temporal_context": {
+        "level_code": "local",
+        "level_label": "短時間シーケンス",
+        "analysis_scope": "イベント前後およそ15〜30秒。直前の情報取得・移動・交戦後までを含める。",
+        "event_window_seconds": {
+          "before": 15,
+          "after": 10
+        },
+        "requires_round_timeline": false,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "原則10〜20秒。必要なら直前情報を説明文で補足",
+        "classification_reason": "遮蔽・退路の有無は、その位置へ入った経緯と敵の圧力、味方Utilityによる退路支援まで見る必要がある。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "engagement_start",
+          "position_hold",
+          "position_change"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "spatial_context_available",
+            "op": "eq",
+            "value": true,
+            "missing_policy": "allow_unscored"
+          }
+        ],
+        "supporting_fact_keys": [],
+        "priority": "mvp_required",
+        "temporal_level": "local",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "cover",
+        "escape_route"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 2.0,
+        "clip_sec": 3.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 20,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "POS-03",
+      "category": "Positioning",
+      "item": "オフアングル",
+      "priority": "important",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "通常位置との差",
+        "逃げやすさ",
+        "敵の想定外性"
+      ],
+      "human_policy": "基本GOOD。オフアングルだと思って待っていたところに合わせてピークされたらBAD。それはオフアングルになっていないので。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「基本GOOD。オフアングルだと思って待っていたところに合わせてピークされたらBAD。それはオフアングルになっていないので。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "通常想定から外れた位置で待つ場面。相手に事前エイムされていた場合はオフアングルとして機能していない可能性を評価。",
+      "suggested_clip_window_seconds": {
+        "before_event": 10,
+        "after_event": 6
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "オフアングルをGOODとする条件／BADとする条件は？",
+      "temporal_context": {
+        "level_code": "local",
+        "level_label": "短時間シーケンス",
+        "analysis_scope": "イベント前後およそ15〜30秒。直前の情報取得・移動・交戦後までを含める。",
+        "event_window_seconds": {
+          "before": 15,
+          "after": 10
+        },
+        "requires_round_timeline": false,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "原則10〜20秒。必要なら直前情報を説明文で補足",
+        "classification_reason": "オフアングルが成立していたかは、待ち位置だけでなく敵に事前に読まれる要因や直前の露出も確認したい。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "hold_angle",
+          "position_hold"
+        ],
+        "required_state_predicates": [],
+        "supporting_fact_keys": [
+          "cover_available"
+        ],
+        "priority": "important",
+        "temporal_level": "local",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "off_angle"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 2.0,
+        "clip_sec": 3.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 20,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "POS-04",
+      "category": "Positioning",
+      "item": "ポストプラント位置",
+      "priority": "mvp_required",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "Spike位置",
+        "味方位置",
+        "敵の侵入方向"
+      ],
+      "human_policy": "人数不利の場合は特になし(残った味方と動きを合わせればGOOD)。しかし人数有利の場合は味方がケアできてないところを優先的にケアする。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「人数不利の場合は特になし(残った味方と動きを合わせればGOOD)。しかし人数有利の場合は味方がケアできてないところを優先的にケアする。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "Spike設置後の移動・保持位置選択。人数差と味方がケアしている方向を必ず併記。",
+      "suggested_clip_window_seconds": {
+        "before_event": 10,
+        "after_event": 6
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "設置後に優先したい立ち位置の考え方は？",
+      "temporal_context": {
+        "level_code": "phase",
+        "level_label": "ラウンド局面",
+        "analysis_scope": "エントリー、サイト取得、ポストプラント等の局面開始〜終了（目安20〜60秒）。",
+        "event_window_seconds": null,
+        "requires_round_timeline": true,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "核心部分15〜25秒。局面全体は時系列要約を併記",
+        "classification_reason": "ポストプラント位置は設置後の人数、味方配置、未ケア方向、Spike位置が変化する局面全体で評価する。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "spike_planted",
+          "position_change",
+          "position_hold"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "spike_planted",
+            "op": "eq",
+            "value": true,
+            "missing_policy": "exclude"
+          }
+        ],
+        "supporting_fact_keys": [],
+        "priority": "mvp_required",
+        "temporal_level": "phase",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "post_plant_positioning"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 4.0,
+        "clip_sec": 5.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 35,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "POS-05",
+      "category": "Positioning",
+      "item": "守りの配置",
+      "priority": "important",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "round",
+      "required_visual_signals": [
+        "守るエリア",
+        "味方との重複",
+        "退路"
+      ],
+      "human_policy": "ラウンド開始時に全てのメイン+がミッドが見えていること。",
+      "human_exceptions": "作戦で片方のサイトに固まる(スタック)こともあるのでこの限りではない。",
+      "evaluation_instruction": "「ラウンド開始時に全てのメイン+がミッドが見えていること。」を最優先の評価方針として使用する。 ただし「作戦で片方のサイトに固まる(スタック)こともあるのでこの限りではない。」に該当する場合は減点・指摘を抑制または除外する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "守備ラウンド開始時の配置。全メインおよびミッドへの監視状況を確認。スタック作戦は例外。",
+      "suggested_clip_window_seconds": {
+        "before_event": 10,
+        "after_event": 6
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "守備時に『良い配置』とする条件は？",
+      "temporal_context": {
+        "level_code": "round",
+        "level_label": "ラウンド全体",
+        "analysis_scope": "ラウンド開始〜終了。評価時はラウンド内の情報変化・人数変化・味方位置を時系列で保持する。",
+        "event_window_seconds": null,
+        "requires_round_timeline": true,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "根拠となる場面10〜25秒。必要なら複数クリップ",
+        "classification_reason": "守りの配置はラウンド開始時の全体配置と、スタック等の作戦意図を含めて判断する必要がある。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "round_start",
+          "position_hold",
+          "position_change"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "side",
+            "op": "eq",
+            "value": "defense",
+            "missing_policy": "exclude"
+          }
+        ],
+        "supporting_fact_keys": [],
+        "priority": "important",
+        "temporal_level": "round",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "defensive_setup"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 6.0,
+        "clip_sec": 8.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 35,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "INFO-02",
+      "category": "Information",
+      "item": "音情報の利用",
+      "priority": "important",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "足音・射撃・スキル音の後の行動変化"
+      ],
+      "human_policy": "スモークの要求や味方を呼んだり、その方向をケアしたり、こちらの音は出さないようにする。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「スモークの要求や味方を呼んだり、その方向をケアしたり、こちらの音は出さないようにする。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "音情報の利用の良し悪しが映像から判断でき、結果ではなく行動選択の妥当性を説明できる場面。",
+      "suggested_clip_window_seconds": {
+        "before_event": 10,
+        "after_event": 6
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "音情報を得た後、どんな反応をGOODとする？",
+      "temporal_context": {
+        "level_code": "local",
+        "level_label": "短時間シーケンス",
+        "analysis_scope": "イベント前後およそ15〜30秒。直前の情報取得・移動・交戦後までを含める。",
+        "event_window_seconds": {
+          "before": 12,
+          "after": 15
+        },
+        "requires_round_timeline": false,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "原則10〜20秒。必要なら直前情報を説明文で補足",
+        "classification_reason": "音を聞いた瞬間だけでなく、聞いた後のスモーク要求・味方招集・ケア・静音行動まで追う必要がある。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "audio_cue",
+          "position_change",
+          "peek"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "audio_cue_observed",
+            "op": "eq",
+            "value": true,
+            "missing_policy": "exclude"
+          }
+        ],
+        "supporting_fact_keys": [],
+        "priority": "important",
+        "temporal_level": "local",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "audio_information"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 2.0,
+        "clip_sec": 3.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 20,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "INFO-03",
+      "category": "Information",
+      "item": "人数状況の認識",
+      "priority": "mvp_required",
+      "detection_difficulty": "medium",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "Kill Feed",
+        "生存人数",
+        "その後の行動"
+      ],
+      "human_policy": "人数不利では、固まるような立ち回りをする。人数有利では、有利を崩さないように、あまり広がりすぎない。",
+      "human_exceptions": "人数不利でもオフアングルからのワンピックだったり、人数有利でも情報取得のために広がることがある",
+      "evaluation_instruction": "「人数不利では、固まるような立ち回りをする。人数有利では、有利を崩さないように、あまり広がりすぎない。」を最優先の評価方針として使用する。 ただし「人数不利でもオフアングルからのワンピックだったり、人数有利でも情報取得のために広がることがある」に該当する場合は減点・指摘を抑制または除外する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "キル発生などで人数差が変化した後の立ち回り変化。",
+      "suggested_clip_window_seconds": {
+        "before_event": 10,
+        "after_event": 6
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "人数差が変わった後、どんな行動変化を求める？",
+      "temporal_context": {
+        "level_code": "round",
+        "level_label": "ラウンド全体",
+        "analysis_scope": "ラウンド開始〜終了。評価時はラウンド内の情報変化・人数変化・味方位置を時系列で保持する。",
+        "event_window_seconds": null,
+        "requires_round_timeline": true,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "根拠となる場面10〜25秒。必要なら複数クリップ",
+        "classification_reason": "人数状況はラウンド中に何度も変化し、それに応じて固まる/広がる判断も変わるため。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "kill",
+          "state_snapshot",
+          "position_change",
+          "peek"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "numbers_state",
+            "op": "in",
+            "value": [
+              "advantage",
+              "disadvantage"
+            ],
+            "missing_policy": "allow_unscored"
+          }
+        ],
+        "supporting_fact_keys": [],
+        "priority": "mvp_required",
+        "temporal_level": "round",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "numbers_awareness"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 6.0,
+        "clip_sec": 8.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 35,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "INFO-04",
+      "category": "Information",
+      "item": "未確認エリアの扱い",
+      "priority": "important",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "確認済み",
+        "未確認方向への視線・移動"
+      ],
+      "human_policy": "索敵スキルを入れたりフラッシュなどで安全に進行すべき。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「索敵スキルを入れたりフラッシュなどで安全に進行すべき。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "未確認エリアの扱いの良し悪しが映像から判断でき、結果ではなく行動選択の妥当性を説明できる場面。",
+      "suggested_clip_window_seconds": {
+        "before_event": 10,
+        "after_event": 6
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "未確認エリアに対して、どの程度警戒すべきとする？",
+      "temporal_context": {
+        "level_code": "local",
+        "level_label": "短時間シーケンス",
+        "analysis_scope": "イベント前後およそ15〜30秒。直前の情報取得・移動・交戦後までを含める。",
+        "event_window_seconds": {
+          "before": 15,
+          "after": 12
+        },
+        "requires_round_timeline": false,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "原則10〜20秒。必要なら直前情報を説明文で補足",
+        "classification_reason": "未確認エリアへ進む直前の情報状況と、索敵/フラッシュを使った進行まで一連で確認する。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "enemy_spotted",
+          "enemy_lost",
+          "peek",
+          "position_change"
+        ],
+        "required_state_predicates": [],
+        "supporting_fact_keys": [
+          "uncleared_zone_ahead"
+        ],
+        "priority": "important",
+        "temporal_level": "local",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "uncleared_area"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 2.0,
+        "clip_sec": 3.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 20,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "DEC-01",
+      "category": "Decision Making",
+      "item": "人数有利時の判断",
+      "priority": "mvp_required",
+      "detection_difficulty": "medium",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "生存人数",
+        "ピーク",
+        "味方との距離"
+      ],
+      "human_policy": "単独でドカドカ進んでくことは避けるべき。ラークして相手の裏をかいたり、人数有利を活かして一気に畳み掛ける行動はok。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「単独でドカドカ進んでくことは避けるべき。ラークして相手の裏をかいたり、人数有利を活かして一気に畳み掛ける行動はok。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "人数有利時に単独進行・ラーク・一気に畳み掛ける判断をした場面。文脈依存で評価。",
+      "suggested_clip_window_seconds": {
+        "before_event": 12,
+        "after_event": 8
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "人数有利で避けるべき行動／優先する行動は？",
+      "temporal_context": {
+        "level_code": "round",
+        "level_label": "ラウンド全体",
+        "analysis_scope": "ラウンド開始〜終了。評価時はラウンド内の情報変化・人数変化・味方位置を時系列で保持する。",
+        "event_window_seconds": null,
+        "requires_round_timeline": true,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "根拠となる場面10〜25秒。必要なら複数クリップ",
+        "classification_reason": "人数有利・不利での行動は、人数差が生まれた時点からその後どうリスクを取ったかまでラウンド全体で見る必要がある。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "kill",
+          "peek",
+          "position_change",
+          "engagement_start"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "numbers_state",
+            "op": "eq",
+            "value": "advantage",
+            "missing_policy": "allow_unscored"
+          }
+        ],
+        "supporting_fact_keys": [],
+        "priority": "mvp_required",
+        "temporal_level": "round",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "numbers_advantage",
+        "risk_control"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 6.0,
+        "clip_sec": 8.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 35,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "DEC-02",
+      "category": "Decision Making",
+      "item": "人数不利時の判断",
+      "priority": "important",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "生存人数",
+        "リスクの取り方",
+        "孤立"
+      ],
+      "human_policy": "敵がたくさんいそうなところにキルとりに行くのはNG。孤立した敵を狙いにいったり、オフアングルからの大量キルはGOOD。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「敵がたくさんいそうなところにキルとりに行くのはNG。孤立した敵を狙いにいったり、オフアングルからの大量キルはGOOD。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "人数不利時にリスクを取った場面。孤立敵狙い・オフアングルなど、逆転意図を評価。",
+      "suggested_clip_window_seconds": {
+        "before_event": 12,
+        "after_event": 8
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "人数不利で、どの程度リスクを取ることをGOODとする？",
+      "temporal_context": {
+        "level_code": "round",
+        "level_label": "ラウンド全体",
+        "analysis_scope": "ラウンド開始〜終了。評価時はラウンド内の情報変化・人数変化・味方位置を時系列で保持する。",
+        "event_window_seconds": null,
+        "requires_round_timeline": true,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "根拠となる場面10〜25秒。必要なら複数クリップ",
+        "classification_reason": "人数有利・不利での行動は、人数差が生まれた時点からその後どうリスクを取ったかまでラウンド全体で見る必要がある。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "kill",
+          "peek",
+          "position_change",
+          "engagement_start"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "numbers_state",
+            "op": "eq",
+            "value": "disadvantage",
+            "missing_policy": "allow_unscored"
+          }
+        ],
+        "supporting_fact_keys": [],
+        "priority": "important",
+        "temporal_level": "round",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "numbers_disadvantage",
+        "play_together"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 6.0,
+        "clip_sec": 8.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 35,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "DEC-03",
+      "category": "Decision Making",
+      "item": "戦闘継続/離脱",
+      "priority": "mvp_required",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "HP",
+        "味方位置",
+        "敵位置",
+        "使用可能Utility"
+      ],
+      "human_policy": "フラッシュだったり、遅延スキルなど、その場に居続けること自体が不利になるような場合。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「フラッシュだったり、遅延スキルなど、その場に居続けること自体が不利になるような場合。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "フラッシュ、遅延、継続ダメージ等でその場に留まることが不利になった後の継続/離脱判断。",
+      "suggested_clip_window_seconds": {
+        "before_event": 12,
+        "after_event": 8
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "どんな条件なら戦い続けず引くべき？",
+      "temporal_context": {
+        "level_code": "local",
+        "level_label": "短時間シーケンス",
+        "analysis_scope": "イベント前後およそ15〜30秒。直前の情報取得・移動・交戦後までを含める。",
+        "event_window_seconds": {
+          "before": 15,
+          "after": 12
+        },
+        "requires_round_timeline": false,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "原則10〜20秒。必要なら直前情報を説明文で補足",
+        "classification_reason": "戦闘を継続すべきか離脱すべきかは、直前のUtility・被弾・敵圧力と直後の結果までで判断できる。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "utility_used",
+          "engagement_start",
+          "engagement_end",
+          "position_change"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "disadvantageous_effect_active",
+            "op": "eq",
+            "value": true,
+            "missing_policy": "allow_unscored"
+          }
+        ],
+        "supporting_fact_keys": [],
+        "priority": "mvp_required",
+        "temporal_level": "local",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "disengage",
+        "fight_continuation"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 2.0,
+        "clip_sec": 3.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 20,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "DEC-04",
+      "category": "Decision Making",
+      "item": "ローテーション判断",
+      "priority": "important",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "敵情報",
+        "Spike",
+        "味方位置",
+        "残り時間"
+      ],
+      "human_policy": "索敵スキルで何人か映ったり、味方の報告で多いという情報が入ったとき。",
+      "human_exceptions": "相手のラッシュが早い場合で、索敵スキルが当たらなかった場合、逆サイトのラッシュの可能性があるので、その場合はローテしてもいい。",
+      "evaluation_instruction": "「索敵スキルで何人か映ったり、味方の報告で多いという情報が入ったとき。」を最優先の評価方針として使用する。 ただし「相手のラッシュが早い場合で、索敵スキルが当たらなかった場合、逆サイトのラッシュの可能性があるので、その場合はローテしてもいい。」に該当する場合は減点・指摘を抑制または除外する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "敵人数情報、味方報告、索敵結果などを受けてローテーション判断した場面。",
+      "suggested_clip_window_seconds": {
+        "before_event": 12,
+        "after_event": 8
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "どんな情報が揃ったらローテーションすべき？",
+      "temporal_context": {
+        "level_code": "round",
+        "level_label": "ラウンド全体",
+        "analysis_scope": "ラウンド開始〜終了。評価時はラウンド内の情報変化・人数変化・味方位置を時系列で保持する。",
+        "event_window_seconds": null,
+        "requires_round_timeline": true,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "根拠となる場面10〜25秒。必要なら複数クリップ",
+        "classification_reason": "ローテーションは、それ以前に得た索敵・味方報告・敵の進行速度と、移動開始タイミングを比較する必要がある。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "enemy_spotted",
+          "rotation_started",
+          "position_change"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "enemy_spotted_count",
+            "op": "gte",
+            "value": 1,
+            "missing_policy": "allow_unscored"
+          }
+        ],
+        "supporting_fact_keys": [],
+        "priority": "important",
+        "temporal_level": "round",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "rotation"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 6.0,
+        "clip_sec": 8.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 35,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "DEC-05",
+      "category": "Decision Making",
+      "item": "残り時間の使い方",
+      "priority": "mvp_required",
+      "detection_difficulty": "medium",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "ラウンド時間",
+        "Spike状態",
+        "行動速度"
+      ],
+      "human_policy": "守りなら設置阻止、攻めなら設置",
+      "human_exceptions": null,
+      "evaluation_instruction": "「守りなら設置阻止、攻めなら設置」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "残り時間が少ない終盤。攻めは設置、守りは設置阻止を優先できたかを確認。",
+      "suggested_clip_window_seconds": {
+        "before_event": 12,
+        "after_event": 8
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "時間が少ないとき、何を優先する？",
+      "temporal_context": {
+        "level_code": "round",
+        "level_label": "ラウンド全体",
+        "analysis_scope": "ラウンド開始〜終了。評価時はラウンド内の情報変化・人数変化・味方位置を時系列で保持する。",
+        "event_window_seconds": null,
+        "requires_round_timeline": true,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "根拠となる場面10〜25秒。必要なら複数クリップ",
+        "classification_reason": "残り時間の使い方は、ラウンド全体の進行と設置/阻止までの残時間を継続的に追う必要がある。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "objective_state",
+          "spike_planted",
+          "rotation_started",
+          "position_change"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "objective_state_observed",
+            "op": "eq",
+            "value": true,
+            "missing_policy": "exclude"
+          }
+        ],
+        "supporting_fact_keys": [
+          "round_time_remaining_sec",
+          "spike_carried_by_player"
+        ],
+        "priority": "mvp_required",
+        "temporal_level": "round",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "time_management",
+        "objective_priority"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 6.0,
+        "clip_sec": 8.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 35,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "UTL-01",
+      "category": "Utility",
+      "item": "Utilityを残して死亡",
+      "priority": "mvp_required",
+      "detection_difficulty": "medium",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "死亡時の残Utility",
+        "直前の交戦"
+      ],
+      "human_policy": "オフアングルに撃たれた時、壁抜きやモク抜きで抜かれたときは仕方ないが、フラッシュがあるのに使わずに敵がいそうなところにピークしたりしたらBAD。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「オフアングルに撃たれた時、壁抜きやモク抜きで抜かれたときは仕方ないが、フラッシュがあるのに使わずに敵がいそうなところにピークしたりしたらBAD。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "使えるUtilityと使用猶予がある状態で、敵がいそうな場所へ進入・ピークして死亡した場面。即死・不意打ちは除外。",
+      "suggested_clip_window_seconds": {
+        "before_event": 10,
+        "after_event": 8
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "どんな場面でUtilityを使わず死亡したらBADとする？",
+      "temporal_context": {
+        "level_code": "local",
+        "level_label": "短時間シーケンス",
+        "analysis_scope": "イベント前後およそ15〜30秒。直前の情報取得・移動・交戦後までを含める。",
+        "event_window_seconds": {
+          "before": 20,
+          "after": 5
+        },
+        "requires_round_timeline": false,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "原則10〜20秒。必要なら直前情報を説明文で補足",
+        "classification_reason": "死亡時点だけでなく、死亡前にUtilityを使える合理的な機会があったか、突然死など例外だったかを確認する。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "ability_state",
+          "player_death",
+          "engagement_start"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "player_died",
+            "op": "eq",
+            "value": true,
+            "missing_policy": "exclude"
+          },
+          {
+            "fact_key": "utility_available_count",
+            "op": "gt",
+            "value": 0,
+            "missing_policy": "allow_unscored"
+          }
+        ],
+        "supporting_fact_keys": [],
+        "priority": "mvp_required",
+        "temporal_level": "local",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "unused_utility",
+        "death"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 2.0,
+        "clip_sec": 3.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 20,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "TEAM-02",
+      "category": "Teamplay",
+      "item": "味方とのタイミング合わせ",
+      "priority": "mvp_required",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "エントリー",
+        "フラッシュ",
+        "スモーク等との同期"
+      ],
+      "human_policy": "味方がサイト中にエントリーするときにサイト中にスキルを入れることができる。また立ち回り面でも味方の位置を考慮した立ち位置をとることができる。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「味方がサイト中にエントリーするときにサイト中にスキルを入れることができる。また立ち回り面でも味方の位置を考慮した立ち位置をとることができる。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "味方とのタイミング合わせの良し悪しが映像から判断でき、結果ではなく行動選択の妥当性を説明できる場面。",
+      "suggested_clip_window_seconds": {
+        "before_event": 12,
+        "after_event": 8
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "どんな行動を『味方と合わせられている』とする？",
+      "temporal_context": {
+        "level_code": "phase",
+        "level_label": "ラウンド局面",
+        "analysis_scope": "エントリー、サイト取得、ポストプラント等の局面開始〜終了（目安20〜60秒）。",
+        "event_window_seconds": null,
+        "requires_round_timeline": true,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "核心部分15〜25秒。局面全体は時系列要約を併記",
+        "classification_reason": "味方とのタイミング合わせは、サイト進入や交戦の局面全体で味方位置とUtility投入タイミングを比較する必要がある。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "ally_entry_start",
+          "ally_enter_site",
+          "peek",
+          "engagement_start"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "ally_entry_active",
+            "op": "eq",
+            "value": true,
+            "missing_policy": "exclude"
+          }
+        ],
+        "supporting_fact_keys": [],
+        "priority": "mvp_required",
+        "temporal_level": "phase",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "team_timing",
+        "tradeability"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 4.0,
+        "clip_sec": 5.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 35,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "OBJ-02",
+      "category": "Objective",
+      "item": "設置判断",
+      "priority": "mvp_required",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "サイト制圧状況",
+        "残り時間",
+        "味方位置"
+      ],
+      "human_policy": "時間がないとき、サイト中が安全であるとき、人数有利であるときは即設置。サイト中が安全ではない、被弾する可能性が高い、撃ち合っているときなどは設置を待つべき。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「時間がないとき、サイト中が安全であるとき、人数有利であるときは即設置。サイト中が安全ではない、被弾する可能性が高い、撃ち合っているときなどは設置を待つべき。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "設置可能な局面で即設置/待機を選択した場面。サイト安全度、被弾可能性、交戦状況、残り時間、人数差を併記。",
+      "suggested_clip_window_seconds": {
+        "before_event": 15,
+        "after_event": 10
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "どんな条件なら即設置／設置を待つべき？",
+      "temporal_context": {
+        "level_code": "phase",
+        "level_label": "ラウンド局面",
+        "analysis_scope": "エントリー、サイト取得、ポストプラント等の局面開始〜終了（目安20〜60秒）。",
+        "event_window_seconds": null,
+        "requires_round_timeline": true,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "核心部分15〜25秒。局面全体は時系列要約を併記",
+        "classification_reason": "設置判断はサイト安全度、撃ち合い、人数、残り時間が変化するサイト取得局面の流れで評価する。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "objective_state",
+          "site_state",
+          "spike_planted",
+          "engagement_start"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "side",
+            "op": "eq",
+            "value": "attack",
+            "missing_policy": "exclude"
+          },
+          {
+            "fact_key": "spike_carried_by_player",
+            "op": "eq",
+            "value": true,
+            "missing_policy": "allow_unscored"
+          }
+        ],
+        "supporting_fact_keys": [
+          "round_time_remaining_sec",
+          "site_incoming_damage_risk_observed",
+          "numbers_state"
+        ],
+        "priority": "mvp_required",
+        "temporal_level": "phase",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "plant_timing",
+        "site_safety"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 4.0,
+        "clip_sec": 5.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 35,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "OBJ-03",
+      "category": "Objective",
+      "item": "設置後/解除時の時間管理",
+      "priority": "mvp_required",
+      "detection_difficulty": "medium",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "Spike残り時間",
+        "敵位置",
+        "ピーク頻度"
+      ],
+      "human_policy": "立ち回って敵を殺しにいったり、「まさか」の位置に移動したりする。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「立ち回って敵を殺しにいったり、「まさか」の位置に移動したりする。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "設置後または解除阻止中の位置変更・ピーク・時間消費に関する判断。",
+      "suggested_clip_window_seconds": {
+        "before_event": 15,
+        "after_event": 10
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "設置後・解除阻止で、時間をどう使うのをGOODとする？",
+      "temporal_context": {
+        "level_code": "phase",
+        "level_label": "ラウンド局面",
+        "analysis_scope": "エントリー、サイト取得、ポストプラント等の局面開始〜終了（目安20〜60秒）。",
+        "event_window_seconds": null,
+        "requires_round_timeline": true,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "核心部分15〜25秒。局面全体は時系列要約を併記",
+        "classification_reason": "設置後/解除時の時間管理は、Spike設置からラウンド終了までのポストプラント/リテイク局面全体を見る。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "spike_planted",
+          "spike_defuse_started",
+          "position_change",
+          "peek",
+          "engagement_start"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "spike_planted",
+            "op": "eq",
+            "value": true,
+            "missing_policy": "exclude"
+          }
+        ],
+        "supporting_fact_keys": [
+          "round_time_remaining_sec",
+          "numbers_state"
+        ],
+        "priority": "mvp_required",
+        "temporal_level": "phase",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "post_plant_time",
+        "defuse_time"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 4.0,
+        "clip_sec": 5.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 35,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "ECO-01",
+      "category": "Economy",
+      "item": "チームBuyとの同期",
+      "priority": "important",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "round",
+      "required_visual_signals": [
+        "自分と味方の装備・所持金"
+      ],
+      "human_policy": "エコラウンドでヒーローバイをしたとき。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「エコラウンドでヒーローバイをしたとき。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "エコラウンドで単独ヒーローバイをした、またはチームBuyと明確に乖離した場面。",
+      "suggested_clip_window_seconds": {
+        "before_event": 20,
+        "after_event": 8
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "味方とBuyが合っていない状態を、どの条件でBADとする？",
+      "temporal_context": {
+        "level_code": "cross_round",
+        "level_label": "前後ラウンド",
+        "analysis_scope": "前ラウンド結果＋購入フェーズ＋対象ラウンド。将来の実結果ではなく、判断時点で予測可能な次ラウンド経済のみ使う。",
+        "event_window_seconds": null,
+        "requires_round_timeline": true,
+        "requires_previous_round_context": true,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "購入画面/判断場面10〜20秒＋経済状況テキスト",
+        "classification_reason": "チームBuyとの同期は前ラウンド結果と現在の所持金・味方Buyを合わせて判断するため。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "buy_phase",
+          "purchase"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "buy_phase_observed",
+            "op": "eq",
+            "value": true,
+            "missing_policy": "exclude"
+          }
+        ],
+        "supporting_fact_keys": [
+          "team_buy_class",
+          "player_buy_class"
+        ],
+        "priority": "important",
+        "temporal_level": "cross_round",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "team_economy",
+        "buy_sync"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 10.0,
+        "clip_sec": 12.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 35,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "ECO-02",
+      "category": "Economy",
+      "item": "武器回収/セーブ判断",
+      "priority": "important",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "round",
+      "required_visual_signals": [
+        "残り時間",
+        "生存人数",
+        "所持武器",
+        "勝率が低い状況"
+      ],
+      "human_policy": "次味方がバイラウンドで、自分が死んだらバイできない場合。あと敵がエコラウンドのとき。自分がオペレーターを持っているとき。",
+      "human_exceptions": "逆転不可能なくらいの人数不利なら諦めてもいい。(1v3とか)",
+      "evaluation_instruction": "「次味方がバイラウンドで、自分が死んだらバイできない場合。あと敵がエコラウンドのとき。自分がオペレーターを持っているとき。」を最優先の評価方針として使用する。 ただし「逆転不可能なくらいの人数不利なら諦めてもいい。(1v3とか)」に該当する場合は減点・指摘を抑制または除外する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "ラウンド継続か武器回収/セーブかの判断。次ラウンドBuy、人数差、所持武器を確認。",
+      "suggested_clip_window_seconds": {
+        "before_event": 20,
+        "after_event": 8
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "どんな条件なら戦闘継続より回収・セーブを優先する？",
+      "temporal_context": {
+        "level_code": "cross_round",
+        "level_label": "前後ラウンド",
+        "analysis_scope": "前ラウンド結果＋購入フェーズ＋対象ラウンド。将来の実結果ではなく、判断時点で予測可能な次ラウンド経済のみ使う。",
+        "event_window_seconds": null,
+        "requires_round_timeline": true,
+        "requires_previous_round_context": true,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "購入画面/判断場面10〜20秒＋経済状況テキスト",
+        "classification_reason": "武器回収/セーブは現在ラウンドの勝算だけでなく、次ラウンドの購入可能性を判断時点で見積もる必要がある。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "save_decision",
+          "weapon_pickup",
+          "buy_phase"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "save_context_observed",
+            "op": "eq",
+            "value": true,
+            "missing_policy": "exclude"
+          }
+        ],
+        "supporting_fact_keys": [
+          "weapon",
+          "numbers_state"
+        ],
+        "priority": "important",
+        "temporal_level": "cross_round",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "save_decision",
+        "weapon_value"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 10.0,
+        "clip_sec": 12.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 35,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "ADV-01",
+      "category": "Decision Making",
+      "item": "ファーストデス",
+      "priority": "additional",
+      "detection_difficulty": "medium",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "ラウンド序盤の死亡位置",
+        "味方距離",
+        "得た情報"
+      ],
+      "human_policy": "変にプッシュとかして死んだとき。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「変にプッシュとかして死んだとき。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "ラウンド序盤の最初の死亡。プッシュの必要性、得た情報、味方との距離を評価。",
+      "suggested_clip_window_seconds": {
+        "before_event": 12,
+        "after_event": 8
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "どんなファーストデスを『価値が低い』とする？",
+      "temporal_context": {
+        "level_code": "round",
+        "level_label": "ラウンド全体",
+        "analysis_scope": "ラウンド開始〜終了。評価時はラウンド内の情報変化・人数変化・味方位置を時系列で保持する。",
+        "event_window_seconds": null,
+        "requires_round_timeline": true,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "根拠となる場面10〜25秒。必要なら複数クリップ",
+        "classification_reason": "ファーストデスが『変なプッシュ』だったかは、ラウンド開始からの作戦・情報・味方位置を知らないと判定できない。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "player_death",
+          "kill"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "first_death_by_player",
+            "op": "eq",
+            "value": true,
+            "missing_policy": "allow_unscored"
+          }
+        ],
+        "supporting_fact_keys": [],
+        "priority": "additional",
+        "temporal_level": "round",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "first_death"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 6.0,
+        "clip_sec": 8.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 35,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "ADV-02",
+      "category": "Decision Making",
+      "item": "ファーストキル後の判断",
+      "priority": "additional",
+      "detection_difficulty": "medium",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "先制キル後の継続ピーク",
+        "撤退"
+      ],
+      "human_policy": "一旦退く。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「一旦退く。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "ファーストキル直後の継続ピーク/撤退判断。原則は一旦退く方針で評価。",
+      "suggested_clip_window_seconds": {
+        "before_event": 12,
+        "after_event": 8
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "先制キル後、どんな行動を優先する？",
+      "temporal_context": {
+        "level_code": "phase",
+        "level_label": "ラウンド局面",
+        "analysis_scope": "エントリー、サイト取得、ポストプラント等の局面開始〜終了（目安20〜60秒）。",
+        "event_window_seconds": null,
+        "requires_round_timeline": true,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "核心部分15〜25秒。局面全体は時系列要約を併記",
+        "classification_reason": "ファーストキル後に一旦退くべきだったかは、キル取得前後の位置関係と直後の敵反応を見る必要がある。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "kill",
+          "position_change",
+          "peek"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "first_kill_by_player",
+            "op": "eq",
+            "value": true,
+            "missing_policy": "allow_unscored"
+          }
+        ],
+        "supporting_fact_keys": [],
+        "priority": "additional",
+        "temporal_level": "phase",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "first_kill_conversion"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 4.0,
+        "clip_sec": 5.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 35,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "ADV-03",
+      "category": "Decision Making",
+      "item": "クラッチ判断",
+      "priority": "additional",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "1vX",
+        "Spike",
+        "残り時間",
+        "敵位置"
+      ],
+      "human_policy": "想定されづらい立ち回り。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「想定されづらい立ち回り。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "1vXクラッチ中の移動・ポジション選択。敵に想定されにくい動きかを評価。",
+      "suggested_clip_window_seconds": {
+        "before_event": 12,
+        "after_event": 8
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "1vXで何を優先して評価したい？",
+      "temporal_context": {
+        "level_code": "round",
+        "level_label": "ラウンド全体",
+        "analysis_scope": "ラウンド開始〜終了。評価時はラウンド内の情報変化・人数変化・味方位置を時系列で保持する。",
+        "event_window_seconds": null,
+        "requires_round_timeline": true,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "根拠となる場面10〜25秒。必要なら複数クリップ",
+        "classification_reason": "クラッチは人数、残時間、Spike、既知敵位置を継続的に更新しながら判断するためラウンド全体が必要。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "kill",
+          "engagement_start",
+          "position_change"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "clutch_state",
+            "op": "eq",
+            "value": true,
+            "missing_policy": "allow_unscored"
+          }
+        ],
+        "supporting_fact_keys": [],
+        "priority": "additional",
+        "temporal_level": "round",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "clutch"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 6.0,
+        "clip_sec": 8.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 35,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "ADV-04",
+      "category": "Positioning",
+      "item": "ラーク",
+      "priority": "additional",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "味方本隊との距離",
+        "敵情報",
+        "タイミング"
+      ],
+      "human_policy": "攻めで、人数不利からラークをスタートすることはBAD、別サイトにローテできるようにラークするのはGOOD。守りで、逆サイトラッシュされてるのにラークするのはBAD、情報が少ないときにラークするのはGOOD。どちらでもあまりに遅すぎるラークはBAD。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「攻めで、人数不利からラークをスタートすることはBAD、別サイトにローテできるようにラークするのはGOOD。守りで、逆サイトラッシュされてるのにラークするのはBAD、情報が少ないときにラークするのはGOOD。どちらでもあまりに遅すぎるラークはBAD。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "ラーク開始・継続・終了の判断。攻守、人数差、本隊の動き、ローテ余地、遅さを確認。",
+      "suggested_clip_window_seconds": {
+        "before_event": 10,
+        "after_event": 6
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "ラークをGOODとする条件／BADとする条件は？",
+      "temporal_context": {
+        "level_code": "round",
+        "level_label": "ラウンド全体",
+        "analysis_scope": "ラウンド開始〜終了。評価時はラウンド内の情報変化・人数変化・味方位置を時系列で保持する。",
+        "event_window_seconds": null,
+        "requires_round_timeline": true,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "根拠となる場面10〜25秒。必要なら複数クリップ",
+        "classification_reason": "ラーク開始の妥当性や遅すぎるかどうかは、ラウンド開始からの人数・ローテーション・味方進行との時間関係で評価する。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "position_change",
+          "position_hold",
+          "enemy_spotted"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "lurk_context_observed",
+            "op": "eq",
+            "value": true,
+            "missing_policy": "allow_unscored"
+          }
+        ],
+        "supporting_fact_keys": [],
+        "priority": "additional",
+        "temporal_level": "round",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "lurk"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 6.0,
+        "clip_sec": 8.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 35,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "ADV-05",
+      "category": "Teamplay",
+      "item": "エントリー役との連携",
+      "priority": "additional",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "先頭役と後続の距離",
+        "Utility"
+      ],
+      "human_policy": "ついていくべき。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「ついていくべき。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "エントリー役との連携の良し悪しが映像から判断でき、結果ではなく行動選択の妥当性を説明できる場面。",
+      "suggested_clip_window_seconds": {
+        "before_event": 12,
+        "after_event": 8
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "エントリーに対して後続がどう動くべき？",
+      "temporal_context": {
+        "level_code": "phase",
+        "level_label": "ラウンド局面",
+        "analysis_scope": "エントリー、サイト取得、ポストプラント等の局面開始〜終了（目安20〜60秒）。",
+        "event_window_seconds": null,
+        "requires_round_timeline": true,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "核心部分15〜25秒。局面全体は時系列要約を併記",
+        "classification_reason": "エントリー役への追従は、サイト進入開始からSpace獲得・トレード可能状態までの一連の局面で見る。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "ally_entry_start",
+          "ally_enter_site",
+          "utility_used",
+          "position_change"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "ally_entry_active",
+            "op": "eq",
+            "value": true,
+            "missing_policy": "exclude"
+          }
+        ],
+        "supporting_fact_keys": [],
+        "priority": "additional",
+        "temporal_level": "phase",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "entry_support"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 4.0,
+        "clip_sec": 5.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 35,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "ADV-06",
+      "category": "Economy",
+      "item": "アンチエコ",
+      "priority": "additional",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "round",
+      "required_visual_signals": [
+        "敵の推定Buy",
+        "武器距離",
+        "ポジション"
+      ],
+      "human_policy": "単独で行動して死ぬこと。ショットガンのケア",
+      "human_exceptions": null,
+      "evaluation_instruction": "「単独で行動して死ぬこと。ショットガンのケア」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "アンチエコで単独行動した、またはショットガン等の近距離武器に有利な場所へ不用意に入った場面。",
+      "suggested_clip_window_seconds": {
+        "before_event": 20,
+        "after_event": 8
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "アンチエコで避けるべきリスクは？",
+      "temporal_context": {
+        "level_code": "round",
+        "level_label": "ラウンド全体",
+        "analysis_scope": "ラウンド開始〜終了。評価時はラウンド内の情報変化・人数変化・味方位置を時系列で保持する。",
+        "event_window_seconds": null,
+        "requires_round_timeline": true,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "根拠となる場面10〜25秒。必要なら複数クリップ",
+        "classification_reason": "アンチエコは敵経済、味方の集団行動、ショットガン警戒などラウンド全体の安全管理として評価する。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "buy_phase",
+          "engagement_start",
+          "weapon_pickup"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "enemy_eco_likely",
+            "op": "eq",
+            "value": true,
+            "missing_policy": "allow_unscored"
+          }
+        ],
+        "supporting_fact_keys": [],
+        "priority": "additional",
+        "temporal_level": "round",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "anti_eco"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 6.0,
+        "clip_sec": 8.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 35,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "ADV-07",
+      "category": "Economy",
+      "item": "セーブ",
+      "priority": "additional",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "round",
+      "required_visual_signals": [
+        "勝ち目",
+        "装備価値",
+        "逃走ルート"
+      ],
+      "human_policy": "エリア不利、人数不利ならセーブしてもいい。オペレーターを持っているならセーブ判断はより強く。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「エリア不利、人数不利ならセーブしてもいい。オペレーターを持っているならセーブ判断はより強く。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "エリア不利・人数不利・高価値武器所持時のセーブ判断。",
+      "suggested_clip_window_seconds": {
+        "before_event": 20,
+        "after_event": 8
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "どんな条件なら早めにセーブ判断する？",
+      "temporal_context": {
+        "level_code": "cross_round",
+        "level_label": "前後ラウンド",
+        "analysis_scope": "前ラウンド結果＋購入フェーズ＋対象ラウンド。将来の実結果ではなく、判断時点で予測可能な次ラウンド経済のみ使う。",
+        "event_window_seconds": null,
+        "requires_round_timeline": true,
+        "requires_previous_round_context": true,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "購入画面/判断場面10〜20秒＋経済状況テキスト",
+        "classification_reason": "セーブ判断は現在のエリア/人数不利と、次ラウンドの武器価値・購入可能性を合わせて判断する。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "save_decision",
+          "weapon_pickup",
+          "position_change"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "save_context_observed",
+            "op": "eq",
+            "value": true,
+            "missing_policy": "exclude"
+          }
+        ],
+        "supporting_fact_keys": [],
+        "priority": "additional",
+        "temporal_level": "cross_round",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "save_decision"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 10.0,
+        "clip_sec": 12.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 35,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "ADV-08",
+      "category": "Ultimate",
+      "item": "Ult使用判断",
+      "priority": "additional",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "Ultポイント",
+        "ラウンド重要度",
+        "人数",
+        "サイト状況"
+      ],
+      "human_policy": "ウルトの性能にもよるが、その効果が得られるときは価値があると判断する。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「ウルトの性能にもよるが、その効果が得られるときは価値があると判断する。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "Ultimateを使用/温存した場面。能力固有の期待効果が実際に得られる条件だったかを評価。",
+      "suggested_clip_window_seconds": {
+        "before_event": 12,
+        "after_event": 8
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "Ultを使う価値がある条件は？",
+      "temporal_context": {
+        "level_code": "phase",
+        "level_label": "ラウンド局面",
+        "analysis_scope": "エントリー、サイト取得、ポストプラント等の局面開始〜終了（目安20〜60秒）。",
+        "event_window_seconds": null,
+        "requires_round_timeline": true,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "核心部分15〜25秒。局面全体は時系列要約を併記",
+        "classification_reason": "Ult価値は発動瞬間だけでなく、その局面で得られるエリア・キル・設置/解除支援などの効果まで確認する。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "utility_used",
+          "objective_state"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "ultimate_available",
+            "op": "eq",
+            "value": true,
+            "missing_policy": "allow_unscored"
+          }
+        ],
+        "supporting_fact_keys": [],
+        "priority": "additional",
+        "temporal_level": "phase",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "ultimate_usage"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 4.0,
+        "clip_sec": 5.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 35,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "ROLE-02",
+      "category": "Controller",
+      "item": "Smokeタイミング",
+      "priority": "additional",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "味方進行",
+        "残り時間",
+        "再使用可能時間"
+      ],
+      "human_policy": "攻め、味方がピークする直前。守り、敵がそのポイントをクリアする前。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「攻め、味方がピークする直前。守り、敵がそのポイントをクリアする前。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "ControllerのSmoke使用。攻めは味方ピーク直前、守りは敵が要所をクリアする前かを評価。",
+      "suggested_clip_window_seconds": {
+        "before_event": 10,
+        "after_event": 8
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "Smokeを入れる理想タイミングは？",
+      "temporal_context": {
+        "level_code": "local",
+        "level_label": "短時間シーケンス",
+        "analysis_scope": "イベント前後およそ15〜30秒。直前の情報取得・移動・交戦後までを含める。",
+        "event_window_seconds": {
+          "before": 15,
+          "after": 12
+        },
+        "requires_round_timeline": false,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "原則10〜20秒。必要なら直前情報を説明文で補足",
+        "classification_reason": "Smokeは味方ピーク直前/敵クリア前というタイミング差を見るため、投入前後の短い流れが必要。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "utility_used",
+          "site_state",
+          "engagement_start"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "player_role",
+            "op": "eq",
+            "value": "controller",
+            "missing_policy": "exclude"
+          }
+        ],
+        "supporting_fact_keys": [],
+        "priority": "additional",
+        "temporal_level": "local",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "smoke_timing"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 2.0,
+        "clip_sec": 3.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 20,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "ROLE-03",
+      "category": "Initiator",
+      "item": "索敵Utility",
+      "priority": "additional",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "索敵範囲",
+        "味方が利用できるか"
+      ],
+      "human_policy": "開幕。それとしばらく情報がないところ。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「開幕。それとしばらく情報がないところ。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "Initiatorの索敵Utility使用。開幕または長時間情報がないエリアへの使用を評価。",
+      "suggested_clip_window_seconds": {
+        "before_event": 10,
+        "after_event": 8
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "索敵UtilityをGOODとする条件は？",
+      "temporal_context": {
+        "level_code": "round",
+        "level_label": "ラウンド全体",
+        "analysis_scope": "ラウンド開始〜終了。評価時はラウンド内の情報変化・人数変化・味方位置を時系列で保持する。",
+        "event_window_seconds": null,
+        "requires_round_timeline": true,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "根拠となる場面10〜25秒。必要なら複数クリップ",
+        "classification_reason": "索敵Utilityは開幕だけでなく『しばらく情報がない場所』への再取得も評価するため、情報鮮度をラウンド全体で追う。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "utility_used",
+          "enemy_spotted",
+          "ally_entry_start"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "player_role",
+            "op": "eq",
+            "value": "initiator",
+            "missing_policy": "exclude"
+          }
+        ],
+        "supporting_fact_keys": [],
+        "priority": "additional",
+        "temporal_level": "round",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "recon_utility"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 6.0,
+        "clip_sec": 8.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 35,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "ROLE-06",
+      "category": "Duelist",
+      "item": "Space獲得後の生存",
+      "priority": "additional",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "侵入後の位置",
+        "味方との接続"
+      ],
+      "human_policy": "エリアを広げること。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「エリアを広げること。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "Duelistがエントリー後にSpaceをさらに広げる行動を取れたかを見る場面。",
+      "suggested_clip_window_seconds": {
+        "before_event": 10,
+        "after_event": 8
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "エントリー後に何を優先する？",
+      "temporal_context": {
+        "level_code": "phase",
+        "level_label": "ラウンド局面",
+        "analysis_scope": "エントリー、サイト取得、ポストプラント等の局面開始〜終了（目安20〜60秒）。",
+        "event_window_seconds": null,
+        "requires_round_timeline": true,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "核心部分15〜25秒。局面全体は時系列要約を併記",
+        "classification_reason": "DuelistのSpace獲得後の生存は、エントリー開始から獲得エリアの維持/拡張までを見る必要がある。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "ally_enter_site",
+          "engagement_end",
+          "position_change"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "player_role",
+            "op": "eq",
+            "value": "duelist",
+            "missing_policy": "exclude"
+          }
+        ],
+        "supporting_fact_keys": [],
+        "priority": "additional",
+        "temporal_level": "phase",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "space_creation",
+        "duelist_survival"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 4.0,
+        "clip_sec": 5.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 35,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "ROLE-07",
+      "category": "Sentinel",
+      "item": "サイト保持",
+      "priority": "additional",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "round",
+      "required_visual_signals": [
+        "設置Utility",
+        "侵入遅延",
+        "退路"
+      ],
+      "human_policy": "メインの入りを確認できること。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「メインの入りを確認できること。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "Sentinel守備でメイン入口を確認・検知できる配置になっているか。",
+      "suggested_clip_window_seconds": {
+        "before_event": 12,
+        "after_event": 8
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "Sentinelの守りを何で評価する？",
+      "temporal_context": {
+        "level_code": "round",
+        "level_label": "ラウンド全体",
+        "analysis_scope": "ラウンド開始〜終了。評価時はラウンド内の情報変化・人数変化・味方位置を時系列で保持する。",
+        "event_window_seconds": null,
+        "requires_round_timeline": true,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "根拠となる場面10〜25秒。必要なら複数クリップ",
+        "classification_reason": "Sentinelのサイト保持はメイン入口を継続して確認できていたかをラウンド中の配置変化込みで評価する。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "position_hold",
+          "utility_used",
+          "enemy_spotted"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "player_role",
+            "op": "eq",
+            "value": "sentinel",
+            "missing_policy": "exclude"
+          }
+        ],
+        "supporting_fact_keys": [],
+        "priority": "additional",
+        "temporal_level": "round",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "site_hold"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 6.0,
+        "clip_sec": 8.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 35,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "ROLE-08",
+      "category": "Sentinel",
+      "item": "Flank管理",
+      "priority": "additional",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "round",
+      "required_visual_signals": [
+        "罠",
+        "監視Utility",
+        "破壊情報",
+        "味方位置"
+      ],
+      "human_policy": "裏見スキルを置いたり、継続的な警戒をGOODとする。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「裏見スキルを置いたり、継続的な警戒をGOODとする。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "Flank監視Utilityまたは継続的な裏警戒が機能しているか。",
+      "suggested_clip_window_seconds": {
+        "before_event": 12,
+        "after_event": 8
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "Flank管理をGOODとする条件は？",
+      "temporal_context": {
+        "level_code": "round",
+        "level_label": "ラウンド全体",
+        "analysis_scope": "ラウンド開始〜終了。評価時はラウンド内の情報変化・人数変化・味方位置を時系列で保持する。",
+        "event_window_seconds": null,
+        "requires_round_timeline": true,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "根拠となる場面10〜25秒。必要なら複数クリップ",
+        "classification_reason": "Flank管理は一度の確認ではなく、裏見Utilityの設置と継続的な警戒が維持されたかを見る必要がある。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "position_hold",
+          "enemy_spotted",
+          "enemy_lost"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "player_role",
+            "op": "eq",
+            "value": "sentinel",
+            "missing_policy": "exclude"
+          }
+        ],
+        "supporting_fact_keys": [],
+        "priority": "additional",
+        "temporal_level": "round",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "flank_control"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 6.0,
+        "clip_sec": 8.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 35,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    },
+    {
+      "id": "WPN-01",
+      "category": "Weapon",
+      "item": "Operator使用",
+      "priority": "additional",
+      "detection_difficulty": "hard",
+      "evaluation_scope": "clip",
+      "required_visual_signals": [
+        "射線距離",
+        "ピーク方法",
+        "逃げ道"
+      ],
+      "human_policy": "長い射線を通せるかつ、壁に近いところで構えていること。",
+      "human_exceptions": null,
+      "evaluation_instruction": "「長い射線を通せるかつ、壁に近いところで構えていること。」を最優先の評価方針として使用する。 結果論ではなく、その行動を選んだ時点でプレイヤーが得られた情報に基づいて評価する。映像から根拠を確認できない場合は推測せず unscored とする。",
+      "clip_trigger": "Operator所持時の保持位置・射線。長い射線かつ遮蔽へ退きやすい位置かを評価。",
+      "suggested_clip_window_seconds": {
+        "before_event": 8,
+        "after_event": 5
+      },
+      "output_requirements": {
+        "label": [
+          "good",
+          "improve",
+          "unscored"
+        ],
+        "must_explain_evidence": true,
+        "must_explain_why": true,
+        "must_suggest_actionable_improvement_if_improve": true,
+        "avoid_result_only_judgement": true
+      },
+      "source_question": "Operator使用時の良い立ち回りをどう定義する？",
+      "temporal_context": {
+        "level_code": "local",
+        "level_label": "短時間シーケンス",
+        "analysis_scope": "イベント前後およそ15〜30秒。直前の情報取得・移動・交戦後までを含める。",
+        "event_window_seconds": {
+          "before": 12,
+          "after": 8
+        },
+        "requires_round_timeline": false,
+        "requires_previous_round_context": false,
+        "uses_whole_match_aggregation": false,
+        "display_clip_strategy": "原則10〜20秒。必要なら直前情報を説明文で補足",
+        "classification_reason": "Operatorの適正は長い射線、遮蔽までの距離、構えた位置と接敵までの状態を短いシーケンスで確認する。"
+      },
+      "trigger": {
+        "trigger_event_types": [
+          "hold_angle",
+          "shot",
+          "position_change"
+        ],
+        "required_state_predicates": [
+          {
+            "fact_key": "weapon",
+            "op": "eq",
+            "value": "Operator",
+            "missing_policy": "allow_unscored"
+          }
+        ],
+        "supporting_fact_keys": [
+          "cover_available",
+          "line_of_sight_state"
+        ],
+        "priority": "additional",
+        "temporal_level": "local",
+        "label_mode": "llm_contextual"
+      },
+      "concept_tags": [
+        "operator_usage"
+      ],
+      "test_tolerance_seconds": {
+        "evidence_sec": 2.0,
+        "clip_sec": 3.0
+      },
+      "aggregation_policy": {
+        "aggregate_repeated_occurrences": false,
+        "deduplicate_same_rule_within_seconds": 20,
+        "max_display_exemplars_per_match": 2,
+        "summary_required_if_occurrences_at_least": null
+      },
+      "confidence_policy": {
+        "normal_min_for_user_display": 0.75,
+        "review_band": [
+          0.55,
+          0.7499
+        ],
+        "below_review_band": "unscored_or_suppress"
+      },
+      "automation_policy": {
+        "candidate_selection": "deterministic_rule_engine",
+        "final_label_mode": "llm_contextual",
+        "do_not_numericize_unstated_human_judgment": true
+      }
+    }
+  ],
+  "temporal_context_policy": {
+    "principle": "AIが評価に使用する時間文脈と、ユーザーへ提示する短いクリップを分離する。",
+    "anti_hindsight_rule": "評価は行動時点でプレイヤーが取得可能だった情報だけで行う。後から判明した敵位置や実際の次ラウンド結果で過去判断を裁かない。",
+    "levels": {
+      "micro": {
+        "label": "瞬間",
+        "analysis_scope": "イベント前後およそ5〜12秒。射撃・照準・ピークそのものを中心に見る。",
+        "display_clip": "原則8〜15秒の1クリップ"
+      },
+      "local": {
+        "label": "短時間シーケンス",
+        "analysis_scope": "イベント前後およそ15〜30秒。直前の情報取得・移動・交戦後までを含める。",
+        "display_clip": "原則10〜20秒。必要なら直前情報を説明文で補足"
+      },
+      "phase": {
+        "label": "ラウンド局面",
+        "analysis_scope": "エントリー、サイト取得、ポストプラント等の局面開始〜終了（目安20〜60秒）。",
+        "display_clip": "核心部分15〜25秒。局面全体は時系列要約を併記"
+      },
+      "round": {
+        "label": "ラウンド全体",
+        "analysis_scope": "ラウンド開始〜終了。評価時はラウンド内の情報変化・人数変化・味方位置を時系列で保持する。",
+        "display_clip": "根拠となる場面10〜25秒。必要なら複数クリップ"
+      },
+      "cross_round": {
+        "label": "前後ラウンド",
+        "analysis_scope": "前ラウンド結果＋購入フェーズ＋対象ラウンド。将来の実結果ではなく、判断時点で予測可能な次ラウンド経済のみ使う。",
+        "display_clip": "購入画面/判断場面10〜20秒＋経済状況テキスト"
+      },
+      "match": {
+        "label": "試合全体集計",
+        "analysis_scope": "試合全体を複数サンプルで集計し、単発ではなく傾向として評価する。",
+        "display_clip": "代表例8〜15秒を最大3本程度"
+      }
+    }
+  }
+}

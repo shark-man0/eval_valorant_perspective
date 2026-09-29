@@ -1,0 +1,33 @@
+{
+  "version": "1.0",
+  "target": "valorant_visual_analyzer_patch_v2",
+  "purpose": "Remove duplicate/obsolete map runtime definitions when Map/Zone Patch v3 is installed.",
+  "must_ignore_or_remove": [
+    "config/map_zone_runtime_contract_v1.json"
+  ],
+  "replace_files": {
+    "config/map_spatial_fact_policy_v1.json": "integration_overrides/visual_analyzer_v2/map_spatial_fact_policy_v2.json"
+  },
+  "textual_contract_overrides": [
+    {
+      "file": "config/visual_event_detection_contract_v2.json",
+      "path": "events.rotation_started.notes",
+      "replace_meaning": "Use canonical Map/Zone Patch v3 ZoneResolution + topology_edges; no auto_site_anchor_macro_groups and no A/B/Mid hard-coded fallback."
+    },
+    {
+      "file": "config/visual_event_detection_contract_v2.json",
+      "path": "events.rotation_completed.notes",
+      "replace_meaning": "Same canonical v3 map dependency."
+    },
+    {
+      "file": "VISUAL_ANALYZER_SPEC.md",
+      "replace_meaning": "All map/zone provider references resolve to Map/Zone Patch v3 runtime contract v4."
+    }
+  ],
+  "provider_id_mapping": {
+    "stable_location_label": "location_label",
+    "static_polygon_registry": "polygon",
+    "site_anchor_macro_fallback": "coarse_fallback",
+    "auto_site_anchor_macro_groups": "coarse_fallback"
+  }
+}

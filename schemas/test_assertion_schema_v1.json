@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "test_assertion_schema_v1.json",
+  "title": "AI Coach Test Assertions v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "case_id",
+    "description",
+    "expected_evaluations",
+    "expected_candidate_rule_ids",
+    "forbidden_candidate_rule_ids",
+    "forbidden_input_conclusion_terms"
+  ],
+  "properties": {
+    "case_id": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "expected_candidate_rule_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "forbidden_candidate_rule_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "expected_evaluation_count_min": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "expected_evaluation_count_max": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "expected_evaluations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "primary_rule_id",
+          "label",
+          "allowed_related_rule_ids",
+          "required_concept_tags",
+          "confidence_range",
+          "expect_clip",
+          "expect_missing_information"
+        ],
+        "properties": {
+          "primary_rule_id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string",
+            "enum": [
+              "good",
+              "improve",
+              "unscored"
+            ]
+          },
+          "allowed_related_rule_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required_concept_tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "confidence_range": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          },
+          "expect_clip": {
+            "type": "boolean"
+          },
+          "expect_missing_information": {
+            "type": "boolean"
+          },
+          "expected_unscored_reason_codes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "forbidden_input_conclusion_terms": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

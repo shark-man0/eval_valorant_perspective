@@ -1,0 +1,42 @@
+{
+  "case_id": "TC-025",
+  "description": "生存人数HUDが読めず人数判断不能",
+  "expected_evaluations": [
+    {
+      "primary_rule_id": "INFO-03",
+      "label": "unscored",
+      "allowed_related_rule_ids": [],
+      "required_concept_tags": [
+        "numbers_awareness"
+      ],
+      "confidence_range": [
+        0,
+        0.54
+      ],
+      "expect_clip": false,
+      "expect_missing_information": true,
+      "expected_unscored_reason_codes": [
+        "insufficient_visual_evidence",
+        "insufficient_hud_evidence",
+        "missing_required_fact",
+        "ambiguous_exception",
+        "low_confidence",
+        "other"
+      ]
+    }
+  ],
+  "expected_candidate_rule_ids": [
+    "INFO-03"
+  ],
+  "forbidden_candidate_rule_ids": [],
+  "expected_evaluation_count_min": 1,
+  "expected_evaluation_count_max": 3,
+  "forbidden_input_conclusion_terms": [
+    "good",
+    "bad",
+    "適切",
+    "不適切",
+    "例外に該当",
+    "〜すべき"
+  ]
+}

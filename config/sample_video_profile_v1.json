@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "filename": "Valorant_09-25-2026_0-37-29-379.mp4",
+  "duration_sec": 171.019336,
+  "video": {
+    "codec": "h264",
+    "width": 1920,
+    "height": 1080,
+    "fps": 60.0
+  },
+  "audio": {
+    "stream_count": 3,
+    "codec": "aac",
+    "sample_rate_hz": 48000,
+    "channels_each": 2,
+    "analysis_enabled_for_mvp": false,
+    "clip_policy": "preserve_all_audio_streams_when_possible",
+    "playback_default": "container_default_if_present_else_first",
+    "user_track_selection_required_when_multiple": true,
+    "automatic_role_identification": "out_of_scope_for_mvp"
+  },
+  "capture_notes": [
+    "OBS/Outplayed-style multi-audio-track file",
+    "Client FPS text visible top-left",
+    "performance graph visible top-right",
+    "occasional voice/chat overlay visible at left"
+  ]
+}

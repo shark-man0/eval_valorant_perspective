@@ -1,0 +1,99 @@
+{
+  "version": "4.0",
+  "purpose": "Single canonical runtime contract for map selection, zone resolution, fusion, boundary handling, and Visual Analyzer consumers.",
+  "canonical_provider_ids": {
+    "location_label": {
+      "priority": 1,
+      "requirements": [
+        "recognized callout record",
+        "stable_duration_sec satisfied",
+        "controlled-player context"
+      ]
+    },
+    "polygon": {
+      "priority": 2,
+      "requirements": [
+        "calibrated normalized map canvas",
+        "self marker resolved"
+      ],
+      "confidence_rule": "min(minimap_calibration_confidence,self_marker_confidence,map.geometry_confidence_cap,matched_zone.geometry_confidence_cap)"
+    },
+    "coarse_fallback": {
+      "priority": 3,
+      "confidence_cap": 0.7,
+      "scope": "coarse role/site affinity only; zone_id may remain null"
+    }
+  },
+  "fusion_thresholds": {
+    "accept": 0.85,
+    "support": 0.7,
+    "named_zone_min": 0.8
+  },
+  "fusion_decision_table": [
+    {
+      "case": "label and polygon same zone, both >= support",
+      "result": "zone accepted",
+      "source": "fused_label_polygon",
+      "confidence": "max(label_confidence, polygon_confidence)"
+    },
+    {
+      "case": "label >= accept; polygon missing or < support",
+      "result": "label zone accepted",
+      "source": "location_label",
+      "confidence": "label_confidence"
+    },
+    {
+      "case": "polygon >= accept; label missing or < support",
+      "result": "polygon zone accepted",
+      "source": "polygon",
+      "confidence": "polygon_confidence"
+    },
+    {
+      "case": "one source >= accept; other source in [support,accept) disagrees",
+      "result": "higher-confidence zone accepted with diagnostic source_disagreement_secondary",
+      "source": "higher-confidence source",
+      "confidence": "higher confidence"
+    },
+    {
+      "case": "label >= accept AND polygon >= accept AND zones disagree",
+      "result": "ambiguous; hold previous stable zone only if boundary policy allows, otherwise zone_id=null",
+      "source": "held_previous_boundary or unknown",
+      "confidence": "held confidence decayed or 0"
+    },
+    {
+      "case": "both < accept but same zone and both >= support",
+      "result": "degraded zone context only",
+      "source": "fused_label_polygon",
+      "confidence": "min(label_confidence, polygon_confidence)"
+    },
+    {
+      "case": "otherwise",
+      "result": "unknown",
+      "source": "unknown",
+      "confidence": 0
+    }
+  ],
+  "boundary_policy": {
+    "margin_norm": 0.025,
+    "state": "ambiguous when point is within margin of shared boundary or multiple polygon candidates exist",
+    "previous_zone_hold_sec": 0.6,
+    "confidence_decay_per_sec": 0.2,
+    "without_previous_zone": "zone_id=null until one candidate persists beyond zone_transition_persistence_sec"
+  },
+  "temporal_debounce": {
+    "zone_transition_persistence_sec": 0.6,
+    "site_entry_persistence_sec": 0.35,
+    "rotation_destination_persistence_sec": 1.0
+  },
+  "map_selection": "Use config/map_registry_v1.json. Unresolved map_id blocks zone-dependent event generation.",
+  "minimap_profile": "Dynamic rotation/centered crop unsupported in MVP unless calibration recovers a stable full-map transform; otherwise calibration_required.",
+  "consumer_contract": {
+    "resolver_output": "ZoneResolution timeline only; resolver MUST NOT emit gameplay events.",
+    "position_change": "Visual minimap_spatial_tracker consumes stable ZoneResolution transitions.",
+    "rotation": "Visual minimap_spatial_tracker validates a topology path from an origin with non-empty site_affinity to a stable destination whose affinity is disjoint. Edges come only from topology_edges.",
+    "team_entry": "Visual team_entry_analyzer detects crossing into any zone listed by sites[].zone_ids and dwell threshold.",
+    "topology_source_of_truth": "topology_edges only; adjacency is derived at runtime and is not stored separately."
+  },
+  "calibration_failure_behavior": "zone_id=null, zone_confidence=0, calibration_status=failed; no zone-dependent gameplay event emitted.",
+  "missing_geometry_behavior": "zone-dependent facts/events unavailable; never infer exact callout/exposure topology with VLM."
+}

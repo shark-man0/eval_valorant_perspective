@@ -1,0 +1,66 @@
+{
+  "version": "2.0",
+  "clock": "All timestamps use original video seconds and must align with HudObservation.time_sec.",
+  "passes": [
+    {
+      "id": "A_global_context",
+      "fps": 2,
+      "purpose": "Broad state/entity/minimap/location tracking. Never sufficient alone for micro mechanics."
+    },
+    {
+      "id": "B_always_on_trigger_scan",
+      "fps": 5,
+      "purpose": "Always-on low-cost trigger scan while live_first_person: ammo_current/delta request, cheap recoil/muzzle score, enemy appearance, minimap displacement, location changes. This pass is the guaranteed source that can open Pass C."
+    },
+    {
+      "id": "C_micro_candidate",
+      "fps": 15,
+      "purpose": "Refine burst-start/first-shot, stopping, peek and engagement candidates in short windows. Do not attempt exact per-bullet counting for full-auto fire.",
+      "activation": "Opened by Pass B/HUD ammo delta, cheap recoil/muzzle score, enemy appearance, sharp motion/cover transition, utility cast, or engagement transition."
+    },
+    {
+      "id": "D_native_burst",
+      "fps": "source_fps_up_to_60",
+      "purpose": "Optional ±0.35 s burst only for first-shot/stop timing when Pass C is insufficient. Never used to count every bullet in full-auto fire.",
+      "activation": "Only for unresolved AIM-03/MOV-02 timing and within cost budget."
+    }
+  ],
+  "constraints": [
+    "Do not decode the entire match at 60 fps for semantic analysis.",
+    "Do not run semantic VLM on every frame; use selected keyframes/candidate sequences only.",
+    "Frames with HUD primary_state other than live_first_person are ineligible for target-player aim/movement/peek mechanics.",
+    "Semantic call budgets are enforced per round and per match; budget exhaustion returns unknown/null rather than extra calls.",
+    "Homography/back-projection preaim analysis is not an MVP path."
+  ],
+  "candidate_windows": {
+    "shot": [
+      -0.5,
+      1.0
+    ],
+    "peek": [
+      -1.5,
+      1.5
+    ],
+    "preaim": [
+      -1.5,
+      0.75
+    ],
+    "engagement": [
+      -2.0,
+      3.0
+    ],
+    "utility": [
+      -1.5,
+      3.0
+    ],
+    "rotation": [
+      -5.0,
+      8.0
+    ]
+  },
+  "cross_module_trigger_contract": {
+    "ammo_monitoring": "While live_first_person, scheduler requests HUD ammo_current at >=5 fps or reuses the same HUD ROI reader at Pass B cadence. Ammo decrease is a burst/shot trigger; ammo increase must be classified as reload/switch/purchase before shot logic.",
+    "redundant_visual_trigger": "Pass B also computes cheap muzzle/recoil scores so Pass C can open even if a HUD ammo sample is missed.",
+    "shot_event_granularity": "MVP emits a shot event at trigger/burst start (especially first_shot). It does not guarantee one event per bullet during automatic fire."
+  }
+}

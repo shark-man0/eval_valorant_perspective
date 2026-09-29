@@ -1,0 +1,251 @@
+{
+  "version": "3.0",
+  "map_id": "summit",
+  "vocabulary_status": "Inherited project callout vocabulary; not asserted as official Riot taxonomy.",
+  "location_label_policy": {
+    "stable_duration_sec": 0.45,
+    "exact_match_base_confidence": 0.96,
+    "fuzzy_match_min": 0.9,
+    "confidence_rule": "min(recognition_confidence, record.confidence_cap)",
+    "on_unknown": "fall back to polygon resolver; never invent a callout"
+  },
+  "records": {
+    "Mid Bottom": {
+      "zone_id": "summit_mid",
+      "verification_status": "public_vocab_unobserved",
+      "confidence_cap": 0.9,
+      "aliases": {
+        "ja-JP": []
+      },
+      "notes": null
+    },
+    "Mid Top": {
+      "zone_id": "summit_mid",
+      "verification_status": "public_vocab_unobserved",
+      "confidence_cap": 0.9,
+      "aliases": {
+        "ja-JP": []
+      },
+      "notes": null
+    },
+    "Mid Window": {
+      "zone_id": "summit_mid",
+      "verification_status": "public_vocab_unobserved",
+      "confidence_cap": 0.9,
+      "aliases": {
+        "ja-JP": []
+      },
+      "notes": null
+    },
+    "Mid Fountain": {
+      "zone_id": "summit_mid",
+      "verification_status": "public_vocab_unobserved",
+      "confidence_cap": 0.9,
+      "aliases": {
+        "ja-JP": ["中央ファウンテン"]
+      },
+      "notes": "Japanese alias added from supplied observed-label integration overlay; geometry and confidence cap unchanged."
+    },
+    "Mid Bend": {
+      "zone_id": "summit_mid",
+      "verification_status": "public_vocab_unobserved",
+      "confidence_cap": 0.9,
+      "aliases": {
+        "ja-JP": []
+      },
+      "notes": null
+    },
+    "Mid Tiles": {
+      "zone_id": "summit_mid",
+      "verification_status": "public_vocab_unobserved",
+      "confidence_cap": 0.9,
+      "aliases": {
+        "ja-JP": []
+      },
+      "notes": null
+    },
+    "A Lobby": {
+      "zone_id": "summit_a_approach",
+      "verification_status": "public_vocab_unobserved",
+      "confidence_cap": 0.9,
+      "aliases": {
+        "ja-JP": ["A ロビー"]
+      },
+      "notes": "Japanese alias added from supplied observed-label integration overlay; geometry and confidence cap unchanged."
+    },
+    "A Main": {
+      "zone_id": "summit_a_approach",
+      "verification_status": "observed_user_material",
+      "confidence_cap": 0.96,
+      "aliases": {
+        "ja-JP": [
+          "A メイン"
+        ]
+      },
+      "notes": null
+    },
+    "A Garden": {
+      "zone_id": "summit_a_approach",
+      "verification_status": "observed_user_material",
+      "confidence_cap": 0.96,
+      "aliases": {
+        "ja-JP": [
+          "A ガーデン"
+        ]
+      },
+      "notes": null
+    },
+    "A Site": {
+      "zone_id": "summit_a_site",
+      "verification_status": "observed_user_material",
+      "confidence_cap": 0.96,
+      "aliases": {
+        "ja-JP": [
+          "A サイト"
+        ]
+      },
+      "notes": null
+    },
+    "A Art": {
+      "zone_id": "summit_a_link",
+      "verification_status": "public_vocab_unobserved",
+      "confidence_cap": 0.9,
+      "aliases": {
+        "ja-JP": []
+      },
+      "notes": null
+    },
+    "A Cave": {
+      "zone_id": "summit_a_site",
+      "verification_status": "provisional_needs_observation",
+      "confidence_cap": 0.82,
+      "aliases": {
+        "ja-JP": []
+      },
+      "notes": null
+    },
+    "A Hall": {
+      "zone_id": "summit_a_link",
+      "verification_status": "public_vocab_unobserved",
+      "confidence_cap": 0.9,
+      "aliases": {
+        "ja-JP": []
+      },
+      "notes": null
+    },
+    "A Link": {
+      "zone_id": "summit_a_link",
+      "verification_status": "observed_user_material",
+      "confidence_cap": 0.96,
+      "aliases": {
+        "ja-JP": [
+          "A リンク"
+        ]
+      },
+      "notes": null
+    },
+    "B Lobby": {
+      "zone_id": "summit_b_approach",
+      "verification_status": "public_vocab_unobserved",
+      "confidence_cap": 0.9,
+      "aliases": {
+        "ja-JP": []
+      },
+      "notes": null
+    },
+    "B Main": {
+      "zone_id": "summit_b_approach",
+      "verification_status": "observed_user_material",
+      "confidence_cap": 0.96,
+      "aliases": {
+        "ja-JP": [
+          "B メイン",
+          "Bメイン"
+        ]
+      },
+      "notes": "Spacing variant from supplied observed-label integration overlay; ownership gates remain mandatory."
+    },
+    "B Gym": {
+      "zone_id": "summit_b_site",
+      "verification_status": "observed_user_material",
+      "confidence_cap": 0.96,
+      "aliases": {
+        "ja-JP": [
+          "B ジム"
+        ]
+      },
+      "notes": null
+    },
+    "B Trophy": {
+      "zone_id": "summit_b_link",
+      "verification_status": "public_vocab_unobserved",
+      "confidence_cap": 0.9,
+      "aliases": {
+        "ja-JP": []
+      },
+      "notes": null
+    },
+    "B Tower": {
+      "zone_id": "summit_b_site",
+      "verification_status": "provisional_needs_observation",
+      "confidence_cap": 0.82,
+      "aliases": {
+        "ja-JP": []
+      },
+      "notes": null
+    },
+    "B Drop": {
+      "zone_id": "summit_b_site",
+      "verification_status": "provisional_needs_observation",
+      "confidence_cap": 0.82,
+      "aliases": {
+        "ja-JP": []
+      },
+      "notes": null
+    },
+    "B Site": {
+      "zone_id": "summit_b_site",
+      "verification_status": "observed_user_material",
+      "confidence_cap": 0.96,
+      "aliases": {
+        "ja-JP": [
+          "B サイト"
+        ]
+      },
+      "notes": null
+    },
+    "B Link": {
+      "zone_id": "summit_b_link",
+      "verification_status": "public_vocab_unobserved",
+      "confidence_cap": 0.9,
+      "aliases": {
+        "ja-JP": [
+          "B リンク"
+        ]
+      },
+      "notes": null
+    },
+    "Defender Side Spawn": {
+      "zone_id": "summit_defender_spawn",
+      "verification_status": "public_vocab_unobserved",
+      "confidence_cap": 0.9,
+      "aliases": {
+        "ja-JP": [
+          "ディフェンス側スポーン"
+        ]
+      },
+      "notes": null
+    },
+    "Attacker Side Spawn": {
+      "zone_id": "summit_attacker_spawn",
+      "verification_status": "observed_user_material",
+      "confidence_cap": 0.96,
+      "aliases": {
+        "ja-JP": [
+          "アタック側スポーン"
+        ]
+      },
+      "notes": null
+    }
+  }
+}

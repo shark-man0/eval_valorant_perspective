@@ -1,0 +1,247 @@
+{
+  "version": "3.0",
+  "map_id": "special_link_fixture",
+  "display_name": "special_link_fixture",
+  "geometry_version": "special_link_fixture_v1",
+  "geometry_status": "test_fixture",
+  "geometry_confidence_cap": 1.0,
+  "observed_client_builds": [],
+  "validity_policy": {
+    "status": "test_fixture",
+    "invalidate_when": "never",
+    "on_invalidate": "n/a"
+  },
+  "coordinate_system": {
+    "space": "normalized_map_canvas",
+    "definition": "test fixture",
+    "x_range": [
+      0,
+      1
+    ],
+    "y_range": [
+      0,
+      1
+    ],
+    "origin": "top_left",
+    "orientation": "fixed",
+    "reference_minimap_roi_px_1920x1080": [
+      0,
+      0,
+      100,
+      100
+    ],
+    "reference_map_mask_bbox_within_roi_px": [
+      0,
+      0,
+      100,
+      100
+    ],
+    "calibration_note": "test only"
+  },
+  "minimap_runtime_profile": {
+    "mvp_supported_orientation": "fixed",
+    "require_full_static_map_mask_visible": true,
+    "dynamic_rotation_supported": false,
+    "player_centered_dynamic_crop_supported": false,
+    "zoom_or_hud_scale_change_behavior": "n/a",
+    "runtime_alignment_reference_asset": "none"
+  },
+  "coverage_mask_file": "fixture://none",
+  "resolution_priority": [
+    "location_label",
+    "polygon",
+    "coarse_fallback",
+    "unknown"
+  ],
+  "zones": [
+    {
+      "zone_id": "sl_a_site",
+      "zone_name": "sl_a_site",
+      "kind": "site",
+      "site_id": "A",
+      "site_affinity": [
+        "A"
+      ],
+      "priority": 100,
+      "polygon_norm": [
+        [
+          0,
+          0
+        ],
+        [
+          0.2,
+          0
+        ],
+        [
+          0.2,
+          0.25
+        ],
+        [
+          0,
+          0.25
+        ]
+      ],
+      "display_group": null,
+      "geometry_confidence_cap": 1.0
+    },
+    {
+      "zone_id": "sl_a_app",
+      "zone_name": "sl_a_app",
+      "kind": "site_approach",
+      "site_id": null,
+      "site_affinity": [
+        "A"
+      ],
+      "priority": 100,
+      "polygon_norm": [
+        [
+          0,
+          0.25
+        ],
+        [
+          0.3,
+          0.25
+        ],
+        [
+          0.3,
+          0.5
+        ],
+        [
+          0,
+          0.5
+        ]
+      ],
+      "display_group": null,
+      "geometry_confidence_cap": 1.0
+    },
+    {
+      "zone_id": "sl_tp",
+      "zone_name": "sl_tp",
+      "kind": "special_link",
+      "site_id": null,
+      "site_affinity": [],
+      "priority": 100,
+      "polygon_norm": [
+        [
+          0.35,
+          0.25
+        ],
+        [
+          0.65,
+          0.25
+        ],
+        [
+          0.65,
+          0.5
+        ],
+        [
+          0.35,
+          0.5
+        ]
+      ],
+      "display_group": null,
+      "geometry_confidence_cap": 1.0
+    },
+    {
+      "zone_id": "sl_b_app",
+      "zone_name": "sl_b_app",
+      "kind": "site_approach",
+      "site_id": null,
+      "site_affinity": [
+        "B"
+      ],
+      "priority": 100,
+      "polygon_norm": [
+        [
+          0.7,
+          0.25
+        ],
+        [
+          1,
+          0.25
+        ],
+        [
+          1,
+          0.5
+        ],
+        [
+          0.7,
+          0.5
+        ]
+      ],
+      "display_group": null,
+      "geometry_confidence_cap": 1.0
+    },
+    {
+      "zone_id": "sl_b_site",
+      "zone_name": "sl_b_site",
+      "kind": "site",
+      "site_id": "B",
+      "site_affinity": [
+        "B"
+      ],
+      "priority": 100,
+      "polygon_norm": [
+        [
+          0.8,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0.25
+        ],
+        [
+          0.8,
+          0.25
+        ]
+      ],
+      "display_group": null,
+      "geometry_confidence_cap": 1.0
+    }
+  ],
+  "topology_edges": [
+    {
+      "from_zone_id": "sl_a_site",
+      "to_zone_id": "sl_a_app",
+      "edge_kind": "walkable_boundary",
+      "active_by_default": true
+    },
+    {
+      "from_zone_id": "sl_a_app",
+      "to_zone_id": "sl_tp",
+      "edge_kind": "teleporter_link",
+      "active_by_default": true
+    },
+    {
+      "from_zone_id": "sl_tp",
+      "to_zone_id": "sl_b_app",
+      "edge_kind": "teleporter_link",
+      "active_by_default": true
+    },
+    {
+      "from_zone_id": "sl_b_app",
+      "to_zone_id": "sl_b_site",
+      "edge_kind": "walkable_boundary",
+      "active_by_default": true
+    }
+  ],
+  "sites": [
+    {
+      "site_id": "A",
+      "zone_ids": [
+        "sl_a_site"
+      ]
+    },
+    {
+      "site_id": "B",
+      "zone_ids": [
+        "sl_b_site"
+      ]
+    }
+  ],
+  "authoring_limits": []
+}

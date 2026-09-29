@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Contract for weapon icon identification without forcing a hard-coded weapon list into the HUD schema.",
+  "registry_entry": {
+    "canonical_id": "string",
+    "display_name": "string",
+    "template_assets": [
+      "path-or-id"
+    ],
+    "aliases": [
+      "optional text aliases"
+    ]
+  },
+  "matching_policy": {
+    "primary": "template match against weapon_inventory/ammo_current_weapon icon crops",
+    "fallback": "short text OCR when a label is actually visible",
+    "unknown_allowed": true,
+    "never_infer_from_ammo_count_only": true,
+    "disagreement": "lower confidence; return unknown unless one source is decisively stronger"
+  }
+}

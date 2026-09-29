@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "visual_event_candidate_schema_v2.json",
+  "title": "VALORANT Visual Event Candidate v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "candidate_id",
+    "type",
+    "actor",
+    "start_sec",
+    "end_sec",
+    "attributes",
+    "confidence",
+    "producer_component",
+    "evidence",
+    "semantic_confirmation",
+    "status"
+  ],
+  "properties": {
+    "candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "enemy_spotted",
+        "enemy_lost",
+        "engagement_start",
+        "engagement_end",
+        "shot",
+        "movement_state",
+        "preaim_started",
+        "peek",
+        "info_peek",
+        "position_change",
+        "position_hold",
+        "rotation_started",
+        "rotation_completed",
+        "utility_used",
+        "ally_entry_start",
+        "ally_enter_site",
+        "enemy_reengage",
+        "hold_angle",
+        "site_state",
+        "utility_effect_observed",
+        "spike_pickup",
+        "spike_dropped",
+        "spike_defuse_started",
+        "spike_defused",
+        "weapon_pickup"
+      ]
+    },
+    "actor": {
+      "type": "string",
+      "enum": [
+        "player",
+        "ally",
+        "enemy",
+        "team",
+        "system",
+        "unknown"
+      ]
+    },
+    "start_sec": {
+      "type": "number",
+      "minimum": 0
+    },
+    "end_sec": {
+      "type": "number",
+      "minimum": 0
+    },
+    "attributes": {
+      "type": "object",
+      "description": "Observed facts only. Do not include GOOD/IMPROVE/appropriate/mistake judgments."
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Visual detector/fusion confidence only. Governed by visual_confidence_policy_v1.json; separate from HUD and AI Coach confidence."
+    },
+    "producer_component": {
+      "type": "string",
+      "enum": [
+        "shot_detector",
+        "motion_fusion",
+        "entity_tracker",
+        "engagement_fsm",
+        "preaim_analyzer",
+        "peek_analyzer",
+        "minimap_spatial_tracker",
+        "utility_fusion",
+        "team_entry_analyzer",
+        "hold_angle_detector",
+        "site_state_analyzer",
+        "semantic_visual_adapter",
+        "event_fusion"
+      ]
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "time_sec",
+          "frame_ref",
+          "signal"
+        ],
+        "properties": {
+          "time_sec": {
+            "type": "number",
+            "minimum": 0
+          },
+          "frame_ref": {
+            "type": "string"
+          },
+          "signal": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "semantic_confirmation": {
+      "type": "string",
+      "enum": [
+        "not_needed",
+        "required",
+        "confirmed",
+        "rejected",
+        "unavailable"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "candidate",
+        "confirmed",
+        "suppressed"
+      ],
+      "description": "candidate/confirmed/suppressed after applying tier-specific visual confidence policy and semantic requirements."
+    },
+    "suppression_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

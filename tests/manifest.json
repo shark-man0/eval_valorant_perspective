@@ -1,0 +1,407 @@
+{
+  "version": "3.0",
+  "schema": "../schemas/round_package_schema_v2.json",
+  "output_schema": "../schemas/ai_coach_output_schema_v3.json",
+  "assertion_schema": "../schemas/test_assertion_schema_v1.json",
+  "case_count": 38,
+  "cases": [
+    {
+      "id": "TC-001",
+      "rule_ids": [
+        "DEC-01"
+      ],
+      "labels": [
+        "improve"
+      ],
+      "description": "人数有利で味方から離れたピーク"
+    },
+    {
+      "id": "TC-002",
+      "rule_ids": [
+        "DEC-02"
+      ],
+      "labels": [
+        "good"
+      ],
+      "description": "人数不利で味方とまとまる"
+    },
+    {
+      "id": "TC-003",
+      "rule_ids": [
+        "MOV-01"
+      ],
+      "labels": [
+        "improve"
+      ],
+      "description": "遠距離Vandalで移動撃ち"
+    },
+    {
+      "id": "TC-004",
+      "rule_ids": [
+        "MOV-01"
+      ],
+      "labels": [
+        "good"
+      ],
+      "description": "近距離SMGの移動撃ち例外"
+    },
+    {
+      "id": "TC-005",
+      "rule_ids": [
+        "MOV-02"
+      ],
+      "labels": [
+        "good"
+      ],
+      "description": "初弾前に停止"
+    },
+    {
+      "id": "TC-006",
+      "rule_ids": [
+        "AIM-02"
+      ],
+      "labels": [
+        "good"
+      ],
+      "description": "約0.7秒前からプリエイム"
+    },
+    {
+      "id": "TC-007",
+      "rule_ids": [
+        "MOV-04"
+      ],
+      "labels": [
+        "improve"
+      ],
+      "description": "交戦後に同じ位置へ居続け再交戦"
+    },
+    {
+      "id": "TC-008",
+      "rule_ids": [
+        "POS-04"
+      ],
+      "labels": [
+        "good"
+      ],
+      "description": "設置後に射線と遮蔽を確保"
+    },
+    {
+      "id": "TC-009",
+      "rule_ids": [
+        "UTL-01"
+      ],
+      "labels": [
+        "improve"
+      ],
+      "description": "使用可能Utilityを残して死亡"
+    },
+    {
+      "id": "TC-010",
+      "rule_ids": [
+        "TEAM-02"
+      ],
+      "labels": [
+        "good"
+      ],
+      "description": "味方エントリーに合わせる"
+    },
+    {
+      "id": "TC-011",
+      "rule_ids": [
+        "DEC-04"
+      ],
+      "labels": [
+        "improve"
+      ],
+      "description": "敵情報後のローテーションが遅い"
+    },
+    {
+      "id": "TC-012",
+      "rule_ids": [
+        "ECO-01"
+      ],
+      "labels": [
+        "improve"
+      ],
+      "description": "チームFull Buyに対して単独軽装"
+    },
+    {
+      "id": "TC-013",
+      "rule_ids": [
+        "ECO-02"
+      ],
+      "labels": [
+        "good"
+      ],
+      "description": "Operator保持で1v3の撤退"
+    },
+    {
+      "id": "TC-014",
+      "rule_ids": [
+        "WPN-01"
+      ],
+      "labels": [
+        "good"
+      ],
+      "description": "Operatorで長距離角を保持"
+    },
+    {
+      "id": "TC-015",
+      "rule_ids": [
+        "POS-01"
+      ],
+      "labels": [
+        "unscored"
+      ],
+      "description": "遮蔽・退路の映像証拠不足"
+    },
+    {
+      "id": "TC-016",
+      "rule_ids": [
+        "AIM-01"
+      ],
+      "labels": [
+        "improve"
+      ],
+      "description": "複数接敵でヘッドラインが継続的にずれる"
+    },
+    {
+      "id": "TC-017",
+      "rule_ids": [
+        "AIM-03"
+      ],
+      "labels": [
+        "improve"
+      ],
+      "description": "初弾時に停止できていない"
+    },
+    {
+      "id": "TC-018",
+      "rule_ids": [
+        "PEEK-04"
+      ],
+      "labels": [
+        "improve"
+      ],
+      "description": "3方向の射線へ同時露出"
+    },
+    {
+      "id": "TC-019",
+      "rule_ids": [
+        "INFO-03"
+      ],
+      "labels": [
+        "improve"
+      ],
+      "description": "人数不利で味方から大きく離れる"
+    },
+    {
+      "id": "TC-020",
+      "rule_ids": [
+        "DEC-03"
+      ],
+      "labels": [
+        "improve"
+      ],
+      "description": "不利Utilityを受ける位置に居続ける"
+    },
+    {
+      "id": "TC-021",
+      "rule_ids": [
+        "DEC-05"
+      ],
+      "labels": [
+        "improve"
+      ],
+      "description": "攻め残り時間が少ないのに設置優先度を上げない"
+    },
+    {
+      "id": "TC-022",
+      "rule_ids": [
+        "OBJ-02"
+      ],
+      "labels": [
+        "improve"
+      ],
+      "description": "サイト内で射線が通っている最中に設置開始"
+    },
+    {
+      "id": "TC-023",
+      "rule_ids": [
+        "OBJ-03"
+      ],
+      "labels": [
+        "good"
+      ],
+      "description": "設置後に時間を使わせる位置へ移動"
+    },
+    {
+      "id": "TC-024",
+      "rule_ids": [
+        "DEC-01"
+      ],
+      "labels": [
+        "improve"
+      ],
+      "description": "人数有利認識と意思決定が同時に関係"
+    },
+    {
+      "id": "TC-025",
+      "rule_ids": [
+        "INFO-03"
+      ],
+      "labels": [
+        "unscored"
+      ],
+      "description": "生存人数HUDが読めず人数判断不能"
+    },
+    {
+      "id": "TC-026",
+      "rule_ids": [
+        "PEEK-02"
+      ],
+      "labels": [
+        "unscored"
+      ],
+      "description": "体一個分かオーバーピークかだけでは判断不能"
+    },
+    {
+      "id": "TC-027",
+      "rule_ids": [
+        "MOV-01"
+      ],
+      "labels": [
+        "improve"
+      ],
+      "description": "同一ミスを試合内集約する代表ケース"
+    },
+    {
+      "id": "TC-028",
+      "rule_ids": [
+        "PEEK-01"
+      ],
+      "labels": [
+        "improve"
+      ],
+      "description": "トレード不能な単独ピーク"
+    },
+    {
+      "id": "TC-029",
+      "rule_ids": [
+        "AIM-02",
+        "DEC-01"
+      ],
+      "labels": [
+        "good",
+        "improve"
+      ],
+      "description": "同一ピークでプリエイムは良いが、人数有利の単独判断は改善"
+    },
+    {
+      "id": "TC-030",
+      "rule_ids": [
+        "ROLE-06"
+      ],
+      "labels": [
+        "good"
+      ],
+      "description": "Duelistロールでサイトへ入りスペースを広げる"
+    },
+    {
+      "id": "TC-031",
+      "rule_ids": [],
+      "labels": [],
+      "description": "ControllerではDuelist固有ルールROLE-06を候補化しない"
+    },
+    {
+      "id": "TC-032",
+      "rule_ids": [
+        "OBJ-02"
+      ],
+      "labels": [
+        "good"
+      ],
+      "description": "攻め残り8秒・サイト安全・Spike所持で即設置"
+    },
+    {
+      "id": "TC-033",
+      "rule_ids": [
+        "DEC-05"
+      ],
+      "labels": [
+        "good"
+      ],
+      "description": "残り時間が少ない攻めで設置へ向かう"
+    },
+    {
+      "id": "TC-034",
+      "rule_ids": [
+        "DEC-03"
+      ],
+      "labels": [
+        "good"
+      ],
+      "description": "不利な状態効果を受けた後に交戦を切る"
+    },
+    {
+      "id": "TC-035",
+      "rule_ids": [
+        "ROLE-02"
+      ],
+      "labels": [
+        "good"
+      ],
+      "description": "Controllerが味方ピーク直前にSmokeを入れる"
+    },
+    {
+      "id": "TC-036",
+      "rule_ids": [],
+      "labels": [],
+      "description": "Role不一致ならController固有ルールを候補化しない"
+    },
+    {
+      "id": "TC-037",
+      "rule_ids": [],
+      "labels": [],
+      "description": "明確な評価対象イベントがない通常区間は評価を生成しない"
+    },
+    {
+      "id": "TC-038",
+      "rule_ids": [
+        "POS-01"
+      ],
+      "labels": [
+        "unscored"
+      ],
+      "description": "遮蔽・退路の空間情報が取れないためPOS-01はUNSCORED"
+    }
+  ],
+  "coverage": {
+    "AIM-01": 1,
+    "AIM-02": 2,
+    "AIM-03": 1,
+    "DEC-01": 3,
+    "DEC-02": 1,
+    "DEC-03": 2,
+    "DEC-04": 1,
+    "DEC-05": 2,
+    "ECO-01": 1,
+    "ECO-02": 1,
+    "INFO-03": 2,
+    "MOV-01": 3,
+    "MOV-02": 1,
+    "MOV-04": 1,
+    "OBJ-02": 2,
+    "OBJ-03": 1,
+    "PEEK-01": 1,
+    "PEEK-02": 1,
+    "PEEK-04": 1,
+    "POS-01": 2,
+    "POS-04": 1,
+    "ROLE-02": 1,
+    "ROLE-06": 1,
+    "TEAM-02": 1,
+    "UTL-01": 1,
+    "WPN-01": 1
+  }
+}

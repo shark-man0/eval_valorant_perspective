@@ -1,0 +1,37 @@
+{
+  "case_id": "TC-024",
+  "description": "人数有利認識と意思決定が同時に関係",
+  "expected_evaluations": [
+    {
+      "primary_rule_id": "DEC-01",
+      "label": "improve",
+      "allowed_related_rule_ids": [
+        "INFO-03"
+      ],
+      "required_concept_tags": [
+        "numbers_advantage",
+        "risk_control"
+      ],
+      "confidence_range": [
+        0.75,
+        1.0
+      ],
+      "expect_clip": true,
+      "expect_missing_information": false
+    }
+  ],
+  "expected_candidate_rule_ids": [
+    "DEC-01"
+  ],
+  "forbidden_candidate_rule_ids": [],
+  "expected_evaluation_count_min": 1,
+  "expected_evaluation_count_max": 3,
+  "forbidden_input_conclusion_terms": [
+    "good",
+    "bad",
+    "適切",
+    "不適切",
+    "例外に該当",
+    "〜すべき"
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "version": "2.0",
+  "applies_to": "hud_v2/config/event_source_contract_v1.json",
+  "merge_semantics": "For listed events, retain primary_producer=visual_analyzer but add concrete component/tier/contract reference. Do not change unrelated HUD/audio/derived producers.",
+  "visual_events": {
+    "shot": {
+      "producer_component": "shot_detector",
+      "tier": "A",
+      "contract": "visual_event_detection_contract_v2.json"
+    },
+    "movement_state": {
+      "producer_component": "motion_fusion",
+      "tier": "A",
+      "contract": "visual_event_detection_contract_v2.json"
+    },
+    "enemy_spotted": {
+      "producer_component": "entity_tracker",
+      "tier": "B",
+      "contract": "visual_event_detection_contract_v2.json"
+    },
+    "enemy_lost": {
+      "producer_component": "entity_tracker",
+      "tier": "B",
+      "contract": "visual_event_detection_contract_v2.json"
+    },
+    "engagement_start": {
+      "producer_component": "engagement_fsm",
+      "tier": "B",
+      "contract": "visual_event_detection_contract_v2.json"
+    },
+    "engagement_end": {
+      "producer_component": "engagement_fsm",
+      "tier": "B",
+      "contract": "visual_event_detection_contract_v2.json"
+    },
+    "preaim_started": {
+      "producer_component": "preaim_analyzer",
+      "tier": "C",
+      "contract": "visual_event_detection_contract_v2.json"
+    },
+    "peek": {
+      "producer_component": "peek_analyzer",
+      "tier": "C",
+      "contract": "visual_event_detection_contract_v2.json"
+    },
+    "info_peek": {
+      "producer_component": "peek_analyzer",
+      "tier": "C",
+      "contract": "visual_event_detection_contract_v2.json"
+    },
+    "position_change": {
+      "producer_component": "minimap_spatial_tracker",
+      "tier": "A",
+      "contract": "visual_event_detection_contract_v2.json"
+    },
+    "position_hold": {
+      "producer_component": "minimap_spatial_tracker",
+      "tier": "A",
+      "contract": "visual_event_detection_contract_v2.json"
+    },
+    "rotation_started": {
+      "producer_component": "minimap_spatial_tracker",
+      "tier": "B",
+      "contract": "visual_event_detection_contract_v2.json"
+    },
+    "rotation_completed": {
+      "producer_component": "minimap_spatial_tracker",
+      "tier": "B",
+      "contract": "visual_event_detection_contract_v2.json"
+    },
+    "utility_used": {
+      "producer_component": "utility_fusion",
+      "tier": "B",
+      "contract": "visual_event_detection_contract_v2.json"
+    },
+    "ally_entry_start": {
+      "producer_component": "team_entry_analyzer",
+      "tier": "C",
+      "contract": "visual_event_detection_contract_v2.json"
+    },
+    "ally_enter_site": {
+      "producer_component": "team_entry_analyzer",
+      "tier": "C",
+      "contract": "visual_event_detection_contract_v2.json"
+    },
+    "enemy_reengage": {
+      "producer_component": "engagement_fsm",
+      "tier": "B",
+      "contract": "visual_event_detection_contract_v2.json"
+    },
+    "hold_angle": {
+      "producer_component": "hold_angle_detector",
+      "tier": "A",
+      "contract": "visual_event_detection_contract_v2.json"
+    },
+    "site_state": {
+      "producer_component": "site_state_analyzer",
+      "tier": "C",
+      "contract": "visual_event_detection_contract_v2.json"
+    },
+    "utility_effect_observed": {
+      "producer_component": "semantic_visual_adapter",
+      "tier": "C",
+      "contract": "visual_event_detection_contract_v2.json"
+    }
+  },
+  "notes": [
+    "Visual v2 supersedes v1 for detector semantics. v3 event registry remains authoritative.",
+    "rotation_started.delay_since_enemy_info_sec is retained as a compatibility attribute because deterministic_rule_engine_v1 consumes it even though event_type_registry_v2 common_attributes omits it."
+  ]
+}

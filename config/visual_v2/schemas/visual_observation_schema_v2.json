@@ -1,0 +1,609 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "visual_observation_schema_v2.json",
+  "title": "VALORANT Visual Observation v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "time_sec",
+    "frame_index",
+    "hud_primary_state",
+    "analysis_eligibility",
+    "motion",
+    "aiming",
+    "weapon_action",
+    "entities",
+    "spatial",
+    "minimap",
+    "utility",
+    "quality"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "2.0"
+    },
+    "time_sec": {
+      "type": "number",
+      "minimum": 0
+    },
+    "frame_index": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "hud_primary_state": {
+      "type": "string",
+      "enum": [
+        "live_first_person",
+        "spectator_first_person",
+        "buy_menu_open",
+        "remote_control_view",
+        "expanded_tactical_map",
+        "unknown"
+      ]
+    },
+    "analysis_eligibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "player_mechanics",
+        "world_semantics",
+        "reason_codes"
+      ],
+      "properties": {
+        "player_mechanics": {
+          "type": "boolean",
+          "description": "True only when player-specific aim/movement/peek observations can safely be attributed to the target player."
+        },
+        "world_semantics": {
+          "type": "boolean",
+          "description": "Whether the frame can be used for world/minimap semantic context."
+        },
+        "reason_codes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "live_first_person",
+              "spectating_other_player",
+              "remote_control_view",
+              "buy_menu",
+              "tactical_overlay",
+              "transition",
+              "vision_obscured",
+              "low_quality",
+              "unknown_state"
+            ]
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "motion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "map_displacement_norm_per_sec",
+        "camera_motion_score",
+        "stationary_confidence",
+        "evidence_sources"
+      ],
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": [
+            "stationary",
+            "moving",
+            "unknown"
+          ]
+        },
+        "map_displacement_norm_per_sec": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "camera_motion_score": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "stationary_confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "evidence_sources": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "minimap_track",
+              "global_optical_flow",
+              "weapon_bob",
+              "location_change",
+              "semantic_sequence"
+            ]
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "aiming": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "crosshair_x_norm",
+        "crosshair_y_norm",
+        "crosshair_stable",
+        "visible_enemy_head_refs",
+        "primary_target_ref",
+        "head_alignment_error_norm",
+        "reference_mode",
+        "confidence"
+      ],
+      "properties": {
+        "crosshair_x_norm": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "crosshair_y_norm": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "crosshair_stable": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "visible_enemy_head_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "head_alignment_error_norm": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "description": "Normalized error to primary_target_ref only. Null when no trustworthy primary target/head reference exists."
+        },
+        "reference_mode": {
+          "type": "string",
+          "enum": [
+            "visible_enemy_head",
+            "static_corner_reference",
+            "semantic_corner_headline",
+            "none"
+          ]
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "primary_target_ref": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Primary engagement target chosen by engagement_fsm. head_alignment_error_norm refers only to this target. Null when no stable primary target exists."
+        }
+      }
+    },
+    "weapon_action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "weapon_text",
+        "ammo_current",
+        "ammo_delta",
+        "muzzle_flash_score",
+        "recoil_score",
+        "shot_candidate",
+        "first_shot_candidate",
+        "confidence",
+        "burst_active",
+        "burst_start_candidate"
+      ],
+      "properties": {
+        "weapon_text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ammo_current": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "ammo_delta": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "muzzle_flash_score": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "recoil_score": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "shot_candidate": {
+          "type": "boolean"
+        },
+        "first_shot_candidate": {
+          "type": "boolean"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "burst_active": {
+          "type": "boolean",
+          "description": "True while a continuous trigger-hold/burst is active. MVP does not require per-bullet event reconstruction."
+        },
+        "burst_start_candidate": {
+          "type": "boolean"
+        }
+      }
+    },
+    "entities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "visible_enemies",
+        "visible_allies"
+      ],
+      "properties": {
+        "visible_enemies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/entity_detection"
+          }
+        },
+        "visible_allies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/entity_detection"
+          }
+        }
+      }
+    },
+    "spatial": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cover_available",
+        "escape_route_available",
+        "line_of_sight_state",
+        "exposed_directions_count",
+        "view_target_zone_id",
+        "cover_edge_score",
+        "confidence",
+        "exposed_directions_source"
+      ],
+      "properties": {
+        "cover_available": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "escape_route_available": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "line_of_sight_state": {
+          "type": "string",
+          "enum": [
+            "confirmed_clear",
+            "confirmed_blocked",
+            "unknown"
+          ]
+        },
+        "exposed_directions_count": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "view_target_zone_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "cover_edge_score": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "exposed_directions_source": {
+          "type": "string",
+          "enum": [
+            "static_peek_registry",
+            "none"
+          ],
+          "description": "VLM/semantic inference is forbidden from authoring exposed_directions_count."
+        }
+      }
+    },
+    "minimap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "self_x_norm",
+        "self_y_norm",
+        "zone_id",
+        "zone_name",
+        "ally_markers",
+        "enemy_markers",
+        "track_confidence"
+      ],
+      "properties": {
+        "self_x_norm": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "self_y_norm": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "zone_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "zone_name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ally_markers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/map_marker"
+          }
+        },
+        "enemy_markers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/map_marker"
+          }
+        },
+        "track_confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "utility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cast_candidate",
+        "slot",
+        "ability_name",
+        "world_effect_candidate",
+        "affected_side",
+        "confidence"
+      ],
+      "properties": {
+        "cast_candidate": {
+          "type": "boolean"
+        },
+        "slot": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "C",
+            "Q",
+            "E",
+            "X",
+            null
+          ],
+          "description": "Logical HUD slot label only (C/Q/E/X positions in the game ability model). It is NOT the actual user keybind text shown on screen and must never be derived by OCR-matching key labels."
+        },
+        "ability_name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "world_effect_candidate": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "affected_side": {
+          "type": "string",
+          "enum": [
+            "ally",
+            "enemy",
+            "both",
+            "self",
+            "unknown"
+          ]
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "quality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "visual_confidence",
+        "occluded",
+        "blur_score",
+        "notes"
+      ],
+      "properties": {
+        "visual_confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "occluded": {
+          "type": "boolean"
+        },
+        "blur_score": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "entity_detection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "detection_id",
+        "bbox_norm",
+        "head_point_norm",
+        "outline_side",
+        "confidence"
+      ],
+      "properties": {
+        "detection_id": {
+          "type": "string",
+          "description": "Short-lived tracker ID, stable across adjacent frames while association remains reliable; not a permanent player identity and not guaranteed across long occlusion."
+        },
+        "bbox_norm": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "head_point_norm": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "outline_side": {
+          "type": "string",
+          "enum": [
+            "ally",
+            "enemy",
+            "unknown"
+          ]
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "map_marker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "x_norm",
+        "y_norm",
+        "side",
+        "confidence"
+      ],
+      "properties": {
+        "x_norm": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "y_norm": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "side": {
+          "type": "string",
+          "enum": [
+            "ally",
+            "enemy",
+            "unknown"
+          ]
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,359 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ai_coach_output_schema_v3.json",
+  "title": "VALORANT AI Coach Result v3",
+  "description": "AI Coach/Rule Engine共通の正式出力。NOT_APPLICABLE/NEUTRALは出力しない。UNSCOREDは候補ルールに該当したが必要証拠不足・曖昧性で判断不能な場合だけ使用する。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "analysis_id",
+    "match_id",
+    "round_no",
+    "evaluations"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "3.0"
+    },
+    "analysis_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "match_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "round_no": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "evaluations": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "$ref": "#/$defs/evaluation"
+      }
+    }
+  },
+  "$defs": {
+    "time_range": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "start_sec",
+        "end_sec"
+      ],
+      "properties": {
+        "start_sec": {
+          "type": "number",
+          "minimum": 0
+        },
+        "end_sec": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "evidence_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "time_sec",
+        "fact",
+        "source"
+      ],
+      "properties": {
+        "time_sec": {
+          "type": "number",
+          "minimum": 0
+        },
+        "fact": {
+          "type": "string",
+          "minLength": 1,
+          "description": "観測/導出事実のみ。評価結論は禁止。"
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "visual",
+            "hud",
+            "event_log",
+            "audio",
+            "round_timeline",
+            "cross_round_context",
+            "deterministic_fact"
+          ]
+        }
+      }
+    },
+    "evaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evaluation_id",
+        "clip_id",
+        "primary_rule_id",
+        "related_rule_ids",
+        "label",
+        "decision_source",
+        "fact_refs",
+        "concept_tags",
+        "title",
+        "reason",
+        "improvement",
+        "confidence",
+        "evidence",
+        "evidence_range",
+        "display_clip",
+        "missing_information",
+        "unscored_reason_code"
+      ],
+      "properties": {
+        "evaluation_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "clip_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "primary_rule_id": {
+          "type": "string",
+          "pattern": "^[A-Z]+-[0-9]{2}$"
+        },
+        "related_rule_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "maxItems": 2,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z]+-[0-9]{2}$"
+          }
+        },
+        "label": {
+          "type": "string",
+          "enum": [
+            "good",
+            "improve",
+            "unscored"
+          ]
+        },
+        "decision_source": {
+          "type": "string",
+          "enum": [
+            "llm",
+            "deterministic",
+            "hybrid"
+          ],
+          "description": "最終ラベルを誰が確定したか。候補選定だけならdeterministicとはしない。"
+        },
+        "fact_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          },
+          "description": "round_package.deterministic_facts の fact_id 参照。"
+        },
+        "concept_tags": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "situation": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 600
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1200
+        },
+        "improvement": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 1200
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "evidence": {
+          "type": "array",
+          "maxItems": 8,
+          "items": {
+            "$ref": "#/$defs/evidence_item"
+          }
+        },
+        "evidence_range": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/time_range"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "display_clip": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/time_range"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "missing_information": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "unscored_reason_code": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "insufficient_visual_evidence",
+            "insufficient_hud_evidence",
+            "missing_required_fact",
+            "ambiguous_exception",
+            "low_confidence",
+            "other",
+            null
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "label": {
+                "const": "improve"
+              }
+            },
+            "required": [
+              "label"
+            ]
+          },
+          "then": {
+            "properties": {
+              "improvement": {
+                "type": "string",
+                "minLength": 1
+              },
+              "evidence": {
+                "minItems": 1
+              },
+              "evidence_range": {
+                "$ref": "#/$defs/time_range"
+              },
+              "display_clip": {
+                "$ref": "#/$defs/time_range"
+              },
+              "clip_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "missing_information": {
+                "maxItems": 0
+              },
+              "unscored_reason_code": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "label": {
+                "const": "good"
+              }
+            },
+            "required": [
+              "label"
+            ]
+          },
+          "then": {
+            "properties": {
+              "evidence": {
+                "minItems": 1
+              },
+              "evidence_range": {
+                "$ref": "#/$defs/time_range"
+              },
+              "display_clip": {
+                "$ref": "#/$defs/time_range"
+              },
+              "clip_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "missing_information": {
+                "maxItems": 0
+              },
+              "unscored_reason_code": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "label": {
+                "const": "unscored"
+              }
+            },
+            "required": [
+              "label"
+            ]
+          },
+          "then": {
+            "properties": {
+              "clip_id": {
+                "type": "null"
+              },
+              "display_clip": {
+                "type": "null"
+              },
+              "improvement": {
+                "type": "null"
+              },
+              "missing_information": {
+                "minItems": 1
+              },
+              "unscored_reason_code": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "version": "1.0",
+  "mask_id": "summit_operational_mask_v1",
+  "map_id": "summit",
+  "purpose": "Independent coarse playable/operational mask used only for authoring QA coverage metrics.",
+  "authoring_basis": "Derived separately from the supplied minimap reference image; not generated from zone polygon union.",
+  "reference_asset": "assets/summit_minimap_reference.png",
+  "reference_sha256": "6ccdc19605b8885ef8d51761f872630ef6122266bcf5bb0d318fcc7661d1f3b6",
+  "polygon_norm": [
+    [
+      0.32,
+      0
+    ],
+    [
+      0.68,
+      0
+    ],
+    [
+      0.69,
+      0.22
+    ],
+    [
+      1,
+      0.29
+    ],
+    [
+      1,
+      0.59
+    ],
+    [
+      0.94,
+      0.7
+    ],
+    [
+      0.8,
+      0.76
+    ],
+    [
+      0.78,
+      1
+    ],
+    [
+      0.34,
+      1
+    ],
+    [
+      0.14,
+      0.74
+    ],
+    [
+      0,
+      0.63
+    ],
+    [
+      0,
+      0.28
+    ],
+    [
+      0.22,
+      0.27
+    ],
+    [
+      0.31,
+      0.2
+    ]
+  ],
+  "limits": {
+    "not_official_geometry": true,
+    "not_for_los": true,
+    "not_for_gameplay_event_generation": true
+  }
+}

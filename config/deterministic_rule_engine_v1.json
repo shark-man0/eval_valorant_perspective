@@ -1,0 +1,186 @@
+{
+  "version": "1.0",
+  "purpose": "LLMへ渡す前に観測値を正規化し、候補ルールを絞る。評価結論の生成は行わない。ただしルールに明示された数値閾値のみ、高信頼時は deterministic/hybrid 最終判定を許可する。",
+  "operators": [
+    "eq",
+    "neq",
+    "in",
+    "gte",
+    "lte",
+    "gt",
+    "lt",
+    "exists"
+  ],
+  "fact_catalog": {
+    "side": {
+      "source": "round_meta.side",
+      "type": "string"
+    },
+    "player_role": {
+      "source": "round_meta.player_role",
+      "type": "string"
+    },
+    "numbers_state": {
+      "source": "state_snapshots ally_alive/enemy_alive",
+      "type": "string",
+      "values": [
+        "advantage",
+        "even",
+        "disadvantage",
+        "unknown"
+      ]
+    },
+    "shot_while_moving": {
+      "source": "shot.attributes.moving",
+      "type": "boolean"
+    },
+    "first_shot_detected": {
+      "source": "shot.attributes.first_shot",
+      "type": "boolean"
+    },
+    "first_shot_stationary": {
+      "source": "shot + movement_state",
+      "type": "boolean"
+    },
+    "preaim_lead_sec": {
+      "source": "preaim_started -> next peek/engagement",
+      "type": "number"
+    },
+    "exposed_directions_count": {
+      "source": "peek.attributes.exposed_directions or visual",
+      "type": "number"
+    },
+    "tradeable_ally_nearby": {
+      "source": "peek/engagement attributes or minimap",
+      "type": "boolean"
+    },
+    "ally_entry_active": {
+      "source": "ally_entry_start until entry window end",
+      "type": "boolean"
+    },
+    "player_died": {
+      "source": "player_death event",
+      "type": "boolean"
+    },
+    "utility_available_count": {
+      "source": "ability_state/state snapshot",
+      "type": "number"
+    },
+    "spike_planted": {
+      "source": "spike event/state",
+      "type": "boolean"
+    },
+    "spike_carried_by_player": {
+      "source": "state snapshot",
+      "type": "boolean"
+    },
+    "round_time_remaining_sec": {
+      "source": "timer HUD/objective_state",
+      "type": "number"
+    },
+    "site_incoming_damage_risk_observed": {
+      "source": "site_state",
+      "type": "boolean"
+    },
+    "enemy_spotted_count": {
+      "source": "enemy_spotted event",
+      "type": "number"
+    },
+    "rotation_delay_sec": {
+      "source": "rotation_started.attributes.delay_since_enemy_info_sec",
+      "type": "number"
+    },
+    "cover_available": {
+      "source": "visual/spatial_context",
+      "type": "boolean"
+    },
+    "escape_route_available": {
+      "source": "visual/spatial_context",
+      "type": "boolean"
+    },
+    "line_of_sight_state": {
+      "source": "visual/spatial_context",
+      "type": "string"
+    },
+    "spatial_context_available": {
+      "source": "spatial_context fields",
+      "type": "boolean"
+    },
+    "weapon": {
+      "source": "state/shot/hold_angle",
+      "type": "string"
+    },
+    "buy_phase_observed": {
+      "source": "buy_phase event",
+      "type": "boolean"
+    },
+    "team_buy_class": {
+      "source": "economy_context/buy events",
+      "type": "string"
+    },
+    "player_buy_class": {
+      "source": "economy_context/purchase",
+      "type": "string"
+    },
+    "save_context_observed": {
+      "source": "save_decision event",
+      "type": "boolean"
+    },
+    "first_death_by_player": {
+      "source": "first death event order",
+      "type": "boolean"
+    },
+    "first_kill_by_player": {
+      "source": "first kill event order",
+      "type": "boolean"
+    },
+    "clutch_state": {
+      "source": "alive counts",
+      "type": "boolean"
+    },
+    "lurk_context_observed": {
+      "source": "position + team distribution",
+      "type": "boolean"
+    },
+    "enemy_eco_likely": {
+      "source": "economy observation",
+      "type": "boolean"
+    },
+    "ultimate_available": {
+      "source": "HUD",
+      "type": "boolean"
+    },
+    "audio_cue_observed": {
+      "source": "audio_cue event",
+      "type": "boolean"
+    },
+    "uncleared_zone_ahead": {
+      "source": "map/vision context",
+      "type": "boolean"
+    },
+    "disadvantageous_effect_active": {
+      "source": "status_effect/utility visual",
+      "type": "boolean"
+    },
+    "objective_state_observed": {
+      "source": "objective_state event",
+      "type": "boolean"
+    }
+  },
+  "selection_semantics": {
+    "event_match": "trigger_event_types のいずれかがラウンドに存在すること。",
+    "required_state_predicates": "predicateがfalseなら候補除外。fact欠落時はmissing_policy=excludeなら除外、allow_unscoredなら候補に残しAIへ不足として渡す。",
+    "supporting_fact_keys": "候補順位付けとAI文脈に使うが候補除外には使わない。",
+    "not_applicable": "候補にならないルールはAI出力を生成しない。UNSCOREDに変換しない。",
+    "neutral": "明確なGOOD/IMPROVE根拠がない通常行動は出力しない。"
+  },
+  "deterministic_label_policy": {
+    "allowed_only_when": "human_policyに明示的な数値/二値条件があり、必要事実confidence>=0.90、例外条件が否定できる場合。",
+    "otherwise": "LLMが文脈・例外を最終判断。",
+    "examples": [
+      "PEEK-04の3方向以上",
+      "AIM-02の約0.5秒プリエイム",
+      "完全停止が明示されたMOV-02/AIM-03（映像事実が十分な場合）"
+    ]
+  }
+}

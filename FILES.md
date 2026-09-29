@@ -1,0 +1,71 @@
+# FILES
+
+- `README.md` — bundle概要
+- `CODEX_MASTER_SPEC.md` — 実装の正本
+- `REVIEW_FIXES.md` — Claude/Geminiレビュー反映記録
+- `schemas/round_package_schema_v2.json` — Video/HUD/Fact Builder → AI Coach入力
+- `schemas/ai_coach_output_schema_v3.json` — AI/Rule Engine共通出力
+- `schemas/event_type_registry_v2.json` — Event語彙
+- `schemas/test_assertion_schema_v1.json` — テスト期待値の型
+- `config/valorant_evaluation_rules_v4.json` — 44評価ルール
+- `config/rule_trigger_registry_v2.json` — 候補選定条件
+- `config/deterministic_rule_engine_v1.json` — Fact catalog / Rule Engine契約
+- `config/role_contract_v1.json` — Role解決方針
+- `config/map_zone_contract_v1.json` — 旧Zone/Spatial方針（保存用、実行時は不使用）
+- `config/map_zone_v3/` — Map/Zone v3正本データ・Schema・参照画像・24ケースのvalidator
+- `MAP_ZONE_INTEGRATION.md` — Map/Zone統合、旧契約廃止、検証範囲、Windows手順
+- `tests/manifest.json` — テスト一覧
+- `tests/cases/TC-001...` — input + expected assertions
+- `tests/validate_dataset.py` — Schema/Leak/Candidate selection検証
+
+## 実装ファイル
+
+- `pyproject.toml` — Python 3.12依存関係、テスト・lint・型検査設定
+- `constraints-windows.txt` — Windows/Python 3.12向けに固定した直接依存バージョン
+- `src/valorant_ai_coach/main.py` — PySide6アプリの起動境界
+- `src/valorant_ai_coach/bootstrap.py` — 設定から各交換可能サービスを構築するcomposition root
+- `src/valorant_ai_coach/models/` — Fact、候補ルール、決定論的判定モデル
+- `src/valorant_ai_coach/video/` — FFprobe、中断可能なOpenCVフレーム抽出と縮小
+- `src/valorant_ai_coach/video/geometry.py` — 校正とマーカー検出で共有するROI pixel bounds
+- `src/valorant_ai_coach/hud/` — 正規化ROI、Mock/Real HUD Analyzer境界
+- `src/valorant_ai_coach/maps/` — Registry検証・Map選択・ミニマップ校正・ZoneResolution
+- `src/valorant_ai_coach/visual/map_pipeline.py` — ROI座標からMap座標への変換と時系列位置解決
+- `src/valorant_ai_coach/visual/map_consumer.py` — ZoneResolutionからのVisualイベント生成
+- `src/valorant_ai_coach/facts/` — provenance付きDeterministic Fact Builder
+- `src/valorant_ai_coach/rules/` — 候補選定、Rule Engine、Mock evaluator、集約
+- `src/valorant_ai_coach/ai/` — Responses API、決定論マージ、再試行、Schema修復、結果キャッシュ
+- `src/valorant_ai_coach/clips/` — 中断可能なFFmpegクリップ生成
+- `src/valorant_ai_coach/storage/` — SQLite migration、結果・履歴・checkpoint・参照安全なclip保存
+- `src/valorant_ai_coach/application/` — frame plan、round analysis、障害分離・中断再開可能なmatch pipeline
+- `src/valorant_ai_coach/ui/` — ホーム、非同期動画確認、進捗、履歴の再開/削除、結果/診断、再生、設定画面
+- `src/valorant_ai_coach/schema_validation.py` — 正本Schemaとcross-field invariant検証
+- `src/valorant_ai_coach/settings.py` — 原子的JSON設定とOS資格情報ストア
+- `tests/unit/` — 各境界の単体・契約テスト
+- `tests/integration/` — Round Analyzer、Mock動画E2E、実OpenCV/FFmpeg経路
+- `config/hud_layout.example.json` — 未校正であることを明示した差し替え用ROI例
+- `VIDEO_HUD_ANALYZER_SPEC.md` / `HUD_REVIEW_FIXES.md` / `HUD_VALIDATION_REPORT.md` — HUD v2追加仕様の正本コピー
+- `HUD_INTEGRATION.md` — HUD統合の実装範囲・検証結果・残課題
+- `VISUAL_INTEGRATION.md` — Visual v2統合・認識profile・API上限・実機未確認範囲
+- `config/visual_v2/` — Visualパッチ原本（config/schemas/tests/assetsを含む31ファイル）
+- `config/visual_runtime.example.json` — 実装用Visual profileの未校正例
+- `HUD_REVIEW_IMPLEMENTATION_20260928.md` — HUDレビュー8項目の修正・回帰テスト・未確認範囲
+- `src/valorant_ai_coach/hud/timeline.py` — 時間差のあるHUD証拠の一対一結合
+- `config/hud_layout_1080p_v3.json` — パッチ指定の基準ROIと校正方針
+- `config/event_source_contract_v1.json` — HUD/Visual/Derived/Audioのproducer契約
+- `config/ability_slot_contract_v1.json` / `config/weapon_visual_registry_contract_v1.json` — Ability/武器の観測契約
+- `config/sample_video_profile_v1.json` — 元録画の参照メタデータ
+- `config/hud_templates.example.json` — 任意のテンプレート/OCR reader設定例（正本Schemaとは別の実装設定）
+- `schemas/hud_observation_schema_v2.json` — HUD中間観測の正本Schema
+- `src/valorant_ai_coach/hud/calibrate.py` — 未加工スクリーンショットから参照アンカーprofileを作成
+- `src/valorant_ai_coach/hud/templates.py` — テンプレート照合・数字OCRとprofile読込
+- `src/valorant_ai_coach/events/` — producer契約検証と非評価Derived Events
+- `src/valorant_ai_coach/rounds/` — Round Package生成、観測品質の時間集約
+- `src/valorant_ai_coach/visual/` — Visual Analyzer差替境界、通常一人称解析の保護
+- `src/valorant_ai_coach/video/sampling.py` — HUD向け2-passサンプリング
+- `src/valorant_ai_coach/application/hud_video_processor.py` — 実動画からRound Packageまでの処理
+- `tests/hud_logic_cases_v1.json` / `tests/hud_state_samples_v2.json` — パッチの変更していないテストデータ
+- `tests/integration/test_hud_real_video_anchors.py` — 元録画指定時だけ実行する実データ受入試験
+- `VALORANT-AI-Coach.spec` — PyInstaller onedir設定
+- `run_windows.ps1` / `build_windows.ps1` — Windows実行・テスト・ビルド
+- `.github/workflows/windows.yml` — Windows 3.12のテストとonedir成果物生成
+- `scripts/package_source.py` — ローカル動画・DB・仮想環境を除外したソースZIP生成

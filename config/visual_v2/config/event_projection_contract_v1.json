@@ -1,0 +1,42 @@
+{
+  "version": "1.0",
+  "purpose": "Defines conversion from VisualObservation/EventCandidate intermediate fields to strict v3 Event/StateSnapshot.",
+  "rules": [
+    {
+      "source": "VisualObservation.spatial",
+      "target": "v3 spatial_context",
+      "copy": [
+        "cover_available",
+        "escape_route_available",
+        "line_of_sight_state",
+        "exposed_directions_count",
+        "view_target_zone_id"
+      ],
+      "drop": [
+        "cover_edge_score",
+        "confidence",
+        "exposed_directions_source"
+      ]
+    },
+    {
+      "source": "VisualEventCandidate",
+      "target": "v3 Event",
+      "copy": [
+        "type",
+        "actor",
+        "time/start time",
+        "attributes",
+        "confidence as producer evidence if supported"
+      ],
+      "drop": [
+        "candidate_id",
+        "producer_component",
+        "evidence",
+        "semantic_confirmation",
+        "status",
+        "suppression_reason"
+      ]
+    }
+  ],
+  "principle": "Never copy additional intermediate properties into v3 objects with additionalProperties:false."
+}

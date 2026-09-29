@@ -1,0 +1,861 @@
+{
+  "version": "2.0",
+  "purpose": "イベント＋正規化Factで候補ルールを決定的に絞る。候補化は評価結論ではない。",
+  "fallback": {
+    "max_candidate_rules": 12,
+    "if_no_trigger_match": "temporal/category fallbackを最大6ルールまで選ぶ。全44ルール投入は禁止。"
+  },
+  "dedup_groups": {
+    "save_decision": {
+      "members": [
+        "ECO-02",
+        "ADV-07"
+      ],
+      "primary_order": [
+        "ECO-02",
+        "ADV-07"
+      ],
+      "note": "同一セーブ判断ではEconomy基準をprimary、追加分析のADV-07をrelatedにする。"
+    },
+    "numbers_advantage": {
+      "members": [
+        "INFO-03",
+        "DEC-01",
+        "DEC-02"
+      ],
+      "primary_order": [
+        "DEC-01",
+        "DEC-02",
+        "INFO-03"
+      ],
+      "note": "意思決定をprimary、人数認識をrelatedにする。"
+    },
+    "movement_shooting": {
+      "members": [
+        "AIM-03",
+        "MOV-01",
+        "MOV-02"
+      ],
+      "primary_order": [
+        "AIM-03",
+        "MOV-02",
+        "MOV-01"
+      ],
+      "note": "同一初弾なら初弾/ストッピングを優先し、重複クリップを避ける。"
+    }
+  },
+  "rules": {
+    "AIM-01": {
+      "trigger_event_types": [
+        "engagement_start",
+        "shot"
+      ],
+      "required_state_predicates": [],
+      "supporting_fact_keys": [
+        "weapon",
+        "zone_id"
+      ],
+      "priority": "mvp_required",
+      "temporal_level": "match",
+      "label_mode": "llm_contextual"
+    },
+    "AIM-02": {
+      "trigger_event_types": [
+        "preaim_started",
+        "peek",
+        "engagement_start"
+      ],
+      "required_state_predicates": [],
+      "supporting_fact_keys": [
+        "preaim_lead_sec"
+      ],
+      "priority": "mvp_required",
+      "temporal_level": "micro",
+      "label_mode": "deterministic_if_confident_else_llm"
+    },
+    "AIM-03": {
+      "trigger_event_types": [
+        "shot"
+      ],
+      "required_state_predicates": [],
+      "supporting_fact_keys": [
+        "first_shot_stationary"
+      ],
+      "priority": "mvp_required",
+      "temporal_level": "micro",
+      "label_mode": "deterministic_if_confident_else_llm"
+    },
+    "AIM-04": {
+      "trigger_event_types": [
+        "shot"
+      ],
+      "required_state_predicates": [],
+      "supporting_fact_keys": [
+        "weapon"
+      ],
+      "priority": "important",
+      "temporal_level": "micro",
+      "label_mode": "llm_contextual"
+    },
+    "MOV-01": {
+      "trigger_event_types": [
+        "shot",
+        "movement_state"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "shot_while_moving",
+          "op": "eq",
+          "value": true,
+          "missing_policy": "exclude"
+        }
+      ],
+      "supporting_fact_keys": [],
+      "priority": "mvp_required",
+      "temporal_level": "micro",
+      "label_mode": "llm_contextual"
+    },
+    "MOV-02": {
+      "trigger_event_types": [
+        "shot",
+        "movement_state"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "first_shot_detected",
+          "op": "eq",
+          "value": true,
+          "missing_policy": "exclude"
+        }
+      ],
+      "supporting_fact_keys": [],
+      "priority": "mvp_required",
+      "temporal_level": "micro",
+      "label_mode": "deterministic_if_confident_else_llm"
+    },
+    "MOV-03": {
+      "trigger_event_types": [
+        "peek",
+        "position_change"
+      ],
+      "required_state_predicates": [],
+      "supporting_fact_keys": [
+        "zone_id"
+      ],
+      "priority": "important",
+      "temporal_level": "local",
+      "label_mode": "llm_contextual"
+    },
+    "MOV-04": {
+      "trigger_event_types": [
+        "engagement_end",
+        "position_change",
+        "enemy_reengage"
+      ],
+      "required_state_predicates": [],
+      "supporting_fact_keys": [
+        "cover_available",
+        "escape_route_available"
+      ],
+      "priority": "important",
+      "temporal_level": "local",
+      "label_mode": "llm_contextual"
+    },
+    "PEEK-01": {
+      "trigger_event_types": [
+        "peek",
+        "info_peek"
+      ],
+      "required_state_predicates": [],
+      "supporting_fact_keys": [
+        "tradeable_ally_nearby",
+        "numbers_state"
+      ],
+      "priority": "mvp_required",
+      "temporal_level": "round",
+      "label_mode": "llm_contextual"
+    },
+    "PEEK-02": {
+      "trigger_event_types": [
+        "peek",
+        "info_peek"
+      ],
+      "required_state_predicates": [],
+      "supporting_fact_keys": [
+        "tradeable_ally_nearby"
+      ],
+      "priority": "important",
+      "temporal_level": "micro",
+      "label_mode": "llm_contextual"
+    },
+    "PEEK-04": {
+      "trigger_event_types": [
+        "peek"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "exposed_directions_count",
+          "op": "gte",
+          "value": 3,
+          "missing_policy": "exclude"
+        }
+      ],
+      "supporting_fact_keys": [],
+      "priority": "mvp_required",
+      "temporal_level": "micro",
+      "label_mode": "deterministic_if_confident_else_llm"
+    },
+    "PEEK-05": {
+      "trigger_event_types": [
+        "peek",
+        "enemy_reengage"
+      ],
+      "required_state_predicates": [],
+      "supporting_fact_keys": [
+        "weapon"
+      ],
+      "priority": "important",
+      "temporal_level": "local",
+      "label_mode": "llm_contextual"
+    },
+    "POS-01": {
+      "trigger_event_types": [
+        "engagement_start",
+        "position_hold",
+        "position_change"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "spatial_context_available",
+          "op": "eq",
+          "value": true,
+          "missing_policy": "allow_unscored"
+        }
+      ],
+      "supporting_fact_keys": [],
+      "priority": "mvp_required",
+      "temporal_level": "local",
+      "label_mode": "llm_contextual"
+    },
+    "POS-03": {
+      "trigger_event_types": [
+        "hold_angle",
+        "position_hold"
+      ],
+      "required_state_predicates": [],
+      "supporting_fact_keys": [
+        "cover_available"
+      ],
+      "priority": "important",
+      "temporal_level": "local",
+      "label_mode": "llm_contextual"
+    },
+    "POS-04": {
+      "trigger_event_types": [
+        "spike_planted",
+        "position_change",
+        "position_hold"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "spike_planted",
+          "op": "eq",
+          "value": true,
+          "missing_policy": "exclude"
+        }
+      ],
+      "supporting_fact_keys": [],
+      "priority": "mvp_required",
+      "temporal_level": "phase",
+      "label_mode": "llm_contextual"
+    },
+    "POS-05": {
+      "trigger_event_types": [
+        "round_start",
+        "position_hold",
+        "position_change"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "side",
+          "op": "eq",
+          "value": "defense",
+          "missing_policy": "exclude"
+        }
+      ],
+      "supporting_fact_keys": [],
+      "priority": "important",
+      "temporal_level": "round",
+      "label_mode": "llm_contextual"
+    },
+    "INFO-02": {
+      "trigger_event_types": [
+        "audio_cue",
+        "position_change",
+        "peek"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "audio_cue_observed",
+          "op": "eq",
+          "value": true,
+          "missing_policy": "exclude"
+        }
+      ],
+      "supporting_fact_keys": [],
+      "priority": "important",
+      "temporal_level": "local",
+      "label_mode": "llm_contextual"
+    },
+    "INFO-03": {
+      "trigger_event_types": [
+        "kill",
+        "state_snapshot",
+        "position_change",
+        "peek"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "numbers_state",
+          "op": "in",
+          "value": [
+            "advantage",
+            "disadvantage"
+          ],
+          "missing_policy": "allow_unscored"
+        }
+      ],
+      "supporting_fact_keys": [],
+      "priority": "mvp_required",
+      "temporal_level": "round",
+      "label_mode": "llm_contextual"
+    },
+    "INFO-04": {
+      "trigger_event_types": [
+        "enemy_spotted",
+        "enemy_lost",
+        "peek",
+        "position_change"
+      ],
+      "required_state_predicates": [],
+      "supporting_fact_keys": [
+        "uncleared_zone_ahead"
+      ],
+      "priority": "important",
+      "temporal_level": "local",
+      "label_mode": "llm_contextual"
+    },
+    "DEC-01": {
+      "trigger_event_types": [
+        "kill",
+        "peek",
+        "position_change",
+        "engagement_start"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "numbers_state",
+          "op": "eq",
+          "value": "advantage",
+          "missing_policy": "allow_unscored"
+        }
+      ],
+      "supporting_fact_keys": [],
+      "priority": "mvp_required",
+      "temporal_level": "round",
+      "label_mode": "llm_contextual"
+    },
+    "DEC-02": {
+      "trigger_event_types": [
+        "kill",
+        "peek",
+        "position_change",
+        "engagement_start"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "numbers_state",
+          "op": "eq",
+          "value": "disadvantage",
+          "missing_policy": "allow_unscored"
+        }
+      ],
+      "supporting_fact_keys": [],
+      "priority": "important",
+      "temporal_level": "round",
+      "label_mode": "llm_contextual"
+    },
+    "DEC-03": {
+      "trigger_event_types": [
+        "utility_used",
+        "engagement_start",
+        "engagement_end",
+        "position_change"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "disadvantageous_effect_active",
+          "op": "eq",
+          "value": true,
+          "missing_policy": "allow_unscored"
+        }
+      ],
+      "supporting_fact_keys": [],
+      "priority": "mvp_required",
+      "temporal_level": "local",
+      "label_mode": "llm_contextual"
+    },
+    "DEC-04": {
+      "trigger_event_types": [
+        "enemy_spotted",
+        "rotation_started",
+        "position_change"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "enemy_spotted_count",
+          "op": "gte",
+          "value": 1,
+          "missing_policy": "allow_unscored"
+        }
+      ],
+      "supporting_fact_keys": [],
+      "priority": "important",
+      "temporal_level": "round",
+      "label_mode": "llm_contextual"
+    },
+    "DEC-05": {
+      "trigger_event_types": [
+        "objective_state",
+        "spike_planted",
+        "rotation_started",
+        "position_change"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "objective_state_observed",
+          "op": "eq",
+          "value": true,
+          "missing_policy": "exclude"
+        }
+      ],
+      "supporting_fact_keys": [
+        "round_time_remaining_sec",
+        "spike_carried_by_player"
+      ],
+      "priority": "mvp_required",
+      "temporal_level": "round",
+      "label_mode": "llm_contextual"
+    },
+    "UTL-01": {
+      "trigger_event_types": [
+        "ability_state",
+        "player_death",
+        "engagement_start"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "player_died",
+          "op": "eq",
+          "value": true,
+          "missing_policy": "exclude"
+        },
+        {
+          "fact_key": "utility_available_count",
+          "op": "gt",
+          "value": 0,
+          "missing_policy": "allow_unscored"
+        }
+      ],
+      "supporting_fact_keys": [],
+      "priority": "mvp_required",
+      "temporal_level": "local",
+      "label_mode": "llm_contextual"
+    },
+    "TEAM-02": {
+      "trigger_event_types": [
+        "ally_entry_start",
+        "ally_enter_site",
+        "peek",
+        "engagement_start"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "ally_entry_active",
+          "op": "eq",
+          "value": true,
+          "missing_policy": "exclude"
+        }
+      ],
+      "supporting_fact_keys": [],
+      "priority": "mvp_required",
+      "temporal_level": "phase",
+      "label_mode": "llm_contextual"
+    },
+    "OBJ-02": {
+      "trigger_event_types": [
+        "objective_state",
+        "site_state",
+        "spike_planted",
+        "engagement_start"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "side",
+          "op": "eq",
+          "value": "attack",
+          "missing_policy": "exclude"
+        },
+        {
+          "fact_key": "spike_carried_by_player",
+          "op": "eq",
+          "value": true,
+          "missing_policy": "allow_unscored"
+        }
+      ],
+      "supporting_fact_keys": [
+        "round_time_remaining_sec",
+        "site_incoming_damage_risk_observed",
+        "numbers_state"
+      ],
+      "priority": "mvp_required",
+      "temporal_level": "phase",
+      "label_mode": "llm_contextual"
+    },
+    "OBJ-03": {
+      "trigger_event_types": [
+        "spike_planted",
+        "spike_defuse_started",
+        "position_change",
+        "peek",
+        "engagement_start"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "spike_planted",
+          "op": "eq",
+          "value": true,
+          "missing_policy": "exclude"
+        }
+      ],
+      "supporting_fact_keys": [
+        "round_time_remaining_sec",
+        "numbers_state"
+      ],
+      "priority": "mvp_required",
+      "temporal_level": "phase",
+      "label_mode": "llm_contextual"
+    },
+    "ECO-01": {
+      "trigger_event_types": [
+        "buy_phase",
+        "purchase"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "buy_phase_observed",
+          "op": "eq",
+          "value": true,
+          "missing_policy": "exclude"
+        }
+      ],
+      "supporting_fact_keys": [
+        "team_buy_class",
+        "player_buy_class"
+      ],
+      "priority": "important",
+      "temporal_level": "cross_round",
+      "label_mode": "llm_contextual"
+    },
+    "ECO-02": {
+      "trigger_event_types": [
+        "save_decision",
+        "weapon_pickup",
+        "buy_phase"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "save_context_observed",
+          "op": "eq",
+          "value": true,
+          "missing_policy": "exclude"
+        }
+      ],
+      "supporting_fact_keys": [
+        "weapon",
+        "numbers_state"
+      ],
+      "priority": "important",
+      "temporal_level": "cross_round",
+      "label_mode": "llm_contextual"
+    },
+    "ADV-01": {
+      "trigger_event_types": [
+        "player_death",
+        "kill"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "first_death_by_player",
+          "op": "eq",
+          "value": true,
+          "missing_policy": "allow_unscored"
+        }
+      ],
+      "supporting_fact_keys": [],
+      "priority": "additional",
+      "temporal_level": "round",
+      "label_mode": "llm_contextual"
+    },
+    "ADV-02": {
+      "trigger_event_types": [
+        "kill",
+        "position_change",
+        "peek"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "first_kill_by_player",
+          "op": "eq",
+          "value": true,
+          "missing_policy": "allow_unscored"
+        }
+      ],
+      "supporting_fact_keys": [],
+      "priority": "additional",
+      "temporal_level": "phase",
+      "label_mode": "llm_contextual"
+    },
+    "ADV-03": {
+      "trigger_event_types": [
+        "kill",
+        "engagement_start",
+        "position_change"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "clutch_state",
+          "op": "eq",
+          "value": true,
+          "missing_policy": "allow_unscored"
+        }
+      ],
+      "supporting_fact_keys": [],
+      "priority": "additional",
+      "temporal_level": "round",
+      "label_mode": "llm_contextual"
+    },
+    "ADV-04": {
+      "trigger_event_types": [
+        "position_change",
+        "position_hold",
+        "enemy_spotted"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "lurk_context_observed",
+          "op": "eq",
+          "value": true,
+          "missing_policy": "allow_unscored"
+        }
+      ],
+      "supporting_fact_keys": [],
+      "priority": "additional",
+      "temporal_level": "round",
+      "label_mode": "llm_contextual"
+    },
+    "ADV-05": {
+      "trigger_event_types": [
+        "ally_entry_start",
+        "ally_enter_site",
+        "utility_used",
+        "position_change"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "ally_entry_active",
+          "op": "eq",
+          "value": true,
+          "missing_policy": "exclude"
+        }
+      ],
+      "supporting_fact_keys": [],
+      "priority": "additional",
+      "temporal_level": "phase",
+      "label_mode": "llm_contextual"
+    },
+    "ADV-06": {
+      "trigger_event_types": [
+        "buy_phase",
+        "engagement_start",
+        "weapon_pickup"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "enemy_eco_likely",
+          "op": "eq",
+          "value": true,
+          "missing_policy": "allow_unscored"
+        }
+      ],
+      "supporting_fact_keys": [],
+      "priority": "additional",
+      "temporal_level": "round",
+      "label_mode": "llm_contextual"
+    },
+    "ADV-07": {
+      "trigger_event_types": [
+        "save_decision",
+        "weapon_pickup",
+        "position_change"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "save_context_observed",
+          "op": "eq",
+          "value": true,
+          "missing_policy": "exclude"
+        }
+      ],
+      "supporting_fact_keys": [],
+      "priority": "additional",
+      "temporal_level": "cross_round",
+      "label_mode": "llm_contextual"
+    },
+    "ADV-08": {
+      "trigger_event_types": [
+        "utility_used",
+        "objective_state"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "ultimate_available",
+          "op": "eq",
+          "value": true,
+          "missing_policy": "allow_unscored"
+        }
+      ],
+      "supporting_fact_keys": [],
+      "priority": "additional",
+      "temporal_level": "phase",
+      "label_mode": "llm_contextual"
+    },
+    "ROLE-02": {
+      "trigger_event_types": [
+        "utility_used",
+        "site_state",
+        "engagement_start"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "player_role",
+          "op": "eq",
+          "value": "controller",
+          "missing_policy": "exclude"
+        }
+      ],
+      "supporting_fact_keys": [],
+      "priority": "additional",
+      "temporal_level": "local",
+      "label_mode": "llm_contextual"
+    },
+    "ROLE-03": {
+      "trigger_event_types": [
+        "utility_used",
+        "enemy_spotted",
+        "ally_entry_start"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "player_role",
+          "op": "eq",
+          "value": "initiator",
+          "missing_policy": "exclude"
+        }
+      ],
+      "supporting_fact_keys": [],
+      "priority": "additional",
+      "temporal_level": "round",
+      "label_mode": "llm_contextual"
+    },
+    "ROLE-06": {
+      "trigger_event_types": [
+        "ally_enter_site",
+        "engagement_end",
+        "position_change"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "player_role",
+          "op": "eq",
+          "value": "duelist",
+          "missing_policy": "exclude"
+        }
+      ],
+      "supporting_fact_keys": [],
+      "priority": "additional",
+      "temporal_level": "phase",
+      "label_mode": "llm_contextual"
+    },
+    "ROLE-07": {
+      "trigger_event_types": [
+        "position_hold",
+        "utility_used",
+        "enemy_spotted"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "player_role",
+          "op": "eq",
+          "value": "sentinel",
+          "missing_policy": "exclude"
+        }
+      ],
+      "supporting_fact_keys": [],
+      "priority": "additional",
+      "temporal_level": "round",
+      "label_mode": "llm_contextual"
+    },
+    "ROLE-08": {
+      "trigger_event_types": [
+        "position_hold",
+        "enemy_spotted",
+        "enemy_lost"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "player_role",
+          "op": "eq",
+          "value": "sentinel",
+          "missing_policy": "exclude"
+        }
+      ],
+      "supporting_fact_keys": [],
+      "priority": "additional",
+      "temporal_level": "round",
+      "label_mode": "llm_contextual"
+    },
+    "WPN-01": {
+      "trigger_event_types": [
+        "hold_angle",
+        "shot",
+        "position_change"
+      ],
+      "required_state_predicates": [
+        {
+          "fact_key": "weapon",
+          "op": "eq",
+          "value": "Operator",
+          "missing_policy": "allow_unscored"
+        }
+      ],
+      "supporting_fact_keys": [
+        "cover_available",
+        "line_of_sight_state"
+      ],
+      "priority": "additional",
+      "temporal_level": "local",
+      "label_mode": "llm_contextual"
+    }
+  }
+}

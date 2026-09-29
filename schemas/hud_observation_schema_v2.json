@@ -1,0 +1,393 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hud_observation_schema_v2.json",
+  "title": "VALORANT HUD Observation v2",
+  "description": "One non-evaluative observation sampled from a video frame. Values may be null when unreadable. No GOOD/BAD judgement is allowed.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "time_sec",
+    "frame_index",
+    "primary_state",
+    "state_flags",
+    "view_context",
+    "values",
+    "quality"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "2.0"
+    },
+    "time_sec": {
+      "type": "number",
+      "minimum": 0
+    },
+    "frame_index": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "primary_state": {
+      "type": "string",
+      "enum": [
+        "live_first_person",
+        "spectator_first_person",
+        "buy_menu_open",
+        "remote_control_view",
+        "expanded_tactical_map",
+        "unknown"
+      ]
+    },
+    "state_flags": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "buy_phase_banner",
+          "combat_report_visible",
+          "round_end_banner",
+          "vision_obscured_smoke",
+          "vision_obscured_flash",
+          "visual_transition"
+        ]
+      }
+    },
+    "values": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "round_time_remaining_sec",
+        "score_ally",
+        "score_enemy",
+        "ally_alive",
+        "enemy_alive",
+        "hp",
+        "armor",
+        "ammo_current",
+        "ammo_reserve",
+        "spike_state",
+        "location_text",
+        "kill_feed_rows",
+        "ability_slots"
+      ],
+      "properties": {
+        "round_time_remaining_sec": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "score_ally": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "score_enemy": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "ally_alive": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 5
+        },
+        "enemy_alive": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 5
+        },
+        "hp": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 100
+        },
+        "armor": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 50
+        },
+        "ammo_current": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "ammo_reserve": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "weapon_text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "spike_state": {
+          "type": "string",
+          "enum": [
+            "not_carried",
+            "carried_by_player",
+            "carried_by_ally",
+            "dropped",
+            "planted",
+            "defusing",
+            "resolved",
+            "unknown"
+          ]
+        },
+        "location_text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "kill_feed_rows": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "raw_text",
+              "confidence"
+            ],
+            "properties": {
+              "raw_text": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "killer_text": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "victim_text": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "confidence": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "killer_side": {
+                "type": "string",
+                "enum": [
+                  "ally",
+                  "enemy",
+                  "unknown"
+                ]
+              },
+              "victim_side": {
+                "type": "string",
+                "enum": [
+                  "ally",
+                  "enemy",
+                  "unknown"
+                ]
+              },
+              "weapon_text": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "ability_slots": {
+          "type": "array",
+          "maxItems": 4,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "slot",
+              "available",
+              "charges",
+              "confidence",
+              "keybind_role",
+              "semantic_role",
+              "ability_name"
+            ],
+            "properties": {
+              "slot": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "available": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              },
+              "charges": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "confidence": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "keybind_role": {
+                "type": "string",
+                "enum": [
+                  "C",
+                  "Q",
+                  "E",
+                  "X",
+                  "unknown"
+                ]
+              },
+              "semantic_role": {
+                "type": "string",
+                "enum": [
+                  "ability_c",
+                  "ability_q",
+                  "ability_e",
+                  "ultimate",
+                  "unknown"
+                ]
+              },
+              "ability_name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "combat_report_visible": {
+          "type": "boolean"
+        },
+        "buy_phase_visible": {
+          "type": "boolean"
+        },
+        "round_end_text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "zone_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Optional canonical map-zone ID. Null when unresolved."
+        },
+        "player_specific_hud_valid": {
+          "type": "boolean",
+          "description": "False in spectator/remote states when HP/ammo/ability cannot safely be attributed to the target player."
+        }
+      }
+    },
+    "quality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "hud_confidence",
+        "visual_confidence",
+        "occluded_rois",
+        "notes",
+        "state_confidence",
+        "roi_confidence"
+      ],
+      "properties": {
+        "hud_confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "visual_confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "occluded_rois": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "state_confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "roi_confidence": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        }
+      }
+    },
+    "view_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "remote_view_type",
+        "is_player_world_view_trustworthy"
+      ],
+      "properties": {
+        "remote_view_type": {
+          "type": "string",
+          "enum": [
+            "none",
+            "astra_astral",
+            "cypher_camera",
+            "sova_drone",
+            "skye_trailblazer",
+            "other",
+            "unknown"
+          ]
+        },
+        "is_player_world_view_trustworthy": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

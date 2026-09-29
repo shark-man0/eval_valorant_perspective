@@ -1,0 +1,113 @@
+{
+  "version": "2.0",
+  "video": "Valorant_09-25-2026_0-37-29-379.mp4",
+  "duration_sec": 171.019336,
+  "purpose": "Integration/probe windows from the supplied real recording. Expectations are intentionally broad; these are not hand-labeled coaching judgments.",
+  "windows": [
+    {
+      "id": "RV-01",
+      "start_sec": 3.0,
+      "end_sec": 8.0,
+      "asset": "assets/t005.jpg",
+      "expected_observations": [
+        "live first-person world view",
+        "teammates/world geometry visible"
+      ],
+      "use_for": [
+        "entity tracking smoke test",
+        "motion/minimap pipeline smoke test"
+      ]
+    },
+    {
+      "id": "RV-02",
+      "start_sec": 18.0,
+      "end_sec": 22.0,
+      "asset": "assets/t020.jpg",
+      "expected_observations": [
+        "Astra-style remote/astral view visible"
+      ],
+      "use_for": [
+        "remote_control_view gating",
+        "suppress player aim/peek mechanics"
+      ]
+    },
+    {
+      "id": "RV-03",
+      "start_sec": 78.0,
+      "end_sec": 83.0,
+      "asset": "assets/t080.jpg",
+      "expected_observations": [
+        "menu/round-transition style UI present"
+      ],
+      "use_for": [
+        "state gating",
+        "ensure no false player-mechanics events"
+      ]
+    },
+    {
+      "id": "RV-04",
+      "start_sec": 110.0,
+      "end_sec": 114.0,
+      "asset": "assets/t112.jpg",
+      "expected_observations": [
+        "non-standard purple/ability view appears in this neighborhood"
+      ],
+      "use_for": [
+        "state-gating transition test"
+      ]
+    },
+    {
+      "id": "RV-05",
+      "start_sec": 116.0,
+      "end_sec": 120.0,
+      "asset": "assets/t118.jpg",
+      "expected_observations": [
+        "astral/tactical-like ability view"
+      ],
+      "use_for": [
+        "remote view semantic context",
+        "no target-player micro mechanics"
+      ]
+    },
+    {
+      "id": "RV-06",
+      "start_sec": 126.0,
+      "end_sec": 130.0,
+      "asset": "assets/t128.jpg",
+      "expected_observations": [
+        "live first-person near smoke/engagement context"
+      ],
+      "use_for": [
+        "dense candidate sampling",
+        "shot/engagement detector probe"
+      ]
+    },
+    {
+      "id": "RV-07",
+      "start_sec": 134.0,
+      "end_sec": 138.0,
+      "asset": "assets/t136.jpg",
+      "expected_observations": [
+        "live first-person combat context"
+      ],
+      "use_for": [
+        "entity/engagement/utility fusion probe"
+      ]
+    },
+    {
+      "id": "RV-08",
+      "start_sec": 162.0,
+      "end_sec": 169.0,
+      "asset": "assets/t165.jpg",
+      "expected_observations": [
+        "late-round/death-or-spectator context possible"
+      ],
+      "use_for": [
+        "spectator gating probe",
+        "must confirm HUD state before attributing mechanics"
+      ]
+    }
+  ],
+  "important": "Exact shot/peek/preaim labels are deliberately not asserted from these sparse manual probes. The implementation must produce evidence and confidence, then be checked against dense extracted frames.",
+  "note": "Real sample validates existing Astra/live/spectator states. Cypher/Sova/Skye remote views, flash, HUD-scale variants remain explicit follow-up fixtures."
+}

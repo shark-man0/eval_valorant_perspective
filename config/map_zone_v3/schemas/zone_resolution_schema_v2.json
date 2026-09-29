@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "zone_resolution_schema_v2.json",
+  "title": "ZoneResolution v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "time_sec",
+    "frame_index",
+    "map_id",
+    "geometry_version",
+    "zone_id",
+    "zone_kind",
+    "site_id",
+    "site_affinity",
+    "zone_confidence",
+    "resolution_scope",
+    "resolution_source",
+    "calibration_status",
+    "boundary_state",
+    "candidate_zone_ids",
+    "held_from_previous",
+    "diagnostics"
+  ],
+  "properties": {
+    "time_sec": {
+      "type": "number",
+      "minimum": 0
+    },
+    "frame_index": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "map_id": {
+      "type": "string"
+    },
+    "geometry_version": {
+      "type": "string"
+    },
+    "zone_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "zone_kind": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "site_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "site_affinity": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "zone_confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "resolution_scope": {
+      "enum": [
+        "exact_zone",
+        "coarse_role",
+        "unknown"
+      ]
+    },
+    "resolution_source": {
+      "enum": [
+        "location_label",
+        "polygon",
+        "coarse_fallback",
+        "fused_label_polygon",
+        "held_previous_boundary",
+        "unknown"
+      ]
+    },
+    "calibration_status": {
+      "enum": [
+        "ok",
+        "degraded",
+        "failed",
+        "calibration_required"
+      ]
+    },
+    "boundary_state": {
+      "enum": [
+        "clear",
+        "ambiguous",
+        "unknown"
+      ]
+    },
+    "candidate_zone_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "held_from_previous": {
+      "type": "boolean"
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

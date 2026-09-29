@@ -1,0 +1,46 @@
+{
+  "version": "1.0",
+  "selection_policy": {
+    "priority": [
+      "explicit_user_selection",
+      "trusted_map_label",
+      "minimap_template_match",
+      "unresolved"
+    ],
+    "manual_fallback_required": true,
+    "on_unresolved": "request/require map selection before zone-dependent analysis; do not guess map_id",
+    "map_template_match_min_confidence": 0.9
+  },
+  "minimap_policy": {
+    "mvp_required_profile": "fixed orientation with full static map mask recoverable",
+    "dynamic_rotation": "unsupported_in_mvp",
+    "keep_player_centered_or_dynamic_crop": "unsupported_in_mvp unless full static map transform can still be recovered",
+    "zoom_or_hud_scale_change": "attempt calibration; on failure set calibration_required",
+    "calibration_required_conditions": [
+      "static mask alignment below threshold",
+      "dynamic orientation detected",
+      "persistent crop/zoom mismatch",
+      "unknown map geometry version"
+    ]
+  },
+  "maps": {
+    "summit": {
+      "map_file": "config/maps/summit_map_v3.json",
+      "callout_registry_file": "config/maps/summit_callout_registry_v3.json",
+      "peek_registry_file": "config/maps/summit_peek_exposure_registry_v2.json",
+      "coverage_mask_file": "config/maps/summit_operational_mask_v1.json",
+      "geometry_version": "summit_coarse_2026-09-28_v3",
+      "reference_asset": "assets/summit_minimap_reference.png",
+      "reference_sha256": "6ccdc19605b8885ef8d51761f872630ef6122266bcf5bb0d318fcc7661d1f3b6",
+      "production": true
+    }
+  },
+  "test_fixtures": {
+    "three_site_fixture": {
+      "map_file": "config/maps/fixtures/three_site_fixture_v1.json"
+    },
+    "special_link_fixture": {
+      "map_file": "config/maps/fixtures/special_link_fixture_v1.json"
+    }
+  }
+}

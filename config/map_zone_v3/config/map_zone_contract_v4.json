@@ -1,0 +1,36 @@
+{
+  "version": "4.0",
+  "purpose": "Canonical map-independent zone contract. Supersedes base v3 map_zone_contract_v1 and Map Patch v2 contracts.",
+  "zone_id_format": "<map_slug>_<stable_zone_slug>",
+  "unknown_policy": "Return null on unresolved/calibration failure; never guess.",
+  "3d_policy": "No Z reconstruction or full 3D LOS in MVP.",
+  "authoritative_files": {
+    "map_registry": "config/map_registry_v1.json",
+    "runtime_contract": "config/map_zone_runtime_contract_v4.json",
+    "map_schema": "schemas/map_zone_map_schema_v3.json",
+    "zone_resolution_schema": "schemas/zone_resolution_schema_v2.json"
+  },
+  "canonical_provider_ids": [
+    "location_label",
+    "polygon",
+    "coarse_fallback"
+  ],
+  "event_ownership": {
+    "resolver": "ZoneResolution only",
+    "visual_minimap_spatial_tracker": [
+      "position_change",
+      "rotation_started",
+      "rotation_completed"
+    ],
+    "visual_team_entry_analyzer": [
+      "ally_entry_start",
+      "ally_enter_site"
+    ]
+  },
+  "supersedes": [
+    "valorant_codex_ready_bundle_v3/config/map_zone_contract_v1.json",
+    "valorant_visual_analyzer_patch_v2/config/map_zone_runtime_contract_v1.json",
+    "valorant_map_zone_patch_v2/config/map_zone_contract_v3.json",
+    "valorant_map_zone_patch_v2/config/map_zone_runtime_contract_v3.json"
+  ]
+}

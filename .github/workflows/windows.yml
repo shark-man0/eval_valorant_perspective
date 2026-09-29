@@ -1,0 +1,39 @@
+name: Windows verification
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test-and-build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Ensure FFmpeg integration-test dependency
+        shell: pwsh
+        run: |
+          if (-not (Get-Command ffmpeg -ErrorAction SilentlyContinue)) {
+            choco install ffmpeg --yes --no-progress
+          }
+          ffmpeg -version
+          ffprobe -version
+      - run: python -m pip install -c constraints-windows.txt -e ".[dev,build]"
+      - run: python tests/validate_dataset.py
+      - run: python -m pytest --cov=valorant_ai_coach --cov-report=term-missing --cov-fail-under=75
+      - run: python -m ruff check src tests/unit tests/integration
+      - run: python -m mypy src/valorant_ai_coach
+      - run: python -m PyInstaller --noconfirm --clean VALORANT-AI-Coach.spec
+      - name: Smoke-test packaged application
+        shell: pwsh
+        run: |
+          $env:QT_QPA_PLATFORM = "offscreen"
+          & "dist\VALORANT-AI-Coach\VALORANT-AI-Coach.exe" --smoke-test
+          if ($LASTEXITCODE -ne 0) { throw "Packaged application smoke test failed." }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: VALORANT-AI-Coach-windows-onedir
+          path: dist/VALORANT-AI-Coach

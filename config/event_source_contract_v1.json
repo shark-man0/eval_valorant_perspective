@@ -1,0 +1,262 @@
+{
+  "schema_version": "1.0",
+  "source_registry_version": "2.0",
+  "purpose": "Explicit producer boundary for every event_type_registry_v2 event. HUD Analyzer completion must not be interpreted as complete production of Visual Analyzer events.",
+  "events": {
+    "round_start": {
+      "primary_producer": "hud_analyzer",
+      "mvp_status": "mvp_direct",
+      "notes": "Generated from HUD observation timeline with stated cross-checks."
+    },
+    "round_end": {
+      "primary_producer": "hud_analyzer",
+      "mvp_status": "mvp_direct",
+      "notes": "Generated from HUD observation timeline with stated cross-checks."
+    },
+    "state_snapshot": {
+      "primary_producer": "derived_event_builder",
+      "mvp_status": "mvp_derived",
+      "notes": "Derived from HUD/visual events and snapshots; not directly read from a single ROI."
+    },
+    "kill": {
+      "primary_producer": "hud_analyzer",
+      "mvp_status": "mvp_direct",
+      "notes": "Generated from HUD observation timeline with stated cross-checks."
+    },
+    "player_death": {
+      "primary_producer": "hud_analyzer",
+      "mvp_status": "mvp_direct",
+      "notes": "Generated from HUD observation timeline with stated cross-checks."
+    },
+    "enemy_spotted": {
+      "primary_producer": "visual_analyzer",
+      "mvp_status": "separate_module_required",
+      "notes": "Not produced by HUD Analyzer. Requires world-view/minimap temporal vision analysis."
+    },
+    "enemy_lost": {
+      "primary_producer": "visual_analyzer",
+      "mvp_status": "separate_module_required",
+      "notes": "Not produced by HUD Analyzer. Requires world-view/minimap temporal vision analysis."
+    },
+    "engagement_start": {
+      "primary_producer": "visual_analyzer",
+      "mvp_status": "separate_module_required",
+      "notes": "Not produced by HUD Analyzer. Requires world-view/minimap temporal vision analysis."
+    },
+    "engagement_end": {
+      "primary_producer": "visual_analyzer",
+      "mvp_status": "separate_module_required",
+      "notes": "Not produced by HUD Analyzer. Requires world-view/minimap temporal vision analysis."
+    },
+    "shot": {
+      "primary_producer": "visual_analyzer",
+      "mvp_status": "separate_module_required",
+      "notes": "Not produced by HUD Analyzer. Requires world-view/minimap temporal vision analysis."
+    },
+    "movement_state": {
+      "primary_producer": "visual_analyzer",
+      "mvp_status": "separate_module_required",
+      "notes": "Not produced by HUD Analyzer. Requires world-view/minimap temporal vision analysis."
+    },
+    "preaim_started": {
+      "primary_producer": "visual_analyzer",
+      "mvp_status": "separate_module_required",
+      "notes": "Not produced by HUD Analyzer. Requires world-view/minimap temporal vision analysis."
+    },
+    "peek": {
+      "primary_producer": "visual_analyzer",
+      "mvp_status": "separate_module_required",
+      "notes": "Not produced by HUD Analyzer. Requires world-view/minimap temporal vision analysis."
+    },
+    "info_peek": {
+      "primary_producer": "visual_analyzer",
+      "mvp_status": "separate_module_required",
+      "notes": "Not produced by HUD Analyzer. Requires world-view/minimap temporal vision analysis."
+    },
+    "position_change": {
+      "primary_producer": "visual_analyzer",
+      "mvp_status": "separate_module_required",
+      "notes": "Not produced by HUD Analyzer. Requires world-view/minimap temporal vision analysis."
+    },
+    "position_hold": {
+      "primary_producer": "visual_analyzer",
+      "mvp_status": "separate_module_required",
+      "notes": "Not produced by HUD Analyzer. Requires world-view/minimap temporal vision analysis."
+    },
+    "rotation_started": {
+      "primary_producer": "visual_analyzer",
+      "mvp_status": "separate_module_required",
+      "notes": "Not produced by HUD Analyzer. Requires world-view/minimap temporal vision analysis."
+    },
+    "rotation_completed": {
+      "primary_producer": "visual_analyzer",
+      "mvp_status": "separate_module_required",
+      "notes": "Not produced by HUD Analyzer. Requires world-view/minimap temporal vision analysis."
+    },
+    "spike_pickup": {
+      "primary_producer": "hud_or_visual_analyzer",
+      "mvp_status": "optional_or_deferred",
+      "notes": "Generate only when direct evidence exists; otherwise omit, never infer."
+    },
+    "spike_dropped": {
+      "primary_producer": "hud_or_visual_analyzer",
+      "mvp_status": "optional_or_deferred",
+      "notes": "Generate only when direct evidence exists; otherwise omit, never infer."
+    },
+    "spike_planted": {
+      "primary_producer": "hud_analyzer",
+      "mvp_status": "mvp_direct",
+      "notes": "Generated from HUD observation timeline with stated cross-checks."
+    },
+    "spike_defuse_started": {
+      "primary_producer": "hud_or_visual_analyzer",
+      "mvp_status": "optional_or_deferred",
+      "notes": "Generate only when direct evidence exists; otherwise omit, never infer."
+    },
+    "spike_defused": {
+      "primary_producer": "hud_or_visual_analyzer",
+      "mvp_status": "optional_or_deferred",
+      "notes": "Generate only when direct evidence exists; otherwise omit, never infer."
+    },
+    "utility_used": {
+      "primary_producer": "visual_analyzer",
+      "mvp_status": "separate_module_required",
+      "notes": "Not produced by HUD Analyzer. Requires world-view/minimap temporal vision analysis."
+    },
+    "ability_state": {
+      "primary_producer": "hud_analyzer",
+      "mvp_status": "mvp_direct",
+      "notes": "Generated from HUD observation timeline with stated cross-checks."
+    },
+    "ally_entry_start": {
+      "primary_producer": "visual_analyzer",
+      "mvp_status": "separate_module_required",
+      "notes": "Not produced by HUD Analyzer. Requires world-view/minimap temporal vision analysis."
+    },
+    "ally_enter_site": {
+      "primary_producer": "visual_analyzer",
+      "mvp_status": "separate_module_required",
+      "notes": "Not produced by HUD Analyzer. Requires world-view/minimap temporal vision analysis."
+    },
+    "enemy_reengage": {
+      "primary_producer": "visual_analyzer",
+      "mvp_status": "separate_module_required",
+      "notes": "Not produced by HUD Analyzer. Requires world-view/minimap temporal vision analysis."
+    },
+    "buy_phase": {
+      "primary_producer": "hud_analyzer",
+      "mvp_status": "mvp_direct",
+      "notes": "Generated from HUD observation timeline with stated cross-checks."
+    },
+    "purchase": {
+      "primary_producer": "hud_or_visual_analyzer",
+      "mvp_status": "optional_or_deferred",
+      "notes": "Generate only when direct evidence exists; otherwise omit, never infer."
+    },
+    "save_decision": {
+      "primary_producer": "derived_event_builder",
+      "mvp_status": "mvp_derived",
+      "notes": "Derived from HUD/visual events and snapshots; not directly read from a single ROI."
+    },
+    "weapon_pickup": {
+      "primary_producer": "hud_or_visual_analyzer",
+      "mvp_status": "optional_or_deferred",
+      "notes": "Generate only when direct evidence exists; otherwise omit, never infer."
+    },
+    "hold_angle": {
+      "primary_producer": "visual_analyzer",
+      "mvp_status": "separate_module_required",
+      "notes": "Not produced by HUD Analyzer. Requires world-view/minimap temporal vision analysis."
+    },
+    "audio_cue": {
+      "primary_producer": "audio_analyzer",
+      "mvp_status": "disabled_for_mvp",
+      "notes": "Audio analysis is disabled for MVP; event remains absent unless explicitly enabled later."
+    },
+    "site_state": {
+      "primary_producer": "visual_analyzer",
+      "mvp_status": "separate_module_required",
+      "notes": "Not produced by HUD Analyzer. Requires world-view/minimap temporal vision analysis."
+    },
+    "objective_state": {
+      "primary_producer": "derived_event_builder",
+      "mvp_status": "mvp_derived",
+      "notes": "Derived from HUD/visual events and snapshots; not directly read from a single ROI."
+    },
+    "status_effect": {
+      "primary_producer": "hud_analyzer",
+      "mvp_status": "mvp_direct",
+      "notes": "Generated from HUD observation timeline with stated cross-checks."
+    },
+    "utility_effect_observed": {
+      "primary_producer": "visual_analyzer",
+      "mvp_status": "separate_module_required",
+      "notes": "Not produced by HUD Analyzer. Requires world-view/minimap temporal vision analysis."
+    }
+  },
+  "coverage_summary": {
+    "rule_count": 44,
+    "rules_with_no_hud_direct_trigger_count": 29,
+    "mvp_required_with_no_hud_direct_trigger_count": 10,
+    "rules_with_no_hud_direct_trigger": [
+      "AIM-01",
+      "AIM-02",
+      "AIM-03",
+      "AIM-04",
+      "MOV-01",
+      "MOV-02",
+      "MOV-03",
+      "MOV-04",
+      "PEEK-01",
+      "PEEK-02",
+      "PEEK-04",
+      "PEEK-05",
+      "POS-01",
+      "POS-03",
+      "INFO-02",
+      "INFO-04",
+      "DEC-03",
+      "DEC-04",
+      "TEAM-02",
+      "ADV-04",
+      "ADV-05",
+      "ADV-07",
+      "ADV-08",
+      "ROLE-02",
+      "ROLE-03",
+      "ROLE-06",
+      "ROLE-07",
+      "ROLE-08",
+      "WPN-01"
+    ],
+    "mvp_required_with_no_hud_direct_trigger": [
+      "AIM-01",
+      "AIM-02",
+      "AIM-03",
+      "MOV-01",
+      "MOV-02",
+      "PEEK-01",
+      "PEEK-04",
+      "POS-01",
+      "DEC-03",
+      "TEAM-02"
+    ],
+    "rules_with_mixed_hud_and_non_hud_triggers": [
+      "POS-04",
+      "POS-05",
+      "INFO-03",
+      "DEC-01",
+      "DEC-02",
+      "DEC-05",
+      "UTL-01",
+      "OBJ-02",
+      "OBJ-03",
+      "ECO-01",
+      "ECO-02",
+      "ADV-02",
+      "ADV-03",
+      "ADV-06"
+    ],
+    "interpretation": "These rules require Visual Analyzer or another producer before real-video evaluation can be considered complete."
+  }
+}

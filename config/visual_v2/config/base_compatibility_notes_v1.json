@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "notes": [
+    {
+      "issue": "rotation_started.delay_since_enemy_info_sec is consumed by deterministic_rule_engine_v1 but omitted from event_type_registry_v2 common_attributes.",
+      "visual_patch_behavior": "Preserve the attribute when computed. Do not delete it merely because common_attributes list is incomplete.",
+      "recommended_base_fix": "Add delay_since_enemy_info_sec to event_type_registry_v2 rotation_started.common_attributes in a future base bundle revision."
+    }
+  ]
+}

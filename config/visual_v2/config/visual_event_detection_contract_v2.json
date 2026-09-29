@@ -1,0 +1,395 @@
+{
+  "version": "2.0",
+  "target_registry": "event_type_registry_v2.json",
+  "global_gating": {
+    "player_mechanics_allowed_states": [
+      "live_first_person"
+    ],
+    "world_semantics_allowed_states": [
+      "live_first_person",
+      "remote_control_view",
+      "expanded_tactical_map"
+    ],
+    "suppressed_states_for_player_mechanics": [
+      "spectator_first_person",
+      "buy_menu_open",
+      "remote_control_view",
+      "expanded_tactical_map",
+      "unknown"
+    ],
+    "principle": "If attribution to the target player is unsafe, suppress the player-mechanics event rather than lowering confidence and emitting it."
+  },
+  "events": {
+    "shot": {
+      "tier": "A",
+      "producer_component": "shot_detector",
+      "required_signals": [
+        "burst/trigger start evidence from ammo decrease and/or high-confidence recoil/muzzle temporal cue",
+        "weapon state",
+        "reload/switch/purchase exclusion"
+      ],
+      "semantic_confirmation": "not_needed_if_burst_start_confident",
+      "round_package_attributes": [
+        "moving",
+        "speed_class",
+        "distance_class",
+        "fire_mode",
+        "first_shot"
+      ],
+      "notes": "MVP event granularity is burst/trigger start, not one event per bullet. Fuse >=5 fps ammo monitoring with visual cue. Ammo increase/reload/weapon-switch/purchase must not become shots.",
+      "suppress_outside_live_first_person": true
+    },
+    "movement_state": {
+      "tier": "A",
+      "producer_component": "motion_fusion",
+      "required_signals": [
+        "use-case-specific motion evidence: macro map displacement OR micro shot-time local optical-flow/weapon-bob evidence",
+        "camera-rotation rejection"
+      ],
+      "semantic_confirmation": "not_needed",
+      "round_package_attributes": [
+        "state",
+        "speed_class"
+      ],
+      "notes": "For macro position/rotation, prefer minimap/zone displacement. For shot-time stationary/moving, prefer local world optical flow + weapon-bob at sub-second cadence; minimap is supporting evidence only. Conflicts become unknown.",
+      "suppress_outside_live_first_person": true
+    },
+    "enemy_spotted": {
+      "tier": "B",
+      "producer_component": "entity_tracker",
+      "required_signals": [
+        "enemy visible in world view OR enemy marker becomes visible on minimap"
+      ],
+      "semantic_confirmation": "fallback",
+      "round_package_attributes": [
+        "source",
+        "zone_id",
+        "world_bbox"
+      ],
+      "notes": "Only visible/recorded information; no hidden-position inference.",
+      "suppress_outside_live_first_person": true
+    },
+    "enemy_lost": {
+      "tier": "B",
+      "producer_component": "entity_tracker",
+      "required_signals": [
+        "previously confirmed enemy no longer visible for hysteresis window"
+      ],
+      "semantic_confirmation": "not_needed",
+      "round_package_attributes": [
+        "source",
+        "last_zone_id"
+      ],
+      "notes": "Use hysteresis to avoid flicker.",
+      "suppress_outside_live_first_person": true
+    },
+    "engagement_start": {
+      "tier": "B",
+      "producer_component": "engagement_fsm",
+      "required_signals": [
+        "enemy_spotted plus shot/damage/aim-contact OR mutual combat sequence"
+      ],
+      "semantic_confirmation": "fallback",
+      "round_package_attributes": [
+        "visible_enemy_count",
+        "weapon"
+      ],
+      "notes": "Start once per encounter; debounce.",
+      "suppress_outside_live_first_person": true
+    },
+    "engagement_end": {
+      "tier": "B",
+      "producer_component": "engagement_fsm",
+      "required_signals": [
+        "no visible enemy and no combat action for end-gap OR player death/round end"
+      ],
+      "semantic_confirmation": "not_needed",
+      "round_package_attributes": [
+        "reason"
+      ],
+      "notes": "Do not end on a single obscured frame.",
+      "suppress_outside_live_first_person": true
+    },
+    "preaim_started": {
+      "tier": "C",
+      "producer_component": "preaim_analyzer",
+      "required_signals": [
+        "live_first_person",
+        "near-static/low-translation gate for deterministic timing",
+        "visible enemy-head or static corner reference when available",
+        "earlier crosshair stability/alignment"
+      ],
+      "semantic_confirmation": "fallback_for_moving_or_missing_reference_low_confidence",
+      "round_package_attributes": [
+        "lead_sec",
+        "reference_mode",
+        "alignment_error_norm"
+      ],
+      "notes": "MVP does NOT use homography/back-projected future head points. Deterministic lead_sec is allowed only in near-static/low-translation windows with trustworthy visible/static reference. Moving-peek cases fall back to semantic keyframes capped below deterministic-label confidence.",
+      "suppress_outside_live_first_person": true
+    },
+    "peek": {
+      "tier": "C",
+      "producer_component": "peek_analyzer",
+      "required_signals": [
+        "cover boundary/occlusion change",
+        "player translation evidence",
+        "new line-of-sight/revealed region"
+      ],
+      "semantic_confirmation": "required_for_style_only; forbidden_for_exposure_count",
+      "round_package_attributes": [
+        "peek_style",
+        "exposed_directions",
+        "target_known",
+        "distance_class"
+      ],
+      "notes": "exposed_directions_count/exposed_directions may only come from static peek-exposure registry matched to a known position/anchor. If no registry match, omit/null; semantic VLM must not author it.",
+      "suppress_outside_live_first_person": true
+    },
+    "info_peek": {
+      "tier": "C",
+      "producer_component": "peek_analyzer",
+      "required_signals": [
+        "confirmed peek",
+        "brief exposure",
+        "no committed fight",
+        "new enemy information acquired",
+        "retreat/re-cover"
+      ],
+      "semantic_confirmation": "required",
+      "round_package_attributes": [
+        "new_information_observed",
+        "shot_fired",
+        "duration_sec"
+      ],
+      "notes": "Intent is not directly observable; only emit at high confidence, otherwise keep ordinary peek only.",
+      "suppress_outside_live_first_person": true
+    },
+    "position_change": {
+      "tier": "A",
+      "producer_component": "minimap_spatial_tracker",
+      "required_signals": [
+        "location_text/zone_id change OR significant minimap displacement"
+      ],
+      "semantic_confirmation": "not_needed",
+      "round_package_attributes": [
+        "from",
+        "to"
+      ],
+      "notes": "Can use normalized map positions when zone registry is unresolved.",
+      "suppress_outside_live_first_person": true
+    },
+    "position_hold": {
+      "tier": "A",
+      "producer_component": "minimap_spatial_tracker",
+      "required_signals": [
+        "stable map position over minimum duration"
+      ],
+      "semantic_confirmation": "not_needed",
+      "round_package_attributes": [
+        "duration_sec",
+        "zone_id"
+      ],
+      "notes": "Camera motion does not break a position hold if self-position is stable.",
+      "suppress_outside_live_first_person": true
+    },
+    "rotation_started": {
+      "tier": "B",
+      "producer_component": "minimap_spatial_tracker",
+      "required_signals": [
+        "sustained movement away from current site/zone toward another macro zone",
+        "prior information timeline"
+      ],
+      "semantic_confirmation": "fallback_if_zone_geometry_missing",
+      "round_package_attributes": [
+        "from",
+        "to",
+        "known_enemy_info_count",
+        "delay_since_enemy_info_sec"
+      ],
+      "notes": "Requires resolved coarse macro zone/site grouping from map_zone_runtime_contract. If production map geometry is absent, emit diagnostic feature_unavailable and do not fabricate from/to. Auto site-anchor fallback may produce only low-confidence macro A/B/Mid groups.",
+      "suppress_outside_live_first_person": true
+    },
+    "rotation_completed": {
+      "tier": "B",
+      "producer_component": "minimap_spatial_tracker",
+      "required_signals": [
+        "arrival/stable hold in target macro zone"
+      ],
+      "semantic_confirmation": "fallback_if_zone_geometry_missing",
+      "round_package_attributes": [
+        "from",
+        "to",
+        "duration_sec"
+      ],
+      "notes": "Same map dependency as rotation_started; named destination requires static/coarse zone resolution.",
+      "suppress_outside_live_first_person": true
+    },
+    "utility_used": {
+      "tier": "B",
+      "producer_component": "utility_fusion",
+      "required_signals": [
+        "HUD ability charge/availability transition plus cast animation/world effect when observable"
+      ],
+      "semantic_confirmation": "fallback",
+      "round_package_attributes": [
+        "ability_name",
+        "purpose_observed",
+        "slot"
+      ],
+      "notes": "Purpose_observed is factual visible purpose, not evaluation; may be null/unknown.",
+      "suppress_outside_live_first_person": true
+    },
+    "ally_entry_start": {
+      "tier": "C",
+      "producer_component": "team_entry_analyzer",
+      "required_signals": [
+        "ally minimap marker moves through chokepoint/site boundary OR semantic minimap confirmation"
+      ],
+      "semantic_confirmation": "fallback_if_zone_geometry_missing",
+      "round_package_attributes": [
+        "site",
+        "ally_count"
+      ],
+      "notes": "Requires site semantics. Static coarse zone geometry preferred; auto site-anchor fallback is allowed only at reduced confidence with persistence checks. If unresolved, TEAM-02 route is explicitly unavailable rather than silently missing.",
+      "suppress_outside_live_first_person": true
+    },
+    "ally_enter_site": {
+      "tier": "C",
+      "producer_component": "team_entry_analyzer",
+      "required_signals": [
+        "ally marker confirmed inside site zone OR semantic minimap confirmation"
+      ],
+      "semantic_confirmation": "fallback_if_zone_geometry_missing",
+      "round_package_attributes": [
+        "site",
+        "ally_count"
+      ],
+      "notes": "Requires site semantics. Static coarse zone geometry preferred; auto site-anchor fallback is allowed only at reduced confidence with persistence checks. If unresolved, TEAM-02 route is explicitly unavailable rather than silently missing.",
+      "suppress_outside_live_first_person": true
+    },
+    "enemy_reengage": {
+      "tier": "B",
+      "producer_component": "engagement_fsm",
+      "required_signals": [
+        "engagement ended/lost then same/nearby enemy context reappears within configured window"
+      ],
+      "semantic_confirmation": "fallback",
+      "round_package_attributes": [
+        "gap_sec",
+        "zone_id"
+      ],
+      "notes": "Identity can remain unknown; do not claim same named enemy unless supported.",
+      "suppress_outside_live_first_person": true
+    },
+    "hold_angle": {
+      "tier": "A",
+      "producer_component": "hold_angle_detector",
+      "required_signals": [
+        "stable self-position",
+        "low crosshair angular drift",
+        "weapon ready",
+        "view direction maintained"
+      ],
+      "semantic_confirmation": "not_needed",
+      "round_package_attributes": [
+        "duration_sec",
+        "weapon",
+        "view_target_zone_id"
+      ],
+      "notes": "Useful for Operator and positioning context; suppress in smoke/fully obscured view when target line cannot be observed.",
+      "suppress_outside_live_first_person": true
+    },
+    "site_state": {
+      "tier": "C",
+      "producer_component": "site_state_analyzer",
+      "required_signals": [
+        "world entities",
+        "minimap entities",
+        "spatial observation"
+      ],
+      "semantic_confirmation": "required_for_crossfire_or_risk",
+      "round_package_attributes": [
+        "visible_enemy_count",
+        "active_crossfire",
+        "incoming_damage_risk_observed"
+      ],
+      "notes": "Fields may be null/unknown independently. Do not force a full site-state judgment.",
+      "suppress_outside_live_first_person": true
+    },
+    "utility_effect_observed": {
+      "tier": "C",
+      "producer_component": "semantic_visual_adapter",
+      "required_signals": [
+        "visible utility effect and affected player/area"
+      ],
+      "semantic_confirmation": "required",
+      "round_package_attributes": [
+        "ability_name",
+        "affected_side",
+        "affected_count",
+        "duration_sec"
+      ],
+      "notes": "Only emit when effect is visibly attributable.",
+      "suppress_outside_live_first_person": true
+    },
+    "spike_pickup": {
+      "tier": "D_optional",
+      "producer_component": "event_fusion",
+      "required_signals": [
+        "visible spike pickup cue/state transition"
+      ],
+      "semantic_confirmation": "fallback",
+      "round_package_attributes": [],
+      "notes": "Optional for MVP. Emit only on direct evidence; otherwise leave absent.",
+      "suppress_outside_live_first_person": false
+    },
+    "spike_dropped": {
+      "tier": "D_optional",
+      "producer_component": "event_fusion",
+      "required_signals": [
+        "visible drop/state transition"
+      ],
+      "semantic_confirmation": "fallback",
+      "round_package_attributes": [],
+      "notes": "Optional for MVP. Emit only on direct evidence; otherwise leave absent.",
+      "suppress_outside_live_first_person": false
+    },
+    "spike_defuse_started": {
+      "tier": "D_optional",
+      "producer_component": "event_fusion",
+      "required_signals": [
+        "defuse interaction/progress evidence"
+      ],
+      "semantic_confirmation": "fallback",
+      "round_package_attributes": [],
+      "notes": "Optional for MVP. Emit only on direct evidence; otherwise leave absent.",
+      "suppress_outside_live_first_person": false
+    },
+    "spike_defused": {
+      "tier": "D_optional",
+      "producer_component": "event_fusion",
+      "required_signals": [
+        "defuse completion/round outcome evidence"
+      ],
+      "semantic_confirmation": "fallback",
+      "round_package_attributes": [],
+      "notes": "Optional for MVP. Emit only on direct evidence; otherwise leave absent.",
+      "suppress_outside_live_first_person": false
+    },
+    "weapon_pickup": {
+      "tier": "D_optional",
+      "producer_component": "event_fusion",
+      "required_signals": [
+        "weapon inventory change plus world pickup evidence"
+      ],
+      "semantic_confirmation": "fallback",
+      "round_package_attributes": [],
+      "notes": "Optional for MVP. Emit only on direct evidence; otherwise leave absent.",
+      "suppress_outside_live_first_person": false
+    }
+  },
+  "confidence_policy": "visual_confidence_policy_v1.json",
+  "projection_policy": "event_projection_contract_v1.json",
+  "map_spatial_policy": "map_spatial_fact_policy_v1.json"
+}

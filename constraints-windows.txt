@@ -1,0 +1,15 @@
+# Reproducible direct dependency set used by the Windows test/build workflow.
+# CI verifies this set on Windows/Python 3.12; transitive platform wheels are resolved by pip.
+PySide6==6.11.2
+jsonschema==4.26.0
+keyring==25.7.0
+openai==2.54.0
+opencv-python==4.14.0.94
+shapely==2.1.2
+pywin32-ctypes==0.2.3; sys_platform == "win32"
+
+mypy==1.20.2
+pytest==9.1.1
+pytest-cov==7.1.0
+ruff==0.16.9
+pyinstaller==6.22.3

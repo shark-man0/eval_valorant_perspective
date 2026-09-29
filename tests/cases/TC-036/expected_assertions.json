@@ -1,0 +1,19 @@
+{
+  "case_id": "TC-036",
+  "description": "Role不一致ならController固有ルールを候補化しない",
+  "expected_evaluations": [],
+  "expected_candidate_rule_ids": [],
+  "forbidden_candidate_rule_ids": [
+    "ROLE-02"
+  ],
+  "expected_evaluation_count_min": 0,
+  "expected_evaluation_count_max": 2,
+  "forbidden_input_conclusion_terms": [
+    "good",
+    "bad",
+    "適切",
+    "不適切",
+    "例外に該当",
+    "〜すべき"
+  ]
+}
