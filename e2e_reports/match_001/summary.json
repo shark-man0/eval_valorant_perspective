@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "metadata": {
+    "video_id": "match_001",
+    "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "analyzer_commit": "fad41cef478f4faea0b8e36d5bb7a0cac2150221",
+    "git_is_dirty": true,
+    "executed_at": "2026-09-29T21:17:56.749450+00:00",
+    "validation_pack": "valorant_e2e_validation_pack_v3",
+    "validation_pack_sha256": "aa8305ad49df94551e39f107193a5453dded8bbed6c643c5323c30321045fb04",
+    "git_dirty_fingerprint": "a25f6f683bde787fe05dd5fa051211476e8e43e1e2e81383debd62d9c5489bda",
+    "settings_fingerprint": null
+  },
+  "result": {
+    "status": "fail",
+    "schema_valid": false,
+    "failure_count": null,
+    "negative_assertion_count": null,
+    "error_code": "MANIFEST_METADATA_OR_PACK_MISMATCH"
+  },
+  "counts": {
+    "events": null,
+    "state_intervals": null,
+    "ownership_intervals": null,
+    "snapshots": null,
+    "visual_observations": null,
+    "temporal_features": null
+  },
+  "sections": {
+    "HUD": {
+      "status": "unknown",
+      "failure_count": 0
+    },
+    "Visual": {
+      "status": "unknown",
+      "failure_count": 0
+    },
+    "map_zone": {
+      "status": "unknown",
+      "failure_count": 0
+    },
+    "round_package": {
+      "status": "unknown",
+      "failure_count": 0
+    },
+    "e2e": {
+      "status": "fail",
+      "failure_count": 1
+    },
+    "negative": {
+      "status": "unknown",
+      "failure_count": 0
+    },
+    "discontinuity": {
+      "status": "unknown",
+      "failure_count": 0
+    }
+  },
+  "failures": [
+    {
+      "assertion_id": null,
+      "category": "runtime_error",
+      "expected": null,
+      "actual": null,
+      "time_sec": null,
+      "interval": null,
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "runner",
+      "diagnostic_codes": [
+        "runtime_error"
+      ],
+      "section": "e2e"
+    }
+  ],
+  "privacy": {
+    "player_names": "normalized_to_player_or_omitted",
+    "free_text_and_unknown_labels": "omitted",
+    "images": "opt_in_manual_privacy_review_required"
+  },
+  "hud": {
+    "observations": null,
+    "unknown": null,
+    "states": null
+  },
+  "visual": {
+    "observations": null,
+    "events": null,
+    "missing_expected": []
+  },
+  "map_zone": {
+    "resolved": null,
+    "unknown": null,
+    "zones": null
+  },
+  "round_package": {
+    "rounds": null,
+    "round_count": null
+  },
+  "e2e": {
+    "passed": null,
+    "failed": null,
+    "not_evaluated": null,
+    "count_unit": "assertion_records; multiple failed fields count once",
+    "failure_message_count": null,
+    "failures_by_category": {}
+  },
+  "negative": {
+    "passed": null,
+    "failed": null,
+    "assertions": 20
+  },
+  "discontinuity": {
+    "violations": null
+  },
+  "negative_assertions": {
+    "passed": null,
+    "failed": null,
+    "assertions": 20
+  },
+  "known_discontinuities": {
+    "violations": null
+  },
+  "evidence_files": []
+}

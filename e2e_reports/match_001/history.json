@@ -1,0 +1,24 @@
+[
+  {
+    "history_key": "31ddaec1d10865bba3a3aaf9fd7a62c63d9be451230bfaecad9c4142abd5963e",
+    "metadata": {
+      "video_id": "match_001",
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "analyzer_commit": "fad41cef478f4faea0b8e36d5bb7a0cac2150221",
+      "git_is_dirty": true,
+      "executed_at": "2026-09-29T21:17:56.749450+00:00",
+      "validation_pack": "valorant_e2e_validation_pack_v3",
+      "validation_pack_sha256": "aa8305ad49df94551e39f107193a5453dded8bbed6c643c5323c30321045fb04",
+      "git_dirty_fingerprint": "a25f6f683bde787fe05dd5fa051211476e8e43e1e2e81383debd62d9c5489bda",
+      "settings_fingerprint": null
+    },
+    "result": {
+      "status": "fail",
+      "schema_valid": false,
+      "failure_count": null,
+      "negative_assertion_count": null,
+      "error_code": "MANIFEST_METADATA_OR_PACK_MISMATCH"
+    },
+    "failure_count": null
+  }
+]
