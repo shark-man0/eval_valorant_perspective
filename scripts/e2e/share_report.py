@@ -11,6 +11,8 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
+from scripts.e2e.calibration_report import sanitize_calibration
+
 MAX_REPORT_BYTES = 128 * 1024
 MAX_HISTORY = 20
 _SAFE_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:-]{0,79}$")
@@ -852,6 +854,26 @@ def export_report(
         if row["category"] == "missing_visual_observation"
     ]
     if isinstance(raw.get("zone_resolutions"), list):
+        known_map_reasons = {
+            "map_definition_unresolved",
+            "map_selection_or_calibration_required",
+            "location_label_pending",
+            "self_marker_position_invalid",
+            "fused_zone_below_accept_threshold",
+            "zone_conflict_high_confidence",
+            "zone_transition_pending",
+            "calibration_required",
+            "ownership_untrusted",
+            "client_build_unverified",
+        }
+        aggregates["map_zone"]["diagnostic_counts"] = dict(
+            Counter(
+                code
+                for row in raw["zone_resolutions"]
+                for code in row.get("diagnostics", [])
+                if isinstance(code, str) and code in known_map_reasons
+            )
+        )
         aggregates["map_zone"]["zones"] = sorted(
             {
                 x["zone_id"]
@@ -859,6 +881,14 @@ def export_report(
                 if x.get("zone_id") in _field_vocabulary("zone_id")
             }
         )[:64]
+    if isinstance(raw.get("visual_observations"), list):
+        aggregates["visual"]["eligibility_counts"] = {
+            key: sum(
+                row.get("analysis_eligibility", {}).get(key) is True
+                for row in raw["visual_observations"]
+            )
+            for key in ("player_mechanics", "world_semantics")
+        }
     sections = {
         name: {
             "status": "fail"
@@ -881,6 +911,7 @@ def export_report(
     )
     summary = {
         "schema_version": 1,
+        "hud_calibration": sanitize_calibration(raw.get("hud_calibration_diagnostics")),
         "metadata": meta,
         "result": {
             "status": "pass" if passed and not error_code else "fail",
@@ -926,6 +957,16 @@ def export_report(
     if len(encoded.encode("utf-8")) > MAX_REPORT_BYTES:
         raise ValueError("share report exceeds size limit")
     path.write_text(encoded, encoding="utf-8")
+    (output_dir / "hud_calibration.json").write_text(
+        json.dumps(
+            {"metadata": meta, **summary["hud_calibration"]},
+            ensure_ascii=False,
+            indent=2,
+            allow_nan=False,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
     (output_dir / "README.md").write_text(
         "# E2E shared report\n\nThis directory contains a privacy-filtered summary only. "
         "The source video and full analyzer outputs are not included. `git_is_dirty=true` means "

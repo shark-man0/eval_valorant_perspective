@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable, Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from threading import Event
 from typing import Any, Protocol
@@ -59,6 +59,7 @@ class HudVideoProcessingResult:
     visual_observations: tuple[dict[str, Any], ...] = ()
     visual_candidates: tuple[dict[str, Any], ...] = ()
     zone_resolutions: tuple[dict[str, Any], ...] = ()
+    calibration_diagnostics: dict[str, Any] = field(default_factory=dict)
 
 
 class HudVideoProcessor:
@@ -235,6 +236,7 @@ class HudVideoProcessor:
             visual.observations,
             visual.candidates,
             visual.zone_resolutions,
+            getattr(final, "calibration_diagnostics", {}),
         )
 
     @staticmethod

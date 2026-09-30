@@ -75,6 +75,7 @@ outputs/e2e/<video_id>/<UTC-run-id>/     # ignored, Windows-only
 e2e_reports/<video_id>/                # Git-shareable after review
   summary.json
   history.json
+  hud_calibration.json                # image-free anchor statistics, automatic
   README.md
   evidence/hud_00.jpg ...              # only with -IncludeEvidence
 ```
@@ -111,6 +112,18 @@ is copied. Existing evidence from a previous opt-in remains until manually remov
 
 This is not a fine-tuning dataset: raw video, dataset manifest, human ground truth,
 analyzer output and E2E report have distinct roles.
+
+### Image-free HUD profile diagnostics
+
+Keep using the same `-HudLayout` and its adjacent `.templates.json` profile locally.
+The runner automatically exports fixed anchor names, thresholds, mask presence, image
+dimensions and SHA-256, accepted/rejected/unscored counts, finite confidence min/median/max,
+missing-anchor co-occurrence and geometry success rates. No extra flag or image upload
+is required. `hud_calibration.json` and `summary.hud_calibration` contain the same metrics.
+Fresh geometry and retained valid geometry are counted separately from state evidence.
+These are sampled-frame rates, not time-weighted accuracy. Missing diagnostics from old
+outputs are marked unavailable, never reconstructed. See
+[HUD_DIAGNOSTICS_REVIEW.md](HUD_DIAGNOSTICS_REVIEW.md) for interpretation and the baseline.
 
 ## Minimal workflow (PowerShell)
 

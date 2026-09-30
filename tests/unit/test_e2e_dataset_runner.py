@@ -133,6 +133,53 @@ def execute(c):
     return runner.run_case(c.args, root=c.root, runner=c.command, probe=c.probe)
 
 
+def test_pack_fingerprint_uses_posix_order_independent_of_enumeration(case, monkeypatch):
+    from pathlib import PurePosixPath, PureWindowsPath
+
+    # Mixed case/nesting expose differences in platform-native path ordering.
+    for name in ("Z/z.json", "a/B.json", "a/c.json", "M/q.json"):
+        write_json(case.pack / name, {"value": 1})
+    original = runner.Path.rglob
+    paths = list(original(case.pack, "*"))
+    expected = runner.pack_identity(case.pack)[1:]
+    for cls in (PurePosixPath, PureWindowsPath):
+        sequence = sorted(paths, key=lambda p: cls(p.relative_to(case.pack).as_posix()))
+        monkeypatch.setattr(runner.Path, "rglob", lambda self, pattern, seq=sequence: iter(seq))
+        assert runner.pack_identity(case.pack)[1:] == expected
+
+
+def test_analyzer_failure_still_exports_calibration_diagnostics(case):
+    original = case.command
+
+    def failing(cmd, **kwargs):
+        result = original(cmd, **kwargs)
+        if "run_real_video.py" in " ".join(cmd):
+            target = Path(cmd[cmd.index("--output") + 1]) / "raw_processing.json"
+            write_json(
+                target,
+                {
+                    "status": "error",
+                    "error": "D:\\private\\secret",
+                    "hud_calibration_diagnostics": {
+                        "schema_version": 1,
+                        "counts": {"frames": 12},
+                        "reasons": {"insufficient_anchors": 12},
+                        "anchors": [],
+                    },
+                },
+            )
+            return subprocess.CompletedProcess(cmd, 2)
+        return result
+
+    case.command = failing
+    assert execute(case) == 2
+    data = json.loads((case.root / "e2e_reports/match_001/summary.json").read_text())
+    assert data["result"]["status"] == "fail"
+    assert data["hud_calibration"]["counts"]["frames"] == 12
+    assert data["hud_calibration"]["reasons"] == {"insufficient_anchors": 12}
+    assert "private" not in json.dumps(data)
+
+
 def test_register_match_run_and_never_overwrite_manifest(case):
     c = case
     assert execute(c) == 0

@@ -121,6 +121,7 @@ def main(argv: list[str] | None = None) -> int:
             "visual_candidates": list(result.visual_candidates),
             "zone_resolutions": list(result.zone_resolutions),
             "diagnostics": list(result.diagnostics),
+            "hud_calibration_diagnostics": result.calibration_diagnostics,
             "evidence_frames": [asdict(frame) for frame in result.evidence_frames],
         })
         _write_json(output / "raw_processing.json", raw)
@@ -131,6 +132,9 @@ def main(argv: list[str] | None = None) -> int:
         # Keep calibration/runtime failures inspectable without substituting fake
         # detections. The empty trace is schema-shaped but evaluator scores will fail.
         raw.update({"status": "error", "error_type": type(exc).__name__, "error": str(exc)})
+        if "processor" in locals() and processor is not None:
+            raw["hud_calibration_diagnostics"] = getattr(
+                processor.analyzer, "last_calibration_diagnostics", {})
         _write_json(output / "raw_processing.json", raw)
         _write_json(output / "e2e_trace.json", {
             "events": [], "state_intervals": [], "ownership_intervals": [],

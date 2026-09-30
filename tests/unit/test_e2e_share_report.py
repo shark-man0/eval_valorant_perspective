@@ -123,7 +123,13 @@ def test_error_unknown_counts_dirty_history_and_no_output_copy(tmp_path):
     assert data["counts"]["events"] is None
     assert data["metadata"]["git_is_dirty"] is True
     assert data["failures"][0]["category"] == "runtime_error"
-    assert set(p.name for p in tmp_path.iterdir()) == {"summary.json", "README.md", "history.json"}
+    assert set(p.name for p in tmp_path.iterdir()) == {
+        "summary.json",
+        "README.md",
+        "history.json",
+        "hud_calibration.json",
+    }
+    assert json.loads((tmp_path / "hud_calibration.json").read_text())["available"] is False
     export_report(**args)
     history = json.loads((tmp_path / "history.json").read_text())
     assert len(history) == 1
@@ -189,9 +195,14 @@ def test_expected_actual_layers_negative_discontinuity_and_fractional_time(tmp_p
         "states": 2,
         "detected_states": {"unknown": 1, "live_first_person": 1},
     }
-    assert data["visual"] == {"observations": 2, "events": 1, "missing_expected": []}
+    assert data["visual"] == {
+        "observations": 2,
+        "events": 1,
+        "missing_expected": [],
+        "eligibility_counts": {"player_mechanics": 0, "world_semantics": 0},
+    }
     # Unknown free-text zone labels must not be copied into shared reports.
-    assert data["map_zone"] == {"resolved": 1, "unknown": 1, "zones": []}
+    assert data["map_zone"] == {"resolved": 1, "unknown": 1, "zones": [], "diagnostic_counts": {}}
     assert data["round_package"]["rounds"] == 2
     assert data["negative"] == {"passed": 0, "failed": 2, "assertions": 2}
     assert data["discontinuity"]["violations"] == 1

@@ -69,6 +69,11 @@ def test_mask_excludes_dynamic_pixels_and_keeps_geometry_checks(tmp_path):
     analysis = RealHudAnalyzer(exported).observe_frames([changed])
     assert analysis.calibration.calibrated
     assert analysis.observations[0]["values"]["player_specific_hud_valid"] is False
+    stats = analysis.calibration_diagnostics
+    assert stats["counts"]["frames"] == 1
+    assert stats["counts"]["geometry_valid_state_unknown"] == 1
+    assert stats["fresh_geometry_success_rate"] == 1.0
+    assert all(anchor["accepted_count"] == 1 for anchor in stats["anchors"])
     shifted = cv2.warpAffine(changed, np.float32([[1, 0, 80], [0, 1, 0]]), (1920, 1080))
     shifted_boxes, _, _ = profile.detect_anchors(shifted, layout)
     assert not layout.validate_calibration(1920, 1080, detected_anchors=shifted_boxes,

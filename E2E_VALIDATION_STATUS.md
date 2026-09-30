@@ -1,5 +1,21 @@
 # E2E Validation Pack v3 導入状況（2026-09-29）
 
+## 最新Windows共有結果と追加診断（2026-10-01）
+
+`a880518` で共有された最新summaryは **21 passed / 57 failed / 4 not evaluated**、
+不一致58件、Schema適合。HUD unknown 3891/3929、Visual events 0、Map resolved 0、
+Round count 1、negative failures 0。下記65不一致は以前のベースラインであり、
+最新結果と混同しない。
+
+画像やprofile本体を転送せずanchor統計を `hud_calibration.json` とsummaryへ出す
+診断経路を追加。geometry有効/無効とstate証拠不足を分離し、profileの閾値で
+棄却されたanchorを本人視点へ流用する不整合も修正。resume contractは8。
+原因分類・変更・検証限界・Windows再実行手順は
+[HUD_DIAGNOSTICS_REVIEW.md](HUD_DIAGNOSTICS_REVIEW.md) に記載。
+今回はMacで実動画を再実行せず、Windows profileも参照していない。
+Mac検証は **433 passed / 3 skipped**（32.69秒）。Ruff成功、mypyは73ファイル成功。
+skipは実動画アンカー1件とPowerShell未導入による2件。Windows再検証は未実施。
+
 ## 2026-09-30: Windowsローカル実動画 / Git共有レポート
 
 `run_e2e_windows.ps1` と薄い `scripts/e2e/run_dataset_case.py` を追加。

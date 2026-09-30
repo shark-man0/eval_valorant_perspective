@@ -11,6 +11,7 @@ import re
 import shutil
 import subprocess
 import sys
+from contextlib import suppress
 from datetime import UTC, datetime
 from pathlib import Path
 from uuid import uuid4
@@ -103,9 +104,9 @@ def pack_identity(pack: Path) -> tuple[dict, str, str]:
     digest = hashlib.sha256()
     # Fingerprint GT, assertions, schemas and evaluator code, not cache/platform files.
     for path in sorted(
-    	pack.rglob("*"),
-    	key=lambda p: p.relative_to(pack).as_posix(),
-	):
+        pack.rglob("*"),
+        key=lambda p: p.relative_to(pack).as_posix(),
+    ):
         if path.is_file() and path.suffix in {".json", ".py"}:
             digest.update(path.relative_to(pack).as_posix().encode())
             digest.update(bytes.fromhex(sha256_file(path)))
@@ -356,6 +357,9 @@ def run_case(args, *, root=APP_ROOT, runner=subprocess.run, probe=None) -> int:
                 limit=args.evidence_limit,
             )
     except Exception as exc:
+        if not raw and (output / "raw_processing.json").is_file():
+            with suppress(OSError, ValueError):
+                raw = read_json(output / "raw_processing.json")
         error = str(exc) if isinstance(exc, CaseError) else "PREFLIGHT_OR_RUNTIME_FAILED"
         metadata["error_code"] = error
         evaluation = {**evaluation, "pass": False}

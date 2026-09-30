@@ -5,7 +5,7 @@ import math
 import re
 from collections.abc import Mapping, Sequence
 from copy import deepcopy
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from threading import Event
 from typing import Any, Protocol
@@ -15,6 +15,7 @@ from valorant_ai_coach.video import FrameSample, VideoMetadata
 from valorant_ai_coach.video.sampling import HudFrameSampler
 
 from .classifier import HudStateClassifier
+from .diagnostics import CalibrationTelemetry
 from .layout import CalibrationResult, HudLayout, NormalizedRoi
 from .models import HudObservationV2, accept_hud_value, empty_hud_values
 from .readers import (
@@ -54,6 +55,7 @@ class HudFrameAnalysis:
     calibration: CalibrationResult
     feature_observations: tuple[FrameFeatureObservation, ...] = ()
     diagnostics: tuple[str, ...] = ()
+    calibration_diagnostics: dict[str, Any] = field(default_factory=dict)
 
 
 class HudAnalyzer(Protocol):
@@ -229,6 +231,8 @@ class RealHudAnalyzer:
 
         if additional_signals is not None and len(additional_signals) != len(frames):
             raise ValueError("additional_signalsの件数はframesと一致する必要があります")
+        telemetry = CalibrationTelemetry(self.template_profile, self.layout)
+        self.last_calibration_diagnostics = telemetry.snapshot()
         if not frames:
             calibration = CalibrationResult(
                 False, ("no_frames", "calibration_required"), 0, None, None
@@ -313,6 +317,8 @@ class RealHudAnalyzer:
         if not calibration.calibrated:
             diagnostics.append("calibration_required: " + ", ".join(calibration.reasons))
 
+        current_anchors = detected_anchors or {}
+        current_calibration = calibration
         for index, (frame, feature) in enumerate(zip(frames, features, strict=True)):
             if cancel_event is not None and cancel_event.is_set():
                 raise InterruptedError("HUD frame analysis was cancelled")
@@ -349,6 +355,7 @@ class RealHudAnalyzer:
             signals.update(supplemental)
             values = empty_hud_values()
             reader_confidence: dict[str, float] = {}
+            identity_count = 0
             if calibration.calibrated:
                 self._read_values(image, values, reader_confidence, calibration, diagnostics)
                 for side, key in (("ally", "ally_alive"), ("enemy", "enemy_alive")):
@@ -373,7 +380,10 @@ class RealHudAnalyzer:
                     "remote_control_candidate", "cypher_camera_template",
                     "sova_drone_template", "skye_trailblazer_template",
                 ))
-                identity_scores = dict(anchor_scores)
+                # A score below the profile's own acceptance threshold cannot
+                # establish identity even when it exceeds the legacy 0.90 floor.
+                identity_scores = {name: score for name, score in anchor_scores.items()
+                                   if name in current_anchors}
                 profile_raw = getattr(self.template_profile, "raw", {})
                 if isinstance(profile_raw, Mapping):
                     for name, spec in profile_raw.get("anchors", {}).items():
@@ -381,12 +391,15 @@ class RealHudAnalyzer:
                             # Structural outlines survive remote/overlay views.
                             # A masked match calibrates geometry, not ownership.
                             identity_scores.pop(name, None)
-                if (not mode_present
-                        and sum(score >= 0.90 for score in identity_scores.values()) >= 3):
+                identity_count = sum(score >= 0.90 for score in identity_scores.values())
+                if not mode_present and identity_count >= 3:
                     signals["live_first_person"] = True
                 classified = self.state_classifier.classify(signals)
             else:
                 classified = self.state_classifier.classify({})
+
+            telemetry.record(current_anchors, anchor_scores, current_calibration, calibration,
+                             classified.primary_state, identity_count)
 
             values["player_specific_hud_valid"] = (
                 classified.player_specific_hud_valid if calibration.calibrated else False
@@ -474,6 +487,7 @@ class RealHudAnalyzer:
         )
         change_times = set(_observation_change_times(observations, evidence_by_frame))
         change_times.update(float(event["time_sec"]) for event in hud_events)
+        self.last_calibration_diagnostics = telemetry.snapshot()
         return HudFrameAnalysis(
             observations=tuple(observations),
             hud_events=hud_events,
@@ -481,6 +495,7 @@ class RealHudAnalyzer:
             calibration=calibration,
             feature_observations=features,
             diagnostics=tuple(dict.fromkeys(diagnostics)),
+            calibration_diagnostics=self.last_calibration_diagnostics,
         )
 
     def _read_values(
