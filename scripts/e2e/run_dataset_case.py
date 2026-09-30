@@ -102,7 +102,10 @@ def pack_identity(pack: Path) -> tuple[dict, str, str]:
         raise CaseError("VALIDATION_PACK_SOURCE_HASH_MISSING")
     digest = hashlib.sha256()
     # Fingerprint GT, assertions, schemas and evaluator code, not cache/platform files.
-    for path in sorted(pack.rglob("*")):
+    for path in sorted(
+    	pack.rglob("*"),
+    	key=lambda p: p.relative_to(pack).as_posix(),
+	):
         if path.is_file() and path.suffix in {".json", ".py"}:
             digest.update(path.relative_to(pack).as_posix().encode())
             digest.update(bytes.fromhex(sha256_file(path)))

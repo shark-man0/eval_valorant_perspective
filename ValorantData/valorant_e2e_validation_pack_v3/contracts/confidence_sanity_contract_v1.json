@@ -1,0 +1,15 @@
+{
+  "version": "1.0",
+  "rules": [
+    "Any emitted confidence must be finite and in [0,1].",
+    "HUD, visual, and map confidence fields remain separate when the output exposes them; evaluator must not manufacture one from Ground Truth.",
+    "No minimum confidence is asserted merely because a GT item exists.",
+    "Statistical calibration is advisory until the multi-fixture corpus requirement is met."
+  ],
+  "recommended_layers": [
+    "hud_confidence",
+    "visual_confidence",
+    "map_confidence",
+    "evaluation_confidence"
+  ]
+}

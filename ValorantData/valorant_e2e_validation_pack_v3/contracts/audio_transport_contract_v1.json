@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "source": {
+    "audio_stream_count": 3,
+    "codec": "aac",
+    "channels_each": 2
+  },
+  "mvp": {
+    "semantic_analysis_required": false,
+    "generated_clip_preserve_all_tracks": true
+  },
+  "pass_rule": "When a generated evidence clip is supplied to validate_media_transport.py it must contain three audio streams. Track semantics/names are not inferred."
+}

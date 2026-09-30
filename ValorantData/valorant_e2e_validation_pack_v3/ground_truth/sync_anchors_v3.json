@@ -1,0 +1,106 @@
+{
+  "version": "3.0",
+  "timebase": "container_pts_seconds",
+  "anchors": [
+    {
+      "id": "SYNC-R1-START-BEFORE",
+      "time_sec": 4.1,
+      "game_timer_display": "0:00",
+      "score_player": 0,
+      "score_enemy": 1,
+      "buy_phase_banner": true,
+      "evidence": "assets/reference_frames/r1_round_start_before_004.100s.jpg"
+    },
+    {
+      "id": "SYNC-R1-START-AFTER",
+      "time_sec": 4.15,
+      "game_timer_display": "1:39",
+      "score_player": 0,
+      "score_enemy": 1,
+      "buy_phase_banner": false,
+      "evidence": "assets/reference_frames/r1_round_start_after_004.150s.jpg"
+    },
+    {
+      "id": "SYNC-R1-MID",
+      "time_sec": 59.5,
+      "game_timer_display": "0:44",
+      "score_player": 0,
+      "score_enemy": 1,
+      "buy_phase_banner": false,
+      "evidence": "assets/reference_frames/r1_smoke_core_059.500s.jpg"
+    },
+    {
+      "id": "SYNC-R1-PRECUT",
+      "time_sec": 74.38,
+      "game_timer_display": "0:29",
+      "score_player": 0,
+      "score_enemy": 1,
+      "buy_phase_banner": false,
+      "evidence": "assets/reference_frames/r1_muzzle_3_074.380s.jpg"
+    },
+    {
+      "id": "SYNC-R1-POSTCUT",
+      "time_sec": 74.45,
+      "game_timer_display": "0:06",
+      "score_player": 0,
+      "score_enemy": 2,
+      "buy_phase_banner": false,
+      "evidence": "assets/reference_frames/r1_discontinuity_after_074.450s.jpg",
+      "after_known_discontinuity": "DISC-001"
+    },
+    {
+      "id": "SYNC-R2-BUY",
+      "time_sec": 82.0,
+      "game_timer_display": "0:29",
+      "score_player": 0,
+      "score_enemy": 2,
+      "buy_phase_banner": true,
+      "evidence": "assets/reference_frames/r2_buy_phase_082.000s.jpg"
+    },
+    {
+      "id": "SYNC-R2-START-BEFORE",
+      "time_sec": 111.4,
+      "game_timer_display": "0:00",
+      "score_player": 0,
+      "score_enemy": 2,
+      "buy_phase_banner": true,
+      "evidence": "assets/reference_frames/r2_round_start_before_111.400s.jpg"
+    },
+    {
+      "id": "SYNC-R2-START-AFTER",
+      "time_sec": 111.45,
+      "game_timer_display": "1:40",
+      "score_player": 0,
+      "score_enemy": 2,
+      "buy_phase_banner": false,
+      "evidence": "assets/reference_frames/r2_round_start_after_111.450s.jpg"
+    },
+    {
+      "id": "SYNC-R2-PREDEATH",
+      "time_sec": 147.5,
+      "game_timer_display": "1:03",
+      "score_player": 0,
+      "score_enemy": 2,
+      "buy_phase_banner": false,
+      "evidence": "assets/reference_frames/r2_predeath_hp80_147.500s.jpg"
+    },
+    {
+      "id": "SYNC-R2-SPECTATOR",
+      "time_sec": 151.0,
+      "game_timer_display": "1:00",
+      "score_player": 0,
+      "score_enemy": 2,
+      "buy_phase_banner": false,
+      "evidence": "assets/reference_frames/r2_spectator_chamber_151.000s.jpg"
+    },
+    {
+      "id": "SYNC-R2-LATE",
+      "time_sec": 170.0,
+      "game_timer_display": "0:41",
+      "score_player": 0,
+      "score_enemy": 2,
+      "buy_phase_banner": false,
+      "evidence": "assets/reference_frames/r2_spectator_trigger_firing_170.000s.jpg"
+    }
+  ]
+}

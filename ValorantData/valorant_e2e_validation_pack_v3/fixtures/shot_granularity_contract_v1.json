@@ -1,0 +1,104 @@
+{
+  "version": "1.0",
+  "scope": "detector/fusion contract logic; synthetic, not visual-perception evidence",
+  "cases": [
+    {
+      "id": "SHOT-SYN-SEMI-2",
+      "input_samples": [
+        {
+          "t": 0.0,
+          "ammo": 12,
+          "muzzle": false,
+          "reload": false
+        },
+        {
+          "t": 0.1,
+          "ammo": 11,
+          "muzzle": true,
+          "reload": false
+        },
+        {
+          "t": 0.55,
+          "ammo": 10,
+          "muzzle": true,
+          "reload": false
+        }
+      ],
+      "expected_shot_events": 2,
+      "rule": "Separated trigger starts are separate shot events."
+    },
+    {
+      "id": "SHOT-SYN-FULLAUTO",
+      "input_samples": [
+        {
+          "t": 0.0,
+          "ammo": 30,
+          "muzzle": false,
+          "reload": false
+        },
+        {
+          "t": 0.08,
+          "ammo": 29,
+          "muzzle": true,
+          "reload": false
+        },
+        {
+          "t": 0.14,
+          "ammo": 28,
+          "muzzle": true,
+          "reload": false
+        },
+        {
+          "t": 0.2,
+          "ammo": 27,
+          "muzzle": true,
+          "reload": false
+        },
+        {
+          "t": 0.27,
+          "ammo": 26,
+          "muzzle": true,
+          "reload": false
+        }
+      ],
+      "expected_shot_events": 1,
+      "rule": "Continuous automatic burst emits burst/trigger-start only, not one event per bullet."
+    },
+    {
+      "id": "SHOT-SYN-RELOAD",
+      "input_samples": [
+        {
+          "t": 0.0,
+          "ammo": 9,
+          "reserve": 36,
+          "reload": true
+        },
+        {
+          "t": 0.6,
+          "ammo": 12,
+          "reserve": 33,
+          "reload": false
+        }
+      ],
+      "expected_shot_events": 0,
+      "rule": "Ammo increase classified as reload cannot create shot."
+    },
+    {
+      "id": "SHOT-SYN-SWITCH",
+      "input_samples": [
+        {
+          "t": 0.0,
+          "ammo": 12,
+          "weapon": "Classic"
+        },
+        {
+          "t": 0.2,
+          "ammo": 25,
+          "weapon": "Vandal"
+        }
+      ],
+      "expected_shot_events": 0,
+      "rule": "Weapon-switch ammo discontinuity cannot create shot."
+    }
+  ]
+}

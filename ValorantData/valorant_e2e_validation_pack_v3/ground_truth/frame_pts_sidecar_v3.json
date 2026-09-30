@@ -1,0 +1,535 @@
+{
+  "version": "3.0",
+  "timebase": "container_pts_seconds",
+  "method": "nearest exact video packet PTS from ffprobe -show_packets; presentation-sorted",
+  "source_video": "Valorant_09-25-2026_0-37-29-379.mp4",
+  "frame_count_indexed": 75,
+  "max_abs_delta_sec": 0.006003,
+  "entries": [
+    {
+      "evidence_path": "assets/reference_frames/r1_astral1_after_012.500s.jpg",
+      "requested_sec": 12.5,
+      "decoded_frame_pts_sec": 12.502669,
+      "presentation_index": 748,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_astral1_first_absent_012.200s.jpg",
+      "requested_sec": 12.2,
+      "decoded_frame_pts_sec": 12.202669,
+      "presentation_index": 730,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_astral1_first_present_010.200s.jpg",
+      "requested_sec": 10.2,
+      "decoded_frame_pts_sec": 10.202669,
+      "presentation_index": 610,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_astral1_last_absent_010.100s.jpg",
+      "requested_sec": 10.1,
+      "decoded_frame_pts_sec": 10.102669,
+      "presentation_index": 604,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_astral1_last_present_012.100s.jpg",
+      "requested_sec": 12.1,
+      "decoded_frame_pts_sec": 12.102669,
+      "presentation_index": 724,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_astral2_after_028.500s.jpg",
+      "requested_sec": 28.5,
+      "decoded_frame_pts_sec": 28.502669,
+      "presentation_index": 1708,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_astral2_before_016.500s.jpg",
+      "requested_sec": 16.5,
+      "decoded_frame_pts_sec": 16.502669,
+      "presentation_index": 988,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_astral2_core_017.000s.jpg",
+      "requested_sec": 17.0,
+      "decoded_frame_pts_sec": 17.002669,
+      "presentation_index": 1018,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_astral2_core_028.000s.jpg",
+      "requested_sec": 28.0,
+      "decoded_frame_pts_sec": 28.002669,
+      "presentation_index": 1678,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_astral2_first_absent_028.500s.jpg",
+      "requested_sec": 28.5,
+      "decoded_frame_pts_sec": 28.502669,
+      "presentation_index": 1708,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_astral2_first_present_016.500s.jpg",
+      "requested_sec": 16.5,
+      "decoded_frame_pts_sec": 16.502669,
+      "presentation_index": 988,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_astral2_last_absent_016.400s.jpg",
+      "requested_sec": 16.4,
+      "decoded_frame_pts_sec": 16.402669,
+      "presentation_index": 982,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_astral2_last_present_028.400s.jpg",
+      "requested_sec": 28.4,
+      "decoded_frame_pts_sec": 28.402669,
+      "presentation_index": 1702,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_astral_core_010.500s.jpg",
+      "requested_sec": 10.5,
+      "decoded_frame_pts_sec": 10.502669,
+      "presentation_index": 628,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_buy_location_a_lobby_003.500s.jpg",
+      "requested_sec": 3.5,
+      "decoded_frame_pts_sec": 3.502669,
+      "presentation_index": 208,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_death_first_visible_074.400s.jpg",
+      "requested_sec": 74.4,
+      "decoded_frame_pts_sec": 74.402669,
+      "presentation_index": 4462,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_discontinuity_after_074.450s.jpg",
+      "requested_sec": 74.45,
+      "decoded_frame_pts_sec": 74.452669,
+      "presentation_index": 4465,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_muzzle_1_073.950s.jpg",
+      "requested_sec": 73.95,
+      "decoded_frame_pts_sec": 73.952669,
+      "presentation_index": 4435,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_muzzle_3_074.380s.jpg",
+      "requested_sec": 74.38,
+      "decoded_frame_pts_sec": 74.386003,
+      "presentation_index": 4461,
+      "delta_sec": 0.006003
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_nonself_killfeed_047.500s.jpg",
+      "requested_sec": 47.5,
+      "decoded_frame_pts_sec": 47.502669,
+      "presentation_index": 2848,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_post_smoke_070.500s.jpg",
+      "requested_sec": 70.5,
+      "decoded_frame_pts_sec": 70.502669,
+      "presentation_index": 4228,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_pre_smoke_058.500s.jpg",
+      "requested_sec": 58.5,
+      "decoded_frame_pts_sec": 58.502669,
+      "presentation_index": 3508,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_reload_072.800s.jpg",
+      "requested_sec": 72.8,
+      "decoded_frame_pts_sec": 72.802669,
+      "presentation_index": 4366,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_reload_before_complete_073.300s.jpg",
+      "requested_sec": 73.3,
+      "decoded_frame_pts_sec": 73.302669,
+      "presentation_index": 4396,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_reload_complete_073.400s.jpg",
+      "requested_sec": 73.4,
+      "decoded_frame_pts_sec": 73.402669,
+      "presentation_index": 4402,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_round_end_banner_074.433s.jpg",
+      "requested_sec": 74.433,
+      "decoded_frame_pts_sec": 74.436003,
+      "presentation_index": 4464,
+      "delta_sec": 0.003003
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_round_end_before_074.417s.jpg",
+      "requested_sec": 74.417,
+      "decoded_frame_pts_sec": 74.419336,
+      "presentation_index": 4463,
+      "delta_sec": 0.002336
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_round_end_ui_080.000s.jpg",
+      "requested_sec": 80.0,
+      "decoded_frame_pts_sec": 80.002669,
+      "presentation_index": 4798,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_round_start_after_004.150s.jpg",
+      "requested_sec": 4.15,
+      "decoded_frame_pts_sec": 4.152669,
+      "presentation_index": 247,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_round_start_before_004.100s.jpg",
+      "requested_sec": 4.1,
+      "decoded_frame_pts_sec": 4.102669,
+      "presentation_index": 244,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_shot_alive_074.250s.jpg",
+      "requested_sec": 74.25,
+      "decoded_frame_pts_sec": 74.252669,
+      "presentation_index": 4453,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_smoke_core_059.500s.jpg",
+      "requested_sec": 59.5,
+      "decoded_frame_pts_sec": 59.502669,
+      "presentation_index": 3568,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_smoke_core_070.000s.jpg",
+      "requested_sec": 70.0,
+      "decoded_frame_pts_sec": 70.002669,
+      "presentation_index": 4198,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_smoke_first_absent_070.300s.jpg",
+      "requested_sec": 70.3,
+      "decoded_frame_pts_sec": 70.302669,
+      "presentation_index": 4216,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_smoke_first_present_059.500s.jpg",
+      "requested_sec": 59.5,
+      "decoded_frame_pts_sec": 59.502669,
+      "presentation_index": 3568,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_smoke_last_absent_059.400s.jpg",
+      "requested_sec": 59.4,
+      "decoded_frame_pts_sec": 59.402669,
+      "presentation_index": 3562,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r1_smoke_last_present_070.200s.jpg",
+      "requested_sec": 70.2,
+      "decoded_frame_pts_sec": 70.202669,
+      "presentation_index": 4210,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_astral1_first_absent_112.500s.jpg",
+      "requested_sec": 112.5,
+      "decoded_frame_pts_sec": 112.502669,
+      "presentation_index": 6748,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_astral1_first_present_111.300s.jpg",
+      "requested_sec": 111.3,
+      "decoded_frame_pts_sec": 111.302669,
+      "presentation_index": 6676,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_astral1_last_absent_111.100s.jpg",
+      "requested_sec": 111.1,
+      "decoded_frame_pts_sec": 111.102669,
+      "presentation_index": 6664,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_astral1_last_present_112.400s.jpg",
+      "requested_sec": 112.4,
+      "decoded_frame_pts_sec": 112.402669,
+      "presentation_index": 6742,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_astral2_after_120.500s.jpg",
+      "requested_sec": 120.5,
+      "decoded_frame_pts_sec": 120.502669,
+      "presentation_index": 7228,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_astral2_before_115.500s.jpg",
+      "requested_sec": 115.5,
+      "decoded_frame_pts_sec": 115.502669,
+      "presentation_index": 6928,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_astral2_core_116.000s.jpg",
+      "requested_sec": 116.0,
+      "decoded_frame_pts_sec": 116.002669,
+      "presentation_index": 6958,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_astral2_core_119.500s.jpg",
+      "requested_sec": 119.5,
+      "decoded_frame_pts_sec": 119.502669,
+      "presentation_index": 7168,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_astral2_first_absent_120.200s.jpg",
+      "requested_sec": 120.2,
+      "decoded_frame_pts_sec": 120.202669,
+      "presentation_index": 7210,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_astral2_first_present_115.600s.jpg",
+      "requested_sec": 115.6,
+      "decoded_frame_pts_sec": 115.602669,
+      "presentation_index": 6934,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_astral2_last_absent_115.500s.jpg",
+      "requested_sec": 115.5,
+      "decoded_frame_pts_sec": 115.502669,
+      "presentation_index": 6928,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_astral2_last_present_120.100s.jpg",
+      "requested_sec": 120.1,
+      "decoded_frame_pts_sec": 120.102669,
+      "presentation_index": 7204,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_buy1_first_absent_091.450s.jpg",
+      "requested_sec": 91.45,
+      "decoded_frame_pts_sec": 91.452669,
+      "presentation_index": 5485,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_buy1_first_present_083.350s.jpg",
+      "requested_sec": 83.35,
+      "decoded_frame_pts_sec": 83.352669,
+      "presentation_index": 4999,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_buy1_last_absent_083.250s.jpg",
+      "requested_sec": 83.25,
+      "decoded_frame_pts_sec": 83.252669,
+      "presentation_index": 4993,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_buy1_last_present_091.400s.jpg",
+      "requested_sec": 91.4,
+      "decoded_frame_pts_sec": 91.402669,
+      "presentation_index": 5482,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_buy2_first_absent_110.850s.jpg",
+      "requested_sec": 110.85,
+      "decoded_frame_pts_sec": 110.852669,
+      "presentation_index": 6649,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_buy2_first_present_108.050s.jpg",
+      "requested_sec": 108.05,
+      "decoded_frame_pts_sec": 108.052669,
+      "presentation_index": 6481,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_buy2_last_absent_107.950s.jpg",
+      "requested_sec": 107.95,
+      "decoded_frame_pts_sec": 107.952669,
+      "presentation_index": 6475,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_buy2_last_present_110.800s.jpg",
+      "requested_sec": 110.8,
+      "decoded_frame_pts_sec": 110.802669,
+      "presentation_index": 6646,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_buy_live_105.000s.jpg",
+      "requested_sec": 105.0,
+      "decoded_frame_pts_sec": 105.002669,
+      "presentation_index": 6298,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_buy_menu_084.000s.jpg",
+      "requested_sec": 84.0,
+      "decoded_frame_pts_sec": 84.002669,
+      "presentation_index": 5038,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_buy_menu_090.000s.jpg",
+      "requested_sec": 90.0,
+      "decoded_frame_pts_sec": 90.002669,
+      "presentation_index": 5398,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_buy_menu_108.000s.jpg",
+      "requested_sec": 108.0,
+      "decoded_frame_pts_sec": 108.002669,
+      "presentation_index": 6478,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_buy_menu_110.000s.jpg",
+      "requested_sec": 110.0,
+      "decoded_frame_pts_sec": 110.002669,
+      "presentation_index": 6598,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_buy_phase_082.000s.jpg",
+      "requested_sec": 82.0,
+      "decoded_frame_pts_sec": 82.002669,
+      "presentation_index": 4918,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_damaged_hp22_147.600s.jpg",
+      "requested_sec": 147.6,
+      "decoded_frame_pts_sec": 147.602669,
+      "presentation_index": 8854,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_death_first_visible_147.700s.jpg",
+      "requested_sec": 147.7,
+      "decoded_frame_pts_sec": 147.702669,
+      "presentation_index": 8860,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_death_ui_148.000s.jpg",
+      "requested_sec": 148.0,
+      "decoded_frame_pts_sec": 148.002669,
+      "presentation_index": 8878,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_expanded_map_149.000s.jpg",
+      "requested_sec": 149.0,
+      "decoded_frame_pts_sec": 149.002669,
+      "presentation_index": 8938,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_hp80_143.000s.jpg",
+      "requested_sec": 143.0,
+      "decoded_frame_pts_sec": 143.002669,
+      "presentation_index": 8578,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_post_astral1_112.600s.jpg",
+      "requested_sec": 112.6,
+      "decoded_frame_pts_sec": 112.602669,
+      "presentation_index": 6754,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_predeath_hp80_147.500s.jpg",
+      "requested_sec": 147.5,
+      "decoded_frame_pts_sec": 147.502669,
+      "presentation_index": 8848,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_round_start_after_111.450s.jpg",
+      "requested_sec": 111.45,
+      "decoded_frame_pts_sec": 111.452669,
+      "presentation_index": 6685,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_round_start_before_111.400s.jpg",
+      "requested_sec": 111.4,
+      "decoded_frame_pts_sec": 111.402669,
+      "presentation_index": 6682,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_spectator_chamber_151.000s.jpg",
+      "requested_sec": 151.0,
+      "decoded_frame_pts_sec": 151.002669,
+      "presentation_index": 9058,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_spectator_map_150.500s.jpg",
+      "requested_sec": 150.5,
+      "decoded_frame_pts_sec": 150.502669,
+      "presentation_index": 9028,
+      "delta_sec": 0.002669
+    },
+    {
+      "evidence_path": "assets/reference_frames/r2_spectator_trigger_firing_170.000s.jpg",
+      "requested_sec": 170.0,
+      "decoded_frame_pts_sec": 170.002669,
+      "presentation_index": 10198,
+      "delta_sec": 0.002669
+    }
+  ]
+}

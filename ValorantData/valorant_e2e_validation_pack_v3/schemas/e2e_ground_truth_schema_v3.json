@@ -1,0 +1,861 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "e2e_ground_truth_schema_v3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "fixture_id",
+    "timebase",
+    "known_discontinuities",
+    "rounds",
+    "cross_round_invariants",
+    "continuous_segments",
+    "observation_policy"
+  ],
+  "properties": {
+    "version": {
+      "const": "3.0"
+    },
+    "fixture_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "timebase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "profile"
+      ],
+      "properties": {
+        "kind": {
+          "const": "container_pts_seconds"
+        },
+        "profile": {
+          "type": "string"
+        }
+      }
+    },
+    "known_discontinuities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "kind",
+          "last_pre_jump_sec",
+          "first_post_jump_sec",
+          "video_pts_continuous",
+          "observed_game_timer_before",
+          "observed_game_timer_after",
+          "observed_score_before",
+          "observed_score_after",
+          "policy",
+          "evidence"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "const": "content_time_jump"
+          },
+          "last_pre_jump_sec": {
+            "type": "number",
+            "minimum": 0
+          },
+          "first_post_jump_sec": {
+            "type": "number",
+            "minimum": 0
+          },
+          "video_pts_continuous": {
+            "type": "boolean"
+          },
+          "observed_game_timer_before": {
+            "type": "string"
+          },
+          "observed_game_timer_after": {
+            "type": "string"
+          },
+          "observed_score_before": {
+            "type": "string"
+          },
+          "observed_score_after": {
+            "type": "string"
+          },
+          "policy": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "pattern": "^assets/"
+            }
+          }
+        }
+      }
+    },
+    "rounds": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/round"
+      }
+    },
+    "cross_round_invariants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "description"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "continuous_segments": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "interval",
+          "reason"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "interval": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "number",
+                "minimum": 0
+              }
+            ],
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "reason": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "observation_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "utility_used",
+        "shot_granularity"
+      ],
+      "properties": {
+        "utility_used": {
+          "type": "string"
+        },
+        "shot_granularity": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "point_event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "type",
+        "actor",
+        "evidence_bracket",
+        "tolerance_before_sec",
+        "tolerance_after_sec",
+        "facts",
+        "evidence",
+        "required_event_attributes"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "kind": {
+          "const": "point_event"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "round_start",
+            "player_death",
+            "round_end"
+          ]
+        },
+        "actor": {
+          "type": "string",
+          "enum": [
+            "player",
+            "ally",
+            "enemy",
+            "team",
+            "system",
+            "unknown"
+          ]
+        },
+        "evidence_bracket": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "last_absent_sec",
+            "first_present_sec"
+          ],
+          "properties": {
+            "last_absent_sec": {
+              "type": "number",
+              "minimum": 0
+            },
+            "first_present_sec": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "tolerance_before_sec": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 2
+        },
+        "tolerance_after_sec": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 2
+        },
+        "must_precede": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "facts": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "score_before": {
+              "type": "string"
+            },
+            "score_after_confirmed_after_discontinuity": {
+              "type": "string"
+            },
+            "ace_team": {
+              "type": "string",
+              "enum": [
+                "player",
+                "enemy",
+                "unknown"
+              ]
+            },
+            "victim_name": {
+              "type": "string"
+            },
+            "killer_agent": {
+              "type": "string"
+            },
+            "combat_report_damage_received": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "player_is_dead": {
+              "type": "boolean"
+            }
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^assets/"
+          }
+        },
+        "required_event_attributes": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "victim_name": {
+              "type": "string"
+            },
+            "killer_agent": {
+              "type": "string"
+            },
+            "combat_report_damage_received": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "state_interval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "state_class",
+        "state",
+        "subtype",
+        "core_interval",
+        "outer_interval",
+        "edge_policy",
+        "min_core_coverage",
+        "exhaustive",
+        "evidence"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "kind": {
+          "const": "state_interval"
+        },
+        "state_class": {
+          "type": "string",
+          "enum": [
+            "primary_state",
+            "flag"
+          ]
+        },
+        "state": {
+          "type": "string"
+        },
+        "subtype": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "core_interval": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "number",
+              "minimum": 0
+            }
+          ],
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "outer_interval": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "number",
+              "minimum": 0
+            }
+          ],
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "edge_policy": {
+          "type": "string"
+        },
+        "min_core_coverage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "exhaustive": {
+          "type": "boolean"
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^assets/"
+          }
+        },
+        "edge_brackets": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "start",
+            "end"
+          ],
+          "properties": {
+            "start": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "last_absent_sec",
+                "first_present_sec"
+              ],
+              "properties": {
+                "last_absent_sec": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "first_present_sec": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              }
+            },
+            "end": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "last_present_sec",
+                "first_absent_sec"
+              ],
+              "properties": {
+                "last_present_sec": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "first_absent_sec": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "ownership_interval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "owner",
+        "core_interval",
+        "outer_interval",
+        "evidence"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "kind": {
+          "const": "ownership_interval"
+        },
+        "owner": {
+          "type": "string",
+          "enum": [
+            "self",
+            "self_dead_ui",
+            "teammate_spectated",
+            "unknown"
+          ]
+        },
+        "core_interval": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "number",
+              "minimum": 0
+            }
+          ],
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "outer_interval": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "number",
+              "minimum": 0
+            }
+          ],
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^assets/"
+          }
+        }
+      }
+    },
+    "snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "time_sec",
+        "tolerance_sec",
+        "expected",
+        "evidence",
+        "derived_expectations"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "kind": {
+          "const": "snapshot"
+        },
+        "time_sec": {
+          "type": "number",
+          "minimum": 0
+        },
+        "tolerance_sec": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "expected": {
+          "type": "object",
+          "additionalProperties": false,
+          "minProperties": 1,
+          "properties": {
+            "primary_state": {
+              "type": "string"
+            },
+            "remote_control_subtype": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "buy_phase_banner": {
+              "type": "boolean"
+            },
+            "player_alive": {
+              "type": "boolean"
+            },
+            "player_hp": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 200
+            },
+            "player_armor": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 200
+            },
+            "ammo_mag": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "ammo_reserve": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "reload_animation_visible": {
+              "type": "boolean"
+            },
+            "muzzle_flash_visible": {
+              "type": "boolean"
+            },
+            "location_label_raw": {
+              "type": "string"
+            },
+            "score_player": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "score_enemy": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "game_timer_display": {
+              "type": "string"
+            },
+            "vision_obscured_smoke": {
+              "type": "boolean"
+            },
+            "combat_report_visible": {
+              "type": "boolean"
+            },
+            "nonself_killfeed_row_visible": {
+              "type": "boolean"
+            },
+            "spectator_primary_state": {
+              "type": "boolean"
+            },
+            "view_owner": {
+              "type": "string"
+            },
+            "spectated_name": {
+              "type": "string"
+            },
+            "spectated_hp": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 200
+            },
+            "spectated_ammo_mag": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "spectated_ammo_reserve": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "spectated_weapon": {
+              "type": "string"
+            },
+            "spectated_location_label_raw": {
+              "type": "string"
+            },
+            "weapon": {
+              "type": "string"
+            }
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^assets/"
+          }
+        },
+        "derived_expectations": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "zone_id": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "value",
+                "source_contract",
+                "provenance"
+              ],
+              "properties": {
+                "value": {
+                  "type": "string"
+                },
+                "source_contract": {
+                  "type": "string"
+                },
+                "provenance": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "visual_observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "observation",
+        "time_sec",
+        "actor",
+        "evidence"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "kind": {
+          "const": "visual_observation"
+        },
+        "observation": {
+          "type": "string",
+          "enum": [
+            "muzzle_flash"
+          ]
+        },
+        "time_sec": {
+          "type": "number",
+          "minimum": 0
+        },
+        "actor": {
+          "type": "string"
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^assets/"
+          }
+        }
+      }
+    },
+    "count_constraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "actor",
+        "min",
+        "max"
+      ],
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "actor": {
+          "type": "string"
+        },
+        "window": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "number",
+              "minimum": 0
+            }
+          ],
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "min": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "round": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "round_id",
+        "match_round_number_from_score",
+        "clip_censoring",
+        "point_events",
+        "state_intervals",
+        "snapshots",
+        "round_package_expectations"
+      ],
+      "properties": {
+        "round_id": {
+          "type": "string"
+        },
+        "match_round_number_from_score": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "clip_censoring": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "start",
+            "end"
+          ],
+          "properties": {
+            "start": {
+              "type": "string"
+            },
+            "end": {
+              "type": "string"
+            }
+          }
+        },
+        "point_events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/point_event"
+          }
+        },
+        "state_intervals": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/state_interval"
+          }
+        },
+        "ownership_intervals": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ownership_interval"
+          }
+        },
+        "snapshots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/snapshot"
+          }
+        },
+        "visual_observations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/visual_observation"
+          }
+        },
+        "round_package_expectations": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "event_count_constraints"
+          ],
+          "properties": {
+            "event_count_constraints": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/count_constraint"
+              }
+            },
+            "must_not_span_discontinuities": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "clip_end_policy": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

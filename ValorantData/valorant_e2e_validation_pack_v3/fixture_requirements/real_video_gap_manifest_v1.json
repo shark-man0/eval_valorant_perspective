@@ -1,0 +1,41 @@
+{
+  "version": "1.0",
+  "status": "requires_additional_recordings",
+  "requirements": [
+    {
+      "id": "REQ-CONT-COMBAT",
+      "purpose": "Perception-level reaction/rotation/duration timing",
+      "capture": "One uncropped full round with no editor/content jumps; include at least one enemy spotted -> engagement -> first shot sequence."
+    },
+    {
+      "id": "REQ-SHOT-SEMI",
+      "purpose": "Perception-level semi-auto granularity",
+      "capture": "Clean 2-3 deliberate taps separated by >=0.35s, ammo HUD visible."
+    },
+    {
+      "id": "REQ-SHOT-FULL",
+      "purpose": "Perception-level full-auto granularity",
+      "capture": "One sustained automatic burst, ammo HUD visible, no weapon switch/reload overlapping."
+    },
+    {
+      "id": "REQ-OBJECTIVE",
+      "purpose": "Plant/defuse/objective state coverage",
+      "capture": "At least one plant and one defuse/round-end path."
+    },
+    {
+      "id": "REQ-SELF-KILL",
+      "purpose": "Self kill/multikill ownership and kill-feed fusion",
+      "capture": "At least one self kill and one multi-kill."
+    },
+    {
+      "id": "REQ-OTHER-REMOTE",
+      "purpose": "Remote-view generalization",
+      "capture": "Cypher camera/Sova drone/Skye Trailblazer examples if those agents enter supported scope."
+    },
+    {
+      "id": "REQ-CONFIDENCE-CORPUS",
+      "purpose": "Statistical confidence calibration",
+      "capture": "Multiple positive/negative clips per event class; target >=50 labeled opportunities per class before interpreting reliability curves."
+    }
+  ]
+}

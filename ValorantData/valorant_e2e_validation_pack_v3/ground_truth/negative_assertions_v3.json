@@ -1,0 +1,326 @@
+{
+  "version": "3.0",
+  "assertions": [
+    {
+      "id": "NEG-REMOTE-R1A",
+      "window": [
+        10.202669,
+        12.102669
+      ],
+      "when": {
+        "primary_state": "remote_control_view",
+        "subtype": "astra_astral"
+      },
+      "must_not_emit_player_event_types": [
+        "shot",
+        "movement_state",
+        "preaim_started",
+        "peek",
+        "info_peek",
+        "position_change",
+        "position_hold",
+        "engagement_start"
+      ],
+      "reason": "Astral Form is not normal player first-person mechanics."
+    },
+    {
+      "id": "NEG-REMOTE-R1B",
+      "window": [
+        16.502669,
+        28.402669
+      ],
+      "when": {
+        "primary_state": "remote_control_view",
+        "subtype": "astra_astral"
+      },
+      "must_not_emit_player_event_types": [
+        "shot",
+        "movement_state",
+        "preaim_started",
+        "peek",
+        "info_peek",
+        "position_change",
+        "position_hold",
+        "engagement_start"
+      ],
+      "reason": "Extended Astral Form suppression."
+    },
+    {
+      "id": "NEG-REMOTE-R2A",
+      "window": [
+        111.302669,
+        112.402669
+      ],
+      "when": {
+        "primary_state": "remote_control_view",
+        "subtype": "astra_astral"
+      },
+      "must_not_emit_player_event_types": [
+        "shot",
+        "movement_state",
+        "preaim_started",
+        "peek",
+        "info_peek",
+        "position_change",
+        "position_hold",
+        "engagement_start"
+      ],
+      "reason": "Astral Form overlaps round start; mechanics remain suppressed."
+    },
+    {
+      "id": "NEG-REMOTE-R2B",
+      "window": [
+        115.602669,
+        120.102669
+      ],
+      "when": {
+        "primary_state": "remote_control_view",
+        "subtype": "astra_astral"
+      },
+      "must_not_emit_player_event_types": [
+        "shot",
+        "movement_state",
+        "preaim_started",
+        "peek",
+        "info_peek",
+        "position_change",
+        "position_hold",
+        "engagement_start"
+      ],
+      "reason": "Second R2 Astral window."
+    },
+    {
+      "id": "NEG-ASTRAL-NOT-SMOKE",
+      "window": [
+        10.5,
+        11.5
+      ],
+      "must_not_state_match": {
+        "state": "vision_obscured_smoke"
+      },
+      "reason": "Do not classify Astral purple overlay as smoke."
+    },
+    {
+      "id": "NEG-SMOKE-NOT-ASTRAL",
+      "window": [
+        59.502669,
+        70.202669
+      ],
+      "must_not_state_match": {
+        "state": "remote_control_view",
+        "subtype": "astra_astral"
+      },
+      "reason": "Do not classify purple smoke as Astral Form."
+    },
+    {
+      "id": "NEG-SMOKE-WORLD-SPOT",
+      "window": [
+        59.502669,
+        70.202669
+      ],
+      "must_not_emit_matching": {
+        "type": "enemy_spotted",
+        "actor": "player",
+        "attributes": {
+          "source": "world_view"
+        }
+      },
+      "reason": "World view is fully smoke-obscured in the confirmed core. A minimap-sourced detection is not prohibited."
+    },
+    {
+      "id": "NEG-NONSELF-KILLFEED",
+      "window": [
+        47.3,
+        49.0
+      ],
+      "must_not_emit_player_event_types": [
+        "player_death"
+      ],
+      "reason": "Visible kill-feed activity is non-self while sharkman remains alive."
+    },
+    {
+      "id": "NEG-RELOAD-NOT-SHOT",
+      "window": [
+        72.8,
+        73.4
+      ],
+      "must_not_emit_player_event_types": [
+        "shot"
+      ],
+      "reason": "Ammo increases 9/36 -> 12/33 during a visible reload. Reload/ammo increase must not become shot."
+    },
+    {
+      "id": "NEG-BUY-MENU-1",
+      "window": [
+        83.352669,
+        91.402669
+      ],
+      "must_not_emit_player_event_types": [
+        "shot",
+        "movement_state",
+        "preaim_started",
+        "peek",
+        "info_peek",
+        "engagement_start"
+      ],
+      "reason": "Buy menu is open."
+    },
+    {
+      "id": "NEG-BUY-MENU-2",
+      "window": [
+        108.052669,
+        110.802669
+      ],
+      "must_not_emit_player_event_types": [
+        "shot",
+        "movement_state",
+        "preaim_started",
+        "peek",
+        "info_peek",
+        "engagement_start"
+      ],
+      "reason": "Second confirmed buy-menu window."
+    },
+    {
+      "id": "NEG-SPECTATOR-COUNT-TEXT",
+      "window": [
+        74.2,
+        74.3
+      ],
+      "must_not_state_match": {
+        "state": "spectator_first_person"
+      },
+      "reason": "Live player footage can display 観戦者 N; text alone must not force spectator state."
+    },
+    {
+      "id": "NEG-DEAD-PLAYER-MECHANICS",
+      "window": [
+        147.7,
+        171.019336
+      ],
+      "must_not_emit_player_event_types": [
+        "shot",
+        "movement_state",
+        "preaim_started",
+        "peek",
+        "info_peek",
+        "position_change",
+        "position_hold",
+        "rotation_started",
+        "rotation_completed",
+        "engagement_start",
+        "enemy_spotted",
+        "utility_used",
+        "ally_entry_start",
+        "ally_enter_site"
+      ],
+      "reason": "After self death, death UI / expanded map / teammate spectator footage must not produce player-owned mechanics."
+    },
+    {
+      "id": "NEG-EXPANDED-MAP-MECHANICS",
+      "window": [
+        149.0,
+        150.5
+      ],
+      "must_not_emit_player_event_types": [
+        "shot",
+        "movement_state",
+        "preaim_started",
+        "peek",
+        "info_peek",
+        "engagement_start"
+      ],
+      "reason": "Expanded tactical map is not live aiming view."
+    },
+    {
+      "id": "NEG-SPECTATOR-POISON-151",
+      "window": [
+        150.9,
+        151.1
+      ],
+      "must_not_update_player_fields_to": {
+        "player_hp": 100
+      },
+      "reason": "These are known teammate values at 151s, not sharkman state.",
+      "must_not_match_snapshot_subset": {
+        "ammo_mag": 21,
+        "ammo_reserve": 50,
+        "weapon": "Vandal",
+        "zone_id": "summit_mid"
+      }
+    },
+    {
+      "id": "NEG-SPECTATOR-POISON-170",
+      "window": [
+        169.9,
+        170.1
+      ],
+      "must_not_update_player_fields_to": {
+        "player_hp": 85
+      },
+      "must_not_emit_matching": {
+        "type": "shot",
+        "actor": "player"
+      },
+      "reason": "TRIGGER is firing at 170s; the muzzle flash must not become sharkman shot.",
+      "must_not_match_snapshot_subset": {
+        "ammo_mag": 22,
+        "ammo_reserve": 31,
+        "weapon": "Vandal",
+        "zone_id": "summit_b_approach"
+      }
+    },
+    {
+      "id": "NEG-STALE-COMBAT-REPORT",
+      "window": [
+        82.0,
+        111.4
+      ],
+      "must_not_emit_player_event_types": [
+        "player_death"
+      ],
+      "reason": "R1 Combat Report remains visible during R2 buy phase; stale UI must not create another death."
+    },
+    {
+      "id": "NEG-R2-NO-ROUND-END",
+      "window": [
+        111.45,
+        171.019336
+      ],
+      "must_not_emit_matching": {
+        "type": "round_end"
+      },
+      "reason": "Round 2 continues beyond source EOF."
+    },
+    {
+      "id": "NEG-SAME-ZONE-CALLOUT-CHANGE",
+      "window": [
+        3.4,
+        4.1
+      ],
+      "must_not_emit_matching": {
+        "type": "position_change",
+        "actor": "player",
+        "attributes": {
+          "from": "summit_a_approach",
+          "to": "summit_a_approach"
+        }
+      },
+      "reason": "A ロビー and A メイン are the same operational zone in the current map contract; string change alone is not position_change."
+    },
+    {
+      "id": "NEG-CONTENT-JUMP-SPAN",
+      "window": [
+        74.433,
+        74.45
+      ],
+      "must_not_span_temporal_features": [
+        "movement_state.duration_sec",
+        "rotation_started.delay_since_enemy_info_sec",
+        "rotation_completed.duration_sec",
+        "preaim_started.lead_sec"
+      ],
+      "reason": "Known source content jump invalidates continuous-time features across the boundary."
+    }
+  ]
+}

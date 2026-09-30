@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "purpose": "Stable E2E vocabulary for attributes whose upstream contract names the field but does not enumerate values.",
+  "events": {
+    "enemy_spotted": {
+      "source_enum": [
+        "world_view",
+        "minimap",
+        "mixed"
+      ],
+      "unknown_policy": "unknown/null rather than inventing a source"
+    },
+    "enemy_lost": {
+      "source_enum": [
+        "world_view",
+        "minimap",
+        "mixed"
+      ],
+      "unknown_policy": "unknown/null rather than inventing a source"
+    }
+  },
+  "note": "world_view is the canonical token used by NEG-SMOKE-WORLD-SPOT."
+}

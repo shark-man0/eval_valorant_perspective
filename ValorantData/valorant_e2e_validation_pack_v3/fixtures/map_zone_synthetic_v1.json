@@ -1,0 +1,132 @@
+{
+  "version": "1.0",
+  "scope": "resolver mechanics independent of Summit authoring accuracy",
+  "canvas": "normalized_0_1",
+  "calibration": {
+    "pixel_roi": [
+      100,
+      50,
+      500,
+      450
+    ],
+    "pixel_to_norm": "x=(px-100)/400; y=(py-50)/400",
+    "confidence": 0.99
+  },
+  "zones": [
+    {
+      "zone_id": "syn_left",
+      "polygon": [
+        [
+          0,
+          0
+        ],
+        [
+          0.45,
+          0
+        ],
+        [
+          0.45,
+          1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "kind": "site"
+    },
+    {
+      "zone_id": "syn_mid",
+      "polygon": [
+        [
+          0.45,
+          0
+        ],
+        [
+          0.55,
+          0
+        ],
+        [
+          0.55,
+          1
+        ],
+        [
+          0.45,
+          1
+        ]
+      ],
+      "kind": "transit"
+    },
+    {
+      "zone_id": "syn_right",
+      "polygon": [
+        [
+          0.55,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          0.55,
+          1
+        ]
+      ],
+      "kind": "site"
+    }
+  ],
+  "boundary_margin_norm": 0.02,
+  "cases": [
+    {
+      "id": "MZ-SYN-LEFT",
+      "pixel": [
+        180,
+        250
+      ],
+      "expected_zone": "syn_left",
+      "expected_boundary_state": "interior"
+    },
+    {
+      "id": "MZ-SYN-MID",
+      "pixel": [
+        300,
+        250
+      ],
+      "expected_zone": "syn_mid",
+      "expected_boundary_state": "interior"
+    },
+    {
+      "id": "MZ-SYN-RIGHT",
+      "pixel": [
+        420,
+        250
+      ],
+      "expected_zone": "syn_right",
+      "expected_boundary_state": "interior"
+    },
+    {
+      "id": "MZ-SYN-B45",
+      "pixel": [
+        280,
+        250
+      ],
+      "expected_zone": null,
+      "expected_boundary_state": "ambiguous"
+    },
+    {
+      "id": "MZ-SYN-B55",
+      "pixel": [
+        320,
+        250
+      ],
+      "expected_zone": null,
+      "expected_boundary_state": "ambiguous"
+    }
+  ],
+  "limitation": "This proves calibration/point-in-polygon/boundary behavior, not the correctness of Summit polygons."
+}

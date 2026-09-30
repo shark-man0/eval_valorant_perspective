@@ -1,0 +1,26 @@
+{
+  "version": "3.0",
+  "name": "valorant_e2e_validation_pack_v3",
+  "canonical_ground_truth": "ground_truth/timeline_ground_truth_v3.json",
+  "generated_assertions": "tests/generated/e2e_assertions_v3.json",
+  "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "reference_frame_count": 75,
+  "counts": {
+    "rounds": 2,
+    "point_events": 5,
+    "state_intervals": 12,
+    "ownership_intervals": 5,
+    "snapshots": 23,
+    "visual_observations": 3,
+    "negative_assertions": 20
+  },
+  "synthetic_contract_fixtures": [
+    "fixtures/shot_granularity_contract_v1.json",
+    "fixtures/map_zone_synthetic_v1.json",
+    "fixtures/continuous_combat_contract_v1.json"
+  ],
+  "integration_overrides": [
+    "integration_overrides/map_zone_v3/summit_observed_ja_alias_overlay_v1.json"
+  ],
+  "remaining_real_data_requirements": "fixture_requirements/real_video_gap_manifest_v1.json"
+}

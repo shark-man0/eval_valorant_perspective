@@ -1,0 +1,38 @@
+{
+  "version": "1.0",
+  "scope": "consumer/temporal logic only; synthetic continuous segment",
+  "timeline": [
+    {
+      "t": 1.0,
+      "type": "enemy_spotted",
+      "actor": "player",
+      "attributes": {
+        "source": "world_view"
+      }
+    },
+    {
+      "t": 1.05,
+      "type": "engagement_start",
+      "actor": "player"
+    },
+    {
+      "t": 1.2,
+      "type": "shot",
+      "actor": "player",
+      "attributes": {
+        "first_shot": true
+      }
+    },
+    {
+      "t": 1.8,
+      "type": "engagement_end",
+      "actor": "player"
+    }
+  ],
+  "expected_metrics": {
+    "enemy_info_to_first_shot_sec": 0.2,
+    "engagement_duration_sec": 0.75
+  },
+  "discontinuities": [],
+  "limitation": "Validates temporal consumer math but not perception from real pixels. A real uncropped combat fixture is still required for end-to-end perception timing."
+}

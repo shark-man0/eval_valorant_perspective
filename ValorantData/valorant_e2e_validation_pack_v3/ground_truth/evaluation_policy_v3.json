@@ -1,0 +1,18 @@
+{
+  "version": "3.0",
+  "tolerance_precedence": "Per-item tolerance is canonical. There is no widening global tolerance. Defaults apply only when an item omits a tolerance, and v3 canonical GT does not omit required tolerances.",
+  "defaults": {
+    "point_event_before_sec": 0.1,
+    "point_event_after_sec": 0.1,
+    "snapshot_sec": 0.1
+  },
+  "point_event_matching": "candidate time must fall in [last_absent - tolerance_before, first_present + tolerance_after], type and actor must match, and ordering invariants also apply",
+  "state_interval_matching": "detector must cover at least min_core_coverage of core_interval; outer_interval minus core_interval is dont-care; detections outside outer_interval count as overreach only where the interval is marked exhaustive",
+  "snapshot_matching": "nearest output snapshot inside ±tolerance_sec must match every explicitly listed expected field; unspecified fields are not asserted",
+  "unknown_policy": "Unspecified facts are neither positive nor negative assertions unless an exhaustive region explicitly closes the world for the listed category.",
+  "leakage_policy": "Runtime may read inputs/e2e_inputs.json and source video only. ground_truth/, assets/, and generated assertions are evaluation-side only.",
+  "frame_pts_policy": "Evidence filenames carry requested container times; frame_pts_sidecar_v3.json carries nearest exact packet PTS and must stay within one frame of the requested time.",
+  "discontinuity_policy": "No temporal feature with a start/end interval may cross a known discontinuity. Evaluator consumes output.temporal_features to enforce this.",
+  "ownership_policy": "Ownership intervals are first-class assertions; player-owned mechanics during self_dead_ui/teammate_spectated windows fail through negatives.",
+  "confidence_policy": "This single fixture checks numeric/domain sanity only. Statistical calibration metrics are advisory until multiple fixtures are accumulated."
+}

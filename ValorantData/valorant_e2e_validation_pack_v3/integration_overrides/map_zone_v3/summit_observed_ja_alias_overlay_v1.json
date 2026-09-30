@@ -1,0 +1,33 @@
+{
+  "version": "1.0",
+  "map_id": "summit",
+  "provenance": "raw UI labels observed in the exact E2E source video",
+  "normalization": {
+    "unicode": "NFKC",
+    "trim": true,
+    "collapse_internal_whitespace": true,
+    "do_not_machine_translate_unknown_labels": true
+  },
+  "records": [
+    {
+      "raw_label": "A ロビー",
+      "zone_id": "summit_a_approach",
+      "canonical_callout_hint": "A Lobby",
+      "evidence": "assets/reference_frames/r1_buy_location_a_lobby_003.500s.jpg"
+    },
+    {
+      "raw_label": "中央ファウンテン",
+      "zone_id": "summit_mid",
+      "canonical_callout_hint": "Mid Fountain",
+      "evidence": "assets/reference_frames/r1_shot_alive_074.250s.jpg"
+    },
+    {
+      "raw_label": "Bメイン",
+      "zone_id": "summit_b_approach",
+      "canonical_callout_hint": "B Main",
+      "evidence": "assets/reference_frames/r2_spectator_trigger_firing_170.000s.jpg",
+      "ownership_note": "label belongs to spectated teammate view; alias mapping is valid but must not update target-player zone"
+    }
+  ],
+  "merge_policy": "Overlay may augment locale aliases but must not overwrite map geometry/topology. Unknown labels still fall back to polygon/unknown."
+}

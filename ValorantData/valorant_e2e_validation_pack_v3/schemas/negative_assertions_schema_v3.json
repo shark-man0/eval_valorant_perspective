@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "negative_assertions_schema_v3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "assertions"
+  ],
+  "properties": {
+    "version": {
+      "const": "3.0"
+    },
+    "assertions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "window",
+          "reason"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "window": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "number",
+                "minimum": 0
+              }
+            ],
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "when": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "primary_state": {
+                "type": "string"
+              },
+              "subtype": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "must_not_emit_player_event_types": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "must_not_state_match": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "state": {
+                "type": "string"
+              },
+              "subtype": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "must_not_emit_matching": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "actor": {
+                "type": "string"
+              },
+              "attributes": {
+                "type": "object"
+              }
+            }
+          },
+          "must_not_update_player_fields_to": {
+            "type": "object"
+          },
+          "must_not_span_temporal_features": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reason": {
+            "type": "string"
+          },
+          "must_not_match_snapshot_subset": {
+            "type": "object",
+            "minProperties": 1
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "e2e_inputs_schema_v3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "source_video",
+    "player_context",
+    "audio_policy",
+    "forbidden_runtime_inputs"
+  ],
+  "properties": {
+    "version": {
+      "const": "3.0"
+    },
+    "source_video": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "filename",
+        "sha256"
+      ],
+      "properties": {
+        "filename": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "player_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "player_name",
+        "agent",
+        "provenance"
+      ],
+      "properties": {
+        "player_name": {
+          "type": "string"
+        },
+        "agent": {
+          "type": "string"
+        },
+        "provenance": {
+          "type": "string"
+        }
+      }
+    },
+    "audio_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "analyze_audio",
+        "preserve_all_tracks",
+        "semantic_audio_ground_truth"
+      ],
+      "properties": {
+        "analyze_audio": {
+          "type": "boolean"
+        },
+        "preserve_all_tracks": {
+          "type": "boolean"
+        },
+        "semantic_audio_ground_truth": {
+          "type": "boolean"
+        }
+      }
+    },
+    "forbidden_runtime_inputs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "version": "3.0",
+  "covered": [
+    "Astra remote-control suppression",
+    "HP damage transition 80->22->death",
+    "Japanese raw-label integration overlay for observed labels",
+    "Round Package event actor/count constraints",
+    "audio stream transport contract and optional clip validator",
+    "buy-menu primary state",
+    "buy-phase flag",
+    "confidence structural sanity checks and reusable calibration auditor",
+    "decoded/presentation PTS sidecar for every reference frame",
+    "derived Map/Zone snapshot expectations evaluated",
+    "expanded tactical map",
+    "known content discontinuity handling",
+    "left/right censoring",
+    "live-first-person positive samples",
+    "map raw location labels",
+    "no invented R2 round_end",
+    "ownership intervals evaluated as first-class assertions",
+    "player firing activity",
+    "reload-vs-shot exclusion",
+    "round start bracketing (two rounds)",
+    "round-end banner (R1)",
+    "same operational-zone callout change",
+    "self death bracketing (two rounds)",
+    "smoke-vs-Astral disambiguation",
+    "spectator ownership and target change",
+    "spectator poison-value suppression",
+    "stale Combat Report carry-over",
+    "state-edge frame brackets for Astral, smoke, and buy menus",
+    "synthetic Map/Zone calibration/boundary fixture",
+    "synthetic burst/reload event-granularity contract",
+    "temporal-feature discontinuity guard evaluated",
+    "test-leakage meta-contract",
+    "visual-observation assertions evaluated"
+  ],
+  "not_covered_requires_other_fixture": [
+    {
+      "feature": "player kill / multikill",
+      "reason": "no self kill in this source"
+    },
+    {
+      "feature": "spike plant / defuse",
+      "reason": "not present"
+    },
+    {
+      "feature": "flash status effect",
+      "reason": "not present"
+    },
+    {
+      "feature": "teleport / revive",
+      "reason": "not present"
+    },
+    {
+      "feature": "remote-control agents other than Astra",
+      "reason": "not present"
+    },
+    {
+      "feature": "overtime",
+      "reason": "not present"
+    },
+    {
+      "feature": "exact polygon boundary / calibration pixel truth",
+      "reason": "human-verifiable independent map-coordinate oracle is not available from this single video"
+    },
+    {
+      "feature": "confidence calibration statistics",
+      "reason": "one clip is insufficient for calibration/reliability curves"
+    },
+    {
+      "feature": "audio-derived facts",
+      "reason": "semantic audio remains out of MVP; transport/preservation is now covered separately"
+    }
+  ],
+  "present_but_only_partially_ground_truthed": [
+    {
+      "feature": "shot/burst granularity",
+      "reason": "Real video remains 1..3 due ambiguous burst grouping, but synthetic contract fixtures now define semi-auto/full-auto/reload production semantics."
+    },
+    {
+      "feature": "utility_used",
+      "reason": "Astral use and smoke effects are visible, but exact ability charge-to-cast mapping is not exhaustively annotated"
+    },
+    {
+      "feature": "map zone",
+      "reason": "Synthetic geometry fixture validates resolver mechanics; real Summit polygon accuracy still lacks an independent surveyed pixel-coordinate oracle."
+    },
+    {
+      "feature": "state edge timing",
+      "reason": "Astral/smoke/buy-menu edges are now bracketed to 0.05-0.20s from observed frames; only states not explicitly bracketed remain coarse."
+    }
+  ]
+}

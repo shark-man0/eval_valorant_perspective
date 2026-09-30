@@ -1,0 +1,1246 @@
+{
+  "version": "3.0",
+  "generated_from": [
+    "ground_truth/timeline_ground_truth_v3.json",
+    "ground_truth/negative_assertions_v3.json"
+  ],
+  "required_point_events": [
+    {
+      "id": "GT-R1-ROUND-START",
+      "round_id": "sample_round_1",
+      "type": "round_start",
+      "actor": "system",
+      "acceptance_window": [
+        4.08,
+        4.2
+      ],
+      "facts": {
+        "score_before": "0-1"
+      },
+      "required_event_attributes": {}
+    },
+    {
+      "id": "GT-R1-DEATH",
+      "round_id": "sample_round_1",
+      "type": "player_death",
+      "actor": "player",
+      "acceptance_window": [
+        74.35,
+        74.45
+      ],
+      "facts": {
+        "victim_name": "sharkman",
+        "killer_agent": "Fade",
+        "combat_report_damage_received": 130
+      },
+      "required_event_attributes": {
+        "victim_name": "sharkman",
+        "killer_agent": "Fade",
+        "combat_report_damage_received": 130
+      }
+    },
+    {
+      "id": "GT-R1-ROUND-END",
+      "round_id": "sample_round_1",
+      "type": "round_end",
+      "actor": "system",
+      "acceptance_window": [
+        74.387,
+        74.483
+      ],
+      "facts": {
+        "ace_team": "enemy",
+        "score_before": "0-1",
+        "score_after_confirmed_after_discontinuity": "0-2"
+      },
+      "required_event_attributes": {}
+    },
+    {
+      "id": "GT-R2-ROUND-START",
+      "round_id": "sample_round_2",
+      "type": "round_start",
+      "actor": "system",
+      "acceptance_window": [
+        111.38000000000001,
+        111.5
+      ],
+      "facts": {
+        "score_before": "0-2"
+      },
+      "required_event_attributes": {}
+    },
+    {
+      "id": "GT-R2-DEATH",
+      "round_id": "sample_round_2",
+      "type": "player_death",
+      "actor": "player",
+      "acceptance_window": [
+        147.57,
+        147.75
+      ],
+      "facts": {
+        "victim_name": "sharkman",
+        "killer_agent": "Fade",
+        "combat_report_damage_received": 194
+      },
+      "required_event_attributes": {
+        "victim_name": "sharkman",
+        "killer_agent": "Fade",
+        "combat_report_damage_received": 194
+      }
+    }
+  ],
+  "required_state_intervals": [
+    {
+      "id": "GT-R1-BUY-FLAG",
+      "round_id": "sample_round_1",
+      "state_class": "flag",
+      "state": "buy_phase_banner",
+      "subtype": null,
+      "core_interval": [
+        0.0,
+        4.1
+      ],
+      "outer_interval": [
+        0.0,
+        4.15
+      ],
+      "min_core_coverage": 0.8,
+      "exhaustive": false
+    },
+    {
+      "id": "GT-R1-ASTRAL-1",
+      "round_id": "sample_round_1",
+      "state_class": "primary_state",
+      "state": "remote_control_view",
+      "subtype": "astra_astral",
+      "core_interval": [
+        10.202669,
+        12.102669
+      ],
+      "outer_interval": [
+        10.102669,
+        12.202669
+      ],
+      "min_core_coverage": 0.9,
+      "exhaustive": true,
+      "edge_brackets": {
+        "start": {
+          "last_absent_sec": 10.102669,
+          "first_present_sec": 10.202669
+        },
+        "end": {
+          "last_present_sec": 12.102669,
+          "first_absent_sec": 12.202669
+        }
+      }
+    },
+    {
+      "id": "GT-R1-ASTRAL-2",
+      "round_id": "sample_round_1",
+      "state_class": "primary_state",
+      "state": "remote_control_view",
+      "subtype": "astra_astral",
+      "core_interval": [
+        16.502669,
+        28.402669
+      ],
+      "outer_interval": [
+        16.402669,
+        28.502669
+      ],
+      "min_core_coverage": 0.9,
+      "exhaustive": true,
+      "edge_brackets": {
+        "start": {
+          "last_absent_sec": 16.402669,
+          "first_present_sec": 16.502669
+        },
+        "end": {
+          "last_present_sec": 28.402669,
+          "first_absent_sec": 28.502669
+        }
+      }
+    },
+    {
+      "id": "GT-R1-SMOKE",
+      "round_id": "sample_round_1",
+      "state_class": "flag",
+      "state": "vision_obscured_smoke",
+      "subtype": null,
+      "core_interval": [
+        59.502669,
+        70.202669
+      ],
+      "outer_interval": [
+        59.402669,
+        70.302669
+      ],
+      "min_core_coverage": 0.9,
+      "exhaustive": true,
+      "edge_brackets": {
+        "start": {
+          "last_absent_sec": 59.402669,
+          "first_present_sec": 59.502669
+        },
+        "end": {
+          "last_present_sec": 70.202669,
+          "first_absent_sec": 70.302669
+        }
+      }
+    },
+    {
+      "id": "GT-R1-COMBAT-REPORT",
+      "round_id": "sample_round_1",
+      "state_class": "flag",
+      "state": "combat_report_visible",
+      "subtype": null,
+      "core_interval": [
+        74.4,
+        80.0
+      ],
+      "outer_interval": [
+        74.4,
+        81.5
+      ],
+      "min_core_coverage": 0.8,
+      "exhaustive": false
+    },
+    {
+      "id": "GT-R2-BUY-FLAG",
+      "round_id": "sample_round_2",
+      "state_class": "flag",
+      "state": "buy_phase_banner",
+      "subtype": null,
+      "core_interval": [
+        82.0,
+        111.4
+      ],
+      "outer_interval": [
+        81.5,
+        111.45
+      ],
+      "min_core_coverage": 0.9,
+      "exhaustive": false
+    },
+    {
+      "id": "GT-R2-BUY-MENU-1",
+      "round_id": "sample_round_2",
+      "state_class": "primary_state",
+      "state": "buy_menu_open",
+      "subtype": null,
+      "core_interval": [
+        83.352669,
+        91.402669
+      ],
+      "outer_interval": [
+        83.252669,
+        91.452669
+      ],
+      "min_core_coverage": 0.9,
+      "exhaustive": true,
+      "edge_brackets": {
+        "start": {
+          "last_absent_sec": 83.252669,
+          "first_present_sec": 83.352669
+        },
+        "end": {
+          "last_present_sec": 91.402669,
+          "first_absent_sec": 91.452669
+        }
+      }
+    },
+    {
+      "id": "GT-R2-BUY-MENU-2",
+      "round_id": "sample_round_2",
+      "state_class": "primary_state",
+      "state": "buy_menu_open",
+      "subtype": null,
+      "core_interval": [
+        108.052669,
+        110.802669
+      ],
+      "outer_interval": [
+        107.952669,
+        110.852669
+      ],
+      "min_core_coverage": 0.9,
+      "exhaustive": true,
+      "edge_brackets": {
+        "start": {
+          "last_absent_sec": 107.952669,
+          "first_present_sec": 108.052669
+        },
+        "end": {
+          "last_present_sec": 110.802669,
+          "first_absent_sec": 110.852669
+        }
+      }
+    },
+    {
+      "id": "GT-R2-ASTRAL-1",
+      "round_id": "sample_round_2",
+      "state_class": "primary_state",
+      "state": "remote_control_view",
+      "subtype": "astra_astral",
+      "core_interval": [
+        111.302669,
+        112.402669
+      ],
+      "outer_interval": [
+        111.102669,
+        112.502669
+      ],
+      "min_core_coverage": 0.9,
+      "exhaustive": true,
+      "edge_brackets": {
+        "start": {
+          "last_absent_sec": 111.102669,
+          "first_present_sec": 111.302669
+        },
+        "end": {
+          "last_present_sec": 112.402669,
+          "first_absent_sec": 112.502669
+        }
+      }
+    },
+    {
+      "id": "GT-R2-ASTRAL-2",
+      "round_id": "sample_round_2",
+      "state_class": "primary_state",
+      "state": "remote_control_view",
+      "subtype": "astra_astral",
+      "core_interval": [
+        115.602669,
+        120.102669
+      ],
+      "outer_interval": [
+        115.502669,
+        120.202669
+      ],
+      "min_core_coverage": 0.9,
+      "exhaustive": true,
+      "edge_brackets": {
+        "start": {
+          "last_absent_sec": 115.502669,
+          "first_present_sec": 115.602669
+        },
+        "end": {
+          "last_present_sec": 120.102669,
+          "first_absent_sec": 120.202669
+        }
+      }
+    },
+    {
+      "id": "GT-R2-EXPANDED-MAP",
+      "round_id": "sample_round_2",
+      "state_class": "primary_state",
+      "state": "expanded_tactical_map",
+      "subtype": null,
+      "core_interval": [
+        149.0,
+        150.5
+      ],
+      "outer_interval": [
+        148.8,
+        150.8
+      ],
+      "min_core_coverage": 0.7,
+      "exhaustive": true
+    },
+    {
+      "id": "GT-R2-SPECTATOR",
+      "round_id": "sample_round_2",
+      "state_class": "primary_state",
+      "state": "spectator_first_person",
+      "subtype": null,
+      "core_interval": [
+        151.0,
+        171.0
+      ],
+      "outer_interval": [
+        150.5,
+        171.019336
+      ],
+      "min_core_coverage": 0.9,
+      "exhaustive": true
+    }
+  ],
+  "required_ownership_intervals": [
+    {
+      "id": "OWN-R1-SELF",
+      "round_id": "sample_round_1",
+      "owner": "self",
+      "core_interval": [
+        0.036003,
+        74.38
+      ],
+      "outer_interval": [
+        0.0,
+        74.4
+      ],
+      "min_core_coverage": 0.9
+    },
+    {
+      "id": "OWN-R1-SELF-DEAD",
+      "round_id": "sample_round_1",
+      "owner": "self_dead_ui",
+      "core_interval": [
+        74.4,
+        81.5
+      ],
+      "outer_interval": [
+        74.4,
+        82.0
+      ],
+      "min_core_coverage": 0.9
+    },
+    {
+      "id": "OWN-R2-SELF",
+      "round_id": "sample_round_2",
+      "owner": "self",
+      "core_interval": [
+        82.0,
+        147.6
+      ],
+      "outer_interval": [
+        81.5,
+        147.7
+      ],
+      "min_core_coverage": 0.9
+    },
+    {
+      "id": "OWN-R2-SELF-DEAD",
+      "round_id": "sample_round_2",
+      "owner": "self_dead_ui",
+      "core_interval": [
+        147.7,
+        150.0
+      ],
+      "outer_interval": [
+        147.7,
+        150.5
+      ],
+      "min_core_coverage": 0.9
+    },
+    {
+      "id": "OWN-R2-TEAMMATE",
+      "round_id": "sample_round_2",
+      "owner": "teammate_spectated",
+      "core_interval": [
+        150.5,
+        171.0
+      ],
+      "outer_interval": [
+        150.0,
+        171.019336
+      ],
+      "min_core_coverage": 0.9
+    }
+  ],
+  "required_snapshots": [
+    {
+      "id": "GT-R1-SNAP-0035",
+      "round_id": "sample_round_1",
+      "time_sec": 3.5,
+      "tolerance_sec": 0.05,
+      "expected": {
+        "primary_state": "live_first_person",
+        "buy_phase_banner": true,
+        "player_alive": true,
+        "location_label_raw": "A ロビー"
+      }
+    },
+    {
+      "id": "GT-R1-SNAP-0415",
+      "round_id": "sample_round_1",
+      "time_sec": 4.15,
+      "tolerance_sec": 0.05,
+      "expected": {
+        "primary_state": "live_first_person",
+        "buy_phase_banner": false,
+        "player_alive": true,
+        "score_player": 0,
+        "score_enemy": 1,
+        "game_timer_display": "1:39",
+        "location_label_raw": "A メイン"
+      }
+    },
+    {
+      "id": "GT-R1-SNAP-475",
+      "round_id": "sample_round_1",
+      "time_sec": 47.5,
+      "tolerance_sec": 0.1,
+      "expected": {
+        "primary_state": "live_first_person",
+        "player_alive": true,
+        "nonself_killfeed_row_visible": true
+      }
+    },
+    {
+      "id": "GT-R1-SNAP-585",
+      "round_id": "sample_round_1",
+      "time_sec": 58.5,
+      "tolerance_sec": 0.1,
+      "expected": {
+        "primary_state": "live_first_person",
+        "vision_obscured_smoke": false
+      }
+    },
+    {
+      "id": "GT-R1-SNAP-595",
+      "round_id": "sample_round_1",
+      "time_sec": 59.5,
+      "tolerance_sec": 0.1,
+      "expected": {
+        "primary_state": "live_first_person",
+        "vision_obscured_smoke": true,
+        "remote_control_subtype": null
+      }
+    },
+    {
+      "id": "GT-R1-SNAP-705",
+      "round_id": "sample_round_1",
+      "time_sec": 70.5,
+      "tolerance_sec": 0.1,
+      "expected": {
+        "primary_state": "live_first_person",
+        "vision_obscured_smoke": false
+      }
+    },
+    {
+      "id": "GT-R1-SNAP-728",
+      "round_id": "sample_round_1",
+      "time_sec": 72.8,
+      "tolerance_sec": 0.08,
+      "expected": {
+        "primary_state": "live_first_person",
+        "player_alive": true,
+        "ammo_mag": 9,
+        "ammo_reserve": 36,
+        "reload_animation_visible": true
+      }
+    },
+    {
+      "id": "GT-R1-SNAP-733",
+      "round_id": "sample_round_1",
+      "time_sec": 73.3,
+      "tolerance_sec": 0.08,
+      "expected": {
+        "primary_state": "live_first_person",
+        "player_alive": true,
+        "ammo_mag": 9,
+        "ammo_reserve": 36,
+        "reload_animation_visible": true
+      }
+    },
+    {
+      "id": "GT-R1-SNAP-734",
+      "round_id": "sample_round_1",
+      "time_sec": 73.4,
+      "tolerance_sec": 0.08,
+      "expected": {
+        "primary_state": "live_first_person",
+        "player_alive": true,
+        "ammo_mag": 12,
+        "ammo_reserve": 33,
+        "reload_animation_visible": false
+      }
+    },
+    {
+      "id": "GT-R1-SNAP-7425",
+      "round_id": "sample_round_1",
+      "time_sec": 74.25,
+      "tolerance_sec": 0.05,
+      "expected": {
+        "primary_state": "live_first_person",
+        "player_alive": true,
+        "player_hp": 48,
+        "muzzle_flash_visible": true,
+        "location_label_raw": "中央ファウンテン",
+        "spectator_primary_state": false
+      }
+    },
+    {
+      "id": "GT-R1-SNAP-7438",
+      "round_id": "sample_round_1",
+      "time_sec": 74.38,
+      "tolerance_sec": 0.03,
+      "expected": {
+        "primary_state": "live_first_person",
+        "player_alive": true,
+        "muzzle_flash_visible": true,
+        "game_timer_display": "0:29",
+        "score_player": 0,
+        "score_enemy": 1
+      }
+    },
+    {
+      "id": "GT-R1-SNAP-7440",
+      "round_id": "sample_round_1",
+      "time_sec": 74.4,
+      "tolerance_sec": 0.03,
+      "expected": {
+        "player_alive": false,
+        "combat_report_visible": true
+      }
+    },
+    {
+      "id": "GT-R1-SNAP-7445",
+      "round_id": "sample_round_1",
+      "time_sec": 74.45,
+      "tolerance_sec": 0.03,
+      "expected": {
+        "player_alive": false,
+        "combat_report_visible": true,
+        "game_timer_display": "0:06",
+        "score_player": 0,
+        "score_enemy": 2
+      }
+    },
+    {
+      "id": "GT-R2-SNAP-820",
+      "round_id": "sample_round_2",
+      "time_sec": 82.0,
+      "tolerance_sec": 0.1,
+      "expected": {
+        "primary_state": "live_first_person",
+        "buy_phase_banner": true,
+        "player_alive": true,
+        "player_hp": 100,
+        "location_label_raw": "アタック側スポーン",
+        "combat_report_visible": true
+      }
+    },
+    {
+      "id": "GT-R2-SNAP-1050",
+      "round_id": "sample_round_2",
+      "time_sec": 105.0,
+      "tolerance_sec": 0.1,
+      "expected": {
+        "primary_state": "live_first_person",
+        "buy_phase_banner": true,
+        "player_alive": true,
+        "combat_report_visible": true
+      }
+    },
+    {
+      "id": "GT-R2-SNAP-11145",
+      "round_id": "sample_round_2",
+      "time_sec": 111.45,
+      "tolerance_sec": 0.05,
+      "expected": {
+        "buy_phase_banner": false,
+        "player_alive": true,
+        "score_player": 0,
+        "score_enemy": 2,
+        "game_timer_display": "1:40"
+      }
+    },
+    {
+      "id": "GT-R2-SNAP-143",
+      "round_id": "sample_round_2",
+      "time_sec": 143.0,
+      "tolerance_sec": 0.1,
+      "expected": {
+        "primary_state": "live_first_person",
+        "player_alive": true,
+        "player_hp": 80
+      }
+    },
+    {
+      "id": "GT-R2-SNAP-1475",
+      "round_id": "sample_round_2",
+      "time_sec": 147.5,
+      "tolerance_sec": 0.05,
+      "expected": {
+        "primary_state": "live_first_person",
+        "player_alive": true,
+        "player_hp": 80
+      }
+    },
+    {
+      "id": "GT-R2-SNAP-1476",
+      "round_id": "sample_round_2",
+      "time_sec": 147.6,
+      "tolerance_sec": 0.05,
+      "expected": {
+        "primary_state": "live_first_person",
+        "player_alive": true,
+        "player_hp": 22
+      }
+    },
+    {
+      "id": "GT-R2-SNAP-1477",
+      "round_id": "sample_round_2",
+      "time_sec": 147.7,
+      "tolerance_sec": 0.05,
+      "expected": {
+        "player_alive": false,
+        "combat_report_visible": true
+      }
+    },
+    {
+      "id": "GT-R2-SNAP-149",
+      "round_id": "sample_round_2",
+      "time_sec": 149.0,
+      "tolerance_sec": 0.1,
+      "expected": {
+        "primary_state": "expanded_tactical_map",
+        "player_alive": false,
+        "combat_report_visible": true
+      }
+    },
+    {
+      "id": "GT-R2-SNAP-151",
+      "round_id": "sample_round_2",
+      "time_sec": 151.0,
+      "tolerance_sec": 0.1,
+      "expected": {
+        "primary_state": "spectator_first_person",
+        "player_alive": false,
+        "view_owner": "teammate_spectated",
+        "spectated_name": "チェンバーのおチェンバー",
+        "spectated_hp": 100,
+        "spectated_ammo_mag": 21,
+        "spectated_ammo_reserve": 50,
+        "spectated_weapon": "Vandal",
+        "combat_report_visible": true,
+        "spectated_location_label_raw": "中央ファウンテン"
+      }
+    },
+    {
+      "id": "GT-R2-SNAP-170",
+      "round_id": "sample_round_2",
+      "time_sec": 170.0,
+      "tolerance_sec": 0.1,
+      "expected": {
+        "primary_state": "spectator_first_person",
+        "player_alive": false,
+        "view_owner": "teammate_spectated",
+        "spectated_name": "TRIGGER",
+        "spectated_hp": 85,
+        "spectated_ammo_mag": 22,
+        "spectated_ammo_reserve": 31,
+        "spectated_weapon": "Vandal",
+        "muzzle_flash_visible": true,
+        "combat_report_visible": true,
+        "spectated_location_label_raw": "Bメイン"
+      }
+    }
+  ],
+  "required_visual_observations": [
+    {
+      "id": "GT-R1-MUZZLE-1",
+      "round_id": "sample_round_1",
+      "observation": "muzzle_flash",
+      "actor": "player",
+      "time_sec": 73.95,
+      "tolerance_sec": 0.08
+    },
+    {
+      "id": "GT-R1-MUZZLE-2",
+      "round_id": "sample_round_1",
+      "observation": "muzzle_flash",
+      "actor": "player",
+      "time_sec": 74.25,
+      "tolerance_sec": 0.08
+    },
+    {
+      "id": "GT-R1-MUZZLE-3",
+      "round_id": "sample_round_1",
+      "observation": "muzzle_flash",
+      "actor": "player",
+      "time_sec": 74.38,
+      "tolerance_sec": 0.08
+    }
+  ],
+  "derived_assertions": [
+    {
+      "id": "GT-R1-SNAP-0035-DERIVED-zone_id",
+      "round_id": "sample_round_1",
+      "time_sec": 3.5,
+      "tolerance_sec": 0.05,
+      "field": "zone_id",
+      "expected": "summit_a_approach",
+      "source_contract": "valorant_map_zone_patch_v3"
+    },
+    {
+      "id": "GT-R1-SNAP-0415-DERIVED-zone_id",
+      "round_id": "sample_round_1",
+      "time_sec": 4.15,
+      "tolerance_sec": 0.05,
+      "field": "zone_id",
+      "expected": "summit_a_approach",
+      "source_contract": "valorant_map_zone_patch_v3"
+    },
+    {
+      "id": "GT-R2-SNAP-820-DERIVED-zone_id",
+      "round_id": "sample_round_2",
+      "time_sec": 82.0,
+      "tolerance_sec": 0.1,
+      "field": "zone_id",
+      "expected": "summit_attacker_spawn",
+      "source_contract": "valorant_map_zone_patch_v3"
+    }
+  ],
+  "event_count_constraints": [
+    {
+      "type": "round_start",
+      "actor": "system",
+      "min": 1,
+      "max": 1,
+      "round_id": "sample_round_1"
+    },
+    {
+      "type": "player_death",
+      "actor": "player",
+      "min": 1,
+      "max": 1,
+      "round_id": "sample_round_1"
+    },
+    {
+      "type": "round_end",
+      "actor": "system",
+      "min": 1,
+      "max": 1,
+      "round_id": "sample_round_1"
+    },
+    {
+      "type": "shot",
+      "actor": "player",
+      "window": [
+        73.9,
+        74.39
+      ],
+      "min": 1,
+      "max": 3,
+      "note": "Visual contract uses burst/trigger-start granularity; three muzzle flashes are observed but exact event count is intentionally a range.",
+      "round_id": "sample_round_1"
+    },
+    {
+      "type": "round_start",
+      "actor": "system",
+      "min": 1,
+      "max": 1,
+      "round_id": "sample_round_2"
+    },
+    {
+      "type": "player_death",
+      "actor": "player",
+      "min": 1,
+      "max": 1,
+      "round_id": "sample_round_2"
+    },
+    {
+      "type": "round_end",
+      "actor": "system",
+      "min": 0,
+      "max": 0,
+      "round_id": "sample_round_2"
+    }
+  ],
+  "ordering_constraints": [
+    {
+      "before": "GT-R1-ROUND-START",
+      "after": "GT-R1-DEATH"
+    },
+    {
+      "before": "GT-R1-ROUND-START",
+      "after": "GT-R1-ROUND-END"
+    },
+    {
+      "before": "GT-R1-DEATH",
+      "after": "GT-R1-ROUND-END"
+    },
+    {
+      "before": "GT-R2-ROUND-START",
+      "after": "GT-R2-DEATH"
+    }
+  ],
+  "negative_assertions": [
+    {
+      "id": "NEG-REMOTE-R1A",
+      "window": [
+        10.202669,
+        12.102669
+      ],
+      "when": {
+        "primary_state": "remote_control_view",
+        "subtype": "astra_astral"
+      },
+      "must_not_emit_player_event_types": [
+        "shot",
+        "movement_state",
+        "preaim_started",
+        "peek",
+        "info_peek",
+        "position_change",
+        "position_hold",
+        "engagement_start"
+      ],
+      "reason": "Astral Form is not normal player first-person mechanics."
+    },
+    {
+      "id": "NEG-REMOTE-R1B",
+      "window": [
+        16.502669,
+        28.402669
+      ],
+      "when": {
+        "primary_state": "remote_control_view",
+        "subtype": "astra_astral"
+      },
+      "must_not_emit_player_event_types": [
+        "shot",
+        "movement_state",
+        "preaim_started",
+        "peek",
+        "info_peek",
+        "position_change",
+        "position_hold",
+        "engagement_start"
+      ],
+      "reason": "Extended Astral Form suppression."
+    },
+    {
+      "id": "NEG-REMOTE-R2A",
+      "window": [
+        111.302669,
+        112.402669
+      ],
+      "when": {
+        "primary_state": "remote_control_view",
+        "subtype": "astra_astral"
+      },
+      "must_not_emit_player_event_types": [
+        "shot",
+        "movement_state",
+        "preaim_started",
+        "peek",
+        "info_peek",
+        "position_change",
+        "position_hold",
+        "engagement_start"
+      ],
+      "reason": "Astral Form overlaps round start; mechanics remain suppressed."
+    },
+    {
+      "id": "NEG-REMOTE-R2B",
+      "window": [
+        115.602669,
+        120.102669
+      ],
+      "when": {
+        "primary_state": "remote_control_view",
+        "subtype": "astra_astral"
+      },
+      "must_not_emit_player_event_types": [
+        "shot",
+        "movement_state",
+        "preaim_started",
+        "peek",
+        "info_peek",
+        "position_change",
+        "position_hold",
+        "engagement_start"
+      ],
+      "reason": "Second R2 Astral window."
+    },
+    {
+      "id": "NEG-ASTRAL-NOT-SMOKE",
+      "window": [
+        10.5,
+        11.5
+      ],
+      "must_not_state_match": {
+        "state": "vision_obscured_smoke"
+      },
+      "reason": "Do not classify Astral purple overlay as smoke."
+    },
+    {
+      "id": "NEG-SMOKE-NOT-ASTRAL",
+      "window": [
+        59.502669,
+        70.202669
+      ],
+      "must_not_state_match": {
+        "state": "remote_control_view",
+        "subtype": "astra_astral"
+      },
+      "reason": "Do not classify purple smoke as Astral Form."
+    },
+    {
+      "id": "NEG-SMOKE-WORLD-SPOT",
+      "window": [
+        59.502669,
+        70.202669
+      ],
+      "must_not_emit_matching": {
+        "type": "enemy_spotted",
+        "actor": "player",
+        "attributes": {
+          "source": "world_view"
+        }
+      },
+      "reason": "World view is fully smoke-obscured in the confirmed core. A minimap-sourced detection is not prohibited."
+    },
+    {
+      "id": "NEG-NONSELF-KILLFEED",
+      "window": [
+        47.3,
+        49.0
+      ],
+      "must_not_emit_player_event_types": [
+        "player_death"
+      ],
+      "reason": "Visible kill-feed activity is non-self while sharkman remains alive."
+    },
+    {
+      "id": "NEG-RELOAD-NOT-SHOT",
+      "window": [
+        72.8,
+        73.4
+      ],
+      "must_not_emit_player_event_types": [
+        "shot"
+      ],
+      "reason": "Ammo increases 9/36 -> 12/33 during a visible reload. Reload/ammo increase must not become shot."
+    },
+    {
+      "id": "NEG-BUY-MENU-1",
+      "window": [
+        83.352669,
+        91.402669
+      ],
+      "must_not_emit_player_event_types": [
+        "shot",
+        "movement_state",
+        "preaim_started",
+        "peek",
+        "info_peek",
+        "engagement_start"
+      ],
+      "reason": "Buy menu is open."
+    },
+    {
+      "id": "NEG-BUY-MENU-2",
+      "window": [
+        108.052669,
+        110.802669
+      ],
+      "must_not_emit_player_event_types": [
+        "shot",
+        "movement_state",
+        "preaim_started",
+        "peek",
+        "info_peek",
+        "engagement_start"
+      ],
+      "reason": "Second confirmed buy-menu window."
+    },
+    {
+      "id": "NEG-SPECTATOR-COUNT-TEXT",
+      "window": [
+        74.2,
+        74.3
+      ],
+      "must_not_state_match": {
+        "state": "spectator_first_person"
+      },
+      "reason": "Live player footage can display 観戦者 N; text alone must not force spectator state."
+    },
+    {
+      "id": "NEG-DEAD-PLAYER-MECHANICS",
+      "window": [
+        147.7,
+        171.019336
+      ],
+      "must_not_emit_player_event_types": [
+        "shot",
+        "movement_state",
+        "preaim_started",
+        "peek",
+        "info_peek",
+        "position_change",
+        "position_hold",
+        "rotation_started",
+        "rotation_completed",
+        "engagement_start",
+        "enemy_spotted",
+        "utility_used",
+        "ally_entry_start",
+        "ally_enter_site"
+      ],
+      "reason": "After self death, death UI / expanded map / teammate spectator footage must not produce player-owned mechanics."
+    },
+    {
+      "id": "NEG-EXPANDED-MAP-MECHANICS",
+      "window": [
+        149.0,
+        150.5
+      ],
+      "must_not_emit_player_event_types": [
+        "shot",
+        "movement_state",
+        "preaim_started",
+        "peek",
+        "info_peek",
+        "engagement_start"
+      ],
+      "reason": "Expanded tactical map is not live aiming view."
+    },
+    {
+      "id": "NEG-SPECTATOR-POISON-151",
+      "window": [
+        150.9,
+        151.1
+      ],
+      "must_not_update_player_fields_to": {
+        "player_hp": 100
+      },
+      "reason": "These are known teammate values at 151s, not sharkman state.",
+      "must_not_match_snapshot_subset": {
+        "ammo_mag": 21,
+        "ammo_reserve": 50,
+        "weapon": "Vandal",
+        "zone_id": "summit_mid"
+      }
+    },
+    {
+      "id": "NEG-SPECTATOR-POISON-170",
+      "window": [
+        169.9,
+        170.1
+      ],
+      "must_not_update_player_fields_to": {
+        "player_hp": 85
+      },
+      "must_not_emit_matching": {
+        "type": "shot",
+        "actor": "player"
+      },
+      "reason": "TRIGGER is firing at 170s; the muzzle flash must not become sharkman shot.",
+      "must_not_match_snapshot_subset": {
+        "ammo_mag": 22,
+        "ammo_reserve": 31,
+        "weapon": "Vandal",
+        "zone_id": "summit_b_approach"
+      }
+    },
+    {
+      "id": "NEG-STALE-COMBAT-REPORT",
+      "window": [
+        82.0,
+        111.4
+      ],
+      "must_not_emit_player_event_types": [
+        "player_death"
+      ],
+      "reason": "R1 Combat Report remains visible during R2 buy phase; stale UI must not create another death."
+    },
+    {
+      "id": "NEG-R2-NO-ROUND-END",
+      "window": [
+        111.45,
+        171.019336
+      ],
+      "must_not_emit_matching": {
+        "type": "round_end"
+      },
+      "reason": "Round 2 continues beyond source EOF."
+    },
+    {
+      "id": "NEG-SAME-ZONE-CALLOUT-CHANGE",
+      "window": [
+        3.4,
+        4.1
+      ],
+      "must_not_emit_matching": {
+        "type": "position_change",
+        "actor": "player",
+        "attributes": {
+          "from": "summit_a_approach",
+          "to": "summit_a_approach"
+        }
+      },
+      "reason": "A ロビー and A メイン are the same operational zone in the current map contract; string change alone is not position_change."
+    },
+    {
+      "id": "NEG-CONTENT-JUMP-SPAN",
+      "window": [
+        74.433,
+        74.45
+      ],
+      "must_not_span_temporal_features": [
+        "movement_state.duration_sec",
+        "rotation_started.delay_since_enemy_info_sec",
+        "rotation_completed.duration_sec",
+        "preaim_started.lead_sec"
+      ],
+      "reason": "Known source content jump invalidates continuous-time features across the boundary."
+    }
+  ],
+  "discontinuities": [
+    {
+      "id": "DISC-001",
+      "kind": "content_time_jump",
+      "last_pre_jump_sec": 74.433,
+      "first_post_jump_sec": 74.45,
+      "video_pts_continuous": true,
+      "observed_game_timer_before": "0:29",
+      "observed_game_timer_after": "0:06",
+      "observed_score_before": "0-1",
+      "observed_score_after": "0-2",
+      "policy": "Do not compute continuous-time movement, reaction, rotation, or causal latency across this boundary. Reset temporal derivatives/state that assumes contiguous gameplay.",
+      "evidence": [
+        "assets/reference_frames/r1_round_end_banner_074.433s.jpg",
+        "assets/reference_frames/r1_discontinuity_after_074.450s.jpg"
+      ]
+    }
+  ],
+  "continuous_segments": [
+    {
+      "id": "SEG-001",
+      "interval": [
+        0.036003,
+        74.433
+      ],
+      "reason": "PTS-contiguous and game-content-contiguous before DISC-001."
+    },
+    {
+      "id": "SEG-002",
+      "interval": [
+        74.45,
+        81.5
+      ],
+      "reason": "Post-jump inter-round tail before R2 fixture window."
+    },
+    {
+      "id": "SEG-003",
+      "interval": [
+        81.5,
+        171.019336
+      ],
+      "reason": "R2 observed continuously to source EOF."
+    }
+  ],
+  "attribute_vocab": {
+    "enemy_spotted": {
+      "source_enum": [
+        "world_view",
+        "minimap",
+        "mixed"
+      ],
+      "unknown_policy": "unknown/null rather than inventing a source"
+    },
+    "enemy_lost": {
+      "source_enum": [
+        "world_view",
+        "minimap",
+        "mixed"
+      ],
+      "unknown_policy": "unknown/null rather than inventing a source"
+    }
+  }
+}
