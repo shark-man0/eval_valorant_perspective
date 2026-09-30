@@ -3,49 +3,49 @@
   "metadata": {
     "video_id": "match_001",
     "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
-    "analyzer_commit": "eb7160e321ffb6db28d6c791dc210508f909e371",
+    "analyzer_commit": "65d0ca83a01d5af9990b948f283b520b3814d4cf",
     "git_is_dirty": true,
-    "executed_at": "2026-09-30T09:48:35.244652+00:00",
+    "executed_at": "2026-09-30T10:11:34.912972+00:00",
     "validation_pack": "valorant_e2e_validation_pack_v3",
     "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
-    "git_dirty_fingerprint": "693abdc83d78ccedf8d970b3af9801b2df70b6150300b63f5e5896a65ecf07d0",
-    "settings_fingerprint": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    "git_dirty_fingerprint": "b57cd6c401deaa94b7841ee5b5085e9d873768200a41eec2fc2469e6dfa0a50b",
+    "settings_fingerprint": "04f55588d0933ee0f12257d95172c93fb33e297a13d78c1b35be9fc15487fcbc"
   },
   "result": {
     "status": "fail",
-    "schema_valid": false,
-    "failure_count": null,
-    "negative_assertion_count": null,
-    "error_code": "ANALYZER_FAILED"
+    "schema_valid": true,
+    "failure_count": 58,
+    "negative_assertion_count": 20,
+    "error_code": null
   },
   "counts": {
-    "events": null,
-    "state_intervals": null,
-    "ownership_intervals": null,
-    "snapshots": null,
-    "visual_observations": null,
-    "temporal_features": null
+    "events": 8,
+    "state_intervals": 21,
+    "ownership_intervals": 1451,
+    "snapshots": 35,
+    "visual_observations": 5,
+    "temporal_features": 0
   },
   "sections": {
     "HUD": {
-      "status": "unknown",
-      "failure_count": 0
+      "status": "fail",
+      "failure_count": 18
     },
     "Visual": {
-      "status": "unknown",
-      "failure_count": 0
+      "status": "fail",
+      "failure_count": 3
     },
     "map_zone": {
-      "status": "unknown",
-      "failure_count": 0
+      "status": "fail",
+      "failure_count": 3
     },
     "round_package": {
-      "status": "unknown",
-      "failure_count": 0
+      "status": "fail",
+      "failure_count": 28
     },
     "e2e": {
       "status": "fail",
-      "failure_count": 1
+      "failure_count": 6
     },
     "negative": {
       "status": "unknown",
@@ -58,21 +58,1409 @@
   },
   "failures": [
     {
-      "assertion_id": null,
-      "category": "runtime_error",
-      "expected": null,
+      "assertion_id": "GT-R1-ROUND-START",
+      "category": "missing_point",
+      "expected": {
+        "type": "round_start",
+        "actor": "system"
+      },
       "actual": null,
       "time_sec": null,
+      "interval": [
+        4.08,
+        4.2
+      ],
+      "actor": "system",
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_point"
+      ],
+      "section": "HUD",
+      "nearby_trace_row_count": 4,
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R1-DEATH",
+      "category": "missing_point",
+      "expected": {
+        "type": "player_death",
+        "actor": "player",
+        "victim_name": "player"
+      },
+      "actual": null,
+      "time_sec": null,
+      "interval": [
+        74.35,
+        74.45
+      ],
+      "actor": "player",
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_point"
+      ],
+      "section": "HUD",
+      "nearby_trace_row_count": 6,
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R1-ROUND-END",
+      "category": "missing_point",
+      "expected": {
+        "type": "round_end",
+        "actor": "system"
+      },
+      "actual": null,
+      "time_sec": null,
+      "interval": [
+        74.387,
+        74.483
+      ],
+      "actor": "system",
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_point"
+      ],
+      "section": "HUD",
+      "nearby_trace_row_count": 6,
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R2-ROUND-START",
+      "category": "missing_point",
+      "expected": {
+        "type": "round_start",
+        "actor": "system"
+      },
+      "actual": null,
+      "time_sec": null,
+      "interval": [
+        111.38000000000001,
+        111.5
+      ],
+      "actor": "system",
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_point"
+      ],
+      "section": "HUD",
+      "nearby_trace_row_count": 0,
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R2-DEATH",
+      "category": "missing_point",
+      "expected": {
+        "type": "player_death",
+        "actor": "player",
+        "victim_name": "player"
+      },
+      "actual": null,
+      "time_sec": null,
+      "interval": [
+        147.57,
+        147.75
+      ],
+      "actor": "player",
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_point"
+      ],
+      "section": "HUD",
+      "nearby_trace_row_count": 0,
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R1-BUY-FLAG",
+      "category": "state_coverage",
+      "expected": {
+        "state": "buy_phase_banner",
+        "min_core_coverage": 0.8
+      },
+      "actual": {
+        "confidence": 0.88,
+        "state": "live_first_person",
+        "interval": [
+          0.036003,
+          0.086003
+        ]
+      },
+      "time_sec": null,
+      "interval": [
+        0.0,
+        4.1
+      ],
+      "actor": null,
+      "screen_state": "live_first_person",
+      "view_owner": null,
+      "confidence": 0.88,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "state_coverage"
+      ],
+      "section": "HUD",
+      "nearby_trace_row_count": 95,
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R1-ASTRAL-1",
+      "category": "state_coverage",
+      "expected": {
+        "state": "remote_control_view",
+        "min_core_coverage": 0.9
+      },
+      "actual": null,
+      "time_sec": null,
+      "interval": [
+        10.202669,
+        12.102669
+      ],
+      "actor": null,
+      "screen_state": "remote_control_view",
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "state_coverage"
+      ],
+      "section": "HUD",
+      "nearby_trace_row_count": 58,
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R1-ASTRAL-1",
+      "category": "state_start_edge",
+      "expected": {
+        "state": "remote_control_view",
+        "min_core_coverage": 0.9
+      },
+      "actual": null,
+      "time_sec": null,
+      "interval": [
+        10.202669,
+        12.102669
+      ],
+      "actor": null,
+      "screen_state": "remote_control_view",
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "state_start_edge"
+      ],
+      "section": "HUD",
+      "nearby_trace_row_count": 58,
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R1-ASTRAL-2",
+      "category": "state_coverage",
+      "expected": {
+        "state": "remote_control_view",
+        "min_core_coverage": 0.9
+      },
+      "actual": null,
+      "time_sec": null,
+      "interval": [
+        16.502669,
+        28.402669
+      ],
+      "actor": null,
+      "screen_state": "remote_control_view",
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "state_coverage"
+      ],
+      "section": "HUD",
+      "nearby_trace_row_count": 186,
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R1-SMOKE",
+      "category": "state_coverage",
+      "expected": {
+        "state": "vision_obscured_smoke",
+        "min_core_coverage": 0.9
+      },
+      "actual": null,
+      "time_sec": null,
+      "interval": [
+        59.502669,
+        70.202669
+      ],
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "state_coverage"
+      ],
+      "section": "HUD",
+      "nearby_trace_row_count": 129,
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R1-COMBAT-REPORT",
+      "category": "state_coverage",
+      "expected": {
+        "state": "combat_report_visible",
+        "min_core_coverage": 0.8
+      },
+      "actual": {
+        "confidence": 0.0,
+        "state": "combat_report_visible",
+        "interval": [
+          74.469336,
+          74.552669
+        ]
+      },
+      "time_sec": null,
+      "interval": [
+        74.4,
+        80.0
+      ],
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": 0.0,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "state_coverage"
+      ],
+      "section": "HUD",
+      "nearby_trace_row_count": 100,
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R2-BUY-FLAG",
+      "category": "state_coverage",
+      "expected": {
+        "state": "buy_phase_banner",
+        "min_core_coverage": 0.9
+      },
+      "actual": null,
+      "time_sec": null,
+      "interval": [
+        82.0,
+        111.4
+      ],
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "state_coverage"
+      ],
+      "section": "HUD",
+      "nearby_trace_row_count": 0,
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R2-BUY-MENU-1",
+      "category": "state_coverage",
+      "expected": {
+        "state": "buy_menu_open",
+        "min_core_coverage": 0.9
+      },
+      "actual": null,
+      "time_sec": null,
+      "interval": [
+        83.352669,
+        91.402669
+      ],
+      "actor": null,
+      "screen_state": "buy_menu_open",
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "state_coverage"
+      ],
+      "section": "HUD",
+      "nearby_trace_row_count": 0,
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R2-BUY-MENU-2",
+      "category": "state_coverage",
+      "expected": {
+        "state": "buy_menu_open",
+        "min_core_coverage": 0.9
+      },
+      "actual": null,
+      "time_sec": null,
+      "interval": [
+        108.052669,
+        110.802669
+      ],
+      "actor": null,
+      "screen_state": "buy_menu_open",
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "state_coverage"
+      ],
+      "section": "HUD",
+      "nearby_trace_row_count": 0,
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R2-ASTRAL-1",
+      "category": "state_coverage",
+      "expected": {
+        "state": "remote_control_view",
+        "min_core_coverage": 0.9
+      },
+      "actual": null,
+      "time_sec": null,
+      "interval": [
+        111.302669,
+        112.402669
+      ],
+      "actor": null,
+      "screen_state": "remote_control_view",
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "state_coverage"
+      ],
+      "section": "HUD",
+      "nearby_trace_row_count": 0,
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R2-ASTRAL-2",
+      "category": "state_coverage",
+      "expected": {
+        "state": "remote_control_view",
+        "min_core_coverage": 0.9
+      },
+      "actual": null,
+      "time_sec": null,
+      "interval": [
+        115.602669,
+        120.102669
+      ],
+      "actor": null,
+      "screen_state": "remote_control_view",
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "state_coverage"
+      ],
+      "section": "HUD",
+      "nearby_trace_row_count": 0,
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R2-EXPANDED-MAP",
+      "category": "state_coverage",
+      "expected": {
+        "state": "expanded_tactical_map",
+        "min_core_coverage": 0.7
+      },
+      "actual": null,
+      "time_sec": null,
+      "interval": [
+        149.0,
+        150.5
+      ],
+      "actor": null,
+      "screen_state": "expanded_tactical_map",
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "state_coverage"
+      ],
+      "section": "HUD",
+      "nearby_trace_row_count": 0,
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R2-SPECTATOR",
+      "category": "state_coverage",
+      "expected": {
+        "state": "spectator_first_person",
+        "min_core_coverage": 0.9
+      },
+      "actual": null,
+      "time_sec": null,
+      "interval": [
+        151.0,
+        171.0
+      ],
+      "actor": null,
+      "screen_state": "spectator_first_person",
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "state_coverage"
+      ],
+      "section": "HUD",
+      "nearby_trace_row_count": 0,
+      "context_only": true
+    },
+    {
+      "assertion_id": "OWN-R1-SELF",
+      "category": "ownership_coverage",
+      "expected": {
+        "owner": "self",
+        "min_core_coverage": 0.9
+      },
+      "actual": {
+        "confidence": 0.88,
+        "owner": "self",
+        "interval": [
+          0.036003,
+          0.086003
+        ]
+      },
+      "time_sec": null,
+      "interval": [
+        0.036003,
+        74.38
+      ],
+      "actor": null,
+      "screen_state": null,
+      "view_owner": "self",
+      "confidence": 0.88,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "ownership_coverage"
+      ],
+      "section": "round_package",
+      "nearby_trace_row_count": 1420,
+      "context_only": true
+    },
+    {
+      "assertion_id": "OWN-R1-SELF-DEAD",
+      "category": "ownership_coverage",
+      "expected": {
+        "owner": "self_dead_ui",
+        "min_core_coverage": 0.9
+      },
+      "actual": {
+        "confidence": 0.0,
+        "owner": "unknown",
+        "interval": [
+          74.386003,
+          74.402669
+        ]
+      },
+      "time_sec": null,
+      "interval": [
+        74.4,
+        81.5
+      ],
+      "actor": null,
+      "screen_state": null,
+      "view_owner": "unknown",
+      "confidence": 0.0,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "ownership_coverage"
+      ],
+      "section": "round_package",
+      "nearby_trace_row_count": 100,
+      "context_only": true
+    },
+    {
+      "assertion_id": "OWN-R2-SELF",
+      "category": "ownership_coverage",
+      "expected": {
+        "owner": "self",
+        "min_core_coverage": 0.9
+      },
+      "actual": null,
+      "time_sec": null,
+      "interval": [
+        82.0,
+        147.6
+      ],
+      "actor": null,
+      "screen_state": null,
+      "view_owner": "self",
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "ownership_coverage"
+      ],
+      "section": "round_package",
+      "nearby_trace_row_count": 0,
+      "context_only": true
+    },
+    {
+      "assertion_id": "OWN-R2-SELF-DEAD",
+      "category": "ownership_coverage",
+      "expected": {
+        "owner": "self_dead_ui",
+        "min_core_coverage": 0.9
+      },
+      "actual": null,
+      "time_sec": null,
+      "interval": [
+        147.7,
+        150.0
+      ],
+      "actor": null,
+      "screen_state": null,
+      "view_owner": "self_dead_ui",
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "ownership_coverage"
+      ],
+      "section": "round_package",
+      "nearby_trace_row_count": 0,
+      "context_only": true
+    },
+    {
+      "assertion_id": "OWN-R2-TEAMMATE",
+      "category": "ownership_coverage",
+      "expected": {
+        "owner": "teammate_spectated",
+        "min_core_coverage": 0.9
+      },
+      "actual": null,
+      "time_sec": null,
+      "interval": [
+        150.5,
+        171.0
+      ],
+      "actor": null,
+      "screen_state": null,
+      "view_owner": "teammate_spectated",
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "ownership_coverage"
+      ],
+      "section": "round_package",
+      "nearby_trace_row_count": 0,
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-0035",
+      "category": "missing_snapshot",
+      "expected": {
+        "primary_state": "live_first_person",
+        "player_alive": true,
+        "buy_phase_banner": true
+      },
+      "actual": null,
+      "time_sec": 3.5,
       "interval": null,
       "actor": null,
       "screen_state": null,
       "view_owner": null,
       "confidence": null,
-      "source": "runner",
+      "source": "reference_evaluator",
       "diagnostic_codes": [
-        "runtime_error"
+        "missing_snapshot"
       ],
-      "section": "e2e"
+      "section": "round_package",
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-0415",
+      "category": "missing_snapshot",
+      "expected": {
+        "primary_state": "live_first_person",
+        "player_alive": true,
+        "buy_phase_banner": false,
+        "score_enemy": 1,
+        "game_timer_display": "1:39",
+        "score_player": 0
+      },
+      "actual": null,
+      "time_sec": 4.15,
+      "interval": null,
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_snapshot"
+      ],
+      "section": "round_package",
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-475",
+      "category": "missing_snapshot",
+      "expected": {
+        "primary_state": "live_first_person",
+        "player_alive": true
+      },
+      "actual": null,
+      "time_sec": 47.5,
+      "interval": null,
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_snapshot"
+      ],
+      "section": "round_package",
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-585",
+      "category": "missing_snapshot",
+      "expected": {
+        "primary_state": "live_first_person",
+        "vision_obscured_smoke": false
+      },
+      "actual": null,
+      "time_sec": 58.5,
+      "interval": null,
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_snapshot"
+      ],
+      "section": "round_package",
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-595",
+      "category": "missing_snapshot",
+      "expected": {
+        "primary_state": "live_first_person",
+        "vision_obscured_smoke": true
+      },
+      "actual": null,
+      "time_sec": 59.5,
+      "interval": null,
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_snapshot"
+      ],
+      "section": "round_package",
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-705",
+      "category": "missing_snapshot",
+      "expected": {
+        "primary_state": "live_first_person",
+        "vision_obscured_smoke": false
+      },
+      "actual": null,
+      "time_sec": 70.5,
+      "interval": null,
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_snapshot"
+      ],
+      "section": "round_package",
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-728",
+      "category": "missing_snapshot",
+      "expected": {
+        "primary_state": "live_first_person",
+        "player_alive": true,
+        "ammo_reserve": 36,
+        "ammo_mag": 9
+      },
+      "actual": null,
+      "time_sec": 72.8,
+      "interval": null,
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_snapshot"
+      ],
+      "section": "round_package",
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-733",
+      "category": "missing_snapshot",
+      "expected": {
+        "primary_state": "live_first_person",
+        "player_alive": true,
+        "ammo_reserve": 36,
+        "ammo_mag": 9
+      },
+      "actual": null,
+      "time_sec": 73.3,
+      "interval": null,
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_snapshot"
+      ],
+      "section": "round_package",
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-734",
+      "category": "missing_snapshot",
+      "expected": {
+        "primary_state": "live_first_person",
+        "player_alive": true,
+        "ammo_reserve": 33,
+        "ammo_mag": 12
+      },
+      "actual": null,
+      "time_sec": 73.4,
+      "interval": null,
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_snapshot"
+      ],
+      "section": "round_package",
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-7425",
+      "category": "missing_snapshot",
+      "expected": {
+        "primary_state": "live_first_person",
+        "player_hp": 48,
+        "player_alive": true
+      },
+      "actual": null,
+      "time_sec": 74.25,
+      "interval": null,
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_snapshot"
+      ],
+      "section": "round_package",
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-7438",
+      "category": "missing_snapshot",
+      "expected": {
+        "primary_state": "live_first_person",
+        "player_alive": true,
+        "score_enemy": 1,
+        "game_timer_display": "0:29",
+        "score_player": 0
+      },
+      "actual": null,
+      "time_sec": 74.38,
+      "interval": null,
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_snapshot"
+      ],
+      "section": "round_package",
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-7440",
+      "category": "missing_snapshot",
+      "expected": {
+        "combat_report_visible": true,
+        "player_alive": false
+      },
+      "actual": null,
+      "time_sec": 74.4,
+      "interval": null,
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_snapshot"
+      ],
+      "section": "round_package",
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-7445",
+      "category": "missing_snapshot",
+      "expected": {
+        "combat_report_visible": true,
+        "player_alive": false,
+        "score_enemy": 2,
+        "game_timer_display": "0:06",
+        "score_player": 0
+      },
+      "actual": null,
+      "time_sec": 74.45,
+      "interval": null,
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_snapshot"
+      ],
+      "section": "round_package",
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-820",
+      "category": "missing_snapshot",
+      "expected": {
+        "primary_state": "live_first_person",
+        "combat_report_visible": true,
+        "player_hp": 100,
+        "player_alive": true,
+        "buy_phase_banner": true
+      },
+      "actual": null,
+      "time_sec": 82.0,
+      "interval": null,
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_snapshot"
+      ],
+      "section": "round_package",
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-1050",
+      "category": "missing_snapshot",
+      "expected": {
+        "primary_state": "live_first_person",
+        "combat_report_visible": true,
+        "player_alive": true,
+        "buy_phase_banner": true
+      },
+      "actual": null,
+      "time_sec": 105.0,
+      "interval": null,
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_snapshot"
+      ],
+      "section": "round_package",
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-11145",
+      "category": "missing_snapshot",
+      "expected": {
+        "player_alive": true,
+        "buy_phase_banner": false,
+        "score_enemy": 2,
+        "game_timer_display": "1:40",
+        "score_player": 0
+      },
+      "actual": null,
+      "time_sec": 111.45,
+      "interval": null,
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_snapshot"
+      ],
+      "section": "round_package",
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-143",
+      "category": "missing_snapshot",
+      "expected": {
+        "primary_state": "live_first_person",
+        "player_hp": 80,
+        "player_alive": true
+      },
+      "actual": null,
+      "time_sec": 143.0,
+      "interval": null,
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_snapshot"
+      ],
+      "section": "round_package",
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-1475",
+      "category": "missing_snapshot",
+      "expected": {
+        "primary_state": "live_first_person",
+        "player_hp": 80,
+        "player_alive": true
+      },
+      "actual": null,
+      "time_sec": 147.5,
+      "interval": null,
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_snapshot"
+      ],
+      "section": "round_package",
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-1476",
+      "category": "missing_snapshot",
+      "expected": {
+        "primary_state": "live_first_person",
+        "player_hp": 22,
+        "player_alive": true
+      },
+      "actual": null,
+      "time_sec": 147.6,
+      "interval": null,
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_snapshot"
+      ],
+      "section": "round_package",
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-1477",
+      "category": "missing_snapshot",
+      "expected": {
+        "combat_report_visible": true,
+        "player_alive": false
+      },
+      "actual": null,
+      "time_sec": 147.7,
+      "interval": null,
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_snapshot"
+      ],
+      "section": "round_package",
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-149",
+      "category": "missing_snapshot",
+      "expected": {
+        "primary_state": "expanded_tactical_map",
+        "combat_report_visible": true,
+        "player_alive": false
+      },
+      "actual": null,
+      "time_sec": 149.0,
+      "interval": null,
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_snapshot"
+      ],
+      "section": "round_package",
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-151",
+      "category": "missing_snapshot",
+      "expected": {
+        "primary_state": "spectator_first_person",
+        "combat_report_visible": true,
+        "view_owner": "teammate_spectated",
+        "spectated_ammo_mag": 21,
+        "player_alive": false,
+        "spectated_hp": 100,
+        "spectated_ammo_reserve": 50
+      },
+      "actual": null,
+      "time_sec": 151.0,
+      "interval": null,
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_snapshot"
+      ],
+      "section": "round_package",
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-170",
+      "category": "missing_snapshot",
+      "expected": {
+        "primary_state": "spectator_first_person",
+        "combat_report_visible": true,
+        "view_owner": "teammate_spectated",
+        "spectated_ammo_mag": 22,
+        "player_alive": false,
+        "spectated_hp": 85,
+        "spectated_ammo_reserve": 31
+      },
+      "actual": null,
+      "time_sec": 170.0,
+      "interval": null,
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_snapshot"
+      ],
+      "section": "round_package",
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-0035-DERIVED-zone_id",
+      "category": "missing_derived_snapshot",
+      "expected": {
+        "zone_id": "summit_a_approach"
+      },
+      "actual": null,
+      "time_sec": 3.5,
+      "interval": null,
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_derived_snapshot"
+      ],
+      "section": "map_zone",
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-0415-DERIVED-zone_id",
+      "category": "missing_derived_snapshot",
+      "expected": {
+        "zone_id": "summit_a_approach"
+      },
+      "actual": null,
+      "time_sec": 4.15,
+      "interval": null,
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_derived_snapshot"
+      ],
+      "section": "map_zone",
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-820-DERIVED-zone_id",
+      "category": "missing_derived_snapshot",
+      "expected": {
+        "zone_id": "summit_attacker_spawn"
+      },
+      "actual": null,
+      "time_sec": 82.0,
+      "interval": null,
+      "actor": null,
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_derived_snapshot"
+      ],
+      "section": "map_zone",
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R1-MUZZLE-1",
+      "category": "missing_visual_observation",
+      "expected": {
+        "observation": "muzzle_flash",
+        "actor": "player"
+      },
+      "actual": null,
+      "time_sec": 73.95,
+      "interval": null,
+      "actor": "player",
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_visual_observation"
+      ],
+      "section": "Visual",
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R1-MUZZLE-2",
+      "category": "missing_visual_observation",
+      "expected": {
+        "observation": "muzzle_flash",
+        "actor": "player"
+      },
+      "actual": null,
+      "time_sec": 74.25,
+      "interval": null,
+      "actor": "player",
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_visual_observation"
+      ],
+      "section": "Visual",
+      "context_only": true
+    },
+    {
+      "assertion_id": "GT-R1-MUZZLE-3",
+      "category": "missing_visual_observation",
+      "expected": {
+        "observation": "muzzle_flash",
+        "actor": "player"
+      },
+      "actual": null,
+      "time_sec": 74.38,
+      "interval": null,
+      "actor": "player",
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": null,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "missing_visual_observation"
+      ],
+      "section": "Visual",
+      "context_only": true
+    },
+    {
+      "assertion_id": "event_count_constraints-000",
+      "category": "count",
+      "expected": {
+        "type": "round_start",
+        "actor": "system",
+        "min": 1,
+        "max": 1
+      },
+      "actual": {
+        "count": 0
+      },
+      "time_sec": null,
+      "interval": null,
+      "actor": "system",
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": 0.88,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "count"
+      ],
+      "section": "e2e",
+      "context_only": true
+    },
+    {
+      "assertion_id": "event_count_constraints-001",
+      "category": "count",
+      "expected": {
+        "type": "player_death",
+        "actor": "player",
+        "min": 1,
+        "max": 1
+      },
+      "actual": {
+        "count": 0
+      },
+      "time_sec": null,
+      "interval": null,
+      "actor": "player",
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": 0.88,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "count"
+      ],
+      "section": "e2e",
+      "context_only": true
+    },
+    {
+      "assertion_id": "event_count_constraints-002",
+      "category": "count",
+      "expected": {
+        "type": "round_end",
+        "actor": "system",
+        "min": 1,
+        "max": 1
+      },
+      "actual": {
+        "count": 0
+      },
+      "time_sec": null,
+      "interval": null,
+      "actor": "system",
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": 0.88,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "count"
+      ],
+      "section": "e2e",
+      "context_only": true
+    },
+    {
+      "assertion_id": "event_count_constraints-003",
+      "category": "count",
+      "expected": {
+        "type": "shot",
+        "actor": "player",
+        "min": 1,
+        "max": 3
+      },
+      "actual": {
+        "count": 0
+      },
+      "time_sec": null,
+      "interval": [
+        73.9,
+        74.39
+      ],
+      "actor": "player",
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": 0.88,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "count"
+      ],
+      "section": "e2e",
+      "nearby_trace_row_count": 19,
+      "context_only": true
+    },
+    {
+      "assertion_id": "event_count_constraints-004",
+      "category": "count",
+      "expected": {
+        "type": "round_start",
+        "actor": "system",
+        "min": 1,
+        "max": 1
+      },
+      "actual": {
+        "count": 0
+      },
+      "time_sec": null,
+      "interval": null,
+      "actor": "system",
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": 0.88,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "count"
+      ],
+      "section": "e2e",
+      "context_only": true
+    },
+    {
+      "assertion_id": "event_count_constraints-005",
+      "category": "count",
+      "expected": {
+        "type": "player_death",
+        "actor": "player",
+        "min": 1,
+        "max": 1
+      },
+      "actual": {
+        "count": 0
+      },
+      "time_sec": null,
+      "interval": null,
+      "actor": "player",
+      "screen_state": null,
+      "view_owner": null,
+      "confidence": 0.88,
+      "source": "reference_evaluator",
+      "diagnostic_codes": [
+        "count"
+      ],
+      "section": "e2e",
+      "context_only": true
     }
   ],
   "privacy": {
@@ -81,47 +1469,67 @@
     "images": "opt_in_manual_privacy_review_required"
   },
   "hud": {
-    "observations": null,
-    "unknown": null,
-    "states": null
+    "observations": 3929,
+    "unknown": 3891,
+    "states": 4,
+    "detected_states": {
+      "live_first_person": 1,
+      "unknown": 3891,
+      "remote_control_view": 34,
+      "buy_menu_open": 3
+    }
   },
   "visual": {
-    "observations": null,
-    "events": null,
-    "missing_expected": []
+    "observations": 3929,
+    "events": 0,
+    "missing_expected": [
+      "GT-R1-MUZZLE-1",
+      "GT-R1-MUZZLE-2",
+      "GT-R1-MUZZLE-3"
+    ]
   },
   "map_zone": {
-    "resolved": null,
-    "unknown": null,
-    "zones": null
+    "resolved": 0,
+    "unknown": 3929,
+    "zones": []
   },
   "round_package": {
-    "rounds": null,
-    "round_count": null
+    "rounds": 1,
+    "event_count": 8,
+    "round_count": 1
   },
   "e2e": {
-    "passed": null,
-    "failed": null,
-    "not_evaluated": null,
+    "passed": 21,
+    "failed": 57,
+    "not_evaluated": 4,
     "count_unit": "assertion_records; multiple failed fields count once",
-    "failure_message_count": null,
-    "failures_by_category": {}
+    "failure_message_count": 58,
+    "failures_by_category": {
+      "missing_point": 5,
+      "state_coverage": 12,
+      "state_start_edge": 1,
+      "ownership_coverage": 5,
+      "missing_snapshot": 23,
+      "missing_derived_snapshot": 3,
+      "missing_visual_observation": 3,
+      "count": 6
+    }
   },
   "negative": {
-    "passed": null,
-    "failed": null,
+    "passed": 20,
+    "failed": 0,
     "assertions": 20
   },
   "discontinuity": {
-    "violations": null
+    "violations": 0
   },
   "negative_assertions": {
-    "passed": null,
-    "failed": null,
+    "passed": 20,
+    "failed": 0,
     "assertions": 20
   },
   "known_discontinuities": {
-    "violations": null
+    "violations": 0
   },
   "evidence_files": []
 }
