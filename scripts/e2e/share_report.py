@@ -173,6 +173,11 @@ _FIELDS = {
 
 @lru_cache(maxsize=128)
 def _field_vocabulary(key):
+    if key == "map_id":
+        path = (
+            Path(__file__).resolve().parents[2] / "config/map_zone_v3/config/map_registry_v1.json"
+        )
+        return set(json.loads(path.read_text(encoding="utf-8"))["maps"])
     if key in {"primary_state", "state"}:
         return _STATES | {
             "buy_phase_banner",
@@ -733,6 +738,7 @@ def export_report(
     output_dir.mkdir(parents=True, exist_ok=True)
     # Only explicitly named, format-checked metadata crosses the share boundary.
     meta = {
+        "manual_map_id": _vocab(metadata.get("manual_map_id"), _field_vocabulary("map_id")),
         "video_id": _safe_id(metadata.get("video_id")),
         "source_sha256": metadata.get("source_sha256")
         if isinstance(metadata.get("source_sha256"), str)

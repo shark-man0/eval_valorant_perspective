@@ -1,5 +1,126 @@
 # Windows E2E 上流診断（2026-10-01）
 
+## 2026-10-02: 手編集不要の自動生成経路
+
+下記の旧「Windows側profile作業」は `hud.calibrate_profile` に置き換えた。
+実行コマンド全文は `WINDOWS_E2E.md` の Automatic local profile 節。
+geometryとは別に未ラベルROIから固定矩形のidentity参照を選び、未使用holdout frameで
+一致を確認。geometry maskをidentityへ流用せず、閾値.90も維持する。
+観戦presenceの意味ラベルは自動捏造しない。既存detectorを保持し、条件が成立する場合に
+限り全領域clear参照を生成する。不成立はunknownのまま。API・GTは生成に使用しない。
+生成統計はallowlist経由で共有し、参照画像・mask・profile本体はローカルに保持する。
+resume contractは10へ更新。Windows実動画改善は未検証。
+
+## 最新診断06f981bに基づくgeometry / identity分離
+
+正本は最新summary / hud_calibration。Windows実行commit `f301aeb`、dirty=false。
+3929 frame中、fresh geometry成功1、保持込み成功3929、保持3928。
+geometry無効によるunknownは0、有効下unknownは3891、identity証拠不足3928。
+全anchorはmaskなし。medianはtimer .772、match bar .444、HP .502、abilities .418。
+これはgeometryの失効ではなく、内容が変化する大きなROIを毎フレームのidentity確認にも
+使っていた経路が主問題であることを示す。画素未確認なので、各ROIのどの画素が変動したか
+までは断定しない。
+
+### 設計変更
+
+- `hud/identity.py`で本人視点証拠をgeometryから完全に分離。anchorの個数・スコアは
+  live判定へ渡さない。masked/unmaskedのどちらもgeometry専用。
+- 現在frameの独立した `hp_hud_structure` / `ability_bar_structure` /
+  `weapon_ammo_structure` の3検出（各confidence >= .90）と、実行済みの観戦パネル
+  detectorによる不在確認を必要とする。既存signal template readerを利用する。
+- 観戦パネルの中間スコア(.20超〜threshold未満)、未設定、サイズ不一致、黒画面、
+  読み取り不成立は不在とみなさない。陰性結果だけでliveにすることもない。
+- remote、観戦、buy menu、expanded map、死亡UI等の証拠がある場合はliveを抑止。
+  過去liveを持ち越すpersistenceは採用せず、毎frameで独立証拠を要求する。
+  geometryの保持とletterbox等による失効は従来どおり。
+- geometryだけのprofileでは、引き続きunknownになる。これは未検証の本人視点を
+  自動承認しないためであり、閾値緩和は行っていない。resume contractは9。
+
+### Windows側profile作業（必要）
+
+既存profileがanchorのみの場合は独立したsignalの追加が必要。
+`config/hud_templates.example.json` の3構造signalと `spectated_player_panel` を参考に、
+Windowsローカルで各ROI内の小さな固定UI形状を参照画像として用意する。
+HPの数字・timer・abilityのready状態・実キー文字・プレイヤー名・背景は含めない。
+ROI全体やgeometry用maskをそのままidentityへ流用しない。通常/特殊視点で検証し、
+不確かな検出は有効化しない。Macには素材がないため、これらの実画像は作成・検証していない。
+
+`hud.calibrate_temporal` は未ラベル動画から8〜64枚（標準24）を等間隔抽出し、
+低時間分散と持続するエッジからgeometry用のmask候補を作る。GT時刻・stateは使わない。
+情報不足なら失敗し、3個未満のanchorを無理に補完しない。既存thresholdを下げず、
+reader/signalは保持する。新規フォルダへのみ出力し、Git内ではignored先に限定する。
+生成画像・mask・元profileへの絶対参照はWindowsローカルだけに保持する。
+静止背景や一定の数字が残る可能性があるので、候補は完成済み校正の保証ではない。
+このツールはidentity画像を自動生成・承認しない。
+
+### Visual / Map
+
+Visual eligibilityはplayer_mechanics/world_semanticsとも1。現在のevents=0だけでは
+独立したCVバグと断定できない。HUD identity設定後、同じCV条件で再評価する。
+
+Mapの `map_definition_unresolved=3929` は、resolverがdefinition=Noneのまま呼ばれたことを
+明確に示す。これはresolverの校正・ownership判定より前に発生する。
+ただし自動選択を試すminimap校正は上流でHUD eligibilityに制限されるので、
+HUDと完全に無関係な故障と断定もできない。
+
+runner → run_real_video → AppSettings → bootstrap → MapTimelineのmanual ID伝達は正常。
+登録された正確なIDは `summit`。自動選択はtrusted labelまたはminimap照合の十分な
+confidenceを必要とし、登録mapが1個という理由で決めない。前回のflag値はhashから
+復元できない。今回は共有metadataに登録済みmanual_map_idだけを記録するよう追加。
+明示的 `-ManualMapId summit` によりGTではなくユーザー設定として選択できる。
+選択後も位置・所有者・minimap校正に失敗すればzoneはunknown。これを迂回しない。
+`-MapClientBuild`は実際のclient buildが分かる場合のみ指定する。参照版を憶測で指定しない。
+
+### Windows再実行
+
+変更をcommit/push後にWindowsでpullする。前回のVisualProfile等の設定も維持する。
+
+```powershell
+git pull
+$video = Read-Host '元動画の絶対パス'
+$oldLayout = Read-Host '現在使用中のlayout JSONの絶対パス'
+# geometry候補の生成は任意。出力先は未使用のignoredフォルダ。
+$newLayout = & .\.venv\Scripts\python.exe -m valorant_ai_coach.hud.calibrate_temporal `
+  --video $video --layout $oldLayout --output .\outputs\hud_temporal_v1 --samples 24
+if ($LASTEXITCODE -ne 0) { throw '候補生成失敗。閾値を下げず診断してください' }
+```
+
+生成されたprofileのgeometry候補を確認し、同じprofileのsignalsに独立したidentity参照を
+追加・検証してから実行する（既存profileにこれらがあれば保持される）。
+
+```powershell
+.\run_e2e_windows.ps1 -Video $video -VideoId match_001 `
+  -ValidationPack '.\ValorantData\valorant_e2e_validation_pack_v3' `
+  -HudLayout $newLayout -ManualMapId summit
+```
+
+マスク生成を省略するなら、identity signalを追加した `$oldLayout` を指定する。
+`-IncludeEvidence`は不要。共有対象はe2e_reportsのみ。画像/profileはgit addしない。
+
+次回比較: geometry保持率、unknown3891、`identity_reasons`の内訳、独立構造成立数、
+Visual eligibility1/events0、map_definition_unresolved3929、Map resolved0、Round1→期待2、
+E2E failed57、negative failures0維持。`live_identity_evidence_insufficient`は今後geometry
+anchor数ではなく独立構造数に基づくため、policy名と合わせて比較する。
+temporal_generationは選択画素数/率とhashだけ共有し、画像/パス/自由文はexportしない。
+
+### 修正ファイルと検証範囲
+
+新規: `hud/identity.py`、`hud/calibrate_temporal.py`、対応unit tests、Map経路テスト、
+独立したidentity証拠を供給するtests/conftest.py。
+変更: `hud/analyzers.py`、`hud/templates.py`、`hud/diagnostics.py`、application/pipeline.py、
+`scripts/e2e/{calibration_report,run_dataset_case,share_report}.py`、profile設定例、
+HUD境界/letterbox/診断テスト、実ピクセル→SQLite統合テスト。
+runtimeパスは `src/valorant_ai_coach/` 以下。
+Mac全体テスト: **464 passed / 3 skipped**（32.33秒）、Ruff成功、mypy 75ファイル成功。
+skipは実動画アンカー1件とPowerShell未導入による2件。新規31ケースは独立identity、
+geometry欠落時のlive成立、モード遷移即時抑止、非有限/低confidence抑止、画素template、
+temporal候補生成/情報不足/非上書き/既存設定維持、Map選択経路、sanitizationを検証。
+既存テストの期待結果は維持し、旧「geometry一致だけでlive」という入力前提に
+独立したidentity検出fixtureを追加した。GT/付属Schema/評価基準は変更していない。
+実動画・Windows profileは未使用。以下の旧レビューにある「mask不明」等は当時の状況。
+
+---
+
 ## 正本と検証限界
 
 取得commit: `a880518`。最新 `e2e_reports/match_001/summary.json` の実行コードは

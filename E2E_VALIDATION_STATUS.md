@@ -1,5 +1,33 @@
 # E2E Validation Pack v3 導入状況（2026-09-29）
 
+## 自動profile生成（2026-10-02）
+
+`hud.calibrate_profile` を追加。未ラベル動画・base layout・出力先だけでgeometry maskと
+独立identity参照を生成し、そのlayoutをE2Eへ直接渡せる。手動画像確認・JSON編集は不要。
+以下の10月1日時点の「独立signal手設定が必要」という手順を置き換える。
+不足する証拠は自動的に無効化して診断へ記録するため、生成成功は実動画改善を意味しない。
+Windows実測JSONは変更していない。手順・制限は `WINDOWS_E2E.md` の自動生成節を参照。
+Mac検証: **474 passed / 3 skipped**、Ruff成功、mypy76ファイル成功。
+追加テストは未使用holdoutでの抑制、参照不足、観戦パネル出現・曖昧検出、破損参照の再生成、
+日本語出力パス、診断のallowlist、合成動画→自動profile→Round Package→SQLiteを含む。
+skipは実録画1件とPowerShell2件。Windows実動作・実録画精度の確認ではない。
+
+## 最新診断06f981b / identity分離（2026-10-01）
+
+Windows実行f301aeb（dirty=false）の正本診断で、geometry有効3929/3929、
+fresh成功1、保持3928、geometry有効下unknown3891、identity証拠不足3928を確認。
+今回はgeometry anchor一致数からliveを決める経路を除去し、独立した3構造signalと
+観戦パネル確認に分離。参照画像がないprofileは安全にunknownを維持する。
+未ラベル複数frameからgeometry用mask候補を生成するローカルツールを追加。
+これはidentity detectorの自動生成ではなく、Windows側の独立signal設定は必要。
+
+Mapはdefinition未選択が確定。manual IDの伝達・registryのsummit定義は正常。
+自動選択もHUD eligibilityに影響されるので、独立CV故障とは断定していない。
+明示的な `-ManualMapId summit` を用いて再検証する。詳細・コマンドは
+[HUD_DIAGNOSTICS_REVIEW.md](HUD_DIAGNOSTICS_REVIEW.md) の最新節を参照。
+過去のWindows実測JSONは変更していない。今回もMacで実動画PASSは主張しない。
+Mac検証: **464 passed / 3 skipped**。Ruff成功、mypy75ファイル成功。
+
 ## 最新Windows共有結果と追加診断（2026-10-01）
 
 `a880518` で共有された最新summaryは **21 passed / 57 failed / 4 not evaluated**、

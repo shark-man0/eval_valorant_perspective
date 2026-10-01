@@ -13,6 +13,36 @@ from valorant_ai_coach.hud.templates import HudTemplateProfile
 from valorant_ai_coach.resources import resource_path
 
 
+def test_automatic_identity_export_is_allowlisted():
+    unsafe = {
+        "schema_version": 1,
+        "automatic_identity_generation": {
+            "sample_count": 32,
+            "geometry_mode": "generated",
+            "path": "PRIVATE",
+            "references": {
+                "hp_hud_structure": {
+                    "status": "generated",
+                    "content_hash": "a" * 64,
+                    "dimensions": [20, 30],
+                    "holdout_count": 16,
+                    "holdout_accept_count": 15,
+                    "holdout_median": 0.98,
+                    "template": "PRIVATE",
+                    "pixels": "PRIVATE",
+                },
+                "PRIVATE": {"status": "PRIVATE"},
+            },
+        },
+    }
+    result = sanitize_calibration(unsafe)["automatic_identity_generation"]
+    assert "PRIVATE" not in json.dumps(result)
+    row = result["references"]["hp_hud_structure"]
+    assert row["holdout_accept_count"] == 15
+    assert row["content_hash"] == "a" * 64
+    assert row["dimensions"] == [20, 30]
+
+
 def test_anchor_metadata_scores_and_geometry_are_separate(tmp_path):
     path = tmp_path / "private_username.png"
     cv2.imwrite(str(path), np.random.default_rng(4).integers(0, 255, (20, 30), dtype=np.uint8))
@@ -87,7 +117,32 @@ def test_export_filters_telemetry_and_keeps_old_reports_honest(tmp_path):
     assert sanitize_calibration(None) == {"available": False}
 
 
-def test_rejected_anchor_scores_never_restore_live_identity():
+def test_generation_stats_and_identity_codes_are_allowlisted():
+    result = sanitize_calibration(
+        {
+            "schema_version": 1,
+            "identity_reasons": {"independent_hud_structures": 10, "private-key": 5},
+            "temporal_generation": {
+                "sample_count": 24,
+                "anchor_count": 3,
+                "generated_assets_sha256": "a" * 64,
+                "path": "C:\\private",
+                "anchors": {
+                    "round_timer": {
+                        "selected_ratio": 0.2,
+                        "selected_pixels": 80,
+                        "secret": "secret-text",
+                    }
+                },
+            },
+        }
+    )
+    assert result["identity_reasons"] == {"independent_hud_structures": 10}
+    assert result["temporal_generation"]["sample_count"] == 24
+    assert "private" not in json.dumps(result) and "secret-text" not in json.dumps(result)
+
+
+def test_rejected_anchor_scores_never_restore_live_identity(live_identity_signals):
     from unittest.mock import Mock
 
     analyzer = RealHudAnalyzer(resource_path("config/hud_layout_1080p_v3.json"))
@@ -98,7 +153,7 @@ def test_rejected_anchor_scores_never_restore_live_identity():
         (anchors, dict.fromkeys(ANCHORS, 1.0), ()),
         ({}, dict.fromkeys(ANCHORS, 0.95), ()),
     ]
-    profile.detect_signals.return_value = {}
+    profile.detect_signals.side_effect = [live_identity_signals, {}]
     analyzer.template_profile = profile
     frame = np.full((1080, 1920, 3), 60, dtype=np.uint8)
     result = analyzer.observe_frames([frame, frame])

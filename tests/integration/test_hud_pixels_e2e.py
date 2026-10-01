@@ -11,13 +11,16 @@ import pytest
 
 from valorant_ai_coach.bootstrap import build_services
 from valorant_ai_coach.hud.calibrate import create_anchor_profile
+from valorant_ai_coach.hud.calibrate_profile import create_profile
 from valorant_ai_coach.hud.layout import HudLayout
 from valorant_ai_coach.resources import resource_path
 from valorant_ai_coach.settings import AppSettings, SettingsStore
 
 
+@pytest.mark.parametrize("automatic", [False, True])
 def test_calibrated_pixels_reach_round_package_and_sqlite_without_fabrication(
     tmp_path: Path,
+    automatic: bool,
 ) -> None:
     ffmpeg, ffprobe = shutil.which("ffmpeg"), shutil.which("ffprobe")
     if ffmpeg is None or ffprobe is None:
@@ -26,13 +29,57 @@ def test_calibrated_pixels_reach_round_package_and_sqlite_without_fabrication(
     layout = HudLayout.load(layout_path)
     image = np.full((1080, 1920, 3), 60, dtype=np.uint8)
     rng = np.random.default_rng(54)
-    for name in (layout.calibration_policy or {})["required_anchors"]:
+    for name in [
+        *(layout.calibration_policy or {})["required_anchors"],
+        "ammo_current_weapon",
+        "spectated_player_panel",
+    ]:
         x1, y1, x2, y2 = layout.normalized_roi(name).pixel_bounds(1920, 1080)
         gray = rng.integers(30, 230, (y2 - y1, x2 - x1), dtype=np.uint8)
         image[y1:y2, x1:x2] = gray[:, :, np.newaxis]
     reference = tmp_path / "reference.png"
     assert cv2.imwrite(str(reference), image)
     selected_layout = create_anchor_profile(layout_path, reference, tmp_path / "profile")
+    # Explicit independent pixel detectors replace the former assumption that
+    # geometry reference matching itself establishes player identity.
+    sidecar = selected_layout.with_suffix(".templates.json")
+    profile = json.loads(sidecar.read_text(encoding="utf-8"))
+    profile["signals"] = {}
+    for signal, roi in (
+        ("hp_hud_structure", "player_hp_armor"),
+        ("ability_bar_structure", "abilities"),
+        ("weapon_ammo_structure", "ammo_current_weapon"),
+        ("spectated_player_panel", "spectated_player_panel"),
+    ):
+        x, y, _, _ = layout.normalized_roi(roi).pixel_bounds(1920, 1080)
+        patch = (
+            image[y : y + 32, x : x + 32]
+            if signal != "spectated_player_panel"
+            else (rng.integers(30, 230, (32, 32, 3), dtype=np.uint8))
+        )
+        asset = sidecar.parent / f"{signal}.png"
+        assert cv2.imwrite(str(asset), patch)
+        profile["signals"][signal] = {"roi": roi, "template": asset.name, "threshold": 0.9}
+    sidecar.write_text(json.dumps(profile), encoding="utf-8")
+    if automatic:
+        # Unlabelled synthetic recording. The automatic path below receives only
+        # this video and the base layout, NOT the manually constructed profile.
+        image[:] = 60
+        for roi in (
+            "round_timer",
+            "top_match_bar",
+            "player_hp_armor",
+            "abilities",
+            "ammo_current_weapon",
+        ):
+            x1, y1, x2, y2 = layout.normalized_roi(roi).pixel_bounds(1920, 1080)
+            for y in range(y1 + 4, y2 - 3, 12):
+                cv2.line(image, (x1 + 4, y), (x2 - 4, y), (220, 220, 220), 2)
+            cv2.rectangle(image, (x1 + 4, y1 + 4), (x2 - 5, y2 - 5), (150, 150, 150), 2)
+        x1, y1, x2, y2 = layout.normalized_roi("spectated_player_panel").pixel_bounds(1920, 1080)
+        # Keep codec ringing at the synthetic panel boundary outside its ROI.
+        image[max(0, y1 - 16) : min(1080, y2 + 16), max(0, x1 - 16) : min(1920, x2 + 16)] = 65
+        assert cv2.imwrite(str(reference), image)
     source = tmp_path / "synthetic hud.mp4"
     subprocess.run(
         [
@@ -64,6 +111,8 @@ def test_calibrated_pixels_reach_round_package_and_sqlite_without_fabrication(
         capture_output=True,
         timeout=30,
     )
+    if automatic:
+        selected_layout = create_profile(source, layout_path, tmp_path / "automatic", samples=16)
     services = build_services(
         SettingsStore(tmp_path / "settings.json"),
         settings=AppSettings(

@@ -16,6 +16,7 @@ from valorant_ai_coach.video.sampling import HudFrameSampler
 
 from .classifier import HudStateClassifier
 from .diagnostics import CalibrationTelemetry
+from .identity import live_identity
 from .layout import CalibrationResult, HudLayout, NormalizedRoi
 from .models import HudObservationV2, accept_hud_value, empty_hud_values
 from .readers import (
@@ -366,40 +367,17 @@ class RealHudAnalyzer:
                 _enrich_temporal_evidence(
                     signals, values, observations[-1] if observations else None
                 )
+            identity = live_identity(signals, geometry_valid=calibration.calibrated)
+            identity_count = identity.positive_count
+            signals["live_first_person"] = identity.live
             if calibration.calibrated:
-                # Scene edges alone can look like a buy-menu grid. Require its
-                # close anchor too, matching the classifier's menu contract.
-                # Keep ambiguous ownership/remote cues conservative.
-                mode_present = (
-                    bool(signals.get("buy_menu_grid_present"))
-                    and bool(signals.get("buy_menu_close_anchor_present"))
-                ) or all(bool(signals.get(key)) for key in (
-                    "astral_geometry", "purple_palette", "astra_hand_interface",
-                )) or any(bool(signals.get(key)) for key in (
-                    "expanded_map_present", "expanded_map_stable", "spectated_player_panel",
-                    "remote_control_candidate", "cypher_camera_template",
-                    "sova_drone_template", "skye_trailblazer_template",
-                ))
-                # A score below the profile's own acceptance threshold cannot
-                # establish identity even when it exceeds the legacy 0.90 floor.
-                identity_scores = {name: score for name, score in anchor_scores.items()
-                                   if name in current_anchors}
-                profile_raw = getattr(self.template_profile, "raw", {})
-                if isinstance(profile_raw, Mapping):
-                    for name, spec in profile_raw.get("anchors", {}).items():
-                        if isinstance(spec, Mapping) and "mask" in spec:
-                            # Structural outlines survive remote/overlay views.
-                            # A masked match calibrates geometry, not ownership.
-                            identity_scores.pop(name, None)
-                identity_count = sum(score >= 0.90 for score in identity_scores.values())
-                if not mode_present and identity_count >= 3:
-                    signals["live_first_person"] = True
                 classified = self.state_classifier.classify(signals)
             else:
                 classified = self.state_classifier.classify({})
 
             telemetry.record(current_anchors, anchor_scores, current_calibration, calibration,
                              classified.primary_state, identity_count)
+            telemetry.identity_reasons[identity.reason] += 1
 
             values["player_specific_hud_valid"] = (
                 classified.player_specific_hud_valid if calibration.calibrated else False

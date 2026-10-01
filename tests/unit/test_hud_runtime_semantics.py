@@ -22,7 +22,7 @@ class SequenceReader:
         return ReaderResult(next(self.values), 0.95)
 
 
-def test_real_analyzer_connects_round_boundaries_roster_and_feed():
+def test_real_analyzer_connects_round_boundaries_roster_and_feed(live_identity_signals):
     analyzer = RealHudAnalyzer(
         resource_path("config/hud_layout_1080p_v3.json"),
         readers={
@@ -56,7 +56,11 @@ def test_real_analyzer_connects_round_boundaries_roster_and_feed():
         name: analyzer.layout.normalized_roi(name)
         for name in ("round_timer", "top_match_bar", "player_hp_armor", "abilities")
     }
-    result = analyzer.observe_frames(frames, anchor_detections=anchors, additional_signals=signals)
+    result = analyzer.observe_frames(
+        frames,
+        anchor_detections=anchors,
+        additional_signals=[{**live_identity_signals, **s} for s in signals],
+    )
     for observation in result.observations:
         SchemaValidator().validate_hud_observation(observation)
     assert result.observations[0]["values"]["hp"] is None

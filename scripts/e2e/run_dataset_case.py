@@ -228,6 +228,7 @@ def run_case(args, *, root=APP_ROOT, runner=subprocess.run, probe=None) -> int:
         "analyzer_commit": None,
         "git_is_dirty": None,
         "executed_at": stamp,
+        "manual_map_id": args.manual_map_id,
     }
     raw, trace, assertions = {}, {}, {}
     evaluation = {"pass": False, "schema_valid": False, "failures": []}

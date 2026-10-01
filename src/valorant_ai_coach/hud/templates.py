@@ -63,6 +63,7 @@ class HudTemplateProfile:
                 raise ValueError(f"HUD template profile {section}はobjectである必要があります")
         self.asset_paths = tuple(sorted(self._find_asset_paths(self.raw)))
         self._signal_templates: dict[str, tuple[str, LoadedTemplate]] = {}
+        self._signal_bounds: dict[str, tuple[float, float, float, float]] = {}
         for name, spec in self.raw.get("signals", {}).items():
             try:
                 if not isinstance(spec, Mapping) or not isinstance(spec.get("roi"), str):
@@ -70,19 +71,53 @@ class HudTemplateProfile:
                 template = self.load_template(
                     str(name), str(spec["template"]), float(spec.get("threshold", 0.90))
                 )
+                if "roi_bounds" in spec:
+                    self._signal_bounds[str(name)] = _bounds(spec["roi_bounds"])
                 self._signal_templates[str(name)] = (spec["roi"], template)
             except (KeyError, ValueError, OSError) as exc:
                 self.reader_diagnostics.append(f"signal {name}: {exc}")
+        self._clear_reference: ImageU8 | None = None
+        clear = self.raw.get("spectator_clear_reference")
+        if isinstance(clear, Mapping):
+            try:
+                data = self.resolve_asset(str(clear["template"])).read_bytes()
+                reference = cv2.imdecode(np.frombuffer(data, np.uint8), cv2.IMREAD_GRAYSCALE)
+                if (
+                    reference is None
+                    or reference.size == 0
+                    or not 12 <= float(reference.mean()) <= 245
+                    or int(reference.max()) - int(reference.min()) > 8
+                ):
+                    raise ValueError("invalid clear reference")
+                self._clear_reference = np.asarray(reference, dtype=np.uint8)
+            except (KeyError, ValueError, OSError, cv2.error):
+                self.reader_diagnostics.append("spectator_clear_reference: invalid asset")
 
     def detect_signals(self, frame: ImageU8, layout: HudLayout) -> dict[str, Any]:
-        """Positive template evidence only; a missing icon never proves identity loss."""
+        """UI matches and checked spectator absence; unreadable regions stay unknown."""
         signals: dict[str, Any] = {}
         height, width = frame.shape[:2]
         for name, (roi_name, template) in self._signal_templates.items():
             if roi_name not in layout.regions:
                 continue
             x1, y1, x2, y2 = layout.normalized_roi(roi_name).pixel_bounds(width, height)
-            result = _best_template_match(frame[y1:y2, x1:x2], (template,))
+            crop = frame[y1:y2, x1:x2]
+            if name in self._signal_bounds:
+                left, top, right, bottom = self._signal_bounds[name]
+                ch, cw = crop.shape[:2]
+                crop = crop[
+                    round(top * ch) : round(bottom * ch), round(left * cw) : round(right * cw)
+                ]
+            result = _best_template_match(crop, (template,))
+            if name == "spectated_player_panel" and float(frame[y1:y2, x1:x2].std()) >= 1.0:
+                # Only an executed configured detector can supply absence.
+                signals["spectator_panel_absent"] = (
+                    result.sources == ("template_below_threshold",)
+                    and math.isfinite(result.confidence)
+                    and 0 <= result.confidence <= 0.20
+                )
+                if result.value is not None:
+                    signals["self_hud_identity_trustworthy"] = False
             if result.value is not None and result.confidence >= 0.85:
                 signals[name] = True
                 signals[f"{name}_confidence"] = result.confidence
@@ -100,6 +135,20 @@ class HudTemplateProfile:
                     signals[confidence_key] = min(
                         signals.get(confidence_key, 1.0), result.confidence
                     )
+        if (
+            self._clear_reference is not None
+            and "spectated_player_panel" in layout.regions
+            and "spectator_panel_absent" not in signals
+        ):
+            x1, y1, x2, y2 = layout.normalized_roi("spectated_player_panel").pixel_bounds(
+                width, height
+            )
+            panel = cv2.cvtColor(frame[y1:y2, x1:x2], cv2.COLOR_BGR2GRAY)
+            signals["spectator_panel_absent"] = (
+                not signals.get("spectated_player_panel", False)
+                and panel.shape == self._clear_reference.shape
+                and int(np.abs(panel.astype(np.int16) - self._clear_reference).max()) <= 8
+            )
         return signals
 
     @classmethod
@@ -146,7 +195,7 @@ class HudTemplateProfile:
         if not math.isfinite(threshold) or not 0.0 <= threshold <= 1.0:
             raise ValueError(f"template thresholdが不正です: {name}")
         path = self.resolve_asset(value)
-        image = cv2.imread(str(path), cv2.IMREAD_COLOR)
+        image = cv2.imdecode(np.frombuffer(path.read_bytes(), np.uint8), cv2.IMREAD_COLOR)
         if image is None or image.size == 0:
             raise ValueError(f"HUD template画像を読み込めません: {path}")
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -200,8 +249,11 @@ class HudTemplateProfile:
                     continue
                 mask = None
                 if "mask" in raw_spec:
-                    mask = cv2.imread(
-                        str(self.resolve_asset(str(raw_spec["mask"]))), cv2.IMREAD_GRAYSCALE
+                    mask = cv2.imdecode(
+                        np.frombuffer(
+                            self.resolve_asset(str(raw_spec["mask"])).read_bytes(), np.uint8
+                        ),
+                        cv2.IMREAD_GRAYSCALE,
                     )
                     if mask is None or mask.shape != template.image.shape:
                         raise ValueError("anchor mask must match template dimensions")
@@ -261,8 +313,7 @@ class HudTemplateProfile:
             kind = raw_spec.get("kind")
             try:
                 subregion = (
-                    _bounds(raw_spec["subregion_norm"])
-                    if "subregion_norm" in raw_spec else None
+                    _bounds(raw_spec["subregion_norm"]) if "subregion_norm" in raw_spec else None
                 )
                 if kind == "digits":
                     readers[str(roi_name)] = SegmentedDigitsReader(
@@ -348,7 +399,7 @@ class SubregionReader:
     def read(self, image: ImageU8, roi: ImageU8) -> ReaderResult[Any]:
         height, width = roi.shape[:2]
         x1, y1, x2, y2 = self.bounds
-        crop = roi[round(y1 * height):round(y2 * height), round(x1 * width):round(x2 * width)]
+        crop = roi[round(y1 * height) : round(y2 * height), round(x1 * width) : round(x2 * width)]
         if not crop.size:
             return ReaderResult(None, 0.0, ("empty_reader_subregion",))
         return self.reader.read(image, crop)
@@ -379,9 +430,7 @@ class TesseractDigitsReader:
             return ReaderResult(None, 0.0, ("tesseract_unavailable",))
         gray = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY) if roi.ndim == 3 else roi
         if self.white_text_threshold is not None:
-            gray = cv2.threshold(
-                gray, self.white_text_threshold, 255, cv2.THRESH_BINARY_INV
-            )[1]
+            gray = cv2.threshold(gray, self.white_text_threshold, 255, cv2.THRESH_BINARY_INV)[1]
         enlarged = cv2.resize(gray, None, fx=3, fy=3, interpolation=cv2.INTER_CUBIC)
         ok, encoded = cv2.imencode(".png", enlarged)
         if not ok:
@@ -462,9 +511,7 @@ class TesseractTextReader:
             command.extend(("--tessdata-dir", self.tessdata_dir))
         command.append("--list-langs")
         try:
-            result = subprocess.run(
-                command, capture_output=True, check=False, timeout=2.0
-            )
+            result = subprocess.run(command, capture_output=True, check=False, timeout=2.0)
         except (OSError, subprocess.TimeoutExpired):
             self.diagnostics.append("tesseract_language_query_failed")
             return
@@ -570,8 +617,11 @@ class SegmentedDigitsReader:
         ocr = self.fallback.read(roi, roi)
         # Never reinterpret an OCR-missed colon (e.g. 1:14 -> 1714)
         # as thousands of seconds or insert punctuation speculatively.
-        if (self.value_format == "timer_mmss" and ocr.value is not None
-                and re.fullmatch(r"[0-9]{1,2}:[0-5][0-9]", ocr.value) is None):
+        if (
+            self.value_format == "timer_mmss"
+            and ocr.value is not None
+            and re.fullmatch(r"[0-9]{1,2}:[0-5][0-9]", ocr.value) is None
+        ):
             ocr = ReaderResult(None, 0.0, ("timer_ocr_format_invalid",))
         if candidate is not None and self.value_format == "timer_mmss":
             digits = candidate.value or ""
@@ -812,6 +862,8 @@ def _best_template_match(
             continue
         try:
             scores = cv2.matchTemplate(gray, template.image, cv2.TM_CCOEFF_NORMED)
+            if not np.isfinite(scores).all():
+                continue
             _, score, _, _ = cv2.minMaxLoc(scores)
         except cv2.error:
             continue

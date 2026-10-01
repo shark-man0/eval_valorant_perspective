@@ -34,7 +34,51 @@ def sanitize_calibration(value):
         result[key] = number(value.get(key))
     reasons = object_or_empty(value.get("reasons"))
     result["reasons"] = {key: number(reasons[key], count=True) for key in REASONS if key in reasons}
+    identity = object_or_empty(value.get("identity_reasons"))
+    result["identity_evidence_policy"] = (
+        "independent_current_frame_structures_v1" if "identity_reasons" in value else None
+    )
+    result["identity_reasons"] = {
+        key: number(identity[key], count=True)
+        for key in (
+            "geometry_invalid",
+            "spectator_exclusion_unverified",
+            "competing_view_evidence",
+            "structure_evidence_insufficient",
+            "independent_hud_structures",
+        )
+        if key in identity
+    }
     rows = value.get("anchors", [])
+    automatic = object_or_empty(value.get("automatic_identity_generation"))
+    if automatic:
+        result["automatic_identity_generation"] = sanitize_identity_generation(automatic)
+    generation = object_or_empty(value.get("temporal_generation"))
+    if generation:
+        digest = generation.get("generated_assets_sha256")
+        result["temporal_generation"] = {
+            "sample_count": number(generation.get("sample_count"), count=True),
+            "anchor_count": number(generation.get("anchor_count"), count=True),
+            "generated_assets_sha256": digest
+            if isinstance(digest, str) and re.fullmatch(r"[a-f0-9]{64}", digest)
+            else None,
+            "anchors": {
+                name: {
+                    "selected_ratio": number(
+                        object_or_empty(object_or_empty(generation.get("anchors")).get(name)).get(
+                            "selected_ratio"
+                        )
+                    ),
+                    "selected_pixels": number(
+                        object_or_empty(object_or_empty(generation.get("anchors")).get(name)).get(
+                            "selected_pixels"
+                        ),
+                        count=True,
+                    ),
+                }
+                for name in ANCHORS
+            },
+        }
     if not isinstance(rows, list):
         rows = []
     result["anchors"] = []
@@ -71,4 +115,52 @@ def sanitize_calibration(value):
         scores = object_or_empty(source.get("match_confidence"))
         row["match_confidence"] = {key: number(scores.get(key)) for key in ("min", "median", "max")}
         result["anchors"].append(row)
+    return result
+
+
+def sanitize_identity_generation(value):
+    references = object_or_empty(value.get("references"))
+    result = {
+        "version": 1,
+        "sample_count": number(value.get("sample_count"), count=True),
+        "geometry_mode": value.get("geometry_mode")
+        if value.get("geometry_mode") in ("generated", "inherited")
+        else None,
+        "references": {},
+    }
+    for name in (
+        "hp_hud_structure",
+        "ability_bar_structure",
+        "weapon_ammo_structure",
+        "spectator_clear",
+    ):
+        source = object_or_empty(references.get(name))
+        row = {
+            key: number(source.get(key), count=True)
+            for key in (
+                "training_count",
+                "holdout_count",
+                "training_accept_count",
+                "holdout_accept_count",
+            )
+        }
+        row["holdout_median"] = number(source.get("holdout_median"))
+        row["status"] = (
+            source.get("status")
+            if source.get("status") in ("generated", "inherited", "insufficient_evidence")
+            else None
+        )
+        digest = source.get("content_hash")
+        row["content_hash"] = (
+            digest if isinstance(digest, str) and re.fullmatch(r"[a-f0-9]{64}", digest) else None
+        )
+        dims = source.get("dimensions")
+        row["dimensions"] = (
+            dims
+            if isinstance(dims, list)
+            and len(dims) == 2
+            and all(isinstance(x, int) and not isinstance(x, bool) and 0 < x <= 65536 for x in dims)
+            else None
+        )
+        result["references"][name] = row
     return result

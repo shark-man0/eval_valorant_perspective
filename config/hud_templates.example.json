@@ -47,6 +47,9 @@
     }
   },
   "signals": {
+    "hp_hud_structure": {"roi": "player_hp_armor", "template": "identity/hp_structure.png", "threshold": 0.90},
+    "ability_bar_structure": {"roi": "abilities", "template": "identity/ability_structure.png", "threshold": 0.90},
+    "weapon_ammo_structure": {"roi": "ammo_current_weapon", "template": "identity/weapon_ammo_structure.png", "threshold": 0.90},
     "spectated_player_panel": {"roi": "spectated_player_panel", "template": "states/spectated_panel.png"},
     "self_hud_identity_lost": {"roi": "combat_report", "template": "states/player_dead.png"},
     "buy_phase_template": {"roi": "center_phase_banner", "template": "states/buy_phase.png"},

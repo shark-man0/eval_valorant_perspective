@@ -124,27 +124,42 @@ class SequenceReader:
         return ReaderResult(next(self.values), 0.95)
 
 
-@pytest.mark.parametrize("text,expected", [
-    ("1714", None), ("13", None), ("1:99", None), ("1:4", None),
-    ("1:14", 74.0), ("0:04", 4.0), (74, 74.0),
-])
+@pytest.mark.parametrize(
+    "text,expected",
+    [
+        ("1714", None),
+        ("13", None),
+        ("1:99", None),
+        ("1:4", None),
+        ("1:14", 74.0),
+        ("0:04", 4.0),
+        (74, 74.0),
+    ],
+)
 def test_default_timer_ocr_validates_format_but_preserves_numeric_seconds(text, expected):
     class Reader:
         def read(self, image, roi):
-            return ReaderResult(text, .95)
+            return ReaderResult(text, 0.95)
 
-    analyzer = RealHudAnalyzer(resource_path("config/hud_layout_1080p_v3.json"),
-                               ocr_reader=Reader())
-    anchors = {name: analyzer.layout.normalized_roi(name)
-               for name in ("round_timer", "top_match_bar", "player_hp_armor", "abilities")}
-    result = analyzer.observe_frames([np.full((1080, 1920, 3), 60, dtype=np.uint8)],
-                                      anchor_detections=anchors)
+    analyzer = RealHudAnalyzer(
+        resource_path("config/hud_layout_1080p_v3.json"), ocr_reader=Reader()
+    )
+    anchors = {
+        name: analyzer.layout.normalized_roi(name)
+        for name in ("round_timer", "top_match_bar", "player_hp_armor", "abilities")
+    }
+    result = analyzer.observe_frames(
+        [np.full((1080, 1920, 3), 60, dtype=np.uint8)], anchor_detections=anchors
+    )
     assert result.observations[0]["values"]["round_time_remaining_sec"] == expected
 
 
 def test_stale_combat_report_in_buy_phase_does_not_emit_death():
-    samples = [observation(0, flags=("buy_phase_banner",), timer=1),
-               observation(1, timer=100), observation(2, timer=99)]
+    samples = [
+        observation(0, flags=("buy_phase_banner",), timer=1),
+        observation(1, timer=100),
+        observation(2, timer=99),
+    ]
     for sample in samples[:2]:
         sample["values"]["combat_report_visible"] = True
     evidence = {i: {"self_hud_identity_lost": True} for i in range(2)}
@@ -153,49 +168,75 @@ def test_stale_combat_report_in_buy_phase_does_not_emit_death():
     assert len([event for event in events if event["type"] == "round_start"]) == 1
 
 
-@pytest.mark.parametrize("signals,expected", [
-    ({"buy_menu_grid_present": True, "astral_geometry": True}, "live_first_person"),
-    ({"astral_geometry": True, "purple_palette": True,
-      "astra_hand_interface": True}, "remote_control_view"),
-    ({"spectated_player_panel": True}, "unknown"),
-])
-def test_partial_scene_geometry_does_not_override_confirmed_hud(signals, expected):
+@pytest.mark.parametrize(
+    "signals,expected",
+    [
+        ({"buy_menu_grid_present": True, "astral_geometry": True}, "live_first_person"),
+        (
+            {"astral_geometry": True, "purple_palette": True, "astra_hand_interface": True},
+            "remote_control_view",
+        ),
+        ({"spectated_player_panel": True}, "unknown"),
+    ],
+)
+def test_partial_scene_geometry_does_not_override_confirmed_hud(
+    signals, expected, live_identity_signals
+):
     analyzer = RealHudAnalyzer(resource_path("config/hud_layout_1080p_v3.json"))
-    anchors = {name: analyzer.layout.normalized_roi(name)
-               for name in ("round_timer", "top_match_bar", "player_hp_armor", "abilities")}
-    neutral = dict.fromkeys((
-        "buy_menu_grid_present", "buy_menu_close_anchor_present", "expanded_map_present",
-        "expanded_map_stable", "astral_geometry", "purple_palette", "astra_hand_interface",
-        "spectated_player_panel", "remote_control_candidate",
-    ), False)
+    anchors = {
+        name: analyzer.layout.normalized_roi(name)
+        for name in ("round_timer", "top_match_bar", "player_hp_armor", "abilities")
+    }
+    neutral = dict.fromkeys(
+        (
+            "buy_menu_grid_present",
+            "buy_menu_close_anchor_present",
+            "expanded_map_present",
+            "expanded_map_stable",
+            "astral_geometry",
+            "purple_palette",
+            "astra_hand_interface",
+            "spectated_player_panel",
+            "remote_control_candidate",
+        ),
+        False,
+    )
     result = analyzer.observe_frames(
         [np.full((1080, 1920, 3), 60, dtype=np.uint8)],
-        anchor_detections=anchors, additional_signals=[{**neutral, **signals}],
+        anchor_detections=anchors,
+        additional_signals=[{**live_identity_signals, **neutral, **signals}],
     )
     assert result.observations[0]["primary_state"] == expected
 
 
 def test_map_texture_score_alone_cannot_confirm_tactical_map(monkeypatch):
     analyzer = RealHudAnalyzer(resource_path("config/hud_layout_1080p_v3.json"))
-    monkeypatch.setattr("valorant_ai_coach.hud.readers._map_score", lambda _: .99)
+    monkeypatch.setattr("valorant_ai_coach.hud.readers._map_score", lambda _: 0.99)
     feature = analyzer.feature_reader.observe(np.full((1080, 1920, 3), 60, dtype=np.uint8))
     assert feature.signals["expanded_map_candidate"] is True
     assert feature.signals["expanded_map_present"] is False
     assert feature.signals["expanded_map_stable"] is False
 
 
-def test_letterbox_invalidates_cached_calibration_until_anchors_recover(monkeypatch):
+def test_letterbox_invalidates_cached_calibration_until_anchors_recover(
+    monkeypatch, live_identity_signals
+):
     from unittest.mock import Mock
 
     analyzer = RealHudAnalyzer(resource_path("config/hud_layout_1080p_v3.json"))
-    anchors = {name: analyzer.layout.normalized_roi(name)
-               for name in ("round_timer", "top_match_bar", "player_hp_armor", "abilities")}
-    scores = dict.fromkeys(anchors, .99)
+    anchors = {
+        name: analyzer.layout.normalized_roi(name)
+        for name in ("round_timer", "top_match_bar", "player_hp_armor", "abilities")
+    }
+    scores = dict.fromkeys(anchors, 0.99)
     profile = Mock()
     profile.detect_anchors.side_effect = [
-        (anchors, scores, ()), ({}, {}, ()), ({}, {}, ()), (anchors, scores, ()),
+        (anchors, scores, ()),
+        ({}, {}, ()),
+        ({}, {}, ()),
+        (anchors, scores, ()),
     ]
-    profile.detect_signals.return_value = {}
+    profile.detect_signals.return_value = live_identity_signals
     analyzer.template_profile = profile
     monkeypatch.setattr(
         "valorant_ai_coach.hud.analyzers._detect_letterbox",
@@ -212,7 +253,9 @@ def test_letterbox_invalidates_cached_calibration_until_anchors_recover(monkeypa
     assert analysis.calibration.calibrated
 
 
-def test_real_analyzer_connects_delayed_signals_without_test_only_before_counts():
+def test_real_analyzer_connects_delayed_signals_without_test_only_before_counts(
+    live_identity_signals,
+):
     analyzer = RealHudAnalyzer(
         resource_path("config/hud_layout_1080p_v3.json"),
         readers={
@@ -238,10 +281,10 @@ def test_real_analyzer_connects_delayed_signals_without_test_only_before_counts(
             [image] * 4,
             anchor_detections=anchors,
             additional_signals=[
-                {},
-                {"kill_feed_row_added": True},
-                {"round_end_template": True},
-                {},
+                live_identity_signals,
+                {**live_identity_signals, "kill_feed_row_added": True},
+                {**live_identity_signals, "round_end_template": True},
+                live_identity_signals,
             ],
         )
     assert Counter(item["type"] for item in result.hud_events) == {"kill": 1, "round_end": 1}

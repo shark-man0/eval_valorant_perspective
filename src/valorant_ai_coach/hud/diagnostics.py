@@ -10,6 +10,7 @@ from statistics import median
 from typing import Any
 
 import cv2
+import numpy as np
 
 from .layout import CalibrationResult, HudLayout
 from .templates import HudTemplateProfile
@@ -51,8 +52,17 @@ class CalibrationTelemetry:
         self.scores: dict[str, list[float]] = {name: [] for name in ANCHORS}
         self.counts: Counter[str] = Counter()
         self.reasons: Counter[str] = Counter()
+        self.identity_reasons: Counter[str] = Counter()
         self.required = set((layout.calibration_policy or {}).get("required_anchors", ANCHORS))
         profile_raw = getattr(profile, "raw", {})
+        self.identity_generation = (
+            profile_raw.get("automatic_identity_generation")
+            if isinstance(profile_raw, Mapping)
+            else None
+        )
+        self.generation = (
+            profile_raw.get("temporal_generation") if isinstance(profile_raw, Mapping) else None
+        )
         specs = profile_raw.get("anchors", {}) if isinstance(profile_raw, Mapping) else {}
         for name in ANCHORS:
             spec = specs.get(name, {})
@@ -81,7 +91,9 @@ class CalibrationTelemetry:
                 try:
                     path = profile.resolve_asset(spec["template"])
                     row["content_hash"] = hashlib.sha256(path.read_bytes()).hexdigest()
-                    image = cv2.imread(str(path), cv2.IMREAD_GRAYSCALE)
+                    image = cv2.imdecode(
+                        np.frombuffer(path.read_bytes(), np.uint8), cv2.IMREAD_GRAYSCALE
+                    )
                     if image is not None:
                         row["dimensions"] = [int(image.shape[1]), int(image.shape[0])]
                         row["asset_readable"] = True
@@ -157,5 +169,8 @@ class CalibrationTelemetry:
             if total
             else None,
             "reasons": dict(self.reasons),
+            "identity_reasons": dict(self.identity_reasons),
+            "temporal_generation": self.generation,
+            "automatic_identity_generation": self.identity_generation,
             "anchors": rows,
         }

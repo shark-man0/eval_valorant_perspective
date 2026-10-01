@@ -115,6 +115,19 @@ analyzer output and E2E report have distinct roles.
 
 ### Image-free HUD profile diagnostics
 
+Geometry anchors no longer establish live-player identity, masked or unmasked.
+Use the single `python -m valorant_ai_coach.hud.calibrate_profile` command below; it generates
+geometry masks and separate, unmasked HP/ability/weapon-ammo structure references from
+unlabelled frames. Selection uses training frames, then a disjoint holdout checks support.
+It preserves existing readers and signals. No GT, validation pack, expected state, or API is
+an input to generation. There is no intermediate image approval or JSON editing step.
+The optional `calibrate_temporal` remains a geometry-only diagnostic tool, not the recommended
+end-to-end workflow. Keep all generated assets in ignored `outputs/`.
+The `identity_reasons`, sanitized `temporal_generation`, and `automatic_identity_generation`
+statistics are automatically shared in the E2E calibration reports.
+Use explicit `-ManualMapId summit` only when you know that is the actual map;
+map selection does not bypass position/ownership/calibration requirements.
+
 Keep using the same `-HudLayout` and its adjacent `.templates.json` profile locally.
 The runner automatically exports fixed anchor names, thresholds, mask presence, image
 dimensions and SHA-256, accepted/rejected/unscored counts, finite confidence min/median/max,
@@ -124,6 +137,71 @@ Fresh geometry and retained valid geometry are counted separately from state evi
 These are sampled-frame rates, not time-weighted accuracy. Missing diagnostics from old
 outputs are marked unavailable, never reconstructed. See
 [HUD_DIAGNOSTICS_REVIEW.md](HUD_DIAGNOSTICS_REVIEW.md) for interpretation and the baseline.
+
+### Automatic local profile → Windows E2E (PowerShell)
+
+Run from the updated repository root. The example uses the default Desktop video filename;
+set only the three input paths below to your actual local files. Use your existing calibrated
+layout if available: its adjacent `.templates.json` is loaded automatically. Keep that base
+profile's assets locally because inherited readers can still reference them.
+
+```powershell
+$ErrorActionPreference = 'Stop'
+$video = Join-Path ([Environment]::GetFolderPath('Desktop')) 'Valorant_09-25-2026_0-37-29-379.mp4'
+$baseLayout = (Resolve-Path '.\config\hud_layout_1080p_v3.json').Path
+$pack = (Resolve-Path '..\valorant_e2e_validation_pack_v3').Path
+
+# Existing Windows E2E environments can reuse .venv; bootstrap when absent.
+if (-not (Test-Path '.\.venv\Scripts\python.exe')) {
+  py -3.12 -m venv .venv
+  if ($LASTEXITCODE -ne 0) { throw 'venv creation failed' }
+}
+.\.venv\Scripts\python.exe -m pip install -c constraints-windows.txt -e .
+if ($LASTEXITCODE -ne 0) { throw 'Dependency installation failed' }
+Get-Command ffmpeg, ffprobe -ErrorAction Stop | Out-Null
+
+# New directory on every run; no overwriting an earlier profile.
+$out = Join-Path (Get-Location).Path ('outputs\hud_profiles\auto_' + [guid]::NewGuid().ToString('N'))
+.\.venv\Scripts\python.exe -m valorant_ai_coach.hud.calibrate_profile `
+  --video $video `
+  --layout $baseLayout `
+  --output $out `
+  --samples 32
+if ($LASTEXITCODE -ne 0) { throw 'Profile generation failed; E2E was not started' }
+$hudLayout = Join-Path $out 'hud_layout.json'
+
+# No image/JSON editing between these two commands.
+.\run_e2e_windows.ps1 `
+  -Video $video `
+  -VideoId match_001 `
+  -ValidationPack $pack `
+  -HudLayout $hudLayout `
+  -ManualMapId summit
+```
+
+Outputs: `hud_layout.json`, `hud_layout.templates.json`, `anchors/*.png` (including masks),
+`identity/*.png` (available references), `profile_diagnostics.json`, and, when geometry is
+generated, `temporal_stats.json`. No images are copied into `e2e_reports` by this workflow.
+Do not add `-IncludeEvidence`. Only sanitized counts, status, dimensions and hashes are shared.
+
+**Generation success means a loadable profile, not verified HUD accuracy.** Insufficient
+identity references have status `insufficient_evidence` and remain disabled; the E2E can report
+unknown or fail to form a round. It does not ask for hand editing. If stable geometry cannot
+be generated, an existing local anchor profile is retained; with neither, generation fails
+without publishing a partial directory. Existing thresholds are not lowered.
+
+Spectator presence detectors already configured are retained. Without semantic labels the
+tool does not name a textured cluster "spectator". It may generate a strict full-panel clear
+reference only from near-uniform, non-black/non-white observations with holdout support.
+Runtime checks every pixel (maximum grayscale difference 8); a visible panel or mismatch
+does not prove absence. This conservative fallback may be unavailable on real recordings.
+All three current-frame structures and existing remote/spectator/menu/map blockers still
+apply; there is no live-state persistence. A clear reference alone never establishes live.
+
+Compare `automatic_identity_generation.references`, `identity_reasons`, geometry success,
+`geometry_valid_state_unknown`, Visual eligibility and Map unresolved counts against the
+Windows baseline. Mac synthetic tests do not establish real-video improvement. PowerShell
+execution itself must be checked on Windows.
 
 ## Minimal workflow (PowerShell)
 
