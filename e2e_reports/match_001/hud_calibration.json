@@ -1,14 +1,15 @@
 {
   "metadata": {
+    "manual_map_id": "summit",
     "video_id": "match_001",
     "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
-    "analyzer_commit": "f301aebefa3b1875bd8c9472a85d5bf59a967a33",
-    "git_is_dirty": false,
-    "executed_at": "2026-09-30T16:04:39.904026+00:00",
+    "analyzer_commit": "99d7d1aa20368478b48704ca07bd3a3417b7f356",
+    "git_is_dirty": true,
+    "executed_at": "2026-10-01T21:16:22.692420+00:00",
     "validation_pack": "valorant_e2e_validation_pack_v3",
     "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
     "git_dirty_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "settings_fingerprint": "04f55588d0933ee0f12257d95172c93fb33e297a13d78c1b35be9fc15487fcbc"
+    "settings_fingerprint": "eee7e4fc9eb2638c9a3cb67dc42c7078c1d4410d7574bdbda67ea490f5ee37d4"
   },
   "available": true,
   "schema_version": 1,
@@ -19,14 +20,65 @@
     "effective_geometry_success": 3929,
     "retained_geometry_frames": 3928,
     "geometry_invalid_unknown": 0,
-    "geometry_valid_state_unknown": 3891,
-    "live_identity_evidence_insufficient": 3928,
+    "geometry_valid_state_unknown": 3892,
+    "live_identity_evidence_insufficient": 3929,
     "insufficient_anchors_frames": 3928
   },
   "fresh_geometry_success_rate": 0.00025451768897938407,
   "effective_geometry_success_rate": 1.0,
   "reasons": {
     "insufficient_anchors": 3928
+  },
+  "identity_evidence_policy": "independent_current_frame_structures_v1",
+  "identity_reasons": {
+    "spectator_exclusion_unverified": 3929
+  },
+  "automatic_identity_generation": {
+    "version": 1,
+    "sample_count": 32,
+    "geometry_mode": "inherited",
+    "references": {
+      "hp_hud_structure": {
+        "training_count": null,
+        "holdout_count": null,
+        "training_accept_count": null,
+        "holdout_accept_count": null,
+        "holdout_median": null,
+        "status": "insufficient_evidence",
+        "content_hash": null,
+        "dimensions": null
+      },
+      "ability_bar_structure": {
+        "training_count": null,
+        "holdout_count": null,
+        "training_accept_count": null,
+        "holdout_accept_count": null,
+        "holdout_median": null,
+        "status": "insufficient_evidence",
+        "content_hash": null,
+        "dimensions": null
+      },
+      "weapon_ammo_structure": {
+        "training_count": null,
+        "holdout_count": null,
+        "training_accept_count": null,
+        "holdout_accept_count": null,
+        "holdout_median": null,
+        "status": "insufficient_evidence",
+        "content_hash": null,
+        "dimensions": null
+      },
+      "spectator_clear": {
+        "training_count": null,
+        "holdout_count": null,
+        "training_accept_count": null,
+        "holdout_accept_count": null,
+        "holdout_median": null,
+        "status": "insufficient_evidence",
+        "content_hash": null,
+        "dimensions": null
+      }
+    }
   },
   "anchors": [
     {

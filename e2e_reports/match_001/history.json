@@ -130,5 +130,50 @@
       "error_code": null
     },
     "failure_count": 58
+  },
+  {
+    "history_key": "42c3e60dca1762fa0b91e7bd3ee13161ebe455118f317ea009be1bccf2f8897e",
+    "metadata": {
+      "video_id": "match_001",
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "analyzer_commit": "99d7d1aa20368478b48704ca07bd3a3417b7f356",
+      "git_is_dirty": false,
+      "executed_at": "2026-10-01T21:10:31.554490+00:00",
+      "validation_pack": "valorant_e2e_validation_pack_v3",
+      "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
+      "git_dirty_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "settings_fingerprint": null
+    },
+    "result": {
+      "status": "fail",
+      "schema_valid": false,
+      "failure_count": null,
+      "negative_assertion_count": null,
+      "error_code": "PREFLIGHT_OR_RUNTIME_FAILED"
+    },
+    "failure_count": null
+  },
+  {
+    "history_key": "bb2397eb1020b2253a6f0c7be14698ffa5df333884803ff618f7f8bef7e31cec",
+    "metadata": {
+      "manual_map_id": "summit",
+      "video_id": "match_001",
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "analyzer_commit": "99d7d1aa20368478b48704ca07bd3a3417b7f356",
+      "git_is_dirty": true,
+      "executed_at": "2026-10-01T21:16:22.692420+00:00",
+      "validation_pack": "valorant_e2e_validation_pack_v3",
+      "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
+      "git_dirty_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "settings_fingerprint": "eee7e4fc9eb2638c9a3cb67dc42c7078c1d4410d7574bdbda67ea490f5ee37d4"
+    },
+    "result": {
+      "status": "fail",
+      "schema_valid": true,
+      "failure_count": 58,
+      "negative_assertion_count": 20,
+      "error_code": null
+    },
+    "failure_count": 58
   }
 ]
