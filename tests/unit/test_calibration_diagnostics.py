@@ -49,6 +49,7 @@ def test_cluster_and_runtime_failures_are_separately_shared():
         "identity_missing": {"hp_hud_structure": 9, "PRIVATE": 10},
         "spectator_checks": {
             "panel_structure_ambiguous": 4,
+            "panel_structure_mismatch": 2,
             "reference_unavailable": 5,
             "PRIVATE": 10,
         },
@@ -69,6 +70,7 @@ def test_cluster_and_runtime_failures_are_separately_shared():
     report = sanitize_calibration(raw)
     assert report["identity_missing"] == {"hp_hud_structure": 9}
     assert report["spectator_checks"]["panel_structure_ambiguous"] == 4
+    assert report["spectator_checks"]["panel_structure_mismatch"] == 2
     row = report["automatic_identity_generation"]["references"]["spectator_panel"]
     assert row["candidate_count"] == 5 and row["holdout_rejected"] == 1
     assert "PRIVATE" not in json.dumps(report)

@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import pytest
 
 from valorant_ai_coach.hud.calibrate_profile import structure_reference
 from valorant_ai_coach.hud.identity import live_identity
@@ -65,4 +66,25 @@ def test_no_positive_panel_structure_no_negative_evidence(panel_images):
 def test_absent_flag_without_executed_detector_is_not_evidence(live_identity_signals):
     assert live_identity(live_identity_signals, geometry_valid=True).live
     live_identity_signals["spectator_detector_checked"] = False
+    assert not live_identity(live_identity_signals, geometry_valid=True).live
+
+
+@pytest.mark.parametrize("shift", [(5, 10), (12, 15), (20, 20)])
+def test_displaced_panel_is_unknown_and_never_live(panel_images, live_identity_signals, shift):
+    positive, _ = panel_images(160, 126)
+    gray = cv2.cvtColor(positive, cv2.COLOR_BGR2GRAY)
+    labels = panel_components(gray)
+    assert labels is not None
+    moved = cv2.warpAffine(
+        gray, np.float32([[1, 0, shift[0]], [0, 1, shift[1]]]), (160, 126), borderValue=60
+    )
+    result = detect_panel(moved, labels)
+    assert result["checked"] is False
+    assert result["panel_present"] is None
+    assert result["reason"] in {"panel_structure_mismatch", "panel_structure_ambiguous"}
+    live_identity_signals.update(
+        spectator_detector_checked=result["checked"],
+        spectator_panel_present=result["panel_present"],
+        spectator_panel_absent=False,
+    )
     assert not live_identity(live_identity_signals, geometry_valid=True).live

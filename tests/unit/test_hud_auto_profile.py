@@ -6,6 +6,7 @@ import numpy as np
 import pytest
 from test_hud_temporal_calibration import FakeVideoService, _frames, _layout
 
+from valorant_ai_coach.hud.calibrate import create_anchor_profile
 from valorant_ai_coach.hud.calibrate_profile import (
     clear_reference,
     create_profile,
@@ -159,3 +160,75 @@ def test_legacy_clear_reference_cannot_override_unverified_panel(
     )
     signals = profile.detect_signals(frame, HudLayout.load(generated))
     assert signals["spectator_panel_absent"] is False
+
+
+def test_regeneration_preserves_valid_panel_detector_without_new_positive_frames(
+    tmp_path, panel_images
+):
+    layout, frames = inputs(tmp_path, panel_images)
+    first = create_profile(
+        Path("private.mp4"), layout, tmp_path / "first", video_service=FakeVideoService(frames)
+    )
+    before = HudTemplateProfile.load(first.with_suffix(".templates.json"))
+    assert before.raw["automatic_identity_generation"]["identity_reference_ready"] is True
+    x1, y1, x2, y2 = (
+        HudLayout.load(first).normalized_roi("spectated_player_panel").pixel_bounds(640, 360)
+    )
+    negative = []
+    for index, frame in enumerate(frames):
+        frame = frame.copy()
+        frame[y1:y2, x1:x2] = panel_images(x2 - x1, y2 - y1, index % 8)[1]
+        negative.append(frame)
+    source_bytes = first.with_suffix(".templates.json").read_bytes()
+    second = create_profile(
+        Path("private.mp4"), first, tmp_path / "second", video_service=FakeVideoService(negative)
+    )
+    after = HudTemplateProfile.load(second.with_suffix(".templates.json"))
+    row = after.raw["automatic_identity_generation"]["references"]["spectator_panel"]
+    assert row["status"] == "inherited"
+    assert row["candidate_count"] == 0
+    assert after.raw["automatic_identity_generation"]["identity_reference_ready"] is True
+    assert np.array_equal(before._panel_components, after._panel_components)
+    assert (
+        after.detect_signals(negative[0], HudLayout.load(second))["spectator_panel_absent"] is True
+    )
+    assert after.detect_signals(frames[2], HudLayout.load(second))["spectated_player_panel"] is True
+    assert first.with_suffix(".templates.json").read_bytes() == source_bytes
+
+
+@pytest.mark.parametrize("copy_asset", [False, True])
+def test_replaced_source_geometry_cannot_be_inherited_as_identity(
+    tmp_path, panel_images, copy_asset
+):
+    layout, frames = inputs(tmp_path, panel_images)
+    shot = (
+        FakeVideoService(frames)
+        .extract_frames(Path("private.mp4"), [0], tmp_path / "frame")[0]
+        .path
+    )
+    base = create_anchor_profile(layout, shot, tmp_path / "base")
+    sidecar = base.with_suffix(".templates.json")
+    raw = json.loads(sidecar.read_text())
+    old_anchor = sidecar.parent / raw["anchors"]["player_hp_armor"]["template"]
+    asset = old_anchor
+    if copy_asset:
+        asset = sidecar.parent / "copied_anchor.png"
+        asset.write_bytes(old_anchor.read_bytes())
+    raw["signals"] = {
+        "hp_hud_structure": {"roi": "player_hp_armor", "template": str(asset), "threshold": 0.90}
+    }
+    sidecar.write_text(json.dumps(raw))
+    generated = create_profile(
+        Path("private.mp4"), base, tmp_path / "generated", video_service=FakeVideoService(frames)
+    )
+    after = HudTemplateProfile.load(generated.with_suffix(".templates.json"))
+    assert after.raw["automatic_identity_generation"]["geometry_mode"] == "generated"
+    assert (
+        after.raw["automatic_identity_generation"]["references"]["hp_hud_structure"]["status"]
+        == "generated"
+    )
+    assert after.raw["signals"]["hp_hud_structure"]["template"].startswith("identity/")
+    assert (
+        after.resolve_asset(after.raw["signals"]["hp_hud_structure"]["template"]).read_bytes()
+        != old_anchor.read_bytes()
+    )

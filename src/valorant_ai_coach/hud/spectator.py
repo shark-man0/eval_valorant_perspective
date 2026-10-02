@@ -79,6 +79,24 @@ def component_scores(gray: np.ndarray, labels: np.ndarray) -> list[float]:
     return [float(np.mean(edges[labels == k] > 0)) for k in (1, 2, 3)]
 
 
+def _displaced_component_present(gray: np.ndarray, labels: np.ndarray) -> bool:
+    """Search the whole ROI before treating fixed-position contradictions as absence.
+
+    A displaced characteristic component is ambiguous evidence, not proof of
+    presence. Use the same .90 edge-coverage requirement as the positive detector.
+    """
+    edges = (cv2.dilate(cv2.Canny(gray, 60, 150), np.ones((3, 3), np.uint8)) > 0).astype(np.float32)
+    for kind in (1, 2, 3):
+        ys, xs = np.nonzero(labels == kind)
+        template = (labels[ys.min() : ys.max() + 1, xs.min() : xs.max() + 1] == kind).astype(
+            np.float32
+        )
+        coverage = cv2.matchTemplate(edges, template, cv2.TM_CCORR) / len(xs)
+        if float(coverage.max()) >= 0.90:
+            return True
+    return False
+
+
 def generate_panel_reference(crops: list[np.ndarray], stats: dict[str, Any]) -> np.ndarray | None:
     gray = [cv2.cvtColor(c, cv2.COLOR_BGR2GRAY) if c.ndim == 3 else c for c in crops]
     stats.update(
@@ -136,6 +154,9 @@ def detect_panel(crop: np.ndarray, labels: np.ndarray | None) -> dict[str, Any]:
     if min(scores) >= 0.90:
         result.update(checked=True, panel_present=True, reason="panel_structure_present")
     elif max(scores) <= 0.10:
+        if panel_components(gray) is not None or _displaced_component_present(gray, labels):
+            result["reason"] = "panel_structure_mismatch"
+            return result
         # Each mandatory UI component was checked and strongly contradicted.
         # Partial structure, noise/occlusion or just a below-threshold match is unknown.
         result.update(checked=True, panel_present=False, reason="panel_structure_excluded")

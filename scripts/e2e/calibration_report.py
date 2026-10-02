@@ -61,6 +61,7 @@ def sanitize_calibration(value):
             "panel_structure_present",
             "panel_structure_excluded",
             "panel_structure_ambiguous",
+            "panel_structure_mismatch",
         ),
     }.items():
         counts = object_or_empty(value.get(section))

@@ -203,6 +203,9 @@ def create_profile(
     layout = HudLayout.load(layout_path)
     if layout.layout_format != "v3" or layout.reference_resolution is None:
         raise ValueError("v3の基準解像度付きlayoutが必要です")
+    source_path = layout_path.with_suffix(".templates.json")
+    source = HudTemplateProfile.load(source_path) if source_path.is_file() else None
+    source_geometry_assets = _geometry_asset_paths(source) if source is not None else set()
     service = video_service or VideoService()
     metadata = service.probe(video)
     if not math.isfinite(metadata.duration_sec) or metadata.duration_sec <= 0:
@@ -255,13 +258,8 @@ def create_profile(
         }
         raw.setdefault("signals", {})
         inherited = HudTemplateProfile(stage / "hud_layout.templates.json", raw)
-        geometry_assets = {
-            inherited.resolve_asset(spec[key]).resolve()
-            for spec in raw.get("anchors", {}).values()
-            if isinstance(spec, dict)
-            for key in ("template", "mask")
-            if isinstance(spec.get(key), str)
-        }
+        # Retain source geometry provenance even when new anchors replace it.
+        geometry_assets = source_geometry_assets | _geometry_asset_paths(inherited)
         geometry_hashes = {
             hashlib.sha256(p.read_bytes()).hexdigest() for p in geometry_assets if p.is_file()
         }
@@ -313,6 +311,19 @@ def create_profile(
             )
             labels = generate_panel_reference([image[y1:y2, x1:x2] for image in images], stats)
         status = "generated"
+        if labels is None and inherited._panel_components is not None:
+            spec = inherited.raw.get("spectator_panel_detector", {})
+            asset = inherited.resolve_asset(spec["template"]).resolve()
+            roi_name = "spectated_player_panel"
+            if (
+                roi_name in layout.regions
+                and asset not in geometry_assets
+                and hashlib.sha256(asset.read_bytes()).hexdigest() not in geometry_hashes
+            ):
+                x1, y1, x2, y2 = layout.normalized_roi(roi_name).pixel_bounds(width, height)
+                if inherited._panel_components.shape == (y2 - y1, x2 - x1):
+                    labels = inherited._panel_components.copy()
+                    status = "inherited"
         if labels is None and "spectated_player_panel" in inherited._signal_templates:
             roi_name, template = inherited._signal_templates["spectated_player_panel"]
             if (
@@ -358,6 +369,16 @@ def create_profile(
         )
         stage.rename(output)
     return output / "hud_layout.json"
+
+
+def _geometry_asset_paths(profile: HudTemplateProfile) -> set[Path]:
+    return {
+        profile.resolve_asset(spec[key]).resolve()
+        for spec in profile.raw.get("anchors", {}).values()
+        if isinstance(spec, dict)
+        for key in ("template", "mask")
+        if isinstance(spec.get(key), str)
+    }
 
 
 def main() -> int:

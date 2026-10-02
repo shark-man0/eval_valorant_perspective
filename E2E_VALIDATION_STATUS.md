@@ -1,5 +1,12 @@
 # E2E Validation Pack v3 導入状況（2026-09-29）
 
+## 精査後の3件修正（2026-10-02）
+
+観戦panel位置変更時の誤absence、再生成時の正常detector消失、古いgeometry画像のidentity
+継承を修正。新しい `panel_structure_mismatch` 診断を追加し、resume contractを12に更新。
+Mac検証 **489 passed / 3 skipped**、Ruff成功、mypy77ファイル成功。
+合成回帰6ケースを追加。Windows実測JSONは変更せず、実動画改善は未確認。
+
 ## 34dc48a再検証後: mixed-mode cluster / panel構造detector（2026-10-02）
 
 最新Windows結果はgeometry有効3929、独立参照4件不足、live=0、Visual eligibility=0、

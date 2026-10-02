@@ -1,5 +1,23 @@
 # Windows E2E 上流診断（2026-10-01）
 
+## 2026-10-02: 精査で再現した3件の修正
+
+- `hud/spectator.py`: 固定位置で3要素が不一致でも、ROI全体でpanel候補と移動した特徴を
+  探索する。候補・特徴が残っていれば `panel_structure_mismatch` として未確認に戻す。
+  合成panelの5px/10px移動でabsence→liveになる再現を回帰テスト化。
+- `hud/calibrate_profile.py`: 新positive clusterが生成できない場合、既存の検証済み
+  component detectorをdimensions・形式・assetに基づいて継承し、新出力先へコピーする。
+  観戦場面なしで再生成するテストでも、前回の参照を保持して現在frameを検査できる。
+- 同生成器で元profileのgeometry asset provenanceを保持し、生成後anchorとの両方を
+  path/hashで照合する。古いanchorが置き換わった場合と別名コピーの場合の流用を拒否。
+- `scripts/e2e/calibration_report.py`: 新しいmismatch理由を画像なしで共有。
+  `application/pipeline.py`: resume contractを12へ更新。
+
+Windows実測JSONは変更していない。CLIと再実行コマンドは `WINDOWS_E2E.md` に記載。
+Mac検証: **489 passed / 3 skipped**、Ruff成功、mypy77ファイル成功。
+今回の回帰テストは位置移動3ケース、参照継承1ケース、geometry流用2ケース。
+skipは実録画1件・PowerShell2件。実動画精度やWindows動作は未検証。
+
 ## 2026-10-02: 34dc48a Windows再検証後の修正（現在の手順）
 
 正本 `summary.json` / `hud_calibration.json` を確認。実行元99d7d1a、geometry有効3929、

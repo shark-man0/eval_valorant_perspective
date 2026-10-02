@@ -197,12 +197,18 @@ your profile, including when the previous CLI reported success. The new spectato
 requires a long panel boundary, closed portrait-like box and aligned text components in the
 layout's panel ROI. It learns positive component locations from supported training/holdout
 observations, or extracts them from an existing configured positive full-panel template.
+On regeneration, an existing valid component detector can also be inherited when no new
+positive cluster is available. Its dimensions and assets are checked; this retains a reference,
+not a previous frame's state. Source and new geometry asset paths/hashes are both excluded
+from identity inheritance.
 It never calls an arbitrary texture cluster "spectator". This shape prior is conservative;
 UI variants that do not meet it are unsupported, not automatically labelled absent.
 
 Runtime measures all three edge-component groups, not background pixel agreement. With an
 observable ROI, all groups >= .90 prove presence; all <= .10 provide explicit structural
-exclusion (`checked=true`, `panel_present=false`). Partial/ambiguous structure, unreadable
+exclusion (`checked=true`, `panel_present=false`) only after a whole-ROI search finds neither
+a panel candidate nor a displaced characteristic component. Position/structure mismatches
+give `panel_structure_mismatch` and unknown. Partial/ambiguous structure, unreadable
 ROI, size mismatch, or missing positive reference give `checked=false` and unknown. A legacy
 pixel template's failure alone cannot establish absence. Current-frame HP/ability/ammo
 structures and remote/spectator/menu/map blockers remain required; no live persistence.
