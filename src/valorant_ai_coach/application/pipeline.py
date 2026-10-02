@@ -661,7 +661,7 @@ class MatchAnalysisPipeline:
                 return f"{component_type.__module__}.{component_type.__qualname__}"
 
         payload = {
-            "resume_contract_version": 13,
+            "resume_contract_version": 14,
             "implementations": [implementation_token(component) for component in components],
             "selector_registry": self.round_analyzer.selector.registry,
             "rule_engine_contract": self.round_analyzer.rule_engine.contract,

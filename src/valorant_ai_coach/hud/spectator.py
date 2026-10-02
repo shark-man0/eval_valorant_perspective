@@ -13,6 +13,77 @@ import cv2
 import numpy as np
 
 
+def portrait_frames(
+    edges: np.ndarray, diagnostics: dict[str, Any]
+) -> list[tuple[int, int, int, int]]:
+    """Frame occupancy from fragments/line pairs; no closed convex polygon required."""
+    h, w = edges.shape
+    proposals: set[tuple[int, int, int, int]] = set()
+    contours, _ = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    for contour in contours:
+        x, y, bw, bh = cv2.boundingRect(contour)
+        proposals.add((int(x), int(y), int(bw), int(bh)))
+    lines = cv2.HoughLinesP(
+        edges,
+        1,
+        np.pi / 180,
+        threshold=6,
+        minLineLength=max(8, int(min(h, w) * 0.10)),
+        maxLineGap=4,
+    )
+    vertical, horizontal = [], []
+    if lines is not None:
+        for x1, y1, x2, y2 in lines[:, 0]:
+            if abs(x1 - x2) <= 2:
+                vertical.append((int((x1 + x2) // 2), int(min(y1, y2)), int(max(y1, y2))))
+            if abs(y1 - y2) <= 2:
+                horizontal.append((int((y1 + y2) // 2), int(min(x1, x2)), int(max(x1, x2))))
+    # Deterministic bounds keep complex world textures from exploding combinations.
+    vertical = sorted(set(vertical), key=lambda v: v[2] - v[1], reverse=True)[:48]
+    horizontal = sorted(set(horizontal), key=lambda v: v[2] - v[1], reverse=True)[:48]
+    for i, (x, top, bottom) in enumerate(vertical):
+        for other, ot, ob in vertical[i + 1 :]:
+            y, end = max(top, ot), min(bottom, ob)
+            if end > y:
+                proposals.add((min(x, other), y, abs(x - other) + 1, end - y + 1))
+    for i, (y, left, right) in enumerate(horizontal):
+        for other, ol, ob in horizontal[i + 1 :]:
+            x, end = max(left, ol), min(right, ob)
+            if end > x:
+                proposals.add((x, min(y, other), end - x + 1, abs(y - other) + 1))
+    nearby = cv2.distanceTransform((edges == 0).astype(np.uint8), cv2.DIST_L2, 3) <= 1.5
+    boxes = []
+    best = 0.0
+    geometry_count = 0
+    best_sides = [0.0] * 4
+    for x, y, bw, bh in sorted(proposals):
+        if not (0.08 * w <= bw <= 0.35 * w and 0.15 * h <= bh <= 0.8 * h and 0.5 <= bw / bh <= 1.8):
+            continue
+        geometry_count += 1
+        side = [
+            float(nearby[y, x : x + bw].mean()),
+            float(nearby[y + bh - 1, x : x + bw].mean()),
+            float(nearby[y : y + bh, x].mean()),
+            float(nearby[y : y + bh, x + bw - 1].mean()),
+        ]
+        score = float(np.mean(side))
+        if score > best:
+            best, best_sides = score, side
+        # Three supported sides plus nonzero fourth-side evidence prevents two
+        # disconnected lines/text rows from becoming a portrait box.
+        if sum(s >= 0.55 for s in side) >= 3 and min(side) >= 0.25 and score >= 0.70:
+            boxes.append((x, y, bw, bh))
+    diagnostics.update(
+        portrait_candidate_count=len(proposals),
+        portrait_frame_score=best,
+        portrait_supported_count=len(boxes),
+        portrait_geometry_count=geometry_count,
+        portrait_occupancy_rejected=geometry_count - len(boxes),
+        portrait_side_scores=best_sides,
+    )
+    return boxes
+
+
 def panel_components(
     gray: np.ndarray, diagnostics: dict[str, Any] | None = None
 ) -> np.ndarray | None:
@@ -39,19 +110,7 @@ def panel_components(
         return None
     diag.update(observable=True, reason="structural_rejected")
     edges = cv2.Canny(gray, 60, 150)
-    contours, _ = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-    boxes = []
-    for contour in contours:
-        x, y, bw, bh = cv2.boundingRect(contour)
-        polygon = cv2.approxPolyDP(contour, 0.02 * cv2.arcLength(contour, True), True)
-        if (
-            len(polygon) == 4
-            and cv2.isContourConvex(polygon)
-            and 0.08 * w <= bw <= 0.35 * w
-            and 0.15 * h <= bh <= 0.8 * h
-            and 0.5 <= bw / bh <= 1.8
-        ):
-            boxes.append((x, y, bw, bh))
+    boxes = portrait_frames(edges, diag)
     diag["portrait"] = bool(boxes)
     lines = cv2.HoughLinesP(
         edges, 1, np.pi / 180, threshold=max(12, w // 5), minLineLength=int(0.30 * w), maxLineGap=3

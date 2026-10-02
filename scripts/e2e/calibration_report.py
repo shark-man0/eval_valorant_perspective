@@ -191,6 +191,9 @@ def sanitize_identity_generation(value):
         result["references"][name] = row
         if name == "weapon_ammo_structure":
             row["weapon_ammo_generation"] = {
+                "matcher": source.get("matcher")
+                if source.get("matcher") in ("oriented_edges_v1", "masked_ncc")
+                else None,
                 "rejection_counts": {
                     k: number(object_or_empty(source.get("rejection_counts")).get(k), count=True)
                     for k in (
@@ -199,6 +202,7 @@ def sanitize_identity_generation(value):
                         "edge_arrangement_invalid",
                         "edge_density_invalid",
                         "mask_contrast_insufficient",
+                        "edge_support_insufficient",
                         "training_support_insufficient",
                     )
                 },
@@ -250,6 +254,23 @@ def sanitize_identity_generation(value):
                     {
                         **{k: s.get(k) is True for k in keys},
                         "sample_index": number(s.get("sample_index"), count=True),
+                        "portrait_candidate_count": number(
+                            s.get("portrait_candidate_count"), count=True
+                        ),
+                        "portrait_supported_count": number(
+                            s.get("portrait_supported_count"), count=True
+                        ),
+                        "portrait_frame_score": number(s.get("portrait_frame_score")),
+                        "portrait_geometry_count": number(
+                            s.get("portrait_geometry_count"), count=True
+                        ),
+                        "portrait_occupancy_rejected": number(
+                            s.get("portrait_occupancy_rejected"), count=True
+                        ),
+                        "portrait_side_scores": [number(v) for v in s["portrait_side_scores"]]
+                        if isinstance(s.get("portrait_side_scores"), list)
+                        and len(s["portrait_side_scores"]) == 4
+                        else None,
                         "training": s.get("training") is True,
                         "reason": s.get("reason") if s.get("reason") in reasons else None,
                     }
@@ -265,7 +286,13 @@ def sanitize_identity_generation(value):
 def sanitize_candidate(source):
     result = {
         k: number(source.get(k), count=True)
-        for k in ("training_cluster_size", "training_accept_count", "holdout_accept_count")
+        for k in (
+            "training_cluster_size",
+            "training_accept_count",
+            "holdout_accept_count",
+            "edge_count",
+            "mask_population",
+        )
     }
     result.update(
         {
@@ -277,6 +304,8 @@ def sanitize_candidate(source):
                 "dynamic_pixel_ratio",
                 "mask_pixel_ratio",
                 "holdout_prevalence",
+                "stable_edge_ratio",
+                "orientation_consistency",
             )
         }
     )
@@ -316,9 +345,14 @@ def sanitize_candidate(source):
                 "edge_arrangement_invalid",
                 "edge_density_invalid",
                 "mask_contrast_insufficient",
+                "edge_support_insufficient",
             ),
         ),
         ("support_rejection_reason", ("training_support_insufficient",)),
     ):
         result[key] = source.get(key) if source.get(key) in allowed else None
+    for key in ("training_similarity", "holdout_similarity"):
+        values = object_or_empty(source.get(key))
+        result[key] = {k: number(values.get(k)) for k in ("min", "median", "max")}
+        result[key]["count"] = number(values.get("count"), count=True)
     return result

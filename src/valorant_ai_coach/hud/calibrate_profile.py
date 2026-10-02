@@ -279,6 +279,10 @@ def create_profile(
                     )
                     and inherited_roi == roi_name
                     and inherited_roi in layout.regions
+                    and (
+                        name != "weapon_ammo_structure"
+                        or spec.get("matcher") == "oriented_edges_v1"
+                    )
                 ):
                     diagnostics["references"][name] = {
                         "status": "inherited",
@@ -287,6 +291,7 @@ def create_profile(
                     }
                     if name == "weapon_ammo_structure" and "mask" in spec:
                         diagnostics["references"][name].update(
+                            matcher=spec.get("matcher", "masked_ncc"),
                             mask_presence=True,
                             mask_content_hash=hashlib.sha256(
                                 identity_assets[-1].read_bytes()
@@ -327,6 +332,8 @@ def create_profile(
                 stats["mask_content_hash"] = mask_stats["content_hash"]
                 stats["mask_presence"] = True
                 raw["signals"][name]["mask"] = f"identity/{name}.mask.png"
+                raw["signals"][name]["matcher"] = "oriented_edges_v1"
+                stats["matcher"] = "oriented_edges_v1"
         # Never inherit or generate background/clear-image evidence.
         raw.pop("spectator_clear_reference", None)
         raw.pop("spectator_panel_detector", None)

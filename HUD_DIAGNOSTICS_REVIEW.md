@@ -1,5 +1,71 @@
 # Windows E2E 上流診断（2026-10-01）
 
+## 2026-10-02: report 83a36df / analyzer 20346ac の再検証と構造検出修正
+
+この節が最新。Windows実行metadataは `20346ac` / dirty=false、実動画改善はMacでは未確認。
+HUD unknown3892 / live0、Weapon missing3929、spectator reference_unavailable3929のまま。
+
+### 確定した原因と未確定部分
+
+- Weaponは46候補が全構造棄却：固定edge不足21、方向配置不足17、mask contrast不足8。
+  46件全部をvariance問題と断定しない。旧固定edgeは同一pixelに90%以上出現する必要があり、
+  圧縮・AAでedge位置が揺れる場合にも消える。方向配置不足は別のgeometry条件の棄却である。
+- `variance<=4` は8bit画素で標準偏差<=2階調。輝度だけが動く固定UIでもmaskから除外される。
+  最新のstable_pixel_ratio≒0 / mask_population≒0と整合する。圧縮/輝度揺れの各寄与は
+  原画像なしでは確定できないが、輝度変動・ノイズ・JPEGの合成回帰で問題を再現した。
+- Spectatorはobservable/textlike64、boundary6、portrait2、all_components0。観測性の失敗では
+  ない。閉じたconvex四角contourが必要な旧priorが欠損や装飾に弱いことは合成回帰で確認。
+  実際の残り62枚の内訳（本当のpanel不在、輪郭欠損、geometry条件違反）は画像なしでは不明。
+
+### 新しいWeapon方式
+
+`oriented_edges_v1`: local contrastを正規化し、長い線のscaffoldからtraining clusterを作る。
+1px以内の位置差と20度以内のunsigned gradient方向差を許容し、clusterの90%以上で
+同じ構造を支持するedgeだけをidentity maskへ残す。画素varianceは比較用診断のみ。
+
+類似度は `min(oriented edge recall, neighbourhood precision)`。両方向90%以上を要求する。
+内容部分から離れた数字/iconは比較しないが、枠近傍の余分なedgeはprecisionで減点する。
+ROI全体を滑らせる探索はしない。位置ずれ、遮蔽、強いblur、平行線だけ、world textureは
+合成negativeで棄却。固定線の異方向配置と十分なedge人口は維持する。
+
+これはNCCでもAI Coach confidenceでもなく、identity構造の一致率である。.90の意味と
+1px/20度の許容は合成回帰で検証した設計値であり、実動画の誤検出率保証ではない。
+trainingだけで候補を凍結し、holdout最低3件・training prevalenceの80%以上を維持する。
+旧masked NCC profileはruntime互換を維持するが、再生成時はWeaponを新方式で生成し直す。
+
+### 新しいportrait方式と安全条件
+
+輪郭のbounding regionとHough水平/垂直線ペアから枠候補を作る。convex/4頂点/閉輪郭は
+不要。distance transformで4辺のedge occupancyを測り、3辺>=.55、残り辺>=.25、平均>=.70を
+要求する。寸法/縦横比priorは維持し、同時にboundaryと隣接する整列text-like構造を要求する。
+欠けたAA枠のpositive、単独要素やnormal/buy/remote/map背景のnegativeを追加した。
+portrait単独ではpanelにしない。既存の現在frameチェック・部分一致/blur/低contrast unknown・
+移動したcomponentの全ROI探索・template missだけでabsenceにしない条件は維持する。
+
+HP/Ability/Weapon/spectator exclusionの4条件は変更しない。geometry asset/hash照合と
+GT/expected state不使用も維持。Visual/Map/Roundロジックは変更しない。
+検出結果キャッシュの互換性を切るためresume contractだけ14へ更新した。
+
+### 次回共有診断
+
+Weaponのselected_candidateにはedge_count、stable_edge_ratio、orientation_consistency、
+mask_population、training_similarity/holdout_similarityのcount/min/median/maxを追加。
+全候補棄却でも、training支持に基づく最良の診断候補を保存する（採用の意味ではない）。
+matcherと新edge_support_insufficient理由も共有。stable_pixel_ratioは旧画素統計であり、
+新方式ではこの値が低いことだけで失敗と解釈しない。
+
+Spectatorはsampleごとのportrait候補数、geometry成立数、occupancy棄却数、支持数、
+最良のframe score/4辺scoreを追加。画像/path/OCR文字列は共有allowlistから除外する。
+Windowsでは `WINDOWS_E2E.md` の単一CLI→E2E手順で新profileを生成する。JSON/画像手編集不要。
+
+### Mac検証
+
+pytest: 507 passed / 3 skipped（実録画未提供1、PowerShell未導入2）。
+Ruff: All checks passed。mypy: 78 source files、問題なし。git diff --check: 成功。
+新規回帰はJPEG/輝度変動/ノイズ、1px jitter、clutter、位置ずれ/遮蔽/blur、欠損AA枠、
+三要素不足、normal/buy/remote/map背景、診断の共有境界。既存テストは変更していない。
+合成動画→生成profile→Round Package/SQLiteの既存integrationも成功。実動画改善は未検証。
+
 ## 2026-10-02: Weapon/Ammo・spectator限定の追加修正（Mac検証）
 
 以下が今回の変更であり、下記の過去経緯より優先する。Windows実動画の改善は未確認。
