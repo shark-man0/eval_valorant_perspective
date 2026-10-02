@@ -98,6 +98,18 @@ def panel_components(
         boundary_textlike=False,
         all_components=False,
         reason="geometry_rejected",
+        final_rejections={
+            "text_alignment_insufficient": 0,
+            "boundary_span_insufficient": 0,
+            "relative_position_mismatch": 0,
+            "component_pixels_insufficient": 0,
+        },
+        final_gates={
+            "portrait": False,
+            "text_alignment": False,
+            "boundary_span": False,
+            "component_pixels": False,
+        },
     )
     h, w = gray.shape
     if min(h, w) < 32:
@@ -112,6 +124,7 @@ def panel_components(
     edges = cv2.Canny(gray, 60, 150)
     boxes = portrait_frames(edges, diag)
     diag["portrait"] = bool(boxes)
+    diag["final_gates"]["portrait"] = bool(boxes)
     lines = cv2.HoughLinesP(
         edges, 1, np.pi / 180, threshold=max(12, w // 5), minLineLength=int(0.30 * w), maxLineGap=3
     )
@@ -149,15 +162,27 @@ def panel_components(
         ]
         rows = [g for g in glyphs if sum(abs(g[1] - v[1]) <= max(3, 0.03 * h) for v in glyphs) >= 3]
         if len(rows) < 3:
+            diag["final_rejections"]["text_alignment_insufficient"] += 1
             continue
         diag["portrait_textlike"] = True
+        diag["final_gates"]["text_alignment"] = True
         # A boundary must span the portrait/text group and lie outside its row.
         # Mere coincident game-world edges are not a coherent panel candidate.
         boundary = np.zeros_like(gray)
         right = max(a + c for a, b, c, d in rows)
+        spanned = False
         for left, by, end in horizontal:
-            if left <= x + bw * 0.25 and end >= right and (by < y or by > y + bh):
+            coverage = max(0, min(end, right) - max(left, x)) / max(1, right - x)
+            outside = by < y + 2 or by > y + bh - 2
+            if coverage >= 0.90 and left <= x + bw * 0.25 + 2 and outside:
                 cv2.line(boundary, (left, by), (end, by), 1, 1)
+                spanned = True
+            elif not outside:
+                diag["final_rejections"]["relative_position_mismatch"] += 1
+        if not spanned:
+            diag["final_rejections"]["boundary_span_insufficient"] += 1
+            continue
+        diag["final_gates"]["boundary_span"] = True
         labels = boundary.copy()
         box = np.zeros_like(gray)
         cv2.rectangle(box, (x, y), (x + bw - 1, y + bh - 1), 1, 2)
@@ -166,8 +191,11 @@ def panel_components(
             region = labels[b : b + d, a : a + c]
             region[edges[b : b + d, a : a + c] > 0] = 3
         if all(np.count_nonzero(labels == k) >= 12 for k in (1, 2, 3)):
+            diag["final_gates"]["component_pixels"] = True
+            diag["component_pixel_counts"] = [int(np.count_nonzero(labels == k)) for k in (1, 2, 3)]
             diag.update(all_components=True, reason="candidate")
             return labels
+        diag["final_rejections"]["component_pixels_insufficient"] += 1
     return None
 
 
@@ -176,6 +204,23 @@ def component_scores(gray: np.ndarray, labels: np.ndarray) -> list[float]:
         return []
     edges = cv2.dilate(cv2.Canny(gray, 60, 150), np.ones((3, 3), np.uint8))
     return [float(np.mean(edges[labels == k] > 0)) for k in (1, 2, 3)]
+
+
+def local_component_scores(gray: np.ndarray, labels: np.ndarray) -> list[float]:
+    """A shared rigid offset <=2px only, not global sliding or independent drift."""
+    best = component_scores(gray, labels)
+    if not best:
+        return []
+    h, w = gray.shape
+    edges = cv2.dilate(cv2.Canny(gray, 60, 150), np.ones((3, 3), np.uint8))
+    padded = np.pad(edges, 2)
+    for dy in range(-2, 3):
+        for dx in range(-2, 3):
+            shifted = padded[2 + dy : 2 + dy + h, 2 + dx : 2 + dx + w]
+            scores = [float(np.mean(shifted[labels == k] > 0)) for k in (1, 2, 3)]
+            if min(scores, default=0) > min(best, default=0):
+                best = scores
+    return best
 
 
 def _displaced_component_present(gray: np.ndarray, labels: np.ndarray) -> bool:
@@ -235,6 +280,15 @@ def generate_panel_reference(crops: list[np.ndarray], stats: dict[str, Any]) -> 
             "structural_rejected",
         )
     }
+    stats["final_rejection_counts"] = (
+        {
+            key: sum(s["final_rejections"][key] for s in samples)
+            for key in samples[0]["final_rejections"]
+        }
+        if samples
+        else {}
+    )
+    stats["candidate_support"] = []
     candidates = []
     clusters = set()
     for frame in gray[::2]:
@@ -246,9 +300,10 @@ def generate_panel_reference(crops: list[np.ndarray], stats: dict[str, Any]) -> 
         members = tuple(
             i
             for i, g in enumerate(gray[::2])
-            if min(component_scores(g, labels), default=0) >= 0.90
+            if min(local_component_scores(g, labels), default=0) >= 0.90
         )
         support = len(members)
+        stats["candidate_support"].append({"training_support": support, "minimum_required": 3})
         if support >= 3:
             if members not in clusters:
                 candidates.append((support, labels))
@@ -259,7 +314,7 @@ def generate_panel_reference(crops: list[np.ndarray], stats: dict[str, Any]) -> 
         return None
     stats["cluster_count"] = len(candidates)
     support, labels = max(candidates, key=lambda item: item[0])
-    heldout = sum(min(component_scores(g, labels), default=0) >= 0.90 for g in gray[1::2])
+    heldout = sum(min(local_component_scores(g, labels), default=0) >= 0.90 for g in gray[1::2])
     stats.update(training_accept_count=support, holdout_accept_count=heldout)
     if heldout < 3 or heldout < 0.80 * support * len(gray[1::2]) / len(gray[::2]):
         stats["holdout_rejected"] += 1
@@ -288,7 +343,8 @@ def detect_panel(crop: np.ndarray, labels: np.ndarray | None) -> dict[str, Any]:
         result["reason"] = "roi_unobservable"
         return result
     result["component_scores"] = scores
-    if min(scores) >= 0.90:
+    positive_scores = local_component_scores(gray, labels)
+    if min(positive_scores, default=0) >= 0.90:
         result.update(checked=True, panel_present=True, reason="panel_structure_present")
     elif max(scores) <= 0.10:
         if panel_components(gray) is not None or _displaced_component_present(gray, labels):

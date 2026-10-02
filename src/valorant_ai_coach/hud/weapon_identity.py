@@ -95,6 +95,74 @@ def frame_edges(edges: np.ndarray) -> np.ndarray:
     return edges & (scaffold > 0)
 
 
+def structural_layout(
+    edges: np.ndarray, angles: np.ndarray, lines: np.ndarray | None
+) -> dict[str, Any]:
+    """A nonparallel corner OR separated, non-spanning, spatially rich edge groups.
+
+    Full-width parallel stripes and a single line cannot pass the alternative.
+    This is a structural sanity check, not a semantic claim about weapon names.
+    """
+    h, w = edges.shape
+    ys, xs = np.nonzero(edges)
+    spread = [float(np.ptp(xs) / w), float(np.ptp(ys) / h)] if len(xs) else [0.0, 0.0]
+    hist = np.histogram(angles[edges > 0], bins=8, range=(0, np.pi))[0]
+    histogram = (hist / max(1, int(hist.sum()))).tolist()
+    occupancy = [
+        float(edges[y1:y2, x1:x2].mean())
+        for y1, y2 in zip(
+            np.linspace(0, h, 5).astype(int)[:-1], np.linspace(0, h, 5).astype(int)[1:], strict=True
+        )
+        for x1, x2 in zip(
+            np.linspace(0, w, 5).astype(int)[:-1], np.linspace(0, w, 5).astype(int)[1:], strict=True
+        )
+    ]
+    _, _, components, centers = cv2.connectedComponentsWithStats(
+        edges.astype(np.uint8), connectivity=8
+    )
+    groups = [
+        (c, center) for c, center in zip(components[1:], centers[1:], strict=True) if c[4] >= 8
+    ]
+    localized = [(c, center) for c, center in groups if c[2] < 0.75 * w and c[3] < 0.75 * h]
+    center_spread = [
+        float(np.ptp([p[1][axis] for p in localized]) / (w if axis == 0 else h))
+        if localized
+        else 0.0
+        for axis in (0, 1)
+    ]
+    directions = (
+        []
+        if lines is None
+        else [np.array([x2 - x1, y2 - y1], float) for x1, y1, x2, y2 in lines[:, 0]]
+    )
+    nonparallel = any(
+        abs(a[0] * b[1] - a[1] * b[0]) / (np.linalg.norm(a) * np.linalg.norm(b)) >= 0.25
+        for i, a in enumerate(directions)
+        for b in directions[i + 1 :]
+    )
+    spatial = min(spread) >= 0.35
+    rich = (
+        len(localized) >= 3 and min(center_spread) >= 0.25 and sum(v > 0.02 for v in occupancy) >= 5
+    )
+    gates = dict(
+        line_support=lines is not None and len(lines) >= 2,
+        spatial_spread=spatial,
+        nonparallel=nonparallel,
+        separated_layout=rich,
+        arrangement=spatial and (nonparallel or rich),
+    )
+    return dict(
+        structural_gates=gates,
+        line_count=len(directions),
+        orientation_histogram=histogram,
+        spatial_edge_spread=spread,
+        component_centroid_spread=center_spread,
+        edge_component_count=len(groups),
+        localized_component_count=len(localized),
+        edge_occupancy_grid=occupancy,
+    )
+
+
 def masked_score(reference: np.ndarray, image: np.ndarray, mask: np.ndarray) -> float:
     """Fixed-position masked NCC; undefined or insufficient contrasts are unknown."""
     if image.ndim == 3:
@@ -217,17 +285,12 @@ def weapon_reference(
                     maxLineGap=2,
                 )
                 density = float(np.mean(fixed_edges > 0))
-                directions = (
-                    []
-                    if lines is None
-                    else [
-                        np.array([x2 - x1, y2 - y1], dtype=float) for x1, y1, x2, y2 in lines[:, 0]
-                    ]
-                )
-                arranged = any(
-                    abs(a[0] * b[1] - a[1] * b[0]) / (np.linalg.norm(a) * np.linalg.norm(b)) >= 0.25
-                    for i, a in enumerate(directions)
-                    for b in directions[i + 1 :]
+                layout_diag = structural_layout(fixed_edges, ref_angles, lines)
+                row.update(layout_diag)
+                arranged = layout_diag["structural_gates"]["arrangement"]
+                row["structural_gates"].update(
+                    edge_density=0.015 <= density <= 0.25,
+                    edge_support=structural_score(reference, reference, mask) >= 0.90,
                 )
                 rejection = (
                     "fixed_edges_insufficient"

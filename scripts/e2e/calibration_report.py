@@ -151,6 +151,14 @@ def representatives(rows, *, limit=6):
         reason = (
             row.get("structural_rejection_reason")
             or row.get("support_rejection_reason")
+            or next(
+                (
+                    key
+                    for key, count in object_or_empty(row.get("final_rejections")).items()
+                    if count
+                ),
+                None,
+            )
             or row.get("reason")
         )
         if reason not in seen:
@@ -314,6 +322,17 @@ def sanitize_identity_generation(value):
                     k: number(object_or_empty(source.get("rejection_counts")).get(k), count=True)
                     for k in reasons[:-1]
                 },
+                "final_rejection_counts": {
+                    k: number(
+                        object_or_empty(source.get("final_rejection_counts")).get(k), count=True
+                    )
+                    for k in (
+                        "text_alignment_insufficient",
+                        "boundary_span_insufficient",
+                        "relative_position_mismatch",
+                        "component_pixels_insufficient",
+                    )
+                },
                 "samples": [
                     {
                         **{k: s.get(k) is True for k in keys},
@@ -337,6 +356,24 @@ def sanitize_identity_generation(value):
                         else None,
                         "training": s.get("training") is True,
                         "reason": s.get("reason") if s.get("reason") in reasons else None,
+                        "final_gates": {
+                            k: object_or_empty(s.get("final_gates")).get(k) is True
+                            for k in (
+                                "portrait",
+                                "text_alignment",
+                                "boundary_span",
+                                "component_pixels",
+                            )
+                        },
+                        "final_rejections": {
+                            k: number(object_or_empty(s.get("final_rejections")).get(k), count=True)
+                            for k in (
+                                "text_alignment_insufficient",
+                                "boundary_span_insufficient",
+                                "relative_position_mismatch",
+                                "component_pixels_insufficient",
+                            )
+                        },
                     }
                     for s in samples[:64]
                     if isinstance(s, dict)
@@ -419,4 +456,28 @@ def sanitize_candidate(source):
         values = object_or_empty(source.get(key))
         result[key] = {k: number(values.get(k)) for k in ("min", "median", "max")}
         result[key]["count"] = number(values.get("count"), count=True)
+    result["structural_gates"] = {
+        k: object_or_empty(source.get("structural_gates")).get(k) is True
+        for k in (
+            "line_support",
+            "spatial_spread",
+            "nonparallel",
+            "separated_layout",
+            "arrangement",
+            "edge_density",
+            "edge_support",
+        )
+    }
+    for key in ("line_count", "edge_component_count", "localized_component_count"):
+        result[key] = number(source.get(key), count=True)
+    for key, size in (
+        ("orientation_histogram", 8),
+        ("spatial_edge_spread", 2),
+        ("component_centroid_spread", 2),
+        ("edge_occupancy_grid", 16),
+    ):
+        value = source.get(key)
+        result[key] = (
+            [number(v) for v in value] if isinstance(value, list) and len(value) == size else None
+        )
     return result

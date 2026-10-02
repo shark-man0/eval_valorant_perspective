@@ -1,5 +1,59 @@
 # Windows E2E 上流診断（2026-10-01）
 
+## 2026-10-02: 回収report 3f005a0を基準とするidentity限定修正
+
+この節が最新。基準実装はde46747。旧runからの回収metadataのnullを性能比較に使わない。
+Macではunit/integration/syntheticのみ検証し、Windows実動画改善は未確認。
+
+### Weapon
+
+Candidate Bはedge人口・方向一致・train/holdout支持があっても、旧gateの
+「少なくとも2本の非平行線」が成立せず `edge_arrangement_invalid` になった。
+これは強い構造一致とorientation diversityが別条件だったため。旧共有診断には
+全lineの向きがないので、実画像の具体的な線配置は断定しない。
+
+新gateは十分な二次元spreadに加え、非平行線、または離れた短いedge群の配置を要求する。
+後者は3つ以上の局所connected components、二次元のcentroid spread、4x4 gridの
+5cell以上のedge occupancyを要求する。全幅の平行stripeや一本線は通らない。
+line support、density、edge similarity >=.90、最低3支持、80%支持、holdout条件は維持。
+
+Candidate Aのmembershipはseed scaffoldの片方向recallで作られる一方、最終支持は
+recall/precisionの両方向。clutterを含むmemberは最終支持から落ち得る。
+12/16=75%の棄却は正常であり80%条件を下げない。holdoutを使った候補再選択もしない。
+新共有診断はgates、line count、8-bin orientation histogram、spread、component count、
+4x4 occupancy、training/holdout分布を含む。全candidateはローカルに残し共有は最大6代表例。
+
+### Spectator
+
+pairwise countsは要素の共存（一部は相対配置）であり、同一panel構造成立数ではない。
+最終成立にはportraitと3つ以上のaligned text群、両者を覆うboundary、各label>=12pxが必要。
+前回のpairwise6 / all1だけでは残り5件の最終棄却理由は特定できない。
+今回、text alignment / boundary span / relative position / component pixel不足を記録する。
+`final_rejection_counts` は候補box試行の集計でありframe数とは限らない。
+
+boundaryはportrait/text spanの90%以上の被覆を要求し、endpointの完全包含への依存を除く。
+training/holdout/runtime presenceの一致は全3componentを共通の最大±2px rigid offsetで
+検証する。個別componentの移動やROI全域のpositive探索はしない。端の欠損は分母から除かない。
+部分一致、blur、低contrast、reference unavailableはunknownのまま。
+absenceは従来の固定位置scoreとdisplaced-component vetoを維持し、positiveの位置許容を
+absenceへ転用しない。portrait単独やpairwise共存だけでpositiveへ昇格させない。
+
+HP/Ability/Weapon/spectator exclusion全4条件、geometry/identity分離、GT不使用は維持。
+Visual/Map/Round処理は変更しない。旧解析cacheを使わないためresume contractのみ15へ更新。
+新profile生成が必要。Windowsコマンドは `WINDOWS_E2E.md` のAutomatic local profile節を参照。
+
+次回はidentity readiness、Weapon rejection/gates/support分布、spectator final rejectionと
+training/holdout support、live/unknown、Visual eligibilityを比較する。
+Map/Visual改善やE2E PASSは今回のMac検証から主張しない。
+
+Mac検証: pytest 525 passed / 3 skipped（実録画未提供1、PowerShell未導入2）。
+`ruff check src tests scripts`、変更4Pythonファイルのformat check、mypy（78 source files）、
+git diff --check成功。`ruff check .` は同梱の未変更validation pack/config検証コードの
+386件で失敗するため、リポジトリ全域のlint成功とは報告しない。
+追加回帰: 非平行線なしの豊富な構造、一本線/平行stripe/compact/textureの棄却、
+共通位置差付きpanel生成、部分panel unknown、pairwise共存と最終geometryの区別、
+理由診断、共有privacy/128 KiB境界。既存negativeテストは変更していない。
+
 ## 2026-10-02: shared export容量超過の回収
 
 Analyzer/Evaluator完了後の共有export失敗は、詳細candidate/sample診断でsummaryが

@@ -194,8 +194,8 @@ outputs are marked unavailable, never reconstructed. See
 
 ### Automatic local profile → Windows E2E (PowerShell)
 
-2026-10-02: Regenerate after the Weapon/Ammo oriented-edge / fragmented portrait-frame
-update (resume contract 14). No image or JSON editing is needed. HP/Ability and all
+2026-10-02: Regenerate after the Weapon/Ammo spatial-layout gate / bounded spectator
+alignment update (resume contract 15). No image or JSON editing is needed. HP/Ability and all
 four live-identity gates remain required. Insufficient references stay unknown;
 successful file generation is not evidence of real-video accuracy. Detailed sanitized
 candidate/element statistics and training/holdout edge-similarity distributions are
@@ -254,7 +254,7 @@ without publishing a partial directory. Existing thresholds are not lowered.
 
 Old clear/background references are no longer generated or used as evidence. Regenerate
 your profile, including when the previous CLI reported success. The new spectator detector
-requires a long panel boundary, closed portrait-like box and aligned text components in the
+requires a long panel boundary, supported portrait-frame edges and aligned text components in the
 layout's panel ROI. It learns positive component locations from supported training/holdout
 observations, or extracts them from an existing configured positive full-panel template.
 On regeneration, an existing valid component detector can also be inherited when no new
