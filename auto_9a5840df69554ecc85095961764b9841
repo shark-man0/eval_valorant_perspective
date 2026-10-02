@@ -1,0 +1,1 @@
+function touch { foreach ($file in $args) { if (Test-Path $file) { (Get-Item $file).LastWriteTime = Get-Date } else { New-Item -Path $file -ItemType "File" | Out-Null } } }
