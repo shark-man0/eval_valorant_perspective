@@ -200,7 +200,6 @@
   {
     "history_key": "b94b15683edbf6fb4bf09bd73f62657e0a69d421a6f1f95a6c05d2997182f20a",
     "metadata": {
-      "manual_map_id": "summit",
       "video_id": "match_001",
       "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
       "analyzer_commit": "20346ac2cdda3d56f69fb0bff5599f7725ab29ca",
@@ -217,6 +216,30 @@
       "failure_count": 58,
       "negative_assertion_count": 20,
       "error_code": null
+    },
+    "failure_count": 58
+  },
+  {
+    "history_key": "3d1a00404b30578d4870151440fbc6db93576a5743e718a8945919f168ea85ec",
+    "metadata": {
+      "manual_map_id": null,
+      "video_id": "match_001",
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "analyzer_commit": null,
+      "git_is_dirty": null,
+      "executed_at": null,
+      "validation_pack": "valorant_e2e_validation_pack_v3",
+      "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
+      "git_dirty_fingerprint": null,
+      "settings_fingerprint": null
+    },
+    "result": {
+      "status": "fail",
+      "schema_valid": true,
+      "failure_count": 58,
+      "negative_assertion_count": 20,
+      "error_code": null,
+      "detail_truncated": true
     },
     "failure_count": 58
   }
