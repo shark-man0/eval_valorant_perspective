@@ -29,7 +29,7 @@ from valorant_ai_coach.resources import resource_path
 
 from .layout import HudLayout, NormalizedRoi
 from .readers import HudReader, ReaderResult
-from .spectator import detect_panel
+from .spectator import PanelReference, detect_panel
 from .weapon_identity import masked_score, structural_score
 
 ImageU8 = NDArray[np.uint8]
@@ -113,13 +113,23 @@ class HudTemplateProfile:
                 if (
                     reference is None
                     or reference.size == 0
-                    or clear.get("version") != 1
+                    or clear.get("version") not in (1, 2)
                     or not set(np.unique(reference)).issubset({0, 1, 2, 3})
                     or any(np.count_nonzero(reference == k) < 12 for k in (1, 2, 3))
                 ):
                     raise ValueError("invalid panel structure")
                 self._panel_components = np.asarray(reference, dtype=np.uint8)
+                if clear.get("version") == 2:
+                    assets = []
+                    for key in ("support_regions", "orientation"):
+                        data = self.resolve_asset(str(clear[key])).read_bytes()
+                        asset = cv2.imdecode(np.frombuffer(data, np.uint8), cv2.IMREAD_GRAYSCALE)
+                        if asset is None:
+                            raise ValueError("invalid panel support asset")
+                        assets.append(asset)
+                    self._panel_components = PanelReference(reference, *assets)
             except (KeyError, ValueError, OSError, cv2.error):
+                self._panel_components = None
                 self.reader_diagnostics.append("spectator_panel_detector: invalid asset")
 
     def detect_signals(self, frame: ImageU8, layout: HudLayout) -> dict[str, Any]:
@@ -214,6 +224,8 @@ class HudTemplateProfile:
                     "values",
                     "available_template",
                     "unavailable_template",
+                    "support_regions",
+                    "orientation",
                 }:
                     if isinstance(child, str):
                         found.add(Path(child))

@@ -13,6 +13,47 @@ import cv2
 import numpy as np
 
 
+class PanelReference(np.ndarray):
+    """Measured edges and frozen, disjoint precision regions (local assets only).
+
+    The array itself remains a legacy-compatible component label image. Regions
+    include *all* source edges, not just synthetic Hough lines or glyph outlines.
+    Orientation is measured, never inferred from a label or a frame identity.
+    """
+
+    regions: np.ndarray
+    orientation: np.ndarray
+
+    def __new__(
+        cls, labels: np.ndarray, regions: np.ndarray, orientation: np.ndarray
+    ) -> PanelReference:
+        obj = np.asarray(labels, dtype=np.uint8).view(cls)
+        if (
+            regions.shape != obj.shape
+            or orientation.shape != obj.shape
+            or not set(np.unique(regions)).issubset({0, 1, 2, 3})
+            or np.any((obj > 0) & (obj != regions))
+            or np.any(orientation > 179)
+        ):
+            raise ValueError("invalid component support assets")
+        obj.regions = np.asarray(regions, dtype=np.uint8).copy()
+        obj.orientation = np.asarray(orientation, dtype=np.uint8).copy()
+        return obj
+
+    def __array_finalize__(self, obj: Any) -> None:
+        if obj is not None:
+            self.regions = getattr(obj, "regions", np.empty((0, 0), np.uint8))
+            self.orientation = getattr(obj, "orientation", np.empty((0, 0), np.uint8))
+
+
+def _orientation(gray: np.ndarray) -> np.ndarray:
+    gx = cv2.Sobel(gray, cv2.CV_32F, 1, 0)
+    gy = cv2.Sobel(gray, cv2.CV_32F, 0, 1)
+    # Signed gradient direction, quantised to two degrees per uint8 unit.
+    # Opposite sides of a bright UI line must not substitute for each other.
+    return np.mod(np.rint(np.degrees(np.arctan2(gy, gx)) / 2), 180).astype(np.uint8)
+
+
 def portrait_frames(
     edges: np.ndarray, diagnostics: dict[str, Any]
 ) -> list[tuple[int, int, int, int]]:
@@ -103,6 +144,7 @@ def panel_components(
             "boundary_span_insufficient": 0,
             "relative_position_mismatch": 0,
             "component_pixels_insufficient": 0,
+            "boundary_orientation_incoherent": 0,
         },
         final_gates={
             "portrait": False,
@@ -221,18 +263,39 @@ def panel_components(
         diag["boundary_fragment_count"] = len(best_segments)
         diag["portrait_text_gap_ratio"] = float((text_left - x - bw) / bw)
         diag["final_gates"]["boundary_span"] = True
-        labels = boundary.copy()
+        # Freeze support before looking at edge matches. All observed source
+        # edges in these regions become expectations, so source-frame recall
+        # and precision have the same denominator/representation contract.
+        regions = cv2.dilate(boundary, np.ones((5, 5), np.uint8))
         box = np.zeros_like(gray)
-        cv2.rectangle(box, (x, y), (x + bw - 1, y + bh - 1), 1, 2)
-        labels[(box > 0) & (edges > 0)] = 2
+        cv2.rectangle(box, (x, y), (x + bw - 1, y + bh - 1), 1, 5)
+        regions[box > 0] = 2
         for a, b, c, d in rows:
-            region = labels[b : b + d, a : a + c]
-            region[edges[b : b + d, a : a + c] > 0] = 3
+            regions[max(0, b - 2) : min(h, b + d + 2), max(0, a - 2) : min(w, a + c + 2)] = 3
+        labels = np.where(edges > 0, regions, 0).astype(np.uint8)
+        orientation = _orientation(gray)
+        boundary_angles = (orientation[labels == 1].astype(np.int16) * 2) % 180
+        # Horizontal boundary evidence must be predominantly normal to its
+        # direction, not a Hough coincidence in dense isotropic world texture.
+        # +/-20 degrees accommodates rasterisation; 60% requires a clear
+        # majority over isotropic noise's 40/180 ~=22% expected support.
+        if not len(boundary_angles) or np.mean(np.abs(boundary_angles - 90) <= 20) < 0.60:
+            diag["final_rejections"]["boundary_orientation_incoherent"] += 1
+            continue
         if all(np.count_nonzero(labels == k) >= 12 for k in (1, 2, 3)):
             diag["final_gates"]["component_pixels"] = True
             diag["component_pixel_counts"] = [int(np.count_nonzero(labels == k)) for k in (1, 2, 3)]
             diag.update(all_components=True, reason="candidate")
-            return labels
+            if diagnostics is not None:
+                legacy = boundary.copy()
+                old_box = np.zeros_like(gray)
+                cv2.rectangle(old_box, (x, y), (x + bw - 1, y + bh - 1), 1, 2)
+                legacy[(old_box > 0) & (edges > 0)] = 2
+                for a, b, c, d in rows:
+                    region = legacy[b : b + d, a : a + c]
+                    region[edges[b : b + d, a : a + c] > 0] = 3
+                diag["legacy_self_match"] = component_match_diagnostics(gray, legacy)
+            return PanelReference(labels, regions, orientation)
         diag["final_rejections"]["component_pixels_insufficient"] += 1
     return None
 
@@ -245,40 +308,99 @@ def component_scores(gray: np.ndarray, labels: np.ndarray) -> list[float]:
 
 
 def local_component_scores(gray: np.ndarray, labels: np.ndarray) -> list[float]:
+    return [c["score"] for c in component_match_diagnostics(gray, labels).get("components", [])]
+
+
+def component_match_diagnostics(gray: np.ndarray, labels: np.ndarray) -> dict[str, Any]:
     """Require recall AND local precision for each group at one shared <=2px offset.
 
-    Only precision uses the raw edges: dilating observed edges before counting
-    them would let dense texture cover almost every reference pixel. A one-pixel
-    match band within a two-pixel neighbourhood penalizes extra nearby edges.
-    Absence keeps its separate, conservative coverage-only checks.
+    V2 compares measured oriented edges inside frozen disjoint support regions.
+    Only precision counts raw observed edges. Legacy label-only assets retain
+    their old one-pixel band / two-pixel neighbourhood matcher, never silently
+    fabricate missing regions/orientations. Absence remains coverage-only.
     """
     if gray.shape != labels.shape or any(np.count_nonzero(labels == k) < 12 for k in (1, 2, 3)):
-        return []
-    best = [0.0] * 3
+        return {}
+    best: dict[str, Any] = {}
     h, w = gray.shape
     edges = cv2.Canny(gray, 60, 150) > 0
     padded = np.pad(edges, 2)
     covered = np.pad(cv2.dilate(edges.astype(np.uint8), np.ones((3, 3), np.uint8)), 2)
+    angles = np.pad(_orientation(gray), 2)
     groups = []
+    coordinates = []
     for kind in (1, 2, 3):
-        expected = labels == kind
+        expected = np.asarray(labels) == kind
         band = cv2.dilate(expected.astype(np.uint8), np.ones((3, 3), np.uint8)) > 0
-        neighbourhood = cv2.dilate(expected.astype(np.uint8), np.ones((5, 5), np.uint8)) > 0
+        neighbourhood = (
+            labels.regions == kind
+            if isinstance(labels, PanelReference)
+            else cv2.dilate(expected.astype(np.uint8), np.ones((5, 5), np.uint8)) > 0
+        )
         groups.append((expected, band, neighbourhood))
+        coordinates.append(np.nonzero(expected))
     for dy in range(-2, 3):
         for dx in range(-2, 3):
             shifted = padded[2 + dy : 2 + dy + h, 2 + dx : 2 + dx + w]
             shifted_covered = covered[2 + dy : 2 + dy + h, 2 + dx : 2 + dx + w]
-            scores = []
-            for expected, band, neighbourhood in groups:
+            components: list[dict[str, Any]] = []
+            for kind, (expected, band, neighbourhood) in enumerate(groups, 1):
                 observed = shifted & neighbourhood
-                recall = float(np.mean(shifted_covered[expected] > 0))
-                precision = int(np.count_nonzero(observed & band)) / max(
-                    1, int(np.count_nonzero(observed))
+                if isinstance(labels, PanelReference):
+                    # Bidirectional 1px / 20-degree oriented correspondence.
+                    # Dense random texture must not obtain coverage merely by
+                    # filling the tolerance band. No independent group shifts.
+                    ey, ex = coordinates[kind - 1]
+                    expected_angles = labels.orientation[ey, ex].astype(np.int16)
+                    matched_expected = np.zeros(len(ey), bool)
+                    matched_observed = np.zeros_like(expected)
+                    shifted_angles = angles[2 + dy : 2 + dy + h, 2 + dx : 2 + dx + w]
+                    for oy in (-1, 0, 1):
+                        for ox in (-1, 0, 1):
+                            sy, sx = ey + oy, ex + ox
+                            inside = (sy >= 0) & (sy < h) & (sx >= 0) & (sx < w)
+                            sy, sx = np.clip(sy, 0, h - 1), np.clip(sx, 0, w - 1)
+                            delta = np.abs(
+                                shifted_angles[sy, sx].astype(np.int16) - expected_angles
+                            )
+                            valid = (
+                                inside & observed[sy, sx] & (np.minimum(delta, 180 - delta) <= 10)
+                            )
+                            matched_expected |= valid
+                            matched_observed[sy[valid], sx[valid]] = True
+                    ne, no = int(matched_expected.sum()), int(matched_observed.sum())
+                else:
+                    ne = int(np.count_nonzero(shifted_covered & expected))
+                    no = int(np.count_nonzero(observed & band))
+                expected_count, observed_count = int(expected.sum()), int(observed.sum())
+                recall, precision = ne / expected_count, no / max(1, observed_count)
+                components.append(
+                    dict(
+                        component=("boundary", "portrait", "text")[kind - 1],
+                        component_id=kind,
+                        expected_count=expected_count,
+                        observed_count=observed_count,
+                        matched_expected_count=ne,
+                        matched_observed_count=no,
+                        recall=recall,
+                        precision=precision,
+                        score=min(recall, precision),
+                    )
                 )
-                scores.append(min(recall, precision))
-            if min(scores) > min(best):
-                best = scores
+            score = min(c["score"] for c in components)
+            # Prefer the smallest rigid displacement on tied scores.
+            if not best or (score, -abs(dx) - abs(dy)) > (
+                best["minimum_score"],
+                -abs(best["dx"]) - abs(best["dy"]),
+            ):
+                best = dict(
+                    components=components,
+                    minimum_score=score,
+                    dx=dx,
+                    dy=dy,
+                    limiting_component=min(components, key=lambda c: c["score"])["component"],
+                    passed=score >= 0.90,
+                )
     return best
 
 
@@ -303,7 +425,7 @@ def _displaced_component_present(gray: np.ndarray, labels: np.ndarray) -> bool:
 def generate_panel_reference(crops: list[np.ndarray], stats: dict[str, Any]) -> np.ndarray | None:
     gray = [cv2.cvtColor(c, cv2.COLOR_BGR2GRAY) if c.ndim == 3 else c for c in crops]
     stats.update(
-        matcher="edge_recall_precision_v1",
+        matcher="oriented_component_regions_v2",
         training_count=len(gray[::2]),
         holdout_count=len(gray[1::2]),
         candidate_count=0,
@@ -357,14 +479,24 @@ def generate_panel_reference(crops: list[np.ndarray], stats: dict[str, Any]) -> 
             stats["structural_rejected"] += 1
             continue
         stats["candidate_count"] += 1
-        members = tuple(
-            i
-            for i, g in enumerate(gray[::2])
-            if min(local_component_scores(g, labels), default=0) >= 0.90
-        )
+        comparisons = [component_match_diagnostics(g, labels) for g in gray[::2]]
+        members = tuple(i for i, result in enumerate(comparisons) if result.get("passed"))
+        failed = [r["minimum_score"] for r in comparisons if not r.get("passed")]
         support = len(members)
         stats["candidate_support"].append(
-            {"sample_index": index * 2, "training_support": support, "minimum_required": 3}
+            {
+                "sample_index": index * 2,
+                "training_support": support,
+                "minimum_required": 3,
+                "self_match": comparisons[index],
+                "legacy_self_match": samples[index * 2].get("legacy_self_match", {}),
+                "failed_support_scores": dict(
+                    count=len(failed),
+                    min=min(failed) if failed else None,
+                    median=float(np.median(failed)) if failed else None,
+                    max=max(failed) if failed else None,
+                ),
+            }
         )
         if support >= 3:
             if members not in clusters:

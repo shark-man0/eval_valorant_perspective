@@ -21,6 +21,44 @@ def number(value, *, count=False):
     return value if value <= 1 else None
 
 
+def sanitize_panel_match(value):
+    """Fixed-size numerical matcher telemetry, never image/name/path strings."""
+    value = object_or_empty(value)
+    names = ("boundary", "portrait", "text")
+    rows = value.get("components", [])
+    rows = rows if isinstance(rows, list) else []
+    result = {
+        "minimum_score": number(value.get("minimum_score")),
+        "passed": value.get("passed") is True,
+        "limiting_component": value.get("limiting_component")
+        if value.get("limiting_component") in names
+        else None,
+        "components": [],
+    }
+    for key in ("dx", "dy"):
+        offset = value.get(key)
+        result[key] = offset if type(offset) is int and -2 <= offset <= 2 else None
+    for kind, name in enumerate(names, 1):
+        row = next((r for r in rows if isinstance(r, dict) and r.get("component") == name), {})
+        result["components"].append(
+            {
+                "component": name,
+                "component_id": kind,
+                **{
+                    k: number(row.get(k), count=True)
+                    for k in (
+                        "expected_count",
+                        "observed_count",
+                        "matched_expected_count",
+                        "matched_observed_count",
+                    )
+                },
+                **{k: number(row.get(k)) for k in ("recall", "precision", "score")},
+            }
+        )
+    return result
+
+
 def sanitize_calibration(value):
     if not isinstance(value, dict) or value.get("schema_version") != 1:
         return {"available": False}
@@ -228,6 +266,23 @@ def compact_diagnostics(calibration):
             if s.get("training_support") is not None and s.get("minimum_required") is not None
         ),
     )
+    self_matches = [
+        s["self_match"]
+        for s in supports
+        if s.get("self_match", {}).get("minimum_score") is not None
+    ]
+    self_scores = [s["minimum_score"] for s in self_matches]
+    generation["self_match_summary"] = dict(
+        count=len(self_scores),
+        passed_count=sum(s["passed"] for s in self_matches),
+        min=min(self_scores) if self_scores else None,
+        median=statistics.median(self_scores) if self_scores else None,
+        max=max(self_scores) if self_scores else None,
+        failing_components={
+            k: sum(not s["passed"] and s["limiting_component"] == k for s in self_matches)
+            for k in ("boundary", "portrait", "text")
+        },
+    )
     ordered = sorted(supports, key=lambda s: s.get("training_support") or 0, reverse=True)
     keep_supports = []
     if ordered:
@@ -364,6 +419,13 @@ def sanitize_identity_generation(value):
                 else None,
             }
         if name == "spectator_panel":
+            for key in ("support_regions_content_hash", "orientation_content_hash"):
+                digest = source.get(key)
+                row[key] = (
+                    digest
+                    if isinstance(digest, str) and re.fullmatch(r"[a-f0-9]{64}", digest)
+                    else None
+                )
             keys = (
                 "observable",
                 "boundary",
@@ -385,12 +447,24 @@ def sanitize_identity_generation(value):
             supports = source.get("candidate_support", [])
             row["spectator_generation"] = {
                 "matcher": source.get("matcher")
-                if source.get("matcher") == "edge_recall_precision_v1"
+                if source.get("matcher")
+                in ("edge_recall_precision_v1", "oriented_component_regions_v2")
                 else None,
                 "candidate_support": [
                     {
-                        k: number(s.get(k), count=True)
-                        for k in ("sample_index", "training_support", "minimum_required")
+                        **{
+                            k: number(s.get(k), count=True)
+                            for k in ("sample_index", "training_support", "minimum_required")
+                        },
+                        "self_match": sanitize_panel_match(s.get("self_match")),
+                        "legacy_self_match": sanitize_panel_match(s.get("legacy_self_match")),
+                        "failed_support_scores": {
+                            k: number(
+                                object_or_empty(s.get("failed_support_scores")).get(k),
+                                count=k == "count",
+                            )
+                            for k in ("count", "min", "median", "max")
+                        },
                     }
                     for s in supports[:64]
                     if isinstance(s, dict)
@@ -414,6 +488,7 @@ def sanitize_identity_generation(value):
                         "boundary_span_insufficient",
                         "relative_position_mismatch",
                         "component_pixels_insufficient",
+                        "boundary_orientation_incoherent",
                     )
                 },
                 "samples": [
@@ -468,6 +543,7 @@ def sanitize_identity_generation(value):
                                 "boundary_span_insufficient",
                                 "relative_position_mismatch",
                                 "component_pixels_insufficient",
+                                "boundary_orientation_incoherent",
                             )
                         },
                     }

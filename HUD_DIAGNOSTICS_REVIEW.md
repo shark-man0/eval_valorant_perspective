@@ -1,5 +1,51 @@
 # Windows E2E 上流診断（2026-10-01）
 
+## Spectator self-consistency 修正（2026-10-03、Windows未検証）
+
+今回はSpectator生成・照合と必要なasset保存/読み込み・共有診断だけを変更。
+Weapon/Ammo、HP/Ability生成、identity policy、Visual/Map/Round、GT、runnerは変更しない。
+sample 28の実画像・参照asset・component別照合値はMacにないため、実際のlimiting
+componentはまだ特定できない。「portraitが原因」と実動画について断定しない。
+
+旧方式はsynthetic Hough線・狭いportrait outline・glyph edgeだけを参照にしながら、
+precisionではその外側2pxの全edgeを分母へ含めていた。装飾付き合成panelで、自己照合の
+portrait recall=1、precision=188/221=.850679、旧最小score<.90を再現した。
+参照に含めなかった正常edgeを、同じ元frameの照合ではclutter扱いする契約不一致である。
+
+新matcher `oriented_component_regions_v2` は固定・排他的な支持領域を生成時に保存し、
+その中の実Canny edgeをすべて参照に含める。Hough描画そのものを期待edgeにしない。
+precisionは同じ固定支持領域内のraw edgeのみを数え、1px/20度の双方向対応を要求する。
+gradientは符号付き方向を2度刻みで保存し、明るい線の表裏を取り違えない。
+自己照合は全groupのrecall/precision=1になるが、画像hash・object identity等は使用しない。
+別frameの支持領域内の矛盾edgeはprecisionを下げ、外側の無関係edgeは分母に入れない。
+
+反復random textureを参照化しないため、水平boundaryの実edge方向が法線±20度に
+60%以上集中する追加品質gateを設ける（等方noiseの期待値は約22%）。構造条件を緩めず、
+同じtextureの反復だけでは採用しない。棄却は `boundary_orientation_incoherent` へ集計。
+header/footer/separator、fragmentの実被覆、3component構造、共通±2px、閾値.90、
+training最低3、holdout最低3かつtraining比率80%を維持。holdoutで候補選択しない。
+absenceはcoverage-onlyとdisplaced-component vetoを維持し、positive失敗から導かない。
+
+fresh profileのSpectator detector versionは2。labels/support_regions/orientationの3PNGを
+Windowsローカルのidentity配下へ保存する。新assetもgeometryとのpath/hash一致を排除し、
+継承・asset移動・読み込みで保持する。不正/欠落assetはreference_unavailableに落とす。
+旧version1は旧matcherを維持し、欠けた支持領域・方向情報を捏造しない。再検証はfresh生成。
+
+共有candidate_supportは最大6代表例。旧方式 `legacy_self_match` と新方式 `self_match`
+それぞれのexpected/observed/matched count、recall、precision、score、共通dx/dy、
+limiting component、passedを共有。失敗training比較はcount/min/median/maxに集約。
+全候補のself_match_summaryは代表例を容量fallbackで削除しても残る。共有は128KiBのまま。
+画像・OCR・名前・private pathは共有せず、ローカル診断は削らない。
+
+次回はWINDOWS_E2E.mdの既存fresh手順（geometry-only base、64未ラベルsample、
+生成layoutをそのままfull E2Eへ渡す）で確認する。まず全candidateのself score>=.90、
+次に独立training/holdout支持・generatedを確認する。source自己一致だけで採用せず、
+支持不足ならunknownを維持する。Weaponの18/18はWindows比較指標でありMac確認値ではない。
+
+Mac最終検証: pytest 602 passed / 3 skipped（実録画未提供1、PowerShell未導入2）、
+Ruff `src tests scripts`、mypy `src`（79 files）、git diff --check成功。
+新規46回帰を追加。既存テスト・Weapon実装に変更はなく、commit/pushは行っていない。
+
 ## Fresh p5: Weapon localization / Spectator topology限定修正
 
 基準はfcf313eのfresh Windows診断。profile/runnerの古さを原因と扱わない。

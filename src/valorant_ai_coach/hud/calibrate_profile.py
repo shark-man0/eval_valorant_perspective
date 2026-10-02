@@ -22,7 +22,7 @@ from valorant_ai_coach.video.service import VideoService
 
 from .calibrate_temporal import _check_output_privacy, _localize_assets, create_temporal_profile
 from .layout import HudLayout
-from .spectator import generate_panel_reference, panel_components
+from .spectator import PanelReference, generate_panel_reference, panel_components
 from .templates import HudTemplateProfile
 from .weapon_identity import weapon_reference
 
@@ -348,12 +348,16 @@ def create_profile(
         status = "generated"
         if labels is None and inherited._panel_components is not None:
             spec = inherited.raw.get("spectator_panel_detector", {})
-            asset = inherited.resolve_asset(spec["template"]).resolve()
+            assets = [
+                inherited.resolve_asset(spec[key]).resolve()
+                for key in ("template", "support_regions", "orientation")
+                if key in spec
+            ]
             roi_name = "spectated_player_panel"
-            if (
-                roi_name in layout.regions
-                and asset not in geometry_assets
+            if roi_name in layout.regions and all(
+                asset not in geometry_assets
                 and hashlib.sha256(asset.read_bytes()).hexdigest() not in geometry_hashes
+                for asset in assets
             ):
                 x1, y1, x2, y2 = layout.normalized_roi(roi_name).pixel_bounds(width, height)
                 if inherited._panel_components.shape == (y2 - y1, x2 - x1):
@@ -380,6 +384,16 @@ def create_profile(
                 "version": 1,
                 "template": "identity/spectator_panel.components.png",
             }
+            if isinstance(labels, PanelReference):
+                raw["spectator_panel_detector"]["version"] = 2
+                for key, image in (
+                    ("support_regions", labels.regions),
+                    ("orientation", labels.orientation),
+                ):
+                    asset_name = f"identity/spectator_panel.{key}.png"
+                    info = _write_asset(stage / asset_name, image)
+                    raw["spectator_panel_detector"][key] = asset_name
+                    stats[f"{key}_content_hash"] = info["content_hash"]
             diagnostics["references"][name] = stats
         else:
             diagnostics["references"][name] = {**stats, "status": "insufficient_evidence"}
