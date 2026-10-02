@@ -202,7 +202,37 @@ def compact_diagnostics(calibration):
     keep_samples = representatives(samples)
     generation["samples"] = keep_samples
     generation["omitted_sample_count"] = len(samples) - len(keep_samples)
-    if len(keep) < len(candidates) or len(keep_samples) < len(samples):
+    supports = generation.get("candidate_support", [])
+    values = [s["training_support"] for s in supports if s.get("training_support") is not None]
+    minimums = {s["minimum_required"] for s in supports if s.get("minimum_required") is not None}
+    generation["candidate_support_summary"] = dict(
+        count=len(values),
+        min=min(values) if values else None,
+        median=statistics.median(values) if values else None,
+        max=max(values) if values else None,
+        minimum_required=next(iter(minimums)) if len(minimums) == 1 else None,
+        below_minimum_count=sum(
+            s["training_support"] < s["minimum_required"]
+            for s in supports
+            if s.get("training_support") is not None and s.get("minimum_required") is not None
+        ),
+    )
+    ordered = sorted(supports, key=lambda s: s.get("training_support") or 0, reverse=True)
+    keep_supports = []
+    if ordered:
+        # Keep strongest and weakest candidates before the remaining examples.
+        for support in [ordered[0], ordered[-1], *ordered]:
+            if support not in keep_supports:
+                keep_supports.append(support)
+            if len(keep_supports) == 6:
+                break
+    generation["candidate_support"] = keep_supports
+    generation["omitted_candidate_support_count"] = len(supports) - len(keep_supports)
+    if (
+        len(keep) < len(candidates)
+        or len(keep_samples) < len(samples)
+        or len(keep_supports) < len(supports)
+    ):
         calibration["detail_truncated"] = True
 
 
@@ -313,7 +343,21 @@ def sanitize_identity_generation(value):
                 "candidate",
             )
             samples = source.get("samples", [])
+            supports = source.get("candidate_support", [])
             row["spectator_generation"] = {
+                "matcher": source.get("matcher")
+                if source.get("matcher") == "edge_recall_precision_v1"
+                else None,
+                "candidate_support": [
+                    {
+                        k: number(s.get(k), count=True)
+                        for k in ("sample_index", "training_support", "minimum_required")
+                    }
+                    for s in supports[:64]
+                    if isinstance(s, dict)
+                ]
+                if isinstance(supports, list)
+                else [],
                 "evidence_counts": {
                     k: number(object_or_empty(source.get("evidence_counts")).get(k), count=True)
                     for k in keys

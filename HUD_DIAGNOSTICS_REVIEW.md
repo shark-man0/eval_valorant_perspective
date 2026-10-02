@@ -1,5 +1,38 @@
 # Windows E2E 上流診断（2026-10-01）
 
+## 2026-10-02: Spectator texture誤一致と棄却候補の共有診断
+
+この節が最新。基準f9d70a3のMac合成監査で、panelのないランダムtexture5種類がすべて
+panel_present=trueになり、ノイズだけの16frameからtraining/holdout各8支持でreferenceを
+生成できた。原因はdilated edgeの片方向coverageだけで照合していたこと。
+
+presenceと参照生成のmatcherを `edge_recall_precision_v1` に変更した。
+全3componentについて、参照edgeのrecallと周辺の観測edgeのprecisionの小さい方を使う。
+precisionは膨張前の観測edgeを数え、参照の1px match bandと2px neighbourhoodを比較する。
+固定構造の位置差は全component共通の最大±2pxで扱い、各score>=.90を維持する。
+referenceとruntime両方で同じ照合を使う。textureはunknownに落とし、absenceへ昇格させない。
+absence用coverageとobservable/partial/displaced-componentの安全条件は従来どおり。
+
+候補の `sample_index` / `training_support` / `minimum_required` をraw/localに残し、
+共有には支持件数のcount/min/median/max、必要数、必要数未満の候補数を追加した。
+強い/弱い候補を含めた最大6代表例と省略件数も共有する。参照未成立の
+training_accept_countを棄却候補数で埋めず、候補支持と採用支持を別々に記録する。
+容量fallbackではcandidate_support代表例も削除するが、集計は維持する。
+128 KiBとprivacy allowlistを維持し、画像・path・OCRは共有しない。
+
+resume contractを16に更新。Windowsでは更新コードで新profileを生成してE2Eを再実行する。
+手順は `WINDOWS_E2E.md` のAutomatic local profile節。GT/geometry assetは利用しない。
+Weapon/HUD identity policy/Visual/Map/Round処理は今回変更していない。
+実動画改善は未検証。次回はSpectator matcher、候補支持集計、reference生成状態、
+spectator_checks、identity_reasonsとlive/unknownを比較する。
+
+Mac検証: pytest 537 passed / 3 skipped（実録画未提供1、PowerShell未導入2）。
+Ruff (`src tests scripts`) / 変更Pythonファイルのformat check / mypy（78 source files） /
+git diff --check成功。追加12回帰はtexture5種類のunknown、変化/固定noiseの参照棄却、
+noiseで支持件数が増えないこと、混合データの正しいpanel採用、棄却支持の共有、
+代表例6件/128 KiB/privacy/raw不変、容量fallback後の集計維持を確認した。
+既存negativeテストは変更していない。
+
 ## 2026-10-02: 回収report 3f005a0を基準とするidentity限定修正
 
 この節が最新。基準実装はde46747。旧runからの回収metadataのnullを性能比較に使わない。

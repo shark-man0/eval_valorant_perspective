@@ -207,18 +207,39 @@ def component_scores(gray: np.ndarray, labels: np.ndarray) -> list[float]:
 
 
 def local_component_scores(gray: np.ndarray, labels: np.ndarray) -> list[float]:
-    """A shared rigid offset <=2px only, not global sliding or independent drift."""
-    best = component_scores(gray, labels)
-    if not best:
+    """Require recall AND local precision for each group at one shared <=2px offset.
+
+    Only precision uses the raw edges: dilating observed edges before counting
+    them would let dense texture cover almost every reference pixel. A one-pixel
+    match band within a two-pixel neighbourhood penalizes extra nearby edges.
+    Absence keeps its separate, conservative coverage-only checks.
+    """
+    if gray.shape != labels.shape or any(np.count_nonzero(labels == k) < 12 for k in (1, 2, 3)):
         return []
+    best = [0.0] * 3
     h, w = gray.shape
-    edges = cv2.dilate(cv2.Canny(gray, 60, 150), np.ones((3, 3), np.uint8))
+    edges = cv2.Canny(gray, 60, 150) > 0
     padded = np.pad(edges, 2)
+    covered = np.pad(cv2.dilate(edges.astype(np.uint8), np.ones((3, 3), np.uint8)), 2)
+    groups = []
+    for kind in (1, 2, 3):
+        expected = labels == kind
+        band = cv2.dilate(expected.astype(np.uint8), np.ones((3, 3), np.uint8)) > 0
+        neighbourhood = cv2.dilate(expected.astype(np.uint8), np.ones((5, 5), np.uint8)) > 0
+        groups.append((expected, band, neighbourhood))
     for dy in range(-2, 3):
         for dx in range(-2, 3):
             shifted = padded[2 + dy : 2 + dy + h, 2 + dx : 2 + dx + w]
-            scores = [float(np.mean(shifted[labels == k] > 0)) for k in (1, 2, 3)]
-            if min(scores, default=0) > min(best, default=0):
+            shifted_covered = covered[2 + dy : 2 + dy + h, 2 + dx : 2 + dx + w]
+            scores = []
+            for expected, band, neighbourhood in groups:
+                observed = shifted & neighbourhood
+                recall = float(np.mean(shifted_covered[expected] > 0))
+                precision = int(np.count_nonzero(observed & band)) / max(
+                    1, int(np.count_nonzero(observed))
+                )
+                scores.append(min(recall, precision))
+            if min(scores) > min(best):
                 best = scores
     return best
 
@@ -244,6 +265,7 @@ def _displaced_component_present(gray: np.ndarray, labels: np.ndarray) -> bool:
 def generate_panel_reference(crops: list[np.ndarray], stats: dict[str, Any]) -> np.ndarray | None:
     gray = [cv2.cvtColor(c, cv2.COLOR_BGR2GRAY) if c.ndim == 3 else c for c in crops]
     stats.update(
+        matcher="edge_recall_precision_v1",
         training_count=len(gray[::2]),
         holdout_count=len(gray[1::2]),
         candidate_count=0,
@@ -291,7 +313,7 @@ def generate_panel_reference(crops: list[np.ndarray], stats: dict[str, Any]) -> 
     stats["candidate_support"] = []
     candidates = []
     clusters = set()
-    for frame in gray[::2]:
+    for index, frame in enumerate(gray[::2]):
         labels = panel_components(frame)
         if labels is None:
             stats["structural_rejected"] += 1
@@ -303,7 +325,9 @@ def generate_panel_reference(crops: list[np.ndarray], stats: dict[str, Any]) -> 
             if min(local_component_scores(g, labels), default=0) >= 0.90
         )
         support = len(members)
-        stats["candidate_support"].append({"training_support": support, "minimum_required": 3})
+        stats["candidate_support"].append(
+            {"sample_index": index * 2, "training_support": support, "minimum_required": 3}
+        )
         if support >= 3:
             if members not in clusters:
                 candidates.append((support, labels))
@@ -344,6 +368,7 @@ def detect_panel(crop: np.ndarray, labels: np.ndarray | None) -> dict[str, Any]:
         return result
     result["component_scores"] = scores
     positive_scores = local_component_scores(gray, labels)
+    result["positive_component_scores"] = positive_scores
     if min(positive_scores, default=0) >= 0.90:
         result.update(checked=True, panel_present=True, reason="panel_structure_present")
     elif max(scores) <= 0.10:

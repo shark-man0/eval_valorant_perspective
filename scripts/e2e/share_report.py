@@ -1109,5 +1109,9 @@ def _drop_verbose_diagnostics(summary):
     panel = refs.get("spectator_panel", {}).get("spectator_generation", {})
     samples = panel.pop("samples", [])
     panel["omitted_sample_count"] = (panel.get("omitted_sample_count") or 0) + len(samples)
+    supports = panel.pop("candidate_support", [])
+    panel["omitted_candidate_support_count"] = (
+        panel.get("omitted_candidate_support_count") or 0
+    ) + len(supports)
     calibration["detail_truncated"] = True
     summary["result"]["detail_truncated"] = True

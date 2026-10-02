@@ -194,8 +194,8 @@ outputs are marked unavailable, never reconstructed. See
 
 ### Automatic local profile → Windows E2E (PowerShell)
 
-2026-10-02: Regenerate after the Weapon/Ammo spatial-layout gate / bounded spectator
-alignment update (resume contract 15). No image or JSON editing is needed. HP/Ability and all
+2026-10-02: Regenerate after the Spectator recall/precision texture-rejection
+update (resume contract 16). No image or JSON editing is needed. HP/Ability and all
 four live-identity gates remain required. Insufficient references stay unknown;
 successful file generation is not evidence of real-video accuracy. Detailed sanitized
 candidate/element statistics and training/holdout edge-similarity distributions are
@@ -273,6 +273,14 @@ ROI, size mismatch, or missing positive reference give `checked=false` and unkno
 pixel template's failure alone cannot establish absence. Current-frame HP/ability/ammo
 structures and remote/spectator/menu/map blockers remain required; no live persistence.
 There are no new dependencies or paid API calls.
+
+Presence uses the minimum of recall and local raw-edge precision for every component,
+at a shared offset of at most two pixels. Extra nearby edges reduce precision; dense
+texture cannot establish a panel or inflate reference support just by covering its pixels.
+Absence still uses fixed-position coverage and the existing conservative veto checks.
+`candidate_support_summary` shares support counts even when every candidate is rejected;
+`candidate_support` keeps at most six sanitized representatives. Regenerate the local profile
+before comparing the updated detector; Mac synthetic checks do not prove real-video accuracy.
 
 Compare per-role candidate/rejection/support counts in `automatic_identity_generation.references`,
 `identity_missing`, `spectator_checks`, `identity_reasons`, geometry success,
