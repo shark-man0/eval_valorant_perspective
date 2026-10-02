@@ -33,7 +33,11 @@ def live_identity(signals: Mapping[str, Any], *, geometry_valid: bool) -> Identi
         return IdentityEvidence(False, count, "geometry_invalid")
     # Unchecked absence is not negative evidence. The current frame must have
     # been measured by a configured spectator detector, not just lack its flag.
-    if signals.get("spectator_panel_absent") is not True:
+    if (
+        signals.get("spectator_panel_absent") is not True
+        or signals.get("spectator_detector_checked") is not True
+        or signals.get("spectator_panel_present") is not False
+    ):
         return IdentityEvidence(False, count, "spectator_exclusion_unverified")
     blockers = (
         "spectated_player_panel",

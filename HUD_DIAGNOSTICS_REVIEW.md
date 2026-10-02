@@ -1,5 +1,93 @@
 # Windows E2E 上流診断（2026-10-01）
 
+## 2026-10-02: 34dc48a Windows再検証後の修正（現在の手順）
+
+正本 `summary.json` / `hud_calibration.json` を確認。実行元99d7d1a、geometry有効3929、
+geometry有効下unknown3892、spectator_exclusion_unverified3929、独立参照4件不足。
+Visual eligibilityは両方0、Map definition未解決は解消、57 failed / negative failures 0。
+今回のMac作業ではこのWindows結果JSONを変更していない。
+
+### 確認できた原因と限界
+
+- 旧structure_referenceは全training中央値から一つの参照を作り、全trainingと全holdoutの
+  各80%以上でNCC >= .90を要求していた。異なるHUDモードが混在する場合、十分に一貫した
+  minority modeまで不採用になる。固定cropの形状フィルタでも棄却され得る。
+- 旧clear生成はpanel ROI全体がほぼ一様（max-min <= 8）で、固定背景と全holdoutの80%以上
+  一致することを要求した。変化する3D背景には不適切。
+- 旧共有JSONは棄却時のtraining/holdout値が全てnull。実画像もMacにないので、各roleが
+  最初に落ちたフィルタや画素を特定したとは言えない。構造上の欠陥と実測棄却を区別する。
+- live_identityの早期returnはspectatorの不足しか報告せず、同時に起きる3構造不足を隠した。
+
+### 修正
+
+1. Training frame内でNCC >= .90のcandidate clusterを作り、cluster内の固定edge整合性を
+   検査。trainingだけで候補を選び、未使用holdoutで一度検証する。各splitで3件以上の支持と
+   training比率に対して80%以上のholdout支持を要求。全動画の80%一致ではない。
+   最良training候補がholdout不合格なら、holdoutを使って別候補へ乗り換えない。
+2. Geometry asset/maskを使わずidentity ROIから別参照を生成。継承時もpathとhashでgeometry
+   assetの流用を拒否する。cluster自体をlive/spectator等の正解stateとはラベル付けしない。
+3. `hud/spectator.py` を追加。panel ROI内の長い境界、portrait状の閉じた枠、横に整列する
+   文字要素というUI形状条件からpositive候補を抽出し、training/holdout支持を検証。
+   既存の明示的positive panel templateがある場合は、同じ形状条件で参照を継承可能。
+4. Runtimeでは背景NCCではなく3要素のedge被覆を測る。観測可能性（contrast、明度、blur）
+   とサイズを確認し、全要素 >= .90なら存在、全要素 <= .10なら構造の不在を確認する。
+   中間値・部分隠れ・参照不足は未確認。`checked=true && panel_present=false` の時のみ
+   absentを設定。旧clear assetとlegacy pixel templateの非検出はabsenceに利用しない。
+5. 自動CLIの入力・出力先・E2E呼出方法は維持。新profileの生成が必要。JSON手編集なし。
+   現在frameの証拠だけを使い、remote/spectator/menu/map/死亡UIの抑止とunknownを維持。
+   resume contractを11へ更新。
+
+このpanel形状条件は未検証のUI variantには対応しない。観戦画面がサンプルに存在しない、
+portrait枠等が条件を満たさない、holdout支持不足ならdetectorは未確認のままになる。
+任意の背景クラスタをpanelと呼んで埋め合わせることはしない。実動画改善は未確認。
+
+### Mapの次のgate
+
+`visual/runtime.py` はHUD live + player_specific_hud_valid + 禁止flagなしでのみ
+`timeline.calibrate(image)` を呼ぶ。live=0の今回の実行経路では、その前で全件停止する。
+従来のmap_selection_or_calibration_requiredはNoneをまとめた理由なので、markerやlocation
+の故障を意味しない。新しい共有診断は以下を区別する。
+
+- `map_calibration_skipped_hud_eligibility` / `map_ownership_blocked`
+- 校正を試した場合: `map_calibration_failed` + 個別理由（asset不足、特徴不足、alignment等）
+- `map_calibration_accepted` 後: `map_marker_missing` / `map_marker_available`
+- `map_location_not_evaluated` / `map_location_unresolved` / `map_location_resolved`
+
+### 次回の比較指標
+
+- `automatic_identity_generation.references`: 各roleのcandidate_count、structural_rejected、
+  support_rejected、holdout_rejected、training/holdout支持件数。新しいroleはspectator_panel。
+  `*_rejected`は候補検査件数でありframe件数ではない。identity_reference_readyは参照の
+  構成可否であって精度PASSではない。
+- `identity_missing`: 各構造の不足frame数（早期returnとは独立）。
+- `spectator_checks`: reference_unavailable、roi_unobservable、geometry_mismatch、
+  panel_structure_present/excluded/ambiguous（およびROI不足・未評価）。
+- geometry成功保持率、HUD unknown/live、Visual eligibility/events、Map各gate件数、
+  E2E failedとnegative failures。live増加だけで改善判定せず、誤liveとnegativeも比較。
+
+Windowsコマンド全文は `WINDOWS_E2E.md` のAutomatic local profile節。今回は前回使用した
+Windows-local layout/profileをbaseにし、64サンプルで新しい出力先へ生成する。
+古い画像やJSONの目視修正は不要。GTはE2E評価だけに使い、生成器は参照しない。
+
+### 変更ファイルとMac検証
+
+- `src/valorant_ai_coach/hud/calibrate_profile.py`: cluster生成、生成診断、旧clear参照除外。
+- `src/valorant_ai_coach/hud/spectator.py`（新規）: positive UI形状抽出・三値検査。
+- `src/valorant_ai_coach/hud/{templates,identity,analyzers,diagnostics}.py`: 実行接続、
+  checked/present条件、同時不足の集計。
+- `src/valorant_ai_coach/visual/{runtime,map_pipeline}.py`: Mapの試行/未試行・gate診断。
+- `src/valorant_ai_coach/application/pipeline.py`: resume contract更新。
+- `scripts/e2e/{calibration_report,share_report}.py`: 新統計のallowlist共有。
+- `tests/unit/test_hud_cluster_spectator.py`（新規）、既存HUD/profile/diagnostics/Map/report
+  テスト、`tests/conftest.py`、`tests/integration/test_hud_pixels_e2e.py`: 回帰・合成検証。
+- 本文書、`WINDOWS_E2E.md`、`E2E_VALIDATION_STATUS.md`: 手順と検証限界。
+
+Mac全体テスト **483 passed / 3 skipped**。Ruff成功、mypy77ファイル成功。
+skipは実録画1件とPowerShell2件。合成動画→profile→Round Package→SQLiteを含むが、
+Windows実動画改善やUI形状の適合を検証した結果ではない。
+既存テストの変更は、旧「背景が一致すれば不在」fixtureを明示的positive panel構造へ置換し、
+黒画面で証拠を出さない検証を維持したもの。GTや期待イベントを検出器へ注入していない。
+
 ## 2026-10-02: 手編集不要の自動生成経路
 
 下記の旧「Windows側profile作業」は `hud.calibrate_profile` に置き換えた。

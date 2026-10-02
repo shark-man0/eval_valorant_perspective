@@ -43,6 +43,37 @@ def test_automatic_identity_export_is_allowlisted():
     assert row["dimensions"] == [20, 30]
 
 
+def test_cluster_and_runtime_failures_are_separately_shared():
+    raw = {
+        "schema_version": 1,
+        "identity_missing": {"hp_hud_structure": 9, "PRIVATE": 10},
+        "spectator_checks": {
+            "panel_structure_ambiguous": 4,
+            "reference_unavailable": 5,
+            "PRIVATE": 10,
+        },
+        "automatic_identity_generation": {
+            "version": 2,
+            "references": {
+                "spectator_panel": {
+                    "status": "insufficient_evidence",
+                    "candidate_count": 5,
+                    "structural_rejected": 2,
+                    "holdout_rejected": 1,
+                    "holdout_accept_count": 0,
+                    "PRIVATE": "PRIVATE",
+                }
+            },
+        },
+    }
+    report = sanitize_calibration(raw)
+    assert report["identity_missing"] == {"hp_hud_structure": 9}
+    assert report["spectator_checks"]["panel_structure_ambiguous"] == 4
+    row = report["automatic_identity_generation"]["references"]["spectator_panel"]
+    assert row["candidate_count"] == 5 and row["holdout_rejected"] == 1
+    assert "PRIVATE" not in json.dumps(report)
+
+
 def test_anchor_metadata_scores_and_geometry_are_separate(tmp_path):
     path = tmp_path / "private_username.png"
     cv2.imwrite(str(path), np.random.default_rng(4).integers(0, 255, (20, 30), dtype=np.uint8))

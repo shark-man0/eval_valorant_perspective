@@ -22,6 +22,7 @@ from valorant_ai_coach.video.service import VideoService
 
 from .calibrate_temporal import _check_output_privacy, _localize_assets, create_temporal_profile
 from .layout import HudLayout
+from .spectator import generate_panel_reference, panel_components
 from .templates import HudTemplateProfile
 
 ROLES = {
@@ -44,12 +45,22 @@ def _score(template: np.ndarray, image: np.ndarray) -> float:
 
 def structure_reference(
     crops: list[np.ndarray],
+    diagnostics: dict[str, Any] | None = None,
 ) -> tuple[np.ndarray, list[float], dict[str, Any]] | None:
-    """Choose on training frames only; evaluate once on disjoint holdout frames.
+    """Mine a supported training cluster, then independently confirm its support.
 
-    Tight unmasked rectangles are independent of the geometry-anchor masks.
-    Long edges plus contrast reject blank areas and most random scene texture.
+    NCC >= .90 remains mandatory within a cluster. Other modes are not counted
+    as failed matches. No cluster is assigned a gameplay-state label here.
     """
+    diag = diagnostics if diagnostics is not None else {}
+    diag.update(
+        candidate_count=0,
+        structural_rejected=0,
+        support_rejected=0,
+        holdout_rejected=0,
+        training_count=len(crops[::2]),
+        holdout_count=len(crops[1::2]),
+    )
     if len(crops) < 16 or any(c.shape != crops[0].shape for c in crops):
         return None
     gray = [_gray(c) for c in crops]
@@ -57,63 +68,91 @@ def structure_reference(
     h, w = max(16, round(height * 0.30)), max(16, round(width * 0.20))
     if h >= height or w >= width:
         return None
-    best: tuple[float, np.ndarray, list[float], list[np.ndarray], list[float]] | None = None
+    candidates = []
     for y in np.linspace(0, height - h, 5).astype(int):
         for x in np.linspace(0, width - w, 5).astype(int):
             patches = [image[y : y + h, x : x + w] for image in gray]
             training = patches[::2]
-            reference = np.median(np.stack(training), axis=0).astype(np.uint8)
-            edges = cv2.Canny(reference, 60, 150)
-            density = float(np.count_nonzero(edges) / edges.size)
-            if not 0.015 <= density <= 0.25 or float(reference.std()) < 8:
-                continue
-            lines = cv2.HoughLinesP(
-                edges,
-                1,
-                np.pi / 180,
-                threshold=8,
-                minLineLength=max(8, min(h, w) // 3),
-                maxLineGap=2,
-            )
-            if lines is None or len(lines) < 2:
-                continue
-            scores = [_score(reference, patch) for patch in training]
-            support = sum(s >= 0.90 for s in scores) / len(scores)
-            if support < 0.80:
-                continue
-            rank = support + float(np.median(scores))
-            if best is None or rank > best[0]:
-                best = (
-                    rank,
-                    reference,
-                    [x / width, y / height, (x + w) / width, (y + h) / height],
-                    patches,
-                    scores,
+            # Each seed defines a bounded candidate mode using training frames only.
+            clusters = set()
+            for seed in training:
+                members = tuple(
+                    i for i, patch in enumerate(training) if _score(seed, patch) >= 0.90
                 )
-    if best is None:
+                if len(members) >= 3:
+                    clusters.add(members)
+                else:
+                    diag["support_rejected"] += 1
+            for members in sorted(clusters):
+                reference = np.median(np.stack([training[i] for i in members]), axis=0).astype(
+                    np.uint8
+                )
+                diag["candidate_count"] += 1
+                candidate = _structure_candidate(reference, training, members)
+                if candidate is None:
+                    diag["structural_rejected"] += 1
+                    continue
+                scores = [_score(reference, patch) for patch in training]
+                matched = [s for s in scores if s >= 0.90]
+                if (
+                    len(matched) < 3
+                    or sum(scores[i] >= 0.90 for i in members) / len(members) < 0.80
+                ):
+                    diag["support_rejected"] += 1
+                    continue
+                candidates.append(
+                    (
+                        len(matched) + float(np.median(matched)),
+                        reference,
+                        [x / width, y / height, (x + w) / width, (y + h) / height],
+                        patches,
+                        scores,
+                    )
+                )
+    # Choose once on training only; never search holdout for a better-fitting ROI.
+    if not candidates:
         return None
-    _, reference, bounds, patches, train_scores = best
+    _, reference, bounds, patches, train_scores = max(candidates, key=lambda item: item[0])
     heldout = [_score(reference, patch) for patch in patches[1::2]]
-    if sum(s >= 0.90 for s in heldout) / len(heldout) < 0.80:
-        return None  # Do not select another candidate using the holdout set.
-    return (
-        reference,
-        bounds,
-        {
-            "training_count": len(train_scores),
-            "holdout_count": len(heldout),
-            "training_accept_count": sum(s >= 0.90 for s in train_scores),
-            "holdout_accept_count": sum(s >= 0.90 for s in heldout),
-            "holdout_median": float(np.median(heldout)),
-        },
+    train_support = sum(s >= 0.90 for s in train_scores)
+    heldout_support = sum(s >= 0.90 for s in heldout)
+    diag.update(training_accept_count=train_support, holdout_accept_count=heldout_support)
+    # At least three independent observations per split, and comparable cluster
+    # prevalence in holdout. This is not 80% of the entire mixed-state recording.
+    expected = train_support / len(train_scores) * len(heldout)
+    if heldout_support < 3 or heldout_support < 0.80 * expected:
+        diag["holdout_rejected"] += 1
+        return None
+    diag["holdout_median"] = float(np.median([s for s in heldout if s >= 0.90]))
+    return reference, bounds, dict(diag)
+
+
+def _structure_candidate(
+    reference: np.ndarray, training: list[np.ndarray], members: tuple[int, ...]
+) -> bool | None:
+    """Require persistent edges within the proposed mode, not a median ghost."""
+    h, w = reference.shape
+    edges = cv2.Canny(reference, 60, 150)
+    density = float(np.count_nonzero(edges) / edges.size)
+    if not 0.015 <= density <= 0.25 or float(reference.std()) < 8:
+        return None
+    lines = cv2.HoughLinesP(
+        edges, 1, np.pi / 180, threshold=8, minLineLength=max(8, min(h, w) // 3), maxLineGap=2
     )
+    if lines is None or len(lines) < 2:
+        return None
+    supports = []
+    for i in members:
+        observed = cv2.dilate(cv2.Canny(training[i], 60, 150), np.ones((3, 3), np.uint8))
+        supports.append(float(np.mean(observed[edges > 0] > 0)))
+    return True if min(supports) >= 0.90 else None
 
 
 def clear_reference(crops: list[np.ndarray]) -> tuple[np.ndarray, dict[str, Any]] | None:
-    """Only near-uniform, non-black/non-white complete panel ROIs qualify.
+    """Legacy diagnostic helper only; not used by generation or runtime.
 
-    No clustering of text/panels is labelled as spectator/live. Runtime checks
-    every pixel against this reference and requires all three HUD structures.
+    Retained for comparison tests of the retired algorithm. Its result is not
+    written to new profiles and cannot establish absence in HudTemplateProfile.
     """
     if len(crops) < 16:
         return None
@@ -209,7 +248,7 @@ def create_profile(
             raise ValueError("identity_frame_resolution_invalid")
         images = [image for image in decoded if image is not None]
         diagnostics: dict[str, Any] = {
-            "version": 1,
+            "version": 2,
             "sample_count": len(images),
             "geometry_mode": geometry_mode,
             "references": {},
@@ -223,11 +262,17 @@ def create_profile(
             for key in ("template", "mask")
             if isinstance(spec.get(key), str)
         }
+        geometry_hashes = {
+            hashlib.sha256(p.read_bytes()).hexdigest() for p in geometry_assets if p.is_file()
+        }
         for name, roi_name in ROLES.items():
             if name in inherited._signal_templates:
                 inherited_roi, template = inherited._signal_templates[name]
                 if (
                     template.path.resolve() not in geometry_assets
+                    and hashlib.sha256(template.path.read_bytes()).hexdigest()
+                    not in geometry_hashes
+                    and inherited_roi == roi_name
                     and inherited_roi in layout.regions
                 ):
                     diagnostics["references"][name] = {
@@ -239,11 +284,12 @@ def create_profile(
             # Invalid/missing assets and reused geometry are not independent evidence.
             raw["signals"].pop(name, None)
             result = None
+            stats: dict[str, Any] = {}
             if roi_name in layout.regions:
                 x1, y1, x2, y2 = layout.normalized_roi(roi_name).pixel_bounds(width, height)
-                result = structure_reference([image[y1:y2, x1:x2] for image in images])
+                result = structure_reference([image[y1:y2, x1:x2] for image in images], stats)
             if result is None:
-                diagnostics["references"][name] = {"status": "insufficient_evidence"}
+                diagnostics["references"][name] = {**stats, "status": "insufficient_evidence"}
                 continue
             reference, bounds, stats = result
             asset = stage / "identity" / f"{name}.png"
@@ -255,32 +301,46 @@ def create_profile(
                 "template": f"identity/{name}.png",
                 "threshold": 0.90,
             }
-        name = "spectator_clear"
-        result_clear = None
+        # Never inherit or generate background/clear-image evidence.
+        raw.pop("spectator_clear_reference", None)
+        raw.pop("spectator_panel_detector", None)
+        name = "spectator_panel"
+        labels = None
+        stats = {}
         if "spectated_player_panel" in layout.regions:
             x1, y1, x2, y2 = layout.normalized_roi("spectated_player_panel").pixel_bounds(
                 width, height
             )
-            result_clear = clear_reference([image[y1:y2, x1:x2] for image in images])
-        if result_clear is not None:
-            reference, stats = result_clear
+            labels = generate_panel_reference([image[y1:y2, x1:x2] for image in images], stats)
+        status = "generated"
+        if labels is None and "spectated_player_panel" in inherited._signal_templates:
+            roi_name, template = inherited._signal_templates["spectated_player_panel"]
+            if (
+                roi_name == "spectated_player_panel"
+                and roi_name in layout.regions
+                and template.path.resolve() not in geometry_assets
+                and hashlib.sha256(template.path.read_bytes()).hexdigest() not in geometry_hashes
+            ):
+                x1, y1, x2, y2 = layout.normalized_roi(roi_name).pixel_bounds(width, height)
+                if template.image.shape == (y2 - y1, x2 - x1):
+                    labels = panel_components(template.image)
+                    status = "inherited"
+        if labels is not None:
             stats.update(
-                _write_asset(stage / "identity/spectator_clear.png", reference), status="generated"
+                _write_asset(stage / "identity/spectator_panel.components.png", labels),
+                status=status,
             )
-            raw["spectator_clear_reference"] = {"template": "identity/spectator_clear.png"}
+            raw["spectator_panel_detector"] = {
+                "version": 1,
+                "template": "identity/spectator_panel.components.png",
+            }
             diagnostics["references"][name] = stats
         else:
-            if inherited._clear_reference is not None:
-                asset = inherited.resolve_asset(raw["spectator_clear_reference"]["template"])
-                reference = inherited._clear_reference
-                diagnostics["references"][name] = {
-                    "status": "inherited",
-                    "content_hash": hashlib.sha256(asset.read_bytes()).hexdigest(),
-                    "dimensions": [int(reference.shape[1]), int(reference.shape[0])],
-                }
-            else:
-                raw.pop("spectator_clear_reference", None)
-                diagnostics["references"][name] = {"status": "insufficient_evidence"}
+            diagnostics["references"][name] = {**stats, "status": "insufficient_evidence"}
+        diagnostics["identity_reference_ready"] = all(
+            diagnostics["references"][role]["status"] in {"generated", "inherited"}
+            for role in (*ROLES, "spectator_panel")
+        )
         raw["automatic_identity_generation"] = diagnostics
         # Normalized entry-point names, directly accepted by -HudLayout.
         for old in (

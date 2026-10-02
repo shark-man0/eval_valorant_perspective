@@ -152,6 +152,7 @@ class RealVisualAnalyzer:
                 image, previous_image, state, previous_hud, profile=pixel_profile
             )
             proof = dict(measured.pop("measurement_meta", {}))
+            proof["map_calibration_attempted"] = map_eligible
             proof["frame_ref"] = str(frame.path)
             proof["hud_confidence"] = state.get("quality", {}).get("hud_confidence", 0.0)
             primary = proof.get("primary_state", state.get("primary_state", "unknown"))

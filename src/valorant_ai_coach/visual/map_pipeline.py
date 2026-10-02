@@ -31,10 +31,12 @@ class MapTimeline:
         self.next_track = 0
         self.previous: tuple[float, tuple[float, float]] | None = None
         self.last_time: float | None = None
+        self.calibration_reason = "map_calibration_not_attempted"
 
     def calibrate(self, frame: NDArray[Any]) -> CalibrationResult | None:
         roi = self.profile.get("rois", {}).get("minimap")
         if roi is None:
+            self.calibration_reason = "map_minimap_roi_missing"
             return None
         if self.definition is None:
             scores = {}
@@ -52,6 +54,7 @@ class MapTimeline:
                 self.definition = self.registry.load(selected)
                 self.resolver = ZoneResolver(self.definition, self.registry.runtime)
                 return results[selected]
+            self.calibration_reason = "map_auto_selection_failed"
             return None
         return self.calibrator.analyze(frame, roi, self.definition, profile=self.options)
 
@@ -65,6 +68,31 @@ class MapTimeline:
         t, index = observation["time_sec"], observation["frame_index"]
         minimap = observation["minimap"]
         safe = observation["analysis_eligibility"]["player_mechanics"]
+        attempted = proof.get("map_calibration_attempted", calibration is not None)
+        gates = ["map_ownership_accepted" if safe else "map_ownership_blocked"]
+        if not attempted:
+            gates.extend(
+                [
+                    "map_calibration_skipped_hud_eligibility",
+                    "map_marker_not_evaluated",
+                    "map_location_not_evaluated",
+                ]
+            )
+        elif calibration is None:
+            gates.extend(
+                [self.calibration_reason, "map_marker_not_evaluated", "map_location_not_evaluated"]
+            )
+        elif calibration.status not in {"ok", "degraded"}:
+            gates.extend(
+                ["map_calibration_failed", "map_marker_not_evaluated", "map_location_not_evaluated"]
+            )
+        else:
+            gates.append("map_calibration_accepted")
+            gates.append(
+                "map_marker_available"
+                if minimap.get("self_x_norm") is not None
+                else "map_marker_missing"
+            )
         if not safe or (self.last_time is not None and not 0 < t - self.last_time <= 0.5):
             self.resolver.reset()
             self.tracks.clear()
@@ -108,6 +136,11 @@ class MapTimeline:
             label_confidence=quality.get("roi_confidence", {}).get("location_label", 0),
             controlled_player=bool(safe),
         )
+        if calibration and calibration.status in {"ok", "degraded"}:
+            gates.append(
+                "map_location_resolved" if resolution.get("zone_id") else "map_location_unresolved"
+            )
+        resolution["diagnostics"] = list(dict.fromkeys(resolution["diagnostics"] + gates))
         proof["zone_resolution"] = resolution
         proof["static_peek_exposure"] = (
             self.resolver.match_peek(point, resolution, minimap["track_confidence"])

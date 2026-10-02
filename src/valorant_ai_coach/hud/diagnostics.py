@@ -53,6 +53,8 @@ class CalibrationTelemetry:
         self.counts: Counter[str] = Counter()
         self.reasons: Counter[str] = Counter()
         self.identity_reasons: Counter[str] = Counter()
+        self.spectator_checks: Counter[str] = Counter()
+        self.identity_missing: Counter[str] = Counter()
         self.required = set((layout.calibration_policy or {}).get("required_anchors", ANCHORS))
         profile_raw = getattr(profile, "raw", {})
         self.identity_generation = (
@@ -170,6 +172,8 @@ class CalibrationTelemetry:
             else None,
             "reasons": dict(self.reasons),
             "identity_reasons": dict(self.identity_reasons),
+            "identity_missing": dict(self.identity_missing),
+            "spectator_checks": dict(self.spectator_checks),
             "temporal_generation": self.generation,
             "automatic_identity_generation": self.identity_generation,
             "anchors": rows,

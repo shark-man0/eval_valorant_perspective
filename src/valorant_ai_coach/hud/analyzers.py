@@ -375,9 +375,27 @@ class RealHudAnalyzer:
             else:
                 classified = self.state_classifier.classify({})
 
-            telemetry.record(current_anchors, anchor_scores, current_calibration, calibration,
-                             classified.primary_state, identity_count)
+            telemetry.record(
+                current_anchors,
+                anchor_scores,
+                current_calibration,
+                calibration,
+                classified.primary_state,
+                identity_count,
+            )
             telemetry.identity_reasons[identity.reason] += 1
+            telemetry.spectator_checks[
+                signals.get("spectator_detector_reason", "not_evaluated")
+            ] += 1
+            for key in ("hp_hud_structure", "ability_bar_structure", "weapon_ammo_structure"):
+                score = signals.get(key + "_confidence", 0)
+                if (
+                    signals.get(key) is not True
+                    or not isinstance(score, (int, float))
+                    or isinstance(score, bool)
+                    or not 0.90 <= score <= 1
+                ):
+                    telemetry.identity_missing[key] += 1
 
             values["player_specific_hud_valid"] = (
                 classified.player_specific_hud_valid if calibration.calibrated else False

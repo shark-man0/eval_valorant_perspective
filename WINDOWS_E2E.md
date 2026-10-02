@@ -118,7 +118,9 @@ analyzer output and E2E report have distinct roles.
 Geometry anchors no longer establish live-player identity, masked or unmasked.
 Use the single `python -m valorant_ai_coach.hud.calibrate_profile` command below; it generates
 geometry masks and separate, unmasked HP/ability/weapon-ammo structure references from
-unlabelled frames. Selection uses training frames, then a disjoint holdout checks support.
+unlabelled frames. Training-only modal clustering finds consistent structures even when other
+HUD modes dominate. NCC remains >= .90. A chosen cluster needs at least three observations
+per split and comparable prevalence in heldout frames; no holdout-driven ROI reselection.
 It preserves existing readers and signals. No GT, validation pack, expected state, or API is
 an input to generation. There is no intermediate image approval or JSON editing step.
 The optional `calibrate_temporal` remains a geometry-only diagnostic tool, not the recommended
@@ -148,7 +150,7 @@ profile's assets locally because inherited readers can still reference them.
 ```powershell
 $ErrorActionPreference = 'Stop'
 $video = Join-Path ([Environment]::GetFolderPath('Desktop')) 'Valorant_09-25-2026_0-37-29-379.mp4'
-$baseLayout = (Resolve-Path '.\config\hud_layout_1080p_v3.json').Path
+$baseLayout = (Resolve-Path (Read-Host 'Path to the previous Windows HUD layout JSON')).Path
 $pack = (Resolve-Path '..\valorant_e2e_validation_pack_v3').Path
 
 # Existing Windows E2E environments can reuse .venv; bootstrap when absent.
@@ -166,7 +168,7 @@ $out = Join-Path (Get-Location).Path ('outputs\hud_profiles\auto_' + [guid]::New
   --video $video `
   --layout $baseLayout `
   --output $out `
-  --samples 32
+  --samples 64
 if ($LASTEXITCODE -ne 0) { throw 'Profile generation failed; E2E was not started' }
 $hudLayout = Join-Path $out 'hud_layout.json'
 
@@ -190,18 +192,29 @@ unknown or fail to form a round. It does not ask for hand editing. If stable geo
 be generated, an existing local anchor profile is retained; with neither, generation fails
 without publishing a partial directory. Existing thresholds are not lowered.
 
-Spectator presence detectors already configured are retained. Without semantic labels the
-tool does not name a textured cluster "spectator". It may generate a strict full-panel clear
-reference only from near-uniform, non-black/non-white observations with holdout support.
-Runtime checks every pixel (maximum grayscale difference 8); a visible panel or mismatch
-does not prove absence. This conservative fallback may be unavailable on real recordings.
-All three current-frame structures and existing remote/spectator/menu/map blockers still
-apply; there is no live-state persistence. A clear reference alone never establishes live.
+Old clear/background references are no longer generated or used as evidence. Regenerate
+your profile, including when the previous CLI reported success. The new spectator detector
+requires a long panel boundary, closed portrait-like box and aligned text components in the
+layout's panel ROI. It learns positive component locations from supported training/holdout
+observations, or extracts them from an existing configured positive full-panel template.
+It never calls an arbitrary texture cluster "spectator". This shape prior is conservative;
+UI variants that do not meet it are unsupported, not automatically labelled absent.
 
-Compare `automatic_identity_generation.references`, `identity_reasons`, geometry success,
+Runtime measures all three edge-component groups, not background pixel agreement. With an
+observable ROI, all groups >= .90 prove presence; all <= .10 provide explicit structural
+exclusion (`checked=true`, `panel_present=false`). Partial/ambiguous structure, unreadable
+ROI, size mismatch, or missing positive reference give `checked=false` and unknown. A legacy
+pixel template's failure alone cannot establish absence. Current-frame HP/ability/ammo
+structures and remote/spectator/menu/map blockers remain required; no live persistence.
+There are no new dependencies or paid API calls.
+
+Compare per-role candidate/rejection/support counts in `automatic_identity_generation.references`,
+`identity_missing`, `spectator_checks`, `identity_reasons`, geometry success,
 `geometry_valid_state_unknown`, Visual eligibility and Map unresolved counts against the
 Windows baseline. Mac synthetic tests do not establish real-video improvement. PowerShell
-execution itself must be checked on Windows.
+execution itself must be checked on Windows. Map diagnostic counts now separate calibration
+skipped due to HUD eligibility, attempted calibration failures, marker missing/not evaluated,
+ownership rejection and location resolution. Downstream "not evaluated" is not a CV failure.
 
 ## Minimal workflow (PowerShell)
 

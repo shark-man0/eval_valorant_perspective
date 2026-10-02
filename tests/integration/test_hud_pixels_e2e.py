@@ -13,6 +13,7 @@ from valorant_ai_coach.bootstrap import build_services
 from valorant_ai_coach.hud.calibrate import create_anchor_profile
 from valorant_ai_coach.hud.calibrate_profile import create_profile
 from valorant_ai_coach.hud.layout import HudLayout
+from valorant_ai_coach.hud.spectator import panel_components
 from valorant_ai_coach.resources import resource_path
 from valorant_ai_coach.settings import AppSettings, SettingsStore
 
@@ -21,6 +22,7 @@ from valorant_ai_coach.settings import AppSettings, SettingsStore
 def test_calibrated_pixels_reach_round_package_and_sqlite_without_fabrication(
     tmp_path: Path,
     automatic: bool,
+    panel_images,
 ) -> None:
     ffmpeg, ffprobe = shutil.which("ffmpeg"), shutil.which("ffprobe")
     if ffmpeg is None or ffprobe is None:
@@ -37,6 +39,9 @@ def test_calibrated_pixels_reach_round_package_and_sqlite_without_fabrication(
         x1, y1, x2, y2 = layout.normalized_roi(name).pixel_bounds(1920, 1080)
         gray = rng.integers(30, 230, (y2 - y1, x2 - x1), dtype=np.uint8)
         image[y1:y2, x1:x2] = gray[:, :, np.newaxis]
+    sx1, sy1, sx2, sy2 = layout.normalized_roi("spectated_player_panel").pixel_bounds(1920, 1080)
+    panel, scene = panel_images(sx2 - sx1, sy2 - sy1)
+    image[sy1:sy2, sx1:sx2] = scene
     reference = tmp_path / "reference.png"
     assert cv2.imwrite(str(reference), image)
     selected_layout = create_anchor_profile(layout_path, reference, tmp_path / "profile")
@@ -60,6 +65,10 @@ def test_calibrated_pixels_reach_round_package_and_sqlite_without_fabrication(
         asset = sidecar.parent / f"{signal}.png"
         assert cv2.imwrite(str(asset), patch)
         profile["signals"][signal] = {"roi": roi, "template": asset.name, "threshold": 0.9}
+    labels = panel_components(cv2.cvtColor(panel, cv2.COLOR_BGR2GRAY))
+    assert labels is not None
+    assert cv2.imwrite(str(sidecar.parent / "panel.components.png"), labels)
+    profile["spectator_panel_detector"] = {"version": 1, "template": "panel.components.png"}
     sidecar.write_text(json.dumps(profile), encoding="utf-8")
     if automatic:
         # Unlabelled synthetic recording. The automatic path below receives only
@@ -77,8 +86,7 @@ def test_calibrated_pixels_reach_round_package_and_sqlite_without_fabrication(
                 cv2.line(image, (x1 + 4, y), (x2 - 4, y), (220, 220, 220), 2)
             cv2.rectangle(image, (x1 + 4, y1 + 4), (x2 - 5, y2 - 5), (150, 150, 150), 2)
         x1, y1, x2, y2 = layout.normalized_roi("spectated_player_panel").pixel_bounds(1920, 1080)
-        # Keep codec ringing at the synthetic panel boundary outside its ROI.
-        image[max(0, y1 - 16) : min(1080, y2 + 16), max(0, x1 - 16) : min(1920, x2 + 16)] = 65
+        image[y1:y2, x1:x2] = scene
         assert cv2.imwrite(str(reference), image)
     source = tmp_path / "synthetic hud.mp4"
     subprocess.run(
@@ -112,7 +120,24 @@ def test_calibrated_pixels_reach_round_package_and_sqlite_without_fabrication(
         timeout=30,
     )
     if automatic:
-        selected_layout = create_profile(source, layout_path, tmp_path / "automatic", samples=16)
+        # Base profile has a positive panel UI detector only, no identity references.
+        base = tmp_path / "base.json"
+        shutil.copy2(layout_path, base)
+        assert cv2.imwrite(str(tmp_path / "positive_panel.png"), panel)
+        base.with_suffix(".templates.json").write_text(
+            json.dumps(
+                {
+                    "schema_version": "1.0",
+                    "signals": {
+                        "spectated_player_panel": {
+                            "roi": "spectated_player_panel",
+                            "template": "positive_panel.png",
+                        }
+                    },
+                }
+            )
+        )
+        selected_layout = create_profile(source, base, tmp_path / "automatic", samples=16)
     services = build_services(
         SettingsStore(tmp_path / "settings.json"),
         settings=AppSettings(

@@ -6,7 +6,55 @@ import importlib.util
 from pathlib import Path
 from types import SimpleNamespace
 
+from valorant_ai_coach.maps.calibration import CalibrationResult
 from valorant_ai_coach.visual.map_pipeline import MapTimeline
+
+
+def _map_step(*, eligible=False, attempted=False, calibration=None):
+    timeline = MapTimeline({"map_zone": {"manual_map_id": "summit"}})
+    observation = {
+        "time_sec": 0.0,
+        "frame_index": 0,
+        "analysis_eligibility": {"player_mechanics": eligible},
+        "motion": {},
+        "minimap": {
+            "self_x_norm": None,
+            "self_y_norm": None,
+            "track_confidence": 0.0,
+            "ally_markers": [],
+            "enemy_markers": [],
+        },
+    }
+    proof = {"map_calibration_attempted": attempted}
+    timeline.resolve(observation, proof, {}, calibration)
+    return proof["zone_resolution"]
+
+
+def test_map_hud_gate_is_not_reported_as_calibration_or_marker_failure():
+    row = _map_step()
+    codes = row["diagnostics"]
+    assert "map_definition_unresolved" not in codes
+    assert "map_calibration_skipped_hud_eligibility" in codes
+    assert "map_marker_not_evaluated" in codes
+    assert "map_location_not_evaluated" in codes
+    assert "map_calibration_failed" not in codes
+    assert "map_marker_missing" not in codes
+    assert row["zone_id"] is None
+
+
+def test_map_calibration_failure_and_marker_failure_are_distinct():
+    failed = CalibrationResult(
+        "calibration_required", 0.0, None, "v1", ("reference_asset_unavailable",)
+    )
+    codes = _map_step(eligible=True, attempted=True, calibration=failed)["diagnostics"]
+    assert "map_calibration_failed" in codes and "reference_asset_unavailable" in codes
+    assert "map_marker_not_evaluated" in codes
+    ok = CalibrationResult("ok", 0.95, None, "v1", ())
+    row = _map_step(eligible=True, attempted=True, calibration=ok)
+    assert "map_calibration_accepted" in row["diagnostics"]
+    assert "map_marker_missing" in row["diagnostics"]
+    assert "map_location_unresolved" in row["diagnostics"]
+    assert row["zone_id"] is None
 
 
 def test_map_timeline_manual_selection_precedes_automatic_signals():

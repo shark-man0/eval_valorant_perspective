@@ -69,7 +69,14 @@ def test_profile_readers_match_values_weapon_abilities_and_signals(tmp_path):
     x1, y1, _, _ = layout.normalized_roi("spectated_player_panel").pixel_bounds(1920, 1080)
     frame[y1 : y1 + 24, x1 : x1 + 28] = image
     assert profile.detect_signals(frame, layout)["spectated_player_panel"] is True
-    assert not profile.detect_signals(np.zeros_like(frame), layout)
+    # Diagnostic fields are explicit now, but a blank frame supplies no
+    # positive UI or checked-absence evidence.
+    assert profile.detect_signals(np.zeros_like(frame), layout) == {
+        "spectator_detector_checked": False,
+        "spectator_panel_present": None,
+        "spectator_detector_reason": "reference_unavailable",
+        "spectator_panel_absent": False,
+    }
 
 
 def test_ambiguous_templates_do_not_choose_arbitrary_label(tmp_path):

@@ -104,7 +104,9 @@ def test_real_hud_keeps_independent_identity_when_fresh_anchors_disappear(live_i
     assert result.calibration_diagnostics["identity_reasons"]["independent_hud_structures"] == 2
 
 
-def test_real_pixel_structure_templates_work_without_any_geometry_templates(tmp_path):
+def test_real_pixel_structure_templates_work_without_any_geometry_templates(tmp_path, panel_images):
+    from valorant_ai_coach.hud.spectator import panel_components
+
     analyzer = RealHudAnalyzer(resource_path("config/hud_layout_1080p_v3.json"))
     frame = np.random.default_rng(41).integers(0, 255, (1080, 1920, 3), dtype=np.uint8)
     roi_names = ("player_hp_armor", "abilities", "ammo_current_weapon", "spectated_player_panel")
@@ -116,15 +118,29 @@ def test_real_pixel_structure_templates_work_without_any_geometry_templates(tmp_
         assert cv2.imwrite(str(path), patch)
         signals[name] = {"roi": roi_name, "template": path.name, "threshold": 0.9}
         if name != "spectated_player_panel":
-            x, y, _, _ = analyzer.layout.normalized_roi(roi_name).pixel_bounds(1920, 1080)
-            frame[y : y + 20, x : x + 24] = patch
+            _, y, right, _ = analyzer.layout.normalized_roi(roi_name).pixel_bounds(1920, 1080)
+            frame[y : y + 20, right - 24 : right] = patch
+    x1, y1, x2, y2 = analyzer.layout.normalized_roi("spectated_player_panel").pixel_bounds(
+        1920, 1080
+    )
+    panel, scene = panel_images(x2 - x1, y2 - y1)
+    frame[y1:y2, x1:x2] = scene
+    labels = panel_components(cv2.cvtColor(panel, cv2.COLOR_BGR2GRAY))
+    assert labels is not None
+    assert cv2.imwrite(str(tmp_path / "components.png"), labels)
     profile = HudTemplateProfile(
-        tmp_path / "profile.json", {"schema_version": "1.0", "signals": signals}
+        tmp_path / "profile.json",
+        {
+            "schema_version": "1.0",
+            "signals": signals,
+            "spectator_panel_detector": {"version": 1, "template": "components.png"},
+        },
     )
     measured = profile.detect_signals(frame, analyzer.layout)
     assert live_identity(measured, geometry_valid=True).live
     assert not profile.detect_anchors(frame, analyzer.layout)[0]
     # A failed/unreadable exclusion ROI must not manufacture negative evidence.
     blank = profile.detect_signals(np.zeros_like(frame), analyzer.layout)
-    assert "spectator_panel_absent" not in blank
+    assert blank["spectator_panel_absent"] is False
+    assert blank["spectator_detector_checked"] is False
     assert not live_identity(blank, geometry_valid=True).live

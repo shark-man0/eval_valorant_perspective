@@ -71,6 +71,28 @@ def test_pass_and_failure_details_are_bounded_and_reconciled(tmp_path):
     assert data["sections"]["HUD"]["failure_count"] == 1
 
 
+def test_map_gate_diagnostics_are_shared_without_private_strings(tmp_path):
+    args = _inputs(tmp_path)
+    args["raw"]["zone_resolutions"] = [
+        {
+            "zone_id": None,
+            "diagnostics": [
+                "map_calibration_skipped_hud_eligibility",
+                "map_marker_not_evaluated",
+                "reference_asset_unavailable",
+                "PRIVATE/local/path",
+            ],
+        }
+    ]
+    data = json.loads(export_report(**args).read_text())
+    assert data["map_zone"]["diagnostic_counts"] == {
+        "map_calibration_skipped_hud_eligibility": 1,
+        "map_marker_not_evaluated": 1,
+        "reference_asset_unavailable": 1,
+    }
+    assert "PRIVATE" not in json.dumps(data)
+
+
 def test_nested_secrets_paths_and_hostile_text_never_leak(tmp_path):
     args = _inputs(
         tmp_path,

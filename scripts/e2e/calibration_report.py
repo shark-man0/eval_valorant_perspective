@@ -50,6 +50,21 @@ def sanitize_calibration(value):
         if key in identity
     }
     rows = value.get("anchors", [])
+    for section, keys in {
+        "identity_missing": ("hp_hud_structure", "ability_bar_structure", "weapon_ammo_structure"),
+        "spectator_checks": (
+            "not_evaluated",
+            "reference_unavailable",
+            "roi_unavailable",
+            "geometry_mismatch",
+            "roi_unobservable",
+            "panel_structure_present",
+            "panel_structure_excluded",
+            "panel_structure_ambiguous",
+        ),
+    }.items():
+        counts = object_or_empty(value.get(section))
+        result[section] = {key: number(counts[key], count=True) for key in keys if key in counts}
     automatic = object_or_empty(value.get("automatic_identity_generation"))
     if automatic:
         result["automatic_identity_generation"] = sanitize_identity_generation(automatic)
@@ -121,7 +136,10 @@ def sanitize_calibration(value):
 def sanitize_identity_generation(value):
     references = object_or_empty(value.get("references"))
     result = {
-        "version": 1,
+        "version": value.get("version") if value.get("version") in (1, 2) else None,
+        "identity_reference_ready": value.get("identity_reference_ready")
+        if isinstance(value.get("identity_reference_ready"), bool)
+        else None,
         "sample_count": number(value.get("sample_count"), count=True),
         "geometry_mode": value.get("geometry_mode")
         if value.get("geometry_mode") in ("generated", "inherited")
@@ -133,6 +151,7 @@ def sanitize_identity_generation(value):
         "ability_bar_structure",
         "weapon_ammo_structure",
         "spectator_clear",
+        "spectator_panel",
     ):
         source = object_or_empty(references.get(name))
         row = {
@@ -142,6 +161,10 @@ def sanitize_identity_generation(value):
                 "holdout_count",
                 "training_accept_count",
                 "holdout_accept_count",
+                "candidate_count",
+                "structural_rejected",
+                "support_rejected",
+                "holdout_rejected",
             )
         }
         row["holdout_median"] = number(source.get("holdout_median"))

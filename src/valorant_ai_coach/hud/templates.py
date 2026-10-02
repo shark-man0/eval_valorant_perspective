@@ -29,6 +29,7 @@ from valorant_ai_coach.resources import resource_path
 
 from .layout import HudLayout, NormalizedRoi
 from .readers import HudReader, ReaderResult
+from .spectator import detect_panel
 
 ImageU8 = NDArray[np.uint8]
 
@@ -76,8 +77,8 @@ class HudTemplateProfile:
                 self._signal_templates[str(name)] = (spec["roi"], template)
             except (KeyError, ValueError, OSError) as exc:
                 self.reader_diagnostics.append(f"signal {name}: {exc}")
-        self._clear_reference: ImageU8 | None = None
-        clear = self.raw.get("spectator_clear_reference")
+        self._panel_components: ImageU8 | None = None
+        clear = self.raw.get("spectator_panel_detector")
         if isinstance(clear, Mapping):
             try:
                 data = self.resolve_asset(str(clear["template"])).read_bytes()
@@ -85,13 +86,14 @@ class HudTemplateProfile:
                 if (
                     reference is None
                     or reference.size == 0
-                    or not 12 <= float(reference.mean()) <= 245
-                    or int(reference.max()) - int(reference.min()) > 8
+                    or clear.get("version") != 1
+                    or not set(np.unique(reference)).issubset({0, 1, 2, 3})
+                    or any(np.count_nonzero(reference == k) < 12 for k in (1, 2, 3))
                 ):
-                    raise ValueError("invalid clear reference")
-                self._clear_reference = np.asarray(reference, dtype=np.uint8)
+                    raise ValueError("invalid panel structure")
+                self._panel_components = np.asarray(reference, dtype=np.uint8)
             except (KeyError, ValueError, OSError, cv2.error):
-                self.reader_diagnostics.append("spectator_clear_reference: invalid asset")
+                self.reader_diagnostics.append("spectator_panel_detector: invalid asset")
 
     def detect_signals(self, frame: ImageU8, layout: HudLayout) -> dict[str, Any]:
         """UI matches and checked spectator absence; unreadable regions stay unknown."""
@@ -109,15 +111,9 @@ class HudTemplateProfile:
                     round(top * ch) : round(bottom * ch), round(left * cw) : round(right * cw)
                 ]
             result = _best_template_match(crop, (template,))
-            if name == "spectated_player_panel" and float(frame[y1:y2, x1:x2].std()) >= 1.0:
-                # Only an executed configured detector can supply absence.
-                signals["spectator_panel_absent"] = (
-                    result.sources == ("template_below_threshold",)
-                    and math.isfinite(result.confidence)
-                    and 0 <= result.confidence <= 0.20
-                )
-                if result.value is not None:
-                    signals["self_hud_identity_trustworthy"] = False
+            # Legacy pixel templates can prove presence, never absence.
+            if name == "spectated_player_panel" and result.value is not None:
+                signals["self_hud_identity_trustworthy"] = False
             if result.value is not None and result.confidence >= 0.85:
                 signals[name] = True
                 signals[f"{name}_confidence"] = result.confidence
@@ -135,19 +131,25 @@ class HudTemplateProfile:
                     signals[confidence_key] = min(
                         signals.get(confidence_key, 1.0), result.confidence
                     )
-        if (
-            self._clear_reference is not None
-            and "spectated_player_panel" in layout.regions
-            and "spectator_panel_absent" not in signals
-        ):
+        panel_result = {"checked": False, "panel_present": None, "reason": "roi_unavailable"}
+        if "spectated_player_panel" in layout.regions:
             x1, y1, x2, y2 = layout.normalized_roi("spectated_player_panel").pixel_bounds(
                 width, height
             )
-            panel = cv2.cvtColor(frame[y1:y2, x1:x2], cv2.COLOR_BGR2GRAY)
-            signals["spectator_panel_absent"] = (
-                not signals.get("spectated_player_panel", False)
-                and panel.shape == self._clear_reference.shape
-                and int(np.abs(panel.astype(np.int16) - self._clear_reference).max()) <= 8
+            panel_result = detect_panel(frame[y1:y2, x1:x2], self._panel_components)
+        signals["spectator_detector_checked"] = panel_result["checked"]
+        signals["spectator_panel_present"] = panel_result["panel_present"]
+        signals["spectator_detector_reason"] = panel_result["reason"]
+        signals["spectator_panel_absent"] = (
+            panel_result["checked"] is True
+            and panel_result["panel_present"] is False
+            and not signals.get("spectated_player_panel", False)
+        )
+        if panel_result["panel_present"] is True:
+            signals.update(
+                spectated_player_panel=True,
+                spectator_confidence=0.90,
+                self_hud_identity_trustworthy=False,
             )
         return signals
 

@@ -1,5 +1,16 @@
 # E2E Validation Pack v3 導入状況（2026-09-29）
 
+## 34dc48a再検証後: mixed-mode cluster / panel構造detector（2026-10-02）
+
+最新Windows結果はgeometry有効3929、独立参照4件不足、live=0、Visual eligibility=0、
+Map definition選択済み・resolved=0、E2E57 failed、negative failures=0。
+Macで共有結果を上書きしていない。
+全動画80%一致を要求する生成器と背景clear参照を改修。positive UI構造による三値spectator
+検査とMap段階診断を追加した。旧clear profileは再生成が必要。手編集は不要。
+Macテスト **483 passed / 3 skipped**、Ruff成功、mypy77ファイル成功。
+実動画の改善は未確認。原因・変更ファイル・比較指標は `HUD_DIAGNOSTICS_REVIEW.md`、
+Windowsコマンドは `WINDOWS_E2E.md` の最新節を参照。
+
 ## 自動profile生成（2026-10-02）
 
 `hud.calibrate_profile` を追加。未ラベル動画・base layout・出力先だけでgeometry maskと

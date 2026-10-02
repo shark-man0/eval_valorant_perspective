@@ -16,7 +16,7 @@ from valorant_ai_coach.hud.layout import HudLayout
 from valorant_ai_coach.hud.templates import HudTemplateProfile
 
 
-def inputs(tmp_path):
+def inputs(tmp_path, panel_images):
     layout = tmp_path / "base.json"
     _layout(layout)
     raw = json.loads(layout.read_text())
@@ -25,16 +25,17 @@ def inputs(tmp_path):
     layout.write_text(json.dumps(raw))
     frames = _frames(changing=True, count=32)
     hud = HudLayout.load(layout)
-    for frame in frames:
+    for index, frame in enumerate(frames):
         x1, y1, x2, y2 = hud.normalized_roi("ammo_current_weapon").pixel_bounds(640, 360)
         frame[y1:y2, x1:x2] = frame[36 : 36 + y2 - y1, 19 : 19 + x2 - x1]
         x1, y1, x2, y2 = hud.normalized_roi("spectated_player_panel").pixel_bounds(640, 360)
-        frame[y1:y2, x1:x2] = 65
+        panel, scene = panel_images(x2 - x1, y2 - y1, index % 8)
+        frame[y1:y2, x1:x2] = panel if index % 4 >= 2 else scene
     return layout, frames
 
 
-def test_generated_layout_consumed_without_json_edits(tmp_path):
-    layout, frames = inputs(tmp_path)
+def test_generated_layout_consumed_without_json_edits(tmp_path, panel_images):
+    layout, frames = inputs(tmp_path, panel_images)
     original = layout.read_bytes()
     out = tmp_path / "local"
     generated = create_profile(
@@ -89,8 +90,8 @@ def test_textured_panel_is_not_automatically_labelled_clear():
     assert clear_reference([frame] * 32) is None
 
 
-def test_missing_identity_publishes_runnable_but_unknown_profile(tmp_path):
-    layout, frames = inputs(tmp_path)
+def test_missing_identity_publishes_runnable_but_unknown_profile(tmp_path, panel_images):
+    layout, frames = inputs(tmp_path, panel_images)
     hud = HudLayout.load(layout)
     x1, y1, x2, y2 = hud.normalized_roi("ammo_current_weapon").pixel_bounds(640, 360)
     for frame in frames:
@@ -108,8 +109,8 @@ def test_missing_identity_publishes_runnable_but_unknown_profile(tmp_path):
     assert not live_identity(profile.detect_signals(frames[0], hud), geometry_valid=True).live
 
 
-def test_invalid_inherited_identity_is_regenerated_and_readers_preserved(tmp_path):
-    layout, frames = inputs(tmp_path)
+def test_invalid_inherited_identity_is_regenerated_and_readers_preserved(tmp_path, panel_images):
+    layout, frames = inputs(tmp_path, panel_images)
     base = {
         "schema_version": "1.0",
         "readers": {"hp": {"kind": "digits"}},
@@ -134,14 +135,17 @@ def test_invalid_inherited_identity_is_regenerated_and_readers_preserved(tmp_pat
     assert sidecar.read_bytes() == original
 
 
-def test_ambiguous_presence_detector_cannot_be_overridden_by_clear_reference(tmp_path, monkeypatch):
+def test_legacy_clear_reference_cannot_override_unverified_panel(
+    tmp_path, monkeypatch, panel_images
+):
     from valorant_ai_coach.hud.readers import ReaderResult
 
-    layout, frames = inputs(tmp_path)
+    layout, frames = inputs(tmp_path, panel_images)
     generated = create_profile(
         Path("private.mp4"), layout, tmp_path / "out", video_service=FakeVideoService(frames)
     )
     profile = HudTemplateProfile.load(generated.with_suffix(".templates.json"))
+    profile._panel_components = None
     # Existing configured presence detector returns ambiguous .5, not absence.
     template = profile._signal_templates["hp_hud_structure"][1]
     profile._signal_templates["spectated_player_panel"] = ("spectated_player_panel", template)
