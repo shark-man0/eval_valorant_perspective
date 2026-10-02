@@ -23,36 +23,63 @@
     "identity_reasons": {
       "spectator_exclusion_unverified": 3929
     },
+    "identity_missing": {
+      "hp_hud_structure": 1277,
+      "ability_bar_structure": 1409,
+      "weapon_ammo_structure": 3929
+    },
+    "spectator_checks": {
+      "reference_unavailable": 3929
+    },
     "automatic_identity_generation": {
-      "version": 1,
-      "sample_count": 32,
+      "version": 2,
+      "identity_reference_ready": false,
+      "sample_count": 64,
       "geometry_mode": "inherited",
       "references": {
         "hp_hud_structure": {
-          "training_count": null,
-          "holdout_count": null,
-          "training_accept_count": null,
-          "holdout_accept_count": null,
-          "holdout_median": null,
-          "status": "insufficient_evidence",
-          "content_hash": null,
-          "dimensions": null
+          "training_count": 32,
+          "holdout_count": 32,
+          "training_accept_count": 23,
+          "holdout_accept_count": 23,
+          "candidate_count": 107,
+          "structural_rejected": 71,
+          "support_rejected": 455,
+          "holdout_rejected": 0,
+          "holdout_median": 0.9956628680229187,
+          "status": "generated",
+          "content_hash": "b4d18e2685ca79ab2e0d2ba2191aee7bb22a4d1deec90c94e7807ad2703b05cd",
+          "dimensions": [
+            44,
+            46
+          ]
         },
         "ability_bar_structure": {
-          "training_count": null,
-          "holdout_count": null,
-          "training_accept_count": null,
-          "holdout_accept_count": null,
-          "holdout_median": null,
-          "status": "insufficient_evidence",
-          "content_hash": null,
-          "dimensions": null
+          "training_count": 32,
+          "holdout_count": 32,
+          "training_accept_count": 21,
+          "holdout_accept_count": 24,
+          "candidate_count": 155,
+          "structural_rejected": 112,
+          "support_rejected": 546,
+          "holdout_rejected": 0,
+          "holdout_median": 0.9800662994384766,
+          "status": "generated",
+          "content_hash": "d83617acdc2ec7bc72cf103393463276710f2882047dbb6ae30a6bcaa6d5fc1f",
+          "dimensions": [
+            100,
+            67
+          ]
         },
         "weapon_ammo_structure": {
-          "training_count": null,
-          "holdout_count": null,
-          "training_accept_count": null,
-          "holdout_accept_count": null,
+          "training_count": 32,
+          "holdout_count": 32,
+          "training_accept_count": 16,
+          "holdout_accept_count": 9,
+          "candidate_count": 73,
+          "structural_rejected": 43,
+          "support_rejected": 670,
+          "holdout_rejected": 1,
           "holdout_median": null,
           "status": "insufficient_evidence",
           "content_hash": null,
@@ -63,6 +90,24 @@
           "holdout_count": null,
           "training_accept_count": null,
           "holdout_accept_count": null,
+          "candidate_count": null,
+          "structural_rejected": null,
+          "support_rejected": null,
+          "holdout_rejected": null,
+          "holdout_median": null,
+          "status": null,
+          "content_hash": null,
+          "dimensions": null
+        },
+        "spectator_panel": {
+          "training_count": 32,
+          "holdout_count": 32,
+          "training_accept_count": null,
+          "holdout_accept_count": null,
+          "candidate_count": 0,
+          "structural_rejected": 32,
+          "support_rejected": 0,
+          "holdout_rejected": 0,
           "holdout_median": null,
           "status": "insufficient_evidence",
           "content_hash": null,
@@ -177,13 +222,13 @@
     "manual_map_id": "summit",
     "video_id": "match_001",
     "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
-    "analyzer_commit": "99d7d1aa20368478b48704ca07bd3a3417b7f356",
-    "git_is_dirty": true,
-    "executed_at": "2026-10-01T21:16:22.692420+00:00",
+    "analyzer_commit": "8f376ece98950ed4c3ab29172e4b811f69efd528",
+    "git_is_dirty": false,
+    "executed_at": "2026-10-02T01:37:37.289031+00:00",
     "validation_pack": "valorant_e2e_validation_pack_v3",
     "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
     "git_dirty_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "settings_fingerprint": "eee7e4fc9eb2638c9a3cb67dc42c7078c1d4410d7574bdbda67ea490f5ee37d4"
+    "settings_fingerprint": "551d94f3a72aaa7932646b358542be8dbc2887eb277b47a54dfe09547e6059ba"
   },
   "result": {
     "status": "fail",
@@ -491,8 +536,8 @@
         "min_core_coverage": 0.8
       },
       "actual": {
-        "state": "combat_report_visible",
         "confidence": 0.0,
+        "state": "combat_report_visible",
         "interval": [
           74.469336,
           74.552669
@@ -698,8 +743,8 @@
         "min_core_coverage": 0.9
       },
       "actual": {
-        "owner": "unknown",
         "confidence": 0.92,
+        "owner": "unknown",
         "interval": [
           12.169336,
           12.202669
@@ -730,8 +775,8 @@
         "min_core_coverage": 0.9
       },
       "actual": {
-        "owner": "unknown",
         "confidence": 0.0,
+        "owner": "unknown",
         "interval": [
           74.386003,
           74.402669
@@ -834,8 +879,8 @@
       "category": "missing_snapshot",
       "expected": {
         "player_alive": true,
-        "buy_phase_banner": true,
-        "primary_state": "live_first_person"
+        "primary_state": "live_first_person",
+        "buy_phase_banner": true
       },
       "actual": null,
       "time_sec": 3.5,
@@ -855,12 +900,12 @@
       "assertion_id": "GT-R1-SNAP-0415",
       "category": "missing_snapshot",
       "expected": {
-        "score_enemy": 1,
+        "score_player": 0,
         "player_alive": true,
         "game_timer_display": "1:39",
-        "score_player": 0,
-        "buy_phase_banner": false,
-        "primary_state": "live_first_person"
+        "score_enemy": 1,
+        "primary_state": "live_first_person",
+        "buy_phase_banner": false
       },
       "actual": null,
       "time_sec": 4.15,
@@ -901,8 +946,8 @@
       "assertion_id": "GT-R1-SNAP-585",
       "category": "missing_snapshot",
       "expected": {
-        "primary_state": "live_first_person",
-        "vision_obscured_smoke": false
+        "vision_obscured_smoke": false,
+        "primary_state": "live_first_person"
       },
       "actual": null,
       "time_sec": 58.5,
@@ -922,8 +967,8 @@
       "assertion_id": "GT-R1-SNAP-595",
       "category": "missing_snapshot",
       "expected": {
-        "primary_state": "live_first_person",
-        "vision_obscured_smoke": true
+        "vision_obscured_smoke": true,
+        "primary_state": "live_first_person"
       },
       "actual": null,
       "time_sec": 59.5,
@@ -943,8 +988,8 @@
       "assertion_id": "GT-R1-SNAP-705",
       "category": "missing_snapshot",
       "expected": {
-        "primary_state": "live_first_person",
-        "vision_obscured_smoke": false
+        "vision_obscured_smoke": false,
+        "primary_state": "live_first_person"
       },
       "actual": null,
       "time_sec": 70.5,
@@ -964,9 +1009,9 @@
       "assertion_id": "GT-R1-SNAP-728",
       "category": "missing_snapshot",
       "expected": {
+        "ammo_reserve": 36,
         "player_alive": true,
         "ammo_mag": 9,
-        "ammo_reserve": 36,
         "primary_state": "live_first_person"
       },
       "actual": null,
@@ -987,9 +1032,9 @@
       "assertion_id": "GT-R1-SNAP-733",
       "category": "missing_snapshot",
       "expected": {
+        "ammo_reserve": 36,
         "player_alive": true,
         "ammo_mag": 9,
-        "ammo_reserve": 36,
         "primary_state": "live_first_person"
       },
       "actual": null,
@@ -1010,9 +1055,9 @@
       "assertion_id": "GT-R1-SNAP-734",
       "category": "missing_snapshot",
       "expected": {
+        "ammo_reserve": 33,
         "player_alive": true,
         "ammo_mag": 12,
-        "ammo_reserve": 33,
         "primary_state": "live_first_person"
       },
       "actual": null,
@@ -1055,10 +1100,10 @@
       "assertion_id": "GT-R1-SNAP-7438",
       "category": "missing_snapshot",
       "expected": {
-        "score_enemy": 1,
+        "score_player": 0,
         "player_alive": true,
         "game_timer_display": "0:29",
-        "score_player": 0,
+        "score_enemy": 1,
         "primary_state": "live_first_person"
       },
       "actual": null,
@@ -1079,8 +1124,8 @@
       "assertion_id": "GT-R1-SNAP-7440",
       "category": "missing_snapshot",
       "expected": {
-        "player_alive": false,
-        "combat_report_visible": true
+        "combat_report_visible": true,
+        "player_alive": false
       },
       "actual": null,
       "time_sec": 74.4,
@@ -1100,11 +1145,11 @@
       "assertion_id": "GT-R1-SNAP-7445",
       "category": "missing_snapshot",
       "expected": {
-        "score_enemy": 2,
+        "score_player": 0,
+        "combat_report_visible": true,
         "player_alive": false,
         "game_timer_display": "0:06",
-        "score_player": 0,
-        "combat_report_visible": true
+        "score_enemy": 2
       },
       "actual": null,
       "time_sec": 74.45,
@@ -1124,11 +1169,11 @@
       "assertion_id": "GT-R2-SNAP-820",
       "category": "missing_snapshot",
       "expected": {
+        "combat_report_visible": true,
         "player_hp": 100,
         "player_alive": true,
-        "buy_phase_banner": true,
         "primary_state": "live_first_person",
-        "combat_report_visible": true
+        "buy_phase_banner": true
       },
       "actual": null,
       "time_sec": 82.0,
@@ -1148,10 +1193,10 @@
       "assertion_id": "GT-R2-SNAP-1050",
       "category": "missing_snapshot",
       "expected": {
+        "combat_report_visible": true,
         "player_alive": true,
-        "buy_phase_banner": true,
         "primary_state": "live_first_person",
-        "combat_report_visible": true
+        "buy_phase_banner": true
       },
       "actual": null,
       "time_sec": 105.0,
@@ -1171,10 +1216,10 @@
       "assertion_id": "GT-R2-SNAP-11145",
       "category": "missing_snapshot",
       "expected": {
-        "score_enemy": 2,
+        "score_player": 0,
         "player_alive": true,
         "game_timer_display": "1:40",
-        "score_player": 0,
+        "score_enemy": 2,
         "buy_phase_banner": false
       },
       "actual": null,
@@ -1261,8 +1306,8 @@
       "assertion_id": "GT-R2-SNAP-1477",
       "category": "missing_snapshot",
       "expected": {
-        "player_alive": false,
-        "combat_report_visible": true
+        "combat_report_visible": true,
+        "player_alive": false
       },
       "actual": null,
       "time_sec": 147.7,
@@ -1282,9 +1327,9 @@
       "assertion_id": "GT-R2-SNAP-149",
       "category": "missing_snapshot",
       "expected": {
+        "combat_report_visible": true,
         "player_alive": false,
-        "primary_state": "expanded_tactical_map",
-        "combat_report_visible": true
+        "primary_state": "expanded_tactical_map"
       },
       "actual": null,
       "time_sec": 149.0,
@@ -1304,13 +1349,13 @@
       "assertion_id": "GT-R2-SNAP-151",
       "category": "missing_snapshot",
       "expected": {
-        "view_owner": "teammate_spectated",
-        "player_alive": false,
+        "combat_report_visible": true,
         "spectated_ammo_mag": 21,
-        "spectated_hp": 100,
         "spectated_ammo_reserve": 50,
-        "primary_state": "spectator_first_person",
-        "combat_report_visible": true
+        "player_alive": false,
+        "view_owner": "teammate_spectated",
+        "spectated_hp": 100,
+        "primary_state": "spectator_first_person"
       },
       "actual": null,
       "time_sec": 151.0,
@@ -1330,13 +1375,13 @@
       "assertion_id": "GT-R2-SNAP-170",
       "category": "missing_snapshot",
       "expected": {
-        "view_owner": "teammate_spectated",
-        "player_alive": false,
+        "combat_report_visible": true,
         "spectated_ammo_mag": 22,
-        "spectated_hp": 85,
         "spectated_ammo_reserve": 31,
-        "primary_state": "spectator_first_person",
-        "combat_report_visible": true
+        "player_alive": false,
+        "view_owner": "teammate_spectated",
+        "spectated_hp": 85,
+        "primary_state": "spectator_first_person"
       },
       "actual": null,
       "time_sec": 170.0,
@@ -1663,7 +1708,11 @@
     "unknown": 3929,
     "zones": [],
     "diagnostic_counts": {
-      "map_selection_or_calibration_required": 3929
+      "map_selection_or_calibration_required": 3929,
+      "map_ownership_blocked": 3929,
+      "map_calibration_skipped_hud_eligibility": 3929,
+      "map_marker_not_evaluated": 3929,
+      "map_location_not_evaluated": 3929
     }
   },
   "round_package": {

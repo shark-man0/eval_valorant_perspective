@@ -3,13 +3,13 @@
     "manual_map_id": "summit",
     "video_id": "match_001",
     "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
-    "analyzer_commit": "99d7d1aa20368478b48704ca07bd3a3417b7f356",
-    "git_is_dirty": true,
-    "executed_at": "2026-10-01T21:16:22.692420+00:00",
+    "analyzer_commit": "8f376ece98950ed4c3ab29172e4b811f69efd528",
+    "git_is_dirty": false,
+    "executed_at": "2026-10-02T01:37:37.289031+00:00",
     "validation_pack": "valorant_e2e_validation_pack_v3",
     "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
     "git_dirty_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "settings_fingerprint": "eee7e4fc9eb2638c9a3cb67dc42c7078c1d4410d7574bdbda67ea490f5ee37d4"
+    "settings_fingerprint": "551d94f3a72aaa7932646b358542be8dbc2887eb277b47a54dfe09547e6059ba"
   },
   "available": true,
   "schema_version": 1,
@@ -33,36 +33,63 @@
   "identity_reasons": {
     "spectator_exclusion_unverified": 3929
   },
+  "identity_missing": {
+    "hp_hud_structure": 1277,
+    "ability_bar_structure": 1409,
+    "weapon_ammo_structure": 3929
+  },
+  "spectator_checks": {
+    "reference_unavailable": 3929
+  },
   "automatic_identity_generation": {
-    "version": 1,
-    "sample_count": 32,
+    "version": 2,
+    "identity_reference_ready": false,
+    "sample_count": 64,
     "geometry_mode": "inherited",
     "references": {
       "hp_hud_structure": {
-        "training_count": null,
-        "holdout_count": null,
-        "training_accept_count": null,
-        "holdout_accept_count": null,
-        "holdout_median": null,
-        "status": "insufficient_evidence",
-        "content_hash": null,
-        "dimensions": null
+        "training_count": 32,
+        "holdout_count": 32,
+        "training_accept_count": 23,
+        "holdout_accept_count": 23,
+        "candidate_count": 107,
+        "structural_rejected": 71,
+        "support_rejected": 455,
+        "holdout_rejected": 0,
+        "holdout_median": 0.9956628680229187,
+        "status": "generated",
+        "content_hash": "b4d18e2685ca79ab2e0d2ba2191aee7bb22a4d1deec90c94e7807ad2703b05cd",
+        "dimensions": [
+          44,
+          46
+        ]
       },
       "ability_bar_structure": {
-        "training_count": null,
-        "holdout_count": null,
-        "training_accept_count": null,
-        "holdout_accept_count": null,
-        "holdout_median": null,
-        "status": "insufficient_evidence",
-        "content_hash": null,
-        "dimensions": null
+        "training_count": 32,
+        "holdout_count": 32,
+        "training_accept_count": 21,
+        "holdout_accept_count": 24,
+        "candidate_count": 155,
+        "structural_rejected": 112,
+        "support_rejected": 546,
+        "holdout_rejected": 0,
+        "holdout_median": 0.9800662994384766,
+        "status": "generated",
+        "content_hash": "d83617acdc2ec7bc72cf103393463276710f2882047dbb6ae30a6bcaa6d5fc1f",
+        "dimensions": [
+          100,
+          67
+        ]
       },
       "weapon_ammo_structure": {
-        "training_count": null,
-        "holdout_count": null,
-        "training_accept_count": null,
-        "holdout_accept_count": null,
+        "training_count": 32,
+        "holdout_count": 32,
+        "training_accept_count": 16,
+        "holdout_accept_count": 9,
+        "candidate_count": 73,
+        "structural_rejected": 43,
+        "support_rejected": 670,
+        "holdout_rejected": 1,
         "holdout_median": null,
         "status": "insufficient_evidence",
         "content_hash": null,
@@ -73,6 +100,24 @@
         "holdout_count": null,
         "training_accept_count": null,
         "holdout_accept_count": null,
+        "candidate_count": null,
+        "structural_rejected": null,
+        "support_rejected": null,
+        "holdout_rejected": null,
+        "holdout_median": null,
+        "status": null,
+        "content_hash": null,
+        "dimensions": null
+      },
+      "spectator_panel": {
+        "training_count": 32,
+        "holdout_count": 32,
+        "training_accept_count": null,
+        "holdout_accept_count": null,
+        "candidate_count": 0,
+        "structural_rejected": 32,
+        "support_rejected": 0,
+        "holdout_rejected": 0,
         "holdout_median": null,
         "status": "insufficient_evidence",
         "content_hash": null,
