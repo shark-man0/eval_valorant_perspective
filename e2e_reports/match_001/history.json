@@ -288,7 +288,6 @@
   {
     "history_key": "19e856b970e6e502fb39626a91437e9da2d07085f55c2b8deed82ea605d18b3a",
     "metadata": {
-      "manual_map_id": "summit",
       "video_id": "match_001",
       "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
       "analyzer_commit": "041d62c1ec6d9b7c058addd6b38c52239747697c",
@@ -298,6 +297,29 @@
       "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
       "git_dirty_fingerprint": "aab79447b190b96cf1d62fd0270ebe0ee3c60d298af72b2ee2a57e84171f9292",
       "settings_fingerprint": "a8afc113eeda7ede11ea5c56f2d38aa108afde1fb9e06569e5d44c46e88bdaa6"
+    },
+    "result": {
+      "status": "fail",
+      "schema_valid": true,
+      "failure_count": 58,
+      "negative_assertion_count": 20,
+      "error_code": null
+    },
+    "failure_count": 58
+  },
+  {
+    "history_key": "c87cb19ced2cadfdef752bf16083cc860bb2e117beca1b39fb5d1f350607da61",
+    "metadata": {
+      "manual_map_id": "summit",
+      "video_id": "match_001",
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "analyzer_commit": "c790c7c14c46a6a4c14cd1ed685bf3e06451655f",
+      "git_is_dirty": false,
+      "executed_at": "2026-10-02T18:01:54.319546+00:00",
+      "validation_pack": "valorant_e2e_validation_pack_v3",
+      "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
+      "git_dirty_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "settings_fingerprint": "5074f29ac801760473a334ef138da77c7be5ad9bde2ee129087a8d0bb7509e6d"
     },
     "result": {
       "status": "fail",
