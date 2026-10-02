@@ -1,7 +1,7 @@
 """Positive panel-structure detector; never match a background/clear image.
 
 The ROI is supplied by the layout. A supported panel candidate must contain a
-long boundary, portrait-like closed box, and aligned text components to its right.
+coherent boundary fragments, portrait-frame edges, and aligned adjacent text.
 These are UI-shape priors, not frame labels. Unrecognised UI variants stay unknown.
 """
 
@@ -126,7 +126,12 @@ def panel_components(
     diag["portrait"] = bool(boxes)
     diag["final_gates"]["portrait"] = bool(boxes)
     lines = cv2.HoughLinesP(
-        edges, 1, np.pi / 180, threshold=max(12, w // 5), minLineLength=int(0.30 * w), maxLineGap=3
+        edges,
+        1,
+        np.pi / 180,
+        threshold=max(8, w // 12),
+        minLineLength=max(8, int(0.10 * w)),
+        maxLineGap=3,
     )
     boundary = np.zeros_like(gray)
     horizontal = []
@@ -166,22 +171,55 @@ def panel_components(
             continue
         diag["portrait_textlike"] = True
         diag["final_gates"]["text_alignment"] = True
-        # A boundary must span the portrait/text group and lie outside its row.
-        # Mere coincident game-world edges are not a coherent panel candidate.
+        text_left = min(a for a, b, c, d in rows)
+        text_top = min(b for a, b, c, d in rows)
+        text_bottom = max(b + d for a, b, c, d in rows)
+        if text_left - (x + bw) > bw or max(a + c for a, b, c, d in rows) - text_left > 3.5 * bw:
+            diag["final_rejections"]["relative_position_mismatch"] += 1
+            continue
+        # Header/footer and interior text separators are valid only with bounded
+        # portrait/text geometry. Merge real fragments; never fill missing edges.
         boundary = np.zeros_like(gray)
         right = max(a + c for a, b, c, d in rows)
-        spanned = False
-        for left, by, end in horizontal:
-            coverage = max(0, min(end, right) - max(left, x)) / max(1, right - x)
-            outside = by < y + 2 or by > y + bh - 2
-            if coverage >= 0.90 and left <= x + bw * 0.25 + 2 and outside:
-                cv2.line(boundary, (left, by), (end, by), 1, 1)
-                spanned = True
-            elif not outside:
+        best_segments = []
+        best_coverage = 0.0
+        for by in sorted({s[1] for s in horizontal}):
+            segments = [s for s in horizontal if abs(s[1] - by) <= max(2, round(0.03 * bh))]
+            covered = np.zeros(w, bool)
+            for left, _, end in segments:
+                covered[max(x, left) : min(right, end + 1)] = True
+            coverage = float(np.mean(covered[x:right]))
+            diag["boundary_coverage"] = max(diag.get("boundary_coverage", 0.0), coverage)
+            # A union must connect both sides of the group and retain >=90% of
+            # its actual span. Unrelated distant fragments cannot bridge a panel.
+            if min(s[0] for s in segments) > x + bw * 0.25 + 2:
+                continue
+            if coverage < 0.90:
+                continue
+            diag["boundary_span_candidates"] = diag.get("boundary_span_candidates", 0) + 1
+            outside_text = by <= text_top - 2 or by >= text_bottom + 2
+            distance = max(text_top - by, by - text_bottom, 0) / bh
+            if not (outside_text and y - 0.5 * bh <= by <= y + 1.5 * bh and distance <= 1.0):
                 diag["final_rejections"]["relative_position_mismatch"] += 1
-        if not spanned:
+                continue
+            if coverage >= 0.90 and coverage > best_coverage:
+                best_segments, best_coverage = segments, coverage
+                diag["panel_topology"] = (
+                    "group_header"
+                    if by <= y + 2
+                    else "group_footer"
+                    if by >= y + bh - 2
+                    else "text_separator"
+                )
+                diag["boundary_relative_y"] = float((by - y + 0.5 * bh) / (2 * bh))
+        if not best_segments:
             diag["final_rejections"]["boundary_span_insufficient"] += 1
             continue
+        for left, by, end in best_segments:
+            cv2.line(boundary, (left, by), (end, by), 1, 1)
+        diag["boundary_coverage"] = best_coverage
+        diag["boundary_fragment_count"] = len(best_segments)
+        diag["portrait_text_gap_ratio"] = float((text_left - x - bw) / bw)
         diag["final_gates"]["boundary_span"] = True
         labels = boundary.copy()
         box = np.zeros_like(gray)

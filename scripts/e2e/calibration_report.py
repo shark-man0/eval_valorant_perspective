@@ -143,7 +143,12 @@ def representatives(rows, *, limit=6):
         chosen.append(
             max(
                 rows,
-                key=lambda r: r.get("training_accept_count") or r.get("portrait_frame_score") or 0,
+                key=lambda r: (
+                    r.get("training_accept_count")
+                    or r.get("proposal_training_frames")
+                    or r.get("portrait_frame_score")
+                    or 0
+                ),
             )
         )
     seen = set()
@@ -151,6 +156,7 @@ def representatives(rows, *, limit=6):
         reason = (
             row.get("structural_rejection_reason")
             or row.get("support_rejection_reason")
+            or row.get("rejection_stage")
             or next(
                 (
                     key
@@ -160,6 +166,7 @@ def representatives(rows, *, limit=6):
                 None,
             )
             or row.get("reason")
+            or row.get("proposal_source")
         )
         if reason not in seen:
             seen.add(reason)
@@ -176,6 +183,10 @@ def compact_diagnostics(calibration):
     weapon = object_or_empty(refs.get("weapon_ammo_structure"))
     generation = object_or_empty(weapon.get("weapon_ammo_generation"))
     candidates = generation.get("candidates", [])
+    proposals = generation.get("proposals", [])
+    keep_proposals = representatives(proposals)
+    generation["proposals"] = keep_proposals
+    generation["omitted_proposal_count"] = len(proposals) - len(keep_proposals)
     keep = representatives(candidates)
     generation["candidates"] = keep
     weapon["omitted_candidate_count"] = (
@@ -230,6 +241,7 @@ def compact_diagnostics(calibration):
     generation["omitted_candidate_support_count"] = len(supports) - len(keep_supports)
     if (
         len(keep) < len(candidates)
+        or len(keep_proposals) < len(proposals)
         or len(keep_samples) < len(samples)
         or len(keep_supports) < len(supports)
     ):
@@ -296,6 +308,33 @@ def sanitize_identity_generation(value):
                 "matcher": source.get("matcher")
                 if source.get("matcher") in ("oriented_edges_v1", "masked_ncc")
                 else None,
+                "proposal_count": number(source.get("proposal_count"), count=True),
+                "proposal_budget_omitted": number(
+                    source.get("proposal_budget_omitted"), count=True
+                ),
+                "proposal_rejection_counts": {
+                    k: number(
+                        object_or_empty(source.get("proposal_rejection_counts")).get(k), count=True
+                    )
+                    for k in ("spanning_component", "one_dimensional", "group_extent_invalid")
+                },
+                "proposals": [
+                    {
+                        "proposal_source": p.get("proposal_source")
+                        if p.get("proposal_source")
+                        in ("localized_component", "component_group", "legacy_grid")
+                        else None,
+                        "proposal_training_frames": number(
+                            p.get("proposal_training_frames"), count=True
+                        ),
+                        "dimensions": sanitize_candidate(p)["dimensions"],
+                        "roi_bounds": sanitize_candidate(p)["roi_bounds"],
+                    }
+                    for p in source.get("proposals", [])[:64]
+                    if isinstance(p, dict)
+                ]
+                if isinstance(source.get("proposals"), list)
+                else [],
                 "rejection_counts": {
                     k: number(object_or_empty(source.get("rejection_counts")).get(k), count=True)
                     for k in (
@@ -399,6 +438,19 @@ def sanitize_identity_generation(value):
                         and len(s["portrait_side_scores"]) == 4
                         else None,
                         "training": s.get("training") is True,
+                        "panel_topology": s.get("panel_topology")
+                        if s.get("panel_topology")
+                        in ("group_header", "group_footer", "text_separator")
+                        else None,
+                        "boundary_coverage": number(s.get("boundary_coverage")),
+                        "boundary_relative_y": number(s.get("boundary_relative_y")),
+                        "portrait_text_gap_ratio": number(s.get("portrait_text_gap_ratio")),
+                        "boundary_fragment_count": number(
+                            s.get("boundary_fragment_count"), count=True
+                        ),
+                        "boundary_span_candidates": number(
+                            s.get("boundary_span_candidates"), count=True
+                        ),
                         "reason": s.get("reason") if s.get("reason") in reasons else None,
                         "final_gates": {
                             k: object_or_empty(s.get("final_gates")).get(k) is True
@@ -514,6 +566,19 @@ def sanitize_candidate(source):
     }
     for key in ("line_count", "edge_component_count", "localized_component_count"):
         result[key] = number(source.get(key), count=True)
+    for key in ("occupied_rows", "occupied_columns", "proposal_training_frames"):
+        result[key] = number(source.get(key), count=True)
+    result["proposal_source"] = (
+        source.get("proposal_source")
+        if source.get("proposal_source")
+        in ("localized_component", "component_group", "legacy_grid")
+        else None
+    )
+    result["rejection_stage"] = (
+        source.get("rejection_stage")
+        if source.get("rejection_stage") in ("structure", "training_support", "holdout")
+        else None
+    )
     for key, size in (
         ("orientation_histogram", 8),
         ("spatial_edge_spread", 2),

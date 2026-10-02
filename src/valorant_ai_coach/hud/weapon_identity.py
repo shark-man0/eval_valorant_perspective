@@ -8,6 +8,8 @@ from typing import Any
 import cv2
 import numpy as np
 
+from .weapon_proposals import candidate_windows
+
 
 def edge_features(image: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     """Local contrast normalization, then edge location and unsigned orientation."""
@@ -160,6 +162,8 @@ def structural_layout(
         edge_component_count=len(groups),
         localized_component_count=len(localized),
         edge_occupancy_grid=occupancy,
+        occupied_rows=sum(any(v > 0.02 for v in occupancy[i : i + 4]) for i in range(0, 16, 4)),
+        occupied_columns=sum(any(occupancy[i] > 0.02 for i in range(j, 16, 4)) for j in range(4)),
     )
 
 
@@ -205,156 +209,172 @@ def weapon_reference(
         return None
     gray = [cv2.cvtColor(c, cv2.COLOR_BGR2GRAY) if c.ndim == 3 else c for c in crops]
     height, width = gray[0].shape
-    h, w = max(16, round(height * 0.30)), max(16, round(width * 0.20))
-    if h >= height or w >= width:
+    if min(height, width) < 16:
         return None
+    training_edges = [edge_features(g)[0] for g in gray[::2]]
+    proposals = candidate_windows(training_edges, stats)
     accepted = []
     best_diagnostic: dict[str, Any] | None = None
-    for y in np.linspace(0, height - h, 5).astype(int):
-        for x in np.linspace(0, width - w, 5).astype(int):
-            patches = [g[y : y + h, x : x + w] for g in gray]
-            training = patches[::2]
-            features = [edge_features(p) for p in training]
-            clusters = set()
-            for all_edges, angle in features:
-                e = frame_edges(all_edges)
-                if np.count_nonzero(e) < 12:
-                    continue
-                members = tuple(
-                    i
-                    for i, (observed, orientation) in enumerate(features)
-                    if np.count_nonzero(oriented_matches(e, angle, observed, orientation))
-                    / np.count_nonzero(e)
-                    >= 0.90
-                )
-                if len(members) >= 3:
-                    clusters.add(members)
-                else:
+    for proposal in proposals:
+        x, y, x2, y2 = proposal["pixel_bounds"]
+        h, w = y2 - y, x2 - x
+        patches = [g[y : y + h, x : x + w] for g in gray]
+        training = patches[::2]
+        features = [edge_features(p) for p in training]
+        clusters = set()
+        for all_edges, angle in features:
+            e = (
+                frame_edges(all_edges)
+                if proposal["proposal_source"] == "legacy_grid"
+                else all_edges
+            )
+            if np.count_nonzero(e) < 12:
+                continue
+            members = tuple(
+                i
+                for i, (observed, orientation) in enumerate(features)
+                if np.count_nonzero(oriented_matches(e, angle, observed, orientation))
+                / np.count_nonzero(e)
+                >= 0.90
+            )
+            if len(members) >= 3:
+                clusters.add(members)
+            else:
+                stats["support_rejected"] += 1
+                counts = stats["rejection_counts"]
+                counts["seed_support_insufficient"] = counts.get("seed_support_insufficient", 0) + 1
+        for members in sorted(clusters):
+            stack = np.stack([training[i] for i in members]).astype(float)
+            reference = training[members[0]].copy()
+            variance = stack.var(axis=0)
+            ref_edges, ref_angles = edge_features(reference)
+            scaffold = (
+                frame_edges(ref_edges)
+                if proposal["proposal_source"] == "legacy_grid"
+                else ref_edges
+            )
+            persistence = np.mean(
+                np.stack([oriented_matches(scaffold, ref_angles, *features[i]) for i in members]),
+                axis=0,
+            )
+            fixed_edges = ((persistence >= 0.90) & ref_edges).astype(np.uint8)
+            mask = fixed_edges * 255
+            bounds = [
+                float(x / width),
+                float(y / height),
+                float((x + w) / width),
+                float((y + h) / height),
+            ]
+            row: dict[str, Any] = dict(
+                training_cluster_size=len(members),
+                roi_bounds=bounds,
+                dimensions=[w, h],
+                temporal_variance=float(variance.mean() / 65025),
+                edge_persistence=float(persistence[fixed_edges > 0].mean())
+                if fixed_edges.any()
+                else 0.0,
+                stable_pixel_ratio=float(np.mean(variance <= 4)),
+                dynamic_pixel_ratio=float(np.mean(variance > 4)),
+                mask_pixel_ratio=float(np.mean(mask > 0)),
+                edge_count=int(np.count_nonzero(ref_edges)),
+                mask_population=int(np.count_nonzero(mask)),
+                stable_edge_ratio=float(np.count_nonzero(mask))
+                / max(1, int(np.count_nonzero(ref_edges))),
+                orientation_consistency=float(np.mean(persistence[mask > 0]))
+                if mask.any()
+                else 0.0,
+                reason="structural_rejected",
+                proposal_source=proposal["proposal_source"],
+                proposal_training_frames=proposal.get("proposal_training_frames"),
+                rejection_stage="structure",
+            )
+            stats["candidate_count"] += 1
+            lines = cv2.HoughLinesP(
+                fixed_edges * 255,
+                1,
+                np.pi / 180,
+                threshold=8,
+                minLineLength=max(8, min(h, w) // 3),
+                maxLineGap=2,
+            )
+            density = float(np.mean(fixed_edges > 0))
+            layout_diag = structural_layout(fixed_edges, ref_angles, lines)
+            row.update(layout_diag)
+            arranged = layout_diag["structural_gates"]["arrangement"]
+            row["structural_gates"].update(
+                edge_density=0.015 <= density <= 0.25,
+                edge_support=structural_score(reference, reference, mask) >= 0.90,
+            )
+            rejection = (
+                "fixed_edges_insufficient"
+                if lines is None or len(lines) < 2
+                else "edge_arrangement_invalid"
+                if not arranged
+                else "edge_density_invalid"
+                if not 0.015 <= density <= 0.25
+                else "edge_support_insufficient"
+                if structural_score(reference, reference, mask) < 0.90
+                else None
+            )
+            row["structural_rejection_reason"] = rejection
+            row["support_rejection_reason"] = None
+            # Diagnostic-only holdout values cannot affect training ranking.
+            diagnostic_scores = [structural_score(reference, p, mask) for p in patches[1::2]]
+            row["holdout_similarity"] = similarity_distribution(diagnostic_scores)
+            scores = [structural_score(reference, p, mask) for p in training]
+            row["training_similarity"] = similarity_distribution(scores)
+            row["training_accept_count"] = sum(s >= 0.90 for s in scores)
+            if best_diagnostic is None or (
+                rejection is None,
+                row["training_accept_count"],
+                row["mask_population"],
+            ) > (
+                best_diagnostic["structural_rejection_reason"] is None,
+                best_diagnostic["training_accept_count"],
+                best_diagnostic["mask_population"],
+            ):
+                best_diagnostic = row
+            row["holdout_accept_count"] = sum(s >= 0.90 for s in diagnostic_scores)
+            row["holdout_prevalence"] = row["holdout_accept_count"] / len(diagnostic_scores)
+            if (
+                lines is None
+                or len(lines) < 2
+                or not arranged
+                or not 0.015 <= density <= 0.25
+                or structural_score(reference, reference, mask) < 0.90
+            ):
+                stats["structural_rejected"] += 1
+                counts = stats["rejection_counts"]
+                counts[rejection] = counts.get(rejection, 0) + 1
+            else:
+                support = sum(s >= 0.90 for s in scores)
+                row["training_accept_count"] = support
+                if support < 3 or sum(scores[i] >= 0.90 for i in members) < 0.80 * len(members):
                     stats["support_rejected"] += 1
+                    row["reason"] = "support_rejected"
+                    row["rejection_stage"] = "training_support"
+                    row["support_rejection_reason"] = "training_support_insufficient"
                     counts = stats["rejection_counts"]
-                    counts["seed_support_insufficient"] = (
-                        counts.get("seed_support_insufficient", 0) + 1
+                    counts["training_support_insufficient"] = (
+                        counts.get("training_support_insufficient", 0) + 1
                     )
-            for members in sorted(clusters):
-                stack = np.stack([training[i] for i in members]).astype(float)
-                reference = training[members[0]].copy()
-                variance = stack.var(axis=0)
-                ref_edges, ref_angles = edge_features(reference)
-                scaffold = frame_edges(ref_edges)
-                persistence = np.mean(
-                    np.stack(
-                        [oriented_matches(scaffold, ref_angles, *features[i]) for i in members]
-                    ),
-                    axis=0,
-                )
-                fixed_edges = ((persistence >= 0.90) & ref_edges).astype(np.uint8)
-                mask = fixed_edges * 255
-                bounds = [
-                    float(x / width),
-                    float(y / height),
-                    float((x + w) / width),
-                    float((y + h) / height),
-                ]
-                row: dict[str, Any] = dict(
-                    training_cluster_size=len(members),
-                    roi_bounds=bounds,
-                    dimensions=[w, h],
-                    temporal_variance=float(variance.mean() / 65025),
-                    edge_persistence=float(persistence[fixed_edges > 0].mean())
-                    if fixed_edges.any()
-                    else 0.0,
-                    stable_pixel_ratio=float(np.mean(variance <= 4)),
-                    dynamic_pixel_ratio=float(np.mean(variance > 4)),
-                    mask_pixel_ratio=float(np.mean(mask > 0)),
-                    edge_count=int(np.count_nonzero(ref_edges)),
-                    mask_population=int(np.count_nonzero(mask)),
-                    stable_edge_ratio=float(np.count_nonzero(mask))
-                    / max(1, int(np.count_nonzero(ref_edges))),
-                    orientation_consistency=float(np.mean(persistence[mask > 0]))
-                    if mask.any()
-                    else 0.0,
-                    reason="structural_rejected",
-                )
-                stats["candidate_count"] += 1
-                lines = cv2.HoughLinesP(
-                    fixed_edges * 255,
-                    1,
-                    np.pi / 180,
-                    threshold=8,
-                    minLineLength=max(8, min(h, w) // 3),
-                    maxLineGap=2,
-                )
-                density = float(np.mean(fixed_edges > 0))
-                layout_diag = structural_layout(fixed_edges, ref_angles, lines)
-                row.update(layout_diag)
-                arranged = layout_diag["structural_gates"]["arrangement"]
-                row["structural_gates"].update(
-                    edge_density=0.015 <= density <= 0.25,
-                    edge_support=structural_score(reference, reference, mask) >= 0.90,
-                )
-                rejection = (
-                    "fixed_edges_insufficient"
-                    if lines is None or len(lines) < 2
-                    else "edge_arrangement_invalid"
-                    if not arranged
-                    else "edge_density_invalid"
-                    if not 0.015 <= density <= 0.25
-                    else "edge_support_insufficient"
-                    if structural_score(reference, reference, mask) < 0.90
-                    else None
-                )
-                row["structural_rejection_reason"] = rejection
-                row["support_rejection_reason"] = None
-                # Diagnostic-only holdout values cannot affect training ranking.
-                diagnostic_scores = [structural_score(reference, p, mask) for p in patches[1::2]]
-                row["holdout_similarity"] = similarity_distribution(diagnostic_scores)
-                scores = [structural_score(reference, p, mask) for p in training]
-                row["training_similarity"] = similarity_distribution(scores)
-                row["training_accept_count"] = sum(s >= 0.90 for s in scores)
-                if best_diagnostic is None or (
-                    row["training_accept_count"],
-                    row["mask_population"],
-                ) > (best_diagnostic["training_accept_count"], best_diagnostic["mask_population"]):
-                    best_diagnostic = row
-                row["holdout_accept_count"] = sum(s >= 0.90 for s in diagnostic_scores)
-                row["holdout_prevalence"] = row["holdout_accept_count"] / len(diagnostic_scores)
-                if (
-                    lines is None
-                    or len(lines) < 2
-                    or not arranged
-                    or not 0.015 <= density <= 0.25
-                    or structural_score(reference, reference, mask) < 0.90
-                ):
-                    stats["structural_rejected"] += 1
-                    counts = stats["rejection_counts"]
-                    counts[rejection] = counts.get(rejection, 0) + 1
                 else:
-                    support = sum(s >= 0.90 for s in scores)
-                    row["training_accept_count"] = support
-                    if support < 3 or sum(scores[i] >= 0.90 for i in members) < 0.80 * len(members):
-                        stats["support_rejected"] += 1
-                        row["reason"] = "support_rejected"
-                        row["support_rejection_reason"] = "training_support_insufficient"
-                        counts = stats["rejection_counts"]
-                        counts["training_support_insufficient"] = (
-                            counts.get("training_support_insufficient", 0) + 1
+                    row["reason"] = "training_candidate"
+                    row["rejection_stage"] = None
+                    accepted.append(
+                        (
+                            support + float(np.median([s for s in scores if s >= 0.90])),
+                            reference,
+                            bounds,
+                            mask,
+                            patches,
+                            row,
                         )
-                    else:
-                        row["reason"] = "training_candidate"
-                        accepted.append(
-                            (
-                                support + float(np.median([s for s in scores if s >= 0.90])),
-                                reference,
-                                bounds,
-                                mask,
-                                patches,
-                                row,
-                            )
-                        )
-                if len(stats["candidates"]) < 64:
-                    stats["candidates"].append(row)
-                else:
-                    stats["omitted_candidate_count"] += 1
+                    )
+            if len(stats["candidates"]) < 64:
+                stats["candidates"].append(row)
+            else:
+                stats["omitted_candidate_count"] += 1
     stats["cluster_count"] = stats["candidate_count"]
     if not accepted:
         if best_diagnostic is not None:
@@ -373,7 +393,9 @@ def weapon_reference(
     if support < 3 or support < 0.80 * expected:
         stats["holdout_rejected"] += 1
         row["reason"] = "holdout_rejected"
+        row["rejection_stage"] = "holdout"
         stats["selected_candidate"]["reason"] = "holdout_rejected"
+        stats["selected_candidate"]["rejection_stage"] = "holdout"
         return None
     row["reason"] = "selected"
     stats["selected_candidate"]["reason"] = "selected"

@@ -194,8 +194,8 @@ outputs are marked unavailable, never reconstructed. See
 
 ### Automatic local profile → Windows E2E (PowerShell)
 
-2026-10-02: Regenerate after the Spectator recall/precision texture-rejection
-update (resume contract 16). No image or JSON editing is needed. HP/Ability and all
+2026-10-02: Regenerate after the training-only Weapon component proposals and
+Spectator boundary-topology update. No image or JSON editing is needed. HP/Ability and all
 four live-identity gates remain required. Insufficient references stay unknown;
 successful file generation is not evidence of real-video accuracy. Detailed sanitized
 candidate/element statistics and training/holdout edge-similarity distributions are
@@ -204,14 +204,15 @@ alone no longer invalidate the independent Weapon edge mask.
 
 Run from the updated repository root. The example uses the default Desktop video filename;
 set only the three input paths below to your actual local files. Use your existing calibrated
-layout if available: its adjacent `.templates.json` is loaded automatically. Keep that base
+geometry-only base layout from the confirmed fresh workflow: its adjacent `.templates.json`
+must contain no old identity references. Keep that base
 profile's assets locally because inherited readers can still reference them.
 
 ```powershell
 $ErrorActionPreference = 'Stop'
 $video = Join-Path ([Environment]::GetFolderPath('Desktop')) 'Valorant_09-25-2026_0-37-29-379.mp4'
-$baseLayout = (Resolve-Path (Read-Host 'Path to the previous Windows HUD layout JSON')).Path
-$pack = (Resolve-Path '..\valorant_e2e_validation_pack_v3').Path
+$baseLayout = (Resolve-Path (Read-Host 'Path to the confirmed geometry-only base layout JSON')).Path
+$pack = (Resolve-Path (Read-Host 'Path to the validation pack directory')).Path
 
 # Existing Windows E2E environments can reuse .venv; bootstrap when absent.
 if (-not (Test-Path '.\.venv\Scripts\python.exe')) {

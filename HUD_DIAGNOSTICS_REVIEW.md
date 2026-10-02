@@ -1,5 +1,49 @@
 # Windows E2E 上流診断（2026-10-01）
 
+## Fresh p5: Weapon localization / Spectator topology限定修正
+
+基準はfcf313eのfresh Windows診断。profile/runnerの古さを原因と扱わない。
+HP/Ability生成、identity policy、Visual/Map/Round/E2E処理は変更していない。
+Macでは実動画改善を確認していない。
+
+Weaponの最良候補はx spread=.978 / y spread=.038であり、一本の水平帯の棄却は正しい。
+旧proposalはROIの20%幅×30%高さの25固定窓、seedは長いHough線のみ。
+局所的な短い2D UI edge群を切り分けたりseedから除外し得る。これを合成で再現した。
+今回training frameの局所connected componentsと隣接groupからROI内の窓を導出する。
+padding前に細い/一方向のgroupやROIを横断するcomponentを除外し、training内の再出現数で
+最大16窓を選ぶ。旧25窓も残す。局所窓のseedは短いedgeも使い、90% persistenceと
+最終2D arrangement / density / line support / similarity >=.90 / 最低3支持 / member80% /
+holdout条件は維持する。窓選択にholdoutを使わない。
+診断用bestは構造gate成立候補を先に示すが、採用判定とholdout条件は別で維持する。
+実際のWeapon ROIの構造が新窓で捕捉できるかは次回Windows結果を正とする。
+
+Spectatorのrelative_position_mismatch=42はframe数ではなくportrait/線の組合せ試行数。
+旧priorはboundaryがportraitの上下にあることを要求し、portrait内部のtext separatorや
+分割境界を扱えなかった。新priorはportrait右の近接aligned text、portrait/text全体の
+実edge被覆>=90%、textに対する上下位置、portrait高さで正規化した近接範囲を要求する。
+header/footer/text separatorを扱い、最大2〜3pxのrow band内の実fragmentを合算する。
+欠けた部分へ線を描いて埋めない。遠いworld boundaryや不正順序は棄却する。
+位置棄却の集計は、水平spanを満たすboundary候補のunique row試行に限定したため、旧42と
+数値だけで精度比較しない。boundary_span_candidatesと採用topologyを併せて確認する。
+presenceは全3componentのrecall/precision>=.90と共通最大±2pxの照合を維持する。
+texture/部分表示/観測不能/位置不一致はunknown。absenceの安全条件は変更していない。
+
+追加診断: proposal source/count/budget/rejection counts、候補位置・寸法・training観測数、
+棄却stage、占有row/column数。既存component count/spread/histogram/train/holdout分布も保持。
+Spectatorはtopology、boundary被覆・fragment数・正規化y・text gap・span候補数を共有する。
+詳細proposalはローカルに残し、共有proposal/candidate/sampleは各最大6代表例と128 KiBを維持する。
+画像・path・OCR・名前は共有しない。GT、期待state、APIを利用しない。
+
+次回は確認済みgeometry-only baseから64枚でfresh profileを生成してfull E2Eへ渡す。
+`WINDOWS_E2E.md` のAutomatic local profile節を参照。コミット/pushは今回行わない。
+
+Mac検証: pytest 556 passed / 3 skipped（実録画未提供1、PowerShell未導入2）。
+Ruff (`src tests scripts`) / mypy（79 source files） / git diff --check成功。
+共有proposal代表例/容量fallbackの追補後、関連pytest 37 passedも確認した。
+追加19回帰は旧gridが取り逃す局所2D構造、noise/jitter、1D/stripe/texture棄却、
+holdout非依存の窓選択、header/footer/separator、fragment被覆、不正順序/無関係要素を確認。
+既存negativeとHP/Ability生成テストは変更していない。実動画改善は次回Windowsを正とする。
+
 ## 2026-10-02: Spectator texture誤一致と棄却候補の共有診断
 
 この節が最新。基準f9d70a3のMac合成監査で、panelのないランダムtexture5種類がすべて

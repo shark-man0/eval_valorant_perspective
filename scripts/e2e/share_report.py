@@ -1103,6 +1103,11 @@ def _drop_verbose_diagnostics(summary):
     refs = calibration.get("automatic_identity_generation", {}).get("references", {})
     weapon = refs.get("weapon_ammo_structure", {})
     candidates = weapon.get("weapon_ammo_generation", {}).pop("candidates", [])
+    generation = weapon.get("weapon_ammo_generation", {})
+    proposals = generation.pop("proposals", [])
+    generation["omitted_proposal_count"] = (generation.get("omitted_proposal_count") or 0) + len(
+        proposals
+    )
     weapon["omitted_candidate_count"] = (weapon.get("omitted_candidate_count") or 0) + len(
         candidates
     )
