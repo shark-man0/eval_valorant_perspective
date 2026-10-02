@@ -1,5 +1,63 @@
 # Windows E2E 上流診断（2026-10-01）
 
+## 2026-10-02: Weapon/Ammo・spectator限定の追加修正（Mac検証）
+
+以下が今回の変更であり、下記の過去経緯より優先する。Windows実動画の改善は未確認。
+
+### 原因と変更
+
+- 旧Weapon生成は生pixel NCCでclusterを形成し、選んだ1候補のtraining支持16に対して
+  holdout支持9だった。必要支持12.8を下回ったため棄却された。数字・weapon表示の変動が
+  原因という仮説はあるが、旧共有情報だけでは変動箇所は確定できない。
+- Weaponのみ、trainingのedge支持でclusterを形成し、低分散（画素分散<=4）かつ
+  edge persistence>=.90の領域周辺から専用maskを生成する。固定位置masked NCC>=.90、
+  独立holdout最低3件・training prevalenceの80%以上を維持する。trainingだけで候補を
+  1個選ぶ。複数reference ORは今回導入しない。holdout失敗時に別候補へ逃げない。
+  平行線だけの背景は採用せず、異なる方向の持続edgeを要求する。
+- geometryの元/新assetとidentity template/maskをpath・hashで照合し、コピーも継承拒否。
+  HP/Ability生成・4条件のlive policy・competing evidence抑止は変更しない。
+- 旧spectatorは左側portrait、ROI上/下端の長い線、固定pxで整列した文字状成分という
+  priorで32 training frame全部が構造棄却された。どの要素が不足したかは旧診断では不明。
+  今回はportraitと隣接text-like成分をまたぐ外側boundaryという相対配置を要求する。
+  portrait閉枠・3個以上の整列した文字状成分・boundaryの三要素は依然必須。
+- spectatorのtraining支持集合をclusterとして重複排除し、選択後holdoutで確認する。
+  背景clear画像は使わない。実行済みdetectorで全mandatory componentが強く否定され、
+  ROIが観測可能で、移動したcomponent/別panel候補も残らない場合のみabsenceとする。
+  blur・低contrast・部分一致・位置不一致はunknownのまま。
+- Map/Visual CVは変更しない。resume contractは13へ更新し、旧キャッシュを再利用しない。
+
+### 共有診断
+
+`automatic_identity_generation.references.weapon_ammo_structure` に候補/cluster件数、
+支持件数、棄却件数を保存。`weapon_ammo_generation` に各候補のtraining cluster size、
+holdout支持/prevalence、ROI内normalized bounds、dimensions、正規化temporal variance、
+edge persistence、dynamic/stable/mask pixel ratio、棄却理由と選択候補を保存する。
+候補一覧は先頭64件で上限を設け、除外件数は `omitted_candidate_count` で明示する。
+選択候補は一覧外でも別途保存する。候補のholdout数は診断専用で選択に利用しない。
+
+`automatic_identity_generation.references.spectator_panel.spectator_generation` に全sample
+（最大64）のobservability、各要素・pairwise evidence、all components、training/holdout区分、
+blur/contrast/geometry/structural棄却理由、要素別集計を保存する。sample indexは抽出順序のみで
+動画時刻や正解labelではない。cluster/support/holdout/statusは親参照rowに保存する。
+画像、path、OCR文字列は共有allowlistから除外。生成assetはWindowsローカルのみ。
+
+### 次回Windows比較
+
+必ず新しい出力先へprofileを再生成する。コマンドは `WINDOWS_E2E.md` の
+Automatic local profile節。生成後の画像/JSON手編集は不要。元layout/隣接profile/assetは保持。
+以下を旧baselineと比較する。
+
+- Weapon status・training/holdout支持・stable/dynamic比率・棄却内訳。
+- Spectator status・三要素/pairwise/observability・cluster/holdout支持。
+- identity_reference_ready、reference_unavailable（旧3929）、present/excluded/ambiguous/mismatch。
+- HUD live（旧0）、unknown（旧3892）、HP/Ability/Weapon missing（旧1277/1409/3929）。
+- Visual eligibility（旧0/0）、Map calibration attempted/accepted、skipped（旧3929）、resolved。
+- Round count（旧1）、E2E failed（旧57）、negative failures=0を維持。
+
+Mac最終確認: pytest 495 passed / 3 skipped。skipは実録画未提供1件とPowerShell未導入2件。
+Ruff: All checks passed。mypy: 78 source files、問題なし。git diff --checkも成功。
+unit/integration/syntheticのみの結果であり、Windows実動画精度の証明ではない。
+
 ## 2026-10-02: 精査で再現した3件の修正
 
 - `hud/spectator.py`: 固定位置で3要素が不一致でも、ROI全体でpanel候補と移動した特徴を

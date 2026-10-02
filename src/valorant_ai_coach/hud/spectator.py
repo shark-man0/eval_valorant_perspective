@@ -13,10 +13,31 @@ import cv2
 import numpy as np
 
 
-def panel_components(gray: np.ndarray) -> np.ndarray | None:
+def panel_components(
+    gray: np.ndarray, diagnostics: dict[str, Any] | None = None
+) -> np.ndarray | None:
+    diag = diagnostics if diagnostics is not None else {}
+    diag.update(
+        observable=False,
+        boundary=False,
+        portrait=False,
+        textlike=False,
+        boundary_portrait=False,
+        portrait_textlike=False,
+        boundary_textlike=False,
+        all_components=False,
+        reason="geometry_rejected",
+    )
     h, w = gray.shape
     if min(h, w) < 32:
         return None
+    if float(gray.std()) < 8 or not 12 < float(gray.mean()) < 245:
+        diag["reason"] = "contrast_rejected"
+        return None
+    if float(cv2.Laplacian(gray, cv2.CV_64F).var()) < 10:
+        diag["reason"] = "blur_rejected"
+        return None
+    diag.update(observable=True, reason="structural_rejected")
     edges = cv2.Canny(gray, 60, 150)
     contours, _ = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     boxes = []
@@ -29,24 +50,34 @@ def panel_components(gray: np.ndarray) -> np.ndarray | None:
             and 0.08 * w <= bw <= 0.35 * w
             and 0.15 * h <= bh <= 0.8 * h
             and 0.5 <= bw / bh <= 1.8
-            and x < 0.45 * w
         ):
             boxes.append((x, y, bw, bh))
+    diag["portrait"] = bool(boxes)
     lines = cv2.HoughLinesP(
-        edges, 1, np.pi / 180, threshold=max(12, w // 5), minLineLength=int(0.55 * w), maxLineGap=3
+        edges, 1, np.pi / 180, threshold=max(12, w // 5), minLineLength=int(0.30 * w), maxLineGap=3
     )
-    if not boxes or lines is None:
-        return None
     boundary = np.zeros_like(gray)
-    for line in lines[:, 0]:
+    horizontal = []
+    for line in [] if lines is None else lines[:, 0]:
         x1, y1, x2, y2 = map(int, line)
-        if abs(y1 - y2) <= 2 and (y1 < 0.3 * h or y1 > 0.7 * h):
+        if abs(y1 - y2) <= 2:
             cv2.line(boundary, (x1, y1), (x2, y2), 1, 1)
-    if np.count_nonzero(boundary) < 0.55 * w:
-        return None
+            horizontal.append((min(x1, x2), y1, max(x1, x2)))
+    diag["boundary"] = bool(horizontal)
+    diag["boundary_portrait"] = bool(horizontal and boxes)
+    _, _, stats, _ = cv2.connectedComponentsWithStats(edges, connectivity=8)
+    generic_glyphs = [
+        (int(a), int(b), int(c), int(d))
+        for a, b, c, d, area in stats[1:]
+        if 2 <= c <= 0.10 * w and 4 <= d <= 0.35 * h and area >= 4
+    ]
+    diag["textlike"] = any(
+        sum(abs(g[1] - v[1]) <= max(3, 0.03 * h) for v in generic_glyphs) >= 3
+        for g in generic_glyphs
+    )
+    diag["boundary_textlike"] = bool(diag["boundary"] and diag["textlike"])
     for x, y, bw, bh in sorted(boxes):
         # Text-shaped connected components, spatially aligned beside the portrait.
-        _, _, stats, _ = cv2.connectedComponentsWithStats(edges, connectivity=8)
         glyphs = [
             (int(a), int(b), int(c), int(d))
             for a, b, c, d, area in stats[1:]
@@ -57,9 +88,17 @@ def panel_components(gray: np.ndarray) -> np.ndarray | None:
             and 4 <= d <= 0.35 * h
             and area >= 4
         ]
-        rows = [g for g in glyphs if sum(abs(g[1] - v[1]) <= 3 for v in glyphs) >= 3]
+        rows = [g for g in glyphs if sum(abs(g[1] - v[1]) <= max(3, 0.03 * h) for v in glyphs) >= 3]
         if len(rows) < 3:
             continue
+        diag["portrait_textlike"] = True
+        # A boundary must span the portrait/text group and lie outside its row.
+        # Mere coincident game-world edges are not a coherent panel candidate.
+        boundary = np.zeros_like(gray)
+        right = max(a + c for a, b, c, d in rows)
+        for left, by, end in horizontal:
+            if left <= x + bw * 0.25 and end >= right and (by < y or by > y + bh):
+                cv2.line(boundary, (left, by), (end, by), 1, 1)
         labels = boundary.copy()
         box = np.zeros_like(gray)
         cv2.rectangle(box, (x, y), (x + bw - 1, y + bh - 1), 1, 2)
@@ -68,6 +107,7 @@ def panel_components(gray: np.ndarray) -> np.ndarray | None:
             region = labels[b : b + d, a : a + c]
             region[edges[b : b + d, a : a + c] > 0] = 3
         if all(np.count_nonzero(labels == k) >= 12 for k in (1, 2, 3)):
+            diag.update(all_components=True, reason="candidate")
             return labels
     return None
 
@@ -106,21 +146,59 @@ def generate_panel_reference(crops: list[np.ndarray], stats: dict[str, Any]) -> 
         structural_rejected=0,
         support_rejected=0,
         holdout_rejected=0,
+        cluster_count=0,
     )
+    samples = []
+    for index, frame in enumerate(gray):
+        sample: dict[str, Any] = {"sample_index": index, "training": index % 2 == 0}
+        panel_components(frame, sample)
+        samples.append(sample)
+    stats["samples"] = samples
+    stats["evidence_counts"] = {
+        key: sum(s.get(key) is True for s in samples)
+        for key in (
+            "observable",
+            "boundary",
+            "portrait",
+            "textlike",
+            "boundary_portrait",
+            "portrait_textlike",
+            "boundary_textlike",
+            "all_components",
+        )
+    }
+    stats["rejection_counts"] = {
+        reason: sum(s["reason"] == reason for s in samples)
+        for reason in (
+            "geometry_rejected",
+            "contrast_rejected",
+            "blur_rejected",
+            "structural_rejected",
+        )
+    }
     candidates = []
+    clusters = set()
     for frame in gray[::2]:
         labels = panel_components(frame)
         if labels is None:
             stats["structural_rejected"] += 1
             continue
         stats["candidate_count"] += 1
-        support = sum(min(component_scores(g, labels), default=0) >= 0.90 for g in gray[::2])
+        members = tuple(
+            i
+            for i, g in enumerate(gray[::2])
+            if min(component_scores(g, labels), default=0) >= 0.90
+        )
+        support = len(members)
         if support >= 3:
-            candidates.append((support, labels))
+            if members not in clusters:
+                candidates.append((support, labels))
+                clusters.add(members)
         else:
             stats["support_rejected"] += 1
     if not candidates:
         return None
+    stats["cluster_count"] = len(candidates)
     support, labels = max(candidates, key=lambda item: item[0])
     heldout = sum(min(component_scores(g, labels), default=0) >= 0.90 for g in gray[1::2])
     stats.update(training_accept_count=support, holdout_accept_count=heldout)

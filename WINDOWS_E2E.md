@@ -142,6 +142,12 @@ outputs are marked unavailable, never reconstructed. See
 
 ### Automatic local profile → Windows E2E (PowerShell)
 
+2026-10-02: Regenerate after the Weapon/Ammo stable-mask / relative spectator-structure
+update (resume contract 13). No image or JSON editing is needed. HP/Ability and all
+four live-identity gates remain required. Insufficient references stay unknown;
+successful file generation is not evidence of real-video accuracy. Detailed sanitized
+candidate/element statistics are included in `hud_calibration.json` after E2E.
+
 Run from the updated repository root. The example uses the default Desktop video filename;
 set only the three input paths below to your actual local files. Use your existing calibrated
 layout if available: its adjacent `.templates.json` is loaded automatically. Keep that base

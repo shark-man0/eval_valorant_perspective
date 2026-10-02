@@ -30,6 +30,7 @@ from valorant_ai_coach.resources import resource_path
 from .layout import HudLayout, NormalizedRoi
 from .readers import HudReader, ReaderResult
 from .spectator import detect_panel
+from .weapon_identity import masked_score
 
 ImageU8 = NDArray[np.uint8]
 
@@ -65,6 +66,7 @@ class HudTemplateProfile:
         self.asset_paths = tuple(sorted(self._find_asset_paths(self.raw)))
         self._signal_templates: dict[str, tuple[str, LoadedTemplate]] = {}
         self._signal_bounds: dict[str, tuple[float, float, float, float]] = {}
+        self._signal_masks: dict[str, ImageU8] = {}
         for name, spec in self.raw.get("signals", {}).items():
             try:
                 if not isinstance(spec, Mapping) or not isinstance(spec.get("roi"), str):
@@ -74,8 +76,23 @@ class HudTemplateProfile:
                 )
                 if "roi_bounds" in spec:
                     self._signal_bounds[str(name)] = _bounds(spec["roi_bounds"])
+                if "mask" in spec:
+                    if name != "weapon_ammo_structure" or template.threshold < 0.90:
+                        raise ValueError("masked identity requires weapon structure and NCC >= .90")
+                    mask = cv2.imdecode(
+                        np.frombuffer(self.resolve_asset(str(spec["mask"])).read_bytes(), np.uint8),
+                        cv2.IMREAD_GRAYSCALE,
+                    )
+                    if (
+                        mask is None
+                        or mask.shape != template.image.shape[:2]
+                        or np.count_nonzero(mask) < 32
+                        or not set(np.unique(mask)).issubset({0, 255})
+                    ):
+                        raise ValueError("invalid identity mask")
+                    self._signal_masks[str(name)] = np.asarray(mask, dtype=np.uint8)
                 self._signal_templates[str(name)] = (spec["roi"], template)
-            except (KeyError, ValueError, OSError) as exc:
+            except (KeyError, ValueError, OSError, cv2.error) as exc:
                 self.reader_diagnostics.append(f"signal {name}: {exc}")
         self._panel_components: ImageU8 | None = None
         clear = self.raw.get("spectator_panel_detector")
@@ -110,7 +127,18 @@ class HudTemplateProfile:
                 crop = crop[
                     round(top * ch) : round(bottom * ch), round(left * cw) : round(right * cw)
                 ]
-            result = _best_template_match(crop, (template,))
+            if name in self._signal_masks:
+                reference = template.image
+                if reference.ndim == 3:
+                    reference = np.asarray(
+                        cv2.cvtColor(reference, cv2.COLOR_BGR2GRAY), dtype=np.uint8
+                    )
+                confidence = masked_score(reference, crop, self._signal_masks[name])
+                result: ReaderResult[Any] = ReaderResult(
+                    True if confidence >= template.threshold else None, confidence
+                )
+            else:
+                result = _best_template_match(crop, (template,))
             # Legacy pixel templates can prove presence, never absence.
             if name == "spectated_player_panel" and result.value is not None:
                 signals["self_hud_identity_trustworthy"] = False

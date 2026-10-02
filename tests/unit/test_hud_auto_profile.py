@@ -48,7 +48,20 @@ def test_generated_layout_consumed_without_json_edits(tmp_path, panel_images):
     signals = profile.detect_signals(frames[1], HudLayout.load(generated))
     assert live_identity(signals, geometry_valid=True).live
     assert not live_identity(signals, geometry_valid=False).live
-    assert all("mask" not in profile.raw["signals"][name] for name in STRUCTURES)
+    assert all(
+        "mask" not in profile.raw["signals"][name]
+        for name in STRUCTURES
+        if name != "weapon_ammo_structure"
+    )
+    # The new weapon mask is identity-only, never a geometry mask or asset.
+    weapon_mask = profile.raw["signals"]["weapon_ammo_structure"]["mask"]
+    geometry_assets = {
+        spec[key]
+        for spec in profile.raw["anchors"].values()
+        for key in ("template", "mask")
+        if key in spec
+    }
+    assert weapon_mask not in geometry_assets
     assert all(
         profile.raw["signals"][name]["template"].startswith("identity/") for name in STRUCTURES
     )
@@ -78,6 +91,31 @@ def test_structure_requires_disjoint_holdout_support():
             cv2.rectangle(image, (4, 4), (115, 115), (220, 220, 220), 2)
         crops.append(image)
     assert structure_reference(crops) is None
+
+
+@pytest.mark.parametrize("copy_mask", [False, True])
+def test_inherited_geometry_mask_cannot_be_weapon_identity(tmp_path, panel_images, copy_mask):
+    layout, frames = inputs(tmp_path, panel_images)
+    base = create_profile(
+        Path("private.mp4"), layout, tmp_path / "base", video_service=FakeVideoService(frames)
+    )
+    sidecar = base.with_suffix(".templates.json")
+    raw = json.loads(sidecar.read_text())
+    mask = raw["signals"]["weapon_ammo_structure"]["mask"]
+    raw["anchors"]["round_timer"]["mask"] = mask
+    if copy_mask:
+        copy = sidecar.parent / "identity" / "copied.mask.png"
+        copy.write_bytes((sidecar.parent / mask).read_bytes())
+        raw["signals"]["weapon_ammo_structure"]["mask"] = "identity/copied.mask.png"
+    sidecar.write_text(json.dumps(raw))
+    generated = create_profile(
+        Path("private.mp4"), base, tmp_path / "next", video_service=FakeVideoService(frames)
+    )
+    after = HudTemplateProfile.load(generated.with_suffix(".templates.json"))
+    assert (
+        after.raw["automatic_identity_generation"]["references"]["weapon_ammo_structure"]["status"]
+        == "generated"
+    )
 
 
 @pytest.mark.parametrize("value", [0, 255])

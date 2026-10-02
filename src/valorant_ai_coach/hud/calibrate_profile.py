@@ -24,6 +24,7 @@ from .calibrate_temporal import _check_output_privacy, _localize_assets, create_
 from .layout import HudLayout
 from .spectator import generate_panel_reference, panel_components
 from .templates import HudTemplateProfile
+from .weapon_identity import weapon_reference
 
 ROLES = {
     "hp_hud_structure": "player_hp_armor",
@@ -266,10 +267,16 @@ def create_profile(
         for name, roi_name in ROLES.items():
             if name in inherited._signal_templates:
                 inherited_roi, template = inherited._signal_templates[name]
+                spec = inherited.raw["signals"][name]
+                identity_assets = [template.path]
+                if "mask" in spec:
+                    identity_assets.append(inherited.resolve_asset(spec["mask"]))
                 if (
-                    template.path.resolve() not in geometry_assets
-                    and hashlib.sha256(template.path.read_bytes()).hexdigest()
-                    not in geometry_hashes
+                    all(
+                        asset.resolve() not in geometry_assets
+                        and hashlib.sha256(asset.read_bytes()).hexdigest() not in geometry_hashes
+                        for asset in identity_assets
+                    )
                     and inherited_roi == roi_name
                     and inherited_roi in layout.regions
                 ):
@@ -278,14 +285,29 @@ def create_profile(
                         "content_hash": hashlib.sha256(template.path.read_bytes()).hexdigest(),
                         "dimensions": [int(template.image.shape[1]), int(template.image.shape[0])],
                     }
+                    if name == "weapon_ammo_structure" and "mask" in spec:
+                        diagnostics["references"][name].update(
+                            mask_presence=True,
+                            mask_content_hash=hashlib.sha256(
+                                identity_assets[-1].read_bytes()
+                            ).hexdigest(),
+                        )
                     continue
             # Invalid/missing assets and reused geometry are not independent evidence.
             raw["signals"].pop(name, None)
             result = None
+            identity_mask = None
             stats: dict[str, Any] = {}
             if roi_name in layout.regions:
                 x1, y1, x2, y2 = layout.normalized_roi(roi_name).pixel_bounds(width, height)
-                result = structure_reference([image[y1:y2, x1:x2] for image in images], stats)
+                crops = [image[y1:y2, x1:x2] for image in images]
+                if name == "weapon_ammo_structure":
+                    weapon = weapon_reference(crops, stats)
+                    if weapon is not None:
+                        reference, bounds, identity_mask = weapon
+                        result = reference, bounds, stats
+                else:
+                    result = structure_reference(crops, stats)
             if result is None:
                 diagnostics["references"][name] = {**stats, "status": "insufficient_evidence"}
                 continue
@@ -299,6 +321,12 @@ def create_profile(
                 "template": f"identity/{name}.png",
                 "threshold": 0.90,
             }
+            if identity_mask is not None:
+                mask_asset = stage / "identity" / f"{name}.mask.png"
+                mask_stats = _write_asset(mask_asset, identity_mask)
+                stats["mask_content_hash"] = mask_stats["content_hash"]
+                stats["mask_presence"] = True
+                raw["signals"][name]["mask"] = f"identity/{name}.mask.png"
         # Never inherit or generate background/clear-image evidence.
         raw.pop("spectator_clear_reference", None)
         raw.pop("spectator_panel_detector", None)

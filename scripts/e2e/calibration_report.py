@@ -166,6 +166,8 @@ def sanitize_identity_generation(value):
                 "structural_rejected",
                 "support_rejected",
                 "holdout_rejected",
+                "cluster_count",
+                "omitted_candidate_count",
             )
         }
         row["holdout_median"] = number(source.get("holdout_median"))
@@ -187,4 +189,136 @@ def sanitize_identity_generation(value):
             else None
         )
         result["references"][name] = row
+        if name == "weapon_ammo_structure":
+            row["weapon_ammo_generation"] = {
+                "rejection_counts": {
+                    k: number(object_or_empty(source.get("rejection_counts")).get(k), count=True)
+                    for k in (
+                        "seed_support_insufficient",
+                        "fixed_edges_insufficient",
+                        "edge_arrangement_invalid",
+                        "edge_density_invalid",
+                        "mask_contrast_insufficient",
+                        "training_support_insufficient",
+                    )
+                },
+                "candidates": [
+                    sanitize_candidate(c)
+                    for c in source.get("candidates", [])[:64]
+                    if isinstance(c, dict)
+                ]
+                if isinstance(source.get("candidates"), list)
+                else [],
+                "selected_candidate": sanitize_candidate(
+                    object_or_empty(source.get("selected_candidate"))
+                ),
+                "mask_presence": source.get("mask_presence") is True,
+                "mask_content_hash": source.get("mask_content_hash")
+                if isinstance(source.get("mask_content_hash"), str)
+                and re.fullmatch(r"[a-f0-9]{64}", source["mask_content_hash"])
+                else None,
+            }
+        if name == "spectator_panel":
+            keys = (
+                "observable",
+                "boundary",
+                "portrait",
+                "textlike",
+                "boundary_portrait",
+                "portrait_textlike",
+                "boundary_textlike",
+                "all_components",
+            )
+            reasons = (
+                "geometry_rejected",
+                "contrast_rejected",
+                "blur_rejected",
+                "structural_rejected",
+                "candidate",
+            )
+            samples = source.get("samples", [])
+            row["spectator_generation"] = {
+                "evidence_counts": {
+                    k: number(object_or_empty(source.get("evidence_counts")).get(k), count=True)
+                    for k in keys
+                },
+                "rejection_counts": {
+                    k: number(object_or_empty(source.get("rejection_counts")).get(k), count=True)
+                    for k in reasons[:-1]
+                },
+                "samples": [
+                    {
+                        **{k: s.get(k) is True for k in keys},
+                        "sample_index": number(s.get("sample_index"), count=True),
+                        "training": s.get("training") is True,
+                        "reason": s.get("reason") if s.get("reason") in reasons else None,
+                    }
+                    for s in samples[:64]
+                    if isinstance(s, dict)
+                ]
+                if isinstance(samples, list)
+                else [],
+            }
+    return result
+
+
+def sanitize_candidate(source):
+    result = {
+        k: number(source.get(k), count=True)
+        for k in ("training_cluster_size", "training_accept_count", "holdout_accept_count")
+    }
+    result.update(
+        {
+            k: number(source.get(k))
+            for k in (
+                "temporal_variance",
+                "edge_persistence",
+                "stable_pixel_ratio",
+                "dynamic_pixel_ratio",
+                "mask_pixel_ratio",
+                "holdout_prevalence",
+            )
+        }
+    )
+    bounds = source.get("roi_bounds")
+    result["roi_bounds"] = (
+        bounds
+        if isinstance(bounds, list)
+        and len(bounds) == 4
+        and all(number(v) is not None for v in bounds)
+        else None
+    )
+    dims = source.get("dimensions")
+    result["dimensions"] = (
+        dims
+        if isinstance(dims, list)
+        and len(dims) == 2
+        and all(isinstance(v, int) and not isinstance(v, bool) and 0 < v <= 65536 for v in dims)
+        else None
+    )
+    result["reason"] = (
+        source.get("reason")
+        if source.get("reason")
+        in (
+            "structural_rejected",
+            "support_rejected",
+            "training_candidate",
+            "holdout_rejected",
+            "selected",
+        )
+        else None
+    )
+    for key, allowed in (
+        (
+            "structural_rejection_reason",
+            (
+                "fixed_edges_insufficient",
+                "edge_arrangement_invalid",
+                "edge_density_invalid",
+                "mask_contrast_insufficient",
+            ),
+        ),
+        ("support_rejection_reason", ("training_support_insufficient",)),
+    ):
+        result[key] = source.get(key) if source.get(key) in allowed else None
     return result
