@@ -205,6 +205,7 @@ def parser() -> argparse.ArgumentParser:
 
 
 def run_case(args, *, root=APP_ROOT, runner=subprocess.run, probe=None) -> int:
+    from scripts.e2e.report_context import save_context
     from scripts.e2e.share_report import export_report
     from valorant_ai_coach.video import VideoService
 
@@ -232,6 +233,7 @@ def run_case(args, *, root=APP_ROOT, runner=subprocess.run, probe=None) -> int:
     }
     raw, trace, assertions = {}, {}, {}
     evaluation = {"pass": False, "schema_valid": False, "failures": []}
+    assertions_hash = None
 
     def command(argv, name, allowed=(0,)):
         with (output / f"{name}.log").open("wb") as log:
@@ -317,12 +319,14 @@ def run_case(args, *, root=APP_ROOT, runner=subprocess.run, probe=None) -> int:
             Path(args.hud_layout) if args.hud_layout else root / "config/hud_layout_1080p_v3.json"
         )
         sidecar = layout.with_suffix(".templates.json")
+        metadata["hud_layout_sha256"] = sha256_file(layout) if layout.is_file() else None
         if sidecar.is_file():
             settings["hud_assets"] = HudTemplateProfile.load(sidecar).fingerprint(layout)
         metadata["settings_fingerprint"] = hashlib.sha256(
             json.dumps(settings, sort_keys=True).encode()
         ).hexdigest()
         print("Running existing E2E pipeline; detailed logs stay in outputs/.", flush=True)
+        save_context(output, metadata, assertions_sha256=assertions_hash)
         command(cmd, "analyzer")
         raw = read_json(output / "raw_processing.json")
         if raw.get("status") != "complete":
@@ -368,14 +372,21 @@ def run_case(args, *, root=APP_ROOT, runner=subprocess.run, probe=None) -> int:
         (output / "error_code.json").write_text(json.dumps({"error_code": error}) + "\n")
         print(error, file=sys.stderr)
         code = 2
-    export_report(
-        raw=raw,
-        trace=trace,
-        evaluation=evaluation,
-        assertions=assertions,
-        metadata=metadata,
-        output_dir=shared,
-    )
+    save_context(output, metadata, assertions_sha256=assertions_hash, exit_code=code)
+    try:
+        export_report(
+            raw=raw,
+            trace=trace,
+            evaluation=evaluation,
+            assertions=assertions,
+            metadata=metadata,
+            output_dir=shared,
+        )
+    except (OSError, ValueError):
+        print(
+            "SHARED_EXPORT_FAILED: local run and metadata retained for re-export.", file=sys.stderr
+        )
+        return 2
     print(f"Generated share report: e2e_reports/{video_id}/summary.json")
     return code
 

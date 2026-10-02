@@ -1,5 +1,26 @@
 # Windows E2E 上流診断（2026-10-01）
 
+## 2026-10-02: shared export容量超過の回収
+
+Analyzer/Evaluator完了後の共有export失敗は、詳細candidate/sample診断でsummaryが
+128 KiBを超えたため。旧fallbackはfailuresしか縮めず、HUD arraysには効かなかった。
+今回の修正では上限を増やさず、共有allowlist適用後に最大6代表例へ縮約する。
+Weaponの選択候補・支持/棄却件数・similarity分布、Spectatorのevidence/rejection countsと
+portrait統計を維持。省略件数とdetail_truncatedを共有する。raw/local詳細は変更しない。
+
+容量fallbackはfailures短縮→HUD詳細arrays削除の二段階。summaryとhud_calibration両方を
+書き込み前にサイズ検査する。それでも超える場合だけエラーにする。
+
+`scripts.e2e.reexport_report` は完了済みrunの3JSONから、解析・評価を実行せず再共有できる。
+今後はrun_metadata.jsonにsanitized metadataと3JSONのhashを保存し、再exportで同一性を検証。
+旧runは登録manifestでpackを確認できる場合のみ回収し、歴史的commit/dirty/time/settingsを
+推測せずnullにする。現在のgit状態や指定layoutで過去metadataを作り直さない。
+実行コマンドと旧runでの制限は `WINDOWS_E2E.md` のRecovery節を参照。
+Windows実動画の改善をMacで検証したものではない。
+Mac検証: pytest 517 passed / 3 skipped（実録画未提供1、PowerShell未導入2）。
+Ruff・mypy（78 source files）・git diff --check成功。容量fallback、privacy、raw不変、
+解析/評価再実行なし、通常exportとの一致、入力/pack改変拒否、旧metadata不明をテストした。
+
 ## 2026-10-02: report 83a36df / analyzer 20346ac の再検証と構造検出修正
 
 この節が最新。Windows実行metadataは `20346ac` / dirty=false、実動画改善はMacでは未確認。

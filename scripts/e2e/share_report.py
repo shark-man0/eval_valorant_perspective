@@ -730,14 +730,9 @@ def _aggregates(raw: dict, trace: dict, evaluation: dict, assertions: dict) -> d
     }
 
 
-def export_report(
-    *, raw: dict, trace: dict, evaluation: dict, assertions: dict, metadata: dict, output_dir: Path
-) -> Path:
-    """Write summary.json, README.md and bounded history.json; return summary path."""
-    output_dir = Path(output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
+def sanitize_metadata(metadata: dict) -> dict:
     # Only explicitly named, format-checked metadata crosses the share boundary.
-    meta = {
+    return {
         "manual_map_id": _vocab(metadata.get("manual_map_id"), _field_vocabulary("map_id")),
         "video_id": _safe_id(metadata.get("video_id")),
         "source_sha256": metadata.get("source_sha256")
@@ -766,6 +761,31 @@ def export_report(
         and re.fullmatch(r"[a-fA-F0-9]{64}", metadata["settings_fingerprint"])
         else None,
     }
+
+
+def sanitize_run_metadata(metadata: dict) -> dict:
+    return {
+        **sanitize_metadata(metadata),
+        "error_code": _safe_id(metadata.get("error_code")),
+        "evidence_files": [
+            name
+            for name in metadata.get("evidence_files", [])[:10]
+            if isinstance(name, str)
+            and re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,79}", name)
+            and not _SECRETISH.search(name)
+        ]
+        if isinstance(metadata.get("evidence_files"), list)
+        else [],
+    }
+
+
+def export_report(
+    *, raw: dict, trace: dict, evaluation: dict, assertions: dict, metadata: dict, output_dir: Path
+) -> Path:
+    """Write bounded summary and calibration; raw/local objects remain untouched."""
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    meta = sanitize_metadata(metadata)
     error_code = _safe_id(metadata.get("error_code"))
     passed = (
         evaluation.get("pass") is True
@@ -990,7 +1010,7 @@ def export_report(
         else [],
     }
     path = output_dir / "summary.json"
-    if len(messages) > 300:
+    if len(messages) > 300 or summary["hud_calibration"].get("detail_truncated"):
         summary["result"]["detail_truncated"] = True
     encoded = json.dumps(summary, ensure_ascii=False, indent=2, allow_nan=False) + "\n"
     if len(encoded.encode("utf-8")) > MAX_REPORT_BYTES:
@@ -998,18 +1018,36 @@ def export_report(
         summary["result"]["detail_truncated"] = True
         encoded = json.dumps(summary, ensure_ascii=False, indent=2, allow_nan=False) + "\n"
     if len(encoded.encode("utf-8")) > MAX_REPORT_BYTES:
-        raise ValueError("share report exceeds size limit")
-    path.write_text(encoded, encoding="utf-8")
-    (output_dir / "hud_calibration.json").write_text(
+        _drop_verbose_diagnostics(summary)
+        encoded = json.dumps(summary, ensure_ascii=False, indent=2, allow_nan=False) + "\n"
+    calibration_encoded = (
         json.dumps(
             {"metadata": meta, **summary["hud_calibration"]},
             ensure_ascii=False,
             indent=2,
             allow_nan=False,
         )
-        + "\n",
-        encoding="utf-8",
+        + "\n"
     )
+    if len(calibration_encoded.encode("utf-8")) > MAX_REPORT_BYTES:
+        _drop_verbose_diagnostics(summary)
+        encoded = json.dumps(summary, ensure_ascii=False, indent=2, allow_nan=False) + "\n"
+        calibration_encoded = (
+            json.dumps(
+                {"metadata": meta, **summary["hud_calibration"]},
+                ensure_ascii=False,
+                indent=2,
+                allow_nan=False,
+            )
+            + "\n"
+        )
+    if (
+        max(len(encoded.encode("utf-8")), len(calibration_encoded.encode("utf-8")))
+        > MAX_REPORT_BYTES
+    ):
+        raise ValueError("share report exceeds size limit")
+    path.write_text(encoded, encoding="utf-8")
+    (output_dir / "hud_calibration.json").write_text(calibration_encoded, encoding="utf-8")
     (output_dir / "README.md").write_text(
         "# E2E shared report\n\nThis directory contains a privacy-filtered summary only. "
         "The source video and full analyzer outputs are not included. `git_is_dirty=true` means "
@@ -1058,3 +1096,18 @@ def export_report(
         encoding="utf-8",
     )
     return path
+
+
+def _drop_verbose_diagnostics(summary):
+    calibration = summary["hud_calibration"]
+    refs = calibration.get("automatic_identity_generation", {}).get("references", {})
+    weapon = refs.get("weapon_ammo_structure", {})
+    candidates = weapon.get("weapon_ammo_generation", {}).pop("candidates", [])
+    weapon["omitted_candidate_count"] = (weapon.get("omitted_candidate_count") or 0) + len(
+        candidates
+    )
+    panel = refs.get("spectator_panel", {}).get("spectator_generation", {})
+    samples = panel.pop("samples", [])
+    panel["omitted_sample_count"] = (panel.get("omitted_sample_count") or 0) + len(samples)
+    calibration["detail_truncated"] = True
+    summary["result"]["detail_truncated"] = True

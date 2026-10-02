@@ -1,5 +1,57 @@
 # Windows-local raw video / Git-shared E2E results
 
+## Recover an already completed run (no video re-analysis)
+
+If Analyzer/Evaluator completed but shared export failed, update the repository and
+run the following from its root. This only reads saved results, checks integrity,
+and exports shared reports; it does not invoke Analyzer, Evaluator, FFmpeg, OpenAI,
+or git. A legacy run may read the original video's bytes to verify its SHA256.
+
+```powershell
+$ErrorActionPreference = 'Stop'
+$pack = (Resolve-Path (Read-Host 'Validation Pack directory')).Path
+$run = Get-ChildItem '.\outputs\e2e\match_001' -Directory |
+  Where-Object {
+    (Test-Path (Join-Path $_.FullName 'raw_processing.json')) -and
+    (Test-Path (Join-Path $_.FullName 'e2e_trace.json')) -and
+    (Test-Path (Join-Path $_.FullName 'evaluation_report.json'))
+  } |
+  Sort-Object Name -Descending |
+  Select-Object -First 1
+if (-not $run) { throw 'No completed local run found' }
+
+.\.venv\Scripts\python.exe -m scripts.e2e.reexport_report `
+  --run-dir $run.FullName `
+  --video-id match_001 `
+  --validation-pack $pack
+if ($LASTEXITCODE -ne 0) { throw 'Recovery failed; no analysis was run' }
+```
+
+Check the selected `$run.FullName` if you want to recover a particular run rather
+than the latest complete one. Output defaults to `e2e_reports/match_001`; use
+`--output-dir` for a separate destination. Exit 0 means export succeeded, NOT that
+the saved E2E passed. Read `summary.json.result` for its actual evaluation status.
+
+Future dataset runs save `run_metadata.json` before Analyzer and immediately before
+shared export, with allowlisted metadata and raw/trace/evaluation hashes. Re-export
+preserves the original commit, dirty state, timestamp, settings fingerprint and
+manual map metadata. Changed inputs or Validation Pack are rejected.
+
+For older runs with no saved metadata, recovery verifies the supplied pack against
+the registered dataset manifest, and verifies the source hash if the video remains
+available. Historical commit/dirty/time/settings fingerprint stay null. Manual map
+is restored only if recorded settings exist; a present-day layout cannot reconstruct
+historical settings. Therefore omit `--hud-layout` and `--manual-map-id` for the
+current legacy recovery unless you have matching recorded evidence. For new runs,
+these optional flags are verification-only: layout must match its saved SHA256,
+and manual map must match recorded metadata. They never overwrite historical fields.
+
+Shared `summary.json` AND `hud_calibration.json` retain the 128 KiB limit. Weapon
+candidates and spectator samples are reduced to at most six representatives; full
+local diagnostics remain untouched. Aggregates, rejection/support counts and the
+selected candidate remain available. The size fallback first shortens failures,
+then removes representative diagnostic arrays and sets `detail_truncated=true`.
+
 ## One execution path
 
 `run_e2e_windows.ps1` → `scripts/e2e/run_dataset_case.py` → existing

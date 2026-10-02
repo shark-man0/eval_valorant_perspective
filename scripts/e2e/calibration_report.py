@@ -2,6 +2,7 @@
 
 import math
 import re
+import statistics
 
 from valorant_ai_coach.hud.diagnostics import ANCHORS, COUNTS, REASONS
 
@@ -131,7 +132,70 @@ def sanitize_calibration(value):
         scores = object_or_empty(source.get("match_confidence"))
         row["match_confidence"] = {key: number(scores.get(key)) for key in ("min", "median", "max")}
         result["anchors"].append(row)
+    compact_diagnostics(result)
     return result
+
+
+def representatives(rows, *, limit=6):
+    """Deterministic representatives of reasons, plus strongest training evidence."""
+    chosen = []
+    if rows:
+        chosen.append(
+            max(
+                rows,
+                key=lambda r: r.get("training_accept_count") or r.get("portrait_frame_score") or 0,
+            )
+        )
+    seen = set()
+    for row in rows:
+        reason = (
+            row.get("structural_rejection_reason")
+            or row.get("support_rejection_reason")
+            or row.get("reason")
+        )
+        if reason not in seen:
+            seen.add(reason)
+            if row not in chosen:
+                chosen.append(row)
+    return chosen[:limit]
+
+
+def compact_diagnostics(calibration):
+    """Only called on the fresh sanitized copy, never on raw/local telemetry."""
+    refs = object_or_empty(
+        object_or_empty(calibration.get("automatic_identity_generation")).get("references")
+    )
+    weapon = object_or_empty(refs.get("weapon_ammo_structure"))
+    generation = object_or_empty(weapon.get("weapon_ammo_generation"))
+    candidates = generation.get("candidates", [])
+    keep = representatives(candidates)
+    generation["candidates"] = keep
+    weapon["omitted_candidate_count"] = (
+        (weapon.get("omitted_candidate_count") or 0) + len(candidates) - len(keep)
+    )
+    panel = object_or_empty(refs.get("spectator_panel"))
+    generation = object_or_empty(panel.get("spectator_generation"))
+    samples = generation.get("samples", [])
+    generation["portrait_statistics"] = {}
+    for key in (
+        "portrait_candidate_count",
+        "portrait_geometry_count",
+        "portrait_supported_count",
+        "portrait_occupancy_rejected",
+        "portrait_frame_score",
+    ):
+        values = [s[key] for s in samples if s.get(key) is not None]
+        generation["portrait_statistics"][key] = dict(
+            count=len(values),
+            min=min(values) if values else None,
+            median=statistics.median(values) if values else None,
+            max=max(values) if values else None,
+        )
+    keep_samples = representatives(samples)
+    generation["samples"] = keep_samples
+    generation["omitted_sample_count"] = len(samples) - len(keep_samples)
+    if len(keep) < len(candidates) or len(keep_samples) < len(samples):
+        calibration["detail_truncated"] = True
 
 
 def sanitize_identity_generation(value):
