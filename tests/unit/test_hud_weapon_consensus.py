@@ -174,6 +174,31 @@ def consensus(reference_result, image, diagnostics=None):
     )
 
 
+def _group_box(reference_result, group):
+    _reference, bounds, _mask, regions, _allowed = reference_result
+    ys, xs = np.where(regions == group)
+    bx1, by1, _bx2, _by2 = _pixel_box(bounds)
+    return (
+        bx1 + int(xs.min()),
+        by1 + int(ys.min()),
+        bx1 + int(xs.max()) + 1,
+        by1 + int(ys.max()) + 1,
+    )
+
+
+def _obscure_group(reference_result, image, group, value=42):
+    x1, y1, x2, y2 = _group_box(reference_result, group)
+    image[y1:y2, x1:x2] = value
+    return image
+
+
+def _assert_status_counts(diagnostics, *, matching, contradictory, unobservable):
+    groups = diagnostics["groups"]
+    assert sum(item["matching"] for item in groups) == matching
+    assert sum(item["contradictory"] for item in groups) == contradictory
+    assert sum(item["unobservable"] for item in groups) == unobservable
+
+
 def test_config_uses_persistent_weapon_slots_without_legacy_support_boxes():
     spec = copy.deepcopy(WEAPON_SPEC)
     assert spec["discovery"] == "persistent_slots_v1"
@@ -206,7 +231,9 @@ def test_persistent_slot_consensus_survives_digits_and_world_texture_changes():
             )
     for index in range(4):
         image = weapon_crop(40 + index, value=("100", "80", "48", "22")[index])
-        assert consensus(result, image) >= 0.90
+        diagnostics = {}
+        assert consensus(result, image, diagnostics) >= 0.90
+        _assert_status_counts(diagnostics, matching=3, contradictory=0, unobservable=0)
     # The reference is a frozen crop-bounded representation, not raw ammo text.
     intended = WEAPON_SPEC["intended_bounds"]
     assert abs(bounds[0] - intended[0]) <= 1 / CROP_SHAPE[1]
@@ -234,7 +261,39 @@ def test_hiding_all_three_critical_slot_features_is_unknown():
     hidden = weapon_crop(41, slot=False)
     diagnostics = {}
     assert consensus(result, hidden, diagnostics) < 0.90
-    assert all(group["unobservable"] for group in diagnostics["groups"])
+    _assert_status_counts(diagnostics, matching=0, contradictory=0, unobservable=3)
+
+
+def test_exactly_two_matching_and_one_genuinely_unobservable_group_stays_negative():
+    result, _stats = accepted_reference([weapon_crop(i) for i in range(16)], NEIGHBOR_BOUNDS)
+    assert result is not None
+    image = _obscure_group(result, weapon_crop(40), group=1)
+    diagnostics = {}
+    assert consensus(result, image, diagnostics) < 0.90
+    _assert_status_counts(diagnostics, matching=2, contradictory=0, unobservable=1)
+
+
+def test_one_matching_and_two_unobservable_groups_stays_negative():
+    result, _stats = accepted_reference([weapon_crop(i) for i in range(16)], NEIGHBOR_BOUNDS)
+    assert result is not None
+    image = weapon_crop(40)
+    _obscure_group(result, image, group=1)
+    _obscure_group(result, image, group=2)
+    diagnostics = {}
+    assert consensus(result, image, diagnostics) < 0.90
+    _assert_status_counts(diagnostics, matching=1, contradictory=0, unobservable=2)
+
+
+def test_two_matching_and_one_observable_contradiction_stays_negative():
+    result, _stats = accepted_reference([weapon_crop(i) for i in range(16)], NEIGHBOR_BOUNDS)
+    assert result is not None
+    image = weapon_crop(40)
+    x1, y1, x2, y2 = _group_box(result, group=1)
+    center = (x1 + x2) // 2
+    cv2.line(image, (center, y1 - 2), (center, y2 + 2), 242, 2, cv2.LINE_8)
+    diagnostics = {}
+    assert consensus(result, image, diagnostics) < 0.90
+    _assert_status_counts(diagnostics, matching=2, contradictory=1, unobservable=0)
 
 
 def test_observable_contradictory_slot_is_not_presence():
@@ -291,6 +350,29 @@ def test_non_slot_patterns_never_create_a_weapon_reference(kind):
         frames = [weapon_crop(i, slot=False, generic=kind) for i in range(16)]
     else:
         frames = [weapon_crop(i, slot=False) for i in range(16)]
+    result, _stats = accepted_reference(frames, NEIGHBOR_BOUNDS)
+    assert result is None
+
+
+def test_ability_like_contamination_inside_learned_support_cannot_pass_runtime():
+    result, _stats = accepted_reference([weapon_crop(i) for i in range(16)], NEIGHBOR_BOUNDS)
+    assert result is not None
+    image = weapon_crop(40, slot=False)
+    for group in range(1, int(result[3].max()) + 1):
+        x1, y1, x2, y2 = _group_box(result, group)
+        cv2.line(image, (x1 - 2, y1 + 3), (x2 + 2, y2 - 3), 238, 2, cv2.LINE_AA)
+    diagnostics = {}
+    assert consensus(result, image, diagnostics) < 0.90
+    assert sum(group["matching"] for group in diagnostics["groups"]) < 3
+
+
+def test_continuous_vertical_slot_lookalikes_without_cap_gap_are_rejected():
+    frames = []
+    for index in range(16):
+        image = weapon_crop(index, slot=False)
+        for x in (122, 131, 140):
+            cv2.line(image, (x, 112), (x, 143), 225, 1, cv2.LINE_8)
+        frames.append(image)
     result, _stats = accepted_reference(frames, NEIGHBOR_BOUNDS)
     assert result is None
 
