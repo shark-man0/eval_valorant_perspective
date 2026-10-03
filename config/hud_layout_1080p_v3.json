@@ -786,5 +786,73 @@
     "user_track_selection": "required in playback/settings UI when multiple tracks exist",
     "persist_user_choice": true,
     "automatic_game_mic_mix_identification_mvp": false
+  },
+  "identity_structure_regions": {
+    "hp_hud_structure": {
+      "intended_bounds": [
+        0.14,
+        0.46,
+        0.945,
+        0.93
+      ],
+      "support_bounds": [
+        [
+          0.15,
+          0.8,
+          0.66,
+          0.91
+        ],
+        [
+          0.68,
+          0.47,
+          0.945,
+          0.89
+        ]
+      ],
+      "dynamic_bounds": [
+        [
+          0.34,
+          0.5,
+          0.67,
+          0.79
+        ]
+      ]
+    },
+    "weapon_ammo_structure": {
+      "intended_bounds": [
+        0.24,
+        0.59,
+        0.78,
+        0.93
+      ],
+      "support_bounds": [
+        [
+          0.515,
+          0.62,
+          0.635,
+          0.79
+        ],
+        [
+          0.25,
+          0.82,
+          0.77,
+          0.92
+        ]
+      ],
+      "dynamic_bounds": [
+        [
+          0.25,
+          0.59,
+          0.51,
+          0.82
+        ],
+        [
+          0.64,
+          0.59,
+          0.78,
+          0.82
+        ]
+      ]
+    }
   }
 }

@@ -472,10 +472,28 @@ def sanitize_identity_generation(value):
             else None
         )
         result["references"][name] = row
+        if (
+            name in ("hp_hud_structure", "weapon_ammo_structure")
+            and source.get("matcher") == "value_invariant_edges_v1"
+        ):
+            row["value_invariant_generation"] = {
+                "matcher": "value_invariant_edges_v1",
+                "selected_candidate": sanitize_candidate(
+                    object_or_empty(source.get("selected_candidate"))
+                ),
+            }
+            for key in ("mask_content_hash", "support_content_hash"):
+                digest = source.get(key)
+                row["value_invariant_generation"][key] = (
+                    digest
+                    if isinstance(digest, str) and re.fullmatch(r"[a-f0-9]{64}", digest)
+                    else None
+                )
         if name == "weapon_ammo_structure":
             row["weapon_ammo_generation"] = {
                 "matcher": source.get("matcher")
-                if source.get("matcher") in ("oriented_edges_v1", "masked_ncc")
+                if source.get("matcher")
+                in ("oriented_edges_v1", "masked_ncc", "value_invariant_edges_v1")
                 else None,
                 "proposal_count": number(source.get("proposal_count"), count=True),
                 "proposal_budget_omitted": number(
@@ -491,7 +509,12 @@ def sanitize_identity_generation(value):
                     {
                         "proposal_source": p.get("proposal_source")
                         if p.get("proposal_source")
-                        in ("localized_component", "component_group", "legacy_grid")
+                        in (
+                            "localized_component",
+                            "component_group",
+                            "legacy_grid",
+                            "configured_role_scaffold",
+                        )
                         else None,
                         "proposal_training_frames": number(
                             p.get("proposal_training_frames"), count=True
@@ -720,6 +743,26 @@ def sanitize_candidate(source):
         and all(number(v) is not None for v in bounds)
         else None
     )
+    for key in ("distance_from_intended_region", "neighbor_overlap_ratio"):
+        result[key] = number(source.get(key))
+    for key in ("intended_bounds",):
+        box = source.get(key)
+        result[key] = [number(v) for v in box] if isinstance(box, list) and len(box) == 4 else None
+    for key in ("support_bounds", "dynamic_bounds"):
+        boxes = source.get(key)
+        result[key] = (
+            [
+                [number(v) for v in box]
+                for box in boxes[:4]
+                if isinstance(box, list) and len(box) == 4
+            ]
+            if isinstance(boxes, list)
+            else []
+        )
+    populations = source.get("group_mask_population")
+    result["group_mask_population"] = (
+        [number(v, count=True) for v in populations[:4]] if isinstance(populations, list) else []
+    )
     dims = source.get("dimensions")
     result["dimensions"] = (
         dims
@@ -777,7 +820,7 @@ def sanitize_candidate(source):
     result["proposal_source"] = (
         source.get("proposal_source")
         if source.get("proposal_source")
-        in ("localized_component", "component_group", "legacy_grid")
+        in ("localized_component", "component_group", "legacy_grid", "configured_role_scaffold")
         else None
     )
     result["rejection_stage"] = (

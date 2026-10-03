@@ -1,27 +1,5 @@
 [
   {
-    "history_key": "47eb547af96d260630d4d2c64a3bf4b5fc0f2365bd88e0c37068b1b6eb71882e",
-    "metadata": {
-      "video_id": "match_001",
-      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
-      "analyzer_commit": "eb7160e321ffb6db28d6c791dc210508f909e371",
-      "git_is_dirty": true,
-      "executed_at": "2026-09-30T09:48:35.244652+00:00",
-      "validation_pack": "valorant_e2e_validation_pack_v3",
-      "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
-      "git_dirty_fingerprint": "693abdc83d78ccedf8d970b3af9801b2df70b6150300b63f5e5896a65ecf07d0",
-      "settings_fingerprint": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
-    },
-    "result": {
-      "status": "fail",
-      "schema_valid": false,
-      "failure_count": null,
-      "negative_assertion_count": null,
-      "error_code": "ANALYZER_FAILED"
-    },
-    "failure_count": null
-  },
-  {
     "history_key": "a1c98d8d9912debcd5b1c79b8e43b4c77ebd99ee0773d2dea2d27f16946a8d7f",
     "metadata": {
       "video_id": "match_001",
@@ -440,12 +418,35 @@
       "settings_fingerprint": "edd7ac4d443fa5369bbc74009b05ffdf645b43388c0d35b7c4a3d5fb38bdacf4"
     },
     "result": {
+      "detail_truncated": true,
       "status": "fail",
       "schema_valid": true,
       "failure_count": 58,
       "negative_assertion_count": 20,
-      "error_code": null,
-      "detail_truncated": true
+      "error_code": null
+    },
+    "failure_count": 58
+  },
+  {
+    "history_key": "89d90d3c5b5b4a3224003107523cdaa705abccb2f4032b5c1bc2658caca49898",
+    "metadata": {
+      "manual_map_id": "summit",
+      "video_id": "match_001",
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "analyzer_commit": "2ba61f441e8d01872b76c9f5ea18d21d9dd4fb32",
+      "git_is_dirty": true,
+      "executed_at": "2026-10-03T16:21:13.821561+00:00",
+      "validation_pack": "valorant_e2e_validation_pack_v3",
+      "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
+      "git_dirty_fingerprint": "ba2ac9b45b18bdd72311663fa5db1964fa2fe36c8fadd67248d064057eacae1a",
+      "settings_fingerprint": "9f316c55b1925dc53aa4a8b24346e9cb63ea28e70ec44d50edaf5db0fa4f6b87"
+    },
+    "result": {
+      "status": "fail",
+      "schema_valid": true,
+      "failure_count": 58,
+      "negative_assertion_count": 20,
+      "error_code": null
     },
     "failure_count": 58
   }

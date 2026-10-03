@@ -24,6 +24,7 @@ from .calibrate_temporal import _check_output_privacy, _localize_assets, create_
 from .layout import HudLayout
 from .spectator import PanelReference, generate_panel_reference, panel_components
 from .templates import HudTemplateProfile
+from .value_identity import MATCHER, scaffold_reference
 from .weapon_identity import weapon_reference
 
 ROLES = {
@@ -202,6 +203,9 @@ def create_profile(
     _check_output_privacy(output)
     layout_path = Path(layout_path).expanduser().resolve()
     layout = HudLayout.load(layout_path)
+    structure_specs = json.loads(layout_path.read_text(encoding="utf-8")).get(
+        "identity_structure_regions", {}
+    )
     if layout.layout_format != "v3" or layout.reference_resolution is None:
         raise ValueError("v3の基準解像度付きlayoutが必要です")
     source_path = layout_path.with_suffix(".templates.json")
@@ -277,11 +281,12 @@ def create_profile(
                         and hashlib.sha256(asset.read_bytes()).hexdigest() not in geometry_hashes
                         for asset in identity_assets
                     )
+                    and (name not in structure_specs or spec.get("matcher") == MATCHER)
                     and inherited_roi == roi_name
                     and inherited_roi in layout.regions
                     and (
                         name != "weapon_ammo_structure"
-                        or spec.get("matcher") == "oriented_edges_v1"
+                        or spec.get("matcher") in ("oriented_edges_v1", MATCHER)
                     )
                 ):
                     diagnostics["references"][name] = {
@@ -302,11 +307,39 @@ def create_profile(
             raw["signals"].pop(name, None)
             result = None
             identity_mask = None
+            identity_regions = None
             stats: dict[str, Any] = {}
             if roi_name in layout.regions:
                 x1, y1, x2, y2 = layout.normalized_roi(roi_name).pixel_bounds(width, height)
                 crops = [image[y1:y2, x1:x2] for image in images]
-                if name == "weapon_ammo_structure":
+                if name in structure_specs:
+                    neighbors = []
+                    for other_name, other_roi in ROLES.items():
+                        if other_name == name or other_roi not in layout.regions:
+                            continue
+                        nx1, ny1, nx2, ny2 = layout.normalized_roi(other_roi).pixel_bounds(
+                            width, height
+                        )
+                        left, top, right, bottom = (
+                            max(x1, nx1),
+                            max(y1, ny1),
+                            min(x2, nx2),
+                            min(y2, ny2),
+                        )
+                        if left < right and top < bottom:
+                            neighbors.append(
+                                [
+                                    (left - x1) / (x2 - x1),
+                                    (top - y1) / (y2 - y1),
+                                    (right - x1) / (x2 - x1),
+                                    (bottom - y1) / (y2 - y1),
+                                ]
+                            )
+                    scaffold = scaffold_reference(crops, structure_specs[name], stats, neighbors)
+                    if scaffold is not None:
+                        reference, bounds, identity_mask, identity_regions = scaffold
+                        result = reference, bounds, stats
+                elif name == "weapon_ammo_structure":
                     weapon = weapon_reference(crops, stats)
                     if weapon is not None:
                         reference, bounds, identity_mask = weapon
@@ -334,6 +367,13 @@ def create_profile(
                 raw["signals"][name]["mask"] = f"identity/{name}.mask.png"
                 raw["signals"][name]["matcher"] = "oriented_edges_v1"
                 stats["matcher"] = "oriented_edges_v1"
+                if identity_regions is not None:
+                    regions_asset = stage / "identity" / f"{name}.support.png"
+                    region_stats = _write_asset(regions_asset, identity_regions)
+                    raw["signals"][name]["support_regions"] = f"identity/{name}.support.png"
+                    raw["signals"][name]["matcher"] = MATCHER
+                    stats["matcher"] = MATCHER
+                    stats["support_content_hash"] = region_stats["content_hash"]
         # Never inherit or generate background/clear-image evidence.
         raw.pop("spectator_clear_reference", None)
         raw.pop("spectator_panel_detector", None)
