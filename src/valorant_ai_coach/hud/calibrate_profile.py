@@ -337,66 +337,82 @@ def create_profile(
         # Never inherit or generate background/clear-image evidence.
         raw.pop("spectator_clear_reference", None)
         raw.pop("spectator_panel_detector", None)
-        name = "spectator_panel"
-        labels = None
-        stats = {}
-        if "spectated_player_panel" in layout.regions:
-            x1, y1, x2, y2 = layout.normalized_roi("spectated_player_panel").pixel_bounds(
-                width, height
-            )
-            labels = generate_panel_reference([image[y1:y2, x1:x2] for image in images], stats)
-        status = "generated"
-        if labels is None and inherited._panel_components is not None:
-            spec = inherited.raw.get("spectator_panel_detector", {})
-            assets = [
-                inherited.resolve_asset(spec[key]).resolve()
-                for key in ("template", "support_regions", "orientation")
-                if key in spec
-            ]
-            roi_name = "spectated_player_panel"
-            if roi_name in layout.regions and all(
-                asset not in geometry_assets
-                and hashlib.sha256(asset.read_bytes()).hexdigest() not in geometry_hashes
-                for asset in assets
-            ):
-                x1, y1, x2, y2 = layout.normalized_roi(roi_name).pixel_bounds(width, height)
-                if inherited._panel_components.shape == (y2 - y1, x2 - x1):
-                    labels = inherited._panel_components.copy()
-                    status = "inherited"
-        if labels is None and "spectated_player_panel" in inherited._signal_templates:
-            roi_name, template = inherited._signal_templates["spectated_player_panel"]
-            if (
-                roi_name == "spectated_player_panel"
-                and roi_name in layout.regions
-                and template.path.resolve() not in geometry_assets
-                and hashlib.sha256(template.path.read_bytes()).hexdigest() not in geometry_hashes
-            ):
-                x1, y1, x2, y2 = layout.normalized_roi(roi_name).pixel_bounds(width, height)
-                if template.image.shape == (y2 - y1, x2 - x1):
-                    labels = panel_components(template.image)
-                    status = "inherited"
-        if labels is not None:
-            stats.update(
-                _write_asset(stage / "identity/spectator_panel.components.png", labels),
-                status=status,
-            )
-            raw["spectator_panel_detector"] = {
+        if "spectator_icon" in layout.regions:
+            raw["spectator_icon_detector"] = {
                 "version": 1,
-                "template": "identity/spectator_panel.components.png",
+                "roi": "spectator_icon",
+                "method": "fixed_slot_structure_v1",
             }
-            if isinstance(labels, PanelReference):
-                raw["spectator_panel_detector"]["version"] = 2
-                for key, image in (
-                    ("support_regions", labels.regions),
-                    ("orientation", labels.orientation),
-                ):
-                    asset_name = f"identity/spectator_panel.{key}.png"
-                    info = _write_asset(stage / asset_name, image)
-                    raw["spectator_panel_detector"][key] = asset_name
-                    stats[f"{key}_content_hash"] = info["content_hash"]
-            diagnostics["references"][name] = stats
+            raw.get("signals", {}).pop("spectated_player_panel", None)
+            diagnostics["references"]["spectator_panel"] = {
+                "status": "generated",
+                "matcher": "fixed_slot_structure_v1",
+                "reference_required": False,
+                "candidate_count": 0,
+            }
         else:
-            diagnostics["references"][name] = {**stats, "status": "insufficient_evidence"}
+            raw.pop("spectator_icon_detector", None)
+            name = "spectator_panel"
+            labels = None
+            stats = {}
+            if "spectated_player_panel" in layout.regions:
+                x1, y1, x2, y2 = layout.normalized_roi("spectated_player_panel").pixel_bounds(
+                    width, height
+                )
+                labels = generate_panel_reference([image[y1:y2, x1:x2] for image in images], stats)
+            status = "generated"
+            if labels is None and inherited._panel_components is not None:
+                spec = inherited.raw.get("spectator_panel_detector", {})
+                assets = [
+                    inherited.resolve_asset(spec[key]).resolve()
+                    for key in ("template", "support_regions", "orientation")
+                    if key in spec
+                ]
+                roi_name = "spectated_player_panel"
+                if roi_name in layout.regions and all(
+                    asset not in geometry_assets
+                    and hashlib.sha256(asset.read_bytes()).hexdigest() not in geometry_hashes
+                    for asset in assets
+                ):
+                    x1, y1, x2, y2 = layout.normalized_roi(roi_name).pixel_bounds(width, height)
+                    if inherited._panel_components.shape == (y2 - y1, x2 - x1):
+                        labels = inherited._panel_components.copy()
+                        status = "inherited"
+            if labels is None and "spectated_player_panel" in inherited._signal_templates:
+                roi_name, template = inherited._signal_templates["spectated_player_panel"]
+                if (
+                    roi_name == "spectated_player_panel"
+                    and roi_name in layout.regions
+                    and template.path.resolve() not in geometry_assets
+                    and hashlib.sha256(template.path.read_bytes()).hexdigest()
+                    not in geometry_hashes
+                ):
+                    x1, y1, x2, y2 = layout.normalized_roi(roi_name).pixel_bounds(width, height)
+                    if template.image.shape == (y2 - y1, x2 - x1):
+                        labels = panel_components(template.image)
+                        status = "inherited"
+            if labels is not None:
+                stats.update(
+                    _write_asset(stage / "identity/spectator_panel.components.png", labels),
+                    status=status,
+                )
+                raw["spectator_panel_detector"] = {
+                    "version": 1,
+                    "template": "identity/spectator_panel.components.png",
+                }
+                if isinstance(labels, PanelReference):
+                    raw["spectator_panel_detector"]["version"] = 2
+                    for key, image in (
+                        ("support_regions", labels.regions),
+                        ("orientation", labels.orientation),
+                    ):
+                        asset_name = f"identity/spectator_panel.{key}.png"
+                        info = _write_asset(stage / asset_name, image)
+                        raw["spectator_panel_detector"][key] = asset_name
+                        stats[f"{key}_content_hash"] = info["content_hash"]
+                diagnostics["references"][name] = stats
+            else:
+                diagnostics["references"][name] = {**stats, "status": "insufficient_evidence"}
         diagnostics["identity_reference_ready"] = all(
             diagnostics["references"][role]["status"] in {"generated", "inherited"}
             for role in (*ROLES, "spectator_panel")

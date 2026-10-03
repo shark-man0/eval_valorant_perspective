@@ -775,3 +775,54 @@ Verification: pytest 651 passed / 2 skipped; focused 97 passed; Ruff src/tests/
 scripts passed; mypy src passed (80 files); git diff --check passed. Shared
 summary/hud_calibration are 101887/60116 bytes, below 128 KiB each, without image
 or local-path exports. No commit or push was made.
+
+
+## Dedicated Spectator icon slot (2026-10-03)
+
+The new profile route replaces panel topology/clustering with deterministic
+fixed-slot structure at [32,794,107,877) in 1920x1080 configured geometry. It
+uses distributed Canny occupancy, small local groups, signed orientation
+diversity, and sharpness/contrast. No identity recognition or learned Spectator
+picture reference is required. Observable sparse sharp backgrounds establish
+absence; blur/fade/clipping/partial crops, menu/map/flash/transition hints and
+ambiguous structures stay UNKNOWN. A menu-grid candidate alone vetoes an
+otherwise convincing icon because buy-menu roster pictures overlap this slot.
+The global HP + Ability + Weapon + checked Spectator exclusion policy remains.
+The first E2E still misclassified a buy-menu roster icon despite negatives 20/0;
+runtime-selected image inspection caught it. A short-X veto in the configured
+menu-close ROI now supplements the existing longer-line menu reader, solely
+marking possible obscuration UNKNOWN. Icon thresholds and Buy policy are unchanged.
+
+Fresh icon_slot_v1_run1 (64 unlabelled samples) is identity_reference_ready=true.
+HP/Ability/Weapon have unchanged support 23/23,21/24,18/18 and content hashes.
+Independent odd-frame inspection with the final detector found 3 genuine
+icons, 2 sharp icon-free backgrounds and 27 UNKNOWN; it did not tune thresholds
+or use GT labels. Old saved profiles retain the legacy panel route; profiles
+with the new key never fall back to it, even on malformed configuration.
+
+Complete native real-video E2E 20261003T134129Z-0f6d3e9f, schema valid, exit 1:
+Spectator checked=777, present=519, excluded=258,
+UNKNOWN=3674. HUD states: {"live_first_person": 96, "unknown": 3794, "remote_control_view": 39, "buy_menu_open": 3, "spectator_first_person": 519}.
+All 68 runtime-selected Spectator run starts visually contain the dedicated
+icon; the previously observed menu false positive does not recur. Selected
+live/Spectator samples (6 each) were also reviewed. This is sampled structural
+verification, not an all-frame accuracy guarantee.
+Identity missing: {"hp_hud_structure": 1446, "ability_bar_structure": 1601, "weapon_ammo_structure": 1895}.
+Visual eligibility: {"player_mechanics": 96, "world_semantics": 96}.
+Map resolved=0, unknown=4451.
+E2E 21 passed / 57 failed /
+4 not evaluated; negatives 20
+passed / 0 failed. This is not full E2E PASS.
+
+Verification: focused 32 passed; full pytest 678 passed / 5 skipped; Ruff
+src/tests/scripts passed; mypy src passed (81 files); git diff --check passed.
+Supplemental explicit-Pack integration tests: 5 passed, covering the 3
+environment-dependent full-suite skips; the 2 existing configuration skips remain.
+The synthetic automatic-profile integration fixture gained a sharp empty-slot
+background; its assertions were unchanged. GT, Validation Pack, downstream
+Visual/Map/Round/Coach policy were not modified. No commit or push was made.
+Legacy panel loading/generation, framed/frameless component detection and
+specialized diagnostics can be removed after old-profile migration; they are
+retained here for compatibility. Generalization beyond this recording still
+requires independent verification; conservative UNKNOWN and menu vetoes can
+miss otherwise visible icons.

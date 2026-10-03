@@ -87,6 +87,11 @@ def test_calibrated_pixels_reach_round_package_and_sqlite_without_fabrication(
             cv2.rectangle(image, (x1 + 4, y1 + 4), (x2 - 5, y2 - 5), (150, 150, 150), 2)
         x1, y1, x2, y2 = layout.normalized_roi("spectated_player_panel").pixel_bounds(1920, 1080)
         image[y1:y2, x1:x2] = scene
+        # The new fixed slot needs visible sharp background to establish absence;
+        # a featureless synthetic patch correctly remains UNKNOWN.
+        x1, y1, x2, y2 = layout.normalized_roi("spectator_icon").pixel_bounds(1920, 1080)
+        image[y1:y2, x1:x2] = 70
+        cv2.rectangle(image, (x1 + 8, y1 + 12), (x2 - 9, y2 - 13), (160, 160, 160), 1)
         assert cv2.imwrite(str(reference), image)
     source = tmp_path / "synthetic hud.mp4"
     subprocess.run(

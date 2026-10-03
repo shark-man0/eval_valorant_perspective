@@ -411,6 +411,20 @@
         0.604167,
         0.694444
       ]
+    },
+    "spectator_icon": {
+      "px": [
+        32,
+        794,
+        107,
+        877
+      ],
+      "norm": [
+        0.016666666666666666,
+        0.7351851851851852,
+        0.05572916666666667,
+        0.812037037037037
+      ]
     }
   },
   "state_detection": {
@@ -541,16 +555,16 @@
     },
     "spectator_first_person": {
       "positive_rois": [
-        "spectated_player_panel"
+        "spectator_icon"
       ],
       "negative_or_changed_rois": [
         "player_hp_armor",
         "abilities"
       ],
       "hints": [
-        "spectated player name/agent panel visible in lower-left",
-        "self HUD identity cannot be trusted; combat report may also be visible",
-        "require at least two signals: spectated panel plus self-HUD disappearance/change or recent player_death candidate"
+        "Dedicated icon slot visibly occupied; no agent or text identity recognition",
+        "Unobservable, obscured, transitional, or ambiguous icon ROI stays unknown",
+        "Live identity still requires checked Spectator exclusion plus HP, Ability, Weapon structure"
       ],
       "usable_rois": [
         "top_match_bar",
@@ -711,6 +725,10 @@
     "status_effects_center_bottom": {
       "method": "status_icon_presence_optional_parse",
       "sample_fps": 4.0
+    },
+    "spectator_icon": {
+      "method": "fixed_slot_structure_presence",
+      "sample_fps": 2.0
     }
   },
   "external_overlay_handling": {

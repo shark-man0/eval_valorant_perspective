@@ -30,6 +30,7 @@ from valorant_ai_coach.resources import resource_path
 from .layout import HudLayout, NormalizedRoi
 from .readers import HudReader, ReaderResult
 from .spectator import PanelReference, detect_panel
+from .spectator_icon import detect_icon, menu_overlay_candidate
 from .weapon_identity import masked_score, structural_score
 
 ImageU8 = NDArray[np.uint8]
@@ -132,11 +133,17 @@ class HudTemplateProfile:
                 self._panel_components = None
                 self.reader_diagnostics.append("spectator_panel_detector: invalid asset")
 
-    def detect_signals(self, frame: ImageU8, layout: HudLayout) -> dict[str, Any]:
+    def detect_signals(
+        self, frame: ImageU8, layout: HudLayout, *, context: Mapping[str, Any] | None = None
+    ) -> dict[str, Any]:
         """UI matches and checked spectator absence; unreadable regions stay unknown."""
         signals: dict[str, Any] = {}
         height, width = frame.shape[:2]
+        icon_spec = self.raw.get("spectator_icon_detector")
+        icon_active = "spectator_icon_detector" in self.raw
         for name, (roi_name, template) in self._signal_templates.items():
+            if icon_active and name == "spectated_player_panel":
+                continue
             if roi_name not in layout.regions:
                 continue
             x1, y1, x2, y2 = layout.normalized_roi(roi_name).pixel_bounds(width, height)
@@ -181,7 +188,40 @@ class HudTemplateProfile:
                         signals.get(confidence_key, 1.0), result.confidence
                     )
         panel_result = {"checked": False, "panel_present": None, "reason": "roi_unavailable"}
-        if "spectated_player_panel" in layout.regions:
+        if icon_active:
+            valid = (
+                isinstance(icon_spec, Mapping)
+                and type(icon_spec.get("version")) is int
+                and icon_spec.get("version") == 1
+                and icon_spec.get("method") == "fixed_slot_structure_v1"
+                and icon_spec.get("roi") == "spectator_icon"
+            )
+            if valid and "spectator_icon" in layout.regions:
+                x1, y1, x2, y2 = layout.normalized_roi("spectator_icon").pixel_bounds(width, height)
+                hints = {} if context is None else context
+                obscured = any(
+                    hints.get(key)
+                    for key in (
+                        "map_transition",
+                        "partial_expanded_map",
+                        "expanded_map_present",
+                        "expanded_map_stable",
+                        "flash_candidate",
+                        "abrupt_luminance_spike",
+                        "scene_detail_collapse",
+                        "visual_transition",
+                        "buy_menu_grid_present",
+                    )
+                )
+                if "buy_menu_close_anchor" in layout.regions:
+                    cx1, cy1, cx2, cy2 = layout.normalized_roi(
+                        "buy_menu_close_anchor"
+                    ).pixel_bounds(width, height)
+                    obscured = obscured or menu_overlay_candidate(frame[cy1:cy2, cx1:cx2])
+                panel_result = detect_icon(frame[y1:y2, x1:x2], obscured=bool(obscured))
+            else:
+                panel_result = detect_icon(np.empty((0, 0), np.uint8), configured=False)
+        elif "spectated_player_panel" in layout.regions:
             x1, y1, x2, y2 = layout.normalized_roi("spectated_player_panel").pixel_bounds(
                 width, height
             )

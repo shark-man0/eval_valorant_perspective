@@ -5,35 +5,42 @@
     "schema_version": 1,
     "profile_present": true,
     "counts": {
-      "frames": 3929,
+      "frames": 4451,
       "fresh_geometry_success": 1,
-      "effective_geometry_success": 3929,
-      "retained_geometry_frames": 3928,
+      "effective_geometry_success": 4451,
+      "retained_geometry_frames": 4450,
       "geometry_invalid_unknown": 0,
-      "geometry_valid_state_unknown": 3892,
-      "live_identity_evidence_insufficient": 2820,
-      "insufficient_anchors_frames": 3928
+      "geometry_valid_state_unknown": 3794,
+      "live_identity_evidence_insufficient": 3208,
+      "insufficient_anchors_frames": 4450
     },
-    "fresh_geometry_success_rate": 0.00025451768897938407,
+    "fresh_geometry_success_rate": 0.00022466861379465288,
     "effective_geometry_success_rate": 1.0,
     "reasons": {
-      "insufficient_anchors": 3928
+      "insufficient_anchors": 4450
     },
     "identity_evidence_policy": "independent_current_frame_structures_v1",
     "identity_reasons": {
-      "spectator_exclusion_unverified": 3929
+      "spectator_exclusion_unverified": 4193,
+      "competing_view_evidence": 14,
+      "structure_evidence_insufficient": 148,
+      "independent_hud_structures": 96
     },
     "identity_missing": {
-      "hp_hud_structure": 1277,
-      "ability_bar_structure": 1409,
-      "weapon_ammo_structure": 1791
+      "hp_hud_structure": 1446,
+      "ability_bar_structure": 1601,
+      "weapon_ammo_structure": 1895
     },
     "spectator_checks": {
-      "reference_unavailable": 3929
+      "icon_present": 519,
+      "icon_absent": 258,
+      "icon_roi_obscured": 2639,
+      "icon_roi_unobservable": 1006,
+      "icon_structure_ambiguous": 29
     },
     "automatic_identity_generation": {
       "version": 2,
-      "identity_reference_ready": false,
+      "identity_reference_ready": true,
       "sample_count": 64,
       "geometry_mode": "inherited",
       "references": {
@@ -830,336 +837,51 @@
           "dimensions": null
         },
         "spectator_panel": {
-          "training_count": 32,
-          "holdout_count": 32,
+          "training_count": null,
+          "holdout_count": null,
           "training_accept_count": null,
           "holdout_accept_count": null,
-          "candidate_count": 2,
-          "structural_rejected": 30,
-          "support_rejected": 2,
-          "holdout_rejected": 0,
-          "cluster_count": 0,
+          "candidate_count": 0,
+          "structural_rejected": null,
+          "support_rejected": null,
+          "holdout_rejected": null,
+          "cluster_count": null,
           "omitted_candidate_count": null,
           "holdout_median": null,
-          "status": "insufficient_evidence",
+          "status": "generated",
           "content_hash": null,
           "dimensions": null,
           "support_regions_content_hash": null,
           "orientation_content_hash": null,
           "spectator_generation": {
-            "matcher": "oriented_component_regions_v2",
-            "proposal_sample_count": 32,
-            "holdout_proposal_skipped_count": 32,
-            "candidate_support": [
-              {
-                "sample_index": 60,
-                "training_support": 1,
-                "minimum_required": 3,
-                "self_match": {
-                  "minimum_score": 1.0,
-                  "passed": true,
-                  "limiting_component": "boundary",
-                  "components": [
-                    {
-                      "component": "boundary",
-                      "component_id": 1,
-                      "expected_count": 172,
-                      "observed_count": 172,
-                      "matched_expected_count": 172,
-                      "matched_observed_count": 172,
-                      "recall": 1.0,
-                      "precision": 1.0,
-                      "score": 1.0
-                    },
-                    {
-                      "component": "portrait",
-                      "component_id": 2,
-                      "expected_count": 1461,
-                      "observed_count": 1461,
-                      "matched_expected_count": 1461,
-                      "matched_observed_count": 1461,
-                      "recall": 1.0,
-                      "precision": 1.0,
-                      "score": 1.0
-                    },
-                    {
-                      "component": "text",
-                      "component_id": 3,
-                      "expected_count": 957,
-                      "observed_count": 957,
-                      "matched_expected_count": 957,
-                      "matched_observed_count": 957,
-                      "recall": 1.0,
-                      "precision": 1.0,
-                      "score": 1.0
-                    }
-                  ],
-                  "dx": 0,
-                  "dy": 0
-                },
-                "portrait_proposal": {
-                  "portrait_mode": "frameless",
-                  "panel_topology": "portrait_side_separator",
-                  "portrait_search_region": [
-                    0.0532258064516129,
-                    0.23529411764705882,
-                    0.1693548387096774,
-                    0.47058823529411764
-                  ],
-                  "portrait_region_dimensions": [
-                    72,
-                    80
-                  ],
-                  "portrait_edge_count": 1496,
-                  "portrait_localized_component_count": 22,
-                  "portrait_x_spread": 0.9861111111111112,
-                  "portrait_y_spread": 0.9875,
-                  "portrait_occupied_rows": 4,
-                  "portrait_occupied_columns": 4,
-                  "portrait_orientation_distribution": [
-                    0.16302765647743814,
-                    0.14192139737991266,
-                    0.12518195050946143,
-                    0.10189228529839883,
-                    0.14192139737991266,
-                    0.11280931586608442,
-                    0.13100436681222707,
-                    0.08224163027656478
-                  ],
-                  "portrait_relative_to_text": 0.175,
-                  "portrait_relative_to_boundary": 0.0375,
-                  "portrait_support_region_population": 4965,
-                  "portrait_candidate_rejection_reason": null,
-                  "frameless_rejections": {
-                    "separator_geometry": null,
-                    "separator_evidence": null,
-                    "two_text_rows_missing": null,
-                    "portrait_text_geometry": null,
-                    "portrait_edge_density": null,
-                    "portrait_localized_groups": null,
-                    "portrait_spread": null,
-                    "portrait_occupancy": null,
-                    "portrait_orientation": null,
-                    "component_pixels_insufficient": null,
-                    "holdout_not_proposed": null
-                  }
-                },
-                "legacy_self_match": {
-                  "minimum_score": null,
-                  "passed": false,
-                  "limiting_component": null,
-                  "components": [
-                    {
-                      "component": "boundary",
-                      "component_id": 1,
-                      "expected_count": null,
-                      "observed_count": null,
-                      "matched_expected_count": null,
-                      "matched_observed_count": null,
-                      "recall": null,
-                      "precision": null,
-                      "score": null
-                    },
-                    {
-                      "component": "portrait",
-                      "component_id": 2,
-                      "expected_count": null,
-                      "observed_count": null,
-                      "matched_expected_count": null,
-                      "matched_observed_count": null,
-                      "recall": null,
-                      "precision": null,
-                      "score": null
-                    },
-                    {
-                      "component": "text",
-                      "component_id": 3,
-                      "expected_count": null,
-                      "observed_count": null,
-                      "matched_expected_count": null,
-                      "matched_observed_count": null,
-                      "recall": null,
-                      "precision": null,
-                      "score": null
-                    }
-                  ],
-                  "dx": null,
-                  "dy": null
-                },
-                "failed_support_scores": {
-                  "count": 31,
-                  "min": 0.0,
-                  "median": 0.0,
-                  "max": 0.8850102669404517
-                }
-              },
-              {
-                "sample_index": 62,
-                "training_support": 1,
-                "minimum_required": 3,
-                "self_match": {
-                  "minimum_score": 1.0,
-                  "passed": true,
-                  "limiting_component": "boundary",
-                  "components": [
-                    {
-                      "component": "boundary",
-                      "component_id": 1,
-                      "expected_count": 163,
-                      "observed_count": 163,
-                      "matched_expected_count": 163,
-                      "matched_observed_count": 163,
-                      "recall": 1.0,
-                      "precision": 1.0,
-                      "score": 1.0
-                    },
-                    {
-                      "component": "portrait",
-                      "component_id": 2,
-                      "expected_count": 1427,
-                      "observed_count": 1427,
-                      "matched_expected_count": 1427,
-                      "matched_observed_count": 1427,
-                      "recall": 1.0,
-                      "precision": 1.0,
-                      "score": 1.0
-                    },
-                    {
-                      "component": "text",
-                      "component_id": 3,
-                      "expected_count": 890,
-                      "observed_count": 890,
-                      "matched_expected_count": 890,
-                      "matched_observed_count": 890,
-                      "recall": 1.0,
-                      "precision": 1.0,
-                      "score": 1.0
-                    }
-                  ],
-                  "dx": 0,
-                  "dy": 0
-                },
-                "portrait_proposal": {
-                  "portrait_mode": "frameless",
-                  "panel_topology": "portrait_side_separator",
-                  "portrait_search_region": [
-                    0.0532258064516129,
-                    0.23529411764705882,
-                    0.1693548387096774,
-                    0.47058823529411764
-                  ],
-                  "portrait_region_dimensions": [
-                    72,
-                    80
-                  ],
-                  "portrait_edge_count": 1451,
-                  "portrait_localized_component_count": 20,
-                  "portrait_x_spread": 0.9861111111111112,
-                  "portrait_y_spread": 0.9875,
-                  "portrait_occupied_rows": 4,
-                  "portrait_occupied_columns": 4,
-                  "portrait_orientation_distribution": [
-                    0.15746268656716417,
-                    0.12388059701492538,
-                    0.1253731343283582,
-                    0.10597014925373134,
-                    0.13880597014925372,
-                    0.1291044776119403,
-                    0.11791044776119403,
-                    0.10149253731343283
-                  ],
-                  "portrait_relative_to_text": 0.175,
-                  "portrait_relative_to_boundary": 0.0375,
-                  "portrait_support_region_population": 4931,
-                  "portrait_candidate_rejection_reason": null,
-                  "frameless_rejections": {
-                    "separator_geometry": null,
-                    "separator_evidence": null,
-                    "two_text_rows_missing": null,
-                    "portrait_text_geometry": null,
-                    "portrait_edge_density": null,
-                    "portrait_localized_groups": null,
-                    "portrait_spread": null,
-                    "portrait_occupancy": null,
-                    "portrait_orientation": null,
-                    "component_pixels_insufficient": null,
-                    "holdout_not_proposed": null
-                  }
-                },
-                "legacy_self_match": {
-                  "minimum_score": null,
-                  "passed": false,
-                  "limiting_component": null,
-                  "components": [
-                    {
-                      "component": "boundary",
-                      "component_id": 1,
-                      "expected_count": null,
-                      "observed_count": null,
-                      "matched_expected_count": null,
-                      "matched_observed_count": null,
-                      "recall": null,
-                      "precision": null,
-                      "score": null
-                    },
-                    {
-                      "component": "portrait",
-                      "component_id": 2,
-                      "expected_count": null,
-                      "observed_count": null,
-                      "matched_expected_count": null,
-                      "matched_observed_count": null,
-                      "recall": null,
-                      "precision": null,
-                      "score": null
-                    },
-                    {
-                      "component": "text",
-                      "component_id": 3,
-                      "expected_count": null,
-                      "observed_count": null,
-                      "matched_expected_count": null,
-                      "matched_observed_count": null,
-                      "recall": null,
-                      "precision": null,
-                      "score": null
-                    }
-                  ],
-                  "dx": null,
-                  "dy": null
-                },
-                "failed_support_scores": {
-                  "count": 31,
-                  "min": 0.0,
-                  "median": 0.0,
-                  "max": 0.8945908460471568
-                }
-              }
-            ],
+            "matcher": "fixed_slot_structure_v1",
+            "proposal_sample_count": null,
+            "holdout_proposal_skipped_count": null,
+            "candidate_support": [],
             "evidence_counts": {
-              "observable": 32,
-              "boundary": 24,
-              "portrait": 2,
-              "textlike": 32,
-              "boundary_portrait": 2,
-              "portrait_textlike": 2,
-              "boundary_textlike": 24,
-              "all_components": 2
+              "observable": null,
+              "boundary": null,
+              "portrait": null,
+              "textlike": null,
+              "boundary_portrait": null,
+              "portrait_textlike": null,
+              "boundary_textlike": null,
+              "all_components": null
             },
             "rejection_counts": {
-              "geometry_rejected": 0,
-              "contrast_rejected": 0,
-              "blur_rejected": 0,
-              "structural_rejected": 30
+              "geometry_rejected": null,
+              "contrast_rejected": null,
+              "blur_rejected": null,
+              "structural_rejected": null
             },
             "portrait_modes": {
-              "framed": 0,
-              "frameless": 2
+              "framed": null,
+              "frameless": null
             },
             "frameless_rejection_counts": {
-              "separator_geometry": 3,
-              "separator_evidence": 2,
-              "two_text_rows_missing": 5,
+              "separator_geometry": null,
+              "separator_evidence": null,
+              "two_text_rows_missing": null,
               "portrait_text_geometry": null,
               "portrait_edge_density": null,
               "portrait_localized_groups": null,
@@ -1170,353 +892,60 @@
               "holdout_not_proposed": null
             },
             "final_rejection_counts": {
-              "text_alignment_insufficient": 0,
-              "boundary_span_insufficient": 0,
-              "relative_position_mismatch": 0,
-              "component_pixels_insufficient": 0,
-              "boundary_orientation_incoherent": 0
+              "text_alignment_insufficient": null,
+              "boundary_span_insufficient": null,
+              "relative_position_mismatch": null,
+              "component_pixels_insufficient": null,
+              "boundary_orientation_incoherent": null
             },
-            "samples": [
-              {
-                "observable": true,
-                "boundary": true,
-                "portrait": false,
-                "textlike": true,
-                "boundary_portrait": false,
-                "portrait_textlike": false,
-                "boundary_textlike": true,
-                "all_components": false,
-                "sample_index": 32,
-                "portrait_candidate_count": 588,
-                "portrait_supported_count": 0,
-                "portrait_frame_score": 0.8023477720575182,
-                "portrait_geometry_count": 25,
-                "portrait_occupancy_rejected": 25,
-                "portrait_side_scores": [
-                  1.0,
-                  0.9651162790697675,
-                  1.0,
-                  0.24427480916030533
-                ],
-                "training": true,
-                "panel_topology": null,
-                "boundary_coverage": null,
-                "boundary_relative_y": null,
-                "portrait_text_gap_ratio": null,
-                "boundary_fragment_count": null,
-                "boundary_span_candidates": null,
-                "reason": "structural_rejected",
-                "final_gates": {
-                  "portrait": false,
-                  "text_alignment": false,
-                  "boundary_span": false,
-                  "component_pixels": false
-                },
-                "final_rejections": {
-                  "text_alignment_insufficient": 0,
-                  "boundary_span_insufficient": 0,
-                  "relative_position_mismatch": 0,
-                  "component_pixels_insufficient": 0,
-                  "boundary_orientation_incoherent": 0
-                },
-                "portrait_mode": null,
-                "portrait_search_region": null,
-                "portrait_region_dimensions": null,
-                "portrait_edge_count": null,
-                "portrait_localized_component_count": null,
-                "portrait_x_spread": null,
-                "portrait_y_spread": null,
-                "portrait_occupied_rows": null,
-                "portrait_occupied_columns": null,
-                "portrait_orientation_distribution": null,
-                "portrait_relative_to_text": null,
-                "portrait_relative_to_boundary": null,
-                "portrait_support_region_population": null,
-                "portrait_candidate_rejection_reason": null,
-                "frameless_rejections": {
-                  "separator_geometry": 1,
-                  "separator_evidence": 1,
-                  "two_text_rows_missing": null,
-                  "portrait_text_geometry": null,
-                  "portrait_edge_density": null,
-                  "portrait_localized_groups": null,
-                  "portrait_spread": null,
-                  "portrait_occupancy": null,
-                  "portrait_orientation": null,
-                  "component_pixels_insufficient": null,
-                  "holdout_not_proposed": null
-                }
-              },
-              {
-                "observable": true,
-                "boundary": true,
-                "portrait": false,
-                "textlike": true,
-                "boundary_portrait": false,
-                "portrait_textlike": false,
-                "boundary_textlike": true,
-                "all_components": false,
-                "sample_index": 0,
-                "portrait_candidate_count": 373,
-                "portrait_supported_count": 0,
-                "portrait_frame_score": 0.21198756720430106,
-                "portrait_geometry_count": 26,
-                "portrait_occupancy_rejected": 26,
-                "portrait_side_scores": [
-                  0.26881720430107525,
-                  0.03225806451612903,
-                  0.078125,
-                  0.46875
-                ],
-                "training": true,
-                "panel_topology": null,
-                "boundary_coverage": null,
-                "boundary_relative_y": null,
-                "portrait_text_gap_ratio": null,
-                "boundary_fragment_count": null,
-                "boundary_span_candidates": null,
-                "reason": "structural_rejected",
-                "final_gates": {
-                  "portrait": false,
-                  "text_alignment": false,
-                  "boundary_span": false,
-                  "component_pixels": false
-                },
-                "final_rejections": {
-                  "text_alignment_insufficient": 0,
-                  "boundary_span_insufficient": 0,
-                  "relative_position_mismatch": 0,
-                  "component_pixels_insufficient": 0,
-                  "boundary_orientation_incoherent": 0
-                },
-                "portrait_mode": null,
-                "portrait_search_region": null,
-                "portrait_region_dimensions": null,
-                "portrait_edge_count": null,
-                "portrait_localized_component_count": null,
-                "portrait_x_spread": null,
-                "portrait_y_spread": null,
-                "portrait_occupied_rows": null,
-                "portrait_occupied_columns": null,
-                "portrait_orientation_distribution": null,
-                "portrait_relative_to_text": null,
-                "portrait_relative_to_boundary": null,
-                "portrait_support_region_population": null,
-                "portrait_candidate_rejection_reason": null,
-                "frameless_rejections": {
-                  "separator_geometry": null,
-                  "separator_evidence": null,
-                  "two_text_rows_missing": null,
-                  "portrait_text_geometry": null,
-                  "portrait_edge_density": null,
-                  "portrait_localized_groups": null,
-                  "portrait_spread": null,
-                  "portrait_occupancy": null,
-                  "portrait_orientation": null,
-                  "component_pixels_insufficient": null,
-                  "holdout_not_proposed": null
-                }
-              },
-              {
-                "observable": false,
-                "boundary": false,
-                "portrait": false,
-                "textlike": false,
-                "boundary_portrait": false,
-                "portrait_textlike": false,
-                "boundary_textlike": false,
-                "all_components": false,
-                "sample_index": 1,
-                "portrait_candidate_count": null,
-                "portrait_supported_count": null,
-                "portrait_frame_score": null,
-                "portrait_geometry_count": null,
-                "portrait_occupancy_rejected": null,
-                "portrait_side_scores": null,
-                "training": false,
-                "panel_topology": null,
-                "boundary_coverage": null,
-                "boundary_relative_y": null,
-                "portrait_text_gap_ratio": null,
-                "boundary_fragment_count": null,
-                "boundary_span_candidates": null,
-                "reason": "holdout_not_proposed",
-                "final_gates": {
-                  "portrait": false,
-                  "text_alignment": false,
-                  "boundary_span": false,
-                  "component_pixels": false
-                },
-                "final_rejections": {
-                  "text_alignment_insufficient": null,
-                  "boundary_span_insufficient": null,
-                  "relative_position_mismatch": null,
-                  "component_pixels_insufficient": null,
-                  "boundary_orientation_incoherent": null
-                },
-                "portrait_mode": null,
-                "portrait_search_region": null,
-                "portrait_region_dimensions": null,
-                "portrait_edge_count": null,
-                "portrait_localized_component_count": null,
-                "portrait_x_spread": null,
-                "portrait_y_spread": null,
-                "portrait_occupied_rows": null,
-                "portrait_occupied_columns": null,
-                "portrait_orientation_distribution": null,
-                "portrait_relative_to_text": null,
-                "portrait_relative_to_boundary": null,
-                "portrait_support_region_population": null,
-                "portrait_candidate_rejection_reason": null,
-                "frameless_rejections": {
-                  "separator_geometry": null,
-                  "separator_evidence": null,
-                  "two_text_rows_missing": null,
-                  "portrait_text_geometry": null,
-                  "portrait_edge_density": null,
-                  "portrait_localized_groups": null,
-                  "portrait_spread": null,
-                  "portrait_occupancy": null,
-                  "portrait_orientation": null,
-                  "component_pixels_insufficient": null,
-                  "holdout_not_proposed": null
-                }
-              },
-              {
-                "observable": true,
-                "boundary": true,
-                "portrait": true,
-                "textlike": true,
-                "boundary_portrait": true,
-                "portrait_textlike": true,
-                "boundary_textlike": true,
-                "all_components": true,
-                "sample_index": 60,
-                "portrait_candidate_count": 353,
-                "portrait_supported_count": 0,
-                "portrait_frame_score": 0.39847781217750256,
-                "portrait_geometry_count": 1,
-                "portrait_occupancy_rejected": 1,
-                "portrait_side_scores": [
-                  0.8070175438596491,
-                  0.22807017543859648,
-                  0.23529411764705882,
-                  0.3235294117647059
-                ],
-                "training": true,
-                "panel_topology": "portrait_side_separator",
-                "boundary_coverage": null,
-                "boundary_relative_y": null,
-                "portrait_text_gap_ratio": null,
-                "boundary_fragment_count": null,
-                "boundary_span_candidates": null,
-                "reason": "candidate",
-                "final_gates": {
-                  "portrait": true,
-                  "text_alignment": true,
-                  "boundary_span": true,
-                  "component_pixels": true
-                },
-                "final_rejections": {
-                  "text_alignment_insufficient": 0,
-                  "boundary_span_insufficient": 0,
-                  "relative_position_mismatch": 0,
-                  "component_pixels_insufficient": 0,
-                  "boundary_orientation_incoherent": 0
-                },
-                "portrait_mode": "frameless",
-                "portrait_search_region": [
-                  0.0532258064516129,
-                  0.23529411764705882,
-                  0.1693548387096774,
-                  0.47058823529411764
-                ],
-                "portrait_region_dimensions": [
-                  72,
-                  80
-                ],
-                "portrait_edge_count": 1496,
-                "portrait_localized_component_count": 22,
-                "portrait_x_spread": 0.9861111111111112,
-                "portrait_y_spread": 0.9875,
-                "portrait_occupied_rows": 4,
-                "portrait_occupied_columns": 4,
-                "portrait_orientation_distribution": [
-                  0.16302765647743814,
-                  0.14192139737991266,
-                  0.12518195050946143,
-                  0.10189228529839883,
-                  0.14192139737991266,
-                  0.11280931586608442,
-                  0.13100436681222707,
-                  0.08224163027656478
-                ],
-                "portrait_relative_to_text": 0.175,
-                "portrait_relative_to_boundary": 0.0375,
-                "portrait_support_region_population": 4965,
-                "portrait_candidate_rejection_reason": null,
-                "frameless_rejections": {
-                  "separator_geometry": null,
-                  "separator_evidence": null,
-                  "two_text_rows_missing": null,
-                  "portrait_text_geometry": null,
-                  "portrait_edge_density": null,
-                  "portrait_localized_groups": null,
-                  "portrait_spread": null,
-                  "portrait_occupancy": null,
-                  "portrait_orientation": null,
-                  "component_pixels_insufficient": null,
-                  "holdout_not_proposed": null
-                }
-              }
-            ],
+            "samples": [],
             "portrait_statistics": {
               "portrait_candidate_count": {
-                "count": 32,
-                "min": 9,
-                "median": 128.5,
-                "max": 1009
+                "count": 0,
+                "min": null,
+                "median": null,
+                "max": null
               },
               "portrait_geometry_count": {
-                "count": 32,
-                "min": 0,
-                "median": 1.0,
-                "max": 158
+                "count": 0,
+                "min": null,
+                "median": null,
+                "max": null
               },
               "portrait_supported_count": {
-                "count": 32,
-                "min": 0,
-                "median": 0.0,
-                "max": 0
+                "count": 0,
+                "min": null,
+                "median": null,
+                "max": null
               },
               "portrait_occupancy_rejected": {
-                "count": 32,
-                "min": 0,
-                "median": 1.0,
-                "max": 158
+                "count": 0,
+                "min": null,
+                "median": null,
+                "max": null
               },
               "portrait_frame_score": {
-                "count": 32,
-                "min": 0.0,
-                "median": 0.05224233012170385,
-                "max": 0.8023477720575182
+                "count": 0,
+                "min": null,
+                "median": null,
+                "max": null
               }
             },
-            "omitted_sample_count": 60,
+            "omitted_sample_count": 0,
             "candidate_support_summary": {
-              "count": 2,
-              "min": 1,
-              "median": 1.0,
-              "max": 1,
-              "minimum_required": 3,
-              "below_minimum_count": 2
+              "count": 0,
+              "min": null,
+              "median": null,
+              "max": null,
+              "minimum_required": null,
+              "below_minimum_count": 0
             },
             "self_match_summary": {
-              "count": 2,
-              "passed_count": 2,
-              "min": 1.0,
-              "median": 1.0,
-              "max": 1.0,
+              "count": 0,
+              "passed_count": 0,
+              "min": null,
+              "median": null,
+              "max": null,
               "failing_components": {
                 "boundary": 0,
                 "portrait": 0,
@@ -1538,9 +967,9 @@
         "threshold": 0.9,
         "geometry_success_rate_when_accepted": 0.3333333333333333,
         "accepted_count": 3,
-        "rejected_count": 3926,
+        "rejected_count": 4448,
         "unscored_count": 0,
-        "missing_during_insufficient_anchors": 3926,
+        "missing_during_insufficient_anchors": 4448,
         "accepted_during_geometry_success": 1,
         "content_hash": "b479ec4f00a1e271cd559d23c1843ae45da39abc04bdf794bf926bdba394ffbd",
         "mask_content_hash": null,
@@ -1550,7 +979,7 @@
         ],
         "match_confidence": {
           "min": 0.326923668384552,
-          "median": 0.7720189690589905,
+          "median": 0.7676832675933838,
           "max": 0.9986677765846252
         }
       },
@@ -1563,9 +992,9 @@
         "threshold": 0.9,
         "geometry_success_rate_when_accepted": 1.0,
         "accepted_count": 1,
-        "rejected_count": 3928,
+        "rejected_count": 4450,
         "unscored_count": 0,
-        "missing_during_insufficient_anchors": 3928,
+        "missing_during_insufficient_anchors": 4450,
         "accepted_during_geometry_success": 1,
         "content_hash": "1f9852f18243d77106197c32cb2d01612a7a862e139bd8f0b4618d00ae8feca0",
         "mask_content_hash": null,
@@ -1575,7 +1004,7 @@
         ],
         "match_confidence": {
           "min": 0.009110734798014164,
-          "median": 0.44378504157066345,
+          "median": 0.43946316838264465,
           "max": 0.9985427260398865
         }
       },
@@ -1588,9 +1017,9 @@
         "threshold": 0.9,
         "geometry_success_rate_when_accepted": 1.0,
         "accepted_count": 1,
-        "rejected_count": 3928,
+        "rejected_count": 4450,
         "unscored_count": 0,
-        "missing_during_insufficient_anchors": 3928,
+        "missing_during_insufficient_anchors": 4450,
         "accepted_during_geometry_success": 1,
         "content_hash": "31d71802e579aabcd257926af9707687b4dfa1bb3faf9e5df410c0d8bf6bf574",
         "mask_content_hash": null,
@@ -1600,7 +1029,7 @@
         ],
         "match_confidence": {
           "min": 0.0,
-          "median": 0.5017452239990234,
+          "median": 0.5030232667922974,
           "max": 0.9988275170326233
         }
       },
@@ -1613,9 +1042,9 @@
         "threshold": 0.9,
         "geometry_success_rate_when_accepted": 1.0,
         "accepted_count": 1,
-        "rejected_count": 3928,
+        "rejected_count": 4450,
         "unscored_count": 0,
-        "missing_during_insufficient_anchors": 3928,
+        "missing_during_insufficient_anchors": 4450,
         "accepted_during_geometry_success": 1,
         "content_hash": "f9faf779c0490d9ef79d3cc7fa3824de0fbcb7cbed4947df3af93f7ce5a3d847",
         "mask_content_hash": null,
@@ -1625,7 +1054,7 @@
         ],
         "match_confidence": {
           "min": 0.0,
-          "median": 0.4184153378009796,
+          "median": 0.41703277826309204,
           "max": 0.9978856444358826
         }
       }
@@ -1636,13 +1065,13 @@
     "manual_map_id": "summit",
     "video_id": "match_001",
     "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
-    "analyzer_commit": "719899f40122f09de2fcd54978e96cc205d85c1a",
+    "analyzer_commit": "3641a125800ad15f898c6588f56bef14cb94dc69",
     "git_is_dirty": true,
-    "executed_at": "2026-10-03T12:03:11.353696+00:00",
+    "executed_at": "2026-10-03T13:41:29.616868+00:00",
     "validation_pack": "valorant_e2e_validation_pack_v3",
     "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
-    "git_dirty_fingerprint": "4f2dbc1efbc912a1494d88a0f7d1314eb018e0d3fb27e397574ec7ed2d9b7549",
-    "settings_fingerprint": "398787764eb631bbb4c7646e9991f0a0ba547d78e57f428337ceed6903b494a0"
+    "git_dirty_fingerprint": "60fba1dbaedc3e77b5441f2d2e3f01dbbd6b2c84eb0f1fe9c173772e5b4bcad7",
+    "settings_fingerprint": "edd7ac4d443fa5369bbc74009b05ffdf645b43388c0d35b7c4a3d5fb38bdacf4"
   },
   "result": {
     "status": "fail",
@@ -1653,10 +1082,10 @@
     "detail_truncated": true
   },
   "counts": {
-    "events": 7,
-    "state_intervals": 13,
-    "ownership_intervals": 1177,
-    "snapshots": 34,
+    "events": 126,
+    "state_intervals": 241,
+    "ownership_intervals": 4448,
+    "snapshots": 657,
     "visual_observations": 5,
     "temporal_features": 0
   },
@@ -1713,7 +1142,7 @@
         "missing_point"
       ],
       "section": "HUD",
-      "nearby_trace_row_count": 0,
+      "nearby_trace_row_count": 4,
       "context_only": true
     },
     {
@@ -1789,7 +1218,7 @@
         "missing_point"
       ],
       "section": "HUD",
-      "nearby_trace_row_count": 0,
+      "nearby_trace_row_count": 3,
       "context_only": true
     },
     {
@@ -1815,7 +1244,7 @@
         "missing_point"
       ],
       "section": "HUD",
-      "nearby_trace_row_count": 0,
+      "nearby_trace_row_count": 6,
       "context_only": true
     },
     {
@@ -1825,22 +1254,29 @@
         "state": "buy_phase_banner",
         "min_core_coverage": 0.8
       },
-      "actual": null,
+      "actual": {
+        "state": "live_first_person",
+        "confidence": 0.88,
+        "interval": [
+          0.036003,
+          0.086003
+        ]
+      },
       "time_sec": null,
       "interval": [
         0.0,
         4.1
       ],
       "actor": null,
-      "screen_state": null,
+      "screen_state": "live_first_person",
       "view_owner": null,
-      "confidence": null,
+      "confidence": 0.88,
       "source": "reference_evaluator",
       "diagnostic_codes": [
         "state_coverage"
       ],
       "section": "HUD",
-      "nearby_trace_row_count": 0,
+      "nearby_trace_row_count": 95,
       "context_only": true
     },
     {
@@ -1865,7 +1301,7 @@
         "state_coverage"
       ],
       "section": "HUD",
-      "nearby_trace_row_count": 0,
+      "nearby_trace_row_count": 61,
       "context_only": true
     },
     {
@@ -1890,7 +1326,7 @@
         "state_start_edge"
       ],
       "section": "HUD",
-      "nearby_trace_row_count": 0,
+      "nearby_trace_row_count": 61,
       "context_only": true
     },
     {
@@ -1900,22 +1336,29 @@
         "state": "remote_control_view",
         "min_core_coverage": 0.9
       },
-      "actual": null,
+      "actual": {
+        "state": "live_first_person",
+        "confidence": 0.7121,
+        "interval": [
+          21.702669,
+          21.886003
+        ]
+      },
       "time_sec": null,
       "interval": [
         16.502669,
         28.402669
       ],
       "actor": null,
-      "screen_state": "remote_control_view",
+      "screen_state": "live_first_person",
       "view_owner": null,
-      "confidence": null,
+      "confidence": 0.7121,
       "source": "reference_evaluator",
       "diagnostic_codes": [
         "state_coverage"
       ],
       "section": "HUD",
-      "nearby_trace_row_count": 186,
+      "nearby_trace_row_count": 241,
       "context_only": true
     },
     {
@@ -1972,7 +1415,7 @@
         "state_coverage"
       ],
       "section": "HUD",
-      "nearby_trace_row_count": 100,
+      "nearby_trace_row_count": 224,
       "context_only": true
     },
     {
@@ -1997,7 +1440,7 @@
         "state_coverage"
       ],
       "section": "HUD",
-      "nearby_trace_row_count": 0,
+      "nearby_trace_row_count": 1163,
       "context_only": true
     },
     {
@@ -2022,7 +1465,7 @@
         "state_coverage"
       ],
       "section": "HUD",
-      "nearby_trace_row_count": 0,
+      "nearby_trace_row_count": 258,
       "context_only": true
     },
     {
@@ -2047,7 +1490,7 @@
         "state_coverage"
       ],
       "section": "HUD",
-      "nearby_trace_row_count": 0,
+      "nearby_trace_row_count": 82,
       "context_only": true
     },
     {
@@ -2072,7 +1515,7 @@
         "state_coverage"
       ],
       "section": "HUD",
-      "nearby_trace_row_count": 0,
+      "nearby_trace_row_count": 30,
       "context_only": true
     },
     {
@@ -2097,7 +1540,7 @@
         "state_coverage"
       ],
       "section": "HUD",
-      "nearby_trace_row_count": 0,
+      "nearby_trace_row_count": 68,
       "context_only": true
     },
     {
@@ -2122,7 +1565,7 @@
         "state_coverage"
       ],
       "section": "HUD",
-      "nearby_trace_row_count": 0,
+      "nearby_trace_row_count": 44,
       "context_only": true
     },
     {
@@ -2147,7 +1590,7 @@
         "state_coverage"
       ],
       "section": "HUD",
-      "nearby_trace_row_count": 0,
+      "nearby_trace_row_count": 1584,
       "context_only": true
     },
     {
@@ -2158,11 +1601,11 @@
         "min_core_coverage": 0.9
       },
       "actual": {
-        "confidence": 0.92,
-        "owner": "unknown",
+        "confidence": 0.88,
+        "owner": "self",
         "interval": [
-          12.169336,
-          12.202669
+          0.036003,
+          0.086003
         ]
       },
       "time_sec": null,
@@ -2172,14 +1615,14 @@
       ],
       "actor": null,
       "screen_state": null,
-      "view_owner": "unknown",
-      "confidence": 0.92,
+      "view_owner": "self",
+      "confidence": 0.88,
       "source": "reference_evaluator",
       "diagnostic_codes": [
         "ownership_coverage"
       ],
       "section": "round_package",
-      "nearby_trace_row_count": 1136,
+      "nearby_trace_row_count": 1695,
       "context_only": true
     },
     {
@@ -2211,7 +1654,7 @@
         "ownership_coverage"
       ],
       "section": "round_package",
-      "nearby_trace_row_count": 100,
+      "nearby_trace_row_count": 251,
       "context_only": true
     },
     {
@@ -2236,7 +1679,7 @@
         "ownership_coverage"
       ],
       "section": "round_package",
-      "nearby_trace_row_count": 0,
+      "nearby_trace_row_count": 1837,
       "context_only": true
     },
     {
@@ -2261,7 +1704,7 @@
         "ownership_coverage"
       ],
       "section": "round_package",
-      "nearby_trace_row_count": 0,
+      "nearby_trace_row_count": 69,
       "context_only": true
     },
     {
@@ -2286,16 +1729,16 @@
         "ownership_coverage"
       ],
       "section": "round_package",
-      "nearby_trace_row_count": 0,
+      "nearby_trace_row_count": 1603,
       "context_only": true
     },
     {
       "assertion_id": "GT-R1-SNAP-0035",
       "category": "missing_snapshot",
       "expected": {
-        "player_alive": true,
         "primary_state": "live_first_person",
-        "buy_phase_banner": true
+        "buy_phase_banner": true,
+        "player_alive": true
       },
       "actual": null,
       "time_sec": 3.5,
@@ -2315,12 +1758,12 @@
       "assertion_id": "GT-R1-SNAP-0415",
       "category": "missing_snapshot",
       "expected": {
-        "player_alive": true,
-        "game_timer_display": "1:39",
-        "score_player": 0,
-        "score_enemy": 1,
         "primary_state": "live_first_person",
-        "buy_phase_banner": false
+        "score_enemy": 1,
+        "game_timer_display": "1:39",
+        "buy_phase_banner": false,
+        "score_player": 0,
+        "player_alive": true
       },
       "actual": null,
       "time_sec": 4.15,
@@ -2340,8 +1783,8 @@
       "assertion_id": "GT-R1-SNAP-475",
       "category": "missing_snapshot",
       "expected": {
-        "player_alive": true,
-        "primary_state": "live_first_person"
+        "primary_state": "live_first_person",
+        "player_alive": true
       },
       "actual": null,
       "time_sec": 47.5,
@@ -2424,10 +1867,10 @@
       "assertion_id": "GT-R1-SNAP-728",
       "category": "missing_snapshot",
       "expected": {
-        "player_alive": true,
         "primary_state": "live_first_person",
+        "ammo_reserve": 36,
         "ammo_mag": 9,
-        "ammo_reserve": 36
+        "player_alive": true
       },
       "actual": null,
       "time_sec": 72.8,
@@ -2447,10 +1890,10 @@
       "assertion_id": "GT-R1-SNAP-733",
       "category": "missing_snapshot",
       "expected": {
-        "player_alive": true,
         "primary_state": "live_first_person",
+        "ammo_reserve": 36,
         "ammo_mag": 9,
-        "ammo_reserve": 36
+        "player_alive": true
       },
       "actual": null,
       "time_sec": 73.3,
@@ -2470,10 +1913,10 @@
       "assertion_id": "GT-R1-SNAP-734",
       "category": "missing_snapshot",
       "expected": {
-        "player_alive": true,
         "primary_state": "live_first_person",
+        "ammo_reserve": 33,
         "ammo_mag": 12,
-        "ammo_reserve": 33
+        "player_alive": true
       },
       "actual": null,
       "time_sec": 73.4,
@@ -2493,9 +1936,9 @@
       "assertion_id": "GT-R1-SNAP-7425",
       "category": "missing_snapshot",
       "expected": {
-        "player_alive": true,
         "primary_state": "live_first_person",
-        "player_hp": 48
+        "player_hp": 48,
+        "player_alive": true
       },
       "actual": null,
       "time_sec": 74.25,
@@ -2515,11 +1958,11 @@
       "assertion_id": "GT-R1-SNAP-7438",
       "category": "missing_snapshot",
       "expected": {
-        "player_alive": true,
+        "primary_state": "live_first_person",
+        "score_enemy": 1,
         "game_timer_display": "0:29",
         "score_player": 0,
-        "score_enemy": 1,
-        "primary_state": "live_first_person"
+        "player_alive": true
       },
       "actual": null,
       "time_sec": 74.38,
@@ -2539,8 +1982,8 @@
       "assertion_id": "GT-R1-SNAP-7440",
       "category": "missing_snapshot",
       "expected": {
-        "player_alive": false,
-        "combat_report_visible": true
+        "combat_report_visible": true,
+        "player_alive": false
       },
       "actual": null,
       "time_sec": 74.4,
@@ -2560,11 +2003,11 @@
       "assertion_id": "GT-R1-SNAP-7445",
       "category": "missing_snapshot",
       "expected": {
-        "player_alive": false,
-        "game_timer_display": "0:06",
-        "score_player": 0,
         "score_enemy": 2,
-        "combat_report_visible": true
+        "game_timer_display": "0:06",
+        "combat_report_visible": true,
+        "score_player": 0,
+        "player_alive": false
       },
       "actual": null,
       "time_sec": 74.45,
@@ -2584,11 +2027,11 @@
       "assertion_id": "GT-R2-SNAP-820",
       "category": "missing_snapshot",
       "expected": {
-        "player_alive": true,
         "primary_state": "live_first_person",
-        "buy_phase_banner": true,
+        "player_hp": 100,
         "combat_report_visible": true,
-        "player_hp": 100
+        "buy_phase_banner": true,
+        "player_alive": true
       },
       "actual": null,
       "time_sec": 82.0,
@@ -2608,10 +2051,10 @@
       "assertion_id": "GT-R2-SNAP-1050",
       "category": "missing_snapshot",
       "expected": {
-        "player_alive": true,
         "primary_state": "live_first_person",
+        "combat_report_visible": true,
         "buy_phase_banner": true,
-        "combat_report_visible": true
+        "player_alive": true
       },
       "actual": null,
       "time_sec": 105.0,
@@ -2631,11 +2074,11 @@
       "assertion_id": "GT-R2-SNAP-11145",
       "category": "missing_snapshot",
       "expected": {
-        "player_alive": true,
-        "game_timer_display": "1:40",
-        "score_player": 0,
         "score_enemy": 2,
-        "buy_phase_banner": false
+        "game_timer_display": "1:40",
+        "buy_phase_banner": false,
+        "score_player": 0,
+        "player_alive": true
       },
       "actual": null,
       "time_sec": 111.45,
@@ -2655,9 +2098,9 @@
       "assertion_id": "GT-R2-SNAP-143",
       "category": "missing_snapshot",
       "expected": {
-        "player_alive": true,
         "primary_state": "live_first_person",
-        "player_hp": 80
+        "player_hp": 80,
+        "player_alive": true
       },
       "actual": null,
       "time_sec": 143.0,
@@ -2677,9 +2120,9 @@
       "assertion_id": "GT-R2-SNAP-1475",
       "category": "missing_snapshot",
       "expected": {
-        "player_alive": true,
         "primary_state": "live_first_person",
-        "player_hp": 80
+        "player_hp": 80,
+        "player_alive": true
       },
       "actual": null,
       "time_sec": 147.5,
@@ -2699,9 +2142,9 @@
       "assertion_id": "GT-R2-SNAP-1476",
       "category": "missing_snapshot",
       "expected": {
-        "player_alive": true,
         "primary_state": "live_first_person",
-        "player_hp": 22
+        "player_hp": 22,
+        "player_alive": true
       },
       "actual": null,
       "time_sec": 147.6,
@@ -2721,8 +2164,8 @@
       "assertion_id": "GT-R2-SNAP-1477",
       "category": "missing_snapshot",
       "expected": {
-        "player_alive": false,
-        "combat_report_visible": true
+        "combat_report_visible": true,
+        "player_alive": false
       },
       "actual": null,
       "time_sec": 147.7,
@@ -2742,9 +2185,9 @@
       "assertion_id": "GT-R2-SNAP-149",
       "category": "missing_snapshot",
       "expected": {
-        "player_alive": false,
         "primary_state": "expanded_tactical_map",
-        "combat_report_visible": true
+        "combat_report_visible": true,
+        "player_alive": false
       },
       "actual": null,
       "time_sec": 149.0,
@@ -2764,13 +2207,13 @@
       "assertion_id": "GT-R2-SNAP-151",
       "category": "missing_snapshot",
       "expected": {
-        "view_owner": "teammate_spectated",
-        "player_alive": false,
-        "spectated_hp": 100,
         "primary_state": "spectator_first_person",
-        "spectated_ammo_reserve": 50,
+        "spectated_hp": 100,
         "spectated_ammo_mag": 21,
-        "combat_report_visible": true
+        "spectated_ammo_reserve": 50,
+        "combat_report_visible": true,
+        "view_owner": "teammate_spectated",
+        "player_alive": false
       },
       "actual": null,
       "time_sec": 151.0,
@@ -2790,13 +2233,13 @@
       "assertion_id": "GT-R2-SNAP-170",
       "category": "missing_snapshot",
       "expected": {
-        "view_owner": "teammate_spectated",
-        "player_alive": false,
-        "spectated_hp": 85,
         "primary_state": "spectator_first_person",
-        "spectated_ammo_reserve": 31,
+        "spectated_hp": 85,
         "spectated_ammo_mag": 22,
-        "combat_report_visible": true
+        "spectated_ammo_reserve": 31,
+        "combat_report_visible": true,
+        "view_owner": "teammate_spectated",
+        "player_alive": false
       },
       "actual": null,
       "time_sec": 170.0,
@@ -2876,8 +2319,8 @@
       "assertion_id": "GT-R1-MUZZLE-1",
       "category": "missing_visual_observation",
       "expected": {
-        "actor": "player",
-        "observation": "muzzle_flash"
+        "observation": "muzzle_flash",
+        "actor": "player"
       },
       "actual": null,
       "time_sec": 73.95,
@@ -2897,8 +2340,8 @@
       "assertion_id": "GT-R1-MUZZLE-2",
       "category": "missing_visual_observation",
       "expected": {
-        "actor": "player",
-        "observation": "muzzle_flash"
+        "observation": "muzzle_flash",
+        "actor": "player"
       },
       "actual": null,
       "time_sec": 74.25,
@@ -2918,8 +2361,8 @@
       "assertion_id": "GT-R1-MUZZLE-3",
       "category": "missing_visual_observation",
       "expected": {
-        "actor": "player",
-        "observation": "muzzle_flash"
+        "observation": "muzzle_flash",
+        "actor": "player"
       },
       "actual": null,
       "time_sec": 74.38,
@@ -2952,7 +2395,7 @@
       "actor": "system",
       "screen_state": null,
       "view_owner": null,
-      "confidence": 0.92,
+      "confidence": 0.88,
       "source": "reference_evaluator",
       "diagnostic_codes": [
         "count"
@@ -2977,7 +2420,7 @@
       "actor": "player",
       "screen_state": null,
       "view_owner": null,
-      "confidence": 0.92,
+      "confidence": 0.88,
       "source": "reference_evaluator",
       "diagnostic_codes": [
         "count"
@@ -3002,7 +2445,7 @@
       "actor": "system",
       "screen_state": null,
       "view_owner": null,
-      "confidence": 0.92,
+      "confidence": 0.88,
       "source": "reference_evaluator",
       "diagnostic_codes": [
         "count"
@@ -3030,7 +2473,7 @@
       "actor": "player",
       "screen_state": null,
       "view_owner": null,
-      "confidence": 0.92,
+      "confidence": 0.88,
       "source": "reference_evaluator",
       "diagnostic_codes": [
         "count"
@@ -3056,7 +2499,7 @@
       "actor": "system",
       "screen_state": null,
       "view_owner": null,
-      "confidence": 0.92,
+      "confidence": 0.88,
       "source": "reference_evaluator",
       "diagnostic_codes": [
         "count"
@@ -3081,7 +2524,7 @@
       "actor": "player",
       "screen_state": null,
       "view_owner": null,
-      "confidence": 0.92,
+      "confidence": 0.88,
       "source": "reference_evaluator",
       "diagnostic_codes": [
         "count"
@@ -3096,17 +2539,19 @@
     "images": "opt_in_manual_privacy_review_required"
   },
   "hud": {
-    "observations": 3929,
-    "unknown": 3892,
-    "states": 3,
+    "observations": 4451,
+    "unknown": 3794,
+    "states": 5,
     "detected_states": {
-      "unknown": 3892,
-      "remote_control_view": 34,
-      "buy_menu_open": 3
+      "live_first_person": 96,
+      "unknown": 3794,
+      "remote_control_view": 39,
+      "buy_menu_open": 3,
+      "spectator_first_person": 519
     }
   },
   "visual": {
-    "observations": 3929,
+    "observations": 4451,
     "events": 0,
     "missing_expected": [
       "GT-R1-MUZZLE-1",
@@ -3114,25 +2559,33 @@
       "GT-R1-MUZZLE-3"
     ],
     "eligibility_counts": {
-      "player_mechanics": 0,
-      "world_semantics": 0
+      "player_mechanics": 96,
+      "world_semantics": 96
     }
   },
   "map_zone": {
     "resolved": 0,
-    "unknown": 3929,
+    "unknown": 4451,
     "zones": [],
     "diagnostic_counts": {
-      "map_selection_or_calibration_required": 3929,
-      "map_ownership_blocked": 3929,
-      "map_calibration_skipped_hud_eligibility": 3929,
-      "map_marker_not_evaluated": 3929,
-      "map_location_not_evaluated": 3929
+      "alignment_confidence_below_threshold": 46,
+      "map_ownership_accepted": 96,
+      "map_calibration_failed": 53,
+      "map_marker_not_evaluated": 4408,
+      "map_location_not_evaluated": 4408,
+      "map_selection_or_calibration_required": 4355,
+      "map_ownership_blocked": 4355,
+      "map_calibration_skipped_hud_eligibility": 4355,
+      "client_build_unverified": 43,
+      "map_calibration_accepted": 43,
+      "map_marker_missing": 43,
+      "map_location_unresolved": 43,
+      "full_map_evidence_missing": 7
     }
   },
   "round_package": {
     "rounds": 1,
-    "event_count": 7,
+    "event_count": 126,
     "round_count": 1
   },
   "e2e": {

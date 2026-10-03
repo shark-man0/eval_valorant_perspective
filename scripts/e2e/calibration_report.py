@@ -55,8 +55,10 @@ def _positive_dimensions(value):
         value
         if isinstance(value, list)
         and len(value) == 2
-        and all(isinstance(item, int) and not isinstance(item, bool) and 0 < item <= 65536
-                for item in value)
+        and all(
+            isinstance(item, int) and not isinstance(item, bool) and 0 < item <= 65536
+            for item in value
+        )
         else None
     )
 
@@ -208,6 +210,11 @@ def sanitize_calibration(value):
             "panel_structure_excluded",
             "panel_structure_ambiguous",
             "panel_structure_mismatch",
+            "icon_present",
+            "icon_absent",
+            "icon_roi_obscured",
+            "icon_roi_unobservable",
+            "icon_structure_ambiguous",
         ),
     }.items():
         counts = object_or_empty(value.get(section))
@@ -555,7 +562,11 @@ def sanitize_identity_generation(value):
             row["spectator_generation"] = {
                 "matcher": source.get("matcher")
                 if source.get("matcher")
-                in ("edge_recall_precision_v1", "oriented_component_regions_v2")
+                in (
+                    "edge_recall_precision_v1",
+                    "oriented_component_regions_v2",
+                    "fixed_slot_structure_v1",
+                )
                 else None,
                 "proposal_sample_count": number(source.get("proposal_sample_count"), count=True),
                 "holdout_proposal_skipped_count": number(
@@ -568,9 +579,7 @@ def sanitize_identity_generation(value):
                             for k in ("sample_index", "training_support", "minimum_required")
                         },
                         "self_match": sanitize_panel_match(s.get("self_match")),
-                        "portrait_proposal": sanitize_portrait_proposal(
-                            s.get("portrait_proposal")
-                        ),
+                        "portrait_proposal": sanitize_portrait_proposal(s.get("portrait_proposal")),
                         "legacy_self_match": sanitize_panel_match(s.get("legacy_self_match")),
                         "failed_support_scores": {
                             k: number(
