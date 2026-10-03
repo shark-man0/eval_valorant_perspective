@@ -55,7 +55,7 @@ def _orientation(gray: np.ndarray) -> np.ndarray:
 
 
 def portrait_frames(
-    edges: np.ndarray, diagnostics: dict[str, Any]
+    edges: np.ndarray, diagnostics: dict[str, Any], orientation: np.ndarray | None = None
 ) -> list[tuple[int, int, int, int]]:
     """Frame occupancy from fragments/line pairs; no closed convex polygon required."""
     h, w = edges.shape
@@ -93,6 +93,19 @@ def portrait_frames(
             if end > x:
                 proposals.add((x, min(y, other), end - x + 1, abs(y - other) + 1))
     nearby = cv2.distanceTransform((edges == 0).astype(np.uint8), cv2.DIST_L2, 3) <= 1.5
+    # Directed side occupancy rejects coincidental world/chat rectangles.
+    # Keep the Windows occupancy gates, using the canonical two-degree angles.
+    vertical_nearby = horizontal_nearby = nearby
+    if orientation is not None:
+        angle = (orientation.astype(np.int16) * 2) % 180
+        vertical_edges = (edges > 0) & (np.minimum(angle, 180 - angle) <= 22.5)
+        horizontal_edges = (edges > 0) & (np.abs(angle - 90) <= 22.5)
+        vertical_nearby = (
+            cv2.distanceTransform((~vertical_edges).astype(np.uint8), cv2.DIST_L2, 3) <= 1.5
+        )
+        horizontal_nearby = (
+            cv2.distanceTransform((~horizontal_edges).astype(np.uint8), cv2.DIST_L2, 3) <= 1.5
+        )
     boxes = []
     best = 0.0
     geometry_count = 0
@@ -102,10 +115,10 @@ def portrait_frames(
             continue
         geometry_count += 1
         side = [
-            float(nearby[y, x : x + bw].mean()),
-            float(nearby[y + bh - 1, x : x + bw].mean()),
-            float(nearby[y : y + bh, x].mean()),
-            float(nearby[y : y + bh, x + bw - 1].mean()),
+            float(horizontal_nearby[y, x : x + bw].mean()),
+            float(horizontal_nearby[y + bh - 1, x : x + bw].mean()),
+            float(vertical_nearby[y : y + bh, x].mean()),
+            float(vertical_nearby[y : y + bh, x + bw - 1].mean()),
         ]
         score = float(np.mean(side))
         if score > best:
@@ -126,7 +139,10 @@ def portrait_frames(
 
 
 def panel_components(
-    gray: np.ndarray, diagnostics: dict[str, Any] | None = None
+    gray: np.ndarray,
+    diagnostics: dict[str, Any] | None = None,
+    *,
+    conservative_veto: bool = False,
 ) -> np.ndarray | None:
     diag = diagnostics if diagnostics is not None else {}
     diag.update(
@@ -164,7 +180,7 @@ def panel_components(
         return None
     diag.update(observable=True, reason="structural_rejected")
     edges = cv2.Canny(gray, 60, 150)
-    boxes = portrait_frames(edges, diag)
+    boxes = portrait_frames(edges, diag, None if conservative_veto else _orientation(gray))
     diag["portrait"] = bool(boxes)
     diag["final_gates"]["portrait"] = bool(boxes)
     lines = cv2.HoughLinesP(
@@ -263,6 +279,19 @@ def panel_components(
         diag["boundary_fragment_count"] = len(best_segments)
         diag["portrait_text_gap_ratio"] = float((text_left - x - bw) / bw)
         diag["final_gates"]["boundary_span"] = True
+        # Preserve the ancestor's broader structural veto for absence. Neither
+        # stricter generation guard may make absence easier to establish.
+        if conservative_veto:
+            legacy = boundary.copy()
+            old_box = np.zeros_like(gray)
+            cv2.rectangle(old_box, (x, y), (x + bw - 1, y + bh - 1), 1, 2)
+            legacy[(old_box > 0) & (edges > 0)] = 2
+            for a, b, c, d in rows:
+                region = legacy[b : b + d, a : a + c]
+                region[edges[b : b + d, a : a + c] > 0] = 3
+            if all(np.count_nonzero(legacy == k) >= 12 for k in (1, 2, 3)):
+                return legacy
+            continue
         # Freeze support before looking at edge matches. All observed source
         # edges in these regions become expectations, so source-frame recall
         # and precision have the same denominator/representation contract.
@@ -481,7 +510,7 @@ def generate_panel_reference(crops: list[np.ndarray], stats: dict[str, Any]) -> 
         stats["candidate_count"] += 1
         comparisons = [component_match_diagnostics(g, labels) for g in gray[::2]]
         members = tuple(i for i, result in enumerate(comparisons) if result.get("passed"))
-        failed = [r["minimum_score"] for r in comparisons if not r.get("passed")]
+        failed = [r.get("minimum_score", 0.0) for r in comparisons if not r.get("passed")]
         support = len(members)
         stats["candidate_support"].append(
             {
@@ -489,6 +518,9 @@ def generate_panel_reference(crops: list[np.ndarray], stats: dict[str, Any]) -> 
                 "training_support": support,
                 "minimum_required": 3,
                 "self_match": comparisons[index],
+                "training_matches": [
+                    {"sample_index": i * 2, **r} for i, r in enumerate(comparisons)
+                ],
                 "legacy_self_match": samples[index * 2].get("legacy_self_match", {}),
                 "failed_support_scores": dict(
                     count=len(failed),
@@ -500,15 +532,21 @@ def generate_panel_reference(crops: list[np.ndarray], stats: dict[str, Any]) -> 
         )
         if support >= 3:
             if members not in clusters:
-                candidates.append((support, labels))
+                candidates.append((support, labels, index * 2))
                 clusters.add(members)
         else:
             stats["support_rejected"] += 1
     if not candidates:
         return None
     stats["cluster_count"] = len(candidates)
-    support, labels = max(candidates, key=lambda item: item[0])
-    heldout = sum(min(local_component_scores(g, labels), default=0) >= 0.90 for g in gray[1::2])
+    support, labels, sample_index = max(candidates, key=lambda item: item[0])
+    stats["selected_sample_index"] = sample_index
+    holdout_matches = [
+        {"sample_index": i * 2 + 1, **component_match_diagnostics(g, labels)}
+        for i, g in enumerate(gray[1::2])
+    ]
+    stats["holdout_matches"] = holdout_matches
+    heldout = sum(bool(r.get("passed")) for r in holdout_matches)
     stats.update(training_accept_count=support, holdout_accept_count=heldout)
     if heldout < 3 or heldout < 0.80 * support * len(gray[1::2]) / len(gray[::2]):
         stats["holdout_rejected"] += 1
@@ -542,7 +580,9 @@ def detect_panel(crop: np.ndarray, labels: np.ndarray | None) -> dict[str, Any]:
     if min(positive_scores, default=0) >= 0.90:
         result.update(checked=True, panel_present=True, reason="panel_structure_present")
     elif max(scores) <= 0.10:
-        if panel_components(gray) is not None or _displaced_component_present(gray, labels):
+        if panel_components(
+            gray, conservative_veto=True
+        ) is not None or _displaced_component_present(gray, labels):
             result["reason"] = "panel_structure_mismatch"
             return result
         # Each mandatory UI component was checked and strongly contradicted.

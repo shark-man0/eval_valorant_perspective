@@ -61,6 +61,15 @@ then removes representative diagnostic arrays and sets `detail_truncated=true`.
 `run_windows.ps1` and `build_windows.ps1` remain application launch/build commands.
 No runner invokes `git add`, `commit`, `push`, or `pull`.
 
+## Windows UTF-8 execution
+
+Use `$env:PYTHONUTF8 = '1'` in the PowerShell session before running the E2E
+runner or `python -m pytest`. This also reaches Python subprocesses launched by
+the unmodified Validation Pack. On a CP932 Windows locale, `python -X utf8`
+alone does not set the encoding of those subprocesses. A pack validation failure
+caused by `UnicodeDecodeError` is a preflight failure, not a detector result;
+keep the pack unchanged and rerun with UTF-8 enabled.
+
 ## Requirements and input setup
 
 - Windows 10/11; Python 3.12 and its `py` launcher; Git; FFmpeg/ffprobe on PATH.
@@ -348,3 +357,21 @@ ownership rejection and location resolution. Downstream "not evaluated" is not a
 
 On Mac, `git pull` provides the report without raw video. Private detailed logs and
 recordings stay on Windows. Do not use `git add -f` on ignored outputs or recordings.
+
+### Spectator frozen evidence (version 2)
+
+Regenerate from a validated geometry-only base with 64 unlabelled samples after
+a detector change. New supported Spectator references persist three private PNG
+assets: measured Canny component labels (`template`), exclusive characteristic
+support regions (`support_regions`), and signed two-degree Sobel directions
+(`orientation`). Positive matching uses the canonical 20-degree tolerance.
+The profile fingerprints and localizes all three assets. Missing or invalid
+version-2 evidence disables the detector; it never falls back to a version-1
+positive match. Version-1 profiles retain their original matcher.
+
+Local `candidate_support` diagnostics include the old self-match scores, new
+self-match recall/precision/score and counts by component, best shared offset,
+and comparisons against every training sample. Holdout comparisons run only
+after training selects a supported candidate. Shared reports contain only
+allowlisted self-match aggregates, never masks, source images or full comparison
+arrays. A successful self-match alone cannot generate an identity reference.

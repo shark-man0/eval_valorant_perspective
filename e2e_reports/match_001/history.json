@@ -332,7 +332,6 @@
   {
     "history_key": "c253884de2c502a2dcea7ca83b13463219de2a84bfe7e99cef615acf991875f5",
     "metadata": {
-      "manual_map_id": "summit",
       "video_id": "match_001",
       "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
       "analyzer_commit": "4640be8e0be0a6827f358067e5c9ccd4c3ca5da4",
@@ -342,6 +341,97 @@
       "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
       "git_dirty_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "settings_fingerprint": "5074f29ac801760473a334ef138da77c7be5ad9bde2ee129087a8d0bb7509e6d"
+    },
+    "result": {
+      "status": "fail",
+      "schema_valid": true,
+      "failure_count": 58,
+      "negative_assertion_count": 20,
+      "error_code": null
+    },
+    "failure_count": 58
+  },
+  {
+    "history_key": "515f9ef60703c0fee8a2619408c4759d342fa9cb5668c01b6847377b0e6dd97f",
+    "metadata": {
+      "video_id": "match_001",
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "analyzer_commit": "efbebfdd19d5baeb221786b87997f41979459809",
+      "git_is_dirty": true,
+      "executed_at": "2026-10-02T19:34:27.660000+00:00",
+      "validation_pack": "valorant_e2e_validation_pack_v3",
+      "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
+      "git_dirty_fingerprint": "f1690795ab7eab099f9c764e6f1421d7c49964a358cb445df6c7a149cd4c4e50",
+      "settings_fingerprint": null
+    },
+    "result": {
+      "status": "fail",
+      "schema_valid": false,
+      "failure_count": null,
+      "negative_assertion_count": null,
+      "error_code": "VALIDATION_PACK_FAILED"
+    },
+    "failure_count": null
+  },
+  {
+    "history_key": "b0368c9e8c56a2afea4d9559970a8b151f72c7d40693aa010e86a31a2b103b24",
+    "metadata": {
+      "video_id": "match_001",
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "analyzer_commit": "efbebfdd19d5baeb221786b87997f41979459809",
+      "git_is_dirty": true,
+      "executed_at": "2026-10-02T19:35:17.916265+00:00",
+      "validation_pack": "valorant_e2e_validation_pack_v3",
+      "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
+      "git_dirty_fingerprint": "f1690795ab7eab099f9c764e6f1421d7c49964a358cb445df6c7a149cd4c4e50",
+      "settings_fingerprint": "8503231985ae6bc05b74f7e2cfb222d5b66255e6bd3c2f0437a1926201ec3ca6"
+    },
+    "result": {
+      "status": "fail",
+      "schema_valid": true,
+      "failure_count": 58,
+      "negative_assertion_count": 20,
+      "error_code": null
+    },
+    "failure_count": 58
+  },
+  {
+    "history_key": "0824fe7f1c1ede912b22ac17c420187856fd1c20c9762e32e1636d4f646717a9",
+    "metadata": {
+      "manual_map_id": "summit",
+      "video_id": "match_001",
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "analyzer_commit": "efbebfdd19d5baeb221786b87997f41979459809",
+      "git_is_dirty": true,
+      "executed_at": "2026-10-02T19:56:12.918811+00:00",
+      "validation_pack": "valorant_e2e_validation_pack_v3",
+      "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
+      "git_dirty_fingerprint": "f57ffd8eb4cc1c632de1b53de08f0be864196cf58b4daf37f6be74abc8309561",
+      "settings_fingerprint": "8503231985ae6bc05b74f7e2cfb222d5b66255e6bd3c2f0437a1926201ec3ca6"
+    },
+    "result": {
+      "detail_truncated": true,
+      "status": "fail",
+      "schema_valid": true,
+      "failure_count": 58,
+      "negative_assertion_count": 20,
+      "error_code": null
+    },
+    "failure_count": 58
+  },
+  {
+    "history_key": "d72bfdc90d92c330d75d39665d0a7b57ab7983c2384793f900f7af8f350f534d",
+    "metadata": {
+      "manual_map_id": "summit",
+      "video_id": "match_001",
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "analyzer_commit": "f3ea2676258af9ca81422c61c5f6a751804ac508",
+      "git_is_dirty": true,
+      "executed_at": "2026-10-03T10:46:03.704436+00:00",
+      "validation_pack": "valorant_e2e_validation_pack_v3",
+      "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
+      "git_dirty_fingerprint": "d6de880f5f49af28729d1cba53a60195826a1800c1ee9426289f11220ea02c76",
+      "settings_fingerprint": "c503f439f3ffc917b8b52c0823cb923f8e126a1cee5ab1e23cf040f21eacf920"
     },
     "result": {
       "status": "fail",

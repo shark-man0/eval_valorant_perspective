@@ -211,3 +211,156 @@ def test_dense_texture_around_incomplete_panel_is_not_positive(panel_images, see
     result = detect_panel(image, reference)
     assert result["checked"] is False
     assert result["panel_present"] is None
+
+
+def _write_png(path, image):
+    ok, encoded = cv2.imencode(".png", image)
+    assert ok
+    path.write_bytes(encoded.tobytes())
+
+
+def _write_remote_v2_profile(tmp_path, labels):
+    profile_path = tmp_path / "profile.json"
+    config = {
+        "version": 2,
+        "template": "template.png",
+        "support_regions": "support_regions.png",
+        "orientation": "orientation.png",
+    }
+    raw = {"schema_version": "1.0", "spectator_panel_detector": config}
+    profile_path.write_text(json.dumps(raw), encoding="utf-8")
+    _write_png(tmp_path / "template.png", labels)
+    _write_png(tmp_path / "support_regions.png", labels.regions)
+    _write_png(tmp_path / "orientation.png", labels.orientation)
+    return profile_path, raw, config
+
+
+def test_v2_assets_fail_closed_and_all_are_fingerprinted(tmp_path, panel_images):
+    image = panel(panel_images)
+    reference = panel_components(image)
+    assert isinstance(reference, PanelReference)
+    profile_path, raw, config = _write_remote_v2_profile(tmp_path, reference)
+    layout_path = tmp_path / "layout.json"
+    layout_path.write_text("{}", encoding="utf-8")
+    profile = HudTemplateProfile.load(profile_path)
+    assert isinstance(profile._panel_components, PanelReference)
+    baseline = profile.fingerprint(layout_path)
+
+    for key in ("template", "support_regions", "orientation"):
+        asset_path = tmp_path / config[key]
+        original = asset_path.read_bytes()
+        pixels = cv2.imdecode(np.frombuffer(original, np.uint8), cv2.IMREAD_GRAYSCALE)
+        pixels[0, 0] = (int(pixels[0, 0]) + 1) % 256
+        _write_png(asset_path, pixels)
+        assert profile.fingerprint(layout_path) != baseline, key
+        asset_path.write_bytes(original)
+
+    for key in ("support_regions", "orientation"):
+        config[key] = f"missing_{key}.png"
+        profile_path.write_text(json.dumps(raw), encoding="utf-8")
+        invalid = HudTemplateProfile.load(profile_path)
+        assert invalid._panel_components is None
+        assert invalid.reader_diagnostics
+        assert detect_panel(image, invalid._panel_components)["panel_present"] is None
+        config[key] = f"{key}.png"
+
+    profile_path.write_text(json.dumps(raw), encoding="utf-8")
+    _write_png(tmp_path / "orientation.png", np.zeros((2, 2), dtype=np.uint8))
+    corrupt = HudTemplateProfile.load(profile_path)
+    assert corrupt._panel_components is None
+    assert corrupt.reader_diagnostics
+    assert detect_panel(image, corrupt._panel_components)["panel_present"] is None
+
+
+def test_structural_candidate_veto_prevents_clear_absence(monkeypatch, panel_images):
+    image = panel(panel_images)
+    reference = panel_components(image)
+    scene = np.tile(np.linspace(25, 120, 160, dtype=np.uint8), (126, 1))
+    cv2.circle(scene, (30, 107), 8, 240, 2)
+    calls = []
+
+    def candidate(frame, diagnostics=None, *, conservative_veto=False):
+        calls.append(frame.shape)
+        return reference
+
+    monkeypatch.setattr("valorant_ai_coach.hud.spectator.panel_components", candidate)
+    result = detect_panel(scene, reference)
+    assert calls == [scene.shape]
+    assert result["checked"] is False
+    assert result["panel_present"] is None
+    assert result["reason"] == "panel_structure_mismatch"
+
+
+def test_generation_requires_three_training_and_holdout_and_eighty_percent(
+    panel_images,
+):
+    positive = panel(panel_images)
+    blank = np.full_like(positive, 60)
+
+    two_training = {}
+    assert generate_panel_reference([positive.copy() for _ in range(4)], two_training) is None
+    assert two_training["training_count"] == 2
+    assert two_training["candidate_count"] >= 1
+    assert two_training["support_rejected"] >= 1
+
+    three_training_and_holdout = {}
+    accepted = generate_panel_reference(
+        [positive.copy() for _ in range(6)], three_training_and_holdout
+    )
+    assert accepted is not None
+    assert three_training_and_holdout["training_accept_count"] >= 3
+    assert three_training_and_holdout["holdout_accept_count"] == 3
+
+    below_three_holdout = [positive.copy() for _ in range(6)]
+    below_three_holdout[5] = blank
+    stats = {}
+    assert generate_panel_reference(below_three_holdout, stats) is None
+    assert stats["holdout_accept_count"] == 2
+    assert stats["holdout_rejected"] == 1
+
+    exactly_eighty_percent = [positive.copy() for _ in range(10)]
+    exactly_eighty_percent[9] = blank
+    stats = {}
+    assert generate_panel_reference(exactly_eighty_percent, stats) is not None
+    assert stats["training_accept_count"] >= 5
+    assert stats["holdout_accept_count"] == 4
+
+    below_eighty_percent = [positive.copy() for _ in range(10)]
+    below_eighty_percent[7] = blank
+    below_eighty_percent[9] = blank
+    stats = {}
+    assert generate_panel_reference(below_eighty_percent, stats) is None
+    assert stats["holdout_accept_count"] == 3
+    assert stats["holdout_rejected"] == 1
+
+
+def test_contrast_polarity_inversion_remains_unknown(panel_images):
+    image = panel(panel_images)
+    reference = panel_components(image)
+    inverted = 255 - image
+
+    result = detect_panel(inverted, reference)
+    assert result["checked"] is False
+    assert result["panel_present"] is None
+
+
+def test_absence_veto_uses_conservative_mode_when_strict_generation_rejects(
+    monkeypatch, panel_images
+):
+    image = panel(panel_images)
+    reference = panel_components(image)
+    scene = np.tile(np.linspace(25, 120, 160, dtype=np.uint8), (126, 1))
+    cv2.circle(scene, (30, 107), 8, 240, 2)
+    calls = []
+
+    def candidate(frame, diagnostics=None, *, conservative_veto=False):
+        calls.append(conservative_veto)
+        return reference if conservative_veto else None
+
+    monkeypatch.setattr("valorant_ai_coach.hud.spectator.panel_components", candidate)
+    result = detect_panel(scene, reference)
+
+    assert calls == [True]
+    assert result["checked"] is False
+    assert result["panel_present"] is None
+    assert result["reason"] == "panel_structure_mismatch"

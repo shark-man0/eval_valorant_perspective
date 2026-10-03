@@ -1,6 +1,6 @@
 # Windows E2E 上流診断（2026-10-01）
 
-## Spectator self-consistency 修正（2026-10-03、Windows未検証）
+## MacでのSpectator self-consistency修正記録（当時Windows未検証）
 
 今回はSpectator生成・照合と必要なasset保存/読み込み・共有診断だけを変更。
 Weapon/Ammo、HP/Ability生成、identity policy、Visual/Map/Round、GT、runnerは変更しない。
@@ -676,3 +676,60 @@ profileフォルダ・画像・動画は追加しない。
 E2E failed 57、negative failures 0。加えて新規/保持込みgeometry成功率、
 geometry有効下unknown、anchor別棄却率・score中央値・mask有無、Visual eligibility、
 Map診断件数を確認する。今回のMac修正だけで認識精度改善や実動画PASSは主張しない。
+
+## Spectator self-consistency and directed frame evidence
+
+The integrated `oriented_component_regions_v2` matcher evaluates the representation frozen at generation:
+actual Canny edges inside exclusive boundary/portrait/text support regions.
+Recall and precision use the Mac signed two-degree orientation encoding,
+20-degree angular tolerance and the existing one-pixel spatial match band. All
+groups share one offset bounded by +/-2 pixels. Edges outside support do not
+count as precision errors; contradictory edges inside it still do. The positive
+threshold remains 0.90 for every mandatory group. Absence still uses independent
+conservative contradiction and displacement checks, never a missed positive.
+
+Self-consistency makes repeated texture self-consistent too. Portrait proposals
+therefore require directed frame evidence before support is measured: vertical
+sides use horizontal signed gradients and horizontal sides use vertical signed
+gradients. The original side occupancy, three-side, fourth-side and mean gates
+are unchanged. Side normals use a 22.5-degree tolerance with canonical angles.
+The absence veto bypasses both stricter generation guards and retains the
+ancestor structural check. Arbitrary nearby edges cannot establish a frame side merely by
+covering it. This is a structural proposal check, not a relaxed acceptance gate.
+
+The Windows real-video inspection exposed a background-and-chat candidate with
+no independent training support. Under frozen evidence its self-match was 1.0
+in all groups, but that was not evidence of a Spectator panel. Directed side
+support rejects this candidate. The visible frameless portrait/name UI remains
+an unmodelled variant and must stay UNKNOWN until a coherent, independently
+supported three-component model is available. Neither that variant nor a
+self-match is permission to skip training, holdout or the runtime identity gate.
+
+## Windows / Mac integration validation (2026-10-03)
+
+The integrated tree retains the Mac `PanelReference` representation and adds
+Windows directed portrait proposals, broad ancestor absence veto, and local
+training/selected-holdout comparisons. Thresholds and independent support rules
+are unchanged. The canonical matcher fixes sample 28 self-match: all three
+component recall/precision/scores are 1.0 at shared offset [0, 0]. Its independent
+training support is zero (one self sample, three required), so holdout is not run.
+Directed portrait evidence rejects that background/chat candidate.
+
+Fresh `integrated_oriented_v2_run1` uses 64 unlabelled samples from the validated
+geometry-only base. HP 23/23, Ability 21/24, Weapon 18/18 are generated anew.
+Spectator has no accepted candidate, status insufficient_evidence, and
+identity_reference_ready=false. Full Windows E2E run
+`20261003T104603Z-2db56658` completed with schema valid, 21 passed / 57 failed /
+4 not evaluated, and negative assertions 20 passed / 0 failed. HUD states are
+unknown 3892, remote control 34, buy menu 3, live/spectator 0; 3929 observations.
+Spectator is reference_unavailable for all 3929 observations, with zero checked,
+present, or excluded. Visual eligibility and Map resolved remain zero.
+
+The real frameless portrait/name UI still lacks an independently supported
+three-component structural model. Source self-consistency alone is not a valid
+Spectator reference and does not restore runtime live identity.
+
+Shared report history also now preserves allowlisted manual_map_id and boolean
+detail_truncated when rebuilding existing entries. The prior 19 Windows history
+records were retained exactly and the new run appended by verified re-export.
+This export-only correction does not rerun or change video analysis/evaluation.

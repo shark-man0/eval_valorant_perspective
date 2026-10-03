@@ -363,6 +363,11 @@ def _clean_history_entry(item: Any) -> dict | None:
     old_meta = item.get("metadata") if isinstance(item.get("metadata"), dict) else {}
     old_result = item.get("result") if isinstance(item.get("result"), dict) else {}
     clean_meta = {
+        **(
+            {"manual_map_id": _vocab(old_meta["manual_map_id"], _field_vocabulary("map_id"))}
+            if "manual_map_id" in old_meta
+            else {}
+        ),
         "video_id": _safe_id(old_meta.get("video_id")),
         "source_sha256": old_meta.get("source_sha256")
         if isinstance(old_meta.get("source_sha256"), str)
@@ -396,6 +401,11 @@ def _clean_history_entry(item: Any) -> dict | None:
         else "unknown"
     )
     result = {
+        **(
+            {"detail_truncated": old_result["detail_truncated"]}
+            if isinstance(old_result.get("detail_truncated"), bool)
+            else {}
+        ),
         "status": status,
         "schema_valid": old_result.get("schema_valid")
         if isinstance(old_result.get("schema_valid"), bool)
