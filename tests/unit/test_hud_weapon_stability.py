@@ -72,8 +72,11 @@ def test_spectator_relative_layout_and_element_diagnostics(panel_images):
         is not None
     )
     assert len(stats["samples"]) == 32
-    assert stats["evidence_counts"]["all_components"] == 16
-    assert stats["rejection_counts"]["structural_rejected"] == 16
+    # Proposals and structural diagnostics inspect the 16 training frames only.
+    assert stats["proposal_sample_count"] == 16
+    assert stats["holdout_proposal_skipped_count"] == 16
+    assert stats["evidence_counts"]["all_components"] == 8
+    assert stats["rejection_counts"]["structural_rejected"] == 8
     assert panel_components(np.zeros((100, 100), np.uint8), diag) is None
     assert diag["reason"] == "contrast_rejected"
     assert panel_components(cv2.GaussianBlur(gray, (31, 31), 12), diag) is None

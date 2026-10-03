@@ -1,7 +1,7 @@
 """Positive panel-structure detector; never match a background/clear image.
 
 The ROI is supplied by the layout. A supported panel candidate must contain a
-coherent boundary fragments, portrait-frame edges, and aligned adjacent text.
+coherent boundary fragments, framed or frameless portrait structure, and adjacent text.
 These are UI-shape priors, not frame labels. Unrecognised UI variants stay unknown.
 """
 
@@ -11,6 +11,8 @@ from typing import Any
 
 import cv2
 import numpy as np
+
+from .frameless import frameless_regions
 
 
 class PanelReference(np.ndarray):
@@ -324,8 +326,15 @@ def panel_components(
                     region = legacy[b : b + d, a : a + c]
                     region[edges[b : b + d, a : a + c] > 0] = 3
                 diag["legacy_self_match"] = component_match_diagnostics(gray, legacy)
+            diag["portrait_mode"] = "framed"
             return PanelReference(labels, regions, orientation)
         diag["final_rejections"]["component_pixels_insufficient"] += 1
+    # Alternative topology is constrained by measured separator/text geometry;
+    # it does not relax the framed side gates or alter the positive matcher.
+    alternative = frameless_regions(gray, edges, _orientation(gray), diag)
+    if alternative is not None:
+        labels, regions = alternative
+        return PanelReference(labels, regions, _orientation(gray))
     return None
 
 
@@ -464,9 +473,15 @@ def generate_panel_reference(crops: list[np.ndarray], stats: dict[str, Any]) -> 
         cluster_count=0,
     )
     samples = []
+    proposals = []
+    stats["proposal_sample_count"] = len(gray[::2])
+    stats["holdout_proposal_skipped_count"] = len(gray[1::2])
     for index, frame in enumerate(gray):
         sample: dict[str, Any] = {"sample_index": index, "training": index % 2 == 0}
-        panel_components(frame, sample)
+        if index % 2 == 0:
+            proposals.append(panel_components(frame, sample))
+        else:
+            sample["reason"] = "holdout_not_proposed"
         samples.append(sample)
     stats["samples"] = samples
     stats["evidence_counts"] = {
@@ -493,17 +508,24 @@ def generate_panel_reference(crops: list[np.ndarray], stats: dict[str, Any]) -> 
     }
     stats["final_rejection_counts"] = (
         {
-            key: sum(s["final_rejections"][key] for s in samples)
+            key: sum(s.get("final_rejections", {}).get(key, 0) for s in samples)
             for key in samples[0]["final_rejections"]
         }
         if samples
         else {}
     )
+    stats["portrait_modes"] = {
+        mode: sum(s.get("portrait_mode") == mode for s in samples)
+        for mode in ("framed", "frameless")
+    }
+    stats["frameless_rejection_counts"] = {
+        key: sum(s.get("frameless_rejections", {}).get(key, 0) for s in samples)
+        for key in sorted({key for s in samples for key in s.get("frameless_rejections", {})})
+    }
     stats["candidate_support"] = []
     candidates = []
     clusters = set()
-    for index, frame in enumerate(gray[::2]):
-        labels = panel_components(frame)
+    for index, labels in enumerate(proposals):
         if labels is None:
             stats["structural_rejected"] += 1
             continue
@@ -515,6 +537,11 @@ def generate_panel_reference(crops: list[np.ndarray], stats: dict[str, Any]) -> 
         stats["candidate_support"].append(
             {
                 "sample_index": index * 2,
+                "portrait_proposal": {
+                    key: value
+                    for key, value in samples[index * 2].items()
+                    if key.startswith("portrait_") or key == "panel_topology"
+                },
                 "training_support": support,
                 "minimum_required": 3,
                 "self_match": comparisons[index],

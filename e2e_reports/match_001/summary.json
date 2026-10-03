@@ -834,9 +834,9 @@
           "holdout_count": 32,
           "training_accept_count": null,
           "holdout_accept_count": null,
-          "candidate_count": 0,
-          "structural_rejected": 32,
-          "support_rejected": 0,
+          "candidate_count": 2,
+          "structural_rejected": 30,
+          "support_rejected": 2,
           "holdout_rejected": 0,
           "cluster_count": 0,
           "omitted_candidate_count": null,
@@ -848,22 +848,326 @@
           "orientation_content_hash": null,
           "spectator_generation": {
             "matcher": "oriented_component_regions_v2",
-            "candidate_support": [],
+            "proposal_sample_count": 32,
+            "holdout_proposal_skipped_count": 32,
+            "candidate_support": [
+              {
+                "sample_index": 60,
+                "training_support": 1,
+                "minimum_required": 3,
+                "self_match": {
+                  "minimum_score": 1.0,
+                  "passed": true,
+                  "limiting_component": "boundary",
+                  "components": [
+                    {
+                      "component": "boundary",
+                      "component_id": 1,
+                      "expected_count": 172,
+                      "observed_count": 172,
+                      "matched_expected_count": 172,
+                      "matched_observed_count": 172,
+                      "recall": 1.0,
+                      "precision": 1.0,
+                      "score": 1.0
+                    },
+                    {
+                      "component": "portrait",
+                      "component_id": 2,
+                      "expected_count": 1461,
+                      "observed_count": 1461,
+                      "matched_expected_count": 1461,
+                      "matched_observed_count": 1461,
+                      "recall": 1.0,
+                      "precision": 1.0,
+                      "score": 1.0
+                    },
+                    {
+                      "component": "text",
+                      "component_id": 3,
+                      "expected_count": 957,
+                      "observed_count": 957,
+                      "matched_expected_count": 957,
+                      "matched_observed_count": 957,
+                      "recall": 1.0,
+                      "precision": 1.0,
+                      "score": 1.0
+                    }
+                  ],
+                  "dx": 0,
+                  "dy": 0
+                },
+                "portrait_proposal": {
+                  "portrait_mode": "frameless",
+                  "panel_topology": "portrait_side_separator",
+                  "portrait_search_region": [
+                    0.0532258064516129,
+                    0.23529411764705882,
+                    0.1693548387096774,
+                    0.47058823529411764
+                  ],
+                  "portrait_region_dimensions": [
+                    72,
+                    80
+                  ],
+                  "portrait_edge_count": 1496,
+                  "portrait_localized_component_count": 22,
+                  "portrait_x_spread": 0.9861111111111112,
+                  "portrait_y_spread": 0.9875,
+                  "portrait_occupied_rows": 4,
+                  "portrait_occupied_columns": 4,
+                  "portrait_orientation_distribution": [
+                    0.16302765647743814,
+                    0.14192139737991266,
+                    0.12518195050946143,
+                    0.10189228529839883,
+                    0.14192139737991266,
+                    0.11280931586608442,
+                    0.13100436681222707,
+                    0.08224163027656478
+                  ],
+                  "portrait_relative_to_text": 0.175,
+                  "portrait_relative_to_boundary": 0.0375,
+                  "portrait_support_region_population": 4965,
+                  "portrait_candidate_rejection_reason": null,
+                  "frameless_rejections": {
+                    "separator_geometry": null,
+                    "separator_evidence": null,
+                    "two_text_rows_missing": null,
+                    "portrait_text_geometry": null,
+                    "portrait_edge_density": null,
+                    "portrait_localized_groups": null,
+                    "portrait_spread": null,
+                    "portrait_occupancy": null,
+                    "portrait_orientation": null,
+                    "component_pixels_insufficient": null,
+                    "holdout_not_proposed": null
+                  }
+                },
+                "legacy_self_match": {
+                  "minimum_score": null,
+                  "passed": false,
+                  "limiting_component": null,
+                  "components": [
+                    {
+                      "component": "boundary",
+                      "component_id": 1,
+                      "expected_count": null,
+                      "observed_count": null,
+                      "matched_expected_count": null,
+                      "matched_observed_count": null,
+                      "recall": null,
+                      "precision": null,
+                      "score": null
+                    },
+                    {
+                      "component": "portrait",
+                      "component_id": 2,
+                      "expected_count": null,
+                      "observed_count": null,
+                      "matched_expected_count": null,
+                      "matched_observed_count": null,
+                      "recall": null,
+                      "precision": null,
+                      "score": null
+                    },
+                    {
+                      "component": "text",
+                      "component_id": 3,
+                      "expected_count": null,
+                      "observed_count": null,
+                      "matched_expected_count": null,
+                      "matched_observed_count": null,
+                      "recall": null,
+                      "precision": null,
+                      "score": null
+                    }
+                  ],
+                  "dx": null,
+                  "dy": null
+                },
+                "failed_support_scores": {
+                  "count": 31,
+                  "min": 0.0,
+                  "median": 0.0,
+                  "max": 0.8850102669404517
+                }
+              },
+              {
+                "sample_index": 62,
+                "training_support": 1,
+                "minimum_required": 3,
+                "self_match": {
+                  "minimum_score": 1.0,
+                  "passed": true,
+                  "limiting_component": "boundary",
+                  "components": [
+                    {
+                      "component": "boundary",
+                      "component_id": 1,
+                      "expected_count": 163,
+                      "observed_count": 163,
+                      "matched_expected_count": 163,
+                      "matched_observed_count": 163,
+                      "recall": 1.0,
+                      "precision": 1.0,
+                      "score": 1.0
+                    },
+                    {
+                      "component": "portrait",
+                      "component_id": 2,
+                      "expected_count": 1427,
+                      "observed_count": 1427,
+                      "matched_expected_count": 1427,
+                      "matched_observed_count": 1427,
+                      "recall": 1.0,
+                      "precision": 1.0,
+                      "score": 1.0
+                    },
+                    {
+                      "component": "text",
+                      "component_id": 3,
+                      "expected_count": 890,
+                      "observed_count": 890,
+                      "matched_expected_count": 890,
+                      "matched_observed_count": 890,
+                      "recall": 1.0,
+                      "precision": 1.0,
+                      "score": 1.0
+                    }
+                  ],
+                  "dx": 0,
+                  "dy": 0
+                },
+                "portrait_proposal": {
+                  "portrait_mode": "frameless",
+                  "panel_topology": "portrait_side_separator",
+                  "portrait_search_region": [
+                    0.0532258064516129,
+                    0.23529411764705882,
+                    0.1693548387096774,
+                    0.47058823529411764
+                  ],
+                  "portrait_region_dimensions": [
+                    72,
+                    80
+                  ],
+                  "portrait_edge_count": 1451,
+                  "portrait_localized_component_count": 20,
+                  "portrait_x_spread": 0.9861111111111112,
+                  "portrait_y_spread": 0.9875,
+                  "portrait_occupied_rows": 4,
+                  "portrait_occupied_columns": 4,
+                  "portrait_orientation_distribution": [
+                    0.15746268656716417,
+                    0.12388059701492538,
+                    0.1253731343283582,
+                    0.10597014925373134,
+                    0.13880597014925372,
+                    0.1291044776119403,
+                    0.11791044776119403,
+                    0.10149253731343283
+                  ],
+                  "portrait_relative_to_text": 0.175,
+                  "portrait_relative_to_boundary": 0.0375,
+                  "portrait_support_region_population": 4931,
+                  "portrait_candidate_rejection_reason": null,
+                  "frameless_rejections": {
+                    "separator_geometry": null,
+                    "separator_evidence": null,
+                    "two_text_rows_missing": null,
+                    "portrait_text_geometry": null,
+                    "portrait_edge_density": null,
+                    "portrait_localized_groups": null,
+                    "portrait_spread": null,
+                    "portrait_occupancy": null,
+                    "portrait_orientation": null,
+                    "component_pixels_insufficient": null,
+                    "holdout_not_proposed": null
+                  }
+                },
+                "legacy_self_match": {
+                  "minimum_score": null,
+                  "passed": false,
+                  "limiting_component": null,
+                  "components": [
+                    {
+                      "component": "boundary",
+                      "component_id": 1,
+                      "expected_count": null,
+                      "observed_count": null,
+                      "matched_expected_count": null,
+                      "matched_observed_count": null,
+                      "recall": null,
+                      "precision": null,
+                      "score": null
+                    },
+                    {
+                      "component": "portrait",
+                      "component_id": 2,
+                      "expected_count": null,
+                      "observed_count": null,
+                      "matched_expected_count": null,
+                      "matched_observed_count": null,
+                      "recall": null,
+                      "precision": null,
+                      "score": null
+                    },
+                    {
+                      "component": "text",
+                      "component_id": 3,
+                      "expected_count": null,
+                      "observed_count": null,
+                      "matched_expected_count": null,
+                      "matched_observed_count": null,
+                      "recall": null,
+                      "precision": null,
+                      "score": null
+                    }
+                  ],
+                  "dx": null,
+                  "dy": null
+                },
+                "failed_support_scores": {
+                  "count": 31,
+                  "min": 0.0,
+                  "median": 0.0,
+                  "max": 0.8945908460471568
+                }
+              }
+            ],
             "evidence_counts": {
-              "observable": 64,
-              "boundary": 40,
-              "portrait": 0,
-              "textlike": 64,
-              "boundary_portrait": 0,
-              "portrait_textlike": 0,
-              "boundary_textlike": 40,
-              "all_components": 0
+              "observable": 32,
+              "boundary": 24,
+              "portrait": 2,
+              "textlike": 32,
+              "boundary_portrait": 2,
+              "portrait_textlike": 2,
+              "boundary_textlike": 24,
+              "all_components": 2
             },
             "rejection_counts": {
               "geometry_rejected": 0,
               "contrast_rejected": 0,
               "blur_rejected": 0,
-              "structural_rejected": 64
+              "structural_rejected": 30
+            },
+            "portrait_modes": {
+              "framed": 0,
+              "frameless": 2
+            },
+            "frameless_rejection_counts": {
+              "separator_geometry": 3,
+              "separator_evidence": 2,
+              "two_text_rows_missing": 5,
+              "portrait_text_geometry": null,
+              "portrait_edge_density": null,
+              "portrait_localized_groups": null,
+              "portrait_spread": null,
+              "portrait_occupancy": null,
+              "portrait_orientation": null,
+              "component_pixels_insufficient": null,
+              "holdout_not_proposed": null
             },
             "final_rejection_counts": {
               "text_alignment_insufficient": 0,
@@ -914,6 +1218,33 @@
                   "relative_position_mismatch": 0,
                   "component_pixels_insufficient": 0,
                   "boundary_orientation_incoherent": 0
+                },
+                "portrait_mode": null,
+                "portrait_search_region": null,
+                "portrait_region_dimensions": null,
+                "portrait_edge_count": null,
+                "portrait_localized_component_count": null,
+                "portrait_x_spread": null,
+                "portrait_y_spread": null,
+                "portrait_occupied_rows": null,
+                "portrait_occupied_columns": null,
+                "portrait_orientation_distribution": null,
+                "portrait_relative_to_text": null,
+                "portrait_relative_to_boundary": null,
+                "portrait_support_region_population": null,
+                "portrait_candidate_rejection_reason": null,
+                "frameless_rejections": {
+                  "separator_geometry": 1,
+                  "separator_evidence": 1,
+                  "two_text_rows_missing": null,
+                  "portrait_text_geometry": null,
+                  "portrait_edge_density": null,
+                  "portrait_localized_groups": null,
+                  "portrait_spread": null,
+                  "portrait_occupancy": null,
+                  "portrait_orientation": null,
+                  "component_pixels_insufficient": null,
+                  "holdout_not_proposed": null
                 }
               },
               {
@@ -957,56 +1288,235 @@
                   "relative_position_mismatch": 0,
                   "component_pixels_insufficient": 0,
                   "boundary_orientation_incoherent": 0
+                },
+                "portrait_mode": null,
+                "portrait_search_region": null,
+                "portrait_region_dimensions": null,
+                "portrait_edge_count": null,
+                "portrait_localized_component_count": null,
+                "portrait_x_spread": null,
+                "portrait_y_spread": null,
+                "portrait_occupied_rows": null,
+                "portrait_occupied_columns": null,
+                "portrait_orientation_distribution": null,
+                "portrait_relative_to_text": null,
+                "portrait_relative_to_boundary": null,
+                "portrait_support_region_population": null,
+                "portrait_candidate_rejection_reason": null,
+                "frameless_rejections": {
+                  "separator_geometry": null,
+                  "separator_evidence": null,
+                  "two_text_rows_missing": null,
+                  "portrait_text_geometry": null,
+                  "portrait_edge_density": null,
+                  "portrait_localized_groups": null,
+                  "portrait_spread": null,
+                  "portrait_occupancy": null,
+                  "portrait_orientation": null,
+                  "component_pixels_insufficient": null,
+                  "holdout_not_proposed": null
+                }
+              },
+              {
+                "observable": false,
+                "boundary": false,
+                "portrait": false,
+                "textlike": false,
+                "boundary_portrait": false,
+                "portrait_textlike": false,
+                "boundary_textlike": false,
+                "all_components": false,
+                "sample_index": 1,
+                "portrait_candidate_count": null,
+                "portrait_supported_count": null,
+                "portrait_frame_score": null,
+                "portrait_geometry_count": null,
+                "portrait_occupancy_rejected": null,
+                "portrait_side_scores": null,
+                "training": false,
+                "panel_topology": null,
+                "boundary_coverage": null,
+                "boundary_relative_y": null,
+                "portrait_text_gap_ratio": null,
+                "boundary_fragment_count": null,
+                "boundary_span_candidates": null,
+                "reason": "holdout_not_proposed",
+                "final_gates": {
+                  "portrait": false,
+                  "text_alignment": false,
+                  "boundary_span": false,
+                  "component_pixels": false
+                },
+                "final_rejections": {
+                  "text_alignment_insufficient": null,
+                  "boundary_span_insufficient": null,
+                  "relative_position_mismatch": null,
+                  "component_pixels_insufficient": null,
+                  "boundary_orientation_incoherent": null
+                },
+                "portrait_mode": null,
+                "portrait_search_region": null,
+                "portrait_region_dimensions": null,
+                "portrait_edge_count": null,
+                "portrait_localized_component_count": null,
+                "portrait_x_spread": null,
+                "portrait_y_spread": null,
+                "portrait_occupied_rows": null,
+                "portrait_occupied_columns": null,
+                "portrait_orientation_distribution": null,
+                "portrait_relative_to_text": null,
+                "portrait_relative_to_boundary": null,
+                "portrait_support_region_population": null,
+                "portrait_candidate_rejection_reason": null,
+                "frameless_rejections": {
+                  "separator_geometry": null,
+                  "separator_evidence": null,
+                  "two_text_rows_missing": null,
+                  "portrait_text_geometry": null,
+                  "portrait_edge_density": null,
+                  "portrait_localized_groups": null,
+                  "portrait_spread": null,
+                  "portrait_occupancy": null,
+                  "portrait_orientation": null,
+                  "component_pixels_insufficient": null,
+                  "holdout_not_proposed": null
+                }
+              },
+              {
+                "observable": true,
+                "boundary": true,
+                "portrait": true,
+                "textlike": true,
+                "boundary_portrait": true,
+                "portrait_textlike": true,
+                "boundary_textlike": true,
+                "all_components": true,
+                "sample_index": 60,
+                "portrait_candidate_count": 353,
+                "portrait_supported_count": 0,
+                "portrait_frame_score": 0.39847781217750256,
+                "portrait_geometry_count": 1,
+                "portrait_occupancy_rejected": 1,
+                "portrait_side_scores": [
+                  0.8070175438596491,
+                  0.22807017543859648,
+                  0.23529411764705882,
+                  0.3235294117647059
+                ],
+                "training": true,
+                "panel_topology": "portrait_side_separator",
+                "boundary_coverage": null,
+                "boundary_relative_y": null,
+                "portrait_text_gap_ratio": null,
+                "boundary_fragment_count": null,
+                "boundary_span_candidates": null,
+                "reason": "candidate",
+                "final_gates": {
+                  "portrait": true,
+                  "text_alignment": true,
+                  "boundary_span": true,
+                  "component_pixels": true
+                },
+                "final_rejections": {
+                  "text_alignment_insufficient": 0,
+                  "boundary_span_insufficient": 0,
+                  "relative_position_mismatch": 0,
+                  "component_pixels_insufficient": 0,
+                  "boundary_orientation_incoherent": 0
+                },
+                "portrait_mode": "frameless",
+                "portrait_search_region": [
+                  0.0532258064516129,
+                  0.23529411764705882,
+                  0.1693548387096774,
+                  0.47058823529411764
+                ],
+                "portrait_region_dimensions": [
+                  72,
+                  80
+                ],
+                "portrait_edge_count": 1496,
+                "portrait_localized_component_count": 22,
+                "portrait_x_spread": 0.9861111111111112,
+                "portrait_y_spread": 0.9875,
+                "portrait_occupied_rows": 4,
+                "portrait_occupied_columns": 4,
+                "portrait_orientation_distribution": [
+                  0.16302765647743814,
+                  0.14192139737991266,
+                  0.12518195050946143,
+                  0.10189228529839883,
+                  0.14192139737991266,
+                  0.11280931586608442,
+                  0.13100436681222707,
+                  0.08224163027656478
+                ],
+                "portrait_relative_to_text": 0.175,
+                "portrait_relative_to_boundary": 0.0375,
+                "portrait_support_region_population": 4965,
+                "portrait_candidate_rejection_reason": null,
+                "frameless_rejections": {
+                  "separator_geometry": null,
+                  "separator_evidence": null,
+                  "two_text_rows_missing": null,
+                  "portrait_text_geometry": null,
+                  "portrait_edge_density": null,
+                  "portrait_localized_groups": null,
+                  "portrait_spread": null,
+                  "portrait_occupancy": null,
+                  "portrait_orientation": null,
+                  "component_pixels_insufficient": null,
+                  "holdout_not_proposed": null
                 }
               }
             ],
             "portrait_statistics": {
               "portrait_candidate_count": {
-                "count": 64,
+                "count": 32,
                 "min": 9,
-                "median": 132.5,
+                "median": 128.5,
                 "max": 1009
               },
               "portrait_geometry_count": {
-                "count": 64,
+                "count": 32,
                 "min": 0,
                 "median": 1.0,
                 "max": 158
               },
               "portrait_supported_count": {
-                "count": 64,
+                "count": 32,
                 "min": 0,
                 "median": 0.0,
                 "max": 0
               },
               "portrait_occupancy_rejected": {
-                "count": 64,
+                "count": 32,
                 "min": 0,
                 "median": 1.0,
                 "max": 158
               },
               "portrait_frame_score": {
-                "count": 64,
+                "count": 32,
                 "min": 0.0,
-                "median": 0.08835631526342091,
+                "median": 0.05224233012170385,
                 "max": 0.8023477720575182
               }
             },
-            "omitted_sample_count": 62,
+            "omitted_sample_count": 60,
             "candidate_support_summary": {
-              "count": 0,
-              "min": null,
-              "median": null,
-              "max": null,
-              "minimum_required": null,
-              "below_minimum_count": 0
+              "count": 2,
+              "min": 1,
+              "median": 1.0,
+              "max": 1,
+              "minimum_required": 3,
+              "below_minimum_count": 2
             },
             "self_match_summary": {
-              "count": 0,
-              "passed_count": 0,
-              "min": null,
-              "median": null,
-              "max": null,
+              "count": 2,
+              "passed_count": 2,
+              "min": 1.0,
+              "median": 1.0,
+              "max": 1.0,
               "failing_components": {
                 "boundary": 0,
                 "portrait": 0,
@@ -1126,13 +1636,13 @@
     "manual_map_id": "summit",
     "video_id": "match_001",
     "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
-    "analyzer_commit": "f3ea2676258af9ca81422c61c5f6a751804ac508",
+    "analyzer_commit": "719899f40122f09de2fcd54978e96cc205d85c1a",
     "git_is_dirty": true,
-    "executed_at": "2026-10-03T10:46:03.704436+00:00",
+    "executed_at": "2026-10-03T12:03:11.353696+00:00",
     "validation_pack": "valorant_e2e_validation_pack_v3",
     "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
-    "git_dirty_fingerprint": "d6de880f5f49af28729d1cba53a60195826a1800c1ee9426289f11220ea02c76",
-    "settings_fingerprint": "c503f439f3ffc917b8b52c0823cb923f8e126a1cee5ab1e23cf040f21eacf920"
+    "git_dirty_fingerprint": "4f2dbc1efbc912a1494d88a0f7d1314eb018e0d3fb27e397574ec7ed2d9b7549",
+    "settings_fingerprint": "398787764eb631bbb4c7646e9991f0a0ba547d78e57f428337ceed6903b494a0"
   },
   "result": {
     "status": "fail",
@@ -1185,8 +1695,8 @@
       "assertion_id": "GT-R1-ROUND-START",
       "category": "missing_point",
       "expected": {
-        "type": "round_start",
-        "actor": "system"
+        "actor": "system",
+        "type": "round_start"
       },
       "actual": null,
       "time_sec": null,
@@ -1210,8 +1720,8 @@
       "assertion_id": "GT-R1-DEATH",
       "category": "missing_point",
       "expected": {
-        "type": "player_death",
         "actor": "player",
+        "type": "player_death",
         "victim_name": "player"
       },
       "actual": null,
@@ -1236,8 +1746,8 @@
       "assertion_id": "GT-R1-ROUND-END",
       "category": "missing_point",
       "expected": {
-        "type": "round_end",
-        "actor": "system"
+        "actor": "system",
+        "type": "round_end"
       },
       "actual": null,
       "time_sec": null,
@@ -1261,8 +1771,8 @@
       "assertion_id": "GT-R2-ROUND-START",
       "category": "missing_point",
       "expected": {
-        "type": "round_start",
-        "actor": "system"
+        "actor": "system",
+        "type": "round_start"
       },
       "actual": null,
       "time_sec": null,
@@ -1286,8 +1796,8 @@
       "assertion_id": "GT-R2-DEATH",
       "category": "missing_point",
       "expected": {
-        "type": "player_death",
         "actor": "player",
+        "type": "player_death",
         "victim_name": "player"
       },
       "actual": null,
@@ -1441,8 +1951,8 @@
         "min_core_coverage": 0.8
       },
       "actual": {
-        "confidence": 0.0,
         "state": "combat_report_visible",
+        "confidence": 0.0,
         "interval": [
           74.469336,
           74.552669
@@ -1648,8 +2158,8 @@
         "min_core_coverage": 0.9
       },
       "actual": {
-        "owner": "unknown",
         "confidence": 0.92,
+        "owner": "unknown",
         "interval": [
           12.169336,
           12.202669
@@ -1680,8 +2190,8 @@
         "min_core_coverage": 0.9
       },
       "actual": {
-        "owner": "unknown",
         "confidence": 0.0,
+        "owner": "unknown",
         "interval": [
           74.386003,
           74.402669
@@ -1784,8 +2294,8 @@
       "category": "missing_snapshot",
       "expected": {
         "player_alive": true,
-        "buy_phase_banner": true,
-        "primary_state": "live_first_person"
+        "primary_state": "live_first_person",
+        "buy_phase_banner": true
       },
       "actual": null,
       "time_sec": 3.5,
@@ -1806,11 +2316,11 @@
       "category": "missing_snapshot",
       "expected": {
         "player_alive": true,
-        "buy_phase_banner": false,
+        "game_timer_display": "1:39",
         "score_player": 0,
-        "primary_state": "live_first_person",
         "score_enemy": 1,
-        "game_timer_display": "1:39"
+        "primary_state": "live_first_person",
+        "buy_phase_banner": false
       },
       "actual": null,
       "time_sec": 4.15,
@@ -1916,8 +2426,8 @@
       "expected": {
         "player_alive": true,
         "primary_state": "live_first_person",
-        "ammo_reserve": 36,
-        "ammo_mag": 9
+        "ammo_mag": 9,
+        "ammo_reserve": 36
       },
       "actual": null,
       "time_sec": 72.8,
@@ -1939,8 +2449,8 @@
       "expected": {
         "player_alive": true,
         "primary_state": "live_first_person",
-        "ammo_reserve": 36,
-        "ammo_mag": 9
+        "ammo_mag": 9,
+        "ammo_reserve": 36
       },
       "actual": null,
       "time_sec": 73.3,
@@ -1962,8 +2472,8 @@
       "expected": {
         "player_alive": true,
         "primary_state": "live_first_person",
-        "ammo_reserve": 33,
-        "ammo_mag": 12
+        "ammo_mag": 12,
+        "ammo_reserve": 33
       },
       "actual": null,
       "time_sec": 73.4,
@@ -1984,8 +2494,8 @@
       "category": "missing_snapshot",
       "expected": {
         "player_alive": true,
-        "player_hp": 48,
-        "primary_state": "live_first_person"
+        "primary_state": "live_first_person",
+        "player_hp": 48
       },
       "actual": null,
       "time_sec": 74.25,
@@ -2006,10 +2516,10 @@
       "category": "missing_snapshot",
       "expected": {
         "player_alive": true,
+        "game_timer_display": "0:29",
         "score_player": 0,
-        "primary_state": "live_first_person",
         "score_enemy": 1,
-        "game_timer_display": "0:29"
+        "primary_state": "live_first_person"
       },
       "actual": null,
       "time_sec": 74.38,
@@ -2051,10 +2561,10 @@
       "category": "missing_snapshot",
       "expected": {
         "player_alive": false,
-        "combat_report_visible": true,
+        "game_timer_display": "0:06",
         "score_player": 0,
         "score_enemy": 2,
-        "game_timer_display": "0:06"
+        "combat_report_visible": true
       },
       "actual": null,
       "time_sec": 74.45,
@@ -2075,10 +2585,10 @@
       "category": "missing_snapshot",
       "expected": {
         "player_alive": true,
-        "player_hp": 100,
+        "primary_state": "live_first_person",
         "buy_phase_banner": true,
         "combat_report_visible": true,
-        "primary_state": "live_first_person"
+        "player_hp": 100
       },
       "actual": null,
       "time_sec": 82.0,
@@ -2099,9 +2609,9 @@
       "category": "missing_snapshot",
       "expected": {
         "player_alive": true,
+        "primary_state": "live_first_person",
         "buy_phase_banner": true,
-        "combat_report_visible": true,
-        "primary_state": "live_first_person"
+        "combat_report_visible": true
       },
       "actual": null,
       "time_sec": 105.0,
@@ -2122,10 +2632,10 @@
       "category": "missing_snapshot",
       "expected": {
         "player_alive": true,
-        "buy_phase_banner": false,
+        "game_timer_display": "1:40",
         "score_player": 0,
         "score_enemy": 2,
-        "game_timer_display": "1:40"
+        "buy_phase_banner": false
       },
       "actual": null,
       "time_sec": 111.45,
@@ -2146,8 +2656,8 @@
       "category": "missing_snapshot",
       "expected": {
         "player_alive": true,
-        "player_hp": 80,
-        "primary_state": "live_first_person"
+        "primary_state": "live_first_person",
+        "player_hp": 80
       },
       "actual": null,
       "time_sec": 143.0,
@@ -2168,8 +2678,8 @@
       "category": "missing_snapshot",
       "expected": {
         "player_alive": true,
-        "player_hp": 80,
-        "primary_state": "live_first_person"
+        "primary_state": "live_first_person",
+        "player_hp": 80
       },
       "actual": null,
       "time_sec": 147.5,
@@ -2190,8 +2700,8 @@
       "category": "missing_snapshot",
       "expected": {
         "player_alive": true,
-        "player_hp": 22,
-        "primary_state": "live_first_person"
+        "primary_state": "live_first_person",
+        "player_hp": 22
       },
       "actual": null,
       "time_sec": 147.6,
@@ -2233,8 +2743,8 @@
       "category": "missing_snapshot",
       "expected": {
         "player_alive": false,
-        "combat_report_visible": true,
-        "primary_state": "expanded_tactical_map"
+        "primary_state": "expanded_tactical_map",
+        "combat_report_visible": true
       },
       "actual": null,
       "time_sec": 149.0,
@@ -2254,13 +2764,13 @@
       "assertion_id": "GT-R2-SNAP-151",
       "category": "missing_snapshot",
       "expected": {
-        "player_alive": false,
-        "spectated_ammo_mag": 21,
-        "combat_report_visible": true,
-        "primary_state": "spectator_first_person",
-        "spectated_hp": 100,
         "view_owner": "teammate_spectated",
-        "spectated_ammo_reserve": 50
+        "player_alive": false,
+        "spectated_hp": 100,
+        "primary_state": "spectator_first_person",
+        "spectated_ammo_reserve": 50,
+        "spectated_ammo_mag": 21,
+        "combat_report_visible": true
       },
       "actual": null,
       "time_sec": 151.0,
@@ -2280,13 +2790,13 @@
       "assertion_id": "GT-R2-SNAP-170",
       "category": "missing_snapshot",
       "expected": {
-        "player_alive": false,
-        "spectated_ammo_mag": 22,
-        "combat_report_visible": true,
-        "primary_state": "spectator_first_person",
-        "spectated_hp": 85,
         "view_owner": "teammate_spectated",
-        "spectated_ammo_reserve": 31
+        "player_alive": false,
+        "spectated_hp": 85,
+        "primary_state": "spectator_first_person",
+        "spectated_ammo_reserve": 31,
+        "spectated_ammo_mag": 22,
+        "combat_report_visible": true
       },
       "actual": null,
       "time_sec": 170.0,
@@ -2366,8 +2876,8 @@
       "assertion_id": "GT-R1-MUZZLE-1",
       "category": "missing_visual_observation",
       "expected": {
-        "observation": "muzzle_flash",
-        "actor": "player"
+        "actor": "player",
+        "observation": "muzzle_flash"
       },
       "actual": null,
       "time_sec": 73.95,
@@ -2387,8 +2897,8 @@
       "assertion_id": "GT-R1-MUZZLE-2",
       "category": "missing_visual_observation",
       "expected": {
-        "observation": "muzzle_flash",
-        "actor": "player"
+        "actor": "player",
+        "observation": "muzzle_flash"
       },
       "actual": null,
       "time_sec": 74.25,
@@ -2408,8 +2918,8 @@
       "assertion_id": "GT-R1-MUZZLE-3",
       "category": "missing_visual_observation",
       "expected": {
-        "observation": "muzzle_flash",
-        "actor": "player"
+        "actor": "player",
+        "observation": "muzzle_flash"
       },
       "actual": null,
       "time_sec": 74.38,
@@ -2429,8 +2939,8 @@
       "assertion_id": "event_count_constraints-000",
       "category": "count",
       "expected": {
-        "type": "round_start",
         "actor": "system",
+        "type": "round_start",
         "min": 1,
         "max": 1
       },
@@ -2454,8 +2964,8 @@
       "assertion_id": "event_count_constraints-001",
       "category": "count",
       "expected": {
-        "type": "player_death",
         "actor": "player",
+        "type": "player_death",
         "min": 1,
         "max": 1
       },
@@ -2479,8 +2989,8 @@
       "assertion_id": "event_count_constraints-002",
       "category": "count",
       "expected": {
-        "type": "round_end",
         "actor": "system",
+        "type": "round_end",
         "min": 1,
         "max": 1
       },
@@ -2504,8 +3014,8 @@
       "assertion_id": "event_count_constraints-003",
       "category": "count",
       "expected": {
-        "type": "shot",
         "actor": "player",
+        "type": "shot",
         "min": 1,
         "max": 3
       },
@@ -2533,8 +3043,8 @@
       "assertion_id": "event_count_constraints-004",
       "category": "count",
       "expected": {
-        "type": "round_start",
         "actor": "system",
+        "type": "round_start",
         "min": 1,
         "max": 1
       },
@@ -2558,8 +3068,8 @@
       "assertion_id": "event_count_constraints-005",
       "category": "count",
       "expected": {
-        "type": "player_death",
         "actor": "player",
+        "type": "player_death",
         "min": 1,
         "max": 1
       },

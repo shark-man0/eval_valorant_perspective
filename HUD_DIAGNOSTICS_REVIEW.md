@@ -733,3 +733,45 @@ Shared report history also now preserves allowlisted manual_map_id and boolean
 detail_truncated when rebuilding existing entries. The prior 19 Windows history
 records were retained exactly and the new run appended by verified re-export.
 This export-only correction does not rerun or change video analysis/evaluation.
+
+
+## Windows frameless portrait proposals (2026-10-03)
+
+Training-only inspection of the unlabelled recording shows a thin semitransparent
+vertical side separator, a frameless image slot beside it, and two aligned text
+rows farther right. The framed topology remains unchanged. The new alternative
+derives a bounded slot from separator/text geometry and requires multiple local
+edge groups, two-dimensional spread/occupancy, density, and signed-gradient
+diversity. It emits measured Canny labels, disjoint support regions, and the
+existing canonical v2 orientation. It performs no OCR identity, face/agent
+recognition, embeddings, or state-label lookup. Positive matching remains .90,
+shared +/-2px, three mandatory groups, minimum three training/holdout observations,
+and the existing 80% prevalence condition. Conservative absence/UNKNOWN remain.
+
+Only training frames produce proposals and structural diagnostics; holdout entries
+are marked holdout_not_proposed. proposal_sample_count is the structural-count
+denominator. Holdout matching runs only after training support succeeds. Shared
+telemetry allowlists bounded numerical portrait data, never raw proposal arrays,
+images, local paths, or identity strings.
+
+Fresh frameless_v1_run1 has 64 samples (32 training / 32 holdout), two coherent
+frameless candidates (training 60 and 62, portrait_side_separator), and no framed
+candidates. Both self-match all three components at 1.0 and shared offset [0,0].
+Each has training support one. Portrait cross-scores are .885010 and .894591,
+below .90; boundary .918605 and text approximately .986 pass. Holdout is not
+evaluated. Spectator remains insufficient_evidence and identity_reference_ready
+is false. The former background/chat candidate remains structurally rejected.
+HP/Ability/Weapon remain generated at 23/23, 21/24, and 18/18 respectively.
+
+Full E2E run 20261003T120311Z-6431f9ed used that exact new profile and completed
+native processing with schema-valid reports: 21 passed / 57 failed / 4 not
+evaluated, negatives 20 passed / 0 failed. All 3929 Spectator observations are
+reference_unavailable; checked/present/excluded remain zero. HUD unknown is 3892,
+remote control 34, buy menu 3; live/spectator zero. Visual eligibility and Map
+resolved remain zero. The next blocker is independent portrait support, not
+reference self-consistency; no matcher or downstream gate was relaxed.
+
+Verification: pytest 651 passed / 2 skipped; focused 97 passed; Ruff src/tests/
+scripts passed; mypy src passed (80 files); git diff --check passed. Shared
+summary/hud_calibration are 101887/60116 bytes, below 128 KiB each, without image
+or local-path exports. No commit or push was made.

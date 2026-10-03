@@ -21,6 +21,113 @@ def number(value, *, count=False):
     return value if value <= 1 else None
 
 
+PORTRAIT_MODES = ("framed", "frameless")
+PANEL_TOPOLOGIES = ("group_header", "group_footer", "text_separator", "portrait_side_separator")
+FRAMELESS_REJECTION_REASONS = (
+    "separator_geometry",
+    "separator_evidence",
+    "two_text_rows_missing",
+    "portrait_text_geometry",
+    "portrait_edge_density",
+    "portrait_localized_groups",
+    "portrait_spread",
+    "portrait_occupancy",
+    "portrait_orientation",
+    "component_pixels_insufficient",
+    "holdout_not_proposed",
+)
+PORTRAIT_CANDIDATE_REJECTIONS = (
+    "portrait_edge_density",
+    "portrait_localized_groups",
+    "portrait_spread",
+    "portrait_occupancy",
+    "portrait_orientation",
+)
+
+
+def _fixed_counts(value, keys):
+    source = object_or_empty(value)
+    return {key: number(source.get(key), count=True) for key in keys}
+
+
+def _positive_dimensions(value):
+    return (
+        value
+        if isinstance(value, list)
+        and len(value) == 2
+        and all(isinstance(item, int) and not isinstance(item, bool) and 0 < item <= 65536
+                for item in value)
+        else None
+    )
+
+
+def _normalized_box4(value):
+    if not isinstance(value, list) or len(value) != 4:
+        return None
+    bounds = [number(item) for item in value]
+    if any(item is None for item in bounds):
+        return None
+    left, top, right, bottom = bounds
+    if right <= left or bottom <= top:
+        return None
+    return bounds
+
+
+def _orientation_distribution(value):
+    if not isinstance(value, list) or len(value) != 8:
+        return None
+    distribution = [number(item) for item in value]
+    if any(item is None for item in distribution):
+        return None
+    if not math.isclose(sum(distribution), 1.0, rel_tol=0.0, abs_tol=0.01):
+        return None
+    return distribution
+
+
+def sanitize_portrait_proposal(value):
+    """Allowlist compact portrait proposal diagnostics without retaining source arrays."""
+    source = object_or_empty(value)
+    mode = source.get("portrait_mode")
+    topology = source.get("panel_topology")
+    candidate_reason = source.get("portrait_candidate_rejection_reason")
+    occupied_rows = number(source.get("portrait_occupied_rows"), count=True)
+    occupied_columns = number(source.get("portrait_occupied_columns"), count=True)
+    return {
+        "portrait_mode": mode if mode in PORTRAIT_MODES else None,
+        "panel_topology": topology if topology in PANEL_TOPOLOGIES else None,
+        "portrait_search_region": _normalized_box4(source.get("portrait_search_region")),
+        "portrait_region_dimensions": _positive_dimensions(
+            source.get("portrait_region_dimensions")
+        ),
+        "portrait_edge_count": number(source.get("portrait_edge_count"), count=True),
+        "portrait_localized_component_count": number(
+            source.get("portrait_localized_component_count"), count=True
+        ),
+        "portrait_x_spread": number(source.get("portrait_x_spread")),
+        "portrait_y_spread": number(source.get("portrait_y_spread")),
+        "portrait_occupied_rows": (
+            occupied_rows if occupied_rows is not None and occupied_rows <= 4 else None
+        ),
+        "portrait_occupied_columns": (
+            occupied_columns if occupied_columns is not None and occupied_columns <= 4 else None
+        ),
+        "portrait_orientation_distribution": _orientation_distribution(
+            source.get("portrait_orientation_distribution")
+        ),
+        "portrait_relative_to_text": number(source.get("portrait_relative_to_text")),
+        "portrait_relative_to_boundary": number(source.get("portrait_relative_to_boundary")),
+        "portrait_support_region_population": number(
+            source.get("portrait_support_region_population"), count=True
+        ),
+        "portrait_candidate_rejection_reason": (
+            candidate_reason if candidate_reason in PORTRAIT_CANDIDATE_REJECTIONS else None
+        ),
+        "frameless_rejections": _fixed_counts(
+            source.get("frameless_rejections"), FRAMELESS_REJECTION_REASONS
+        ),
+    }
+
+
 def sanitize_panel_match(value):
     """Fixed-size numerical matcher telemetry, never image/name/path strings."""
     value = object_or_empty(value)
@@ -450,6 +557,10 @@ def sanitize_identity_generation(value):
                 if source.get("matcher")
                 in ("edge_recall_precision_v1", "oriented_component_regions_v2")
                 else None,
+                "proposal_sample_count": number(source.get("proposal_sample_count"), count=True),
+                "holdout_proposal_skipped_count": number(
+                    source.get("holdout_proposal_skipped_count"), count=True
+                ),
                 "candidate_support": [
                     {
                         **{
@@ -457,6 +568,9 @@ def sanitize_identity_generation(value):
                             for k in ("sample_index", "training_support", "minimum_required")
                         },
                         "self_match": sanitize_panel_match(s.get("self_match")),
+                        "portrait_proposal": sanitize_portrait_proposal(
+                            s.get("portrait_proposal")
+                        ),
                         "legacy_self_match": sanitize_panel_match(s.get("legacy_self_match")),
                         "failed_support_scores": {
                             k: number(
@@ -479,6 +593,10 @@ def sanitize_identity_generation(value):
                     k: number(object_or_empty(source.get("rejection_counts")).get(k), count=True)
                     for k in reasons[:-1]
                 },
+                "portrait_modes": _fixed_counts(source.get("portrait_modes"), PORTRAIT_MODES),
+                "frameless_rejection_counts": _fixed_counts(
+                    source.get("frameless_rejection_counts"), FRAMELESS_REJECTION_REASONS
+                ),
                 "final_rejection_counts": {
                     k: number(
                         object_or_empty(source.get("final_rejection_counts")).get(k), count=True
@@ -526,7 +644,9 @@ def sanitize_identity_generation(value):
                         "boundary_span_candidates": number(
                             s.get("boundary_span_candidates"), count=True
                         ),
-                        "reason": s.get("reason") if s.get("reason") in reasons else None,
+                        "reason": s.get("reason")
+                        if s.get("reason") in (*reasons, "holdout_not_proposed")
+                        else None,
                         "final_gates": {
                             k: object_or_empty(s.get("final_gates")).get(k) is True
                             for k in (
@@ -546,6 +666,7 @@ def sanitize_identity_generation(value):
                                 "boundary_orientation_incoherent",
                             )
                         },
+                        **sanitize_portrait_proposal(s),
                     }
                     for s in samples[:64]
                     if isinstance(s, dict)
