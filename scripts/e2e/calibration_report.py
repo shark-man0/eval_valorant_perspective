@@ -21,6 +21,30 @@ def number(value, *, count=False):
     return value if value <= 1 else None
 
 
+def sanitize_panel_match(value):
+    source = object_or_empty(value)
+    components = source.get("components", [])
+    offset = source.get("best_shared_offset")
+    return {
+        "passed": source.get("passed") is True,
+        "best_shared_offset": offset
+        if isinstance(offset, list) and len(offset) == 2
+        and all(type(v) is int and -2 <= v <= 2 for v in offset) else None,
+        "limiting_component": source.get("limiting_component")
+        if source.get("limiting_component") in ("boundary", "portrait", "text") else None,
+        "components": [
+            {
+                "component": c["component"],
+                **{k: number(c.get(k), count=True) for k in
+                   ("expected_count", "support_count", "observed_count")},
+                **{k: number(c.get(k)) for k in ("recall", "precision", "score")},
+            }
+            for c in components[:3]
+            if isinstance(c, dict) and c.get("component") in ("boundary", "portrait", "text")
+        ] if isinstance(components, list) else [],
+    }
+
+
 def sanitize_calibration(value):
     if not isinstance(value, dict) or value.get("schema_version") != 1:
         return {"available": False}
@@ -385,12 +409,17 @@ def sanitize_identity_generation(value):
             supports = source.get("candidate_support", [])
             row["spectator_generation"] = {
                 "matcher": source.get("matcher")
-                if source.get("matcher") == "edge_recall_precision_v1"
+                if source.get("matcher") in ("edge_recall_precision_v1", "signed_support_v2")
                 else None,
                 "candidate_support": [
                     {
-                        k: number(s.get(k), count=True)
-                        for k in ("sample_index", "training_support", "minimum_required")
+                        **{k: number(s.get(k), count=True)
+                           for k in ("sample_index", "training_support", "minimum_required")},
+                        "legacy_self_match_scores": [number(v) for v in
+                            s["legacy_self_match_scores"]]
+                        if isinstance(s.get("legacy_self_match_scores"), list)
+                        and len(s["legacy_self_match_scores"]) == 3 else None,
+                        "self_match": sanitize_panel_match(s.get("self_match")),
                     }
                     for s in supports[:64]
                     if isinstance(s, dict)

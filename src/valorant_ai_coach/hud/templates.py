@@ -29,7 +29,7 @@ from valorant_ai_coach.resources import resource_path
 
 from .layout import HudLayout, NormalizedRoi
 from .readers import HudReader, ReaderResult
-from .spectator import detect_panel
+from .spectator import detect_panel, validate_panel_reference
 from .weapon_identity import masked_score, structural_score
 
 ImageU8 = NDArray[np.uint8]
@@ -104,6 +104,7 @@ class HudTemplateProfile:
                 self._signal_templates[str(name)] = (spec["roi"], template)
             except (KeyError, ValueError, OSError, cv2.error) as exc:
                 self.reader_diagnostics.append(f"signal {name}: {exc}")
+        self._panel_reference: dict[str, np.ndarray] | None = None
         self._panel_components: ImageU8 | None = None
         clear = self.raw.get("spectator_panel_detector")
         if isinstance(clear, Mapping):
@@ -113,11 +114,25 @@ class HudTemplateProfile:
                 if (
                     reference is None
                     or reference.size == 0
-                    or clear.get("version") != 1
+                    or clear.get("version") not in (1, 2)
                     or not set(np.unique(reference)).issubset({0, 1, 2, 3})
                     or any(np.count_nonzero(reference == k) < 12 for k in (1, 2, 3))
                 ):
                     raise ValueError("invalid panel structure")
+                if clear.get("version") == 2:
+                    frozen: dict[str, np.ndarray] = {}
+                    for key in ("support", "evidence"):
+                        asset = self.resolve_asset(str(clear[key])).read_bytes()
+                        image = cv2.imdecode(np.frombuffer(asset, np.uint8),
+                                             cv2.IMREAD_GRAYSCALE)
+                        if image is None:
+                            raise ValueError("unreadable panel evidence")
+                        frozen[key] = image
+                    if any(v is None for v in frozen.values()) or not validate_panel_reference(
+                        reference, frozen
+                    ):
+                        raise ValueError("invalid frozen panel evidence")
+                    self._panel_reference = frozen
                 self._panel_components = np.asarray(reference, dtype=np.uint8)
             except (KeyError, ValueError, OSError, cv2.error):
                 self.reader_diagnostics.append("spectator_panel_detector: invalid asset")
@@ -175,7 +190,9 @@ class HudTemplateProfile:
             x1, y1, x2, y2 = layout.normalized_roi("spectated_player_panel").pixel_bounds(
                 width, height
             )
-            panel_result = detect_panel(frame[y1:y2, x1:x2], self._panel_components)
+            panel_result = detect_panel(
+                frame[y1:y2, x1:x2], self._panel_components, self._panel_reference
+            )
         signals["spectator_detector_checked"] = panel_result["checked"]
         signals["spectator_panel_present"] = panel_result["panel_present"]
         signals["spectator_detector_reason"] = panel_result["reason"]
@@ -210,6 +227,8 @@ class HudTemplateProfile:
                 if key in {
                     "template",
                     "mask",
+                    "support",
+                    "evidence",
                     "templates",
                     "values",
                     "available_template",

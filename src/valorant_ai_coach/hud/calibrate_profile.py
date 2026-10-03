@@ -22,7 +22,7 @@ from valorant_ai_coach.video.service import VideoService
 
 from .calibrate_temporal import _check_output_privacy, _localize_assets, create_temporal_profile
 from .layout import HudLayout
-from .spectator import generate_panel_reference, panel_components
+from .spectator import freeze_panel_reference, generate_panel_reference, panel_components
 from .templates import HudTemplateProfile
 from .weapon_identity import weapon_reference
 
@@ -339,12 +339,15 @@ def create_profile(
         raw.pop("spectator_panel_detector", None)
         name = "spectator_panel"
         labels = None
+        panel_reference: dict[str, np.ndarray] = {}
         stats = {}
         if "spectated_player_panel" in layout.regions:
             x1, y1, x2, y2 = layout.normalized_roi("spectated_player_panel").pixel_bounds(
                 width, height
             )
-            labels = generate_panel_reference([image[y1:y2, x1:x2] for image in images], stats)
+            labels = generate_panel_reference(
+                [image[y1:y2, x1:x2] for image in images], stats, panel_reference
+            )
         status = "generated"
         if labels is None and inherited._panel_components is not None:
             spec = inherited.raw.get("spectator_panel_detector", {})
@@ -358,6 +361,8 @@ def create_profile(
                 x1, y1, x2, y2 = layout.normalized_roi(roi_name).pixel_bounds(width, height)
                 if inherited._panel_components.shape == (y2 - y1, x2 - x1):
                     labels = inherited._panel_components.copy()
+                    if inherited._panel_reference is not None:
+                        panel_reference.update(inherited._panel_reference)
                     status = "inherited"
         if labels is None and "spectated_player_panel" in inherited._signal_templates:
             roi_name, template = inherited._signal_templates["spectated_player_panel"]
@@ -370,6 +375,8 @@ def create_profile(
                 x1, y1, x2, y2 = layout.normalized_roi(roi_name).pixel_bounds(width, height)
                 if template.image.shape == (y2 - y1, x2 - x1):
                     labels = panel_components(template.image)
+                    if labels is not None:
+                        panel_reference.update(freeze_panel_reference(template.image, labels))
                     status = "inherited"
         if labels is not None:
             stats.update(
@@ -380,6 +387,12 @@ def create_profile(
                 "version": 1,
                 "template": "identity/spectator_panel.components.png",
             }
+            if panel_reference:
+                for key, image in panel_reference.items():
+                    path = f"identity/spectator_panel.{key}.png"
+                    _write_asset(stage / path, image)
+                    raw["spectator_panel_detector"][key] = path
+                raw["spectator_panel_detector"]["version"] = 2
             diagnostics["references"][name] = stats
         else:
             diagnostics["references"][name] = {**stats, "status": "insufficient_evidence"}

@@ -630,3 +630,29 @@ profileフォルダ・画像・動画は追加しない。
 E2E failed 57、negative failures 0。加えて新規/保持込みgeometry成功率、
 geometry有効下unknown、anchor別棄却率・score中央値・mask有無、Visual eligibility、
 Map診断件数を確認する。今回のMac修正だけで認識精度改善や実動画PASSは主張しない。
+
+## Spectator self-consistency and directed frame evidence
+
+The `signed_support_v2` matcher evaluates the representation frozen at generation:
+actual Canny edges inside exclusive boundary/portrait/text support regions.
+Recall and precision use signed direction bins with one bin of angular
+discretization tolerance and the existing one-pixel spatial match band. All
+groups share one offset bounded by +/-2 pixels. Edges outside support do not
+count as precision errors; contradictory edges inside it still do. The positive
+threshold remains 0.90 for every mandatory group. Absence still uses independent
+conservative contradiction and displacement checks, never a missed positive.
+
+Self-consistency makes repeated texture self-consistent too. Portrait proposals
+therefore require directed frame evidence before support is measured: vertical
+sides use horizontal signed gradients and horizontal sides use vertical signed
+gradients. The original side occupancy, three-side, fourth-side and mean gates
+are unchanged. Arbitrary nearby edges cannot establish a frame side merely by
+covering it. This is a structural proposal check, not a relaxed acceptance gate.
+
+The Windows real-video inspection exposed a background-and-chat candidate with
+no independent training support. Under frozen evidence its self-match was 1.0
+in all groups, but that was not evidence of a Spectator panel. Directed side
+support rejects this candidate. The visible frameless portrait/name UI remains
+an unmodelled variant and must stay UNKNOWN until a coherent, independently
+supported three-component model is available. Neither that variant nor a
+self-match is permission to skip training, holdout or the runtime identity gate.

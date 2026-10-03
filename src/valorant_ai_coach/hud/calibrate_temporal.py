@@ -29,7 +29,10 @@ ANCHORS = ("round_timer", "top_match_bar", "player_hp_armor", "abilities")
 
 def _localize_assets(value: Any, base: Path) -> Any:
     """Make inherited template references stable without copying user assets."""
-    keys = {"template", "mask", "templates", "values", "available_template", "unavailable_template"}
+    keys = {
+        "template", "mask", "support", "evidence", "templates", "values",
+        "available_template", "unavailable_template",
+    }
     if isinstance(value, dict):
         return {
             key: _localize_assets(child, base) if key not in keys else _asset_value(child, base)

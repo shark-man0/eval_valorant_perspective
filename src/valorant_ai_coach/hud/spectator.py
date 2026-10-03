@@ -14,7 +14,7 @@ import numpy as np
 
 
 def portrait_frames(
-    edges: np.ndarray, diagnostics: dict[str, Any]
+    edges: np.ndarray, diagnostics: dict[str, Any], directions: np.ndarray | None = None
 ) -> list[tuple[int, int, int, int]]:
     """Frame occupancy from fragments/line pairs; no closed convex polygon required."""
     h, w = edges.shape
@@ -52,6 +52,14 @@ def portrait_frames(
             if end > x:
                 proposals.add((x, min(y, other), end - x + 1, abs(y - other) + 1))
     nearby = cv2.distanceTransform((edges == 0).astype(np.uint8), cv2.DIST_L2, 3) <= 1.5
+    # A frame requires edges normal to its sides, not just arbitrary nearby
+    # texture. Reuse the existing side occupancy gates for this directed evidence.
+    vertical_nearby = horizontal_nearby = nearby
+    if directions is not None:
+        vertical_edges = np.isin(directions, (1, 5)).astype(np.uint8)
+        horizontal_edges = np.isin(directions, (3, 7)).astype(np.uint8)
+        vertical_nearby = cv2.distanceTransform(1 - vertical_edges, cv2.DIST_L2, 3) <= 1.5
+        horizontal_nearby = cv2.distanceTransform(1 - horizontal_edges, cv2.DIST_L2, 3) <= 1.5
     boxes = []
     best = 0.0
     geometry_count = 0
@@ -61,10 +69,10 @@ def portrait_frames(
             continue
         geometry_count += 1
         side = [
-            float(nearby[y, x : x + bw].mean()),
-            float(nearby[y + bh - 1, x : x + bw].mean()),
-            float(nearby[y : y + bh, x].mean()),
-            float(nearby[y : y + bh, x + bw - 1].mean()),
+            float(horizontal_nearby[y, x : x + bw].mean()),
+            float(horizontal_nearby[y + bh - 1, x : x + bw].mean()),
+            float(vertical_nearby[y : y + bh, x].mean()),
+            float(vertical_nearby[y : y + bh, x + bw - 1].mean()),
         ]
         score = float(np.mean(side))
         if score > best:
@@ -85,7 +93,8 @@ def portrait_frames(
 
 
 def panel_components(
-    gray: np.ndarray, diagnostics: dict[str, Any] | None = None
+    gray: np.ndarray, diagnostics: dict[str, Any] | None = None,
+    *, directed_portrait: bool = True,
 ) -> np.ndarray | None:
     diag = diagnostics if diagnostics is not None else {}
     diag.update(
@@ -122,7 +131,7 @@ def panel_components(
         return None
     diag.update(observable=True, reason="structural_rejected")
     edges = cv2.Canny(gray, 60, 150)
-    boxes = portrait_frames(edges, diag)
+    boxes = portrait_frames(edges, diag, signed_edges(gray) if directed_portrait else None)
     diag["portrait"] = bool(boxes)
     diag["final_gates"]["portrait"] = bool(boxes)
     lines = cv2.HoughLinesP(
@@ -244,7 +253,7 @@ def component_scores(gray: np.ndarray, labels: np.ndarray) -> list[float]:
     return [float(np.mean(edges[labels == k] > 0)) for k in (1, 2, 3)]
 
 
-def local_component_scores(gray: np.ndarray, labels: np.ndarray) -> list[float]:
+def legacy_component_scores(gray: np.ndarray, labels: np.ndarray) -> list[float]:
     """Require recall AND local precision for each group at one shared <=2px offset.
 
     Only precision uses the raw edges: dilating observed edges before counting
@@ -282,6 +291,111 @@ def local_component_scores(gray: np.ndarray, labels: np.ndarray) -> list[float]:
     return best
 
 
+def signed_edges(gray: np.ndarray) -> np.ndarray:
+    """Eight signed gradient directions, zero only where Canny has no evidence."""
+    gx = cv2.Sobel(gray, cv2.CV_32F, 1, 0, ksize=3)
+    gy = cv2.Sobel(gray, cv2.CV_32F, 0, 1, ksize=3)
+    directions = (np.rint(np.arctan2(gy, gx) * (4 / np.pi)).astype(int) % 8 + 1)
+    return np.where(cv2.Canny(gray, 60, 150) > 0, directions, 0).astype(np.uint8)
+
+
+def freeze_panel_reference(gray: np.ndarray, labels: np.ndarray) -> dict[str, np.ndarray]:
+    """Freeze real edges in exclusive local characteristic regions, never drawn lines.
+
+    Two-pixel support preserves the former precision neighbourhood. Nearest-group
+    assignment makes overlaps exclusive. All Canny evidence inside is expected;
+    edges outside are irrelevant to both generation and positive evaluation.
+    """
+    distances = np.stack([
+        cv2.distanceTransform((labels != k).astype(np.uint8), cv2.DIST_C, 3)
+        for k in (1, 2, 3)
+    ])
+    support = np.where(distances.min(axis=0) <= 2, distances.argmin(axis=0) + 1, 0)
+    support = support.astype(np.uint8)
+    evidence = np.where(support > 0, signed_edges(gray), 0).astype(np.uint8)
+    return {"support": support, "evidence": evidence}
+
+
+def validate_panel_reference(labels: np.ndarray, reference: dict[str, np.ndarray]) -> bool:
+    support, evidence = reference.get("support"), reference.get("evidence")
+    if (
+        not isinstance(support, np.ndarray) or not isinstance(evidence, np.ndarray)
+        or labels.ndim != 2 or support.ndim != 2 or evidence.ndim != 2
+        or any(np.count_nonzero(labels == k) < 12 for k in (1, 2, 3))
+    ):
+        return False
+    return bool(
+        support.shape == evidence.shape == labels.shape
+        and set(np.unique(support)).issubset({0, 1, 2, 3})
+        and set(np.unique(evidence)).issubset(set(range(9)))
+        and not np.any((support == 0) & (evidence > 0))
+        and all(np.count_nonzero((support == k) & (evidence > 0)) >= 12 for k in (1, 2, 3))
+        and all(np.all(support[labels == k] == k) for k in (1, 2, 3))
+    )
+
+
+def _direction_bands(edges: np.ndarray) -> list[np.ndarray]:
+    bands = []
+    for direction in range(1, 9):
+        # One spatial pixel and one 45-degree signed bin of discretization tolerance.
+        neighbours = ((direction - 2) % 8 + 1, direction, direction % 8 + 1)
+        mask = np.isin(edges, neighbours).astype(np.uint8)
+        bands.append(cv2.dilate(mask, np.ones((3, 3), np.uint8)) > 0)
+    return bands
+
+
+def local_component_scores(
+    gray: np.ndarray,
+    labels: np.ndarray,
+    reference: dict[str, np.ndarray] | None = None,
+    diagnostics: dict[str, Any] | None = None,
+) -> list[float]:
+    """Recall and precision of frozen signed evidence under one shared +/-2px shift."""
+    if reference is None:
+        return legacy_component_scores(gray, labels)
+    if gray.shape != labels.shape or not validate_panel_reference(labels, reference):
+        return []
+    support, expected = reference["support"], reference["evidence"]
+    observed = signed_edges(gray)
+    h, w = gray.shape
+    padded = np.pad(observed, 2)
+    # Recall can see adjacent evidence outside support, as the old matcher did.
+    observed_bands = [np.pad(b, 2) for b in _direction_bands(observed)]
+    expected_bands = _direction_bands(expected)
+    best: list[float] = []
+    best_detail: dict[str, Any] = {}
+    offsets = sorted(((dy, dx) for dy in range(-2, 3) for dx in range(-2, 3)),
+                     key=lambda v: (abs(v[0]) + abs(v[1]), v))
+    for dy, dx in offsets:
+        shifted = padded[2 + dy:2 + dy + h, 2 + dx:2 + dx + w]
+        bands = [b[2 + dy:2 + dy + h, 2 + dx:2 + dx + w] for b in observed_bands]
+        components: list[dict[str, Any]] = []
+        for kind, name in enumerate(("boundary", "portrait", "text"), 1):
+            wanted = (support == kind) & (expected > 0)
+            actual = (support == kind) & (shifted > 0)
+            recalled = sum(np.count_nonzero(wanted & (expected == d) & bands[d - 1])
+                           for d in range(1, 9))
+            precise = sum(np.count_nonzero(actual & (shifted == d) & expected_bands[d - 1])
+                          for d in range(1, 9))
+            expected_count = int(np.count_nonzero(wanted))
+            observed_count = int(np.count_nonzero(actual))
+            recall = float(recalled / expected_count)
+            precision = float(precise / max(1, observed_count))
+            components.append(dict(component=name, expected_count=expected_count,
+                                   support_count=int(np.count_nonzero(support == kind)),
+                                   observed_count=observed_count, recall=recall,
+                                   precision=precision, score=min(recall, precision)))
+        scores = [c["score"] for c in components]
+        if not best or min(scores) > min(best):
+            best = scores
+            best_detail = dict(components=components, best_shared_offset=[dx, dy],
+                               limiting_component=components[int(np.argmin(scores))]["component"],
+                               passed=min(scores) >= 0.90)
+    if diagnostics is not None:
+        diagnostics.update(best_detail)
+    return best
+
+
 def _displaced_component_present(gray: np.ndarray, labels: np.ndarray) -> bool:
     """Search the whole ROI before treating fixed-position contradictions as absence.
 
@@ -300,10 +414,13 @@ def _displaced_component_present(gray: np.ndarray, labels: np.ndarray) -> bool:
     return False
 
 
-def generate_panel_reference(crops: list[np.ndarray], stats: dict[str, Any]) -> np.ndarray | None:
+def generate_panel_reference(
+    crops: list[np.ndarray], stats: dict[str, Any],
+    reference_out: dict[str, np.ndarray] | None = None,
+) -> np.ndarray | None:
     gray = [cv2.cvtColor(c, cv2.COLOR_BGR2GRAY) if c.ndim == 3 else c for c in crops]
     stats.update(
-        matcher="edge_recall_precision_v1",
+        matcher="signed_support_v2",
         training_count=len(gray[::2]),
         holdout_count=len(gray[1::2]),
         candidate_count=0,
@@ -357,40 +474,61 @@ def generate_panel_reference(crops: list[np.ndarray], stats: dict[str, Any]) -> 
             stats["structural_rejected"] += 1
             continue
         stats["candidate_count"] += 1
-        members = tuple(
-            i
-            for i, g in enumerate(gray[::2])
-            if min(local_component_scores(g, labels), default=0) >= 0.90
-        )
+        reference = freeze_panel_reference(frame, labels)
+        self_match: dict[str, Any] = {}
+        local_component_scores(frame, labels, reference, self_match)
+        training_matches = []
+        for i, g in enumerate(gray[::2]):
+            detail: dict[str, Any] = {"sample_index": i * 2}
+            local_component_scores(g, labels, reference, detail)
+            training_matches.append(detail)
+        members = tuple(i for i, detail in enumerate(training_matches) if detail.get("passed"))
         support = len(members)
         stats["candidate_support"].append(
-            {"sample_index": index * 2, "training_support": support, "minimum_required": 3}
+            {"sample_index": index * 2, "training_support": support, "minimum_required": 3,
+             "legacy_self_match_scores": legacy_component_scores(frame, labels),
+             "self_match": self_match, "training_matches": training_matches}
         )
         if support >= 3:
             if members not in clusters:
-                candidates.append((support, labels))
+                candidates.append((support, labels, reference, index * 2))
                 clusters.add(members)
         else:
             stats["support_rejected"] += 1
     if not candidates:
         return None
     stats["cluster_count"] = len(candidates)
-    support, labels = max(candidates, key=lambda item: item[0])
-    heldout = sum(min(local_component_scores(g, labels), default=0) >= 0.90 for g in gray[1::2])
+    support, labels, reference, sample_index = max(candidates, key=lambda item: item[0])
+    stats["selected_sample_index"] = sample_index
+    heldout_matches = []
+    for i, g in enumerate(gray[1::2]):
+        detail = {"sample_index": i * 2 + 1}
+        local_component_scores(g, labels, reference, detail)
+        heldout_matches.append(detail)
+    stats["holdout_matches"] = heldout_matches
+    heldout = sum(detail.get("passed", False) for detail in heldout_matches)
     stats.update(training_accept_count=support, holdout_accept_count=heldout)
     if heldout < 3 or heldout < 0.80 * support * len(gray[1::2]) / len(gray[::2]):
         stats["holdout_rejected"] += 1
         return None
+    if reference_out is not None:
+        reference_out.update(reference)
     return labels
 
 
-def detect_panel(crop: np.ndarray, labels: np.ndarray | None) -> dict[str, Any]:
+def detect_panel(
+    crop: np.ndarray, labels: np.ndarray | None,
+    reference: dict[str, np.ndarray] | None = None,
+) -> dict[str, Any]:
     result: dict[str, Any] = {
         "checked": False,
         "panel_present": None,
         "reason": "reference_unavailable",
     }
     if labels is None:
+        return result
+    if reference is not None and not validate_panel_reference(labels, reference):
+        result["reason"] = "reference_invalid"
         return result
     gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY) if crop.ndim == 3 else crop
     scores = component_scores(gray, labels)
@@ -405,12 +543,16 @@ def detect_panel(crop: np.ndarray, labels: np.ndarray | None) -> dict[str, Any]:
         result["reason"] = "roi_unobservable"
         return result
     result["component_scores"] = scores
-    positive_scores = local_component_scores(gray, labels)
+    positive_scores = local_component_scores(gray, labels, reference)
     result["positive_component_scores"] = positive_scores
     if min(positive_scores, default=0) >= 0.90:
         result.update(checked=True, panel_present=True, reason="panel_structure_present")
     elif max(scores) <= 0.10:
-        if panel_components(gray) is not None or _displaced_component_present(gray, labels):
+        # Absence must retain the broader legacy candidate veto. Tightening
+        # generation must never make contradictory frames easier to exclude.
+        if panel_components(gray, directed_portrait=False) is not None or (
+            _displaced_component_present(gray, labels)
+        ):
             result["reason"] = "panel_structure_mismatch"
             return result
         # Each mandatory UI component was checked and strongly contradicted.
