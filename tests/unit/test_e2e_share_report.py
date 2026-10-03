@@ -265,3 +265,23 @@ def test_untrusted_strings_and_existing_history_are_rebuilt(tmp_path):
     assert "secret-token" not in serialized
     data = json.loads((args["output_dir"] / "summary.json").read_text())
     assert data["evidence_files"] == ["report.json"]
+
+
+def test_history_keeps_allowlisted_manual_map_and_rejects_private_values(tmp_path):
+    args = _inputs(tmp_path, manual_map_id="summit", executed_at="2026-10-03T10:00:00+00:00")
+    export_report(**args)
+    args["metadata"]["executed_at"] = "2026-10-03T11:00:00+00:00"
+    args["metadata"]["settings_fingerprint"] = "e" * 64
+    export_report(**args)
+    path = tmp_path / "history.json"
+    history = json.loads(path.read_text())
+    assert len(history) == 2
+    assert all(row["metadata"]["manual_map_id"] == "summit" for row in history)
+    history[0]["metadata"]["manual_map_id"] = "private-player-secret"
+    history[0]["result"]["detail_truncated"] = True
+    path.write_text(json.dumps(history))
+    export_report(**args)
+    history = json.loads(path.read_text())
+    assert history[0]["metadata"]["manual_map_id"] is None
+    assert history[0]["result"]["detail_truncated"] is True
+    assert "private-player-secret" not in path.read_text()

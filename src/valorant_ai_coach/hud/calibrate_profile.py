@@ -22,8 +22,13 @@ from valorant_ai_coach.video.service import VideoService
 
 from .calibrate_temporal import _check_output_privacy, _localize_assets, create_temporal_profile
 from .layout import HudLayout
+<<<<<<< HEAD
 from .spectator import freeze_panel_reference, generate_panel_reference, panel_components
+=======
+from .spectator import PanelReference, generate_panel_reference, panel_components
+>>>>>>> 4a5f013ee504d22dea6dac02ccf62b9b7d280de5
 from .templates import HudTemplateProfile
+from .value_identity import MATCHER, scaffold_reference
 from .weapon_identity import weapon_reference
 
 ROLES = {
@@ -202,6 +207,9 @@ def create_profile(
     _check_output_privacy(output)
     layout_path = Path(layout_path).expanduser().resolve()
     layout = HudLayout.load(layout_path)
+    structure_specs = json.loads(layout_path.read_text(encoding="utf-8")).get(
+        "identity_structure_regions", {}
+    )
     if layout.layout_format != "v3" or layout.reference_resolution is None:
         raise ValueError("v3の基準解像度付きlayoutが必要です")
     source_path = layout_path.with_suffix(".templates.json")
@@ -277,11 +285,12 @@ def create_profile(
                         and hashlib.sha256(asset.read_bytes()).hexdigest() not in geometry_hashes
                         for asset in identity_assets
                     )
+                    and (name not in structure_specs or spec.get("matcher") == MATCHER)
                     and inherited_roi == roi_name
                     and inherited_roi in layout.regions
                     and (
                         name != "weapon_ammo_structure"
-                        or spec.get("matcher") == "oriented_edges_v1"
+                        or spec.get("matcher") in ("oriented_edges_v1", MATCHER)
                     )
                 ):
                     diagnostics["references"][name] = {
@@ -302,11 +311,39 @@ def create_profile(
             raw["signals"].pop(name, None)
             result = None
             identity_mask = None
+            identity_regions = None
             stats: dict[str, Any] = {}
             if roi_name in layout.regions:
                 x1, y1, x2, y2 = layout.normalized_roi(roi_name).pixel_bounds(width, height)
                 crops = [image[y1:y2, x1:x2] for image in images]
-                if name == "weapon_ammo_structure":
+                if name in structure_specs:
+                    neighbors = []
+                    for other_name, other_roi in ROLES.items():
+                        if other_name == name or other_roi not in layout.regions:
+                            continue
+                        nx1, ny1, nx2, ny2 = layout.normalized_roi(other_roi).pixel_bounds(
+                            width, height
+                        )
+                        left, top, right, bottom = (
+                            max(x1, nx1),
+                            max(y1, ny1),
+                            min(x2, nx2),
+                            min(y2, ny2),
+                        )
+                        if left < right and top < bottom:
+                            neighbors.append(
+                                [
+                                    (left - x1) / (x2 - x1),
+                                    (top - y1) / (y2 - y1),
+                                    (right - x1) / (x2 - x1),
+                                    (bottom - y1) / (y2 - y1),
+                                ]
+                            )
+                    scaffold = scaffold_reference(crops, structure_specs[name], stats, neighbors)
+                    if scaffold is not None:
+                        reference, bounds, identity_mask, identity_regions = scaffold
+                        result = reference, bounds, stats
+                elif name == "weapon_ammo_structure":
                     weapon = weapon_reference(crops, stats)
                     if weapon is not None:
                         reference, bounds, identity_mask = weapon
@@ -334,9 +371,17 @@ def create_profile(
                 raw["signals"][name]["mask"] = f"identity/{name}.mask.png"
                 raw["signals"][name]["matcher"] = "oriented_edges_v1"
                 stats["matcher"] = "oriented_edges_v1"
+                if identity_regions is not None:
+                    regions_asset = stage / "identity" / f"{name}.support.png"
+                    region_stats = _write_asset(regions_asset, identity_regions)
+                    raw["signals"][name]["support_regions"] = f"identity/{name}.support.png"
+                    raw["signals"][name]["matcher"] = MATCHER
+                    stats["matcher"] = MATCHER
+                    stats["support_content_hash"] = region_stats["content_hash"]
         # Never inherit or generate background/clear-image evidence.
         raw.pop("spectator_clear_reference", None)
         raw.pop("spectator_panel_detector", None)
+<<<<<<< HEAD
         name = "spectator_panel"
         labels = None
         panel_reference: dict[str, np.ndarray] = {}
@@ -384,9 +429,22 @@ def create_profile(
                 status=status,
             )
             raw["spectator_panel_detector"] = {
+=======
+        if "spectator_icon" in layout.regions:
+            raw["spectator_icon_detector"] = {
+>>>>>>> 4a5f013ee504d22dea6dac02ccf62b9b7d280de5
                 "version": 1,
-                "template": "identity/spectator_panel.components.png",
+                "roi": "spectator_icon",
+                "method": "fixed_slot_structure_v1",
             }
+            raw.get("signals", {}).pop("spectated_player_panel", None)
+            diagnostics["references"]["spectator_panel"] = {
+                "status": "generated",
+                "matcher": "fixed_slot_structure_v1",
+                "reference_required": False,
+                "candidate_count": 0,
+            }
+<<<<<<< HEAD
             if panel_reference:
                 for key, image in panel_reference.items():
                     path = f"identity/spectator_panel.{key}.png"
@@ -394,8 +452,71 @@ def create_profile(
                     raw["spectator_panel_detector"][key] = path
                 raw["spectator_panel_detector"]["version"] = 2
             diagnostics["references"][name] = stats
+=======
+>>>>>>> 4a5f013ee504d22dea6dac02ccf62b9b7d280de5
         else:
-            diagnostics["references"][name] = {**stats, "status": "insufficient_evidence"}
+            raw.pop("spectator_icon_detector", None)
+            name = "spectator_panel"
+            labels = None
+            stats = {}
+            if "spectated_player_panel" in layout.regions:
+                x1, y1, x2, y2 = layout.normalized_roi("spectated_player_panel").pixel_bounds(
+                    width, height
+                )
+                labels = generate_panel_reference([image[y1:y2, x1:x2] for image in images], stats)
+            status = "generated"
+            if labels is None and inherited._panel_components is not None:
+                spec = inherited.raw.get("spectator_panel_detector", {})
+                assets = [
+                    inherited.resolve_asset(spec[key]).resolve()
+                    for key in ("template", "support_regions", "orientation")
+                    if key in spec
+                ]
+                roi_name = "spectated_player_panel"
+                if roi_name in layout.regions and all(
+                    asset not in geometry_assets
+                    and hashlib.sha256(asset.read_bytes()).hexdigest() not in geometry_hashes
+                    for asset in assets
+                ):
+                    x1, y1, x2, y2 = layout.normalized_roi(roi_name).pixel_bounds(width, height)
+                    if inherited._panel_components.shape == (y2 - y1, x2 - x1):
+                        labels = inherited._panel_components.copy()
+                        status = "inherited"
+            if labels is None and "spectated_player_panel" in inherited._signal_templates:
+                roi_name, template = inherited._signal_templates["spectated_player_panel"]
+                if (
+                    roi_name == "spectated_player_panel"
+                    and roi_name in layout.regions
+                    and template.path.resolve() not in geometry_assets
+                    and hashlib.sha256(template.path.read_bytes()).hexdigest()
+                    not in geometry_hashes
+                ):
+                    x1, y1, x2, y2 = layout.normalized_roi(roi_name).pixel_bounds(width, height)
+                    if template.image.shape == (y2 - y1, x2 - x1):
+                        labels = panel_components(template.image)
+                        status = "inherited"
+            if labels is not None:
+                stats.update(
+                    _write_asset(stage / "identity/spectator_panel.components.png", labels),
+                    status=status,
+                )
+                raw["spectator_panel_detector"] = {
+                    "version": 1,
+                    "template": "identity/spectator_panel.components.png",
+                }
+                if isinstance(labels, PanelReference):
+                    raw["spectator_panel_detector"]["version"] = 2
+                    for key, image in (
+                        ("support_regions", labels.regions),
+                        ("orientation", labels.orientation),
+                    ):
+                        asset_name = f"identity/spectator_panel.{key}.png"
+                        info = _write_asset(stage / asset_name, image)
+                        raw["spectator_panel_detector"][key] = asset_name
+                        stats[f"{key}_content_hash"] = info["content_hash"]
+                diagnostics["references"][name] = stats
+            else:
+                diagnostics["references"][name] = {**stats, "status": "insufficient_evidence"}
         diagnostics["identity_reference_ready"] = all(
             diagnostics["references"][role]["status"] in {"generated", "inherited"}
             for role in (*ROLES, "spectator_panel")

@@ -85,8 +85,47 @@ def test_calibrated_pixels_reach_round_package_and_sqlite_without_fabrication(
             for y in range(y1 + 4, y2 - 3, 12):
                 cv2.line(image, (x1 + 4, y), (x2 - 4, y), (220, 220, 220), 2)
             cv2.rectangle(image, (x1 + 4, y1 + 4), (x2 - 5, y2 - 5), (150, 150, 150), 2)
+        # Model two distinct identity scaffolds, with numeric fields changing
+        # independently. Generic repeated stripes do not represent either role.
+        for roi in ("player_hp_armor", "ammo_current_weapon"):
+            x1, y1, x2, y2 = layout.normalized_roi(roi).pixel_bounds(1920, 1080)
+            image[y1:y2, x1:x2] = 60
+            if roi == "player_hp_armor":
+                cv2.line(image, (x1 + 37, y1 + 129), (x1 + 145, y1 + 129), (230, 230, 230), 2)
+                cv2.line(image, (x1 + 145, y1 + 129), (x1 + 194, y1 + 80), (230, 230, 230), 2)
+                cv2.line(image, (x1 + 194, y1 + 80), (x1 + 218, y1 + 80), (230, 230, 230), 2)
+                cv2.putText(
+                    image,
+                    "80",
+                    (x1 + 82, y1 + 114),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    1,
+                    (240, 240, 240),
+                    2,
+                )
+            else:
+                for dx in (123, 129, 135):
+                    cv2.rectangle(
+                        image, (x1 + dx, y1 + 116), (x1 + dx + 2, y1 + 133), (230, 230, 230), -1
+                    )
+                    cv2.line(image, (x1 + dx, y1 + 121), (x1 + dx + 2, y1 + 121), (60, 60, 60), 1)
+                cv2.line(image, (x1 + 60, y1 + 154), (x1 + 174, y1 + 154), (230, 230, 230), 1)
+                cv2.putText(
+                    image,
+                    "12",
+                    (x1 + 76, y1 + 136),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    0.8,
+                    (240, 240, 240),
+                    2,
+                )
         x1, y1, x2, y2 = layout.normalized_roi("spectated_player_panel").pixel_bounds(1920, 1080)
         image[y1:y2, x1:x2] = scene
+        # The new fixed slot needs visible sharp background to establish absence;
+        # a featureless synthetic patch correctly remains UNKNOWN.
+        x1, y1, x2, y2 = layout.normalized_roi("spectator_icon").pixel_bounds(1920, 1080)
+        image[y1:y2, x1:x2] = 70
+        cv2.rectangle(image, (x1 + 8, y1 + 12), (x2 - 9, y2 - 13), (160, 160, 160), 1)
         assert cv2.imwrite(str(reference), image)
     source = tmp_path / "synthetic hud.mp4"
     subprocess.run(

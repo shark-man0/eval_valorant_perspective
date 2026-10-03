@@ -285,12 +285,27 @@ structures and remote/spectator/menu/map blockers remain required; no live persi
 There are no new dependencies or paid API calls.
 
 Presence uses the minimum of recall and local raw-edge precision for every component,
-at a shared offset of at most two pixels. Extra nearby edges reduce precision; dense
-texture cannot establish a panel or inflate reference support just by covering its pixels.
+at a shared offset of at most two pixels. Fresh profiles use
+`oriented_component_regions_v2`: measured Canny edges, frozen disjoint characteristic
+support regions and signed gradient directions (one pixel / twenty degrees of local
+correspondence). Extra conflicting edges **inside** those regions reduce precision;
+unrelated outside edges do not. Coherent horizontal boundary direction is additionally
+required, so repeated isotropic texture cannot turn source-frame self-consistency into
+training support. Legacy version-1 label-only assets keep their legacy matcher.
+Fresh version-2 profiles save three local PNG assets: component labels, support regions,
+and orientations. Missing or inconsistent support assets disable the reference.
 Absence still uses fixed-position coverage and the existing conservative veto checks.
 `candidate_support_summary` shares support counts even when every candidate is rejected;
 `candidate_support` keeps at most six sanitized representatives. Regenerate the local profile
 before comparing the updated detector; Mac synthetic checks do not prove real-video accuracy.
+
+First check `spectator_generation.self_match_summary` (every measured candidate must have
+minimum score >= .90), then the representatives' `self_match` and `legacy_self_match`:
+per-component expected/observed/matched counts, recall, precision, minimum score,
+limiting component and shared dx/dy. Failed training comparisons use
+`failed_support_scores` count/min/median/max, not every frame pair.
+Only independent training >=3 and independent holdout >=3 plus the existing prevalence
+condition can generate a reference. Self-match alone must not produce `generated`.
 
 Compare per-role candidate/rejection/support counts in `automatic_identity_generation.references`,
 `identity_missing`, `spectator_checks`, `identity_reasons`, geometry success,
@@ -347,8 +362,14 @@ recordings stay on Windows. Do not use `git add -f` on ignored outputs or record
 
 Regenerate from a validated geometry-only base with 64 unlabelled samples after
 a detector change. New supported Spectator references persist three private PNG
+<<<<<<< HEAD
 assets: structural component labels, exclusive characteristic support regions,
 and the actual Canny evidence encoded with eight signed gradient directions.
+=======
+assets: measured Canny component labels (`template`), exclusive characteristic
+support regions (`support_regions`), and signed two-degree Sobel directions
+(`orientation`). Positive matching uses the canonical 20-degree tolerance.
+>>>>>>> 4a5f013ee504d22dea6dac02ccf62b9b7d280de5
 The profile fingerprints and localizes all three assets. Missing or invalid
 version-2 evidence disables the detector; it never falls back to a version-1
 positive match. Version-1 profiles retain their original matcher.

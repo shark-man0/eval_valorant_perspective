@@ -21,6 +21,7 @@ def number(value, *, count=False):
     return value if value <= 1 else None
 
 
+<<<<<<< HEAD
 def sanitize_panel_match(value):
     source = object_or_empty(value)
     components = source.get("components", [])
@@ -45,6 +46,155 @@ def sanitize_panel_match(value):
     }
 
 
+=======
+PORTRAIT_MODES = ("framed", "frameless")
+PANEL_TOPOLOGIES = ("group_header", "group_footer", "text_separator", "portrait_side_separator")
+FRAMELESS_REJECTION_REASONS = (
+    "separator_geometry",
+    "separator_evidence",
+    "two_text_rows_missing",
+    "portrait_text_geometry",
+    "portrait_edge_density",
+    "portrait_localized_groups",
+    "portrait_spread",
+    "portrait_occupancy",
+    "portrait_orientation",
+    "component_pixels_insufficient",
+    "holdout_not_proposed",
+)
+PORTRAIT_CANDIDATE_REJECTIONS = (
+    "portrait_edge_density",
+    "portrait_localized_groups",
+    "portrait_spread",
+    "portrait_occupancy",
+    "portrait_orientation",
+)
+
+
+def _fixed_counts(value, keys):
+    source = object_or_empty(value)
+    return {key: number(source.get(key), count=True) for key in keys}
+
+
+def _positive_dimensions(value):
+    return (
+        value
+        if isinstance(value, list)
+        and len(value) == 2
+        and all(
+            isinstance(item, int) and not isinstance(item, bool) and 0 < item <= 65536
+            for item in value
+        )
+        else None
+    )
+
+
+def _normalized_box4(value):
+    if not isinstance(value, list) or len(value) != 4:
+        return None
+    bounds = [number(item) for item in value]
+    if any(item is None for item in bounds):
+        return None
+    left, top, right, bottom = bounds
+    if right <= left or bottom <= top:
+        return None
+    return bounds
+
+
+def _orientation_distribution(value):
+    if not isinstance(value, list) or len(value) != 8:
+        return None
+    distribution = [number(item) for item in value]
+    if any(item is None for item in distribution):
+        return None
+    if not math.isclose(sum(distribution), 1.0, rel_tol=0.0, abs_tol=0.01):
+        return None
+    return distribution
+
+
+def sanitize_portrait_proposal(value):
+    """Allowlist compact portrait proposal diagnostics without retaining source arrays."""
+    source = object_or_empty(value)
+    mode = source.get("portrait_mode")
+    topology = source.get("panel_topology")
+    candidate_reason = source.get("portrait_candidate_rejection_reason")
+    occupied_rows = number(source.get("portrait_occupied_rows"), count=True)
+    occupied_columns = number(source.get("portrait_occupied_columns"), count=True)
+    return {
+        "portrait_mode": mode if mode in PORTRAIT_MODES else None,
+        "panel_topology": topology if topology in PANEL_TOPOLOGIES else None,
+        "portrait_search_region": _normalized_box4(source.get("portrait_search_region")),
+        "portrait_region_dimensions": _positive_dimensions(
+            source.get("portrait_region_dimensions")
+        ),
+        "portrait_edge_count": number(source.get("portrait_edge_count"), count=True),
+        "portrait_localized_component_count": number(
+            source.get("portrait_localized_component_count"), count=True
+        ),
+        "portrait_x_spread": number(source.get("portrait_x_spread")),
+        "portrait_y_spread": number(source.get("portrait_y_spread")),
+        "portrait_occupied_rows": (
+            occupied_rows if occupied_rows is not None and occupied_rows <= 4 else None
+        ),
+        "portrait_occupied_columns": (
+            occupied_columns if occupied_columns is not None and occupied_columns <= 4 else None
+        ),
+        "portrait_orientation_distribution": _orientation_distribution(
+            source.get("portrait_orientation_distribution")
+        ),
+        "portrait_relative_to_text": number(source.get("portrait_relative_to_text")),
+        "portrait_relative_to_boundary": number(source.get("portrait_relative_to_boundary")),
+        "portrait_support_region_population": number(
+            source.get("portrait_support_region_population"), count=True
+        ),
+        "portrait_candidate_rejection_reason": (
+            candidate_reason if candidate_reason in PORTRAIT_CANDIDATE_REJECTIONS else None
+        ),
+        "frameless_rejections": _fixed_counts(
+            source.get("frameless_rejections"), FRAMELESS_REJECTION_REASONS
+        ),
+    }
+
+
+def sanitize_panel_match(value):
+    """Fixed-size numerical matcher telemetry, never image/name/path strings."""
+    value = object_or_empty(value)
+    names = ("boundary", "portrait", "text")
+    rows = value.get("components", [])
+    rows = rows if isinstance(rows, list) else []
+    result = {
+        "minimum_score": number(value.get("minimum_score")),
+        "passed": value.get("passed") is True,
+        "limiting_component": value.get("limiting_component")
+        if value.get("limiting_component") in names
+        else None,
+        "components": [],
+    }
+    for key in ("dx", "dy"):
+        offset = value.get(key)
+        result[key] = offset if type(offset) is int and -2 <= offset <= 2 else None
+    for kind, name in enumerate(names, 1):
+        row = next((r for r in rows if isinstance(r, dict) and r.get("component") == name), {})
+        result["components"].append(
+            {
+                "component": name,
+                "component_id": kind,
+                **{
+                    k: number(row.get(k), count=True)
+                    for k in (
+                        "expected_count",
+                        "observed_count",
+                        "matched_expected_count",
+                        "matched_observed_count",
+                    )
+                },
+                **{k: number(row.get(k)) for k in ("recall", "precision", "score")},
+            }
+        )
+    return result
+
+
+>>>>>>> 4a5f013ee504d22dea6dac02ccf62b9b7d280de5
 def sanitize_calibration(value):
     if not isinstance(value, dict) or value.get("schema_version") != 1:
         return {"available": False}
@@ -87,6 +237,11 @@ def sanitize_calibration(value):
             "panel_structure_excluded",
             "panel_structure_ambiguous",
             "panel_structure_mismatch",
+            "icon_present",
+            "icon_absent",
+            "icon_roi_obscured",
+            "icon_roi_unobservable",
+            "icon_structure_ambiguous",
         ),
     }.items():
         counts = object_or_empty(value.get(section))
@@ -252,6 +407,23 @@ def compact_diagnostics(calibration):
             if s.get("training_support") is not None and s.get("minimum_required") is not None
         ),
     )
+    self_matches = [
+        s["self_match"]
+        for s in supports
+        if s.get("self_match", {}).get("minimum_score") is not None
+    ]
+    self_scores = [s["minimum_score"] for s in self_matches]
+    generation["self_match_summary"] = dict(
+        count=len(self_scores),
+        passed_count=sum(s["passed"] for s in self_matches),
+        min=min(self_scores) if self_scores else None,
+        median=statistics.median(self_scores) if self_scores else None,
+        max=max(self_scores) if self_scores else None,
+        failing_components={
+            k: sum(not s["passed"] and s["limiting_component"] == k for s in self_matches)
+            for k in ("boundary", "portrait", "text")
+        },
+    )
     ordered = sorted(supports, key=lambda s: s.get("training_support") or 0, reverse=True)
     keep_supports = []
     if ordered:
@@ -327,10 +499,28 @@ def sanitize_identity_generation(value):
             else None
         )
         result["references"][name] = row
+        if (
+            name in ("hp_hud_structure", "weapon_ammo_structure")
+            and source.get("matcher") == "value_invariant_edges_v1"
+        ):
+            row["value_invariant_generation"] = {
+                "matcher": "value_invariant_edges_v1",
+                "selected_candidate": sanitize_candidate(
+                    object_or_empty(source.get("selected_candidate"))
+                ),
+            }
+            for key in ("mask_content_hash", "support_content_hash"):
+                digest = source.get(key)
+                row["value_invariant_generation"][key] = (
+                    digest
+                    if isinstance(digest, str) and re.fullmatch(r"[a-f0-9]{64}", digest)
+                    else None
+                )
         if name == "weapon_ammo_structure":
             row["weapon_ammo_generation"] = {
                 "matcher": source.get("matcher")
-                if source.get("matcher") in ("oriented_edges_v1", "masked_ncc")
+                if source.get("matcher")
+                in ("oriented_edges_v1", "masked_ncc", "value_invariant_edges_v1")
                 else None,
                 "proposal_count": number(source.get("proposal_count"), count=True),
                 "proposal_budget_omitted": number(
@@ -346,7 +536,12 @@ def sanitize_identity_generation(value):
                     {
                         "proposal_source": p.get("proposal_source")
                         if p.get("proposal_source")
-                        in ("localized_component", "component_group", "legacy_grid")
+                        in (
+                            "localized_component",
+                            "component_group",
+                            "legacy_grid",
+                            "configured_role_scaffold",
+                        )
                         else None,
                         "proposal_training_frames": number(
                             p.get("proposal_training_frames"), count=True
@@ -388,6 +583,13 @@ def sanitize_identity_generation(value):
                 else None,
             }
         if name == "spectator_panel":
+            for key in ("support_regions_content_hash", "orientation_content_hash"):
+                digest = source.get(key)
+                row[key] = (
+                    digest
+                    if isinstance(digest, str) and re.fullmatch(r"[a-f0-9]{64}", digest)
+                    else None
+                )
             keys = (
                 "observable",
                 "boundary",
@@ -409,10 +611,24 @@ def sanitize_identity_generation(value):
             supports = source.get("candidate_support", [])
             row["spectator_generation"] = {
                 "matcher": source.get("matcher")
+<<<<<<< HEAD
                 if source.get("matcher") in ("edge_recall_precision_v1", "signed_support_v2")
+=======
+                if source.get("matcher")
+                in (
+                    "edge_recall_precision_v1",
+                    "oriented_component_regions_v2",
+                    "fixed_slot_structure_v1",
+                )
+>>>>>>> 4a5f013ee504d22dea6dac02ccf62b9b7d280de5
                 else None,
+                "proposal_sample_count": number(source.get("proposal_sample_count"), count=True),
+                "holdout_proposal_skipped_count": number(
+                    source.get("holdout_proposal_skipped_count"), count=True
+                ),
                 "candidate_support": [
                     {
+<<<<<<< HEAD
                         **{k: number(s.get(k), count=True)
                            for k in ("sample_index", "training_support", "minimum_required")},
                         "legacy_self_match_scores": [number(v) for v in
@@ -420,6 +636,22 @@ def sanitize_identity_generation(value):
                         if isinstance(s.get("legacy_self_match_scores"), list)
                         and len(s["legacy_self_match_scores"]) == 3 else None,
                         "self_match": sanitize_panel_match(s.get("self_match")),
+=======
+                        **{
+                            k: number(s.get(k), count=True)
+                            for k in ("sample_index", "training_support", "minimum_required")
+                        },
+                        "self_match": sanitize_panel_match(s.get("self_match")),
+                        "portrait_proposal": sanitize_portrait_proposal(s.get("portrait_proposal")),
+                        "legacy_self_match": sanitize_panel_match(s.get("legacy_self_match")),
+                        "failed_support_scores": {
+                            k: number(
+                                object_or_empty(s.get("failed_support_scores")).get(k),
+                                count=k == "count",
+                            )
+                            for k in ("count", "min", "median", "max")
+                        },
+>>>>>>> 4a5f013ee504d22dea6dac02ccf62b9b7d280de5
                     }
                     for s in supports[:64]
                     if isinstance(s, dict)
@@ -434,6 +666,10 @@ def sanitize_identity_generation(value):
                     k: number(object_or_empty(source.get("rejection_counts")).get(k), count=True)
                     for k in reasons[:-1]
                 },
+                "portrait_modes": _fixed_counts(source.get("portrait_modes"), PORTRAIT_MODES),
+                "frameless_rejection_counts": _fixed_counts(
+                    source.get("frameless_rejection_counts"), FRAMELESS_REJECTION_REASONS
+                ),
                 "final_rejection_counts": {
                     k: number(
                         object_or_empty(source.get("final_rejection_counts")).get(k), count=True
@@ -443,6 +679,7 @@ def sanitize_identity_generation(value):
                         "boundary_span_insufficient",
                         "relative_position_mismatch",
                         "component_pixels_insufficient",
+                        "boundary_orientation_incoherent",
                     )
                 },
                 "samples": [
@@ -480,7 +717,9 @@ def sanitize_identity_generation(value):
                         "boundary_span_candidates": number(
                             s.get("boundary_span_candidates"), count=True
                         ),
-                        "reason": s.get("reason") if s.get("reason") in reasons else None,
+                        "reason": s.get("reason")
+                        if s.get("reason") in (*reasons, "holdout_not_proposed")
+                        else None,
                         "final_gates": {
                             k: object_or_empty(s.get("final_gates")).get(k) is True
                             for k in (
@@ -497,8 +736,10 @@ def sanitize_identity_generation(value):
                                 "boundary_span_insufficient",
                                 "relative_position_mismatch",
                                 "component_pixels_insufficient",
+                                "boundary_orientation_incoherent",
                             )
                         },
+                        **sanitize_portrait_proposal(s),
                     }
                     for s in samples[:64]
                     if isinstance(s, dict)
@@ -542,6 +783,26 @@ def sanitize_candidate(source):
         and len(bounds) == 4
         and all(number(v) is not None for v in bounds)
         else None
+    )
+    for key in ("distance_from_intended_region", "neighbor_overlap_ratio"):
+        result[key] = number(source.get(key))
+    for key in ("intended_bounds",):
+        box = source.get(key)
+        result[key] = [number(v) for v in box] if isinstance(box, list) and len(box) == 4 else None
+    for key in ("support_bounds", "dynamic_bounds"):
+        boxes = source.get(key)
+        result[key] = (
+            [
+                [number(v) for v in box]
+                for box in boxes[:4]
+                if isinstance(box, list) and len(box) == 4
+            ]
+            if isinstance(boxes, list)
+            else []
+        )
+    populations = source.get("group_mask_population")
+    result["group_mask_population"] = (
+        [number(v, count=True) for v in populations[:4]] if isinstance(populations, list) else []
     )
     dims = source.get("dimensions")
     result["dimensions"] = (
@@ -600,7 +861,7 @@ def sanitize_candidate(source):
     result["proposal_source"] = (
         source.get("proposal_source")
         if source.get("proposal_source")
-        in ("localized_component", "component_group", "legacy_grid")
+        in ("localized_component", "component_group", "legacy_grid", "configured_role_scaffold")
         else None
     )
     result["rejection_stage"] = (

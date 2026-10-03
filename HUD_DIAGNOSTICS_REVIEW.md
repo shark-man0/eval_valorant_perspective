@@ -1,5 +1,51 @@
 # Windows E2E 上流診断（2026-10-01）
 
+## MacでのSpectator self-consistency修正記録（当時Windows未検証）
+
+今回はSpectator生成・照合と必要なasset保存/読み込み・共有診断だけを変更。
+Weapon/Ammo、HP/Ability生成、identity policy、Visual/Map/Round、GT、runnerは変更しない。
+sample 28の実画像・参照asset・component別照合値はMacにないため、実際のlimiting
+componentはまだ特定できない。「portraitが原因」と実動画について断定しない。
+
+旧方式はsynthetic Hough線・狭いportrait outline・glyph edgeだけを参照にしながら、
+precisionではその外側2pxの全edgeを分母へ含めていた。装飾付き合成panelで、自己照合の
+portrait recall=1、precision=188/221=.850679、旧最小score<.90を再現した。
+参照に含めなかった正常edgeを、同じ元frameの照合ではclutter扱いする契約不一致である。
+
+新matcher `oriented_component_regions_v2` は固定・排他的な支持領域を生成時に保存し、
+その中の実Canny edgeをすべて参照に含める。Hough描画そのものを期待edgeにしない。
+precisionは同じ固定支持領域内のraw edgeのみを数え、1px/20度の双方向対応を要求する。
+gradientは符号付き方向を2度刻みで保存し、明るい線の表裏を取り違えない。
+自己照合は全groupのrecall/precision=1になるが、画像hash・object identity等は使用しない。
+別frameの支持領域内の矛盾edgeはprecisionを下げ、外側の無関係edgeは分母に入れない。
+
+反復random textureを参照化しないため、水平boundaryの実edge方向が法線±20度に
+60%以上集中する追加品質gateを設ける（等方noiseの期待値は約22%）。構造条件を緩めず、
+同じtextureの反復だけでは採用しない。棄却は `boundary_orientation_incoherent` へ集計。
+header/footer/separator、fragmentの実被覆、3component構造、共通±2px、閾値.90、
+training最低3、holdout最低3かつtraining比率80%を維持。holdoutで候補選択しない。
+absenceはcoverage-onlyとdisplaced-component vetoを維持し、positive失敗から導かない。
+
+fresh profileのSpectator detector versionは2。labels/support_regions/orientationの3PNGを
+Windowsローカルのidentity配下へ保存する。新assetもgeometryとのpath/hash一致を排除し、
+継承・asset移動・読み込みで保持する。不正/欠落assetはreference_unavailableに落とす。
+旧version1は旧matcherを維持し、欠けた支持領域・方向情報を捏造しない。再検証はfresh生成。
+
+共有candidate_supportは最大6代表例。旧方式 `legacy_self_match` と新方式 `self_match`
+それぞれのexpected/observed/matched count、recall、precision、score、共通dx/dy、
+limiting component、passedを共有。失敗training比較はcount/min/median/maxに集約。
+全候補のself_match_summaryは代表例を容量fallbackで削除しても残る。共有は128KiBのまま。
+画像・OCR・名前・private pathは共有せず、ローカル診断は削らない。
+
+次回はWINDOWS_E2E.mdの既存fresh手順（geometry-only base、64未ラベルsample、
+生成layoutをそのままfull E2Eへ渡す）で確認する。まず全candidateのself score>=.90、
+次に独立training/holdout支持・generatedを確認する。source自己一致だけで採用せず、
+支持不足ならunknownを維持する。Weaponの18/18はWindows比較指標でありMac確認値ではない。
+
+Mac最終検証: pytest 602 passed / 3 skipped（実録画未提供1、PowerShell未導入2）、
+Ruff `src tests scripts`、mypy `src`（79 files）、git diff --check成功。
+新規46回帰を追加。既存テスト・Weapon実装に変更はなく、commit/pushは行っていない。
+
 ## Fresh p5: Weapon localization / Spectator topology限定修正
 
 基準はfcf313eのfresh Windows診断。profile/runnerの古さを原因と扱わない。
@@ -633,10 +679,17 @@ Map診断件数を確認する。今回のMac修正だけで認識精度改善�
 
 ## Spectator self-consistency and directed frame evidence
 
+<<<<<<< HEAD
 The `signed_support_v2` matcher evaluates the representation frozen at generation:
 actual Canny edges inside exclusive boundary/portrait/text support regions.
 Recall and precision use signed direction bins with one bin of angular
 discretization tolerance and the existing one-pixel spatial match band. All
+=======
+The integrated `oriented_component_regions_v2` matcher evaluates the representation frozen at generation:
+actual Canny edges inside exclusive boundary/portrait/text support regions.
+Recall and precision use the Mac signed two-degree orientation encoding,
+20-degree angular tolerance and the existing one-pixel spatial match band. All
+>>>>>>> 4a5f013ee504d22dea6dac02ccf62b9b7d280de5
 groups share one offset bounded by +/-2 pixels. Edges outside support do not
 count as precision errors; contradictory edges inside it still do. The positive
 threshold remains 0.90 for every mandatory group. Absence still uses independent
@@ -646,7 +699,13 @@ Self-consistency makes repeated texture self-consistent too. Portrait proposals
 therefore require directed frame evidence before support is measured: vertical
 sides use horizontal signed gradients and horizontal sides use vertical signed
 gradients. The original side occupancy, three-side, fourth-side and mean gates
+<<<<<<< HEAD
 are unchanged. Arbitrary nearby edges cannot establish a frame side merely by
+=======
+are unchanged. Side normals use a 22.5-degree tolerance with canonical angles.
+The absence veto bypasses both stricter generation guards and retains the
+ancestor structural check. Arbitrary nearby edges cannot establish a frame side merely by
+>>>>>>> 4a5f013ee504d22dea6dac02ccf62b9b7d280de5
 covering it. This is a structural proposal check, not a relaxed acceptance gate.
 
 The Windows real-video inspection exposed a background-and-chat candidate with
@@ -656,3 +715,128 @@ support rejects this candidate. The visible frameless portrait/name UI remains
 an unmodelled variant and must stay UNKNOWN until a coherent, independently
 supported three-component model is available. Neither that variant nor a
 self-match is permission to skip training, holdout or the runtime identity gate.
+<<<<<<< HEAD
+=======
+
+## Windows / Mac integration validation (2026-10-03)
+
+The integrated tree retains the Mac `PanelReference` representation and adds
+Windows directed portrait proposals, broad ancestor absence veto, and local
+training/selected-holdout comparisons. Thresholds and independent support rules
+are unchanged. The canonical matcher fixes sample 28 self-match: all three
+component recall/precision/scores are 1.0 at shared offset [0, 0]. Its independent
+training support is zero (one self sample, three required), so holdout is not run.
+Directed portrait evidence rejects that background/chat candidate.
+
+Fresh `integrated_oriented_v2_run1` uses 64 unlabelled samples from the validated
+geometry-only base. HP 23/23, Ability 21/24, Weapon 18/18 are generated anew.
+Spectator has no accepted candidate, status insufficient_evidence, and
+identity_reference_ready=false. Full Windows E2E run
+`20261003T104603Z-2db56658` completed with schema valid, 21 passed / 57 failed /
+4 not evaluated, and negative assertions 20 passed / 0 failed. HUD states are
+unknown 3892, remote control 34, buy menu 3, live/spectator 0; 3929 observations.
+Spectator is reference_unavailable for all 3929 observations, with zero checked,
+present, or excluded. Visual eligibility and Map resolved remain zero.
+
+The real frameless portrait/name UI still lacks an independently supported
+three-component structural model. Source self-consistency alone is not a valid
+Spectator reference and does not restore runtime live identity.
+
+Shared report history also now preserves allowlisted manual_map_id and boolean
+detail_truncated when rebuilding existing entries. The prior 19 Windows history
+records were retained exactly and the new run appended by verified re-export.
+This export-only correction does not rerun or change video analysis/evaluation.
+
+
+## Windows frameless portrait proposals (2026-10-03)
+
+Training-only inspection of the unlabelled recording shows a thin semitransparent
+vertical side separator, a frameless image slot beside it, and two aligned text
+rows farther right. The framed topology remains unchanged. The new alternative
+derives a bounded slot from separator/text geometry and requires multiple local
+edge groups, two-dimensional spread/occupancy, density, and signed-gradient
+diversity. It emits measured Canny labels, disjoint support regions, and the
+existing canonical v2 orientation. It performs no OCR identity, face/agent
+recognition, embeddings, or state-label lookup. Positive matching remains .90,
+shared +/-2px, three mandatory groups, minimum three training/holdout observations,
+and the existing 80% prevalence condition. Conservative absence/UNKNOWN remain.
+
+Only training frames produce proposals and structural diagnostics; holdout entries
+are marked holdout_not_proposed. proposal_sample_count is the structural-count
+denominator. Holdout matching runs only after training support succeeds. Shared
+telemetry allowlists bounded numerical portrait data, never raw proposal arrays,
+images, local paths, or identity strings.
+
+Fresh frameless_v1_run1 has 64 samples (32 training / 32 holdout), two coherent
+frameless candidates (training 60 and 62, portrait_side_separator), and no framed
+candidates. Both self-match all three components at 1.0 and shared offset [0,0].
+Each has training support one. Portrait cross-scores are .885010 and .894591,
+below .90; boundary .918605 and text approximately .986 pass. Holdout is not
+evaluated. Spectator remains insufficient_evidence and identity_reference_ready
+is false. The former background/chat candidate remains structurally rejected.
+HP/Ability/Weapon remain generated at 23/23, 21/24, and 18/18 respectively.
+
+Full E2E run 20261003T120311Z-6431f9ed used that exact new profile and completed
+native processing with schema-valid reports: 21 passed / 57 failed / 4 not
+evaluated, negatives 20 passed / 0 failed. All 3929 Spectator observations are
+reference_unavailable; checked/present/excluded remain zero. HUD unknown is 3892,
+remote control 34, buy menu 3; live/spectator zero. Visual eligibility and Map
+resolved remain zero. The next blocker is independent portrait support, not
+reference self-consistency; no matcher or downstream gate was relaxed.
+
+Verification: pytest 651 passed / 2 skipped; focused 97 passed; Ruff src/tests/
+scripts passed; mypy src passed (80 files); git diff --check passed. Shared
+summary/hud_calibration are 101887/60116 bytes, below 128 KiB each, without image
+or local-path exports. No commit or push was made.
+
+
+## Dedicated Spectator icon slot (2026-10-03)
+
+The new profile route replaces panel topology/clustering with deterministic
+fixed-slot structure at [32,794,107,877) in 1920x1080 configured geometry. It
+uses distributed Canny occupancy, small local groups, signed orientation
+diversity, and sharpness/contrast. No identity recognition or learned Spectator
+picture reference is required. Observable sparse sharp backgrounds establish
+absence; blur/fade/clipping/partial crops, menu/map/flash/transition hints and
+ambiguous structures stay UNKNOWN. A menu-grid candidate alone vetoes an
+otherwise convincing icon because buy-menu roster pictures overlap this slot.
+The global HP + Ability + Weapon + checked Spectator exclusion policy remains.
+The first E2E still misclassified a buy-menu roster icon despite negatives 20/0;
+runtime-selected image inspection caught it. A short-X veto in the configured
+menu-close ROI now supplements the existing longer-line menu reader, solely
+marking possible obscuration UNKNOWN. Icon thresholds and Buy policy are unchanged.
+
+Fresh icon_slot_v1_run1 (64 unlabelled samples) is identity_reference_ready=true.
+HP/Ability/Weapon have unchanged support 23/23,21/24,18/18 and content hashes.
+Independent odd-frame inspection with the final detector found 3 genuine
+icons, 2 sharp icon-free backgrounds and 27 UNKNOWN; it did not tune thresholds
+or use GT labels. Old saved profiles retain the legacy panel route; profiles
+with the new key never fall back to it, even on malformed configuration.
+
+Complete native real-video E2E 20261003T134129Z-0f6d3e9f, schema valid, exit 1:
+Spectator checked=777, present=519, excluded=258,
+UNKNOWN=3674. HUD states: {"live_first_person": 96, "unknown": 3794, "remote_control_view": 39, "buy_menu_open": 3, "spectator_first_person": 519}.
+All 68 runtime-selected Spectator run starts visually contain the dedicated
+icon; the previously observed menu false positive does not recur. Selected
+live/Spectator samples (6 each) were also reviewed. This is sampled structural
+verification, not an all-frame accuracy guarantee.
+Identity missing: {"hp_hud_structure": 1446, "ability_bar_structure": 1601, "weapon_ammo_structure": 1895}.
+Visual eligibility: {"player_mechanics": 96, "world_semantics": 96}.
+Map resolved=0, unknown=4451.
+E2E 21 passed / 57 failed /
+4 not evaluated; negatives 20
+passed / 0 failed. This is not full E2E PASS.
+
+Verification: focused 32 passed; full pytest 678 passed / 5 skipped; Ruff
+src/tests/scripts passed; mypy src passed (81 files); git diff --check passed.
+Supplemental explicit-Pack integration tests: 5 passed, covering the 3
+environment-dependent full-suite skips; the 2 existing configuration skips remain.
+The synthetic automatic-profile integration fixture gained a sharp empty-slot
+background; its assertions were unchanged. GT, Validation Pack, downstream
+Visual/Map/Round/Coach policy were not modified. No commit or push was made.
+Legacy panel loading/generation, framed/frameless component detection and
+specialized diagnostics can be removed after old-profile migration; they are
+retained here for compatibility. Generalization beyond this recording still
+requires independent verification; conservative UNKNOWN and menu vetoes can
+miss otherwise visible icons.
+>>>>>>> 4a5f013ee504d22dea6dac02ccf62b9b7d280de5

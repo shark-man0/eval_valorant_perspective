@@ -350,7 +350,9 @@ class RealHudAnalyzer:
                     calibration = current_calibration
             signals = dict(feature.signals)
             if calibration.calibrated and self.template_profile is not None:
-                signals.update(self.template_profile.detect_signals(image, self.layout))
+                signals.update(
+                    self.template_profile.detect_signals(image, self.layout, context=signals)
+                )
             signals["template_anchor_scores"] = dict(anchor_scores)
             supplemental = {} if additional_signals is None else dict(additional_signals[index])
             signals.update(supplemental)

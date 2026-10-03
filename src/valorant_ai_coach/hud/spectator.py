@@ -1,7 +1,7 @@
 """Positive panel-structure detector; never match a background/clear image.
 
 The ROI is supplied by the layout. A supported panel candidate must contain a
-coherent boundary fragments, portrait-frame edges, and aligned adjacent text.
+coherent boundary fragments, framed or frameless portrait structure, and adjacent text.
 These are UI-shape priors, not frame labels. Unrecognised UI variants stay unknown.
 """
 
@@ -12,9 +12,56 @@ from typing import Any
 import cv2
 import numpy as np
 
+from .frameless import frameless_regions
+
+
+class PanelReference(np.ndarray):
+    """Measured edges and frozen, disjoint precision regions (local assets only).
+
+    The array itself remains a legacy-compatible component label image. Regions
+    include *all* source edges, not just synthetic Hough lines or glyph outlines.
+    Orientation is measured, never inferred from a label or a frame identity.
+    """
+
+    regions: np.ndarray
+    orientation: np.ndarray
+
+    def __new__(
+        cls, labels: np.ndarray, regions: np.ndarray, orientation: np.ndarray
+    ) -> PanelReference:
+        obj = np.asarray(labels, dtype=np.uint8).view(cls)
+        if (
+            regions.shape != obj.shape
+            or orientation.shape != obj.shape
+            or not set(np.unique(regions)).issubset({0, 1, 2, 3})
+            or np.any((obj > 0) & (obj != regions))
+            or np.any(orientation > 179)
+        ):
+            raise ValueError("invalid component support assets")
+        obj.regions = np.asarray(regions, dtype=np.uint8).copy()
+        obj.orientation = np.asarray(orientation, dtype=np.uint8).copy()
+        return obj
+
+    def __array_finalize__(self, obj: Any) -> None:
+        if obj is not None:
+            self.regions = getattr(obj, "regions", np.empty((0, 0), np.uint8))
+            self.orientation = getattr(obj, "orientation", np.empty((0, 0), np.uint8))
+
+
+def _orientation(gray: np.ndarray) -> np.ndarray:
+    gx = cv2.Sobel(gray, cv2.CV_32F, 1, 0)
+    gy = cv2.Sobel(gray, cv2.CV_32F, 0, 1)
+    # Signed gradient direction, quantised to two degrees per uint8 unit.
+    # Opposite sides of a bright UI line must not substitute for each other.
+    return np.mod(np.rint(np.degrees(np.arctan2(gy, gx)) / 2), 180).astype(np.uint8)
+
 
 def portrait_frames(
+<<<<<<< HEAD
     edges: np.ndarray, diagnostics: dict[str, Any], directions: np.ndarray | None = None
+=======
+    edges: np.ndarray, diagnostics: dict[str, Any], orientation: np.ndarray | None = None
+>>>>>>> 4a5f013ee504d22dea6dac02ccf62b9b7d280de5
 ) -> list[tuple[int, int, int, int]]:
     """Frame occupancy from fragments/line pairs; no closed convex polygon required."""
     h, w = edges.shape
@@ -52,6 +99,7 @@ def portrait_frames(
             if end > x:
                 proposals.add((x, min(y, other), end - x + 1, abs(y - other) + 1))
     nearby = cv2.distanceTransform((edges == 0).astype(np.uint8), cv2.DIST_L2, 3) <= 1.5
+<<<<<<< HEAD
     # A frame requires edges normal to its sides, not just arbitrary nearby
     # texture. Reuse the existing side occupancy gates for this directed evidence.
     vertical_nearby = horizontal_nearby = nearby
@@ -60,6 +108,21 @@ def portrait_frames(
         horizontal_edges = np.isin(directions, (3, 7)).astype(np.uint8)
         vertical_nearby = cv2.distanceTransform(1 - vertical_edges, cv2.DIST_L2, 3) <= 1.5
         horizontal_nearby = cv2.distanceTransform(1 - horizontal_edges, cv2.DIST_L2, 3) <= 1.5
+=======
+    # Directed side occupancy rejects coincidental world/chat rectangles.
+    # Keep the Windows occupancy gates, using the canonical two-degree angles.
+    vertical_nearby = horizontal_nearby = nearby
+    if orientation is not None:
+        angle = (orientation.astype(np.int16) * 2) % 180
+        vertical_edges = (edges > 0) & (np.minimum(angle, 180 - angle) <= 22.5)
+        horizontal_edges = (edges > 0) & (np.abs(angle - 90) <= 22.5)
+        vertical_nearby = (
+            cv2.distanceTransform((~vertical_edges).astype(np.uint8), cv2.DIST_L2, 3) <= 1.5
+        )
+        horizontal_nearby = (
+            cv2.distanceTransform((~horizontal_edges).astype(np.uint8), cv2.DIST_L2, 3) <= 1.5
+        )
+>>>>>>> 4a5f013ee504d22dea6dac02ccf62b9b7d280de5
     boxes = []
     best = 0.0
     geometry_count = 0
@@ -93,8 +156,15 @@ def portrait_frames(
 
 
 def panel_components(
+<<<<<<< HEAD
     gray: np.ndarray, diagnostics: dict[str, Any] | None = None,
     *, directed_portrait: bool = True,
+=======
+    gray: np.ndarray,
+    diagnostics: dict[str, Any] | None = None,
+    *,
+    conservative_veto: bool = False,
+>>>>>>> 4a5f013ee504d22dea6dac02ccf62b9b7d280de5
 ) -> np.ndarray | None:
     diag = diagnostics if diagnostics is not None else {}
     diag.update(
@@ -112,6 +182,7 @@ def panel_components(
             "boundary_span_insufficient": 0,
             "relative_position_mismatch": 0,
             "component_pixels_insufficient": 0,
+            "boundary_orientation_incoherent": 0,
         },
         final_gates={
             "portrait": False,
@@ -131,7 +202,11 @@ def panel_components(
         return None
     diag.update(observable=True, reason="structural_rejected")
     edges = cv2.Canny(gray, 60, 150)
+<<<<<<< HEAD
     boxes = portrait_frames(edges, diag, signed_edges(gray) if directed_portrait else None)
+=======
+    boxes = portrait_frames(edges, diag, None if conservative_veto else _orientation(gray))
+>>>>>>> 4a5f013ee504d22dea6dac02ccf62b9b7d280de5
     diag["portrait"] = bool(boxes)
     diag["final_gates"]["portrait"] = bool(boxes)
     lines = cv2.HoughLinesP(
@@ -230,19 +305,60 @@ def panel_components(
         diag["boundary_fragment_count"] = len(best_segments)
         diag["portrait_text_gap_ratio"] = float((text_left - x - bw) / bw)
         diag["final_gates"]["boundary_span"] = True
-        labels = boundary.copy()
+        # Preserve the ancestor's broader structural veto for absence. Neither
+        # stricter generation guard may make absence easier to establish.
+        if conservative_veto:
+            legacy = boundary.copy()
+            old_box = np.zeros_like(gray)
+            cv2.rectangle(old_box, (x, y), (x + bw - 1, y + bh - 1), 1, 2)
+            legacy[(old_box > 0) & (edges > 0)] = 2
+            for a, b, c, d in rows:
+                region = legacy[b : b + d, a : a + c]
+                region[edges[b : b + d, a : a + c] > 0] = 3
+            if all(np.count_nonzero(legacy == k) >= 12 for k in (1, 2, 3)):
+                return legacy
+            continue
+        # Freeze support before looking at edge matches. All observed source
+        # edges in these regions become expectations, so source-frame recall
+        # and precision have the same denominator/representation contract.
+        regions = cv2.dilate(boundary, np.ones((5, 5), np.uint8))
         box = np.zeros_like(gray)
-        cv2.rectangle(box, (x, y), (x + bw - 1, y + bh - 1), 1, 2)
-        labels[(box > 0) & (edges > 0)] = 2
+        cv2.rectangle(box, (x, y), (x + bw - 1, y + bh - 1), 1, 5)
+        regions[box > 0] = 2
         for a, b, c, d in rows:
-            region = labels[b : b + d, a : a + c]
-            region[edges[b : b + d, a : a + c] > 0] = 3
+            regions[max(0, b - 2) : min(h, b + d + 2), max(0, a - 2) : min(w, a + c + 2)] = 3
+        labels = np.where(edges > 0, regions, 0).astype(np.uint8)
+        orientation = _orientation(gray)
+        boundary_angles = (orientation[labels == 1].astype(np.int16) * 2) % 180
+        # Horizontal boundary evidence must be predominantly normal to its
+        # direction, not a Hough coincidence in dense isotropic world texture.
+        # +/-20 degrees accommodates rasterisation; 60% requires a clear
+        # majority over isotropic noise's 40/180 ~=22% expected support.
+        if not len(boundary_angles) or np.mean(np.abs(boundary_angles - 90) <= 20) < 0.60:
+            diag["final_rejections"]["boundary_orientation_incoherent"] += 1
+            continue
         if all(np.count_nonzero(labels == k) >= 12 for k in (1, 2, 3)):
             diag["final_gates"]["component_pixels"] = True
             diag["component_pixel_counts"] = [int(np.count_nonzero(labels == k)) for k in (1, 2, 3)]
             diag.update(all_components=True, reason="candidate")
-            return labels
+            if diagnostics is not None:
+                legacy = boundary.copy()
+                old_box = np.zeros_like(gray)
+                cv2.rectangle(old_box, (x, y), (x + bw - 1, y + bh - 1), 1, 2)
+                legacy[(old_box > 0) & (edges > 0)] = 2
+                for a, b, c, d in rows:
+                    region = legacy[b : b + d, a : a + c]
+                    region[edges[b : b + d, a : a + c] > 0] = 3
+                diag["legacy_self_match"] = component_match_diagnostics(gray, legacy)
+            diag["portrait_mode"] = "framed"
+            return PanelReference(labels, regions, orientation)
         diag["final_rejections"]["component_pixels_insufficient"] += 1
+    # Alternative topology is constrained by measured separator/text geometry;
+    # it does not relax the framed side gates or alter the positive matcher.
+    alternative = frameless_regions(gray, edges, _orientation(gray), diag)
+    if alternative is not None:
+        labels, regions = alternative
+        return PanelReference(labels, regions, _orientation(gray))
     return None
 
 
@@ -253,41 +369,104 @@ def component_scores(gray: np.ndarray, labels: np.ndarray) -> list[float]:
     return [float(np.mean(edges[labels == k] > 0)) for k in (1, 2, 3)]
 
 
+<<<<<<< HEAD
 def legacy_component_scores(gray: np.ndarray, labels: np.ndarray) -> list[float]:
+=======
+def local_component_scores(gray: np.ndarray, labels: np.ndarray) -> list[float]:
+    return [c["score"] for c in component_match_diagnostics(gray, labels).get("components", [])]
+
+
+def component_match_diagnostics(gray: np.ndarray, labels: np.ndarray) -> dict[str, Any]:
+>>>>>>> 4a5f013ee504d22dea6dac02ccf62b9b7d280de5
     """Require recall AND local precision for each group at one shared <=2px offset.
 
-    Only precision uses the raw edges: dilating observed edges before counting
-    them would let dense texture cover almost every reference pixel. A one-pixel
-    match band within a two-pixel neighbourhood penalizes extra nearby edges.
-    Absence keeps its separate, conservative coverage-only checks.
+    V2 compares measured oriented edges inside frozen disjoint support regions.
+    Only precision counts raw observed edges. Legacy label-only assets retain
+    their old one-pixel band / two-pixel neighbourhood matcher, never silently
+    fabricate missing regions/orientations. Absence remains coverage-only.
     """
     if gray.shape != labels.shape or any(np.count_nonzero(labels == k) < 12 for k in (1, 2, 3)):
-        return []
-    best = [0.0] * 3
+        return {}
+    best: dict[str, Any] = {}
     h, w = gray.shape
     edges = cv2.Canny(gray, 60, 150) > 0
     padded = np.pad(edges, 2)
     covered = np.pad(cv2.dilate(edges.astype(np.uint8), np.ones((3, 3), np.uint8)), 2)
+    angles = np.pad(_orientation(gray), 2)
     groups = []
+    coordinates = []
     for kind in (1, 2, 3):
-        expected = labels == kind
+        expected = np.asarray(labels) == kind
         band = cv2.dilate(expected.astype(np.uint8), np.ones((3, 3), np.uint8)) > 0
-        neighbourhood = cv2.dilate(expected.astype(np.uint8), np.ones((5, 5), np.uint8)) > 0
+        neighbourhood = (
+            labels.regions == kind
+            if isinstance(labels, PanelReference)
+            else cv2.dilate(expected.astype(np.uint8), np.ones((5, 5), np.uint8)) > 0
+        )
         groups.append((expected, band, neighbourhood))
+        coordinates.append(np.nonzero(expected))
     for dy in range(-2, 3):
         for dx in range(-2, 3):
             shifted = padded[2 + dy : 2 + dy + h, 2 + dx : 2 + dx + w]
             shifted_covered = covered[2 + dy : 2 + dy + h, 2 + dx : 2 + dx + w]
-            scores = []
-            for expected, band, neighbourhood in groups:
+            components: list[dict[str, Any]] = []
+            for kind, (expected, band, neighbourhood) in enumerate(groups, 1):
                 observed = shifted & neighbourhood
-                recall = float(np.mean(shifted_covered[expected] > 0))
-                precision = int(np.count_nonzero(observed & band)) / max(
-                    1, int(np.count_nonzero(observed))
+                if isinstance(labels, PanelReference):
+                    # Bidirectional 1px / 20-degree oriented correspondence.
+                    # Dense random texture must not obtain coverage merely by
+                    # filling the tolerance band. No independent group shifts.
+                    ey, ex = coordinates[kind - 1]
+                    expected_angles = labels.orientation[ey, ex].astype(np.int16)
+                    matched_expected = np.zeros(len(ey), bool)
+                    matched_observed = np.zeros_like(expected)
+                    shifted_angles = angles[2 + dy : 2 + dy + h, 2 + dx : 2 + dx + w]
+                    for oy in (-1, 0, 1):
+                        for ox in (-1, 0, 1):
+                            sy, sx = ey + oy, ex + ox
+                            inside = (sy >= 0) & (sy < h) & (sx >= 0) & (sx < w)
+                            sy, sx = np.clip(sy, 0, h - 1), np.clip(sx, 0, w - 1)
+                            delta = np.abs(
+                                shifted_angles[sy, sx].astype(np.int16) - expected_angles
+                            )
+                            valid = (
+                                inside & observed[sy, sx] & (np.minimum(delta, 180 - delta) <= 10)
+                            )
+                            matched_expected |= valid
+                            matched_observed[sy[valid], sx[valid]] = True
+                    ne, no = int(matched_expected.sum()), int(matched_observed.sum())
+                else:
+                    ne = int(np.count_nonzero(shifted_covered & expected))
+                    no = int(np.count_nonzero(observed & band))
+                expected_count, observed_count = int(expected.sum()), int(observed.sum())
+                recall, precision = ne / expected_count, no / max(1, observed_count)
+                components.append(
+                    dict(
+                        component=("boundary", "portrait", "text")[kind - 1],
+                        component_id=kind,
+                        expected_count=expected_count,
+                        observed_count=observed_count,
+                        matched_expected_count=ne,
+                        matched_observed_count=no,
+                        recall=recall,
+                        precision=precision,
+                        score=min(recall, precision),
+                    )
                 )
-                scores.append(min(recall, precision))
-            if min(scores) > min(best):
-                best = scores
+            score = min(c["score"] for c in components)
+            # Prefer the smallest rigid displacement on tied scores.
+            if not best or (score, -abs(dx) - abs(dy)) > (
+                best["minimum_score"],
+                -abs(best["dx"]) - abs(best["dy"]),
+            ):
+                best = dict(
+                    components=components,
+                    minimum_score=score,
+                    dx=dx,
+                    dy=dy,
+                    limiting_component=min(components, key=lambda c: c["score"])["component"],
+                    passed=score >= 0.90,
+                )
     return best
 
 
@@ -420,7 +599,11 @@ def generate_panel_reference(
 ) -> np.ndarray | None:
     gray = [cv2.cvtColor(c, cv2.COLOR_BGR2GRAY) if c.ndim == 3 else c for c in crops]
     stats.update(
+<<<<<<< HEAD
         matcher="signed_support_v2",
+=======
+        matcher="oriented_component_regions_v2",
+>>>>>>> 4a5f013ee504d22dea6dac02ccf62b9b7d280de5
         training_count=len(gray[::2]),
         holdout_count=len(gray[1::2]),
         candidate_count=0,
@@ -430,9 +613,15 @@ def generate_panel_reference(
         cluster_count=0,
     )
     samples = []
+    proposals = []
+    stats["proposal_sample_count"] = len(gray[::2])
+    stats["holdout_proposal_skipped_count"] = len(gray[1::2])
     for index, frame in enumerate(gray):
         sample: dict[str, Any] = {"sample_index": index, "training": index % 2 == 0}
-        panel_components(frame, sample)
+        if index % 2 == 0:
+            proposals.append(panel_components(frame, sample))
+        else:
+            sample["reason"] = "holdout_not_proposed"
         samples.append(sample)
     stats["samples"] = samples
     stats["evidence_counts"] = {
@@ -459,21 +648,29 @@ def generate_panel_reference(
     }
     stats["final_rejection_counts"] = (
         {
-            key: sum(s["final_rejections"][key] for s in samples)
+            key: sum(s.get("final_rejections", {}).get(key, 0) for s in samples)
             for key in samples[0]["final_rejections"]
         }
         if samples
         else {}
     )
+    stats["portrait_modes"] = {
+        mode: sum(s.get("portrait_mode") == mode for s in samples)
+        for mode in ("framed", "frameless")
+    }
+    stats["frameless_rejection_counts"] = {
+        key: sum(s.get("frameless_rejections", {}).get(key, 0) for s in samples)
+        for key in sorted({key for s in samples for key in s.get("frameless_rejections", {})})
+    }
     stats["candidate_support"] = []
     candidates = []
     clusters = set()
-    for index, frame in enumerate(gray[::2]):
-        labels = panel_components(frame)
+    for index, labels in enumerate(proposals):
         if labels is None:
             stats["structural_rejected"] += 1
             continue
         stats["candidate_count"] += 1
+<<<<<<< HEAD
         reference = freeze_panel_reference(frame, labels)
         self_match: dict[str, Any] = {}
         local_component_scores(frame, labels, reference, self_match)
@@ -492,12 +689,45 @@ def generate_panel_reference(
         if support >= 3:
             if members not in clusters:
                 candidates.append((support, labels, reference, index * 2))
+=======
+        comparisons = [component_match_diagnostics(g, labels) for g in gray[::2]]
+        members = tuple(i for i, result in enumerate(comparisons) if result.get("passed"))
+        failed = [r.get("minimum_score", 0.0) for r in comparisons if not r.get("passed")]
+        support = len(members)
+        stats["candidate_support"].append(
+            {
+                "sample_index": index * 2,
+                "portrait_proposal": {
+                    key: value
+                    for key, value in samples[index * 2].items()
+                    if key.startswith("portrait_") or key == "panel_topology"
+                },
+                "training_support": support,
+                "minimum_required": 3,
+                "self_match": comparisons[index],
+                "training_matches": [
+                    {"sample_index": i * 2, **r} for i, r in enumerate(comparisons)
+                ],
+                "legacy_self_match": samples[index * 2].get("legacy_self_match", {}),
+                "failed_support_scores": dict(
+                    count=len(failed),
+                    min=min(failed) if failed else None,
+                    median=float(np.median(failed)) if failed else None,
+                    max=max(failed) if failed else None,
+                ),
+            }
+        )
+        if support >= 3:
+            if members not in clusters:
+                candidates.append((support, labels, index * 2))
+>>>>>>> 4a5f013ee504d22dea6dac02ccf62b9b7d280de5
                 clusters.add(members)
         else:
             stats["support_rejected"] += 1
     if not candidates:
         return None
     stats["cluster_count"] = len(candidates)
+<<<<<<< HEAD
     support, labels, reference, sample_index = max(candidates, key=lambda item: item[0])
     stats["selected_sample_index"] = sample_index
     heldout_matches = []
@@ -507,6 +737,16 @@ def generate_panel_reference(
         heldout_matches.append(detail)
     stats["holdout_matches"] = heldout_matches
     heldout = sum(detail.get("passed", False) for detail in heldout_matches)
+=======
+    support, labels, sample_index = max(candidates, key=lambda item: item[0])
+    stats["selected_sample_index"] = sample_index
+    holdout_matches = [
+        {"sample_index": i * 2 + 1, **component_match_diagnostics(g, labels)}
+        for i, g in enumerate(gray[1::2])
+    ]
+    stats["holdout_matches"] = holdout_matches
+    heldout = sum(bool(r.get("passed")) for r in holdout_matches)
+>>>>>>> 4a5f013ee504d22dea6dac02ccf62b9b7d280de5
     stats.update(training_accept_count=support, holdout_accept_count=heldout)
     if heldout < 3 or heldout < 0.80 * support * len(gray[1::2]) / len(gray[::2]):
         stats["holdout_rejected"] += 1
@@ -548,11 +788,17 @@ def detect_panel(
     if min(positive_scores, default=0) >= 0.90:
         result.update(checked=True, panel_present=True, reason="panel_structure_present")
     elif max(scores) <= 0.10:
+<<<<<<< HEAD
         # Absence must retain the broader legacy candidate veto. Tightening
         # generation must never make contradictory frames easier to exclude.
         if panel_components(gray, directed_portrait=False) is not None or (
             _displaced_component_present(gray, labels)
         ):
+=======
+        if panel_components(
+            gray, conservative_veto=True
+        ) is not None or _displaced_component_present(gray, labels):
+>>>>>>> 4a5f013ee504d22dea6dac02ccf62b9b7d280de5
             result["reason"] = "panel_structure_mismatch"
             return result
         # Each mandatory UI component was checked and strongly contradicted.
