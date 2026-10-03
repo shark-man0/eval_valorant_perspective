@@ -20,7 +20,15 @@ PROJECT = Path(__file__).resolve().parents[2]
 LAYOUT = json.loads(
     (PROJECT / "config" / "hud_layout_1080p_v3.json").read_text(encoding="utf-8")
 )
-SPECS = LAYOUT["identity_structure_regions"]
+# Pin the original two-box weapon proposal here. That algorithm is now tested as
+# a legacy matcher and must remain stable when the production config switches to
+# the role-specific consensus proposal.
+LEGACY_WEAPON_SPEC = {
+    "intended_bounds": [0.24, 0.59, 0.78, 0.93],
+    "support_bounds": [[0.515, 0.62, 0.635, 0.79], [0.25, 0.82, 0.77, 0.92]],
+    "dynamic_bounds": [[0.25, 0.59, 0.51, 0.82], [0.64, 0.59, 0.78, 0.82]],
+}
+SPECS = {**LAYOUT["identity_structure_regions"], "weapon_ammo_structure": LEGACY_WEAPON_SPEC}
 ROLE_SHAPES = {"hp_hud_structure": (153, 220), "weapon_ammo_structure": (178, 230)}
 
 

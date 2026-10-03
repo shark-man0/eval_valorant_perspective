@@ -29,13 +29,11 @@ from valorant_ai_coach.resources import resource_path
 
 from .layout import HudLayout, NormalizedRoi
 from .readers import HudReader, ReaderResult
-<<<<<<< HEAD
-from .spectator import detect_panel, validate_panel_reference
-=======
 from .spectator import PanelReference, detect_panel
 from .spectator_icon import detect_icon, menu_overlay_candidate
 from .value_identity import MATCHER, value_invariant_score
->>>>>>> 4a5f013ee504d22dea6dac02ccf62b9b7d280de5
+from .weapon_consensus import MATCHER as WEAPON_MATCHER
+from .weapon_consensus import consensus_score
 from .weapon_identity import masked_score, structural_score
 
 ImageU8 = NDArray[np.uint8]
@@ -75,11 +73,15 @@ class HudTemplateProfile:
         self._signal_masks: dict[str, ImageU8] = {}
         self._edge_signals: set[str] = set()
         self._value_regions: dict[str, ImageU8] = {}
+        self._consensus_allowed: dict[str, ImageU8] = {}
         for name, spec in self.raw.get("signals", {}).items():
             try:
                 if not isinstance(spec, Mapping) or not isinstance(spec.get("roi"), str):
                     raise ValueError("signal requires roi and template")
-                if spec.get("matcher") in ("oriented_edges_v1", MATCHER) and "mask" not in spec:
+                if (
+                    spec.get("matcher") in ("oriented_edges_v1", MATCHER, WEAPON_MATCHER)
+                    and "mask" not in spec
+                ):
                     raise ValueError("oriented identity requires its independent edge mask")
                 template = self.load_template(
                     str(name), str(spec["template"]), float(spec.get("threshold", 0.90))
@@ -87,7 +89,9 @@ class HudTemplateProfile:
                 if "roi_bounds" in spec:
                     self._signal_bounds[str(name)] = _bounds(spec["roi_bounds"])
                 if "mask" in spec:
-                    value_matcher = spec.get("matcher") == MATCHER
+                    value_matcher = spec.get("matcher") in (MATCHER, WEAPON_MATCHER)
+                    if spec.get("matcher") == WEAPON_MATCHER and name != "weapon_ammo_structure":
+                        raise ValueError("consensus slots require Weapon role")
                     if (
                         name not in {"weapon_ammo_structure", "hp_hud_structure"}
                         or (name != "weapon_ammo_structure" and not value_matcher)
@@ -109,7 +113,7 @@ class HudTemplateProfile:
                         raise ValueError("invalid identity mask")
                     self._signal_masks[str(name)] = np.asarray(mask, dtype=np.uint8)
                     matcher = spec.get("matcher", "masked_ncc")
-                    if matcher not in ("masked_ncc", "oriented_edges_v1", MATCHER):
+                    if matcher not in ("masked_ncc", "oriented_edges_v1", MATCHER, WEAPON_MATCHER):
                         raise ValueError("unsupported identity matcher")
                     if matcher == "oriented_edges_v1":
                         self._edge_signals.add(str(name))
@@ -133,11 +137,26 @@ class HudTemplateProfile:
                             )
                         ):
                             raise ValueError("invalid value-invariant support regions")
+                        if matcher == WEAPON_MATCHER:
+                            allowed = cv2.imdecode(
+                                np.frombuffer(
+                                    self.resolve_asset(str(spec["allowed_regions"])).read_bytes(),
+                                    np.uint8,
+                                ),
+                                cv2.IMREAD_GRAYSCALE,
+                            )
+                            if (
+                                allowed is None
+                                or allowed.shape != mask.shape
+                                or not set(np.unique(allowed)).issubset({0, 255})
+                                or np.any((regions > 0) & (allowed == 0))
+                            ):
+                                raise ValueError("invalid consensus allowed regions")
+                            self._consensus_allowed[str(name)] = np.asarray(allowed, dtype=np.uint8)
                         self._value_regions[str(name)] = np.asarray(regions, dtype=np.uint8)
                 self._signal_templates[str(name)] = (spec["roi"], template)
             except (KeyError, ValueError, OSError, cv2.error) as exc:
                 self.reader_diagnostics.append(f"signal {name}: {exc}")
-        self._panel_reference: dict[str, np.ndarray] | None = None
         self._panel_components: ImageU8 | None = None
         clear = self.raw.get("spectator_panel_detector")
         if isinstance(clear, Mapping):
@@ -152,20 +171,6 @@ class HudTemplateProfile:
                     or any(np.count_nonzero(reference == k) < 12 for k in (1, 2, 3))
                 ):
                     raise ValueError("invalid panel structure")
-                if clear.get("version") == 2:
-                    frozen: dict[str, np.ndarray] = {}
-                    for key in ("support", "evidence"):
-                        asset = self.resolve_asset(str(clear[key])).read_bytes()
-                        image = cv2.imdecode(np.frombuffer(asset, np.uint8),
-                                             cv2.IMREAD_GRAYSCALE)
-                        if image is None:
-                            raise ValueError("unreadable panel evidence")
-                        frozen[key] = image
-                    if any(v is None for v in frozen.values()) or not validate_panel_reference(
-                        reference, frozen
-                    ):
-                        raise ValueError("invalid frozen panel evidence")
-                    self._panel_reference = frozen
                 self._panel_components = np.asarray(reference, dtype=np.uint8)
                 if clear.get("version") == 2:
                     assets = []
@@ -209,7 +214,15 @@ class HudTemplateProfile:
                     )
                 score = structural_score if name in self._edge_signals else masked_score
                 confidence = (
-                    value_invariant_score(
+                    consensus_score(
+                        reference,
+                        crop,
+                        self._signal_masks[name],
+                        self._value_regions[name],
+                        self._consensus_allowed[name],
+                    )
+                    if name in self._consensus_allowed
+                    else value_invariant_score(
                         reference, crop, self._signal_masks[name], self._value_regions[name]
                     )
                     if name in self._value_regions
@@ -278,9 +291,7 @@ class HudTemplateProfile:
             x1, y1, x2, y2 = layout.normalized_roi("spectated_player_panel").pixel_bounds(
                 width, height
             )
-            panel_result = detect_panel(
-                frame[y1:y2, x1:x2], self._panel_components, self._panel_reference
-            )
+            panel_result = detect_panel(frame[y1:y2, x1:x2], self._panel_components)
         signals["spectator_detector_checked"] = panel_result["checked"]
         signals["spectator_panel_present"] = panel_result["panel_present"]
         signals["spectator_detector_reason"] = panel_result["reason"]
@@ -315,13 +326,12 @@ class HudTemplateProfile:
                 if key in {
                     "template",
                     "mask",
-                    "support",
-                    "evidence",
                     "templates",
                     "values",
                     "available_template",
                     "unavailable_template",
                     "support_regions",
+                    "allowed_regions",
                     "orientation",
                 }:
                     if isinstance(child, str):

@@ -21,32 +21,6 @@ def number(value, *, count=False):
     return value if value <= 1 else None
 
 
-<<<<<<< HEAD
-def sanitize_panel_match(value):
-    source = object_or_empty(value)
-    components = source.get("components", [])
-    offset = source.get("best_shared_offset")
-    return {
-        "passed": source.get("passed") is True,
-        "best_shared_offset": offset
-        if isinstance(offset, list) and len(offset) == 2
-        and all(type(v) is int and -2 <= v <= 2 for v in offset) else None,
-        "limiting_component": source.get("limiting_component")
-        if source.get("limiting_component") in ("boundary", "portrait", "text") else None,
-        "components": [
-            {
-                "component": c["component"],
-                **{k: number(c.get(k), count=True) for k in
-                   ("expected_count", "support_count", "observed_count")},
-                **{k: number(c.get(k)) for k in ("recall", "precision", "score")},
-            }
-            for c in components[:3]
-            if isinstance(c, dict) and c.get("component") in ("boundary", "portrait", "text")
-        ] if isinstance(components, list) else [],
-    }
-
-
-=======
 PORTRAIT_MODES = ("framed", "frameless")
 PANEL_TOPOLOGIES = ("group_header", "group_footer", "text_separator", "portrait_side_separator")
 FRAMELESS_REJECTION_REASONS = (
@@ -194,7 +168,6 @@ def sanitize_panel_match(value):
     return result
 
 
->>>>>>> 4a5f013ee504d22dea6dac02ccf62b9b7d280de5
 def sanitize_calibration(value):
     if not isinstance(value, dict) or value.get("schema_version") != 1:
         return {"available": False}
@@ -499,17 +472,17 @@ def sanitize_identity_generation(value):
             else None
         )
         result["references"][name] = row
-        if (
-            name in ("hp_hud_structure", "weapon_ammo_structure")
-            and source.get("matcher") == "value_invariant_edges_v1"
+        if name in ("hp_hud_structure", "weapon_ammo_structure") and source.get("matcher") in (
+            "value_invariant_edges_v1",
+            "weapon_consensus_ridges_v1",
         ):
             row["value_invariant_generation"] = {
-                "matcher": "value_invariant_edges_v1",
+                "matcher": source.get("matcher"),
                 "selected_candidate": sanitize_candidate(
                     object_or_empty(source.get("selected_candidate"))
                 ),
             }
-            for key in ("mask_content_hash", "support_content_hash"):
+            for key in ("mask_content_hash", "support_content_hash", "allowed_content_hash"):
                 digest = source.get(key)
                 row["value_invariant_generation"][key] = (
                     digest
@@ -520,7 +493,12 @@ def sanitize_identity_generation(value):
             row["weapon_ammo_generation"] = {
                 "matcher": source.get("matcher")
                 if source.get("matcher")
-                in ("oriented_edges_v1", "masked_ncc", "value_invariant_edges_v1")
+                in (
+                    "oriented_edges_v1",
+                    "masked_ncc",
+                    "value_invariant_edges_v1",
+                    "weapon_consensus_ridges_v1",
+                )
                 else None,
                 "proposal_count": number(source.get("proposal_count"), count=True),
                 "proposal_budget_omitted": number(
@@ -541,6 +519,7 @@ def sanitize_identity_generation(value):
                             "component_group",
                             "legacy_grid",
                             "configured_role_scaffold",
+                            "training_persistent_slots",
                         )
                         else None,
                         "proposal_training_frames": number(
@@ -611,16 +590,12 @@ def sanitize_identity_generation(value):
             supports = source.get("candidate_support", [])
             row["spectator_generation"] = {
                 "matcher": source.get("matcher")
-<<<<<<< HEAD
-                if source.get("matcher") in ("edge_recall_precision_v1", "signed_support_v2")
-=======
                 if source.get("matcher")
                 in (
                     "edge_recall_precision_v1",
                     "oriented_component_regions_v2",
                     "fixed_slot_structure_v1",
                 )
->>>>>>> 4a5f013ee504d22dea6dac02ccf62b9b7d280de5
                 else None,
                 "proposal_sample_count": number(source.get("proposal_sample_count"), count=True),
                 "holdout_proposal_skipped_count": number(
@@ -628,15 +603,6 @@ def sanitize_identity_generation(value):
                 ),
                 "candidate_support": [
                     {
-<<<<<<< HEAD
-                        **{k: number(s.get(k), count=True)
-                           for k in ("sample_index", "training_support", "minimum_required")},
-                        "legacy_self_match_scores": [number(v) for v in
-                            s["legacy_self_match_scores"]]
-                        if isinstance(s.get("legacy_self_match_scores"), list)
-                        and len(s["legacy_self_match_scores"]) == 3 else None,
-                        "self_match": sanitize_panel_match(s.get("self_match")),
-=======
                         **{
                             k: number(s.get(k), count=True)
                             for k in ("sample_index", "training_support", "minimum_required")
@@ -651,7 +617,6 @@ def sanitize_identity_generation(value):
                             )
                             for k in ("count", "min", "median", "max")
                         },
->>>>>>> 4a5f013ee504d22dea6dac02ccf62b9b7d280de5
                     }
                     for s in supports[:64]
                     if isinstance(s, dict)
@@ -861,9 +826,55 @@ def sanitize_candidate(source):
     result["proposal_source"] = (
         source.get("proposal_source")
         if source.get("proposal_source")
-        in ("localized_component", "component_group", "legacy_grid", "configured_role_scaffold")
+        in (
+            "localized_component",
+            "component_group",
+            "legacy_grid",
+            "configured_role_scaffold",
+            "training_persistent_slots",
+        )
         else None
     )
+    if source.get("proposal_source") == "training_persistent_slots":
+        result["learned_subfeatures"] = []
+        features = source.get("learned_subfeatures")
+        for feature in features[:4] if isinstance(features, list) else []:
+            if not isinstance(feature, dict):
+                continue
+            bounds = feature.get("normalized_bounds")
+            if (
+                not isinstance(bounds, list)
+                or len(bounds) != 4
+                or not all(
+                    isinstance(v, (int, float))
+                    and not isinstance(v, bool)
+                    and math.isfinite(v)
+                    and 0 <= v <= 1
+                    for v in bounds
+                )
+            ):
+                continue
+            result["learned_subfeatures"].append(
+                {
+                    "normalized_bounds": bounds,
+                    "critical": feature.get("critical") is True,
+                    **{
+                        k: number(feature.get(k), count=True)
+                        for k in (
+                            "group_id",
+                            "mask_population",
+                            "training_recurrence_min",
+                            "training_support",
+                            "holdout_support",
+                            "consensus_cluster_support",
+                            "holdout_observable",
+                        )
+                    },
+                }
+            )
+        result["consensus_contributor_count"] = number(
+            source.get("consensus_contributor_count"), count=True
+        )
     result["rejection_stage"] = (
         source.get("rejection_stage")
         if source.get("rejection_stage") in ("structure", "training_support", "holdout")
