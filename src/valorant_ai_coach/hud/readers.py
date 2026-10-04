@@ -140,6 +140,9 @@ class OpenCvHudFeatureReader:
             "purple_palette": astral["palette"] >= 0.9,
             "astra_hand_interface": astral["interface"] >= 0.9,
             "remote_confidence": min(astral.values()),
+            # Aggregate texture can exclude live attribution but cannot verify
+            # a remote-operation interface. Preserve that provenance explicitly.
+            "remote_texture_candidate": all(score >= 0.90 for score in astral.values()),
             "shared_banner": banner_score >= 0.8,
             "banner_confidence": banner_score,
             **smoke_features,

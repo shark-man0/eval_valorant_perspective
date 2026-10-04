@@ -136,6 +136,12 @@ class HudStateClassifier:
                     else "unknown"
                 )
         remote = remote_evidence
+        heuristic_remote_only = (
+            astra_features
+            and bool(signals.get("remote_texture_candidate"))
+            and not bool(signals.get("remote_control_candidate"))
+            and not any(bool(signals.get(key)) for key in self._REMOTE_SIGNALS)
+        )
 
         candidates = [buy_menu, expanded_map, spectator, remote]
         conflicting_modes = sum(candidates) > 1
@@ -156,6 +162,12 @@ class HudStateClassifier:
         elif spectator:
             primary_state = "spectator_first_person"
             confidence = _confidence(signals, "spectator_confidence", fallback=0.9)
+        elif heuristic_remote_only:
+            # Color, circles and edge density are texture candidates, not a
+            # confirmed control interface. Keep them in mode conflicts and live
+            # exclusion, but do not promote a sole candidate to Remote or live.
+            primary_state = "unknown"
+            confidence = min(_confidence(signals, "state_confidence", fallback=0.45), 0.45)
         elif remote:
             primary_state = "remote_control_view"
             confidence = _confidence(signals, "remote_confidence", fallback=0.88)

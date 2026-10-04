@@ -39,6 +39,7 @@ def probe() -> dict[str, object]:
                 "purple_palette": scores["palette"] >= 0.90,
                 "astra_hand_interface": scores["interface"] >= 0.90,
                 "remote_confidence": min(scores.values()),
+                "remote_texture_candidate": all(value >= 0.90 for value in scores.values()),
             }
         )
         rows.append(

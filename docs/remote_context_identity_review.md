@@ -41,7 +41,7 @@ The exposed world-texture observation saturates the palette and interface scores
 | Synthetic content | Geometry / palette / interface | Classifier result | Player HUD valid |
 | --- | --- | --- | --- |
 | Solid purple | 0.0 / 1.0 / 0.0 | UNKNOWN | false |
-| Purple with two circles and lower checker texture | 0.92 / 1.0 / 1.0 | Remote, subtype astra_astral | false |
+| Purple with two circles and lower checker texture | 0.92 / 1.0 / 1.0 | Starting source: Remote, subtype astra_astral; qualified reader source: UNKNOWN | false |
 
 Measured with OpenCV 4.14.0. This proves that the three features alone are insufficient evidence of a particular gameplay control UI. It is not a real-data false-positive rate or independent holdout. The diagnostic does not require this undesirable classifier result to remain a future production contract.
 
@@ -68,3 +68,19 @@ The next diagnostic tests quarantining unconfirmed heuristic evidence: retain it
 The reproducible texture probe is diagnostic-only. Production files are unchanged. Ruff passes for `src tests scripts`, mypy passes for the existing `src` contract (86 files), and diff check passes. Full pytest after the final review-tool width check and this diagnostic addition is 849 passed / 2 skipped (267.25 seconds). The two skips concern the fixed sibling-pack lookup and the dedicated legacy real-video anchor setting.
 
 No new Clean E2E was run in this diagnostic-only phase. The last production Clean E2E remains 22 passed / 56 failed / 4 not evaluated, negative assertions 20/0, and 166 live observations. No diagnostic counterfactual is reported as production improvement. Private images, source crops and identity assets are excluded from Git.
+
+## Evidence qualification change
+
+The follow-up confidence-consistent counterfactual on the same 4,081 observations quarantines only all-three heuristic Remote promotions. Thirty-three Remote observations become UNKNOWN; the pre-existing uncertain-mode conflict remains UNKNOWN. Live 166, Spectator 335, Buy 1, player ownership 166 and trustworthy-world 155 remain unchanged on this fixed population. State and aggregate HUD confidence are capped at 0.45 on the 33 downgraded rows; accepted-reader ROI confidences and values remain unchanged.
+
+The actual production fact helpers applied directly to raw observations retain 1,587 Timer point facts and 130 owned HP point facts, with identical fact hashes. These raw helper counts are not the final fused Clean E2E population of 1,477 Timer facts. Removing weak Remote from active-play evidence moves the inferred single window start by approximately 0.233 seconds; it does not establish a correct round boundary or make the window complete.
+
+The implementation keeps the three heuristic flags in the existing mode-conflict calculation and leaves `live_identity` byte-for-byte unchanged. The image reader now explicitly marks its aggregate evidence as `remote_texture_candidate`. A sole unconfirmed heuristic candidate carrying that provenance returns UNKNOWN with confidence <=0.45 before any live fallback. Existing explicit `remote_control_candidate` and configured subtype-template signal paths retain their prior contracts. No new positive Remote recognition is introduced and no claim of dynamic UI invariance or genuine Remote recall is made.
+
+This is a qualification correction for insufficient positive evidence, rather than adoption of a newly trained representation. The synthetic counterexample and image-only review establish that aggregate texture does not substantiate the asserted control interface. Quarantining its promotion preserves current-frame exclusions and avoids both unsupported Remote and accidental live promotion. An independent Remote UI matcher still requires actual observable positive examples, training/holdout recurrence and negative separation.
+
+Targeted tests cover texture-only rejection, unchanged live exclusion, Buy/Map/Spectator conflicts, existing subtype template paths, the explicit candidate contract, confidence cap and no stale Remote carryover. Existing semantic-input HUD logic cases, including HL-004, and the temporal fixtures remain unchanged. The reader-provenance marker distinguishes measured texture candidates from existing confirmed semantic inputs. Weapon, HP and Spectator tests are unchanged. A clean committed-source E2E must validate the resulting pipeline before deployment claims.
+
+Post-annotation evaluation-only cross-check: none of the 33 saved Remote observations overlaps any of the four GT-ASTRAL core intervals; one overlaps an outer transition bracket only. The four expected intervals already fail in the saved evaluator report. GT was consulted after image labels froze and did not enter production signals, masks, thresholds or timing logic. This corroborates the absence of validated positive retention in these 33 observations; it does not locate a new Remote interface or justify using GT for reference selection.
+
+Final qualification verification: pytest 861 passed / 2 skipped (267.49 seconds); Ruff for src/tests/scripts, mypy for src (86 files), and git diff check pass. An initial classifier-wide qualification attempt failed the authoritative HL-004 semantic-input case; the final reader-provenance design preserves that unchanged case and all temporal fixtures. Clean E2E is pending the production commit. Source-equivalent cached replay recomputes the reader marker from measured flags and invokes the current classifier; its results match the confidence-consistent counterfactual above. No saved replay is claimed as fresh E2E.
