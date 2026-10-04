@@ -214,6 +214,84 @@
       "source_files": 86
     },
     "diff_check": "pass",
-    "clean_e2e": "pending committed source"
+    "clean_e2e": "completed; source4f142ac, git_is_dirty=false",
+    "actual_grayscale_whole_glyph_deletion": {
+      "trials": 49,
+      "accepted": 0,
+      "foreground_border_rejections": 0,
+      "center_rejections": 26,
+      "gap_rejections": 13,
+      "component_count_rejections": 10,
+      "scope": "Fixed training-only local-background inpainting before actual production grayscale preprocessing; derived controls, not independent natural captures."
+    }
+  },
+  "clean_e2e": {
+    "analyzer_commit": "4f142acd50eebf6d956893fe3f9c47b4b9bbda7b",
+    "git_is_dirty": false,
+    "video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "settings_fingerprint": "5f73d89e69cc283cefdd28b68524e0ce2e81985b6605842de5bbb6725edc70f8",
+    "observations": 4081,
+    "previous_observations": 4081,
+    "paired_observations": 4081,
+    "states": {
+      "unknown": 3546,
+      "remote_control_view": 33,
+      "live_first_person": 166,
+      "buy_menu_open": 1,
+      "spectator_first_person": 335
+    },
+    "paired_state_changes": {},
+    "paired_non_hp_value_changes": {},
+    "hp_values": 130,
+    "hp_distribution": {
+      "100": 84,
+      "80": 46
+    },
+    "unsafe_owned_hp_values": 0,
+    "hp_raw_reader_confidence_range": [
+      0.971359372138977,
+      0.9952490925788879
+    ],
+    "world_eligible_hp_values": 123,
+    "hp_snapshots": 130,
+    "hp_facts": 0,
+    "timer_facts": 1477,
+    "event_types": {
+      "state_snapshot": 221
+    },
+    "raw_hud_event_types": {},
+    "trace_counts": {
+      "events": 221,
+      "state_intervals": 145,
+      "ownership_intervals": 3811,
+      "snapshots": 535,
+      "visual_observations": 4,
+      "temporal_features": 0
+    },
+    "round_packages": 1,
+    "round_windows_unchanged": true,
+    "round_meta_unchanged": true,
+    "e2e_assertions": {
+      "passed": 22,
+      "failed": 56,
+      "not_evaluated": 4,
+      "count_unit": "assertion_records; multiple failed fields count once",
+      "failure_message_count": 57,
+      "failures_by_category": {
+        "missing_point": 5,
+        "state_coverage": 11,
+        "state_start_edge": 1,
+        "ownership_coverage": 5,
+        "missing_snapshot": 23,
+        "missing_derived_snapshot": 3,
+        "missing_visual_observation": 3,
+        "count": 6
+      }
+    },
+    "negative_assertions": {
+      "passed": 20,
+      "failed": 0,
+      "assertions": 20
+    }
   }
 }
