@@ -37,3 +37,10 @@ Report template/mask/support-region asset SHA256 respectively:
 - `d9127099d2dfbf4a3fa896c5cbbb0ae88e5bffd2f733d8cfc07e47057953463a`
 
 HP, Ability, Weapon and Spectator references/parameters are inherited unchanged. Raw video, crops, model/reference assets and per-frame diagnostics remain private and are not committed. Future profile regeneration must explicitly retain or regenerate this optional Report block; an ordinary profile without it supplies only legacy Report evidence. Subsequent work must evaluate the clean E2E and temporal consequences before revisiting Spectator observability or Map marker ownership.
+
+
+## Completed Clean E2E and independent live audit
+
+The separately committed report (`d04eef714f172ec609d10d1bf59b9c6a53043410`) evaluates analyzer `5ed3b3d5f53e24c8cb9e902b30b6d5cfa958a3cf` with git_is_dirty=false: 22 passed / 56 failed / 4 not evaluated, negative assertions 20 passed / 0 failed. There are 4,009 adaptive HUD observations: live 138, Spectator 336, remote 33, buy 1 and unknown 3,501. This population differs from the previous 4,730 observations; these raw counts do not measure controlled recall.
+
+All 138 current-run live observations were privately joined to their actual extracted images and scored with the frozen production Report model: accepts 0/138; all 138 non-accepts emit present=None, not Report absence. Scores range 0.000 to 0.213 (median 0.101). The highest-scoring representative of each of 21 time-contiguous runs was independently pixel-inspected; none shows Report UI. This is a bounded review, not proof about every frame. Both current and previous event traces contain zero player_death events, so this recording does not measure a death-event change. Per-frame paths, timestamps and contact sheets remain private.

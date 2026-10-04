@@ -1,0 +1,282 @@
+{
+  "extended_degradation": {
+    "scope": "24 independently pixel-reviewed portrait candidates from appearance diversity; no GT/state/Agent identity as features",
+    "original_portraits": 24,
+    "case_count": 384,
+    "false_absence_before": 35,
+    "false_absence_after_partial_topology_veto": 28,
+    "false_absence_after_existing_presence_contrast_floor_and_topology_veto": 0,
+    "operation_reason_counts": {
+      "original": {
+        "icon_present": 24
+      },
+      "contrast_0.75": {
+        "icon_structure_ambiguous": 24
+      },
+      "contrast_0.5": {
+        "icon_structure_ambiguous": 24
+      },
+      "contrast_0.25": {
+        "icon_structure_ambiguous": 23,
+        "icon_absent": 1
+      },
+      "contrast_0.2": {
+        "icon_absent": 23,
+        "icon_structure_ambiguous": 1
+      },
+      "contrast_0.15": {
+        "icon_absent": 11,
+        "icon_roi_unobservable": 13
+      },
+      "contrast_0.125": {
+        "icon_roi_unobservable": 24
+      },
+      "blur_0.5": {
+        "icon_structure_ambiguous": 24
+      },
+      "blur_1": {
+        "icon_roi_unobservable": 24
+      },
+      "blur_2": {
+        "icon_roi_unobservable": 24
+      },
+      "blur_3": {
+        "icon_roi_unobservable": 24
+      },
+      "blur_4": {
+        "icon_roi_unobservable": 24
+      },
+      "jpeg_90": {
+        "icon_present": 24
+      },
+      "jpeg_70": {
+        "icon_present": 24
+      },
+      "jpeg_40": {
+        "icon_present": 18,
+        "icon_structure_ambiguous": 6
+      },
+      "jpeg_20": {
+        "icon_roi_unobservable": 9,
+        "icon_structure_ambiguous": 15
+      }
+    },
+    "counterfactual_warning": "mutations do not define production positive persistence; low-confidence structure must remain ambiguous, never infer absent from sparse edges alone"
+  },
+  "contrast_and_partial_presence_guard": {
+    "scope": "diagnostic only; existing presence contrast>=35 is required for absence, and partial presence topology vetoes it; no lowered thresholds",
+    "original_absence_count": 343,
+    "combined_scene_only_absence_count": 449,
+    "absence_to_ambiguous_count": 377,
+    "original_absence_to_ambiguous_count": 294,
+    "post_report_baseline_live_count": 137,
+    "post_report_baseline_live_lost": 131,
+    "scene_only_added_live_without_report_count": 18,
+    "scene_only_added_live_lost": 17,
+    "degraded_portrait_false_absence_before": 1,
+    "degraded_portrait_false_absence_after": 0
+  },
+  "normalized_absence_crosscheck": {
+    "scope": "diagnostic only; contrast normalization only crosschecks sparse-edge absence and cannot prove presence; unchanged Canny60/150 and density.08; target std35 from existing presence contract",
+    "original_absences": 343,
+    "scene_only_absences": 449,
+    "absence_to_ambiguous": 54,
+    "original_absence_to_ambiguous": 45,
+    "post_report_baseline_live": 137,
+    "post_report_baseline_live_lost": 24,
+    "scene_only_added_live_after_report": 18,
+    "scene_only_added_live_lost": 4,
+    "portrait_joint_degradation_count": 1512,
+    "false_absence_before": 141,
+    "false_absence_after": 0
+  },
+  "normalized_topology_crosscheck": {
+    "scope": "diagnostic only; contrast normalization spatial topology only crosschecks sparse-edge absence and cannot prove presence; unchanged Canny60/150 and density.08; target std35 from existing presence contract",
+    "original_absences": 343,
+    "scene_only_absences": 449,
+    "absence_to_ambiguous": 0,
+    "original_absence_to_ambiguous": 0,
+    "post_report_baseline_live": 137,
+    "post_report_baseline_live_lost": 0,
+    "scene_only_added_live_after_report": 18,
+    "scene_only_added_live_lost": 0,
+    "portrait_joint_degradation_count": 1512,
+    "false_absence_before": 141,
+    "false_absence_after": 0
+  },
+  "normalized_topology_occlusion_stress": {
+    "scope": "diagnostic stress check; up to25% edge occlusion, bounded shifts2px, resampling and contrast; no normalized positive inference",
+    "count": 1920,
+    "old_false_absence": 536,
+    "remaining_false_absence": 145
+  },
+  "normalized_density_occlusion_stress": {
+    "scope": "diagnostic stress check; up to25% edge occlusion, bounded shifts2px, resampling and contrast; no normalized positive inference",
+    "count": 1920,
+    "old_false_absence": 536,
+    "remaining_false_absence": 0
+  },
+  "normalized_orientation_crosscheck": {
+    "scope": "diagnostic only; contrast normalization spatial topology only crosschecks sparse-edge absence and cannot prove presence; unchanged Canny60/150 and density.08; target std35 from existing presence contract",
+    "original_absences": 343,
+    "scene_only_absences": 449,
+    "absence_to_ambiguous": 1,
+    "original_absence_to_ambiguous": 1,
+    "post_report_baseline_live": 137,
+    "post_report_baseline_live_lost": 0,
+    "scene_only_added_live_after_report": 18,
+    "scene_only_added_live_lost": 0,
+    "portrait_joint_degradation_count": 1512,
+    "false_absence_before": 141,
+    "false_absence_after": 0
+  },
+  "normalized_orientation_occlusion_stress": {
+    "scope": "diagnostic stress check; up to25% edge occlusion, bounded shifts2px, resampling and contrast; no normalized positive inference",
+    "count": 1920,
+    "old_false_absence": 536,
+    "remaining_false_absence": 0
+  },
+  "normalized_orientation_holdout": {
+    "scope": "diagnostic only; contrast normalization spatial topology only crosschecks sparse-edge absence and cannot prove presence; unchanged Canny60/150 and density.08; target std35 from existing presence contract",
+    "original_absences": 343,
+    "scene_only_absences": 449,
+    "absence_to_ambiguous": 1,
+    "original_absence_to_ambiguous": 1,
+    "post_report_baseline_live": 137,
+    "post_report_baseline_live_lost": 0,
+    "scene_only_added_live_after_report": 18,
+    "scene_only_added_live_lost": 0,
+    "portrait_joint_degradation_count": 945,
+    "false_absence_before": 115,
+    "false_absence_after": 0
+  },
+  "normalized_orientation_holdout_occlusion_stress": {
+    "scope": "diagnostic stress check; up to25% edge occlusion, bounded shifts2px, resampling and contrast; no normalized positive inference",
+    "count": 1200,
+    "old_false_absence": 439,
+    "remaining_false_absence": 1
+  },
+  "normalized_orientation_phase_crosscheck": {
+    "scope": "diagnostic only; contrast normalization spatial topology only crosschecks sparse-edge absence and cannot prove presence; unchanged Canny60/150 and density.08; target std35 from existing presence contract",
+    "original_absences": 343,
+    "scene_only_absences": 449,
+    "absence_to_ambiguous": 1,
+    "original_absence_to_ambiguous": 1,
+    "post_report_baseline_live": 137,
+    "post_report_baseline_live_lost": 0,
+    "scene_only_added_live_after_report": 18,
+    "scene_only_added_live_lost": 0,
+    "portrait_joint_degradation_count": 1512,
+    "false_absence_before": 141,
+    "false_absence_after": 0
+  },
+  "normalized_orientation_phase_occlusion_stress": {
+    "scope": "diagnostic stress check; up to25% edge occlusion, bounded shifts2px, resampling and contrast; no normalized positive inference",
+    "count": 1920,
+    "old_false_absence": 536,
+    "remaining_false_absence": 0
+  },
+  "normalized_orientation_phase_holdout": {
+    "scope": "diagnostic only; contrast normalization spatial topology only crosschecks sparse-edge absence and cannot prove presence; unchanged Canny60/150 and density.08; target std35 from existing presence contract",
+    "original_absences": 343,
+    "scene_only_absences": 449,
+    "absence_to_ambiguous": 1,
+    "original_absence_to_ambiguous": 1,
+    "post_report_baseline_live": 137,
+    "post_report_baseline_live_lost": 0,
+    "scene_only_added_live_after_report": 18,
+    "scene_only_added_live_lost": 0,
+    "portrait_joint_degradation_count": 945,
+    "false_absence_before": 115,
+    "false_absence_after": 0
+  },
+  "normalized_orientation_phase_holdout_occlusion_stress": {
+    "scope": "diagnostic stress check; up to25% edge occlusion, bounded shifts2px, resampling and contrast; no normalized positive inference",
+    "count": 1200,
+    "old_false_absence": 439,
+    "remaining_false_absence": 0
+  },
+  "independent_pixel_review": {
+    "density_veto_native_changed": 54,
+    "flat_portrait_visible": 0,
+    "world_no_flat_portrait": 54,
+    "development_portrait_holdout": 15,
+    "training_holdout_decoded_pixel_hash_intersection": 0
+  },
+  "decision": "NEED MORE EVIDENCE",
+  "production_changed": false,
+  "next_experiment": "Frozen two-phase orientation veto on newly reserved pixel-reviewed portrait holdout, followed by actual runtime parity.",
+  "shared_cli_replay": {
+    "diagnostic_only": true,
+    "manifest_sha256": "f75f6654a36c824d88336c41413efa440ee5a52abc7ce9590e0746528b63c28d",
+    "scope": "candidate vetoes only; no positive promotion; private visual annotations",
+    "cohorts": {
+      "portrait_training": {
+        "source_crops": 24,
+        "counts": {
+          "cases": 1512,
+          "runtime_checked_absence": 141,
+          "partial_raw_topology_absence_to_unknown": 37,
+          "partial_raw_topology_remaining_checked_absence": 104,
+          "contrast_floor_absence_to_unknown": 141,
+          "contrast_floor_remaining_checked_absence": 0,
+          "normalized_density_absence_to_unknown": 141,
+          "normalized_density_remaining_checked_absence": 0,
+          "normalized_full_topology_absence_to_unknown": 141,
+          "normalized_full_topology_remaining_checked_absence": 0,
+          "normalized_orientation_absence_to_unknown": 141,
+          "normalized_orientation_remaining_checked_absence": 0
+        },
+        "runtime_reasons": {
+          "icon_present": 66,
+          "icon_structure_ambiguous": 285,
+          "icon_roi_unobservable": 1020,
+          "icon_absent": 141
+        }
+      },
+      "portrait_holdout": {
+        "source_crops": 15,
+        "counts": {
+          "cases": 945,
+          "runtime_checked_absence": 115,
+          "partial_raw_topology_absence_to_unknown": 7,
+          "partial_raw_topology_remaining_checked_absence": 108,
+          "contrast_floor_absence_to_unknown": 115,
+          "contrast_floor_remaining_checked_absence": 0,
+          "normalized_density_absence_to_unknown": 115,
+          "normalized_density_remaining_checked_absence": 0,
+          "normalized_full_topology_absence_to_unknown": 115,
+          "normalized_full_topology_remaining_checked_absence": 0,
+          "normalized_orientation_absence_to_unknown": 115,
+          "normalized_orientation_remaining_checked_absence": 0
+        },
+        "runtime_reasons": {
+          "icon_present": 28,
+          "icon_structure_ambiguous": 206,
+          "icon_roi_unobservable": 596,
+          "icon_absent": 115
+        }
+      },
+      "ordinary_absence": {
+        "source_crops": 54,
+        "counts": {
+          "cases": 54,
+          "runtime_checked_absence": 54,
+          "partial_raw_topology_absence_to_unknown": 0,
+          "partial_raw_topology_remaining_checked_absence": 54,
+          "contrast_floor_absence_to_unknown": 54,
+          "contrast_floor_remaining_checked_absence": 0,
+          "normalized_density_absence_to_unknown": 54,
+          "normalized_density_remaining_checked_absence": 0,
+          "normalized_full_topology_absence_to_unknown": 0,
+          "normalized_full_topology_remaining_checked_absence": 54,
+          "normalized_orientation_absence_to_unknown": 1,
+          "normalized_orientation_remaining_checked_absence": 53
+        },
+        "runtime_reasons": {
+          "icon_absent": 54
+        }
+      }
+    }
+  }
+}
