@@ -435,6 +435,11 @@ class RealHudAnalyzer:
                 "roi_confidence": {
                     **feature.roi_confidence,
                     **reader_confidence,
+                    # Reserved value provenance, independent of generic ROI/geometry
+                    # quality. Never authorize shared facts from feature confidence.
+                    "round_timer_value": reader_confidence.get("round_timer", 0.0)
+                    if values["round_time_remaining_sec"] is not None
+                    else 0.0,
                 },
             }
             observation = HudObservationV2(

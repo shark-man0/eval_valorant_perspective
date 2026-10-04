@@ -38,6 +38,53 @@ def _bounded_confidence(value: Any) -> float:
     return min(1.0, max(0.0, parsed)) if math.isfinite(parsed) else 0.0
 
 
+
+def _shared_timer_facts(observations: Sequence[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Preserve accepted current-frame shared values without attributing a player."""
+    facts: list[dict[str, Any]] = []
+    seen: set[tuple[float, float]] = set()
+    for observation in observations:
+        values = observation.get("values")
+        quality = observation.get("quality")
+        if not isinstance(values, dict) or not isinstance(quality, dict):
+            continue
+        confidence_by_roi = quality.get("roi_confidence")
+        if not isinstance(confidence_by_roi, dict):
+            continue
+        # round_timer alone can be feature/geometry confidence. Only the analyzer's
+        # reserved accepted-reader score authorizes this value-only fact.
+        confidence = confidence_by_roi.get("round_timer_value")
+        value = values.get("round_time_remaining_sec")
+        timestamp = observation.get("time_sec")
+        if isinstance(confidence, bool) or not isinstance(confidence, (int, float)):
+            continue
+        if isinstance(value, bool) or not isinstance(value, (int, float)):
+            continue
+        if isinstance(timestamp, bool) or not isinstance(timestamp, (int, float)):
+            continue
+        if not all(math.isfinite(item) for item in (confidence, value, timestamp)):
+            continue
+        if not 0.90 <= confidence <= 1.0 or value < 0 or timestamp < 0:
+            continue
+        if "calibration_required" in (quality.get("notes") or ()):
+            continue
+        identity = (float(timestamp), float(value))
+        if identity in seen:
+            continue
+        seen.add(identity)
+        facts.append(
+            DeterministicFact(
+                fact_id=f"HT{len(facts) + 1:04d}",
+                key="round_time_remaining_sec",
+                value=value,
+                confidence=float(confidence),
+                source="hud",
+                time_sec=float(timestamp),
+            ).to_dict()
+        )
+    return facts
+
+
 def _coverage_summary(
     valid_times: Sequence[float], start_sec: float, end_sec: float, *, coverage_radius: float
 ) -> tuple[float, list[dict[str, float]]]:
@@ -255,7 +302,7 @@ class RoundPackageBuilder:
                     round_observations,
                     [item for item in zone_resolutions if window.contains(self._time(item))],
                 ),
-                "deterministic_facts": [],
+                "deterministic_facts": _shared_timer_facts(round_observations),
                 "frames": [],
                 "previous_round_context": None,
             }
