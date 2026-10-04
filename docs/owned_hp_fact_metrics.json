@@ -1,0 +1,80 @@
+{
+  "analyzer_commit": "3e9df3dab16d6dce83f3973f0386638d11286c0c",
+  "git_is_dirty": false,
+  "video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "settings_fingerprint": "5f73d89e69cc283cefdd28b68524e0ce2e81985b6605842de5bbb6725edc70f8",
+  "observations": 4081,
+  "observations_identical_after_removing_only_hp_value_confidence": true,
+  "current_owned_hp_values": 130,
+  "false_hp_value_authorizations": 0,
+  "states": {
+    "unknown": 3546,
+    "remote_control_view": 33,
+    "live_first_person": 166,
+    "buy_menu_open": 1,
+    "spectator_first_person": 335
+  },
+  "rounds": [
+    {
+      "hp_fact_count": 130,
+      "timer_fact_count": 1477,
+      "timer_facts_exactly_unchanged": true,
+      "all_hp_facts_match_current_owned_observation": true,
+      "hp_confidence_range": [
+        0.971359372138977,
+        0.9952490925788879
+      ],
+      "unique_direct_fact_ids": true,
+      "enriched_hp_facts_unchanged": true,
+      "enrichment_idempotent": true,
+      "schema_valid": true,
+      "preserved_fields": {
+        "events": true,
+        "state_snapshots": true,
+        "round_window": true,
+        "observation_quality": true,
+        "round_meta": true,
+        "frames": true,
+        "previous_round_context": true
+      }
+    }
+  ],
+  "trace_identical": true,
+  "e2e_assertions": {
+    "passed": 22,
+    "failed": 56,
+    "not_evaluated": 4,
+    "count_unit": "assertion_records; multiple failed fields count once",
+    "failure_message_count": 57,
+    "failures_by_category": {
+      "missing_point": 5,
+      "state_coverage": 11,
+      "state_start_edge": 1,
+      "ownership_coverage": 5,
+      "missing_snapshot": 23,
+      "missing_derived_snapshot": 3,
+      "missing_visual_observation": 3,
+      "count": 6
+    }
+  },
+  "negative_assertions": {
+    "passed": 20,
+    "failed": 0,
+    "assertions": 20
+  },
+  "checks": {
+    "pytest": {
+      "passed": 830,
+      "skipped": 2
+    },
+    "ruff": "pass",
+    "mypy": {
+      "result": "pass",
+      "source_files": 86
+    },
+    "diff_check": "pass"
+  },
+  "profile_fingerprint": "e7987bf758eb2dca8211149b6fde9bddcb04a07997f1fb66cb38e8c677580e57",
+  "profile_sidecar_sha256": "8e764d6eb2b7a6a8ce6a5f144300bdf809f16f9dcf2b689ac659333c2265b615",
+  "scope": "Aggregate owned-HP fact propagation audit; no per-frame records/timestamps/crops or GT production inputs."
+}
