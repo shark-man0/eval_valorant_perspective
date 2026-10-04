@@ -29,6 +29,7 @@ from valorant_ai_coach.resources import resource_path
 
 from .layout import HudLayout, NormalizedRoi
 from .readers import HudReader, ReaderResult
+from .report_header import ReportHeader, report_header_evidence
 from .spectator import PanelReference, detect_panel
 from .spectator_icon import detect_icon, menu_overlay_candidate
 from .value_identity import MATCHER, value_invariant_score
@@ -157,6 +158,52 @@ class HudTemplateProfile:
                 self._signal_templates[str(name)] = (spec["roi"], template)
             except (KeyError, ValueError, OSError, cv2.error) as exc:
                 self.reader_diagnostics.append(f"signal {name}: {exc}")
+        self._report_header: ReportHeader | None = None
+        report = self.raw.get("report_header_detector")
+        if "report_header_detector" in self.raw:
+            try:
+                required = {
+                    "version",
+                    "method",
+                    "roi",
+                    "threshold",
+                    "template",
+                    "mask",
+                    "support_regions",
+                    "input_shape",
+                    "reference_x",
+                }
+                if (
+                    not isinstance(report, Mapping)
+                    or set(report) != required
+                    or type(report.get("version")) is not int
+                    or report.get("version") != 1
+                    or report.get("method") != "independent_static_header_v1"
+                    or report.get("roi") != "combat_report"
+                    or not isinstance(report.get("input_shape"), list)
+                    or len(report["input_shape"]) != 2
+                    or any(type(value) is not int for value in report["input_shape"])
+                ):
+                    raise ValueError("invalid Report header specification")
+                report_assets = []
+                for key in ("template", "mask", "support_regions"):
+                    data = self.resolve_asset(str(report[key])).read_bytes()
+                    decoded = cv2.imdecode(np.frombuffer(data, np.uint8), cv2.IMREAD_GRAYSCALE)
+                    if decoded is None:
+                        raise ValueError("invalid Report header asset")
+                    report_assets.append(np.asarray(decoded, dtype=np.uint8))
+                model = ReportHeader(
+                    report_assets[0],
+                    report_assets[1],
+                    report_assets[2],
+                    (report["input_shape"][0], report["input_shape"][1]),
+                    report["reference_x"],
+                    report["threshold"],
+                )
+                model.validate()
+                self._report_header = model
+            except (KeyError, ValueError, TypeError, OSError, cv2.error) as exc:
+                self.reader_diagnostics.append(f"report_header_detector: {exc}")
         self._panel_components: ImageU8 | None = None
         clear = self.raw.get("spectator_panel_detector")
         if isinstance(clear, Mapping):
@@ -306,6 +353,14 @@ class HudTemplateProfile:
                 spectator_confidence=0.90,
                 self_hud_identity_trustworthy=False,
             )
+        if self._report_header is not None and "combat_report" in layout.regions:
+            x1, y1, x2, y2 = layout.normalized_roi("combat_report").pixel_bounds(width, height)
+            report_evidence = report_header_evidence(frame[y1:y2, x1:x2], self._report_header)
+            if report_evidence["present"] is True:
+                signals.update(
+                    combat_report_visible=True,
+                    combat_report_confidence=report_evidence["score"],
+                )
         return signals
 
     @classmethod
