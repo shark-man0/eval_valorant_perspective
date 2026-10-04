@@ -1,0 +1,195 @@
+{
+  "scope": "Aggregate HP VALUE diagnostic; no production identity change, no images, per-frame values, or timestamps. Production decision limited to opt-in two/three-digit values; one-digit unsupported and rejected.",
+  "analyzer_commit": "84ffd0c1b85f7602c76f12d044fe718aa8ab8405",
+  "video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "profile_fingerprint": "7c40cf8b719689173b9012ee33c4eb5bfda29619b8eb507e26bacfb68b712b27",
+  "hp_candidate_manifest_sha256": "0543612295f8fb398c986848f3aeed0f19afbe0766a02eb53560da77c295a893",
+  "role_evaluation_freeze_sha256": "4d39cf0497ecaca82efdc1660b4c81a615d430684ad5d37036a952713ac7c1c5",
+  "annotation_sha256": "4c8b4b208baf153c2f2c5326383a56b09a73d002132d3cee5733614426351a18",
+  "provenance": {
+    "legacy_midpoint_holdout": "previously exposed development data",
+    "role_confirmation_count": 46,
+    "excluded_odd_block_count": 1,
+    "same_recording": true,
+    "timer_roi_previously_exposed": true,
+    "prior_exact_hp_crop_overlap": 0,
+    "globally_pristine": false,
+    "one_digit_support": false
+  },
+  "training": {
+    "fields": 21,
+    "correct": 16,
+    "wrong": 0,
+    "unknown": 5,
+    "hp_font_distinct_block_support": {
+      "0": 19,
+      "1": 16,
+      "8": 5
+    },
+    "complete_competing_alphabet": true,
+    "glyph_threshold": 0.9,
+    "class_margin": 0.04
+  },
+  "missing_glyph_diagnostic": {
+    "whole_deletion_trials": 49,
+    "prior_wrong_values": 34,
+    "geometry_candidate_wrong_values": 0,
+    "geometry_candidate_unknown": 49
+  },
+  "role_confirmation": {
+    "visible": {
+      "n": 42,
+      "correct": 26,
+      "wrong": 0,
+      "unknown": 16,
+      "reason_counts": {
+        "foreground_border": 9,
+        "accepted": 26,
+        "glyph_unknown": 7
+      }
+    },
+    "obscured": {
+      "n": 1,
+      "accepted": 0
+    },
+    "no_visible_glyph": {
+      "n": 3,
+      "false_accept": 0
+    }
+  },
+  "native_counterfactual": {
+    "frames": 4081,
+    "noHP_baseline_nonnull": 0,
+    "raw_accept": 2417,
+    "cleared_by_actual_analyzer_player_specific_gate": 130,
+    "cleared_after_analyzer_false": 2287,
+    "world_view_eligible_subset_of_clear_values": 123,
+    "world_view_blocked_after_clear": 7,
+    "round_snapshot_quality_filter_pass_count": 130,
+    "raw_reasons": {
+      "glyph_unknown": 817,
+      "accepted": 2417,
+      "foreground_border": 810,
+      "geometry_gap": 4,
+      "component_count": 8,
+      "geometry_center": 16,
+      "empty": 9
+    },
+    "by_state": {
+      "buy_menu_open": {
+        "frames": 1,
+        "raw_reader_accepts": 0,
+        "production_value_clear_accepts": 0,
+        "world_view_eligible_accepts": 0,
+        "accepted_parser_reasons": {
+          "foreground_border": 1
+        }
+      },
+      "live_first_person": {
+        "frames": 166,
+        "raw_reader_accepts": 130,
+        "production_value_clear_accepts": 130,
+        "world_view_eligible_accepts": 123,
+        "accepted_parser_reasons": {
+          "accepted": 130,
+          "glyph_unknown": 21,
+          "foreground_border": 15
+        }
+      },
+      "remote_control_view": {
+        "frames": 33,
+        "raw_reader_accepts": 21,
+        "production_value_clear_accepts": 0,
+        "world_view_eligible_accepts": 0,
+        "accepted_parser_reasons": {
+          "foreground_border": 11,
+          "accepted": 21,
+          "glyph_unknown": 1
+        }
+      },
+      "spectator_first_person": {
+        "frames": 335,
+        "raw_reader_accepts": 70,
+        "production_value_clear_accepts": 0,
+        "world_view_eligible_accepts": 0,
+        "accepted_parser_reasons": {
+          "accepted": 70,
+          "foreground_border": 53,
+          "glyph_unknown": 208,
+          "component_count": 1,
+          "geometry_gap": 1,
+          "geometry_center": 2
+        }
+      },
+      "unknown": {
+        "frames": 3546,
+        "raw_reader_accepts": 2196,
+        "production_value_clear_accepts": 0,
+        "world_view_eligible_accepts": 0,
+        "accepted_parser_reasons": {
+          "glyph_unknown": 587,
+          "accepted": 2196,
+          "foreground_border": 730,
+          "geometry_gap": 3,
+          "component_count": 7,
+          "geometry_center": 14,
+          "empty": 9
+        }
+      }
+    }
+  },
+  "additional_blind_audit": {
+    "annotation_sha256": "dfe9d4001633f6c324ce224731bc6e9a0e2090777dcd7e92b397bd9bbea66564",
+    "n": 40,
+    "correct": 40,
+    "wrong": 0
+  },
+  "limitations": [
+    "Single recording with correlated frames.",
+    "No single-digit HP font/placement validation.",
+    "Other HP classes mostly timer references; unfamiliar fonts reject.",
+    "Native replay is counterfactual; configured production and clean E2E still required.",
+    "Raw accepted numbers are not player identity evidence."
+  ],
+  "fixed_stress": {
+    "trial_arithmetic": {
+      "strip_attempts": 1464,
+      "strip_effective": 1446,
+      "strip_noops": 18,
+      "innerbar_effective": 20,
+      "earlier_binary_outside_and_between_effective": 42,
+      "verified_binary_mark_effective": 84,
+      "all_attempt_entries": 1610,
+      "all_effective_trial_entries": 1592,
+      "unique_effective_post_otsu_masks_scoped_by_source_field": 1522,
+      "duplicate_trial_entries_removed": 70,
+      "duplicate_breakdown": {
+        "strip_suite_exact_hash_collisions": 49,
+        "old_new_between_mark_exact_duplicates": 21,
+        "old_outside_mark_duplicates_with_new_suite": 0
+      }
+    },
+    "full_trial_outcomes": {
+      "effective_trials": {
+        "unknown": 1560,
+        "correct": 32
+      },
+      "noops_excluded": true,
+      "confident_component_but_full_field_unknown_cases": 27
+    },
+    "deduplicated_unique_mask_outcomes": {
+      "unknown": 1520,
+      "correct": 2
+    },
+    "wrong_full_value_accepts": 0,
+    "source_field_count": 21,
+    "same_hash_conflicting_outcomes": 0,
+    "digit8_innerbar_glyph_results": {
+      "cases": 20,
+      "full_field_unknown": 20,
+      "wrong_full_value_accepts": 0,
+      "gray_10pct_glyph8_still_confident": 5,
+      "glyph_0_flips": 0
+    }
+  }
+}
