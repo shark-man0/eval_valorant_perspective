@@ -1,0 +1,872 @@
+{
+  "decision": "NEED MORE EVIDENCE",
+  "starting_commit": "e38ad8a829d8509ec5a418e64ca6734a8ad40aaf",
+  "analyzer_source_commit": "e38ad8a829d8509ec5a418e64ca6734a8ad40aaf",
+  "clean_e2e_analyzer_commit": "2650d09b90df50d6a004dbe5d849fc60432af33b",
+  "production_changes": false,
+  "video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "profile_fingerprint": "372bf43ab9c443e3d54bd46b3b5d51626aa1ebf0f8d8a68edeb76e5aff826453",
+  "layout_sha256": "a3678bcd9df35d0932ae0e69495eb5b87a3ab40e9c988560d502a9507d59eef1",
+  "template_sidecar_sha256": "9e9ad3c4a74583f8792a6e56256fb1828cc36a5991dc31bcee2942ce80b6f2d7",
+  "ability_reference_sha256": "d83617acdc2ec7bc72cf103393463276710f2882047dbb6ae30a6bcaa6d5fc1f",
+  "ability_decoded_pixels_sha256": "54f25aa94bc2a1bb5c92d21a02518b389122f12e9d54de960cba8d188cee3202",
+  "reference_generated": true,
+  "reference_fresh64_pixel_error": 0,
+  "cohort_counts": {
+    "missing": 75,
+    "positive": 183,
+    "negative": 27,
+    "unresolved_control": 3,
+    "training": 32,
+    "holdout": 32
+  },
+  "exact_runtime_independent_agreement": {
+    "frames": 258,
+    "missing": 75,
+    "max_score_error": 0.0
+  },
+  "canonical_current_e2e_observation_overlap": {
+    "shared": 242,
+    "canonical_only": 16
+  },
+  "scores": {
+    "A": {
+      "count": 75,
+      "min": 0.16729286313056946,
+      "p10": 0.19020687639713288,
+      "p25": 0.7088917195796967,
+      "median": 0.8114643692970276,
+      "p75": 0.8394922614097595,
+      "p90": 0.8800626397132874,
+      "max": 0.8989761471748352,
+      "threshold_counts": {
+        "0.9": 0,
+        "0.88": 8,
+        "0.85": 17,
+        "0.8": 38
+      }
+    },
+    "B": {
+      "count": 183,
+      "min": 0.9015570878982544,
+      "p10": 0.9185937523841858,
+      "p25": 0.9269750118255615,
+      "median": 0.9484331607818604,
+      "p75": 0.9810074269771576,
+      "p90": 0.9936434149742126,
+      "max": 0.9962755441665649,
+      "threshold_counts": {
+        "0.9": 183,
+        "0.88": 183,
+        "0.85": 183,
+        "0.8": 183
+      }
+    },
+    "C": {
+      "count": 27,
+      "min": 0.0,
+      "p10": 0.13347269892692565,
+      "p25": 0.21178560703992844,
+      "median": 0.8842630982398987,
+      "p75": 0.9543549418449402,
+      "p90": 0.9775030612945557,
+      "max": 0.9959686398506165,
+      "threshold_counts": {
+        "0.9": 13,
+        "0.88": 15,
+        "0.85": 19,
+        "0.8": 19
+      }
+    }
+  },
+  "threshold_simulation": [
+    {
+      "threshold": 0.9,
+      "recovered_missing": 0,
+      "negative_raw_accept": 13,
+      "newly_accepted_negative": 0,
+      "negative_accept_rate": 0.48148148148148145
+    },
+    {
+      "threshold": 0.88,
+      "recovered_missing": 8,
+      "negative_raw_accept": 15,
+      "newly_accepted_negative": 2,
+      "negative_accept_rate": 0.5555555555555556
+    },
+    {
+      "threshold": 0.85,
+      "recovered_missing": 17,
+      "negative_raw_accept": 19,
+      "newly_accepted_negative": 6,
+      "negative_accept_rate": 0.7037037037037037
+    },
+    {
+      "threshold": 0.8,
+      "recovered_missing": 38,
+      "negative_raw_accept": 19,
+      "newly_accepted_negative": 6,
+      "negative_accept_rate": 0.7037037037037037
+    }
+  ],
+  "alignment": {
+    "center_to_best_pm1_pass_fail_flips": 0,
+    "center_to_best_pm2_pass_fail_flips": 0,
+    "pm1_winner_offsets": {
+      "(0, 0)": 246,
+      "(-1, -1)": 2,
+      "(-1, 1)": 3,
+      "(1, 1)": 3,
+      "(1, 0)": 1,
+      "(1, -1)": 1,
+      "(-1, 0)": 1,
+      "(0, -1)": 1
+    },
+    "pm2_winner_offsets": {
+      "(0, 0)": 246,
+      "(-2, -2)": 1,
+      "(-2, 2)": 4,
+      "(2, 2)": 2,
+      "(2, -1)": 1,
+      "(-1, -1)": 1,
+      "(2, -2)": 2,
+      "(-2, 0)": 1
+    },
+    "max_pm1_score_gain_over_center": 0.0082082599401474,
+    "max_pm2_score_gain_over_center": 0.018864959478378296
+  },
+  "temporal_full_roi": {
+    "variance": {
+      "min": 599.407958984375,
+      "p10": 1232.663427734375,
+      "p25": 1638.7373046875,
+      "median": 1939.39990234375,
+      "p75": 2248.2158203125,
+      "p90": 2709.000366210938,
+      "max": 7101.52734375
+    },
+    "std": {
+      "min": 24.482809458564493,
+      "p10": 35.10930685351245,
+      "p25": 40.48132044141491,
+      "median": 44.038618306470305,
+      "p75": 47.415354267496326,
+      "p90": 52.048058236554574,
+      "max": 84.27056036214545
+    },
+    "edge_persistence": {
+      "min": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "median": 0.015625,
+      "p75": 0.046875,
+      "p90": 0.09375,
+      "max": 0.90625
+    },
+    "brightness_persistence": {
+      "min": 0.0,
+      "p10": 0.0,
+      "p25": 0.03125,
+      "median": 0.078125,
+      "p75": 0.125,
+      "p90": 0.1875,
+      "max": 0.890625
+    },
+    "dynamic_std_over20_fraction": 1.0,
+    "persistent_edge_ge_half_fraction": 0.04258295964125561,
+    "persistent_brightness_ge_half_fraction": 0.05423318385650224
+  },
+  "temporal_reference_patch": {
+    "variance": {
+      "min": 661.4912109375,
+      "p10": 817.92216796875,
+      "p25": 943.142333984375,
+      "median": 1274.702880859375,
+      "p75": 1551.0647583007812,
+      "p90": 2052.35458984375,
+      "max": 4356.956787109375
+    },
+    "std": {
+      "min": 25.71947143581104,
+      "p10": 28.599338549970422,
+      "p25": 30.710622479976898,
+      "median": 35.70298136367676,
+      "p75": 39.383559363318454,
+      "p90": 45.30292030853329,
+      "max": 66.00724798921233
+    },
+    "edge_persistence": {
+      "min": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "median": 0.0,
+      "p75": 0.015625,
+      "p90": 0.078125,
+      "max": 0.890625
+    },
+    "brightness_persistence": {
+      "min": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "median": 0.0,
+      "p75": 0.015625,
+      "p90": 0.359375,
+      "max": 0.875
+    },
+    "dynamic_std_over20_fraction": 1.0,
+    "persistent_edge_ge_half_fraction": 0.06402985074626866,
+    "persistent_brightness_ge_half_fraction": 0.0964179104477612
+  },
+  "normalized_ridge_reference_patch": {
+    "variance": {
+      "min": 0.015380859375,
+      "p10": 1.0561279296875004,
+      "p25": 2.4130859375,
+      "median": 6.7601318359375,
+      "p75": 22.036865234375,
+      "p90": 108.83569335937503,
+      "max": 4119.411865234375
+    },
+    "std": {
+      "min": 0.12401959270615269,
+      "p10": 1.027680775280625,
+      "p25": 1.553411065204571,
+      "median": 2.6000252756865887,
+      "p75": 4.69434384781632,
+      "p90": 10.432434646321258,
+      "max": 64.1826445796243
+    },
+    "edge_persistence": {
+      "min": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "median": 0.0,
+      "p75": 0.015625,
+      "p90": 0.03125,
+      "max": 0.890625
+    },
+    "brightness_persistence": {
+      "min": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "median": 0.0,
+      "p75": 0.0,
+      "p90": 0.0,
+      "max": 0.609375
+    },
+    "dynamic_std_over20_fraction": 0.060298507462686564,
+    "persistent_edge_ge_half_fraction": 0.05149253731343283,
+    "persistent_brightness_ge_half_fraction": 0.004626865671641791
+  },
+  "reference_static_training_edges": {
+    "total": 459,
+    "persistent": 414,
+    "mask_area": 1278,
+    "mask_area_fraction": 0.19074626865671643,
+    "centered_reference_energy_inside_mask": 0.34955003960096603
+  },
+  "missing_normalized_residual_outside_static_band": {
+    "min": 0.40879912717378003,
+    "p10": 0.7013516457662861,
+    "p25": 0.7190024021286088,
+    "median": 0.8014794359193488,
+    "p75": 0.8558829781102193,
+    "p90": 0.8833430150039172,
+    "max": 0.896081435006426
+  },
+  "positive_pairwise_ncc": {
+    "accepted_positive_pairwise_ncc": {
+      "min": 0.7670161209268519,
+      "p10": 0.8849587730061812,
+      "p25": 0.919815082360289,
+      "median": 0.9552405060542836,
+      "p75": 0.9829620337257653,
+      "p90": 0.9922166940155217,
+      "max": 0.9999585650613557
+    },
+    "accepted_positive_pairs_below_0_9": 2402,
+    "accepted_positive_pair_count": 16653,
+    "matching_scaffold_missing_to_positive_pairwise_ncc": {
+      "min": 0.39281216749341485,
+      "p10": 0.6104631246279995,
+      "p25": 0.7100414422650734,
+      "median": 0.8113780097626435,
+      "p75": 0.8848047243659387,
+      "p90": 0.9543171791816081,
+      "max": 0.9911983786414419
+    },
+    "matched_scaffold_cross_pairs_below_0_9": 6115,
+    "cross_pair_count": 7686
+  },
+  "observability": {
+    "visible": 63,
+    "visually_unobservable": 12,
+    "scaffold_matching": 42,
+    "visible_remaining_contradiction": 21
+  },
+  "causes": [
+    {
+      "category": "alignment mismatch",
+      "overlap": 0,
+      "primary": 0,
+      "status": "ruled out by bounded recovery",
+      "overlap_pct": 0.0,
+      "primary_pct": 0.0
+    },
+    {
+      "category": "ROI / geometry mismatch",
+      "overlap": 0,
+      "primary": 0,
+      "status": "valid geometry and identical crop size",
+      "overlap_pct": 0.0,
+      "primary_pct": 0.0
+    },
+    {
+      "category": "low observability",
+      "overlap": 12,
+      "primary": 12,
+      "status": "visual absence, not low variance alone",
+      "overlap_pct": 16.0,
+      "primary_pct": 16.0
+    },
+    {
+      "category": "dynamic visual state change",
+      "overlap": 0,
+      "primary": 0,
+      "status": "not established; zero confirmed is not zero occurrence",
+      "overlap_pct": 0.0,
+      "primary_pct": 0.0
+    },
+    {
+      "category": "fixed-reference shape contradiction",
+      "overlap": 63,
+      "primary": 42,
+      "status": "raw pixel-pattern contradiction; not proof of different Ability icon shape",
+      "overlap_pct": 84.0,
+      "primary_pct": 56.00000000000001
+    },
+    {
+      "category": "transient animation",
+      "overlap": 0,
+      "primary": 0,
+      "status": "not established from snapshots",
+      "overlap_pct": 0.0,
+      "primary_pct": 0.0
+    },
+    {
+      "category": "neighboring HUD contamination",
+      "overlap": 0,
+      "primary": 0,
+      "status": "not confirmed; underlying world/foreground is separate",
+      "overlap_pct": 0.0,
+      "primary_pct": 0.0
+    },
+    {
+      "category": "reference-generation bias",
+      "overlap": 42,
+      "primary": 0,
+      "status": "plausible candidate: single appearance cluster misses matching scaffold; not independently proven causal",
+      "overlap_pct": 56.00000000000001,
+      "primary_pct": 0.0
+    },
+    {
+      "category": "insufficient training representation",
+      "overlap": 0,
+      "primary": 0,
+      "status": "not established; same64 supports alternative scaffold",
+      "overlap_pct": 0.0,
+      "primary_pct": 0.0
+    },
+    {
+      "category": "other",
+      "overlap": 63,
+      "primary": 21,
+      "status": "changing scene imagery observed in visible misses; mechanism unresolved in21",
+      "overlap_pct": 84.0,
+      "primary_pct": 28.000000000000004
+    }
+  ],
+  "clusters": [
+    {
+      "cluster": 0,
+      "missing_A_n": 40,
+      "accepted_B_n": 76,
+      "accepted_fraction_B_of_cluster": 0.6551724137931034,
+      "missing_to_accepted_A_over_B": 0.5263157894736842,
+      "A_score_min_median_max": [
+        0.7061522603034973,
+        0.8176790773868561,
+        0.8985562920570374
+      ],
+      "B_score_min_median_max": [
+        0.9044364094734192,
+        0.9852998852729797,
+        0.9962755441665649
+      ],
+      "A_centroid_distance_median": [
+        42.50824506763264
+      ],
+      "B_centroid_distance_median": [
+        38.657834144912535
+      ]
+    },
+    {
+      "cluster": 1,
+      "missing_A_n": 1,
+      "accepted_B_n": 0,
+      "accepted_fraction_B_of_cluster": 0.0,
+      "missing_to_accepted_A_over_B": null,
+      "A_score_min_median_max": [
+        0.5493661165237427,
+        0.5493661165237427,
+        0.5493661165237427
+      ],
+      "B_score_min_median_max": null,
+      "A_centroid_distance_median": [
+        0.0
+      ],
+      "B_centroid_distance_median": null
+    },
+    {
+      "cluster": 2,
+      "missing_A_n": 21,
+      "accepted_B_n": 107,
+      "accepted_fraction_B_of_cluster": 0.8359375,
+      "missing_to_accepted_A_over_B": 0.19626168224299065,
+      "A_score_min_median_max": [
+        0.625114381313324,
+        0.8629610538482666,
+        0.8989761471748352
+      ],
+      "B_score_min_median_max": [
+        0.9015570878982544,
+        0.9371618628501892,
+        0.9893761277198792
+      ],
+      "A_centroid_distance_median": [
+        16.402546232953448
+      ],
+      "B_centroid_distance_median": [
+        14.71490816808674
+      ]
+    },
+    {
+      "cluster": 3,
+      "missing_A_n": 12,
+      "accepted_B_n": 0,
+      "accepted_fraction_B_of_cluster": 0.0,
+      "missing_to_accepted_A_over_B": null,
+      "A_score_min_median_max": [
+        0.16729286313056946,
+        0.18915347754955292,
+        0.22097358107566833
+      ],
+      "B_score_min_median_max": null,
+      "A_centroid_distance_median": [
+        29.006948373722015
+      ],
+      "B_centroid_distance_median": null
+    },
+    {
+      "cluster": 4,
+      "missing_A_n": 1,
+      "accepted_B_n": 0,
+      "accepted_fraction_B_of_cluster": 0.0,
+      "missing_to_accepted_A_over_B": null,
+      "A_score_min_median_max": [
+        0.5830866098403931,
+        0.5830866098403931,
+        0.5830866098403931
+      ],
+      "B_score_min_median_max": null,
+      "A_centroid_distance_median": [
+        0.0
+      ],
+      "B_centroid_distance_median": null
+    }
+  ],
+  "candidate_groups": [
+    {
+      "bounds": [
+        40,
+        192,
+        121,
+        206
+      ],
+      "normalized_bounds": [
+        0.08,
+        0.8609865470852018,
+        0.242,
+        0.9237668161434978
+      ],
+      "edge_population": 227,
+      "training_recurrence": 0.8757565176908753,
+      "training_support": 28,
+      "holdout_support": 28,
+      "training_observable": 29,
+      "holdout_observable": 28,
+      "component_count": 4,
+      "spatial_spread_normalized": [
+        0.156,
+        0.04932735426008968
+      ],
+      "negative_support": 17,
+      "negative_observable": 20
+    },
+    {
+      "bounds": [
+        153,
+        192,
+        235,
+        206
+      ],
+      "normalized_bounds": [
+        0.306,
+        0.8609865470852018,
+        0.47,
+        0.9237668161434978
+      ],
+      "edge_population": 226,
+      "training_recurrence": 0.8754595588235294,
+      "training_support": 27,
+      "holdout_support": 28,
+      "training_observable": 29,
+      "holdout_observable": 28,
+      "component_count": 3,
+      "spatial_spread_normalized": [
+        0.156,
+        0.04932735426008968
+      ],
+      "negative_support": 17,
+      "negative_observable": 19
+    },
+    {
+      "bounds": [
+        267,
+        192,
+        348,
+        206
+      ],
+      "normalized_bounds": [
+        0.534,
+        0.8609865470852018,
+        0.696,
+        0.9237668161434978
+      ],
+      "edge_population": 228,
+      "training_recurrence": 0.8625465549348231,
+      "training_support": 27,
+      "holdout_support": 27,
+      "training_observable": 29,
+      "holdout_observable": 28,
+      "component_count": 5,
+      "spatial_spread_normalized": [
+        0.156,
+        0.04932735426008968
+      ],
+      "negative_support": 17,
+      "negative_observable": 19
+    },
+    {
+      "bounds": [
+        379,
+        192,
+        461,
+        206
+      ],
+      "normalized_bounds": [
+        0.758,
+        0.8609865470852018,
+        0.922,
+        0.9237668161434978
+      ],
+      "edge_population": 235,
+      "training_recurrence": 0.8915441176470589,
+      "training_support": 28,
+      "holdout_support": 25,
+      "training_observable": 30,
+      "holdout_observable": 28,
+      "component_count": 4,
+      "spatial_spread_normalized": [
+        0.156,
+        0.04932735426008968
+      ],
+      "negative_support": 17,
+      "negative_observable": 20
+    }
+  ],
+  "candidate_geometric_area_exclusion_fraction": 0.959067264573991,
+  "operational_dynamic_exclusion_fraction": 0.9794012789315828,
+  "operational_dynamic_ridge_std_over20_pixel_count": 17671,
+  "candidate_intergroup_separation_pixels": [
+    113.5,
+    113.5,
+    112.5
+  ],
+  "representations": [
+    {
+      "name": "A fixed pixel NCC",
+      "retained": 183,
+      "recovered": 0,
+      "negative_raw_accept": 13,
+      "unobservable": 12,
+      "observable_contradictory": 63,
+      "training": 21,
+      "holdout": 24
+    },
+    {
+      "name": "B fixed NCC + diagnostic bounded2px",
+      "retained": 183,
+      "recovered": 0,
+      "negative_raw_accept": 13,
+      "unobservable": 12,
+      "observable_contradictory": 63,
+      "training": 21,
+      "holdout": 24
+    },
+    {
+      "name": "C independent pedestal edges",
+      "retained": 159,
+      "recovered": 42,
+      "negative_raw_accept": 17,
+      "unobservable": 12,
+      "observable_contradictory": 21,
+      "training": 26,
+      "holdout": 24
+    },
+    {
+      "name": "D single-patch masked NCC ablation",
+      "retained": 164,
+      "recovered": 23,
+      "negative_raw_accept": 14,
+      "unobservable": 12,
+      "observable_contradictory": 40,
+      "training": 21,
+      "holdout": 23
+    }
+  ],
+  "negative_final_live_replay": 0,
+  "negative_replay_context": "Original analyzer-derived spectator exclusion/blockers frozen; not a new full E2E",
+  "tests": {
+    "pytest_passed": 717,
+    "pytest_skipped": 2,
+    "pytest_seconds": 259.67,
+    "ruff": "passed: src tests scripts",
+    "mypy": "passed:83 source files",
+    "diff_check": "passed"
+  },
+  "e2e": {
+    "reused_clean_baseline": true,
+    "new_run": false,
+    "passed": 21,
+    "failed": 57,
+    "not_evaluated": 4,
+    "negative_passed": 20,
+    "negative_failed": 0,
+    "hud_observations": 4730,
+    "live_first_person": 146,
+    "spectator_first_person": 519,
+    "remote_control_view": 39,
+    "buy_menu_open": 3,
+    "unknown": 4023,
+    "git_is_dirty": false
+  },
+  "privacy": "Aggregate only; no frame identifiers, timestamps, images, crops, or identity assets shared",
+  "clustering_recipe": {
+    "feature_recipe": {
+      "input": "read full frame BGR; convert cv2.COLOR_BGR2GRAY; crop gray[1011:1078,810:910], shape 67x100",
+      "histogram": "cv2.calcHist [16 bins, intensity range 0..256], flattened and divided by sum",
+      "gradient": "Sobel gray float32 dx=1,dy=0,ksize=3 and dy=1; abs_sum=abs(gx)+abs(gy)",
+      "global_order": [
+        "gray mean",
+        "gray population std",
+        "gray p10",
+        "gray p50",
+        "gray p90",
+        "mean abs gx",
+        "mean abs gy",
+        "fraction of pixels with abs_sum > 80"
+      ],
+      "grid": "4 rows by 5 columns, y starts 0,17,34,51 (clip final at 67), x starts 0,20,40,60,80 (20px each). Row-major per cell: mean gray, mean abs_sum, fraction abs_sum > 80.",
+      "feature_length": 84,
+      "fit_scaling": "Per-dimension mean and population std (numpy std ddof=0) fit on A75 only; divide by max(std,1e-8)."
+    },
+    "cluster_fit": {
+      "algorithm": "custom deterministic Lloyd k-means; not sklearn KMeans",
+      "n_clusters": 5,
+      "random_seed": "not applicable; no RNG",
+      "n_init": "not applicable; one deterministic start",
+      "initialization": "centroid0 = first A75 row; each subsequent seed maximizes its minimum squared Euclidean distance to existing seeds; np.argmax first-index tie",
+      "assignment": "squared Euclidean distance in standardized feature space; argmin first-centroid tie",
+      "update": "arithmetic mean for each cluster; retain previous center if a cluster is empty",
+      "max_iterations": 100,
+      "convergence": "np.allclose(updated_centers, centers), NumPy defaults rtol=1e-5, atol=1e-8",
+      "iterations_to_convergence": 2,
+      "input_order": "A75 rows in original ability_rows.json order (ascending frame index)",
+      "B_and_control_projection": "standardize with frozen A75 mean/std; nearest final A75 centroid, argmin tie"
+    },
+    "validation": {
+      "missing_labels_exact_match_saved": true,
+      "feature_vectors_allclose_saved_atol_1e-5": true,
+      "B183_assignments_exact_match_saved": true,
+      "n_missing_fit": 75,
+      "n_accepted_projected": 183,
+      "feature_dimensions": 84,
+      "cluster_counts": {
+        "0": 40,
+        "1": 1,
+        "2": 21,
+        "3": 12,
+        "4": 1
+      },
+      "B183_cluster_counts": {
+        "0": 76,
+        "1": 0,
+        "2": 107,
+        "3": 0,
+        "4": 0
+      },
+      "iterations_used": 2,
+      "standardization": "fit on A75 only; mean per dimension; population std ddof=0, floor 1e-8",
+      "fit": "k=5; first A row seed; deterministic farthest-first subsequent seeds by max nearest squared Euclidean distance; Lloyd reassignment and means; 100 max iterations; argmin first-index tie; retain old empty centroid; stop numpy allclose default rtol=1e-5, atol=1e-8",
+      "no_random_seed_or_n_init": "not applicable: deterministic custom implementation, no random initialization or sklearn"
+    }
+  },
+  "cluster_reference_difference": [
+    {
+      "cluster": 0,
+      "counts": {
+        "A75_missing": 40,
+        "B183_accepted": 76,
+        "C27_controls": 13,
+        "U3_unresolved_controls": 1
+      },
+      "template_NCC_1_minus_score": {
+        "A75_missing": {
+          "n": 40,
+          "min": 0.10144370794296265,
+          "median": 0.18232092261314392,
+          "max": 0.2938477396965027
+        },
+        "B183_accepted": {
+          "n": 76,
+          "min": 0.0037244558334350586,
+          "median": 0.014700114727020264,
+          "max": 0.09556359052658081
+        },
+        "C27_controls": {
+          "n": 13,
+          "min": 0.004031360149383545,
+          "median": 0.04778355360031128,
+          "max": 0.1419081687927246
+        }
+      }
+    },
+    {
+      "cluster": 1,
+      "counts": {
+        "A75_missing": 1,
+        "B183_accepted": 0,
+        "C27_controls": 1,
+        "U3_unresolved_controls": 0
+      },
+      "template_NCC_1_minus_score": {
+        "A75_missing": {
+          "n": 1,
+          "min": 0.4506338834762573,
+          "median": 0.4506338834762573,
+          "max": 0.4506338834762573
+        },
+        "B183_accepted": null,
+        "C27_controls": {
+          "n": 1,
+          "min": 1.0,
+          "median": 1.0,
+          "max": 1.0
+        }
+      }
+    },
+    {
+      "cluster": 2,
+      "counts": {
+        "A75_missing": 21,
+        "B183_accepted": 107,
+        "C27_controls": 5,
+        "U3_unresolved_controls": 1
+      },
+      "template_NCC_1_minus_score": {
+        "A75_missing": {
+          "n": 21,
+          "min": 0.1010238528251648,
+          "median": 0.1370389461517334,
+          "max": 0.374885618686676
+        },
+        "B183_accepted": {
+          "n": 107,
+          "min": 0.01062387228012085,
+          "median": 0.06283813714981079,
+          "max": 0.0984429121017456
+        },
+        "C27_controls": {
+          "n": 5,
+          "min": 0.02571725845336914,
+          "median": 0.07854515314102173,
+          "max": 0.8952829465270042
+        }
+      }
+    },
+    {
+      "cluster": 3,
+      "counts": {
+        "A75_missing": 12,
+        "B183_accepted": 0,
+        "C27_controls": 8,
+        "U3_unresolved_controls": 0
+      },
+      "template_NCC_1_minus_score": {
+        "A75_missing": {
+          "n": 12,
+          "min": 0.7790264189243317,
+          "median": 0.8108465224504471,
+          "max": 0.8327071368694305
+        },
+        "B183_accepted": null,
+        "C27_controls": {
+          "n": 8,
+          "min": 0.11573690176010132,
+          "median": 0.8219963759183884,
+          "max": 0.964411050081253
+        }
+      }
+    },
+    {
+      "cluster": 4,
+      "counts": {
+        "A75_missing": 1,
+        "B183_accepted": 0,
+        "C27_controls": 0,
+        "U3_unresolved_controls": 1
+      },
+      "template_NCC_1_minus_score": {
+        "A75_missing": {
+          "n": 1,
+          "min": 0.41691339015960693,
+          "median": 0.41691339015960693,
+          "max": 0.41691339015960693
+        },
+        "B183_accepted": null,
+        "C27_controls": null
+      }
+    }
+  ],
+  "private_reproducibility_artifact_sha256": {
+    "ability_runtime\\ability_ncc.py": "e5a7dd225927842aeb6c03145b3605e7ec3a7857d8ca0fb602270e080ee93820",
+    "ability_runtime\\generation_replay.json": "21efe19c8f39f498bbf2d435b5c6bf15cac24ba9d90e72eaf54e01e496bcc596",
+    "ability_runtime\\fresh64_manifest.json": "4e47384464396e96aa9b2b5a42c5f99e5e2654af18e1c71c58c9d57235f76472",
+    "ability_visual\\cluster_reproduce.py": "1d4f8a115b901b35fb3b1dfd5fe31ffe7900396b40975de6e62f9a3253824962",
+    "ability_visual\\confirmed_C27_manifest.json": "a8328e982ea9c586f6b594c73afb1da895bc7145e55f439f0e2781668412f0fb",
+    "ability_scaffold\\frame_dump.json": "3ea2a0bdeead3ea813535ec9b874eb57703034436867de45b0ff8fdf20c1df47",
+    "ability_scaffold\\probe.py": "00cf4216aff6c4f081013ea6f5177112b7e28fcf1082dd2b9e4eae4c7edec2bf",
+    "ability_scaffold\\compare.py": "d6ca20c95972d8f86bd10eb31e020ab14f372c66c027c5ad4327c685faff8420"
+  }
+}
