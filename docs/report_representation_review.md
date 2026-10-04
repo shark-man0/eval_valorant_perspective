@@ -32,7 +32,7 @@ Header localization searches vertically inside the configured Report ROI and hor
 
 ## Left group failure and observability
 
-The 13 failing left-group crops have median brightness std 19.28, 230 observed Canny edges and 18.5% local contrast occupancy. Oriented edge recall median is 0.883, precision median 0.968; all 13 have precision at least 0.90. About 84.7% of reference edge pixels recur in at least 60% of failing crops. Left-only ±1-pixel shifts recover zero crops. Mismatch occurs inside glyph-edge geometry; darkness or a simple horizontal alignment error does not explain it.
+The 13 failing left-group crops have median brightness std 19.28, 230 observed Canny edges and 18.5% local contrast occupancy. Oriented edge recall median is 0.883, precision median 0.968; all 13 have precision at least 0.90. About 84.7% of reference edge pixels recur in at least 60% of failing crops. Left-only ﾂｱ1-pixel shifts recover zero crops. Mismatch occurs inside glyph-edge geometry; darkness or a simple horizontal alignment error does not explain it.
 
 This is observable disagreement with a particular raster reference, not proof that the Report family is absent. Conversely, the two-group result cannot silently relabel that disagreement as unobservable. Inverting either selected group rejects; changing outside their support is exactly invariant, including inversion of the excluded left group. Whether that ignored variation is nonidentity raster variation or relevant contradictory evidence needs further audit before adoption.
 
@@ -45,3 +45,15 @@ Six tests cover synthetic recurring groups with holdout glyph variation, exact o
 ## Next evidence
 
 Freeze the two-group model and audit native acceptance across all 4,730 observations, especially baseline live and the proposed Spectator ablation. Inspect diverse new accepted frames independently from pixels. Any adoption must preserve legacy negative evidence, reject insufficient selected supports and test temporal death-event consequences. Map ownership diagnosis proceeds independently; a bright minimap component alone cannot become a confident self marker.
+
+## Full-native frozen-model audit
+
+The optimized scorer initially used the entire ROI as a scalar comparison guard, accidentally restricting scalar dx to zero. Correcting the comparison to the learned strip bounds restores all allowed ±2 offsets. Across 99 training/holdout/control images, decision mismatches and selected-pose mismatches are zero; maximum absolute score difference is 5.1e-7. A summary counter also incorrectly reported only previously unreviewed matches under an all-matches name; the corrected all-matches results follow. No production or model threshold changed in either correction.
+
+The frozen two-group candidate accepts 1,962/4,730 native observations: 607 overlap the legacy Report flag, 1,355 are additional Report candidates, and 242 legacy flags are not matched. Preserving the legacy positive flag is therefore essential for any additive guard; this experiment cannot justify clearing it. Nine of the 146 baseline live observations are matched Report candidates; the same nine were already independently reviewed as actual Report overlays. One of the 19 scene-only Spectator-ablation live candidates also matches the previously confirmed missed Report.
+
+A new image audit selects 26 previously unreviewed candidate frames using diverse capture blocks, lowest accepting NCC and lowest excluded-left NCC. All 26 visibly contain Report UI, including changing backgrounds/illustrations and partial animation. Twelve portrait controls also contain Report and match; they are Report positives, so counting them as negative controls would be incorrect. Negative separation remains 0/16 non-Report holdout, 0/8 world and 0/7 shopping. Full-native acceptance is not automatically a truth label, and this sample audit does not prove that every one of the 1,962 matches is correct.
+
+Retaining all three supports and subtracting an isolated fixed 7x7 local background improves training acceptance from 9/22 to 15/22; it still fails the frozen 80% sufficiency gate, so holdout/negatives are not evaluated. Existing HP-style ridge extraction with persistent training support accepts 0/22 and is likewise rejected. Neither result authorizes threshold lowering or blind reuse of the HP matcher for Report. Excluded-left raster variation remains observable; reviewed low-NCC examples still show the same static Report header, so raster disagreement is not itself a Report-family absence label.
+
+Current decision stays `NEED MORE EVIDENCE` pending a precisely bounded additive Report contract and its integration/temporal validation. Production remains unchanged. Any candidate may only add current-frame Report presence from two independently agreeing selected static supports; it cannot clear legacy evidence, prove Report absence, produce self identity, or infer self-HUD loss from its own output.

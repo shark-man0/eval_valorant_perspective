@@ -273,5 +273,124 @@
       "observable excluded-group interpretation",
       "recording-separated holdout"
     ]
-  }
+  },
+  "native_frozen_probe": {
+    "run_frames": 4730,
+    "model": "frozen training22 center+right Canny-supported masked NCC; threshold .90",
+    "model_training_accepted": 22,
+    "configured_roi_xyxy": [
+      1480,
+      270,
+      1918,
+      770
+    ],
+    "score_all_frames": 1962,
+    "legacy_report_flag_count": 849,
+    "two_group_intersections": {
+      "legacy_report_and_candidate": 607,
+      "candidate_without_legacy_report": 1355,
+      "legacy_report_missed_by_candidate": 242,
+      "current_live146_total": 146,
+      "candidate_in_current_live146": 9,
+      "candidate_and_live146_and_not_legacy_report": 9,
+      "scene_only19_total": 19,
+      "candidate_in_scene_only19": 1,
+      "candidate_scene_only19_and_not_legacy_report": 1,
+      "scene_only19_intersection_live146": 0
+    },
+    "manual_visual_controls": {
+      "reviewed_category_counts_in_native_run": {
+        "reviewed_report": 68,
+        "reviewed_world_no_report": 8,
+        "reviewed_shopping": 7
+      },
+      "candidate_acceptance_by_category": {
+        "reviewed_report": {
+          "count": 68,
+          "accepted": 67
+        },
+        "reviewed_shopping": {
+          "count": 7,
+          "accepted": 0
+        },
+        "reviewed_world_no_report": {
+          "count": 8,
+          "accepted": 0
+        }
+      },
+      "candidate_positives_in_confirmed_world_or_shopping_controls": 0
+    },
+    "all_positive_with_excluded_left_raster_diagnostic": {
+      "count": 1962,
+      "left_ncc_below_0_90": 941,
+      "left_ncc_median": 0.901332,
+      "interpretation": "single-reference left-group similarity is reported separately and is not assumed to mean report-family negative evidence; manual visual class is separate"
+    },
+    "candidate_audit_shortlist": {
+      "current_live_new_report_candidates": 0,
+      "scene_only_new_candidates": 0,
+      "top_unreviewed_by_5s_block": 14,
+      "union_count": 14,
+      "known_world_or_shopping_candidate_positives": 0
+    },
+    "scope": "diagnostic safety evaluation only; state flags, manual visual categories, and timestamps are joins/sample IDs, never detector inputs; no Pack/GT used",
+    "full_scalar_parity": {
+      "sample_count": 99,
+      "max_absolute_score_error": 5.100860596130019e-07,
+      "decision_mismatches": 0,
+      "pose_mismatches": 0,
+      "gate_passed": true,
+      "correction": "scalar x guard uses original learned strip bounds 28..420 and corresponding relative support coordinates; previous whole-ROI guard wrongly restricted dx to zero",
+      "summary_correction": "current-live/not-legacy intersection counts all matches; audit-shortlist subset separately excludes already reviewed Report images"
+    }
+  },
+  "native_image_audit": {
+    "new_diverse_and_boundary_samples": 26,
+    "confirmed_report": 26,
+    "false_report_in_audited_samples": 0,
+    "portrait_controls_reviewed": 12,
+    "report_present_and_detected": 12,
+    "note": "portrait controls are Report positives, not Report-absent negatives; do not count them as additional negative separation"
+  },
+  "three_group_local_contrast_trial": {
+    "scope": "training-only; no holdout or negative evaluation after training failure",
+    "method": "all three frozen support groups retained; isolated feature band dilation3, signed residual from fixed7x7 Gaussian; unchanged .90 NCC; shared pose localized by frozen two-group raw template",
+    "training_count": 22,
+    "accepted": 15,
+    "group_acceptance": [
+      15,
+      22,
+      22
+    ],
+    "group_score_min": [
+      0.8369273784964807,
+      0.9767730484038246,
+      0.9308916684575943
+    ],
+    "outside_feature_band_exact_invariance": true,
+    "each_group_polarity_inversion_scores": [
+      -1.0,
+      -1.0,
+      -1.0
+    ],
+    "holdout_evaluated": false,
+    "negative_evaluated": false
+  },
+  "three_group_existing_ridge_trial": {
+    "scope": "training-only reuse probe; not loaded through production matcher",
+    "method": "existing isolated HP-style bright ridge extraction in all3 static header groups; seed0 support has >=80% oriented recurrence across all22 training observations; unchanged .90 joint score",
+    "training_count": 22,
+    "accepted": 0,
+    "support_populations": [
+      70,
+      385,
+      182
+    ],
+    "minimum_score": 0.32608695652173914,
+    "polarity_inverted_reference_score": 0.2857142857142857,
+    "holdout_evaluated": false,
+    "negative_evaluated": false
+  },
+  "frozen_header_model_sha256": "eb4474eb46ea0556cbe33ed3ed2a389f23af230f695ec377015327545a4bbb9f",
+  "decision": "NEED MORE EVIDENCE"
 }
