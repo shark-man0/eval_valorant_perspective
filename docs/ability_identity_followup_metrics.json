@@ -1,0 +1,393 @@
+{
+  "starting_commit": "1c5c30bd92b10655f1e629c408f9c246e5b774d1",
+  "production_changes": false,
+  "decision": "NEED MORE EVIDENCE",
+  "continuation": "Audit Spectator obscuration attribution/local ROI visibility; do not stop or bypass exclusion",
+  "video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "diagnostic_revised_candidate": {
+    "diagnostic_only": true,
+    "threshold": 0.9,
+    "learning": "training median; oriented ridge recurrence >= 0.60; all groups",
+    "support_populations": [
+      120,
+      119,
+      116,
+      136
+    ],
+    "hashes": {
+      "reference": "f7cab7109cc82a4b3110e82399964b4e3e6a94693a3d0e6f1ccdaabb683b5c01",
+      "mask": "32b02b86f68bfe8c44d7191572b68a87740357a5323804356874b91ffe50db57",
+      "regions": "6dad4ea4abbbb92d1f54c6815bae1b0ef7baca6f707175e3d114de0109a6a616"
+    },
+    "cohorts": {
+      "train": {
+        "count": 32,
+        "accepted": 25,
+        "distribution": {
+          "min": 0.0,
+          "p10": 0.4558823529411765,
+          "p25": 0.948063725490196,
+          "median": 0.9836731973877115,
+          "p75": 0.9838709677419355,
+          "p90": 0.9914456233421751,
+          "max": 0.9918032786885246
+        }
+      },
+      "holdout": {
+        "count": 32,
+        "accepted": 27,
+        "distribution": {
+          "min": 0.0,
+          "p10": 0.4205882352941177,
+          "p25": 0.9398453346855984,
+          "median": 0.9834022038567494,
+          "p75": 0.9838709677419355,
+          "p90": 0.9917216473366206,
+          "max": 1.0
+        }
+      },
+      "positive": {
+        "count": 183,
+        "accepted": 173,
+        "distribution": {
+          "min": 0.8529411764705882,
+          "p10": 0.9437593984962406,
+          "p25": 0.9833333333333333,
+          "median": 0.9836065573770492,
+          "p75": 0.9838709677419355,
+          "p90": 0.9915254237288136,
+          "max": 1.0
+        }
+      },
+      "missing": {
+        "count": 75,
+        "accepted": 60,
+        "distribution": {
+          "min": 0.0,
+          "p10": 0.0,
+          "p25": 0.927003410059676,
+          "median": 0.9834710743801653,
+          "p75": 0.9836731973877115,
+          "p90": 0.9839483870967742,
+          "max": 0.9917355371900827
+        }
+      },
+      "negative": {
+        "count": 27,
+        "accepted": 15,
+        "distribution": {
+          "min": 0.0,
+          "p10": 0.0,
+          "p25": 0.09308895972181976,
+          "median": 0.9705882352941176,
+          "p75": 0.983739837398374,
+          "p90": 0.991624649859944,
+          "max": 0.9918032786885246
+        }
+      }
+    }
+  },
+  "counterfactual": {
+    "reference": {
+      "raw_canny": 1.0,
+      "oriented_isolated_ridge": 1.0
+    },
+    "outside_support_noise": {
+      "raw_canny": 0.761744966442953,
+      "oriented_isolated_ridge": 1.0
+    },
+    "outside_support_inversion": {
+      "raw_canny": 0.8043478260869565,
+      "oriented_isolated_ridge": 1.0
+    },
+    "global_affine_luminance": {
+      "raw_canny": 1.0,
+      "oriented_isolated_ridge": 1.0
+    },
+    "contrast_polarity_inversion": {
+      "raw_canny": 1.0,
+      "oriented_isolated_ridge": 0.5084745762711864
+    },
+    "one_group_removed": {
+      "raw_canny": 0.0,
+      "oriented_isolated_ridge": 0.0
+    },
+    "one_group_only": {
+      "raw_canny": 0.0,
+      "oriented_isolated_ridge": 0.0
+    },
+    "dynamic_content_only_no_groups": {
+      "raw_canny": 0.013215859030837005,
+      "oriented_isolated_ridge": 0.0
+    },
+    "flat_no_structure": {
+      "raw_canny": 0.0,
+      "oriented_isolated_ridge": 0.0
+    },
+    "arbitrary_texture": {
+      "raw_canny": 0.5314685314685315,
+      "oriented_isolated_ridge": 0.625531914893617
+    },
+    "one_group_vertical_contradiction": {
+      "raw_canny": 0.752895752895753,
+      "oriented_isolated_ridge": 0.15833333333333333
+    }
+  },
+  "training_support_population": [
+    {
+      "group": 1,
+      "region_pixels": 1134,
+      "raw_reference_ridge_pixels": 120,
+      "persistent_mask_pixels": 120,
+      "training_recurrence": {
+        "min": 0.875,
+        "median": 0.875,
+        "max": 0.9375,
+        "fraction_ge_0_75": 1.0
+      },
+      "reference_orientation_histogram": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "construction": "bright top-hat ridge pixels from reference, retained when oriented match occurs in >=60% of even-32 training crops"
+    },
+    {
+      "group": 2,
+      "region_pixels": 1148,
+      "raw_reference_ridge_pixels": 119,
+      "persistent_mask_pixels": 119,
+      "training_recurrence": {
+        "min": 0.875,
+        "median": 0.90625,
+        "max": 0.9375,
+        "fraction_ge_0_75": 1.0
+      },
+      "reference_orientation_histogram": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "construction": "bright top-hat ridge pixels from reference, retained when oriented match occurs in >=60% of even-32 training crops"
+    },
+    {
+      "group": 3,
+      "region_pixels": 1134,
+      "raw_reference_ridge_pixels": 116,
+      "persistent_mask_pixels": 116,
+      "training_recurrence": {
+        "min": 0.8125,
+        "median": 0.90625,
+        "max": 0.9375,
+        "fraction_ge_0_75": 1.0
+      },
+      "reference_orientation_histogram": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "construction": "bright top-hat ridge pixels from reference, retained when oriented match occurs in >=60% of even-32 training crops"
+    },
+    {
+      "group": 4,
+      "region_pixels": 1148,
+      "raw_reference_ridge_pixels": 136,
+      "persistent_mask_pixels": 136,
+      "training_recurrence": {
+        "min": 0.8125,
+        "median": 0.875,
+        "max": 0.90625,
+        "fraction_ge_0_75": 1.0
+      },
+      "reference_orientation_histogram": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "construction": "bright top-hat ridge pixels from reference, retained when oriented match occurs in >=60% of even-32 training crops"
+    }
+  ],
+  "cause_breakdown_missing75": {
+    "fixed_reference_disagreement_scaffold_supported": 42,
+    "raw_edge_clutter_resolved_by_isolation": 18,
+    "localized_partial_oriented_contour_mismatch": 3,
+    "no_visible_ability_hud": 12
+  },
+  "original_positive_losses24": {
+    "recovered_by_revised_extractor": 14,
+    "localized_oriented_mismatch_remains": 10
+  },
+  "negative27": {
+    "current_raw_accept": 13,
+    "old_scaffold_raw_accept": 17,
+    "revised_raw_accept": 15,
+    "full_revised_frozen_gate_replay_live": 0,
+    "full_gate_reason_all27": "spectator_exclusion_unverified",
+    "interpretation": "Gate replay does not prove intrinsic candidate negative separation; contextual overlay may preserve visible Ability HUD."
+  },
+  "tests": {
+    "targeted": 6,
+    "ruff": "passed",
+    "mypy_source_files": 83,
+    "diff_check": "passed",
+    "full": {
+      "passed": 723,
+      "skipped": 2,
+      "seconds": 273.66,
+      "environment": "PYTHONUTF8=1; VALORANT_E2E_PACK=local supplied validation pack"
+    }
+  },
+  "temporal_neighborhood": {
+    "target_centers": 13,
+    "target_groups": 52,
+    "insufficient_temporal_coverage": 0,
+    "centers_with_exact_score_match": 13,
+    "max_center_score_abs_error": 0.0,
+    "group_fates": {
+      "persistent_all_neighbors_fail": 0,
+      "center_only_failure_neighbors_pass": 5,
+      "mixed_neighbors": 10,
+      "center_group_pass": 37
+    },
+    "not_production_temporal_persistence": true
+  },
+  "temporal_neighborhood_aggregate": {
+    "coverage": {
+      "centers": 13,
+      "three_before_and_after_within_025s": true,
+      "max_neighbor_delta_sec": 0.15000000000000568,
+      "unique_cached_frames_in_all_windows": 69
+    },
+    "center_reproduction": {
+      "all_13_exact": true,
+      "max_abs_error": 0.0
+    },
+    "whole_frame_neighbor_result": {
+      "accepted": 59,
+      "count": 78,
+      "by_center_cohort": {
+        "old_positive_lost": {
+          "accepted": 43,
+          "count": 60
+        },
+        "visible_unresolved": {
+          "accepted": 16,
+          "count": 18
+        }
+      }
+    },
+    "center_failed_group_instances": 15,
+    "center_failed_group_endpoint_deficient": 12,
+    "group_fates": {
+      "persistent_all_neighbors_fail": 0,
+      "center_only_failure_neighbors_pass": 5,
+      "mixed_neighbors": 10,
+      "center_group_pass": 37
+    },
+    "center_failed_group_neighbor_failure_occurrences": {
+      "1": {
+        "center_failures": 0,
+        "neighbor_failures": 0,
+        "neighbor_group_observations": 0
+      },
+      "2": {
+        "center_failures": 1,
+        "neighbor_failures": 2,
+        "neighbor_group_observations": 6
+      },
+      "3": {
+        "center_failures": 5,
+        "neighbor_failures": 1,
+        "neighbor_group_observations": 30
+      },
+      "4": {
+        "center_failures": 9,
+        "neighbor_failures": 13,
+        "neighbor_group_observations": 54
+      }
+    },
+    "unique_window_frames_failed_by_group": {
+      "1": 0,
+      "2": 3,
+      "3": 8,
+      "4": 13
+    },
+    "matched_displacement": {
+      "1": {
+        "dx_median_of_frame_medians": 0.0,
+        "dy_median_of_frame_medians": 0.0,
+        "max_per_frame_abs_p90": 0
+      },
+      "2": {
+        "dx_median_of_frame_medians": 0.0,
+        "dy_median_of_frame_medians": 0.0,
+        "max_per_frame_abs_p90": 1.0
+      },
+      "3": {
+        "dx_median_of_frame_medians": 0.0,
+        "dy_median_of_frame_medians": 0.0,
+        "max_per_frame_abs_p90": 1.0
+      },
+      "4": {
+        "dx_median_of_frame_medians": 0.0,
+        "dy_median_of_frame_medians": 0.0,
+        "max_per_frame_abs_p90": 0
+      }
+    },
+    "support_vs_nearby_exterior": {
+      "support": {
+        "flow_median": {
+          "median": 0.04862660728394985,
+          "p90": 0.30026933550834656
+        },
+        "flow_p90": {
+          "median": 1.0337690711021423,
+          "p90": 6.376325607299805
+        },
+        "gray_absdiff_mean": {
+          "median": 4.658859491348267,
+          "p90": 21.720977401733386
+        }
+      },
+      "nearby_exterior": {
+        "flow_median": {
+          "median": 0.06210782937705517,
+          "p90": 0.4001832067966461
+        },
+        "flow_p90": {
+          "median": 1.167701542377472,
+          "p90": 10.161298656463623
+        },
+        "gray_absdiff_mean": {
+          "median": 7.24609112739563,
+          "p90": 38.08735427856443
+        }
+      }
+    },
+    "center_frame_fates": {
+      "all_six_neighbors_pass": 2,
+      "mixed_neighbors": 11,
+      "all_six_neighbors_fail": 0
+    }
+  }
+}
