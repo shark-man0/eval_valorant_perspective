@@ -1,0 +1,226 @@
+{
+  "starting_commit": "4e768580ef60e3b7908760b39ffb213a1fa3df3e",
+  "production_changed": false,
+  "decision": "KEEP CURRENT",
+  "next_step": "Diagnose independent Report structural evidence before revisiting Spectator scene-only refinement",
+  "native_e2e_analyzer_commit": "2650d09b90df50d6a004dbe5d849fc60432af33b",
+  "video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "policy_reproduction": {
+    "diagnostic_only": true,
+    "frame_count": 4730,
+    "legacy_hint_policy": [
+      "map_transition",
+      "partial_expanded_map",
+      "expanded_map_present",
+      "expanded_map_stable",
+      "flash_candidate",
+      "abrupt_luminance_spike",
+      "scene_detail_collapse",
+      "visual_transition",
+      "buy_menu_grid_present"
+    ],
+    "removed_hint": "scene_detail_collapse",
+    "before": {
+      "icon_absent": 343,
+      "icon_roi_obscured": 2786,
+      "icon_roi_unobservable": 1050,
+      "icon_structure_ambiguous": 32,
+      "icon_present": 519
+    },
+    "after": {
+      "icon_absent": 449,
+      "icon_roi_obscured": 1918,
+      "icon_roi_unobservable": 1689,
+      "icon_structure_ambiguous": 70,
+      "icon_present": 604
+    },
+    "transitions": {
+      "icon_absent -> icon_absent": 343,
+      "icon_roi_obscured -> icon_roi_obscured": 1918,
+      "icon_roi_obscured -> icon_roi_unobservable": 639,
+      "icon_roi_obscured -> icon_absent": 106,
+      "icon_roi_unobservable -> icon_roi_unobservable": 1050,
+      "icon_roi_obscured -> icon_structure_ambiguous": 38,
+      "icon_structure_ambiguous -> icon_structure_ambiguous": 32,
+      "icon_present -> icon_present": 519,
+      "icon_roi_obscured -> icon_present": 85
+    },
+    "limit": "Obscuration policy comparison only; no live identity/state simulation.",
+    "layout_sha256": "a3678bcd9df35d0932ae0e69495eb5b87a3ab40e9c988560d502a9507d59eef1",
+    "profile_fingerprint": "372bf43ab9c443e3d54bd46b3b5d51626aa1ebf0f8d8a68edeb76e5aff826453"
+  },
+  "scene_only_gate_replay": {
+    "candidates": 21,
+    "baseline_unknown_exact": 21,
+    "counterfactual_live": 19,
+    "competing_rejected": 2,
+    "visible_report_controls": 3,
+    "visible_report_missed_by_current_reader": 1,
+    "counterfactual_live_world_trustworthy": 11,
+    "counterfactual_live_world_untrustworthy": 8
+  },
+  "report_actual_path": {
+    "function": "OpenCvHudFeatureReader.observe -> _panel_score",
+    "template_present": false,
+    "threshold": 0.78,
+    "roi_xyxy": [
+      1480,
+      270,
+      1918,
+      770
+    ],
+    "reproduced_frames": 4730,
+    "flagged": 849,
+    "unflagged": 3881,
+    "flag_and_value_agreement": 4730,
+    "current_live_with_flag": 0,
+    "flagged_distribution": {
+      "n": 849,
+      "min": 0.78,
+      "p10": 0.7921,
+      "median": 0.8596,
+      "p90": 1.0,
+      "max": 1.0
+    },
+    "unflagged_distribution": {
+      "n": 3881,
+      "min": 0.0119,
+      "p10": 0.066,
+      "median": 0.4062,
+      "p90": 0.7255,
+      "max": 0.7799
+    }
+  },
+  "report_boundary_diagnostic": {
+    "diagnostic_only": true,
+    "current_report_threshold_unchanged": 0.78,
+    "source_reproduction_frames": 4730,
+    "known_visible_report_comparison": [
+      {
+        "current": 0.9674,
+        "content_only": 1,
+        "max_four_band_boundary": 1.0
+      },
+      {
+        "current": 0.5099,
+        "content_only": 1,
+        "max_four_band_boundary": 0.7398
+      },
+      {
+        "current": 0.8285,
+        "content_only": 1,
+        "max_four_band_boundary": 0.9914
+      }
+    ],
+    "shopping_grid_context": {
+      "current": 0.7974,
+      "content_only": 0.5498325722983257,
+      "max_four_band_boundary": 0.7974
+    },
+    "counterfactual": [
+      {
+        "intervention": "replace outer left border only from a detected neighboring report crop",
+        "modified_area_fraction": 0.06164383561643835,
+        "report_core_pixel_change_outside_band": 0,
+        "original_score": 0.5099,
+        "counterfactual_score": 1.0
+      },
+      {
+        "intervention": "replace outer left border only from a detected neighboring report crop",
+        "modified_area_fraction": 0.06164383561643835,
+        "report_core_pixel_change_outside_band": 0,
+        "original_score": 0.5099,
+        "counterfactual_score": 0.5472
+      },
+      {
+        "intervention": "constant outer left border only",
+        "modified_area_fraction": 0.06164383561643835,
+        "report_core_pixel_change_outside_band": 0,
+        "original_score": 0.5099,
+        "counterfactual_score": 1.0
+      },
+      {
+        "intervention": "constant outer left border only",
+        "modified_area_fraction": 0.06164383561643835,
+        "report_core_pixel_change_outside_band": 0,
+        "original_score": 0.5099,
+        "counterfactual_score": 1.0
+      }
+    ],
+    "current_live_controls_count": 146,
+    "current_live_controls_candidate_report_accepts": {
+      "current": 0,
+      "content_only": 14,
+      "max_four_band_boundary": 12
+    },
+    "conclusion": "Neither content-only nor localized max-boundary is a certified report detector. Border intensity dependence is measured with the center report core unchanged."
+  },
+  "tests": {
+    "existing_full": {
+      "passed": 723,
+      "skipped": 2
+    },
+    "new_diagnostic_and_existing_spectator_targeted": 30,
+    "ruff": "passed",
+    "mypy_files": 83,
+    "diff_check": "passed",
+    "new_full": {
+      "passed": 724,
+      "skipped": 2,
+      "seconds": 273.4,
+      "environment": "PYTHONUTF8=1; local supplied validation pack"
+    }
+  },
+  "expanded_ability_context_controls": {
+    "diagnostic_only": true,
+    "new_confirmed_context_controls": 49,
+    "category_counts": {
+      "right_side_report_overlay_visible": 16,
+      "report_overlay_visible": 14,
+      "full_shopping_grid_visible": 7,
+      "portrait_visible_in_configured_icon_roi": 12
+    },
+    "raw_ability_accepts": {
+      "fixed": 30,
+      "raw_canny": 26,
+      "R": 33
+    },
+    "full_gate_replay": {
+      "current_live": 9,
+      "R_live": 8,
+      "current_vs_saved_live_agreement": 49,
+      "new_live_under_R": 0,
+      "lost_current_live_under_R": 1
+    },
+    "current_reasons": {
+      "structure_evidence_insufficient": 1,
+      "spectator_exclusion_unverified": 39,
+      "independent_hud_structures": 9
+    },
+    "R_reasons": {
+      "structure_evidence_insufficient": 2,
+      "spectator_exclusion_unverified": 39,
+      "independent_hud_structures": 8
+    },
+    "interpretation": "Observed portrait/report/shopping controls; raw Ability acceptance alone is not final identity. False live under report overlays requires separate blocker fix; no production changes."
+  },
+  "manual_report_control_review": {
+    "current_live_variant_union": 16,
+    "visible_report": 9,
+    "nonreport_world_texture": 7,
+    "content_only_14_tags": {
+      "report": 9,
+      "texture": 5
+    },
+    "four_band_12_tags": {
+      "report": 5,
+      "texture": 7
+    },
+    "confirmed_controls_total": 57,
+    "confirmed_context_negatives_for_ability": 49,
+    "report": 30,
+    "shopping": 7,
+    "portrait": 12,
+    "report_negative_texture": 8
+  }
+}
