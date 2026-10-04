@@ -191,5 +191,29 @@
       "gray_10pct_glyph8_still_confident": 5,
       "glyph_0_flips": 0
     }
+  },
+  "production_integration": {
+    "profile_json_sha256": "8e764d6eb2b7a6a8ce6a5f144300bdf809f16f9dcf2b689ac659333c2265b615",
+    "profile_fingerprint": "e7987bf758eb2dca8211149b6fde9bddcb04a07997f1fb66cb38e8c677580e57",
+    "inherited_files_identical": 23,
+    "timer_reference_pixels_identical": true,
+    "factory_native_replay": {
+      "count": 4081,
+      "raw_accepts": 2417,
+      "new_accepts": 0,
+      "lost_accepts": 0,
+      "changed_values": 0
+    },
+    "pytest": {
+      "passed": 801,
+      "skipped": 2
+    },
+    "ruff": "pass",
+    "mypy": {
+      "result": "pass",
+      "source_files": 86
+    },
+    "diff_check": "pass",
+    "clean_e2e": "pending committed source"
   }
 }

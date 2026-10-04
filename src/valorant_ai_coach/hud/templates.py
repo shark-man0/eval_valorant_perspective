@@ -5,7 +5,8 @@ Profiles are JSON files next to a layout by default, named
 Anchor entries have ``template``, ``search_region`` (a layout ROI name or
 normalized ``[x1, y1, x2, y2]``), and optional ``threshold``. Reader entries
 use ``kind`` values ``digits``, ``strict_timer_glyphs``, ``template_values``,
-``fields``, ``ability_slots``, or ``weapon_templates``. Missing assets produce no match.
+``fields``, ``ability_slots``, ``weapon_templates``, or opt-in
+``strict_hp_glyphs``. Missing assets produce no match.
 """
 
 from __future__ import annotations
@@ -19,7 +20,7 @@ import subprocess
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import cv2
 import numpy as np
@@ -27,6 +28,7 @@ from numpy.typing import NDArray
 
 from valorant_ai_coach.resources import resource_path
 
+from .hp_glyphs import StrictHpGlyphReader, UnavailableStrictHpGlyphReader
 from .layout import HudLayout, NormalizedRoi
 from .readers import HudReader, ReaderResult
 from .report_header import ReportHeader, report_header_evidence
@@ -378,10 +380,22 @@ class HudTemplateProfile:
         found: set[Path] = set()
         if isinstance(value, Mapping):
             for key, child in value.items():
-                if key in {
+                if key == "templates":
+
+                    def collect_template_paths(value: Any) -> None:
+                        if isinstance(value, str):
+                            found.add(Path(value))
+                        elif isinstance(value, Mapping):
+                            for nested in value.values():
+                                collect_template_paths(nested)
+                        elif isinstance(value, list):
+                            for nested in value:
+                                collect_template_paths(nested)
+
+                    collect_template_paths(child)
+                elif key in {
                     "template",
                     "mask",
-                    "templates",
                     "values",
                     "available_template",
                     "unavailable_template",
@@ -527,9 +541,30 @@ class HudTemplateProfile:
                 continue
             kind = raw_spec.get("kind")
             try:
-                subregion = (
-                    _bounds(raw_spec["subregion_norm"]) if "subregion_norm" in raw_spec else None
-                )
+                subregion: tuple[float, float, float, float] | None
+                if kind == "strict_hp_glyphs" and "subregion_norm" in raw_spec:
+                    raw_subregion = raw_spec["subregion_norm"]
+                    if (
+                        not isinstance(raw_subregion, Sequence)
+                        or isinstance(raw_subregion, (str, bytes))
+                        or len(raw_subregion) != 4
+                        or any(
+                            isinstance(item, bool)
+                            or not isinstance(item, (int, float))
+                            or not math.isfinite(float(item))
+                            for item in raw_subregion
+                        )
+                    ):
+                        raise ValueError(
+                            "strict HP subregion_norm must contain four finite numbers"
+                        )
+                    subregion = _bounds(raw_subregion)
+                else:
+                    subregion = (
+                        _bounds(raw_spec["subregion_norm"])
+                        if "subregion_norm" in raw_spec
+                        else None
+                    )
                 if kind == "digits":
                     readers[str(roi_name)] = SegmentedDigitsReader(
                         self,
@@ -601,6 +636,74 @@ class HudTemplateProfile:
                             )
                         loaded_templates[digit] = [np.asarray(reference, dtype=np.uint8)]
                     readers[str(roi_name)] = StrictTimerGlyphReader(loaded_templates)
+                elif kind == "strict_hp_glyphs":
+                    if str(roi_name) != "player_hp_armor":
+                        raise ValueError("strict_hp_glyphs is only supported for player_hp_armor")
+                    if subregion is None:
+                        raise ValueError("strict HP reader requires subregion_norm")
+                    threshold = raw_spec.get("glyph_threshold", StrictHpGlyphReader.THRESHOLD)
+                    margin = raw_spec.get("glyph_margin", StrictHpGlyphReader.CLASS_MARGIN)
+                    if (
+                        isinstance(threshold, bool)
+                        or not isinstance(threshold, (int, float))
+                        or not math.isfinite(float(threshold))
+                        or float(threshold) != StrictHpGlyphReader.THRESHOLD
+                    ):
+                        raise ValueError("strict HP glyph_threshold is fixed at 0.90")
+                    if (
+                        isinstance(margin, bool)
+                        or not isinstance(margin, (int, float))
+                        or not math.isfinite(float(margin))
+                        or float(margin) != StrictHpGlyphReader.CLASS_MARGIN
+                    ):
+                        raise ValueError("strict HP glyph_margin is fixed at 0.04")
+                    raw_geometry = raw_spec.get("geometry")
+                    if not isinstance(raw_geometry, Mapping):
+                        raise ValueError("strict HP reader requires profile geometry bounds")
+                    raw_templates = raw_spec.get("templates")
+                    if not isinstance(raw_templates, Mapping) or set(raw_templates) != set(
+                        "0123456789"
+                    ):
+                        raise ValueError(
+                            "strict HP templates must contain exactly digits 0 through 9"
+                        )
+                    hp_templates: dict[str, list[ImageU8]] = {}
+                    for digit in "0123456789":
+                        asset_spec = raw_templates[digit]
+                        asset_paths = (
+                            [asset_spec]
+                            if isinstance(asset_spec, str)
+                            else list(asset_spec)
+                            if isinstance(asset_spec, Sequence)
+                            and not isinstance(asset_spec, (str, bytes))
+                            else []
+                        )
+                        if not asset_paths or not all(
+                            isinstance(path, str) for path in asset_paths
+                        ):
+                            raise ValueError(f"strict HP digit {digit} reference paths are invalid")
+                        images: list[ImageU8] = []
+                        for asset in asset_paths:
+                            encoded = np.frombuffer(
+                                self.resolve_asset(asset).read_bytes(), dtype=np.uint8
+                            )
+                            reference = cv2.imdecode(encoded, cv2.IMREAD_GRAYSCALE)
+                            if reference is None:
+                                raise ValueError(
+                                    f"strict HP digit {digit} template cannot be decoded"
+                                )
+                            images.append(np.asarray(reference, dtype=np.uint8))
+                        hp_templates[digit] = images
+                    readers[str(roi_name)] = StrictHpGlyphReader(
+                        hp_templates,
+                        center_offset_norm=cast(
+                            Sequence[float], raw_geometry.get("center_offset_norm")
+                        ),
+                        gap_ratio_bounds=cast(
+                            Sequence[float], raw_geometry.get("gap_ratio_bounds")
+                        ),
+                        tolerance_norm=cast(float, raw_geometry.get("tolerance_norm")),
+                    )
                 elif kind == "fields":
                     fields = raw_spec.get("fields", {})
                     if isinstance(fields, Mapping):
@@ -636,6 +739,9 @@ class HudTemplateProfile:
                     # Keep the configured timer reader present: HudAnalyzer otherwise
                     # substitutes its legacy OCR reader when round_timer is absent.
                     readers[str(roi_name)] = UnavailableStrictTimerGlyphReader()
+                if kind == "strict_hp_glyphs":
+                    # Explicit opt-in HP configurations fail closed, including wrong roles.
+                    readers[str(roi_name)] = UnavailableStrictHpGlyphReader()
         return readers
 
     def _load_values(
