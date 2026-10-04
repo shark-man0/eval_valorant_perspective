@@ -1,0 +1,39 @@
+{
+  "scope": "training-only aggregate; no holdout pixels opened",
+  "samples": 24,
+  "visible_hp_crops": 21,
+  "blurred_or_obscured": 2,
+  "no_numeric_hud": 1,
+  "hp_digit_distinct_block_support": {
+    "0": 19,
+    "1": 16,
+    "2": 0,
+    "3": 0,
+    "4": 0,
+    "5": 2,
+    "6": 0,
+    "7": 0,
+    "8": 5,
+    "9": 0
+  },
+  "armor_digit_distinct_block_support": {
+    "0": 3,
+    "1": 0,
+    "2": 4,
+    "3": 0,
+    "4": 0,
+    "5": 7,
+    "6": 0,
+    "7": 0,
+    "8": 3,
+    "9": 0
+  },
+  "missing_competitor_digits": [
+    "3",
+    "4",
+    "6",
+    "7",
+    "9"
+  ],
+  "decision": "NO HP/ARMOR ACTIVATION; EXAMINE AMMO TRAINING COVERAGE"
+}

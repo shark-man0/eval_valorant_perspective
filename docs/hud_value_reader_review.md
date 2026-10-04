@@ -76,3 +76,15 @@ Aggregate machine-readable evidence is in `docs/strict_timer_reader_metrics.json
 ## Strict reader integration verification
 
 Full pytest: 775 passed / 2 existing environment skips (optional sibling validation pack and raw-video test input). Ruff src/tests/scripts passed; mypy passed for 85 source files; diff check passed. Production-class reserved replay is 48/48 identical to frozen predictions, with 17 correct / 0 wrong / 31 unknown; production malformed controls are 0/288 accepts and numeric non-timer controls 0/12. Private-profile activation is evaluated by a subsequent clean committed-source E2E; no results from that run are claimed here.
+
+## Clean E2E and paired downstream audit
+
+Analyzer `0d99b1d189d9dc20ffddc04d55786daae370b2c3` ran with an empty initial Git status and metadata git_is_dirty=false. Generated reports were committed separately as `f7f1be7`. E2E is 22 passed / 56 failed / 4 not evaluated, with negative 20 passed / 0 failed and 57 failure messages. This remains incomplete overall E2E quality.
+
+All 4,081 observations pair with the preceding clean run, with zero changed primary states, flags or view contexts. Values change only in round_time_remaining_sec: 1,587 populated outputs. Every normalized value agrees with frozen diagnostic replay. Timer values reach 201 of 535 trace snapshots. Trace state_snapshot events increase from 128 to 206; no direct round/death/shot event is newly inferred. State intervals (145), ownership intervals (3,811), trace Visual observations (4) and temporal features (0) remain unchanged. Identity counts remain live 166 / spectator 335 / remote 33 / buy 1 / unknown 3,546. The evidence supports retaining the bounded optional reader, not declaring the pipeline complete.
+
+The additional 56 hard controls were replayed through the production class using original grayscale fields, not already resized masks: zero false accepts and zero mask/value/confidence/reason mismatches against the frozen prototype. An adjacent-value anomaly check found one large short-gap change; direct before/after pixel review verified an actual rendered timer reset. This is diagnostic evidence only, not a production event rule or accuracy estimate for unaudited values.
+
+## Next blocker: player value coverage
+
+Training-only HP/armor review preserves unopened odd holdout blocks. Of 24 even-block samples, 21 have clear HP numerals, two are obscured and one has no numeric HUD. Distinct-block HP digit support is 0:19 / 1:16 / 5:2 / 8:5; armor adds 0:3 / 2:4 / 5:7 / 8:3. Digits 3,4,6,7,9 are missing. These are visible-value class counts, not verified isolated glyph references. No sparse-alphabet HP/armor reader is activated. Whole-ROI thresholding also mixes rails/background and the armor ring. The next information-rich experiment is training-only current/reserve ammo coverage, with odd holdout still reserved. See docs/hp_value_coverage_metrics.json.

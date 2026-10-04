@@ -119,5 +119,82 @@
     "Unaudited native accepted values have no accuracy claim",
     "Stress controls are not a prevalence sample"
   ],
-  "decision": "ENABLE OPT-IN STRICT TIMER READER; VERIFY CLEAN E2E"
+  "decision": "KEEP OPT-IN STRICT TIMER READER; CONTINUE VALUE COVERAGE DIAGNOSIS",
+  "clean_e2e": {
+    "scope": "aggregate only; paired timestamps and values stay private",
+    "analyzer_commit": "0d99b1d189d9dc20ffddc04d55786daae370b2c3",
+    "git_is_dirty": false,
+    "paired_count": 4081,
+    "baseline_unpaired": 0,
+    "current_unpaired": 0,
+    "categorical_changes": {
+      "primary_state": 0,
+      "state_flags": 0,
+      "view_context": 0
+    },
+    "value_changes": {
+      "round_time_remaining_sec": 1587,
+      "score_ally": 0,
+      "score_enemy": 0,
+      "ally_alive": 0,
+      "enemy_alive": 0,
+      "hp": 0,
+      "armor": 0,
+      "ammo_current": 0,
+      "ammo_reserve": 0,
+      "weapon_text": 0,
+      "spike_state": 0,
+      "location_text": 0,
+      "kill_feed_rows": 0,
+      "ability_slots": 0,
+      "combat_report_visible": 0,
+      "buy_phase_visible": 0,
+      "round_end_text": 0,
+      "zone_id": 0,
+      "player_specific_hud_valid": 0
+    },
+    "frozen_replay_normalized_timer_value_mismatches": 0,
+    "timer_observations": 1587,
+    "timer_snapshots": 201,
+    "trace_event_types": {
+      "state_snapshot": 206
+    },
+    "e2e": {
+      "passed": 22,
+      "failed": 56,
+      "not_evaluated": 4,
+      "count_unit": "assertion_records; multiple failed fields count once",
+      "failure_message_count": 57,
+      "failures_by_category": {
+        "missing_point": 5,
+        "state_coverage": 11,
+        "state_start_edge": 1,
+        "ownership_coverage": 5,
+        "missing_snapshot": 23,
+        "missing_derived_snapshot": 3,
+        "missing_visual_observation": 3,
+        "count": 6
+      }
+    },
+    "negative": {
+      "passed": 20,
+      "failed": 0,
+      "assertions": 20
+    },
+    "counts": {
+      "events": 206,
+      "state_intervals": 145,
+      "ownership_intervals": 3811,
+      "snapshots": 535,
+      "visual_observations": 4,
+      "temporal_features": 0
+    }
+  },
+  "additional_negative_production_parity": {
+    "cases": 56,
+    "false_accepts": 0,
+    "value_confidence_reason_mismatches": 0,
+    "preprocessing_mask_mismatches": 0,
+    "native_grayscale_inputs": true
+  }
 }
