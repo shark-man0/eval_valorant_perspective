@@ -1,0 +1,277 @@
+{
+  "scope": "diagnostic only; no production change",
+  "starting_commit": "a0d844e4b881c854726486145f92db69c6d8ef78",
+  "video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "profile_fingerprint": "372bf43ab9c443e3d54bd46b3b5d51626aa1ebf0f8d8a68edeb76e5aff826453",
+  "panel_separator": {
+    "scope": "offline only; no production wiring or threshold override",
+    "sample_counts": {
+      "training": 22,
+      "holdout": 16,
+      "negative": 44
+    },
+    "training": {
+      "sufficient": false,
+      "reason": "insufficient_panel_scale_pair_support",
+      "accepted": 0,
+      "group_count": 0,
+      "diagnostics": {
+        "score_threshold": 0.9,
+        "orientation_tolerance_deg": 20.0,
+        "pixel_tolerance": 1,
+        "recurrence_fraction": 0.6,
+        "min_train_observations": 3,
+        "min_panel_segment_fraction": 0.5,
+        "parallel_separation_px": [
+          4,
+          32
+        ],
+        "parallel_overlap_fraction": 0.6,
+        "corner_endpoint_gap_px": 8,
+        "group_support_min_pixels": 32,
+        "min_group_span_px": 8,
+        "min_intergroup_gap_px": 16,
+        "support_feature_dilation_px": 7,
+        "derivative_guard_px": 3,
+        "region_guardband_px": 7,
+        "candidate_pair_count": 0,
+        "persistent_segment_count": 0,
+        "training_count": 22,
+        "support_learning": "exact Canny edges from training median reference intersected with >=60% one-pixel recurrence; dilation used for votes only",
+        "selected_group_training": []
+      }
+    },
+    "support_hashes": [],
+    "holdout": {
+      "evaluated": false,
+      "count": 16,
+      "reason": "training model insufficient"
+    },
+    "negative": {
+      "evaluated": false,
+      "count": 44,
+      "reason": "training model insufficient"
+    }
+  },
+  "header_three_group_training": {
+    "raw": 7,
+    "masked": 9,
+    "count": 22
+  },
+  "left_group_failure": {
+    "count": 13,
+    "summary": {
+      "masked_ncc": {
+        "count": 13,
+        "median": 0.776758,
+        "p10": 0.6721308,
+        "p90": 0.8921482000000001,
+        "min": 0.48923,
+        "max": 0.899259
+      },
+      "brightness_std": {
+        "count": 13,
+        "median": 19.2817,
+        "p10": 17.60732,
+        "p90": 21.952,
+        "min": 16.5737,
+        "max": 22.426
+      },
+      "contrast_p90_p10": {
+        "count": 13,
+        "median": 9.0,
+        "p10": 6.0,
+        "p90": 32.400000000000006,
+        "min": 6.0,
+        "max": 36.0
+      },
+      "local_residual_ge8_fraction": {
+        "count": 13,
+        "median": 0.185496,
+        "p10": 0.18056,
+        "p90": 0.2122644,
+        "min": 0.161323,
+        "max": 0.218321
+      },
+      "observed_canny_edge_count": {
+        "count": 13,
+        "median": 230.0,
+        "p10": 217.0,
+        "p90": 247.4,
+        "min": 216.0,
+        "max": 261.0
+      },
+      "oriented_recall": {
+        "count": 13,
+        "median": 0.8830645161290323,
+        "p10": 0.8451612903225807,
+        "p90": 0.9758064516129032,
+        "min": 0.842741935483871,
+        "max": 0.9838709677419355
+      },
+      "oriented_precision": {
+        "count": 13,
+        "median": 0.9678899082568807,
+        "p10": 0.9415865028858961,
+        "p90": 0.9795918367346939,
+        "min": 0.9003831417624522,
+        "max": 0.9879032258064516
+      },
+      "reference_edge_pixels": {
+        "count": 13,
+        "median": 248.0,
+        "p10": 248.0,
+        "p90": 248.0,
+        "min": 248.0,
+        "max": 248.0
+      },
+      "frames_with_oriented_recall_at_least_90pct": 5,
+      "frames_with_oriented_precision_at_least_90pct": 13
+    },
+    "edge_persistence": {
+      "all_training": {
+        "frame_count": 22,
+        "reference_edge_pixels": 248,
+        "pixel_vote_fraction_median": 1.0,
+        "fraction_of_reference_edge_pixels_seen_in_at_least_60pct": 0.9395161290322581,
+        "fraction_of_reference_edge_pixels_seen_in_at_least_80pct": 0.8467741935483871
+      },
+      "left_group_failures": {
+        "frame_count": 13,
+        "reference_edge_pixels": 248,
+        "pixel_vote_fraction_median": 1.0,
+        "fraction_of_reference_edge_pixels_seen_in_at_least_60pct": 0.8467741935483871,
+        "fraction_of_reference_edge_pixels_seen_in_at_least_80pct": 0.8387096774193549
+      }
+    },
+    "alignment": {
+      "frames_with_best_dx_minus1": 0,
+      "frames_with_best_dx_zero": 13,
+      "frames_with_best_dx_plus1": 0,
+      "best_single_group_scores": {
+        "count": 13,
+        "median": 0.776758,
+        "p10": 0.6721308,
+        "p90": 0.8921482000000001,
+        "min": 0.48923,
+        "max": 0.899259
+      },
+      "frames_reaching_90pct_at_any_single_dx": 0,
+      "interpretation": "single-group diagnostic only; the detector contract remains the shared x=0 pose"
+    }
+  },
+  "header_two_group": {
+    "threshold": 0.9,
+    "training": {
+      "accepted": 22,
+      "count": 22,
+      "fraction": 1.0,
+      "required_fraction": 0.8,
+      "support_counts": [
+        1092,
+        621
+      ],
+      "passed": true
+    },
+    "cohorts": {
+      "independent_holdout": {
+        "non_report": {
+          "count": 16,
+          "accepted": 0
+        },
+        "report_ui": {
+          "count": 16,
+          "accepted": 16
+        }
+      },
+      "frozen_report_controls": {
+        "report_ui": {
+          "count": 30,
+          "accepted": 29
+        }
+      },
+      "frozen_world_controls": {
+        "world_texture": {
+          "count": 8,
+          "accepted": 0
+        }
+      },
+      "frozen_shopping_controls": {
+        "shopping_grid": {
+          "count": 7,
+          "accepted": 0
+        }
+      }
+    },
+    "counterfactuals": {
+      "outside_selected_group_support_changed": true,
+      "base": {
+        "score": 1.0,
+        "accepted": true,
+        "dx": 0,
+        "dy": 232,
+        "group_scores": [
+          1.0,
+          1.0
+        ]
+      },
+      "outside_changed": {
+        "score": 1.0,
+        "accepted": true,
+        "dx": 0,
+        "dy": 232,
+        "group_scores": [
+          1.0,
+          1.0
+        ]
+      },
+      "outside_exactly_invariant": true,
+      "selected_group_polarity_inversion_results": [
+        {
+          "selected_group": 1,
+          "result": {
+            "score": 0.190603,
+            "accepted": false,
+            "dx": 2,
+            "dy": 232,
+            "group_scores": [
+              0.190603,
+              0.232556
+            ]
+          }
+        },
+        {
+          "selected_group": 2,
+          "result": {
+            "score": 0.229702,
+            "accepted": false,
+            "dx": 0,
+            "dy": 230,
+            "group_scores": [
+              0.324806,
+              0.229702
+            ]
+          }
+        }
+      ],
+      "each_selected_group_inversion_rejected": true,
+      "left_group_polarity_inversion_result": {
+        "score": 1.0,
+        "accepted": true,
+        "dx": 0,
+        "dy": 232,
+        "group_scores": [
+          1.0,
+          1.0
+        ]
+      },
+      "two_group_acceptance_survives_left_contradiction": true
+    },
+    "decision": "NEED MORE EVIDENCE",
+    "remaining_evidence": [
+      "full native acceptance image audit",
+      "observable excluded-group interpretation",
+      "recording-separated holdout"
+    ]
+  }
+}
