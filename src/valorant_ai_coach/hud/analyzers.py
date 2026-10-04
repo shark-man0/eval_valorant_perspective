@@ -410,6 +410,21 @@ class RealHudAnalyzer:
                 for key in ("hp", "armor", "ammo_current", "ammo_reserve", "weapon_text"):
                     values[key] = None
                 values["ability_slots"] = []
+            # This is value-reader provenance, distinct from feature/ROI geometry
+            # confidence. It is nonzero only for a current, accepted, owned HP value.
+            hp_value_confidence = reader_confidence.get("player_hp_armor", 0.0)
+            if (
+                not calibration.calibrated
+                or values["player_specific_hud_valid"] is not True
+                or type(values.get("hp")) is not int
+                or not 0 <= values["hp"] <= 100
+                or isinstance(hp_value_confidence, bool)
+                or not isinstance(hp_value_confidence, (int, float))
+                or not math.isfinite(float(hp_value_confidence))
+            ):
+                hp_value_confidence = 0.0
+            else:
+                hp_value_confidence = min(1.0, max(0.0, float(hp_value_confidence)))
             quality = {
                 "hud_confidence": min([classified.confidence, *reader_confidence.values()])
                 if calibration.calibrated
@@ -440,6 +455,7 @@ class RealHudAnalyzer:
                     "round_timer_value": reader_confidence.get("round_timer", 0.0)
                     if values["round_time_remaining_sec"] is not None
                     else 0.0,
+                    "hp_value": hp_value_confidence,
                 },
             }
             observation = HudObservationV2(
