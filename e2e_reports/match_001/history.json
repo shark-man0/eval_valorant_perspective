@@ -67,5 +67,28 @@
       "error_code": null
     },
     "failure_count": 57
+  },
+  {
+    "history_key": "0a2740203224a76428cd97fb2a857a576ba2829541e6c435425c33a76e59fa7d",
+    "metadata": {
+      "manual_map_id": "summit",
+      "video_id": "match_001",
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "analyzer_commit": "0972db4db955ba659bbcc9be3bdea9097c00ec76",
+      "git_is_dirty": false,
+      "executed_at": "2026-10-04T07:13:20.929351+00:00",
+      "validation_pack": "valorant_e2e_validation_pack_v3",
+      "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
+      "git_dirty_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "settings_fingerprint": "5fbf872a4d91c43787c91e3e33f0b58e133f06c65ae84672a41a42df763b8332"
+    },
+    "result": {
+      "status": "fail",
+      "schema_valid": true,
+      "failure_count": 57,
+      "negative_assertion_count": 20,
+      "error_code": null
+    },
+    "failure_count": 57
   }
 ]
