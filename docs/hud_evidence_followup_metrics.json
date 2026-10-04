@@ -1,0 +1,335 @@
+{
+  "score_fullfield": {
+    "sha256": "205a6d9ef323b6235f6e248196995d90dc20a3dc60fbb93dfeae73f2483f07ec",
+    "training_summary": {
+      "ally_score": {
+        "raw": {
+          "accepted": 12,
+          "correct": 12,
+          "wrong": 0,
+          "unknown": 12,
+          "one_component_count": 12,
+          "predictions": {
+            "0": 12
+          }
+        },
+        "localnorm": {
+          "accepted": 13,
+          "correct": 13,
+          "wrong": 0,
+          "unknown": 11,
+          "one_component_count": 16,
+          "predictions": {
+            "0": 13
+          }
+        }
+      },
+      "enemy_score": {
+        "raw": {
+          "accepted": 4,
+          "correct": 4,
+          "wrong": 0,
+          "unknown": 20,
+          "one_component_count": 4,
+          "predictions": {
+            "1": 1,
+            "2": 3
+          }
+        },
+        "localnorm": {
+          "accepted": 6,
+          "correct": 6,
+          "wrong": 0,
+          "unknown": 18,
+          "one_component_count": 9,
+          "predictions": {
+            "1": 6
+          }
+        }
+      }
+    }
+  },
+  "score_erasure": {
+    "sha256": "501cc7e52b358777ad8e7a10adbb15173a0021e99d3bf126569067cba4fa1599",
+    "pixel_identical": true,
+    "candidate_outputs": {
+      "raw": {
+        "single_visible_center": {
+          "status": "accept",
+          "prediction": "2",
+          "score": 1.0,
+          "runner": "3",
+          "runner_score": 0.5905124545097351,
+          "margin": 0.4094875454902649,
+          "components": 1
+        },
+        "triplet_after_complete_outer_erasure": {
+          "status": "accept",
+          "prediction": "2",
+          "score": 1.0,
+          "runner": "3",
+          "runner_score": 0.5905124545097351,
+          "margin": 0.4094875454902649,
+          "components": 1
+        }
+      },
+      "localnorm": {
+        "single_visible_center": {
+          "status": "unknown_gate",
+          "prediction": null,
+          "score": 0.8673703670501709,
+          "runner": "3",
+          "runner_score": 0.5568224191665649,
+          "margin": 0.31054794788360596,
+          "components": 1
+        },
+        "triplet_after_complete_outer_erasure": {
+          "status": "unknown_gate",
+          "prediction": null,
+          "score": 0.8673703670501709,
+          "runner": "3",
+          "runner_score": 0.5568224191665649,
+          "margin": 0.31054794788360596,
+          "components": 1
+        }
+      }
+    }
+  },
+  "title_join": {
+    "sha256": "d7be9ee76d28c700499bf17a647787f8da544794594a381b2be5a232f3f08c3e",
+    "audit": {
+      "rows": 279,
+      "pixel_identical_alternative_groups": 279,
+      "pixel_conflicting_alternative_groups": 0,
+      "distinct_pixel_group_counts": {
+        "1": 279
+      },
+      "rows_where_any_alternative_hit_disagrees_with_saved_baseline": 0
+    }
+  },
+  "map_morphology": {
+    "sha256": "98b274d6d3994f2893875fe3a8907bf47d9e3742459bbddce4b8249b1363fa75"
+  },
+  "spectator_probe": {
+    "sha256": "a438e511bbd4c46a93276e117d7e7b5a8b0b74a80de58bcac1c5ea9c79582582",
+    "counts": {
+      "analyzer_commit": "4f142acd50eebf6d956893fe3f9c47b4b9bbda7b",
+      "layout_sha256": "a3678bcd9df35d0932ae0e69495eb5b87a3ab40e9c988560d502a9507d59eef1",
+      "native_rows": 4081,
+      "join_misses": 0,
+      "baseline_reason_counts_reproduced_exactly": {
+        "icon_absent": 461,
+        "icon_roi_obscured": 1681,
+        "icon_roi_unobservable": 1551,
+        "icon_structure_ambiguous": 53,
+        "icon_present": 335
+      },
+      "presence_probe_obscured_false_reason_counts": {
+        "icon_absent": 922,
+        "icon_roi_unobservable": 2163,
+        "icon_structure_ambiguous": 137,
+        "icon_present": 859
+      },
+      "presence_probe_present_total": 859,
+      "presence_probe_present_by_baseline_reason": {
+        "icon_roi_obscured": 524,
+        "icon_present": 335
+      },
+      "presence_probe_present_on_baseline_unverified_statuses": 524,
+      "baseline_reason_crosstab": {
+        "icon_absent|icon_absent": 461,
+        "icon_roi_obscured|icon_roi_unobservable": 612,
+        "icon_roi_unobservable|icon_roi_unobservable": 1551,
+        "icon_roi_obscured|icon_absent": 461,
+        "icon_structure_ambiguous|icon_structure_ambiguous": 53,
+        "icon_roi_obscured|icon_structure_ambiguous": 84,
+        "icon_roi_obscured|icon_present": 524,
+        "icon_present|icon_present": 335
+      },
+      "reconstructed_obscuration_context": {
+        "buy_menu_grid_present": 1070,
+        "abrupt_luminance_spike": 7,
+        "buy_menu_close_anchor_candidate": 1035,
+        "obscured_union": 1681,
+        "multi_cause_overlap": 430
+      }
+    }
+  },
+  "spectator_review": {
+    "sha256": "2243b0cda02a614c9c710b2ef4c2769a875565c1e25b70679b73a2e9bff505a8",
+    "appearance_counts": {
+      "clear_hud_portrait_visible": 24,
+      "no_clear_hud_portrait_visible": 24,
+      "review_ids_matched": 48
+    }
+  },
+  "ammo_annotation_audit": {
+    "combined_unique_exact_pixel_crops": 298,
+    "support_evidence_sha256": "2f13cecb63f6f2bf958a9e86b9ffd5826257c40131e2a22282061dbe9085e028",
+    "block_support_limitation": "Same-recording duration-block coverage, not independent matches/recordings; partial appearance is not full-word positive support.",
+    "original_pair_disagreements": 4,
+    "expanded_pair_disagreements": 7,
+    "label_file_hashes": {
+      "original72": "0a4fc6a921f3b192afb1adf2590d3220928f2ca9e55f1b7beb13808ecf0532c4",
+      "expanded96": "f1a3820044987b8f518a254231ccac58ed2eef4640930a837c86dd029b63dca2",
+      "v1": "ecf3b57437dafec4843407f49d8fa647d0dcc6de933eaa861c5ab9740e466dcd",
+      "v2": "2a4507e0cd85db19c7fddedd5076c8fb6763796f45c153c6a30ce4cdeac8e078",
+      "novelty24": "61c67983f2b87c42bcb89bc92e02e14b43d52dec43af5d0be476c3b42588bcf7"
+    },
+    "source_entry_counts": {
+      "prior72": 72,
+      "prior96": 96,
+      "V1": 64,
+      "V2": 64,
+      "novelty24": 24
+    },
+    "exact_pixel_overlap_by_source_pair": {
+      "prior72/prior96": 0,
+      "prior72/V1": 0,
+      "prior96/V1": 0,
+      "prior72/V2": 0,
+      "prior96/V2": 0,
+      "V1/V2": 22,
+      "prior72/novelty24": 0,
+      "prior96/novelty24": 0,
+      "V1/novelty24": 0,
+      "V2/novelty24": 0
+    },
+    "support_independent_even_blocks": {
+      "current_uncontaminated_full_word": {
+        "0": 1,
+        "1": 19,
+        "2": 18,
+        "3": 0,
+        "4": 1,
+        "5": 2,
+        "6": 1,
+        "7": 1,
+        "8": 3,
+        "9": 1
+      },
+      "current_legible_contaminated_full_word": {
+        "0": 0,
+        "1": 3,
+        "2": 3,
+        "3": 0,
+        "4": 0,
+        "5": 1,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0
+      },
+      "current_partial_appearance_only": {
+        "0": 2,
+        "1": 3,
+        "2": 2,
+        "3": 2,
+        "4": 1,
+        "5": 2,
+        "6": 0,
+        "7": 0,
+        "8": 2,
+        "9": 0
+      },
+      "reserve_uncontaminated_full_word": {
+        "0": 2,
+        "1": 3,
+        "2": 0,
+        "3": 18,
+        "4": 2,
+        "5": 2,
+        "6": 16,
+        "7": 0,
+        "8": 2,
+        "9": 0
+      },
+      "reserve_legible_contaminated_full_word": {
+        "0": 1,
+        "1": 1,
+        "2": 0,
+        "3": 3,
+        "4": 0,
+        "5": 1,
+        "6": 2,
+        "7": 0,
+        "8": 0,
+        "9": 0
+      }
+    },
+    "same_crop_unresolved_disagreements": [],
+    "four_initial_pools_unique_crops": 274,
+    "additional_novelty_crops": 24,
+    "adjudication_override_sha256": "22ecc6b04c60c0c9a2dd3844ed3be4b906be70ad070070fc94965754a2f3aaa2"
+  },
+  "scope": "Aggregate-only current-frame diagnostic; no production/profile activation or new Clean E2E. Frame IDs, timestamps and paths excluded.",
+  "starting_shared_commit": "f8ba07a",
+  "analyzer_commit": "3e9df3dab16d6dce83f3973f0386638d11286c0c",
+  "native_probe_analyzer_commit": "4f142acd50eebf6d956893fe3f9c47b4b9bbda7b",
+  "video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "threshold_unchanged": 0.9,
+  "ammo_frozen_prediction_rejoin": {
+    "evidence_sha256": "d3ad5c435b84b1592d9fd6b98883915b1a030d24971989650ada379464ebc8a7",
+    "crop_integrity": {
+      "original": {
+        "n": 72,
+        "parent_file_sha_match": 72,
+        "frozen_pixel_array_sha_match": 72,
+        "path_match": 72
+      },
+      "expanded": {
+        "n": 96,
+        "parent_file_sha_match": 96,
+        "manifest_file_sha_match": 96
+      }
+    },
+    "truth_status_counts": {
+      "original72": {
+        "numeric_word_absent": 27,
+        "clear_visible": 40,
+        "dimmed_partial_word; reserve uncertain": 4,
+        "menu_blur; no confidently transcribable word": 1
+      },
+      "expanded96": {
+        "numeric_word_absent": 37,
+        "clear_visible": 49,
+        "dimmed_partial_word; reserve uncertain": 7,
+        "contaminated_but_readable": 3
+      }
+    },
+    "corrected_current": {
+      "visible_full_words": 92,
+      "correct_accept": 25,
+      "wrong_accept": 0,
+      "unknown": 67,
+      "partial_or_uncertain_abstentions": 12,
+      "absent_abstentions": 64
+    },
+    "corrected_reserve": {
+      "visible_full_words": 92,
+      "correct_accept": 0,
+      "wrong_accept": 0,
+      "unknown": 92,
+      "partial_or_uncertain_abstentions": 12,
+      "absent_abstentions": 64
+    },
+    "joint_current_reserve_separator": {
+      "visible_full_pairs": 92,
+      "accepted": 0,
+      "uncertain_abstentions": 12,
+      "absent_abstentions": 64
+    },
+    "hp_augmented_old_selection": {
+      "selected": 40,
+      "authoritative_visible": 39,
+      "authoritative_absent": 1,
+      "current_correct": 11,
+      "current_wrong": 0,
+      "current_unknown": 28,
+      "reserve_correct": 0,
+      "reserve_unknown": 39,
+      "absent_abstained": 1
+    },
+    "no_refit_or_threshold_change": true
+  }
+}
