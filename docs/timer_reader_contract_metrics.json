@@ -1,0 +1,43 @@
+{
+  "scope": "synthetic contract characterization; not video accuracy or production input",
+  "threshold": 0.9,
+  "reader_source_sha256": "295f007c413112ba15efe83db1b4957e51e18fc068e4b4eb85145ba7fde48eed",
+  "cases": [
+    {
+      "case": "complete_timer",
+      "value": "1:14",
+      "confidence": 1.0,
+      "alphabet_size": 10
+    },
+    {
+      "case": "missing_separator",
+      "value": "1:14",
+      "confidence": 1.0,
+      "alphabet_size": 10
+    },
+    {
+      "case": "duplicate_separator",
+      "value": "1:14",
+      "confidence": 1.0,
+      "alphabet_size": 10
+    },
+    {
+      "case": "extra_dot",
+      "value": "1:14",
+      "confidence": 1.0,
+      "alphabet_size": 10
+    },
+    {
+      "case": "partial_alphabet",
+      "value": "1:14",
+      "confidence": 1.0,
+      "alphabet_size": 2
+    },
+    {
+      "case": "clipped_ink_at_roi_edge",
+      "value": "1:14",
+      "confidence": 0.9941826462745667,
+      "alphabet_size": 10
+    }
+  ]
+}
