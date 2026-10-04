@@ -1,0 +1,265 @@
+{
+  "scope": "Aggregate diagnostic only. No production/profile activation; no raw images, frame identifiers or timestamps.",
+  "analyzer_commit": "3e9df3dab16d6dce83f3973f0386638d11286c0c",
+  "native_probe_analyzer_commit": "4f142acd50eebf6d956893fe3f9c47b4b9bbda7b",
+  "git_is_dirty_at_clean_e2e": false,
+  "video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "hp_profile_sidecar_sha256": "8e764d6eb2b7a6a8ce6a5f144300bdf809f16f9dcf2b689ac659333c2265b615",
+  "hp_profile_fingerprint": "e7987bf758eb2dca8211149b6fde9bddcb04a07997f1fb66cb38e8c677580e57",
+  "score": {
+    "frozen_parser_sha256": "4e29f1b90a64f299932045acb983379fdca074b85c0e14e46e7b6d10ee6d8c0c",
+    "predictions_sha256": "1c82b40791d1a654cea4d68a1730679c536aa41083dbf25d93e8496a501f9c29",
+    "annotations_sha256": "c01cf3106eeece3cc030775446806d189e5bebbf2267b53c654120a0ac0aa141",
+    "summary": {
+      "ally_score": {
+        "fields": 46,
+        "visibility": {
+          "readable": 42,
+          "partly_contaminated_but_readable": 4
+        },
+        "outcomes": {
+          "unknown": 15,
+          "correct": 31
+        },
+        "readable_correct": 31,
+        "readable_wrong_accept": 0,
+        "readable_unknown": 11,
+        "unreadable_accept": 0,
+        "unreadable_unknown": 4,
+        "confusion": {
+          "0->0": 31
+        },
+        "by_label": {
+          "0": {
+            "n": 46,
+            "correct": 31,
+            "wrong": 0,
+            "unknown": 15
+          }
+        },
+        "reasons": {
+          "component_touches_crop_border": 5,
+          "accepted": 31,
+          "component_count_not_one": 8,
+          "score_below_0.90": 2
+        }
+      },
+      "enemy_score": {
+        "fields": 46,
+        "visibility": {
+          "readable": 46
+        },
+        "outcomes": {
+          "correct": 38,
+          "unknown": 8
+        },
+        "readable_correct": 38,
+        "readable_wrong_accept": 0,
+        "readable_unknown": 8,
+        "unreadable_accept": 0,
+        "unreadable_unknown": 0,
+        "confusion": {
+          "1->1": 14,
+          "2->2": 24
+        },
+        "by_label": {
+          "1": {
+            "n": 20,
+            "correct": 14,
+            "wrong": 0,
+            "unknown": 6
+          },
+          "2": {
+            "n": 26,
+            "correct": 24,
+            "wrong": 0,
+            "unknown": 2
+          }
+        },
+        "reasons": {
+          "accepted": 38,
+          "component_touches_crop_border": 3,
+          "component_count_not_one": 5
+        }
+      }
+    },
+    "real_absent_unreadable_negative_count": 0,
+    "whole_field_guard": {
+      "enemy_exactly_one_component": 7,
+      "enemy_training_fields": 24,
+      "ally_exactly_one_component": 17,
+      "ally_training_fields": 24,
+      "synthetic_visible_triplets": 9,
+      "narrow_single_component_triplets": 9,
+      "wide_three_component_triplets": 9
+    },
+    "decision": "NEED MORE EVIDENCE; no score reader activation"
+  },
+  "purchase_title": {
+    "decoded_template_sha256": "2806bf04b2ceebdde1965fe0bf31904fb95c65ac7eadf026fe36d83d9d76ecea",
+    "experimental_sidecar_sha256": "6705923ba906461b20515c9c611d4f98946571f503dec07e35e03203a3695e86",
+    "threshold": 0.9,
+    "groups": {
+      "training::fixed_purchase_phase_text": {
+        "n": 10,
+        "api_hit": 9,
+        "prototype_hit": 9,
+        "both_hit": 9,
+        "discordant": 0
+      },
+      "training::no_center_banner_text": {
+        "n": 57,
+        "api_hit": 0,
+        "prototype_hit": 0,
+        "both_hit": 0,
+        "discordant": 0
+      },
+      "training::other_red_center_notification": {
+        "n": 3,
+        "api_hit": 0,
+        "prototype_hit": 0,
+        "both_hit": 0,
+        "discordant": 0
+      },
+      "training::team_ace_overlay": {
+        "n": 2,
+        "api_hit": 0,
+        "prototype_hit": 0,
+        "both_hit": 0,
+        "discordant": 0
+      },
+      "blind_holdout::expanded_map_text": {
+        "n": 2,
+        "api_hit": 0,
+        "prototype_hit": 0,
+        "both_hit": 0,
+        "discordant": 0
+      },
+      "blind_holdout::no_center_title": {
+        "n": 33,
+        "api_hit": 0,
+        "prototype_hit": 0,
+        "both_hit": 0,
+        "discordant": 0
+      },
+      "blind_holdout::other_red_text_notification": {
+        "n": 1,
+        "api_hit": 0,
+        "prototype_hit": 0,
+        "both_hit": 0,
+        "discordant": 0
+      },
+      "blind_holdout::purchase_phase_title": {
+        "n": 6,
+        "api_hit": 4,
+        "prototype_hit": 4,
+        "both_hit": 4,
+        "discordant": 0
+      },
+      "blind_holdout::TEAM_ACE_title": {
+        "n": 2,
+        "api_hit": 0,
+        "prototype_hit": 0,
+        "both_hit": 0,
+        "discordant": 0
+      },
+      "blind_holdout::buy_menu_text": {
+        "n": 2,
+        "api_hit": 0,
+        "prototype_hit": 0,
+        "both_hit": 0,
+        "discordant": 0
+      }
+    },
+    "actual_profile_prototype_pass_fail_disagreements": 0,
+    "exact_source_frame_and_crop_hash_matches": 118,
+    "native": {
+      "native_rows": 4081,
+      "source_frame_path_count": 4361,
+      "same_rounded_ms_multiple_paths": 279,
+      "template_score": {
+        "min": 0.0,
+        "median": 0.03127455711364746,
+        "p90": 0.8693484663963318,
+        "max": 0.9999480843544006,
+        "hit_ge_.90": 344
+      },
+      "template_hits_by_existing_primary_state": {
+        "unknown": 344
+      },
+      "legacy_generic_shared_banner_true": 2852,
+      "legacy_generic_score": {
+        "min": 0.0576,
+        "median": 0.9282,
+        "p90": 1.0,
+        "max": 1.0
+      },
+      "legacy_generic_true_and_title_hit": 327,
+      "score_pair_known": 0,
+      "score_stable": 0,
+      "candidate_hits_that_would_pass_current_score_stable_enricher": 0,
+      "existing_live_identity_valid": 166,
+      "existing_hp_values_present": 130,
+      "existing_buy_phase_flags": 0,
+      "existing_round_start_events": 0,
+      "existing_primary_state_counts": {
+        "unknown": 3546,
+        "remote_control_view": 33,
+        "live_first_person": 166,
+        "buy_menu_open": 1,
+        "spectator_first_person": 335
+      },
+      "generic_vs_title_cross_tab": {
+        "generic_shared_banner=False,title_hit=False": 1212,
+        "generic_shared_banner=False,title_hit=True": 17,
+        "generic_shared_banner=True,title_hit=False": 2525,
+        "generic_shared_banner=True,title_hit=True": 327
+      }
+    },
+    "decision": "No phase/event contract change; presence alone does not establish checked absence, ScoreStable or live identity"
+  },
+  "map": {
+    "visual_profile_supplied": false,
+    "marker_hsv_configured": false,
+    "eligible_rows": 166,
+    "calibration_counts": {
+      "calibration_required": 117,
+      "ok": 49
+    },
+    "calibration_failure_counts": {
+      "alignment_confidence_below_threshold": 67,
+      "full_map_evidence_missing": 38,
+      "insufficient_feature_matches": 12
+    },
+    "markers": {
+      "rows_with_both_self_coordinates": 0,
+      "rows_with_nonempty_ally_markers": 0,
+      "rows_with_nonempty_enemy_markers": 0,
+      "all_rows_have_uncalibrated_note": true
+    },
+    "audited_even_crops": 32,
+    "reserved_odd_crops": 32,
+    "odd_opened": false,
+    "decision": "Self-role unidentifiable from currently established image cues; no HSV self profile adopted"
+  },
+  "clean_e2e": {
+    "run": "20261004T130701Z-bb7e94b4",
+    "passed": 22,
+    "failed": 56,
+    "not_evaluated": 4,
+    "negative_passed": 20,
+    "negative_failed": 0
+  },
+  "source_checks": {
+    "pytest_passed": 830,
+    "pytest_skipped": 2,
+    "ruff": "pass",
+    "mypy": "pass; 86 source files",
+    "diff_check": "pass"
+  },
+  "private_evidence_file_hashes": {
+    "cross_role_numeric_audit/score_fullfield_guard_diagnostic/nativeglyph_field_completeness.json": "1d5a01c9857d8a2eca95bf3d34f89382893331691c460c421127552163923a42",
+    "map_visual_profile/map_profile_evidence_summary.json": "375462b116e4d3425dd92c52acdafa4e1cb618f1616784abeff2ca37520dddce",
+    "buy_banner_study/counterfactual_d332e9b4/train_holdout_source_hash_audit.json": "2e26242dedaf6dacb9669995d99a48e37ae8354788d52c033cf86990ca1c89c7"
+  }
+}
