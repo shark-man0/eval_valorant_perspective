@@ -25,3 +25,9 @@ IMPLEMENT SHARED TIMER VALUE FACT PROVENANCE; verify full tests/static checks, t
 ## Integration verification
 
 Full pytest: 793 passed / 2 existing environment skips. Ruff src/tests/scripts passed; mypy 85 source files passed; diff check passed. Independent read-only review found no concrete safety gap. Clean E2E confirmation follows this source commit; diagnostic replay above remains labeled as prediction.
+
+## Actual committed-source Clean E2E
+
+Analyzer `84ffd0c1b85f7602c76f12d044fe718aa8ab8405` ran with empty Git status and metadata git_is_dirty=false. Reports were saved separately in `d3e2c8c`. E2E remains 22 passed / 56 failed / 4 not evaluated; negative assertions remain 20 passed / 0 failed. All 4,081 paired observations are exactly equal to the preceding clean run after removing only the reserved timer-value confidence key. Events, snapshots, round window, aggregate quality, round metadata and ownership evidence remain unchanged.
+
+Actual output confirms 1,477 current-frame timer facts. Every fact matches its source observation value, timestamp and accepted reader confidence; confidence spans 0.900061..0.993196. IDs and time/value identities are unique, schema validation passes, and FactBuilder enrichment retains all 1,477 with no collision. This confirms the earlier diagnostic prediction without promoting UNKNOWN actor state or inventing round boundaries. Aggregate evidence is `docs/shared_timer_fact_metrics.json`. Full source validation remains 793 passed / 2 existing environment skips, Ruff pass, mypy 85 files pass, diff check pass. Overall E2E is still incomplete.

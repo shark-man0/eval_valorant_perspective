@@ -1,0 +1,70 @@
+{
+  "scope": {
+    "current_run": "20261004T111440Z-caa78222",
+    "comparison_run": "20261004T085542Z-c75aa6a2",
+    "read_only": true,
+    "label_or_GT_data_used": false
+  },
+  "provenance": {
+    "current_commit": "84ffd0c1b85f7602c76f12d044fe718aa8ab8405",
+    "current_git_clean": true,
+    "comparison_commit": "0d99b1d189d9dc20ffddc04d55786daae370b2c3",
+    "both_same_source_sha256": true,
+    "both_same_validation_pack_sha256": true,
+    "current_error_code": null
+  },
+  "paired_observations": {
+    "counts": [
+      4081,
+      4081
+    ],
+    "exact_equal_after_removing_only_round_timer_value": true
+  },
+  "round_package": {
+    "unchanged_fields": {
+      "events": true,
+      "state_snapshots": true,
+      "round_window": true,
+      "observation_quality": true,
+      "round_meta": true,
+      "frames": true,
+      "previous_round_context": true
+    },
+    "new_shared_timer_fact_count": 1477,
+    "all_facts_match_current_observation": true,
+    "fact_id_prefix_counts": {
+      "HT": 1477
+    },
+    "unique_fact_ids": true,
+    "unique_key_value_time_identities": true,
+    "confidence_range": [
+      0.9000612497329712,
+      0.9931959509849548
+    ],
+    "timestamp_order_monotone": true,
+    "schema_valid": true,
+    "post_enrichment_timer_fact_count": 1477,
+    "post_enrichment_ids_unique": true
+  },
+  "negative_and_evaluation_guard": {
+    "reports_same": true,
+    "negative_assertion_counts": [
+      20,
+      20
+    ],
+    "validation_pack_log_status": "OK",
+    "evaluation_schema_valid": true,
+    "evaluation_pass": false,
+    "evaluation_failure_count": 57,
+    "limitation": "The E2E evaluator remains failing with the same 57 failures in both runs; zero negative violations do not demonstrate detection."
+  },
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "e2e": {
+    "passed": 22,
+    "failed": 56,
+    "not_evaluated": 4,
+    "negative_passed": 20,
+    "negative_failed": 0,
+    "report_commit": "d3e2c8c"
+  }
+}
