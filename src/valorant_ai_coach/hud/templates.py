@@ -4,8 +4,8 @@ Profiles are JSON files next to a layout by default, named
 ``<layout-stem>.templates.json``. Asset paths are relative to the profile.
 Anchor entries have ``template``, ``search_region`` (a layout ROI name or
 normalized ``[x1, y1, x2, y2]``), and optional ``threshold``. Reader entries
-use ``kind`` values ``digits``, ``template_values``, ``fields``,
-``ability_slots``, or ``weapon_templates``. Missing assets produce no match.
+use ``kind`` values ``digits``, ``strict_timer_glyphs``, ``template_values``,
+``fields``, ``ability_slots``, or ``weapon_templates``. Missing assets produce no match.
 """
 
 from __future__ import annotations
@@ -32,6 +32,7 @@ from .readers import HudReader, ReaderResult
 from .report_header import ReportHeader, report_header_evidence
 from .spectator import PanelReference, detect_panel
 from .spectator_icon import detect_icon, menu_overlay_candidate
+from .timer_glyphs import StrictTimerGlyphReader, UnavailableStrictTimerGlyphReader
 from .value_identity import MATCHER, value_invariant_score
 from .weapon_consensus import MATCHER as WEAPON_MATCHER
 from .weapon_consensus import consensus_score
@@ -560,6 +561,46 @@ class HudTemplateProfile:
                     if isinstance(values, Mapping):
                         loaded = self._load_values(values, float(raw_spec.get("threshold", 0.90)))
                         readers[str(roi_name)] = TemplateValueReader(loaded)
+                elif kind == "strict_timer_glyphs":
+                    if str(roi_name) != "round_timer":
+                        raise ValueError("strict_timer_glyphs is only supported for round_timer")
+                    threshold = raw_spec.get("glyph_threshold", 0.90)
+                    margin = raw_spec.get("glyph_margin", 0.04)
+                    if (
+                        isinstance(threshold, bool)
+                        or not isinstance(threshold, (int, float))
+                        or not math.isfinite(float(threshold))
+                        or float(threshold) != StrictTimerGlyphReader.THRESHOLD
+                    ):
+                        raise ValueError("strict timer glyph_threshold is fixed at 0.90")
+                    if (
+                        isinstance(margin, bool)
+                        or not isinstance(margin, (int, float))
+                        or not math.isfinite(float(margin))
+                        or float(margin) != StrictTimerGlyphReader.CLASS_MARGIN
+                    ):
+                        raise ValueError("strict timer glyph_margin is fixed at 0.04")
+                    raw_templates = raw_spec.get("templates")
+                    if not isinstance(raw_templates, Mapping) or set(raw_templates) != set(
+                        "0123456789"
+                    ):
+                        raise ValueError(
+                            "strict timer templates must contain exactly digits 0 through 9"
+                        )
+                    loaded_templates: dict[str, list[ImageU8]] = {}
+                    for digit in "0123456789":
+                        asset = raw_templates[digit]
+                        if not isinstance(asset, str):
+                            raise ValueError(f"strict timer digit {digit} template path is invalid")
+                        path = self.resolve_asset(asset)
+                        encoded = np.frombuffer(path.read_bytes(), dtype=np.uint8)
+                        reference = cv2.imdecode(encoded, cv2.IMREAD_GRAYSCALE)
+                        if reference is None:
+                            raise ValueError(
+                                f"strict timer digit {digit} template cannot be decoded"
+                            )
+                        loaded_templates[digit] = [np.asarray(reference, dtype=np.uint8)]
+                    readers[str(roi_name)] = StrictTimerGlyphReader(loaded_templates)
                 elif kind == "fields":
                     fields = raw_spec.get("fields", {})
                     if isinstance(fields, Mapping):
@@ -589,8 +630,12 @@ class HudTemplateProfile:
                         readers[str(roi_name)] = WeaponTemplateReader(loaded)
                 if subregion is not None and str(roi_name) in readers:
                     readers[str(roi_name)] = SubregionReader(readers[str(roi_name)], subregion)
-            except (OSError, TypeError, ValueError) as exc:
+            except (OSError, TypeError, ValueError, cv2.error) as exc:
                 self.reader_diagnostics.append(f"reader {roi_name}: {exc}")
+                if kind == "strict_timer_glyphs" and str(roi_name) == "round_timer":
+                    # Keep the configured timer reader present: HudAnalyzer otherwise
+                    # substitutes its legacy OCR reader when round_timer is absent.
+                    readers[str(roi_name)] = UnavailableStrictTimerGlyphReader()
         return readers
 
     def _load_values(

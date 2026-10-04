@@ -72,3 +72,7 @@ The training-derived field is a profile subregion, not a hardcoded production co
 Timer cannot satisfy missing HP/Ability/Weapon identity gates or unchecked Spectator exclusion. Shared timer values may survive non-live states; player-specific value clearing remains unchanged. A timer reset alone creates no round_start. Existing temporal logic also requires a buy/banner-to-live transition; round_end requires its banner plus corroborating evidence. No expected state or timestamp enters this reader.
 
 Aggregate machine-readable evidence is in `docs/strict_timer_reader_metrics.json`. Reproduction requires the private frozen references and frame collection: validate policy/reference hashes, build the strict reader through HudTemplateProfile, and replay original timer ROIs using the frozen normalized subregion. Shared synthetic tests exercise format, competing alphabet, role, malformed assets and fail-closed OCR behavior without private assets.
+
+## Strict reader integration verification
+
+Full pytest: 775 passed / 2 existing environment skips (optional sibling validation pack and raw-video test input). Ruff src/tests/scripts passed; mypy passed for 85 source files; diff check passed. Production-class reserved replay is 48/48 identical to frozen predictions, with 17 correct / 0 wrong / 31 unknown; production malformed controls are 0/288 accepts and numeric non-timer controls 0/12. Private-profile activation is evaluated by a subsequent clean committed-source E2E; no results from that run are claimed here.
