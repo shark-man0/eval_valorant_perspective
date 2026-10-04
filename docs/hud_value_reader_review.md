@@ -50,3 +50,25 @@ A shared reproducer is `python scripts/diagnose_timer_reader_contract.py AGGREGA
 ## Verification for this diagnostic checkpoint
 
 pytest: 768 passed / 2 existing skips; Ruff src/tests/scripts: pass; mypy: 84 source files pass; diff check: pass. The two diagnostic tests verify actual-reader execution, aggregate output schema and genuine visible-ink clipping. Production source/profile activation is unchanged, so no new Clean E2E is required; latest committed-source E2E remains 22/56/4 with negative 20/0. This checkpoint immediately continues into extractor-mechanism diagnosis and fresh reserved-image evaluation.
+
+## Continued diagnosis: normalization mechanism
+
+The generic glyph normalizer infers polarity from foreground occupancy. Digit zero straddles its 50% rule: 20/34 training zero glyphs invert. Keeping an already known white-foreground mask increases mean zero within-class NCC from 0.311 to 0.892. Changing references alone while retaining query inversion is invalid; both query and reference normalization must use the same contract. The initial 24 holdout crops became development data after extractor inspection. Gaussian smoothing and three-level luminance clustering were development-only probes and are not enabled.
+
+## Frozen strict v1 evidence
+
+Seventy-two training samples come from 24 preassigned even blocks. Each selected digit reference recurs in at least three distinct training blocks, with per-class block support 15/13/8/5/6/9/5/4/4/3. Freeze the field and raw normal-polarity Otsu extraction before evaluating 48 reserved odd-block quarter samples. Their full-image and timer-ROI hashes overlap neither training nor the 24 development samples. Independent pixel transcription agrees for all 48. The frozen policy SHA256 is `1fa5f1809e181415f928de4f46f38f066b9680f6b37e5d0467248368e014c7c4`.
+
+Reserved evaluation: 17 correct, 0 wrong, 31 unknown (19 glyph score, 11 boundary contact, 1 separator). This conservative coverage supports bounded optional value reading, not broad recognition accuracy. Eight malformed pixel mutations across 36 eligible source crops produce 0/288 accepts; twelve HP/ammo/score controls produce 0/12. Another 48 aspect-preserved non-timer crops from 48 source frames produce 0/48. Eight additional combat-report subwindows pass the frozen digit-and-separator geometry but all fail glyph scores: 0/8. The latter combined stress set is 56 crops from 53 source frames. Spectator game clocks are legitimate shared timer values and are not labeled negatives.
+
+Actual production-class replay on all 4,081 saved native observations matches the frozen diagnostic exactly: zero value mismatches and zero confidence difference. It returns 1,587 values; this count is not an accuracy result. An additional 64 accepted crops, chosen across states and low confidence while excluding all 144 prior image hashes, were transcribed with predictions hidden: 64/64 agree. All evidence is from one recording; it does not demonstrate independence across episodes or other resolutions.
+
+## Bounded production decision
+
+ENABLE OPT-IN STRICT TIMER READER, followed by committed-source Clean E2E. The reader is restricted to round_timer, requires the exact ten-digit alphabet, fixed glyph score 0.90 and competing-class margin 0.04, observed two-dot separator, one/two minute digits plus two second digits, seconds below 60, and no extra or boundary-connected foreground. References are already normalized binary 32x24 masks. Confidence is the minimum accepted glyph NCC, not a probability. Current-frame pixels alone determine each result. Invalid explicitly configured strict profiles install a rejecting reader, preventing silent OCR fallback.
+
+The training-derived field is a profile subregion, not a hardcoded production coordinate. Private activation profile fingerprint is `7c40cf8b719689173b9012ee33c4eb5bfda29619b8eb507e26bacfb68b712b27`; sidecar SHA256 is `e6b73b810f73dd2efbed44f4cbd240bc82214e634b4b4a545f082d8636285588`. All prior identity references and Report/Spectator contracts are inherited unchanged. Glyph assets and per-frame annotations remain private. The prior NEED MORE EVIDENCE decision above is historical; these new reserved and negative experiments resolve the bounded activation question.
+
+Timer cannot satisfy missing HP/Ability/Weapon identity gates or unchecked Spectator exclusion. Shared timer values may survive non-live states; player-specific value clearing remains unchanged. A timer reset alone creates no round_start. Existing temporal logic also requires a buy/banner-to-live transition; round_end requires its banner plus corroborating evidence. No expected state or timestamp enters this reader.
+
+Aggregate machine-readable evidence is in `docs/strict_timer_reader_metrics.json`. Reproduction requires the private frozen references and frame collection: validate policy/reference hashes, build the strict reader through HudTemplateProfile, and replay original timer ROIs using the frozen normalized subregion. Shared synthetic tests exercise format, competing alphabet, role, malformed assets and fail-closed OCR behavior without private assets.

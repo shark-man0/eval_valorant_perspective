@@ -1,0 +1,123 @@
+{
+  "scope": "Aggregate only; private images, glyphs, per-frame values and timestamps excluded",
+  "video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "policy_sha256": "1fa5f1809e181415f928de4f46f38f066b9680f6b37e5d0467248368e014c7c4",
+  "training": {
+    "samples": 72,
+    "blocks": 24,
+    "digit_independent_block_support": [
+      15,
+      13,
+      8,
+      5,
+      6,
+      9,
+      5,
+      4,
+      4,
+      3
+    ]
+  },
+  "reserved_holdout": {
+    "samples": 48,
+    "correct": 17,
+    "wrong": 0,
+    "unknown": 31,
+    "rejection_counts": {
+      "glyph_score": 19,
+      "border_contact": 11,
+      "separator": 1
+    },
+    "exact_image_hash_overlap": 0
+  },
+  "native_pixel_review": {
+    "samples": 64,
+    "correct": 64,
+    "wrong": 0,
+    "predictions_hidden_during_transcription": true,
+    "excluded_previous_144_images_by_hash": true
+  },
+  "runtime_parity": {
+    "count": 4081,
+    "value_mismatches": 0,
+    "max_confidence_error": 0.0,
+    "runtime_nonempty": 1587,
+    "reader_diagnostics": [],
+    "profile_fingerprint": "7c40cf8b719689173b9012ee33c4eb5bfda29619b8eb507e26bacfb68b712b27"
+  },
+  "malformed_controls": {
+    "cases": 288,
+    "source_cases": 36,
+    "families": 8,
+    "false_accepts": 0
+  },
+  "numeric_non_timer_controls": {
+    "cases": 12,
+    "false_accepts": 0
+  },
+  "additional_negative_controls": {
+    "scope": "Frozen strict v1 raw policy only; private-only safety diagnostic. Timer reader did not change. All negative samples are from fixed non-timer ROIs in oldnative pass-a frames; frame selection is SHA-content ordered. No full-frame timestamp/state/ground-truth or game-clock text was a feature.",
+    "policy_sha256": "1fa5f1809e181415f928de4f46f38f066b9680f6b37e5d0467248368e014c7c4",
+    "prototype_sha256": "d842dd3fd0227b2fd92cb966cf1366d0f5fec6bb1af9e19ea1cd6079098a46a0",
+    "sha_verified": true,
+    "wide_negative_controls": {
+      "crop_cases": 48,
+      "distinct_source_frames": 48,
+      "source_roi_categories": {
+        "combat_report_numbers_rows": {
+          "selected": 8,
+          "requested": 8
+        },
+        "hp_armor_numeric_and_shield": {
+          "selected": 14,
+          "requested": 14
+        },
+        "ammo_numeric_and_weapon_glyphs": {
+          "selected": 14,
+          "requested": 14
+        },
+        "top_score_digits": {
+          "selected": 4,
+          "requested": 4
+        },
+        "enemy_score_digits": {
+          "selected": 4,
+          "requested": 4
+        },
+        "minimap_texture_labels_markers": {
+          "selected": 4,
+          "requested": 4
+        }
+      },
+      "frozen_reader_false_accepts": 0,
+      "reason_counts": {
+        "expected_three_or_four_digit_components": 46,
+        "exactly_one_two_dot_separator_required": 2
+      },
+      "mask_size_138x96": true
+    },
+    "structure_matched_hard_controls": {
+      "crop_cases": 8,
+      "distinct_source_frames": 8,
+      "source_hash_overlap_with_wide": 3,
+      "all_from_non_timer_report_roi": true,
+      "all_pass_frozen_parser_structure": true,
+      "reader_reason_counts": {
+        "glyph_below_0_90": 8
+      },
+      "false_accepts": 0
+    },
+    "combined": {
+      "distinct_crop_cases": 56,
+      "false_accepts": 0,
+      "distinct_source_frames": 53
+    },
+    "limitations": "The 48 broad ROI crops are realistic but most fail the 3/4 digit/2-dot grammar before glyph scoring. The additional eight cases were selected with a frozen pixel-only grammar prefilter; all passed structure and separator geometry and then failed glyph score. This is a stress set, not a prevalence sample or proof across other games/resolutions."
+  },
+  "limitations": [
+    "One recording; disjoint image hashes do not imply independent episodes",
+    "Unaudited native accepted values have no accuracy claim",
+    "Stress controls are not a prevalence sample"
+  ],
+  "decision": "ENABLE OPT-IN STRICT TIMER READER; VERIFY CLEAN E2E"
+}
