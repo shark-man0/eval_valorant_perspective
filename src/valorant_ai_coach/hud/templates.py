@@ -321,7 +321,6 @@ class HudTemplateProfile:
                         "expanded_map_stable",
                         "flash_candidate",
                         "abrupt_luminance_spike",
-                        "scene_detail_collapse",
                         "visual_transition",
                         "buy_menu_grid_present",
                     )

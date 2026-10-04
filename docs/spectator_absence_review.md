@@ -1,6 +1,6 @@
 # Spectator sparse-edge absence review
 
-Decision: `NEED MORE EVIDENCE` for a new Spectator absence crosscheck. No Spectator production change is made in this diagnostic commit. The next experiment is a newly reserved portrait holdout for a frozen two-phase orientation representation; this decision does not end work.
+Decision: `CHANGE REPRESENTATION` for Spectator checked-absence evidence only, after a separate frozen reserved stress holdout and actual-runtime parity. Ability's representation decision remains `NEED MORE EVIDENCE`; no Ability implementation changes are included. The prior diagnostic commit rejected incomplete candidates before implementing the bounded contract below.
 
 ## Reproducibility
 
@@ -44,10 +44,25 @@ Clean E2E at analyzer `5ed3b3d5f53e24c8cb9e902b30b6d5cfa958a3cf` records git_is_
 
 An independent audit joins all 138 live observations to their actual current-run extracted frames in private diagnostics: zero missing frames; frozen production Report witness accepts 0/138 (all non-accepts emit present=None), scores 0.000–0.213, median 0.101. The highest-scoring representative of each of 21 time-contiguous runs was pixel-inspected; none contains visible Report UI. This bounded audit does not prove universal Report absence. Both old and current traces contain zero player_death events, so temporal death-event changes cannot be measured in this recording.
 
-## Safety and next action
+## Diagnostic phase safety and next action (completed)
 
 HP + Ability + Weapon + checked Spectator exclusion and threshold 0.90 are unchanged. Normalization can only withhold absence; it cannot establish live identity, clear Report evidence, prove self-HUD loss, use a timestamp/state/Agent oracle or carry state between frames. Buy close-X, buy grid, map and flash safeguards remain unchanged. Raw crops/video/reference assets and per-frame dumps stay private. Candidate support remains one-recording evidence.
 
-Next: reserved two-phase holdout, current-frame runtime parity and synthetic damaged-icon regression. Only after these checks may an absence-only guard and narrowly localized scene-detail context handling be implemented; production changes must receive full/static checks and committed-source Clean E2E.
+The diagnostic phase selected reserved two-phase holdout, current-frame runtime parity and synthetic damaged-icon regression as its next checks. These are completed in the adopted contract below. Production changes still require full/static checks and committed-source Clean E2E.
 
 Verification for this diagnostic commit: pytest 755 passed / 2 existing skips; Ruff src/tests/scripts passes; mypy 84 source files passes; diff check passes. Six new diagnostic tests cover no positive promotion, sparse directional-world retention, geometry rejection, aggregate privacy, exact-pixel split leakage and oracle-field rejection.
+
+
+## Adopted bounded contract
+
+A newly reserved sixteen-portrait set was independently pixel-reviewed before evaluation. It has zero decoded-crop hash overlap with development twenty-four and the previous fifteen. It is still one-video, same-picture/shop-episode evidence, not an independent episode/recording holdout. The frozen two-phase direction veto leaves zero false absences among 1,008 joint mutations (legacy 119) and 1,280 stress mutations (legacy 449). No constants are adjusted after this evaluation.
+
+The implementation runs only in the existing sparse-edge checked-absence branch, after all original local observability/geometry/clipping/acutance guards. Raw partial topology (ten components and eight populated direction bins) or residual normalized edges with eight populated direction bins at either fixed origin 0/22.5 degrees withhold absence into UNKNOWN. The normalization floor remains the existing presence std35; Canny remains 60/150; density boundary remains 0.08; every orientation bin still needs five percent support. Positive presence thresholds and behavior are unchanged. The two bin origins address a measured 4.98%/5.55% boundary artifact without lowering the population threshold.
+
+Actual production detector and frozen pre-change detector plus independent diagnostic candidate agree on every checked/present/reason decision across 8,833 cases: development training 3,432, first development holdout 2,145, reserved holdout 2,288, native absences 449 and native presences 519; zero mismatches. Across 7,865 portrait mutations, legacy errors are 1,799 and the guard leaves zero. These are correlated counterfactual tests, not a cross-recording false-positive estimate.
+
+The center-scene scene_detail_collapse hint is removed only from the dedicated icon detector's obscuration context. It is still computed and consumed elsewhere in the scene/classifier pipeline. Direct local observability checks continue to reject low-information, clipped, blurred and ambiguous slots. Every buy-grid, close-X, map, flash, luminance-spike and visual-transition veto remains. Legacy non-dedicated panel detection is unchanged. The additional Report witness remains active; an actual runtime replay of the same twenty-one reviewed opportunities produces eighteen live and three rejected competing-evidence outcomes. The eighteen are evidence-backed opportunities rather than forced UNKNOWN promotions; full adaptive run effects require the committed-source Clean E2E.
+
+Eleven synthetic regression cases use the existing abstract icon fixture, not a private image: mean-preserving fades with partial occlusion stay UNKNOWN and cannot release live_identity, world rectangles retain checked absence, full abstract presence remains unchanged, content outside the configured slot is irrelevant, and buy/map/flash/transition vetoes continue to reject. Existing HP/Ability/Weapon/Spectator/Report tests are unchanged. Full/static checks and Clean E2E results are recorded separately after the implementation commit.
+
+Production verification before commit: pytest 766 passed / 2 existing skips; Ruff src/tests/scripts passes; mypy 84 source files passes; diff check passes. The 47 targeted Spectator/icon/diagnostic cases pass. Clean E2E is run only after this implementation commit with an empty worktree; its generated report is a separate commit.

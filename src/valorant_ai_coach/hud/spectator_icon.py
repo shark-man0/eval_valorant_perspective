@@ -10,6 +10,33 @@ import cv2
 import numpy as np
 
 
+def _absence_has_unresolved_structure(
+    gray: np.ndarray, mean: float, contrast: float, localized: int, bins: int
+) -> bool:
+    """Withhold sparse-edge absence when current local structure contradicts it.
+
+    This is an absence-only crosscheck, never a positive icon detector. Existing
+    presence contrast and orientation constants are retained. Two fixed bin
+    origins avoid deciding absence from a histogram-boundary artifact.
+    """
+    if localized >= 10 and bins == 8:
+        return True
+    normalized = np.clip(
+        mean + (gray.astype(float) - mean) * max(1, 35 / max(contrast, 1)), 0, 255
+    ).astype(np.uint8)
+    occupied = cv2.Canny(normalized, 60, 150) > 0
+    if float(occupied.mean()) <= 0.08:
+        return False
+    gx = cv2.Sobel(normalized, cv2.CV_32F, 1, 0)
+    gy = cv2.Sobel(normalized, cv2.CV_32F, 0, 1)
+    angle = np.mod(np.degrees(np.arctan2(gy, gx)), 360)[occupied]
+    for phase in (0, 22.5):
+        hist = np.histogram(np.mod(angle + phase, 360), bins=np.linspace(0, 360, 9))[0]
+        if int(sum(hist / max(1, int(hist.sum())) >= 0.05)) == 8:
+            return True
+    return False
+
+
 def detect_icon(
     crop: np.ndarray, configured: bool = True, *, obscured: bool = False
 ) -> dict[str, Any]:
@@ -90,7 +117,10 @@ def detect_icon(
     ):
         result.update(checked=True, panel_present=True, reason="icon_present")
     elif density <= 0.08 and mean >= 45:
-        result.update(checked=True, panel_present=False, reason="icon_absent")
+        if _absence_has_unresolved_structure(gray, mean, contrast, int(localized), bins):
+            result["reason"] = "icon_structure_ambiguous"
+        else:
+            result.update(checked=True, panel_present=False, reason="icon_absent")
     else:
         result["reason"] = "icon_structure_ambiguous"
     return result

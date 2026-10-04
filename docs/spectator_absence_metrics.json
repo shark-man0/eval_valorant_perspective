@@ -203,9 +203,8 @@
     "development_portrait_holdout": 15,
     "training_holdout_decoded_pixel_hash_intersection": 0
   },
-  "decision": "NEED MORE EVIDENCE",
-  "production_changed": false,
-  "next_experiment": "Frozen two-phase orientation veto on newly reserved pixel-reviewed portrait holdout, followed by actual runtime parity.",
+  "decision": "CHANGE REPRESENTATION",
+  "production_changed": true,
   "shared_cli_replay": {
     "diagnostic_only": true,
     "manifest_sha256": "f75f6654a36c824d88336c41413efa440ee5a52abc7ce9590e0746528b63c28d",
@@ -278,5 +277,56 @@
         }
       }
     }
+  },
+  "normalized_orientation_phase_reserved_holdout": {
+    "scope": "diagnostic only; contrast normalization spatial topology only crosschecks sparse-edge absence and cannot prove presence; unchanged Canny60/150 and density.08; target std35 from existing presence contract",
+    "original_absences": 343,
+    "scene_only_absences": 449,
+    "absence_to_ambiguous": 1,
+    "original_absence_to_ambiguous": 1,
+    "post_report_baseline_live": 137,
+    "post_report_baseline_live_lost": 0,
+    "scene_only_added_live_after_report": 18,
+    "scene_only_added_live_lost": 0,
+    "portrait_joint_degradation_count": 1008,
+    "false_absence_before": 119,
+    "false_absence_after": 0
+  },
+  "normalized_orientation_phase_reserved_occlusion_stress": {
+    "scope": "diagnostic stress check; up to25% edge occlusion, bounded shifts2px, resampling and contrast; no normalized positive inference",
+    "count": 1280,
+    "old_false_absence": 449,
+    "remaining_false_absence": 0
+  },
+  "production_absence_runtime_parity": {
+    "scope": "actual production detector against frozen bbda59e baseline + independent diagnostic two-phase veto; raw local measurements only",
+    "cases": {
+      "training": 3432,
+      "development": 2145,
+      "reserved": 2288,
+      "native_absence": 449,
+      "native_present": 519
+    },
+    "total_cases": 8833,
+    "decision_mismatches": 0,
+    "production_changed_no_positive_promotion": true
+  },
+  "targeted_production_live_replay": {
+    "candidate_count": 21,
+    "actual_runtime_classification_counts": {
+      "independent_hud_structures|live_first_person|hudvalid=True": 18,
+      "competing_view_evidence|unknown|hudvalid=False": 3
+    },
+    "scope": "same21 previously reviewed nativeopportunities, actualnewsourceReportprofile; not newadaptiveE2E"
+  },
+  "scope": "Spectator absence-only crosscheck and localized obscuration context; Ability/HP/Weapon/Report/Visual/Map detector algorithms unchanged",
+  "clean_e2e": "PENDING_COMMITTED_SOURCE",
+  "production_checks": {
+    "pytest_passed": 766,
+    "pytest_existing_skips": 2,
+    "targeted_cases_passed": 47,
+    "ruff": "PASS",
+    "mypy_source_files": 84,
+    "diff_check": "PASS"
   }
 }
