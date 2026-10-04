@@ -1,0 +1,149 @@
+{
+  "starting_commit": "b7e41d77f69e0840cdd604d29489e7f29d5ac4f2",
+  "production_analyzer_commit": "3e9df3dab16d6dce83f3973f0386638d11286c0c",
+  "video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "profile_sidecar_sha256": "8e764d6eb2b7a6a8ce6a5f144300bdf809f16f9dcf2b689ac659333c2265b615",
+  "production_changes": false,
+  "canonical_ledger": {
+    "canonical_ledger_sha256": "d16521eae0e353d5aad4e3b985d0ca64df706a18934b2d5b465d73d2126abd93",
+    "cache_unique_raw_pixels": 2023,
+    "canonical_reviewed_total": 317,
+    "reviewed_cache_intersection": 220,
+    "unreviewed_cache_count": 1803,
+    "prior_five_pool_unique_corrected": 291,
+    "f24_prior_overlap": 0,
+    "f24_increment": 24,
+    "missing_from_cache": 97,
+    "hash_semantics": "SHA256 contiguous uint8 decoded BGR HWC bytes",
+    "source_rows": {
+      "original72": 72,
+      "expanded96": 96,
+      "V1": 64,
+      "V2": 64,
+      "novelty24": 24,
+      "F24": 24,
+      "G2_uncertain": 2
+    },
+    "annotation_hash_semantics": {
+      "original72:png_file_bytes": 72,
+      "expanded96:png_file_bytes": 96,
+      "V1:decoded_bgr_pixel_bytes": 64,
+      "V2:decoded_bgr_pixel_bytes": 64,
+      "novelty24:decoded_bgr_pixel_bytes": 24,
+      "F24:decoded_bgr_pixel_bytes": 24,
+      "G2_uncertain:decoded_bgr_pixel_bytes": 2
+    },
+    "non_null_label_conflicts": 0,
+    "absent_vs_visible_duplicate_conflicts": 0
+  },
+  "frozen_candidate": {
+    "runtime_sha256": "d26b1ca92fe46ae475f226f86405800f0a553e391631707505c8d3de790e2463",
+    "threshold": 0.9,
+    "margin": 0.04,
+    "canonical_configuration_sha256": "1a5d499513305fc6b6061a20767ce6a9da88f9d358e5d75e23f71ea1d84b8b40",
+    "json_file_sha256": "acf6b7bd3c3e18e65e125bad127d79c1f896e399a90c9bc5e2b1566807b6399f"
+  },
+  "odd_holdout": {
+    "count": 69,
+    "complete_pairs": 41,
+    "clean_pairs": 19,
+    "contaminated_pairs": 22,
+    "absent": 24,
+    "uncertain": 4,
+    "generic_current_correct": 14,
+    "generic_reserve_correct": 1,
+    "candidate_current_correct": 14,
+    "candidate_reserve_correct": 16,
+    "candidate_joint_correct": 6,
+    "candidate_joint_unknown_positive": 35,
+    "candidate_joint_wrong": 0,
+    "absent_or_uncertain_false_accepts": 0,
+    "even_pixel_overlap": 0,
+    "latest_owned_accepted_count": 0
+  },
+  "current_owned_opportunity": {
+    "cohort": 166,
+    "joint_accepted": 31,
+    "pixel_audited_correct": 31,
+    "wrong": 0,
+    "unreviewed_rejected": 135,
+    "min_pair_ncc": 0.9021,
+    "median_pair_ncc": 0.9452,
+    "min_pair_margin": 0.1671,
+    "sampling": "score-selected opportunity audit; not unbiased validation"
+  },
+  "accepted_current_morphology_audit": {
+    "pool": 230,
+    "sample": 24,
+    "single_component": 9,
+    "two_component": 15,
+    "current_correct": 24,
+    "current_wrong": 0,
+    "reserve_correct": 7,
+    "reserve_unknown": 17,
+    "reserve_wrong": 0,
+    "joint_correct": 3,
+    "joint_wrong": 0,
+    "joint_unknown": 21,
+    "no_number_controls": 0,
+    "rejoin_sha256": "62d2a593686356b5c86fec792ae4db539fc22fbac596b63df88e72e054338c47",
+    "verification_sha256": "9438d8903e1eb50128a98ffaaa7fe68a0df4e405102f3b40e6da22b259b3f7bd",
+    "invalid_prior_join": true
+  },
+  "buy_anchor": {
+    "native_frames": 4081,
+    "obscured_local_portrait_cases": 524,
+    "strict_anchor_hits_in_cases": 1,
+    "broad_x_hints_in_cases": 418,
+    "strict_min_line_length": 23,
+    "strict_hough_votes": 31,
+    "broad_min_line_length": 5,
+    "broad_hough_votes": 8,
+    "learned_reference_present": false,
+    "development_x_matches": 8,
+    "development_world_rejections": 4,
+    "center_candidate_threshold": 0.9,
+    "independent_positive_holdout": 0,
+    "expanded_odd_hint_controls_reviewed": 24,
+    "clear_x_in_expanded_sample": 0
+  },
+  "verification": {
+    "pytest_passed": 830,
+    "pytest_skipped": 2,
+    "pytest_seconds": 290.16,
+    "initial_wrong_environment": {
+      "failed": 2,
+      "passed": 825,
+      "skipped": 5,
+      "cause": "UTF8 JSON read with CP932 default; configured validation pack omitted"
+    },
+    "ruff": "PASS src tests scripts",
+    "mypy": "PASS 86 source files",
+    "diff_check": "PASS",
+    "clean_e2e": "not rerun; no production/profile changes",
+    "last_clean_e2e": {
+      "passed": 22,
+      "failed": 56,
+      "not_evaluated": 4,
+      "negative_passed": 20,
+      "negative_failed": 0,
+      "git_is_dirty": false
+    },
+    "aggregate_privacy_check": "PASS"
+  },
+  "decision": "NEED MORE EVIDENCE",
+  "next_experiments": [
+    "Frozen Ammo visible-partial and foreign-texture completeness stress",
+    "Frozen center-X newly reviewed positive and diagonal-texture challenge; no refit",
+    "Numeric confidence and current/prior ownership integration contract before any source change"
+  ],
+  "separator_parity": {
+    "preserved_cases": 168,
+    "accepted": 44,
+    "rejected": 124,
+    "status_mismatches": 0,
+    "old_generator_ast_available": false,
+    "gray_decode_method_status_divergences": 1,
+    "gray_max_pixel_delta": 1
+  }
+}

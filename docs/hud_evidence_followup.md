@@ -1,5 +1,8 @@
 # HUD evidence follow-up: geometry, numeric labels and portrait presence
 
+> Count erratum: the Ammo unique counts below are historical and superseded by [the canonical hash-ledger review](hud_numeric_safety_review.md). The verified four/five/six-pool counts are 268/291/315; the old PNG-versus-decoded-pixel hash join missed overlaps.
+
+
 ## Provenance and scope
 
 Starting shared commit: `f8ba07a`. Production analyzer remains `3e9df3dab16d6dce83f3973f0386638d11286c0c`; native pixel probes use the preceding `4f142acd50eebf6d956893fe3f9c47b4b9bbda7b` replay. Their observations are equal after removing the later HP-reader confidence field. The source video SHA256 remains `71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06`. No source, active profile, identity gate or threshold is changed. Raw crops, source timestamps, individual labels and frame dumps remain private. This report contains aggregates only.
