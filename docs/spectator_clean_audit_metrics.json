@@ -1,0 +1,41 @@
+{
+  "analyzer_commit": "0972db4db955ba659bbcc9be3bdea9097c00ec76",
+  "report_commit": "9d4309278e18a1af6a7827dbf70629f794d8f0cb",
+  "git_is_dirty": false,
+  "e2e": {
+    "passed": 22,
+    "failed": 56,
+    "not_evaluated": 4,
+    "negative_passed": 20,
+    "negative_failed": 0
+  },
+  "paired_comparison": {
+    "old_count": 4009,
+    "new_count": 4081,
+    "shared_ms_count": 3942,
+    "old_live": 138,
+    "new_live": 166,
+    "old_live_in_shared": 138,
+    "old_live_retained_in_shared": 138,
+    "old_live_not_sampled_in_new": 0,
+    "shared_nonlive_to_live": 18,
+    "shared_live_to_nonlive": 0,
+    "new_live_unpaired": 10,
+    "pixel_review_episode_count": 31,
+    "report_accepts": 0,
+    "report_score_quantiles": [
+      0.0,
+      0.10619508269233421,
+      0.21272817545540013
+    ],
+    "paired_live_pixel_comparisons": 156,
+    "paired_live_pixel_mismatches": 0,
+    "manual_episode_review": {
+      "reviewed": 31,
+      "visible_report": 0,
+      "visible_flat_spectator_portrait": 0,
+      "self_first_person_hud_scene": 31,
+      "scope": "run-maxReport-score representatives only, not universal groundtruth"
+    }
+  }
+}

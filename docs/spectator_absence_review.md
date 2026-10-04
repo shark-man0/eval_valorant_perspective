@@ -66,3 +66,14 @@ The center-scene scene_detail_collapse hint is removed only from the dedicated i
 Eleven synthetic regression cases use the existing abstract icon fixture, not a private image: mean-preserving fades with partial occlusion stay UNKNOWN and cannot release live_identity, world rectangles retain checked absence, full abstract presence remains unchanged, content outside the configured slot is irrelevant, and buy/map/flash/transition vetoes continue to reject. Existing HP/Ability/Weapon/Spectator/Report tests are unchanged. Full/static checks and Clean E2E results are recorded separately after the implementation commit.
 
 Production verification before commit: pytest 766 passed / 2 existing skips; Ruff src/tests/scripts passes; mypy 84 source files passes; diff check passes. The 47 targeted Spectator/icon/diagnostic cases pass. Clean E2E is run only after this implementation commit with an empty worktree; its generated report is a separate commit.
+
+
+## Completed committed-source Clean E2E
+
+Analyzer `0972db4db955ba659bbcc9be3bdea9097c00ec76` was run with an empty `git status --porcelain`; metadata records `git_is_dirty=false`. Generated reports are isolated in commit `9d4309278e18a1af6a7827dbf70629f794d8f0cb`. Results: 22 passed / 56 failed / 4 not evaluated; negative assertions 20 passed / 0 failed. The 4,081 adaptive HUD observations comprise live 166, Spectator 335, remote 33, buy 1 and unknown 3,546. Visual eligibility is mechanics 166 / world 155. No numeric/text readers were configured; all thirteen audited value fields remain empty, so this identity improvement does not establish downstream facts/events completeness.
+
+A controlled comparison shares 3,942 rounded-millisecond observations with the previous 4,009-observation Report-only run. All 138 earlier live observations remain live; eighteen shared non-live observations become live; zero shared live observations become non-live. All 156 paired live full-image hashes match exactly. Ten further live observations are newly sampled and have no paired counterpart; they are not counted as demonstrated recovery. These comparisons separate current-image behavior from changes in adaptive sampling.
+
+All 166 live images are joined without missing frames and independently replayed against the frozen Report witness: accepts 0/166; score range 0 to 0.212728, median 0.106195. The maximum-Report-score representative of each of 31 contiguous live runs was visually reviewed: 31 self first-person HUD scenes, zero visible Report overlays, zero flat Spectator portraits. This bounded review is not universal ground truth. Private crops, frame identifiers and timestamps stay outside Git.
+
+Decision remains CHANGE REPRESENTATION for the bounded Spectator absence veto only. Ability remains NEED MORE EVIDENCE. The next autonomous phase measures value-reader completeness and image-only glyph recognition while preserving all identity contracts.
