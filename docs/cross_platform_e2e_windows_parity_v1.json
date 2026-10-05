@@ -1,0 +1,323 @@
+{
+  "adaptive_comparison": {
+    "added_sample_behavior": {
+      "behavior_counts": {},
+      "confidence_only_changes": 0,
+      "identity_reason_transitions": {},
+      "other_evidence_changes": 0,
+      "ownership_changes": 0,
+      "paired_frames": 0,
+      "primary_state_transitions": {},
+      "reader_value_changes": {
+        "changed": 0,
+        "gained": 0,
+        "lost": 0
+      },
+      "reader_value_changes_by_reader": {},
+      "spectator_reason_transitions": {},
+      "world_eligibility_changes": 0
+    },
+    "common_frame_behavior": {
+      "behavior_counts": {
+        "unchanged": 4038
+      },
+      "confidence_only_changes": 0,
+      "identity_reason_transitions": {},
+      "other_evidence_changes": 0,
+      "ownership_changes": 0,
+      "paired_frames": 4038,
+      "primary_state_transitions": {},
+      "reader_value_changes": {
+        "changed": 0,
+        "gained": 0,
+        "lost": 0
+      },
+      "reader_value_changes_by_reader": {
+        "ability_slots": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "ally_alive": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "ammo_current": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "ammo_reserve": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "armor": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "enemy_alive": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "hp": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "kill_feed_rows": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "location_text": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "round_end_text": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "round_time_remaining_sec": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "score_ally": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "score_enemy": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "spike_state": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "weapon_text": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        }
+      },
+      "spectator_reason_transitions": {},
+      "world_eligibility_changes": 0
+    },
+    "metadata": {
+      "baseline_manifest_sha256": "a3017c0721cf7dfb1454fe8fee0b9de1bb435c645cc3a1e25bd8b6e1ccd4c365",
+      "current_manifest_sha256": "a3017c0721cf7dfb1454fe8fee0b9de1bb435c645cc3a1e25bd8b6e1ccd4c365",
+      "interpretation": "unresolved",
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06"
+    },
+    "removed_sample_behavior": {
+      "behavior_counts": {},
+      "confidence_only_changes": 0,
+      "identity_reason_transitions": {},
+      "other_evidence_changes": 0,
+      "ownership_changes": 0,
+      "paired_frames": 0,
+      "primary_state_transitions": {},
+      "reader_value_changes": {
+        "changed": 0,
+        "gained": 0,
+        "lost": 0
+      },
+      "reader_value_changes_by_reader": {},
+      "spectator_reason_transitions": {},
+      "world_eligibility_changes": 0
+    },
+    "sampling": {
+      "added_frames": 0,
+      "common_frames": 4038,
+      "removed_frames": 0
+    }
+  },
+  "comparison_implementation": {
+    "adapter_sha256": "b4bb46cd72549a39822ef9eb5b57712011ffbf55fc247b1bceab888dd8fe704f",
+    "fixed_replay_comparison_sha256": "85611da724357d52e3b369d8f4bc770323de3452e59bf591177d89f277efd055",
+    "locator_contract": "stream_index:PTS:zero_based_source_frame_index from exact native table time match",
+    "native_frame_table_sha256": "8dee2dda9274908ed3965c2fe1e8beaea8bb9927fae6f53f0a7cd0e6c5948abc"
+  },
+  "limitations": [
+    "Serialized outputs only; no detector replay or frame extraction.",
+    "No per-frame identifiers, paths, or timestamps are emitted; locators exist only in memory for pairing.",
+    "Fact identifiers and provenance event IDs are excluded from semantic record equality."
+  ],
+  "native_locator_binding": {
+    "baseline": {
+      "max_abs_time_delta_sec": 0.0,
+      "observation_count": 4038,
+      "unique_native_locators": 4038
+    },
+    "current": {
+      "max_abs_time_delta_sec": 0.0,
+      "observation_count": 4038,
+      "unique_native_locators": 4038
+    }
+  },
+  "published_fact_comparison": {
+    "hp": {
+      "baseline_count": 130,
+      "current_count": 130,
+      "lost_at_common_observation_time": 0,
+      "lost_at_removed_observation_time": 0,
+      "semantic_records_gained": 0,
+      "semantic_records_lost": 0,
+      "semantic_records_retained_unchanged": 130,
+      "semantic_slots_changed": 0
+    },
+    "round_time_remaining_sec": {
+      "baseline_count": 1470,
+      "current_count": 1470,
+      "lost_at_common_observation_time": 0,
+      "lost_at_removed_observation_time": 0,
+      "semantic_records_gained": 0,
+      "semantic_records_lost": 0,
+      "semantic_records_retained_unchanged": 1470,
+      "semantic_slots_changed": 0
+    }
+  },
+  "round_windows": {
+    "baseline_only_package_count": 0,
+    "baseline_package_count": 1,
+    "comparisons": [
+      {
+        "baseline": {
+          "boundary_event_count": 0,
+          "earliest_usable_sample": {
+            "flags": [],
+            "hud_confidence": 0.7124,
+            "present": true,
+            "state": "live_first_person"
+          },
+          "fallback_causality_eligible": true,
+          "run_boundary_event_count": 0,
+          "run_package_count": 1,
+          "start_matches_earliest_usable_sample": true,
+          "start_matches_global_earliest_usable_sample": true,
+          "window": {
+            "end_sec": 170.836003,
+            "start_sec": 12.402669
+          }
+        },
+        "current": {
+          "boundary_event_count": 0,
+          "earliest_usable_sample": {
+            "flags": [],
+            "hud_confidence": 0.7124,
+            "present": true,
+            "state": "live_first_person"
+          },
+          "fallback_causality_eligible": true,
+          "run_boundary_event_count": 0,
+          "run_package_count": 1,
+          "start_matches_earliest_usable_sample": true,
+          "start_matches_global_earliest_usable_sample": true,
+          "window": {
+            "end_sec": 170.836003,
+            "start_sec": 12.402669
+          }
+        },
+        "end_delta_sec": 0.0,
+        "measured_cause": "window_bounds_unchanged",
+        "round_no": 1,
+        "start_delta_sec": 0.0
+      }
+    ],
+    "current_only_package_count": 0,
+    "current_package_count": 1,
+    "paired_package_count": 1
+  },
+  "runs": {
+    "baseline": {
+      "analyzer_commit": "5b7a7e26c670cfc999839dcecd42c77065d19a24",
+      "git_is_dirty": false,
+      "observation_count": 4038,
+      "raw_sha256": "50ce267b4808c7975b4f8dfb4d22655bc4c87a7e302c0affbee2937d928ce1bf",
+      "run_id": "20261005T023417Z-9331d6ca",
+      "run_metadata_sha256": "05187a43bb3c27c5b32b7ea8aeb20394ac0187ef8a91f366b13bae1bda385620",
+      "settings_fingerprint": "5f73d89e69cc283cefdd28b68524e0ce2e81985b6605842de5bbb6725edc70f8"
+    },
+    "current": {
+      "analyzer_commit": "ba8135a3563e5c451b3a2d2685b5f6cbf6036a7d",
+      "git_is_dirty": false,
+      "observation_count": 4038,
+      "raw_sha256": "5675a5427656cc7e0f56d9a4b439078f9b998db44ac2fa61ec32460c86b7b384",
+      "run_id": "20261005T082557Z-7e6305cd",
+      "run_metadata_sha256": "c8397aa3306ae5ffa969e51ca5eaffed9e5b4fa5f77aeee318a911a34b45cbf1",
+      "settings_fingerprint": "5f73d89e69cc283cefdd28b68524e0ce2e81985b6605842de5bbb6725edc70f8"
+    }
+  },
+  "schema_version": 2,
+  "windows_migration_verification": {
+    "decision": "WINDOWS_PARITY_CONFIRMED_PI_UNVERIFIED",
+    "e2e_assertions": {
+      "count_unit": "assertion_records; multiple failed fields count once",
+      "failed": 56,
+      "failure_message_count": 56,
+      "failures_by_category": {
+        "count": 6,
+        "missing_derived_snapshot": 3,
+        "missing_point": 5,
+        "missing_snapshot": 23,
+        "missing_visual_observation": 3,
+        "ownership_coverage": 5,
+        "state_coverage": 11
+      },
+      "not_evaluated": 4,
+      "passed": 22
+    },
+    "evaluation_json_equal": true,
+    "hud": {
+      "detected_states": {
+        "buy_menu_open": 1,
+        "live_first_person": 165,
+        "spectator_first_person": 335,
+        "unknown": 3537
+      },
+      "observations": 4038,
+      "states": 4,
+      "unknown": 3537
+    },
+    "linux_pi_execution_verified": false,
+    "migration_starting_commit": "530c47d9303a8a06ceb0d17f24588ad0b4d468fa",
+    "negative_assertions": {
+      "assertions": 20,
+      "failed": 0,
+      "passed": 20
+    },
+    "private_profile_image_references": {
+      "relative_posix_style": 21,
+      "total": 25,
+      "windows_absolute": 4
+    },
+    "runtime_exit_code": 1,
+    "shared_summary_content_equal_excluding_metadata": true,
+    "source_checks": {
+      "common_environment_smoke": "pass",
+      "diff_check": "pass",
+      "mypy": "pass",
+      "mypy_src_files": 86,
+      "posix_shell_syntax_and_stub_contract": "pass_on_Git_Bash_only",
+      "pytest_passed": 966,
+      "pytest_skipped": 3,
+      "ruff": "pass",
+      "windows_environment_smoke": "pass"
+    },
+    "src_and_config_diff_from_baseline_empty": true,
+    "unchanged_tool_and_pack_validation_logs": {
+      "ffmpeg.log": true,
+      "ffprobe.log": true,
+      "validation_pack.log": true
+    }
+  }
+}
