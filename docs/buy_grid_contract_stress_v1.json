@@ -1,0 +1,233 @@
+{
+  "appearance_control": {
+    "annotation_sha256": "a53a89daf870d89a05ebf5f0c0023e1cdd9eca211c0c35484b44b300088153a1",
+    "original_ncc_negative_accepts": 0,
+    "original_ncc_positive_retained": 6,
+    "private_evaluation_sha256": "c00489da86aa00a378c8015e18f9a7adeddf33084ea7e82bc2b2aef97d826734",
+    "rows": 68,
+    "unique_buy_appearance": 6,
+    "unique_images": 66,
+    "unique_non_buy_appearance": 60
+  },
+  "cohorts": {
+    "canonical_6hz": {
+      "rows": 34,
+      "unique_locators": 34,
+      "variants": {
+        "blank_black": {
+          "conjunction_flips_from_original": 3,
+          "conjunction_n": 0,
+          "grid_positive_n": 8,
+          "median_grid": 0.6688000000000001,
+          "median_ncc": 0.0,
+          "ncc_positive_n": 0
+        },
+        "blank_mean_bgr": {
+          "conjunction_flips_from_original": 3,
+          "conjunction_n": 0,
+          "grid_positive_n": 8,
+          "median_grid": 0.6688000000000001,
+          "median_ncc": 0.0,
+          "ncc_positive_n": 0
+        },
+        "original": {
+          "conjunction_flips_from_original": 0,
+          "conjunction_n": 3,
+          "grid_positive_n": 8,
+          "median_grid": 0.6688000000000001,
+          "median_ncc": -0.00552593357861042,
+          "ncc_positive_n": 3
+        },
+        "reference_1": {
+          "conjunction_flips_from_original": 5,
+          "conjunction_n": 8,
+          "grid_positive_n": 8,
+          "median_grid": 0.6688000000000001,
+          "median_ncc": 1.0,
+          "ncc_positive_n": 34
+        },
+        "reference_2": {
+          "conjunction_flips_from_original": 5,
+          "conjunction_n": 8,
+          "grid_positive_n": 8,
+          "median_grid": 0.6688000000000001,
+          "median_ncc": 1.0,
+          "ncc_positive_n": 34
+        },
+        "reference_3": {
+          "conjunction_flips_from_original": 5,
+          "conjunction_n": 8,
+          "grid_positive_n": 8,
+          "median_grid": 0.6688000000000001,
+          "median_ncc": 1.0,
+          "ncc_positive_n": 34
+        }
+      }
+    },
+    "production_coverage": {
+      "rows": 34,
+      "unique_locators": 34,
+      "variants": {
+        "blank_black": {
+          "conjunction_flips_from_original": 3,
+          "conjunction_n": 0,
+          "grid_positive_n": 9,
+          "median_grid": 0.6723,
+          "median_ncc": 0.0,
+          "ncc_positive_n": 0
+        },
+        "blank_mean_bgr": {
+          "conjunction_flips_from_original": 3,
+          "conjunction_n": 0,
+          "grid_positive_n": 9,
+          "median_grid": 0.6723,
+          "median_ncc": 0.0,
+          "ncc_positive_n": 0
+        },
+        "original": {
+          "conjunction_flips_from_original": 0,
+          "conjunction_n": 3,
+          "grid_positive_n": 9,
+          "median_grid": 0.6723,
+          "median_ncc": 0.018460924737155437,
+          "ncc_positive_n": 3
+        },
+        "reference_1": {
+          "conjunction_flips_from_original": 6,
+          "conjunction_n": 9,
+          "grid_positive_n": 9,
+          "median_grid": 0.6723,
+          "median_ncc": 1.0,
+          "ncc_positive_n": 34
+        },
+        "reference_2": {
+          "conjunction_flips_from_original": 6,
+          "conjunction_n": 9,
+          "grid_positive_n": 9,
+          "median_grid": 0.6723,
+          "median_ncc": 1.0,
+          "ncc_positive_n": 34
+        },
+        "reference_3": {
+          "conjunction_flips_from_original": 6,
+          "conjunction_n": 9,
+          "grid_positive_n": 9,
+          "median_grid": 0.6723,
+          "median_ncc": 1.0,
+          "ncc_positive_n": 34
+        }
+      }
+    }
+  },
+  "counts": {
+    "canonical_rows": 34,
+    "coverage_rows": 34,
+    "rows": 68,
+    "unique_native_locators": 66
+  },
+  "diagnostic_only": true,
+  "input_hashes": {
+    "active_layout_sha256": "a3678bcd9df35d0932ae0e69495eb5b87a3ab40e9c988560d502a9507d59eef1",
+    "all_challenge_decoded_bgr_sha256": "177ef90e858fb511844b015d447ef9702da154e7ad15f7410fd583bda42101fb",
+    "all_challenge_frame_file_sha256": "a2b2e70d565c5a1eea1a3a2ca87c28dcb33510bf7fa2d1fc1d9d9181925f2b14",
+    "candidate_sha256": "cccadc393cd82fe7215c713b8a211432f21265c426583aa0f2d25a00d197fa60",
+    "composition_receipt_sha256": "d473fec6c0b0e461b5f1705c58aa38f463cdbab135543f1569a263eb2532cfd1",
+    "reference_patch_sha256": [
+      "df7902504526af555e53e99769cc17b807e38064d9a1c4ac6ced387078051fe9",
+      "b90fb732e46306ca7f81f4fa098d38bede15fc9c24862ee77dc6704075138cb9",
+      "2bdde694f323a88f849ec1ff0e939738c4ed6d697254f0f52d14c5be361f990f"
+    ],
+    "score_table_sha256": "5e90cbc1435ef04cb11c8dd7116bde2bbda15b2f26762cf2a70de0a3e38b395f",
+    "selection_map_sha256": "4daf58302ebdea85c2509dd2a174bfe26b61e84c11ca15e75ef538407a0db9a2",
+    "source_layout_sha256": "d74d3c38f23905e56a2c7eaea336aa1ab87f4cc7b77a1e9bcf2f35494fef2529"
+  },
+  "interpretation": "Counterfactual predicate sensitivity, not real-world false-positive rate. Independent Buy-specific structure remains unproven.",
+  "invariance": {
+    "all_duplicate_locator_measurements_identical": true,
+    "grid_score_unchanged_by_every_patch_intervention": true
+  },
+  "layout_binding": {
+    "active_close_bounds_xyxy": [
+      1825,
+      0,
+      1918,
+      95
+    ],
+    "active_grid_bounds_xyxy": [
+      360,
+      90,
+      1510,
+      960
+    ],
+    "active_layout_sha256": "a3678bcd9df35d0932ae0e69495eb5b87a3ab40e9c988560d502a9507d59eef1",
+    "center_patch_bounds_xyxy": [
+      1852,
+      27,
+      1891,
+      66
+    ],
+    "center_patch_overlaps_grid": false,
+    "configured_bounds_equal": true,
+    "grid_metric": "_region_candidate(measure_roi(configured buy_menu_grid crop), min_edge=0.055)",
+    "source_close_bounds_xyxy": [
+      1825,
+      0,
+      1918,
+      95
+    ],
+    "source_grid_bounds_xyxy": [
+      360,
+      90,
+      1510,
+      960
+    ],
+    "source_layout_sha256": "d74d3c38f23905e56a2c7eaea336aa1ab87f4cc7b77a1e9bcf2f35494fef2529"
+  },
+  "per_image_detail_sha256": "f89b9a4ee049eded761fb12740024bce331b60a487d75f0e563c010c99d8d9d1",
+  "schema_version": 1,
+  "scope": "Diagnostic pixel interventions on all frozen challenge images; actual unchanged grid primitive and frozen NCC; no classifier invocation, GT, expected state, replay state/flags or production modifications.",
+  "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "thresholds": {
+    "grid": 0.72,
+    "grid_candidate_min_edge": 0.055,
+    "ncc": 0.9
+  },
+  "unique_image_aggregate": {
+    "blank_black": {
+      "conjunction_flips_from_original": 6,
+      "conjunction_n": 0,
+      "grid_positive_n": 17,
+      "ncc_positive_n": 0
+    },
+    "blank_mean_bgr": {
+      "conjunction_flips_from_original": 6,
+      "conjunction_n": 0,
+      "grid_positive_n": 17,
+      "ncc_positive_n": 0
+    },
+    "original": {
+      "conjunction_flips_from_original": 0,
+      "conjunction_n": 6,
+      "grid_positive_n": 17,
+      "ncc_positive_n": 6
+    },
+    "reference_1": {
+      "conjunction_flips_from_original": 11,
+      "conjunction_n": 17,
+      "grid_positive_n": 17,
+      "ncc_positive_n": 66
+    },
+    "reference_2": {
+      "conjunction_flips_from_original": 11,
+      "conjunction_n": 17,
+      "grid_positive_n": 17,
+      "ncc_positive_n": 66
+    },
+    "reference_3": {
+      "conjunction_flips_from_original": 11,
+      "conjunction_n": 17,
+      "grid_positive_n": 17,
+      "ncc_positive_n": 66
+    }
+  }
+}
