@@ -1,0 +1,348 @@
+{
+  "adaptive_comparison": {
+    "added_sample_behavior": {
+      "behavior_counts": {},
+      "confidence_only_changes": 0,
+      "identity_reason_transitions": {},
+      "other_evidence_changes": 0,
+      "ownership_changes": 0,
+      "paired_frames": 0,
+      "primary_state_transitions": {},
+      "reader_value_changes": {
+        "changed": 0,
+        "gained": 0,
+        "lost": 0
+      },
+      "reader_value_changes_by_reader": {},
+      "spectator_reason_transitions": {},
+      "world_eligibility_changes": 0
+    },
+    "common_frame_behavior": {
+      "behavior_counts": {
+        "other_evidence_change": 3,
+        "positive_to_unknown": 26,
+        "unchanged": 4009
+      },
+      "confidence_only_changes": 0,
+      "identity_reason_transitions": {},
+      "other_evidence_changes": 29,
+      "ownership_changes": 0,
+      "paired_frames": 4038,
+      "primary_state_transitions": {
+        "remote_control_view->unknown": 26
+      },
+      "reader_value_changes": {
+        "changed": 0,
+        "gained": 0,
+        "lost": 1
+      },
+      "reader_value_changes_by_reader": {
+        "ability_slots": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "ally_alive": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 1
+        },
+        "ammo_current": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "ammo_reserve": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "armor": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "enemy_alive": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "hp": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "kill_feed_rows": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "location_text": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "round_end_text": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "round_time_remaining_sec": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "score_ally": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "score_enemy": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "spike_state": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "weapon_text": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        }
+      },
+      "spectator_reason_transitions": {},
+      "world_eligibility_changes": 0
+    },
+    "metadata": {
+      "baseline_manifest_sha256": "a54c10378261386a46d94236c01b5ed55683d5939507e9469c490b531a537552",
+      "current_manifest_sha256": "a3017c0721cf7dfb1454fe8fee0b9de1bb435c645cc3a1e25bd8b6e1ccd4c365",
+      "interpretation": "unresolved",
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06"
+    },
+    "removed_sample_behavior": {
+      "behavior_counts": {
+        "positive_to_unknown": 8,
+        "state_changed": 35
+      },
+      "confidence_only_changes": 0,
+      "identity_reason_transitions": {},
+      "other_evidence_changes": 43,
+      "ownership_changes": 43,
+      "paired_frames": 43,
+      "primary_state_transitions": {
+        "live_first_person-><missing>": 1,
+        "remote_control_view-><missing>": 7,
+        "unknown-><missing>": 35
+      },
+      "reader_value_changes": {
+        "changed": 0,
+        "gained": 0,
+        "lost": 146
+      },
+      "reader_value_changes_by_reader": {
+        "ability_slots": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 43
+        },
+        "ally_alive": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 4
+        },
+        "ammo_current": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "ammo_reserve": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "armor": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "enemy_alive": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 6
+        },
+        "hp": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "kill_feed_rows": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 43
+        },
+        "location_text": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "round_end_text": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "round_time_remaining_sec": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 7
+        },
+        "score_ally": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "score_enemy": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "spike_state": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 43
+        },
+        "weapon_text": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        }
+      },
+      "spectator_reason_transitions": {},
+      "world_eligibility_changes": 43
+    },
+    "sampling": {
+      "added_frames": 0,
+      "common_frames": 4038,
+      "removed_frames": 43
+    }
+  },
+  "comparison_implementation": {
+    "adapter_sha256": "b4bb46cd72549a39822ef9eb5b57712011ffbf55fc247b1bceab888dd8fe704f",
+    "fixed_replay_comparison_sha256": "85611da724357d52e3b369d8f4bc770323de3452e59bf591177d89f277efd055",
+    "locator_contract": "stream_index:PTS:zero_based_source_frame_index from exact native table time match",
+    "native_frame_table_sha256": "8dee2dda9274908ed3965c2fe1e8beaea8bb9927fae6f53f0a7cd0e6c5948abc"
+  },
+  "limitations": [
+    "Serialized outputs only; no detector replay or frame extraction.",
+    "No per-frame identifiers, paths, or timestamps are emitted; locators exist only in memory for pairing.",
+    "Fact identifiers and provenance event IDs are excluded from semantic record equality."
+  ],
+  "native_locator_binding": {
+    "baseline": {
+      "max_abs_time_delta_sec": 0.0,
+      "observation_count": 4081,
+      "unique_native_locators": 4081
+    },
+    "current": {
+      "max_abs_time_delta_sec": 0.0,
+      "observation_count": 4038,
+      "unique_native_locators": 4038
+    }
+  },
+  "published_fact_comparison": {
+    "hp": {
+      "baseline_count": 130,
+      "current_count": 130,
+      "lost_at_common_observation_time": 0,
+      "lost_at_removed_observation_time": 0,
+      "semantic_records_gained": 0,
+      "semantic_records_lost": 0,
+      "semantic_records_retained_unchanged": 130,
+      "semantic_slots_changed": 0
+    },
+    "round_time_remaining_sec": {
+      "baseline_count": 1477,
+      "current_count": 1470,
+      "lost_at_common_observation_time": 0,
+      "lost_at_removed_observation_time": 7,
+      "semantic_records_gained": 0,
+      "semantic_records_lost": 7,
+      "semantic_records_retained_unchanged": 1470,
+      "semantic_slots_changed": 0
+    }
+  },
+  "round_windows": {
+    "baseline_only_package_count": 0,
+    "baseline_package_count": 1,
+    "comparisons": [
+      {
+        "baseline": {
+          "boundary_event_count": 0,
+          "earliest_usable_sample": {
+            "flags": [],
+            "hud_confidence": 0.92,
+            "present": true,
+            "state": "remote_control_view"
+          },
+          "fallback_causality_eligible": true,
+          "run_boundary_event_count": 0,
+          "run_package_count": 1,
+          "start_matches_earliest_usable_sample": true,
+          "start_matches_global_earliest_usable_sample": true,
+          "window": {
+            "end_sec": 170.836003,
+            "start_sec": 12.169336
+          }
+        },
+        "current": {
+          "boundary_event_count": 0,
+          "earliest_usable_sample": {
+            "flags": [],
+            "hud_confidence": 0.7124,
+            "present": true,
+            "state": "live_first_person"
+          },
+          "fallback_causality_eligible": true,
+          "run_boundary_event_count": 0,
+          "run_package_count": 1,
+          "start_matches_earliest_usable_sample": true,
+          "start_matches_global_earliest_usable_sample": true,
+          "window": {
+            "end_sec": 170.836003,
+            "start_sec": 12.402669
+          }
+        },
+        "end_delta_sec": 0.0,
+        "measured_cause": "baseline_start_sample_retained_but_fails_current_usable_filter",
+        "round_no": 1,
+        "start_delta_sec": 0.233333
+      }
+    ],
+    "current_only_package_count": 0,
+    "current_package_count": 1,
+    "paired_package_count": 1
+  },
+  "runs": {
+    "baseline": {
+      "analyzer_commit": "3e9df3dab16d6dce83f3973f0386638d11286c0c",
+      "git_is_dirty": false,
+      "observation_count": 4081,
+      "raw_sha256": "4797abc921734812aa7c38354a260c0386548ffeb302461a2bb85c6c1e933f01",
+      "run_id": "20261004T130701Z-bb7e94b4",
+      "run_metadata_sha256": "cfb5eff4c0f0bcce413f096730b8298c79d9ce497d71676eca0d23e4343f93d1",
+      "settings_fingerprint": "5f73d89e69cc283cefdd28b68524e0ce2e81985b6605842de5bbb6725edc70f8"
+    },
+    "current": {
+      "analyzer_commit": "f291ded6140a802aec9098c22ea96ef6d7b29e2a",
+      "git_is_dirty": false,
+      "observation_count": 4038,
+      "raw_sha256": "8285b20fdccd238a80342be4f8d77116951cb3918bde6c15d70b400d0af35dda",
+      "run_id": "20261004T234911Z-092d7437",
+      "run_metadata_sha256": "5a7c370bf72c75f3f390cb1370346b66b315c8dc7ce3dfc1069b1c40f6b57d7a",
+      "settings_fingerprint": "5f73d89e69cc283cefdd28b68524e0ce2e81985b6605842de5bbb6725edc70f8"
+    }
+  },
+  "schema_version": 2
+}

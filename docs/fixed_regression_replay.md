@@ -123,3 +123,104 @@ observation. The adapter now reads that actual field. Structural score availabil
 is named `score_exposed`; it is not an observability verdict. A null rejected score
 must never imply unobservable structure. Detector outputs and source-frame manifests
 were not changed. Eleven focused adapter/comparison tests passed after correction.
+
+
+## Completed real-source baseline checkpoint
+
+Analyzer `5b7a7e26c670cfc999839dcecd42c77065d19a24` ran both immutable sets
+with `git_is_dirty=false`. Fresh factories/services repeated every actual
+production snapshot exactly; this measures full-video stability beyond the
+synthetic parity tests above. The baseline outputs remain local/private.
+
+| Set | Frames | Fresh-service repeat | Live | Spectator | Buy | UNKNOWN | Ownership | World eligible |
+| --- | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| canonical uniform v1 | 1,026 | exact | 25 | 85 | 0 | 916 | 25 | 19 |
+| frozen f291 coverage v1 | 4,038 | exact | 165 | 335 | 1 | 3,537 | 165 | 154 |
+
+Canonical logical snapshot SHA-256:
+`4ff8a0b49eaacb32e0fdd8b0d7ac041c887ca9e2deb235d935683ae50256fbd7`.
+Coverage logical snapshot SHA-256:
+`1d9ec1c66cdcd20c305cebee98557fc335a3144decf8724587ca43ee79494eea`.
+Both repeat hashes equal their corresponding first-run hashes.
+HUD fingerprint: `e7987bf758eb2dca8211149b6fde9bddcb04a07997f1fb66cb38e8c677580e57`.
+Replay implementation fingerprint:
+`5ae7e89efbb32568da81b6d92283fcc15a606d34924bb1fdf762bebc559c553f`.
+Visual fingerprint hash:
+`a17e8043bf81515b4fe4ea674ab2011acb6c3e49ddc51777ddeb8d3e8871740e`.
+
+Every one of the 4,038 ordered, native-bound coverage observations agrees with
+the previous clean f291 run on primary state/flags, Remote subtype, ownership,
+world eligibility, state/HUD/ROI confidence and published reader fields.
+Core-field difference counts are empty. Rejected raw matcher scores unavailable
+in serialized production observations are outside that core parity claim.
+The comparison helper's self-comparisons also report all frames unchanged;
+these are schema/accounting checks, not an independent accuracy test.
+Aggregate evidence is in `fixed_regression_replay_evidence_v1.json`.
+
+The clean adaptive run `20261005T023417Z-9331d6ca` verified analyzer 5b7:
+**22 passed / 56 failed / 4 not evaluated**, negative **20 passed / 0 failed**,
+no runtime error, and `git_is_dirty=false`. Its assertion failure exit code 1
+does not indicate an analyzer execution failure. Native pairing against f291
+finds **4,038 common / 0 removed / 0 added**, all common snapshots unchanged,
+and zero confidence, reader, ownership, world or reason changes. Final published
+HP facts remain **130** and Timer facts **1,470**, with no semantic records lost,
+gained or changed. The fallback round window also stays unchanged.
+`fixed_replay_clean_adaptive_parity_v1.json` records the aggregate comparison.
+The clean E2E report was committed separately as `2376cee`.
+
+Per-frame availability is different from final package fact count: fixed
+coverage has 130 HP-available frames and 1,580 Timer-available frames before
+final round-window/package filtering. Those figures must not be presented as
+130/1,580 final facts. Canonical availability is HP 22 and Timer 411.
+
+## Reusable adaptive comparison and measured sampling effect
+
+`scripts/compare_adaptive_regression.py` consumes only serialized production
+outputs, hash-bound run metadata and the private native source-frame table.
+It binds observations to unique native stream/PTS/ordinal keys before invoking
+the same comparison helper. It compares semantic HP/Timer fact records across all round
+packages, ignoring generated IDs while retaining multiplicity and null/zero
+differences. Round windows are compared across paired packages; causal statements
+require measured boundary/fallback conditions. Exclusive output creation
+preserves earlier comparisons. The shared output contains aggregate changes,
+hashes and package bounds, without per-frame locators, image paths or payloads.
+
+The earlier 3e9-to-f291 comparison is retained in
+`fixed_adaptive_sampling_comparison_v1.json`: 4,038 common, 43 removed and
+0 added observations. Twenty-six common Remote observations became UNKNOWN
+through the intended safety qualification; HP facts stayed 130. Timer facts
+decreased from 1,477 to 1,470, and all seven lost facts correspond exclusively
+to removed observations. There was no common-frame Timer reader regression.
+The fallback window start shifted by +0.233333 seconds because the old first
+usable observation remained sampled but no longer met the positive-state
+usable filter after Remote became UNKNOWN. This explains provenance and does
+not prove either boundary correct. A prior output is never a truth label.
+
+## Acceptance and next diagnostic
+
+The infrastructure checkpoint is accepted: both immutable sets exist, actual
+production paths and passive traces are tested, real-source input hashes bind,
+fresh-service repeat is exact, full coverage core parity is exact, and unchanged
+adaptive sampling produces unchanged common behavior and final HP/Timer facts.
+No identity, threshold, exclusion, ownership or temporal contract was relaxed.
+
+This completes the evaluation infrastructure checkpoint, not the E2E objective.
+Buy production adoption remains deferred while its close-X candidate is tested
+for independent menu evidence. Canonical replay also identifies 234 frames with
+all three identity structures but unchecked/ambiguous Spectator exclusion
+(118 obscured, 114 unobservable, 2 ambiguous). These are opportunities for
+diagnosis, not positives or authority to bypass exclusion. The same set has
+42 all-structure frames with detected Spectator presence and only 25 checked
+absences. Nine accepted Map calibrations still have missing markers, showing a
+separate downstream blocker. Future subject selection must use evidence and
+preserve every safety gate rather than optimize raw acceptance counts.
+
+Final integration verification after the causal-reporting guards: **920 passed,
+2 skipped** in the full pytest suite; the same two optional-fixture skips remain.
+Fifteen focused adaptive-comparison tests cover the final helper, including
+out-of-window boundary evidence, globally earlier usable frames and multi-package
+runs. Ruff across src/tests/scripts, mypy across 86 source files and diff checks
+pass. Fallback attribution requires a single-package run, no boundary event
+anywhere in the run, and start equal to the globally earliest usable observation;
+other changed package bounds remain unresolved. These final additions are
+comparison/docs/tests only and do not require another adaptive E2E.

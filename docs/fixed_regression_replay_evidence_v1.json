@@ -1,0 +1,294 @@
+{
+  "coverage_production_parity": {
+    "all_core_fields_identical": true,
+    "baseline_analyzer_commit": "f291ded6140a802aec9098c22ea96ef6d7b29e2a",
+    "compared_frames": 4038,
+    "current_analyzer_commit": "5b7a7e26c670cfc999839dcecd42c77065d19a24",
+    "field_difference_counts": {},
+    "manifest_sha256": "e90453cd5ab962101c350ec734ea7a5434b4f368fc1b15ac9cceb72f86edcd8e",
+    "paired_by": "ordered exact native-bound fullcoverage population",
+    "raw_processing_sha256": "8285b20fdccd238a80342be4f8d77116951cb3918bde6c15d70b400d0af35dda"
+  },
+  "interpretation_note": "Published reader counts are per-frame availability, not final RoundPackage facts. State, identity, ownership and world eligibility are production frame outcomes. Paired self-comparison is helper schema sanity; fresh-service repeat equality is separately proven by exact logical snapshot hashes. Previous outputs are not truth.",
+  "runs": [
+    {
+      "analyzer_provenance": {
+        "analyzer_commit": "5b7a7e26c670cfc999839dcecd42c77065d19a24",
+        "git_is_dirty": false,
+        "hud_fingerprint_sha256": "e7987bf758eb2dca8211149b6fde9bddcb04a07997f1fb66cb38e8c677580e57",
+        "implementation_sha256": "5ae7e89efbb32568da81b6d92283fcc15a606d34924bb1fdf762bebc559c553f",
+        "visual_fingerprint_sha256": "a17e8043bf81515b4fe4ea674ab2011acb6c3e49ddc51777ddeb8d3e8871740e"
+      },
+      "frame_count": 1026,
+      "manifest_sha256": "f8267c437f95cb534c06d80a459961409323688f9b7a76a728b719b0350e74f1",
+      "paired_self_comparison": {
+        "behavior_counts": {
+          "unchanged": 1026
+        },
+        "confidence_only_changes": 0,
+        "identity_reason_transitions": {},
+        "metadata": {
+          "baseline_manifest_sha256": "f8267c437f95cb534c06d80a459961409323688f9b7a76a728b719b0350e74f1",
+          "current_manifest_sha256": "f8267c437f95cb534c06d80a459961409323688f9b7a76a728b719b0350e74f1",
+          "interpretation": "unresolved",
+          "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06"
+        },
+        "other_evidence_changes": 0,
+        "ownership_changes": 0,
+        "paired_frames": 1026,
+        "primary_state_transitions": {},
+        "reader_value_changes": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "reader_value_changes_by_reader": {
+          "ability_slots": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          },
+          "ally_alive": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          },
+          "ammo_current": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          },
+          "ammo_reserve": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          },
+          "armor": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          },
+          "enemy_alive": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          },
+          "hp": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          },
+          "kill_feed_rows": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          },
+          "location_text": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          },
+          "round_end_text": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          },
+          "round_time_remaining_sec": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          },
+          "score_ally": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          },
+          "score_enemy": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          },
+          "spike_state": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          },
+          "weapon_text": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          }
+        },
+        "spectator_reason_transitions": {},
+        "world_eligibility_changes": 0
+      },
+      "population": "canonical_sparse",
+      "production_frame_outcomes": {
+        "identity_reason_counts": {
+          "competing_view_evidence": 10,
+          "independent_hud_structures": 25,
+          "spectator_exclusion_unverified": 948,
+          "structure_evidence_insufficient": 43
+        },
+        "ownership_true_frames": 25,
+        "primary_state_counts": {
+          "live_first_person": 25,
+          "spectator_first_person": 85,
+          "unknown": 916
+        },
+        "world_eligible_frames": 19
+      },
+      "published_frame_values": {
+        "frames_with_published_hp": 22,
+        "frames_with_published_timer": 411
+      },
+      "repeat": {
+        "fresh_service_repeat_exact": true,
+        "fresh_service_repeat_sha256": "4ff8a0b49eaacb32e0fdd8b0d7ac041c887ca9e2deb235d935683ae50256fbd7",
+        "logical_output_sha256": "4ff8a0b49eaacb32e0fdd8b0d7ac041c887ca9e2deb235d935683ae50256fbd7"
+      },
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06"
+    },
+    {
+      "analyzer_provenance": {
+        "analyzer_commit": "5b7a7e26c670cfc999839dcecd42c77065d19a24",
+        "git_is_dirty": false,
+        "hud_fingerprint_sha256": "e7987bf758eb2dca8211149b6fde9bddcb04a07997f1fb66cb38e8c677580e57",
+        "implementation_sha256": "5ae7e89efbb32568da81b6d92283fcc15a606d34924bb1fdf762bebc559c553f",
+        "visual_fingerprint_sha256": "a17e8043bf81515b4fe4ea674ab2011acb6c3e49ddc51777ddeb8d3e8871740e"
+      },
+      "frame_count": 4038,
+      "manifest_sha256": "e90453cd5ab962101c350ec734ea7a5434b4f368fc1b15ac9cceb72f86edcd8e",
+      "paired_self_comparison": {
+        "behavior_counts": {
+          "unchanged": 4038
+        },
+        "confidence_only_changes": 0,
+        "identity_reason_transitions": {},
+        "metadata": {
+          "baseline_manifest_sha256": "e90453cd5ab962101c350ec734ea7a5434b4f368fc1b15ac9cceb72f86edcd8e",
+          "current_manifest_sha256": "e90453cd5ab962101c350ec734ea7a5434b4f368fc1b15ac9cceb72f86edcd8e",
+          "interpretation": "unresolved",
+          "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06"
+        },
+        "other_evidence_changes": 0,
+        "ownership_changes": 0,
+        "paired_frames": 4038,
+        "primary_state_transitions": {},
+        "reader_value_changes": {
+          "changed": 0,
+          "gained": 0,
+          "lost": 0
+        },
+        "reader_value_changes_by_reader": {
+          "ability_slots": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          },
+          "ally_alive": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          },
+          "ammo_current": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          },
+          "ammo_reserve": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          },
+          "armor": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          },
+          "enemy_alive": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          },
+          "hp": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          },
+          "kill_feed_rows": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          },
+          "location_text": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          },
+          "round_end_text": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          },
+          "round_time_remaining_sec": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          },
+          "score_ally": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          },
+          "score_enemy": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          },
+          "spike_state": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          },
+          "weapon_text": {
+            "changed": 0,
+            "gained": 0,
+            "lost": 0
+          }
+        },
+        "spectator_reason_transitions": {},
+        "world_eligibility_changes": 0
+      },
+      "population": "coverage_full",
+      "production_frame_outcomes": {
+        "identity_reason_counts": {
+          "competing_view_evidence": 39,
+          "independent_hud_structures": 165,
+          "spectator_exclusion_unverified": 3579,
+          "structure_evidence_insufficient": 255
+        },
+        "ownership_true_frames": 165,
+        "primary_state_counts": {
+          "buy_menu_open": 1,
+          "live_first_person": 165,
+          "spectator_first_person": 335,
+          "unknown": 3537
+        },
+        "world_eligible_frames": 154
+      },
+      "published_frame_values": {
+        "frames_with_published_hp": 130,
+        "frames_with_published_timer": 1580
+      },
+      "repeat": {
+        "fresh_service_repeat_exact": true,
+        "fresh_service_repeat_sha256": "1d9ec1c66cdcd20c305cebee98557fc335a3144decf8724587ca43ee79494eea",
+        "logical_output_sha256": "1d9ec1c66cdcd20c305cebee98557fc335a3144decf8724587ca43ee79494eea"
+      },
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06"
+    }
+  ],
+  "schema": "fixed-regression-replay-evidence/v1",
+  "scope": "aggregate-only private evidence draft; no ground-truth labels"
+}
