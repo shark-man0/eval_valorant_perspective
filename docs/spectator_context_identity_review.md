@@ -57,3 +57,54 @@ in274.53 seconds. Ruff src/tests/scripts and mypy src(86 files) pass.
 Production remains unchanged; no new Clean E2E is run for these aggregate/docs
 changes. The current clean baseline remains22 passed/56 failed/4 not evaluated,
 with negative assertions20 passed/0 failed. Fixed replay manifests remain frozen.
+
+
+## New score-blind appearance challenge and center-rule rejection
+
+The canonical1026-frame manifest contains248 unchanged short-X-helper positives.
+Explicit earlier close-anchor review/source-image exclusions leave222 unique
+eligible frames. Native-order quantiles select32, then shuffled opaque IDs hide
+center scores from full-frame/native-crop review. All32 source JPEGs, decoded
+frames and93x95 crops match recorded hashes; helper/Hough parity is32/32.
+The selected frames have zero intersections with the enumerated exact locators
+or hashes. Exclusions do not cover every earlier broad-video analysis or adjacent
+frame, and this is a helper-conditioned single-recording challenge rather than
+independent recording or population specificity evidence.
+
+Appearance labels were locked before reading the center scores:9 visible Buy
+menus with close-X,23 with neither;7 report panels and3 large purple diagram-like
+overlays. Text-like glyphs occur in15 close crops, scene/effect edges in8.
+The frozen center-sign rule retains9/9 visible menu-X cases but also matches
+3/23 no-menu appearances:2/15 text-like crops and1/8 scene/effect crops.
+It matches1/7 report appearances and0/3 diagram overlays. These appearances are
+diagnostic visual categories, never ownership or expected runtime states.
+
+More importantly, a location stress disproves safe universal substitution.
+The existing synthetic short-X fixture is translated with nearest-neighbor
+integer shifts and clipped by the fixed ROI. Production-Hough trace parity is
+13/13. On10 cases—four fully visible corner positions and six clipped positions—
+the old helper vetoes but the frozen center proxy does not. Through the actual
+HudTemplateProfile.detect_signals path, the unchanged ordinary slot goes from
+icon_roi_obscured/unchecked to icon_absent/checked in those10 shadow cases.
+This is no real-menu prevalence or live-ownership claim. It directly demonstrates
+that rejecting off-center support can remove an existing safety condition.
+
+**KEEP CURRENT** production behavior; reject the center-only replacement.
+Ten new synthetic regression cases preserve unchecked absence for the translated
+and clipped Xs, confirm the identical slot without X reaches checked absence,
+and confirm this advisory does not emit Buy-grid/strict-close positives. The
+current Report header exclusion, independent Buy grid/close evidence, all other
+context vetoes and HP/Ability/Weapon/current checked-Spectator gates remain intact.
+
+The next work separates location-tolerant cross topology from distributed
+text/scene diagonals and explores training-only static menu headers away from
+dynamic availability borders. The already running full-context shadow is an
+impact diagnosis of a rejected rule, never a production candidate. Shared
+evidence is spectator_close_anchor_new_challenge_evidence_v1.json; reference
+assets, images, per-frame data and appearance ledgers remain private.
+
+Verification after the10 new regressions: full pytest with the external pack
+**934 passed /2 skipped** in271.94 seconds; focused Spectator tests39 passed.
+Ruff src/tests/scripts, mypy src(86 files), aggregate privacy/count checks and
+diff check pass. The two skips remain existing optional fixtures. Production
+source and private profile assets are unchanged; no new Clean E2E is run.

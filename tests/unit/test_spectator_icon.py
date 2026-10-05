@@ -295,3 +295,85 @@ def test_short_menu_close_x_vetoes_icon_without_menu_grid_candidate() -> None:
     frame[cy1:cy2, cx1:cx2] = cv2.resize(empty, (cx2 - cx1, cy2 - cy1))
     assert profile.detect_signals(frame, layout)["spectator_panel_present"] is True
 
+
+
+@pytest.mark.parametrize(
+    "dx,dy",
+    [
+        (-24, -22),
+        (24, -22),
+        (-24, 22),
+        (24, 22),
+        (-42, 0),
+        (42, 0),
+        (0, -42),
+        (0, 42),
+        (-50, 42),
+        (50, 42),
+    ],
+    ids=[
+        "upper-left",
+        "upper-right",
+        "lower-left",
+        "lower-right",
+        "left-clipped",
+        "right-clipped",
+        "top-clipped",
+        "bottom-clipped",
+        "lower-left-clipped",
+        "lower-right-clipped",
+    ],
+)
+def test_translated_or_clipped_close_x_keeps_spectator_absence_unchecked(
+    dx: int, dy: int
+) -> None:
+    """Visible short-X overlays keep absence unknown through the profile path."""
+    crop = np.full((95, 93, 3), 55, np.uint8)
+    cv2.line(crop, (34, 32), (54, 52), (210, 210, 210), 4)
+    cv2.line(crop, (34, 52), (54, 32), (210, 210, 210), 4)
+    moved = cv2.warpAffine(
+        crop,
+        np.float32([[1, 0, dx], [0, 1, dy]]),
+        (93, 95),
+        flags=cv2.INTER_NEAREST,
+        borderMode=cv2.BORDER_CONSTANT,
+        borderValue=(55, 55, 55),
+    )
+
+    layout = _icon_layout()
+    profile = _icon_profile(
+        Path("unused-profile.json"),
+        {"version": 1, "roi": "spectator_icon", "method": "fixed_slot_structure_v1"},
+    )
+    frame = np.full((1080, 1920, 3), 24, np.uint8)
+    x1, y1, x2, y2 = layout.normalized_roi("spectator_icon").pixel_bounds(1920, 1080)
+    ordinary = cv2.resize(_ordinary_slot(), (x2 - x1, y2 - y1), interpolation=cv2.INTER_NEAREST)
+    frame[y1:y2, x1:x2] = cv2.cvtColor(ordinary, cv2.COLOR_GRAY2BGR)
+    cx1, cy1, cx2, cy2 = layout.normalized_roi("buy_menu_close_anchor").pixel_bounds(1920, 1080)
+    frame[cy1:cy2, cx1:cx2] = cv2.resize(moved, (cx2 - cx1, cy2 - cy1))
+
+    context = {
+        "buy_menu_grid_present": False,
+        "map_transition": False,
+        "partial_expanded_map": False,
+        "expanded_map_present": False,
+        "expanded_map_stable": False,
+        "flash_candidate": False,
+        "abrupt_luminance_spike": False,
+        "visual_transition": False,
+    }
+    result = profile.detect_signals(frame, layout, context=context)
+    assert result["spectator_detector_checked"] is False
+    assert result["spectator_panel_present"] is None
+    assert result["spectator_panel_absent"] is False
+    assert result["spectator_detector_reason"] == "icon_roi_obscured"
+    assert result.get("buy_menu_grid_present") is None
+    assert result.get("buy_menu_close_anchor_present") is None
+
+    # The same ordinary slot is explicitly classifiable when the close-X is absent.
+    frame[cy1:cy2, cx1:cx2] = 55
+    absence = profile.detect_signals(frame, layout, context=context)
+    assert absence["spectator_detector_checked"] is True
+    assert absence["spectator_panel_present"] is False
+    assert absence["spectator_panel_absent"] is True
+    assert absence["spectator_detector_reason"] == "icon_absent"

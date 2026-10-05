@@ -1,0 +1,135 @@
+{
+  "appearance_counts": {
+    "buy_menu_appearance": {
+      "not_visible": 23,
+      "visible": 9
+    },
+    "close_crop_appearance": {
+      "close_x_button": 9,
+      "scene_or_effect_edges": 8,
+      "text_like_glyphs_over_scene": 15
+    },
+    "close_x_button_appearance": {
+      "not_visible": 23,
+      "visible": 9
+    },
+    "large_diagram_overlay_appearance": {
+      "not_visible": 29,
+      "visible": 3
+    },
+    "report_panel_appearance": {
+      "not_visible": 25,
+      "visible": 7
+    }
+  },
+  "candidate_status": "REJECT CENTER-ONLY VETO REPLACEMENT",
+  "center_sign_support": {
+    "by_crop": {
+      "close_x_button": {
+        "center_both": 9,
+        "n": 9
+      },
+      "scene_or_effect_edges": {
+        "center_both": 1,
+        "n": 8
+      },
+      "text_like_glyphs_over_scene": {
+        "center_both": 2,
+        "n": 15
+      }
+    },
+    "by_diagram": {
+      "not_visible": {
+        "center_both": 12,
+        "n": 29
+      },
+      "visible": {
+        "center_both": 0,
+        "n": 3
+      }
+    },
+    "by_menu": {
+      "not_visible": {
+        "center_both": 3,
+        "center_neg": 9,
+        "center_pos": 5,
+        "n": 23
+      },
+      "visible": {
+        "center_both": 9,
+        "center_neg": 9,
+        "center_pos": 9,
+        "n": 9
+      }
+    },
+    "by_report": {
+      "not_visible": {
+        "center_both": 11,
+        "n": 25
+      },
+      "visible": {
+        "center_both": 1,
+        "n": 7
+      }
+    }
+  },
+  "decision": "KEEP CURRENT",
+  "fixed_manifest_sha256": "f8267c437f95cb534c06d80a459961409323688f9b7a76a728b719b0350e74f1",
+  "hashes": {
+    "appearance_center_sign_join_v1.json": "4a5deed098296ef2d4a2ddc4725997e5f15e3733fb8d23cb324ab7a6e393c17b",
+    "exclusion_inventory_v1.json": "bb7f49894c700e5de3c34126c91f2dbd63ace37360d2bd6ccd308244c361991a",
+    "frozen_recipe_v1.json": "b148e743a8db851192a65ed1686e5a4e02244bf332b3c1b08492a82435ca6f6b",
+    "frozen_selection_manifest_v1.json": "b2fa2bac22fe9a2e67e3922016933f2522f0d1535aab8af08ccfc1f216ccd94e",
+    "parity_receipt_v1.json": "e1109eb4840fa7268efe836824e231f2199207df938148f657b35c8b96e29d69",
+    "receipt_v1.json": "5556390a1f6c9e776c12840a37690290d54ac4615706ff68b07fbe1e22c24ec9",
+    "root_appearance_annotations_v1.json": "56522c8ffb877d199155fb363c9256e003b2830024654e6d3bf272148fc3ba97"
+  },
+  "interpretation": "Center support retains9/9 visible menu-X appearances but also matches3/23 visible non-menu appearances. This describes a helper-conditioned sample; not population specificity, a menu-absence proof or live identity evidence.",
+  "next_experiments": [
+    "Actual full-context canonical shadow with remaining guards unchanged and baseline parity prerequisite.",
+    "Synthetic translated/clipped-X counterexamples to center-only qualification.",
+    "Training-only static menu-header witness exploration, excluding availability-like borders and values."
+  ],
+  "production_changed": false,
+  "regression_tests": {
+    "added_cases": 10,
+    "file": "tests/unit/test_spectator_icon.py",
+    "focused_passed": 39,
+    "production_source_changed": false
+  },
+  "rejection_reason": "Retaining full centered X controls is insufficient: ten translated/clipped visible-X fixtures lose the existing unchecked safeguard.",
+  "review": {
+    "candidate_center_scores_hidden": true,
+    "cases": 32,
+    "full_frame_and_native_crop_pages": 8,
+    "labels_locked_before_score_join": true,
+    "no_gt_or_ownership_labels": true,
+    "production_helper_positive_selection_known": true
+  },
+  "schema": "spectator_close_anchor_new_appearance_challenge_aggregate_v1",
+  "selection": {
+    "actual_helper_positive": 248,
+    "canonical_frames": 1026,
+    "eligible_after_explicit_exclusions": 222,
+    "method": "Native-order quantiles of unchanged-helper positives, then shuffled opaque review IDs; candidate center scores never used.",
+    "prior_exact_locator_or_hash_intersections": 0,
+    "scope": "Explicit close-anchor manifests and saved source JPEGs only; not all previous frame usage, adjacent blocks or independent recordings.",
+    "selected": 32
+  },
+  "starting_head": "2c303e0786c3d6e87547f4705ab166bf78b20bfb",
+  "synthetic_safety_stress": {
+    "artifact_sha256": "f9c5f12348c4ce23804855a60506f5d45a74d6fa92192857953b9bf4c70a9e18",
+    "cases": 13,
+    "interpretation": "Synthetic existing short-X fixture, translated/clipped without interpolation. Actual detect_signals path with remaining context vetoes false. No fabricated live identity, menu truth, source recording pixels or GT inputs.",
+    "old_unchecked_to_shadow_checked_absent": 10,
+    "old_veto_true_center_proxy_false": 10,
+    "production_trace_parity": 13,
+    "receipt_sha256": "261c814332e8434b9f8c2595263441df1dcb958273ca0b59446d540dc96adc04",
+    "script_sha256": "c947a823e8b0a14bf552eefdd9dcda460ffedbd74b98cb49058de204f87cea3c"
+  },
+  "validation": {
+    "exact_source_jpeg_decoded_frame_crop_and_helper_trace_cases": 32,
+    "production_trace_parity_cases": 32
+  },
+  "video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06"
+}
