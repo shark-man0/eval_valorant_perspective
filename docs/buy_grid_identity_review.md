@@ -414,3 +414,24 @@ The next48-image challenge uses score-independent native-order quantiles after
 exact enumerated prior exclusions, with blind pixel review before scoring.
 This addresses the acceptance-conditioned bias of the24-image review and seeks
 natural weak/menu-not-visible evidence. No production adoption.
+
+
+## Score-independent 48-frame checkpoint before platform migration
+
+Native-order quantiles selected48 canonical frames after enumerated exact prior
+exclusions without candidate scores, runtime states or GT. All source/crop/page
+hashes verify; root visual annotations were locked before scoring. Three images
+show visible menus/close-X/three strong headers;45 show no menu. Frozen V2 accepts
+exactly3/3 menu appearances and0/45 other appearances. Overlapping hard controls
+reject:15 Report panels,9 large purple diagrams,6 lower-left portrait panels and
+one expanded flat map. The non-menu middle support has substantial texture
+(median std38.86) but median NCC-.0043, so these are not merely blank controls.
+This bounded same-recording quantile review has no ownership or population
+accuracy claim. The weak-contrast limitation remains unresolved.
+
+**NEED MORE EVIDENCE**, production unchanged. User instructions now prioritize
+cross-platform E2E migration and Pi validation. New Analyzer experiments, including
+the proposed minimum-support guard and additive-menu-gap audit, are deferred.
+Shared aggregate: `buy_static_header_natural_challenge_v1.json`. This docs-only
+checkpoint reuses the934-pass/2-skip suite and passing Ruff/mypy; aggregate privacy,
+accounting and diff checks pass. No new real-video E2E is required.
