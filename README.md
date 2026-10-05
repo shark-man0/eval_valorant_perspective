@@ -80,7 +80,7 @@ PowerShellでプロジェクト直下から実行します。
 ```powershell
 py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install --upgrade pip
-.\.venv\Scripts\python.exe -m pip install -c constraints-windows.txt -e ".[dev,build]"
+.\.venv\Scripts\python.exe -m pip install -c constraints-windows.txt -e ".[gui,dev,build]"
 .\.venv\Scripts\python.exe tests\validate_dataset.py
 .\.venv\Scripts\python.exe -m pytest
 .\.venv\Scripts\python.exe -m valorant_ai_coach
@@ -251,3 +251,11 @@ $env:VALORANT_HUD_TEST_LAYOUT = 'C:\captures\my_hud_profile\hud_layout.json'
 - `tests/hud_logic_cases_v1.json`, `tests/hud_state_samples_v2.json`
 
 これらのSchema・ルール・テストデータは、アプリ固有の別形式へ置き換えず直接使用しています。
+
+## Cross-platform source E2E
+
+Windows and Linux/Pi use the same `scripts/e2e/run_dataset_case.py`.
+See [Windows E2E](WINDOWS_E2E.md), [Raspberry Pi setup](RASPBERRY_PI_E2E.md),
+and [migration audit](docs/cross_platform_e2e_migration.md).
+Linux/Pi real-device execution remains unverified; Analyzer improvements are paused
+until that result is reviewed. Desktop installation requires the `gui` extra.

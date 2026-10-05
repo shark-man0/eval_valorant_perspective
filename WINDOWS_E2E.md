@@ -63,8 +63,8 @@ No runner invokes `git add`, `commit`, `push`, or `pull`.
 
 ## Windows UTF-8 execution
 
-Use `$env:PYTHONUTF8 = '1'` in the PowerShell session before running the E2E
-runner or `python -m pytest`. This also reaches Python subprocesses launched by
+The common runner now forces `PYTHONUTF8=1` for Python child processes.
+Use `$env:PYTHONUTF8 = '1'` for direct pack commands and `python -m pytest`. This also reaches Python subprocesses launched by
 the unmodified Validation Pack. On a CP932 Windows locale, `python -X utf8`
 alone does not set the encoding of those subprocesses. A pack validation failure
 caused by `UnicodeDecodeError` is a preflight failure, not a detector result;
@@ -72,10 +72,24 @@ keep the pack unchanged and rerun with UTF-8 enabled.
 
 ## Requirements and input setup
 
-- Windows 10/11; Python 3.12 and its `py` launcher; Git; FFmpeg/ffprobe on PATH.
-- First execution creates/reuses `.venv` and installs the application dependencies with
-  `constraints-windows.txt`. Later executions check the dependency stamp, imports and
-  `pip check`; unchanged healthy environments need no reinstall.
+- Windows 10/11; Python 3.12; Git; FFmpeg/ffprobe on PATH.
+- Create/install the venv explicitly once (commands below). The launcher no longer
+  installs or stamps dependencies. Existing named parameters are preserved; Python
+  discovery uses repo venv, then `python`, then `py -3.12` as fallback.
+
+```powershell
+py -3.12 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install --upgrade pip
+.\.venv\Scripts\python.exe -m pip install -c constraints-e2e.txt -e .
+.\.venv\Scripts\python.exe -m pip check
+.\run_e2e_windows.ps1 -CheckEnvironment
+```
+
+Source E2E needs no GUI. For the desktop app/build/full GUI tests, install
+`-c constraints-windows.txt -e ".[gui,dev,build]"`; Windows app launch/build
+scripts retain their GUI dependency. See [Pi setup](RASPBERRY_PI_E2E.md) and
+[migration audit](docs/cross_platform_e2e_migration.md).
+
 - Unzip the separately provided **unaltered** `valorant_e2e_validation_pack_v3.zip`
   on Windows. The pack is required even if the source repository was cloned.
   It is not automatically fetched, uploaded, or silently replaced with mock GT.
@@ -94,12 +108,19 @@ keep the pack unchanged and rerun with UTF-8 enabled.
 | Input | Priority |
 | --- | --- |
 | Video | `-Video` → `VALORANT_E2E_VIDEO` → repository `.env.local` |
-| Validation Pack | `-ValidationPack` → `VALORANT_E2E_PACK` → sibling `../valorant_e2e_validation_pack_v3` |
+| Validation Pack | `-ValidationPack` → `VALORANT_E2E_PACK` → `.env.local` → sibling `../valorant_e2e_validation_pack_v3` |
 
-Use absolute Windows paths. `.env.local` can contain
-`VALORANT_E2E_VIDEO="D:\ValorantData\videos\match_001.mp4"`.
-Only this key is read; there is no command/interpolation expansion or other environment loading.
-The file stays ignored. CLI arguments override environment variables.
+Native absolute or repository-relative paths are accepted, including spaces/Unicode.
+`.env.local` can contain `VALORANT_E2E_VIDEO="D:\ValorantData\videos\match_001.mp4"`
+and `VALORANT_E2E_PACK="D:\ValorantData\valorant_e2e_validation_pack_v3"`.
+It also allowlists `VALORANT_E2E_HUD_LAYOUT`, `VALORANT_E2E_VISUAL_PROFILE`,
+`VALORANT_E2E_MANUAL_MAP_ID`, `VALORANT_E2E_MAP_CLIENT_BUILD`, `FFMPEG_BIN`,
+`FFPROBE_BIN`, `GIT_BIN`. Optional settings use CLI → environment → local file.
+Tool overrides (`-FFmpegBin`, `-FFprobeBin`, `-GitBin`) use CLI → environment →
+local file → PATH discovery; broken overrides reject. No command/interpolation
+expansion occurs; the file stays ignored. `-Manifest` and `-Output` accept explicit
+paths; output must be a new directory, otherwise unique private defaults remain.
+The pack local-file fallback is new, below the prior CLI/environment precedence.
 
 ## Manifest and registration
 
@@ -124,7 +145,7 @@ an explicit reviewed manifest update, not an automatic rewrite.
 ## Local vs shared files
 
 ```text
-outputs/e2e/<video_id>/<UTC-run-id>/     # ignored, Windows-only
+outputs/e2e/<video_id>/<UTC-run-id>/     # ignored, host-local
   raw_processing.json
   e2e_trace.json
   evaluation_report.json
@@ -146,7 +167,8 @@ Preflight/processing failures are nonzero and generate a sanitized failure repor
 the Python runner has started with a valid VideoId. Earlier PowerShell/toolchain failures
 return nonzero without a new report: check the exit code and `executed_at`, not an old file.
 Exit 0 = evaluator PASS, 1 = evaluated FAIL, 2 = Python preflight/runtime failure.
-Toolchain/bootstrap failures are also nonzero.
+Toolchain/runtime startup failures return 2. `-CheckEnvironment` returns 0 for
+environment readiness only, not an E2E PASS.
 
 ## Shared result and privacy
 
@@ -317,7 +339,7 @@ ownership rejection and location resolution. Downstream "not evaluated" is not a
 
 ## Minimal workflow (PowerShell)
 
-1. First setup (once):
+1. Clone and perform the explicit venv/dependency setup above (once):
 
    ```powershell
    git clone https://github.com/shark-man0/eval_valorant_perspective.git
