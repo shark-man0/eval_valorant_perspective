@@ -794,9 +794,9 @@
     "manual_map_id": "summit",
     "video_id": "match_001",
     "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
-    "analyzer_commit": "f291ded6140a802aec9098c22ea96ef6d7b29e2a",
+    "analyzer_commit": "5b7a7e26c670cfc999839dcecd42c77065d19a24",
     "git_is_dirty": false,
-    "executed_at": "2026-10-04T23:49:11.712919+00:00",
+    "executed_at": "2026-10-05T02:34:17.615027+00:00",
     "validation_pack": "valorant_e2e_validation_pack_v3",
     "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
     "git_dirty_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -852,8 +852,8 @@
       "assertion_id": "GT-R1-ROUND-START",
       "category": "missing_point",
       "expected": {
-        "actor": "system",
-        "type": "round_start"
+        "type": "round_start",
+        "actor": "system"
       },
       "actual": null,
       "time_sec": null,
@@ -877,8 +877,8 @@
       "assertion_id": "GT-R1-DEATH",
       "category": "missing_point",
       "expected": {
-        "actor": "player",
         "type": "player_death",
+        "actor": "player",
         "victim_name": "player"
       },
       "actual": null,
@@ -903,8 +903,8 @@
       "assertion_id": "GT-R1-ROUND-END",
       "category": "missing_point",
       "expected": {
-        "actor": "system",
-        "type": "round_end"
+        "type": "round_end",
+        "actor": "system"
       },
       "actual": null,
       "time_sec": null,
@@ -928,8 +928,8 @@
       "assertion_id": "GT-R2-ROUND-START",
       "category": "missing_point",
       "expected": {
-        "actor": "system",
-        "type": "round_start"
+        "type": "round_start",
+        "actor": "system"
       },
       "actual": null,
       "time_sec": null,
@@ -953,8 +953,8 @@
       "assertion_id": "GT-R2-DEATH",
       "category": "missing_point",
       "expected": {
-        "actor": "player",
         "type": "player_death",
+        "actor": "player",
         "victim_name": "player"
       },
       "actual": null,
@@ -1265,8 +1265,8 @@
         "min_core_coverage": 0.9
       },
       "actual": {
-        "owner": "self",
         "confidence": 0.7124,
+        "owner": "self",
         "interval": [
           12.402669,
           12.502669
@@ -1297,8 +1297,8 @@
         "min_core_coverage": 0.9
       },
       "actual": {
-        "owner": "unknown",
         "confidence": 0.0,
+        "owner": "unknown",
         "interval": [
           74.319336,
           74.402669
@@ -1400,8 +1400,8 @@
       "assertion_id": "GT-R1-SNAP-0035",
       "category": "missing_snapshot",
       "expected": {
-        "buy_phase_banner": true,
         "player_alive": true,
+        "buy_phase_banner": true,
         "primary_state": "live_first_person"
       },
       "actual": null,
@@ -1422,12 +1422,12 @@
       "assertion_id": "GT-R1-SNAP-0415",
       "category": "missing_snapshot",
       "expected": {
-        "score_enemy": 1,
-        "game_timer_display": "1:39",
-        "score_player": 0,
-        "buy_phase_banner": false,
         "player_alive": true,
-        "primary_state": "live_first_person"
+        "buy_phase_banner": false,
+        "score_player": 0,
+        "score_enemy": 1,
+        "primary_state": "live_first_person",
+        "game_timer_display": "1:39"
       },
       "actual": null,
       "time_sec": 4.15,
@@ -1468,8 +1468,8 @@
       "assertion_id": "GT-R1-SNAP-585",
       "category": "missing_snapshot",
       "expected": {
-        "primary_state": "live_first_person",
-        "vision_obscured_smoke": false
+        "vision_obscured_smoke": false,
+        "primary_state": "live_first_person"
       },
       "actual": null,
       "time_sec": 58.5,
@@ -1489,8 +1489,8 @@
       "assertion_id": "GT-R1-SNAP-595",
       "category": "missing_snapshot",
       "expected": {
-        "primary_state": "live_first_person",
-        "vision_obscured_smoke": true
+        "vision_obscured_smoke": true,
+        "primary_state": "live_first_person"
       },
       "actual": null,
       "time_sec": 59.5,
@@ -1510,8 +1510,8 @@
       "assertion_id": "GT-R1-SNAP-705",
       "category": "missing_snapshot",
       "expected": {
-        "primary_state": "live_first_person",
-        "vision_obscured_smoke": false
+        "vision_obscured_smoke": false,
+        "primary_state": "live_first_person"
       },
       "actual": null,
       "time_sec": 70.5,
@@ -1531,9 +1531,9 @@
       "assertion_id": "GT-R1-SNAP-728",
       "category": "missing_snapshot",
       "expected": {
+        "player_alive": true,
         "ammo_mag": 9,
         "ammo_reserve": 36,
-        "player_alive": true,
         "primary_state": "live_first_person"
       },
       "actual": null,
@@ -1554,9 +1554,9 @@
       "assertion_id": "GT-R1-SNAP-733",
       "category": "missing_snapshot",
       "expected": {
+        "player_alive": true,
         "ammo_mag": 9,
         "ammo_reserve": 36,
-        "player_alive": true,
         "primary_state": "live_first_person"
       },
       "actual": null,
@@ -1577,9 +1577,9 @@
       "assertion_id": "GT-R1-SNAP-734",
       "category": "missing_snapshot",
       "expected": {
+        "player_alive": true,
         "ammo_mag": 12,
         "ammo_reserve": 33,
-        "player_alive": true,
         "primary_state": "live_first_person"
       },
       "actual": null,
@@ -1600,8 +1600,8 @@
       "assertion_id": "GT-R1-SNAP-7425",
       "category": "missing_snapshot",
       "expected": {
-        "player_hp": 48,
         "player_alive": true,
+        "player_hp": 48,
         "primary_state": "live_first_person"
       },
       "actual": null,
@@ -1622,11 +1622,11 @@
       "assertion_id": "GT-R1-SNAP-7438",
       "category": "missing_snapshot",
       "expected": {
-        "score_enemy": 1,
-        "game_timer_display": "0:29",
-        "score_player": 0,
         "player_alive": true,
-        "primary_state": "live_first_person"
+        "score_player": 0,
+        "score_enemy": 1,
+        "primary_state": "live_first_person",
+        "game_timer_display": "0:29"
       },
       "actual": null,
       "time_sec": 74.38,
@@ -1646,8 +1646,8 @@
       "assertion_id": "GT-R1-SNAP-7440",
       "category": "missing_snapshot",
       "expected": {
-        "combat_report_visible": true,
-        "player_alive": false
+        "player_alive": false,
+        "combat_report_visible": true
       },
       "actual": null,
       "time_sec": 74.4,
@@ -1667,11 +1667,11 @@
       "assertion_id": "GT-R1-SNAP-7445",
       "category": "missing_snapshot",
       "expected": {
-        "score_enemy": 2,
-        "combat_report_visible": true,
-        "game_timer_display": "0:06",
+        "player_alive": false,
         "score_player": 0,
-        "player_alive": false
+        "combat_report_visible": true,
+        "score_enemy": 2,
+        "game_timer_display": "0:06"
       },
       "actual": null,
       "time_sec": 74.45,
@@ -1691,10 +1691,10 @@
       "assertion_id": "GT-R2-SNAP-820",
       "category": "missing_snapshot",
       "expected": {
-        "combat_report_visible": true,
-        "player_hp": 100,
-        "buy_phase_banner": true,
         "player_alive": true,
+        "buy_phase_banner": true,
+        "player_hp": 100,
+        "combat_report_visible": true,
         "primary_state": "live_first_person"
       },
       "actual": null,
@@ -1715,9 +1715,9 @@
       "assertion_id": "GT-R2-SNAP-1050",
       "category": "missing_snapshot",
       "expected": {
-        "combat_report_visible": true,
-        "buy_phase_banner": true,
         "player_alive": true,
+        "buy_phase_banner": true,
+        "combat_report_visible": true,
         "primary_state": "live_first_person"
       },
       "actual": null,
@@ -1738,11 +1738,11 @@
       "assertion_id": "GT-R2-SNAP-11145",
       "category": "missing_snapshot",
       "expected": {
-        "score_enemy": 2,
-        "game_timer_display": "1:40",
-        "score_player": 0,
+        "player_alive": true,
         "buy_phase_banner": false,
-        "player_alive": true
+        "score_player": 0,
+        "score_enemy": 2,
+        "game_timer_display": "1:40"
       },
       "actual": null,
       "time_sec": 111.45,
@@ -1762,8 +1762,8 @@
       "assertion_id": "GT-R2-SNAP-143",
       "category": "missing_snapshot",
       "expected": {
-        "player_hp": 80,
         "player_alive": true,
+        "player_hp": 80,
         "primary_state": "live_first_person"
       },
       "actual": null,
@@ -1784,8 +1784,8 @@
       "assertion_id": "GT-R2-SNAP-1475",
       "category": "missing_snapshot",
       "expected": {
-        "player_hp": 80,
         "player_alive": true,
+        "player_hp": 80,
         "primary_state": "live_first_person"
       },
       "actual": null,
@@ -1806,8 +1806,8 @@
       "assertion_id": "GT-R2-SNAP-1476",
       "category": "missing_snapshot",
       "expected": {
-        "player_hp": 22,
         "player_alive": true,
+        "player_hp": 22,
         "primary_state": "live_first_person"
       },
       "actual": null,
@@ -1828,8 +1828,8 @@
       "assertion_id": "GT-R2-SNAP-1477",
       "category": "missing_snapshot",
       "expected": {
-        "combat_report_visible": true,
-        "player_alive": false
+        "player_alive": false,
+        "combat_report_visible": true
       },
       "actual": null,
       "time_sec": 147.7,
@@ -1849,8 +1849,8 @@
       "assertion_id": "GT-R2-SNAP-149",
       "category": "missing_snapshot",
       "expected": {
-        "combat_report_visible": true,
         "player_alive": false,
+        "combat_report_visible": true,
         "primary_state": "expanded_tactical_map"
       },
       "actual": null,
@@ -1871,13 +1871,13 @@
       "assertion_id": "GT-R2-SNAP-151",
       "category": "missing_snapshot",
       "expected": {
-        "view_owner": "teammate_spectated",
-        "spectated_ammo_mag": 21,
-        "combat_report_visible": true,
-        "spectated_hp": 100,
         "player_alive": false,
-        "primary_state": "spectator_first_person",
-        "spectated_ammo_reserve": 50
+        "spectated_ammo_reserve": 50,
+        "combat_report_visible": true,
+        "spectated_ammo_mag": 21,
+        "spectated_hp": 100,
+        "view_owner": "teammate_spectated",
+        "primary_state": "spectator_first_person"
       },
       "actual": null,
       "time_sec": 151.0,
@@ -1897,13 +1897,13 @@
       "assertion_id": "GT-R2-SNAP-170",
       "category": "missing_snapshot",
       "expected": {
-        "view_owner": "teammate_spectated",
-        "spectated_ammo_mag": 22,
-        "combat_report_visible": true,
-        "spectated_hp": 85,
         "player_alive": false,
-        "primary_state": "spectator_first_person",
-        "spectated_ammo_reserve": 31
+        "spectated_ammo_reserve": 31,
+        "combat_report_visible": true,
+        "spectated_ammo_mag": 22,
+        "spectated_hp": 85,
+        "view_owner": "teammate_spectated",
+        "primary_state": "spectator_first_person"
       },
       "actual": null,
       "time_sec": 170.0,
@@ -1983,8 +1983,8 @@
       "assertion_id": "GT-R1-MUZZLE-1",
       "category": "missing_visual_observation",
       "expected": {
-        "actor": "player",
-        "observation": "muzzle_flash"
+        "observation": "muzzle_flash",
+        "actor": "player"
       },
       "actual": null,
       "time_sec": 73.95,
@@ -2004,8 +2004,8 @@
       "assertion_id": "GT-R1-MUZZLE-2",
       "category": "missing_visual_observation",
       "expected": {
-        "actor": "player",
-        "observation": "muzzle_flash"
+        "observation": "muzzle_flash",
+        "actor": "player"
       },
       "actual": null,
       "time_sec": 74.25,
@@ -2025,8 +2025,8 @@
       "assertion_id": "GT-R1-MUZZLE-3",
       "category": "missing_visual_observation",
       "expected": {
-        "actor": "player",
-        "observation": "muzzle_flash"
+        "observation": "muzzle_flash",
+        "actor": "player"
       },
       "actual": null,
       "time_sec": 74.38,
@@ -2046,8 +2046,8 @@
       "assertion_id": "event_count_constraints-000",
       "category": "count",
       "expected": {
-        "actor": "system",
         "type": "round_start",
+        "actor": "system",
         "min": 1,
         "max": 1
       },
@@ -2071,8 +2071,8 @@
       "assertion_id": "event_count_constraints-001",
       "category": "count",
       "expected": {
-        "actor": "player",
         "type": "player_death",
+        "actor": "player",
         "min": 1,
         "max": 1
       },
@@ -2096,8 +2096,8 @@
       "assertion_id": "event_count_constraints-002",
       "category": "count",
       "expected": {
-        "actor": "system",
         "type": "round_end",
+        "actor": "system",
         "min": 1,
         "max": 1
       },
@@ -2121,8 +2121,8 @@
       "assertion_id": "event_count_constraints-003",
       "category": "count",
       "expected": {
-        "actor": "player",
         "type": "shot",
+        "actor": "player",
         "min": 1,
         "max": 3
       },
@@ -2150,8 +2150,8 @@
       "assertion_id": "event_count_constraints-004",
       "category": "count",
       "expected": {
-        "actor": "system",
         "type": "round_start",
+        "actor": "system",
         "min": 1,
         "max": 1
       },
@@ -2175,8 +2175,8 @@
       "assertion_id": "event_count_constraints-005",
       "category": "count",
       "expected": {
-        "actor": "player",
         "type": "player_death",
+        "actor": "player",
         "min": 1,
         "max": 1
       },
