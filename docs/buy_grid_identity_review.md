@@ -322,3 +322,37 @@ This aggregate/docs phase reran the full suite with the external validation pack
 (86 files) pass. Existing optional trace-adapter/source-anchor fixtures account
 for the two skips. No production change means no new adaptive Clean E2E is
 required; the clean 5b7 result remains22/56/4 with negative20/0.
+
+## Train-only amplitude qualification follow-up
+
+The next diagnostic freezes per-segment unnormalized profile-norm and oriented
+edge-population floors at minima over the three original training images. Shape
+cosine remains .90 and alignment remains the single frozen common offset.
+Training measurements reproduce24/24 prior segment norms/edges/cosines;
+the development scorer reproduces544/544 frozen segment arrays/norms/cosines.
+No GT, Agent knowledge, expected values or detector-state labels enter scoring.
+
+This qualification retains2/6 visible menus, leaves3 below the empirical support
+floor and rejects1 qualified shape mismatch. Among60 unique other appearances,
+0 match,59 fall below that floor and1 has qualified shape mismatch. These are
+statuses relative to this diagnostic contract, not proofs of physical
+unobservability. All24 segments at each .10/.05/zero contrast factor fail the
+floor, addressing the previous nonzero-only weakness. However, JPEG quality95
+retains20/24 training segments and only1/3 complete training frames; quality70
+retains19/24 segments and0/3 complete frames. Empirical minima are brittle to
+codec perturbations. Synthetic period4/6 stripes have enough amplitude but
+still fail the shape rule. Neither weak-input rejection nor these designed
+stripe rejections establish real hard-negative separation across recordings.
+
+**NEED MORE EVIDENCE**; this candidate is not adopted. Existing value_identity
+was audited read-only: its local normalization, eroded guard, reciprocal oriented
+edge precision/recall and weakest-group contract cannot be assumed to calibrate
+physical visibility for this Buy structure. Availability-like green borders
+remain unqualified. Further fitting to the same six development menus has low
+information value. Prioritize the Spectator context specificity experiment,
+whose measured global vetoes prevent local measurement in118/301 all-structure
+opportunities. All safety gates remain unchanged. Future Buy work needs new
+static border evidence and independent acquisition/codec variation rather than
+another minimum-floor adjustment. Shared counts/hashes are in
+`buy_amplitude_qualification_evidence_v1.json`. These docs-only changes reuse
+the924/2-skip full suite and passing static checks; no new E2E is required.

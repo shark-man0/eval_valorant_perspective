@@ -1,0 +1,53 @@
+{
+  "aggregate_sha256": "496cee1ede5044e2e7ffa86e4168640fe43af36f7003865a9e06ef8ffc64481d",
+  "candidate_adoption": false,
+  "config_sha256": "a24fb9e540894582149a4f99e709feb135a402f79ae3e91f5916403706e8a2b6",
+  "decision": "NEED MORE EVIDENCE",
+  "development_rows": 68,
+  "development_segment_parity": {
+    "correlations_within_1e-9": 544,
+    "norms_within_1e-9": 544,
+    "profile_arrays_exact": 544,
+    "segments_compared": 544
+  },
+  "development_unique": 66,
+  "diagnostic_only": true,
+  "limits": [
+    "Training minima are a diagnostic support proxy, not calibrated physical visibility.",
+    "Most other appearances are below support floor, not demonstrated physically unobservable.",
+    "Codec perturbations expose brittle retention; shape plus these floors is not safe adoption evidence.",
+    "Same recording and availability-like green borders remain unqualified."
+  ],
+  "next_blocker": "Prioritize Spectator context specificity; do not continue tuning these development floors to reclaim losses.",
+  "other_appearance": {
+    "below_empirical_support_floor": 59,
+    "matching": 0,
+    "qualified_profile_mismatch": 1,
+    "unique": 60
+  },
+  "production_changed": false,
+  "rule": "Per-segment training minimum L2 profile norm and fixed magnitude100/dominance1.5 oriented edge population, separate from unchanged .90 shape and frozen common alignment.",
+  "schema": "buy_amplitude_qualification_aggregate_v1",
+  "stress": {
+    "jpeg_q70_all_groups_retained_cases": 0,
+    "jpeg_q70_qualified_segments": 19,
+    "jpeg_q95_all_groups_retained_cases": 1,
+    "jpeg_q95_qualified_segments": 20,
+    "qualified_segments_per_factor": 0,
+    "segments_per_factor": 24,
+    "training_cases": 3,
+    "weak_contrast_factors": [
+      0.1,
+      0.05,
+      0
+    ]
+  },
+  "training_frames": 3,
+  "training_segment_parity": 24,
+  "visible_menu": {
+    "below_empirical_support_floor": 3,
+    "matching": 2,
+    "qualified_profile_mismatch": 1,
+    "unique": 6
+  }
+}
