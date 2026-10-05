@@ -3,7 +3,7 @@ from __future__ import annotations
 import hashlib
 import math
 import re
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from copy import deepcopy
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -156,6 +156,7 @@ class RealHudAnalyzer:
         *,
         readers: Mapping[str, HudReader[Any]] | None = None,
         template_profile_path: Path | None = None,
+        diagnostic_sink: Callable[[dict[str, Any]], None] | None = None,
     ) -> None:
         self.layout_path = Path(layout_path)
         self.layout = HudLayout.load(self.layout_path)
@@ -180,6 +181,7 @@ class RealHudAnalyzer:
         self.digit_ocr_reader = self.ocr_reader or TesseractDigitsReader()
         self.feature_reader = OpenCvHudFeatureReader(self.layout)
         self.state_classifier = HudStateClassifier()
+        self.diagnostic_sink = diagnostic_sink
 
     def fingerprint(self) -> str:
         """Hash the layout, selected profile, and all referenced template bytes."""
@@ -358,9 +360,19 @@ class RealHudAnalyzer:
             signals.update(supplemental)
             values = empty_hud_values()
             reader_confidence: dict[str, float] = {}
+            raw_accepted_reader_values: dict[str, Any] | None = (
+                {} if self.diagnostic_sink is not None else None
+            )
             identity_count = 0
             if calibration.calibrated:
-                self._read_values(image, values, reader_confidence, calibration, diagnostics)
+                self._read_values(
+                    image,
+                    values,
+                    reader_confidence,
+                    calibration,
+                    diagnostics,
+                    raw_accepted_reader_values,
+                )
                 for side, key in (("ally", "ally_alive"), ("enemy", "enemy_alive")):
                     debounced = _debounced_roster_count(features, index, side)
                     if debounced is not None and f"{side}_roster" not in self.readers:
@@ -376,6 +388,40 @@ class RealHudAnalyzer:
                 classified = self.state_classifier.classify(signals)
             else:
                 classified = self.state_classifier.classify({})
+
+            if self.diagnostic_sink is not None:
+                self.diagnostic_sink(
+                    deepcopy(
+                        {
+                            "frame_index": index,
+                            "signals": signals,
+                            "raw_accepted_reader_values": raw_accepted_reader_values or {},
+                            "reader_confidence": reader_confidence,
+                            "geometry_calibrated": calibration.calibrated,
+                            "identity": {
+                                "live": identity.live,
+                                "positive_count": identity.positive_count,
+                                "reason": identity.reason,
+                            },
+                            "classified_state": {
+                                "primary_state": classified.primary_state,
+                                "state_flags": classified.state_flags,
+                                "remote_view_type": classified.remote_view_type,
+                                "player_specific_hud_valid": (
+                                    classified.player_specific_hud_valid
+                                ),
+                                "is_player_world_view_trustworthy": (
+                                    classified.is_player_world_view_trustworthy
+                                ),
+                                "confidence": classified.confidence,
+                                "flag_confidence": classified.flag_confidence,
+                                "sensitive_visual_readers_suspended": (
+                                    classified.sensitive_visual_readers_suspended
+                                ),
+                            },
+                        }
+                    )
+                )
 
             telemetry.record(
                 current_anchors,
@@ -524,6 +570,7 @@ class RealHudAnalyzer:
         reader_confidence: dict[str, float],
         calibration: CalibrationResult,
         diagnostics: list[str],
+        raw_accepted: dict[str, Any] | None = None,
     ) -> None:
         bindings = {
             "round_timer": ("round_time_remaining_sec", "timer"),
@@ -555,6 +602,8 @@ class RealHudAnalyzer:
                 )
                 if accepted is None:
                     continue
+                if raw_accepted is not None:
+                    raw_accepted[region_name] = deepcopy(accepted)
                 normalized = _normalize_reader_value(target, value_kind, accepted)
                 if normalized is not None:
                     if target == "spike_state" and values[target] not in {"unknown", normalized}:
@@ -587,6 +636,8 @@ class RealHudAnalyzer:
                     cross_checked=result.cross_checked,
                 )
                 if isinstance(accepted, dict):
+                    if raw_accepted is not None:
+                        raw_accepted[region_name] = deepcopy(accepted)
                     for key in target_keys:
                         if key in accepted:
                             normalized = _normalize_reader_value(

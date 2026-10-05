@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -160,6 +161,47 @@ class HudVideoProcessor:
                 cancel_event=cancel_event,
             )
         combined = self._deduplicate_frames(pass_a_frames + pass_b_frames)
+        return self._process_frames(
+            metadata=metadata,
+            match_id=match_id,
+            frames=combined,
+            cancel_event=cancel_event,
+            progress=progress,
+        )
+
+    def process_frames(
+        self,
+        metadata: VideoMetadata,
+        match_id: str,
+        frames: Sequence[FrameSample],
+        cancel_event: Event | None = None,
+        progress_cb: Callable[[float, str], None] | None = None,
+    ) -> HudVideoProcessingResult:
+        """Run the production final-processing stages over an exact ordered frame set."""
+        self._validate_fixed_frames(frames)
+        progress = progress_cb or (lambda _value, _message: None)
+        visual_cancel = getattr(self.visual_analyzer, "set_cancel_event", None)
+        if callable(visual_cancel):
+            visual_cancel(cancel_event)
+        return self._process_frames(
+            metadata=metadata,
+            match_id=match_id,
+            frames=frames,
+            cancel_event=cancel_event,
+            progress=progress,
+        )
+
+    def _process_frames(
+        self,
+        *,
+        metadata: VideoMetadata,
+        match_id: str,
+        frames: Sequence[FrameSample],
+        cancel_event: Event | None,
+        progress: Callable[[float, str], None],
+    ) -> HudVideoProcessingResult:
+        combined = list(frames)
+        self._check_cancel(cancel_event)
         progress(0.72, "HUD時系列とイベントを確定しています")
         final = self.analyzer.observe_frames(
             combined, video_metadata=metadata, cancel_event=cancel_event
@@ -238,6 +280,21 @@ class HudVideoProcessor:
             visual.zone_resolutions,
             getattr(final, "calibration_diagnostics", {}),
         )
+
+    @staticmethod
+    def _validate_fixed_frames(frames: Sequence[FrameSample]) -> None:
+        if not frames:
+            raise HudVideoProcessingError("fixed frame set must not be empty")
+        previous = -math.inf
+        for frame in frames:
+            timestamp = float(frame.time_sec)
+            if not math.isfinite(timestamp):
+                raise HudVideoProcessingError("fixed frame timestamps must be finite")
+            if timestamp == previous:
+                raise HudVideoProcessingError("fixed frame timestamps must be unique")
+            if timestamp < previous:
+                raise HudVideoProcessingError("fixed frames must be in ascending time order")
+            previous = timestamp
 
     @staticmethod
     def _check_cancel(cancel_event: Event | None) -> None:
