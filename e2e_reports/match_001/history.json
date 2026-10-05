@@ -251,5 +251,51 @@
       "error_code": null
     },
     "failure_count": 56
+  },
+  {
+    "history_key": "12201e4e70a7c723826af87870fb037bbe662552684e9888bd8095e632a3f58c",
+    "metadata": {
+      "manual_map_id": null,
+      "video_id": "match_001",
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "analyzer_commit": "1d47418b9a3d681305b6a15a6a8a55205957f756",
+      "git_is_dirty": false,
+      "executed_at": "2026-10-05T11:19:53.488259+00:00",
+      "validation_pack": null,
+      "validation_pack_sha256": null,
+      "git_dirty_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "settings_fingerprint": null
+    },
+    "result": {
+      "status": "fail",
+      "schema_valid": false,
+      "failure_count": null,
+      "negative_assertion_count": null,
+      "error_code": "VALIDATION_PACK_MISSING"
+    },
+    "failure_count": null
+  },
+  {
+    "history_key": "33ba8994bb2bf3613675569e4e514b934bb709aeb941b43f6696861133f8a628",
+    "metadata": {
+      "manual_map_id": null,
+      "video_id": "match_001",
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "analyzer_commit": "1d47418b9a3d681305b6a15a6a8a55205957f756",
+      "git_is_dirty": true,
+      "executed_at": "2026-10-05T11:20:39.101974+00:00",
+      "validation_pack": "valorant_e2e_validation_pack_v3",
+      "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
+      "git_dirty_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "settings_fingerprint": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    "result": {
+      "status": "fail",
+      "schema_valid": false,
+      "failure_count": null,
+      "negative_assertion_count": null,
+      "error_code": "ANALYZER_FAILED"
+    },
+    "failure_count": null
   }
 ]

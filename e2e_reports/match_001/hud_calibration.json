@@ -1,801 +1,123 @@
 {
   "metadata": {
-    "manual_map_id": "summit",
+    "manual_map_id": null,
     "video_id": "match_001",
     "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
-    "analyzer_commit": "ba8135a3563e5c451b3a2d2685b5f6cbf6036a7d",
-    "git_is_dirty": false,
-    "executed_at": "2026-10-05T08:25:57.273015+00:00",
+    "analyzer_commit": "1d47418b9a3d681305b6a15a6a8a55205957f756",
+    "git_is_dirty": true,
+    "executed_at": "2026-10-05T11:20:39.101974+00:00",
     "validation_pack": "valorant_e2e_validation_pack_v3",
     "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
     "git_dirty_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "settings_fingerprint": "5f73d89e69cc283cefdd28b68524e0ce2e81985b6605842de5bbb6725edc70f8"
+    "settings_fingerprint": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
   },
   "available": true,
   "schema_version": 1,
-  "profile_present": true,
+  "profile_present": false,
   "counts": {
-    "frames": 4038,
-    "fresh_geometry_success": 1,
-    "effective_geometry_success": 4038,
-    "retained_geometry_frames": 4037,
+    "frames": 0,
+    "fresh_geometry_success": 0,
+    "effective_geometry_success": 0,
+    "retained_geometry_frames": 0,
     "geometry_invalid_unknown": 0,
-    "geometry_valid_state_unknown": 3537,
-    "live_identity_evidence_insufficient": 2723,
-    "insufficient_anchors_frames": 4037
+    "geometry_valid_state_unknown": 0,
+    "live_identity_evidence_insufficient": 0,
+    "insufficient_anchors_frames": 0
   },
-  "fresh_geometry_success_rate": 0.00024764735017335313,
-  "effective_geometry_success_rate": 1.0,
-  "reasons": {
-    "insufficient_anchors": 4037
-  },
+  "fresh_geometry_success_rate": null,
+  "effective_geometry_success_rate": null,
+  "reasons": {},
   "identity_evidence_policy": "independent_current_frame_structures_v1",
-  "identity_reasons": {
-    "spectator_exclusion_unverified": 3579,
-    "competing_view_evidence": 39,
-    "structure_evidence_insufficient": 255,
-    "independent_hud_structures": 165
-  },
-  "identity_missing": {
-    "hp_hud_structure": 725,
-    "ability_bar_structure": 1434,
-    "weapon_ammo_structure": 2132
-  },
-  "spectator_checks": {
-    "icon_present": 335,
-    "icon_absent": 459,
-    "icon_roi_obscured": 1646,
-    "icon_roi_unobservable": 1546,
-    "icon_structure_ambiguous": 52
-  },
-  "automatic_identity_generation": {
-    "version": 2,
-    "identity_reference_ready": true,
-    "sample_count": 64,
-    "geometry_mode": "inherited",
-    "references": {
-      "hp_hud_structure": {
-        "training_count": 32,
-        "holdout_count": 32,
-        "training_accept_count": 28,
-        "holdout_accept_count": 28,
-        "candidate_count": 28,
-        "structural_rejected": 4,
-        "support_rejected": 0,
-        "holdout_rejected": 0,
-        "cluster_count": null,
-        "omitted_candidate_count": null,
-        "holdout_median": null,
-        "status": "generated",
-        "content_hash": "3ae13c689067b93b4d5d76de1c687990eec837e799b8bd69c808ff3a3f2cf515",
-        "dimensions": [
-          175,
-          67
-        ],
-        "value_invariant_generation": {
-          "matcher": "value_invariant_edges_v1",
-          "selected_candidate": {
-            "training_cluster_size": 19,
-            "training_accept_count": 28,
-            "holdout_accept_count": 28,
-            "edge_count": 440,
-            "mask_population": 387,
-            "temporal_variance": null,
-            "edge_persistence": null,
-            "stable_pixel_ratio": null,
-            "dynamic_pixel_ratio": null,
-            "mask_pixel_ratio": null,
-            "holdout_prevalence": null,
-            "stable_edge_ratio": null,
-            "orientation_consistency": 0.9995920032639739,
-            "roi_bounds": [
-              0.15,
-              0.47058823529411764,
-              0.9454545454545454,
-              0.9084967320261438
-            ],
-            "distance_from_intended_region": 0.0,
-            "neighbor_overlap_ratio": 0.0,
-            "intended_bounds": [
-              0.14,
-              0.46,
-              0.945,
-              0.93
-            ],
-            "support_bounds": [
-              [
-                0.15,
-                0.8,
-                0.66,
-                0.91
-              ],
-              [
-                0.68,
-                0.47,
-                0.945,
-                0.89
-              ]
-            ],
-            "dynamic_bounds": [
-              [
-                0.34,
-                0.5,
-                0.67,
-                0.79
-              ]
-            ],
-            "group_mask_population": [
-              105,
-              282
-            ],
-            "dimensions": [
-              175,
-              67
-            ],
-            "reason": null,
-            "structural_rejection_reason": null,
-            "support_rejection_reason": null,
-            "training_similarity": {
-              "min": 0.0,
-              "median": 0.9836534613845538,
-              "max": 1.0,
-              "count": 32
-            },
-            "holdout_similarity": {
-              "min": 0.0,
-              "median": 0.9794567755366135,
-              "max": 1.0,
-              "count": 32
-            },
-            "structural_gates": {
-              "line_support": true,
-              "spatial_spread": true,
-              "nonparallel": true,
-              "separated_layout": false,
-              "arrangement": true,
-              "edge_density": true,
-              "edge_support": true
-            },
-            "line_count": 13,
-            "edge_component_count": 2,
-            "localized_component_count": 2,
-            "occupied_rows": 4,
-            "occupied_columns": 4,
-            "proposal_training_frames": null,
-            "proposal_source": "configured_role_scaffold",
-            "rejection_stage": null,
-            "orientation_histogram": [
-              0.0,
-              0.7286821705426356,
-              0.0,
-              0.0,
-              0.2713178294573643,
-              0.0,
-              0.0,
-              0.0
-            ],
-            "spatial_edge_spread": [
-              0.9714285714285714,
-              0.7761194029850746
-            ],
-            "component_centroid_spread": [
-              0.5168996960486322,
-              0.5149782999894146
-            ],
-            "edge_occupancy_grid": [
-              0.0,
-              0.0,
-              0.0,
-              0.16193181818181818,
-              0.0,
-              0.0,
-              0.0,
-              0.12566844919786097,
-              0.0,
-              0.0,
-              0.04946524064171123,
-              0.03877005347593583,
-              0.0533515731874145,
-              0.058823529411764705,
-              0.040106951871657755,
-              0.0
-            ]
-          },
-          "mask_content_hash": "b2c8944f29272014bf9ca8a3ccbf0ab9a327103ffa1c532e2ddc677b6ab7ce2a",
-          "support_content_hash": "ec702596da2d901fbad2c7156532d955664b9aa738efca597850a4eff0f49c23",
-          "allowed_content_hash": null
-        }
-      },
-      "ability_bar_structure": {
-        "training_count": 32,
-        "holdout_count": 32,
-        "training_accept_count": 21,
-        "holdout_accept_count": 24,
-        "candidate_count": 155,
-        "structural_rejected": 112,
-        "support_rejected": 546,
-        "holdout_rejected": 0,
-        "cluster_count": null,
-        "omitted_candidate_count": null,
-        "holdout_median": 0.9800662994384766,
-        "status": "generated",
-        "content_hash": "d83617acdc2ec7bc72cf103393463276710f2882047dbb6ae30a6bcaa6d5fc1f",
-        "dimensions": [
-          100,
-          67
-        ]
-      },
-      "weapon_ammo_structure": {
-        "training_count": 32,
-        "holdout_count": 32,
-        "training_accept_count": 15,
-        "holdout_accept_count": 14,
-        "candidate_count": 1,
-        "structural_rejected": 0,
-        "support_rejected": 0,
-        "holdout_rejected": 0,
-        "cluster_count": null,
-        "omitted_candidate_count": 0,
-        "holdout_median": null,
-        "status": "generated",
-        "content_hash": "d4e0025029fd4fcefc2133ba2c010c971b750ef89b939596d6a6f0d52245c5bd",
-        "dimensions": [
-          124,
-          61
-        ],
-        "value_invariant_generation": {
-          "matcher": "weapon_consensus_ridges_v1",
-          "selected_candidate": {
-            "training_cluster_size": 15,
-            "training_accept_count": 15,
-            "holdout_accept_count": 14,
-            "edge_count": null,
-            "mask_population": 504,
-            "temporal_variance": null,
-            "edge_persistence": null,
-            "stable_pixel_ratio": null,
-            "dynamic_pixel_ratio": null,
-            "mask_pixel_ratio": null,
-            "holdout_prevalence": null,
-            "stable_edge_ratio": null,
-            "orientation_consistency": null,
-            "roi_bounds": [
-              0.2391304347826087,
-              0.5898876404494382,
-              0.7782608695652173,
-              0.9325842696629213
-            ],
-            "distance_from_intended_region": 0.0,
-            "neighbor_overlap_ratio": 0.0,
-            "intended_bounds": [
-              0.24,
-              0.59,
-              0.78,
-              0.93
-            ],
-            "support_bounds": [],
-            "dynamic_bounds": [
-              [
-                0.25,
-                0.59,
-                0.51,
-                0.82
-              ],
-              [
-                0.64,
-                0.59,
-                0.78,
-                0.82
-              ]
-            ],
-            "group_mask_population": [
-              168,
-              144,
-              192
-            ],
-            "dimensions": [
-              124,
-              61
-            ],
-            "reason": null,
-            "structural_rejection_reason": null,
-            "support_rejection_reason": null,
-            "training_similarity": {
-              "min": 0.0,
-              "median": 0.7728072452720305,
-              "max": 0.9986839988176837,
-              "count": 32
-            },
-            "holdout_similarity": {
-              "min": 0.0,
-              "median": 0.49698200806550324,
-              "max": 0.997655227002887,
-              "count": 32
-            },
-            "structural_gates": {
-              "line_support": false,
-              "spatial_spread": false,
-              "nonparallel": false,
-              "separated_layout": true,
-              "arrangement": true,
-              "edge_density": false,
-              "edge_support": false
-            },
-            "line_count": null,
-            "edge_component_count": null,
-            "localized_component_count": null,
-            "occupied_rows": null,
-            "occupied_columns": null,
-            "proposal_training_frames": null,
-            "proposal_source": "training_persistent_slots",
-            "learned_subfeatures": [
-              {
-                "normalized_bounds": [
-                  0.5217391304347826,
-                  0.6348314606741573,
-                  0.5521739130434783,
-                  0.7696629213483146
-                ],
-                "critical": true,
-                "group_id": 1,
-                "mask_population": 168,
-                "training_recurrence_min": 15,
-                "training_support": 16,
-                "holdout_support": 16,
-                "consensus_cluster_support": 15,
-                "holdout_observable": 19
-              },
-              {
-                "normalized_bounds": [
-                  0.5521739130434783,
-                  0.6348314606741573,
-                  0.5782608695652174,
-                  0.7696629213483146
-                ],
-                "critical": true,
-                "group_id": 2,
-                "mask_population": 144,
-                "training_recurrence_min": 3,
-                "training_support": 17,
-                "holdout_support": 16,
-                "consensus_cluster_support": 15,
-                "holdout_observable": 19
-              },
-              {
-                "normalized_bounds": [
-                  0.5782608695652174,
-                  0.6348314606741573,
-                  0.6130434782608696,
-                  0.7696629213483146
-                ],
-                "critical": true,
-                "group_id": 3,
-                "mask_population": 192,
-                "training_recurrence_min": 3,
-                "training_support": 16,
-                "holdout_support": 15,
-                "consensus_cluster_support": 15,
-                "holdout_observable": 20
-              }
-            ],
-            "consensus_contributor_count": 15,
-            "rejection_stage": null,
-            "orientation_histogram": null,
-            "spatial_edge_spread": [
-              0.09130434782608696,
-              0.1348314606741573
-            ],
-            "component_centroid_spread": null,
-            "edge_occupancy_grid": null
-          },
-          "mask_content_hash": "e97bad5ced263c9ceb05fd2dde6814d2a9c86b732ddbb7266766fe94e0632877",
-          "support_content_hash": "297e4260c30603fde2eea698ad1165fd85f1f6e466e92ddd93f8c1c09a11a72c",
-          "allowed_content_hash": "3e58637b7b8275ffdfaea8da6015b8cc428201b39bd1febc609f92ee0325cc53"
-        },
-        "weapon_ammo_generation": {
-          "matcher": "weapon_consensus_ridges_v1",
-          "proposal_count": null,
-          "proposal_budget_omitted": null,
-          "proposal_rejection_counts": {
-            "spanning_component": null,
-            "one_dimensional": null,
-            "group_extent_invalid": null
-          },
-          "proposals": [],
-          "rejection_counts": {
-            "seed_support_insufficient": null,
-            "fixed_edges_insufficient": null,
-            "edge_arrangement_invalid": null,
-            "edge_density_invalid": null,
-            "mask_contrast_insufficient": null,
-            "edge_support_insufficient": null,
-            "training_support_insufficient": null
-          },
-          "candidates": [],
-          "selected_candidate": {
-            "training_cluster_size": 15,
-            "training_accept_count": 15,
-            "holdout_accept_count": 14,
-            "edge_count": null,
-            "mask_population": 504,
-            "temporal_variance": null,
-            "edge_persistence": null,
-            "stable_pixel_ratio": null,
-            "dynamic_pixel_ratio": null,
-            "mask_pixel_ratio": null,
-            "holdout_prevalence": null,
-            "stable_edge_ratio": null,
-            "orientation_consistency": null,
-            "roi_bounds": [
-              0.2391304347826087,
-              0.5898876404494382,
-              0.7782608695652173,
-              0.9325842696629213
-            ],
-            "distance_from_intended_region": 0.0,
-            "neighbor_overlap_ratio": 0.0,
-            "intended_bounds": [
-              0.24,
-              0.59,
-              0.78,
-              0.93
-            ],
-            "support_bounds": [],
-            "dynamic_bounds": [
-              [
-                0.25,
-                0.59,
-                0.51,
-                0.82
-              ],
-              [
-                0.64,
-                0.59,
-                0.78,
-                0.82
-              ]
-            ],
-            "group_mask_population": [
-              168,
-              144,
-              192
-            ],
-            "dimensions": [
-              124,
-              61
-            ],
-            "reason": null,
-            "structural_rejection_reason": null,
-            "support_rejection_reason": null,
-            "training_similarity": {
-              "min": 0.0,
-              "median": 0.7728072452720305,
-              "max": 0.9986839988176837,
-              "count": 32
-            },
-            "holdout_similarity": {
-              "min": 0.0,
-              "median": 0.49698200806550324,
-              "max": 0.997655227002887,
-              "count": 32
-            },
-            "structural_gates": {
-              "line_support": false,
-              "spatial_spread": false,
-              "nonparallel": false,
-              "separated_layout": true,
-              "arrangement": true,
-              "edge_density": false,
-              "edge_support": false
-            },
-            "line_count": null,
-            "edge_component_count": null,
-            "localized_component_count": null,
-            "occupied_rows": null,
-            "occupied_columns": null,
-            "proposal_training_frames": null,
-            "proposal_source": "training_persistent_slots",
-            "learned_subfeatures": [
-              {
-                "normalized_bounds": [
-                  0.5217391304347826,
-                  0.6348314606741573,
-                  0.5521739130434783,
-                  0.7696629213483146
-                ],
-                "critical": true,
-                "group_id": 1,
-                "mask_population": 168,
-                "training_recurrence_min": 15,
-                "training_support": 16,
-                "holdout_support": 16,
-                "consensus_cluster_support": 15,
-                "holdout_observable": 19
-              },
-              {
-                "normalized_bounds": [
-                  0.5521739130434783,
-                  0.6348314606741573,
-                  0.5782608695652174,
-                  0.7696629213483146
-                ],
-                "critical": true,
-                "group_id": 2,
-                "mask_population": 144,
-                "training_recurrence_min": 3,
-                "training_support": 17,
-                "holdout_support": 16,
-                "consensus_cluster_support": 15,
-                "holdout_observable": 19
-              },
-              {
-                "normalized_bounds": [
-                  0.5782608695652174,
-                  0.6348314606741573,
-                  0.6130434782608696,
-                  0.7696629213483146
-                ],
-                "critical": true,
-                "group_id": 3,
-                "mask_population": 192,
-                "training_recurrence_min": 3,
-                "training_support": 16,
-                "holdout_support": 15,
-                "consensus_cluster_support": 15,
-                "holdout_observable": 20
-              }
-            ],
-            "consensus_contributor_count": 15,
-            "rejection_stage": null,
-            "orientation_histogram": null,
-            "spatial_edge_spread": [
-              0.09130434782608696,
-              0.1348314606741573
-            ],
-            "component_centroid_spread": null,
-            "edge_occupancy_grid": null
-          },
-          "mask_presence": true,
-          "mask_content_hash": "e97bad5ced263c9ceb05fd2dde6814d2a9c86b732ddbb7266766fe94e0632877",
-          "omitted_proposal_count": 0
-        }
-      },
-      "spectator_clear": {
-        "training_count": null,
-        "holdout_count": null,
-        "training_accept_count": null,
-        "holdout_accept_count": null,
-        "candidate_count": null,
-        "structural_rejected": null,
-        "support_rejected": null,
-        "holdout_rejected": null,
-        "cluster_count": null,
-        "omitted_candidate_count": null,
-        "holdout_median": null,
-        "status": null,
-        "content_hash": null,
-        "dimensions": null
-      },
-      "spectator_panel": {
-        "training_count": null,
-        "holdout_count": null,
-        "training_accept_count": null,
-        "holdout_accept_count": null,
-        "candidate_count": 0,
-        "structural_rejected": null,
-        "support_rejected": null,
-        "holdout_rejected": null,
-        "cluster_count": null,
-        "omitted_candidate_count": null,
-        "holdout_median": null,
-        "status": "generated",
-        "content_hash": null,
-        "dimensions": null,
-        "support_regions_content_hash": null,
-        "orientation_content_hash": null,
-        "spectator_generation": {
-          "matcher": "fixed_slot_structure_v1",
-          "proposal_sample_count": null,
-          "holdout_proposal_skipped_count": null,
-          "candidate_support": [],
-          "evidence_counts": {
-            "observable": null,
-            "boundary": null,
-            "portrait": null,
-            "textlike": null,
-            "boundary_portrait": null,
-            "portrait_textlike": null,
-            "boundary_textlike": null,
-            "all_components": null
-          },
-          "rejection_counts": {
-            "geometry_rejected": null,
-            "contrast_rejected": null,
-            "blur_rejected": null,
-            "structural_rejected": null
-          },
-          "portrait_modes": {
-            "framed": null,
-            "frameless": null
-          },
-          "frameless_rejection_counts": {
-            "separator_geometry": null,
-            "separator_evidence": null,
-            "two_text_rows_missing": null,
-            "portrait_text_geometry": null,
-            "portrait_edge_density": null,
-            "portrait_localized_groups": null,
-            "portrait_spread": null,
-            "portrait_occupancy": null,
-            "portrait_orientation": null,
-            "component_pixels_insufficient": null,
-            "holdout_not_proposed": null
-          },
-          "final_rejection_counts": {
-            "text_alignment_insufficient": null,
-            "boundary_span_insufficient": null,
-            "relative_position_mismatch": null,
-            "component_pixels_insufficient": null,
-            "boundary_orientation_incoherent": null
-          },
-          "samples": [],
-          "portrait_statistics": {
-            "portrait_candidate_count": {
-              "count": 0,
-              "min": null,
-              "median": null,
-              "max": null
-            },
-            "portrait_geometry_count": {
-              "count": 0,
-              "min": null,
-              "median": null,
-              "max": null
-            },
-            "portrait_supported_count": {
-              "count": 0,
-              "min": null,
-              "median": null,
-              "max": null
-            },
-            "portrait_occupancy_rejected": {
-              "count": 0,
-              "min": null,
-              "median": null,
-              "max": null
-            },
-            "portrait_frame_score": {
-              "count": 0,
-              "min": null,
-              "median": null,
-              "max": null
-            }
-          },
-          "omitted_sample_count": 0,
-          "candidate_support_summary": {
-            "count": 0,
-            "min": null,
-            "median": null,
-            "max": null,
-            "minimum_required": null,
-            "below_minimum_count": 0
-          },
-          "self_match_summary": {
-            "count": 0,
-            "passed_count": 0,
-            "min": null,
-            "median": null,
-            "max": null,
-            "failing_components": {
-              "boundary": 0,
-              "portrait": 0,
-              "text": 0
-            }
-          },
-          "omitted_candidate_support_count": 0
-        }
-      }
-    }
-  },
+  "identity_reasons": {},
+  "identity_missing": {},
+  "spectator_checks": {},
   "anchors": [
     {
       "anchor_name": "round_timer",
-      "configured": true,
+      "configured": false,
       "required": true,
       "mask_presence": false,
-      "asset_readable": true,
+      "asset_readable": false,
       "threshold": 0.9,
-      "geometry_success_rate_when_accepted": 0.5,
-      "accepted_count": 2,
-      "rejected_count": 4036,
+      "geometry_success_rate_when_accepted": null,
+      "accepted_count": 0,
+      "rejected_count": 0,
       "unscored_count": 0,
-      "missing_during_insufficient_anchors": 4036,
-      "accepted_during_geometry_success": 1,
-      "content_hash": "b479ec4f00a1e271cd559d23c1843ae45da39abc04bdf794bf926bdba394ffbd",
+      "missing_during_insufficient_anchors": 0,
+      "accepted_during_geometry_success": 0,
+      "content_hash": null,
       "mask_content_hash": null,
-      "dimensions": [
-        125,
-        85
-      ],
+      "dimensions": null,
       "match_confidence": {
-        "min": 0.36908218264579773,
-        "median": 0.7600071132183075,
-        "max": 0.9986677765846252
+        "min": null,
+        "median": null,
+        "max": null
       }
     },
     {
       "anchor_name": "top_match_bar",
-      "configured": true,
+      "configured": false,
       "required": true,
       "mask_presence": false,
-      "asset_readable": true,
+      "asset_readable": false,
       "threshold": 0.9,
-      "geometry_success_rate_when_accepted": 1.0,
-      "accepted_count": 1,
-      "rejected_count": 4037,
+      "geometry_success_rate_when_accepted": null,
+      "accepted_count": 0,
+      "rejected_count": 0,
       "unscored_count": 0,
-      "missing_during_insufficient_anchors": 4037,
-      "accepted_during_geometry_success": 1,
-      "content_hash": "1f9852f18243d77106197c32cb2d01612a7a862e139bd8f0b4618d00ae8feca0",
+      "missing_during_insufficient_anchors": 0,
+      "accepted_during_geometry_success": 0,
+      "content_hash": null,
       "mask_content_hash": null,
-      "dimensions": [
-        1155,
-        120
-      ],
+      "dimensions": null,
       "match_confidence": {
-        "min": 0.009110734798014164,
-        "median": 0.43024060130119324,
-        "max": 0.9985427260398865
+        "min": null,
+        "median": null,
+        "max": null
       }
     },
     {
       "anchor_name": "player_hp_armor",
-      "configured": true,
+      "configured": false,
       "required": true,
       "mask_presence": false,
-      "asset_readable": true,
+      "asset_readable": false,
       "threshold": 0.9,
-      "geometry_success_rate_when_accepted": 1.0,
-      "accepted_count": 1,
-      "rejected_count": 4037,
+      "geometry_success_rate_when_accepted": null,
+      "accepted_count": 0,
+      "rejected_count": 0,
       "unscored_count": 0,
-      "missing_during_insufficient_anchors": 4037,
-      "accepted_during_geometry_success": 1,
-      "content_hash": "31d71802e579aabcd257926af9707687b4dfa1bb3faf9e5df410c0d8bf6bf574",
+      "missing_during_insufficient_anchors": 0,
+      "accepted_during_geometry_success": 0,
+      "content_hash": null,
       "mask_content_hash": null,
-      "dimensions": [
-        220,
-        153
-      ],
+      "dimensions": null,
       "match_confidence": {
-        "min": 0.0,
-        "median": 0.5106585025787354,
-        "max": 0.9988275170326233
+        "min": null,
+        "median": null,
+        "max": null
       }
     },
     {
       "anchor_name": "abilities",
-      "configured": true,
+      "configured": false,
       "required": true,
       "mask_presence": false,
-      "asset_readable": true,
+      "asset_readable": false,
       "threshold": 0.9,
-      "geometry_success_rate_when_accepted": 1.0,
-      "accepted_count": 1,
-      "rejected_count": 4037,
+      "geometry_success_rate_when_accepted": null,
+      "accepted_count": 0,
+      "rejected_count": 0,
       "unscored_count": 0,
-      "missing_during_insufficient_anchors": 4037,
-      "accepted_during_geometry_success": 1,
-      "content_hash": "f9faf779c0490d9ef79d3cc7fa3824de0fbcb7cbed4947df3af93f7ce5a3d847",
+      "missing_during_insufficient_anchors": 0,
+      "accepted_during_geometry_success": 0,
+      "content_hash": null,
       "mask_content_hash": null,
-      "dimensions": [
-        500,
-        223
-      ],
+      "dimensions": null,
       "match_confidence": {
-        "min": 0.0,
-        "median": 0.4313812404870987,
-        "max": 0.9978856444358826
+        "min": null,
+        "median": null,
+        "max": null
       }
     }
   ]
