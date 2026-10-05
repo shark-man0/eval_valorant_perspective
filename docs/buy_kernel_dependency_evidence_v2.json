@@ -1,0 +1,90 @@
+{
+  "audit_script_sha256": "7d07482d3013b7f22ed07edbaf3fe61e7e8c0f588144225cfed7317b66005e55",
+  "border41_interpretation": "41px clearing only trims response at the ROI image perimeter; it does not bound internal support dependencies.",
+  "canny_hysteresis_test": {
+    "finite_halo_can_guarantee_exclusion": false,
+    "seed_to_probe_distance_px": 250,
+    "strong_seed_rows": [
+      270,
+      290
+    ],
+    "weak_edge_with_seed": true,
+    "weak_edge_without_seed": false,
+    "weak_probe_xy": [
+      149,
+      20
+    ]
+  },
+  "default_even_kernel_anchor_xy": [
+    40,
+    0
+  ],
+  "diagnostic_only": true,
+  "exact_opening_test": {
+    "changed_output_pixels_n": 80,
+    "changed_output_x_minmax": [
+      81,
+      160
+    ],
+    "deleted_pixel_xy": [
+      80,
+      1
+    ],
+    "max_distance_px": 80,
+    "outside_41_halo": true,
+    "source_edge_xy": [
+      80,
+      1
+    ]
+  },
+  "finite_local_alternative": {
+    "contract": "Sobel ksize3 on original pixels; retain derivative positions only when full 3x3 source footprint is valid. Avoid hysteresis; optional short local opening requires eroding valid-source mask by its full composed dependency footprint.",
+    "existing_helper": "scripts/diagnostic_edge_geometry.py::masked_spatial_hog",
+    "existing_test_sha256": "c5ee659917e3c6fdc2f26b2192d3df501001fed76c451493b182495580f35817",
+    "helper_sha256": "f5e217e832241f752ce6db97d1d5bf760bf2777ab00862899ffec0d175b347ad",
+    "status": "new training-only experiment proposal; requires independent freeze/evaluation"
+  },
+  "frozen_config_changed": false,
+  "frozen_config_sha256": "0bf5ba57f9a098e96cf324b2259098a6c6a1e460a875307007e397a6ffa59487",
+  "gray_canny_opening_test": {
+    "changed_output_pixel_count": 61,
+    "known_changed_output_xy": [
+      12,
+      30
+    ],
+    "max_distance_px": 58,
+    "outside_41_halo": true,
+    "source_gray_pixel_xy": [
+      70,
+      31
+    ]
+  },
+  "limits": [
+    "Synthetic dependency proofs do not explain any particular challenge frame.",
+    "The 79-symmetric-radius assumption in v1 was incorrect for OpenCV\u2019s default even-kernel anchor; exact support is asymmetric [-78,+80].",
+    "No holdout scores, labels, replay states, or classifier outputs read."
+  ],
+  "opening_composed_source_to_output_offsets_px": {
+    "horizontal": [
+      -78,
+      80
+    ],
+    "vertical": [
+      -78,
+      80
+    ]
+  },
+  "phase": "frozen_kernel_dependency_audit_corrected_anchor",
+  "schema_version": 2,
+  "single_stage_source_to_output_offsets_px": {
+    "horizontal": [
+      -39,
+      40
+    ],
+    "vertical": [
+      -39,
+      40
+    ]
+  },
+  "source_v1_audit_sha256": "9378ef95955a6f0cff3d8fe8122d71fad0615316ae6fe09255915b58a28ab18f"
+}

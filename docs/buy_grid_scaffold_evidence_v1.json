@@ -1,0 +1,183 @@
+{
+  "ablation_contract_status": "invalid exclusion guarantee: synthetic counterexamples demonstrate 80px opening influence and nonlocal Canny hysteresis outside the chosen41px halo",
+  "analyzer_baseline": "5b7a7e26c670cfc999839dcecd42c77065d19a24",
+  "appearance_role_summary": [
+    {
+      "appearance_role": "visible_buy",
+      "insertion": "original",
+      "legacy_x_grid_rows_n": 6,
+      "legacy_x_grid_unique_n": 6,
+      "rows_n": 6,
+      "scaffold_ncc_rows_n": 2,
+      "scaffold_ncc_unique_n": 2,
+      "scaffold_rows_n": 2,
+      "scaffold_unique_n": 2,
+      "unique_n": 6
+    },
+    {
+      "appearance_role": "visible_buy",
+      "insertion": "reference_1",
+      "legacy_x_grid_rows_n": 6,
+      "legacy_x_grid_unique_n": 6,
+      "rows_n": 6,
+      "scaffold_ncc_rows_n": 2,
+      "scaffold_ncc_unique_n": 2,
+      "scaffold_rows_n": 2,
+      "scaffold_unique_n": 2,
+      "unique_n": 6
+    },
+    {
+      "appearance_role": "visible_buy",
+      "insertion": "reference_2",
+      "legacy_x_grid_rows_n": 6,
+      "legacy_x_grid_unique_n": 6,
+      "rows_n": 6,
+      "scaffold_ncc_rows_n": 2,
+      "scaffold_ncc_unique_n": 2,
+      "scaffold_rows_n": 2,
+      "scaffold_unique_n": 2,
+      "unique_n": 6
+    },
+    {
+      "appearance_role": "visible_buy",
+      "insertion": "reference_3",
+      "legacy_x_grid_rows_n": 6,
+      "legacy_x_grid_unique_n": 6,
+      "rows_n": 6,
+      "scaffold_ncc_rows_n": 2,
+      "scaffold_ncc_unique_n": 2,
+      "scaffold_rows_n": 2,
+      "scaffold_unique_n": 2,
+      "unique_n": 6
+    },
+    {
+      "appearance_role": "all_other_appearances",
+      "insertion": "original",
+      "legacy_x_grid_rows_n": 0,
+      "legacy_x_grid_unique_n": 0,
+      "rows_n": 62,
+      "scaffold_ncc_rows_n": 0,
+      "scaffold_ncc_unique_n": 0,
+      "scaffold_rows_n": 0,
+      "scaffold_unique_n": 0,
+      "unique_n": 60
+    },
+    {
+      "appearance_role": "all_other_appearances",
+      "insertion": "reference_1",
+      "legacy_x_grid_rows_n": 11,
+      "legacy_x_grid_unique_n": 11,
+      "rows_n": 62,
+      "scaffold_ncc_rows_n": 0,
+      "scaffold_ncc_unique_n": 0,
+      "scaffold_rows_n": 0,
+      "scaffold_unique_n": 0,
+      "unique_n": 60
+    },
+    {
+      "appearance_role": "all_other_appearances",
+      "insertion": "reference_2",
+      "legacy_x_grid_rows_n": 11,
+      "legacy_x_grid_unique_n": 11,
+      "rows_n": 62,
+      "scaffold_ncc_rows_n": 0,
+      "scaffold_ncc_unique_n": 0,
+      "scaffold_rows_n": 0,
+      "scaffold_unique_n": 0,
+      "unique_n": 60
+    },
+    {
+      "appearance_role": "all_other_appearances",
+      "insertion": "reference_3",
+      "legacy_x_grid_rows_n": 11,
+      "legacy_x_grid_unique_n": 11,
+      "rows_n": 62,
+      "scaffold_ncc_rows_n": 0,
+      "scaffold_ncc_unique_n": 0,
+      "scaffold_rows_n": 0,
+      "scaffold_unique_n": 0,
+      "unique_n": 60
+    }
+  ],
+  "counts": {
+    "canonical_rows": 34,
+    "coverage_rows": 34,
+    "rows": 68,
+    "unique_native_locators": 66
+  },
+  "decision": "NEED MORE EVIDENCE",
+  "diagnostic_only": true,
+  "failed_groups_unique": {
+    "H1": {
+      "bbox_response_at_other_positions_n": 0,
+      "failed_n": 64,
+      "insufficient_structural_response_n": 64,
+      "passed_n": 2
+    },
+    "H2": {
+      "bbox_response_at_other_positions_n": 1,
+      "failed_n": 64,
+      "insufficient_structural_response_n": 63,
+      "passed_n": 2
+    },
+    "V1": {
+      "bbox_response_at_other_positions_n": 5,
+      "failed_n": 62,
+      "insufficient_structural_response_n": 57,
+      "passed_n": 4
+    },
+    "V2": {
+      "bbox_response_at_other_positions_n": 0,
+      "failed_n": 63,
+      "insufficient_structural_response_n": 63,
+      "passed_n": 3
+    }
+  },
+  "group_patterns_unique": {
+    "0000": 61,
+    "0001": 1,
+    "0101": 1,
+    "0111": 1,
+    "1100": 1,
+    "1110": 1
+  },
+  "hashes": {
+    "appearance_only_join_sha256": "d3701a4d57122eee1457f7c85232dbd0031f9afe27fb432a14ebbb84effa6cc3",
+    "config_sha256": "0bf5ba57f9a098e96cf324b2259098a6c6a1e460a875307007e397a6ffa59487",
+    "private_corrected_kernel_audit_sha256": "b3242fea386fecda3134743fcc6ebc86d6a1bc4c8fa77a5a6b524ebca4f775b2",
+    "private_score_detail_sha256": "7c06e0e4cf4ad1e3928a89656e63531117f1328bbfed310edb06e913eadd4a55",
+    "score_aggregate_sha256": "4ca378ba5ff73b9c174249ce403efc624c996484fb10c3e6e170d60dcd4f6e3a"
+  },
+  "interior_ablation_observed": {
+    "all_68_all_groups_unchanged": false,
+    "pixels_changed_fraction_max": 0.8534802598700649,
+    "pixels_changed_fraction_min": 0.8534802598700649,
+    "unchanged_rows_by_group": {
+      "H1": 67,
+      "H2": 68,
+      "V1": 63,
+      "V2": 60
+    }
+  },
+  "next_experiment": "prove extractor dependency bounds, then finite local extraction with correct footprint; prior challenge becomes development data",
+  "production_changed": false,
+  "schema": "buy_grid_scaffold_evidence_v1",
+  "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "synthetic_x_insertions": {
+    "reference_1": {
+      "scaffold_and_ncc_accept_n": 0,
+      "scaffold_and_ncc_reject_n": 11,
+      "synthetic_legacy_false_to_true_n": 11
+    },
+    "reference_2": {
+      "scaffold_and_ncc_accept_n": 0,
+      "scaffold_and_ncc_reject_n": 11,
+      "synthetic_legacy_false_to_true_n": 11
+    },
+    "reference_3": {
+      "scaffold_and_ncc_accept_n": 0,
+      "scaffold_and_ncc_reject_n": 11,
+      "synthetic_legacy_false_to_true_n": 11
+    }
+  }
+}

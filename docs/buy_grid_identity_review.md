@@ -111,3 +111,95 @@ passed / 2 existing optional-fixture skips, Ruff/mypy/diff checks pass).
 It adds aggregate/docs only; production code is unchanged, so no new adaptive
 E2E is required. The clean 5b7 E2E and fixed baselines remain authoritative.
 This evidence gap triggers the next diagnostic rather than stopping autonomy.
+
+## Frozen long-line scaffold follow-up
+
+The three previously frozen training images supplied persistent horizontal and
+vertical long-line masks, split into H1/V1/H2/V2 groups. Canny (60/150, L2) was
+followed by 80-pixel oriented morphological opening. All four groups supported
+all three training images. Candidate configuration was frozen before challenge
+inspection; its SHA is
+`0bf5ba57f9a098e96cf324b2259098a6c6a1e460a875307007e397a6ffa59487`.
+The diagnostic rule required three of four groups, both orientations and the
+unchanged 0.90 close-anchor NCC. It was never installed in production.
+
+On the same secondary challenge (68 rows, 66 unique images), the locked
+appearance-only ledger identifies six visible menus and 60 other appearances.
+Only **2/6** menus survive scaffold plus NCC; **0/60** other appearances accept.
+All 11 additional synthetic X-insertion accepts are rejected by the scaffold.
+This is a useful counterfactual improvement but an unacceptable loss of four
+existing menu controls. Exactly two unique images support three groups; none
+supports all four. The original per-image predicates and corrected aggregate
+join agree. Images, references, masks and per-frame dumps remain private.
+
+| Representation | Visible menus retained | Other appearances accepted | Synthetic X-only additional accepts |
+| --- | ---: | ---: | ---: |
+| Coarse grid + frozen NCC | 6/6 | 0/60 | 11 |
+| Long-line scaffold + frozen NCC | 2/6 | 0/60 | 0 |
+
+For unique images, H1/H2/V1/V2 pass in 2/2/4/3 cases respectively. Five V1
+failures and one H2 failure have extracted long-line responses elsewhere inside
+their group bounds. Low response counts elsewhere are **extractor insufficiency**,
+not proof that visible UI structure is absent or unobservable.
+
+The interior ablation replaced 85.348% of grid pixels outside a 41-pixel support
+halo. It left all training metrics unchanged, but held-out group metrics remain
+unchanged only on H1 67/68, H2 68/68, V1 63/68 and V2 60/68 rows. These are
+measured interventions, **not a proved dynamic-pixel exclusion contract**.
+An 80-pixel opening composes erosion and dilation, and Canny hysteresis links
+edges beyond a local derivative footprint. The chosen 41-pixel halo has not been
+proved to bound these dependencies. An explicit dependency audit is the next
+experiment; ablation changes must not be attributed to glyphs or visual states
+until that mechanism is separated.
+
+**NEED MORE EVIDENCE**: reject adoption of this frozen candidate. Preserve its
+results, investigate the extraction contract, and test a finite local alternative
+with verified footprints. Any revised candidate evaluated on these now-inspected
+images is a development experiment, not fresh holdout qualification. Single
+recording and nearby menu occurrences still limit generalization. No threshold,
+identity safety gate or production behavior changed. Aggregate evidence is in
+`buy_grid_scaffold_evidence_v1.json`; prior clean tests and E2E remain applicable
+to the unchanged production code.
+
+### Dependency audit result
+
+Synthetic metamorphic tests establish that the 41-pixel halo is insufficient.
+For OpenCV's default even 80-pixel kernel, anchor 40 gives single-stage
+source-to-output influence offsets [-39,+40], composing to [-78,+80] for
+erosion followed by dilation. Removing one pixel from an 80-pixel line changes
+opened output 80 pixels away. This is asymmetric; the usual symmetric 79-pixel
+bound would be incorrect for this implementation's default even anchor.
+The vertical case reproduces the same influence. In the actual grayscale ->
+Canny -> opening sequence a one-pixel change alters output 58 pixels away.
+Removing a strong Canny seed 250 pixels away also removes a weak response.
+
+These counterexamples invalidate the proposed exclusion guarantee; they do
+not prove the mechanism of any individual real-image miss. Perimeter trimming
+does not bound dependencies of internal support pixels. Frozen v1 configuration,
+pixel scores and prior private audit are preserved. The corrected private audit
+hash is `b3242fea386fecda3134743fcc6ebc86d6a1bc4c8fa77a5a6b524ebca4f775b2`.
+Shared aggregate proof is `buy_kernel_dependency_evidence_v2.json`; reproducible
+synthetic tests are `tests/unit/test_diagnostic_buy_kernel_contract.py`.
+
+The selected next experiment uses original-image local Sobel derivatives with
+full 3x3 source-footprint validation, excluding hysteresis. Any subsequent
+aggregation must validate its complete composed dependency footprint. Training
+supports will be frozen before revised development scoring. The same 68 images
+cannot supply fresh holdout qualification after their inspection. No production
+detector, identity gate or threshold is modified.
+
+### Verification of this diagnostic phase
+
+Full pytest: 921 passed / 5 skipped in 267.54 seconds. The invocation omitted
+the external-pack environment variable; the three pack-dependent skips were
+then evaluated explicitly with the supplied `VALORANT_E2E_PACK`. The three pack
+integration modules passed all five tests (including two already passed in the
+full suite). Thus 924 distinct tests passed, with only the two existing optional
+sibling-trace/source-anchor fixtures unevaluated. Four new synthetic dependency
+tests also pass individually. Ruff (`src tests scripts`), mypy (`src`, 86 files),
+JSON privacy/consistency checks and diff check pass.
+
+No production change was made. The authoritative clean adaptive E2E remains
+analyzer 5b7: 22 passed / 56 failed / 4 not evaluated, negative assertions
+20 passed / 0 failed, `git_is_dirty=false`. No new E2E was run for this
+diagnostic-only phase. Fixed manifests and baseline populations remain unchanged.
