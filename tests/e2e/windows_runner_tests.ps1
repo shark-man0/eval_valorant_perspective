@@ -56,15 +56,6 @@ if (($Implicit -ccontains "--video") -or ($Implicit -ccontains "--validation-pac
     throw "Implicit inputs must remain unresolved in the PowerShell wrapper."
 }
 
-if ([System.Environment]::OSVersion.Platform -ne [System.PlatformID]::Win32NT) {
-    $PlatformTest = Start-Process -FilePath (Get-Process -Id $PID).Path `
-        -ArgumentList @("-NoProfile", "-File", ('"{0}"' -f $RunnerPath), "-VideoId", "platform-check") `
-        -Wait -PassThru -NoNewWindow
-    if ($PlatformTest.ExitCode -eq 0) {
-        throw "The production runner did not reject a non-Windows host."
-    }
-}
-
 $ExitTest = Start-Process -FilePath (Get-Process -Id $PID).Path `
     -ArgumentList @("-NoProfile", "-File", ('"{0}"' -f $PSCommandPath), "-RunnerPath", ('"{0}"' -f $RunnerPath), "-AssertExit") `
     -Wait -PassThru -NoNewWindow

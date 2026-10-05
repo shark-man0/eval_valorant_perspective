@@ -1,0 +1,9 @@
+# Shared direct E2E dependencies measured on the Windows baseline.
+# ARM64 wheel installation/imports and numeric parity still require Pi validation.
+# Transitive packages remain pip-resolved; this is not a complete lock file.
+numpy==2.5.3
+jsonschema==4.26.0
+keyring==25.7.0
+openai==2.54.0
+opencv-python==4.14.0.94
+shapely==2.1.2

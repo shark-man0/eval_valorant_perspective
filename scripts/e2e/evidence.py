@@ -34,7 +34,9 @@ def failure_times(evaluation, assertions, limit):
     return sorted(times)[:limit]
 
 
-def export_evidence(*, video, trace, evaluation, assertions, output, shared, limit):
+def export_evidence(
+    *, video, trace, evaluation, assertions, output, shared, limit, ffprobe_bin="ffprobe"
+):
     import cv2
 
     from valorant_ai_coach.hud.layout import HudLayout
@@ -44,7 +46,7 @@ def export_evidence(*, video, trace, evaluation, assertions, output, shared, lim
     del trace
     if not 1 <= limit <= 10:
         raise ValueError("Evidence limit must be in [1,10]")
-    service = VideoService()
+    service = VideoService(ffprobe_bin)
     metadata = service.probe(video)
     layout = HudLayout.load(resource_path("config/hud_layout_1080p_v3.json"))
     if layout.reference_resolution != (metadata.width, metadata.height):

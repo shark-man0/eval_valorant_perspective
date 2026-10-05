@@ -21,7 +21,7 @@ jobs:
           }
           ffmpeg -version
           ffprobe -version
-      - run: python -m pip install -c constraints-windows.txt -e ".[dev,build]"
+      - run: python -m pip install -c constraints-windows.txt -e ".[gui,dev,build]"
       - run: python tests/validate_dataset.py
       - run: python -m pytest --cov=valorant_ai_coach --cov-report=term-missing --cov-fail-under=75
       - run: python -m ruff check src tests scripts/e2e

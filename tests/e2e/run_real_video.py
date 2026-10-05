@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from dataclasses import asdict
 from importlib import import_module
@@ -55,6 +56,8 @@ def main(argv: list[str] | None = None) -> int:
                         help="Optional visual runtime profile JSON")
     parser.add_argument("--manual-map-id", default="")
     parser.add_argument("--map-client-build", default="")
+    parser.add_argument("--ffmpeg-bin")
+    parser.add_argument("--ffprobe-bin")
     args = parser.parse_args(argv)
 
     output = args.output.expanduser().resolve()
@@ -73,6 +76,8 @@ def main(argv: list[str] | None = None) -> int:
     data_dir = output / "runtime_data"
     settings = AppSettings(
         data_dir=data_dir,
+        ffmpeg_path=args.ffmpeg_bin or os.environ.get("FFMPEG_BIN", "ffmpeg"),
+        ffprobe_path=args.ffprobe_bin or os.environ.get("FFPROBE_BIN", "ffprobe"),
         hud_mode="real",
         mock_ai=True,
         hud_layout_path=(

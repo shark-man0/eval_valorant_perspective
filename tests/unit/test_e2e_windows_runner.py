@@ -15,7 +15,7 @@ def test_windows_runner_uses_script_root_and_argument_array() -> None:
     assert "Push-Location $RepoRoot" in source
     assert "Build-E2EArguments" in source
     assert "$PythonArgArray = Build-E2EArguments" in source
-    assert "& $VenvPython @PythonArgArray" in source
+    assert "& $VenvPython @PythonPrefix @PythonArgArray" in source
     assert "Invoke-Expression" not in source
     assert "--video-id" in source
     assert "--validation-pack" in source
@@ -40,13 +40,15 @@ def test_windows_runner_propagates_pipeline_failure_and_checks_toolchain() -> No
 
     assert "function Assert-E2ESuccess([int] $ExitCode)" in source
     assert "if ($ExitCode -ne 0)" in source
-    assert "Stop-Runner \"E2E pipeline failed" in source
-    assert "Python 3.12 is required" in source
-    assert "existing project virtual environment must use Python 3.12" in source
-    assert "e2e-dependencies.sha256" in source
-    assert "pip check" in source
-    assert 'foreach ($ToolName in @("ffmpeg", "ffprobe"))' in source
-    assert "Test-Path -LiteralPath $Video -PathType Leaf" in source
+    assert 'Stop-Runner "E2E pipeline failed' in source
+    assert "Get-Command python" in source
+    assert "Get-Command py" in source
+    assert '".venv\\Scripts\\python.exe"' in source
+    assert "pip install" not in source
+    assert "ffmpeg was not found" not in source
+    assert "Test-Path -LiteralPath $Video" not in source
+    assert "--check-environment" in source
+    assert "exit $RunnerExitCode" in source
 
 
 @pytest.mark.skipif(shutil.which("pwsh") is None, reason="PowerShell Core is unavailable")
@@ -59,8 +61,8 @@ def test_windows_runner_rejects_missing_required_video_id(tmp_path: Path) -> Non
         check=False,
     )
 
-    assert result.returncode != 0
-    assert "VideoId" in result.stderr
+    assert result.returncode == 2
+    assert "--video-id" in result.stderr
 
 
 @pytest.mark.skipif(shutil.which("pwsh") is None, reason="PowerShell Core is unavailable")
@@ -83,3 +85,16 @@ def test_windows_runner_power_shell_behavior_harness(tmp_path: Path) -> None:
 
     assert result.returncode == 0, result.stdout + result.stderr
     assert "behavior tests passed" in result.stdout
+
+
+@pytest.mark.skipif(shutil.which("pwsh") is None, reason="PowerShell Core is unavailable")
+def test_windows_launcher_environment_connectivity(tmp_path):
+    result = subprocess.run(
+        ["pwsh", "-NoProfile", "-NonInteractive", "-File", str(SCRIPT), "-CheckEnvironment"],
+        cwd=tmp_path,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert "Environment ready" in result.stdout

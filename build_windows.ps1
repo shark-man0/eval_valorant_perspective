@@ -19,7 +19,7 @@ function Invoke-ProjectPython {
 }
 
 Invoke-ProjectPython -m pip install --upgrade pip
-Invoke-ProjectPython -m pip install -c constraints-windows.txt -e ".[dev,build]"
+Invoke-ProjectPython -m pip install -c constraints-windows.txt -e ".[gui,dev,build]"
 Invoke-ProjectPython tests\validate_dataset.py
 Invoke-ProjectPython -m pytest --cov=valorant_ai_coach --cov-report=term-missing --cov-fail-under=75
 Invoke-ProjectPython -m ruff check src tests\unit tests\integration

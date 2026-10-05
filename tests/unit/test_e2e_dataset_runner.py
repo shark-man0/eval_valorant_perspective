@@ -9,6 +9,7 @@ from types import SimpleNamespace
 import pytest
 
 from scripts.e2e import run_dataset_case as runner
+from scripts.e2e import runtime
 from scripts.e2e.evidence import failure_times
 
 
@@ -116,7 +117,7 @@ def case(tmp_path, monkeypatch):
             duration_sec=12.0, width=1920, height=1080, fps=60.0, audio_tracks=[{}, {}, {}]
         )
 
-    monkeypatch.setattr(runner.shutil, "which", lambda name: name)
+    monkeypatch.setattr(runtime.shutil, "which", lambda name: name)
     return SimpleNamespace(
         root=root,
         video=video,
