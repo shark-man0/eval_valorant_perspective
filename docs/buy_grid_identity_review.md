@@ -267,3 +267,58 @@ the preceding full suite, external-pack rechecks, Ruff, mypy and clean 5b7 E2E
 remain the applicable baseline. Shared numerical evidence is
 `buy_finite_local_scaffold_evidence_v1.json`; private crops, masks, references,
 per-image diagnostics and appearance ledgers remain local.
+
+## Border profile topology and observability stress
+
+Starting diagnostic HEAD: `c24ec31fc77cd0cdcdb53b192567455a5cf1c2e7`.
+Production, profiles, thresholds and frozen replay manifests remain unchanged.
+The preceding finite-local count probe accepted synthetic period-4/6 stripes;
+the next diagnostic therefore compares normal-direction edge profiles rather
+than just response populations. Eight segments use absolute original-image
+Sobel profiles with valid derivative footprints. Three training images define
+the normalized mean profile. A training-only common shift (+2,-1) increases
+minimum pairwise cosine to .91636; all segments use that same frozen shift.
+The cosine threshold stays .90. Any segment shape mismatch rejects the frame,
+even when three other groups match. Signed profiles are forensic measurements,
+not an additional acceptance path.
+
+On the same previously inspected 68 development rows (66 unique), this shape
+proxy retains 5/6 visible menu appearances and matches 0/60 other appearances.
+It rejects all six synthetic scenes, including the stripe counterexamples.
+This is improved topology sensitivity, not independent holdout qualification
+or a safe detector. Its original observability predicate is only nonzero L2
+profile norm and at least one valid center. That establishes a numerical
+feature, not sufficient visible structure. Do not interpret the proxy's 60
+other-image mismatches as 60 physically observable contradictions.
+
+The separate frozen stress scales training contrast about gray128. At factors
+.10 and .05, all 24 segment/frame cases at each factor (48 combined) still satisfy that nonzero predicate
+and preserve cosine .956–1.000, while none retains oriented Sobel responses
+at the frozen magnitude100/dominance1.5. Maximum mask-to-flank contrast is
+only 7 and3 gray levels respectively. JPEG qualities95/70 do not establish
+an observability safeguard. These are artificial counterexamples, not observed
+UI alpha values or an estimate of real false-positive frequency. Shape
+normalization must not conceal insufficient evidence.
+
+The one visible-menu loss has a different mechanism. Its V1 segment retains
+356 strong oriented responses; profile shape has additional later-bin energy.
+Absolute/signed cosine at the frozen shift is .8988/.8769. A forensic common
+bounded shift search reaches only .8992. Spatial phase/polarity mismatch is
+supported; physical edge absence is not. Neither lowering .90 nor relabeling
+this mismatch as unobservable is justified.
+
+**NEED MORE EVIDENCE**. No production adoption. Training consists of three
+frames from one recording, and H2/V2 still include availability-like green
+borders. Agent independence, dynamic-state invariance and new holdout support
+remain unproven. The next experiment freezes amplitude and spatial-support
+qualification from training separately from normalized shape, then evaluates
+the same development controls and weak/synthetic contradictions. This proceeds
+in parallel with the higher-opportunity Spectator context audit; it does not
+repeat the rejected count-only rule. Aggregate hashes and counts are in
+`buy_border_profile_evidence_v1.json`; private profiles and crops remain local.
+
+This aggregate/docs phase reran the full suite with the external validation pack:
+**924 passed /2 skipped** in274.53 seconds. Ruff src/tests/scripts and mypy src
+(86 files) pass. Existing optional trace-adapter/source-anchor fixtures account
+for the two skips. No production change means no new adaptive Clean E2E is
+required; the clean 5b7 result remains22/56/4 with negative20/0.

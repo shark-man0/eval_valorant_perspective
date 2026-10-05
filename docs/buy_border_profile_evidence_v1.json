@@ -1,0 +1,68 @@
+{
+  "active_layout_sha256": "a3678bcd9df35d0932ae0e69495eb5b87a3ab40e9c988560d502a9507d59eef1",
+  "clean_e2e_analyzer_commit": "5b7a7e26c670cfc999839dcecd42c77065d19a24",
+  "decision": "NEED MORE EVIDENCE",
+  "development_rows": 68,
+  "development_unique": 66,
+  "diagnostic_only": true,
+  "hashes": {
+    "appearance_join": "05a27c0206f868398c61839d9c38afba0b1a72f5de735e249a80ab595c519264",
+    "config": "f5fb0118bd1e04198411f23c2d576ecaac90c2eb967d25abe04e8485c1a0de3b",
+    "development_aggregate": "8d1a62418dfc8315f98357762142e18d641e5b0565405321cf4dbe2fb4681d45",
+    "freeze_receipt": "465753efadb90222207e64f6f70cb410d0f7b706d5db22de535812aee8a4a832",
+    "observability_stress": "9b769998a059be0bc5051a8641076efadf3006b7cd705ba9d2414ad6d111573f"
+  },
+  "limits": [
+    "Same recording, previously inspected development cohort; not independent holdout.",
+    "Availability-like green borders remain semantically unqualified.",
+    "Proxy mismatch counts must not be described as physically observable contradictions."
+  ],
+  "low_amplitude_stress": {
+    "cases_with_oriented_gradient_ge100": 0,
+    "combined_segment_frame_cases": 48,
+    "contrast_factors": [
+      0.1,
+      0.05
+    ],
+    "cosine_max": 1.0,
+    "cosine_min": 0.956,
+    "interpretation": "Normalized shape survives loss of sufficient edge amplitude; synthetic stress is not real-world frequency.",
+    "maximum_mask_flank_contrast_gray": [
+      7,
+      3
+    ],
+    "nonzero_profile_observable_proxy": 48,
+    "segment_frame_cases_per_factor": 24
+  },
+  "minimum_training_pair_cosine": 0.9163588548353521,
+  "next_experiment": "Freeze train-only amplitude/spatial support qualification independently of normalized topology; evaluate weak synthetic and same development controls.",
+  "observability_proxy": "valid centers >0 and profile L2 norm >1e-6; NOT sufficient physical observability",
+  "other_appearance_unique": 60,
+  "other_profile_consistent": 0,
+  "production_changed": false,
+  "profile_cosine_threshold": 0.9,
+  "schema": "buy_border_profile_aggregate_v1",
+  "segments": 8,
+  "starting_head": "c24ec31fc77cd0cdcdb53b192567455a5cf1c2e7",
+  "starting_worktree_clean": true,
+  "synthetic_cases": 6,
+  "synthetic_profile_consistent": 0,
+  "train_only_common_shift_xy": [
+    2,
+    -1
+  ],
+  "training_frames": 3,
+  "video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "visible_menu_mismatch_evidence": {
+    "best_bounded_diagnostic_cosine": 0.8992,
+    "frozen_abs_cosine": 0.8988,
+    "frozen_signed_cosine": 0.8769,
+    "group": "V1",
+    "interpretation": "Strong edges remain; phase/polarity mismatch cannot be relabeled insufficient to recover this case.",
+    "oriented_response_pixels": 356,
+    "segment": "V1_v2"
+  },
+  "visible_menu_profile_consistent": 5,
+  "visible_menu_profile_mismatch": 1,
+  "visible_menu_unique": 6
+}
