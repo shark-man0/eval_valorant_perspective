@@ -1,0 +1,145 @@
+{
+  "aggregate_replay": {
+    "all_three_marker_component_specs_unconfigured": 9,
+    "calibration_accepted_cases_reviewed": 9,
+    "calibration_profile_fingerprint_exactly_reproduced": 9,
+    "cases_with_client_build_unverified_diagnostic": 9,
+    "client_build_unverified_rejected_calibration": 0,
+    "configured_marker_detector_evaluated": false,
+    "map_location_unresolved_reproduced": 9,
+    "map_marker_missing_reproduced": 9,
+    "physical_marker_absence_observed": null,
+    "production_calibrator_status_ok": 9,
+    "returned_component_counts": {
+      "ally": 0,
+      "enemy": 0,
+      "self": 0
+    },
+    "returned_zero_interpretation": "No marker component detector ran: all three specs were unconfigured and the production _components guard short-circuited. Physical marker absence was not measured.",
+    "saved_map_diagnostics_exactly_reproduced": 9,
+    "snapshots_in_fixed_replay": 1026
+  },
+  "baseline": {
+    "active_ally_marker_hsv_spec_present": false,
+    "active_enemy_marker_hsv_spec_present": false,
+    "active_self_marker_hsv_spec_present": false,
+    "analyzer_commit": "5b7a7e26c670cfc999839dcecd42c77065d19a24",
+    "analyzer_implementation_sha256": "5ae7e89efbb32568da81b6d92283fcc15a606d34924bb1fdf762bebc559c553f",
+    "analyzer_worktree_clean": true,
+    "effective_visual_profile_fingerprint_sha256": "a17e8043bf81515b4fe4ea674ab2011acb6c3e49ddc51777ddeb8d3e8871740e",
+    "fixed_replay_manifest_sha256": "f8267c437f95cb534c06d80a459961409323688f9b7a76a728b719b0350e74f1",
+    "git_is_dirty": false,
+    "hud_fingerprint_sha256": "e7987bf758eb2dca8211149b6fde9bddcb04a07997f1fb66cb38e8c677580e57",
+    "marker_client_build_supplied": false,
+    "profile_arguments": {
+      "manual_map_id": "summit",
+      "minimap_roi_norm_xyxy": [
+        0.010417,
+        0.044444,
+        0.247396,
+        0.439815
+      ],
+      "minimap_roi_px_xyxy_1920x1080": [
+        20,
+        48,
+        475,
+        475
+      ]
+    },
+    "reconstructed_profile_fingerprint_exact_match": true,
+    "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06"
+  },
+  "calibration_ranges": {
+    "calibration_acceptance_floor": 0.55,
+    "calibration_is_geometric_registration_only": true,
+    "confidence": [
+      0.5740555934,
+      0.7587332332
+    ],
+    "geometry_version": "summit_coarse_2026-09-28_v3",
+    "inlier_matches": [
+      35,
+      47
+    ],
+    "map_coverage_x": [
+      0.84,
+      0.89
+    ],
+    "map_coverage_y": [
+      0.52,
+      0.96
+    ],
+    "reference_asset_sha256": "6ccdc19605b8885ef8d51761f872630ef6122266bcf5bb0d318fcc7661d1f3b6",
+    "reference_map_mask_bbox_within_roi_px": [
+      38,
+      18,
+      430,
+      422
+    ]
+  },
+  "decision": "NEED MORE EVIDENCE",
+  "diagnostic_improvement_proposal": {
+    "behavior_change": false,
+    "meaning": "No valid self detector means unavailable/not_evaluated; when a valid configured detector ran, report its zero, one, or multiple candidate outcome separately. Retain map_marker_missing and map_location_unresolved for compatibility.",
+    "new_metadata_fields": {
+      "marker_measurement_status": [
+        "not_evaluated",
+        "evaluated_absent",
+        "evaluated_unique",
+        "evaluated_ambiguous"
+      ],
+      "marker_profile_status": [
+        "unavailable",
+        "configured",
+        "invalid"
+      ]
+    },
+    "preserve_existing_map_outputs_and_gates": true
+  },
+  "private_evidence_sha256": {
+    "opaque_minimap_contact_sheet": "a5ef3b2eeaf79020cebce94e877137fd91fb3bcc9365c2ee2261a4eccbe735a4",
+    "profile_inventory_json": "e30148fe2a4fcc55bc695d3aaee59fe3e1165364c7671cdc709e61bd6d7e1590",
+    "profile_inventory_markdown": "c569655e11e2aac2b2e74e09685f9a476ced96255704eb26450de09feac75d7e",
+    "runtime_audit_aggregate": "e2b9625ce9015a3714d69de9a2f2bd8c16c159d5fbadcdba1e78f404d33122f8",
+    "runtime_audit_immutable_receipt": "fd7d6c7c55c7ba4ba353978f196e89c183768b27bcb57adc9b4cde34f31fd2a9"
+  },
+  "profile_inventory": {
+    "current_run_was_profile_loader_failure": false,
+    "example_profile": "config/visual_runtime.example.json has validated=false and minimap_colors_hsv={}; its note says empty data deliberately yields unknown and requires representative actual recordings before validation.",
+    "generated_hud_profiles_or_e2e_run_assets_with_marker_specs_found": false,
+    "interpretation": "The pixel component capability exists, but no real-client marker asset was available for the runner to load. The default/example intentionally abstains; the test fixtures are not production profiles.",
+    "nonempty_repository_hits": [
+      "tests/unit/test_visual_pixels_v2.py uses a synthetic green component to exercise the extractor.",
+      "tests/integration/test_map_zone_v3.py draws a synthetic magenta pixel onto the Summit reference and uses a validated fixture profile to exercise registration and resolution."
+    ],
+    "operational_profile_found": false
+  },
+  "role_grounding_experiment": {
+    "adoption_gate": "Require evidence that distinguishes the current controlled-player symbol from these nonself controls and preserves absent/occluded/ambiguous rejection. Do not infer a self role from color, geometric calibration, or downstream location outputs.",
+    "counterexamples_to_guard": "Teammate portrait rings can look like local-player rings; ping/spike/camera symbols may be angular or brightly colored; map labels and borders create compact components; multiple marker families coexist in the reviewed minimap crops.",
+    "input_requirement": "Obtain current-build full-screen/minimap captures with the controlled-player symbol independently identified from UI appearance, plus hard negatives showing ally portraits and markers, enemy markers, spike/ping/ability indicators, map labels, absent, occluded, and ambiguous cases.",
+    "pixel_cues_to_evaluate_without_adopting": "Shape/contour, interior portrait texture versus hollow fill, ring thickness, angular wedge/cone presence, orientation, edge support, and local color as a supporting feature only. These are candidate descriptors, not assumed self semantics.",
+    "protocol": "Freeze appearance categories before scores; preserve full-frame context and minimap crop; use a disjoint recording/client-build holdout; retain unknown when multiple symbols fit or the controlled-player role is not visually identifiable."
+  },
+  "schema": "map_marker_runtime_evidence_v1",
+  "scope": "Aggregate-only replay of the nine calibration-accepted cases from one fixed replay. No frame-level IDs, times, images, locations, GT, or private paths are included.",
+  "source_explanation": {
+    "client_build": "calibration.py appends client_build_unverified to diagnostic output when the build is absent/unrecognized. It is not an acceptance failure in _profile_failure; the accepted geometric calibrations still return ok.",
+    "diagnostic_collapse": "map_pipeline.py currently calls the result map_marker_missing whenever self_x_norm is null. It cannot distinguish no configured detector from a configured detector that ran and found zero components.",
+    "location_dependency": "The resolver receives a controlled-player point only when calibration is accepted, ownership is safe, and a self minimap coordinate exists. No coordinate or zone can be resolved from calibration alone.",
+    "marker_extraction": "pixels.py _components returns [] when a color spec is empty or lacks lower/upper. The minimap loop calls it per side from minimap_colors_hsv.",
+    "profile_path": "settings.py defaults visual_profile_path to empty; run_real_video.py leaves it empty when optional --visual-profile is omitted; load_visual_profile returns {} for a blank path; bootstrap adds manual map selection and minimap ROI, but no marker specs."
+  },
+  "source_files": {
+    "config/visual_runtime.example.json": "empty example profile",
+    "src/valorant_ai_coach/bootstrap.py": "runtime profile augmentation",
+    "src/valorant_ai_coach/maps/calibration.py": "geometric calibration and client-build diagnostic",
+    "src/valorant_ai_coach/settings.py": "default profile path",
+    "src/valorant_ai_coach/visual/map_pipeline.py": "marker and location gate diagnostics",
+    "src/valorant_ai_coach/visual/pixels.py": "component guard and marker extraction",
+    "src/valorant_ai_coach/visual/runtime.py": "profile loader and runtime calibration path",
+    "tests/e2e/run_real_video.py": "optional CLI profile argument",
+    "tests/integration/test_map_zone_v3.py": "synthetic reference-overlay fixture",
+    "tests/unit/test_visual_pixels_v2.py": "synthetic component fixture"
+  }
+}
