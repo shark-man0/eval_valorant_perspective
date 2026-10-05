@@ -75,6 +75,7 @@ def test_snapshot_keeps_actual_unavailable_scores_and_reader_ownership(replay_mo
         "values": {"hp": None, "player_specific_hud_valid": False},
         "quality": {"state_confidence": 0.45, "hud_confidence": 0.45, "roi_confidence": {}},
         "state_flags": [],
+        "view_context": {"remote_view_type": "none", "is_player_world_view_trustworthy": False},
     }
     trace = {
         "signals": {
@@ -96,6 +97,8 @@ def test_snapshot_keeps_actual_unavailable_scores_and_reader_ownership(replay_mo
     assert result["structures"]["ability_bar_structure"]["score"] is None
     assert result["structures"]["ability_bar_structure"]["accepted"] is False
     assert result["spectator"]["checked"] is True
+    assert result["remote_view_type"] == "none"
+    assert result["structures"]["ability_bar_structure"]["score_exposed"] is False
     result["accepted_reader_values"]["hp"] = 0
     assert trace["raw_accepted_reader_values"]["hp"] == 100
 

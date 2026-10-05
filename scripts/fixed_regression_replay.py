@@ -111,7 +111,7 @@ def snapshot(
             and 0.90 <= score <= 1.0,
             "score": score,
             "threshold": 0.90,
-            "measured": name in signals or score is not None,
+            "score_exposed": score is not None,
         }
     return {
         "primary_state": observation["primary_state"],
@@ -178,7 +178,7 @@ def snapshot(
                 "other_remote_view_template",
             )
         },
-        "remote_view_type": observation.get("remote_view_type"),
+        "remote_view_type": observation.get("view_context", {}).get("remote_view_type"),
         "map_result": {
             "zone": deepcopy(zone),
             "minimap": deepcopy(visual.get("minimap")) if visual else None,

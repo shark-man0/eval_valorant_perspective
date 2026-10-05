@@ -114,3 +114,12 @@ The two skips are the existing optional trace-pack and real-recording-anchor tes
 no skipped test is claimed as accuracy validation. Four adapter tests were rerun
 after the final script-only published-value filtering adjustment and passed.
 Repeat full-video replay output measurements are pending execution at this checkpoint.
+
+## Adapter correction before output baseline freezing
+
+The first output-baseline attempt was aborted before publication because schema
+review found that Remote subtype resides under `view_context`, not the root HUD
+observation. The adapter now reads that actual field. Structural score availability
+is named `score_exposed`; it is not an observability verdict. A null rejected score
+must never imply unobservable structure. Detector outputs and source-frame manifests
+were not changed. Eleven focused adapter/comparison tests passed after correction.
