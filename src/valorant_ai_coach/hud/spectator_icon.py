@@ -147,7 +147,7 @@ def menu_overlay_candidate(crop: np.ndarray) -> bool:
     if lines is None:
         return False
     signs = set()
-    for x1, y1, x2, y2 in lines[:, 0, :]:
+    for x1, y1, x2, y2 in lines.reshape(-1, 4):
         dx, dy = int(x2 - x1), int(y2 - y1)
         if abs(dx) >= 3 and abs(dy) >= 3 and abs(abs(dy / dx) - 1) <= 0.45:
             signs.add(1 if dx * dy > 0 else -1)

@@ -92,7 +92,7 @@ def frame_edges(edges: np.ndarray) -> np.ndarray:
     )
     scaffold = np.zeros(edges.shape, np.uint8)
     if lines is not None:
-        for x1, y1, x2, y2 in lines[:, 0]:
+        for x1, y1, x2, y2 in lines.reshape(-1, 4):
             cv2.line(scaffold, (int(x1), int(y1)), (int(x2), int(y2)), 1, 3)
     return edges & (scaffold > 0)
 
@@ -135,7 +135,7 @@ def structural_layout(
     directions = (
         []
         if lines is None
-        else [np.array([x2 - x1, y2 - y1], float) for x1, y1, x2, y2 in lines[:, 0]]
+        else [np.array([x2 - x1, y2 - y1], float) for x1, y1, x2, y2 in lines.reshape(-1, 4)]
     )
     nonparallel = any(
         abs(a[0] * b[1] - a[1] * b[0]) / (np.linalg.norm(a) * np.linalg.norm(b)) >= 0.25

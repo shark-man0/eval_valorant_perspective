@@ -30,4 +30,5 @@ bin/ffprobe.exe
 *.db-wal
 *.db-shm
 outputs/
+*.log
 .DS_Store

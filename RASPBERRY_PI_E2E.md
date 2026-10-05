@@ -1,8 +1,10 @@
 # Raspberry Pi / Linux E2E setup
 
-Status: prepared from source inspection and Windows verification, **not tested on
-Linux or a Raspberry Pi**. First target: Raspberry Pi OS 64-bit (Bookworm or newer),
-ARM64. Linux x86_64 uses the same entrypoint. Python must be **3.12.x**, matching
+Status: the real-video pipeline was **verified through evaluation on a Raspberry
+Pi 4 Model B, Linux ARM64, Python 3.12.3**. It completed with exit 1 (assertion
+FAIL), 3869 analyzed frames, valid schema and no runtime error. Detection/Windows
+parity is still unverified. See [runtime repair and measured results](docs/pi_e2e_runtime.md).
+Target: Raspberry Pi OS 64-bit (Bookworm or newer), ARM64. Linux x86_64 uses the same entrypoint. Python must be **3.12.x**, matching
 `pyproject.toml`; do not substitute a system Python 3.11 or 3.13.
 
 ## Install system tools
@@ -184,11 +186,12 @@ Review and share sanitized reports separately; never force-add raw/private outpu
 - `Permission denied`: Git should track launcher mode 100755. If a copy lost it,
   restore `chmod +x run_e2e_pi.sh`. Shell files must use LF.
 
-Still unverified: ARM64 dependency installation/imports, system library availability,
-FFmpeg decode fidelity, profile portability, fixed-frame image hashes, numeric
-detector parity, full E2E output parity, performance/memory and Pi launcher execution
-on the actual OS. Compare fixed-regression frame identities and per-frame results
+ARM64 dependency installation/imports and the direct Python real-video E2E
+entrypoint were verified. Still unverified: FFmpeg decode fidelity against Windows,
+profile portability, fixed-frame image hashes, numeric detector parity, full E2E
+output parity and the separate Pi shell launcher on the actual OS. Compare fixed-regression frame identities and per-frame results
 before attributing differences to detectors. Existing fixed replay and comparison
 contracts remain unchanged; see `docs/fixed_regression_replay.md`.
 
-Analyzer development is paused until the first Pi result is examined.
+The first Pi runtime result is recorded in `docs/pi_e2e_runtime.md`. Runtime
+completion does not imply that the remaining 57 detection assertions pass.

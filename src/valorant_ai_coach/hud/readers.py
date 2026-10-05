@@ -329,8 +329,9 @@ def _cross_lines_score(image: np.ndarray | None) -> float:
     )
     if lines is None:
         return 0.0
+    # Binding versions expose either (N, 1, 4) or (N, 4); keep all coordinates.
     diagonal_signs: set[int] = set()
-    for line in lines[:, 0, :]:
+    for line in lines.reshape(-1, 4):
         x1, y1, x2, y2 = (int(part) for part in line)
         dx, dy = x2 - x1, y2 - y1
         if abs(dx) < 3 or abs(dy) < 3 or abs(abs(dy / dx) - 1) > 0.45:
@@ -384,7 +385,7 @@ def _astra_scores(image: np.ndarray | None) -> dict[str, float]:
         minRadius=4,
         maxRadius=max(8, min(gray.shape) // 3),
     )
-    geometry_score = 0.92 if circles is not None and len(circles[0]) >= 2 else 0.0
+    geometry_score = 0.92 if circles is not None and len(circles.reshape(-1, 3)) >= 2 else 0.0
     lower = gray[int(gray.shape[0] * 0.58) :, :]
     lower_edges = cv2.Canny(lower, 55, 130)
     interface_ratio = float(np.count_nonzero(lower_edges)) / float(lower_edges.size)

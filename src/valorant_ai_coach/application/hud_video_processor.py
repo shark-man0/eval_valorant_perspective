@@ -98,6 +98,7 @@ class HudVideoProcessor:
         output_dir: Path,
         cancel_event: Event | None = None,
         progress_cb: Callable[[float, str], None] | None = None,
+        require_detected_rounds: bool = True,
     ) -> HudVideoProcessingResult:
         progress = progress_cb or (lambda _value, _message: None)
         visual_cancel = getattr(self.visual_analyzer, "set_cancel_event", None)
@@ -167,6 +168,7 @@ class HudVideoProcessor:
             frames=combined,
             cancel_event=cancel_event,
             progress=progress,
+            require_detected_rounds=require_detected_rounds,
         )
 
     def process_frames(
@@ -176,6 +178,7 @@ class HudVideoProcessor:
         frames: Sequence[FrameSample],
         cancel_event: Event | None = None,
         progress_cb: Callable[[float, str], None] | None = None,
+        require_detected_rounds: bool = True,
     ) -> HudVideoProcessingResult:
         """Run the production final-processing stages over an exact ordered frame set."""
         self._validate_fixed_frames(frames)
@@ -189,6 +192,7 @@ class HudVideoProcessor:
             frames=frames,
             cancel_event=cancel_event,
             progress=progress,
+            require_detected_rounds=require_detected_rounds,
         )
 
     def _process_frames(
@@ -199,6 +203,7 @@ class HudVideoProcessor:
         frames: Sequence[FrameSample],
         cancel_event: Event | None,
         progress: Callable[[float, str], None],
+        require_detected_rounds: bool = True,
     ) -> HudVideoProcessingResult:
         combined = list(frames)
         self._check_cancel(cancel_event)
@@ -246,10 +251,13 @@ class HudVideoProcessor:
             visual_observations=visual.observations,
             zone_resolutions=visual.zone_resolutions,
             map_name=getattr(self.visual_analyzer, "map_name", "unknown"),
+            require_detected_rounds=require_detected_rounds,
         )
         diagnostics = (
             tuple(getattr(final, "diagnostics", ())) + tuple(visual.diagnostics) + fusion_notes
         )
+        if not packages:
+            diagnostics += ("round_packages_unavailable: no reliable round boundaries",)
         if dropped_visual:
             diagnostics += (
                 f"無効なworld-view区間のVisualイベントを{dropped_visual}件抑制しました",
@@ -266,7 +274,8 @@ class HudVideoProcessor:
             for timestamp in event_times
             for frame in [min(combined, key=lambda value: abs(value.time_sec - timestamp))]
         }
-        progress(1.0, "Round Packageを生成しました")
+        progress(1.0, "Round Packageを生成しました" if packages
+                 else "観測解析が完了しました（信頼できるラウンド区間なし）")
         return HudVideoProcessingResult(
             packages,
             tuple(observations),

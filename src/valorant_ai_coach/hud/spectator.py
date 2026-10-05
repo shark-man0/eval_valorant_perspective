@@ -76,7 +76,7 @@ def portrait_frames(
     )
     vertical, horizontal = [], []
     if lines is not None:
-        for x1, y1, x2, y2 in lines[:, 0]:
+        for x1, y1, x2, y2 in lines.reshape(-1, 4):
             if abs(x1 - x2) <= 2:
                 vertical.append((int((x1 + x2) // 2), int(min(y1, y2)), int(max(y1, y2))))
             if abs(y1 - y2) <= 2:
@@ -195,7 +195,7 @@ def panel_components(
     )
     boundary = np.zeros_like(gray)
     horizontal = []
-    for line in [] if lines is None else lines[:, 0]:
+    for line in [] if lines is None else lines.reshape(-1, 4):
         x1, y1, x2, y2 = map(int, line)
         if abs(y1 - y2) <= 2:
             cv2.line(boundary, (x1, y1), (x2, y2), 1, 1)

@@ -273,6 +273,7 @@ class RoundPackageBuilder:
         map_name: str = "unknown",
         player_agent: str = "unknown",
         side: str = "unknown",
+        require_detected_rounds: bool = True,
     ) -> tuple[dict[str, Any], ...]:
         observations = sorted((dict(item) for item in hud_observations), key=self._time)
         for resolution in zone_resolutions:
@@ -286,7 +287,9 @@ class RoundPackageBuilder:
         derived = self.derived.build(observations)
         all_events = sorted(direct_hud + direct_visual + derived, key=self._event_sort_key)
         windows = self._round_windows(observations, direct_hud, video_metadata.duration_sec)
-        if not windows:
+        # Diagnostics may retain observations without inventing round boundaries.
+        # Interactive coaching keeps the strict default. All other validation stays active.
+        if not windows and require_detected_rounds:
             raise RoundPackageBuildError(
                 "信頼できるラウンド区間を検出できませんでした。HUD校正と録画範囲を確認してください"
             )

@@ -297,5 +297,74 @@
       "error_code": "ANALYZER_FAILED"
     },
     "failure_count": null
+  },
+  {
+    "history_key": "b857ba5eda0f7d152af26fd1d0e5b8e3ac95e184ab79c0cabc82c2153adea2ec",
+    "metadata": {
+      "manual_map_id": null,
+      "video_id": "match_001",
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "analyzer_commit": "54404c7f84dd463a6ea0ecdff3d171ebc3cb4dac",
+      "git_is_dirty": true,
+      "executed_at": "2026-10-05T11:50:49.574109+00:00",
+      "validation_pack": "valorant_e2e_validation_pack_v3",
+      "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
+      "git_dirty_fingerprint": "930847a89f1a9d2af191e7ba86d408f628334e20bb536ba6d32dd515040c24a5",
+      "settings_fingerprint": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    "result": {
+      "status": "fail",
+      "schema_valid": false,
+      "failure_count": null,
+      "negative_assertion_count": null,
+      "error_code": "ANALYZER_FAILED"
+    },
+    "failure_count": null
+  },
+  {
+    "history_key": "a9757766067b793d03cc8699786a587b66c9b8a2041d3d3705049bdc75547757",
+    "metadata": {
+      "manual_map_id": null,
+      "video_id": "match_001",
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "analyzer_commit": "54404c7f84dd463a6ea0ecdff3d171ebc3cb4dac",
+      "git_is_dirty": true,
+      "executed_at": "2026-10-05T12:21:35.288310+00:00",
+      "validation_pack": "valorant_e2e_validation_pack_v3",
+      "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
+      "git_dirty_fingerprint": "0b5e91b39ed1694e0380cc4938d094c4d39f1f7cf4605a37d98c5ad8bc6ceed5",
+      "settings_fingerprint": "ab3bbf1962861fd815bc4d4bac160c34beec15008a6707f403a4719fe59d8693"
+    },
+    "result": {
+      "status": "fail",
+      "schema_valid": false,
+      "failure_count": null,
+      "negative_assertion_count": null,
+      "error_code": "ANALYZER_FAILED"
+    },
+    "failure_count": null
+  },
+  {
+    "history_key": "5ac8fa401c783f12330d1c34d5643952192a977b25abd56a5fb67e3b4a66489d",
+    "metadata": {
+      "manual_map_id": null,
+      "video_id": "match_001",
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "analyzer_commit": "54404c7f84dd463a6ea0ecdff3d171ebc3cb4dac",
+      "git_is_dirty": true,
+      "executed_at": "2026-10-05T13:51:05.107400+00:00",
+      "validation_pack": "valorant_e2e_validation_pack_v3",
+      "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
+      "git_dirty_fingerprint": "1e71f910205e995539f802a96dd3ddabbdc641c279eaca05cc6c42dbf4d1dc48",
+      "settings_fingerprint": "ab3bbf1962861fd815bc4d4bac160c34beec15008a6707f403a4719fe59d8693"
+    },
+    "result": {
+      "status": "fail",
+      "schema_valid": true,
+      "failure_count": 57,
+      "negative_assertion_count": 20,
+      "error_code": null
+    },
+    "failure_count": 57
   }
 ]

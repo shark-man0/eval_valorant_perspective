@@ -26,7 +26,7 @@ def frameless_regions(
     separators = sorted(
         {
             (int(round((x1 + x2) / 2)), int(min(y1, y2)), int(abs(y1 - y2) + 1))
-            for x1, y1, x2, y2 in ([] if raw is None else raw[:, 0])
+            for x1, y1, x2, y2 in ([] if raw is None else raw.reshape(-1, 4))
             if abs(x1 - x2) <= 1
         }
     )

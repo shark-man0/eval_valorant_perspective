@@ -81,3 +81,26 @@ def test_extraction_uses_nearest_pts_and_decoded_image_index(tmp_path, monkeypat
     samples = service.extract_frames(path, [0, .105], tmp_path / "out", metadata=metadata)
     assert [s.time_sec for s in samples] == [.036, .110]
     assert captured_indices == [0, 2]
+
+
+def test_full_decode_has_separate_bounded_timeout_and_remains_cancellable(tmp_path, monkeypatch):
+    from threading import Event
+
+    path = tmp_path / "sample.mp4"
+    path.write_bytes(b"sample")
+    cancellation = Event()
+    calls = []
+
+    def probe(command, timeout, cancel):
+        calls.append((timeout, cancel))
+        return SimpleNamespace(returncode=0, stdout=json.dumps({"frames": [
+            {"best_effort_timestamp_time": "0.036003"}
+        ]}))
+
+    monkeypatch.setattr("valorant_ai_coach.video.service._run_cancellable_process", probe)
+    service = VideoService()
+    assert service.timeout_sec == 45.0
+    assert service.presentation_times(path, cancel_event=cancellation) == (0.036003,)
+    assert calls == [(1800.0, cancellation)]
+    VideoService(pts_timeout_sec=600.0).presentation_times(path, cancel_event=cancellation)
+    assert calls[-1] == (600.0, cancellation)

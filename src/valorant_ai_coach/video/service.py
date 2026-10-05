@@ -151,11 +151,15 @@ class VideoService:
         ffprobe_path: str = "ffprobe",
         *,
         timeout_sec: float = 45.0,
+        pts_timeout_sec: float = 1800.0,
         capture_factory: Callable[[str], Any] | None = None,
         cv2_module: Any | None = None,
     ) -> None:
         self.ffprobe_path = str(ffprobe_path or "ffprobe")
         self.timeout_sec = max(1.0, float(timeout_sec))
+        # PTS scanning decodes the entire recording, unlike the metadata probe.
+        # Keep a separate bounded budget for slower hosts, with the same cancellation.
+        self.pts_timeout_sec = max(1.0, float(pts_timeout_sec))
         self._capture_factory = capture_factory
         self._cv2 = cv2_module
         self._pts_cache: tuple[tuple[str, int, int], tuple[float, ...]] | None = None
@@ -174,7 +178,7 @@ class VideoService:
                 [self.ffprobe_path, "-v", "error", "-select_streams", "v:0",
                  "-show_frames", "-show_entries", "frame=best_effort_timestamp_time",
                  "-of", "json", str(path)],
-                max(self.timeout_sec, 300.0), cancel_event,
+                max(self.timeout_sec, self.pts_timeout_sec), cancel_event,
             )
             if result.returncode:
                 raise VideoProbeError("動画のpresentation timestampを取得できません")

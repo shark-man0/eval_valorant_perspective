@@ -12,6 +12,7 @@ import argparse
 import json
 import os
 import sys
+import traceback
 from dataclasses import asdict
 from importlib import import_module
 from pathlib import Path
@@ -97,7 +98,8 @@ def main(argv: list[str] | None = None) -> int:
         "status": "starting",
         "source_video": str(source),
         "runtime_mode": {"hud_mode": "real", "visual_semantic_enabled": False,
-                         "coach_mode": "mock", "ground_truth_loaded": False},
+                         "coach_mode": "mock", "ground_truth_loaded": False,
+                         "require_detected_rounds": False},
         "round_id_mapping": (
             "Native RoundPackage order N is named sample_round_N for the evaluator. "
             "No ground-truth boundary or timestamp is consulted."
@@ -111,6 +113,7 @@ def main(argv: list[str] | None = None) -> int:
             raise RuntimeError("Real HudVideoProcessor was not configured")
         result = processor.process(metadata=metadata, match_id="e2e-runtime",
                                    output_dir=output / "processing_frames",
+                                   require_detected_rounds=False,
                                    progress_cb=lambda fraction, message: print(
                                        f"[{fraction:5.1%}] {message}", flush=True))
         # Raw export is the processor's own objects, before trace adaptation.
@@ -134,6 +137,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Wrote native processing and E2E trace under {output}")
         return 0
     except Exception as exc:
+        traceback.print_exc(file=sys.stderr)
         # Keep calibration/runtime failures inspectable without substituting fake
         # detections. The empty trace is schema-shaped but evaluator scores will fail.
         raw.update({"status": "error", "error_type": type(exc).__name__, "error": str(exc)})
