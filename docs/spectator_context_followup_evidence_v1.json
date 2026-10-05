@@ -1,0 +1,182 @@
+{
+  "schema": "spectator_context_followup_evidence_v1",
+  "diagnostic_only": true,
+  "decision": "KEEP CURRENT",
+  "shadow": {
+    "actual_production_api": "production build_services factory plus native VideoMetadata probe and RealHudAnalyzer.observe_frames over all 1026 ordered fixed frames; only menu_overlay_candidate wrapped during shadow",
+    "baseline_reason_histogram": {
+      "icon_absent": 25,
+      "icon_present": 42,
+      "icon_roi_obscured": 118,
+      "icon_roi_unobservable": 114,
+      "icon_structure_ambiguous": 2
+    },
+    "candidate_status": "disqualified by separate 10/13 translated/clipped-X synthetic stress cases; no adoption proposed",
+    "canonical_frames": 1026,
+    "canonical_replay_analyzer_commit": "5b7a7e26c670cfc999839dcecd42c77065d19a24",
+    "center_both_signs_count": 23,
+    "diagnostic_only": true,
+    "helper_true_count": 147,
+    "layout_sha256": "a3678bcd9df35d0932ae0e69495eb5b87a3ab40e9c988560d502a9507d59eef1",
+    "limitations": [
+      "301 cohort derived from canonical saved structure measurements; selected baseline reason histogram exact-match gate to full-context audit.",
+      "Same-recording fixed sample; not prevalence or population false-positive rate.",
+      "Spectator reason transitions only; no classifier, identity, live, or state claim is made.",
+      "No per-frame old-output parity claimed and no GT used.",
+      "Separate synthetic challenge disqualifies general adoption.",
+      "No frame keys, paths, times, or frame payloads included."
+    ],
+    "manifest_sha256": "f8267c437f95cb534c06d80a459961409323688f9b7a76a728b719b0350e74f1",
+    "native_metadata": {
+      "duration_sec": 171.019336,
+      "fps": 60.0,
+      "height": 1080,
+      "width": 1920
+    },
+    "non_spectator_input_changed_frames_by_key": {},
+    "profile_fingerprint": "e7987bf758eb2dca8211149b6fde9bddcb04a07997f1fb66cb38e8c677580e57",
+    "reason_transitions": {
+      "icon_absent -> icon_absent": 25,
+      "icon_present -> icon_present": 42,
+      "icon_roi_obscured -> icon_absent": 10,
+      "icon_roi_obscured -> icon_present": 7,
+      "icon_roi_obscured -> icon_roi_obscured": 80,
+      "icon_roi_obscured -> icon_roi_unobservable": 20,
+      "icon_roi_obscured -> icon_structure_ambiguous": 1,
+      "icon_roi_unobservable -> icon_roi_unobservable": 114,
+      "icon_structure_ambiguous -> icon_structure_ambiguous": 2
+    },
+    "schema": "spectator-center-context-shadow-v1",
+    "selected_frames": 301,
+    "selection_rule": "saved actual accepted hp, ability and weapon structures, each score >=0.90; no labels/state selection",
+    "shadow_reason_histogram": {
+      "icon_absent": 35,
+      "icon_present": 49,
+      "icon_roi_obscured": 80,
+      "icon_roi_unobservable": 134,
+      "icon_structure_ambiguous": 3
+    },
+    "shadow_rule": "production helper true only when both qualifying Hough sign-family midpoints lie within frozen center support; all other features/profile/guards unchanged",
+    "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "template_profile_sha256": "8e764d6eb2b7a6a8ce6a5f144300bdf809f16f9dcf2b689ac659333c2265b615"
+  },
+  "cross_topology": {
+    "frozen_rule_sha256": "222eecf3afe94c647471bfa695275513762bc02dbdca9248fe358fdb51f76adb",
+    "frozen_scores_sha256": "07d6b9ceec267ddc8c09a6a457cd7689ce2f69a3257fd4532cabfa3c5934bd66",
+    "cohort_counts": {
+      "new32": 32,
+      "old25": 25
+    },
+    "by_menu_appearance": {
+      "not_visible": {
+        "center_proxy_both_n": 6,
+        "cross_rule_false_n": 26,
+        "cross_rule_true_n": 22,
+        "legacy_helper_true_n": 39,
+        "n": 48,
+        "visible_menu_miss_n": 0
+      },
+      "visible": {
+        "center_proxy_both_n": 9,
+        "cross_rule_false_n": 0,
+        "cross_rule_true_n": 9,
+        "legacy_helper_true_n": 9,
+        "n": 9,
+        "visible_menu_miss_n": 0
+      }
+    },
+    "new32_appearance_crosstabs": {
+      "close_crop_appearance": {
+        "close_x_button": {
+          "center_proxy_both_n": 9,
+          "cross_rule_true_n": 9,
+          "legacy_helper_true_n": 9,
+          "n": 9
+        },
+        "scene_or_effect_edges": {
+          "center_proxy_both_n": 1,
+          "cross_rule_true_n": 3,
+          "legacy_helper_true_n": 8,
+          "n": 8
+        },
+        "text_like_glyphs_over_scene": {
+          "center_proxy_both_n": 2,
+          "cross_rule_true_n": 8,
+          "legacy_helper_true_n": 15,
+          "n": 15
+        }
+      },
+      "close_x_appearance": {
+        "not_visible": {
+          "center_proxy_both_n": 3,
+          "cross_rule_true_n": 11,
+          "legacy_helper_true_n": 23,
+          "n": 23
+        },
+        "visible": {
+          "center_proxy_both_n": 9,
+          "cross_rule_true_n": 9,
+          "legacy_helper_true_n": 9,
+          "n": 9
+        }
+      },
+      "large_diagram_overlay_appearance": {
+        "not_visible": {
+          "center_proxy_both_n": 12,
+          "cross_rule_true_n": 17,
+          "legacy_helper_true_n": 29,
+          "n": 29
+        },
+        "visible": {
+          "center_proxy_both_n": 0,
+          "cross_rule_true_n": 3,
+          "legacy_helper_true_n": 3,
+          "n": 3
+        }
+      },
+      "report_panel_appearance": {
+        "not_visible": {
+          "center_proxy_both_n": 11,
+          "cross_rule_true_n": 18,
+          "legacy_helper_true_n": 25,
+          "n": 25
+        },
+        "visible": {
+          "center_proxy_both_n": 1,
+          "cross_rule_true_n": 2,
+          "legacy_helper_true_n": 7,
+          "n": 7
+        }
+      }
+    },
+    "old25_overlay_crosstab": {
+      "buy_phase_banner": {
+        "center_proxy_both_n": 1,
+        "cross_rule_true_n": 1,
+        "legacy_helper_true_n": 1,
+        "n": 3
+      },
+      "combat_report": {
+        "center_proxy_both_n": 2,
+        "cross_rule_true_n": 1,
+        "legacy_helper_true_n": 3,
+        "n": 6
+      },
+      "scoreboard": {
+        "center_proxy_both_n": 0,
+        "cross_rule_true_n": 0,
+        "legacy_helper_true_n": 0,
+        "n": 1
+      }
+    },
+    "interpretation_limits": [
+      "Only locked pixel-appearance annotations were joined; no Replay states, ownership, GT event labels, expected detector state, OCR, classifier outputs, or detector output ledgers were used.",
+      "Appearance cohorts are not independent recordings or prevalence samples.",
+      "A cross-rule false result remains insufficient evidence only; it never means menu or X absence."
+    ]
+  },
+  "private_artifact_hashes": {
+    "shadow": "ec1325a1eeaa7efbca4bbc4bd8a5f855027a1e6efde4e232861572e94ca42bae",
+    "appearance_join": "cdf069cec390d315f36dc63a929a18ae3254ee3a1d56bd8fee5f2a929c453714"
+  }
+}

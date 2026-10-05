@@ -1,0 +1,575 @@
+{
+  "schema": "buy_static_header_diagnostic_evidence_v2",
+  "diagnostic_only": true,
+  "decision": "NEED MORE EVIDENCE",
+  "analyzer_commit": "055736722d25a8069d8c6b89f1c5ef4206c68967",
+  "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "layout_sha256": "a3678bcd9df35d0932ae0e69495eb5b87a3ab40e9c988560d502a9507d59eef1",
+  "template_profile_sha256": "8e764d6eb2b7a6a8ce6a5f144300bdf809f16f9dcf2b689ac659333c2265b615",
+  "frozen_recipe_sha256": "38e2b5e96ed24ea422a07e3bd2a13f98e6613c5d480fd6dc00f12508e62f0df7",
+  "reference_bank_sha256": "d548c685ed0e9aa78f1de607746e53355d7418e125e99de89d10dead5ce3deb1",
+  "fixed_lane_audit_sha256": "402d201547eb8e59b7754a8c1421d32946cc60ae8566919116b93b8890ecb079",
+  "threshold": 0.9,
+  "training_count": 3,
+  "support_pixels": [
+    242,
+    187,
+    198
+  ],
+  "training_loo_min_by_group": [
+    0.9941802174989122,
+    0.9816584973251947,
+    0.9735430332764626
+  ],
+  "runtime": "direct signed grayscale NCC at three frozen header-support masks; no runtime Canny/derivatives/alignment/OCR",
+  "qualification_tests": {
+    "outside_selected_pixels_random_invert_constant_ablations_exactly_invariant": true,
+    "outside_ablation_cases": 27,
+    "selected_support_polarity_inversion_signed_ncc": {
+      "category_1": [
+        -0.998112467469971,
+        -0.99711461949823,
+        -0.9960168110268434
+      ],
+      "category_3": [
+        -0.9867491040689723,
+        -0.9975480547820857,
+        -0.9969672055463314
+      ],
+      "category_4": [
+        -0.9962080071432382,
+        -0.9984772577744458,
+        -0.9799306685140934
+      ]
+    },
+    "flat_missing_group_rejects": {
+      "category_1": {
+        "score_by_group": {
+          "category_1": null,
+          "category_3": 0.9867491040689723,
+          "category_4": 0.9962080071432382
+        },
+        "accepted": false
+      },
+      "category_3": {
+        "score_by_group": {
+          "category_1": 0.998112467469971,
+          "category_3": null,
+          "category_4": 0.9962080071432382
+        },
+        "accepted": false
+      },
+      "category_4": {
+        "score_by_group": {
+          "category_1": 0.998112467469971,
+          "category_3": 0.9867491040689723,
+          "category_4": null
+        },
+        "accepted": false
+      }
+    },
+    "synthetic_texture_controls": {
+      "checker": {
+        "v2_scores": {
+          "category_1": 0.0010670596745799364,
+          "category_3": -0.02104819150972836,
+          "category_4": -0.023842608675722108
+        },
+        "v2_accept": false,
+        "v1_one_sided_edge_coverage": {
+          "category_1": 0.08264462809917356,
+          "category_3": 0.0,
+          "category_4": 0.0
+        },
+        "v1_accept": false
+      },
+      "vertical_stripes": {
+        "v2_scores": {
+          "category_1": -0.15196410628035653,
+          "category_3": -0.1331183521969896,
+          "category_4": -0.10940105960049351
+        },
+        "v2_accept": false,
+        "v1_one_sided_edge_coverage": {
+          "category_1": 0.10743801652892562,
+          "category_3": 0.0,
+          "category_4": 0.0
+        },
+        "v1_accept": false
+      },
+      "horizontal_stripes": {
+        "v2_scores": {
+          "category_1": 0.0178135350173689,
+          "category_3": -0.24306025198769876,
+          "category_4": -0.009240483930048877
+        },
+        "v2_accept": false,
+        "v1_one_sided_edge_coverage": {
+          "category_1": 0.0,
+          "category_3": 0.0,
+          "category_4": 0.0
+        },
+        "v1_accept": false
+      },
+      "random_noise": {
+        "v2_scores": {
+          "category_1": 0.0590407389724474,
+          "category_3": -0.07493102635199664,
+          "category_4": -0.006144488496445637
+        },
+        "v2_accept": false,
+        "v1_one_sided_edge_coverage": {
+          "category_1": 0.9793388429752066,
+          "category_3": 0.9946524064171123,
+          "category_4": 0.9949494949494949
+        },
+        "v1_accept": true
+      },
+      "flat": {
+        "v2_scores": {
+          "category_1": null,
+          "category_3": null,
+          "category_4": null
+        },
+        "v2_accept": false,
+        "v1_one_sided_edge_coverage": {
+          "category_1": 0.08264462809917356,
+          "category_3": 0.0,
+          "category_4": 0.0
+        },
+        "v1_accept": false
+      }
+    }
+  },
+  "development": {
+    "old_visible_menus": 6,
+    "old_visible_retained": 6,
+    "new_visible_menus": 9,
+    "new_visible_retained": 9,
+    "new_not_visible": 23,
+    "new_not_visible_accepted": 0
+  },
+  "fixed_lanes": {
+    "canonical_1026": {
+      "n": 1026,
+      "accepted_all3": 64,
+      "pass_per_group": {
+        "category_1": 64,
+        "category_3": 65,
+        "category_4": 65
+      },
+      "score_minmax_by_group": {
+        "category_1": [
+          -0.22132581449726776,
+          0.9980091245671024
+        ],
+        "category_3": [
+          -0.17046056769793164,
+          0.9973965052762666
+        ],
+        "category_4": [
+          -0.23121835350907669,
+          0.9972990984107782
+        ]
+      },
+      "accepted_min_group_quantiles": {
+        "0": 0.9495010443628281,
+        "0.1": 0.9796986137359184,
+        "0.25": 0.9887043898336308,
+        "0.5": 0.9937994027169128,
+        "0.75": 0.9944318257040083,
+        "0.9": 0.9946698613753658,
+        "1": 0.9953512928760156
+      },
+      "flat_invalid_by_group": {
+        "category_1": 12,
+        "category_3": 0,
+        "category_4": 5
+      },
+      "passive_grid_true": 241,
+      "passive_close_true": 1,
+      "accepted_vs_grid": {
+        "both": 59,
+        "header_only": 5,
+        "grid_only": 182,
+        "neither": 780
+      },
+      "accepted_vs_close": {
+        "both": 0,
+        "header_only": 64,
+        "close_only": 1,
+        "neither": 961
+      }
+    },
+    "coverage_4038": {
+      "n": 4038,
+      "accepted_all3": 304,
+      "pass_per_group": {
+        "category_1": 304,
+        "category_3": 305,
+        "category_4": 305
+      },
+      "score_minmax_by_group": {
+        "category_1": [
+          -0.22132581449726776,
+          0.998112467469971
+        ],
+        "category_3": [
+          -0.1861314964208077,
+          0.997791788101523
+        ],
+        "category_4": [
+          -0.21349700094831187,
+          0.9984772577744458
+        ]
+      },
+      "accepted_min_group_quantiles": {
+        "0": 0.9411190209791452,
+        "0.1": 0.9791908778952665,
+        "0.25": 0.9902581721362296,
+        "0.5": 0.9940274881397068,
+        "0.75": 0.9944318257040083,
+        "0.9": 0.9948394756058521,
+        "1": 0.99711461949823
+      },
+      "flat_invalid_by_group": {
+        "category_1": 36,
+        "category_3": 0,
+        "category_4": 17
+      },
+      "passive_grid_true": 1037,
+      "passive_close_true": 11,
+      "accepted_vs_grid": {
+        "both": 275,
+        "header_only": 29,
+        "grid_only": 762,
+        "neither": 2972
+      },
+      "accepted_vs_close": {
+        "both": 0,
+        "header_only": 304,
+        "close_only": 11,
+        "neither": 3723
+      }
+    },
+    "canonical_coverage_parity": {
+      "common_frame_keys": 444,
+      "jpeg_hash_equal": 444,
+      "decoded_hash_equal": 444,
+      "scores_equal": 444,
+      "accept_equal": 444
+    }
+  },
+  "passive_close_field_semantics": "production buy_menu_close_anchor_present strict reader >=0.78; not Spectator short-X advisory",
+  "locked_blind_review": {
+    "count": 24,
+    "visible_buy_menu": 24,
+    "visible_close_x": 24,
+    "three_headers_visible": 24,
+    "annotations_sha256": "02e8bdbee17df5118d0f8629618480abb3d30b867c3cdf2072a5f0cf0f2b2993",
+    "selection": "accepted candidate conditioned; low score per native block then temporal-middle fill; exact enumerated prior exclusions only",
+    "no_specificity_or_prevalence_claim": true
+  },
+  "limits": [
+    "Scores bind to exact saved JPEGs; no re-extraction was performed.",
+    "Only passive buy-grid and short-X detector evidence was compared; no classifier state, identity, ownership, GT or expected-event data was read.",
+    "Review exclusions are limited to enumerated saved manifests, image hashes, source locators and 73 direct JPEGs in the prior close-anchor inventory; unrelated broad reviews/adjacent blocks may remain.",
+    "Same source recording and UI locale; no independent-recording generalization. Header similarity is not phase truth or permission to clear any production gate.",
+    "Normalized NCC does not yet qualify physical observability; weak-contrast stress is next. No production adoption or veto clearing."
+  ],
+  "weak_contrast_stress": {
+    "input_count": 24,
+    "exact_jpeg_hashes_verified": 24,
+    "contrast_aggregate": {
+      "0.1": {
+        "accepted": 24,
+        "n": 24,
+        "support_std_min_across_groups": {
+          "n": 24,
+          "min": 4.780054741537396,
+          "p10": 4.913702292929178,
+          "median": 4.98335680291213,
+          "p90": 5.151501728425353,
+          "max": 5.185825947477229
+        },
+        "minimum_group_score": {
+          "n": 24,
+          "min": 0.9397561657677641,
+          "p10": 0.9472022080474604,
+          "median": 0.9868550386101583,
+          "p90": 0.9942544433968319,
+          "max": 0.9953504071551282
+        },
+        "invalid_score_frames": 0
+      },
+      "0.05": {
+        "accepted": 24,
+        "n": 24,
+        "support_std_min_across_groups": {
+          "n": 24,
+          "min": 2.417277927220145,
+          "p10": 2.459392559197696,
+          "median": 2.5088248089263603,
+          "p90": 2.57428029743922,
+          "max": 2.6095927936914136
+        },
+        "minimum_group_score": {
+          "n": 24,
+          "min": 0.935357334278545,
+          "p10": 0.9410957215419591,
+          "median": 0.983613221383492,
+          "p90": 0.9890408344000986,
+          "max": 0.9920649381237531
+        },
+        "invalid_score_frames": 0
+      },
+      "0.0": {
+        "accepted": 0,
+        "n": 24,
+        "support_std_min_across_groups": {
+          "n": 24,
+          "min": 0.0,
+          "p10": 0.0,
+          "median": 0.0,
+          "p90": 0.0,
+          "max": 0.0
+        },
+        "minimum_group_score": {
+          "n": 0
+        },
+        "invalid_score_frames": 24
+      }
+    },
+    "jpeg_aggregate": {
+      "95": {
+        "accepted": 24,
+        "n": 24,
+        "minimum_group_score": {
+          "n": 24,
+          "min": 0.940734972701424,
+          "p10": 0.9470067699342671,
+          "median": 0.9883603972450619,
+          "p90": 0.9944804315624594,
+          "max": 0.9954421730282872
+        }
+      },
+      "70": {
+        "accepted": 24,
+        "n": 24,
+        "minimum_group_score": {
+          "n": 24,
+          "min": 0.9241440282395064,
+          "p10": 0.9310658541738237,
+          "median": 0.9690718458508064,
+          "p90": 0.9778656031821394,
+          "max": 0.9797742880679637
+        }
+      }
+    },
+    "one_group_aggregate": {
+      "category_1": {
+        "flat_rejects": 24,
+        "flat_target_invalid": 24,
+        "other_scores_exactly_unchanged": 24,
+        "invert_rejects": 24,
+        "inverted_target_score": {
+          "n": 24,
+          "min": -0.9845335983322376,
+          "p10": -0.9843704866026698,
+          "median": -0.9749104933126692,
+          "p90": -0.9685039024233917,
+          "max": -0.9675228980749144
+        },
+        "invert_other_scores_exactly_unchanged": 24
+      },
+      "category_3": {
+        "flat_rejects": 24,
+        "flat_target_invalid": 24,
+        "other_scores_exactly_unchanged": 24,
+        "invert_rejects": 24,
+        "inverted_target_score": {
+          "n": 24,
+          "min": -0.9746036561647171,
+          "p10": -0.974204639773123,
+          "median": -0.9654353685800535,
+          "p90": -0.911344485734435,
+          "max": -0.903625224467584
+        },
+        "invert_other_scores_exactly_unchanged": 24
+      },
+      "category_4": {
+        "flat_rejects": 24,
+        "flat_target_invalid": 24,
+        "other_scores_exactly_unchanged": 24,
+        "invert_rejects": 24,
+        "inverted_target_score": {
+          "n": 24,
+          "min": -0.9718704999619832,
+          "p10": -0.9713958709734299,
+          "median": -0.9678475907951962,
+          "p90": -0.9591711091483208,
+          "max": -0.9560910245831491
+        },
+        "invert_other_scores_exactly_unchanged": 24
+      }
+    },
+    "support_flank_aggregate": {
+      "category_1": {
+        "std": {
+          "n": 24,
+          "min": 53.4472618046327,
+          "p10": 53.52039671315937,
+          "median": 56.842157272177104,
+          "p90": 58.876239583263505,
+          "max": 59.04848560933599
+        },
+        "range": {
+          "n": 24,
+          "min": 211.0,
+          "p10": 214.3,
+          "median": 223.0,
+          "p90": 231.7,
+          "max": 233.0
+        },
+        "p05_p95": {
+          "n": 24,
+          "min": 164.74999999999994,
+          "p10": 168.61499999999995,
+          "median": 179.5999999999999,
+          "p90": 183.6799999999999,
+          "max": 185.44999999999987
+        },
+        "flank_std": {
+          "n": 24,
+          "min": 28.879554395491564,
+          "p10": 28.907838764024785,
+          "median": 31.137663208655297,
+          "p90": 31.63615156915946,
+          "max": 31.765188145984084
+        },
+        "flank_range": {
+          "n": 24,
+          "min": 216.0,
+          "p10": 217.3,
+          "median": 232.5,
+          "p90": 239.7,
+          "max": 242.0
+        },
+        "support_to_flank_std_ratio": {
+          "n": 24,
+          "min": 1.8022383103690132,
+          "p10": 1.8119441701779102,
+          "median": 1.85071889165201,
+          "p90": 1.8610107544051253,
+          "max": 1.8641743452911477
+        }
+      },
+      "category_3": {
+        "std": {
+          "n": 24,
+          "min": 47.75552632167958,
+          "p10": 48.97432433722026,
+          "median": 49.93108543407509,
+          "p90": 51.288391963554865,
+          "max": 51.6354492872362
+        },
+        "range": {
+          "n": 24,
+          "min": 212.0,
+          "p10": 212.3,
+          "median": 218.0,
+          "p90": 224.7,
+          "max": 225.0
+        },
+        "p05_p95": {
+          "n": 24,
+          "min": 143.39999999999998,
+          "p10": 144.7,
+          "median": 147.09999999999997,
+          "p90": 166.0999999999999,
+          "max": 171.5999999999999
+        },
+        "flank_std": {
+          "n": 24,
+          "min": 27.126523346936462,
+          "p10": 27.713183567556808,
+          "median": 28.884835933625347,
+          "p90": 31.620841700388322,
+          "max": 32.84508467819586
+        },
+        "flank_range": {
+          "n": 24,
+          "min": 231.0,
+          "p10": 233.0,
+          "median": 235.0,
+          "p90": 243.0,
+          "max": 243.0
+        },
+        "support_to_flank_std_ratio": {
+          "n": 24,
+          "min": 1.5009792967848326,
+          "p10": 1.601726228842417,
+          "median": 1.7326158627966874,
+          "p90": 1.7664005675753784,
+          "max": 1.780437045732914
+        }
+      },
+      "category_4": {
+        "std": {
+          "n": 24,
+          "min": 53.614857346379516,
+          "p10": 54.85714149613515,
+          "median": 56.14908072116569,
+          "p90": 56.800172382763826,
+          "max": 57.32938515459465
+        },
+        "range": {
+          "n": 24,
+          "min": 225.0,
+          "p10": 227.0,
+          "median": 231.0,
+          "p90": 234.0,
+          "max": 235.0
+        },
+        "p05_p95": {
+          "n": 24,
+          "min": 151.49999999999977,
+          "p10": 154.64999999999975,
+          "median": 158.97499999999985,
+          "p90": 166.07499999999996,
+          "max": 167.29999999999995
+        },
+        "flank_std": {
+          "n": 24,
+          "min": 28.135098205423326,
+          "p10": 28.81512640689499,
+          "median": 29.009858269117657,
+          "p90": 30.93998149686481,
+          "max": 31.016521070812622
+        },
+        "flank_range": {
+          "n": 24,
+          "min": 235.0,
+          "p10": 237.0,
+          "median": 239.0,
+          "p90": 242.7,
+          "max": 245.0
+        },
+        "support_to_flank_std_ratio": {
+          "n": 24,
+          "min": 1.756563824778528,
+          "p10": 1.7731329887832727,
+          "median": 1.9335562504659491,
+          "p90": 1.9425733958411218,
+          "max": 1.9509003083374745
+        }
+      }
+    },
+    "limits": [
+      "NCC can be nearly invariant to positive affine contrast scaling; a high normalized score is not itself a calibrated measure of physical visibility.",
+      "Selection required candidate acceptance; no sensitivity/recall claim.",
+      "No text decode, state, ownership, event, GT, or production behavior was used."
+    ],
+    "private_artifact_sha256": "a5e12f5255e3b8fecc34069018f1a71c1f2197a765d0ac0060966231d638bf80"
+  }
+}

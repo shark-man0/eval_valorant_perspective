@@ -356,3 +356,61 @@ static border evidence and independent acquisition/codec variation rather than
 another minimum-floor adjustment. Shared counts/hashes are in
 `buy_amplitude_qualification_evidence_v1.json`. These docs-only changes reuse
 the924/2-skip full suite and passing static checks; no new E2E is required.
+
+
+## Static category-header representation and fixed-lane diagnosis
+
+Static category headings provide a different candidate from the rejected dynamic
+availability borders. Three separated supports are learned from the same original
+three training images; no item icon, price, ability state, OCR result or Agent
+knowledge is used. A one-sided dilated-edge coverage version is rejected: designed
+dense random noise passes all three supports, and whole-grid Canny hysteresis
+prevents strict source-support independence.
+
+V2 instead samples raw grayscale only at frozen support coordinates and requires
+three signed NCC scores >=0.90. Runtime has no Canny, blur, derivatives, alignment
+or OCR. Support populations are242/187/198 pixels; leave-one-out training minima
+are.9942/.9817/.9735. All27 outside-selected-pixel mutations are exactly invariant.
+Polarity reversal, missing/flat groups, checker/stripes and random noise reject.
+Previously reviewed6 visible menus and the new9 visible menus are retained;
+23 new menu-not-visible controls reject. This is development evidence from one UI
+locale and recording, not independent-recording qualification.
+
+Exact stored-JPEG fixed replay scores64/1026 canonical and304/4038 coverage rows
+as matching all groups. The444 exact common rows have identical JPEG/decoded
+hashes, scores and decisions. Minimum retained weakest-group scores are.9495
+and.9411. Passive grid overlaps are59 and275; header-only counts5 and29, while
+grid-only counts182 and762. The strict close-anchor reader has1 and11 positives
+respectively, with zero header intersections. This is `buy_menu_close_anchor_present`
+(reader >=0.78), not the separate Spectator short-X advisory. Detector disagreements
+are not truth labels or proof of Buy phase.
+
+A new opaque24-image accepted-candidate challenge is reviewed before reading scores
+or mappings. All24 visibly contain the menu, close-X and three header crops.
+Selection uses accepted low-score candidates across native blocks then temporal
+middle fill, with exact enumerated prior exclusions. It is candidate-conditioned
+and may overlap adjacent historically viewed frames; it estimates neither missed
+menus nor population false-positive rate.
+
+**NEED MORE EVIDENCE**. Normalized agreement has not yet qualified physical
+observability. The next experiment tests frozen V2 under weak contrast, codecs and
+one-group corruption without fitting floors. No existing menu/Spectator veto is
+cleared and no player identity, ownership or Buy classification is inferred.
+Public aggregate is `buy_static_header_diagnostic_evidence_v2.json`; reference
+assets, images and per-frame results remain private. Production is unchanged.
+This docs-only phase reuses934 passed/2 optional skips, passing Ruff/mypy and
+performs diff/privacy checks. The current clean adaptive baseline remains22/56/4,
+negative20/0; no new E2E is required.
+
+
+The frozen weak-contrast stress is now complete on the24 reviewed accepted
+images. Contrast factors.10 and.05 both retain24/24 matches; at.05 the median
+minimum-group support std is only2.51 gray levels, while median weakest-group
+NCC remains.984. Zero contrast rejects24/24. JPEG95/70 retain24/24 (minimum
+weakest-group scores.941/.924). Flattening or polarity-inverting any single group
+rejects24/24 while other groups remain bit-identical. Thus physical observability
+remains unresolved despite signed shape agreement; no empirical floor is fitted.
+The next48-image challenge uses score-independent native-order quantiles after
+exact enumerated prior exclusions, with blind pixel review before scoring.
+This addresses the acceptance-conditioned bias of the24-image review and seeks
+natural weak/menu-not-visible evidence. No production adoption.

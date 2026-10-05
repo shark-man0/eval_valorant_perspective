@@ -108,3 +108,30 @@ Verification after the10 new regressions: full pytest with the external pack
 Ruff src/tests/scripts, mypy src(86 files), aggregate privacy/count checks and
 diff check pass. The two skips remain existing optional fixtures. Production
 source and private profile assets are unchanged; no new Clean E2E is run.
+
+
+## Frozen cross topology and exact production-context shadow
+
+The location-tolerant cross rule freezes opposite-sign line intersections, median
+radial spread at most5 pixels and an8-pixel ROI pad before development scoring.
+It retains3/3 training,11/11 helper-positive synthetic X and6/6 prior visible-X
+controls. The locked appearance-only join retains9/9 visible menus but also
+matches22/48 menu-not-visible appearances (old25 plus new32); new text-like crops
+match8/15, scene/effect3/8, report2/7 and diagram overlays3/3. These conditioned,
+overlapping same-recording categories are not prevalence or specificity estimates.
+A failed rule does not establish absence; topology alone remains unqualified.
+
+A separate reason-only shadow uses the actual production service factory, native
+metadata and all1026 ordered canonical frames. The301 structure-selected baseline
+exactly reproduces the prior reason histogram. Replacing only the short-X advisory
+with the already-rejected center predicate changes38 obscured cases:10 to absent,
+7 to present,20 to unobservable and1 to ambiguous. All other reason categories stay
+unchanged. Checked non-Spectator inputs (three structure signals/scores, geometry,
+Buy grid/strict close, Report, map/flash/transitions and remote context) have zero
+mismatches. No classifier, live-player or ownership improvement is claimed.
+The translated/clipped-X safety counterexamples still disqualify this replacement.
+
+**KEEP CURRENT** production behavior. Evidence is in
+`spectator_context_followup_evidence_v1.json`. This docs-only phase reuses the
+934-pass/2-skip suite and passing Ruff/mypy checks; diff/privacy checks pass.
+No production changes or new adaptive E2E.
