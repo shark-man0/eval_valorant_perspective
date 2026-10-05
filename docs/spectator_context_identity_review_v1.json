@@ -1,0 +1,191 @@
+{
+  "execution_binding": {
+    "baseline_analyzer_clean": true,
+    "baseline_analyzer_commit": "5b7a7e26c670cfc999839dcecd42c77065d19a24",
+    "current_diagnostic_head": "c24ec31fc77cd0cdcdb53b192567455a5cf1c2e7",
+    "feature_reader_source_sha256": "debad0c5493460c073cda8c9f397792b4dadfcee9cdc4062b2437c2ae528efcc",
+    "fixed_replay_frames": 1026,
+    "fixed_replay_manifest_sha256": "f8267c437f95cb534c06d80a459961409323688f9b7a76a728b719b0350e74f1",
+    "hud_layout_sha256": "a3678bcd9df35d0932ae0e69495eb5b87a3ab40e9c988560d502a9507d59eef1",
+    "hud_profile_fingerprint_sha256": "e7987bf758eb2dca8211149b6fde9bddcb04a07997f1fb66cb38e8c677580e57",
+    "production_source_unchanged_since_diagnostic_head": true,
+    "profile_fingerprint_exact_match": true,
+    "report_generation_head": "523141e554ccbe08ae3483a52f7cb89c2c53b0ed",
+    "spectator_template_source_sha256": "40c336a591c271047bff57a7dc41b21feae45455ffca056bfbd0c43d220e7ee8",
+    "verification_basis": "Read-only git diff found no src changes between the diagnostic HEAD and report-generation HEAD; production-source working tree was clean.",
+    "video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06"
+  },
+  "frozen_pixel_ablation": {
+    "after_complement_meanfill_candidate_true": 7,
+    "after_glyph_patch_meanfill_candidate_true": 3,
+    "buy_menu_visible_cases": 0,
+    "cases": 25,
+    "frozen_before_measurement": true,
+    "interpretation_limit": "Artificial mean-fill boundaries and context changes measure sensitivity only; they do not prove semantic causation.",
+    "original_helper_candidate_true": 16,
+    "recipe_sha256": "bba4c32061bd35273ad952e835cfb50920caf67d1982ea174531524abba0e1de",
+    "results_sha256": "f08fe93f2d0efb2531b637d0ca5e047b3c0ddb6681f494b9efb100d8e801175e"
+  },
+  "full_context_replay": {
+    "artifact_sha256": "79b94270f58eeb3d3dd156d30d1c2daa5bc9844095d7b66cb8c167503c56e54a",
+    "interpretation": "Exact fixed-replay inputs and native presentation times were used to reconstruct temporal feature hints and rerun the actual production template detector. Context counts overlap and describe global detector veto inputs, not physical occlusion or spectator truth.",
+    "obscured_context_combinations": {
+      "abrupt_luminance_spike": 1,
+      "buy_menu_grid_only": 52,
+      "buy_menu_grid_plus_short_x": 20,
+      "no_basic_context_plus_short_x": 45
+    },
+    "production_reason_counts": {
+      "icon_absent": 25,
+      "icon_present": 42,
+      "icon_roi_obscured": 118,
+      "icon_roi_unobservable": 114,
+      "icon_structure_ambiguous": 2
+    },
+    "replayed_cases": 301,
+    "saved_production_reason_exact_matches": 301
+  },
+  "hough_segment_attribution": {
+    "cases": 34,
+    "cohort_aggregates": {
+      "development_visible_X": {
+        "both_signs_in_center_patch": 6,
+        "both_signs_in_glyph_patch": 6,
+        "both_signs_outside_center_patch": 0,
+        "both_signs_outside_glyph_patch": 6,
+        "candidate_if_exclude_center_patch_segments": 0,
+        "candidate_if_exclude_glyph_patch_segments": 6,
+        "helper_true": 6,
+        "mean_qualifying_segments": 15.333,
+        "n": 6
+      },
+      "no_menu_context_challenge": {
+        "both_signs_in_center_patch": 3,
+        "both_signs_in_glyph_patch": 10,
+        "both_signs_outside_center_patch": 13,
+        "both_signs_outside_glyph_patch": 5,
+        "candidate_if_exclude_center_patch_segments": 13,
+        "candidate_if_exclude_glyph_patch_segments": 5,
+        "helper_true": 16,
+        "mean_qualifying_segments": 5.28,
+        "n": 25
+      },
+      "training": {
+        "both_signs_in_center_patch": 3,
+        "both_signs_in_glyph_patch": 3,
+        "both_signs_outside_center_patch": 0,
+        "both_signs_outside_glyph_patch": 3,
+        "candidate_if_exclude_center_patch_segments": 0,
+        "candidate_if_exclude_glyph_patch_segments": 3,
+        "helper_true": 3,
+        "mean_qualifying_segments": 16.333,
+        "n": 3
+      }
+    },
+    "interpretation": "No image mutation. Midpoint partition of actual qualifying Hough segments; same recording and center geometry not independently qualified. No live promotion or semantic menu identity.",
+    "production_parity_cases": 34,
+    "recipe_sha256": "952a50775c69ba44b7ac18eb93f302b6782d489c2ef7b82dc67f7eb972079996",
+    "results_sha256": "c80b6c80641a9077e9f5e1398ddac2a969c2164b10d8ed69a8d4132a8a141745",
+    "source_helper_sha256": "2ae424303686b68020f04e3ebf0059df4707fcd99e0fa12e13b14ea32895de75"
+  },
+  "local_only_diagnostic": {
+    "all_301_local_reason_counts": {
+      "icon_absent": 76,
+      "icon_present": 56,
+      "icon_roi_unobservable": 166,
+      "icon_structure_ambiguous": 3
+    },
+    "corrected_scope_note": "The full-context 114 unobservable outcomes are counted across all 301 replay cases. The local-only 52 unobservable outcomes are within the separate 118-case saved-obscured subset. The ROI-only result is diagnostic and does not override the global-context guard.",
+    "local_roi_only_reason_counts": {
+      "icon_absent": 51,
+      "icon_present": 14,
+      "icon_roi_unobservable": 52,
+      "icon_structure_ambiguous": 1
+    },
+    "subset": "118 cases saved as globally obscured"
+  },
+  "local_unobservable_first_failing_guard": {
+    "cases": 114,
+    "counts": {
+      "contrast_below_8": 79,
+      "edge_acutance_below_0.12": 20,
+      "mean_outside_45_245": 8,
+      "near_black_clipping_ge_2pct": 1,
+      "sharpness_below_10": 6
+    },
+    "scope": "Saved production unobservable cases among301, not the118 globally obscured subset."
+  },
+  "locked_appearance_review": {
+    "appearance_annotations_sha256": "17e9df59c4b9f6f120fede2da1501eed80299f675f49a3ce14356fcd894d8153",
+    "appearance_join_sha256": "d8975f8237ec267e7ee462368efca8c410d0c24711b0fbf066900a887796f4d3",
+    "cases": 25,
+    "close_anchor_helper_candidate_true": 16,
+    "helper_flag_scope": "Diagnostic helper output among this context-stratified 25-case sample; not a population false-positive rate.",
+    "manifest_sha256": "b4d051845b22b1b86d9f88306c9639bc4b74b1df0fc391f6356603b3ec473622",
+    "review_process": "Appearance annotations were locked before joining detector outputs. The root review was informed by helper aggregates, so this is not a blinded qualification.",
+    "same_recording_bias": "All 25 cases are selected from the same fixed recording using context-stratified native-order quantiles; they are not prevalence sampled.",
+    "sampling_strata": {
+      "abrupt_only": 1,
+      "buy_only": 8,
+      "buy_plus_x": 8,
+      "x_only": 8
+    },
+    "visible_buy_menu": {
+      "not_visible": 25
+    }
+  },
+  "native_crop_review_receipt": {
+    "cases": 25,
+    "corrected_geometry_audit_sha256": "e80b2d2c1ff9e1e02c4c8dedcc6672d77f4bb7423b94743a0cd5dd01efe26036",
+    "native_aspect_pages": 7,
+    "qualification": "Informed appearance review receipt, not a blinded evaluation.",
+    "recognizable_buy_close_button_visible": 0,
+    "review_receipt_sha256": "49e96710841e2783f32947f90607f01514a59b98cb2de2c852a6e1b419b6d5ea"
+  },
+  "next_work": {
+    "item": "Frozen center-sign support tested on32 newly selected unreviewed actual-helper-positive canonical images, appearance blinded from scores; no parameter fitting.",
+    "status": "private experiment in progress; preserve production veto"
+  },
+  "runtime_contract": {
+    "global_context_veto_before_measurement": true,
+    "path": "OpenCvHudFeatureReader.observe_sequence -> HudTemplateProfile.detect_signals -> fixed_slot_structure_v1",
+    "reference_asset": "none; dedicated structural detector",
+    "roi_dimensions": [
+      75,
+      83
+    ]
+  },
+  "safety_position": {
+    "claims": [
+      "No live behavior claim.",
+      "No oracle or ground-truth claim.",
+      "The 16/25 helper flags are not a population false-positive estimate."
+    ],
+    "global_context_veto_preserved": true,
+    "production_changes_made": false,
+    "recommendation": "KEEP CURRENT safety behavior"
+  },
+  "schema": "spectator-context-identity-review/v1",
+  "source_artifact_sha256": {
+    "context_replay_summary": "814a0e8a5456e7bfb402f5dc4cb79cd31640c850c5e4ab046ffcef8abe69618d",
+    "full_context_replay_v2": "79b94270f58eeb3d3dd156d30d1c2daa5bc9844095d7b66cb8c167503c56e54a",
+    "observability_audit_aggregate": "cdd4b62f7594786aab4394c0b6b1c6ee852a80afb286d9d4ea057aae95796d93"
+  },
+  "status": "published aggregate-only diagnostic",
+  "verification": {
+    "baseline_clean_e2e": {
+      "failed": 56,
+      "negative_failed": 0,
+      "negative_passed": 20,
+      "not_evaluated": 4,
+      "passed": 22
+    },
+    "mypy": "pass86sourcefiles",
+    "new_clean_e2e": "not run: no production change",
+    "production_changed": false,
+    "pytest_passed": 924,
+    "pytest_seconds": 274.53,
+    "pytest_skipped": 2,
+    "ruff": "pass"
+  }
+}
