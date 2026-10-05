@@ -1,0 +1,216 @@
+{
+  "adoption_rejected_reasons": [
+    "Observable multi-stripe topology can satisfy count-only support",
+    "H2/V2 source bands include green availability-like borders",
+    "Single recording and inspected development data do not prove invariant semantics or new holdout separation"
+  ],
+  "analyzer_baseline": "5b7a7e26c670cfc999839dcecd42c77065d19a24",
+  "decision": "NEED MORE EVIDENCE",
+  "development": {
+    "base_other_accepts": 0,
+    "base_visible_menu_accepts": 3,
+    "best_tied_offsets": [
+      {
+        "lost": 0,
+        "offset_xy": [
+          -2,
+          -1
+        ],
+        "other_appearance_accepts": 0,
+        "recovered": 3,
+        "retained": 3
+      },
+      {
+        "lost": 0,
+        "offset_xy": [
+          -2,
+          -2
+        ],
+        "other_appearance_accepts": 0,
+        "recovered": 3,
+        "retained": 3
+      },
+      {
+        "lost": 0,
+        "offset_xy": [
+          1,
+          -1
+        ],
+        "other_appearance_accepts": 0,
+        "recovered": 3,
+        "retained": 3
+      },
+      {
+        "lost": 0,
+        "offset_xy": [
+          2,
+          -1
+        ],
+        "other_appearance_accepts": 0,
+        "recovered": 3,
+        "retained": 3
+      }
+    ],
+    "common_translation_offsets_tested": 25,
+    "common_translation_window_px": 2,
+    "other_appearances": 60,
+    "previous_canny_visible_menu_accepts": 2,
+    "rows": 68,
+    "unique_images": 66,
+    "visible_menus": 6
+  },
+  "diagnostic_only": true,
+  "extractor": {
+    "dynamic_source_exclusion": "all source pixels outside that group static mask are excluded from every contributing derivative footprint",
+    "gradient_threshold": 100,
+    "hysteresis": false,
+    "ksize": 3,
+    "opening": false,
+    "operator": "Sobel",
+    "orientation_dominance_ratio": 1.5,
+    "validity": "only response centers whose complete 3x3 derivative footprint lies inside same group static source mask"
+  },
+  "groups": [
+    {
+      "id": "H1",
+      "mask_bounds_xyxy": [
+        472,
+        170,
+        636,
+        179
+      ],
+      "mask_pixels": 1476,
+      "normalized_bounds": [
+        0.410435,
+        0.195402,
+        0.553043,
+        0.205747
+      ],
+      "orientation": "horizontal"
+    },
+    {
+      "id": "V1",
+      "mask_bounds_xyxy": [
+        465,
+        177,
+        474,
+        511
+      ],
+      "mask_pixels": 1827,
+      "normalized_bounds": [
+        0.404348,
+        0.203448,
+        0.412174,
+        0.587356
+      ],
+      "orientation": "vertical"
+    },
+    {
+      "id": "H2",
+      "mask_bounds_xyxy": [
+        333,
+        710,
+        1109,
+        718
+      ],
+      "mask_pixels": 6096,
+      "normalized_bounds": [
+        0.289565,
+        0.816092,
+        0.964348,
+        0.825287
+      ],
+      "orientation": "horizontal"
+    },
+    {
+      "id": "V2",
+      "mask_bounds_xyxy": [
+        590,
+        715,
+        875,
+        829
+      ],
+      "mask_pixels": 2508,
+      "normalized_bounds": [
+        0.513043,
+        0.821839,
+        0.76087,
+        0.952874
+      ],
+      "orientation": "vertical"
+    }
+  ],
+  "hashes": {
+    "alignment_appearance_join": "620178d81ff3981769e8b61b3a4fe8c0955c48cf14eb8c2c056e85ec1ab11632",
+    "appearance_only_join": "3cf8f30890cfd81c9003a4e1bee78ff0837f6126722284c3bf4ddbe0d7add578",
+    "config": "7e94a91cadbfc88906a6f79406bff60ed58f0d8b706a6d3ea571c5fe8706ead9",
+    "mechanism_diagnostic": "6d69260ff3fcec1df7d045bb290d9a8dfe63a6a6863689044a47d5552b47e15b",
+    "parity": "e0f59d0d21bdf70cf4151fe97c227d69e30d45798d97681437c8bcc1d998f4ba",
+    "synthetic_stress": "ef681e063abf1076eebf724f5068b9005052ea031eaaa37adc18e9f4333985b5"
+  },
+  "next_diagnostic": "training-only local border topology and signed/absolute normal profiles; observable contradictory groups must reject",
+  "production_changed": false,
+  "schema": "buy_finite_local_scaffold_evidence_v1",
+  "source_mask_union": {
+    "roi_pixels": 1000500,
+    "source_pixels": 11876,
+    "valid_centers": 9076
+  },
+  "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "synthetic_contradiction_stress": {
+    "alternating_tangent": {
+      "accepted": false,
+      "group_count": 0,
+      "pattern_H1_V1_H2_V2": "0000"
+    },
+    "checker_normal": {
+      "accepted": false,
+      "group_count": 0,
+      "pattern_H1_V1_H2_V2": "0000"
+    },
+    "period4_normal": {
+      "accepted": true,
+      "group_count": 3,
+      "pattern_H1_V1_H2_V2": "1110"
+    },
+    "period6_normal": {
+      "accepted": true,
+      "group_count": 3,
+      "pattern_H1_V1_H2_V2": "1101"
+    },
+    "random_texture": {
+      "accepted": false,
+      "group_count": 2,
+      "pattern_H1_V1_H2_V2": "1100"
+    },
+    "single_edge": {
+      "accepted": false,
+      "group_count": 1,
+      "pattern_H1_V1_H2_V2": "0100"
+    }
+  },
+  "training": {
+    "exact_scorer_replayed_measurements": 12,
+    "frames": 3,
+    "groups": 4,
+    "outside_mask_randomization_invariant_measurements": 12
+  },
+  "training_minima": {
+    "H1": {
+      "min_components_area2": 1,
+      "min_response_pixels": 348
+    },
+    "H2": {
+      "min_components_area2": 3,
+      "min_response_pixels": 3127
+    },
+    "V1": {
+      "min_components_area2": 2,
+      "min_response_pixels": 398
+    },
+    "V2": {
+      "min_components_area2": 3,
+      "min_response_pixels": 1109
+    }
+  }
+}

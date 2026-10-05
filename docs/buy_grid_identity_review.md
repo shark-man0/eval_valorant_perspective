@@ -203,3 +203,67 @@ No production change was made. The authoritative clean adaptive E2E remains
 analyzer 5b7: 22 passed / 56 failed / 4 not evaluated, negative assertions
 20 passed / 0 failed, `git_is_dirty=false`. No new E2E was run for this
 diagnostic-only phase. Fixed manifests and baseline populations remain unchanged.
+
+## Finite-local Sobel and topology diagnosis
+
+A separate frozen diagnostic removes Canny and morphological opening. It
+computes original-image 3x3 Sobel gradients, retaining only centers whose entire
+source footprint is inside that group's mask, with no black-fill gradients.
+Gradient magnitude 100 and orientation dominance 1.5 were frozen before development
+scoring. Training-derived response/component minima and the three-of-four,
+both-orientations diagnostic rule remained fixed. These are descriptive feature
+tests, not production identity scores or a lowering of the 0.90 identity gate.
+
+The source masks cover 11,876 of 1,000,500 ROI pixels (1.187%); 9,076 centers
+have valid derivative footprints. Outside-mask randomization leaves every one
+of the 12 training frame/group measurements exactly unchanged. The evaluation
+scorer hash-binds the interval geometry and reproduces all training measurements;
+68 development frame metrics and decisions remain identical after that binding
+was made explicit. Candidate config SHA is
+`7e94a91cadbfc88906a6f79406bff60ed58f0d8b706a6d3ea571c5fe8706ead9`.
+
+| Frozen diagnostic representation | Visible menus retained | Other appearances accepted |
+| --- | ---: | ---: |
+| Canny plus long opening | 2/6 | 0/60 |
+| Finite local Sobel, unshifted | 3/6 | 0/60 |
+| Finite local Sobel, best common bounded offset | 6/6 | 0/60 |
+
+The three unshifted misses fail response-pixel minima, not component minima.
+H1 response counts are 337/347/342 against training minimum 348; one missed
+V1 count is 354 against 398. All retain measured oriented responses, so this
+does not prove physical border absence. Applying a single common translation
+to all groups, not independent group search, evaluates all 25 offsets in the
+[-2,2] window. Four offsets tie: (-2,-1), (-2,-2), (1,-1), (2,-1). Each retains
+the original three supports and recovers the three misses with no other-image
+accepts. Ties and boundary offsets establish alignment sensitivity, not a unique
+correction. No production coordinate or acceptance threshold changes.
+
+Count support still fails a topology contract. In synthetic constant-background
+inputs, period-4 and period-6 normal stripes confined to the source bands pass
+the unchanged rule, with H1/V1/H2/V2 patterns 1110 and 1101. They replace single
+border structure with multiple parallel edges. Period-2 checker patterns,
+tangential patterns, random texture and a single-edge scene reject. The period-2
+case alone would miss the risk because central Sobel differences cancel that
+alternation. These are synthetic predicate counterexamples, not an observed
+real-world false-positive rate and not production classifier accepts.
+
+**NEED MORE EVIDENCE**: do not adopt this representation, including the aligned
+variant. Independent pixel footprints are established; border identity,
+observable contradiction rejection and dynamic-state invariance are not. H2/V2
+include green availability-like borders. All three training images are from one
+recording/setup; mask-interior glyph or dynamic content remains possible. The
+68 inspected challenge images are development data, not new holdout evidence.
+
+The next diagnostic is already selected: freeze training-only border topology
+and normal-direction edge profiles, then test both real development images and
+these synthetic contradictions. Observable shape contradictions cannot be
+ignored by a three-of-four count vote. In parallel, the next pipeline blocker
+audit covers the 234 unchecked/ambiguous Spectator exclusions among the 301
+canonical snapshots with all three identity structures. These are opportunities
+for further measurement, not live labels, and the exclusion gate remains intact.
+
+This phase adds aggregate/docs only. Production and existing tests are unchanged;
+the preceding full suite, external-pack rechecks, Ruff, mypy and clean 5b7 E2E
+remain the applicable baseline. Shared numerical evidence is
+`buy_finite_local_scaffold_evidence_v1.json`; private crops, masks, references,
+per-image diagnostics and appearance ledgers remain local.
