@@ -5,7 +5,11 @@ import cv2
 import numpy as np
 import pytest
 
-from valorant_ai_coach.hud.calibrate_temporal import _candidate, create_temporal_profile
+from valorant_ai_coach.hud.calibrate_temporal import (
+    _candidate,
+    _validated_candidate,
+    create_temporal_profile,
+)
 from valorant_ai_coach.video.service import FrameSample, VideoMetadata
 
 
@@ -137,3 +141,53 @@ def test_enforces_bounded_sample_count(tmp_path):
     with pytest.raises(ValueError, match="8〜64"):
         create_temporal_profile(Path("dummy.mp4"), layout, tmp_path / "out", samples=7,
                                 video_service=FakeVideoService(_frames()))
+
+
+def test_holdout_cannot_contribute_pixels_to_geometry_candidate():
+    frames = _frames()
+    training = [frame[36:162, 19:147] for frame in frames[::2]]
+    holdout = [np.full_like(training[0], 60) for _ in training]
+    mixed = [frame for pair in zip(training, holdout, strict=True) for frame in pair]
+    stats = {}
+    assert _validated_candidate(mixed, stats, 0.90) is None
+    assert stats["training_accept_count"] == 12
+    assert stats["holdout_accept_count"] == 0
+    assert stats["reason"] == "holdout_support_insufficient"
+    assert stats["selected_pixels"] >= 64
+
+
+def test_supported_partial_geometry_replaces_only_supported_anchor(tmp_path):
+    layout = tmp_path / "hud_layout.json"
+    _layout(layout)
+    names = ("round_timer", "top_match_bar", "player_hp_armor", "abilities")
+    images = _frames()
+    anchors = {}
+    for index, name in enumerate(names):
+        left = round((0.03 + index * 0.24) * 640)
+        asset = tmp_path / f"{name}.png"
+        assert cv2.imwrite(str(asset), images[0][36:162, left : left + 128])
+        anchors[name] = {"template": asset.name, "threshold": 0.90}
+        if index:
+            for frame in images:
+                frame[36:162, left : left + 128] = 60
+    layout.with_suffix(".templates.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "anchors": anchors,
+                "readers": {},
+            }
+        )
+    )
+    result = create_temporal_profile(
+        Path("dummy.mp4"), layout, tmp_path / "out", video_service=FakeVideoService(images)
+    )
+    profile = json.loads(result.with_suffix(".templates.json").read_text())
+    assert profile["anchors"]["round_timer"]["template"] == "anchors/round_timer.png"
+    assert "mask" in profile["anchors"]["round_timer"]
+    for name in names[1:]:
+        assert profile["anchors"][name]["template"] == str(tmp_path / f"{name}.png")
+        assert profile["temporal_generation"]["anchors"][name]["valid"] is False
+    selected = profile["temporal_generation"]["anchors"]["round_timer"]
+    assert selected["training_accept_count"] == selected["holdout_accept_count"] == 12
+    assert selected["threshold"] == 0.90

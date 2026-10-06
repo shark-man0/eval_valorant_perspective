@@ -1,4 +1,5 @@
 import json
+from dataclasses import replace
 from pathlib import Path
 
 import cv2
@@ -8,6 +9,9 @@ from test_hud_temporal_calibration import FakeVideoService, _frames, _layout
 
 from valorant_ai_coach.hud.calibrate import create_anchor_profile
 from valorant_ai_coach.hud.calibrate_profile import (
+    _bundle_assets,
+    _panel_neighborhood_times,
+    _validate_identity_assets,
     clear_reference,
     create_profile,
     structure_reference,
@@ -15,6 +19,106 @@ from valorant_ai_coach.hud.calibrate_profile import (
 from valorant_ai_coach.hud.identity import STRUCTURES, live_identity
 from valorant_ai_coach.hud.layout import HudLayout
 from valorant_ai_coach.hud.templates import HudTemplateProfile
+from valorant_ai_coach.video.service import FrameSample
+
+
+def test_panel_neighborhood_plan_uses_training_only_and_freezes_split():
+    times = [10.0, 20.0, 30.0, 40.0]
+    samples = [
+        {"sample_index": 0, "training": True, "all_components": True},
+        {"sample_index": 1, "training": False, "all_components": True},
+        {"sample_index": 2, "training": True, "all_components": False},
+        {"sample_index": 3, "training": True, "all_components": True},
+    ]
+    stats = {"samples": samples, "cluster_count": 0, "holdout_rejected": 0}
+    plan = _panel_neighborhood_times(times, 60.0, stats)
+    assert plan == [8.5, 9.0, 9.5, 10.5, 11.0, 11.5]
+    assert not set(plan) & set(times)
+    assert len(plan[::2]) == len(plan[1::2]) == 3
+    samples[1]["all_components"] = False
+    assert _panel_neighborhood_times(times, 60.0, stats) == plan
+    assert _panel_neighborhood_times(times, 60.0, {**stats, "holdout_rejected": 1}) == []
+    assert _panel_neighborhood_times(times, 60.0, {**stats, "cluster_count": 1}) == []
+    assert _panel_neighborhood_times(times[:-1], 60.0, stats) == []
+
+
+def test_panel_neighborhood_plan_excludes_collisions_and_caps_sampling():
+    times = [float(i * 10 + 10) for i in range(32)]
+    stats = {"samples": [
+        {"sample_index": i, "training": True, "all_components": True}
+        for i in range(0, 32, 2)
+    ]}
+    plan = _panel_neighborhood_times(times, 400.0, stats)
+    assert len(plan) == len(set(plan)) == 48
+    assert max(plan) < times[16]
+    # Both members of a pair are omitted when one aliases an original sample.
+    short = _panel_neighborhood_times([1.0, 1.5], 2.0, {
+        "samples": [{"sample_index": 0, "training": True, "all_components": True}]
+    })
+    assert short == []
+
+
+def test_bundled_assets_keep_bytes_and_load_after_source_directory_moves(tmp_path):
+    source = tmp_path / "source"
+    source.mkdir()
+    asset = source / "参照.png"
+    assert cv2.imwrite(str(asset), _frames()[0][36:162, 19:147])
+    original = asset.read_bytes()
+    stage = tmp_path / "profile"
+    stage.mkdir()
+    raw = {
+        "schema_version": "1.0",
+        "anchors": {"round_timer": {"template": str(asset), "threshold": 0.94}},
+        "readers": {"round_timer": {"templates": {"0": [str(asset)]}}},
+        "signals": {"marker": {"roi": "round_timer", "template": str(asset)}},
+    }
+    bundled = _bundle_assets(raw, stage)
+    reference = bundled["anchors"]["round_timer"]["template"]
+    assert not Path(reference).is_absolute()
+    assert bundled["readers"]["round_timer"]["templates"]["0"] == [reference]
+    assert bundled["signals"]["marker"]["template"] == reference
+    assert bundled["anchors"]["round_timer"]["threshold"] == 0.94
+    assert (stage / reference).read_bytes() == original
+    source.rename(tmp_path / "moved-source")
+    stage.rename(tmp_path / "移動-profile")
+    profile = HudTemplateProfile(tmp_path / "移動-profile/profile.json", bundled)
+    assert not profile.reader_diagnostics
+    assert profile.load_template("round_timer", reference).path.read_bytes() == original
+
+
+def test_ready_requires_production_readable_assets_not_generation_status(tmp_path):
+    diagnostics = {
+        "spectator_method": "compound",
+        "references": {role: {"status": "generated"} for role in (*STRUCTURES, "spectator_panel")},
+    }
+    raw = {"schema_version": "1.0", "signals": {
+        role: {"roi": "abilities", "template": "missing.png", "threshold": 0.9}
+        for role in STRUCTURES
+    }, "spectator_panel_detector": {"version": 2, "template": "missing.png"}}
+    _validate_identity_assets(raw, tmp_path, diagnostics)
+    assert diagnostics["identity_reference_ready"] is False
+    for row in diagnostics["references"].values():
+        assert row["status"] == "insufficient_evidence"
+        assert row["reason"] == "reference_load_failed"
+        assert row["rejection_stage"] == "profile_load"
+
+
+def test_nested_digit_bank_assets_participate_in_profile_fingerprint(tmp_path):
+    layout = tmp_path / "layout.json"
+    layout.write_text("{}")
+    sidecar = tmp_path / "profile.json"
+    first, second = tmp_path / "first.png", tmp_path / "second.png"
+    first.write_bytes(b"first reference")
+    second.write_bytes(b"second reference")
+    raw = {"schema_version": "1.0", "readers": {
+        "player_hp_armor": {"templates": {"0": [first.name, second.name]}}
+    }}
+    sidecar.write_text(json.dumps(raw))
+    profile = HudTemplateProfile(sidecar, raw)
+    assert set(profile.asset_paths) == {Path(first.name), Path(second.name)}
+    before = profile.fingerprint(layout)
+    second.write_bytes(b"changed second reference")
+    assert profile.fingerprint(layout) != before
 
 
 def inputs(tmp_path, panel_images):
@@ -33,6 +137,71 @@ def inputs(tmp_path, panel_images):
         panel, scene = panel_images(x2 - x1, y2 - y1, index % 8)
         frame[y1:y2, x1:x2] = panel if index % 4 >= 2 else scene
     return layout, frames
+
+
+@pytest.mark.parametrize("fault", ["duplicate", "missing", "resolution"])
+def test_panel_resampling_rejects_unusable_native_observations(
+    tmp_path, panel_images, monkeypatch, fault,
+):
+    import valorant_ai_coach.hud.calibrate_profile as generator
+
+    layout, frames = inputs(tmp_path, panel_images)
+    base = create_anchor_profile(layout, frames[0], tmp_path / "seed")
+
+    def geometry(_video, _layout, stage, **kwargs):
+        stage.mkdir()
+        profile = HudTemplateProfile.load(base.with_suffix(".templates.json"))
+        raw = generator._localize_assets(profile.raw, base.parent)
+        selected = stage / "hud_layout.json"
+        selected.write_bytes(base.read_bytes())
+        selected.with_suffix(".templates.json").write_text(json.dumps(raw))
+        return selected
+
+    proposal_calls = []
+
+    def proposals(crops, stats):
+        proposal_calls.append(len(crops))
+        stats.update(training_count=16, holdout_count=16, candidate_count=1,
+                     cluster_count=0, holdout_rejected=0, samples=[{
+                         "sample_index": 16, "training": True, "all_components": True,
+                     }])
+        return None
+
+    class FaultyService(FakeVideoService):
+        def probe(self, path):
+            return replace(super().probe(path), duration_sec=100.0)
+
+        def extract_frames(self, video, timestamps, output_dir, **kwargs):
+            result = super().extract_frames(video, timestamps, output_dir, **kwargs)
+            if output_dir.name == "identity_frames":
+                self.original = result
+            else:
+                if fault == "duplicate":
+                    result[0] = FrameSample(self.original[0].time_sec, result[0].path)
+                elif fault == "missing":
+                    result.pop()
+                else:
+                    assert cv2.imwrite(str(result[0].path), np.zeros((10, 10, 3), np.uint8))
+            return result
+
+    monkeypatch.setattr(generator, "create_temporal_profile", geometry)
+    monkeypatch.setattr(generator, "generate_panel_reference", proposals)
+    generated = create_profile(
+        Path("private.mp4"), base, tmp_path / "candidate",
+        video_service=FaultyService(frames), value_invariant_only=True, compound_spectator=True,
+    )
+    profile = HudTemplateProfile.load(generated.with_suffix(".templates.json"))
+    diagnostics = profile.raw["automatic_identity_generation"]
+    panel = diagnostics["references"]["spectator_panel"]
+    assert panel["status"] == "insufficient_evidence"
+    assert panel["sampling"]["accepted_count"] == 0
+    assert panel["sampling"]["reason"] == (
+        "panel_frame_resolution_invalid" if fault == "resolution"
+        else "distinct_panel_frames_insufficient"
+    )
+    assert proposal_calls == [32]
+    assert not diagnostics["identity_reference_ready"]
+    assert "spectator_panel_detector" not in profile.raw
 
 
 def test_generated_layout_consumed_without_json_edits(tmp_path, panel_images):
@@ -91,6 +260,28 @@ def test_structure_requires_disjoint_holdout_support():
             cv2.rectangle(image, (4, 4), (115, 115), (220, 220, 220), 2)
         crops.append(image)
     assert structure_reference(crops) is None
+
+
+def test_value_invariant_only_refuses_unconfigured_roles_without_fallback(tmp_path, panel_images):
+    layout, frames = inputs(tmp_path, panel_images)
+    result = create_profile(
+        Path("private.mp4"), layout, tmp_path / "strict",
+        video_service=FakeVideoService(frames),
+        value_invariant_only=True, compound_spectator=True,
+    )
+    profile = HudTemplateProfile.load(result.with_suffix(".templates.json"))
+    generation = profile.raw["automatic_identity_generation"]
+    assert generation["identity_reference_ready"] is False
+    assert generation["generation_policy"] == "value_invariant_only"
+    assert generation["spectator_method"] == "compound"
+    assert "spectator_icon_detector" not in profile.raw
+    assert "spectator_panel_detector" in profile.raw
+    for name in STRUCTURES:
+        assert name not in profile.raw["signals"]
+        assert generation["references"][name]["status"] == "insufficient_evidence"
+        assert generation["references"][name]["reason"] == "value_invariant_structure_unconfigured"
+    assert not live_identity(profile.detect_signals(frames[1], HudLayout.load(result)),
+                             geometry_valid=True).live
 
 
 @pytest.mark.parametrize("copy_mask", [False, True])

@@ -25,24 +25,19 @@ from .layout import HudLayout
 from .templates import HudTemplateProfile
 
 ANCHORS = ("round_timer", "top_match_bar", "player_hp_armor", "abilities")
+ASSET_KEYS = frozenset({
+    "template", "mask", "templates", "values", "available_template",
+    "unavailable_template", "support_regions", "allowed_regions", "orientation",
+})
 
 
 def _localize_assets(value: Any, base: Path) -> Any:
     """Make inherited template references stable without copying user assets."""
-    keys = {
-        "template",
-        "mask",
-        "templates",
-        "values",
-        "available_template",
-        "unavailable_template",
-        "support_regions",
-        "allowed_regions",
-        "orientation",
-    }
     if isinstance(value, dict):
         return {
-            key: _localize_assets(child, base) if key not in keys else _asset_value(child, base)
+            key: (
+                _asset_value(child, base) if key in ASSET_KEYS else _localize_assets(child, base)
+            )
             for key, child in value.items()
         }
     if isinstance(value, list):
@@ -56,6 +51,8 @@ def _asset_value(value: Any, base: Path) -> Any:
         return str((path if path.is_absolute() else base / path).resolve())
     if isinstance(value, dict):
         return {key: _asset_value(child, base) for key, child in value.items()}
+    if isinstance(value, list):
+        return [_asset_value(child, base) for child in value]
     return value
 
 
@@ -108,6 +105,49 @@ def _candidate(frames: list[np.ndarray]) -> tuple[np.ndarray, np.ndarray, float]
     return median, mask, ratio
 
 
+def _validated_candidate(
+    frames: list[np.ndarray], stats: dict[str, Any], threshold: float
+) -> tuple[np.ndarray, np.ndarray, float] | None:
+    """Freeze pixels on even observations; test odd observations only once."""
+    training, holdout = frames[::2], frames[1::2]
+    stats.update(training_count=len(training), holdout_count=len(holdout))
+    candidate = _candidate(training)
+    if candidate is None:
+        stats["reason"] = "training_structure_insufficient"
+        return None
+    template, mask, ratio = candidate
+
+    def scores(images: list[np.ndarray]) -> list[float]:
+        values = []
+        for image in images:
+            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+            value = float(cv2.matchTemplate(gray, template, cv2.TM_CCOEFF_NORMED, mask=mask)[0, 0])
+            values.append(max(0.0, min(1.0, value)) if math.isfinite(value) else 0.0)
+        return values
+
+    train_scores, holdout_scores = scores(training), scores(holdout)
+    train_support = sum(value >= threshold for value in train_scores)
+    holdout_support = sum(value >= threshold for value in holdout_scores)
+    stats.update(
+        training_accept_count=train_support,
+        holdout_accept_count=holdout_support,
+        selected_pixels=int(np.count_nonzero(mask)),
+        selected_ratio=round(ratio, 6),
+        threshold=threshold,
+        training_similarity={"min": min(train_scores), "median": float(np.median(train_scores))},
+        holdout_similarity={"min": min(holdout_scores), "median": float(np.median(holdout_scores))},
+    )
+    if train_support < 3:
+        stats["reason"] = "training_support_insufficient"
+        return None
+    expected = train_support * len(holdout) / len(training)
+    if holdout_support < 3 or holdout_support < 0.80 * expected:
+        stats["reason"] = "holdout_support_insufficient"
+        return None
+    stats["reason"] = "independent_support"
+    return candidate
+
+
 def create_temporal_profile(
     video: Path,
     layout_path: Path,
@@ -128,6 +168,11 @@ def create_temporal_profile(
     layout = HudLayout.load(layout_path)
     if layout.layout_format != "v3" or layout.reference_resolution is None:
         raise ValueError("v3レイアウトとreference_resolutionが必要です")
+    source_profile_path = layout_path.with_suffix(".templates.json")
+    inherited: dict[str, Any] = {"schema_version": "1.0", "anchors": {}, "readers": {}}
+    if source_profile_path.is_file():
+        inherited = HudTemplateProfile.load(source_profile_path).raw
+        inherited = _localize_assets(inherited, source_profile_path.parent)
     service = video_service or VideoService()
     metadata = service.probe(video)
     if metadata.duration_sec <= 0:
@@ -171,9 +216,18 @@ def create_temporal_profile(
             roi = layout.normalized_roi(name)
             x1, y1, x2, y2 = roi.pixel_bounds(width, height)
             patches = [image[y1:y2, x1:x2] for image in images]
-            candidate = _candidate(patches)
+            previous = inherited.get("anchors", {}).get(name, {})
+            try:
+                previous_threshold = float(previous.get("threshold", 0.90))
+            except (AttributeError, TypeError, ValueError):
+                raise ValueError("既存anchorのthresholdが不正です") from None
+            if not math.isfinite(previous_threshold) or not 0 <= previous_threshold <= 1:
+                raise ValueError("既存anchorのthresholdが不正です")
+            threshold = max(0.90, previous_threshold)
+            candidate_stats: dict[str, Any] = {}
+            candidate = _validated_candidate(patches, candidate_stats, threshold)
             if candidate is None:
-                summaries[name] = {"selected_pixels": 0, "selected_ratio": 0.0, "valid": False}
+                summaries[name] = {**candidate_stats, "valid": False}
                 continue
             template, mask, ratio = candidate
             template_path, mask_path = asset_dir / f"{name}.png", asset_dir / f"{name}.mask.png"
@@ -194,21 +248,26 @@ def create_temporal_profile(
                 "template": f"anchors/{name}.png",
                 "mask": f"anchors/{name}.mask.png",
                 "search_region": search_region,
-                "threshold": 0.90,
+                "threshold": threshold,
             }
             summaries[name] = {
+                **candidate_stats,
                 "selected_pixels": int(np.count_nonzero(mask)),
                 "selected_ratio": round(ratio, 6),
                 "valid": True,
             }
         if len(valid) < 3:
-            raise ValueError("有効な幾何アンカーが3個未満です")
-
-        source_profile_path = layout_path.with_name(f"{layout_path.stem}.templates.json")
-        inherited: dict[str, Any] = {"schema_version": "1.0", "anchors": {}, "readers": {}}
-        if source_profile_path.is_file():
-            inherited = HudTemplateProfile.load(source_profile_path).raw
-            inherited = _localize_assets(inherited, source_profile_path.parent)
+            # A supported new anchor can improve an existing complete geometry
+            # profile. Validate retained assets instead of discarding every new
+            # candidate; the runtime still requires three geometric inliers.
+            retained = HudTemplateProfile(staging / "profile.json", inherited)
+            available = set(valid)
+            for name, spec in inherited.get("anchors", {}).items():
+                if name in ANCHORS and name not in valid:
+                    retained.load_template(name, spec["template"], spec.get("threshold", 0.90))
+                    available.add(name)
+            if not valid or len(available) < 3:
+                raise ValueError("有効な幾何アンカーが3個未満です")
         profile = dict(inherited)
         profile["schema_version"] = "1.0"
         inherited_anchors = profile.get("anchors", {})

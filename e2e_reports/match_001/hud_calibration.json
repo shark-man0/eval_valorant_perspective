@@ -3,43 +3,1642 @@
     "manual_map_id": null,
     "video_id": "match_001",
     "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
-    "analyzer_commit": "54404c7f84dd463a6ea0ecdff3d171ebc3cb4dac",
+    "analyzer_commit": "98600a8d571ccc371575063aef92b43aab87878d",
     "git_is_dirty": true,
-    "executed_at": "2026-10-05T13:51:05.107400+00:00",
+    "executed_at": "2026-10-05T19:11:33.555958+00:00",
     "validation_pack": "valorant_e2e_validation_pack_v3",
     "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
-    "git_dirty_fingerprint": "1e71f910205e995539f802a96dd3ddabbdc641c279eaca05cc6c42dbf4d1dc48",
-    "settings_fingerprint": "ab3bbf1962861fd815bc4d4bac160c34beec15008a6707f403a4719fe59d8693"
+    "git_dirty_fingerprint": "60c325a9918c5aff349f7c1514cb613270c48e6f6000765b8680c80a0d9589fb",
+    "settings_fingerprint": "40a89a2ffa3dce6453e5a92d39c71dc51888f42827c27d89832707f479897046"
   },
   "available": true,
   "schema_version": 1,
   "profile_present": true,
   "counts": {
-    "frames": 3869,
+    "frames": 5347,
     "fresh_geometry_success": 1,
-    "effective_geometry_success": 3869,
-    "retained_geometry_frames": 3868,
+    "effective_geometry_success": 5347,
+    "retained_geometry_frames": 5346,
     "geometry_invalid_unknown": 0,
-    "geometry_valid_state_unknown": 3867,
-    "live_identity_evidence_insufficient": 3869,
-    "insufficient_anchors_frames": 3868
+    "geometry_valid_state_unknown": 4540,
+    "live_identity_evidence_insufficient": 4326,
+    "insufficient_anchors_frames": 5346
   },
-  "fresh_geometry_success_rate": 0.0002584647195657793,
+  "fresh_geometry_success_rate": 0.0001870207593042828,
   "effective_geometry_success_rate": 1.0,
   "reasons": {
-    "insufficient_anchors": 3868
+    "insufficient_anchors": 5346
   },
   "identity_evidence_policy": "independent_current_frame_structures_v1",
   "identity_reasons": {
-    "spectator_exclusion_unverified": 3869
+    "spectator_exclusion_unverified": 2737,
+    "competing_view_evidence": 179,
+    "structure_evidence_insufficient": 1842,
+    "independent_hud_structures": 589
   },
   "identity_missing": {
-    "hp_hud_structure": 3869,
-    "ability_bar_structure": 3869,
-    "weapon_ammo_structure": 3869
+    "hp_hud_structure": 893,
+    "ability_bar_structure": 2794,
+    "weapon_ammo_structure": 2889
   },
   "spectator_checks": {
-    "reference_unavailable": 3869
+    "roi_unobservable": 10,
+    "panel_structure_present": 216,
+    "panel_structure_excluded": 2610,
+    "panel_structure_ambiguous": 2193,
+    "panel_structure_mismatch": 318
+  },
+  "automatic_identity_generation": {
+    "version": 2,
+    "identity_reference_ready": true,
+    "sample_count": 64,
+    "geometry_mode": "generated",
+    "generation_policy": "value_invariant_only",
+    "spectator_method": "compound",
+    "references": {
+      "hp_hud_structure": {
+        "training_count": null,
+        "holdout_count": null,
+        "training_accept_count": null,
+        "holdout_accept_count": null,
+        "candidate_count": null,
+        "structural_rejected": null,
+        "support_rejected": null,
+        "holdout_rejected": null,
+        "cluster_count": null,
+        "omitted_candidate_count": null,
+        "holdout_median": null,
+        "reason": null,
+        "rejection_stage": null,
+        "status": "inherited",
+        "content_hash": "b54b6d20128a15fab7da46dcc6273f3787f76b5138ecc01c4830f5b819bfcd2d",
+        "dimensions": [
+          175,
+          67
+        ]
+      },
+      "ability_bar_structure": {
+        "training_count": 32,
+        "holdout_count": 32,
+        "training_accept_count": 18,
+        "holdout_accept_count": 18,
+        "candidate_count": 18,
+        "structural_rejected": 2,
+        "support_rejected": 12,
+        "holdout_rejected": 0,
+        "cluster_count": null,
+        "omitted_candidate_count": null,
+        "holdout_median": null,
+        "reason": "selected",
+        "rejection_stage": null,
+        "status": "generated",
+        "content_hash": "eeee571ff3ea9080adeab4dd6b33e2e1b19f023bd58bc30fa5e7c8e8f29a5764",
+        "dimensions": [
+          304,
+          55
+        ],
+        "value_invariant_generation": {
+          "matcher": "value_invariant_edges_v1",
+          "selected_candidate": {
+            "training_cluster_size": 18,
+            "training_accept_count": 18,
+            "holdout_accept_count": 18,
+            "edge_count": 1041,
+            "mask_population": 1028,
+            "temporal_variance": null,
+            "edge_persistence": null,
+            "stable_pixel_ratio": null,
+            "dynamic_pixel_ratio": null,
+            "mask_pixel_ratio": null,
+            "holdout_prevalence": null,
+            "stable_edge_ratio": null,
+            "orientation_consistency": 0.9980004323389539,
+            "roi_bounds": [
+              0.084,
+              0.5560538116591929,
+              0.692,
+              0.8026905829596412
+            ],
+            "distance_from_intended_region": 0.0,
+            "neighbor_overlap_ratio": 0.0,
+            "intended_bounds": [
+              0.07,
+              0.55,
+              0.71,
+              0.82
+            ],
+            "support_bounds": [
+              [
+                0.084,
+                0.5560538116591929,
+                0.24,
+                0.8026905829596412
+              ],
+              [
+                0.528,
+                0.5560538116591929,
+                0.692,
+                0.8026905829596412
+              ]
+            ],
+            "dynamic_bounds": [
+              [
+                0.616,
+                0.5201793721973094,
+                0.692,
+                0.6502242152466368
+              ]
+            ],
+            "group_mask_population": [
+              625,
+              403
+            ],
+            "dimensions": [
+              304,
+              55
+            ],
+            "reason": null,
+            "structural_rejection_reason": null,
+            "support_rejection_reason": null,
+            "training_similarity": {
+              "min": 0.0,
+              "median": 0.9726349178927567,
+              "max": 0.9954128440366973,
+              "count": 32
+            },
+            "holdout_similarity": {
+              "min": 0.0,
+              "median": 0.9772461352081758,
+              "max": 0.9975669099756691,
+              "count": 32
+            },
+            "structural_gates": {
+              "line_support": true,
+              "spatial_spread": true,
+              "nonparallel": true,
+              "separated_layout": true,
+              "arrangement": true,
+              "edge_density": true,
+              "edge_support": true
+            },
+            "line_count": 32,
+            "edge_component_count": 11,
+            "localized_component_count": 11,
+            "occupied_rows": 4,
+            "occupied_columns": 2,
+            "proposal_training_frames": null,
+            "proposal_source": "configured_role_scaffold",
+            "rejection_stage": null,
+            "orientation_histogram": [
+              0.17120622568093385,
+              0.16536964980544747,
+              0.009727626459143969,
+              0.16342412451361868,
+              0.311284046692607,
+              0.0029182879377431907,
+              0.08171206225680934,
+              0.0943579766536965
+            ],
+            "spatial_edge_spread": [
+              0.8980263157894737,
+              0.7818181818181819
+            ],
+            "component_centroid_spread": [
+              0.8283691135734071,
+              0.6034196127946128
+            ],
+            "edge_occupancy_grid": [
+              0.12044534412955465,
+              0.0,
+              0.0,
+              0.029352226720647773,
+              0.162593984962406,
+              0.0,
+              0.0,
+              0.09586466165413533,
+              0.22462406015037595,
+              0.0,
+              0.0,
+              0.16447368421052633,
+              0.08834586466165413,
+              0.0,
+              0.0,
+              0.09116541353383459
+            ]
+          },
+          "mask_content_hash": "15d86e5069ab97efc179d31515197d81ff008556b53643867d96c853be884cb4",
+          "support_content_hash": "7f075fe95d12dbbb220912f4b532ba547b962ac82a95e9fc63d95757272d3593",
+          "allowed_content_hash": null
+        }
+      },
+      "weapon_ammo_structure": {
+        "training_count": null,
+        "holdout_count": null,
+        "training_accept_count": null,
+        "holdout_accept_count": null,
+        "candidate_count": null,
+        "structural_rejected": null,
+        "support_rejected": null,
+        "holdout_rejected": null,
+        "cluster_count": null,
+        "omitted_candidate_count": 0,
+        "holdout_median": null,
+        "reason": null,
+        "rejection_stage": null,
+        "status": "inherited",
+        "content_hash": "9c9bc886844b2ba3c0e3b1dc55cd7a2d0f87262e00e4288ce6b89ec0a67fdeb1",
+        "dimensions": [
+          124,
+          61
+        ],
+        "value_invariant_generation": {
+          "matcher": "weapon_consensus_ridges_v1",
+          "selected_candidate": {
+            "training_cluster_size": null,
+            "training_accept_count": null,
+            "holdout_accept_count": null,
+            "edge_count": null,
+            "mask_population": null,
+            "temporal_variance": null,
+            "edge_persistence": null,
+            "stable_pixel_ratio": null,
+            "dynamic_pixel_ratio": null,
+            "mask_pixel_ratio": null,
+            "holdout_prevalence": null,
+            "stable_edge_ratio": null,
+            "orientation_consistency": null,
+            "roi_bounds": null,
+            "distance_from_intended_region": null,
+            "neighbor_overlap_ratio": null,
+            "intended_bounds": null,
+            "support_bounds": [],
+            "dynamic_bounds": [],
+            "group_mask_population": [],
+            "dimensions": null,
+            "reason": null,
+            "structural_rejection_reason": null,
+            "support_rejection_reason": null,
+            "training_similarity": {
+              "min": null,
+              "median": null,
+              "max": null,
+              "count": null
+            },
+            "holdout_similarity": {
+              "min": null,
+              "median": null,
+              "max": null,
+              "count": null
+            },
+            "structural_gates": {
+              "line_support": false,
+              "spatial_spread": false,
+              "nonparallel": false,
+              "separated_layout": false,
+              "arrangement": false,
+              "edge_density": false,
+              "edge_support": false
+            },
+            "line_count": null,
+            "edge_component_count": null,
+            "localized_component_count": null,
+            "occupied_rows": null,
+            "occupied_columns": null,
+            "proposal_training_frames": null,
+            "proposal_source": null,
+            "rejection_stage": null,
+            "orientation_histogram": null,
+            "spatial_edge_spread": null,
+            "component_centroid_spread": null,
+            "edge_occupancy_grid": null
+          },
+          "mask_content_hash": "e97bad5ced263c9ceb05fd2dde6814d2a9c86b732ddbb7266766fe94e0632877",
+          "support_content_hash": null,
+          "allowed_content_hash": null
+        },
+        "weapon_ammo_generation": {
+          "matcher": "weapon_consensus_ridges_v1",
+          "proposal_count": null,
+          "proposal_budget_omitted": null,
+          "proposal_rejection_counts": {
+            "spanning_component": null,
+            "one_dimensional": null,
+            "group_extent_invalid": null
+          },
+          "proposals": [],
+          "rejection_counts": {
+            "seed_support_insufficient": null,
+            "fixed_edges_insufficient": null,
+            "edge_arrangement_invalid": null,
+            "edge_density_invalid": null,
+            "mask_contrast_insufficient": null,
+            "edge_support_insufficient": null,
+            "training_support_insufficient": null
+          },
+          "candidates": [],
+          "selected_candidate": {
+            "training_cluster_size": null,
+            "training_accept_count": null,
+            "holdout_accept_count": null,
+            "edge_count": null,
+            "mask_population": null,
+            "temporal_variance": null,
+            "edge_persistence": null,
+            "stable_pixel_ratio": null,
+            "dynamic_pixel_ratio": null,
+            "mask_pixel_ratio": null,
+            "holdout_prevalence": null,
+            "stable_edge_ratio": null,
+            "orientation_consistency": null,
+            "roi_bounds": null,
+            "distance_from_intended_region": null,
+            "neighbor_overlap_ratio": null,
+            "intended_bounds": null,
+            "support_bounds": [],
+            "dynamic_bounds": [],
+            "group_mask_population": [],
+            "dimensions": null,
+            "reason": null,
+            "structural_rejection_reason": null,
+            "support_rejection_reason": null,
+            "training_similarity": {
+              "min": null,
+              "median": null,
+              "max": null,
+              "count": null
+            },
+            "holdout_similarity": {
+              "min": null,
+              "median": null,
+              "max": null,
+              "count": null
+            },
+            "structural_gates": {
+              "line_support": false,
+              "spatial_spread": false,
+              "nonparallel": false,
+              "separated_layout": false,
+              "arrangement": false,
+              "edge_density": false,
+              "edge_support": false
+            },
+            "line_count": null,
+            "edge_component_count": null,
+            "localized_component_count": null,
+            "occupied_rows": null,
+            "occupied_columns": null,
+            "proposal_training_frames": null,
+            "proposal_source": null,
+            "rejection_stage": null,
+            "orientation_histogram": null,
+            "spatial_edge_spread": null,
+            "component_centroid_spread": null,
+            "edge_occupancy_grid": null
+          },
+          "mask_presence": true,
+          "mask_content_hash": "e97bad5ced263c9ceb05fd2dde6814d2a9c86b732ddbb7266766fe94e0632877",
+          "omitted_proposal_count": 0
+        }
+      },
+      "spectator_clear": {
+        "training_count": null,
+        "holdout_count": null,
+        "training_accept_count": null,
+        "holdout_accept_count": null,
+        "candidate_count": null,
+        "structural_rejected": null,
+        "support_rejected": null,
+        "holdout_rejected": null,
+        "cluster_count": null,
+        "omitted_candidate_count": null,
+        "holdout_median": null,
+        "reason": null,
+        "rejection_stage": null,
+        "status": null,
+        "content_hash": null,
+        "dimensions": null
+      },
+      "spectator_panel": {
+        "training_count": 38,
+        "holdout_count": 38,
+        "training_accept_count": 4,
+        "holdout_accept_count": 4,
+        "candidate_count": 5,
+        "structural_rejected": 33,
+        "support_rejected": 4,
+        "holdout_rejected": 0,
+        "cluster_count": 1,
+        "omitted_candidate_count": null,
+        "holdout_median": null,
+        "reason": null,
+        "rejection_stage": null,
+        "status": "generated",
+        "content_hash": "79d981bc54a72eb708e98c7dab00aec9a4bd46c76e6920eb56e6872f157f6408",
+        "dimensions": [
+          620,
+          340
+        ],
+        "support_regions_content_hash": "e5ae5b116966cbaf302274cfa7f5943423deb0c9194c1d9498b536f3c1c2dc31",
+        "orientation_content_hash": "5da0756c76e4c0eae0de37a86a10062f086a6641b05e2d2e0180d75ef2107ba7",
+        "spectator_generation": {
+          "sampling": {
+            "method": "training_proposal_neighborhoods_v1",
+            "reason": "sampled",
+            "initial_training_count": 32,
+            "initial_holdout_count": 32,
+            "initial_candidate_count": 2,
+            "requested_count": 12,
+            "accepted_count": 12
+          },
+          "matcher": "oriented_component_regions_v2",
+          "proposal_sample_count": 38,
+          "holdout_proposal_skipped_count": 38,
+          "candidate_support": [
+            {
+              "sample_index": 66,
+              "training_support": 4,
+              "minimum_required": 3,
+              "self_match": {
+                "minimum_score": 1.0,
+                "passed": true,
+                "limiting_component": "boundary",
+                "components": [
+                  {
+                    "component": "boundary",
+                    "component_id": 1,
+                    "expected_count": 171,
+                    "observed_count": 171,
+                    "matched_expected_count": 171,
+                    "matched_observed_count": 171,
+                    "recall": 1.0,
+                    "precision": 1.0,
+                    "score": 1.0
+                  },
+                  {
+                    "component": "portrait",
+                    "component_id": 2,
+                    "expected_count": 659,
+                    "observed_count": 659,
+                    "matched_expected_count": 659,
+                    "matched_observed_count": 659,
+                    "recall": 1.0,
+                    "precision": 1.0,
+                    "score": 1.0
+                  },
+                  {
+                    "component": "text",
+                    "component_id": 3,
+                    "expected_count": 935,
+                    "observed_count": 935,
+                    "matched_expected_count": 935,
+                    "matched_observed_count": 935,
+                    "recall": 1.0,
+                    "precision": 1.0,
+                    "score": 1.0
+                  }
+                ],
+                "dx": 0,
+                "dy": 0
+              },
+              "portrait_proposal": {
+                "portrait_mode": "frameless",
+                "panel_topology": "portrait_side_separator",
+                "portrait_search_region": [
+                  0.0532258064516129,
+                  0.23529411764705882,
+                  0.16774193548387098,
+                  0.4676470588235294
+                ],
+                "portrait_region_dimensions": [
+                  71,
+                  79
+                ],
+                "portrait_edge_count": 1379,
+                "portrait_localized_component_count": 14,
+                "portrait_x_spread": 0.9295774647887324,
+                "portrait_y_spread": 0.9493670886075949,
+                "portrait_occupied_rows": 4,
+                "portrait_occupied_columns": 3,
+                "portrait_orientation_distribution": [
+                  0.1033210332103321,
+                  0.1014760147601476,
+                  0.11623616236162361,
+                  0.09225092250922509,
+                  0.19557195571955718,
+                  0.18081180811808117,
+                  0.14206642066420663,
+                  0.06826568265682657
+                ],
+                "portrait_relative_to_text": 0.189873417721519,
+                "portrait_relative_to_boundary": 0.0379746835443038,
+                "portrait_support_region_population": 2320,
+                "portrait_candidate_rejection_reason": null,
+                "frameless_rejections": {
+                  "separator_geometry": null,
+                  "separator_evidence": null,
+                  "two_text_rows_missing": null,
+                  "portrait_text_geometry": null,
+                  "portrait_edge_density": null,
+                  "portrait_localized_groups": null,
+                  "portrait_spread": null,
+                  "portrait_occupancy": null,
+                  "portrait_orientation": null,
+                  "component_pixels_insufficient": null,
+                  "holdout_not_proposed": null
+                }
+              },
+              "legacy_self_match": {
+                "minimum_score": null,
+                "passed": false,
+                "limiting_component": null,
+                "components": [
+                  {
+                    "component": "boundary",
+                    "component_id": 1,
+                    "expected_count": null,
+                    "observed_count": null,
+                    "matched_expected_count": null,
+                    "matched_observed_count": null,
+                    "recall": null,
+                    "precision": null,
+                    "score": null
+                  },
+                  {
+                    "component": "portrait",
+                    "component_id": 2,
+                    "expected_count": null,
+                    "observed_count": null,
+                    "matched_expected_count": null,
+                    "matched_observed_count": null,
+                    "recall": null,
+                    "precision": null,
+                    "score": null
+                  },
+                  {
+                    "component": "text",
+                    "component_id": 3,
+                    "expected_count": null,
+                    "observed_count": null,
+                    "matched_expected_count": null,
+                    "matched_observed_count": null,
+                    "recall": null,
+                    "precision": null,
+                    "score": null
+                  }
+                ],
+                "dx": null,
+                "dy": null
+              },
+              "failed_support_scores": {
+                "count": 34,
+                "min": 0.0,
+                "median": 0.0,
+                "max": 0.8861911987860395
+              }
+            },
+            {
+              "sample_index": 72,
+              "training_support": 2,
+              "minimum_required": 3,
+              "self_match": {
+                "minimum_score": 1.0,
+                "passed": true,
+                "limiting_component": "boundary",
+                "components": [
+                  {
+                    "component": "boundary",
+                    "component_id": 1,
+                    "expected_count": 130,
+                    "observed_count": 130,
+                    "matched_expected_count": 130,
+                    "matched_observed_count": 130,
+                    "recall": 1.0,
+                    "precision": 1.0,
+                    "score": 1.0
+                  },
+                  {
+                    "component": "portrait",
+                    "component_id": 2,
+                    "expected_count": 1022,
+                    "observed_count": 1022,
+                    "matched_expected_count": 1022,
+                    "matched_observed_count": 1022,
+                    "recall": 1.0,
+                    "precision": 1.0,
+                    "score": 1.0
+                  },
+                  {
+                    "component": "text",
+                    "component_id": 3,
+                    "expected_count": 701,
+                    "observed_count": 701,
+                    "matched_expected_count": 701,
+                    "matched_observed_count": 701,
+                    "recall": 1.0,
+                    "precision": 1.0,
+                    "score": 1.0
+                  }
+                ],
+                "dx": 0,
+                "dy": 0
+              },
+              "portrait_proposal": {
+                "portrait_mode": "frameless",
+                "panel_topology": "portrait_side_separator",
+                "portrait_search_region": [
+                  0.0532258064516129,
+                  0.23529411764705882,
+                  0.16774193548387098,
+                  0.4676470588235294
+                ],
+                "portrait_region_dimensions": [
+                  71,
+                  79
+                ],
+                "portrait_edge_count": 1403,
+                "portrait_localized_component_count": 20,
+                "portrait_x_spread": 0.9436619718309859,
+                "portrait_y_spread": 0.9873417721518988,
+                "portrait_occupied_rows": 4,
+                "portrait_occupied_columns": 4,
+                "portrait_orientation_distribution": [
+                  0.15990730011587487,
+                  0.11819235225955968,
+                  0.11123986095017381,
+                  0.08458864426419467,
+                  0.13441483198146004,
+                  0.17033603707995365,
+                  0.13441483198146004,
+                  0.08690614136732329
+                ],
+                "portrait_relative_to_text": 0.20253164556962025,
+                "portrait_relative_to_boundary": 0.0379746835443038,
+                "portrait_support_region_population": 3560,
+                "portrait_candidate_rejection_reason": null,
+                "frameless_rejections": {
+                  "separator_geometry": null,
+                  "separator_evidence": null,
+                  "two_text_rows_missing": null,
+                  "portrait_text_geometry": null,
+                  "portrait_edge_density": null,
+                  "portrait_localized_groups": null,
+                  "portrait_spread": null,
+                  "portrait_occupancy": null,
+                  "portrait_orientation": null,
+                  "component_pixels_insufficient": null,
+                  "holdout_not_proposed": null
+                }
+              },
+              "legacy_self_match": {
+                "minimum_score": null,
+                "passed": false,
+                "limiting_component": null,
+                "components": [
+                  {
+                    "component": "boundary",
+                    "component_id": 1,
+                    "expected_count": null,
+                    "observed_count": null,
+                    "matched_expected_count": null,
+                    "matched_observed_count": null,
+                    "recall": null,
+                    "precision": null,
+                    "score": null
+                  },
+                  {
+                    "component": "portrait",
+                    "component_id": 2,
+                    "expected_count": null,
+                    "observed_count": null,
+                    "matched_expected_count": null,
+                    "matched_observed_count": null,
+                    "recall": null,
+                    "precision": null,
+                    "score": null
+                  },
+                  {
+                    "component": "text",
+                    "component_id": 3,
+                    "expected_count": null,
+                    "observed_count": null,
+                    "matched_expected_count": null,
+                    "matched_observed_count": null,
+                    "recall": null,
+                    "precision": null,
+                    "score": null
+                  }
+                ],
+                "dx": null,
+                "dy": null
+              },
+              "failed_support_scores": {
+                "count": 36,
+                "min": 0.0,
+                "median": 0.0,
+                "max": 0.8923076923076924
+              }
+            },
+            {
+              "sample_index": 60,
+              "training_support": 2,
+              "minimum_required": 3,
+              "self_match": {
+                "minimum_score": 1.0,
+                "passed": true,
+                "limiting_component": "boundary",
+                "components": [
+                  {
+                    "component": "boundary",
+                    "component_id": 1,
+                    "expected_count": 170,
+                    "observed_count": 170,
+                    "matched_expected_count": 170,
+                    "matched_observed_count": 170,
+                    "recall": 1.0,
+                    "precision": 1.0,
+                    "score": 1.0
+                  },
+                  {
+                    "component": "portrait",
+                    "component_id": 2,
+                    "expected_count": 1426,
+                    "observed_count": 1426,
+                    "matched_expected_count": 1426,
+                    "matched_observed_count": 1426,
+                    "recall": 1.0,
+                    "precision": 1.0,
+                    "score": 1.0
+                  },
+                  {
+                    "component": "text",
+                    "component_id": 3,
+                    "expected_count": 958,
+                    "observed_count": 958,
+                    "matched_expected_count": 958,
+                    "matched_observed_count": 958,
+                    "recall": 1.0,
+                    "precision": 1.0,
+                    "score": 1.0
+                  }
+                ],
+                "dx": 0,
+                "dy": 0
+              },
+              "portrait_proposal": {
+                "portrait_mode": "frameless",
+                "panel_topology": "portrait_side_separator",
+                "portrait_search_region": [
+                  0.0532258064516129,
+                  0.23529411764705882,
+                  0.1693548387096774,
+                  0.47058823529411764
+                ],
+                "portrait_region_dimensions": [
+                  72,
+                  80
+                ],
+                "portrait_edge_count": 1469,
+                "portrait_localized_component_count": 19,
+                "portrait_x_spread": 0.9861111111111112,
+                "portrait_y_spread": 0.9875,
+                "portrait_occupied_rows": 4,
+                "portrait_occupied_columns": 4,
+                "portrait_orientation_distribution": [
+                  0.16754320060105185,
+                  0.14650638617580766,
+                  0.1179564237415477,
+                  0.10668670172802404,
+                  0.13749060856498874,
+                  0.10743801652892562,
+                  0.12546957175056347,
+                  0.09090909090909091
+                ],
+                "portrait_relative_to_text": 0.175,
+                "portrait_relative_to_boundary": 0.0375,
+                "portrait_support_region_population": 4902,
+                "portrait_candidate_rejection_reason": null,
+                "frameless_rejections": {
+                  "separator_geometry": null,
+                  "separator_evidence": null,
+                  "two_text_rows_missing": null,
+                  "portrait_text_geometry": null,
+                  "portrait_edge_density": null,
+                  "portrait_localized_groups": null,
+                  "portrait_spread": null,
+                  "portrait_occupancy": null,
+                  "portrait_orientation": null,
+                  "component_pixels_insufficient": null,
+                  "holdout_not_proposed": null
+                }
+              },
+              "legacy_self_match": {
+                "minimum_score": null,
+                "passed": false,
+                "limiting_component": null,
+                "components": [
+                  {
+                    "component": "boundary",
+                    "component_id": 1,
+                    "expected_count": null,
+                    "observed_count": null,
+                    "matched_expected_count": null,
+                    "matched_observed_count": null,
+                    "recall": null,
+                    "precision": null,
+                    "score": null
+                  },
+                  {
+                    "component": "portrait",
+                    "component_id": 2,
+                    "expected_count": null,
+                    "observed_count": null,
+                    "matched_expected_count": null,
+                    "matched_observed_count": null,
+                    "recall": null,
+                    "precision": null,
+                    "score": null
+                  },
+                  {
+                    "component": "text",
+                    "component_id": 3,
+                    "expected_count": null,
+                    "observed_count": null,
+                    "matched_expected_count": null,
+                    "matched_observed_count": null,
+                    "recall": null,
+                    "precision": null,
+                    "score": null
+                  }
+                ],
+                "dx": null,
+                "dy": null
+              },
+              "failed_support_scores": {
+                "count": 36,
+                "min": 0.0,
+                "median": 0.0005219206680584551,
+                "max": 0.8962131837307152
+              }
+            },
+            {
+              "sample_index": 62,
+              "training_support": 2,
+              "minimum_required": 3,
+              "self_match": {
+                "minimum_score": 1.0,
+                "passed": true,
+                "limiting_component": "boundary",
+                "components": [
+                  {
+                    "component": "boundary",
+                    "component_id": 1,
+                    "expected_count": 164,
+                    "observed_count": 164,
+                    "matched_expected_count": 164,
+                    "matched_observed_count": 164,
+                    "recall": 1.0,
+                    "precision": 1.0,
+                    "score": 1.0
+                  },
+                  {
+                    "component": "portrait",
+                    "component_id": 2,
+                    "expected_count": 944,
+                    "observed_count": 944,
+                    "matched_expected_count": 944,
+                    "matched_observed_count": 944,
+                    "recall": 1.0,
+                    "precision": 1.0,
+                    "score": 1.0
+                  },
+                  {
+                    "component": "text",
+                    "component_id": 3,
+                    "expected_count": 896,
+                    "observed_count": 896,
+                    "matched_expected_count": 896,
+                    "matched_observed_count": 896,
+                    "recall": 1.0,
+                    "precision": 1.0,
+                    "score": 1.0
+                  }
+                ],
+                "dx": 0,
+                "dy": 0
+              },
+              "portrait_proposal": {
+                "portrait_mode": "frameless",
+                "panel_topology": "portrait_side_separator",
+                "portrait_search_region": [
+                  0.0532258064516129,
+                  0.23529411764705882,
+                  0.1693548387096774,
+                  0.47058823529411764
+                ],
+                "portrait_region_dimensions": [
+                  72,
+                  80
+                ],
+                "portrait_edge_count": 1466,
+                "portrait_localized_component_count": 21,
+                "portrait_x_spread": 0.9583333333333334,
+                "portrait_y_spread": 0.9875,
+                "portrait_occupied_rows": 4,
+                "portrait_occupied_columns": 4,
+                "portrait_orientation_distribution": [
+                  0.11479591836734694,
+                  0.13903061224489796,
+                  0.09821428571428571,
+                  0.08801020408163265,
+                  0.17857142857142858,
+                  0.19005102040816327,
+                  0.12627551020408162,
+                  0.06505102040816327
+                ],
+                "portrait_relative_to_text": 0.175,
+                "portrait_relative_to_boundary": 0.0375,
+                "portrait_support_region_population": 3204,
+                "portrait_candidate_rejection_reason": null,
+                "frameless_rejections": {
+                  "separator_geometry": null,
+                  "separator_evidence": null,
+                  "two_text_rows_missing": null,
+                  "portrait_text_geometry": null,
+                  "portrait_edge_density": null,
+                  "portrait_localized_groups": null,
+                  "portrait_spread": null,
+                  "portrait_occupancy": null,
+                  "portrait_orientation": null,
+                  "component_pixels_insufficient": null,
+                  "holdout_not_proposed": null
+                }
+              },
+              "legacy_self_match": {
+                "minimum_score": null,
+                "passed": false,
+                "limiting_component": null,
+                "components": [
+                  {
+                    "component": "boundary",
+                    "component_id": 1,
+                    "expected_count": null,
+                    "observed_count": null,
+                    "matched_expected_count": null,
+                    "matched_observed_count": null,
+                    "recall": null,
+                    "precision": null,
+                    "score": null
+                  },
+                  {
+                    "component": "portrait",
+                    "component_id": 2,
+                    "expected_count": null,
+                    "observed_count": null,
+                    "matched_expected_count": null,
+                    "matched_observed_count": null,
+                    "recall": null,
+                    "precision": null,
+                    "score": null
+                  },
+                  {
+                    "component": "text",
+                    "component_id": 3,
+                    "expected_count": null,
+                    "observed_count": null,
+                    "matched_expected_count": null,
+                    "matched_observed_count": null,
+                    "recall": null,
+                    "precision": null,
+                    "score": null
+                  }
+                ],
+                "dx": null,
+                "dy": null
+              },
+              "failed_support_scores": {
+                "count": 36,
+                "min": 0.0,
+                "median": 0.0,
+                "max": 0.8771186440677966
+              }
+            },
+            {
+              "sample_index": 68,
+              "training_support": 2,
+              "minimum_required": 3,
+              "self_match": {
+                "minimum_score": 1.0,
+                "passed": true,
+                "limiting_component": "boundary",
+                "components": [
+                  {
+                    "component": "boundary",
+                    "component_id": 1,
+                    "expected_count": 165,
+                    "observed_count": 165,
+                    "matched_expected_count": 165,
+                    "matched_observed_count": 165,
+                    "recall": 1.0,
+                    "precision": 1.0,
+                    "score": 1.0
+                  },
+                  {
+                    "component": "portrait",
+                    "component_id": 2,
+                    "expected_count": 866,
+                    "observed_count": 866,
+                    "matched_expected_count": 866,
+                    "matched_observed_count": 866,
+                    "recall": 1.0,
+                    "precision": 1.0,
+                    "score": 1.0
+                  },
+                  {
+                    "component": "text",
+                    "component_id": 3,
+                    "expected_count": 682,
+                    "observed_count": 682,
+                    "matched_expected_count": 682,
+                    "matched_observed_count": 682,
+                    "recall": 1.0,
+                    "precision": 1.0,
+                    "score": 1.0
+                  }
+                ],
+                "dx": 0,
+                "dy": 0
+              },
+              "portrait_proposal": {
+                "portrait_mode": "frameless",
+                "panel_topology": "portrait_side_separator",
+                "portrait_search_region": [
+                  0.0532258064516129,
+                  0.2323529411764706,
+                  0.17096774193548386,
+                  0.47058823529411764
+                ],
+                "portrait_region_dimensions": [
+                  73,
+                  81
+                ],
+                "portrait_edge_count": 1478,
+                "portrait_localized_component_count": 17,
+                "portrait_x_spread": 0.9041095890410958,
+                "portrait_y_spread": 0.9876543209876543,
+                "portrait_occupied_rows": 4,
+                "portrait_occupied_columns": 3,
+                "portrait_orientation_distribution": [
+                  0.1554959785522788,
+                  0.14343163538873996,
+                  0.09651474530831099,
+                  0.054959785522788206,
+                  0.14745308310991956,
+                  0.17962466487935658,
+                  0.15281501340482573,
+                  0.06970509383378017
+                ],
+                "portrait_relative_to_text": 0.16049382716049382,
+                "portrait_relative_to_boundary": 0.037037037037037035,
+                "portrait_support_region_population": 3047,
+                "portrait_candidate_rejection_reason": null,
+                "frameless_rejections": {
+                  "separator_geometry": null,
+                  "separator_evidence": null,
+                  "two_text_rows_missing": null,
+                  "portrait_text_geometry": null,
+                  "portrait_edge_density": null,
+                  "portrait_localized_groups": null,
+                  "portrait_spread": null,
+                  "portrait_occupancy": null,
+                  "portrait_orientation": null,
+                  "component_pixels_insufficient": null,
+                  "holdout_not_proposed": null
+                }
+              },
+              "legacy_self_match": {
+                "minimum_score": null,
+                "passed": false,
+                "limiting_component": null,
+                "components": [
+                  {
+                    "component": "boundary",
+                    "component_id": 1,
+                    "expected_count": null,
+                    "observed_count": null,
+                    "matched_expected_count": null,
+                    "matched_observed_count": null,
+                    "recall": null,
+                    "precision": null,
+                    "score": null
+                  },
+                  {
+                    "component": "portrait",
+                    "component_id": 2,
+                    "expected_count": null,
+                    "observed_count": null,
+                    "matched_expected_count": null,
+                    "matched_observed_count": null,
+                    "recall": null,
+                    "precision": null,
+                    "score": null
+                  },
+                  {
+                    "component": "text",
+                    "component_id": 3,
+                    "expected_count": null,
+                    "observed_count": null,
+                    "matched_expected_count": null,
+                    "matched_observed_count": null,
+                    "recall": null,
+                    "precision": null,
+                    "score": null
+                  }
+                ],
+                "dx": null,
+                "dy": null
+              },
+              "failed_support_scores": {
+                "count": 36,
+                "min": 0.0,
+                "median": 0.0,
+                "max": 0.8845265588914549
+              }
+            }
+          ],
+          "evidence_counts": {
+            "observable": 38,
+            "boundary": 24,
+            "portrait": 5,
+            "textlike": 38,
+            "boundary_portrait": 5,
+            "portrait_textlike": 5,
+            "boundary_textlike": 24,
+            "all_components": 5
+          },
+          "rejection_counts": {
+            "geometry_rejected": 0,
+            "contrast_rejected": 0,
+            "blur_rejected": 0,
+            "structural_rejected": 33
+          },
+          "portrait_modes": {
+            "framed": 0,
+            "frameless": 5
+          },
+          "frameless_rejection_counts": {
+            "separator_geometry": 10,
+            "separator_evidence": 3,
+            "two_text_rows_missing": 7,
+            "portrait_text_geometry": null,
+            "portrait_edge_density": null,
+            "portrait_localized_groups": null,
+            "portrait_spread": null,
+            "portrait_occupancy": null,
+            "portrait_orientation": null,
+            "component_pixels_insufficient": null,
+            "holdout_not_proposed": null
+          },
+          "final_rejection_counts": {
+            "text_alignment_insufficient": 0,
+            "boundary_span_insufficient": 0,
+            "relative_position_mismatch": 0,
+            "component_pixels_insufficient": 0,
+            "boundary_orientation_incoherent": 0
+          },
+          "samples": [
+            {
+              "observable": true,
+              "boundary": true,
+              "portrait": false,
+              "textlike": true,
+              "boundary_portrait": false,
+              "portrait_textlike": false,
+              "boundary_textlike": true,
+              "all_components": false,
+              "sample_index": 32,
+              "portrait_candidate_count": 530,
+              "portrait_supported_count": 0,
+              "portrait_frame_score": 0.7832638025918693,
+              "portrait_geometry_count": 25,
+              "portrait_occupancy_rejected": 25,
+              "portrait_side_scores": [
+                1.0,
+                0.9651162790697675,
+                1.0,
+                0.16793893129770993
+              ],
+              "training": true,
+              "panel_topology": null,
+              "boundary_coverage": null,
+              "boundary_relative_y": null,
+              "portrait_text_gap_ratio": null,
+              "boundary_fragment_count": null,
+              "boundary_span_candidates": null,
+              "reason": "structural_rejected",
+              "final_gates": {
+                "portrait": false,
+                "text_alignment": false,
+                "boundary_span": false,
+                "component_pixels": false
+              },
+              "final_rejections": {
+                "text_alignment_insufficient": 0,
+                "boundary_span_insufficient": 0,
+                "relative_position_mismatch": 0,
+                "component_pixels_insufficient": 0,
+                "boundary_orientation_incoherent": 0
+              },
+              "portrait_mode": null,
+              "portrait_search_region": null,
+              "portrait_region_dimensions": null,
+              "portrait_edge_count": null,
+              "portrait_localized_component_count": null,
+              "portrait_x_spread": null,
+              "portrait_y_spread": null,
+              "portrait_occupied_rows": null,
+              "portrait_occupied_columns": null,
+              "portrait_orientation_distribution": null,
+              "portrait_relative_to_text": null,
+              "portrait_relative_to_boundary": null,
+              "portrait_support_region_population": null,
+              "portrait_candidate_rejection_reason": null,
+              "frameless_rejections": {
+                "separator_geometry": 1,
+                "separator_evidence": null,
+                "two_text_rows_missing": null,
+                "portrait_text_geometry": null,
+                "portrait_edge_density": null,
+                "portrait_localized_groups": null,
+                "portrait_spread": null,
+                "portrait_occupancy": null,
+                "portrait_orientation": null,
+                "component_pixels_insufficient": null,
+                "holdout_not_proposed": null
+              }
+            },
+            {
+              "observable": true,
+              "boundary": true,
+              "portrait": false,
+              "textlike": true,
+              "boundary_portrait": false,
+              "portrait_textlike": false,
+              "boundary_textlike": true,
+              "all_components": false,
+              "sample_index": 0,
+              "portrait_candidate_count": 374,
+              "portrait_supported_count": 0,
+              "portrait_frame_score": 0.38552901900359526,
+              "portrait_geometry_count": 28,
+              "portrait_occupancy_rejected": 28,
+              "portrait_side_scores": [
+                0.4745762711864407,
+                0.7796610169491526,
+                0.2878787878787879,
+                0.0
+              ],
+              "training": true,
+              "panel_topology": null,
+              "boundary_coverage": null,
+              "boundary_relative_y": null,
+              "portrait_text_gap_ratio": null,
+              "boundary_fragment_count": null,
+              "boundary_span_candidates": null,
+              "reason": "structural_rejected",
+              "final_gates": {
+                "portrait": false,
+                "text_alignment": false,
+                "boundary_span": false,
+                "component_pixels": false
+              },
+              "final_rejections": {
+                "text_alignment_insufficient": 0,
+                "boundary_span_insufficient": 0,
+                "relative_position_mismatch": 0,
+                "component_pixels_insufficient": 0,
+                "boundary_orientation_incoherent": 0
+              },
+              "portrait_mode": null,
+              "portrait_search_region": null,
+              "portrait_region_dimensions": null,
+              "portrait_edge_count": null,
+              "portrait_localized_component_count": null,
+              "portrait_x_spread": null,
+              "portrait_y_spread": null,
+              "portrait_occupied_rows": null,
+              "portrait_occupied_columns": null,
+              "portrait_orientation_distribution": null,
+              "portrait_relative_to_text": null,
+              "portrait_relative_to_boundary": null,
+              "portrait_support_region_population": null,
+              "portrait_candidate_rejection_reason": null,
+              "frameless_rejections": {
+                "separator_geometry": null,
+                "separator_evidence": null,
+                "two_text_rows_missing": null,
+                "portrait_text_geometry": null,
+                "portrait_edge_density": null,
+                "portrait_localized_groups": null,
+                "portrait_spread": null,
+                "portrait_occupancy": null,
+                "portrait_orientation": null,
+                "component_pixels_insufficient": null,
+                "holdout_not_proposed": null
+              }
+            },
+            {
+              "observable": false,
+              "boundary": false,
+              "portrait": false,
+              "textlike": false,
+              "boundary_portrait": false,
+              "portrait_textlike": false,
+              "boundary_textlike": false,
+              "all_components": false,
+              "sample_index": 1,
+              "portrait_candidate_count": null,
+              "portrait_supported_count": null,
+              "portrait_frame_score": null,
+              "portrait_geometry_count": null,
+              "portrait_occupancy_rejected": null,
+              "portrait_side_scores": null,
+              "training": false,
+              "panel_topology": null,
+              "boundary_coverage": null,
+              "boundary_relative_y": null,
+              "portrait_text_gap_ratio": null,
+              "boundary_fragment_count": null,
+              "boundary_span_candidates": null,
+              "reason": "holdout_not_proposed",
+              "final_gates": {
+                "portrait": false,
+                "text_alignment": false,
+                "boundary_span": false,
+                "component_pixels": false
+              },
+              "final_rejections": {
+                "text_alignment_insufficient": null,
+                "boundary_span_insufficient": null,
+                "relative_position_mismatch": null,
+                "component_pixels_insufficient": null,
+                "boundary_orientation_incoherent": null
+              },
+              "portrait_mode": null,
+              "portrait_search_region": null,
+              "portrait_region_dimensions": null,
+              "portrait_edge_count": null,
+              "portrait_localized_component_count": null,
+              "portrait_x_spread": null,
+              "portrait_y_spread": null,
+              "portrait_occupied_rows": null,
+              "portrait_occupied_columns": null,
+              "portrait_orientation_distribution": null,
+              "portrait_relative_to_text": null,
+              "portrait_relative_to_boundary": null,
+              "portrait_support_region_population": null,
+              "portrait_candidate_rejection_reason": null,
+              "frameless_rejections": {
+                "separator_geometry": null,
+                "separator_evidence": null,
+                "two_text_rows_missing": null,
+                "portrait_text_geometry": null,
+                "portrait_edge_density": null,
+                "portrait_localized_groups": null,
+                "portrait_spread": null,
+                "portrait_occupancy": null,
+                "portrait_orientation": null,
+                "component_pixels_insufficient": null,
+                "holdout_not_proposed": null
+              }
+            },
+            {
+              "observable": true,
+              "boundary": true,
+              "portrait": true,
+              "textlike": true,
+              "boundary_portrait": true,
+              "portrait_textlike": true,
+              "boundary_textlike": true,
+              "all_components": true,
+              "sample_index": 60,
+              "portrait_candidate_count": 351,
+              "portrait_supported_count": 0,
+              "portrait_frame_score": 0.0,
+              "portrait_geometry_count": 0,
+              "portrait_occupancy_rejected": 0,
+              "portrait_side_scores": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "training": true,
+              "panel_topology": "portrait_side_separator",
+              "boundary_coverage": null,
+              "boundary_relative_y": null,
+              "portrait_text_gap_ratio": null,
+              "boundary_fragment_count": null,
+              "boundary_span_candidates": null,
+              "reason": "candidate",
+              "final_gates": {
+                "portrait": true,
+                "text_alignment": true,
+                "boundary_span": true,
+                "component_pixels": true
+              },
+              "final_rejections": {
+                "text_alignment_insufficient": 0,
+                "boundary_span_insufficient": 0,
+                "relative_position_mismatch": 0,
+                "component_pixels_insufficient": 0,
+                "boundary_orientation_incoherent": 0
+              },
+              "portrait_mode": "frameless",
+              "portrait_search_region": [
+                0.0532258064516129,
+                0.23529411764705882,
+                0.1693548387096774,
+                0.47058823529411764
+              ],
+              "portrait_region_dimensions": [
+                72,
+                80
+              ],
+              "portrait_edge_count": 1469,
+              "portrait_localized_component_count": 19,
+              "portrait_x_spread": 0.9861111111111112,
+              "portrait_y_spread": 0.9875,
+              "portrait_occupied_rows": 4,
+              "portrait_occupied_columns": 4,
+              "portrait_orientation_distribution": [
+                0.16754320060105185,
+                0.14650638617580766,
+                0.1179564237415477,
+                0.10668670172802404,
+                0.13749060856498874,
+                0.10743801652892562,
+                0.12546957175056347,
+                0.09090909090909091
+              ],
+              "portrait_relative_to_text": 0.175,
+              "portrait_relative_to_boundary": 0.0375,
+              "portrait_support_region_population": 4902,
+              "portrait_candidate_rejection_reason": null,
+              "frameless_rejections": {
+                "separator_geometry": null,
+                "separator_evidence": null,
+                "two_text_rows_missing": null,
+                "portrait_text_geometry": null,
+                "portrait_edge_density": null,
+                "portrait_localized_groups": null,
+                "portrait_spread": null,
+                "portrait_occupancy": null,
+                "portrait_orientation": null,
+                "component_pixels_insufficient": null,
+                "holdout_not_proposed": null
+              }
+            }
+          ],
+          "portrait_statistics": {
+            "portrait_candidate_count": {
+              "count": 32,
+              "min": 11,
+              "median": 130.5,
+              "max": 1132
+            },
+            "portrait_geometry_count": {
+              "count": 32,
+              "min": 0,
+              "median": 1.5,
+              "max": 211
+            },
+            "portrait_supported_count": {
+              "count": 32,
+              "min": 0,
+              "median": 0.0,
+              "max": 0
+            },
+            "portrait_occupancy_rejected": {
+              "count": 32,
+              "min": 0,
+              "median": 1.5,
+              "max": 211
+            },
+            "portrait_frame_score": {
+              "count": 32,
+              "min": 0.0,
+              "median": 0.06517269736842105,
+              "max": 0.7832638025918693
+            }
+          },
+          "omitted_sample_count": 60,
+          "candidate_support_summary": {
+            "count": 5,
+            "min": 2,
+            "median": 2,
+            "max": 4,
+            "minimum_required": 3,
+            "below_minimum_count": 4
+          },
+          "self_match_summary": {
+            "count": 5,
+            "passed_count": 5,
+            "min": 1.0,
+            "median": 1.0,
+            "max": 1.0,
+            "failing_components": {
+              "boundary": 0,
+              "portrait": 0,
+              "text": 0
+            }
+          },
+          "omitted_candidate_support_count": 0
+        }
+      }
+    }
+  },
+  "temporal_generation": {
+    "sample_count": 64,
+    "anchor_count": 1,
+    "generated_assets_sha256": "81cb7d93bd45c9f1ac65e7950808c543729f172d01251e08a590969255e889ab",
+    "anchors": {
+      "round_timer": {
+        "valid": false,
+        "reason": "training_structure_insufficient",
+        "training_count": 32,
+        "holdout_count": 32,
+        "training_accept_count": null,
+        "holdout_accept_count": null,
+        "selected_pixels": null,
+        "threshold": null,
+        "selected_ratio": null,
+        "training_similarity": {
+          "min": null,
+          "median": null
+        },
+        "holdout_similarity": {
+          "min": null,
+          "median": null
+        }
+      },
+      "top_match_bar": {
+        "valid": true,
+        "reason": "independent_support",
+        "training_count": 32,
+        "holdout_count": 32,
+        "training_accept_count": 32,
+        "holdout_accept_count": 32,
+        "selected_pixels": 811,
+        "threshold": 0.9,
+        "selected_ratio": 0.005851,
+        "training_similarity": {
+          "min": 0.9861992001533508,
+          "median": 0.9958265721797943
+        },
+        "holdout_similarity": {
+          "min": 0.9847760796546936,
+          "median": 0.9939658939838409
+        }
+      },
+      "player_hp_armor": {
+        "valid": false,
+        "reason": "training_structure_insufficient",
+        "training_count": 32,
+        "holdout_count": 32,
+        "training_accept_count": null,
+        "holdout_accept_count": null,
+        "selected_pixels": null,
+        "threshold": null,
+        "selected_ratio": null,
+        "training_similarity": {
+          "min": null,
+          "median": null
+        },
+        "holdout_similarity": {
+          "min": null,
+          "median": null
+        }
+      },
+      "abilities": {
+        "valid": false,
+        "reason": "training_structure_insufficient",
+        "training_count": 32,
+        "holdout_count": 32,
+        "training_accept_count": null,
+        "holdout_accept_count": null,
+        "selected_pixels": null,
+        "threshold": null,
+        "selected_ratio": null,
+        "training_similarity": {
+          "min": null,
+          "median": null
+        },
+        "holdout_similarity": {
+          "min": null,
+          "median": null
+        }
+      }
+    }
   },
   "anchors": [
     {
@@ -51,9 +1650,9 @@
       "threshold": 0.9,
       "geometry_success_rate_when_accepted": 0.3333333333333333,
       "accepted_count": 3,
-      "rejected_count": 3866,
+      "rejected_count": 5344,
       "unscored_count": 0,
-      "missing_during_insufficient_anchors": 3866,
+      "missing_during_insufficient_anchors": 5344,
       "accepted_during_geometry_success": 1,
       "content_hash": "b479ec4f00a1e271cd559d23c1843ae45da39abc04bdf794bf926bdba394ffbd",
       "mask_content_hash": null,
@@ -63,7 +1662,7 @@
       ],
       "match_confidence": {
         "min": 0.31304964423179626,
-        "median": 0.7761532664299011,
+        "median": 0.7707666158676147,
         "max": 0.9994843602180481
       }
     },
@@ -71,25 +1670,25 @@
       "anchor_name": "top_match_bar",
       "configured": true,
       "required": true,
-      "mask_presence": false,
+      "mask_presence": true,
       "asset_readable": true,
       "threshold": 0.9,
-      "geometry_success_rate_when_accepted": 1.0,
-      "accepted_count": 1,
-      "rejected_count": 3868,
+      "geometry_success_rate_when_accepted": 0.0001870207593042828,
+      "accepted_count": 5347,
+      "rejected_count": 0,
       "unscored_count": 0,
-      "missing_during_insufficient_anchors": 3868,
+      "missing_during_insufficient_anchors": 0,
       "accepted_during_geometry_success": 1,
-      "content_hash": "1f9852f18243d77106197c32cb2d01612a7a862e139bd8f0b4618d00ae8feca0",
-      "mask_content_hash": null,
+      "content_hash": "ebd3300a9936c4d43cfc50d900bafae99aa1660b2945ef451cd34c8728996d24",
+      "mask_content_hash": "da90f88ac86a2155de5771362b81abaaca7b8a5749c360c12cdf6999cbd88503",
       "dimensions": [
         1155,
         120
       ],
       "match_confidence": {
-        "min": 0.017121752724051476,
-        "median": 0.440996378660202,
-        "max": 0.9995171427726746
+        "min": 0.9577085971832275,
+        "median": 0.9951611757278442,
+        "max": 0.9983332753181458
       }
     },
     {
@@ -101,9 +1700,9 @@
       "threshold": 0.9,
       "geometry_success_rate_when_accepted": 1.0,
       "accepted_count": 1,
-      "rejected_count": 3868,
+      "rejected_count": 5346,
       "unscored_count": 0,
-      "missing_during_insufficient_anchors": 3868,
+      "missing_during_insufficient_anchors": 5346,
       "accepted_during_geometry_success": 1,
       "content_hash": "31d71802e579aabcd257926af9707687b4dfa1bb3faf9e5df410c0d8bf6bf574",
       "mask_content_hash": null,
@@ -113,7 +1712,7 @@
       ],
       "match_confidence": {
         "min": 0.0,
-        "median": 0.509377121925354,
+        "median": 0.5232334136962891,
         "max": 0.9994807243347168
       }
     },
@@ -126,9 +1725,9 @@
       "threshold": 0.9,
       "geometry_success_rate_when_accepted": 1.0,
       "accepted_count": 1,
-      "rejected_count": 3868,
+      "rejected_count": 5346,
       "unscored_count": 0,
-      "missing_during_insufficient_anchors": 3868,
+      "missing_during_insufficient_anchors": 5346,
       "accepted_during_geometry_success": 1,
       "content_hash": "f9faf779c0490d9ef79d3cc7fa3824de0fbcb7cbed4947df3af93f7ce5a3d847",
       "mask_content_hash": null,
@@ -138,9 +1737,10 @@
       ],
       "match_confidence": {
         "min": 0.0,
-        "median": 0.41175150871276855,
+        "median": 0.43377935886383057,
         "max": 0.9993156790733337
       }
     }
-  ]
+  ],
+  "detail_truncated": true
 }

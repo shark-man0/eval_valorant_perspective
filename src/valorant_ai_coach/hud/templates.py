@@ -97,12 +97,15 @@ class HudTemplateProfile:
                     if spec.get("matcher") == WEAPON_MATCHER and name != "weapon_ammo_structure":
                         raise ValueError("consensus slots require Weapon role")
                     if (
-                        name not in {"weapon_ammo_structure", "hp_hud_structure"}
+                        name not in {
+                            "weapon_ammo_structure", "hp_hud_structure", "ability_bar_structure"
+                        }
                         or (name != "weapon_ammo_structure" and not value_matcher)
                         or template.threshold < 0.90
                     ):
                         raise ValueError(
-                            "masked identity requires weapon structure and similarity >= .90"
+                            "masked identity requires a supported structural role "
+                            "and similarity >= .90"
                         )
                     mask = cv2.imdecode(
                         np.frombuffer(self.resolve_asset(str(spec["mask"])).read_bytes(), np.uint8),
@@ -403,18 +406,23 @@ class HudTemplateProfile:
                     "allowed_regions",
                     "orientation",
                 }:
-                    if isinstance(child, str):
-                        found.add(Path(child))
-                    elif isinstance(child, Mapping):
-                        found.update(
-                            Path(str(path)) for path in child.values() if isinstance(path, str)
-                        )
+                    found.update(HudTemplateProfile._reference_paths(child))
                 else:
                     found.update(HudTemplateProfile._find_asset_paths(child))
         elif isinstance(value, list):
             for child in value:
                 found.update(HudTemplateProfile._find_asset_paths(child))
         return found
+
+    @staticmethod
+    def _reference_paths(value: Any) -> set[Path]:
+        if isinstance(value, str):
+            return {Path(value)}
+        if isinstance(value, Mapping):
+            return set().union(*(HudTemplateProfile._reference_paths(v) for v in value.values()))
+        if isinstance(value, list):
+            return set().union(*(HudTemplateProfile._reference_paths(v) for v in value))
+        return set()
 
     def resolve_asset(self, value: str) -> Path:
         candidate = Path(value)

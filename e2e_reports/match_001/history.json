@@ -366,5 +366,52 @@
       "error_code": null
     },
     "failure_count": 57
+  },
+  {
+    "history_key": "1c0084a8201dd316e185619c84a4f1b0c36b01a873c2ecc88a219086dbb826e4",
+    "metadata": {
+      "manual_map_id": null,
+      "video_id": "match_001",
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "analyzer_commit": "98600a8d571ccc371575063aef92b43aab87878d",
+      "git_is_dirty": true,
+      "executed_at": "2026-10-05T15:38:29.857608+00:00",
+      "validation_pack": "valorant_e2e_validation_pack_v3",
+      "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
+      "git_dirty_fingerprint": "24906b97f16ed4493f4fbefe1a043856aa75fdf20c4811461e383b09387fafc7",
+      "settings_fingerprint": "d1e707251ccb324c1ed732285200a23698de6949c73643562ed38624a0071bca"
+    },
+    "result": {
+      "status": "fail",
+      "schema_valid": true,
+      "failure_count": 57,
+      "negative_assertion_count": 20,
+      "error_code": null
+    },
+    "failure_count": 57
+  },
+  {
+    "history_key": "68f149b5f7fb8c713cab7e501f87a974e397250b9442f76f98d4e4470446336c",
+    "metadata": {
+      "manual_map_id": null,
+      "video_id": "match_001",
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "analyzer_commit": "98600a8d571ccc371575063aef92b43aab87878d",
+      "git_is_dirty": true,
+      "executed_at": "2026-10-05T19:11:33.555958+00:00",
+      "validation_pack": "valorant_e2e_validation_pack_v3",
+      "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
+      "git_dirty_fingerprint": "60c325a9918c5aff349f7c1514cb613270c48e6f6000765b8680c80a0d9589fb",
+      "settings_fingerprint": "40a89a2ffa3dce6453e5a92d39c71dc51888f42827c27d89832707f479897046"
+    },
+    "result": {
+      "status": "fail",
+      "schema_valid": true,
+      "failure_count": 57,
+      "negative_assertion_count": 20,
+      "error_code": null,
+      "detail_truncated": true
+    },
+    "failure_count": 57
   }
 ]

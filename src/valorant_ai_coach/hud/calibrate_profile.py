@@ -20,7 +20,12 @@ import numpy as np
 
 from valorant_ai_coach.video.service import VideoService
 
-from .calibrate_temporal import _check_output_privacy, _localize_assets, create_temporal_profile
+from .calibrate_temporal import (
+    ASSET_KEYS,
+    _check_output_privacy,
+    _localize_assets,
+    create_temporal_profile,
+)
 from .layout import HudLayout
 from .spectator import PanelReference, generate_panel_reference, panel_components
 from .templates import HudTemplateProfile
@@ -36,8 +41,67 @@ ROLES = {
 }
 
 
+def _panel_neighborhood_times(
+    times: list[float], duration: float, stats: dict[str, Any],
+) -> list[float]:
+    """Plan bounded paired observations from training proposals alone.
+
+    Never retry a failed holdout. Pair order freezes the even/odd assignment
+    before decoding; neither holdout pixels nor match scores choose locations.
+    """
+    if len(times) % 2 or stats.get("cluster_count", 0) or stats.get("holdout_rejected", 0):
+        return []
+    selected: list[float] = []
+    centers: set[int] = set()
+    for sample in stats.get("samples", []):
+        index = sample.get("sample_index")
+        if (
+            sample.get("training") is not True or sample.get("all_components") is not True
+            or type(index) is not int or index % 2 or not 0 <= index < len(times)
+            or index in centers
+        ):
+            continue
+        centers.add(index)
+        for first, second in ((-1.5, -1.0), (-0.5, 0.5), (1.0, 1.5)):
+            pair = [times[index] + first, times[index] + second]
+            if all(
+                0 < point < duration
+                and all(abs(point - old) >= 0.25 for old in times + selected)
+                for point in pair
+            ):
+                selected.extend(pair)
+        if len(centers) >= 8:
+            break
+    return selected
+
+
 def _gray(image: np.ndarray) -> np.ndarray:
     return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) if image.ndim == 3 else image
+
+
+def _validate_identity_assets(
+    raw: dict[str, Any], stage: Path, diagnostics: dict[str, Any],
+) -> None:
+    """Ready means the production parser can actually load every reference."""
+    profile = HudTemplateProfile(stage / "hud_layout.templates.json", raw)
+    available = {role: role in profile._signal_templates for role in ROLES}
+    icon = raw.get("spectator_icon_detector")
+    available["spectator_panel"] = profile._panel_components is not None or (
+        diagnostics.get("spectator_method") != "compound"
+        and isinstance(icon, dict)
+        and icon.get("version") == 1
+        and icon.get("roi") == "spectator_icon"
+        and icon.get("method") == "fixed_slot_structure_v1"
+    )
+    for role, usable in available.items():
+        row = diagnostics["references"][role]
+        if row["status"] in {"generated", "inherited"} and not usable:
+            row.update(status="insufficient_evidence", reason="reference_load_failed",
+                       rejection_stage="profile_load")
+    diagnostics["identity_reference_ready"] = all(
+        diagnostics["references"][role]["status"] in {"generated", "inherited"}
+        for role in available
+    )
 
 
 def _score(template: np.ndarray, image: np.ndarray) -> float:
@@ -189,6 +253,39 @@ def _write_asset(path: Path, image: np.ndarray) -> dict[str, Any]:
     }
 
 
+def _bundle_assets(value: Any, stage: Path) -> Any:
+    """Copy inherited file bytes so a generated profile can move as one directory.
+
+    Missing references remain unavailable. No image is decoded or re-encoded;
+    geometry/identity provenance checks run before this serialization step.
+    """
+    def asset(child: Any) -> Any:
+        if isinstance(child, str):
+            source = Path(child)
+            if not source.is_absolute() or not source.is_file():
+                return child
+            data = source.read_bytes()
+            relative = Path("inherited") / (hashlib.sha256(data).hexdigest() + source.suffix)
+            destination = stage / relative
+            destination.parent.mkdir(exist_ok=True)
+            destination.write_bytes(data)
+            return relative.as_posix()
+        if isinstance(child, dict):
+            return {key: asset(item) for key, item in child.items()}
+        if isinstance(child, list):
+            return [asset(item) for item in child]
+        return child
+
+    if isinstance(value, dict):
+        return {
+            key: asset(child) if key in ASSET_KEYS else _bundle_assets(child, stage)
+            for key, child in value.items()
+        }
+    if isinstance(value, list):
+        return [_bundle_assets(child, stage) for child in value]
+    return value
+
+
 def create_profile(
     video: Path,
     layout_path: Path,
@@ -196,6 +293,8 @@ def create_profile(
     *,
     samples: int = 32,
     video_service: VideoService | None = None,
+    value_invariant_only: bool = False,
+    compound_spectator: bool = False,
 ) -> Path:
     if not 16 <= samples <= 64:
         raise ValueError("samplesは16〜64で指定してください")
@@ -262,6 +361,8 @@ def create_profile(
             "sample_count": len(images),
             "geometry_mode": geometry_mode,
             "references": {},
+            "generation_policy": "value_invariant_only" if value_invariant_only else "configured",
+            "spectator_method": "compound" if compound_spectator else "configured",
         }
         raw.setdefault("signals", {})
         inherited = HudTemplateProfile(stage / "hud_layout.templates.json", raw)
@@ -290,6 +391,7 @@ def create_profile(
                         for asset in identity_assets
                     )
                     and (name not in structure_specs or spec.get("matcher") == wanted_matcher)
+                    and (not value_invariant_only or spec.get("matcher") == wanted_matcher)
                     and inherited_roi == roi_name
                     and inherited_roi in layout.regions
                     and (
@@ -313,6 +415,13 @@ def create_profile(
                     continue
             # Invalid/missing assets and reused geometry are not independent evidence.
             raw["signals"].pop(name, None)
+            if value_invariant_only and name not in structure_specs:
+                diagnostics["references"][name] = {
+                    "status": "insufficient_evidence",
+                    "reason": "value_invariant_structure_unconfigured",
+                    "rejection_stage": "role_configuration",
+                }
+                continue
             result = None
             identity_mask = None
             identity_regions = None
@@ -403,7 +512,7 @@ def create_profile(
         # Never inherit or generate background/clear-image evidence.
         raw.pop("spectator_clear_reference", None)
         raw.pop("spectator_panel_detector", None)
-        if "spectator_icon" in layout.regions:
+        if "spectator_icon" in layout.regions and not compound_spectator:
             raw["spectator_icon_detector"] = {
                 "version": 1,
                 "roi": "spectator_icon",
@@ -426,6 +535,54 @@ def create_profile(
                     width, height
                 )
                 labels = generate_panel_reference([image[y1:y2, x1:x2] for image in images], stats)
+                if labels is None and compound_spectator:
+                    times = [float(p.time_sec) for p in paths]
+                    requested = _panel_neighborhood_times(times, metadata.duration_sec, stats)
+                    sampling: dict[str, Any] = {
+                        "method": "training_proposal_neighborhoods_v1",
+                        "initial_training_count": stats.get("training_count", 0),
+                        "initial_holdout_count": stats.get("holdout_count", 0),
+                        "initial_candidate_count": stats.get("candidate_count", 0),
+                        "requested_count": len(requested),
+                        "accepted_count": 0,
+                        "reason": "no_training_neighborhoods",
+                    }
+                    if requested:
+                        extra = service.extract_frames(
+                            video, requested, work / "panel_neighborhood_frames",
+                            max_frames=48, max_dimension=None, metadata=metadata,
+                        )
+                        extra_times = [float(p.time_sec) for p in extra]
+                        if (
+                            len(extra) != len(requested)
+                            or len(set(times + extra_times)) != len(times) + len(extra)
+                            or any(
+                                not math.isfinite(actual) or abs(actual - target) > 0.25
+                                for actual, target in zip(extra_times, requested, strict=False)
+                            )
+                        ):
+                            sampling["reason"] = "distinct_panel_frames_insufficient"
+                        else:
+                            decoded_extra = [
+                                cv2.imdecode(np.frombuffer(p.path.read_bytes(), np.uint8),
+                                             cv2.IMREAD_COLOR)
+                                for p in extra
+                            ]
+                            if any(
+                                image is None or image.shape[:2] != (height, width)
+                                for image in decoded_extra
+                            ):
+                                sampling["reason"] = "panel_frame_resolution_invalid"
+                            else:
+                                crops = [image[y1:y2, x1:x2] for image in images]
+                                crops.extend(
+                                    image[y1:y2, x1:x2] for image in decoded_extra
+                                    if image is not None
+                                )
+                                stats = {}
+                                labels = generate_panel_reference(crops, stats)
+                                sampling.update(accepted_count=len(extra), reason="sampled")
+                    stats["sampling"] = sampling
             status = "generated"
             if labels is None and inherited._panel_components is not None:
                 spec = inherited.raw.get("spectator_panel_detector", {})
@@ -478,11 +635,18 @@ def create_profile(
                         stats[f"{key}_content_hash"] = info["content_hash"]
                 diagnostics["references"][name] = stats
             else:
-                diagnostics["references"][name] = {**stats, "status": "insufficient_evidence"}
-        diagnostics["identity_reference_ready"] = all(
-            diagnostics["references"][role]["status"] in {"generated", "inherited"}
-            for role in (*ROLES, "spectator_panel")
-        )
+                diagnostics["references"][name] = {
+                    **stats,
+                    "status": "insufficient_evidence",
+                    "reason": "compound_reference_insufficient",
+                    "rejection_stage": (
+                        "holdout_support" if stats.get("holdout_rejected")
+                        else "training_support" if stats.get("candidate_count")
+                        else "structure"
+                    ),
+                }
+        raw = _bundle_assets(raw, stage)
+        _validate_identity_assets(raw, stage, diagnostics)
         raw["automatic_identity_generation"] = diagnostics
         # Normalized entry-point names, directly accepted by -HudLayout.
         for old in (
@@ -518,9 +682,21 @@ def main() -> int:
     parser.add_argument("--layout", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--samples", type=int, default=32)
+    parser.add_argument(
+        "--value-invariant-only", action="store_true",
+        help="Do not generate or inherit intensity-only identity references",
+    )
+    parser.add_argument(
+        "--compound-spectator", action="store_true",
+        help="Require supported portrait, adjacent text and boundary references",
+    )
     args = parser.parse_args()
     try:
-        print(create_profile(args.video, args.layout, args.output, samples=args.samples))
+        print(create_profile(
+            args.video, args.layout, args.output, samples=args.samples,
+            value_invariant_only=args.value_invariant_only,
+            compound_spectator=args.compound_spectator,
+        ))
     except (OSError, ValueError, RuntimeError, cv2.error):
         parser.exit(
             2, "HUD profile生成に失敗しました。入力・依存ツール・診断条件を確認してください。\n"

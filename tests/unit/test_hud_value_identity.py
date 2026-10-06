@@ -354,3 +354,101 @@ def test_shared_calibration_keeps_value_identity_numbers_and_drops_private_field
     assert "glyph_values" not in encoded
 
 
+
+
+def _ability_profile_fixture(tmp_path, *, matcher=MATCHER, threshold=0.90, support_mode="valid"):
+    from dataclasses import replace
+
+    weapon, reference, mask, regions, bounds, frames = _write_profile_assets(
+        tmp_path, support_mode=support_mode
+    )
+    raw = json.loads(json.dumps(weapon.raw))
+    spec = raw["signals"].pop("weapon_ammo_structure")
+    spec.update(roi="abilities", matcher=matcher, threshold=threshold)
+    raw["signals"]["ability_bar_structure"] = spec
+    profile = HudTemplateProfile(weapon.path, raw)
+    layout = HudLayout.load(resource_path("config/hud_layout_1080p_v3.json"))
+    # Synthetic role crops use the same fixture dimensions; runtime detection
+    # still looks up the explicitly configured Ability ROI and two support groups.
+    layout = replace(
+        layout, regions={**layout.regions, "abilities": layout.regions["ammo_current_weapon"]}
+    )
+    return profile, layout, reference, mask, regions, bounds, frames
+
+
+def test_ability_value_matcher_requires_current_frame_support_in_each_group(tmp_path):
+    profile, layout, _reference, _mask, regions, bounds, frames = _ability_profile_fixture(tmp_path)
+    assert profile.reader_diagnostics == []
+    for crop in frames[:4]:
+        signals = profile.detect_signals(_full_frame_with_weapon_crop(layout, crop), layout)
+        assert signals["ability_bar_structure"] is True
+        assert signals["ability_bar_structure_confidence"] >= 0.90
+    left, top, right, bottom = [
+        round(v * (frames[0].shape[1] if i % 2 == 0 else frames[0].shape[0]))
+        for i, v in enumerate(bounds)
+    ]
+    for group in (1, 2):
+        crop = frames[0].copy()
+        patch = crop[top:bottom, left:right]
+        patch[regions == group] = 0
+        signals = profile.detect_signals(_full_frame_with_weapon_crop(layout, crop), layout)
+        assert "ability_bar_structure" not in signals
+        assert "ability_bar_structure_confidence" not in signals
+        assert value_invariant_score(_reference, patch, _mask, regions) == 0.0
+
+
+@pytest.mark.parametrize(
+    "matcher", ["masked_ncc", "oriented_edges_v1", "weapon_consensus_ridges_v1"]
+)
+def test_ability_mask_cannot_use_intensity_or_weapon_fallback(tmp_path, matcher):
+    profile, layout, *_rest, frames = _ability_profile_fixture(tmp_path, matcher=matcher)
+    assert "ability_bar_structure" not in profile._signal_templates
+    assert profile.reader_diagnostics
+    assert "ability_bar_structure" not in profile.detect_signals(
+        _full_frame_with_weapon_crop(layout, frames[0]), layout
+    )
+
+
+@pytest.mark.parametrize("support_mode", ["missing", "single_group", "shape_mismatch"])
+def test_ability_value_matcher_rejects_invalid_support_assets(tmp_path, support_mode):
+    profile, layout, *_rest, frames = _ability_profile_fixture(tmp_path, support_mode=support_mode)
+    assert "ability_bar_structure" not in profile._signal_templates
+    assert profile.reader_diagnostics
+    assert "ability_bar_structure" not in profile.detect_signals(
+        _full_frame_with_weapon_crop(layout, frames[0]), layout
+    )
+
+
+def test_ability_value_matcher_rejects_threshold_below_point_nine(tmp_path):
+    profile, _layout, *_rest = _ability_profile_fixture(tmp_path, threshold=0.89)
+    assert "ability_bar_structure" not in profile._signal_templates
+    assert profile.reader_diagnostics
+
+
+def test_ability_generation_export_preserves_support_without_private_content():
+    report = sanitize_calibration({
+        "schema_version": 1,
+        "automatic_identity_generation": {
+            "version": 2,
+            "references": {
+                "ability_bar_structure": {
+                    "matcher": MATCHER,
+                    "mask_content_hash": "a" * 64,
+                    "selected_candidate": {
+                        "training_accept_count": 21,
+                        "holdout_accept_count": 22,
+                        "group_mask_population": [532, 447],
+                        "private_text": "PRIVATE_COUNT",
+                    },
+                }
+            },
+        },
+    })
+    generation = report["automatic_identity_generation"]["references"][
+        "ability_bar_structure"
+    ]["value_invariant_generation"]
+    assert generation["matcher"] == MATCHER
+    assert generation["selected_candidate"]["training_accept_count"] == 21
+    assert generation["selected_candidate"]["holdout_accept_count"] == 22
+    assert generation["selected_candidate"]["group_mask_population"] == [532, 447]
+    assert "PRIVATE_COUNT" not in json.dumps(report)

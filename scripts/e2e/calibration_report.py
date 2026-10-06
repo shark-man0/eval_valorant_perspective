@@ -50,6 +50,32 @@ def _fixed_counts(value, keys):
     return {key: number(source.get(key), count=True) for key in keys}
 
 
+
+def sanitize_temporal_anchor(value):
+    source = object_or_empty(value)
+    reason = source.get("reason")
+    return {
+        "valid": source.get("valid") is True,
+        "reason": reason if reason in (
+            "training_structure_insufficient", "training_support_insufficient",
+            "holdout_support_insufficient", "independent_support",
+        ) else None,
+        **_fixed_counts(source, (
+            "training_count", "holdout_count", "training_accept_count",
+            "holdout_accept_count", "selected_pixels",
+        )),
+        "threshold": number(source.get("threshold")),
+        "selected_ratio": number(source.get("selected_ratio")),
+        **{
+            split: {
+                key: number(object_or_empty(source.get(split)).get(key))
+                for key in ("min", "median")
+            }
+            for split in ("training_similarity", "holdout_similarity")
+        },
+    }
+
+
 def _positive_dimensions(value):
     return (
         value
@@ -232,19 +258,9 @@ def sanitize_calibration(value):
             if isinstance(digest, str) and re.fullmatch(r"[a-f0-9]{64}", digest)
             else None,
             "anchors": {
-                name: {
-                    "selected_ratio": number(
-                        object_or_empty(object_or_empty(generation.get("anchors")).get(name)).get(
-                            "selected_ratio"
-                        )
-                    ),
-                    "selected_pixels": number(
-                        object_or_empty(object_or_empty(generation.get("anchors")).get(name)).get(
-                            "selected_pixels"
-                        ),
-                        count=True,
-                    ),
-                }
+                name: sanitize_temporal_anchor(
+                    object_or_empty(generation.get("anchors")).get(name)
+                )
                 for name in ANCHORS
             },
         }
@@ -428,6 +444,10 @@ def sanitize_identity_generation(value):
         "geometry_mode": value.get("geometry_mode")
         if value.get("geometry_mode") in ("generated", "inherited")
         else None,
+        "generation_policy": value.get("generation_policy")
+        if value.get("generation_policy") in ("configured", "value_invariant_only") else None,
+        "spectator_method": value.get("spectator_method")
+        if value.get("spectator_method") in ("configured", "compound") else None,
         "references": {},
     }
     for name in (
@@ -454,6 +474,15 @@ def sanitize_identity_generation(value):
             )
         }
         row["holdout_median"] = number(source.get("holdout_median"))
+        row["reason"] = source.get("reason") if source.get("reason") in (
+            "value_invariant_structure_unconfigured", "compound_reference_insufficient",
+            "selected", "holdout_rejected", "scaffold_evidence_insufficient",
+            "role_geometry_invalid", "reference_load_failed",
+        ) else None
+        row["rejection_stage"] = source.get("rejection_stage") if source.get("rejection_stage") in (
+            "role_configuration", "structure", "training_support", "holdout_support",
+            "profile_load",
+        ) else None
         row["status"] = (
             source.get("status")
             if source.get("status") in ("generated", "inherited", "insufficient_evidence")
@@ -472,7 +501,9 @@ def sanitize_identity_generation(value):
             else None
         )
         result["references"][name] = row
-        if name in ("hp_hud_structure", "weapon_ammo_structure") and source.get("matcher") in (
+        if name in (
+            "hp_hud_structure", "ability_bar_structure", "weapon_ammo_structure"
+        ) and source.get("matcher") in (
             "value_invariant_edges_v1",
             "weapon_consensus_ridges_v1",
         ):
@@ -588,7 +619,21 @@ def sanitize_identity_generation(value):
             )
             samples = source.get("samples", [])
             supports = source.get("candidate_support", [])
+            sampling = object_or_empty(source.get("sampling"))
             row["spectator_generation"] = {
+                "sampling": {
+                    "method": sampling.get("method")
+                    if sampling.get("method") == "training_proposal_neighborhoods_v1" else None,
+                    "reason": sampling.get("reason") if sampling.get("reason") in (
+                        "no_training_neighborhoods", "distinct_panel_frames_insufficient",
+                        "panel_frame_resolution_invalid", "sampled",
+                    ) else None,
+                    **{key: number(sampling.get(key), count=True) for key in (
+                        "initial_training_count", "initial_holdout_count",
+                        "initial_candidate_count",
+                        "requested_count", "accepted_count",
+                    )},
+                },
                 "matcher": source.get("matcher")
                 if source.get("matcher")
                 in (

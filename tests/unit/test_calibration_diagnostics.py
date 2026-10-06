@@ -13,6 +13,32 @@ from valorant_ai_coach.hud.templates import HudTemplateProfile
 from valorant_ai_coach.resources import resource_path
 
 
+def test_temporal_training_holdout_evidence_is_exported_without_private_reasons():
+    report = sanitize_calibration({
+        "schema_version": 1,
+        "temporal_generation": {"anchors": {
+            "top_match_bar": {
+                "valid": True, "reason": "independent_support",
+                "training_count": 32, "holdout_count": 32,
+                "training_accept_count": 32, "holdout_accept_count": 31,
+                "threshold": 0.94, "selected_pixels": 789, "selected_ratio": 0.005,
+                "training_similarity": {"min": 0.95, "median": 0.98, "path": "PRIVATE"},
+                "holdout_similarity": {"min": float("nan"), "median": 0.97},
+            },
+            "round_timer": {"reason": "PRIVATE", "training_count": True},
+        }},
+    })["temporal_generation"]["anchors"]
+    selected = report["top_match_bar"]
+    assert selected["training_accept_count"] == 32
+    assert selected["holdout_accept_count"] == 31
+    assert selected["threshold"] == 0.94
+    assert selected["reason"] == "independent_support"
+    assert selected["holdout_similarity"]["min"] is None
+    assert report["round_timer"]["reason"] is None
+    assert report["round_timer"]["training_count"] is None
+    assert "PRIVATE" not in json.dumps(report)
+
+
 def test_automatic_identity_export_is_allowlisted():
     unsafe = {
         "schema_version": 1,
@@ -41,6 +67,24 @@ def test_automatic_identity_export_is_allowlisted():
     assert row["holdout_accept_count"] == 15
     assert row["content_hash"] == "a" * 64
     assert row["dimensions"] == [20, 30]
+
+
+def test_panel_resampling_diagnostics_are_allowlisted():
+    result = sanitize_calibration({
+        "schema_version": 1,
+        "automatic_identity_generation": {"references": {"spectator_panel": {
+            "status": "insufficient_evidence", "sampling": {
+                "method": "training_proposal_neighborhoods_v1", "reason": "sampled",
+                "initial_training_count": 32, "initial_holdout_count": 32,
+                "requested_count": 12, "accepted_count": 12, "path": "PRIVATE",
+            },
+        }}},
+    })["automatic_identity_generation"]["references"]["spectator_panel"]
+    sampling = result["spectator_generation"]["sampling"]
+    assert sampling["method"] == "training_proposal_neighborhoods_v1"
+    assert sampling["initial_holdout_count"] == 32
+    assert sampling["requested_count"] == sampling["accepted_count"] == 12
+    assert "PRIVATE" not in json.dumps(result)
 
 
 def test_cluster_and_runtime_failures_are_separately_shared():
