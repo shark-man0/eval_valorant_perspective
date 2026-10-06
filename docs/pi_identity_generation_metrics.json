@@ -49298,12 +49298,15 @@
     "semantic_false_positive_audit_complete": false
   },
   "profile06_native_live_audit_queue": {
-    "pid": 22915,
-    "status": "running_fresh_live_replay",
+    "status": "semantic_review_complete_requires_report_exclusion",
+    "semantic_review_complete": true,
+    "run_output": "outputs/e2e/match_001/20261005T191132Z-66e9aff2",
     "live_observations": 589,
-    "semantic_review_complete": false,
-    "timestamp_mapping": "exact production filename formatting at 3 decimals, max 0.5 ms quantization; conflicting pixel hashes reject",
-    "recognition_or_assertions_changed": false
+    "fresh_identity_replay_passed": 589,
+    "fresh_identity_replay_failed": 0,
+    "contact_sheet_count": 15,
+    "semantic_adoption_gate_passed": false,
+    "report_visible_primary_live_count": 134
   },
   "native06_portable_bundle_validation": {
     "archive": "outputs/hud_profiles/pi-structural-20261006-06.zip",
@@ -49574,5 +49577,2071 @@
       "support.png": "9e57392f02dd16b4f4a624b34298eb0dbae7a1813caca2c6f4da7044b4b6d3ac"
     },
     "diagnosis": "active profile has no report_header_detector; existing production detector requires independent static supports and NCC >= 0.90; first training-only candidate rejected at support 5/10, no holdout tuning, no adoption"
+  },
+  "native06_fresh_identity_replay": {
+    "scope": "terminal native E2E output hashes verified; fresh current-frame identity replay only, not independent semantic ground truth",
+    "profile_fingerprint": "3859de5c439346df8d916522bead980a6246f07e0d38c8e2d70b2e24d285b745",
+    "live_observations": 589,
+    "fresh_identity_replay_passed": 589,
+    "fresh_identity_replay_failed": 0,
+    "same_pts_pixel_content_verified": true,
+    "reader_diagnostics": [],
+    "source_or_assertions_changed": false
+  },
+  "native06_all_live_semantic_review": {
+    "scope": "all 589 terminal native06 primary-live observations only; 15 full-frame contact sheets, four enlarged frames generated, two ambiguity details viewed; no temporal or geometry-wide proof",
+    "contact_sheet_count": 15,
+    "reviewed_frame_count": 589,
+    "fresh_identity_replay_passed": 589,
+    "fresh_identity_replay_failed": 0,
+    "contact_sheet_review_complete": true,
+    "observed_spectator_panel_count": 0,
+    "observed_remote_view_count": 0,
+    "observed_full_buy_menu_count": 0,
+    "observed_expanded_map_count": 0,
+    "report_visible_primary_live_count": 134,
+    "report_visible_index_bounds": [
+      304,
+      437
+    ],
+    "additional_scoreboard_overlay_count": 1,
+    "additional_scoreboard_overlay_index": 331,
+    "semantic_adoption_gate_passed": false,
+    "reason": "combat_report_current_frame_blocker_unconfigured_in_profile06",
+    "known_limitations": [
+      "contact sheets do not prove all world pixels observable in smoke",
+      "no stale-state or global geometry audit claim",
+      "no semantic assertion labels or validation pack altered"
+    ],
+    "manifest_sha256": "493c9682bb2d8dac6f1f737f3c32fb33afce0c4eacb7d4311ffdb160d614045f"
+  },
+  "report_header_persistent_training": {
+    "training_only": true,
+    "holdout_used": false,
+    "production_source_changed": false,
+    "active_profile_changed": false,
+    "threshold": 0.9,
+    "pixel_std_max": 12,
+    "edge_persistence_min": 0.65,
+    "training_positive_count": 10,
+    "training_negative_count": 22,
+    "group_pixels": [
+      272,
+      216
+    ],
+    "assets_sha256": {
+      "reference.png": "258cc58a5657174616830ad296ee8a97deafebca2eac90eb7348c7fbe2663426",
+      "mask.png": "373035ec316679a1502e644078d09546fbfcdb943a24a36643568b734eedd48c",
+      "support.png": "d8f7431b44e0ac623422495f727d4b40a2113cee62e6e808e923d9eefc17f8a8"
+    },
+    "input_shape": [
+      500,
+      438
+    ],
+    "reference_x": 0.0639269406392694,
+    "training_supported_count": 10,
+    "training_support_fraction": 1.0,
+    "training_false_positive_count": 0,
+    "training_valid": true,
+    "reason": "training_qualified_pending_holdout"
+  },
+  "report_header_independent_holdout": {
+    "holdout_count": 32,
+    "holdout_positive_count": 8,
+    "holdout_supported_count": 8,
+    "holdout_support_fraction": 1.0,
+    "holdout_negative_count": 24,
+    "holdout_false_positive_count": 0,
+    "control_count": 24,
+    "control_failure_count": 0,
+    "threshold": 0.9,
+    "holdout_valid": true,
+    "frozen_assets_sha256": {
+      "reference.png": "258cc58a5657174616830ad296ee8a97deafebca2eac90eb7348c7fbe2663426",
+      "mask.png": "373035ec316679a1502e644078d09546fbfcdb943a24a36643568b734eedd48c",
+      "support.png": "d8f7431b44e0ac623422495f727d4b40a2113cee62e6e808e923d9eefc17f8a8"
+    },
+    "holdout_tuned": false,
+    "production_source_changed": false,
+    "active_profile_changed": false
+  },
+  "profile08_report_reader_candidate": {
+    "profile": "outputs/hud_profiles/pi-structural-20261006-08/hud_layout.json",
+    "base_profile": "outputs/hud_profiles/pi-structural-20261006-06/hud_layout.json",
+    "profile_fingerprint": "c57ad914218e0e90fca678b0df7adecf620dde5b9caf31e0379c6e17ba016f47",
+    "reader_diagnostics": [],
+    "original_asset_count": 18,
+    "original_assets_unchanged": true,
+    "relative_asset_count": 21,
+    "absolute_asset_count": 0,
+    "missing_assets": 0,
+    "fingerprint_equal_after_relocation": true,
+    "report_header_threshold": 0.9,
+    "training_positive_support": [
+      10,
+      10
+    ],
+    "training_negative_false_positive": [
+      0,
+      22
+    ],
+    "holdout_positive_support": [
+      8,
+      8
+    ],
+    "holdout_negative_false_positive": [
+      0,
+      24
+    ],
+    "excluded_and_missing_group_controls": [
+      24,
+      0
+    ],
+    "candidate_only": true,
+    "env_adopted": false,
+    "e2e_verified": false,
+    "windows_runtime_verified": false,
+    "production_source_changed": false,
+    "isolated_change": "report-header current-frame exclusion only; timer OCR profile 07 not merged"
+  },
+  "native06_report_header_frozen_replay": {
+    "scope": "all 589 terminal native06 live frames; report annotations from contact sheets before predictions, production report-only witness; no new state or E2E output",
+    "frame_count": 589,
+    "annotated_report_present_count": 134,
+    "report_supported_count": 134,
+    "report_missed_count": 0,
+    "annotated_report_absent_count": 455,
+    "report_false_positive_count": 0,
+    "threshold": 0.9,
+    "profile_unchanged": true,
+    "production_source_changed": false
+  },
+  "profile08_integration_cohort_comparison": {
+    "diagnostic_only": true,
+    "scope": "16 independently saved diagnostic frames, not native E2E",
+    "before_states": {
+      "unknown": 14,
+      "live_first_person": 1,
+      "spectator_first_person": 1
+    },
+    "after_states": {
+      "unknown": 14,
+      "live_first_person": 1,
+      "spectator_first_person": 1
+    },
+    "primary_state_changes": 0,
+    "report_flags_before": 1,
+    "report_flags_after": 7,
+    "actual_spectator_retained": true,
+    "actual_live_retained": true,
+    "production_source_changed": false
+  },
+  "profile08_e2e_queue": {
+    "status": "waiting_for_profile07_terminal",
+    "base_run": "20261005T191132Z-66e9aff2",
+    "next_profile": "outputs/hud_profiles/pi-structural-20261006-08/hud_layout.json",
+    "isolated_change": "existing static report-header current-frame exclusion data; no OCR candidate07 merge",
+    "profile_fingerprint": "c57ad914218e0e90fca678b0df7adecf620dde5b9caf31e0379c6e17ba016f47",
+    "detached_runner_pid": 25123
+  },
+  "external_head_advance_source_verification": {
+    "current_head": "65a4a7e040795c0fd7de82ce67a59c2084c44d1e",
+    "tested_source_base": "98600a8d571ccc371575063aef92b43aab87878d",
+    "source_patch_sha256": "180bee3a42fa690b19641f150d1dead9143ee702766849a6176a08e621584335",
+    "source_content_unchanged": true,
+    "git_mutation_performed_by_agent": false,
+    "live_profile07_e2e_uninterrupted": true,
+    "profile08_waiter_replaced_for_fixed_base_integrity_check": true,
+    "replacement_waiter_pid": 25123
+  },
+  "score_raw_numeric_field_training": {
+    "training_only": true,
+    "holdout_used": false,
+    "reader_calls": 16,
+    "counts": {
+      "unknown": 12,
+      "correct": 4
+    },
+    "global_field_bounds": {
+      "ally_score": [
+        803,
+        20,
+        843,
+        65
+      ],
+      "enemy_score": [
+        1076,
+        20,
+        1116,
+        65
+      ]
+    },
+    "reader_diagnostics": [],
+    "profile_written": false,
+    "production_source_changed": false,
+    "existing_value_acceptance_threshold": 0.85
+  },
+  "score_white_numeric_field_training": {
+    "training_only": true,
+    "holdout_used": false,
+    "reader_calls": 16,
+    "counts": {
+      "unknown": 8,
+      "correct": 8
+    },
+    "global_field_bounds": {
+      "ally_score": [
+        803,
+        20,
+        843,
+        65
+      ],
+      "enemy_score": [
+        1076,
+        20,
+        1116,
+        65
+      ]
+    },
+    "reader_diagnostics": [],
+    "profile_written": false,
+    "production_source_changed": false,
+    "existing_value_acceptance_threshold": 0.85
+  },
+  "score_white_single_char_training": {
+    "training_only": true,
+    "holdout_used": false,
+    "reader_calls": 16,
+    "counts": {
+      "unknown": 8,
+      "correct": 8
+    },
+    "global_field_bounds": {
+      "ally_score": [
+        803,
+        20,
+        843,
+        65
+      ],
+      "enemy_score": [
+        1076,
+        20,
+        1116,
+        65
+      ]
+    },
+    "reader_diagnostics": [],
+    "profile_written": false,
+    "production_source_changed": false,
+    "existing_value_acceptance_threshold": 0.85
+  },
+  "score_white_word_training": {
+    "training_only": true,
+    "holdout_used": false,
+    "reader_calls": 16,
+    "counts": {
+      "unknown": 16
+    },
+    "global_field_bounds": {
+      "ally_score": [
+        803,
+        20,
+        843,
+        65
+      ],
+      "enemy_score": [
+        1076,
+        20,
+        1116,
+        65
+      ]
+    },
+    "reader_diagnostics": [],
+    "profile_written": false,
+    "production_source_changed": false,
+    "existing_value_acceptance_threshold": 0.85
+  },
+  "score_glyph_training_rejection": {
+    "training_only": true,
+    "holdout_used": false,
+    "threshold": 0.9,
+    "role": "numeric value readers only; not identity or geometry",
+    "observed_glyph_count": 3,
+    "unobserved_glyphs_not_synthesized": true,
+    "glyphs": {
+      "0": {
+        "training_count": 8,
+        "candidate_count": 8,
+        "training_supported_count": 0,
+        "training_support_fraction": 0.0,
+        "minimum_similarity": 0,
+        "reference_sample_index": 0,
+        "reference_roi": "ally_score",
+        "asset_sha256": "e0a96eccb52a79cd902bff703141c4d406667c028f44eef973ddf57fb6abfc59",
+        "qualified": false
+      },
+      "1": {
+        "training_count": 5,
+        "candidate_count": 5,
+        "training_supported_count": 0,
+        "training_support_fraction": 0.0,
+        "minimum_similarity": 0,
+        "reference_sample_index": 0,
+        "reference_roi": "enemy_score",
+        "asset_sha256": "721d6b8aeb76b6c5e21bbfa54f832c7c6f748ad33da87cfdd73f80378e4cad77",
+        "qualified": false
+      },
+      "2": {
+        "training_count": 3,
+        "candidate_count": 3,
+        "training_supported_count": 0,
+        "training_support_fraction": 0.0,
+        "minimum_similarity": 0,
+        "reference_sample_index": 64,
+        "reference_roi": "enemy_score",
+        "asset_sha256": "d510d16068408794d91566693db8a0ff0c26c64285f2a95732e9c8fc331877b0",
+        "qualified": false
+      }
+    },
+    "training_valid": false,
+    "training_correct_count": 0,
+    "training_unknown_count": 16,
+    "training_wrong_count": 0,
+    "production_source_changed": false,
+    "profile_written": false
+  },
+  "score_ally_glyph_training_rejection": {
+    "training_only": true,
+    "holdout_used": false,
+    "threshold": 0.9,
+    "global_field_y_bounds": [
+      33,
+      68
+    ],
+    "proposal_binarization": "existing production 2x cubic resize and Otsu, numeric foreground component only",
+    "role": "numeric value readers only; not identity or geometry",
+    "observed_glyph_count": 1,
+    "unobserved_glyphs_not_synthesized": true,
+    "glyphs": {
+      "0": {
+        "training_count": 8,
+        "candidate_count": 7,
+        "foreground_proposal_rejected_count": 1,
+        "training_supported_count": 4,
+        "training_support_fraction": 0.5,
+        "minimum_similarity": 0,
+        "reference_sample_index": 8,
+        "reference_roi": "ally_score",
+        "asset_sha256": "007eb161b43860c20ed901f383f6b8cdd35d02657180fe57bf8f19fb362a3e1f",
+        "qualified": false
+      }
+    },
+    "training_valid": false,
+    "training_correct_count": 4,
+    "training_unknown_count": 4,
+    "training_wrong_count": 0,
+    "production_source_changed": false,
+    "profile_written": false
+  },
+  "enemy_score_field_independent_holdout": {
+    "diagnostic_only": true,
+    "holdout_count": 64,
+    "counts": {
+      "unknown": 11,
+      "correct": 53
+    },
+    "strict_fact_confidence_counts": {
+      "unknown": 13,
+      "correct": 51
+    },
+    "reader_diagnostics": [],
+    "minimum_accepted_confidence": 0.8511383100000001,
+    "existing_uncrosschecked_value_threshold": 0.85,
+    "current_frame_fact_confidence_threshold": 0.9,
+    "global_field_bounds": [
+      1076,
+      20,
+      1116,
+      65
+    ],
+    "psm": 7,
+    "white_text_threshold": 200,
+    "control_count": 24,
+    "control_false_accept_count": 0,
+    "training_field_and_parameters_frozen": true,
+    "holdout_tuned": false,
+    "ally_score_remains_unknown": true,
+    "no_score_stability_or_round_inferred": true,
+    "identity_evidence_changed": false,
+    "production_source_changed": false,
+    "profile_written": false
+  },
+  "score_reader_investigation_scope": {
+    "numeric_value_evidence_only": true,
+    "identity_role_evidence_unchanged": true,
+    "no_round_boundary_inferred": true,
+    "no_actual_profile_written_or_adopted": true,
+    "source_unchanged": true,
+    "thresholds_unchanged": true,
+    "incomplete_observation_not_forced_known": true
+  },
+  "score_raw_fields_and_default_independent_holdout": {
+    "diagnostic_only": true,
+    "scope": "64 odd actual frame score pairs; frozen raw numeric field versus default ROI; not native E2E",
+    "frame_count": 64,
+    "reader_calls": 256,
+    "groups": {
+      "ally_score/numeric_field": {
+        "counts": {
+          "correct": 26,
+          "unknown": 38
+        },
+        "strict_fact_counts": {
+          "correct": 25,
+          "unknown": 39
+        }
+      },
+      "ally_score/original_default_roi": {
+        "counts": {
+          "unknown": 64
+        },
+        "strict_fact_counts": {
+          "unknown": 64
+        }
+      },
+      "enemy_score/numeric_field": {
+        "counts": {
+          "unknown": 42,
+          "correct": 22
+        },
+        "strict_fact_counts": {
+          "unknown": 42,
+          "correct": 22
+        }
+      },
+      "enemy_score/original_default_roi": {
+        "counts": {
+          "unknown": 63,
+          "correct": 1
+        },
+        "strict_fact_counts": {
+          "unknown": 63,
+          "correct": 1
+        }
+      }
+    },
+    "reader_diagnostics": [],
+    "heldout_tuned": false,
+    "identity_or_threshold_changed": false,
+    "production_source_changed": false,
+    "profile_written": false
+  },
+  "score_pair_current_frame_readability": {
+    "holdout_frame_count": 64,
+    "simultaneously_accepted_pairs": 23,
+    "simultaneously_confidence_0_90_pairs": 22,
+    "score_stability_or_round_boundary_claim": false,
+    "next_gate": "candidate07 and08 native E2E outcomes and safety review before combining value-reader configurations"
+  },
+  "portable_score_reader_proposal": {
+    "reader_specifications": {
+      "ally_score": {
+        "kind": "digits",
+        "format": "integer",
+        "templates": {},
+        "glyph_threshold": 0.9,
+        "psm": 7,
+        "whitelist": "0123456789",
+        "executable": "tesseract",
+        "subregion_norm": [
+          0.1565217391304348,
+          0.2,
+          0.5043478260869565,
+          0.8
+        ]
+      },
+      "enemy_score": {
+        "kind": "digits",
+        "format": "integer",
+        "templates": {},
+        "glyph_threshold": 0.9,
+        "psm": 7,
+        "white_text_threshold": 200,
+        "whitelist": "0123456789",
+        "executable": "tesseract",
+        "subregion_norm": [
+          0.4745762711864407,
+          0.2,
+          0.8135593220338984,
+          0.8
+        ]
+      }
+    },
+    "selection_basis": "per-role correct current-frame reads on eight even training frames only: raw ally1/8, white ally0/8; white enemy8/8, raw enemy3/8; PSM7 maintained for multi-digit support",
+    "configuration_only": true,
+    "portable_executable": true,
+    "templates_generated_or_inferred": false,
+    "identity_evidence_unchanged": true,
+    "production_source_changed": false,
+    "profile_written": false,
+    "profile_env_adopted": false,
+    "standard_native_e2e_verified": false,
+    "windows_runtime_verified": false,
+    "holdout_raw_ally_counts": {
+      "correct": 26,
+      "unknown": 38,
+      "wrong": 0
+    },
+    "holdout_white_enemy_counts": {
+      "correct": 53,
+      "unknown": 11,
+      "wrong": 0
+    },
+    "strict_fact_raw_ally_counts": {
+      "correct": 25,
+      "unknown": 39,
+      "wrong": 0
+    },
+    "strict_fact_white_enemy_counts": {
+      "correct": 51,
+      "unknown": 13,
+      "wrong": 0
+    },
+    "simultaneous_readable_pairs": 23,
+    "simultaneous_strict_fact_pairs": 22,
+    "control_count": 48,
+    "control_false_accept_count": 0,
+    "score_stability_or_round_boundary_inferred": false
+  },
+  "ally_score_raw_field_controls": {
+    "diagnostic_only": true,
+    "control_count": 24,
+    "control_false_accept_count": 0,
+    "frozen_training_field": true,
+    "heldout_tuned": false,
+    "profile_written": false,
+    "production_source_changed": false
+  },
+  "hp_ammo_numeric_training": {
+    "training_only": true,
+    "holdout_used": false,
+    "frame_count": 8,
+    "counts": {
+      "raw/hp": {
+        "counts": {
+          "correct": 6,
+          "unscored_ambiguous_pixel": 1,
+          "unknown": 1
+        },
+        "confidence_0_90_counts": {
+          "correct": 6,
+          "unscored_ambiguous_pixel": 1,
+          "unknown": 1
+        }
+      },
+      "raw/ammo_current": {
+        "counts": {
+          "unknown": 7,
+          "unscored_ambiguous_pixel": 1
+        },
+        "confidence_0_90_counts": {
+          "unknown": 8
+        }
+      },
+      "raw/ammo_reserve": {
+        "counts": {
+          "unknown": 8
+        },
+        "confidence_0_90_counts": {
+          "unknown": 8
+        }
+      },
+      "white_text_200/hp": {
+        "counts": {
+          "correct": 7,
+          "unknown": 1
+        },
+        "confidence_0_90_counts": {
+          "correct": 7,
+          "unknown": 1
+        }
+      },
+      "white_text_200/ammo_current": {
+        "counts": {
+          "unknown": 8
+        },
+        "confidence_0_90_counts": {
+          "unknown": 8
+        }
+      },
+      "white_text_200/ammo_reserve": {
+        "counts": {
+          "unknown": 7,
+          "correct": 1
+        },
+        "confidence_0_90_counts": {
+          "unknown": 7,
+          "correct": 1
+        }
+      }
+    },
+    "global_field_bounds": {
+      "hp": [
+        575,
+        1002,
+        655,
+        1048
+      ],
+      "ammo_current": [
+        1262,
+        1002,
+        1325,
+        1046
+      ],
+      "ammo_reserve": [
+        1349,
+        1014,
+        1395,
+        1042
+      ]
+    },
+    "reader_diagnostics": [],
+    "identity_evidence_changed": false,
+    "owned_player_gate_unchanged": true,
+    "production_source_changed": false,
+    "profile_written": false
+  },
+  "hp_ammo_current_only_training": {
+    "training_only": true,
+    "holdout_used": false,
+    "frame_count": 8,
+    "counts": {
+      "raw/hp": {
+        "counts": {
+          "correct": 6,
+          "unscored_ambiguous_pixel": 1,
+          "unknown": 1
+        },
+        "confidence_0_90_counts": {
+          "correct": 6,
+          "unscored_ambiguous_pixel": 1,
+          "unknown": 1
+        }
+      },
+      "raw/ammo_current": {
+        "counts": {
+          "unknown": 7,
+          "unscored_ambiguous_pixel": 1
+        },
+        "confidence_0_90_counts": {
+          "unknown": 8
+        }
+      },
+      "raw/ammo_reserve": {
+        "counts": {},
+        "confidence_0_90_counts": {}
+      },
+      "white_text_200/hp": {
+        "counts": {
+          "correct": 7,
+          "unknown": 1
+        },
+        "confidence_0_90_counts": {
+          "correct": 7,
+          "unknown": 1
+        }
+      },
+      "white_text_200/ammo_current": {
+        "counts": {
+          "unknown": 8
+        },
+        "confidence_0_90_counts": {
+          "unknown": 8
+        }
+      },
+      "white_text_200/ammo_reserve": {
+        "counts": {},
+        "confidence_0_90_counts": {}
+      }
+    },
+    "global_field_bounds": {
+      "hp": [
+        575,
+        1002,
+        655,
+        1048
+      ],
+      "ammo_current": [
+        1262,
+        1002,
+        1325,
+        1046
+      ],
+      "ammo_reserve": [
+        1349,
+        1014,
+        1395,
+        1042
+      ]
+    },
+    "reader_diagnostics": [],
+    "identity_evidence_changed": false,
+    "owned_player_gate_unchanged": true,
+    "production_source_changed": false,
+    "profile_written": false
+  },
+  "hp_numeric_independent_holdout": {
+    "diagnostic_only": true,
+    "scope": "numeric pixels only, existing recording-player ownership gate required separately",
+    "holdout_count": 64,
+    "annotated_readable_count": 57,
+    "annotated_absent_count": 3,
+    "annotated_ambiguous_count": 4,
+    "counts": {
+      "correct": 55,
+      "unknown": 9
+    },
+    "confidence_0_90_counts": {
+      "correct": 55,
+      "unknown": 9
+    },
+    "control_count": 24,
+    "control_false_accept_count": 0,
+    "reader_diagnostics": [],
+    "global_field_bounds": [
+      575,
+      1002,
+      655,
+      1048
+    ],
+    "white_text_threshold": 200,
+    "psm": 7,
+    "frozen_training_parameters": true,
+    "holdout_tuned": false,
+    "identity_evidence_changed": false,
+    "owned_player_gate_unchanged": true,
+    "production_source_changed": false,
+    "profile_written": false,
+    "holdout_valid": true
+  },
+  "portable_hp_reader_proposal": {
+    "configuration_only": true,
+    "identity_evidence_changed": false,
+    "production_source_changed": false,
+    "env_adopted": false,
+    "standard_native_e2e_verified": false,
+    "windows_runtime_verified": false,
+    "selection_basis": "seven readable even training frames correct at confidence>=0.90; menu-ambiguous eighth abstained; parameters frozen before odd holdout",
+    "holdout_counts": {
+      "correct": 55,
+      "unknown": 9
+    },
+    "strict_fact_counts": {
+      "correct": 55,
+      "unknown": 9
+    },
+    "control_count": 24,
+    "control_false_accept_count": 0,
+    "recording_player_attribution_requires_existing_current_frame_ownership_gate": true
+  },
+  "portable_hp_ownership_integration": {
+    "diagnostic_only": true,
+    "profile_fingerprint": "78c23c4bdb896243f2c1aeb1e35e2c040abe300ec2096ae58447ea68508204fd",
+    "frame_count": 16,
+    "states": {
+      "unknown": 14,
+      "live_first_person": 1,
+      "spectator_first_person": 1
+    },
+    "unowned_hp_leak_count": 0,
+    "owned_hp_read_count": 1,
+    "identity_assets_unchanged": true,
+    "production_source_changed": false,
+    "standard_native_e2e_verified": false,
+    "env_adopted": false,
+    "composition": "report08 + previously frozen timer07/score fields + HP field; common runtime only; not a native candidate adoption",
+    "verified_unchanged_asset_count": 21,
+    "primary_states_equal_report08_cohort": true
+  },
+  "buy_banner_raw_training": {
+    "training_only": true,
+    "holdout_used": false,
+    "threshold": 0.9,
+    "global_reference_bounds": [
+      750,
+      168,
+      1170,
+      242
+    ],
+    "roi": "center_phase_banner",
+    "matcher": "existing_unmasked_ncc",
+    "fixed_content": "purchase-phase label only; round number and lower instruction excluded",
+    "candidate_count": 6,
+    "selected_candidate": "0",
+    "training_valid": true,
+    "training_supported_count": 5,
+    "training_positive_count": 5,
+    "training_false_positive_count": 0,
+    "training_negative_count": 27,
+    "reference_sha256": "50758118745848ae0ac93eff822a624c4a1047bb6b0112571edb5a69e7529022",
+    "production_source_changed": false,
+    "active_profile_changed": false,
+    "reason": "training_qualified_pending_holdout"
+  },
+  "buy_banner_fixed_crop_training_consistency": {
+    "training_only": true,
+    "threshold": 0.9,
+    "selected_reference_unchanged": true,
+    "candidate_tuned": false,
+    "training_positive_count": 5,
+    "training_supported_count": 5,
+    "training_negative_count": 27,
+    "training_false_positive_count": 0,
+    "fixed_crop_training_valid": true,
+    "reason": "training_probe_searched_full_banner_roi_but_diagnostic_sidecar_used_exact_reference_crop; original 5/5 was not same production configuration",
+    "adopted": false,
+    "production_source_changed": false
+  },
+  "buy_banner_raw_holdout_rejection": {
+    "diagnostic_only": true,
+    "holdout_tuned": false,
+    "threshold": 0.9,
+    "holdout_positive_count": 3,
+    "holdout_supported_count": 1,
+    "holdout_negative_count": 29,
+    "holdout_false_positive_count": 0,
+    "excluded_pixel_control_count": 9,
+    "excluded_pixel_max_confidence_delta": 0.0,
+    "half_label_control_count": 6,
+    "half_label_false_accept_count": 0,
+    "reader_diagnostics": [],
+    "profile_fingerprint": "66a90fbb95d49fba36036db69d7ee048c6b510b7860269c764a2df502ea52bed",
+    "profile_env_adopted": false,
+    "production_source_changed": false,
+    "native_e2e_verified": false,
+    "windows_runtime_verified": false,
+    "holdout_valid": false
+  },
+  "buy_banner_structural_training_rejection": {
+    "training_only": true,
+    "holdout_used_for_selection": false,
+    "threshold": 0.9,
+    "minimum_recurrence": 3,
+    "minimum_support_fraction": 0.8,
+    "matcher": "existing_value_invariant_edges_v1",
+    "training_positive_count": 5,
+    "training_negative_count": 27,
+    "training_supported_count": 1,
+    "selected_seed": 0,
+    "training_valid": false,
+    "group_minimum_pixels": 32,
+    "global_reference_bounds": [
+      750,
+      168,
+      1170,
+      242
+    ],
+    "support_regions_relative_patch": [
+      [
+        8,
+        0,
+        148,
+        74
+      ],
+      [
+        152,
+        0,
+        412,
+        74
+      ]
+    ],
+    "reference_excludes_round_number_and_purchase_instruction": true,
+    "production_source_changed": false,
+    "profile_written": false,
+    "adopted": false,
+    "production_loader_currently_allows_masked_matcher_only_for_three_identity_roles": true,
+    "reason": "training_support_insufficient",
+    "assets_sha256": {
+      "reference.png": "77ca6edbfc4f981d4606525b0c35740861ca11ba16de49b2b5cf608802c0c231",
+      "mask.png": "2abcf8ddd7a3dbfaa4fb96a03892a5ae153bd2337345e902fd884ece948865bf",
+      "support.png": "bb36307079b7b5d011b578450fab41aa5d9cd249a5e50919a671b7d4e7c49462"
+    }
+  },
+  "buy_banner_persistent_training": {
+    "training_only": true,
+    "holdout_used_for_selection": false,
+    "threshold": 0.9,
+    "pixel_std_max": 12,
+    "edge_persistence_min": 0.65,
+    "minimum_support_fraction": 0.8,
+    "minimum_support_count": 3,
+    "minimum_group_pixels": 32,
+    "group_pixels": [
+      1236,
+      1203
+    ],
+    "training_positive_count": 5,
+    "training_negative_count": 27,
+    "training_supported_count": 4,
+    "training_false_positive_count": 0,
+    "training_valid": true,
+    "method": "two independent static label groups; existing masked_score for each, minimum aggregation",
+    "production_source_changed": false,
+    "profile_written": false,
+    "adopted": false,
+    "production_loader_has_no_generic_static_group_signal_spec": true,
+    "assets_sha256": {
+      "reference.png": "6416036fc11cc2aa3dd56c6f2fe28c178800bfa72ca060b520a2d60bd9f444dc",
+      "mask.png": "4dd5e2b14e6ca2932b6f0dd75c69a27ef7bd5a60883014e6ee14526c9f3376c9",
+      "support.png": "bb36307079b7b5d011b578450fab41aa5d9cd249a5e50919a671b7d4e7c49462"
+    }
+  },
+  "buy_banner_persistent_holdout_rejection": {
+    "diagnostic_only": true,
+    "parameters_frozen_on_training": true,
+    "holdout_tuned": false,
+    "same_odd_holdout_previously_exposed_for_rejected_unmasked_candidate": true,
+    "threshold": 0.9,
+    "holdout_positive_count": 3,
+    "holdout_supported_count": 0,
+    "holdout_negative_count": 29,
+    "holdout_false_positive_count": 0,
+    "excluded_control_count": 9,
+    "excluded_pixel_max_delta": 0.0,
+    "missing_group_control_count": 6,
+    "missing_group_false_accept_count": 0,
+    "production_loader_verified": false,
+    "production_source_changed": false,
+    "profile_written": false,
+    "native_e2e_verified": false,
+    "env_adopted": false,
+    "holdout_valid": false
+  },
+  "profile09_numeric_reader_candidate": {
+    "profile": "outputs/hud_profiles/pi-structural-20261006-09/hud_layout.json",
+    "base_profile": "outputs/hud_profiles/pi-structural-20261006-08/hud_layout.json",
+    "profile_fingerprint": "78c23c4bdb896243f2c1aeb1e35e2c040abe300ec2096ae58447ea68508204fd",
+    "candidate_only": true,
+    "env_adopted": false,
+    "standard_native_e2e_verified": false,
+    "native_e2e_queued": false,
+    "windows_runtime_verified": false,
+    "production_source_changed": false,
+    "tested_source_patch_sha256": "180bee3a42fa690b19641f150d1dead9143ee702766849a6176a08e621584335",
+    "layout_bytes_equal": true,
+    "identity_anchor_spectator_report_specifications_equal": true,
+    "relative_asset_count": 21,
+    "absolute_asset_count": 0,
+    "missing_asset_count": 0,
+    "all_original_assets_hash_equal": true,
+    "reader_diagnostics": [],
+    "reader_names": [
+      "ally_score",
+      "enemy_score",
+      "player_hp_armor",
+      "round_timer"
+    ],
+    "portable_executable": "tesseract",
+    "fingerprint_equal_after_relocation": true,
+    "fingerprint_equal_existing_ownership_cohort": true,
+    "ownership_cohort_count": 16,
+    "unowned_hp_leak_count": 0,
+    "owned_hp_read_count": 1,
+    "holdout_timer_counts": {
+      "correct": 51,
+      "unknown": 13,
+      "wrong": 0
+    },
+    "holdout_ally_score_counts": {
+      "correct": 26,
+      "unknown": 38,
+      "wrong": 0
+    },
+    "holdout_enemy_score_counts": {
+      "correct": 53,
+      "unknown": 11,
+      "wrong": 0
+    },
+    "holdout_hp_counts": {
+      "correct": 55,
+      "unknown": 9
+    },
+    "reader_control_count": 90,
+    "reader_control_false_accept_count": 0,
+    "reader_controls_scope": "18 non-timer crops + 48 score flat/random fields + 24 HP flat/random fields; not a full-video false-positive guarantee",
+    "next_gate": "review terminal07/08 behavior and safety before launching standard09 E2E; no events or boundaries inferred from per-frame reader coverage"
+  },
+  "buy_banner_fresh_cohort": {
+    "purpose": "fresh structural static-label training/holdout after prior candidates rejected; actual cached PTS only",
+    "training_count": 32,
+    "holdout_count": 34,
+    "prior_original64_and_numeric128_pts_excluded": true,
+    "unique_pts_count": 66,
+    "conflicting_decoded_pixel_groups": 0,
+    "labels_before_predictions": true,
+    "holdout_images_inspected": true,
+    "reference_generated": false,
+    "production_source_changed": false,
+    "training_readable_positive_count": 16,
+    "training_absent_count": 16,
+    "holdout_labels_before_predictions": true
+  },
+  "buy_banner_fresh_training": {
+    "training_only": true,
+    "fresh_pts": true,
+    "holdout_used": false,
+    "threshold": 0.9,
+    "minimum_support_fraction": 0.8,
+    "minimum_support_count": 3,
+    "training_positive_count": 16,
+    "training_negative_count": 16,
+    "selected_candidate": "9",
+    "training_supported_count": 14,
+    "training_false_positive_count": 0,
+    "training_valid": true,
+    "global_reference_bounds": [
+      750,
+      168,
+      1170,
+      242
+    ],
+    "matcher": "existing fixed crop unmasked NCC",
+    "candidate_count": 17,
+    "reference_sha256": "f243cea4041e1dd0574c0adeb58170407d2aa74fe1b1c385f2a294dd5e9741be",
+    "source_changed": false,
+    "active_profile_changed": false
+  },
+  "buy_banner_fresh_holdout_rejection": {
+    "diagnostic_only": true,
+    "fresh_pts_separate_from_previous_original64_numeric128": true,
+    "training_parameters_frozen": true,
+    "holdout_tuned": false,
+    "threshold": 0.9,
+    "holdout_positive_count": 9,
+    "holdout_supported_count": 6,
+    "holdout_negative_count": 25,
+    "holdout_false_positive_count": 0,
+    "half_label_control_count": 18,
+    "half_label_false_accept_count": 0,
+    "excluded_pixel_control_count": 9,
+    "excluded_pixel_max_delta": 0,
+    "flat_random_control_count": 24,
+    "flat_random_false_accept_count": 0,
+    "reader_diagnostics": [],
+    "production_loader_matcher_agreement_count": 34,
+    "reference_sha256": "f243cea4041e1dd0574c0adeb58170407d2aa74fe1b1c385f2a294dd5e9741be",
+    "production_source_changed": false,
+    "native_e2e_verified": false,
+    "env_adopted": false,
+    "holdout_valid": false
+  },
+  "hp_ammo_word_line_training_rejection": {
+    "training_only": true,
+    "holdout_used": false,
+    "frame_count": 8,
+    "counts": {
+      "word_raw/hp": {
+        "counts": {
+          "correct": 5,
+          "unknown": 2,
+          "unscored_ambiguous_pixel": 1
+        },
+        "confidence_0_90_counts": {
+          "correct": 5,
+          "unknown": 2,
+          "unscored_ambiguous_pixel": 1
+        }
+      },
+      "word_raw/ammo_current": {
+        "counts": {
+          "unknown": 8
+        },
+        "confidence_0_90_counts": {
+          "unknown": 8
+        }
+      },
+      "word_raw/ammo_reserve": {
+        "counts": {},
+        "confidence_0_90_counts": {}
+      },
+      "word_white/hp": {
+        "counts": {
+          "correct": 4,
+          "unknown": 4
+        },
+        "confidence_0_90_counts": {
+          "unknown": 5,
+          "correct": 3
+        }
+      },
+      "word_white/ammo_current": {
+        "counts": {
+          "unknown": 8
+        },
+        "confidence_0_90_counts": {
+          "unknown": 8
+        }
+      },
+      "word_white/ammo_reserve": {
+        "counts": {},
+        "confidence_0_90_counts": {}
+      },
+      "raw_line_raw/hp": {
+        "counts": {
+          "correct": 5,
+          "unknown": 2,
+          "unscored_ambiguous_pixel": 1
+        },
+        "confidence_0_90_counts": {
+          "correct": 5,
+          "unknown": 2,
+          "unscored_ambiguous_pixel": 1
+        }
+      },
+      "raw_line_raw/ammo_current": {
+        "counts": {
+          "unknown": 8
+        },
+        "confidence_0_90_counts": {
+          "unknown": 8
+        }
+      },
+      "raw_line_raw/ammo_reserve": {
+        "counts": {},
+        "confidence_0_90_counts": {}
+      },
+      "raw_line_white/hp": {
+        "counts": {
+          "correct": 4,
+          "unknown": 4
+        },
+        "confidence_0_90_counts": {
+          "unknown": 5,
+          "correct": 3
+        }
+      },
+      "raw_line_white/ammo_current": {
+        "counts": {
+          "unknown": 8
+        },
+        "confidence_0_90_counts": {
+          "unknown": 8
+        }
+      },
+      "raw_line_white/ammo_reserve": {
+        "counts": {},
+        "confidence_0_90_counts": {}
+      }
+    },
+    "global_field_bounds": {
+      "hp": [
+        575,
+        1002,
+        655,
+        1048
+      ],
+      "ammo_current": [
+        1262,
+        1002,
+        1325,
+        1046
+      ],
+      "ammo_reserve": [
+        1349,
+        1014,
+        1395,
+        1042
+      ]
+    },
+    "reader_diagnostics": [],
+    "identity_evidence_changed": false,
+    "owned_player_gate_unchanged": true,
+    "production_source_changed": false,
+    "profile_written": false,
+    "proposal_basis": "existing multi-digit PSM8 word and PSM13 raw-line modes; field bounds and confidence gates unchanged; training only"
+  },
+  "buy_menu_static_training": {
+    "training_only": true,
+    "holdout_used": false,
+    "threshold": 0.9,
+    "training_count": 64,
+    "training_positive_count": 5,
+    "training_negative_count": 59,
+    "compound_supported_count": 4,
+    "compound_false_positive_count": 0,
+    "training_valid": true,
+    "global_role_bounds": {
+      "buy_menu_grid_present": [
+        421,
+        112,
+        1497,
+        140
+      ],
+      "buy_menu_close_anchor_present": [
+        1849,
+        25,
+        1889,
+        64
+      ]
+    },
+    "static_content": "category headers + close symbol; no prices, stock, weapon labels, HP, names or portraits",
+    "production_source_changed": false,
+    "profile_written": false,
+    "env_adopted": false,
+    "assets_sha256": {
+      "buy_menu_grid_present.png": "58d4d598c3e1c85ef9173967cd08ac6def5873f5515356c3b2feb5edaeb617c9",
+      "buy_menu_close_anchor_present.png": "0eab312ce7da75a103573bf55c661c2a044cfb8b555ffc1aee53d2a8070cbb84"
+    }
+  },
+  "buy_menu_static_independent_holdout": {
+    "diagnostic_only": true,
+    "parameters_frozen_on_training": true,
+    "holdout_tuned": false,
+    "threshold": 0.9,
+    "holdout_count": 66,
+    "holdout_positive_count": 6,
+    "holdout_negative_count": 60,
+    "compound_supported_count": 5,
+    "compound_false_positive_count": 0,
+    "role_counts": {
+      "buy_menu_grid_present": {
+        "positive_supported": 5,
+        "negative_false_accept": 0
+      },
+      "buy_menu_close_anchor_present": {
+        "positive_supported": 6,
+        "negative_false_accept": 0
+      }
+    },
+    "missing_role_control_count": 12,
+    "missing_role_false_accept_count": 0,
+    "production_matcher_agreement_count": 66,
+    "reader_diagnostics": [],
+    "production_source_changed": false,
+    "native_e2e_verified": false,
+    "env_adopted": false,
+    "holdout_valid": true
+  },
+  "profile10_buy_menu_candidate": {
+    "profile": "outputs/hud_profiles/pi-structural-20261006-10/hud_layout.json",
+    "base_profile": "outputs/hud_profiles/pi-structural-20261006-09/hud_layout.json",
+    "profile_fingerprint": "16f144c8fefcacfe5cc70652c9be69d49ce2105a8709e48c20b0c4dcfb0a38b2",
+    "candidate_only": true,
+    "env_adopted": false,
+    "native_e2e_verified": false,
+    "native_e2e_queued": false,
+    "windows_runtime_verified": false,
+    "production_source_changed": false,
+    "prior_identity_anchor_spectator_report_reader_specifications_equal": true,
+    "prior_asset_count": 21,
+    "prior_asset_hashes_equal": true,
+    "relative_asset_count": 23,
+    "absolute_asset_count": 0,
+    "missing_asset_count": 0,
+    "reader_diagnostics": [],
+    "fingerprint_equal_after_relocation": true,
+    "threshold": 0.9,
+    "training_compound_support": [
+      4,
+      5
+    ],
+    "training_false_accept": [
+      0,
+      59
+    ],
+    "holdout_compound_support": [
+      5,
+      6
+    ],
+    "holdout_false_accept": [
+      0,
+      60
+    ],
+    "missing_role_controls": [
+      12,
+      0
+    ],
+    "production_integration_verified": true,
+    "change": "two independently matched fixed purchase-menu category-header and close-symbol signals; existing classifier requires both; no purchase-phase banner or boundary inferred",
+    "production_integration_scope": "16 actual cached frames only, not standard native E2E",
+    "integration_state_counts": {
+      "unknown": 13,
+      "buy_menu_open": 1,
+      "live_first_person": 1,
+      "spectator_first_person": 1
+    },
+    "unowned_hp_leak_count": 0
+  },
+  "profile10_buy_menu_integration": {
+    "frame_count": 16,
+    "before_state_counts": {
+      "unknown": 14,
+      "live_first_person": 1,
+      "spectator_first_person": 1
+    },
+    "after_state_counts": {
+      "unknown": 13,
+      "buy_menu_open": 1,
+      "live_first_person": 1,
+      "spectator_first_person": 1
+    },
+    "primary_state_change_count": 1,
+    "all_other_states_equal": true,
+    "state_flags_and_value_ownership_provenance_equal": true,
+    "unowned_hp_leak_count": 0,
+    "actual_full_menu_frame_reviewed": true,
+    "native_e2e_verified": false,
+    "env_adopted": false
+  },
+  "native06_buy_menu_static_all_live_negative_audit": {
+    "scope": "all589 visually reviewed terminal native06 live frames; additional negative replay only, not independent held generation or native10 E2E",
+    "frame_count": 589,
+    "reviewed_full_menu_absent_count": 589,
+    "compound_false_positive_count": 0,
+    "role_false_positive_counts": {
+      "buy_menu_grid_present": 0,
+      "buy_menu_close_anchor_present": 0
+    },
+    "threshold": 0.9,
+    "profile_fingerprint": "16f144c8fefcacfe5cc70652c9be69d49ce2105a8709e48c20b0c4dcfb0a38b2",
+    "decoded_pixel_hashes_verified": true,
+    "semantic_review_source_sha256": "3122c601c283e9e6462f37d2261183afc7513624b8514d5aa6b64e8ccd09ac79",
+    "manifest_sha256": "493c9682bb2d8dac6f1f737f3c32fb33afce0c4eacb7d4311ffdb160d614045f",
+    "profile_unchanged": true,
+    "production_source_changed": false,
+    "env_adopted": false,
+    "native_e2e_verified": false,
+    "semantic_review_and_manifest_provenance_verified": true
+  },
+  "native06_all_buy_menu_static_signal_replay": {
+    "scope": "all5347 terminal native06 cached frames; frozen static menu-signal replay only, full classifier/native10 E2E not executed",
+    "frame_count": 5347,
+    "profile_fingerprint": "16f144c8fefcacfe5cc70652c9be69d49ce2105a8709e48c20b0c4dcfb0a38b2",
+    "compound_positive_count": 293,
+    "positive_native_state_counts": {
+      "unknown": 293
+    },
+    "role_positive_counts": {
+      "buy_menu_grid_present": 293,
+      "buy_menu_close_anchor_present": 334
+    },
+    "contact_sheet_count": 8,
+    "positive_semantic_review_complete": true,
+    "same_pts_decoded_pixel_hashes_verified": true,
+    "native_terminal_output_hashes_verified": true,
+    "production_source_changed": false,
+    "native_e2e_outputs_changed": false,
+    "profile_unchanged": true,
+    "env_adopted": false,
+    "positive_semantic_review_sha256": "dfbf638940207f9377c564991d34bc36a4efd5c2f01ddf440631d8e83d23005f",
+    "reviewed_compound_true_positive_count": 293,
+    "reviewed_compound_false_positive_count": 0
+  },
+  "native06_all_buy_menu_positive_semantic_review": {
+    "scope": "all293 compound purchase-menu signal positives among5347 terminal native06 sampled frames, eight full-frame contact sheets viewed; signals only, not complete classifier/native10 E2E",
+    "reviewed_positive_frame_count": 293,
+    "contact_sheet_count": 8,
+    "observed_full_buy_menu_count": 293,
+    "false_positive_in_positive_review_count": 0,
+    "semantic_review_complete": true,
+    "manifest_sha256": "47be0a8a09da5aa92af5fdb00ed196c1a0c3e45b9f55db37b4d56f13f634ad64",
+    "profile_fingerprint": "16f144c8fefcacfe5cc70652c9be69d49ce2105a8709e48c20b0c4dcfb0a38b2",
+    "remaining_negative_frames_reviewed_for_false_negatives": false,
+    "global_recall_verified": false,
+    "classification_or_ownership_change_claimed": false,
+    "standard_native_e2e_verified": false,
+    "profile_env_adopted": false
+  },
+  "profile07_runtime_phase_verification": {
+    "scope": "read-only runtime phase diagnosis, not terminal or per-frame completion proof",
+    "verified_live_analyzer_pid": 22885,
+    "verified_live_next_queue_pid": 25123,
+    "logged_progress": 0.72,
+    "code_path": "src/valorant_ai_coach/application/hud_video_processor.py",
+    "code_path_sha256": "fd12f2028ea37618a771678d74c6ef50b595cb4d86e78f80ce2444fccc3b0fc3",
+    "phase_includes_final_combined_frame_observe_frames": true,
+    "phase_also_includes_visual_analysis_and_package_building": true,
+    "per_frame_progress_is_not_emitted_by_this_wrapper": true,
+    "native_exit_code_last_observed": null,
+    "production_source_changed": false,
+    "native_run_restarted": false
+  },
+  "native06_menu_false_positive_diagnosis": {
+    "reviewed_native_buy_count": 2,
+    "confirmed_full_menu_count": 0,
+    "confirmed_false_positive_count": 2,
+    "close_only_reviewed": 41,
+    "close_only_full_menu": 35,
+    "close_only_transition": 5,
+    "close_only_no_menu": 1,
+    "reason": "configured_menu_reference_nonmatch_does_not_override_weak_heuristic",
+    "review_sha256": "bded544262f7508121f72c9f5153d404e292c3326b5494a7aa54b90a3980cf0b",
+    "production_source_changed": false,
+    "candidate10_adoption_gate_passed": false
+  },
+  "isolated_menu_witness_prototype": {
+    "production_source_sha256": "4eef82c1cb4467b304281361f22793f354a054493bcd3d70cdeeee0501a6db06",
+    "prototype_source_sha256": "fb81847093d479561dc09b7d6d9d18a8902b704a76240c815b079ddd4635123a",
+    "production_source_modified": false,
+    "native_e2e_verified": false,
+    "isolated_changed_files": [
+      "src/valorant_ai_coach/hud/templates.py"
+    ],
+    "tests_passed": 57,
+    "test_log_sha256": "6fa5ff30e4189c0cca4ac172de6a3352f7db8047c93789fb4a66276a91150bc0",
+    "mypy_source_files": 86,
+    "mypy_passed": true,
+    "ruff_passed": true,
+    "actual_frame_regression_sha256": "3e54b598ee3e6f34bc4f9035ab816f7ead0bc739581fc6ffb243ee1714348639",
+    "patch_sha256": "9692c1fc0810e64f237b97844c204f49c87788e67978c35e7fb39ab5c328b7f3",
+    "current_production_diff_from_tested_base_sha256": "180bee3a42fa690b19641f150d1dead9143ee702766849a6176a08e621584335",
+    "adoption_gate_passed": false,
+    "actual_false_menu_excluded_count": 2,
+    "actual_positive_menu_retained_count": 2,
+    "production_integration_cohort": {
+      "scope": "16 existing reviewed actual frames; isolated common-code prototype",
+      "states": {
+        "unknown": 13,
+        "buy_menu_open": 1,
+        "live_first_person": 1,
+        "spectator_first_person": 1
+      },
+      "changed_observation_count": 0,
+      "unowned_hp_leak_count": 0,
+      "owned_and_hp_unchanged": true,
+      "cohort_sha256": "4a7cad9e90a835e88f04fb68b25b713ffe484a1efd5b082a2b783a70f5297796"
+    },
+    "frozen_holdout_merge": {
+      "scope": "frozen 66-frame holdout; configured independent references override weak current-frame texture candidates",
+      "parameters_changed": false,
+      "holdout_tuned": false,
+      "frame_count": 66,
+      "positive_count": 6,
+      "true_positive_count": 5,
+      "false_positive_count": 0,
+      "heuristic_false_positive_count": 1,
+      "production_source_modified": false,
+      "native_e2e_verified": false,
+      "adopted": false,
+      "diagnostic_sha256": "d0f5769be0d4272b90bdf406187854e86ba01ef8ee39e4533b3cec49b5d16932"
+    },
+    "ready_regression_test_sha256": "612d6d9724442788e38aca83b0090d68eeb8570295213180af0cef50caaba2b1",
+    "false_menu_full_classification": {
+      "frame_count": 7,
+      "false_menu_to_unknown_count": 2,
+      "false_menu_live_promotion_count": 0,
+      "real_menu_retained_count": 2,
+      "live_retained_count": 1,
+      "spectator_retained_count": 1,
+      "other_observations_unchanged_count": 5,
+      "unowned_hp_leak_count": 0,
+      "original_diagnostic_sha256": "33fed7ef33a127d91707bba6da1e78e2cbf9bf0ce3ce047e7983157181511904",
+      "prototype_diagnostic_sha256": "82092fe5879624a7f34fe11b9fc6434c904fb7d79e2baa178a1461b66e6990ca",
+      "production_source_changed": false,
+      "native_e2e_verified": false
+    },
+    "hud_regression_suite": {
+      "status": "complete",
+      "exit_code": 0,
+      "test_file_count": 24,
+      "passed": 309,
+      "failed": 0,
+      "elapsed_seconds": 992.49,
+      "source": "isolated common-code prototype",
+      "log": "outputs/recognition-investigation/menu-witness-prototype/hud-regression-pytest.log",
+      "log_sha256": "acfa3569c126654a3abcd590ac75948445ffb5cca71b29e29faae37172d2e7e0",
+      "native_e2e_verified": false,
+      "full_repository_pytest_completed": false
+    },
+    "full_repository_regression_suite": {
+      "status": "complete",
+      "full_suite_passed": 1001,
+      "full_suite_skipped": 9,
+      "full_suite_failed": 0,
+      "supplement_passed": 3,
+      "supplement_failed": 0,
+      "supplement_skipped": 0,
+      "resolved_skipped_nodes": [
+        "tests/integration/test_e2e_share_workflow.py::test_canonical_evaluator_and_shared_summary_reconcile",
+        "tests/integration/test_e2e_shot_contract.py::test_supplied_shot_granularity_in_production_engine",
+        "tests/integration/test_e2e_validation_pack_v3.py::test_validation_corpus_and_production_leakage"
+      ],
+      "unique_tests_passed": 1004,
+      "unresolved_optional_skipped": 6,
+      "is_single_pytest_run": false,
+      "templates_sha256": "fb81847093d479561dc09b7d6d9d18a8902b704a76240c815b079ddd4635123a",
+      "full_log_sha256": "b517656cf5c0be9ac359eda4cbf7e190dda13c51fbdedac0f333c0d4fd68e66c",
+      "supplement_log_sha256": "4f311926b7f86c268cb041573bcb50a71e302c7f7cca786772eda25a69e58a8a",
+      "full_elapsed_seconds": 1635.82,
+      "supplement_elapsed_seconds": 6.67,
+      "production_source_modified": false,
+      "windows_runtime_verified": false,
+      "native_e2e_verified": false,
+      "full_status_sha256": "89da42aa5d0a7f1a084b3c6e1a2b1849b18e4cdafd5924fc51e509a37a657bdc",
+      "coverage_certificate_sha256": "dd9c1f47ddaec68206547c0c18812bd84a7cf586d244c67bbb79fba23f63eccc"
+    }
+  },
+  "geometry_feature_ncc_rejected": {
+    "anchors": {
+      "hp_hud_structure": {
+        "training_count": 32,
+        "accepted_count": 1,
+        "threshold": 0.9,
+        "minimum_group_pixels": 64,
+        "minimum_group_std": 1.0,
+        "support_fraction": 0.03125,
+        "training_qualified": false,
+        "score_distribution": {
+          "min": 0.0,
+          "median": 0.616802841424942,
+          "max": 0.9999998807907104
+        },
+        "rejection_reason": "training_support_below_minimum_fraction",
+        "rejection_stage": "training",
+        "holdout_used": false
+      },
+      "ability_bar_structure": {
+        "training_count": 32,
+        "accepted_count": 4,
+        "threshold": 0.9,
+        "minimum_group_pixels": 64,
+        "minimum_group_std": 1.0,
+        "support_fraction": 0.125,
+        "training_qualified": false,
+        "score_distribution": {
+          "min": 0.0,
+          "median": 0.808211088180542,
+          "max": 0.9999998807907104
+        },
+        "rejection_reason": "training_support_below_minimum_fraction",
+        "rejection_stage": "training",
+        "holdout_used": false
+      }
+    },
+    "diagnostic_sha256": "8405f52d295794e48d4c2571109c0495c8294c0352e5311af8f32e676e4012dd",
+    "production_source_changed": false,
+    "profile_written": false,
+    "holdout_used": false,
+    "ncc_threshold": 0.9
+  },
+  "profile11_isolated_menu_candidate": {
+    "profile": "outputs/hud_profiles/pi-structural-20261006-11/hud_layout.json",
+    "base_profile": "outputs/hud_profiles/pi-structural-20261006-08/hud_layout.json",
+    "profile_fingerprint": "94e52fd77d6c2e5555bf257bcce8abf5e8b284e26c139780c9abf2940f3f059d",
+    "candidate_only": true,
+    "env_adopted": false,
+    "native_e2e_verified": false,
+    "native_e2e_queued": false,
+    "windows_runtime_verified": false,
+    "production_source_changed": false,
+    "prior_identity_anchor_spectator_report_reader_specifications_equal": true,
+    "prior_asset_count": 21,
+    "prior_asset_hashes_equal": true,
+    "relative_asset_count": 23,
+    "absolute_asset_count": 0,
+    "missing_asset_count": 0,
+    "reader_diagnostics": [],
+    "fingerprint_equal_after_relocation": true,
+    "threshold": 0.9,
+    "training_compound_support": [
+      4,
+      5
+    ],
+    "training_false_accept": [
+      0,
+      59
+    ],
+    "holdout_compound_support": [
+      5,
+      6
+    ],
+    "holdout_false_accept": [
+      0,
+      60
+    ],
+    "missing_role_controls": [
+      12,
+      0
+    ],
+    "production_integration_verified": true,
+    "requires_verified_menu_witness_source_patch": true,
+    "additional_numeric_reader_changes": false,
+    "change": "isolated addition to report08; two independently matched fixed purchase-menu category-header and close-symbol signals; existing classifier requires both; no purchase-phase banner or boundary inferred",
+    "production_integration_scope": "7 real frames through isolated common-code prototype; full native E2E unverified",
+    "production_integration_counts": {
+      "false_menu_to_unknown": 2,
+      "real_menu_retained": 2,
+      "live_retained": 1,
+      "spectator_retained": 1
+    },
+    "original_integration_sha256": "113c6befddf8580bd7a38cafdbd8ec1fb7298fee3b1a51f70c49e60020fff42b",
+    "prototype_integration_sha256": "616397907fd1f37489c090b1c152e5f36b2cffa3eab238fa718da30810f1e398"
+  },
+  "geometry_feature_ncc_reference_selection_rejected": {
+    "anchors": {
+      "hp_hud_structure": {
+        "training_count": 32,
+        "candidate_count": 34,
+        "candidate_selection": "maximum training support at fixed .90 per-group NCC; ties preserve prior candidate order",
+        "selected_candidate": "training_feature_median",
+        "selected_feature_sha256": "af61f90490f1243358641741d272e4e0d50bd834a4e9491349fb5a8126d4d724",
+        "accepted_count": 7,
+        "support_fraction": 0.21875,
+        "training_qualified": false,
+        "threshold": 0.9,
+        "mask_unchanged": true
+      },
+      "ability_bar_structure": {
+        "training_count": 32,
+        "candidate_count": 34,
+        "candidate_selection": "maximum training support at fixed .90 per-group NCC; ties preserve prior candidate order",
+        "selected_candidate": "training_feature_median",
+        "selected_feature_sha256": "62e68cc02175476d657fa06f27d0f12cf1aa3416151c164ff9c0ff482a060ecc",
+        "accepted_count": 7,
+        "support_fraction": 0.21875,
+        "training_qualified": false,
+        "threshold": 0.9,
+        "mask_unchanged": true
+      }
+    },
+    "holdout_used": false,
+    "production_source_changed": false,
+    "profile_written": false,
+    "rejection_reason": "reference_selection_still_below_support_fraction",
+    "diagnostic_sha256": "aacd50d4150ce261d624a2d1b6a9c1fa57c57862c19a2487e71a8d8e1c83f737"
+  },
+  "spectator_component_ambiguity_diagnosis": {
+    "scope": "64 existing actual generation frames; frozen profile evidence diagnostics; no semantic labels or native classifications inferred",
+    "frame_count": 64,
+    "profile_fingerprint": "3859de5c439346df8d916522bead980a6246f07e0d38c8e2d70b2e24d285b745",
+    "absence_coverage_threshold": 0.1,
+    "positive_component_threshold": 0.9,
+    "production_source_changed": false,
+    "profile_changed": false,
+    "candidate_generated": false,
+    "native_e2e_verified": false,
+    "env_adopted": false,
+    "spectator_reason_counts": {
+      "panel_structure_ambiguous": 28,
+      "panel_structure_excluded": 28,
+      "panel_structure_mismatch": 6,
+      "panel_structure_present": 2
+    },
+    "three_roles_supported_count": 14,
+    "three_roles_supported_but_spectator_exclusion_unverified": 9,
+    "ambiguous_component_exceedance_counts": {
+      "boundary": 27,
+      "portrait": 22,
+      "text": 15
+    },
+    "diagnostic_sha256": "e704593c3cf2bbe9a4ed935087b16f451fa9b23cd01b3d21ead1825158106f5e",
+    "three_role_semantic_review": {
+      "scope": "all9 existing-generation frames with 3 identity roles supported and spectator exclusion unverified; visual inspection only",
+      "reviewed_frame_count": 9,
+      "review_complete": true,
+      "visible_spectator_panel_count": 0,
+      "astra_first_person_appearance_count": 9,
+      "full_buy_menu_count": 0,
+      "combat_report_visible_count": 1,
+      "combat_report_review_indices": [
+        2
+      ],
+      "smoke_visible_review_indices": [
+        3,
+        4,
+        5
+      ],
+      "ownership_or_world_trust_promoted": false,
+      "human_review_does_not_replace_current_frame_exclusion": true,
+      "manifest_sha256": "194f7af337abe37cf9f1a0c015df0d42e88d35d11a5a4a9df273d25c791797b1",
+      "contact_sheet_sha256": "7d8d776f84455a7fb9f91daa88c7ff951d39a6325f940e3c902ce7b128539bf2",
+      "production_source_changed": false,
+      "profile_changed": false
+    }
+  },
+  "native06_all_spectator_semantic_review": {
+    "scope": "all native06 spectator_first_person observations; image semantic review, no native state rewrites",
+    "review_complete": true,
+    "reviewed_frame_count": 216,
+    "spectator_panel_visually_present_count": 216,
+    "first_person_camera_visually_confirmed_count": 214,
+    "external_camera_transition_count": 2,
+    "external_camera_transition_review_indices": [
+      214,
+      215
+    ],
+    "external_camera_transition_native_indices": [
+      5344,
+      5346
+    ],
+    "combat_report_visible_count": 216,
+    "full_buy_menu_visible_count": 0,
+    "player_specific_value_leak_count": 0,
+    "first_person_subtype_quality_gate_passed": false,
+    "spectator_exclusion_quality_gate_passed": true,
+    "production_adoption_allowed": false,
+    "production_source_changed": false,
+    "native_outputs_changed": false,
+    "contract_findings": {
+      "config": "spectator_first_person positive_rois currently only spectator_icon; HP and abilities documented as negative_or_changed_rois; no independent camera-mode requirement",
+      "classifier": "confirmed spectator signal directly selects spectator_first_person unless conflicting modes or map transition",
+      "visual_spec": "spectator_first_person and unknown both suppress target-player mechanics"
+    },
+    "conclusion": "Spectator presence supported in all 216 frames. Last two show external camera transition, so 216 correct first-person classifications is not supported. Keep spectator presence/exclusion evidence; do not infer death events or player ownership. An independent current-frame camera-mode witness needs qualification before a subtype fix.",
+    "contract_source_sha256": {
+      "config/hud_layout_1080p_v3.json": "04825cab065a38c49ac549845fd2bb464e3895f74f25e242df66e81feb93a899",
+      "src/valorant_ai_coach/hud/classifier.py": "8aaec91c1b5d7e450f73ef5f25f4f3ce7052b62e40891f7c8bc09e0639341e59",
+      "config/visual_v2/VISUAL_ANALYZER_SPEC.md": "6a02749902ebb84d32a40d780f95a99991b29bcdcd6bdd676a4fa8e3c027740c"
+    },
+    "manifest_sha256": "580dbd1edf58056e4a552440175f47bd7f47d84c15ab18a127602f7da65d3cea",
+    "semantic_review_sha256": "8d0099185f55a775c815f3736db90346769d7e89adf7efb0b9b2f83812516f90",
+    "native_e2e_counts_unchanged": true
+  },
+  "identity_pose_specificity_diagnostic": {
+    "scope": "existing identity score pose specificity; not geometry NCC acceptance",
+    "training_frames": 32,
+    "holdout_frames": 32,
+    "decoded_pixel_hash_overlap_count": 0,
+    "offsets_px": [
+      8,
+      16
+    ],
+    "pose_count": 17,
+    "off_pose_tests_per_cohort": 1024,
+    "threshold": 0.9,
+    "threshold_or_masks_changed": false,
+    "training": {
+      "hp_hud_structure": {
+        "center_supported_count": 28,
+        "center_supported_with_off_pose_match_count": 0,
+        "any_off_pose_supported_frame_count": 0
+      },
+      "ability_bar_structure": {
+        "center_supported_count": 18,
+        "center_supported_with_off_pose_match_count": 0,
+        "any_off_pose_supported_frame_count": 0
+      }
+    },
+    "holdout": {
+      "hp_hud_structure": {
+        "center_supported_count": 28,
+        "center_supported_with_off_pose_match_count": 0,
+        "any_off_pose_supported_frame_count": 0
+      },
+      "ability_bar_structure": {
+        "center_supported_count": 18,
+        "center_supported_with_off_pose_match_count": 0,
+        "any_off_pose_supported_frame_count": 0
+      }
+    },
+    "production_source_changed": false,
+    "geometry_acceptance_changed": false,
+    "profile_written": false,
+    "fresh_geometry_improvement_proven": false,
+    "conclusion": "Existing structural identities distinguish the tested 8/16 pixel offsets at supported fixed positions. This does not validate geometry NCC, arbitrary shifts/scales, full-video anchor recall, or fresh calibration. Preserve minimum3 anchors and NCC0.90.",
+    "proof_sha256": {
+      "identity-pose-specificity-training.json": "2d7e5663de44eabe3368ff233ec9a9c0fcfbf9044a56c4440b48008abab7fa19",
+      "identity-pose-specificity-holdout.json": "7f92ff0e31f7d3020cbe841d7bfb587e78be0a02fb050347afaeacc607ee5f2d",
+      "probe_identity_pose_specificity_training.py": "3f2d62cccbf03c55bd5291ca01c928da071f3b4da8cca8f321b18d6e0219d279",
+      "validate_identity_pose_specificity_holdout.py": "2b010a93a69019fca77e0618304568b2eda204e38fe76b3048a103d47b5762f8"
+    }
+  },
+  "geometry_smoothed_feature_ncc_training_rejected": {
+    "training_only": true,
+    "holdout_used": false,
+    "geometry_localization_verified": false,
+    "production_source_changed": false,
+    "profile_written": false,
+    "ncc_threshold_changed": false,
+    "mask_changed": false,
+    "feature_extraction_changed": true,
+    "representation": "3x3 sigma0.6 Gaussian on value-isolated binary ridges; excluded groups reset to zero",
+    "parameters_frozen_before_training": true,
+    "rejection_stage": "training_support",
+    "rejection_reason": "per_group_NCC_0.90_support_below_0.80",
+    "conditional_visibility_cohort_qualification_performed": false,
+    "scope_limitation": "Unconditional original32 cohort support; does not prove failure on every independently labelled visible-HUD subset.",
+    "anchors": {
+      "hp_hud_structure": {
+        "training_count": 32,
+        "candidate_count": 34,
+        "candidate_selection": "maximum training support at fixed .90 per-group NCC; ties preserve prior candidate order",
+        "selected_candidate": "training_feature_median",
+        "selected_feature_sha256": "82693153779e32b2398fda39d36b02f4417ae0648a55ab77a2580a54156e4eac",
+        "accepted_count": 15,
+        "support_fraction": 0.46875,
+        "training_qualified": false,
+        "threshold": 0.9,
+        "mask_unchanged": true
+      },
+      "ability_bar_structure": {
+        "training_count": 32,
+        "candidate_count": 34,
+        "candidate_selection": "maximum training support at fixed .90 per-group NCC; ties preserve prior candidate order",
+        "selected_candidate": "training_feature_median",
+        "selected_feature_sha256": "3a1fc9d40f1cd6d6f2f6256b6acf5088886f4b5aac9b9610d543ae9a0236f92d",
+        "accepted_count": 17,
+        "support_fraction": 0.53125,
+        "training_qualified": false,
+        "threshold": 0.9,
+        "mask_unchanged": true
+      }
+    },
+    "diagnostic_sha256": "1822d529b9893817bb76b2b96435c2d7293dd488b47c4dfac7e8e115e2acb232",
+    "runner_sha256": "5dce6ba241dc4bb7fbf04d41974e9221742dc4f30d96d944567610cc918d3915"
+  },
+  "spectator_camera_current_frame_structure_diagnostic": {
+    "scope": "all216 reviewed native06 Spect observations; current-frame common-code structural replay",
+    "counts": {
+      "visually_first_person": {
+        "frame_count": 214,
+        "role_support_count": {
+          "hp_hud_structure": 211,
+          "ability_bar_structure": 0,
+          "weapon_ammo_structure": 197
+        },
+        "all_three_supported_count": 0
+      },
+      "external_camera_transition": {
+        "frame_count": 2,
+        "role_support_count": {
+          "hp_hud_structure": 0,
+          "ability_bar_structure": 0,
+          "weapon_ammo_structure": 0
+        },
+        "all_three_supported_count": 0
+      }
+    },
+    "production_source_changed": false,
+    "thresholds_changed": false,
+    "profile_written": false,
+    "camera_classifier_qualified": false,
+    "player_ownership_promoted": false,
+    "native_outputs_changed": false,
+    "semantic_review_sha256": "8d0099185f55a775c815f3736db90346769d7e89adf7efb0b9b2f83812516f90",
+    "limitations": "Existing Ability identity may be agent-specific. Role absence cannot establish death or external camera; no missing structure implies a known state. Diagnostic is not training/holdout qualification.",
+    "conclusion": "Current player Ability reference cannot be reused as a universal spectator camera witness: 0/214 visible first-person supports. HP and Weapon support differ at the two external-camera frames, but missing structures are not positive camera or death evidence. Independent agent-neutral current-frame camera evidence requires separate training/holdout qualification.",
+    "diagnostic_sha256": "c56897ab16d046565c3871f6e603cc07ea0a112e88f30d2b433729d356e44d7d",
+    "runner_sha256": "d53779cfeb3c267e3a88ee9c14689b089018561f056a711c1a3d2c2f116b204a",
+    "exit_code": 0
+  },
+  "profile11_portable_candidate_bundle": {
+    "archive": "outputs/hud_profiles/pi-structural-20261006-11.zip",
+    "archive_sha256": "2daf9560962459e0a4569d783550a249e523cb3dd8deb31af7f19e3685204bcb",
+    "archive_bytes": 457265,
+    "file_count": 26,
+    "relative_asset_count": 23,
+    "archive_integrity_verified": true,
+    "extracted_file_hashes_equal": true,
+    "fingerprint_equal_after_extract": true,
+    "reader_diagnostics": [],
+    "production_source_modified": false,
+    "candidate_only": true,
+    "production_adopted": false,
+    "native_e2e_verified": false,
+    "windows_runtime_verified": false,
+    "requires_verified_menu_witness_source_patch": true,
+    "required_patch_sha256": "9692c1fc0810e64f237b97844c204f49c87788e67978c35e7fb39ab5c328b7f3",
+    "profile_fingerprint": "94e52fd77d6c2e5555bf257bcce8abf5e8b284e26c139780c9abf2940f3f059d",
+    "validation_sha256": "9058bf385b9353dac56f684bb874695d5ad014d47467b5cb9774a69e2c3bcdc3"
+  },
+  "isolated_menu_witness_native_e2e_preparation": {
+    "workspace": "outputs/recognition-investigation/menu-witness-prototype/native-e2e-workspace",
+    "purpose": "isolated native E2E preparation; no analysis launched yet",
+    "copied_files_verified_equal": 379,
+    "changed_files": [
+      "src/valorant_ai_coach/hud/templates.py"
+    ],
+    "production_source_changed": false,
+    "native_e2e_queued": false,
+    "native_e2e_verified": false,
+    "requires_full_regression_pass": true,
+    "profile": "outputs/hud_profiles/pi-structural-20261006-11/hud_layout.json",
+    "video_and_validation_pack_to_use": "original absolute paths; no copies or expected-value changes",
+    "independent_output_directory_required": true,
+    "environment_check_exit_code": 0,
+    "environment_check_log_sha256": "b75ba800da81f98a2c79e71e2508a879810bf397b11eccb4ef5d8ca968137ab5",
+    "resource_observation": {
+      "available_memory_mib_at_inspection": 2536,
+      "native07_rss_kib": 336068,
+      "full_regression_rss_kib": 270928,
+      "scope": "read-only snapshot; not a future resource guarantee"
+    },
+    "workspace_validation_sha256": "9bc00173ff6872a8dedac0c55b70bd7af1b367ef45986c9a0c3f9d39b3daeaa4"
+  },
+  "profile11_isolated_native_e2e_queue": {
+    "status": "running_isolated_profile11_standard_e2e",
+    "queue_pid": 52116,
+    "production_source_modified": false,
+    "candidate_only": true,
+    "native_e2e_verified": false,
+    "source_scope": "isolated common-code copy",
+    "requires_profile08_comparison_before_adoption": true,
+    "regression_coverage_certificate_sha256": "dd9c1f47ddaec68206547c0c18812bd84a7cf586d244c67bbb79fba23f63eccc",
+    "regression_scope_note": "Full1001pass9skip plus3 originally skipped pack checks passed; unique1004pass6optional skips, two runs.",
+    "run_output": "outputs/e2e/match_001/20261006T063149Z-cc009d82",
+    "regression_log_sha256": "b517656cf5c0be9ac359eda4cbf7e190dda13c51fbdedac0f333c0d4fd68e66c",
+    "regression_passed": 1004,
+    "regression_skipped": 6,
+    "workspace_validation_sha256": "9bc00173ff6872a8dedac0c55b70bd7af1b367ef45986c9a0c3f9d39b3daeaa4",
+    "profile_fingerprint": "94e52fd77d6c2e5555bf257bcce8abf5e8b284e26c139780c9abf2940f3f059d",
+    "source_provenance_note": "Git identity alone does not identify the ignored candidate copy; use workspace content hashes.",
+    "queue_runner_sha256": "e818e963882c1a39e6a64cb3b669d8bd87224f4cb593116a13943464d9a2321c",
+    "initial_queue_stopped_before_native_launch": true,
+    "initial_queue_reason": "whole suite had3 additional pack-dependent skips; supplemented those exact3 nodes without removing skip evidence"
+  },
+  "native_profile07_terminal_review": {
+    "run": "outputs/e2e/match_001/20261006T010024Z-a493a3cc",
+    "status": "complete",
+    "output_hashes_verified": true,
+    "schema_valid": true,
+    "error_code": null,
+    "exit_code": 1,
+    "counts": {
+      "passed": 22,
+      "failed": 56,
+      "not_evaluated": 4,
+      "evaluation_failure_count": 57,
+      "negative_assertion_failures": 0,
+      "negative_assertions_not_evaluated": 0,
+      "discontinuity_violations": 0,
+      "observation_count": 5426,
+      "sampled_frame_count": 5426,
+      "hud_unknown": 4597,
+      "detected_states": {
+        "unknown": 4597,
+        "live_first_person": 594,
+        "buy_menu_open": 2,
+        "spectator_first_person": 233
+      },
+      "identity_missing": {
+        "ability_bar_structure": 2841,
+        "weapon_ammo_structure": 2892,
+        "hp_hud_structure": 896
+      },
+      "identity_reasons": {
+        "structure_evidence_insufficient": 1847,
+        "spectator_exclusion_unverified": 2806,
+        "competing_view_evidence": 179,
+        "independent_hud_structures": 594
+      },
+      "live_identity_evidence_insufficient": 4374,
+      "fresh_geometry_success": 1,
+      "effective_geometry_success": 5426,
+      "insufficient_anchors": 5425,
+      "geometry_invalid_unknown": 0,
+      "spectator_checks": {
+        "panel_structure_excluded": 2620,
+        "panel_structure_mismatch": 320,
+        "panel_structure_ambiguous": 2243,
+        "roi_unobservable": 10,
+        "panel_structure_present": 233
+      },
+      "round_count": 1,
+      "round_start_event_count": 0,
+      "round_end_event_count": 0,
+      "boundary_incomplete_package_count": 1,
+      "hud_event_count": 0,
+      "visual_event_count": 0,
+      "map_resolved_count": 0,
+      "map_held_count": 0,
+      "trace_counts": {
+        "events": 292,
+        "state_intervals": 304,
+        "ownership_intervals": 5251,
+        "snapshots": 829,
+        "visual_observations": 4,
+        "temporal_features": 0
+      }
+    },
+    "baseline_improved_assertions": [
+      "GT-R1-SNAP-705"
+    ],
+    "prior_improved_assertions": [],
+    "regressed_assertions": [],
+    "semantic_review_pending": true,
+    "production_adopted": false,
+    "comparison_sha256": {
+      "profile07-baseline-comparison.json": "98f37ea1797054d2485208b15dcda901aa33e9d8e06cc3dffaafc984bfe81f39",
+      "profile07-prior-comparison.json": "c883de500b23706eddc936676472e4d25b0716b718f2aac20e629542281678b5"
+    },
+    "live_semantic_review_complete": true,
+    "semantic_review_pending_scopes": [
+      "timer value full-run correctness",
+      "global geometry and stale-state safety"
+    ],
+    "spectator_semantic_review_complete": true,
+    "buy_menu_semantic_review_complete": true,
+    "positive_state_semantic_review_complete": true
+  },
+  "current_native_e2e_run": "outputs/e2e/match_001/20261006T010024Z-a493a3cc",
+  "profile08_live_run": {
+    "status": "running_profile08_standard_e2e",
+    "next_profile": "outputs/hud_profiles/pi-structural-20261006-08/hud_layout.json",
+    "run_output": "outputs/e2e/match_001/20261006T063210Z-3ecd1ba6"
+  },
+  "native07_live_semantic_review": {
+    "scope": "all594 native07 live observations:589 verified same-PTS pixel-identical prior reviewed frames plus5 newly reviewed frames",
+    "review_complete": true,
+    "total_live_frames": 594,
+    "prior_semantic_reviews_reused": 589,
+    "new_frames_reviewed": 5,
+    "novel_fresh_current_frame_identity_passed": 5,
+    "report_visible_live_count": 134,
+    "additional_scoreboard_overlay_count": 1,
+    "semantic_adoption_gate_passed": false,
+    "reason": "combat_report_current_frame_blocker_unconfigured_in_profile07",
+    "production_source_changed": false,
+    "native_outputs_changed": false,
+    "global_geometry_or_world_visibility_proven": false,
+    "stale_state_safety_proven": false,
+    "new_page_sha256": "0e0c1d239712e471c6eab55654789c6a018129871f174d91f6125dfce42c27bd",
+    "prior_semantic_review_sha256": "3122c601c283e9e6462f37d2261183afc7513624b8514d5aa6b64e8ccd09ac79",
+    "semantic_review_sha256": "0ce41b9f48380ce00f1450e5883531361b511b61e68b5303ac5426ea307c54bf",
+    "manifest_sha256": "2419a58894d2dc6164f64f4d281e47d3c0808a9f406c8a0f740f93f0599cd990"
+  },
+  "native07_spectator_semantic_review": {
+    "scope": "all233 native07 Spectator observations;216 hash-identical prior reviews plus17 newly viewed current frames",
+    "review_complete": true,
+    "reviewed_frame_count": 233,
+    "prior_reviews_reused": 216,
+    "new_frames_reviewed": 17,
+    "spectator_panel_visually_present_count": 233,
+    "first_person_camera_visually_confirmed_count": 231,
+    "external_camera_transition_count": 2,
+    "external_camera_transition_native_indices": [
+      5423,
+      5425
+    ],
+    "combat_report_visible_count": 233,
+    "player_specific_value_leak_count": 0,
+    "new_current_frame_spectator_replay_passed": 17,
+    "first_person_subtype_quality_gate_passed": false,
+    "production_adoption_allowed": false,
+    "production_source_changed": false,
+    "native_outputs_changed": false,
+    "prior_semantic_review_sha256": "8d0099185f55a775c815f3736db90346769d7e89adf7efb0b9b2f83812516f90",
+    "page_sha256": {
+      "new-page-000.jpg": "590bfca9223da13d5ffdfde1d75fcc7f25c1e8eea2d2614f4fd1eb8291c1098e",
+      "new-page-001.jpg": "bbb51a70443d713758502b6fe60ae83cc80e6858a9b14aae7e4be1b669a19583"
+    },
+    "conclusion": "Spectator presence and player-value exclusion supported; camera subtype still overclaims first-person on2 external-camera transitions. No death event or ownership inferred.",
+    "manifest_sha256": "35334250e08a614508261888f367fcf9b774f625b986e8730bf1453b8c5411ad",
+    "semantic_review_sha256": "93feb2508af1a7d841f6b9c51411df9b69e28aeb85fdde73ecfbf70be5fdeef3"
+  },
+  "native07_buy_menu_semantic_review": {
+    "scope": "all2 native07 buy_menu_open observations; pixel-identical known native06 false menu frames",
+    "review_complete": true,
+    "reviewed_frame_count": 2,
+    "prior_reviews_reused": 2,
+    "new_frames_to_review": 0,
+    "actual_full_menu_count": 0,
+    "false_menu_classification_count": 2,
+    "novel_false_menu_count": 0,
+    "source_or_output_changed": false,
+    "production_adoption_allowed": false,
+    "reason": "same weak menu heuristics; qualified configured witness override under isolated native11 evaluation",
+    "prior_semantic_review_sha256": "bded544262f7508121f72c9f5153d404e292c3326b5494a7aa54b90a3980cf0b",
+    "diagnostic_sha256": "c002d451a043ab9532751d1b524339874090eb66c5467427fad73c30c976cc88"
   }
 }

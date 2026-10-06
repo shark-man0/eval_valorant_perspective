@@ -405,6 +405,30 @@
       "settings_fingerprint": "40a89a2ffa3dce6453e5a92d39c71dc51888f42827c27d89832707f479897046"
     },
     "result": {
+      "detail_truncated": true,
+      "status": "fail",
+      "schema_valid": true,
+      "failure_count": 57,
+      "negative_assertion_count": 20,
+      "error_code": null
+    },
+    "failure_count": 57
+  },
+  {
+    "history_key": "6c2924517f39ba572c52e31aa51b78ad19f5a4b58df709854d8de67ea99aa7de",
+    "metadata": {
+      "manual_map_id": null,
+      "video_id": "match_001",
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "analyzer_commit": "98600a8d571ccc371575063aef92b43aab87878d",
+      "git_is_dirty": true,
+      "executed_at": "2026-10-06T01:00:25.584503+00:00",
+      "validation_pack": "valorant_e2e_validation_pack_v3",
+      "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
+      "git_dirty_fingerprint": "37601b176c091e0dd5ae63bad824d273e06c84c4a50c1b7ee7274cfcebfa958c",
+      "settings_fingerprint": "ee566d324b419dc13fc3a54c63b597c4d2be1367436e2814864d9f318be60667"
+    },
+    "result": {
       "status": "fail",
       "schema_valid": true,
       "failure_count": 57,

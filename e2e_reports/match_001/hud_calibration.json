@@ -5,48 +5,48 @@
     "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
     "analyzer_commit": "98600a8d571ccc371575063aef92b43aab87878d",
     "git_is_dirty": true,
-    "executed_at": "2026-10-05T19:11:33.555958+00:00",
+    "executed_at": "2026-10-06T01:00:25.584503+00:00",
     "validation_pack": "valorant_e2e_validation_pack_v3",
     "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
-    "git_dirty_fingerprint": "60c325a9918c5aff349f7c1514cb613270c48e6f6000765b8680c80a0d9589fb",
-    "settings_fingerprint": "40a89a2ffa3dce6453e5a92d39c71dc51888f42827c27d89832707f479897046"
+    "git_dirty_fingerprint": "37601b176c091e0dd5ae63bad824d273e06c84c4a50c1b7ee7274cfcebfa958c",
+    "settings_fingerprint": "ee566d324b419dc13fc3a54c63b597c4d2be1367436e2814864d9f318be60667"
   },
   "available": true,
   "schema_version": 1,
   "profile_present": true,
   "counts": {
-    "frames": 5347,
+    "frames": 5426,
     "fresh_geometry_success": 1,
-    "effective_geometry_success": 5347,
-    "retained_geometry_frames": 5346,
+    "effective_geometry_success": 5426,
+    "retained_geometry_frames": 5425,
     "geometry_invalid_unknown": 0,
-    "geometry_valid_state_unknown": 4540,
-    "live_identity_evidence_insufficient": 4326,
-    "insufficient_anchors_frames": 5346
+    "geometry_valid_state_unknown": 4597,
+    "live_identity_evidence_insufficient": 4374,
+    "insufficient_anchors_frames": 5425
   },
-  "fresh_geometry_success_rate": 0.0001870207593042828,
+  "fresh_geometry_success_rate": 0.00018429782528566163,
   "effective_geometry_success_rate": 1.0,
   "reasons": {
-    "insufficient_anchors": 5346
+    "insufficient_anchors": 5425
   },
   "identity_evidence_policy": "independent_current_frame_structures_v1",
   "identity_reasons": {
-    "spectator_exclusion_unverified": 2737,
+    "spectator_exclusion_unverified": 2806,
     "competing_view_evidence": 179,
-    "structure_evidence_insufficient": 1842,
-    "independent_hud_structures": 589
+    "structure_evidence_insufficient": 1847,
+    "independent_hud_structures": 594
   },
   "identity_missing": {
-    "hp_hud_structure": 893,
-    "ability_bar_structure": 2794,
-    "weapon_ammo_structure": 2889
+    "hp_hud_structure": 896,
+    "ability_bar_structure": 2841,
+    "weapon_ammo_structure": 2892
   },
   "spectator_checks": {
     "roi_unobservable": 10,
-    "panel_structure_present": 216,
-    "panel_structure_excluded": 2610,
-    "panel_structure_ambiguous": 2193,
-    "panel_structure_mismatch": 318
+    "panel_structure_present": 233,
+    "panel_structure_excluded": 2620,
+    "panel_structure_ambiguous": 2243,
+    "panel_structure_mismatch": 320
   },
   "automatic_identity_generation": {
     "version": 2,
@@ -1650,9 +1650,9 @@
       "threshold": 0.9,
       "geometry_success_rate_when_accepted": 0.3333333333333333,
       "accepted_count": 3,
-      "rejected_count": 5344,
+      "rejected_count": 5423,
       "unscored_count": 0,
-      "missing_during_insufficient_anchors": 5344,
+      "missing_during_insufficient_anchors": 5423,
       "accepted_during_geometry_success": 1,
       "content_hash": "b479ec4f00a1e271cd559d23c1843ae45da39abc04bdf794bf926bdba394ffbd",
       "mask_content_hash": null,
@@ -1662,7 +1662,7 @@
       ],
       "match_confidence": {
         "min": 0.31304964423179626,
-        "median": 0.7707666158676147,
+        "median": 0.7693846821784973,
         "max": 0.9994843602180481
       }
     },
@@ -1673,8 +1673,8 @@
       "mask_presence": true,
       "asset_readable": true,
       "threshold": 0.9,
-      "geometry_success_rate_when_accepted": 0.0001870207593042828,
-      "accepted_count": 5347,
+      "geometry_success_rate_when_accepted": 0.00018429782528566163,
+      "accepted_count": 5426,
       "rejected_count": 0,
       "unscored_count": 0,
       "missing_during_insufficient_anchors": 0,
@@ -1687,7 +1687,7 @@
       ],
       "match_confidence": {
         "min": 0.9577085971832275,
-        "median": 0.9951611757278442,
+        "median": 0.9950983226299286,
         "max": 0.9983332753181458
       }
     },
@@ -1700,9 +1700,9 @@
       "threshold": 0.9,
       "geometry_success_rate_when_accepted": 1.0,
       "accepted_count": 1,
-      "rejected_count": 5346,
+      "rejected_count": 5425,
       "unscored_count": 0,
-      "missing_during_insufficient_anchors": 5346,
+      "missing_during_insufficient_anchors": 5425,
       "accepted_during_geometry_success": 1,
       "content_hash": "31d71802e579aabcd257926af9707687b4dfa1bb3faf9e5df410c0d8bf6bf574",
       "mask_content_hash": null,
@@ -1712,7 +1712,7 @@
       ],
       "match_confidence": {
         "min": 0.0,
-        "median": 0.5232334136962891,
+        "median": 0.5224026143550873,
         "max": 0.9994807243347168
       }
     },
@@ -1725,9 +1725,9 @@
       "threshold": 0.9,
       "geometry_success_rate_when_accepted": 1.0,
       "accepted_count": 1,
-      "rejected_count": 5346,
+      "rejected_count": 5425,
       "unscored_count": 0,
-      "missing_during_insufficient_anchors": 5346,
+      "missing_during_insufficient_anchors": 5425,
       "accepted_during_geometry_success": 1,
       "content_hash": "f9faf779c0490d9ef79d3cc7fa3824de0fbcb7cbed4947df3af93f7ce5a3d847",
       "mask_content_hash": null,
@@ -1737,7 +1737,7 @@
       ],
       "match_confidence": {
         "min": 0.0,
-        "median": 0.43377935886383057,
+        "median": 0.4353940188884735,
         "max": 0.9993156790733337
       }
     }

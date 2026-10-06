@@ -1,11 +1,13 @@
 # Pi real-video recognition investigation (2026-10-06 JST)
 
 <!-- CURRENT_STATUS_START -->
-Current status: strict profile06 standard native E2E completed with valid output hashes, schema and no processing error. Assertion counts are **22 passed / 56 failed / 4 not evaluated**, versus baseline21/57/4. Native evaluator failure-reason count remains57: one failed snapshot assertion now reports two field failures. Improved assertion: `GT-R1-SNAP-705`; previously passing assertions did not regress. Negative assertion failures and discontinuity violations remain0. There are5347 observations: unknown4540, live589, spectator216, buy menu2. All18 identity assets remain relative and production-loaded; safety thresholds are unchanged. Fresh geometry remains1. One boundary-incomplete round package exists with no detected round-start/end events; Visual events and map resolution remain0. Full source tests996 passed/6 skipped, Ruff and mypy remain verified.
+Latest completed standard native E2E is profile07 `20261006T010024Z-a493a3cc`: **22 passed / 56 failed / 4 not evaluated**, evaluator failure-reasons57. Output hashes, terminal metadata, schema validity and null processing error verified. Baseline21/57/4 improves only `GT-R1-SNAP-705`; no assertion changed versus profile06 and no previously passing assertion regressed. Negative assertion failures/discontinuity violations0. 5426 observations: unknown4597/live594/Spectator233/buy-menu2. Fresh geometry1/effective5426/insufficient5425. One boundary-incomplete fragment, detected start/end0, HUD/Visual events0 and map resolution0. All594 primary-live semantics reviewed using589 same-PTS pixel-identical prior reviews plus5 new frames, each with fresh three-role identity and checked Spectator exclusion. Existing134 combat-report live frames remain; Spectator233 reviews also completed:231 first-person cameras and2 existing external-camera transitions; player-value leaks0. Both buy-menu observations are pixel-identical known false positives from06. Positive-state semantics are reviewed; timer-value/global-safety reviews remain pending. Profile07 is not adopted.
 
-Profile06 all-live fresh identity replay and semantic image review are pending. The private comparator was corrected to validate failure-reason multiplicity against assertion detail arrays, without changing native evaluation or assertions. The private audit lookup now uses the production cache filename's3-decimal timestamp formatting (at most0.5ms quantization), with conflicting decoded-pixel hashes rejected.
+Profile06 all589-live review found134 combat-report frames and two false buy-menu classifications elsewhere. Spectator216 review confirmed214 first-person cameras and two external-camera transitions; player-owned value leaks0. These quality findings prevent adoption despite improved assertions. Existing independent identity, compound Spectator exclusion, NCC0.90 and minimum3 anchors remain unchanged.
 
-Portable timer-reader candidate07 standard E2E is running as `20261006T010024Z-a493a3cc` (detached runner22836). It uses unchanged identity assets and verified common production source; host OCR runtime is isolated to this child process. Windows runtime remains unverified. Environment profile selection is unchanged. Goal remains active; native failure-reason reduction and semantic safety are not yet proven.
+Menu witness common-code prototype regression completed: full suite1001 PASS/9 SKIP plus the exact3 skipped pack-dependent tests rerun with the supplied pack, all3 PASS. Unique coverage1004 PASS/6 remaining optional fixture/Windows SKIP; this is two runs, not a single1004/6 output. Original skip evidence is retained. Production source remains frozen and its prior996/6, Ruff/mypy verification remains valid; prototype whole-source mypy86 and relevant Ruff checks passed. Windows runtime is unverified.
+
+Report-only profile08 standard native E2E is running as `20261006T063210Z-3ecd1ba6`. Isolated common-code profile11 standard native E2E is running as `20261006T063149Z-cc009d82` after full regression/input/source/asset gates, using unchanged standard CLIs and original video/pack in a private copy. Only templates.py differs; all379 other copied files matched. Baseline/native06 comparisons are automatic; profile08 comparison and semantic review remain required before adoption. Profiles09/10 remain prepared only. Production application, post-application required checks and final production E2E remain pending. Goal remains active.
 <!-- CURRENT_STATUS_END -->
 
 ## Baseline and input integrity
@@ -900,3 +902,242 @@ Eight uniformly spaced native live observations were inspected as local image pr
 ### Report header training-only rejection
 
 The native 06 sidecar has no `report_header_detector`, so the existing production static-header witness cannot emit the combat-report flag. A private candidate used only the immutable left/right damage column headers, excluding portraits, names, report values and ability rows. At NCC 0.90 it matched 5/10 independently annotated training-positive frames and 0/22 training-negative frames. Its 50% support fails the unchanged minimum 80% rule. Holdout was not inspected or used, no active profile was changed, and no production branch or threshold was changed. Remaining variation requires a better structural reference; the missing flag is not evidence of player death or a round boundary.
+
+### Report-header persistence reference and candidate08
+
+Problem/evidence: all589 native live frames reproduce identity signals, but the independent image review finds134 current frames with a combat report. One also contains a scoreboard. The06 sidecar does not configure the existing static report witness, which is an existing live-identity blocker.
+
+Hypothesis/change: remove temporally varying background pixels from immutable left/right damage column headers. Use only the10 training-positive frames to align the common header pose, build a median reference, retain pixel std<=12 and edge persistence>=0.65, and maintain two spatially independent groups (272/216 masked pixels). At unchanged NCC0.90, training supports10/10 positives and falsely accepts0/22 negatives. Frozen assets support8/8 independent holdout positives, falsely accept0/24 negatives, and pass24 excluded-pixel/independent-group controls. No portraits, names, values, ability rows, expected labels, or timestamps enter the profile specification.
+
+Candidate08 copies06 and adds only the existing `independent_static_header_v1` specification and three relative assets. All18 prior identity/anchor assets remain byte-identical;21 assets load with no diagnostics or missing/absolute paths, and relocation preserves fingerprint. Fingerprint: `c57ad914218e0e90fca678b0df7adecf620dde5b9caf31e0379c6e17ba016f47`. Timer OCR candidate07 remains isolated. No production code or active selection changed, and candidate08 standard E2E is not yet verified. Existing996/6 full-source checks remain applicable to unchanged production source. Report-only replay on all589 reviewed native live frames confirms134/134 actual report panels and0 false detections among455 report-absent frames. The16-frame production integration cohort retains the same primary-state distribution (unknown14/live1/spectator1) and adds six actual report flags (one before, seven after). Its first-frame report flag was confirmed on the enlarged actual frame with a different portrait and report values. Candidate08 standard E2E is queued serially behind07 (detached runner25123), isolated against06, and will compare unchanged video/pack/IDs with both original baseline and06. It remains unadopted pending terminal native E2E and safety review.
+
+The Git HEAD advanced externally to `65a4a7e040795c0fd7de82ce67a59c2084c44d1e` during candidate08 preparation. The exact source/test/E2E-script patch against original tested base `98600a8d571ccc371575063aef92b43aab87878d` still hashes to `180bee3a42fa690b19641f150d1dead9143ee702766849a6176a08e621584335`, proving the tested source content did not change. Candidate07 native E2E remains uninterrupted. Only the idle08 orchestration waiter was intentionally replaced, before it launched any native08 child, to compare against the fixed tested base instead of the mutable Git index. No Git mutation was performed by the agent.
+
+### Independent score-reader diagnostics while native07 is running
+
+Problem/evidence: the original score ROIs contain surrounding HUD edges/background; previous16-frame broad-ROI OCR checks returned32 unknowns. Training-only numeric fields are ally `[803,20,843,65]` and enemy `[1076,20,1116,65]`. Existing raw OCR on eight even training frames gives4/16 correct,12 unknown,0 accepted wrong. The existing white-text extraction setting200 with PSM7 gives8/8 enemy-score reads correct but keeps all eight ally-score reads unknown. PSM10 gives the same result; PSM8 returns16 unknowns and is rejected. No confidence or identity threshold changed.
+
+The PSM7 enemy field and white extraction were frozen before64 independent odd-frame predictions. Pixel transcription was read before predictions: existing value acceptance0.85 yields53 correct/11 unknown/0 wrong; current-frame fact eligibility0.90 yields51 correct/13 unknown/0 wrong. No rounding of the79.6875% strict-fact coverage or promotion of the remaining13 is allowed. Sixteen flat-field and eight random-field controls yield0 accepted false values. These are numeric reader observations, not generated identity references or proof of score stability.
+
+Rejected reference experiment: existing segmented digit templates built from the three observed glyph types and threshold0.90 do not support the wide-field runtime segmentation. A narrower ally field `[803,33,843,68]` plus the exact existing2x/Otsu preprocessing gives a best actual-glyph reference supporting4/8 training frames; the foreground-merged frame remains in the denominator. This50% support fails the unchanged80% rule, so holdout was not used to select or tune this glyph reference, and no glyph profile is adopted. Otsu merges translucent background/plate pixels with digits on some real frames; this is not evidence of an ARM-specific API issue. Unobserved glyphs were not synthesized.
+
+Conclusion/next: enemy numeric evidence can be improved using existing common reader configuration; ally-score evidence is still insufficient for reliable paired-score stability. No score change, round boundary, or event is inferred from that gap. The frozen raw-field/default-ROI comparison completed against the same64 pixel-labelled holdout frames: original default ally ROI64 unknown; original default enemy ROI1 correct/63 unknown. The training-selected raw ally numeric field yields26 correct/38 unknown/0 wrong (25 confidence>=0.90), and raw enemy numeric field22 correct/42 unknown/0 wrong. Combining the raw ally result with the separately frozen white-text enemy result makes23 pairs readable,22 eligible at confidence>=0.90. This is co-observation only, not temporal score stability or a round boundary. The raw ally field also passes24 flat/random controls with0 false accepts. A portable configuration-only score-reader proposal (`portable-score-reader-proposal.json`) uses generic `tesseract`, normalized subregions and the unchanged existing value/fact confidence gates. Per-role selection comes only from the even training results: raw ally1/8 beats white0/8; white enemy8/8 beats raw3/8. PSM7 supports multi-digit text and was retained instead of the single-character variant. No glyph profile, new production source, complete combined HUD profile, active selection, temporal score stability, or round boundary was added. This proposal still needs native E2E and regression/safety comparison after the active07 and queued08 outcomes. Candidates07/08 and their native E2E jobs remain unchanged.
+
+
+### HP numeric field and Ammo rejection
+
+Problem: the complete structural identity profile has no configured composite HP/Ammo value readers. Existing common `NumericFieldsReader` can provide independent values without feeding them into identity. Training-only HP field is `[575,1002,655,1048]`; current Ammo field `[1262,1002,1325,1046]`; reserve field `[1349,1014,1395,1042]`. All use normalized subregions, unchanged value acceptance0.85/fact eligibility0.90, and existing PSM7 OCR. No observed value becomes an identity template.
+
+HP white-text extraction200 gives seven correct readable even training frames at confidence>=0.90 and abstains on the ambiguous menu frame. Freeze these parameters before64 odd holdout predictions and pixel transcription. Holdout gives55 correct/9 unknown/0 wrong, all55 eligible at confidence>=0.90; three absent and four ambiguous fields yield no false acceptance. Twenty-four flat/random controls give0 false accepts. Raw spectator HP is numeric pixel evidence only: the existing current-frame recording-player ownership gate remains mandatory. The portable configuration-only proposal uses generic `tesseract`; Windows runtime and native E2E remain unverified.
+
+Ammo is rejected: the raw composite field produces0 correct current reads/7 unknown/1 accepted but unscored ambiguous-menu read, while reserve fields generally abstain. Removing reserve from the diagnostic reader still does not recover supported current reads, so weak reserve confidence is not the sole cause. White extraction also fails to support current reads. No Ammo holdout tuning, digit truncation, confidence reduction, profile adoption, or inferred values were used. The existing strict glyph identity criteria remain unchanged. Candidate07 continues its standard native E2E and candidate08 waits serially; neither is modified by these diagnostics.
+
+The16-frame common-production integration uses a local diagnostic composition of report08, frozen timer07, score fields and HP. All21 structural assets are hash-identical to08. Primary states remain unknown14/live1/spectator1. The single owned live observation produces a confidence>=0.90 HP read; all15 unowned observations, including the actual spectator panel, clear HP and its provenance confidence. Unowned HP leak count0. This is limited cohort ownership evidence, not combined-profile native E2E or proof for every video frame. No active profile or queued native job is changed.
+
+
+### Purchase-phase static-label candidates rejected
+
+Problem: no `buy_phase_template` is configured. Existing temporal enrichment still requires current banner evidence, a known stable score pair and a readable timer; no phase or boundary is inferred from the absence of those inputs. Before predictions, the32 even generation frames were visually labelled: five purchase labels,27 absent labels. The fixed text-only bounds `[750,168,1170,242]` exclude round number and lower purchase instruction. Six training-only actual/median references were compared at NCC0.90. The selected actual reference supports5/5 positives with0/27 false positives.
+
+The first training probe searched the full banner ROI while the diagnostic sidecar used the fixed crop. This inconsistency was found and independently checked without changing the selected reference: identical fixed-crop training still gives5/5 and0/27. Independent odd-frame pixel labels give1/3 supported purchase labels and0/29 false positives. Nine outside-crop mutations leave confidence unchanged; six half-label removals give0 false accepts. Raw NCC on the three positives is approximately0.923/0.853/0.814. Best locations in full-ROI search agree exactly with the fixed crop, so coordinate search does not explain the rejected held frames. The candidate is rejected, not adopted, and thresholds remain unchanged.
+
+A training-only two-group experiment using existing narrow-ridge structural extraction supports1/5 and is rejected before holdout. A separate training-only static persistence mask uses std<=12, edge recurrence>=0.65, at least32 pixels per independent group and per-group NCC0.90; mask groups have1236/1203 pixels. It supports4/5 training positives,0/27 negatives, but the frozen mask supports0/3 held positives and0/29 negatives. Nine excluded-pixel mutations have delta0, and six missing-group controls falsely accept0. The same odd holdout had already been exposed for the rejected raw candidate; neither masks nor parameters were tuned on it, and this is explicitly recorded. This second candidate is also rejected. Existing production loader does not support generic masked static-label groups; no new loader or recognition code was added for an unqualified candidate.
+
+Conclusion: these actual-label references do not yet meet held support. No purchase flag, state, round boundary or event was forced. All diagnostic compositions remain local and unadopted. Native07 has progressed through HUD Pass A and Visual Pass B into high-density HUD resampling; actual analyzer PID22885 is live and queue08 PID25123 still waits. Source/test/E2E-script contents remain identical to the996-pass tested patch. The next reference attempt needs broader training evidence and a demonstrated treatment of translucent background variation, followed by a fresh held cohort rather than tuning these failed held images.
+
+
+### Portable combined numeric candidate09 prepared
+
+Problem: independently qualified current-frame timer/score/HP reader proposals were not serialized into a complete profile for standard native evaluation. Change: copy candidate08, preserving its layout, identity, anchor, compound spectator and report specifications plus all21 original assets by hash. Add exactly the frozen generic `tesseract` reader configurations from07 and the score/HP proposals. Candidate09 fingerprint is `78c23c4bdb896243f2c1aeb1e35e2c040abe300ec2096ae58447ea68508204fd`, equal to the existing16-frame ownership diagnostic composition. Relocation preserves the fingerprint;21 relative assets exist, no absolute asset paths occur, and the production loader reports no diagnostics. The initial serialization used literal Unicode rather than the prior escaped JSON representation, causing a fingerprint mismatch despite equal parsed configurations; serialization was made byte-identical before claiming fingerprint equality. This was private orchestration only.
+
+Validation: timer holdout51 correct/13 unknown; ally26/38; enemy53/11; HP55/9. Existing per-reader controls total90 with0 false accepts, within the limited control scope. The16-frame composition preserves unknown14/live1/spectator1, clears HP provenance on all15 unowned observations, and reads HP on the single owned observation. No score stability, phase, boundary or event is inferred. Full native09 evaluation and global false-positive safety remain unproven;09 is prepared only, not queued or adopted. Terminal07 and08 comparisons and safety review precede native09 launch. Production source and the996-pass tested patch remain unchanged.
+
+
+### Fresh purchase-label cohort and held support rejection
+
+Problem/hypothesis: the prior five-positive training cohort may underrepresent translucent background variation. Prepare66 unique actual cached PTS, excluding both original64 generation and numeric128 observation PTS. Training requests use bounded offsets around five prior training proposals plus twelve non-purchase contexts; holdout requests use distinct offsets. Nearest cached sampling errors are recorded, bounded by0.10sec; an initial0.05sec sampling bound could not supply all cached frames and was corrected before labels/predictions. Recognition thresholds are unchanged. Every selected same-PTS decoded-pixel hash agrees across cache copies; no frame or timestamp is synthesized.
+
+Training images were visually labelled before predictions: sixteen visible purchase labels and sixteen absent labels, including menus/scoreboard that interrupt nominal buy windows. No label was inferred from the proposal timestamp. Seventeen actual/median references were compared using the exact production fixed-crop NCC. The training-selected actual reference supports14/16 positives and0/16 negatives at0.90. Reference SHA-256 `f243cea4041e1dd0574c0adeb58170407d2aa74fe1b1c385f2a294dd5e9741be` was frozen before viewing the34 distinct held frames.
+
+Holdout images were then labelled before prediction: nine visible purchase labels and25 absent labels. The frozen reference supports6/9 positives,0/25 false positives, and therefore fails the unchanged80% support rule. The production loader and matcher agree on all34 predictions. Eighteen half-label removals,24 flat/random fields yield0 false accepts; nine outside-crop mutations yield confidence delta0. This fresh candidate is rejected, not tuned on holdout, not adopted, and not added to09. Native07 remains live at its72% timeline/event stage and08 waits serially. No new complete native result is claimed. Purchase-label evidence still needs a better treatment of actual translucent background variation; additional tuning of these failed held images is not justified.
+
+
+### Ammo word/raw-line OCR modes rejected
+
+Existing composite numeric fields already use a digits-only whitelist. Changing only to the existing multi-digit PSM8 word or PSM13 raw-line OCR, in both raw and white-threshold200 modes, leaves all eight even training Ammo fields unknown. No holdout tuning or confidence reduction follows this failure. HP results in these modes are poorer than the frozen PSM7 white extraction and include accepted ambiguous-menu pixels in raw mode, so the HP proposal is unchanged. Reserve was not read in this current-only experiment; empty reserve summary rows are not observations. No new source or profile selection changed.
+
+
+### Independent purchase-menu witnesses and candidate10
+
+Problem: full purchase menus remain unknown in reviewed actual frames, while the classifier already requires both `buy_menu_grid_present` and `buy_menu_close_anchor_present`. Investigate current static category headers `[421,112,1497,140]` and close symbol `[1849,25,1889,64]`; exclude prices, stock, weapon names, player names/portraits and HP/Ammo values. These are state-specific witnesses, independent of the three current-frame identity roles.
+
+Training:32 original even frames plus32 fresh training frames were pixel-labelled before predictions. Five actual full menus are positive,59 other contexts negative. Six actual/median candidates per role use the exact fixed-crop existing NCC matcher at0.90. Selected category headers support4/5 and close symbol5/5; compound support4/5,0/59 false accepts. Freeze both asset hashes.
+
+Holdout:32 original odd frames plus34 distinct fresh held frames contain six visually reviewed full menus and60 non-menu contexts. Frozen category headers support5/6 and close symbol6/6; compound5/6,0/60 false accepts. Twelve one-role-removed controls falsely accept0 compound menus. The common production loader/matcher agrees on all66 predictions and reports no diagnostics. One missed menu remains unrecognized; no threshold is reduced or missed witness inferred.
+
+Candidate10 copies09 and adds only the two relative static signal assets/specifications. All21 original assets and identity, anchor, spectator, report and reader specifications are equal by hash/structure;23 assets are relative and readable, no loader diagnostics occur, and relocation preserves fingerprint `16f144c8fefcacfe5cc70652c9be69d49ce2105a8709e48c20b0c4dcfb0a38b2`. Candidate10 standard E2E is neither queued nor verified and the environment selection is unchanged. The source patch remains the same996-pass tested source.
+
+Common-production integration on the existing16 actual frames changes only the independently inspected full-menu observation from unknown to buy_menu_open. Counts change unknown14/live1/spectator1 to unknown13/buy1/live1/spectator1. All flags, value ownership, HP values and HP confidence match the prior09 composition on the same PTS; all15 unowned frames including menu and spectator clear HP provenance. This is limited cohort evidence, not global false-positive/geometry/stale-state safety, a temporal phase transition or a round boundary. Native07 remains live at72% with growing CPU time;08 waits. Their profiles, source and running processes were not changed by this work.
+
+
+### Candidate10 negative replay on every reviewed native06 live image
+
+Replay the frozen purchase-menu header and close-symbol signals on all589 terminal native06 primary-live frames. Their prior full-frame contact-sheet review found no full buy menu; the completed semantic-review file and its589-row manifest hashes are verified before relying on that label scope. Each replay image matches its decoded-pixel SHA. Both individual roles produce0 false positives and compound purchase-menu false positives remain0 at NCC0.90. Candidate10 fingerprint remains `16f144c8fefcacfe5cc70652c9be69d49ce2105a8709e48c20b0c4dcfb0a38b2`.
+
+This is additional negative coverage on a previously reviewed live-only subset, not new independent holdout reference generation, all5347-frame semantic safety, fresh geometry verification, temporal carryover verification or standard native10 E2E. No source, profile or native outputs changed. Actual07 analyzer22885 remains runnable and CPU time increased to71 minutes;08 waiter25123 remains live. Neither was restarted or treated as terminal from elapsed time alone.
+
+
+### Frozen purchase-menu signals across every terminal native06 observation
+
+Read-only replay covers all5347 native06 observations after terminal metadata/output hashes and layout bytes are verified. The production cache uses3-decimal PTS formatting; quantization error is bounded at0.5ms and every same-PTS cache choice has identical decoded-pixel SHA. Replay uses exactly the loaded frozen role templates, normalized fixed crop and common NCC matcher at0.90. It emits diagnostics only; no native state, trace, expected label or assertion is rewritten.
+
+Category headers match293 frames; close symbols match334; both match293. All293 were unknown in native06. All eight full-frame contact sheets of the293 compound positives were viewed: every one displays the full purchase menu, with0 observed compound false positives. Manifest and contact-sheet hashes are retained locally. This adds concrete evidence for a state-specific coverage gap and for frozen menu-witness precision on the5347 sampled frames. It does not establish recall on5054 compound-negative frames, whole-video unsampled-frame safety, geometry/stale-state correctness, complete candidate10 classification/ownership behavior, temporal phase transitions, round boundaries or standard native10 E2E improvements. No reference or parameter was tuned using this review.
+
+Runtime-phase inspection clarifies native07's72% log: `_process_frames` emits that progress before final `observe_frames` on the combined frame set, then runs visual analysis and package construction. This wrapper does not emit per-frame progress during that call. Repeated72% alone is not evidence of a stopped process. Actual analyzer22885 remains runnable with growing CPU time; next-run waiter25123 remains live. Neither is restarted solely because the observation interval elapsed.
+
+### 既存購入メニュー判定の誤認とprofile override診断
+
+Problem: native06の購入メニュー判定2件を実フレームで確認すると、いずれも完全な購入メニューではなかった。
+
+Evidence: current-frame decoded hashを照合して確認。candidate10の独立したcategory header / close-X参照は両件ともNCC 0.90を満たさないが、既存の画素heuristicは両役割をtrueとしていた。`detect_signals`は参照不一致時にkeyを返さないため、analyzerのmerge後もheuristicのtrueが残る。close-Xのみ一致した41件も確認し、完全なメニュー35件、開き始めのtransition5件、メニューのない画面1件を記録した。
+
+Hypothesis: configured structural witnessesを現在フレームの判定元として扱い、不一致や参照利用不能時はunknownを明示する必要がある。absenceの証明には使わず、両役割の独立したNCC 0.90一致を購入メニューの根拠とする。
+
+Change / Tests: 診断のみ。実行中の07と待機中の08に使用されるproduction sourceは変更していない。実フレームでfeature reader → template detector → analyzerと同じmergeを再現し、両誤認の残存を確認した。参照生成の成功とstate判定の安全性を分け、candidate10は未採用のまま維持する。
+
+E2E before / after: native06の22 passed / 56 failed / 4 not evaluatedは変更なし。07は実行中、08は07終了待ち。診断をE2E改善として数えない。
+
+Conclusion: 完全なidentity reference生成は成立したが、候補profileの正式採用にはreport exclusionと購入メニュー誤認の解消・標準E2E検証が引き続き必要。詳細はPiローカルの`native06-one-role-menu-review/semantic-review.json`に保存。
+
+### 購入メニューwitness優先の隔離コード検証
+
+Change: ignored outputs内に共通srcの隔離コピーを作成し、`HudTemplateProfile`だけを変更。menu witnessが一つでも設定されている場合、両役割をcurrent-frame unknown / confidence 0で初期化し、独立した参照一致時だけtrueへ更新する。参照欠落、誤ったROI、NCC threshold < 0.90は診断とunknownを返す。設定のない既存profileの挙動は維持。非一致をabsenceとは扱わない。
+
+Tests: 隔離コピーをimportして57 tests passed、Ruff passed、mypy 86 source files passed。新規回帰は非一致、両役割一致、片方欠落、single-role設定、前フレームの証拠持越し、asset欠落、低閾値、誤ROI、未設定profileを確認。実フレームの2件の誤認を除外し、別の実メニュー2件の検出を維持した。実画像はGit共有しない。
+
+E2E / Conclusion: productionへの適用・全体regression・標準実動画E2Eは未実施。実行中07と待機中08のsource fingerprintを維持し、結果確認後に適用を判断する。正式採用もE2E改善の計上も行っていない。差分・hash・検証結果はPiローカルの`menu-witness-prototype/`に保存。
+
+追加の通常認識器composition検証: 隔離コードに同一profile10と既存16実フレームを入力し、unknown 13 / buy_menu_open 1 / live_first_person 1 / spectator_first_person 1を維持した。state・flags・player ownership・HP/confidenceはいずれも元候補から変化0、unowned HP leak 0。これは限定cohortの回帰証拠であり、全動画E2E検証の代替ではない。
+
+固定holdout 66実フレームを隔離コードのfeature reader + template detector +通常mergeで再検証。参照・ROI・thresholdは変更していない。positive 6中5件を検出、negative 60中false positive 0、両役割の一致結果は既存の固定matcher診断と66/66一致した。未検出1件はunknownのまま維持する。geometryがinvalidの場合は既存analyzerが空signalsで分類してunknownにすることもsource確認し、弱い画素判定が参照検証を迂回する経路を増やしていない。適用用回帰テストを整形後に8 tests passed / Ruff passedを確認。本番sourceと標準E2Eは変更なし。
+
+### Geometry: value-isolated feature NCC候補のtraining棄却
+
+Problem / Evidence: raw grayscaleの時間変動が大きく、従来のmasked anchor生成ではHP/Abilityの安定画素が不足する。identityのvalue-invariant支持は、そのままNCC geometryの支持ではない。
+
+Hypothesis / Change: 既存profile06のtraining生成structural referenceとsupport regionsを使用し、値を除外して抽出したbinary ridge特徴をgroupごとのmasked NCCで比較。reference maskの隣接backgroundを同じsupport group内だけに加え、NCCの分散を確保した。候補はPiローカル診断のみでproduction matcher・profileの変更はない。
+
+Tests: original even 32 training framesだけを評価。NCC 0.90でHP 1/32、Ability 4/32。両候補ともminimum support fraction 0.80を満たさずtraining stageで棄却。holdoutは使わず、anchor localizationも未検証。NCC低下やidentity比率によるgeometry証明への置換は行わない。
+
+E2E before / after / Conclusion: native06の22/56/4、fresh geometry 1は変更なし。07は実行中。正規化した構造特徴の単純NCC化だけでは新しいgeometry anchorを提供できない。候補を追加せず、失敗理由とconfidence分布を記録した。
+
+購入メニュー修正のfalse-live回帰確認: geometry校正用の実フレームに続き、誤認2件、別の実メニュー2件、確認済みlive/spectator各1件を含む7 actual framesを同一profile10で通常認識器に通し、現行sourceと隔離sourceを比較した。両sourceともgeometry calibrated。差分は誤認2件のbuy_menu_open → unknownのみ。両件ともcombat report flagを維持し、player ownership false / HP null / HP confidence 0でliveへ昇格しない。その他5件のstate・flags・ownership・HP/confidenceは変化0。実メニュー2件とlive/spectatorを維持した。初期フレーム時刻を仮定した最初のprivate diagnosticは停止し、保存済みobservationの実PTSを使って再実行した。production source・実動画・packは変更なし。全動画E2Eは引き続き未検証。
+
+### profile11: report08から購入メニュー修正だけを検証する候補
+
+Problem / Hypothesis: profile10には未検証のtimer・score・HP数値reader変更も含まれるため、購入メニューの誤認修正の標準E2E効果を個別に評価できる候補が必要。
+
+Change: base08のlayout / anchors / identities / compound spectator / report detector / readers / 21 assetsを完全維持し、training選択済みの独立category-headerとclose-X参照2件だけを追加。23 relative assets、absolute/missing assets 0、loader diagnostics 0、移設後fingerprint一致。fingerprint `94e52fd77d6c2e5555bf257bcce8abf5e8b284e26c139780c9abf2940f3f059d`。追加数値reader設定やOCR runtimeは含まない。
+
+Tests: 同じ7実フレームで元sourceと隔離sourceを比較。誤認2件はbuy_menu_open → unknown、実メニュー2件・live1件・spectator1件を維持。unowned HP leak 0。他の観測は変化0。閾値は0.90、元のtraining/holdout支持と反例controlを維持。
+
+E2E / Conclusion: candidate11は未queued・未採用・Windows未検証。検証済みのmenu witness共通コード修正の本番適用と全体regressionが必要。07/08は既存sourceで続行し、terminal結果を確認してから次の標準実動画E2Eを開始する。プロファイル作成をE2E改善として数えない。
+
+Geometry NCC参照選択の追加確認: identity用の構造比率で選ばれた参照をそのままNCCで評価したことが低支持の原因かを、trainingだけで検証した。各役割につき既存参照・training feature median・32 actual training referencesの計34候補を比較。NCC 0.90、support mask、feature extractionは固定し、最大training支持の候補を選択した。HP/Abilityともfeature medianが最良だが支持は7/32 (21.875%)で、minimum support fraction 0.80を満たさない。参照を替えるだけでも新geometry anchorは成立しないためtraining stageで棄却。holdout、production matcher、profile、実動画、packの変更なし。局所的な支持改善をgeometry成功やE2E改善として計上しない。
+
+隔離した共通menu witness修正のHUD回帰検証: `test_hud*.py`全22ファイル、calibration diagnostics、追加menu witness regressionsの計24ファイルを実行し、309 passed / 0 failed、992.49秒、exit 0で完了。実行前にimport元が隔離srcであることをassertし、終了後に本番source・隔離sourceのhash維持を確認した。Ruff / mypyおよび実フレームcohortの既存証拠と合わせ、本番適用前の回帰証拠として記録する。全repository pytestと本番コードでの標準実動画E2Eは未完了であり、この結果をそれらの代替にはしない。07/08のsourceは固定したまま。
+
+### Spectator exclusion: 成分別曖昧性の固定参照診断
+
+Problem / Evidence: native06ではspectator exclusion unverifiedがidentity不足の大きな要因。固定profile06を既存64実フレームに適用し、unsigned coverageとoriented positive scoreを成分別に保存した。理由はambiguous 28 / excluded 28 / mismatch 6 / present 2。曖昧28件のcoverage > 0.10はboundary 27、portrait 22、text 15。複数成分が該当するため排他的な件数ではない。
+
+Tests / Interpretation: independent HP/Ability/Weaponの3役割が同じフレームで0.90を満たしたのは14件、そのうちSpect不在未確認は9件。9件をdecoded hash照合付きfull-frame contact sheetで確認すると、Astra first-person外観で可視Spect panelは0件だった。ただしreport表示1件とsmoke表示3件も含み、全件をlive/world-trustworthyへ昇格させる根拠にはしない。画像レビューをcurrent-frame exclusionの代替にしない。
+
+Change / Conclusion: 診断のみ。absence coverage <= 0.10、mandatory portrait/text/boundary、shared relative pose、positive score >= 0.90、whole-ROI vetoを維持する。単なるpositive不一致やworld-edge衝突から不在を宣言しない。新参照生成・mask pruning・production変更は行っていない。boundary以外も曖昧性に寄与するため、boundaryだけの緩和では解決できない。
+
+E2E before / after: native06の22/56/4は変更なし。07は稼働中、保存済みunique PTSは5426件（06は5347件）。これはキャッシュ件数の診断で、完了後のnative observation countではない。
+
+
+### Native06 spectator 全件 semantic audit
+
+- Problem: panel-positive evidence だけで `spectator_first_person` を確定しており、camera subtype の独立証拠がない。
+- Evidence: terminal output/hash と同一PTS decode hashを検証した216件・6ページを全件レビュー。観戦パネル216件、first-person camera確認214件、外部camera遷移2件（native indices 5344/5346）。Combat reportは216件、full buy menuは0件。player固有値漏洩は0件。
+- Contract: layoutはspectator_iconをpositive ROIとし、HP/Abilityをnegative_or_changed ROIとしている。classifierはpanel-positiveを直接first-person subtypeへ変換する。Visual specではSpectator/unknownともtarget mechanicsを抑制する。
+- Conclusion: spectator exclusionは維持できるが、216件すべてのfirst-person subtype正解は主張しない。camera-mode witnessの独立したtraining/holdout検証が必要。死亡eventや所有権を推測で生成しない。
+- Change/Tests/E2E: private診断と統計のみ。production/native出力は変更せず、E2E 22 passed / 56 failed / 4 not evaluated、negative failures 0のまま。07実行中、08待機をプロセス実体で再確認。
+
+
+### Menu witness prototype: full regression started
+
+HUD関連309 PASSを確認した隔離copyについて、全 `tests/` と提案8件のmenu-witness回帰テストを開始。import先のprivate source実体をassertし、productionとのPython source差分がtemplates.pyのみであることを開始時に確認。OpenCV 1 thread、nice +10で実行中。結果未確定であり、全suite PASS・production適用・native E2E改善はまだ主張しない。07 analyzer/08 queueのプロセス実体は稼働を確認し、再起動やsource変更は行っていない。
+
+Full regression起動の初回はroot sys.path不足により `scripts` importのcollection error 23件でexit 2。初回logを保全し、runnerにrepo rootを追加、private sourceを優先するimport guardを維持して再実行。production/test期待値の修正なし。再実行プロセスの実体とrunning statusを確認。結果は未確定。
+
+
+### Identity reference pose specificity: training / holdout diagnostic
+
+- Problem/Hypothesis: 構造identityの一致が、位置ずれにも残る場合はgeometry localizationの根拠として不十分。既存HP/Ability参照の位置識別性を診断。
+- Evidence: original even32 training / odd32 holdout（decode hash重複0）、固定17 poses（center、8/16 pxの8方向）、既存oriented score0.90・mask・support groupsを維持。各cohortのoff-pose 1024比較で一致0。center supportは両cohortともHP28/32、Ability18/32。
+- Conclusion: 試した位置ずれの識別性は確認できたが、NCC anchor品質、任意shift/scale、full-video recall、fresh geometryは未検証。NCC0.90とminimum3 anchorsを維持。参照/profile/source/geometry acceptance変更なし。
+- E2E before/after: 22/56/4のまま。07稼働、08待機。隔離menu prototype全suiteは進行中で、結果未確定。
+
+
+### Smoothed value-isolated NCC geometry hypothesis: rejected
+
+- Hypothesis: 二値ridgeの圧縮揺れがNCCを低下させている。既存feature orientationで使う3x3 sigma0.6 Gaussianを、value-isolated binary featureに固定適用し、excluded regionsを再度zero化。
+- Evidence: original32 trainingのみ。既存参照、training median、32実training featureの計34候補から最大supportを選択。NCC0.90、mask、per-group minimum64 pixels/std1、minimum3/0.80 supportは維持。HP15/32（46.875%）、Ability17/32（53.125%）。
+- Conclusion: unconditional cohortのtraining supportで棄却。独立にlabelしたvisible-HUD subsetのconditional qualificationは未実施であり、そのsubsetの全方式失敗は主張しない。holdout非使用、追加parameter tuningなし、anchor/profile/production変更なし。
+- Tests/E2E: private診断terminal exit0。隔離menu prototypeの全repository pytestとnative07は進行、08待機。最新完了native06は22/56/4、negative failures0のまま。
+
+
+### Spectator camera subtype: existing current-frame role evidence replay
+
+- Problem: native06のSpectator panel-positive 216件のうち、外部camera遷移2件をfirst-person subtypeとしている。既存3role参照の再利用可能性を診断。
+- Evidence: 全216件の同一decoded pixel hashを確認し、共通production matcherでcurrent-frame再評価。一人称視覚確認214件ではHP211、Ability0、Weapon/Ammo197件が支持。外部camera遷移2件は3roleとも0。
+- Conclusion: 既存Ability参照を万能のSpectator camera witnessとして再利用する案は棄却（正しい一人称214件を除外する）。HP/Weapon不一致はcamera mode/deathのpositive証拠ではない。agent-neutralで独立したcamera evidenceのtraining/holdout検証が必要。spectator panel/exclusionは維持し、missing structureから既知state/eventへ推定しない。
+- Change/Tests/E2E: private診断exit0のみ。source/profile/native出力変更なし。最新完了22/56/4、negative failures0。07/08と全回帰テストは既存プロセスを維持。
+
+
+### Profile11 portable candidate bundle
+
+- Artifact: `outputs/hud_profiles/pi-structural-20261006-11.zip`（457265 bytes、26 files：layout/sidecar/23 relative assets/manifest）。SHA256 `2daf9560962459e0a4569d783550a249e523cb3dd8deb31af7f19e3685204bcb`。
+- Verification: ZIP integrity、展開後全25 content hashes一致、同一fingerprint `94e52fd77d6c2e5555bf257bcce8abf5e8b284e26c139780c9abf2940f3f059d`、reader diagnostics0を確認。
+- Requirement: manifestにcandidate-only/未採用/native E2E未検証/Windows実機未検証と、必須menu witness common-source patchのhashを明記。profileデータのみではweak heuristic残存によるfalse buyを修正できない。
+- Status: productionや実行中07/待機08への適用なし。全repository回帰テストは既存プロセスで進行中。
+
+
+### Isolated common-code native E2E preparation
+
+- Problem: 07と待機08が使用するproductionを変更せず、menu witness source修正の実動画検証を準備する。
+- Change: ignored outputs配下へcommon source/標準scripts/tests/config/schemas/datasetsをcopy。差分は提案templates.pyのみ。他379ファイルのhash一致を確認。runnerやassertion/expectedの変更なし。
+- Verification: 標準runner `--check-environment` exit0、Python3.12/headless imports/git/ffmpeg/ffprobe ready。元動画/Validation Packを絶対パスで使い、独立outputを要求する準備。
+- Status: 全repository回帰テストPASSが必要。実動画解析は未起動・未queue・未検証。production変更なし。これはproduction適用後の最終検証完了を主張するものではない。
+
+
+### Isolated profile11 native E2E queue
+
+全repository suiteの完了を待つqueueを起動し、PID51915の実体とwaiting statusを確認。1004 PASS/6 SKIP、test process終端、隔離workspaceとtest済みsource/resource hashes、profile全25 content hashes/fingerprint、元動画SHA/Validation Pack fingerprintを起動直前に要求。不一致やregression failureならstop-requires-reviewとし、再起動しない。標準runner/実動画/pack/assertionは変更せず、独立outputでbaseline/native06と比較する。08完了後の比較とsemantic quality reviewが必要。production適用と適用後の必須checks/final native検証は未完了。
+
+
+### Native07 terminal and prototype whole regression
+
+- Native07: verified complete/schema-valid/error-null;22/56/4, failure-reasons57, negative/discontinuity0. No improved or regressed assertion versus06. Sampling5426 versus5347 prevents treating added live/Spectator counts alone as accuracy gains. Latest semantic review remains pending.
+- Prototype regression:1001 PASS/9 SKIP in1635.82s, supplemental external-pack nodes3 PASS in6.67s; unique1004 PASS/6 optional SKIP. Initial11 queue stopped before launching because it correctly rejected the unexpected skip scope. Original stopped-state/log preserved. A verified coverage certificate now requires both logs, exact3 node IDs and identical source hash.
+- Native11 launched from isolated common-code workspace after all gates;08 also launched after07 terminal. production has not been changed or adopted.
+
+
+### Native07 live semantic review: reuse guarded by exact current frame
+
+- Evidence: native07 all594 live frames were matched to exact3-decimal cached PTS (maximum0.5ms quantization), and every duplicate decode hash agreed. All589 prior reviewed frames reappeared with same PTS and identical decoded pixels. The prior reviewed manifest hash was verified before reuse.
+- New review: remaining5 full-frame images viewed; three independent common-code role matches and explicitly checked spectator absence replayed from each current image. No visible report/Spectator/remote/full buy-menu/expanded-map among these5.
+- Conclusion: all594 live semantic reviews accounted for without re-reviewing unchanged images. Existing134 report-visible frames (one also scoreboard) remain quality blockers. No world visibility/global geometry/stale carryover proof, no state/output/profile/source edits, and no adoption. Native07 assertion counts remain22/56/4.
+
+
+### Native07 Spectator semantic review
+
+All233 Spectator observations audited using exact cached3-decimal PTS and decoded-pixel hashes. All216 prior reviewed frames reused only after same-PTS pixel equality and prior-manifest hash checks;17 new full-frame images viewed. Each new frame independently replayed explicit checked/present Spectator evidence. All233 retain cleared player-specific values with HP confidence0. Visually supported spectator panels233, first-person camera231, existing external-camera transitions2 (native5423/5425), combat report233. No new external-camera transition among17. The two subtype errors remain; do not report233 correct first-person classifications or adopt based on counts. Source/profile/native outputs unchanged.
+
+
+### Native07 buy-menu positives: prior false positives retained
+
+All2 primary-buy observations match prior visually reviewed native06 false-menu frames at samePTS with identical decoded-pixel hashes; all cache copies agreed. Prior reviewed-manifest hash verified before reuse. Actual full menus0, false-menu classifications2, novel false-menu frames0, player-specific HUD valid=false. No state/output/source edits. Native07 positive-state semantic accounting now covers594 live +233 Spectator +2 buy observations. It confirms rather than clears the known quality blockers: report-visible live134, camera subtype transitions2, false menus2. Native11 evaluates configured current-frame witness overrides; no improvement/adoption is claimed before terminal semantic checks.
