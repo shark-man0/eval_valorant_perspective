@@ -39,6 +39,12 @@ def _abstract_icon() -> np.ndarray:
     # leaving a clear abstract emblem rather than any recognizable subject.
     flecks = rng.random(image.shape) < 0.06
     image[flecks] = rng.choice((20, 250), int(flecks.sum()))
+    # Keep every orientation bin comfortably represented across OpenCV CPU
+    # implementations. The detector intentionally requires all eight bins; a
+    # fixture sitting on the 5% boundary becomes runner-dependent.
+    for y in (14, 34, 54, 74):
+        for x in (7, 31, 55):
+            cv2.line(image, (x, y), (min(WIDTH - 2, x + 10), max(1, y - 4)), 235, 1)
     return image
 
 
