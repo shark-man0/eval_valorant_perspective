@@ -56,6 +56,7 @@ def test_context_does_not_mix_between_threads() -> None:
 def test_logging_is_utf8_contextual_rotating_and_redacted(tmp_path: Path) -> None:
     try:
         log_path = configure_logging(tmp_path, max_bytes=1024, backup_count=1)
+        assert logging.getLogger().level == logging.INFO
         logger = logging.getLogger("observability-test")
         with bind_context(run_id="R1", match_id="M1", phase="test"):
             for _ in range(100):
@@ -79,6 +80,26 @@ def test_logging_is_utf8_contextual_rotating_and_redacted(tmp_path: Path) -> Non
         assert "/Users/private" not in combined
         assert len(logging.getLogger().handlers) == 1
         assert rotated.exists()
+    finally:
+        _close_root_handlers()
+
+
+def test_exception_logging_keeps_traceback_and_redacts_paths(tmp_path: Path) -> None:
+    try:
+        log_path = configure_logging(tmp_path, max_bytes=100_000, backup_count=1)
+        logger = logging.getLogger("observability-exception-test")
+        with bind_context(run_id="R2", phase="failure"):
+            try:
+                raise RuntimeError("failed at /mnt/data/private/video.mp4")
+            except RuntimeError:
+                logger.exception("expected diagnostic exception")
+        for handler in logging.getLogger().handlers:
+            handler.flush()
+        rendered = log_path.read_text(encoding="utf-8")
+        assert "expected diagnostic exception" in rendered
+        assert "Traceback" in rendered
+        assert "/mnt/data/private" not in rendered
+        assert "run=R2" in rendered
     finally:
         _close_root_handlers()
 
@@ -212,6 +233,14 @@ def test_dependency_snapshot_has_no_machine_identity(monkeypatch: pytest.MonkeyP
     assert snapshot["tools"]["ffmpeg"] is None
 
 
+def test_dependency_snapshot_reports_package_and_missing_tool(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    assert environment_module.tool_version("__definitely_missing_valorant_tool__") is None
+    snapshot = dependency_snapshot(repository_root=None, package_names=("pytest",))
+    assert snapshot["packages"]["pytest"] is not None
+
+
 def test_sanitize_text_removes_secret_and_private_home_path() -> None:
     text = sanitize_text(
         "Authorization: Bearer topsecret token=abc123 /home/alice/private/video.mp4 "
@@ -268,6 +297,20 @@ def test_diagnostic_bundle_is_allowlist_only_bounded_and_sanitized(tmp_path: Pat
     assert "/mnt/data/private" not in combined
     assert "line 0" not in combined
     assert "line 999" in combined
+
+
+def test_bundle_records_missing_optional_report_without_failing(tmp_path: Path) -> None:
+    target = tmp_path / "bundle.zip"
+    create_diagnostic_bundle(
+        DiagnosticBundleRequest(
+            run_id="r",
+            output_path=target,
+            performance_path=tmp_path / "missing.json",
+        )
+    )
+    with zipfile.ZipFile(target) as archive:
+        value = json.loads(archive.read("performance.json"))
+    assert value["status"] == "unavailable"
 
 
 def test_bundle_handles_malformed_optional_json(tmp_path: Path) -> None:
