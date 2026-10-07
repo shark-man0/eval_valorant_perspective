@@ -46,8 +46,21 @@ jobs:
         shell: pwsh
         run: |
           $env:QT_QPA_PLATFORM = "offscreen"
+          $env:LOCALAPPDATA = Join-Path $env:RUNNER_TEMP "valorant-ai-coach-smoke"
+          New-Item -ItemType Directory -Force -Path $env:LOCALAPPDATA | Out-Null
           & "dist\VALORANT-AI-Coach\VALORANT-AI-Coach.exe" --smoke-test
-          if ($LASTEXITCODE -ne 0) { throw "Packaged application smoke test failed." }
+          $ExitCode = $LASTEXITCODE
+          if ($ExitCode -ne 0) {
+            $LogPath = Join-Path $env:LOCALAPPDATA "ValorantAICoach\logs\valorant-ai-coach.log"
+            if (Test-Path $LogPath) {
+              Write-Host "----- packaged smoke log -----"
+              Get-Content -Raw -Encoding UTF8 $LogPath
+              Write-Host "----- end packaged smoke log -----"
+            } else {
+              Write-Warning "Packaged smoke log was not created: $LogPath"
+            }
+            throw "Packaged application smoke test failed with exit code $ExitCode."
+          }
       - uses: actions/upload-artifact@v4
         with:
           name: VALORANT-AI-Coach-windows-onedir
