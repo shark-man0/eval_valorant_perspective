@@ -245,3 +245,43 @@ def test_round_analysis_fact_confidence_is_not_raised_by_the_pipeline() -> None:
     assert refs
     for ref in refs:
         assert after[ref] == before[ref]
+
+
+# --- Config / code agreement for the confidence policy -------------------------------------
+
+
+def _rules_config() -> dict[str, Any]:
+    path = Path(__file__).resolve().parents[2] / "config" / "valorant_evaluation_rules_v4.json"
+    return json.loads(path.read_text(encoding="utf-8"))  # type: ignore[no-any-return]
+
+
+def test_config_confidence_thresholds_match_the_values_hardcoded_in_code() -> None:
+    policy = _rules_config()["confidence_policy"]
+    assert policy["display_review_min"] == 0.55
+    assert policy["display_normal_min"] == 0.75
+
+
+@pytest.mark.parametrize(
+    ("confidence", "expected"),
+    [(0.549, "unscored"), (0.55, "improve"), (0.9, "improve")],
+)
+def test_pipeline_demotes_scored_labels_below_review_minimum(
+    confidence: float, expected: str
+) -> None:
+    from valorant_ai_coach.application.pipeline import MatchAnalysisPipeline
+
+    evaluation = {
+        "label": "improve",
+        "confidence": confidence,
+        "clip_id": "c1",
+        "display_clip": {"clip_id": "c1"},
+        "improvement": "x",
+        "missing_information": [],
+    }
+    result = MatchAnalysisPipeline._enforce_confidence_policy(evaluation)
+    assert result["label"] == expected
+    if expected == "unscored":
+        assert result["unscored_reason_code"] == "low_confidence"
+        assert result["clip_id"] is None and result["improvement"] is None
+        assert result["missing_information"]
+    assert evaluation["label"] == "improve"  # input is not mutated

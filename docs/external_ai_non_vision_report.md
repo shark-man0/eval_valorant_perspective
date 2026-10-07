@@ -58,7 +58,7 @@
 
 - Priority 2: 依頼の6ケースは、good: TC-006、improve: TC-017、unscored(必須fact不足): TC-025、unscored(低confidence): `test_downstream_contract.py`、authority: `test_round_analysis.py`、spectator: builder層テスト、で網羅。`RoundAnalyzer` 経由のspectator end-to-endは未作成。
 - Priority 3: `DerivedEventBuilder` のevent_idが入力indexに依存する点（入力順序・間引きで変わる）、confidence propagationの精査
-- Priority 4: Excel2本と `valorant_evaluation_rules_v4.json` の差分整理
+- Priority 4: 完了。`docs/external_ai_rules_criteria_diff.md` 参照（44ルールすべて一致、rule変更不要。要判断2点）
 - Priority 5/6: AI Coach検証層、UI（PySide6未導入のため smoke 未実行）、ClipService
 - 全体 `pytest` / `ruff check .` / `mypy src` の最終結果
 
