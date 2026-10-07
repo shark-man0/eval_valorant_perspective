@@ -39,6 +39,19 @@ def _bounded_confidence(value: Any) -> float:
 
 
 
+# Spike states that are relative to whose first-person view is on screen. Seen through a
+# spectator/non-player view they describe someone else, so they must not become player facts.
+_VIEWPOINT_RELATIVE_SPIKE_STATES = frozenset(
+    {"carried_by_player", "carried_by_ally", "not_carried"}
+)
+
+
+def _player_scoped_spike_state(spike_state: Any, player_valid: bool) -> Any:
+    if not player_valid and spike_state in _VIEWPOINT_RELATIVE_SPIKE_STATES:
+        return "unknown"
+    return spike_state
+
+
 def _shared_timer_facts(observations: Sequence[dict[str, Any]]) -> list[dict[str, Any]]:
     """Preserve accepted current-frame shared values without attributing a player."""
     facts: list[dict[str, Any]] = []
@@ -545,7 +558,9 @@ class RoundPackageBuilder:
                 "hp": values.get("hp") if player_valid else None,
                 "armor": values.get("armor") if player_valid else None,
                 "weapon": values.get("weapon_text") if player_valid else None,
-                "spike_state": values.get("spike_state", "unknown"),
+                "spike_state": _player_scoped_spike_state(
+                    values.get("spike_state", "unknown"), player_valid
+                ),
                 "round_time_remaining_sec": values.get("round_time_remaining_sec"),
                 "utility_available_count": utility_count,
                 "player_location": {
