@@ -4,6 +4,13 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test-and-build:
     runs-on: windows-latest
@@ -23,7 +30,7 @@ jobs:
           ffprobe -version
       - run: python -m pip install -c constraints-windows.txt -e ".[gui,dev,build]"
       - run: python tests/validate_dataset.py
-      - run: python -m pytest --cov=valorant_ai_coach --cov-report=term-missing --cov-fail-under=75
+      - run: python -m pytest --durations=25 --cov=valorant_ai_coach --cov-report=term-missing --cov-fail-under=75
       - run: python -m ruff check src tests scripts/e2e
       - run: python -m mypy src/valorant_ai_coach
       - run: python -m PyInstaller --noconfirm --clean VALORANT-AI-Coach.spec
