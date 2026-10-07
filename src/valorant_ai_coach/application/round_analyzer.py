@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from threading import Event
 from typing import Any, Protocol
@@ -8,6 +8,12 @@ from typing import Any, Protocol
 from valorant_ai_coach.facts import FactBuilder
 from valorant_ai_coach.models import RuleCandidate
 from valorant_ai_coach.rules import DeterministicRuleEngine, MockEvaluator, RuleSelector
+from valorant_ai_coach.rules.temporal_scope import (
+    AnalysisScope,
+    TemporalScopeResolver,
+    scope_round_package,
+    validate_output_scope,
+)
 from valorant_ai_coach.schema_validation import ContractValidationError, SchemaValidator
 
 
@@ -19,6 +25,7 @@ class RoundCoach(Protocol):
         *,
         frame_paths: list[Path] | None = None,
         deterministic_decisions: dict[str, dict[str, Any]] | None = None,
+        analysis_scopes: dict[str, dict[str, Any]] | None = None,
         cancel_event: Event | None = None,
     ) -> dict[str, Any]: ...
 
@@ -36,9 +43,10 @@ class MockCoachAdapter:
         *,
         frame_paths: list[Path] | None = None,
         deterministic_decisions: dict[str, dict[str, Any]] | None = None,
+        analysis_scopes: dict[str, dict[str, Any]] | None = None,
         cancel_event: Event | None = None,
     ) -> dict[str, Any]:
-        del frame_paths, deterministic_decisions
+        del frame_paths, deterministic_decisions, analysis_scopes
         if cancel_event is not None and cancel_event.is_set():
             raise InterruptedError("AI評価がキャンセルされました")
         return self.evaluator.evaluate(round_package, candidate_rule_ids)
@@ -50,6 +58,7 @@ class RoundAnalysis:
     candidates: tuple[RuleCandidate, ...]
     deterministic_decisions: dict[str, dict[str, Any]]
     output: dict[str, Any]
+    analysis_scopes: dict[str, AnalysisScope] = field(default_factory=dict)
 
 
 class RoundAnalyzer:
@@ -63,7 +72,9 @@ class RoundAnalyzer:
         rule_engine: DeterministicRuleEngine,
         coach: RoundCoach,
         validator: SchemaValidator,
+        scope_resolver: TemporalScopeResolver | None = None,
     ) -> None:
+        self.scope_resolver = scope_resolver or TemporalScopeResolver()
         self.fact_builder = fact_builder
         self.selector = selector
         self.rule_engine = rule_engine
@@ -90,12 +101,24 @@ class RoundAnalyzer:
                 serialized["fact_refs"] = list(decision.fact_refs)
                 serialized["missing_information"] = list(decision.missing_information)
                 decisions[candidate.rule_id] = serialized
-        frame_paths = [Path(frame["path"]) for frame in enriched["frames"]]
+        scopes = {
+            candidate.rule_id: self.scope_resolver.resolve(candidate, enriched)
+            for candidate in candidates
+        }
+        bound_fact_ids = {
+            str(ref) for decision in decisions.values() for ref in decision.get("fact_refs", [])
+        }
+        scoped_package, kept_frames = scope_round_package(
+            enriched, list(scopes.values()), keep_fact_ids=bound_fact_ids
+        )
+        all_frame_paths = [Path(frame["path"]) for frame in enriched["frames"]]
+        frame_paths = [all_frame_paths[index] for index in kept_frames]
         output = self.coach.evaluate(
-            enriched,
+            scoped_package,
             candidate_ids,
             frame_paths=frame_paths,
             deterministic_decisions=decisions,
+            analysis_scopes={rule_id: scope.to_prompt() for rule_id, scope in scopes.items()},
             cancel_event=cancel_event,
         )
         self.validator.validate_ai_output(
@@ -104,7 +127,8 @@ class RoundAnalyzer:
             candidate_rule_ids=set(candidate_ids),
         )
         self._validate_deterministic_authority(output, decisions)
-        return RoundAnalysis(enriched, tuple(candidates), decisions, output)
+        validate_output_scope(output, scopes)
+        return RoundAnalysis(enriched, tuple(candidates), decisions, output, scopes)
 
     @staticmethod
     def _validate_deterministic_authority(

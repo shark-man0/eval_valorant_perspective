@@ -55,10 +55,9 @@ MOV-03, MOV-04, PEEK-02, PEEK-04, PEEK-05, POS-01, POS-03, INFO-02, INFO-04, DEC
 ### 3.4 JSON `global_evaluation_principles` の記述
 
 - Excel「AI共通評価方針」は10項目、JSONは17項目。JSONはExcelの内容を含み、コード側の設計原則（concept_tags、NOT_APPLICABLE/NEUTRAL禁止、Z座標を推測しない等）が加わっている。矛盾はない。
-- 17項目中の1つが `rule_trigger_registry_v1.json` を参照しているが、実際に使われているのは `config/rule_trigger_registry_v2.json`。**記述が古い**。未修正（config変更になるため、判断を仰ぐ）。この文面がAIへのpromptに入るかは未確認。
+- 17項目中の1つが `rule_trigger_registry_v1.json` を参照しているが、実際に使われているのは `config/rule_trigger_registry_v2.json`。**記述が古かった**。ユーザー承認のうえ、誤記修正として `rule_trigger_registry_v2.json` に修正済み（1行のみ。registry・schema・評価ロジックなど他のconfig semanticsは未変更）。
 
-## 4. production rule変更の要否
+## 4. 対応状況
 
-なし。判断が必要なのは次の2点のみ。
-1. 3.4の `v1` 参照を `v2` に直すか（文字列のみの変更）
-2. 3.3の「AIが見る範囲」を評価ロジックに反映するか（現在は未使用。反映するなら別タスク）
+1. 3.4の `v1` → `v2`: **修正済み**（誤記修正のみ）
+2. 3.3の「AIが見る範囲」: **評価ロジックへ反映済み**（`rules/temporal_scope.py`、`docs/external_ai_non_vision_report.md` §6 参照）。`temporal_tolerance_policy` / `automation_policy` / `requires_round_timeline` などは引き続き未使用。

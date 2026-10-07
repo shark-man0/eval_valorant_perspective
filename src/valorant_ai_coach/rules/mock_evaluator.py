@@ -307,6 +307,11 @@ class MockEvaluator:
         timestamp = float(event["time_sec"] if event else package["round_window"]["start_sec"])
         start = max(float(package["round_window"]["start_sec"]), timestamp - 5)
         end = min(float(package["round_window"]["end_sec"]), timestamp + 5)
+        # Evidence is the observed moment only (same as the real coach); the wider
+        # window is just the display clip. Keeping them apart lets the rule's analysis
+        # scope bound the evidence without constraining the clip.
+        evidence_start = max(float(package["round_window"]["start_sec"]), timestamp - 0.75)
+        evidence_end = min(float(package["round_window"]["end_sec"]), timestamp + 0.75)
         scored = label in {"good", "improve"}
         if decision is not None and decision.label == "unscored":
             missing = list(decision.missing_information) or missing
@@ -347,7 +352,9 @@ class MockEvaluator:
             ),
             "confidence": round(float(confidence), 3),
             "evidence": evidence,
-            "evidence_range": {"start_sec": start, "end_sec": end} if scored else None,
+            "evidence_range": (
+                {"start_sec": evidence_start, "end_sec": evidence_end} if scored else None
+            ),
             "display_clip": {"start_sec": start, "end_sec": end} if scored else None,
             "missing_information": missing,
             "unscored_reason_code": reason_code,

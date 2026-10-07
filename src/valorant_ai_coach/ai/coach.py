@@ -158,6 +158,7 @@ class OpenAICoach:
         *,
         frame_paths: Sequence[Path] | None = None,
         deterministic_decisions: Mapping[str, Mapping[str, Any]] | None = None,
+        analysis_scopes: Mapping[str, Mapping[str, Any]] | None = None,
         cancel_event: threading.Event | None = None,
     ) -> dict[str, Any]:
         self._check_cancel(cancel_event)
@@ -183,6 +184,7 @@ class OpenAICoach:
             "round_package": _stable_package_for_remote(round_package),
             "candidate_rules": [self.rules_by_id[rule_id] for rule_id in selected_ids],
             "binding_deterministic_decisions": dict(deterministic_decisions or {}),
+            "analysis_scopes": dict(analysis_scopes or {}),
             "requirements": {
                 "candidate_rule_ids": selected_ids,
                 "evaluation_language": "ja",

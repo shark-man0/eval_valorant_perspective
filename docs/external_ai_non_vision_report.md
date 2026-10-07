@@ -74,8 +74,37 @@
 - `ruff check`: 変更ファイルは指摘0。リポジトリ全体は変更前から386件の既存指摘
 - `mypy src`: 22件、変更前と同数（PySide6未導入、hud側の既存分）。変更ファイルに指摘なし
 
-## 6. merge時の注意
+## 6. 「AIが見る範囲」（temporal_context）の評価ロジックへの反映（ユーザー承認済み）
 
-- 変更ファイル: `rounds/builder.py`、`rules/engine.py`、`rules/mock_evaluator.py`、`ai/coach.py`、`tests/cases/TC-005,TC-017/expected_assertions.json`、`tests/unit/test_rule_engine.py`、`tests/integration/test_visual_review_regressions.py`（1パラメータ）、`tests/unit/test_downstream_contract.py`（新規）、docs
+実装: `src/valorant_ai_coach/rules/temporal_scope.py`、`RoundAnalyzer` に統合。
+
+**方針: 範囲は「絞る」方向にだけ働く。観測を足さず、不足は `unscored` 側へ倒す。**
+
+| レベル | 範囲 |
+|---|---|
+| micro / local（`event_window_seconds` あり） | トリガeventの時刻の前後（before/after秒）を結合した窓。round windowでクランプ。pivotが無ければ全ラウンド |
+| phase / round / match / cross_round | 全ラウンド（phaseの境界情報が無く、推測しないため） |
+
+反映箇所:
+1. **入力**: 候補が全てwindowedのときだけ、AIへ渡すpackageの `events` / `state_snapshots` / `frames`（と対応する `frame_paths`）を窓の和集合に絞る。決定論decisionが引くfactと、保持factが引くeventは残す（provenance維持）。観測の追加はしない。
+2. **prompt**: 実コーチのpromptにrule別の `analysis_scopes` を含める。
+3. **出力検証**（`validate_output_scope`）: 採点済み（good/improve）の `evidence_range` は、関与するruleの分析範囲内であること。`unscored` は対象外。`display_clip` は制約しない（クリップ窓は別定義）。
+4. **文脈不足**: `requires_previous_round_context` のruleで `previous_round_context` が無い場合、good/improveは `ContractValidationError`（ECO-01 / ECO-02 / ADV-07）。
+
+副次的な変更:
+- `MockEvaluator` の `evidence_range` を表示クリップ窓（±5秒）から**事象時刻±0.75秒**に変更（実コーチと同じ）。`display_clip` は不変。mockの根拠範囲が窓をはみ出して検証に落ちたため。
+- `RoundCoach` / `OpenAICoach.evaluate` / `MockCoachAdapter.evaluate` に任意引数 `analysis_scopes` を追加。`RoundAnalysis` に `analysis_scopes` を追加。
+
+**限界（実測）**:
+- **入力の絞り込みは、全38fixtureで一度も働かなかった。** どのケースにもラウンド全体が必要なruleが1件以上あり、1回のAI呼び出しでは全体に倒れる。現状で実効があるのは、rule別の範囲検証（29ケースで窓が狭まる）と文脈不足の検証、およびpromptへの範囲提示。入力の絞り込みを実効化するには、windowed群とwhole-round群でAI呼び出しを分ける必要があり、API呼び出し回数（コスト）が増えるため未実施。
+- 範囲違反・文脈不足は `ContractValidationError`（修復ループ対象外）。実モデルの出力で起きた場合の扱い（修復／降格）は未決定。
+- 窓は `event_window_seconds` とトリガeventのみから決まる。`requires_round_timeline` / `uses_whole_match_aggregation` / `display_clip_strategy` はこの変更の対象外。
+- 実モデル（OpenAI API）では未検証。テストはmockとスタブのみ。
+
+テスト: `tests/unit/test_temporal_scope.py`（20件）。全38 fixtureが範囲検証を通ることを確認済み。
+
+## 7. merge時の注意
+
+- 変更ファイル: `rules/temporal_scope.py`（新規）、`application/round_analyzer.py`、`rules/__init__.py`、`config/valorant_evaluation_rules_v4.json`（誤記1行）、`rounds/builder.py`、`rules/engine.py`、`rules/mock_evaluator.py`、`ai/coach.py`、`tests/cases/TC-005,TC-017/expected_assertions.json`、`tests/unit/test_rule_engine.py`、`tests/integration/test_visual_review_regressions.py`（1パラメータ）、`tests/unit/test_downstream_contract.py`（新規）、docs
 - `rounds/builder.py` と `test_visual_review_regressions.py` はvision側が触る可能性がある隣接ファイル。前者は `_state_snapshots` 内1箇所とヘルパー追加のみ、後者は1行。
-- 既存contractを変更した（§3.1、§3.2）。schema / config（JSON）は未変更。
+- 既存contractを変更した（§3.1、§3.2、§6）。schema・registry・評価ロジックのconfig semanticsは未変更（configの変更は文字列の誤記修正1行のみ）。
