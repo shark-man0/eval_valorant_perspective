@@ -162,3 +162,7 @@ fullのnegative assertion失敗とdiscontinuity違反は0、82 assertionのstatu
 候補16のボトルネックはgeometry 6244.055秒（41.22%）、numeric/OCR 4132.396秒（27.28%）、spectator 2237.387秒（14.77%）です。full wallは前回より2153.156秒（16.57%）増えています。認識条件を変えずに短い段階で不適格候補を除外する意義が確認できました。
 
 `e2e_reports/match_001/profile16_diagnostic_assessment.json` にterminal hash確認、入力fingerprint、誤読画像のSHA256とPTS、却下理由を記録しました。通常のreport/historyは最後の診断runの結果であり、profileの採用宣言ではありません。raw／trace／evaluationのterminal hash一致、source/profile/code fingerprint、schemaを確認済みです。Ruff／mypyもPASS、Windows実行は未検証です。
+
+## main統合後の検証
+
+2026-10-08、リモートmainのCI／observability更新（`27e668c`）を競合なく統合しました。統合後にRuff（src／tests／E2E・diagnostics scripts）、mypy（96 source files）、変更関連のunit test165件がPASSしました。対象にはobservability、HUD profile生成、spectator icon、numeric confidence、E2E runner／cache／replay／manifest／metrics／timingを含みます。実動画fullの上記計測は統合前のfingerprintに対応し、統合後に再実行したfullと偽って扱いません。
