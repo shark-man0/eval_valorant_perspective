@@ -29,7 +29,7 @@ jobs:
         run: |
           if ! command -v ffmpeg >/dev/null 2>&1 || ! command -v ffprobe >/dev/null 2>&1; then
             sudo apt-get update
-            sudo apt-get install --yes ffmpeg
+            sudo apt-get install --yes ffmpeg libegl1
           fi
           ffmpeg -version
           ffprobe -version
