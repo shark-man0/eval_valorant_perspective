@@ -118,9 +118,8 @@ def test_performance_report_survives_failed_phase_and_unavailable_resources(
     recorder.set_tool_executables(ffmpeg="custom-ffmpeg", ffprobe="custom-ffprobe")
     with recorder.phase("ok"):
         pass
-    with pytest.raises(RuntimeError):
-        with recorder.phase("failed"):
-            raise RuntimeError("boom")
+    with pytest.raises(RuntimeError), recorder.phase("failed"):
+        raise RuntimeError("boom")
     recorder.finish("failed", failure_category="internal")
     report = recorder.report()
     assert report["total_elapsed_sec"] >= 0
