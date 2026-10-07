@@ -1,5 +1,5 @@
 {
-  "status": "qualified_complete_references_native_e2e_pending",
+  "status": "complete_references_native12_runtime_rejected_explicit_fallback_candidate13_native_pending",
   "threshold": 0.9,
   "identity_reference_ready": true,
   "references": {
@@ -51643,5 +51643,2702 @@
     "reason": "same weak menu heuristics; qualified configured witness override under isolated native11 evaluation",
     "prior_semantic_review_sha256": "bded544262f7508121f72c9f5153d404e292c3326b5494a7aa54b90a3980cf0b",
     "diagnostic_sha256": "c002d451a043ab9532751d1b524339874090eb66c5467427fad73c30c976cc88"
+  },
+  "native07_timer_jump_semantic_review": {
+    "candidate_pairs": 7,
+    "reviewed_frames": 14,
+    "correct_readings": 10,
+    "incorrect_readings": 4,
+    "incorrect_confidence_at_least0_90": 1,
+    "incorrect_confidence_below0_90": 3,
+    "actual_on_screen_jump_pairs": 3,
+    "ocr_error_pairs": 4,
+    "minimum_incorrect_confidence": 0.85171875,
+    "maximum_incorrect_confidence": 0.95371284,
+    "semantic_review_complete": true,
+    "adoption_qualified": false,
+    "reason": "high_confidence_timer_ocr_digit_substitution_confirmed",
+    "global_timer_accuracy_verified": false,
+    "round_boundaries_inferred": false,
+    "native_values_or_events_changed": false,
+    "source_profile_changed": false,
+    "profile09_and10_inherit_unqualified_timer": true,
+    "profile08_and11_include_timer_candidate": false,
+    "readable_timer_count": 4070,
+    "unknown_timer_count": 1356,
+    "readable_confidence_below0_90": 97,
+    "cause": "format_valid_minute_digit_substitution_in_raw_ocr",
+    "native_value_and_confidence_reproduced_count": 4,
+    "artifact_hashes": {
+      "reader-error-replay.json": "1d6c57a1dfbe74f344ce0abd12794f8ac6383e779e7d96df27afc426739db595",
+      "blind-pixel-labels.json": "707bae5d991c155c21de04862400b5304bc90c7ab9874a079ff77bdb855b32d3",
+      "semantic-review.json": "3276995a8510900606187a0eb5bd1064fb418c2afb23e385525c8fe42ddbb595",
+      "manifest.json": "44504144c99630d41e7e7997aed40de7cc8710b84ba135cb59b37b9cceb25248"
+    }
+  },
+  "geometry_visible_training_median_diagnostics": {
+    "scope": "independent visible-training median construction; no holdout/source/profile change",
+    "visibility_labels_sha256": "364365fa425919f0b07b7fdb1c1b4ca2cb3f8551f10b46997547960efbad5f8b",
+    "representation": "same frozen3x3 sigma0.6 Gaussian isolated binary ridges; excluded regions zeroed",
+    "mask_changed": false,
+    "threshold": 0.9,
+    "minimum_support": 3,
+    "minimum_support_fraction": 0.8,
+    "holdout_used": false,
+    "profile_created": false,
+    "source_changed": false,
+    "anchors": {
+      "hp_hud_structure": [
+        {
+          "training_subset": "all_visibly_present_structure",
+          "positive_count": 28,
+          "accepted_count": 15,
+          "support_fraction": 0.5357142857142857,
+          "training_qualified": false,
+          "absent_false_accept_count": 0,
+          "ambiguous_accept_count": 0,
+          "feature_sha256": "b7d6d8f8753edf33d4f6206e4bab2758a89a0b210ba9823984d6e9ab38d52246"
+        }
+      ],
+      "ability_bar_structure": [
+        {
+          "training_subset": "all_visibly_present_structure",
+          "positive_count": 28,
+          "accepted_count": 17,
+          "support_fraction": 0.6071428571428571,
+          "training_qualified": false,
+          "absent_false_accept_count": 0,
+          "ambiguous_accept_count": 0,
+          "feature_sha256": "d188b4e4e03cf6d4807111d4befb972021b13144f030926aa1d93132e39572cc"
+        },
+        {
+          "training_subset": "configured_astra_visible_structure",
+          "positive_count": 25,
+          "accepted_count": 17,
+          "support_fraction": 0.68,
+          "training_qualified": false,
+          "absent_false_accept_count": 0,
+          "ambiguous_accept_count": 0,
+          "feature_sha256": "69de980948f9e8d25de8a6c51c9eaa3b0dc357e6f4834395643e178ed38e64d2"
+        }
+      ]
+    },
+    "artifact_hashes": {
+      "visible-median-training-diagnostics.json": "f960b9c630b662521b500cc0cdf6fe611911df61999c8824ba6163e59078749f",
+      "manifest.json": "ca6ee8bb30e99d1ffdf766dc38dd083a8d8ed4124113dbc4c5f2b7f149aaedde",
+      "conditional-existing-candidate-diagnostics.json": "525b7b2b52550f9483d558490de54964bd246a2ddc6ae14e3a52569621d8be2a",
+      "pixel-visibility-labels.json": "364365fa425919f0b07b7fdb1c1b4ca2cb3f8551f10b46997547960efbad5f8b"
+    }
+  },
+  "ability_training_group_diagnostics": {
+    "scope": "original training only; production matcher group decomposition, no new candidate or threshold tuning",
+    "training_count": 32,
+    "configured_astra_visible_count": 25,
+    "configured_astra_supported_count": 18,
+    "configured_astra_failed_count": 7,
+    "failure_by_limiting_group": {
+      "1": 4,
+      "2": 3
+    },
+    "recall_below0_90_in_failed_groups": 9,
+    "precision_below0_90_in_failed_groups": 9,
+    "holdout_used": false,
+    "production_source_or_profile_changed": false,
+    "diagnostic_sha256": "b2fcfb62c1f32edcab0cba2f67307104e7f2e006bea279cc3427a74199b52d80"
+  },
+  "ability_fixed_frame_training_hypothesis": {
+    "status": "rejected_training_structural_gates",
+    "support_boxes_pixels": [
+      [
+        742,
+        1027,
+        840,
+        1067
+      ],
+      [
+        971,
+        1027,
+        1065,
+        1067
+      ]
+    ],
+    "dynamic_and_key_exclusion_boxes_pixels": [
+      [
+        751,
+        1036,
+        828,
+        1050
+      ],
+      [
+        980,
+        1036,
+        1055,
+        1050
+      ],
+      [
+        770,
+        1051,
+        808,
+        1067
+      ],
+      [
+        999,
+        1051,
+        1037,
+        1067
+      ]
+    ],
+    "configured_astra_visible_count": 25,
+    "minimum32_each_eligible_count": 20,
+    "eligible_fraction": 0.8,
+    "reference_generated": false,
+    "generator_stats": {
+      "matcher": "value_invariant_edges_v1",
+      "proposal_source": "configured_role_scaffold",
+      "candidate_count": 18,
+      "structural_rejected": 25,
+      "support_rejected": 7,
+      "holdout_rejected": 0,
+      "training_count": 32,
+      "holdout_count": 32,
+      "reason": "scaffold_evidence_insufficient"
+    },
+    "rejection_stage_counts": {
+      "initial_minimum_support": 7,
+      "structural_arrangement": 18,
+      "group_population": 7
+    },
+    "structural_gate_failure_counts": {
+      "line_support": 18,
+      "spatial_spread": 0,
+      "nonparallel": 18,
+      "separated_layout": 18,
+      "arrangement": 18,
+      "edge_density": 18,
+      "edge_support": 1
+    },
+    "same_core_statistics_and_outcome": true,
+    "holdout_evaluated": false,
+    "production_profile_or_source_changed": false,
+    "artifact_hashes": {
+      "ability-fixed-frame-training-eligibility.json": "928ec09fab90b1f9c9df778197e4cf8832468dd8cc0c0d52c7f62ecef32d03c2",
+      "ability-fixed-frame-generation-diagnostics.json": "d4574a76ffa6fb279cccef30922329e02812aa6fd151abc404a5dc2c93109dd1",
+      "ability-fixed-frame-rejection-diagnostics.json": "0f9c06dc61663ab2ccc52c368aac61ed8b3bb68752b37a5cbc46aba5b111ce7a"
+    }
+  },
+  "spectator_training_edge_collision_review": {
+    "scope": "all four original training identity-positive/exclusion-unverified crops plus one training positive control; not whole-run accuracy or global absence proof",
+    "gallery_viewed": true,
+    "reviewed_training_crop_count": 5,
+    "visually_panel_absent_cases": 4,
+    "detector_unknown_absent_cases": 4,
+    "visually_panel_present_control_count": 1,
+    "detector_present_control_count": 1,
+    "reference_available": true,
+    "cause": "world_and_foreground_edge_overlap_with_frozen_component_coordinates",
+    "unsigned_component_absence_gate_maintained": true,
+    "absence_from_low_oriented_score_inferred": false,
+    "holdout_used": false,
+    "source_profile_or_native_outputs_changed": false,
+    "manifest_sha256": "ea4455f1c3f09b7132ef9d49da835d5e1fc3997bd5c7ab77002e9ff0af629d00",
+    "semantic_review_sha256": "74d479d129b1b160313202fb2432feabe78d035ffdd494445ad05ebb662834af"
+  },
+  "native_profile08_terminal_review": {
+    "run_output": "outputs/e2e/match_001/20261006T063210Z-3ecd1ba6",
+    "status": "complete_pending_current_frame_and_remaining_safety_review",
+    "result_counts": {
+      "passed": 23,
+      "failed": 55,
+      "not_evaluated": 4,
+      "evaluation_failure_count": 56,
+      "negative_assertion_failures": 0,
+      "negative_assertions_not_evaluated": 0,
+      "discontinuity_violations": 0,
+      "observation_count": 4559,
+      "sampled_frame_count": 4559,
+      "hud_unknown": 3940,
+      "detected_states": {
+        "unknown": 3940,
+        "live_first_person": 455,
+        "buy_menu_open": 1,
+        "spectator_first_person": 163
+      },
+      "identity_missing": {
+        "ability_bar_structure": 2223,
+        "weapon_ammo_structure": 2547,
+        "hp_hud_structure": 739
+      },
+      "identity_reasons": {
+        "competing_view_evidence": 346,
+        "spectator_exclusion_unverified": 2260,
+        "structure_evidence_insufficient": 1498,
+        "independent_hud_structures": 455
+      },
+      "live_identity_evidence_insufficient": 3676,
+      "fresh_geometry_success": 1,
+      "effective_geometry_success": 4559,
+      "insufficient_anchors": 4558,
+      "geometry_invalid_unknown": 0,
+      "spectator_checks": {
+        "panel_structure_excluded": 2299,
+        "panel_structure_mismatch": 264,
+        "panel_structure_ambiguous": 1823,
+        "roi_unobservable": 10,
+        "panel_structure_present": 163
+      },
+      "round_count": 1,
+      "round_start_event_count": 0,
+      "round_end_event_count": 0,
+      "boundary_incomplete_package_count": 1,
+      "hud_event_count": 0,
+      "visual_event_count": 0,
+      "map_resolved_count": 0,
+      "map_held_count": 0,
+      "trace_counts": {
+        "events": 170,
+        "state_intervals": 180,
+        "ownership_intervals": 4397,
+        "snapshots": 619,
+        "visual_observations": 4,
+        "temporal_features": 0
+      }
+    },
+    "queue_status_sha256": "e4ed0135e720554554fdc0bb89907328c86e192286212582eca4586ff2a9845b",
+    "production_adopted": false,
+    "Windows_runtime_verified": false
+  },
+  "native08_live_semantic_review": {
+    "scope": "all455 native08 live frames; reuse only same-PTS identical decoded pixels",
+    "review_complete": true,
+    "method": "completed prior review reused only after exact same-PTS decoded-pixel equality",
+    "manifest_sha256": "72074347698bdc8da4c4126fd06823c51e098bb2492201793ad74a95532f3a19",
+    "reviewed_frame_count": 455,
+    "novel_frame_count": 0,
+    "global_false_positive_rate_verified": false,
+    "fresh_geometry_verified": false,
+    "production_adopted": false,
+    "combat_report_visible_live_count": 0,
+    "semantic_review_sha256": "326c253e40c46dade00c98fdd13041f8f21497dcede00ce52f3e802438d553a6"
+  },
+  "native08_spectator_semantic_review": {
+    "scope": "all163 native08 Spectator frames; reuse only same-PTS identical decoded pixels",
+    "review_complete": true,
+    "method": "completed prior review reused only after exact same-PTS decoded-pixel equality",
+    "manifest_sha256": "19008ee0c0b7ef5c7c3d8391b842eff511fd1d026aaf649092b3a6cf0ab5f847",
+    "reviewed_frame_count": 163,
+    "novel_frame_count": 0,
+    "global_false_positive_rate_verified": false,
+    "fresh_geometry_verified": false,
+    "production_adopted": false,
+    "player_specific_value_leak_count": 0,
+    "external_camera_transition_count": 2,
+    "camera_subtype_gate_verified": false,
+    "semantic_review_sha256": "ce3e2376c4af1325486154fa54da5095e5f30b8a847bb9bc847bf5f5f88e32f1"
+  },
+  "native_profile11_terminal_review": {
+    "run_output": "outputs/e2e/match_001/20261006T063149Z-cc009d82",
+    "status": "complete_pending_current_frame_and_remaining_safety_review",
+    "result_counts": {
+      "passed": 23,
+      "failed": 55,
+      "not_evaluated": 4,
+      "evaluation_failure_count": 56,
+      "negative_assertion_failures": 0,
+      "negative_assertions_not_evaluated": 0,
+      "discontinuity_violations": 0,
+      "observation_count": 4634,
+      "sampled_frame_count": 4634,
+      "hud_unknown": 3715,
+      "detected_states": {
+        "unknown": 3715,
+        "live_first_person": 455,
+        "buy_menu_open": 301,
+        "spectator_first_person": 163
+      },
+      "identity_missing": {
+        "ability_bar_structure": 2291,
+        "weapon_ammo_structure": 2610,
+        "hp_hud_structure": 794
+      },
+      "identity_reasons": {
+        "competing_view_evidence": 356,
+        "spectator_exclusion_unverified": 2324,
+        "structure_evidence_insufficient": 1499,
+        "independent_hud_structures": 455
+      },
+      "live_identity_evidence_insufficient": 3744,
+      "fresh_geometry_success": 1,
+      "effective_geometry_success": 4634,
+      "insufficient_anchors": 4633,
+      "geometry_invalid_unknown": 0,
+      "spectator_checks": {
+        "panel_structure_excluded": 2310,
+        "panel_structure_mismatch": 266,
+        "panel_structure_ambiguous": 1885,
+        "roi_unobservable": 10,
+        "panel_structure_present": 163
+      },
+      "round_count": 1,
+      "round_start_event_count": 0,
+      "round_end_event_count": 0,
+      "boundary_incomplete_package_count": 1,
+      "hud_event_count": 0,
+      "visual_event_count": 0,
+      "map_resolved_count": 0,
+      "map_held_count": 0,
+      "trace_counts": {
+        "events": 181,
+        "state_intervals": 185,
+        "ownership_intervals": 4472,
+        "snapshots": 919,
+        "visual_observations": 4,
+        "temporal_features": 0
+      }
+    },
+    "queue_status_sha256": "17d2c92b110ffd1a6bddb7c61befb2fd18ef28736877734985ede56ce4231697",
+    "production_adopted": false,
+    "Windows_runtime_verified": false
+  },
+  "native11_live_semantic_review": {
+    "scope": "all455 native11 live frames; reuse only same-PTS identical decoded pixels",
+    "review_complete": true,
+    "method": "completed prior review reused only after exact same-PTS decoded-pixel equality",
+    "manifest_sha256": "9afdb8edc24a3459d8dee4349f36f467914e0c18b0baa740bd8b9a1a8e5188ee",
+    "reviewed_frame_count": 455,
+    "novel_frame_count": 0,
+    "global_false_positive_rate_verified": false,
+    "fresh_geometry_verified": false,
+    "production_adopted": false,
+    "combat_report_visible_live_count": 0,
+    "semantic_review_sha256": "033248a94909d20ae737cc0e9b9ac5e67fe5b28972f44ac4cd0fe534a11915b6"
+  },
+  "native11_spectator_semantic_review": {
+    "scope": "all163 native11 Spectator frames; reuse only same-PTS identical decoded pixels",
+    "review_complete": true,
+    "method": "completed prior review reused only after exact same-PTS decoded-pixel equality",
+    "manifest_sha256": "d2c0fb14a7765715ef40dc594e0ca4b98924f4e8603e69cabfb770ee62bfedc9",
+    "reviewed_frame_count": 163,
+    "novel_frame_count": 0,
+    "global_false_positive_rate_verified": false,
+    "fresh_geometry_verified": false,
+    "production_adopted": false,
+    "player_specific_value_leak_count": 0,
+    "external_camera_transition_count": 2,
+    "camera_subtype_gate_verified": false,
+    "semantic_review_sha256": "b453f327b88273f8019e9301f75d5e46caa882fffa3b59251eb2ec64e5d0effa"
+  },
+  "native11_menu_semantic_review": {
+    "scope": "all301 terminal native11 buy-menu observations",
+    "review_complete": true,
+    "reviewed_frame_count": 301,
+    "prior_same_pts_pixel_identical_reviews": 269,
+    "novel_frames_visually_reviewed": 32,
+    "contact_sheets_viewed": [
+      "new-page-000.jpg",
+      "new-page-001.jpg"
+    ],
+    "actual_full_buy_menu_count": 301,
+    "false_menu_classification_count": 0,
+    "player_specific_value_leak_count": 0,
+    "manifest_sha256": "6b45b6026c4c1879487ebe593e73837fc8eb7d99fc18a9a2676ba8c1ee49f5f7",
+    "contact_sheet_sha256": {
+      "new-page-000.jpg": "84149a645c4eaefc9bdf6c5e46312ca45ae9663b5e61fb25a527e4a9ee868c9e",
+      "new-page-001.jpg": "1984df93ce7b50266763d580818d7f150cec0cf0b54df6fe2f96291b322ba4e9"
+    },
+    "global_recall_verified": false,
+    "current_frame_witness_replay_pending": false,
+    "production_adopted": false,
+    "current_frame_witness_replay_sha256": "f135863593a8c38c0aa02a4add1f296c0b840e0bc1286fa98392bd96cc16f010",
+    "semantic_review_sha256": "7fefaec31067fca55f62cb383b5708f54949db6238411d7104923ef1a8126139"
+  },
+  "native11_vs_native08_comparison": {
+    "comparison_sha256": "45cf12b2a9a6d7979e6e644c1b7b28893fec638d519aa7d5d77ca841d66b906b",
+    "improved_assertions": [],
+    "regressed_assertions": [],
+    "delta": {
+      "passed": 0,
+      "failed": 0,
+      "not_evaluated": 0,
+      "evaluation_failure_count": 0,
+      "negative_assertion_failures": 0,
+      "negative_assertions_not_evaluated": 0,
+      "discontinuity_violations": 0,
+      "observation_count": 75,
+      "sampled_frame_count": 75,
+      "hud_unknown": -225,
+      "live_identity_evidence_insufficient": 68,
+      "fresh_geometry_success": 0,
+      "effective_geometry_success": 75,
+      "insufficient_anchors": 75,
+      "geometry_invalid_unknown": 0,
+      "round_count": 0,
+      "round_start_event_count": 0,
+      "round_end_event_count": 0,
+      "boundary_incomplete_package_count": 0,
+      "hud_event_count": 0,
+      "visual_event_count": 0,
+      "map_resolved_count": 0,
+      "map_held_count": 0
+    }
+  },
+  "production_menu_witness_application": {
+    "source": "src/valorant_ai_coach/hud/templates.py",
+    "source_sha256": "fb81847093d479561dc09b7d6d9d18a8902b704a76240c815b079ddd4635123a",
+    "same_as_isolated_native11_source": true,
+    "test_file": "tests/unit/test_hud_menu_witnesses.py",
+    "meaningful_regression_cases": 8,
+    "ruff_all_passed": true,
+    "mypy_source_files_passed": 86,
+    "full_pytest_status": "running",
+    "current_frame_live_replay_status": "complete_455_of_455",
+    "menu_current_frame_replay_status": "complete_301_of_301",
+    "profile_env_adopted": false,
+    "final_production_native_e2e_status": "pending",
+    "Windows_runtime_verified": false,
+    "full_production_pytest_status": "complete",
+    "full_production_pytest_passed": 1004,
+    "full_production_pytest_skipped": 6,
+    "full_production_pytest_failed": 0,
+    "full_production_pytest_elapsed_seconds": 1376.8,
+    "full_production_pytest_log_sha256": "59f005dab74e87d671def41f6db65e1c6a9721fe41bb837b22a821717e750de7"
+  },
+  "native08_buy_menu_semantic_review": {
+    "scope": "all1 native08 buy_menu_open observation",
+    "review_complete": true,
+    "reviewed_frame_count": 1,
+    "prior_same_pts_pixel_identical_reviews": 1,
+    "false_menu_classification_count": 1,
+    "actual_full_menu_count": 0,
+    "prior_semantic_review_sha256": "c002d451a043ab9532751d1b524339874090eb66c5467427fad73c30c976cc88",
+    "semantic_review_sha256": "87bff7bd67f6d4ff61f34b479e010410db2d87dce967e1d3f360717acf274e47"
+  },
+  "native11_menu_current_frame_replay": {
+    "scope": "all301 visually verified terminal native11 menu frames; independent static witness current-frame replay",
+    "frame_count": 301,
+    "both_roles_passed": 301,
+    "failed": 0,
+    "threshold": 0.9,
+    "profile_fingerprint": "94e52fd77d6c2e5555bf257bcce8abf5e8b284e26c139780c9abf2940f3f059d",
+    "manifest_sha256": "6b45b6026c4c1879487ebe593e73837fc8eb7d99fc18a9a2676ba8c1ee49f5f7",
+    "native_hashes_verified": true,
+    "replay_sha256": "f135863593a8c38c0aa02a4add1f296c0b840e0bc1286fa98392bd96cc16f010"
+  },
+  "production_profile11_native_e2e_queue": {
+    "status": "running_production_profile11_standard_e2e",
+    "queue_pid": 58021,
+    "profile_fingerprint": "94e52fd77d6c2e5555bf257bcce8abf5e8b284e26c139780c9abf2940f3f059d",
+    "profile_env_adopted": false,
+    "Windows_runtime_verified": false,
+    "run_output": "outputs/e2e/match_001/20261006T113548Z-414e4682",
+    "regression_log_sha256": "59f005dab74e87d671def41f6db65e1c6a9721fe41bb837b22a821717e750de7",
+    "fresh_live_audit_sha256": "0f05b9c97cf2945033f7ce76af3103d5a8a7af0a3edab5c6b6a1b5c96c5770fb",
+    "menu_replay_sha256": "f135863593a8c38c0aa02a4add1f296c0b840e0bc1286fa98392bd96cc16f010",
+    "source_snapshot_sha256": "8f6f99cd0652a9f80aa1527f91a014d39b143916367feff31753faa8f37948fb"
+  },
+  "profile12_hp_only_candidate": {
+    "profile": "outputs/hud_profiles/pi-structural-20261006-12/hud_layout.json",
+    "base_profile": "outputs/hud_profiles/pi-structural-20261006-11/hud_layout.json",
+    "profile_fingerprint": "fdeda023d9ffe0028a73083e9f6feb891d674928dca262b91f06acd3933220ff",
+    "candidate_only": true,
+    "layout_bytes_equal": true,
+    "all_non_reader_specifications_equal": true,
+    "relative_asset_count": 23,
+    "all_existing_assets_hash_equal": true,
+    "absolute_asset_count": 0,
+    "missing_asset_count": 0,
+    "fingerprint_equal_after_relocation": true,
+    "reader_diagnostics": [],
+    "reader_names": [
+      "player_hp_armor"
+    ],
+    "field_names": [
+      "hp"
+    ],
+    "held_correct_count": 55,
+    "held_unknown_count": 9,
+    "held_wrong_count": 0,
+    "held_control_count": 24,
+    "held_control_false_accept_count": 0,
+    "held_frozen_before_evaluation": true,
+    "training_holdout_diagnostics_sha256": "a7cadd4d97bebd0a1f8735939954f11cc5aed931588bb30f699d1e56dd7084fb",
+    "reader_proposal_sha256": "c0c78c69aeb73807bb625f9c8a1e4ab456bbad5ecc0f9b440af56ab69a8e1cfa",
+    "production_source_changed": false,
+    "existing_player_ownership_gate_required": true,
+    "numeric_pixels_used_for_identity": false,
+    "timer_score_ammo_readers_added": false,
+    "global_numeric_accuracy_verified": false,
+    "integration_cohort_verified": false,
+    "standard_native_e2e_verified": false,
+    "profile_env_adopted": false,
+    "Windows_runtime_verified": false,
+    "candidate_report_sha256": "871ad61403a76869c16d62e5355e12c97f426c3f2bc6c6d6bed6c342b4feaf79",
+    "ownership_integration_status": "complete"
+  },
+  "profile12_hp_ownership_integration": {
+    "frame_count": 7,
+    "state_flags_ownership_equal_verified": true,
+    "unowned_frame_count": 6,
+    "unowned_hp_leak_count": 0,
+    "owned_hp_correct_count": 1,
+    "owned_hp_confidence": 0.9564498899999999,
+    "numeric_value_ground_truth_scope": "one independently visually transcribed fixed cohort live frame",
+    "integration_report_sha256": "1e391681cdd099be7170035bff9bf7bdeda2281dafccbc67321e267ae46b3725",
+    "pixel_label_sha256": "e12975fb38d0ef405ca3986fe2eb379a120ff71e5e3b15349498f1871127753e",
+    "standard_native_e2e_verified": false,
+    "profile_env_adopted": false,
+    "Windows_runtime_verified": false
+  },
+  "native11_fresh_live_audit": {
+    "scope": "terminal native E2E output hashes verified; fresh current-frame identity replay only, not independent semantic ground truth",
+    "profile_fingerprint": "94e52fd77d6c2e5555bf257bcce8abf5e8b284e26c139780c9abf2940f3f059d",
+    "live_observations": 455,
+    "fresh_identity_replay_passed": 455,
+    "fresh_identity_replay_failed": 0,
+    "same_pts_pixel_content_verified": true,
+    "reader_diagnostics": [],
+    "source_or_assertions_changed": false,
+    "audit_sha256": "0f05b9c97cf2945033f7ce76af3103d5a8a7af0a3edab5c6b6a1b5c96c5770fb"
+  },
+  "profile12_owned_hp_blind_diagnostic": {
+    "scope": "additional fixed diagnostic cohort; not independent holdout",
+    "frame_count": 455,
+    "readable_count": 453,
+    "ambiguous_count": 2,
+    "all_eight_pages_visually_reviewed": true,
+    "predictions_hidden_at_label_freeze": true,
+    "manifest_sha256": "bce9cdf83b0a4f728c6856da0312d91e5cd5303352caefe32b006a968bd1e51f",
+    "labels_sha256": "196d17a2180d4ca53cb513834c9c8536b77fe8a58d24987c763fc538b41ab9a8",
+    "profile_fingerprint": "fdeda023d9ffe0028a73083e9f6feb891d674928dca262b91f06acd3933220ff",
+    "replay_status": "complete",
+    "parameters_changed": false,
+    "global_accuracy_verified": false,
+    "native12_qualified": false,
+    "review_complete": true,
+    "ambiguous_false_accept_count": 0,
+    "wrong_count": 0,
+    "counts": {
+      "correct": 444,
+      "unknown": 11
+    },
+    "strict_0_90_counts": {
+      "correct": 440,
+      "unknown": 15
+    },
+    "blind_labels_sha256": "196d17a2180d4ca53cb513834c9c8536b77fe8a58d24987c763fc538b41ab9a8",
+    "reader_replay_sha256": "a8cce0aa996f766f854f5871d95e0712baf7b259c8864592be40c5f49492c0b7",
+    "new_independent_holdout": false,
+    "global_numeric_accuracy_verified": false,
+    "native_e2e_verified": false
+  },
+  "production_profile12_native_e2e_queue": {
+    "status": "waiting_for_production_profile11_terminal",
+    "queue_pid": 59327,
+    "profile_fingerprint": "fdeda023d9ffe0028a73083e9f6feb891d674928dca262b91f06acd3933220ff",
+    "candidate_only": true,
+    "profile_env_adopted": false,
+    "Windows_runtime_verified": false
+  },
+  "profile12_portable_bundle": {
+    "archive": "outputs/hud_profiles/pi-structural-20261006-12.zip",
+    "archive_sha256": "22d848693b8c425553746861079d1250db31807000917bc6f23c8d086a18cb5f",
+    "archive_bytes": 457432,
+    "file_count": 26,
+    "relative_asset_count": 23,
+    "extracted_file_hashes_equal": true,
+    "fingerprint_equal_after_extract": true,
+    "reader_diagnostics": [],
+    "candidate_only": true,
+    "native_e2e_verified": false,
+    "profile_env_adopted": false,
+    "Windows_runtime_verified": false,
+    "runtime_requirement": "generic tesseract command available to common subprocess reader; eng OCR data installed separately"
+  },
+  "native11_unknown_blind_taxonomy": {
+    "scope": "fixed64 unknown observations from terminal isolated11; diagnostic taxonomy only",
+    "frame_count": 64,
+    "reviewed_count": 64,
+    "pending_count": 0,
+    "per_role_predictions_hidden": true,
+    "review_complete": true,
+    "manifest_sha256": "19fdbae71a45f52604f33e8a7fefeb873ac54d767b6e7d29f7a1787594929c47",
+    "source_raw_sha256": "a29f010d22ac5b1f76af88f843d3bc216b30a11966948b88962384fff972afca",
+    "production_or_profile_changed": false,
+    "blind_labels_sha256": "0eee4e862890ba35a5b22e76b2dc31939eccbf900428ef34d99a00ad891a69ce",
+    "witness_replay_sha256": "11ff57300138a35b5fef3d9f464de74ea0e71c5b07527d57d20eca12a2adb2dd",
+    "all16_pages_visually_reviewed": true,
+    "scene_counts": {
+      "astra_first_person_world_view": 46,
+      "astral_projection": 9,
+      "external_death_camera": 2,
+      "full_buy_menu": 1,
+      "spectator_first_person": 5,
+      "spectator_external_death_camera": 1
+    },
+    "global_accuracy_claim": false,
+    "native_states_changed": false,
+    "current_frame_replay_complete": true,
+    "group_counts": {
+      "astra_first_person_world_view": {
+        "frame_count": 46,
+        "role_support": {
+          "hp_hud_structure": 38,
+          "ability_bar_structure": 19,
+          "weapon_ammo_structure": 23
+        },
+        "all_three_roles_supported": 7,
+        "identity_reasons_under_nominal_geometry": {
+          "competing_view_evidence": 8,
+          "spectator_exclusion_unverified": 22,
+          "structure_evidence_insufficient": 16
+        },
+        "spectator_reasons": {
+          "panel_structure_excluded": 24,
+          "panel_structure_mismatch": 5,
+          "panel_structure_ambiguous": 17
+        }
+      },
+      "astral_projection": {
+        "frame_count": 9,
+        "role_support": {
+          "hp_hud_structure": 9,
+          "ability_bar_structure": 9,
+          "weapon_ammo_structure": 0
+        },
+        "all_three_roles_supported": 0,
+        "identity_reasons_under_nominal_geometry": {
+          "structure_evidence_insufficient": 6,
+          "spectator_exclusion_unverified": 3
+        },
+        "spectator_reasons": {
+          "panel_structure_excluded": 6,
+          "panel_structure_ambiguous": 3
+        }
+      },
+      "external_death_camera": {
+        "frame_count": 2,
+        "role_support": {
+          "hp_hud_structure": 0,
+          "ability_bar_structure": 0,
+          "weapon_ammo_structure": 0
+        },
+        "all_three_roles_supported": 0,
+        "identity_reasons_under_nominal_geometry": {
+          "spectator_exclusion_unverified": 1,
+          "competing_view_evidence": 1
+        },
+        "spectator_reasons": {
+          "panel_structure_ambiguous": 1,
+          "panel_structure_excluded": 1
+        }
+      },
+      "full_buy_menu": {
+        "frame_count": 1,
+        "role_support": {
+          "hp_hud_structure": 0,
+          "ability_bar_structure": 0,
+          "weapon_ammo_structure": 0
+        },
+        "all_three_roles_supported": 0,
+        "identity_reasons_under_nominal_geometry": {
+          "spectator_exclusion_unverified": 1
+        },
+        "spectator_reasons": {
+          "panel_structure_ambiguous": 1
+        }
+      },
+      "spectator_first_person": {
+        "frame_count": 5,
+        "role_support": {
+          "hp_hud_structure": 4,
+          "ability_bar_structure": 0,
+          "weapon_ammo_structure": 4
+        },
+        "all_three_roles_supported": 0,
+        "identity_reasons_under_nominal_geometry": {
+          "spectator_exclusion_unverified": 5
+        },
+        "spectator_reasons": {
+          "panel_structure_ambiguous": 5
+        }
+      },
+      "spectator_external_death_camera": {
+        "frame_count": 1,
+        "role_support": {
+          "hp_hud_structure": 0,
+          "ability_bar_structure": 0,
+          "weapon_ammo_structure": 0
+        },
+        "all_three_roles_supported": 0,
+        "identity_reasons_under_nominal_geometry": {
+          "spectator_exclusion_unverified": 1
+        },
+        "spectator_reasons": {
+          "panel_structure_ambiguous": 1
+        }
+      }
+    }
+  },
+  "native11_unknown_role_group_diagnostics": {
+    "scope": "additional fixed diagnostic46 Astra world-view appearances; exact unchanged production group scores, no identity promotion",
+    "frame_count": 46,
+    "profile_fingerprint": "94e52fd77d6c2e5555bf257bcce8abf5e8b284e26c139780c9abf2940f3f059d",
+    "all_scores_equal_frozen_witness_replay": true,
+    "thresholds_changed": false,
+    "production_or_profile_changed": false,
+    "new_independent_holdout": false,
+    "global_accuracy_claim": false,
+    "summary_by_weapon_mode": {
+      "ability_cast": {
+        "frame_count": 2,
+        "ability_bar_structure": {
+          "supported": 1,
+          "failed": 1,
+          "failure_limiting_groups": {
+            "2": 1
+          }
+        },
+        "weapon_ammo_structure": {
+          "supported": 0,
+          "failed": 2,
+          "failure_limiting_groups": {
+            "1": 2
+          },
+          "failed_frames_with_unobservable_group": 2,
+          "failed_frames_all_groups_observable": 0
+        }
+      },
+      "knife": {
+        "frame_count": 10,
+        "ability_bar_structure": {
+          "supported": 3,
+          "failed": 7,
+          "failure_limiting_groups": {
+            "1": 6,
+            "2": 1
+          }
+        },
+        "weapon_ammo_structure": {
+          "supported": 0,
+          "failed": 10,
+          "failure_limiting_groups": {
+            "1": 10
+          },
+          "failed_frames_with_unobservable_group": 9,
+          "failed_frames_all_groups_observable": 1
+        }
+      },
+      "pistol": {
+        "frame_count": 18,
+        "ability_bar_structure": {
+          "supported": 9,
+          "failed": 9,
+          "failure_limiting_groups": {
+            "1": 2,
+            "2": 7
+          }
+        },
+        "weapon_ammo_structure": {
+          "supported": 7,
+          "failed": 11,
+          "failure_limiting_groups": {
+            "1": 4,
+            "3": 7
+          },
+          "failed_frames_with_unobservable_group": 2,
+          "failed_frames_all_groups_observable": 9
+        }
+      },
+      "rifle": {
+        "frame_count": 16,
+        "ability_bar_structure": {
+          "supported": 6,
+          "failed": 10,
+          "failure_limiting_groups": {
+            "2": 6,
+            "1": 4
+          }
+        },
+        "weapon_ammo_structure": {
+          "supported": 16,
+          "failed": 0,
+          "failure_limiting_groups": {},
+          "failed_frames_with_unobservable_group": 0,
+          "failed_frames_all_groups_observable": 0
+        }
+      }
+    },
+    "diagnostics_sha256": "5248c62606881e873e6221c45e5971f6f6f525538f2b1518166d76786722d8c5"
+  },
+  "native11_weapon_training_reencode": {
+    "scope": "additional64 cohort even32 training only; existing masks/slots/allowed regions fixed; no holdout inspected",
+    "training_count": 32,
+    "positive_appearance_count": 15,
+    "candidate_count": 17,
+    "selected_candidate": "existing_reference",
+    "selected_training_support": 10,
+    "required_training_support": 12,
+    "training_qualified": false,
+    "threshold": 0.9,
+    "minimum_support_fraction": 0.8,
+    "holdout_used": false,
+    "new_independent_holdout_claim": false,
+    "production_or_profile_changed": false,
+    "masks_or_slot_requirements_changed": false,
+    "numeric_pixels_used_for_identity": false,
+    "diagnostics_sha256": "eee3bc9ec449dc7e8f12da4c596c5f3b503a8cde000ec8f756794024adf90483"
+  },
+  "native11_weapon_training_pose_diagnosis": {
+    "scope": "even training only; diagnostic expanded feature poses, never runtime acceptance or geometry proof",
+    "training_count": 8,
+    "baseline_supported": 3,
+    "baseline_failed": 5,
+    "failed_reaching0_90_with_expanded_pose": 0,
+    "feature_pose_radius_px": 6,
+    "runtime_pose_radius_px_unchanged": 1,
+    "original_scores_exactly_reproduced": true,
+    "threshold": 0.9,
+    "value_exclusions_applied_before_feature_shift": true,
+    "holdout_used": false,
+    "production_or_profile_changed": false,
+    "all_slots_still_required": true,
+    "crop_bounds": [
+      1265,
+      1005,
+      1389,
+      1066
+    ],
+    "visual_crop_sha256": "cec7f1ae63cf8859ee917548c8d517b754a8232bd5ea181e70d7574b831d198e",
+    "diagnostics_sha256": "60c1d71ea7825dde54d50006902cc22e68034bb1700cc0461109ef3c437126d6",
+    "visual_crops_reviewed": true,
+    "runtime_adopted": false
+  },
+  "native11_additional_weapon_generation": {
+    "scope": "additional fixed64 real unknown-frame cohort; original shared training-only discovery then separate odd holdout gates",
+    "candidate_generated": true,
+    "training_count": 32,
+    "holdout_count": 32,
+    "generator_source_sha256": "56e3be382b18589c510168ef70874a2f7088790e01f06ca49fceff1acc9e4656",
+    "manifest_sha256": "19fdbae71a45f52604f33e8a7fefeb873ac54d767b6e7d29f7a1787594929c47",
+    "structure_configuration_sha256": "092c06ecd3683d650076df836319e507ca15c36cb2b3b4ee26280ab5156435d3",
+    "configuration_changed": false,
+    "threshold": 0.9,
+    "minimum_support_fraction": 0.8,
+    "frame_selection_uses_matcher_scores_or_values": false,
+    "new_independent_holdout_claim": false,
+    "profile_or_production_changed": false,
+    "previous_critical_slot_count": 3,
+    "candidate_slot_count": 3,
+    "previous_critical_slot_count_preserved": true,
+    "image_dimensions": [
+      124,
+      61
+    ],
+    "roi_bounds": [
+      0.2391304347826087,
+      0.5898876404494382,
+      0.7782608695652173,
+      0.9325842696629213
+    ],
+    "candidate_asset_sha256": {
+      "reference": "66bd4a2e1455236629b9fd6bde1a6e8899df5d3b927e9bbe4f0ab685d1f5be99",
+      "mask": "3ba40177e30c99afb2d2eee7f6e45eb9dcedcb61ce5f189e58efe52c403d655c",
+      "regions": "15cda201809950f888aa64676530e598e2940669b2c8b9fb93b4e4c57ca37346",
+      "allowed": "3e58637b7b8275ffdfaea8da6015b8cc428201b39bd1febc609f92ee0325cc53"
+    },
+    "candidate_only_not_adopted": true,
+    "training_accept_count": 10,
+    "holdout_accept_count": 15,
+    "consensus_cluster_support": 9
+  },
+  "native11_additional_weapon_validation": {
+    "scope": "frozen candidate on additional64 diagnostic cohort and limited controls, no runtime/profile adoption",
+    "candidate_assets_sha256": {
+      "reference": "66bd4a2e1455236629b9fd6bde1a6e8899df5d3b927e9bbe4f0ab685d1f5be99",
+      "mask": "3ba40177e30c99afb2d2eee7f6e45eb9dcedcb61ce5f189e58efe52c403d655c",
+      "regions": "15cda201809950f888aa64676530e598e2940669b2c8b9fb93b4e4c57ca37346",
+      "allowed": "3e58637b7b8275ffdfaea8da6015b8cc428201b39bd1febc609f92ee0325cc53"
+    },
+    "frame_count": 64,
+    "parameters_changed_after_generation": false,
+    "threshold": 0.9,
+    "critical_slot_count": 3,
+    "summary": {
+      "training": {
+        "count": 32,
+        "old_supported": 12,
+        "new_supported": 10,
+        "gained": 0,
+        "lost": 2
+      },
+      "holdout": {
+        "count": 32,
+        "old_supported": 15,
+        "new_supported": 15,
+        "gained": 0,
+        "lost": 0
+      }
+    },
+    "control_count": 96,
+    "control_failures": 0,
+    "control_counts": {
+      "excluded_black": 12,
+      "excluded_white": 12,
+      "excluded_random": 12,
+      "missing_slot": 36,
+      "flat_field": 16,
+      "random_field": 8
+    },
+    "production_or_profile_changed": false,
+    "global_accuracy_claim": false,
+    "no_existing_cohort_support_regression": false,
+    "control_scope_note": "Slot-neighborhood erasure includes the feature halo and may affect adjacent slots; it is not proof that other groups remain unchanged. Six such controls began with an already-unmatched candidate; thirty began with a matched candidate.",
+    "informative_matched_slot_neighborhood_erasure_count": 30,
+    "already_unmatched_slot_neighborhood_erasure_count": 6,
+    "adoption_decision": "rejected_no_support_gain_and_two_support_losses",
+    "diagnostics_sha256": "78d7d0d76df6f35f9f44f8a1ca5a47d3ab2dde9ee6b9aad794be368b454564d3"
+  },
+  "native11_additional_ability_generation": {
+    "scope": "additional fixed64 real unknown-frame cohort; original shared training-only discovery then separate odd holdout gates",
+    "candidate_generated": true,
+    "training_count": 32,
+    "holdout_count": 32,
+    "generator_source_sha256": "7eced40cfc3df23b7e4c4e503e6ba4d2f84d7a7ca393482ba037870241f1c694",
+    "manifest_sha256": "19fdbae71a45f52604f33e8a7fefeb873ac54d767b6e7d29f7a1787594929c47",
+    "structure_configuration_sha256": "a41bd71007194f2a6b2cd4ce53af5d5ee704d604cb5cac9dd0e37759255ac501",
+    "configuration_changed": false,
+    "threshold": 0.9,
+    "minimum_support_fraction": 0.8,
+    "frame_selection_uses_matcher_scores_or_values": false,
+    "new_independent_holdout_claim": false,
+    "profile_or_production_changed": false,
+    "previous_group_count": 2,
+    "candidate_group_count": 2,
+    "previous_group_count_preserved": true,
+    "image_dimensions": [
+      304,
+      55
+    ],
+    "roi_bounds": [
+      0.084,
+      0.5560538116591929,
+      0.692,
+      0.8026905829596412
+    ],
+    "candidate_asset_sha256": {
+      "reference": "7a8a08781491bd9a61f676a87332e496f0a70b31477e3c3c048cbdd1f18c3fa5",
+      "mask": "6f2aa472ebca30be79d477a5d228f14fd29730836087dab41a3d2d00f7bc3965",
+      "regions": "7f075fe95d12dbbb220912f4b532ba547b962ac82a95e9fc63d95757272d3593"
+    },
+    "candidate_only_not_adopted": true,
+    "training_accept_count": 13,
+    "holdout_accept_count": 15,
+    "training_cluster_size": 13,
+    "mask_population": 1061,
+    "group_mask_population": [
+      631,
+      430
+    ],
+    "diagnostics_sha256": "c5b933a8b090882a0102d6e6c36562c4b9b5a25351658971b3547f400189474b"
+  },
+  "native11_additional_ability_comparison": {
+    "scope": "frozen additional Ability candidate versus verified current-frame role witnesses; no adoption",
+    "frame_count": 64,
+    "critical_group_count": 2,
+    "summary": {
+      "training": {
+        "count": 32,
+        "old_supported": 13,
+        "new_supported": 13,
+        "gained": 0,
+        "lost": 0
+      },
+      "holdout": {
+        "count": 32,
+        "old_supported": 15,
+        "new_supported": 15,
+        "gained": 0,
+        "lost": 0
+      }
+    },
+    "parameters_changed_after_generation": false,
+    "threshold": 0.9,
+    "candidate_assets_sha256": {
+      "reference": "7a8a08781491bd9a61f676a87332e496f0a70b31477e3c3c048cbdd1f18c3fa5",
+      "mask": "6f2aa472ebca30be79d477a5d228f14fd29730836087dab41a3d2d00f7bc3965",
+      "regions": "7f075fe95d12dbbb220912f4b532ba547b962ac82a95e9fc63d95757272d3593"
+    },
+    "production_or_profile_changed": false,
+    "global_accuracy_claim": false,
+    "support_delta_by_scene": {
+      "astra_first_person_world_view": 0,
+      "astral_projection": 0,
+      "external_death_camera": 0,
+      "full_buy_menu": 0,
+      "spectator_external_death_camera": 0,
+      "spectator_first_person": 0
+    },
+    "has_support_gain": false,
+    "has_support_loss": false,
+    "adoption_decision": "not_adopted_no_support_gain_on_fixed_cohort",
+    "diagnostics_sha256": "030a48742e53f234d311862d425e7357b5eda5e097350e2b7f3ca4c7d30746c5"
+  },
+  "native11_unknown_spectator_components": {
+    "scope": "six independently visually present unknown panel frames plus three already verified native positive controls; no reference fitting",
+    "unknown_present_count": 6,
+    "positive_control_count": 3,
+    "unknown_limiting_components": {
+      "portrait": 3,
+      "boundary": 3
+    },
+    "unknown_component_ge0_90_count": {
+      "boundary": 2,
+      "portrait": 0,
+      "text": 4
+    },
+    "positive_controls_passed": 3,
+    "shared_pose_radius_px": 2,
+    "positive_threshold": 0.9,
+    "absence_threshold": 0.1,
+    "profile_fingerprint": "94e52fd77d6c2e5555bf257bcce8abf5e8b284e26c139780c9abf2940f3f059d",
+    "roi_bounds": [
+      0,
+      715,
+      620,
+      1055
+    ],
+    "production_or_profile_changed": false,
+    "global_accuracy_claim": false,
+    "decoded_hashes_and_existing_reasons_verified": true,
+    "diagnostics_sha256": "ea76020a86c0a207241378c9f4b38742ccc1e7c1572dff998a2c7f3b41430afa",
+    "all_three_diagnostic_pages_visually_reviewed": true
+  },
+  "native11_unknown_spectator_generator": {
+    "scope": "additional fixed diagnostic cohort; even32 training, odd32 holdout; not a fresh independent holdout",
+    "input_selection": "all64 fixed uniform-rank unknown observations; no filtering by values, scene, or matcher score",
+    "manifest_sha256": "19fdbae71a45f52604f33e8a7fefeb873ac54d767b6e7d29f7a1787594929c47",
+    "generator_sha256": "404721939ad65cbaa21fdeb58e7cda102652e5fc0225a00a00487477abfae7e2",
+    "profile_fingerprint": "94e52fd77d6c2e5555bf257bcce8abf5e8b284e26c139780c9abf2940f3f059d",
+    "roi_bounds": [
+      0,
+      715,
+      620,
+      1055
+    ],
+    "visually_present_panel_counts": {
+      "training": 3,
+      "holdout": 3
+    },
+    "reference_generated": false,
+    "production_or_profile_changed": false,
+    "positive_threshold": 0.9,
+    "absence_threshold": 0.1,
+    "minimum_support": 3,
+    "support_ratio": 0.8,
+    "global_accuracy_claim": false,
+    "diagnostics_sha256": "e469a3e2e3f04a2055edab2f02de03904f16a9f9a61f3abe0e4cb80960a69473",
+    "statistics": {
+      "matcher": "oriented_component_regions_v2",
+      "training_count": 32,
+      "holdout_count": 32,
+      "candidate_count": 0,
+      "structural_rejected": 32,
+      "support_rejected": 0,
+      "holdout_rejected": 0,
+      "cluster_count": 0,
+      "proposal_sample_count": 32,
+      "holdout_proposal_skipped_count": 32,
+      "evidence_counts": {
+        "observable": 32,
+        "boundary": 15,
+        "portrait": 0,
+        "textlike": 32,
+        "boundary_portrait": 0,
+        "portrait_textlike": 0,
+        "boundary_textlike": 15,
+        "all_components": 0
+      },
+      "rejection_counts": {
+        "geometry_rejected": 0,
+        "contrast_rejected": 0,
+        "blur_rejected": 0,
+        "structural_rejected": 32
+      },
+      "final_rejection_counts": {
+        "text_alignment_insufficient": 0,
+        "boundary_span_insufficient": 0,
+        "relative_position_mismatch": 0,
+        "component_pixels_insufficient": 0,
+        "boundary_orientation_incoherent": 0
+      },
+      "portrait_modes": {
+        "framed": 0,
+        "frameless": 0
+      },
+      "frameless_rejection_counts": {
+        "separator_evidence": 4,
+        "separator_geometry": 11,
+        "two_text_rows_missing": 7
+      }
+    }
+  },
+  "native11_spectator_training_proposals": {
+    "scope": "three even-training visually present panels; no holdout loaded or proposal/matcher changes",
+    "helper_sha256": "8947a19a914076446b8700af427ad71e1fe7dfdf2a2ebebd3e76343f2c1cee13",
+    "manifest_sha256": "19fdbae71a45f52604f33e8a7fefeb873ac54d767b6e7d29f7a1787594929c47",
+    "all_original_outcomes_and_statistics_equal": true,
+    "production_or_profile_changed": false,
+    "diagnostics_sha256": "632ebcf5405a5ba03234940222f1ee4264e73efe221f9e7083ca7c67cb58ae4d",
+    "training_frame_count": 3,
+    "separator_attempt_counts": {
+      "58": 14,
+      "60": 2,
+      "62": 0
+    },
+    "text_pair_counts": {
+      "58": 0,
+      "60": 0,
+      "62": 0
+    }
+  },
+  "native11_spectator_training_neighborhoods_v2": {
+    "scope": "18 additional fixed-neighborhood frames; not a fresh independent temporal holdout",
+    "selection_sha256": "023baed01f2beb05052ce2fe3ec8bd5f6895693445be93d3c4423fc5f1c613e9",
+    "frame_count": 18,
+    "reference_generated": true,
+    "positive_threshold": 0.9,
+    "minimum_support": 3,
+    "support_ratio": 0.8,
+    "production_or_profile_changed": false,
+    "global_accuracy_claim": false,
+    "candidate_asset_sha256": {
+      "components": "aa962b63108a1ee251603e75f368a030aca3f7dbada9f45c2f9ecba5f44d9769",
+      "support_regions": "510eddc3825d0037ce2764bba4044c502a085c1c49aba9aa9872fcea9d371f66",
+      "orientation": "e18561be71758401bd05f4be0808cedc340d36fb25618a57af340a03dad27d74"
+    },
+    "candidate_only_not_adopted": true,
+    "diagnostics_sha256": "184cd0d1939df897b974f9f44b9f65ef04174e361f59dceefcc038f2df1f8125",
+    "blind_labels_sha256": "13c7ae4c9ba3109c163d7e71c85987de3f5379c17a25ce1371f8e4fb4715e460",
+    "all_six_pages_visually_reviewed": true,
+    "visual_panel_counts": {
+      "present": 14,
+      "absent": 3,
+      "unobservable": 1
+    },
+    "statistics": {
+      "matcher": "oriented_component_regions_v2",
+      "training_count": 9,
+      "holdout_count": 9,
+      "candidate_count": 3,
+      "structural_rejected": 6,
+      "support_rejected": 1,
+      "holdout_rejected": 0,
+      "cluster_count": 1,
+      "proposal_sample_count": 9,
+      "holdout_proposal_skipped_count": 9,
+      "evidence_counts": {
+        "observable": 9,
+        "boundary": 5,
+        "portrait": 3,
+        "textlike": 9,
+        "boundary_portrait": 3,
+        "portrait_textlike": 3,
+        "boundary_textlike": 5,
+        "all_components": 3
+      },
+      "rejection_counts": {
+        "geometry_rejected": 0,
+        "contrast_rejected": 0,
+        "blur_rejected": 0,
+        "structural_rejected": 6
+      },
+      "final_rejection_counts": {
+        "text_alignment_insufficient": 0,
+        "boundary_span_insufficient": 0,
+        "relative_position_mismatch": 0,
+        "component_pixels_insufficient": 0,
+        "boundary_orientation_incoherent": 0
+      },
+      "portrait_modes": {
+        "framed": 0,
+        "frameless": 3
+      },
+      "frameless_rejection_counts": {
+        "two_text_rows_missing": 4
+      },
+      "selected_sample_index": 10,
+      "training_accept_count": 3,
+      "holdout_accept_count": 3
+    },
+    "candidate_comparison_pending": false
+  },
+  "native11_spectator_neighborhood_candidate_comparison": {
+    "scope": "two frozen diagnostic cohorts; single-candidate compound witness only; no full-video/global accuracy claim",
+    "candidate_sha256": {
+      "components": "aa962b63108a1ee251603e75f368a030aca3f7dbada9f45c2f9ecba5f44d9769",
+      "support_regions": "510eddc3825d0037ce2764bba4044c502a085c1c49aba9aa9872fcea9d371f66",
+      "orientation": "e18561be71758401bd05f4be0808cedc340d36fb25618a57af340a03dad27d74"
+    },
+    "threshold": 0.9,
+    "absence_threshold": 0.1,
+    "parameters_changed_after_generation": false,
+    "production_or_profile_changed": false,
+    "candidate_not_adopted": true,
+    "summary": {
+      "fixed_unknown64": {
+        "count": 64,
+        "visually_present": 6,
+        "visually_absent": 57,
+        "visually_unobservable": 1,
+        "old_reason_counts": {
+          "panel_structure_excluded": 31,
+          "panel_structure_mismatch": 5,
+          "panel_structure_ambiguous": 28
+        },
+        "new_reason_counts": {
+          "panel_structure_excluded": 30,
+          "panel_structure_mismatch": 7,
+          "panel_structure_ambiguous": 25,
+          "panel_structure_present": 2
+        },
+        "present_panel_support_gains": 2,
+        "present_panel_support_losses": 0,
+        "new_false_positive_on_visually_absent": 0,
+        "new_false_absence_on_visually_present": 0,
+        "absent_exclusion_gains": 1,
+        "absent_exclusion_losses": 2
+      },
+      "new_neighborhood18": {
+        "count": 18,
+        "visually_present": 14,
+        "visually_absent": 3,
+        "visually_unobservable": 1,
+        "old_reason_counts": {
+          "panel_structure_excluded": 4,
+          "panel_structure_ambiguous": 11,
+          "panel_structure_present": 3
+        },
+        "new_reason_counts": {
+          "panel_structure_excluded": 4,
+          "panel_structure_ambiguous": 8,
+          "panel_structure_present": 6
+        },
+        "present_panel_support_gains": 6,
+        "present_panel_support_losses": 3,
+        "new_false_positive_on_visually_absent": 0,
+        "new_false_absence_on_visually_present": 0,
+        "absent_exclusion_gains": 0,
+        "absent_exclusion_losses": 0
+      }
+    },
+    "single_reference_replacement_decision": "rejected_three_previously_supported_panel_frames_lost_on_neighborhood_cohort",
+    "complementary_bank_not_implemented_or_adopted": true,
+    "diagnostics_sha256": "3f6d4943106241749da0747fb91c84f63c26a3af4c71e117c549be84a1967194"
+  },
+  "native11_spectator_verified_native_candidate_probe": {
+    "scope": "candidate on all618 previously visually verified isolated-native11 live/Spectator positives; no native reclassification",
+    "same_state_pts_decoded_pixel_hashes_verified": true,
+    "native_outputs_verified": true,
+    "candidate_assets_sha256": {
+      "components": "aa962b63108a1ee251603e75f368a030aca3f7dbada9f45c2f9ecba5f44d9769",
+      "support_regions": "510eddc3825d0037ce2764bba4044c502a085c1c49aba9aa9872fcea9d371f66",
+      "orientation": "e18561be71758401bd05f4be0808cedc340d36fb25618a57af340a03dad27d74"
+    },
+    "production_or_profile_changed": false,
+    "global_false_positive_rate_verified": false,
+    "camera_subtype_gate_verified": false,
+    "candidate_not_adopted": true,
+    "summary": {
+      "live": {
+        "count": 455,
+        "reason_counts": {
+          "panel_structure_excluded": 408,
+          "panel_structure_mismatch": 26,
+          "panel_structure_ambiguous": 21
+        },
+        "candidate_checked_present": 0,
+        "candidate_checked_absent": 408,
+        "candidate_unverified": 47
+      },
+      "spectator": {
+        "count": 163,
+        "reason_counts": {
+          "panel_structure_ambiguous": 163
+        },
+        "candidate_checked_present": 0,
+        "candidate_checked_absent": 0,
+        "candidate_unverified": 163
+      }
+    },
+    "diagnostics_sha256": "4fcdc550c1b15601e5fbb94977771270db7b9bb959b5b76695465287521f0d9d",
+    "single_replacement_rejected": true,
+    "conservative_reference_bank_decision": "rejected_47_current_live_exclusions_would_be_unverified",
+    "bank_not_implemented_or_adopted": true
+  },
+  "production_e2e_attempt01_interruption": {
+    "status": "interrupted_no_terminal_result",
+    "observed_at_utc": "2026-10-06T12:56:19.525174+00:00",
+    "run_output": "outputs/e2e/match_001/20261006T113548Z-414e4682",
+    "queue_pid": 58021,
+    "worker_pid": 59372,
+    "all_original_process_handles_missing": true,
+    "observation_session_exit_code": 143,
+    "cause_not_independently_verified": true,
+    "last_analyzer_progress": "72% HUD timeline and event finalization",
+    "raw_processing_complete": false,
+    "evaluation_complete": false,
+    "frozen_resources_verified": 340,
+    "resource_changes": 0,
+    "prior_native_outputs_preserved": true,
+    "restart_reason": "authoritative queue and native worker handles missing, no terminal artifacts",
+    "replacement_launch_isolated_process_session": true,
+    "diagnostics_sha256": "5777171a3b620253bd8340024bf1ed811c29340df54b1111c536748c962c2cc2"
+  },
+  "production_e2e_attempt02": {
+    "production11": {
+      "status": "running_production_profile11_standard_e2e",
+      "queue_pid": 61295,
+      "profile_fingerprint": "94e52fd77d6c2e5555bf257bcce8abf5e8b284e26c139780c9abf2940f3f059d",
+      "profile_env_adopted": false,
+      "Windows_runtime_verified": false,
+      "run_output": "outputs/e2e/match_001/20261006T125627Z-ace6cb0d",
+      "regression_log_sha256": "59f005dab74e87d671def41f6db65e1c6a9721fe41bb837b22a821717e750de7",
+      "fresh_live_audit_sha256": "0f05b9c97cf2945033f7ce76af3103d5a8a7af0a3edab5c6b6a1b5c96c5770fb",
+      "menu_replay_sha256": "f135863593a8c38c0aa02a4add1f296c0b840e0bc1286fa98392bd96cc16f010",
+      "source_snapshot_sha256": "8f6f99cd0652a9f80aa1527f91a014d39b143916367feff31753faa8f37948fb"
+    },
+    "candidate12": {
+      "status": "waiting_for_production_profile11_terminal",
+      "queue_pid": 61296,
+      "profile_fingerprint": "fdeda023d9ffe0028a73083e9f6feb891d674928dca262b91f06acd3933220ff",
+      "candidate_only": true,
+      "profile_env_adopted": false,
+      "Windows_runtime_verified": false
+    },
+    "long_lived_queue_processes_detached_in_separate_sessions": true,
+    "prior_attempt_outputs_preserved": true,
+    "native_inputs_and_assertions_unchanged": true,
+    "authoritative_status_paths": [
+      "outputs/recognition-investigation/production-profile11-e2e-queue-attempt02-status.json",
+      "outputs/recognition-investigation/production-profile12-e2e-queue-attempt02-status.json"
+    ],
+    "source_provenance_path": "outputs/recognition-investigation/production-profile11-attempt02-source-provenance.json"
+  },
+  "production_attempt02_terminal_review_queue": {
+    "status": "waiting_for_production11_attempt02_terminal",
+    "pid": 61526,
+    "status_path": "outputs/recognition-investigation/production-attempt02-terminal-review-status.json",
+    "separate_persistent_process_session_verified": true,
+    "scope": "terminal11/12 positive semantics; terminal12 HP values versus455 prior frozen blind pixel labels",
+    "new_frames_left_for_agent_blind_review": true,
+    "reuse_requires_same_state_pts_and_decoded_pixel_hash": true,
+    "missing_native_hp_confidence_stops_for_review": true,
+    "native_outputs_changed": false,
+    "production_or_profile_changed": false,
+    "profile_env_adopted": false,
+    "global_accuracy_claim": false,
+    "script_sha256": {
+      "queue_attempt02_terminal_reviews.py": "67cd0c6d27709ef22acde64712f019ea5372465cca16ac44bf72340c0f534457",
+      "audit_terminal_positive_semantics.py": "95a8492585e2e3ae56fd15ca27db1d9088cec6be7771096d4b8a0dccd1274b8d",
+      "audit_terminal_hp_readings.py": "029162921eb63273bf90e2bbabf4bc5e87dfefbace75e6813d22f605b1754a64"
+    }
+  },
+  "timer_additional_cohort_v2_training": {
+    "scope": "new fixed cohort training-only alphabet gate; no holdout labels/images/glyphs used",
+    "manifest_sha256": "e76b2ac7d6c20f042aa30c2badf3860fd669e211a9397c4f13edbd726eb8d739",
+    "training_blind_labels_sha256": "0a706d04167cc1b1c22ee9861dc0dcccc8c95a5142d18e1f48c003e64d47be66",
+    "threshold": 0.9,
+    "minimum_support": 3,
+    "minimum_comparable_fraction": 0.8,
+    "training_count": 64,
+    "strict_segmented_training_fields": 49,
+    "support_denominator": "all same-class actual glyphs segmented by unchanged strict production prefix; unsegmented readable glyphs reported separately",
+    "training_alphabet_qualified": false,
+    "holdout_used": false,
+    "production_or_profile_changed": false,
+    "profile_created": false,
+    "training_classes": [
+      {
+        "digit": "0",
+        "training_glyph_count": 38,
+        "readable_glyphs_unsegmented": 13,
+        "selected_training_candidate": {
+          "sample_index": 62,
+          "position": 0,
+          "path": "glyph-062-0.png",
+          "support_count": 36,
+          "support_fraction": 0.9473684210526315,
+          "minimum_score": 0.6766417622566223
+        },
+        "qualified": true
+      },
+      {
+        "digit": "1",
+        "training_glyph_count": 40,
+        "readable_glyphs_unsegmented": 12,
+        "selected_training_candidate": {
+          "sample_index": 16,
+          "position": 0,
+          "path": "glyph-016-0.png",
+          "support_count": 40,
+          "support_fraction": 1.0,
+          "minimum_score": 0.9522290825843811
+        },
+        "qualified": true
+      },
+      {
+        "digit": "2",
+        "training_glyph_count": 12,
+        "readable_glyphs_unsegmented": 2,
+        "selected_training_candidate": {
+          "sample_index": 62,
+          "position": 1,
+          "path": "glyph-062-1.png",
+          "support_count": 11,
+          "support_fraction": 0.9166666666666666,
+          "minimum_score": 0.8874104619026184
+        },
+        "qualified": true
+      },
+      {
+        "digit": "3",
+        "training_glyph_count": 18,
+        "readable_glyphs_unsegmented": 3,
+        "selected_training_candidate": {
+          "sample_index": 52,
+          "position": 1,
+          "path": "glyph-052-1.png",
+          "support_count": 12,
+          "support_fraction": 0.6666666666666666,
+          "minimum_score": 0.7542899250984192
+        },
+        "qualified": false
+      },
+      {
+        "digit": "4",
+        "training_glyph_count": 8,
+        "readable_glyphs_unsegmented": 6,
+        "selected_training_candidate": {
+          "sample_index": 72,
+          "position": 2,
+          "path": "glyph-072-2.png",
+          "support_count": 7,
+          "support_fraction": 0.875,
+          "minimum_score": 0.8352553248405457
+        },
+        "qualified": true
+      },
+      {
+        "digit": "5",
+        "training_glyph_count": 14,
+        "readable_glyphs_unsegmented": 2,
+        "selected_training_candidate": {
+          "sample_index": 118,
+          "position": 1,
+          "path": "glyph-118-1.png",
+          "support_count": 10,
+          "support_fraction": 0.7142857142857143,
+          "minimum_score": 0.8364088535308838
+        },
+        "qualified": false
+      },
+      {
+        "digit": "6",
+        "training_glyph_count": 3,
+        "readable_glyphs_unsegmented": 0,
+        "selected_training_candidate": {
+          "sample_index": 16,
+          "position": 2,
+          "path": "glyph-016-2.png",
+          "support_count": 3,
+          "support_fraction": 1.0,
+          "minimum_score": 0.9554862380027771
+        },
+        "qualified": true
+      },
+      {
+        "digit": "7",
+        "training_glyph_count": 3,
+        "readable_glyphs_unsegmented": 2,
+        "selected_training_candidate": {
+          "sample_index": 38,
+          "position": 2,
+          "path": "glyph-038-2.png",
+          "support_count": 1,
+          "support_fraction": 0.3333333333333333,
+          "minimum_score": 0.8392128348350525
+        },
+        "qualified": false
+      },
+      {
+        "digit": "8",
+        "training_glyph_count": 6,
+        "readable_glyphs_unsegmented": 1,
+        "selected_training_candidate": {
+          "sample_index": 70,
+          "position": 2,
+          "path": "glyph-070-2.png",
+          "support_count": 5,
+          "support_fraction": 0.8333333333333334,
+          "minimum_score": 0.8945258259773254
+        },
+        "qualified": true
+      },
+      {
+        "digit": "9",
+        "training_glyph_count": 5,
+        "readable_glyphs_unsegmented": 4,
+        "selected_training_candidate": {
+          "sample_index": 52,
+          "position": 2,
+          "path": "glyph-052-2.png",
+          "support_count": 5,
+          "support_fraction": 1.0,
+          "minimum_score": 0.9454875588417053
+        },
+        "qualified": true
+      }
+    ],
+    "qualification_sha256": "cfa29569f1027a1e7ca3a5beb8526e2311c9f6637013f1be00946816fdcaef64",
+    "training_readable_fields": 64,
+    "training_segmentation_rejection_counts": {
+      "strict_prefix_qualified_unlabelled_glyphs": 49,
+      "strict_timer_foreground_touches_roi_border": 14,
+      "strict_timer_expected_exactly_two_separator_dots": 1
+    },
+    "all_four_training_pages_visually_reviewed": true,
+    "holdout_images_not_reviewed": true,
+    "holdout_proposals_skipped": 64,
+    "single_reference_alphabet_decision": "rejected_incomplete_classes3_5_7",
+    "sampling_preparation_attempt01": "fixed_time_targets_lacked_eligible_cache_within_0_20sec_before_selection_or_pixels_were_frozen",
+    "sampling_preparation_attempt02": "fixed_uniform_rank_128_eligible_actual_pts"
+  },
+  "timer_v2_fixed_white_training": {
+    "scope": "fixed-white numeric-field hypothesis; all64 frozen even training only",
+    "white_grayscale_threshold": 200,
+    "white_foreground_polarity": "positive",
+    "threshold_selection": "fixed prior numeric white-text threshold; no sweep or holdout tuning",
+    "ncc_threshold": 0.9,
+    "class_margin": 0.04,
+    "minimum_support": 3,
+    "minimum_comparable_fraction": 0.8,
+    "training_count": 64,
+    "segmentation_counts": {
+      "strict_prefix_qualified_unlabelled_glyphs": 50,
+      "strict_timer_foreground_touches_roi_border": 9,
+      "strict_timer_expected_exactly_two_separator_dots": 5
+    },
+    "training_alphabet_qualified": false,
+    "classes": [
+      {
+        "digit": "0",
+        "segmented_training_glyph_count": 39,
+        "unsegmented_readable_glyphs": 12,
+        "best": {
+          "sample_index": 38,
+          "position": 0,
+          "support_count": 39,
+          "support_fraction": 1.0,
+          "minimum_score": 0.9226845502853394,
+          "path": "glyph-038-0.png",
+          "sha256": "be0631c01d47bbfa84cd4e967e83ef7708e07aa0509e34cf7c531c637de8249f"
+        },
+        "qualified": true
+      },
+      {
+        "digit": "1",
+        "segmented_training_glyph_count": 41,
+        "unsegmented_readable_glyphs": 11,
+        "best": {
+          "sample_index": 24,
+          "position": 1,
+          "support_count": 38,
+          "support_fraction": 0.926829268292683,
+          "minimum_score": 0.6782824993133545,
+          "path": "glyph-024-1.png",
+          "sha256": "6eacba468537a3f464311c7ad0905ba774ac34d11d0d8825ab8e1d43c2498696"
+        },
+        "qualified": true
+      },
+      {
+        "digit": "2",
+        "segmented_training_glyph_count": 12,
+        "unsegmented_readable_glyphs": 2,
+        "best": {
+          "sample_index": 96,
+          "position": 1,
+          "support_count": 12,
+          "support_fraction": 1.0,
+          "minimum_score": 0.9286826252937317,
+          "path": "glyph-096-1.png",
+          "sha256": "170ad702aedd16330cd67956bf0db134b1c9a75c7774898be306ca47b96b8012"
+        },
+        "qualified": true
+      },
+      {
+        "digit": "3",
+        "segmented_training_glyph_count": 19,
+        "unsegmented_readable_glyphs": 2,
+        "best": {
+          "sample_index": 32,
+          "position": 2,
+          "support_count": 19,
+          "support_fraction": 1.0,
+          "minimum_score": 0.9208828806877136,
+          "path": "glyph-032-2.png",
+          "sha256": "41dd264cf05603a30db10905bfe32570041b9129bcdad240505be80d75818375"
+        },
+        "qualified": true
+      },
+      {
+        "digit": "4",
+        "segmented_training_glyph_count": 9,
+        "unsegmented_readable_glyphs": 5,
+        "best": {
+          "sample_index": 124,
+          "position": 1,
+          "support_count": 9,
+          "support_fraction": 1.0,
+          "minimum_score": 0.9258804321289062,
+          "path": "glyph-124-1.png",
+          "sha256": "5f06f983217594fd281c83cae6573c39dac6351c4a614bf577efeeae9816d6e0"
+        },
+        "qualified": true
+      },
+      {
+        "digit": "5",
+        "segmented_training_glyph_count": 14,
+        "unsegmented_readable_glyphs": 2,
+        "best": {
+          "sample_index": 30,
+          "position": 2,
+          "support_count": 10,
+          "support_fraction": 0.7142857142857143,
+          "minimum_score": 0.8833603262901306,
+          "path": "glyph-030-2.png",
+          "sha256": "959a1ad45a618376ea6edd3dd998aaea20f97d1270303581e70972a20102dffd"
+        },
+        "qualified": false
+      },
+      {
+        "digit": "6",
+        "segmented_training_glyph_count": 2,
+        "unsegmented_readable_glyphs": 1,
+        "best": {
+          "sample_index": 4,
+          "position": 2,
+          "support_count": 2,
+          "support_fraction": 1.0,
+          "minimum_score": 0.9238302707672119,
+          "path": "glyph-004-2.png",
+          "sha256": "e04a28f54dcfd35586b89da6b26837b37a24491780a344fb2e0dd71e662fece7"
+        },
+        "qualified": false
+      },
+      {
+        "digit": "7",
+        "segmented_training_glyph_count": 2,
+        "unsegmented_readable_glyphs": 3,
+        "best": {
+          "sample_index": 38,
+          "position": 2,
+          "support_count": 2,
+          "support_fraction": 1.0,
+          "minimum_score": 0.9510006904602051,
+          "path": "glyph-038-2.png",
+          "sha256": "aaf9cc498a4a42bbfec7a242efb72a397a3f52efb3e80b7fcccdee37f9de5660"
+        },
+        "qualified": false
+      },
+      {
+        "digit": "8",
+        "segmented_training_glyph_count": 6,
+        "unsegmented_readable_glyphs": 1,
+        "best": {
+          "sample_index": 62,
+          "position": 2,
+          "support_count": 6,
+          "support_fraction": 1.0,
+          "minimum_score": 0.9182037115097046,
+          "path": "glyph-062-2.png",
+          "sha256": "02d661cc61308b79318fc6804719165cca4a72c8b3ec0d4beefa2c0f05cbccf0"
+        },
+        "qualified": true
+      },
+      {
+        "digit": "9",
+        "segmented_training_glyph_count": 6,
+        "unsegmented_readable_glyphs": 3,
+        "best": {
+          "sample_index": 86,
+          "position": 2,
+          "support_count": 3,
+          "support_fraction": 0.5,
+          "minimum_score": 0.7336869239807129,
+          "path": "glyph-086-2.png",
+          "sha256": "d1e774548d21204bfc14e4a3b7cd60b3a3176944ff2d3631d5e2c0ceb54ca932"
+        },
+        "qualified": false
+      }
+    ],
+    "holdout_used": false,
+    "production_source_changed": false,
+    "profile_created": false,
+    "production_strict_timer_preprocessing_configuration_available": false,
+    "original_manifest_sha256": "e76b2ac7d6c20f042aa30c2badf3860fd669e211a9397c4f13edbd726eb8d739",
+    "training_blind_labels_sha256": "0a706d04167cc1b1c22ee9861dc0dcccc8c95a5142d18e1f48c003e64d47be66",
+    "diagnostics_sha256": "3039b9e1c32209f61fc9e9ae449d5a5bceffcf72bb5c21b32ece16e0e08b6525",
+    "decision": "rejected_incomplete_classes5_6_7_9"
+  },
+  "native11_spectator_positive_hud_gate": {
+    "scope": "same-state same-PTS decoded-pixel join of completed native06 structural and native11 semantic reviews; six fresh HP-only replays",
+    "first_person_count": 161,
+    "first_person_hp_supported": 158,
+    "first_person_hp_unsupported_indices": [
+      108,
+      126,
+      127
+    ],
+    "external_camera_count": 2,
+    "external_camera_hp_supported": 0,
+    "fresh_selected_replay_count": 6,
+    "ncc_threshold": 0.9,
+    "camera_classifier_qualified": false,
+    "independent_training_holdout_qualification": false,
+    "production_source_changed": false,
+    "profile_changed": false,
+    "native_output_changed": false,
+    "ownership_promoted": false,
+    "limitations": "HP structure support is a correlation, not independently qualified camera projection evidence. Missing HP cannot identify camera or death state. Production signal confidence is zero when raw NCC is below acceptance; retain both in fresh replay.",
+    "diagnostic_sha256": "f9c40d221759ee4704539fc1ef7cb28e97c23135cf933e5f07bac1618635f02b"
+  },
+  "timer_v2_area_normalization_training": {
+    "scope": "one fixed area-downsample/binary128 normalization hypothesis on frozen64 training only; segmentation unchanged",
+    "interpolation": "INTER_AREA",
+    "binary_threshold": 128,
+    "ncc_threshold": 0.9,
+    "minimum_support": 3,
+    "minimum_comparable_fraction": 0.8,
+    "class_margin": 0.04,
+    "training_count": 64,
+    "segmentation_rejections": {
+      "strict_timer_foreground_touches_roi_border": 14,
+      "strict_timer_expected_exactly_two_separator_dots": 1
+    },
+    "training_alphabet_qualified": false,
+    "holdout_used": false,
+    "production_or_profile_changed": false,
+    "profile_created": false,
+    "production_reader_has_this_normalization": false,
+    "training_manifest_sha256": "e76b2ac7d6c20f042aa30c2badf3860fd669e211a9397c4f13edbd726eb8d739",
+    "diagnostic_sha256": "8a81a535ee29b3863155fc209e8c8a9dedde36561676ac894c73b801b94c4e90",
+    "decision": "rejected_complete_alphabet_failed_4_5_7",
+    "class_support_counts": {
+      "0": {
+        "supported": 35,
+        "total": 38,
+        "qualified": true
+      },
+      "1": {
+        "supported": 35,
+        "total": 40,
+        "qualified": true
+      },
+      "2": {
+        "supported": 12,
+        "total": 12,
+        "qualified": true
+      },
+      "3": {
+        "supported": 15,
+        "total": 18,
+        "qualified": true
+      },
+      "4": {
+        "supported": 6,
+        "total": 8,
+        "qualified": false
+      },
+      "5": {
+        "supported": 10,
+        "total": 14,
+        "qualified": false
+      },
+      "6": {
+        "supported": 3,
+        "total": 3,
+        "qualified": true
+      },
+      "7": {
+        "supported": 1,
+        "total": 3,
+        "qualified": false
+      },
+      "8": {
+        "supported": 6,
+        "total": 6,
+        "qualified": true
+      },
+      "9": {
+        "supported": 5,
+        "total": 5,
+        "qualified": true
+      }
+    },
+    "morphology_diagnostic_sha256": "6a0433c49d274e9fed6ee3d100cb32d0f884cd1df874d43097e4c4efc6f7bc5e",
+    "morphology_tiles_visually_reviewed": 15
+  },
+  "current_frame_hud_runtime_diagnostic": {
+    "diagnostic_sha256": "c6abf463511cf87e5a396ebc48b6bda74e56a134fcdd273e214bbcfb4eae774b",
+    "scope": "three actual already-reviewed frames, each once, cProfile overhead included while production native run is active; no throughput extrapolation",
+    "production_or_profile_changed": false,
+    "native_outputs_changed": false,
+    "frame_count": 3,
+    "elapsed_seconds": [
+      0.8034377040021354,
+      0.5510021700029029,
+      0.804838555995957
+    ],
+    "top_cumulative_detector": "spectator.detect_panel",
+    "accuracy_or_throughput_claim": false
+  },
+  "native11_owned_enemy_score_additional_qualification": {
+    "scope": "additional128 verified-owned numeric pixels; even64 training odd64 holdout; same recording, not independent temporal qualification",
+    "decision": "rejected_holdout_strict_support_49_of_64_below_80_percent",
+    "train_counts": {
+      "correct": 53,
+      "unknown": 11
+    },
+    "train_strict_fact_counts": {
+      "correct": 52,
+      "unknown": 12
+    },
+    "holdout_counts": {
+      "unknown": 15,
+      "correct": 49
+    },
+    "holdout_strict_fact_counts": {
+      "unknown": 15,
+      "correct": 49
+    },
+    "training_and_holdout_labels_frozen_before_each_prediction": true,
+    "all_eight_blind_pages_visually_reviewed": true,
+    "reader_parameters_unchanged": true,
+    "holdout_tuned": false,
+    "ncc_identity_policy_unchanged": true,
+    "numeric_pixels_used_for_identity": false,
+    "profile_created": false,
+    "profile_adopted": false,
+    "production_source_changed": false,
+    "native_outputs_changed": false,
+    "score_stability_or_events_or_boundary_inferred": false,
+    "manifest_sha256": "47ee0a6a623545b6d6386415d8218c59f943a5e123870310da0fe823776285f1",
+    "training_labels_sha256": "2fa33e77938468e634b9e63dc2002b48dbd69c5a4c695a3bb6402903a990ae4d",
+    "holdout_labels_sha256": "be0dfb05973c7b7da9e4c5477e7d6eaf000fb742f1cafa0d4b7f9cfbae023bcf",
+    "training_replay_sha256": "f0285703aaac6ac83e2b6b3b29b96dafcdbe074dd60fe018b061877f06d23dc7",
+    "holdout_replay_sha256": "6ca50d069a64bf888a88a75bfc2ec778f7fe8719741271f1f63a7e046ac702ec",
+    "summary_sha256": "1cbb135e3cedd6555a96f037e4ca175a3b3fc8604d1b19fd9d2b4dbc5ca14ded"
+  },
+  "current_native_gates": {
+    "observed_at_utc": "2026-10-06T22:20:54.628579+00:00",
+    "production11_run": "20261006T125627Z-ace6cb0d",
+    "production11_terminal_result_claimed": true,
+    "production11_terminal_hashes_verified": true,
+    "candidate12_run": "20261006T160007Z-6dc502c6",
+    "candidate12_worker_pid": 64441,
+    "candidate12_native_qualification_claimed": false,
+    "interrupted_attempt01_run": "20261006T113548Z-414e4682",
+    "status_records": {
+      "production-profile11-e2e-queue-attempt02-status.json": {
+        "status": "complete_pending_review",
+        "process_pid": 61295,
+        "live_handle_verified": false
+      },
+      "production-profile12-e2e-queue-attempt02-status.json": {
+        "status": "complete_pending_review",
+        "process_pid": 61296,
+        "live_handle_verified": false
+      },
+      "production-attempt02-terminal-review-status.json": {
+        "status": "complete_terminal_reviews_require_agent_assessment",
+        "process_pid": 61526,
+        "live_handle_verified": false
+      },
+      "production12-attempt02-terminal-fallback-review-status.json": {
+        "status": "complete_requires_agent_assessment",
+        "process_pid": 63487,
+        "live_handle_verified": false
+      }
+    },
+    "source_or_profile_changed": false,
+    "profile_env_adopted": false,
+    "Windows_runtime_verified": false,
+    "candidate12_worker_live_verified": false,
+    "candidate12_terminal_output_hashes_verified": true,
+    "candidate12_runtime_candidate_rejected": true
+  },
+  "candidate12_default_numeric_fallback_audit": {
+    "reason": "child-only Tesseract PATH also activates existing unconfigured timer/score fallback; HP-only audit is insufficient",
+    "production_source_changed": false,
+    "profile_changed": false,
+    "native_outputs_changed": false,
+    "default_readers_disabled": false,
+    "queue_pid": 63487,
+    "queue_status_path": "outputs/recognition-investigation/production12-attempt02-terminal-fallback-review-status.json",
+    "queue_script_sha256": "ca6cb61f255fa66020b33acd1f78717da6d689baa6b76c91510642c17ea1e048",
+    "audit_script_sha256": "454b32f635d9b466f1f7e2045e811a11ab216aa2aa6d075205cdb65059d3f09a",
+    "completed_isolated11_actual_accepted_field_count": 0,
+    "isolated11_helper_check_summary_sha256": "615359a8bf7f58197e800e7dca942679ac03eec1e30e4b010a39c3729c441765",
+    "candidate12_fallback_values_verified": false,
+    "novel_pixels_require_blind_labels_before_predictions": true,
+    "only_exact_pts_and_decoded_pixel_labels_reused": true,
+    "native_OCR_replay": false,
+    "profile_env_adopted": false,
+    "Windows_runtime_verified": false,
+    "positive_timer_output_path_smoke": {
+      "scope": "limited three-field output-path smoke only; not full numeric qualification",
+      "reviewed_field_count": 3,
+      "correct": 3,
+      "wrong": 0,
+      "context_and_numeric_field_layout_visually_checked": true,
+      "values_and_confidence_hidden_before_labels": true,
+      "blind_labels_sha256": "b913219f1c97bcd81d0acab60e0d03b8910cbc4016b4bd9f110b52266d410afb",
+      "manifest_sha256": "735c2b03b50eb91ce9687ed01031c6b1e03b1ff13ad67b678503e30ad37c58ea",
+      "native_output_or_source_changed": false,
+      "candidate12_numeric_qualification": false,
+      "full_rejected07_numeric_review": false,
+      "review_sha256": "010ccdbe48505ae3d25f67decb329aa89dc61a3b30005bf4934b003812d87de2"
+    }
+  },
+  "timer_v2_raw_majority_training": {
+    "diagnostics_sha256": "3db78b2773a7e0521d9fe970d5f1ba1cd46dbdc5485b1a96bfea68ab88164eb4",
+    "training_manifest_sha256": "e76b2ac7d6c20f042aa30c2badf3860fd669e211a9397c4f13edbd726eb8d739",
+    "training_labels_sha256": "0a706d04167cc1b1c22ee9861dc0dcccc8c95a5142d18e1f48c003e64d47be66",
+    "consensus_rule": "foreground in >=50% actual normalized same-class training glyphs",
+    "ncc_threshold": 0.9,
+    "minimum_supported_distinct_frames": 3,
+    "minimum_comparable_glyph_fraction": 0.8,
+    "rejected_classes": [
+      {
+        "digit": "3",
+        "supported_glyph_count": 12,
+        "actual_training_glyph_count": 18,
+        "supported_distinct_frame_count": 12,
+        "support_fraction": 0.6666666666666666
+      },
+      {
+        "digit": "5",
+        "supported_glyph_count": 10,
+        "actual_training_glyph_count": 14,
+        "supported_distinct_frame_count": 9,
+        "support_fraction": 0.7142857142857143
+      },
+      {
+        "digit": "7",
+        "supported_glyph_count": 2,
+        "actual_training_glyph_count": 3,
+        "supported_distinct_frame_count": 2,
+        "support_fraction": 0.6666666666666666
+      }
+    ],
+    "training_alphabet_qualified": false,
+    "holdout_used": false,
+    "production_or_profile_changed": false,
+    "profile_created": false
+  },
+  "production11_attempt02_terminal_result": {
+    "run": "20261006T125627Z-ace6cb0d",
+    "baseline_comparison_sha256": "40155185a427f1ca258f1b343047bebf2d50de2f6afbf234161caa24991016ea",
+    "terminal_outputs_and_comparisons_reverified": true,
+    "counts": {
+      "passed": 23,
+      "failed": 55,
+      "not_evaluated": 4,
+      "evaluation_failure_count": 56,
+      "negative_assertion_failures": 0,
+      "negative_assertions_not_evaluated": 0,
+      "discontinuity_violations": 0,
+      "observation_count": 4634,
+      "sampled_frame_count": 4634,
+      "hud_unknown": 3715,
+      "detected_states": {
+        "unknown": 3715,
+        "live_first_person": 455,
+        "buy_menu_open": 301,
+        "spectator_first_person": 163
+      },
+      "identity_missing": {
+        "ability_bar_structure": 2291,
+        "weapon_ammo_structure": 2610,
+        "hp_hud_structure": 794
+      },
+      "identity_reasons": {
+        "competing_view_evidence": 356,
+        "spectator_exclusion_unverified": 2324,
+        "structure_evidence_insufficient": 1499,
+        "independent_hud_structures": 455
+      },
+      "live_identity_evidence_insufficient": 3744,
+      "fresh_geometry_success": 1,
+      "effective_geometry_success": 4634,
+      "insufficient_anchors": 4633,
+      "geometry_invalid_unknown": 0,
+      "spectator_checks": {
+        "panel_structure_excluded": 2310,
+        "panel_structure_mismatch": 266,
+        "panel_structure_ambiguous": 1885,
+        "roi_unobservable": 10,
+        "panel_structure_present": 163
+      },
+      "round_count": 1,
+      "round_start_event_count": 0,
+      "round_end_event_count": 0,
+      "boundary_incomplete_package_count": 1,
+      "hud_event_count": 0,
+      "visual_event_count": 0,
+      "map_resolved_count": 0,
+      "map_held_count": 0,
+      "trace_counts": {
+        "events": 181,
+        "state_intervals": 185,
+        "ownership_intervals": 4472,
+        "snapshots": 919,
+        "visual_observations": 4,
+        "temporal_features": 0
+      }
+    },
+    "improved_assertions": [
+      "GT-R1-COMBAT-REPORT",
+      "GT-R1-SNAP-705"
+    ],
+    "regressed_assertions": [],
+    "positive_review_summary_sha256": "4859931117062a8e0af38e75122bb08e7b13f4eb2fdf6a6579170d870d302cbb",
+    "novel_positive_frames": 0,
+    "known_external_camera_mis_subtype_count": 2,
+    "camera_subtype_gate_verified": false,
+    "unknown_semantics_reviewed": false,
+    "profile_env_adopted": false,
+    "Windows_runtime_verified": false
+  },
+  "production12_attempt02_terminal_assessment": {
+    "run": "20261006T160007Z-6dc502c6",
+    "terminal_output_hashes_reverified": true,
+    "counts": {
+      "passed": 23,
+      "failed": 55,
+      "not_evaluated": 4,
+      "evaluation_failure_count": 55,
+      "negative_assertion_failures": 0,
+      "negative_assertions_not_evaluated": 0,
+      "discontinuity_violations": 0,
+      "observation_count": 4692,
+      "sampled_frame_count": 4692,
+      "hud_unknown": 3751,
+      "detected_states": {
+        "unknown": 3751,
+        "live_first_person": 460,
+        "buy_menu_open": 301,
+        "spectator_first_person": 180
+      },
+      "identity_missing": {
+        "ability_bar_structure": 2323,
+        "weapon_ammo_structure": 2613,
+        "hp_hud_structure": 797
+      },
+      "identity_reasons": {
+        "competing_view_evidence": 356,
+        "spectator_exclusion_unverified": 2372,
+        "structure_evidence_insufficient": 1504,
+        "independent_hud_structures": 460
+      },
+      "live_identity_evidence_insufficient": 3777,
+      "fresh_geometry_success": 1,
+      "effective_geometry_success": 4692,
+      "insufficient_anchors": 4691,
+      "geometry_invalid_unknown": 0,
+      "spectator_checks": {
+        "panel_structure_excluded": 2320,
+        "panel_structure_mismatch": 268,
+        "panel_structure_ambiguous": 1914,
+        "roi_unobservable": 10,
+        "panel_structure_present": 180
+      },
+      "round_count": 1,
+      "round_start_event_count": 0,
+      "round_end_event_count": 0,
+      "boundary_incomplete_package_count": 1,
+      "hud_event_count": 0,
+      "visual_event_count": 0,
+      "map_resolved_count": 0,
+      "map_held_count": 0,
+      "trace_counts": {
+        "events": 198,
+        "state_intervals": 189,
+        "ownership_intervals": 4530,
+        "snapshots": 941,
+        "visual_observations": 4,
+        "temporal_features": 0
+      }
+    },
+    "positive_semantics_complete": true,
+    "novel_live_frame_count": 5,
+    "novel_spectator_frame_count": 17,
+    "known_external_camera_mis_subtype_count": 2,
+    "camera_subtype_gate_verified": false,
+    "hp_counts": {
+      "same_pts_pixel_identical_label_reused": 455,
+      "correct": 449,
+      "unknown": 11,
+      "wrong": 0,
+      "ambiguous_false_accept": 0,
+      "strict_0_90_correct": 445,
+      "strict_0_90_wrong": 0,
+      "strict_0_90_unknown": 15,
+      "native_accepted_below_0_90": 4
+    },
+    "unowned_hp_leak_count": 0,
+    "fallback_numeric_counts": {
+      "round_time_remaining_sec": {
+        "accepted": 20,
+        "correct": 20,
+        "below_0_90": 5
+      },
+      "score_ally": {
+        "accepted": 5,
+        "correct": 4,
+        "below_0_90": 2,
+        "wrong": 1
+      },
+      "score_enemy": {
+        "accepted": 6,
+        "wrong": 4,
+        "below_0_90": 1,
+        "correct": 2
+      }
+    },
+    "positive_assessment_sha256": "beea698466372c0fe0339118ee944c222b9ce300d48a7e0e517c5d39e157fb16",
+    "hp_assessment_sha256": "5574c79ea98c11cba508c2a5dcbd04265772bd7802309f6511774eb54f3b6158",
+    "numeric_assessment_sha256": "71e054933d347fe162aeb345030af35ace58899c3c4b39f92351435cfa524a74",
+    "runtime_candidate_rejected": true,
+    "rejection_reason": "child_tesseract_environment_activates_unqualified_default_score_OCR_with_5_actual_native_wrong_accepts",
+    "profile_env_adopted": false,
+    "Windows_runtime_verified": false
+  },
+  "explicit_numeric_fallback_policy": {
+    "problem": "making Tesseract available for a qualified HP reader silently enables unconfigured default timer/score OCR; rejected12 has5 actual score misreads,4 above0.90",
+    "profile_field": "ocr_fallback_rois",
+    "allowed_names": [
+      "round_timer",
+      "ally_score",
+      "enemy_score"
+    ],
+    "omitted_policy": "preserve legacy three-ROI fallback",
+    "empty_policy": "no implicit numeric OCR; explicitly configured or injected readers still run",
+    "malformed_policy": "diagnostic and no implicit fallback",
+    "recognition_OS_branch_added": false,
+    "threshold_changed": false,
+    "identity_policy_changed": false,
+    "new_regression_cases_passed": 10,
+    "ruff_passed": true,
+    "mypy_passed_source_file_count": 86,
+    "full_pytest_complete": false,
+    "candidate13": {
+      "candidate_only": true,
+      "native_e2e_verified": false,
+      "Windows_runtime_verified": false,
+      "profile_fingerprint": "253a571ecff51dd1043ef9469af27df2644f3bc7647581b7919af4e559183511",
+      "file_sha256": {
+        "hud_layout.json": "baa99f1c1f0b4b7b959ec80242a58996a85c6f018bbc0895b3ca728dcaa5f3f8",
+        "hud_layout.templates.json": "ac85bb657c81262c58783b8f083ea50bc74f594cb65f34c9c61a143518d1a19d",
+        "anchors/top_match_bar.mask.png": "da90f88ac86a2155de5771362b81abaaca7b8a5749c360c12cdf6999cbd88503",
+        "anchors/top_match_bar.png": "ebd3300a9936c4d43cfc50d900bafae99aa1660b2945ef451cd34c8728996d24",
+        "buy_menu_close_anchor_present.png": "0eab312ce7da75a103573bf55c661c2a044cfb8b555ffc1aee53d2a8070cbb84",
+        "buy_menu_grid_present.png": "58d4d598c3e1c85ef9173967cd08ac6def5873f5515356c3b2feb5edaeb617c9",
+        "identity/ability_bar_structure.mask.png": "15d86e5069ab97efc179d31515197d81ff008556b53643867d96c853be884cb4",
+        "identity/ability_bar_structure.png": "eeee571ff3ea9080adeab4dd6b33e2e1b19f023bd58bc30fa5e7c8e8f29a5764",
+        "identity/ability_bar_structure.support.png": "7f075fe95d12dbbb220912f4b532ba547b962ac82a95e9fc63d95757272d3593",
+        "identity/spectator_panel.components.png": "79d981bc54a72eb708e98c7dab00aec9a4bd46c76e6920eb56e6872f157f6408",
+        "identity/spectator_panel.orientation.png": "5da0756c76e4c0eae0de37a86a10062f086a6641b05e2d2e0180d75ef2107ba7",
+        "identity/spectator_panel.support_regions.png": "e5ae5b116966cbaf302274cfa7f5943423deb0c9194c1d9498b536f3c1c2dc31",
+        "inherited/297e4260c30603fde2eea698ad1165fd85f1f6e466e92ddd93f8c1c09a11a72c.png": "297e4260c30603fde2eea698ad1165fd85f1f6e466e92ddd93f8c1c09a11a72c",
+        "inherited/31d71802e579aabcd257926af9707687b4dfa1bb3faf9e5df410c0d8bf6bf574.png": "31d71802e579aabcd257926af9707687b4dfa1bb3faf9e5df410c0d8bf6bf574",
+        "inherited/3e58637b7b8275ffdfaea8da6015b8cc428201b39bd1febc609f92ee0325cc53.png": "3e58637b7b8275ffdfaea8da6015b8cc428201b39bd1febc609f92ee0325cc53",
+        "inherited/9c9bc886844b2ba3c0e3b1dc55cd7a2d0f87262e00e4288ce6b89ec0a67fdeb1.png": "9c9bc886844b2ba3c0e3b1dc55cd7a2d0f87262e00e4288ce6b89ec0a67fdeb1",
+        "inherited/a31e5fc2f8b994705747ed7f4c7658c7437e7b4aa4f8fff9fd117829460d34b3.png": "a31e5fc2f8b994705747ed7f4c7658c7437e7b4aa4f8fff9fd117829460d34b3",
+        "inherited/b479ec4f00a1e271cd559d23c1843ae45da39abc04bdf794bf926bdba394ffbd.png": "b479ec4f00a1e271cd559d23c1843ae45da39abc04bdf794bf926bdba394ffbd",
+        "inherited/b54b6d20128a15fab7da46dcc6273f3787f76b5138ecc01c4830f5b819bfcd2d.png": "b54b6d20128a15fab7da46dcc6273f3787f76b5138ecc01c4830f5b819bfcd2d",
+        "inherited/e97bad5ced263c9ceb05fd2dde6814d2a9c86b732ddbb7266766fe94e0632877.png": "e97bad5ced263c9ceb05fd2dde6814d2a9c86b732ddbb7266766fe94e0632877",
+        "inherited/ec702596da2d901fbad2c7156532d955664b9aa738efca597850a4eff0f49c23.png": "ec702596da2d901fbad2c7156532d955664b9aa738efca597850a4eff0f49c23",
+        "inherited/f9faf779c0490d9ef79d3cc7fa3824de0fbcb7cbed4947df3af93f7ce5a3d847.png": "f9faf779c0490d9ef79d3cc7fa3824de0fbcb7cbed4947df3af93f7ce5a3d847",
+        "report_header/mask.png": "373035ec316679a1502e644078d09546fbfcdb943a24a36643568b734eedd48c",
+        "report_header/reference.png": "258cc58a5657174616830ad296ee8a97deafebca2eac90eb7348c7fbe2663426",
+        "report_header/support.png": "d8f7431b44e0ac623422495f727d4b40a2113cee62e6e808e923d9eefc17f8a8"
+      },
+      "ocr_fallback_rois": [],
+      "reader_names": [
+        "player_hp_armor"
+      ],
+      "required_source_sha256": {
+        "src/valorant_ai_coach/hud/analyzers.py": "93cf81482e3a0e6e74616cf28e5cd0fc818f8fc3b050ba1b59835ae0c4d8907f",
+        "src/valorant_ai_coach/hud/templates.py": "7cdbcf794878da925fe6ceb64c20ca91fbf60107381b7c56f34f895453b12531"
+      },
+      "layout_bytes_equal": true,
+      "all_existing_assets_equal": true,
+      "relocated_fingerprint_equal": true,
+      "relative_asset_count": 23,
+      "archive_sha256": "00dd7eeca0bddcc357d3957bb88f1c31f93dcfdd3526dd00690236eeb31495ba",
+      "archive_file_count": 26,
+      "production_adopted": false,
+      "reader_diagnostics": []
+    },
+    "observed_at_utc": "2026-10-06T22:45:20.903789+00:00",
+    "validation_status": {
+      "status": "running_production_profile13_standard_e2e",
+      "pid": 101468,
+      "profile_env_adopted": false,
+      "Windows_runtime_verified": false,
+      "candidate_only": true,
+      "started_unix": 1791325401.2529955,
+      "source_snapshot_sha256": "3eecdb4827c0bc2164f0d1658d88117ad14c06c3e61b14cb9114099184a5b0cd",
+      "profile_fingerprint": "253a571ecff51dd1043ef9469af27df2644f3bc7647581b7919af4e559183511",
+      "native12_hp_assessment_sha256": "5574c79ea98c11cba508c2a5dcbd04265772bd7802309f6511774eb54f3b6158",
+      "ruff_exit_code": 0,
+      "ruff_log_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "mypy_exit_code": 0,
+      "mypy_log_sha256": "4432ea8a51346dacb7344e3393565a90e4190c96071130e18ee89d6f190e5145",
+      "pytest_exit_code": 0,
+      "pytest_log_sha256": "8bdbe16f1f49b0712e19c5236eebd8330fb3714c88fd864e579181c53444ce43",
+      "run_output": "outputs/e2e/match_001/20261006T224429Z-e77952e0",
+      "child_pid": 102342
+    },
+    "terminal_review_status": {
+      "status": "waiting_for_production13_terminal",
+      "pid": 101559,
+      "native_outputs_changed": false,
+      "production_or_profile_changed": false,
+      "profile_env_adopted": false,
+      "helper_sha256": {
+        "audit_terminal_positive_semantics.py": "95a8492585e2e3ae56fd15ca27db1d9088cec6be7771096d4b8a0dccd1274b8d",
+        "audit_terminal_hp_readings.py": "029162921eb63273bf90e2bbabf4bc5e87dfefbace75e6813d22f605b1754a64",
+        "audit_terminal_fallback_numeric.py": "454b32f635d9b466f1f7e2045e811a11ab216aa2aa6d075205cdb65059d3f09a"
+      }
+    },
+    "profile_env_adopted": false,
+    "Windows_runtime_verified": false
+  },
+  "profile13_actual_frame_integration": {
+    "scope": "eight actual frames,5 new owned and3 unowned controls; full common analyzer with native calibration prefix and actual HP Tesseract; no injected identity/geometry/signals",
+    "profile_fingerprint": "253a571ecff51dd1043ef9469af27df2644f3bc7647581b7919af4e559183511",
+    "native12_raw_sha256": "5608333db9fb4f0c264d734e0d2f3e25be1fae2443262000b9d98017e6317fc5",
+    "novel_blind_labels_sha256": "2f4730496d141640442b1e3b35704dc79409ea97fdbc7cca06b21c0cc7883bb5",
+    "state_flags_view_context_ownership_equal": true,
+    "owned_hp_correct_count": 5,
+    "unowned_hp_leak_count": 0,
+    "implicit_ocr_call_count": 0,
+    "production_or_profile_changed": false,
+    "global_accuracy_verified": false,
+    "standard_native_e2e_verified": false,
+    "report_sha256": "0b76016f9d9d985419052f4064b3cebc6dd940f40a819f931ec8e3c4bea4fc55"
+  },
+  "profile13_whole_suite_regression": {
+    "observed_at_utc": "2026-10-06T22:45:20.903789+00:00",
+    "ruff_exit_code": 0,
+    "mypy_exit_code": 0,
+    "mypy_checked_files": 86,
+    "pytest_passed": 1014,
+    "pytest_skipped": 6,
+    "pytest_failed": 0,
+    "pytest_elapsed_seconds": 1263.17,
+    "pytest_log_sha256": "8bdbe16f1f49b0712e19c5236eebd8330fb3714c88fd864e579181c53444ce43",
+    "frozen_resource_count": 341,
+    "source_snapshot_sha256": "3eecdb4827c0bc2164f0d1658d88117ad14c06c3e61b14cb9114099184a5b0cd",
+    "frozen_source_unchanged": true,
+    "native_run": "outputs/e2e/match_001/20261006T224429Z-e77952e0",
+    "native_status": "running_production_profile13_standard_e2e",
+    "native_worker_pid": 102357,
+    "child_only_ocr_runtime_verified": true,
+    "native13_qualification_complete": false,
+    "Windows_runtime_verified": false,
+    "profile_env_adopted": false
+  },
+  "production12_novel_semantic_review_reuse_index": {
+    "sha256": "d58c522301fa2290c1e255b3e9fb72e73dd27cf98ae9ebdbfe294b7b7d0dbf6f",
+    "live_count": 5,
+    "spectator_count": 17,
+    "reuse_required_equality": [
+      "primary_state",
+      "PTS",
+      "full_decoded_pixel_sha256"
+    ],
+    "native13_review_complete": false
+  },
+  "terminal_review_reuse_assessor_verification": {
+    "scope": "Review-reuse assessor verification on completed native12; not native13 qualification or numeric fallback validation",
+    "helper_sha256": "e16e7bc27102045d6ca04bf8aa7ff45c4e2bfccc43d2a1d8bc2c2fe79e45aaeb",
+    "prior_positive_assessment_sha256": "beea698466372c0fe0339118ee944c222b9ce300d48a7e0e517c5d39e157fb16",
+    "prior_hp_assessment_sha256": "5574c79ea98c11cba508c2a5dcbd04265772bd7802309f6511774eb54f3b6158",
+    "positive_assessment_sha256": "2dcc5b593dc0af92927b3d25559b7c5dea996eddf83bec9de00f70b5a56ce622",
+    "hp_assessment_sha256": "80fd1de4d0f36a742fa8ed21c1c64d69f6126e738e627eba964fb38eaf1c1b0f",
+    "exact_state_pts_pixel_label_reused_live": 5,
+    "exact_state_pts_pixel_label_reused_spectator": 17,
+    "all_previous_hp_counts_equal": true,
+    "known_external_camera_mis_subtype_count": 2,
+    "camera_subtype_qualified": false,
+    "native13_qualified": false,
+    "native12_runtime_rejection_unchanged": true,
+    "frozen_production_source_unchanged": true
+  },
+  "report_conditioned_additional_compound_presence_diagnostic": {
+    "scope": "Exploratory diagnosis on previously examined cohorts, not independent qualification; no extra absence witness",
+    "hypothesis_sha256": "aceabd51cd4f2fb2edd924b833b29b16eb6694a7bb353ae657df3e4f55565843",
+    "diagnostics_sha256": "ae41c3d61dc8e076f0badb8999602c5bd4e701fec359dcd3f2731c7ced3ad3fc",
+    "prior_live_exclusion_safety_sha256": "9b883806b1b12c9d62174afd81de90f3c007f7944b51e299b1feda68ed9b590e",
+    "summary": {
+      "fixed_unknown64": {
+        "count": 64,
+        "additional_presence_count": 2,
+        "additional_presence_visual_counts": {
+          "present": 2
+        },
+        "additional_presence_split_counts": {
+          "holdout": 2
+        },
+        "original_presence_losses": 0,
+        "additional_absence_count": 0
+      },
+      "new_neighborhood18": {
+        "count": 18,
+        "additional_presence_count": 6,
+        "additional_presence_visual_counts": {
+          "present": 6
+        },
+        "additional_presence_split_counts": {
+          "training": 3,
+          "holdout": 3
+        },
+        "original_presence_losses": 0,
+        "additional_absence_count": 0
+      }
+    },
+    "prior_live_exclusion_loss_frames_checked": 47,
+    "condition_enabled_on_previous_loss_frames": 0,
+    "production_or_profile_changed": false,
+    "native_outputs_changed": false,
+    "independent_holdout_qualified": false,
+    "camera_subtype_qualified": false,
+    "candidate_adopted": false,
+    "next_required_evidence": "Freeze condition and existing references, then assess disjoint real-frame positive and negative cohorts; verify unknown new positives, current-frame ownership and camera subtype separately before any common-code implementation."
+  },
+  "report_conditioned_panel_disjoint_training_rejection": {
+    "status": "training_rejected_holdout_not_used",
+    "manifest_sha256": "e7586b8bc2c638a1559ada8e602de74d8af7264669cda5d5327533af0e3ead0d",
+    "frozen_inputs_sha256": "37cb430d60775121a7460bf031fd9c06c5abcd43fb0eebf12f7bbe36d4187be2",
+    "training_blind_labels_sha256": "39aad6abc4fd0813fe0fe1b4227d07a164c97868cddaef94918a2ec1f2b18558",
+    "training_evaluation_sha256": "90cc55d695bd93daf08e402a3f370e723b175c6b7b52135203e8bbee09dd3d3c",
+    "training_positive_count": 12,
+    "training_negative_count": 16,
+    "training_positive_supported_count": 0,
+    "training_false_positive_count": 0,
+    "training_false_absence_count": 0,
+    "positive_static_report_header_support_count": 12,
+    "candidate_positive_reason_counts": {
+      "panel_structure_ambiguous": 12
+    },
+    "holdout_panel_window_frame_count": 10,
+    "holdout_control_frame_count": 16,
+    "holdout_images_viewed": false,
+    "holdout_predictions_generated": false,
+    "required_support_fraction": 0.8,
+    "minimum_support": 3,
+    "threshold": 0.9,
+    "production_or_profile_changed": false,
+    "native_outputs_changed": false,
+    "candidate_adopted": false,
+    "conclusion": "Report header condition is supported on all12 positives, but the frozen extra compound reference is ambiguous on all12. Current reference does not generalize to the disjoint panel window; do not adopt or tune on holdout.",
+    "next_hypothesis": "Use the existing structural compound generator to attempt a separate reference from the newly frozen training panel group; keep the external temporal holdout unread until training qualification and blind labeling. No threshold or element requirement change."
+  },
+  "report_conditioned_panel_training_reference_v2_qualification": {
+    "status": "same_recording_temporal_panel_presence_qualified_side_effect_and_native_validation_pending",
+    "scope": "New training-generated extra compound reference gated by independent current-frame Report presence; presence only, no additional absence or player-ownership evidence",
+    "generation_sha256": "e524b05fd20889423da15644e74a33f7352b3dd2dfc3d2935aac7b2181a84760",
+    "candidate_asset_sha256": {
+      "components": "5aa9157b28e0c0fd62222a1e647ae39231be1c2af90b22a90d957c5525d0cb46",
+      "support_regions": "89034d328ee2f67bb85effa252c93b9007565fc4f180f471cd012d633acf4d0f",
+      "orientation": "f6e6c3e5d2ddac77c4d94374d94a7e4577d0794c0d868b64e750dcaf0f3b6ae2"
+    },
+    "training_labels_sha256": "39aad6abc4fd0813fe0fe1b4227d07a164c97868cddaef94918a2ec1f2b18558",
+    "holdout_labels_sha256": "492185bbc333f868971512a2f3bb711d76038df3f89a217cc6a010c521ffefc2",
+    "training_evaluation_sha256": "1f151ee2acecf25268c2c3a1131483728d0ac8079f632e06824d51878704e591",
+    "holdout_evaluation_sha256": "ea7ba372dfe0b220c42e120fa86c6be85d330c385127e900025712e16625bd17",
+    "pre_holdout_freeze_v2_sha256": "623aef6aaa106af6d1a867e73553615bba50461d9a30ac6cc2d3fa33c274c627",
+    "training_positive_count": 12,
+    "training_positive_supported_count": 12,
+    "training_absent_control_count": 16,
+    "training_false_positive_count": 0,
+    "holdout_positive_count": 10,
+    "holdout_positive_supported_count": 10,
+    "holdout_absent_control_count": 15,
+    "holdout_unobservable_menu_count": 1,
+    "holdout_false_positive_count": 0,
+    "holdout_unobservable_false_accept_count": 0,
+    "original_presence_loss_count": 0,
+    "additional_absence_count": 0,
+    "generator_internal_proposal_support": 6,
+    "generator_internal_validation_support": 6,
+    "external_holdout_used_for_generation": false,
+    "threshold": 0.9,
+    "minimum_support": 3,
+    "required_support_fraction": 0.8,
+    "production_or_profile_changed": false,
+    "candidate_adopted": false,
+    "native_e2e_qualified": false,
+    "camera_subtype_qualified": false,
+    "independent_recording_generalization_verified": false,
+    "next_required_evidence": "Check frozen conditional new reference on all previously reviewed live/Spectator/menu positives and fixed unknown cohorts, then common-code integration/regression/native E2E. Maintain known camera subtype limitations."
+  },
+  "report_conditioned_panel_training_reference_v2_side_effect_assessment": {
+    "scope": "Frozen conditional panel-presence witness replay only. Prior native11 states/reviews and current-frame live exclusion proofs reused after exact PTS/pixel equality. No production state integration, ownership or camera qualification.",
+    "side_effect_audit_sha256": "d57cb3d4dae282dc349c04be84e209f374ca5f57e3d5b6b4b3c98e242889f630",
+    "summary": {
+      "live": {
+        "count": 455,
+        "extra_reference_enabled_count": 0,
+        "additional_presence_count": 0,
+        "additional_presence_visual_counts": {},
+        "additional_presence_scene_counts": {},
+        "original_presence_loss_count": 0,
+        "original_absence_loss_count": 0
+      },
+      "spectator": {
+        "count": 163,
+        "extra_reference_enabled_count": 0,
+        "additional_presence_count": 0,
+        "additional_presence_visual_counts": {},
+        "additional_presence_scene_counts": {},
+        "original_presence_loss_count": 0,
+        "original_absence_loss_count": 0
+      },
+      "menu": {
+        "count": 301,
+        "extra_reference_enabled_count": 0,
+        "additional_presence_count": 0,
+        "additional_presence_visual_counts": {},
+        "additional_presence_scene_counts": {},
+        "original_presence_loss_count": 0,
+        "original_absence_loss_count": 0
+      },
+      "fixed_unknown64": {
+        "count": 64,
+        "extra_reference_enabled_count": 16,
+        "additional_presence_count": 0,
+        "additional_presence_visual_counts": {},
+        "additional_presence_scene_counts": {},
+        "original_presence_loss_count": 0,
+        "original_absence_loss_count": 0
+      },
+      "new_neighborhood18": {
+        "count": 18,
+        "extra_reference_enabled_count": 15,
+        "additional_presence_count": 2,
+        "additional_presence_visual_counts": {
+          "present": 2
+        },
+        "additional_presence_scene_counts": {
+          "spectator_first_person": 2
+        },
+        "original_presence_loss_count": 0,
+        "original_absence_loss_count": 0
+      }
+    },
+    "known_prior_external_camera_mis_subtype_count": 2,
+    "camera_subtype_qualified": false,
+    "native_e2e_qualified": false,
+    "common_production_integration_complete": false,
+    "candidate_adopted": false,
+    "production_or_profile_changed": false,
+    "native_outputs_changed": false,
+    "verified_added_presence_scene_count": {
+      "spectator_first_person": 2
+    },
+    "frozen_resource_count": 341,
+    "frozen_source_unchanged": true,
+    "next_required_evidence": "Implement optional positive-only Report-gated compound variant in an isolated common-code prototype while native13 source remains frozen; verify current-frame reset, invalid-asset diagnostics, thresholds, absence/ownership invariants and profile relocation; then production regression and standard native E2E after13 assessment."
+  },
+  "report_gated_panel_common_code_isolated_prototype": {
+    "implementation": {
+      "scope": "Isolated common-code prototype only; original production source remains frozen during native13",
+      "base_source_snapshot_sha256": "3eecdb4827c0bc2164f0d1658d88117ad14c06c3e61b14cb9114099184a5b0cd",
+      "base_frozen_resource_count": 341,
+      "original_source_unchanged": true,
+      "prototype_template_source_sha256": "c8f2f7745f6facd0ad2e710509bfb609d87aeabf55e476cb74e2e55d770f1f79",
+      "new_test_sha256": "315eb4d61fe401e768af91f8e3a0d6dcc04d5be0d0938f56225767e82c1554f6",
+      "prototype_diff_sha256": "55d9c3d839df018033a6152821a81fe8ba01fa8387c9c6670ed4606a4438b6cf",
+      "focused_pytest_passed": 83,
+      "focused_pytest_failed": 0,
+      "focused_pytest_elapsed_seconds": 6.11,
+      "ruff_changed_files_passed": true,
+      "mypy_changed_module_passed": true,
+      "candidate_profile_sidecar_sha256": "56dd129716340f2409377d9d3cc0d821274387389a119d9f2938f961e49cebfc",
+      "candidate_profile_adopted": false,
+      "real_frame_integration_verified": true,
+      "profile_relocation_verified": true,
+      "production_full_regression_verified": false,
+      "production_native_e2e_verified": false,
+      "Windows_runtime_verified": false,
+      "camera_subtype_qualified": false,
+      "real_frame_integration_sha256": "ec700658a0905409440e9bf021a82541e1abd25352a29a42c833bc1b28ec3d95",
+      "profile_load_and_relocation_sha256": "46c64fbf3d38f568cd5cd3566e73d5171c5df767a3d0ae9b43fa4187821cf3ac",
+      "candidate_profile_fingerprint": "4680b6eb9ddaedb65998f6e771706c7814b801fd50f9a7665d014138293df2f2",
+      "real_frame_integration_scope": "62 actual cached frames, full isolated common analyzer twice with genuine native calibration prefix and actual HP OCR; no injected anchors, geometry, identity or signals. Not standard native E2E/global/camera qualification.",
+      "focused_pytest_log_sha256": "224d5fcc3919b2a5db7e466385688cc2e7350fa174f72f689a2c1e55b8ac3661",
+      "additional_boundary_cases": 8
+    },
+    "integration": {
+      "scope": "62 actual cached frames, full isolated common analyzer twice with genuine native calibration prefix and actual HP OCR; no injected anchors, geometry, identity or signals. Not standard native E2E/global/camera qualification.",
+      "prototype_source_sha256": "c8f2f7745f6facd0ad2e710509bfb609d87aeabf55e476cb74e2e55d770f1f79",
+      "profile_fingerprints": {
+        "baseline13": "253a571ecff51dd1043ef9469af27df2644f3bc7647581b7919af4e559183511",
+        "variant": "4680b6eb9ddaedb65998f6e771706c7814b801fd50f9a7665d014138293df2f2"
+      },
+      "new_panel_current_frame_confirmed_count": 22,
+      "control_count": 40,
+      "all_control_states_flags_context_values_equal": true,
+      "prior_owned_hp_controls_correct": 5,
+      "unowned_player_value_leak_count": 0,
+      "implicit_fallback_call_counts": {
+        "baseline13": 0,
+        "variant": 0
+      },
+      "variant_state_counts": {
+        "unknown": 33,
+        "buy_menu_open": 1,
+        "live_first_person": 5,
+        "spectator_first_person": 23
+      },
+      "candidate_adopted": false,
+      "original_source_changed": false,
+      "standard_native_e2e_verified": false,
+      "camera_subtype_qualified": false
+    },
+    "profile_relocation": {
+      "scope": "Prototype profile loading and relocation with explicitly isolated common-source import; native Windows execution unverified",
+      "loaded_template_module": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/report-panel-variant-prototype/common-code/src/valorant_ai_coach/hud/templates.py",
+      "profile_fingerprint": "4680b6eb9ddaedb65998f6e771706c7814b801fd50f9a7665d014138293df2f2",
+      "relative_asset_count": 26,
+      "report_gated_reference_count": 1,
+      "relocated_fingerprint_equal": true,
+      "reader_diagnostics": [],
+      "original_source_changed": false,
+      "profile_adopted": false
+    }
+  },
+  "geometry_common_translation_training_diagnostic": {
+    "scope": "training-only common translation diagnostic; no holdout/source/profile change; not native anchor localization qualification",
+    "diagnostic_sha256": "7396671c7207613991123f164cd9228c9d3af64393bc70bc9b6030afde1cb8f5",
+    "script_sha256": "3bd3d3aafa71f4ff4cc7401d7bfa98e8f67c9173c5c889a7adfd5e4ef9564c9f",
+    "threshold": 0.9,
+    "translation_pixels": 2,
+    "holdout_used": false,
+    "production_changed": false,
+    "maximum_fixed_position_ncc_difference": 0.0,
+    "results": {
+      "hp_hud_structure": [
+        {
+          "training_subset": "all_visibly_present_structure",
+          "positive_count": 28,
+          "accepted_count": 15,
+          "fixed_position_accepted_count": 15,
+          "support_fraction": 0.5357142857142857,
+          "training_qualified": false,
+          "absent_false_accept_count": 0,
+          "ambiguous_accept_count": 0,
+          "feature_sha256": "b7d6d8f8753edf33d4f6206e4bab2758a89a0b210ba9823984d6e9ab38d52246"
+        }
+      ],
+      "ability_bar_structure": [
+        {
+          "training_subset": "all_visibly_present_structure",
+          "positive_count": 28,
+          "accepted_count": 17,
+          "fixed_position_accepted_count": 17,
+          "support_fraction": 0.6071428571428571,
+          "training_qualified": false,
+          "absent_false_accept_count": 0,
+          "ambiguous_accept_count": 0,
+          "feature_sha256": "d188b4e4e03cf6d4807111d4befb972021b13144f030926aa1d93132e39572cc"
+        },
+        {
+          "training_subset": "configured_astra_visible_structure",
+          "positive_count": 25,
+          "accepted_count": 17,
+          "fixed_position_accepted_count": 17,
+          "support_fraction": 0.68,
+          "training_qualified": false,
+          "absent_false_accept_count": 0,
+          "ambiguous_accept_count": 0,
+          "feature_sha256": "69de980948f9e8d25de8a6c51c9eaa3b0dc357e6f4834395643e178ed38e64d2"
+        }
+      ]
+    },
+    "conclusion": "Reject common +/-2 pixel translation explanation: no newly qualified training frames. No holdout evaluated and no production candidate created."
+  },
+  "timer_multi_reference_training_eligibility": {
+    "scope": "Training-only eligibility of an additional bank made from the unchanged actual raw glyph candidates; does not reject other representations or future disjoint training data. No holdout read.",
+    "manifest_sha256": "e76b2ac7d6c20f042aa30c2badf3860fd669e211a9397c4f13edbd726eb8d739",
+    "training_labels_sha256": "0a706d04167cc1b1c22ee9861dc0dcccc8c95a5142d18e1f48c003e64d47be66",
+    "prior_training_qualification_sha256": "cfa29569f1027a1e7ca3a5beb8526e2311c9f6637013f1be00946816fdcaef64",
+    "digit": "7",
+    "distinct_training_frames": 3,
+    "threshold": 0.9,
+    "minimum_supported_frames_per_reference": 3,
+    "minimum_class_support_fraction": 0.8,
+    "glyphs": [
+      {
+        "sample_index": 38,
+        "position": 2,
+        "path": "glyph-038-2.png",
+        "sha256": "466ab009974a1f11a0763262ce10c2ce93962d2c3a4f5d6db5dcd77057e80a94"
+      },
+      {
+        "sample_index": 94,
+        "position": 2,
+        "path": "glyph-094-2.png",
+        "sha256": "9b1b71ba812a8e7d6fa2828d940aca625b5dc6611b527bea0a2e2974d59ed888"
+      },
+      {
+        "sample_index": 122,
+        "position": 2,
+        "path": "glyph-122-2.png",
+        "sha256": "197f0f9d7f71c8a72227284547e19f54bdb43602cb427dc7dd66d6acb6164128"
+      }
+    ],
+    "pairwise_ncc": [
+      [
+        0.9999999403953552,
+        0.8392128348350525,
+        0.8895150423049927
+      ],
+      [
+        0.8392128348350525,
+        1.0,
+        0.8062190413475037
+      ],
+      [
+        0.8895150423049927,
+        0.8062188625335693,
+        1.0
+      ]
+    ],
+    "supported_frame_counts": [
+      1,
+      1,
+      1
+    ],
+    "eligible_reference_count": 0,
+    "complete_alphabet_possible_from_this_raw_candidate_bank": false,
+    "holdout_used": false,
+    "profile_created": false,
+    "production_changed": false,
+    "conclusion": "Every existing digit7 raw candidate supports only itself. A bank of individually supported references is empty for7; adding all3 unsupported exemplars would evade the minimum3 gate. Reject that bank proposal without holdout matching.",
+    "diagnostic_sha256": "c5b13af3e615b2addf5d2746618044ffc693e4b76bc2fd80a43f33c8f9209449"
   }
 }

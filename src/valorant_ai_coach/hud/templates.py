@@ -42,6 +42,13 @@ from .weapon_identity import masked_score, structural_score
 
 ImageU8 = NDArray[np.uint8]
 
+DEFAULT_DIGIT_OCR_ROIS = frozenset({"round_timer", "ally_score", "enemy_score"})
+
+_MENU_WITNESS_ROIS = {
+    "buy_menu_grid_present": "buy_menu_grid",
+    "buy_menu_close_anchor_present": "buy_menu_close_anchor",
+}
+
 
 def _bounds(value: Sequence[Any]) -> tuple[float, float, float, float]:
     x1, y1, x2, y2 = (float(item) for item in value)
@@ -71,6 +78,18 @@ class HudTemplateProfile:
             value = self.raw.get(section, {})
             if not isinstance(value, dict):
                 raise ValueError(f"HUD template profile {section}はobjectである必要があります")
+        fallback_rois = self.raw.get("ocr_fallback_rois", sorted(DEFAULT_DIGIT_OCR_ROIS))
+        if not isinstance(fallback_rois, list) or any(
+            not isinstance(name, str) or name not in DEFAULT_DIGIT_OCR_ROIS
+            for name in fallback_rois
+        ):
+            self.ocr_fallback_rois = frozenset[str]()
+            self.reader_diagnostics.append(
+                "ocr_fallback_rois must be a list of round_timer/ally_score/enemy_score; "
+                "implicit digit OCR disabled"
+            )
+        else:
+            self.ocr_fallback_rois = frozenset(fallback_rois)
         self.asset_paths = tuple(sorted(self._find_asset_paths(self.raw)))
         self._signal_templates: dict[str, tuple[str, LoadedTemplate]] = {}
         self._signal_bounds: dict[str, tuple[float, float, float, float]] = {}
@@ -90,6 +109,10 @@ class HudTemplateProfile:
                 template = self.load_template(
                     str(name), str(spec["template"]), float(spec.get("threshold", 0.90))
                 )
+                if name in _MENU_WITNESS_ROIS and (
+                    spec["roi"] != _MENU_WITNESS_ROIS[name] or template.threshold < 0.90
+                ):
+                    raise ValueError("menu witness requires its independent ROI and NCC >= .90")
                 if "roi_bounds" in spec:
                     self._signal_bounds[str(name)] = _bounds(spec["roi_bounds"])
                 if "mask" in spec:
@@ -243,6 +266,12 @@ class HudTemplateProfile:
     ) -> dict[str, Any]:
         """UI matches and checked spectator absence; unreadable regions stay unknown."""
         signals: dict[str, Any] = {}
+        # Configured witnesses replace texture candidates. A nonmatch is
+        # unknown, never verified absence; neither role can inherit a heuristic.
+        if any(name in self.raw.get("signals", {}) for name in _MENU_WITNESS_ROIS):
+            for name in _MENU_WITNESS_ROIS:
+                signals[name] = None
+                signals[f"{name}_confidence"] = 0.0
         height, width = frame.shape[:2]
         icon_spec = self.raw.get("spectator_icon_detector")
         icon_active = "spectator_icon_detector" in self.raw

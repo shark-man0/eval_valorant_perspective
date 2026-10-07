@@ -27,7 +27,12 @@ from .readers import (
     crop_roi,
     load_frame,
 )
-from .templates import HudTemplateProfile, TesseractDigitsReader, load_profile_readers
+from .templates import (
+    DEFAULT_DIGIT_OCR_ROIS,
+    HudTemplateProfile,
+    TesseractDigitsReader,
+    load_profile_readers,
+)
 from .temporal import HudDirectEventBuilder
 
 
@@ -179,6 +184,11 @@ class RealHudAnalyzer:
             self.profile_diagnostics.extend(self.template_profile.reader_diagnostics)
         self.readers = {**profile_readers, **dict(readers or {})}
         self.digit_ocr_reader = self.ocr_reader or TesseractDigitsReader()
+        self.ocr_fallback_rois = (
+            self.template_profile.ocr_fallback_rois
+            if self.template_profile is not None
+            else DEFAULT_DIGIT_OCR_ROIS
+        )
         self.feature_reader = OpenCvHudFeatureReader(self.layout)
         self.state_classifier = HudStateClassifier()
         self.diagnostic_sink = diagnostic_sink
@@ -586,7 +596,7 @@ class RealHudAnalyzer:
         }
         for region_name, (target, value_kind) in bindings.items():
             reader = self.readers.get(region_name)
-            if reader is None and region_name in {"round_timer", "ally_score", "enemy_score"}:
+            if reader is None and region_name in self.ocr_fallback_rois:
                 reader = self.digit_ocr_reader
             if reader is None or region_name not in self.layout.regions:
                 continue
