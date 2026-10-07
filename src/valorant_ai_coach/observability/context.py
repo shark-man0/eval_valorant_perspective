@@ -58,8 +58,8 @@ class DiagnosticContextFilter(logging.Filter):
 
     def filter(self, record: logging.LogRecord) -> bool:
         context = current_context()
-        setattr(record, "run_id", context.run_id)
-        setattr(record, "match_id", context.match_id)
-        setattr(record, "round_no", context.round_no)
-        setattr(record, "phase", context.phase)
+        record.__dict__["run_id"] = context.run_id
+        record.__dict__["match_id"] = context.match_id
+        record.__dict__["round_no"] = context.round_no
+        record.__dict__["phase"] = context.phase
         return True

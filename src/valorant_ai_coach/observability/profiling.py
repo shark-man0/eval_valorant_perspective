@@ -31,7 +31,8 @@ def _peak_rss_bytes() -> int | None:
     try:
         import resource
 
-        usage = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+        resource_module: Any = resource
+        usage = resource_module.getrusage(resource_module.RUSAGE_SELF).ru_maxrss
     except (ImportError, OSError, ValueError):
         return None
     if usage <= 0:
