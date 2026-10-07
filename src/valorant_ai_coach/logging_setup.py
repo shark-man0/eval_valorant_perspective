@@ -4,7 +4,14 @@ import logging
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
+from .observability.context import DiagnosticContextFilter
+from .observability.sanitize import sanitize_text
 from .settings import default_data_dir
+
+
+class _RedactingFormatter(logging.Formatter):
+    def format(self, record: logging.LogRecord) -> str:
+        return sanitize_text(super().format(record))
 
 
 def configure_logging(
@@ -30,9 +37,14 @@ def configure_logging(
         backupCount=max(0, int(backup_count)),
         encoding="utf-8",
     )
+    handler.addFilter(DiagnosticContextFilter())
     handler.setFormatter(
-        logging.Formatter(
-            "%(asctime)s %(levelname)s %(name)s: %(message)s",
+        _RedactingFormatter(
+            (
+                "%(asctime)s %(levelname)s %(name)s "
+                "[run=%(run_id)s match=%(match_id)s round=%(round_no)s phase=%(phase)s]: "
+                "%(message)s"
+            ),
             datefmt="%Y-%m-%d %H:%M:%S",
         )
     )
