@@ -1,5 +1,5 @@
 {
-  "status": "complete_references_native12_runtime_rejected_explicit_fallback_candidate13_native_pending",
+  "status": "complete_references_native13_reviewed_candidate14_standard_native_running",
   "threshold": 0.9,
   "identity_reference_ready": true,
   "references": {
@@ -53539,7 +53539,7 @@
     "summary_sha256": "1cbb135e3cedd6555a96f037e4ca175a3b3fc8604d1b19fd9d2b4dbc5ca14ded"
   },
   "current_native_gates": {
-    "observed_at_utc": "2026-10-06T22:20:54.628579+00:00",
+    "observed_at_utc": "2026-10-07T03:50:18.783842+00:00",
     "production11_run": "20261006T125627Z-ace6cb0d",
     "production11_terminal_result_claimed": true,
     "production11_terminal_hashes_verified": true,
@@ -53574,7 +53574,21 @@
     "Windows_runtime_verified": false,
     "candidate12_worker_live_verified": false,
     "candidate12_terminal_output_hashes_verified": true,
-    "candidate12_runtime_candidate_rejected": true
+    "candidate12_runtime_candidate_rejected": true,
+    "production13_run": "20261006T224429Z-e77952e0",
+    "production13_terminal_review_complete": true,
+    "production13_known_camera_subtype_errors": 2,
+    "candidate14_status": "running_production_profile14_standard_e2e",
+    "candidate14_driver_pid": 113277,
+    "candidate14_review_queue_pid": 113294,
+    "candidate14_source_snapshot_sha256": "771f6924a17d6a6fde69041b603adf6e52eb7e15f57b541269745b0a65c9b380",
+    "candidate14_frozen_resource_count": 342,
+    "candidate14_profile_fingerprint": "4680b6eb9ddaedb65998f6e771706c7814b801fd50f9a7665d014138293df2f2",
+    "candidate14_native_qualification_claimed": false,
+    "candidate14_run": "outputs/e2e/match_001/20261007T034919Z-442972cd",
+    "candidate14_cli_pid": 114138,
+    "candidate14_worker_pid": 114155,
+    "candidate14_worker_live_verified": true
   },
   "candidate12_default_numeric_fallback_audit": {
     "reason": "child-only Tesseract PATH also activates existing unconfigured timer/score fallback; HP-only audit is insufficient",
@@ -54340,5 +54354,150 @@
     "production_changed": false,
     "conclusion": "Every existing digit7 raw candidate supports only itself. A bank of individually supported references is empty for7; adding all3 unsupported exemplars would evade the minimum3 gate. Reject that bank proposal without holdout matching.",
     "diagnostic_sha256": "c5b13af3e615b2addf5d2746618044ffc693e4b76bc2fd80a43f33c8f9209449"
+  },
+  "production13_terminal_assessment": {
+    "status": "terminal_review_complete_remaining_failures_and_camera_subtype_errors",
+    "run": "outputs/e2e/match_001/20261006T224429Z-e77952e0",
+    "raw_sha256": "0fcb422bf583d58a3f9d38facc4279d062c052de383f761d6dd8b1957748285c",
+    "counts": {
+      "passed": 23,
+      "failed": 55,
+      "not_evaluated": 4,
+      "evaluation_failure_count": 55,
+      "negative_assertion_failures": 0,
+      "negative_assertions_not_evaluated": 0,
+      "discontinuity_violations": 0,
+      "observation_count": 4634,
+      "sampled_frame_count": 4634,
+      "hud_unknown": 3715,
+      "detected_states": {
+        "unknown": 3715,
+        "live_first_person": 455,
+        "buy_menu_open": 301,
+        "spectator_first_person": 163
+      },
+      "identity_missing": {
+        "ability_bar_structure": 2291,
+        "weapon_ammo_structure": 2610,
+        "hp_hud_structure": 794
+      },
+      "identity_reasons": {
+        "competing_view_evidence": 356,
+        "spectator_exclusion_unverified": 2324,
+        "structure_evidence_insufficient": 1499,
+        "independent_hud_structures": 455
+      },
+      "live_identity_evidence_insufficient": 3744,
+      "fresh_geometry_success": 1,
+      "effective_geometry_success": 4634,
+      "insufficient_anchors": 4633,
+      "geometry_invalid_unknown": 0,
+      "spectator_checks": {
+        "panel_structure_excluded": 2310,
+        "panel_structure_mismatch": 266,
+        "panel_structure_ambiguous": 1885,
+        "roi_unobservable": 10,
+        "panel_structure_present": 163
+      },
+      "round_count": 1,
+      "round_start_event_count": 0,
+      "round_end_event_count": 0,
+      "boundary_incomplete_package_count": 1,
+      "hud_event_count": 0,
+      "visual_event_count": 0,
+      "map_resolved_count": 0,
+      "map_held_count": 0,
+      "trace_counts": {
+        "events": 189,
+        "state_intervals": 185,
+        "ownership_intervals": 4472,
+        "snapshots": 919,
+        "visual_observations": 4,
+        "temporal_features": 0
+      }
+    },
+    "positive_assessment_sha256": "4f388a4d136e330a9bfad23ffa7e4f31aaf951da178981fd6c6fc2a32bfd2e79",
+    "hp_assessment_sha256": "b8a7f2aa24039c35340aec300c285c56cd3064fd26d9d577192bbe43b2e3dc6e",
+    "fallback_summary_sha256": "cc3b9b0b254bdf6e40c559771c383e608fb3e84d15a93e2742af4a7b22e4b24b",
+    "hp_counts": {
+      "same_pts_pixel_identical_label_reused": 455,
+      "correct": 444,
+      "unknown": 11,
+      "wrong": 0,
+      "ambiguous_false_accept": 0,
+      "strict_0_90_correct": 440,
+      "strict_0_90_wrong": 0,
+      "strict_0_90_unknown": 15,
+      "native_accepted_below_0_90": 4,
+      "novel_owned_frames_need_blind_labels": 0
+    },
+    "implicit_timer_score_accepts": 0,
+    "known_camera_subtype_errors": 2,
+    "source_resources_verified": 341,
+    "profile_fingerprint_verified": true,
+    "global_accuracy_qualified": false,
+    "camera_subtype_qualified": false,
+    "production_env_adopted": false,
+    "Windows_runtime_verified": false
+  },
+  "report_gated_panel_common_code_candidate14": {
+    "problem": "A second compound panel layout fails the primary reference while an independent current Report header is visible. Unconditional additional reference previously damaged47 accepted live exclusions.",
+    "change": "Optional relative compound-v2 references gated only by independent current-frame Report header; presence-only, original primary presence wins, failed variants add no absence. Threshold>=0.90 and original component support/layout requirements unchanged. No OS branch or ownership policy change.",
+    "prototype_training_positive": 12,
+    "prototype_holdout_positive": 10,
+    "prototype_training_absent_controls": 16,
+    "prototype_holdout_absent_controls": 15,
+    "prototype_holdout_unobservable_control": 1,
+    "prototype_false_accept_count": 0,
+    "prior_positive_side_effect_controls": 919,
+    "isolated_real_full_analyzer_frames": 62,
+    "isolated_focused_tests_passed": 83,
+    "main_code_applied": true,
+    "main_template_sha256": "c8f2f7745f6facd0ad2e710509bfb609d87aeabf55e476cb74e2e55d770f1f79",
+    "new_test_sha256": "315eb4d61fe401e768af91f8e3a0d6dcc04d5be0d0938f56225767e82c1554f6",
+    "candidate_profile": "outputs/hud_profiles/pi-structural-20261007-14/hud_layout.json",
+    "relative_asset_count": 26,
+    "profile_fingerprint": "4680b6eb9ddaedb65998f6e771706c7814b801fd50f9a7665d014138293df2f2",
+    "ruff_passed": true,
+    "mypy_passed": true,
+    "full_pytest_status": "passed",
+    "standard_native_e2e_verified": false,
+    "camera_subtype_qualified": false,
+    "production_env_adopted": false,
+    "Windows_runtime_verified": false,
+    "full_pytest_passed": 1034,
+    "full_pytest_skipped": 6,
+    "full_pytest_failed": 0,
+    "full_pytest_seconds": 1250.36,
+    "full_pytest_log_sha256": "6b85e2bfa9cfa9dfa226bc36544d5f46fc8f90022bed3c78f1d3130c0d5b5846",
+    "standard_native_e2e_status": "running_production_profile14_standard_e2e",
+    "standard_native_e2e_run": "outputs/e2e/match_001/20261007T034919Z-442972cd"
+  },
+  "timer_training_glyph_registration_diagnostic": {
+    "artifact": "outputs/recognition-investigation/timer-training-glyph-registration-diagnostic.json",
+    "sha256": "b83f962c2f23016dd117ddec75b579c733fd67d13a29e19c0fb62fc141487371",
+    "digit": "7",
+    "training_supported_frame_counts": [
+      1,
+      2,
+      2
+    ],
+    "minimum_support": 3,
+    "threshold": 0.9,
+    "eligible_candidates": 0,
+    "holdout_used": false,
+    "production_or_profile_changed": false
+  },
+  "long_running_command_wait_policy": {
+    "mechanism": "pidfd exit notification",
+    "waiter_pid": 114468,
+    "exec_session_id": 27662,
+    "driver_pid": 113277,
+    "review_queue_pid": 113294,
+    "review_queue_suspended_until_driver_exit": true,
+    "E2E_restarted": false,
+    "repeated_process_polling": false,
+    "growing_log_reads": false,
+    "recognition_source_or_profile_changed": false
   }
 }

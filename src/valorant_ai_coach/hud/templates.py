@@ -260,6 +260,57 @@ class HudTemplateProfile:
             except (KeyError, ValueError, OSError, cv2.error):
                 self._panel_components = None
                 self.reader_diagnostics.append("spectator_panel_detector: invalid asset")
+        self._report_gated_panels: tuple[tuple[PanelReference, float], ...] = ()
+        variants = self.raw.get("report_gated_spectator_panel_references", [])
+        if variants:
+            try:
+                if (
+                    not isinstance(variants, list)
+                    or self._report_header is None
+                    or not isinstance(self._panel_components, PanelReference)
+                    or "spectator_icon_detector" in self.raw
+                ):
+                    raise ValueError(
+                        "requires compound primary panel and independent Report header"
+                    )
+                loaded = []
+                required = {
+                    "version", "method", "roi", "threshold", "template",
+                    "support_regions", "orientation",
+                }
+                for spec in variants:
+                    if (
+                        not isinstance(spec, Mapping)
+                        or set(spec) != required
+                        or type(spec.get("version")) is not int
+                        or spec.get("version") != 2
+                        or spec.get("method") != "oriented_component_regions_v2"
+                        or spec.get("roi") != "spectated_player_panel"
+                        or type(spec.get("threshold")) not in (int, float)
+                        or not np.isfinite(spec["threshold"])
+                        or not 0.90 <= spec["threshold"] <= 1.0
+                    ):
+                        raise ValueError("invalid Report-gated compound panel specification")
+                    assets = []
+                    for key in ("template", "support_regions", "orientation"):
+                        data = self.resolve_asset(str(spec[key])).read_bytes()
+                        decoded = cv2.imdecode(np.frombuffer(data, np.uint8), cv2.IMREAD_GRAYSCALE)
+                        if decoded is None:
+                            raise ValueError("invalid Report-gated panel asset")
+                        assets.append(np.asarray(decoded, dtype=np.uint8))
+                    reference = assets[0]
+                    if (
+                        reference.shape != self._panel_components.shape
+                        or not set(np.unique(reference)).issubset({0, 1, 2, 3})
+                        or any(np.count_nonzero(reference == k) < 12 for k in (1, 2, 3))
+                    ):
+                        raise ValueError("invalid Report-gated panel structure")
+                    loaded.append((PanelReference(*assets), float(spec["threshold"])))
+                self._report_gated_panels = tuple(loaded)
+            except (KeyError, ValueError, TypeError, OSError, cv2.error) as exc:
+                self.reader_diagnostics.append(f"report_gated_spectator_panel_references: {exc}")
+        elif "report_gated_spectator_panel_references" in self.raw and variants != []:
+            self.reader_diagnostics.append("report_gated_spectator_panel_references must be a list")
 
     def detect_signals(
         self, frame: ImageU8, layout: HudLayout, *, context: Mapping[str, Any] | None = None
@@ -387,14 +438,45 @@ class HudTemplateProfile:
                 spectator_confidence=0.90,
                 self_hud_identity_trustworthy=False,
             )
+        report_verified = False
         if self._report_header is not None and "combat_report" in layout.regions:
             x1, y1, x2, y2 = layout.normalized_roi("combat_report").pixel_bounds(width, height)
             report_evidence = report_header_evidence(frame[y1:y2, x1:x2], self._report_header)
             if report_evidence["present"] is True:
+                report_verified = True
                 signals.update(
                     combat_report_visible=True,
                     combat_report_confidence=report_evidence["score"],
                 )
+        if (
+            report_verified
+            and panel_result["panel_present"] is not True
+            and self._report_gated_panels
+            and "spectated_player_panel" in layout.regions
+        ):
+            x1, y1, x2, y2 = layout.normalized_roi("spectated_player_panel").pixel_bounds(
+                width, height
+            )
+            for reference, threshold in self._report_gated_panels:
+                variant = detect_panel(frame[y1:y2, x1:x2], reference)
+                confidence = min(variant.get("positive_component_scores", []), default=0.0)
+                if (
+                    variant["checked"] is True
+                    and variant["panel_present"] is True
+                    and confidence >= threshold
+                ):
+                    # Additional references prove presence only. A failed match
+                    # cannot replace checked absence, identity or ownership.
+                    signals.update(
+                        spectator_detector_checked=True,
+                        spectator_panel_present=True,
+                        spectator_detector_reason="report_gated_panel_structure_present",
+                        spectator_panel_absent=False,
+                        spectated_player_panel=True,
+                        spectator_confidence=confidence,
+                        self_hud_identity_trustworthy=False,
+                    )
+                    break
         return signals
 
     @classmethod

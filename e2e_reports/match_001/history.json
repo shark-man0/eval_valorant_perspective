@@ -1,28 +1,5 @@
 [
   {
-    "history_key": "efe1c3eedb3f5cd8a5aeea7fc791f147c6b8340afa48fed4ac3f11f48de40211",
-    "metadata": {
-      "manual_map_id": "summit",
-      "video_id": "match_001",
-      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
-      "analyzer_commit": "5ed3b3d5f53e24c8cb9e902b30b6d5cfa958a3cf",
-      "git_is_dirty": false,
-      "executed_at": "2026-10-04T06:12:23.492575+00:00",
-      "validation_pack": "valorant_e2e_validation_pack_v3",
-      "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
-      "git_dirty_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "settings_fingerprint": "5fbf872a4d91c43787c91e3e33f0b58e133f06c65ae84672a41a42df763b8332"
-    },
-    "result": {
-      "status": "fail",
-      "schema_valid": true,
-      "failure_count": 57,
-      "negative_assertion_count": 20,
-      "error_code": null
-    },
-    "failure_count": 57
-  },
-  {
     "history_key": "0a2740203224a76428cd97fb2a857a576ba2829541e6c435425c33a76e59fa7d",
     "metadata": {
       "manual_map_id": "summit",
@@ -453,6 +430,30 @@
       "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
       "git_dirty_fingerprint": "5c4fe3ba104e347cb4f82016903cd1fdf7049ab13ca4baa258a75b41f48c7214",
       "settings_fingerprint": "089831d9583aae2f9231b19d9d8c48af0fb832aab9381e1d0e819e239219adc1"
+    },
+    "result": {
+      "detail_truncated": true,
+      "status": "fail",
+      "schema_valid": true,
+      "failure_count": 55,
+      "negative_assertion_count": 20,
+      "error_code": null
+    },
+    "failure_count": 55
+  },
+  {
+    "history_key": "941476aa7f972342e01af077abad4796b4ad3dceb8e3cf58eb58722cfa4605fb",
+    "metadata": {
+      "manual_map_id": null,
+      "video_id": "match_001",
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "analyzer_commit": "c24a4f7d71bbc490d10ba650ecdb5da780f499be",
+      "git_is_dirty": true,
+      "executed_at": "2026-10-06T22:44:30.521025+00:00",
+      "validation_pack": "valorant_e2e_validation_pack_v3",
+      "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
+      "git_dirty_fingerprint": "29f04727fc1d685ed813a06031f31025c34c43a813e0b66efabb2bfd233044de",
+      "settings_fingerprint": "2611cfecc2b148e381d760290c14d70a060efcea2bd837657fe55627ef75554b"
     },
     "result": {
       "status": "fail",
