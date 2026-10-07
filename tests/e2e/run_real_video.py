@@ -6,6 +6,7 @@ Example:
 This runner never loads the validation pack's ground_truth, assets, assertions,
 or fixtures. It uses the bundled production HUD layout unless one is supplied.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -22,6 +23,7 @@ from typing import Any
 # Make the checked-out application importable without requiring an editable
 # install; this also makes the command independent of the caller's cwd.
 APP_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(APP_ROOT))
 sys.path.insert(0, str(APP_ROOT / "src"))
 sys.path.insert(0, str(APP_ROOT / "tests" / "e2e"))
 
@@ -43,22 +45,50 @@ def _write_json(path: Path, value: Any) -> None:
     path.write_text(serialized + "\n", encoding="utf-8")
 
 
+def _trace_result(result: Any, *, isolated_points: bool) -> dict:
+    if isolated_points:
+        # Point observations cannot establish temporal intervals or events.
+        return {
+            key: []
+            for key in (
+                "events",
+                "state_intervals",
+                "ownership_intervals",
+                "snapshots",
+                "visual_observations",
+                "temporal_features",
+            )
+        }
+    return to_e2e_trace(result)
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     source_group = parser.add_mutually_exclusive_group(required=True)
     source_group.add_argument("--source-video", type=Path)
-    source_group.add_argument("--from-raw", type=Path,
-                              help="Adapt a prior raw_processing.json without rerunning video CV")
-    parser.add_argument("--output", required=True, type=Path,
-                        help="Directory for raw_processing.json and e2e_trace.json")
-    parser.add_argument("--hud-layout", "--layout", dest="hud_layout", type=Path,
-                        help="Optional calibrated HUD layout JSON")
-    parser.add_argument("--visual-profile", type=Path,
-                        help="Optional visual runtime profile JSON")
+    source_group.add_argument(
+        "--from-raw", type=Path, help="Adapt a prior raw_processing.json without rerunning video CV"
+    )
+    parser.add_argument(
+        "--output",
+        required=True,
+        type=Path,
+        help="Directory for raw_processing.json and e2e_trace.json",
+    )
+    parser.add_argument(
+        "--hud-layout",
+        "--layout",
+        dest="hud_layout",
+        type=Path,
+        help="Optional calibrated HUD layout JSON",
+    )
+    parser.add_argument("--visual-profile", type=Path, help="Optional visual runtime profile JSON")
     parser.add_argument("--manual-map-id", default="")
     parser.add_argument("--map-client-build", default="")
     parser.add_argument("--ffmpeg-bin")
     parser.add_argument("--ffprobe-bin")
+    parser.add_argument("--frame-input", type=Path, help="PTS-only bounded replay specification")
+    parser.add_argument("--cache-dir", type=Path)
     args = parser.parse_args(argv)
 
     output = args.output.expanduser().resolve()
@@ -68,7 +98,10 @@ def main(argv: list[str] | None = None) -> int:
         raw = json.loads(raw_path.read_text(encoding="utf-8"))
         if raw.get("status") != "complete":
             raise ValueError(f"Raw processing result is not complete: {raw_path}")
-        trace = to_e2e_trace(SimpleNamespace(**raw))
+        trace = _trace_result(
+            SimpleNamespace(**raw),
+            isolated_points=raw.get("runtime_mode", {}).get("input_scope") == "isolated_points",
+        )
         _write_json(output / "e2e_trace.json", trace)
         print(f"Adapted native raw processing into {output / 'e2e_trace.json'}")
         return 0
@@ -97,43 +130,99 @@ def main(argv: list[str] | None = None) -> int:
     raw: dict[str, Any] = {
         "status": "starting",
         "source_video": str(source),
-        "runtime_mode": {"hud_mode": "real", "visual_semantic_enabled": False,
-                         "coach_mode": "mock", "ground_truth_loaded": False,
-                         "require_detected_rounds": False},
+        "runtime_mode": {
+            "hud_mode": "real",
+            "visual_semantic_enabled": False,
+            "coach_mode": "mock",
+            "ground_truth_loaded": False,
+            "require_detected_rounds": False,
+        },
         "round_id_mapping": (
             "Native RoundPackage order N is named sample_round_N for the evaluator. "
             "No ground-truth boundary or timestamp is consulted."
         ),
     }
+    from valorant_ai_coach.diagnostics.runtime_timing import RuntimeTimingCollector, timing_stage
+
+    timings = RuntimeTimingCollector()
+    timings.__enter__()
+    native_lock = None
     try:
+        if not args.frame_input:
+            from scripts.e2e.run_metrics import FullRunLock
+
+            # A child also owns a lock, so an interrupted parent cannot leave
+            # an orphan full workload unprotected from another native run.
+            native_lock = FullRunLock(APP_ROOT / "outputs/native_full_lock")
+            native_lock.__enter__()
         services = build_services(store, settings=settings)
-        metadata = services.video.probe(source)
+        if args.frame_input:
+            from scripts.e2e.frame_replay import decoder_fingerprints, file_hash
+            from scripts.e2e.probe_cache import CachedVideoService
+
+            spec = json.loads(args.frame_input.read_text(encoding="utf-8"))
+            if file_hash(source) != spec.get("source_sha256"):
+                raise ValueError("bounded source SHA256 mismatch")
+            probe_fp, _ = decoder_fingerprints(services.video.ffprobe_path)
+            with timing_stage("metadata_open"):
+                metadata = CachedVideoService(
+                    services.video,
+                    (args.cache_dir or APP_ROOT / "outputs/e2e_cache") / "probe",
+                    spec["source_sha256"],
+                    probe_fp,
+                ).probe(source)
+        else:
+            metadata = services.video.probe(source)
         processor = services.pipeline.hud_video_processor
         if processor is None:
             raise RuntimeError("Real HudVideoProcessor was not configured")
-        result = processor.process(metadata=metadata, match_id="e2e-runtime",
-                                   output_dir=output / "processing_frames",
-                                   require_detected_rounds=False,
-                                   progress_cb=lambda fraction, message: print(
-                                       f"[{fraction:5.1%}] {message}", flush=True))
+        if args.frame_input:
+            from scripts.e2e.frame_replay import replay_points
+
+            result = replay_points(
+                processor=processor,
+                metadata=metadata,
+                spec=spec,
+                output=output,
+                cache_dir=args.cache_dir or APP_ROOT / "outputs/e2e_cache",
+                video=services.video,
+            )
+            raw["runtime_mode"].update(mode=spec["mode"], input_scope="isolated_points")
+            raw["replay_metadata"] = result.replay_metadata
+        else:
+            result = processor.process(
+                metadata=metadata,
+                match_id="e2e-runtime",
+                output_dir=output / "processing_frames",
+                require_detected_rounds=False,
+                progress_cb=lambda fraction, message: print(
+                    f"[{fraction:5.1%}] {message}", flush=True
+                ),
+            )
         # Raw export is the processor's own objects, before trace adaptation.
-        raw.update({
-            "status": "complete",
-            "video_metadata": asdict(metadata),
-            "sampled_frame_count": result.sampled_frame_count,
-            "round_packages": list(result.round_packages),
-            "observations": list(result.observations),
-            "hud_events": list(result.hud_events),
-            "visual_events": list(result.visual_events),
-            "visual_observations": list(result.visual_observations),
-            "visual_candidates": list(result.visual_candidates),
-            "zone_resolutions": list(result.zone_resolutions),
-            "diagnostics": list(result.diagnostics),
-            "hud_calibration_diagnostics": result.calibration_diagnostics,
-            "evidence_frames": [asdict(frame) for frame in result.evidence_frames],
-        })
-        _write_json(output / "raw_processing.json", raw)
-        _write_json(output / "e2e_trace.json", to_e2e_trace(result))
+        raw.update(
+            {
+                "status": "complete",
+                "video_metadata": asdict(metadata),
+                "sampled_frame_count": result.sampled_frame_count,
+                "round_packages": list(result.round_packages),
+                "observations": list(result.observations),
+                "hud_events": list(result.hud_events),
+                "visual_events": list(result.visual_events),
+                "visual_observations": list(result.visual_observations),
+                "visual_candidates": list(result.visual_candidates),
+                "zone_resolutions": list(result.zone_resolutions),
+                "diagnostics": list(result.diagnostics),
+                "hud_calibration_diagnostics": result.calibration_diagnostics,
+                "evidence_frames": [asdict(frame) for frame in result.evidence_frames],
+            }
+        )
+        with timing_stage("trace_serialization"):
+            _write_json(output / "raw_processing.json", raw)
+            _write_json(
+                output / "e2e_trace.json",
+                _trace_result(result, isolated_points=bool(args.frame_input)),
+            )
         print(f"Wrote native processing and E2E trace under {output}")
         return 0
     except Exception as exc:
@@ -143,14 +232,27 @@ def main(argv: list[str] | None = None) -> int:
         raw.update({"status": "error", "error_type": type(exc).__name__, "error": str(exc)})
         if "processor" in locals() and processor is not None:
             raw["hud_calibration_diagnostics"] = getattr(
-                processor.analyzer, "last_calibration_diagnostics", {})
+                processor.analyzer, "last_calibration_diagnostics", {}
+            )
         _write_json(output / "raw_processing.json", raw)
-        _write_json(output / "e2e_trace.json", {
-            "events": [], "state_intervals": [], "ownership_intervals": [],
-            "snapshots": [], "visual_observations": [], "temporal_features": [],
-        })
+        _write_json(
+            output / "e2e_trace.json",
+            {
+                "events": [],
+                "state_intervals": [],
+                "ownership_intervals": [],
+                "snapshots": [],
+                "visual_observations": [],
+                "temporal_features": [],
+            },
+        )
         print(f"Real processing failed: {type(exc).__name__}: {exc}", file=sys.stderr)
         return 2
+    finally:
+        if native_lock is not None:
+            native_lock.__exit__(None, None, None)
+        timings.__exit__(None, None, None)
+        timings.export(output / "stage_timings.json")
 
 
 if __name__ == "__main__":

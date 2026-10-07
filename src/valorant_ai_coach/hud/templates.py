@@ -26,6 +26,7 @@ import cv2
 import numpy as np
 from numpy.typing import NDArray
 
+from valorant_ai_coach.diagnostics.runtime_timing import timing_stage
 from valorant_ai_coach.resources import resource_path
 
 from .hp_glyphs import StrictHpGlyphReader, UnavailableStrictHpGlyphReader
@@ -120,8 +121,11 @@ class HudTemplateProfile:
                     if spec.get("matcher") == WEAPON_MATCHER and name != "weapon_ammo_structure":
                         raise ValueError("consensus slots require Weapon role")
                     if (
-                        name not in {
-                            "weapon_ammo_structure", "hp_hud_structure", "ability_bar_structure"
+                        name
+                        not in {
+                            "weapon_ammo_structure",
+                            "hp_hud_structure",
+                            "ability_bar_structure",
                         }
                         or (name != "weapon_ammo_structure" and not value_matcher)
                         or template.threshold < 0.90
@@ -275,8 +279,13 @@ class HudTemplateProfile:
                     )
                 loaded = []
                 required = {
-                    "version", "method", "roi", "threshold", "template",
-                    "support_regions", "orientation",
+                    "version",
+                    "method",
+                    "roi",
+                    "threshold",
+                    "template",
+                    "support_regions",
+                    "orientation",
                 }
                 for spec in variants:
                     if (
@@ -331,41 +340,49 @@ class HudTemplateProfile:
                 continue
             if roi_name not in layout.regions:
                 continue
-            x1, y1, x2, y2 = layout.normalized_roi(roi_name).pixel_bounds(width, height)
-            crop = frame[y1:y2, x1:x2]
-            if name in self._signal_bounds:
-                left, top, right, bottom = self._signal_bounds[name]
-                ch, cw = crop.shape[:2]
-                crop = crop[
-                    round(top * ch) : round(bottom * ch), round(left * cw) : round(right * cw)
-                ]
-            if name in self._signal_masks:
-                reference = template.image
-                if reference.ndim == 3:
-                    reference = np.asarray(
-                        cv2.cvtColor(reference, cv2.COLOR_BGR2GRAY), dtype=np.uint8
-                    )
-                score = structural_score if name in self._edge_signals else masked_score
-                confidence = (
-                    consensus_score(
-                        reference,
-                        crop,
-                        self._signal_masks[name],
-                        self._value_regions[name],
-                        self._consensus_allowed[name],
-                    )
-                    if name in self._consensus_allowed
-                    else value_invariant_score(
-                        reference, crop, self._signal_masks[name], self._value_regions[name]
-                    )
-                    if name in self._value_regions
-                    else score(reference, crop, self._signal_masks[name])
-                )
-                result: ReaderResult[Any] = ReaderResult(
-                    True if confidence >= template.threshold else None, confidence
-                )
+            if name in {"hp_hud_structure", "ability_bar_structure", "weapon_ammo_structure"}:
+                stage_name = "hud_identity"
+            elif name in _MENU_WITNESS_ROIS:
+                stage_name = "hud_menu"
             else:
-                result = _best_template_match(crop, (template,))
+                stage_name = "hud_signal_templates"
+            with timing_stage(stage_name):
+                x1, y1, x2, y2 = layout.normalized_roi(roi_name).pixel_bounds(width, height)
+                crop = frame[y1:y2, x1:x2]
+                if name in self._signal_bounds:
+                    left, top, right, bottom = self._signal_bounds[name]
+                    ch, cw = crop.shape[:2]
+                    crop = crop[
+                        round(top * ch) : round(bottom * ch),
+                        round(left * cw) : round(right * cw),
+                    ]
+                if name in self._signal_masks:
+                    reference = template.image
+                    if reference.ndim == 3:
+                        reference = np.asarray(
+                            cv2.cvtColor(reference, cv2.COLOR_BGR2GRAY), dtype=np.uint8
+                        )
+                    score = structural_score if name in self._edge_signals else masked_score
+                    confidence = (
+                        consensus_score(
+                            reference,
+                            crop,
+                            self._signal_masks[name],
+                            self._value_regions[name],
+                            self._consensus_allowed[name],
+                        )
+                        if name in self._consensus_allowed
+                        else value_invariant_score(
+                            reference, crop, self._signal_masks[name], self._value_regions[name]
+                        )
+                        if name in self._value_regions
+                        else score(reference, crop, self._signal_masks[name])
+                    )
+                    result: ReaderResult[Any] = ReaderResult(
+                        True if confidence >= template.threshold else None, confidence
+                    )
+                else:
+                    result = _best_template_match(crop, (template,))
             # Legacy pixel templates can prove presence, never absence.
             if name == "spectated_player_panel" and result.value is not None:
                 signals["self_hud_identity_trustworthy"] = False
@@ -415,15 +432,18 @@ class HudTemplateProfile:
                     cx1, cy1, cx2, cy2 = layout.normalized_roi(
                         "buy_menu_close_anchor"
                     ).pixel_bounds(width, height)
-                    obscured = obscured or menu_overlay_candidate(frame[cy1:cy2, cx1:cx2])
-                panel_result = detect_icon(frame[y1:y2, x1:x2], obscured=bool(obscured))
+                    with timing_stage("hud_menu"):
+                        obscured = obscured or menu_overlay_candidate(frame[cy1:cy2, cx1:cx2])
+                with timing_stage("hud_spectator"):
+                    panel_result = detect_icon(frame[y1:y2, x1:x2], obscured=bool(obscured))
             else:
                 panel_result = detect_icon(np.empty((0, 0), np.uint8), configured=False)
         elif "spectated_player_panel" in layout.regions:
             x1, y1, x2, y2 = layout.normalized_roi("spectated_player_panel").pixel_bounds(
                 width, height
             )
-            panel_result = detect_panel(frame[y1:y2, x1:x2], self._panel_components)
+            with timing_stage("hud_spectator"):
+                panel_result = detect_panel(frame[y1:y2, x1:x2], self._panel_components)
         signals["spectator_detector_checked"] = panel_result["checked"]
         signals["spectator_panel_present"] = panel_result["panel_present"]
         signals["spectator_detector_reason"] = panel_result["reason"]
@@ -458,7 +478,8 @@ class HudTemplateProfile:
                 width, height
             )
             for reference, threshold in self._report_gated_panels:
-                variant = detect_panel(frame[y1:y2, x1:x2], reference)
+                with timing_stage("hud_spectator"):
+                    variant = detect_panel(frame[y1:y2, x1:x2], reference)
                 confidence = min(variant.get("positive_component_scores", []), default=0.0)
                 if (
                     variant["checked"] is True
@@ -660,6 +681,10 @@ class HudTemplateProfile:
                 continue
             kind = raw_spec.get("kind")
             try:
+                if "minimum_confidence" in raw_spec and kind not in {"digits", "fields"}:
+                    raise ValueError(
+                        "minimum_confidence is supported only for digits/fields readers"
+                    )
                 subregion: tuple[float, float, float, float] | None
                 if kind == "strict_hp_glyphs" and "subregion_norm" in raw_spec:
                     raw_subregion = raw_spec["subregion_norm"]
@@ -854,7 +879,11 @@ class HudTemplateProfile:
                     readers[str(roi_name)] = SubregionReader(readers[str(roi_name)], subregion)
             except (OSError, TypeError, ValueError, cv2.error) as exc:
                 self.reader_diagnostics.append(f"reader {roi_name}: {exc}")
-                if kind == "strict_timer_glyphs" and str(roi_name) == "round_timer":
+                if "minimum_confidence" in raw_spec:
+                    # Invalid explicit safety configuration must not disappear
+                    # and allow the analyzer's legacy OCR fallback to replace it.
+                    readers[str(roi_name)] = UnavailableConfiguredReader()
+                elif kind == "strict_timer_glyphs" and str(roi_name) == "round_timer":
                     # Keep the configured timer reader present: HudAnalyzer otherwise
                     # substitutes its legacy OCR reader when round_timer is absent.
                     readers[str(roi_name)] = UnavailableStrictTimerGlyphReader()
@@ -871,6 +900,14 @@ class HudTemplateProfile:
             if isinstance(path, str):
                 loaded.append(self.load_template(str(name), path, threshold))
         return tuple(loaded)
+
+
+class UnavailableConfiguredReader:
+    """Retain an invalid explicit reader as a fail-closed configuration."""
+
+    def read(self, image: ImageU8, roi: ImageU8) -> ReaderResult[Any]:
+        del image, roi
+        return ReaderResult(None, 0.0, ("configured_reader_unavailable",))
 
 
 class SubregionReader:
@@ -1075,6 +1112,15 @@ class SegmentedDigitsReader:
         fallback: TesseractDigitsReader,
     ) -> None:
         self.fallback = fallback
+        minimum = spec.get("minimum_confidence")
+        if "minimum_confidence" in spec and (
+            isinstance(minimum, bool)
+            or not isinstance(minimum, (int, float))
+            or not math.isfinite(minimum)
+            or not 0.85 <= minimum <= 1.0
+        ):
+            raise ValueError("minimum_confidence must be finite and between 0.85 and 1.0")
+        self.minimum_confidence = float(minimum) if minimum is not None else None
         self.value_format = spec.get("format", "integer")
         if self.value_format not in {"integer", "timer_mmss"}:
             raise ValueError("digit format must be integer or timer_mmss")
@@ -1096,6 +1142,19 @@ class SegmentedDigitsReader:
         self.threshold = float(spec.get("glyph_threshold", 0.72))
 
     def read(self, image: ImageU8, roi: ImageU8) -> ReaderResult[str]:
+        result = self._read(image, roi)
+        if self.minimum_confidence is not None and (
+            not math.isfinite(result.confidence) or result.confidence < self.minimum_confidence
+        ):
+            return ReaderResult(
+                None,
+                result.confidence if math.isfinite(result.confidence) else 0.0,
+                (*result.sources, "numeric_reader_below_configured_confidence"),
+                False,
+            )
+        return result
+
+    def _read(self, image: ImageU8, roi: ImageU8) -> ReaderResult[str]:
         del image
         candidate = self._read_templates(roi)
         ocr = self.fallback.read(roi, roi)

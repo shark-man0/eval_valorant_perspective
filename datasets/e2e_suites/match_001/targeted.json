@@ -1,0 +1,917 @@
+{
+  "schema_version": 1,
+  "suite_id": "match_001_targeted",
+  "mode": "targeted",
+  "video_id": "match_001",
+  "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "calibration_prefix": [
+    0.036003,
+    0.102669,
+    0.169336
+  ],
+  "frames": [
+    {
+      "pts_sec": 0.036003,
+      "categories": [
+        "unknown",
+        "combat_report",
+        "hp_numeric"
+      ],
+      "decoded_pixel_sha256": "9c0507030b55a419358533edd608227217163bba00e6847e0b21838c836924c7",
+      "provenance": [
+        {
+          "path": "outputs/recognition-investigation/native11-unknown-blind-review-v2/manifest.json",
+          "sha256": "19fdbae71a45f52604f33e8a7fefeb873ac54d767b6e7d29f7a1787594929c47",
+          "description": "Fixed diagnostic unknown-scene frame selection"
+        },
+        {
+          "path": "outputs/recognition-investigation/native11-unknown-blind-review-v2/blind-scene-labels.json",
+          "sha256": "0eee4e862890ba35a5b22e76b2dc31939eccbf900428ef34d99a00ad891a69ce",
+          "description": "Frozen blind scene/display visibility label"
+        }
+      ],
+      "note": "Diagnostic scene/display label only; not a player-state or recording-player ownership assertion."
+    },
+    {
+      "pts_sec": 4.102669,
+      "categories": [
+        "regression_protection",
+        "round_boundary",
+        "timer_score"
+      ],
+      "expected_numeric": {
+        "timer": "0:00",
+        "score_player": 0,
+        "score_enemy": 1
+      },
+      "provenance": [
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/assets/reference_frames/r1_round_start_before_004.100s.jpg",
+          "sha256": "ed1220b28ead7cdec95fe48481a9366c52ad6e2b323812be934adbbeb527bb14",
+          "description": "Validation-pack reference image"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/frame_pts_sidecar_v3.json",
+          "sha256": "993244564b796bf10a7dae5ee7e14ca7f4737d59a6a72231e48d48968ae0a0fb",
+          "description": "Frozen sidecar mapping reference image to exact container PTS"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/timeline_ground_truth_v3.json",
+          "sha256": "afcb25b3aa976bb8b16114215da719d1a705190a244785939816831179bb83dd",
+          "description": "Frozen timeline context for this evidence witness"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/sync_anchors_v3.json",
+          "sha256": "b127e51cac1ecaa930ecaf12c075aaadfed6a8e69d39c6f73ae03a1781a860c8",
+          "description": "Frozen visible timer and score labels for this evidence PTS"
+        }
+      ],
+      "note": "Frame is an evidence witness; do not infer surrounding interval semantics."
+    },
+    {
+      "pts_sec": 4.152669,
+      "categories": [
+        "regression_protection",
+        "round_boundary",
+        "timer_score"
+      ],
+      "expected_numeric": {
+        "timer": "1:39",
+        "score_player": 0,
+        "score_enemy": 1
+      },
+      "provenance": [
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/assets/reference_frames/r1_round_start_after_004.150s.jpg",
+          "sha256": "a9edb5f84cff5d25db5bd5b9e5792d4c9d52f82b50b3beefefd11789d744d90d",
+          "description": "Validation-pack reference image"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/frame_pts_sidecar_v3.json",
+          "sha256": "993244564b796bf10a7dae5ee7e14ca7f4737d59a6a72231e48d48968ae0a0fb",
+          "description": "Frozen sidecar mapping reference image to exact container PTS"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/timeline_ground_truth_v3.json",
+          "sha256": "afcb25b3aa976bb8b16114215da719d1a705190a244785939816831179bb83dd",
+          "description": "Frozen timeline context for this evidence witness"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/sync_anchors_v3.json",
+          "sha256": "b127e51cac1ecaa930ecaf12c075aaadfed6a8e69d39c6f73ae03a1781a860c8",
+          "description": "Frozen visible timer and score labels for this evidence PTS"
+        }
+      ],
+      "note": "Frame is an evidence witness; do not infer surrounding interval semantics."
+    },
+    {
+      "pts_sec": 7.369336,
+      "categories": [
+        "live"
+      ],
+      "expected_state": "live_first_person",
+      "decoded_pixel_sha256": "14acc7e2fd0b98850c73547022fa10669a1e44b88ec420c6c50ae97d5798af5b",
+      "provenance": [
+        {
+          "path": "outputs/recognition-investigation/native11-live-semantic-review/manifest.json",
+          "sha256": "9afdb8edc24a3459d8dee4349f36f467914e0c18b0baa740bd8b9a1a8e5188ee",
+          "description": "Frozen native11 reviewed semantic cohort; exact PTS and pixel identity"
+        }
+      ],
+      "note": "Previously reviewed observation; cohort is diagnostic, not a global accuracy sample."
+    },
+    {
+      "pts_sec": 15.186003,
+      "categories": [
+        "unknown",
+        "hp_numeric"
+      ],
+      "decoded_pixel_sha256": "3f935b5feb2407d5fe5572804f5e8c0085f6c3bc15aad611db7650cdb3d2fe2f",
+      "provenance": [
+        {
+          "path": "outputs/recognition-investigation/native11-unknown-blind-review-v2/manifest.json",
+          "sha256": "19fdbae71a45f52604f33e8a7fefeb873ac54d767b6e7d29f7a1787594929c47",
+          "description": "Fixed diagnostic unknown-scene frame selection"
+        },
+        {
+          "path": "outputs/recognition-investigation/native11-unknown-blind-review-v2/blind-scene-labels.json",
+          "sha256": "0eee4e862890ba35a5b22e76b2dc31939eccbf900428ef34d99a00ad891a69ce",
+          "description": "Frozen blind scene/display visibility label"
+        }
+      ],
+      "note": "Diagnostic scene/display label only; not a player-state or recording-player ownership assertion."
+    },
+    {
+      "pts_sec": 42.969336,
+      "categories": [
+        "timer_score",
+        "known_false_positive"
+      ],
+      "expected_numeric": {
+        "timer": "1:01"
+      },
+      "decoded_pixel_sha256": "a8e4d08d8d0067ff0cf13968d9a42bbbed5fd0566eb3ef17f8e59c9b9de364b4",
+      "provenance": [
+        {
+          "path": "outputs/recognition-investigation/native07-timer-jump-review/semantic-review.json",
+          "sha256": "3276995a8510900606187a0eb5bd1064fb418c2afb23e385525c8fe42ddbb595",
+          "description": "Frozen blind timer OCR review confirming incorrect candidate reading"
+        }
+      ],
+      "note": "Frozen pixel transcription at a confirmed OCR digit-substitution failure."
+    },
+    {
+      "pts_sec": 44.502669,
+      "categories": [
+        "unknown",
+        "hp_numeric"
+      ],
+      "decoded_pixel_sha256": "c2a651b2cf4d26efa1d11552745cbbcf11c798f1130e8ff711c194e3d45acbd6",
+      "provenance": [
+        {
+          "path": "outputs/recognition-investigation/native11-unknown-blind-review-v2/manifest.json",
+          "sha256": "19fdbae71a45f52604f33e8a7fefeb873ac54d767b6e7d29f7a1787594929c47",
+          "description": "Fixed diagnostic unknown-scene frame selection"
+        },
+        {
+          "path": "outputs/recognition-investigation/native11-unknown-blind-review-v2/blind-scene-labels.json",
+          "sha256": "0eee4e862890ba35a5b22e76b2dc31939eccbf900428ef34d99a00ad891a69ce",
+          "description": "Frozen blind scene/display visibility label"
+        }
+      ],
+      "note": "Diagnostic scene/display label only; not a player-state or recording-player ownership assertion."
+    },
+    {
+      "pts_sec": 59.502669,
+      "categories": [
+        "timer_score",
+        "regression_protection"
+      ],
+      "expected_numeric": {
+        "timer": "0:44",
+        "score_player": 0,
+        "score_enemy": 1
+      },
+      "provenance": [
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/assets/reference_frames/r1_smoke_core_059.500s.jpg",
+          "sha256": "78c7472bd1acb630b3d1bee0d6da50b4c69eb93fb90b5101fc29e186a80dcc02",
+          "description": "Validation-pack reference image"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/frame_pts_sidecar_v3.json",
+          "sha256": "993244564b796bf10a7dae5ee7e14ca7f4737d59a6a72231e48d48968ae0a0fb",
+          "description": "Frozen sidecar mapping reference image to exact container PTS"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/sync_anchors_v3.json",
+          "sha256": "b127e51cac1ecaa930ecaf12c075aaadfed6a8e69d39c6f73ae03a1781a860c8",
+          "description": "Frozen visible timer and score labels for this evidence PTS"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/timeline_ground_truth_v3.json",
+          "sha256": "afcb25b3aa976bb8b16114215da719d1a705190a244785939816831179bb83dd",
+          "description": "Frozen timeline context for this evidence witness"
+        }
+      ],
+      "note": "Evidence point only; not a continuous interval assertion."
+    },
+    {
+      "pts_sec": 63.902669,
+      "categories": [
+        "live"
+      ],
+      "expected_state": "live_first_person",
+      "decoded_pixel_sha256": "0c098d2d922d0a3e124247dba6a4beaa98eff68d48f7a327a0ef1b6f2a062a27",
+      "provenance": [
+        {
+          "path": "outputs/recognition-investigation/native11-live-semantic-review/manifest.json",
+          "sha256": "9afdb8edc24a3459d8dee4349f36f467914e0c18b0baa740bd8b9a1a8e5188ee",
+          "description": "Frozen native11 reviewed semantic cohort; exact PTS and pixel identity"
+        }
+      ],
+      "note": "Previously reviewed observation; cohort is diagnostic, not a global accuracy sample."
+    },
+    {
+      "pts_sec": 74.386003,
+      "categories": [
+        "regression_protection",
+        "timer_score"
+      ],
+      "expected_numeric": {
+        "timer": "0:29",
+        "score_player": 0,
+        "score_enemy": 1
+      },
+      "provenance": [
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/assets/reference_frames/r1_muzzle_3_074.380s.jpg",
+          "sha256": "11f2149ea6753e793250136cee8a0a2f57d0d57dff16aebfef1a9a303bca2fc6",
+          "description": "Validation-pack reference image"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/frame_pts_sidecar_v3.json",
+          "sha256": "993244564b796bf10a7dae5ee7e14ca7f4737d59a6a72231e48d48968ae0a0fb",
+          "description": "Frozen sidecar mapping reference image to exact container PTS"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/timeline_ground_truth_v3.json",
+          "sha256": "afcb25b3aa976bb8b16114215da719d1a705190a244785939816831179bb83dd",
+          "description": "Frozen timeline context for this evidence witness"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/sync_anchors_v3.json",
+          "sha256": "b127e51cac1ecaa930ecaf12c075aaadfed6a8e69d39c6f73ae03a1781a860c8",
+          "description": "Frozen visible timer and score labels for this evidence PTS"
+        }
+      ],
+      "note": "Frame is an evidence witness; do not infer surrounding interval semantics."
+    },
+    {
+      "pts_sec": 74.402669,
+      "categories": [
+        "regression_protection"
+      ],
+      "provenance": [
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/assets/reference_frames/r1_death_first_visible_074.400s.jpg",
+          "sha256": "36e84fe45bd78f9ca5a4753e61e1ca58305749b522a5e4d9f7d26adc8146b733",
+          "description": "Validation-pack reference image"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/frame_pts_sidecar_v3.json",
+          "sha256": "993244564b796bf10a7dae5ee7e14ca7f4737d59a6a72231e48d48968ae0a0fb",
+          "description": "Frozen sidecar mapping reference image to exact container PTS"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/timeline_ground_truth_v3.json",
+          "sha256": "afcb25b3aa976bb8b16114215da719d1a705190a244785939816831179bb83dd",
+          "description": "Frozen timeline context for this evidence witness"
+        }
+      ],
+      "note": "Frame is an evidence witness; do not infer surrounding interval semantics."
+    },
+    {
+      "pts_sec": 74.419336,
+      "categories": [
+        "regression_protection",
+        "round_boundary"
+      ],
+      "provenance": [
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/assets/reference_frames/r1_round_end_before_074.417s.jpg",
+          "sha256": "2181c5d7a69b8b9e8c6d79d1f64d7a91941b0a45fda1508fc6f0598afb2120c4",
+          "description": "Validation-pack reference image"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/frame_pts_sidecar_v3.json",
+          "sha256": "993244564b796bf10a7dae5ee7e14ca7f4737d59a6a72231e48d48968ae0a0fb",
+          "description": "Frozen sidecar mapping reference image to exact container PTS"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/timeline_ground_truth_v3.json",
+          "sha256": "afcb25b3aa976bb8b16114215da719d1a705190a244785939816831179bb83dd",
+          "description": "Frozen timeline context for this evidence witness"
+        }
+      ],
+      "note": "Frame is an evidence witness; do not infer surrounding interval semantics."
+    },
+    {
+      "pts_sec": 74.436003,
+      "categories": [
+        "regression_protection",
+        "round_boundary"
+      ],
+      "provenance": [
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/assets/reference_frames/r1_round_end_banner_074.433s.jpg",
+          "sha256": "8a4e6314e7d0ae34a076309062bbfb95b31fa5a28f4793faead6427a742a9320",
+          "description": "Validation-pack reference image"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/frame_pts_sidecar_v3.json",
+          "sha256": "993244564b796bf10a7dae5ee7e14ca7f4737d59a6a72231e48d48968ae0a0fb",
+          "description": "Frozen sidecar mapping reference image to exact container PTS"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/timeline_ground_truth_v3.json",
+          "sha256": "afcb25b3aa976bb8b16114215da719d1a705190a244785939816831179bb83dd",
+          "description": "Frozen timeline context for this evidence witness"
+        }
+      ],
+      "note": "Frame is an evidence witness; do not infer surrounding interval semantics."
+    },
+    {
+      "pts_sec": 74.452669,
+      "categories": [
+        "regression_protection",
+        "round_boundary",
+        "timer_score"
+      ],
+      "expected_numeric": {
+        "timer": "0:06",
+        "score_player": 0,
+        "score_enemy": 2
+      },
+      "provenance": [
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/assets/reference_frames/r1_discontinuity_after_074.450s.jpg",
+          "sha256": "942cc5027d00abdb5d4329aa7341e5b7536774b3a8d35e646c58520faf0ba03c",
+          "description": "Validation-pack reference image"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/frame_pts_sidecar_v3.json",
+          "sha256": "993244564b796bf10a7dae5ee7e14ca7f4737d59a6a72231e48d48968ae0a0fb",
+          "description": "Frozen sidecar mapping reference image to exact container PTS"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/timeline_ground_truth_v3.json",
+          "sha256": "afcb25b3aa976bb8b16114215da719d1a705190a244785939816831179bb83dd",
+          "description": "Frozen timeline context for this evidence witness"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/sync_anchors_v3.json",
+          "sha256": "b127e51cac1ecaa930ecaf12c075aaadfed6a8e69d39c6f73ae03a1781a860c8",
+          "description": "Frozen visible timer and score labels for this evidence PTS"
+        }
+      ],
+      "note": "Frame is an evidence witness; do not infer surrounding interval semantics."
+    },
+    {
+      "pts_sec": 82.002669,
+      "categories": [
+        "timer_score",
+        "regression_protection"
+      ],
+      "expected_numeric": {
+        "timer": "0:29",
+        "score_player": 0,
+        "score_enemy": 2
+      },
+      "provenance": [
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/assets/reference_frames/r2_buy_phase_082.000s.jpg",
+          "sha256": "84400115f05ae831b935c96245e5d7467cd2efc345e5dfc92208c7a245392403",
+          "description": "Validation-pack reference image"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/frame_pts_sidecar_v3.json",
+          "sha256": "993244564b796bf10a7dae5ee7e14ca7f4737d59a6a72231e48d48968ae0a0fb",
+          "description": "Frozen sidecar mapping reference image to exact container PTS"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/sync_anchors_v3.json",
+          "sha256": "b127e51cac1ecaa930ecaf12c075aaadfed6a8e69d39c6f73ae03a1781a860c8",
+          "description": "Frozen visible timer and score labels for this evidence PTS"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/timeline_ground_truth_v3.json",
+          "sha256": "afcb25b3aa976bb8b16114215da719d1a705190a244785939816831179bb83dd",
+          "description": "Frozen timeline context for this evidence witness"
+        }
+      ],
+      "note": "Evidence point only; not a continuous interval assertion."
+    },
+    {
+      "pts_sec": 83.419336,
+      "categories": [
+        "buy_menu"
+      ],
+      "expected_state": "buy_menu_open",
+      "decoded_pixel_sha256": "5bdeed351babe0676754acd54f1af8bd3cc4ba1e5f9a54e1e0bb20ce303ed895",
+      "provenance": [
+        {
+          "path": "outputs/recognition-investigation/native11-menu-semantic-review/manifest.json",
+          "sha256": "6b45b6026c4c1879487ebe593e73837fc8eb7d99fc18a9a2676ba8c1ee49f5f7",
+          "description": "Frozen native11 reviewed semantic cohort; exact PTS and pixel identity"
+        }
+      ],
+      "note": "Previously reviewed observation; cohort is diagnostic, not a global accuracy sample."
+    },
+    {
+      "pts_sec": 88.786003,
+      "categories": [
+        "buy_menu"
+      ],
+      "expected_state": "buy_menu_open",
+      "decoded_pixel_sha256": "8f8b0e4e79824703dd49345dd943bc5c096bd39498383d9959c9b4343f321d34",
+      "provenance": [
+        {
+          "path": "outputs/recognition-investigation/native11-menu-semantic-review/manifest.json",
+          "sha256": "6b45b6026c4c1879487ebe593e73837fc8eb7d99fc18a9a2676ba8c1ee49f5f7",
+          "description": "Frozen native11 reviewed semantic cohort; exact PTS and pixel identity"
+        }
+      ],
+      "note": "Previously reviewed observation; cohort is diagnostic, not a global accuracy sample."
+    },
+    {
+      "pts_sec": 104.219336,
+      "categories": [
+        "unknown",
+        "combat_report",
+        "hp_numeric"
+      ],
+      "decoded_pixel_sha256": "0786e6ed6d5db123b1916d8aa47c754cc5ece9857e4a89cb75f14d9d6f3bd6fd",
+      "provenance": [
+        {
+          "path": "outputs/recognition-investigation/native11-unknown-blind-review-v2/manifest.json",
+          "sha256": "19fdbae71a45f52604f33e8a7fefeb873ac54d767b6e7d29f7a1787594929c47",
+          "description": "Fixed diagnostic unknown-scene frame selection"
+        },
+        {
+          "path": "outputs/recognition-investigation/native11-unknown-blind-review-v2/blind-scene-labels.json",
+          "sha256": "0eee4e862890ba35a5b22e76b2dc31939eccbf900428ef34d99a00ad891a69ce",
+          "description": "Frozen blind scene/display visibility label"
+        }
+      ],
+      "note": "Diagnostic scene/display label only; not a player-state or recording-player ownership assertion."
+    },
+    {
+      "pts_sec": 110.019336,
+      "categories": [
+        "buy_menu"
+      ],
+      "expected_state": "buy_menu_open",
+      "decoded_pixel_sha256": "a15c2f5cce564a984fcac9ab04d5b0160edc16a52d4ed619841ea1745e6b625b",
+      "provenance": [
+        {
+          "path": "outputs/recognition-investigation/native11-menu-semantic-review/manifest.json",
+          "sha256": "6b45b6026c4c1879487ebe593e73837fc8eb7d99fc18a9a2676ba8c1ee49f5f7",
+          "description": "Frozen native11 reviewed semantic cohort; exact PTS and pixel identity"
+        }
+      ],
+      "note": "Previously reviewed observation; cohort is diagnostic, not a global accuracy sample."
+    },
+    {
+      "pts_sec": 111.402669,
+      "categories": [
+        "regression_protection",
+        "round_boundary",
+        "timer_score"
+      ],
+      "expected_numeric": {
+        "timer": "0:00",
+        "score_player": 0,
+        "score_enemy": 2
+      },
+      "provenance": [
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/assets/reference_frames/r2_round_start_before_111.400s.jpg",
+          "sha256": "45df99dcd0e1973a6f7f8379e988f498016d09b61a8104298742b6c2e507b63d",
+          "description": "Validation-pack reference image"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/frame_pts_sidecar_v3.json",
+          "sha256": "993244564b796bf10a7dae5ee7e14ca7f4737d59a6a72231e48d48968ae0a0fb",
+          "description": "Frozen sidecar mapping reference image to exact container PTS"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/timeline_ground_truth_v3.json",
+          "sha256": "afcb25b3aa976bb8b16114215da719d1a705190a244785939816831179bb83dd",
+          "description": "Frozen timeline context for this evidence witness"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/sync_anchors_v3.json",
+          "sha256": "b127e51cac1ecaa930ecaf12c075aaadfed6a8e69d39c6f73ae03a1781a860c8",
+          "description": "Frozen visible timer and score labels for this evidence PTS"
+        }
+      ],
+      "note": "Frame is an evidence witness; do not infer surrounding interval semantics."
+    },
+    {
+      "pts_sec": 111.452669,
+      "categories": [
+        "regression_protection",
+        "round_boundary",
+        "timer_score"
+      ],
+      "expected_numeric": {
+        "timer": "1:40",
+        "score_player": 0,
+        "score_enemy": 2
+      },
+      "provenance": [
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/assets/reference_frames/r2_round_start_after_111.450s.jpg",
+          "sha256": "04c623cb78660364f35aa466d909672bd60220f331ccdcf78ccee6621fff4d9c",
+          "description": "Validation-pack reference image"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/frame_pts_sidecar_v3.json",
+          "sha256": "993244564b796bf10a7dae5ee7e14ca7f4737d59a6a72231e48d48968ae0a0fb",
+          "description": "Frozen sidecar mapping reference image to exact container PTS"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/timeline_ground_truth_v3.json",
+          "sha256": "afcb25b3aa976bb8b16114215da719d1a705190a244785939816831179bb83dd",
+          "description": "Frozen timeline context for this evidence witness"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/sync_anchors_v3.json",
+          "sha256": "b127e51cac1ecaa930ecaf12c075aaadfed6a8e69d39c6f73ae03a1781a860c8",
+          "description": "Frozen visible timer and score labels for this evidence PTS"
+        }
+      ],
+      "note": "Frame is an evidence witness; do not infer surrounding interval semantics."
+    },
+    {
+      "pts_sec": 124.536003,
+      "categories": [
+        "timer_score",
+        "known_false_positive"
+      ],
+      "expected_numeric": {
+        "timer": "1:26"
+      },
+      "decoded_pixel_sha256": "33f5d50f37f09b0fac332869df34379f16e22e46f37d79fe84bb39e94024c399",
+      "provenance": [
+        {
+          "path": "outputs/recognition-investigation/native07-timer-jump-review/semantic-review.json",
+          "sha256": "3276995a8510900606187a0eb5bd1064fb418c2afb23e385525c8fe42ddbb595",
+          "description": "Frozen blind timer OCR review confirming incorrect candidate reading"
+        }
+      ],
+      "note": "Frozen pixel transcription at a confirmed OCR digit-substitution failure."
+    },
+    {
+      "pts_sec": 141.936003,
+      "categories": [
+        "live",
+        "hp_numeric"
+      ],
+      "expected_state": "live_first_person",
+      "expected_numeric": {
+        "hp": 80
+      },
+      "decoded_pixel_sha256": "4f12c791cac8224da17721b7a8a863427af38f3e4153255573f9e3b072939758",
+      "provenance": [
+        {
+          "path": "outputs/recognition-investigation/production12-reviewed-novel-semantic-reuse-index.json",
+          "sha256": "d58c522301fa2290c1e255b3e9fb72e73dd27cf98ae9ebdbfe294b7b7d0dbf6f",
+          "description": "Frozen blind pixel label and same-PTS decoded-pixel reuse index"
+        }
+      ],
+      "note": "HP label is for this owned frame only; no global numeric recall claim."
+    },
+    {
+      "pts_sec": 145.852669,
+      "categories": [
+        "live",
+        "hp_numeric"
+      ],
+      "expected_state": "live_first_person",
+      "expected_numeric": {
+        "hp": 80
+      },
+      "decoded_pixel_sha256": "c9d79dfb9b7bf7174090f31820a42a2b0bb551e11ea4fa8403ddd69c70f9250a",
+      "provenance": [
+        {
+          "path": "outputs/recognition-investigation/production12-reviewed-novel-semantic-reuse-index.json",
+          "sha256": "d58c522301fa2290c1e255b3e9fb72e73dd27cf98ae9ebdbfe294b7b7d0dbf6f",
+          "description": "Frozen blind pixel label and same-PTS decoded-pixel reuse index"
+        }
+      ],
+      "note": "HP label is for this owned frame only; no global numeric recall claim."
+    },
+    {
+      "pts_sec": 146.919336,
+      "categories": [
+        "live"
+      ],
+      "expected_state": "live_first_person",
+      "decoded_pixel_sha256": "47e0ee5d7aa50d47dab17c37008a0d228feb16f49dbb912a7f94e400bfe7fd17",
+      "provenance": [
+        {
+          "path": "outputs/recognition-investigation/native11-live-semantic-review/manifest.json",
+          "sha256": "9afdb8edc24a3459d8dee4349f36f467914e0c18b0baa740bd8b9a1a8e5188ee",
+          "description": "Frozen native11 reviewed semantic cohort; exact PTS and pixel identity"
+        }
+      ],
+      "note": "Previously reviewed observation; cohort is diagnostic, not a global accuracy sample."
+    },
+    {
+      "pts_sec": 147.019336,
+      "categories": [
+        "live",
+        "hp_numeric"
+      ],
+      "expected_state": "live_first_person",
+      "expected_numeric": {
+        "hp": 80
+      },
+      "decoded_pixel_sha256": "2959f23fa03e870518ed668a84a2ef9572492fdbb706e6086da685a02a147e51",
+      "provenance": [
+        {
+          "path": "outputs/recognition-investigation/production12-reviewed-novel-semantic-reuse-index.json",
+          "sha256": "d58c522301fa2290c1e255b3e9fb72e73dd27cf98ae9ebdbfe294b7b7d0dbf6f",
+          "description": "Frozen blind pixel label and same-PTS decoded-pixel reuse index"
+        }
+      ],
+      "note": "HP label is for this owned frame only; no global numeric recall claim."
+    },
+    {
+      "pts_sec": 147.502669,
+      "categories": [
+        "timer_score",
+        "regression_protection"
+      ],
+      "expected_numeric": {
+        "timer": "1:03",
+        "score_player": 0,
+        "score_enemy": 2
+      },
+      "provenance": [
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/assets/reference_frames/r2_predeath_hp80_147.500s.jpg",
+          "sha256": "ad3dce8e3a38b35c10d5a4633be62cea55160b6db20498ec1f93e0c8336e6699",
+          "description": "Validation-pack reference image"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/frame_pts_sidecar_v3.json",
+          "sha256": "993244564b796bf10a7dae5ee7e14ca7f4737d59a6a72231e48d48968ae0a0fb",
+          "description": "Frozen sidecar mapping reference image to exact container PTS"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/sync_anchors_v3.json",
+          "sha256": "b127e51cac1ecaa930ecaf12c075aaadfed6a8e69d39c6f73ae03a1781a860c8",
+          "description": "Frozen visible timer and score labels for this evidence PTS"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/timeline_ground_truth_v3.json",
+          "sha256": "afcb25b3aa976bb8b16114215da719d1a705190a244785939816831179bb83dd",
+          "description": "Frozen timeline context for this evidence witness"
+        }
+      ],
+      "note": "Evidence point only; not a continuous interval assertion."
+    },
+    {
+      "pts_sec": 147.602669,
+      "categories": [
+        "regression_protection"
+      ],
+      "provenance": [
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/assets/reference_frames/r2_damaged_hp22_147.600s.jpg",
+          "sha256": "4f96948efeed8ea1b21aa47ee63edf90260ce7f2460fe321996b3b110bcbf566",
+          "description": "Validation-pack reference image"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/frame_pts_sidecar_v3.json",
+          "sha256": "993244564b796bf10a7dae5ee7e14ca7f4737d59a6a72231e48d48968ae0a0fb",
+          "description": "Frozen sidecar mapping reference image to exact container PTS"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/timeline_ground_truth_v3.json",
+          "sha256": "afcb25b3aa976bb8b16114215da719d1a705190a244785939816831179bb83dd",
+          "description": "Frozen timeline context for this evidence witness"
+        }
+      ],
+      "note": "Frame is an evidence witness; do not infer surrounding interval semantics."
+    },
+    {
+      "pts_sec": 147.702669,
+      "categories": [
+        "regression_protection"
+      ],
+      "provenance": [
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/assets/reference_frames/r2_death_first_visible_147.700s.jpg",
+          "sha256": "4b839ee9bc7506a552c7d98267ae2b405c5e024ac87ee13c792584acbce7bc4f",
+          "description": "Validation-pack reference image"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/frame_pts_sidecar_v3.json",
+          "sha256": "993244564b796bf10a7dae5ee7e14ca7f4737d59a6a72231e48d48968ae0a0fb",
+          "description": "Frozen sidecar mapping reference image to exact container PTS"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/timeline_ground_truth_v3.json",
+          "sha256": "afcb25b3aa976bb8b16114215da719d1a705190a244785939816831179bb83dd",
+          "description": "Frozen timeline context for this evidence witness"
+        }
+      ],
+      "note": "Frame is an evidence witness; do not infer surrounding interval semantics."
+    },
+    {
+      "pts_sec": 151.002669,
+      "categories": [
+        "timer_score",
+        "regression_protection"
+      ],
+      "expected_numeric": {
+        "timer": "1:00",
+        "score_player": 0,
+        "score_enemy": 2
+      },
+      "provenance": [
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/assets/reference_frames/r2_spectator_chamber_151.000s.jpg",
+          "sha256": "c7f163ced23e70f4e56c89e0465441faeaadea9dcc51ad969fb64fa8cf226307",
+          "description": "Validation-pack reference image"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/frame_pts_sidecar_v3.json",
+          "sha256": "993244564b796bf10a7dae5ee7e14ca7f4737d59a6a72231e48d48968ae0a0fb",
+          "description": "Frozen sidecar mapping reference image to exact container PTS"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/sync_anchors_v3.json",
+          "sha256": "b127e51cac1ecaa930ecaf12c075aaadfed6a8e69d39c6f73ae03a1781a860c8",
+          "description": "Frozen visible timer and score labels for this evidence PTS"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/timeline_ground_truth_v3.json",
+          "sha256": "afcb25b3aa976bb8b16114215da719d1a705190a244785939816831179bb83dd",
+          "description": "Frozen timeline context for this evidence witness"
+        }
+      ],
+      "note": "Evidence point only; not a continuous interval assertion."
+    },
+    {
+      "pts_sec": 157.302669,
+      "categories": [
+        "spectator"
+      ],
+      "expected_state": "spectator_first_person",
+      "decoded_pixel_sha256": "d9e3f55313107299ae0fdea8d8229510c80f1141c12c9b8f9e1a909e046b0c7d",
+      "provenance": [
+        {
+          "path": "outputs/recognition-investigation/native11-spectator-semantic-review/manifest.json",
+          "sha256": "d2c0fb14a7765715ef40dc594e0ca4b98924f4e8603e69cabfb770ee62bfedc9",
+          "description": "Frozen native11 reviewed semantic cohort; exact PTS and pixel identity"
+        }
+      ],
+      "note": "Previously reviewed observation; cohort is diagnostic, not a global accuracy sample."
+    },
+    {
+      "pts_sec": 161.636003,
+      "categories": [
+        "spectator"
+      ],
+      "expected_state": "spectator_first_person",
+      "decoded_pixel_sha256": "bab5c8b133f7f802c91d88ec011a32b728b1f0bf71f478f4ec7f9ef485d75f5a",
+      "provenance": [
+        {
+          "path": "outputs/recognition-investigation/native11-spectator-semantic-review/manifest.json",
+          "sha256": "d2c0fb14a7765715ef40dc594e0ca4b98924f4e8603e69cabfb770ee62bfedc9",
+          "description": "Frozen native11 reviewed semantic cohort; exact PTS and pixel identity"
+        }
+      ],
+      "note": "Previously reviewed observation; cohort is diagnostic, not a global accuracy sample."
+    },
+    {
+      "pts_sec": 170.002669,
+      "categories": [
+        "timer_score",
+        "regression_protection"
+      ],
+      "expected_numeric": {
+        "timer": "0:41",
+        "score_player": 0,
+        "score_enemy": 2
+      },
+      "provenance": [
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/assets/reference_frames/r2_spectator_trigger_firing_170.000s.jpg",
+          "sha256": "203e28bbf4cf9e6338b241314f8419161b459b62368aedced6e5b147f89f99ed",
+          "description": "Validation-pack reference image"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/frame_pts_sidecar_v3.json",
+          "sha256": "993244564b796bf10a7dae5ee7e14ca7f4737d59a6a72231e48d48968ae0a0fb",
+          "description": "Frozen sidecar mapping reference image to exact container PTS"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/sync_anchors_v3.json",
+          "sha256": "b127e51cac1ecaa930ecaf12c075aaadfed6a8e69d39c6f73ae03a1781a860c8",
+          "description": "Frozen visible timer and score labels for this evidence PTS"
+        },
+        {
+          "path": "ValorantData/valorant_e2e_validation_pack_v3/ground_truth/timeline_ground_truth_v3.json",
+          "sha256": "afcb25b3aa976bb8b16114215da719d1a705190a244785939816831179bb83dd",
+          "description": "Frozen timeline context for this evidence witness"
+        }
+      ],
+      "note": "Evidence point only; not a continuous interval assertion."
+    },
+    {
+      "pts_sec": 170.802669,
+      "categories": [
+        "spectator"
+      ],
+      "expected_state": "spectator_first_person",
+      "decoded_pixel_sha256": "08b615fa32329dc426015a24ddcc467e20e1f8e0f7e083879f44ba86ae956422",
+      "provenance": [
+        {
+          "path": "outputs/recognition-investigation/native11-spectator-semantic-review/manifest.json",
+          "sha256": "d2c0fb14a7765715ef40dc594e0ca4b98924f4e8603e69cabfb770ee62bfedc9",
+          "description": "Frozen native11 reviewed semantic cohort; exact PTS and pixel identity"
+        }
+      ],
+      "note": "Previously reviewed observation; cohort is diagnostic, not a global accuracy sample."
+    },
+    {
+      "pts_sec": 170.919336,
+      "categories": [
+        "known_false_positive"
+      ],
+      "decoded_pixel_sha256": "61b1226d18b7f3506883fc990277d61e9a88dbdc8a42a7afb00c22fbaf782d5e",
+      "provenance": [
+        {
+          "path": "outputs/recognition-investigation/native11-spectator-positive-hud-gate-diagnostics.json",
+          "sha256": "f9c40d221759ee4704539fc1ef7cb28e97c23135cf933e5f07bac1618635f02b",
+          "description": "Reviewed diagnostic identifying external-camera transition and pixel identity"
+        },
+        {
+          "path": "outputs/recognition-investigation/native11-spectator-semantic-review/manifest.json",
+          "sha256": "d2c0fb14a7765715ef40dc594e0ca4b98924f4e8603e69cabfb770ee62bfedc9",
+          "description": "Frozen spectator visual-semantic cohort and exact PTS/pixel identity"
+        }
+      ],
+      "note": "External-camera subtype reviewed; category-only because no matching application primary-state enum exists."
+    },
+    {
+      "pts_sec": 170.936003,
+      "categories": [
+        "unknown",
+        "combat_report",
+        "spectator"
+      ],
+      "decoded_pixel_sha256": "af6171ea498cfdfa663f3ac7147a31ec9054b57c688ccfb658bea1c7ece47ae7",
+      "provenance": [
+        {
+          "path": "outputs/recognition-investigation/native11-unknown-blind-review-v2/manifest.json",
+          "sha256": "19fdbae71a45f52604f33e8a7fefeb873ac54d767b6e7d29f7a1787594929c47",
+          "description": "Fixed diagnostic unknown-scene frame selection"
+        },
+        {
+          "path": "outputs/recognition-investigation/native11-unknown-blind-review-v2/blind-scene-labels.json",
+          "sha256": "0eee4e862890ba35a5b22e76b2dc31939eccbf900428ef34d99a00ad891a69ce",
+          "description": "Frozen blind scene/display visibility label"
+        }
+      ],
+      "note": "Diagnostic scene/display label only; not a player-state or recording-player ownership assertion."
+    },
+    {
+      "pts_sec": 171.002669,
+      "categories": [
+        "known_false_positive"
+      ],
+      "decoded_pixel_sha256": "ebd93308eae7713ac2089a555846c6912175d0390696e0f955759be5a44e880d",
+      "provenance": [
+        {
+          "path": "outputs/recognition-investigation/native11-spectator-positive-hud-gate-diagnostics.json",
+          "sha256": "f9c40d221759ee4704539fc1ef7cb28e97c23135cf933e5f07bac1618635f02b",
+          "description": "Reviewed diagnostic identifying external-camera transition and pixel identity"
+        },
+        {
+          "path": "outputs/recognition-investigation/native11-spectator-semantic-review/manifest.json",
+          "sha256": "d2c0fb14a7765715ef40dc594e0ca4b98924f4e8603e69cabfb770ee62bfedc9",
+          "description": "Frozen spectator visual-semantic cohort and exact PTS/pixel identity"
+        }
+      ],
+      "note": "External-camera subtype reviewed; category-only because no matching application primary-state enum exists."
+    }
+  ],
+  "suite_note": "Fixed deterministic evidence subset; not exhaustive event or full-video accuracy coverage."
+}

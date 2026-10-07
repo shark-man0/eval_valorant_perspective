@@ -15,6 +15,8 @@ from pathlib import Path
 from threading import Event
 from typing import Any
 
+from valorant_ai_coach.diagnostics.runtime_timing import timing_stage
+
 LOGGER = logging.getLogger(__name__)
 
 
@@ -204,6 +206,10 @@ class VideoService:
         return value
 
     def probe(self, path: Path, *, cancel_event: Event | None = None) -> VideoMetadata:
+        with timing_stage("metadata_open"):
+            return self._probe(path, cancel_event=cancel_event)
+
+    def _probe(self, path: Path, *, cancel_event: Event | None = None) -> VideoMetadata:
         video_path = self._require_video(path)
         command = [
             self.ffprobe_path,
@@ -276,6 +282,30 @@ class VideoService:
         )
 
     def extract_frames(
+        self,
+        path: Path,
+        timestamps_sec: Sequence[float],
+        output_dir: Path,
+        *,
+        max_frames: int = 600,
+        jpeg_quality: int = 92,
+        max_dimension: int | None = 1600,
+        metadata: VideoMetadata | None = None,
+        cancel_event: Event | None = None,
+    ) -> list[FrameSample]:
+        with timing_stage("decode"):
+            return self._extract_frames(
+                path,
+                timestamps_sec,
+                output_dir,
+                max_frames=max_frames,
+                jpeg_quality=jpeg_quality,
+                max_dimension=max_dimension,
+                metadata=metadata,
+                cancel_event=cancel_event,
+            )
+
+    def _extract_frames(
         self,
         path: Path,
         timestamps_sec: Sequence[float],

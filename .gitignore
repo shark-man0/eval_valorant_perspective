@@ -32,3 +32,6 @@ bin/ffprobe.exe
 outputs/
 *.log
 .DS_Store
+
+# Cross-platform advisory full-E2E lock (no recognition results)
+.e2e_full_run.lock

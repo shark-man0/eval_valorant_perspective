@@ -10,6 +10,7 @@ from pathlib import Path
 from threading import Event
 from typing import Any, Protocol
 
+from valorant_ai_coach.diagnostics.runtime_timing import timing_stage
 from valorant_ai_coach.models import RoleResolver
 from valorant_ai_coach.video import FrameSample, VideoMetadata
 from valorant_ai_coach.video.sampling import HudFrameSampler
@@ -263,12 +264,13 @@ class RealHudAnalyzer:
             anchor_scores = {name: 1.0 for name in detected_anchors}
         anchor_diagnostics: tuple[str, ...] = ()
         if detected_anchors is None and self.template_profile is not None:
-            detected_anchors, anchor_scores, anchor_diagnostics = (
-                self.template_profile.detect_anchors(
-                    first_image,
-                    self.layout,
+            with timing_stage("hud_geometry"):
+                detected_anchors, anchor_scores, anchor_diagnostics = (
+                    self.template_profile.detect_anchors(
+                        first_image,
+                        self.layout,
+                    )
                 )
-            )
         letterbox_seen = (
             _detect_letterbox(first_image) if letterboxed is None else bool(letterboxed)
         )
@@ -282,11 +284,12 @@ class RealHudAnalyzer:
             elif self.layout.reference_resolution == (first_width, first_height):
                 crop_state = False
 
-        features = self.feature_reader.observe_sequence(
-            frames,
-            times=[_frame_time(frame, index) for index, frame in enumerate(frames)],
-            cancel_event=cancel_event,
-        )
+        with timing_stage("hud_geometry"):
+            features = self.feature_reader.observe_sequence(
+                frames,
+                times=[_frame_time(frame, index) for index, frame in enumerate(frames)],
+                cancel_event=cancel_event,
+            )
         dimensions_match = all(
             feature.signals.get("frame_width") == first_width
             and feature.signals.get("frame_height") == first_height
@@ -294,13 +297,14 @@ class RealHudAnalyzer:
         )
 
         if self.layout.layout_format == "v3":
-            calibration = self.layout.validate_calibration(
-                first_width,
-                first_height,
-                detected_anchors=detected_anchors,
-                letterboxed=letterbox_seen,
-                crop_applied=crop_state,
-            )
+            with timing_stage("hud_geometry"):
+                calibration = self.layout.validate_calibration(
+                    first_width,
+                    first_height,
+                    detected_anchors=detected_anchors,
+                    letterboxed=letterbox_seen,
+                    crop_applied=crop_state,
+                )
         elif (
             self.layout.calibrated
             and dimensions_match
@@ -338,17 +342,19 @@ class RealHudAnalyzer:
             image = load_frame(frame)
             time_sec = _frame_time(frame, index)
             if index > 0 and dimensions_match and self.template_profile is not None:
-                current_anchors, anchor_scores, messages = self.template_profile.detect_anchors(
-                    image, self.layout
-                )
+                with timing_stage("hud_geometry"):
+                    current_anchors, anchor_scores, messages = (
+                        self.template_profile.detect_anchors(image, self.layout)
+                    )
                 diagnostics.extend(messages)
-                current_calibration = self.layout.validate_calibration(
-                    image.shape[1],
-                    image.shape[0],
-                    detected_anchors=current_anchors,
-                    letterboxed=_detect_letterbox(image),
-                    crop_applied=crop_state,
-                )
+                with timing_stage("hud_geometry"):
+                    current_calibration = self.layout.validate_calibration(
+                        image.shape[1],
+                        image.shape[0],
+                        detected_anchors=current_anchors,
+                        letterboxed=_detect_letterbox(image),
+                        crop_applied=crop_state,
+                    )
                 # Overlays can hide anchors. Never reuse old anchor scores to
                 # classify those frames as live. A later clear frame can calibrate
                 # a recording that began with a buy menu or transition.
@@ -375,14 +381,15 @@ class RealHudAnalyzer:
             )
             identity_count = 0
             if calibration.calibrated:
-                self._read_values(
-                    image,
-                    values,
-                    reader_confidence,
-                    calibration,
-                    diagnostics,
-                    raw_accepted_reader_values,
-                )
+                with timing_stage("hud_numeric_ocr"):
+                    self._read_values(
+                        image,
+                        values,
+                        reader_confidence,
+                        calibration,
+                        diagnostics,
+                        raw_accepted_reader_values,
+                    )
                 for side, key in (("ally", "ally_alive"), ("enemy", "enemy_alive")):
                     debounced = _debounced_roster_count(features, index, side)
                     if debounced is not None and f"{side}_roster" not in self.readers:
@@ -391,7 +398,8 @@ class RealHudAnalyzer:
                 _enrich_temporal_evidence(
                     signals, values, observations[-1] if observations else None
                 )
-            identity = live_identity(signals, geometry_valid=calibration.calibrated)
+            with timing_stage("hud_identity"):
+                identity = live_identity(signals, geometry_valid=calibration.calibrated)
             identity_count = identity.positive_count
             signals["live_first_person"] = identity.live
             if calibration.calibrated:
@@ -557,9 +565,10 @@ class RealHudAnalyzer:
                     )
             evidence_by_frame[index] = {**row_evidence, **supplemental}
 
-        hud_events = HudDirectEventBuilder().build(
-            observations, evidence_by_frame=evidence_by_frame
-        )
+        with timing_stage("hud_event_detection"):
+            hud_events = HudDirectEventBuilder().build(
+                observations, evidence_by_frame=evidence_by_frame
+            )
         change_times = set(_observation_change_times(observations, evidence_by_frame))
         change_times.update(float(event["time_sec"]) for event in hud_events)
         self.last_calibration_diagnostics = telemetry.snapshot()
