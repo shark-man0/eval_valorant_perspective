@@ -48,7 +48,7 @@ Artifacts are written below `outputs/diagnostics/<run-id>/`, which is already co
 - resident memory on Linux when `/proc/self/statm` is available
 - active thread count
 - optional Raspberry Pi temperature/throttling state
-- FFmpeg/ffprobe versions
+- FFmpeg/ffprobe versions for the executables selected by the profiled run
 - NumPy/OpenCV distribution versions
 - success/failure status and diagnostic failure category
 

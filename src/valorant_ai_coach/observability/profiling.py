@@ -63,6 +63,8 @@ class PerformanceRecorder:
         self.run_id = str(run_id)
         self.repository_root = repository_root
         self.include_pi_metrics = include_pi_metrics
+        self.ffmpeg_executable = "ffmpeg"
+        self.ffprobe_executable = "ffprobe"
         self._started_perf = time.perf_counter()
         self._started_cpu = time.process_time()
         self._finished_perf: float | None = None
@@ -87,6 +89,14 @@ class PerformanceRecorder:
                 stats.calls += 1
                 if failed:
                     stats.failures += 1
+
+    def set_tool_executables(
+        self, *, ffmpeg: str | None = None, ffprobe: str | None = None
+    ) -> None:
+        if ffmpeg:
+            self.ffmpeg_executable = str(ffmpeg)
+        if ffprobe:
+            self.ffprobe_executable = str(ffprobe)
 
     def finish(self, status: str, *, failure_category: str | None = None) -> None:
         if self._finished_perf is None:
@@ -130,8 +140,8 @@ class PerformanceRecorder:
             "total_elapsed_sec": round(max(0.0, finished - self._started_perf), 6),
             "resources": resource_metrics,
             "tools": {
-                "ffmpeg": tool_version("ffmpeg", "-version"),
-                "ffprobe": tool_version("ffprobe", "-version"),
+                "ffmpeg": tool_version(self.ffmpeg_executable, "-version"),
+                "ffprobe": tool_version(self.ffprobe_executable, "-version"),
             },
             "packages": package_versions(("numpy", "opencv-python")),
             "status": self.status,

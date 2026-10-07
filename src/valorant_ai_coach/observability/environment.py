@@ -104,6 +104,8 @@ def dependency_snapshot(
     repository_root: Path | None = None,
     package_names: Sequence[str] = DEFAULT_PACKAGES,
     include_pip_check: bool = False,
+    ffmpeg_executable: str = "ffmpeg",
+    ffprobe_executable: str = "ffprobe",
 ) -> dict[str, Any]:
     state = repository_state(repository_root)
     result: dict[str, Any] = {
@@ -120,8 +122,8 @@ def dependency_snapshot(
         "repository": state,
         "packages": package_versions(package_names),
         "tools": {
-            "ffmpeg": tool_version("ffmpeg", "-version"),
-            "ffprobe": tool_version("ffprobe", "-version"),
+            "ffmpeg": tool_version(ffmpeg_executable, "-version"),
+            "ffprobe": tool_version(ffprobe_executable, "-version"),
         },
     }
     if include_pip_check:
@@ -135,6 +137,8 @@ def write_dependency_snapshot(
     repository_root: Path | None = None,
     package_names: Sequence[str] = DEFAULT_PACKAGES,
     include_pip_check: bool = False,
+    ffmpeg_executable: str = "ffmpeg",
+    ffprobe_executable: str = "ffprobe",
 ) -> Path:
     destination = Path(target)
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -142,6 +146,8 @@ def write_dependency_snapshot(
         repository_root=repository_root,
         package_names=package_names,
         include_pip_check=include_pip_check,
+        ffmpeg_executable=ffmpeg_executable,
+        ffprobe_executable=ffprobe_executable,
     )
     destination.write_text(
         json.dumps(payload, ensure_ascii=False, indent=2) + "\n",

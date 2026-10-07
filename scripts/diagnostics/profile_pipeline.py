@@ -30,6 +30,8 @@ def main() -> int:
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--output-dir", type=Path, default=Path("outputs/diagnostics"))
     args = parser.parse_args()
+    if args.resume and args.match_id is None:
+        parser.error("--resume requires --match-id")
 
     run_id = f"D-{uuid.uuid4().hex}"
     match_id = args.match_id or f"M-{uuid.uuid4().hex}"
@@ -48,6 +50,10 @@ def main() -> int:
                 level=logging.DEBUG if settings.debug_logging else logging.INFO,
             )
             services = build_services(store, settings=settings)
+            recorder.set_tool_executables(
+                ffmpeg=str(getattr(services.pipeline.clips, "ffmpeg_path", "ffmpeg")),
+                ffprobe=str(getattr(services.video, "ffprobe_path", "ffprobe")),
+            )
         session = instrument_pipeline(services.pipeline, recorder)
         with bind_context(run_id=run_id, match_id=match_id):
             with recorder.phase("total"):
@@ -73,6 +79,8 @@ def main() -> int:
             run_dir / "dependency_snapshot.json",
             repository_root=ROOT,
             include_pip_check=False,
+            ffmpeg_executable=recorder.ffmpeg_executable,
+            ffprobe_executable=recorder.ffprobe_executable,
         )
     print(run_dir)
     return exit_code
