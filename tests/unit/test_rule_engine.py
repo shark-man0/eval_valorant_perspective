@@ -22,7 +22,11 @@ def test_only_explicit_thresholds_receive_deterministic_labels() -> None:
 
 def test_low_confidence_and_exception_prevent_deterministic_label() -> None:
     engine = DeterministicRuleEngine()
-    assert engine.evaluate("MOV-02", [fact("first_shot_stationary", True, 0.89)], []) is None
+    low = engine.evaluate("MOV-02", [fact("first_shot_stationary", True, 0.89)], [])
+    # Contract change (2026-10-07): a fact below the confidence gate is an explicit
+    # `unscored`, not silence. It must never become good/improve.
+    assert low is not None and low.label == "unscored"
+    assert low.unscored_reason_code == "low_confidence"
     smoke_shot = [
         {"event_id": "shot-1", "type": "shot", "attributes": {"purpose": "smoke penetration"}}
     ]

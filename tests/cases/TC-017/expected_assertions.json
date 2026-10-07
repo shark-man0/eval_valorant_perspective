@@ -5,7 +5,9 @@
     {
       "primary_rule_id": "AIM-03",
       "label": "improve",
-      "allowed_related_rule_ids": [],
+      "allowed_related_rule_ids": [
+        "MOV-02"
+      ],
       "required_concept_tags": [
         "first_shot",
         "stationary_shooting"
@@ -19,6 +21,7 @@
     }
   ],
   "expected_candidate_rule_ids": [
+    "MOV-02",
     "AIM-03"
   ],
   "forbidden_candidate_rule_ids": [],

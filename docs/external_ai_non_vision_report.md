@@ -36,41 +36,46 @@
 - 画像解析コード・player identity判定は変更していない。これはVisionの出力を後段で安全側に倒す変更。
 - テスト: `tests/unit/test_downstream_contract.py`（10件）
 
-## 3. 要判断事項（未変更）
+## 3. ユーザー決定に基づく契約変更（2026-10-07）
 
-### 3.1 なし（上記2.1は安全契約に直接反するため修正済み）
+### 3.1 同一factが複数ruleの決定論labelを生む場合は両ruleを出力（TC-005 / TC-017）
 
-### 3.2 同一factが複数ruleの決定論的labelを生む（TC-005 / TC-017）
+- 原因: `first_shot_stationary` が MOV-02 と AIM-03 の両方に決定論labelを出すが、mockは片方のみ出力し、`RoundAnalyzer` の権威検証が「評価の欠落」で例外にしていた。実コーチは出力されなかったdecisionを独立評価として合成する実装。
+- 変更: `rules/mock_evaluator.py` が、decisionを持つ rule をすべて出力する。
+- 結果: 既存 `dedup_groups.movement_shooting`（primary_order: AIM-03 → MOV-02）が最終段で働き、**AIM-03を主・MOV-02を `related_rule_ids` とする1件**になる（重複クリップ回避の既存方針）。
+- **TC-005 の主ruleが MOV-02 → AIM-03 に変わる。** TC-005/017 の `expected_assertions.json` を更新（`allowed_related_rule_ids=["MOV-02"]`）。
+- 全38ケースが `RoundAnalyzer` + mock を通ることをテストで固定。
 
-- 現象: `first_shot_stationary` が MOV-02 と AIM-03 の両方で決定論的labelを生む。TC-017では両方 `improve`、TC-005では両方 `good`。MockEvaluatorは片方のみ出力するため、`RoundAnalyzer._validate_deterministic_authority` が「決定論的評価が出力から欠落」で例外にする。
-- 実コーチ（`ai/coach.py`）は全decisionを出力にbindする実装に見えるため、**mockと実コーチで挙動が食い違っている**可能性が高い（実コーチの実行は未確認）。
-- 直し方によって契約が変わるため、未変更:
-  - A. mock / 実コーチとも両ruleを出力する → TC-005/017 の `expected_assertions.json` 変更が必要
-  - B. 二つのruleの関係（排他・統合）を config 側で定義する → `deterministic_rule_engine_v1.json` 等の変更が必要
-  - C. mockで `related_rule_ids` に寄せる → `test_dataset_contract.py` が `allowed_related_rule_ids=[]` を要求しており既存テストが落ちる
-- 評価基準Excelで MOV-02 / AIM-03 の定義をどう分けているかの確認が先に必要（未実施）。
+### 3.2 低confidenceは「評価0件」ではなく明示的な `unscored`
+
+- 変更: `rules/engine.py`。factが存在し、全て信頼度0.90未満のとき、AIM-02 / AIM-03 / MOV-02 / PEEK-04 は `unscored`（`low_confidence`、confidence ≤ 0.5、`fact_refs` 保持、`missing_information` あり）を返す。
+- 変わらない点: fact不在は従来どおり `None`（selector / hybrid側が扱う）。smoke例外は評価対象外のまま。信頼度の高いfactが1つでもあればそれが優先。
+- `ai/coach.py` の `_bind_deterministic_evaluation` に `unscored` 分岐を追加（従来は常にclip付きの採点済み形で、スキーマ違反の出力になっていた）。
+- 旧契約を前提にした既存テスト2件の期待値を更新: `tests/unit/test_rule_engine.py`、`tests/integration/test_visual_review_regressions.py`（vision側のテストファイル、1パラメータ: 0.86 は `None` → `unscored`）。
+- 既知の挙動: `unscored` は `evidence_range` を持たないため集約で統合されず、同一factの MOV-02 / AIM-03 が `unscored` では2件別々に出る。統合するかは未決定。
 
 ## 4. 未実施（次の作業）
 
-- Priority 2: 依頼の6ケースのうち、1〜4は既存 `TC-*` で概ねカバー（good: TC-006, improve: TC-017※, unscored: TC-025, authority: `test_round_analysis.py`）。6（spectator混入）はbuilder層で追加済み、`RoundAnalyzer` 経由のend-to-endは未作成。5（低confidence）は §4.1 の観察があり、仕様判断が必要。
+- Priority 2: 依頼の6ケースは、good: TC-006、improve: TC-017、unscored(必須fact不足): TC-025、unscored(低confidence): `test_downstream_contract.py`、authority: `test_round_analysis.py`、spectator: builder層テスト、で網羅。`RoundAnalyzer` 経由のspectator end-to-endは未作成。
 - Priority 3: `DerivedEventBuilder` のevent_idが入力indexに依存する点（入力順序・間引きで変わる）、confidence propagationの精査
 - Priority 4: Excel2本と `valorant_evaluation_rules_v4.json` の差分整理
 - Priority 5/6: AI Coach検証層、UI（PySide6未導入のため smoke 未実行）、ClipService
 - 全体 `pytest` / `ruff check .` / `mypy src` の最終結果
 
-### 4.1 低confidenceの扱い（TC-006 を改変して `RoundAnalyzer` + mock で観察。コードは未変更）
+### 4.1 残る確認事項
 
-| 改変 | 候補rule | 決定論decision | 評価出力 |
-|---|---|---|---|
-| `deterministic_facts` のconfidenceのみ0.3 | 7件（変化なし） | なし | **0件**（`unscored` ではない） |
-| `events` のconfidenceのみ0.3 | 7件 | AIM-02 | AIM-02 `good`（維持） |
-| `observation_quality` のみ0.3 | 7件 | AIM-02 | AIM-02 `good`（維持） |
+- 入力済みfactのconfidenceが、provenanceで参照するeventのconfidenceより高くてもそのまま採用される（TC-006でeventのみ0.3にしても決定論 `good` が維持される）。`FactBuilder` 由来factは元eventから導出されるため、事前計算済みfactを渡すfixture特有の挙動の可能性が高い。本番経路で事前計算済みfactが渡る箇所があるか未確認（`rounds/builder.py` の `_owned_hp_facts` / `_shared_timer_facts` は直接factを生成する）。
 
-- (a) factの証拠が弱いとき、候補ruleが残るのに `unscored` ではなく「評価なし」になる。false positiveは作らないが、依頼の「`unscored` を正常系として扱う」とどちらが正しいか要判断。
-- (b) 入力済みfactのconfidenceが、provenanceで参照するeventのconfidenceより高くても、そのまま採用される。実運用の `FactBuilder` 由来factは元eventのconfidenceから導出されるため、これはfixtureのように事前計算済みfactを渡した場合の挙動の可能性が高い。本番経路で事前計算済みfactが渡る箇所があるか未確認（`rounds/builder.py` の `_owned_hp_facts` / `_shared_timer_facts` は直接factを生成する）。
+## 5. テスト・静的解析（このセッションの環境、1CPU）
 
-## 5. merge時の注意
+- 後段関連の主要14ファイル: 141 passed, 2 skipped（PySide6未導入のUI 2件）
+- 全100ファイルを個別実行し、完了した50ファイルは失敗2件のみ: `test_real_ffmpeg`（変更前から失敗、環境起因）、`test_hud_pixels_e2e`（vision側の重いテスト、120秒タイムアウト）
+- 残りのvision側テスト（hud / visual系の大半）は未実行。vision側production codeは未変更
+- `ruff check`: 変更ファイルは指摘0。リポジトリ全体は変更前から386件の既存指摘
+- `mypy src`: 22件、変更前と同数（PySide6未導入、hud側の既存分）。変更ファイルに指摘なし
 
-- 変更ファイル: `src/valorant_ai_coach/rounds/builder.py`（+14/-1）、`tests/unit/test_downstream_contract.py`（新規）、本docs
-- `rounds/builder.py` は vision側が触る可能性がある隣接ファイル。変更箇所は `_state_snapshots` 内の1箇所と、モジュール先頭付近のヘルパー追加のみ。
-- 既存contract（schema / config / expected assertions）は変更していない。
+## 6. merge時の注意
+
+- 変更ファイル: `rounds/builder.py`、`rules/engine.py`、`rules/mock_evaluator.py`、`ai/coach.py`、`tests/cases/TC-005,TC-017/expected_assertions.json`、`tests/unit/test_rule_engine.py`、`tests/integration/test_visual_review_regressions.py`（1パラメータ）、`tests/unit/test_downstream_contract.py`（新規）、docs
+- `rounds/builder.py` と `test_visual_review_regressions.py` はvision側が触る可能性がある隣接ファイル。前者は `_state_snapshots` 内1箇所とヘルパー追加のみ、後者は1行。
+- 既存contractを変更した（§3.1、§3.2）。schema / config（JSON）は未変更。
