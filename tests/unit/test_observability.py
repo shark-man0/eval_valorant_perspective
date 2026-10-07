@@ -109,7 +109,13 @@ def test_performance_report_survives_failed_phase_and_unavailable_resources(
 ) -> None:
     monkeypatch.setattr(profiling_module, "_peak_rss_bytes", lambda: None)
     monkeypatch.setattr(profiling_module, "_resident_memory_bytes", lambda: None)
+    monkeypatch.setattr(
+        profiling_module,
+        "tool_version",
+        lambda executable, *_args: f"version:{Path(executable).name}",
+    )
     recorder = PerformanceRecorder("run", include_pi_metrics=False)
+    recorder.set_tool_executables(ffmpeg="custom-ffmpeg", ffprobe="custom-ffprobe")
     with recorder.phase("ok"):
         pass
     with pytest.raises(RuntimeError):
@@ -121,6 +127,8 @@ def test_performance_report_survives_failed_phase_and_unavailable_resources(
     assert report["phase_durations"]["ok"]["duration_sec"] >= 0
     assert report["phase_durations"]["failed"]["failures"] == 1
     assert report["resources"]["peak_memory_bytes"] is None
+    assert report["tools"]["ffmpeg"] == "version:custom-ffmpeg"
+    assert report["tools"]["ffprobe"] == "version:custom-ffprobe"
     assert report["status"] == "failed"
 
 
@@ -233,9 +241,7 @@ def test_dependency_snapshot_has_no_machine_identity(monkeypatch: pytest.MonkeyP
     assert snapshot["tools"]["ffmpeg"] is None
 
 
-def test_dependency_snapshot_reports_package_and_missing_tool(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
+def test_dependency_snapshot_reports_package_and_missing_tool() -> None:
     assert environment_module.tool_version("__definitely_missing_valorant_tool__") is None
     snapshot = dependency_snapshot(repository_root=None, package_names=("pytest",))
     assert snapshot["packages"]["pytest"] is not None
