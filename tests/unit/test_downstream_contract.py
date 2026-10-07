@@ -18,7 +18,7 @@ from valorant_ai_coach.facts import FactBuilder
 from valorant_ai_coach.resources import resource_path
 from valorant_ai_coach.rounds import RoundPackageBuilder
 from valorant_ai_coach.rules import DeterministicRuleEngine, RuleSelector
-from valorant_ai_coach.schema_validation import SchemaValidator
+from valorant_ai_coach.schema_validation import ContractValidationError, SchemaValidator
 
 PLAYER_RELATIVE_SPIKE_STATES = ("carried_by_player", "carried_by_ally", "not_carried")
 WORLD_SPIKE_STATES = ("dropped", "planted", "defusing", "resolved")
@@ -285,3 +285,57 @@ def test_pipeline_demotes_scored_labels_below_review_minimum(
         assert result["clip_id"] is None and result["improvement"] is None
         assert result["missing_information"]
     assert evaluation["label"] == "improve"  # input is not mutated
+
+
+# --- Facts must not claim more confidence than the events they cite ------------------------
+
+
+def _package_with_fact_confidence(
+    fact_confidence: float, event_confidence: float
+) -> dict[str, Any]:
+    package = load_case("TC-006")
+    package["events"].append(
+        {
+            "event_id": "CONF-E1",
+            "time_sec": 31.0,
+            "type": "peek",
+            "actor": "player",
+            "attributes": {},
+            "confidence": event_confidence,
+        }
+    )
+    package["deterministic_facts"].append(
+        {
+            "fact_id": "CONF-1",
+            "key": "preaim_lead_sec",
+            "value": 0.7,
+            "time_sec": 31.0,
+            "time_range": None,
+            "confidence": fact_confidence,
+            "source": "derived_code",
+            "provenance_event_ids": ["CONF-E1"],
+        }
+    )
+    return package
+
+
+def test_fact_confidence_above_its_cited_event_is_rejected() -> None:
+    with pytest.raises(ContractValidationError, match="引き上げ"):
+        SchemaValidator().validate_round_package(_package_with_fact_confidence(0.98, 0.3))
+
+
+@pytest.mark.parametrize(("fact", "event"), [(0.3, 0.3), (0.2, 0.3), (0.9, 0.95)])
+def test_fact_confidence_not_above_its_cited_event_is_accepted(fact: float, event: float) -> None:
+    SchemaValidator().validate_round_package(_package_with_fact_confidence(fact, event))
+
+
+def test_fact_without_provenance_is_not_constrained_by_events() -> None:
+    package = _package_with_fact_confidence(0.98, 0.3)
+    package["deterministic_facts"][-1]["provenance_event_ids"] = []
+    SchemaValidator().validate_round_package(package)
+
+
+def test_low_confidence_event_cannot_yield_a_deterministic_label_through_a_raised_fact() -> None:
+    package = _package_with_fact_confidence(0.98, 0.3)
+    with pytest.raises(ContractValidationError):
+        make_analyzer().analyze(package)

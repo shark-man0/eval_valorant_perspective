@@ -6,6 +6,7 @@ from dataclasses import dataclass, replace
 from typing import Any
 
 from valorant_ai_coach.events import DerivedEventBuilder, EventSourceContract
+from valorant_ai_coach.events.derived import player_scoped_spike_state
 from valorant_ai_coach.hud.temporal import aggregate_observation_quality as aggregate_confidences
 from valorant_ai_coach.maps.registry import MapRegistry
 from valorant_ai_coach.models import DeterministicFact, RoleResolver
@@ -37,19 +38,6 @@ def _bounded_confidence(value: Any) -> float:
         return 0.0
     return min(1.0, max(0.0, parsed)) if math.isfinite(parsed) else 0.0
 
-
-
-# Spike states that are relative to whose first-person view is on screen. Seen through a
-# spectator/non-player view they describe someone else, so they must not become player facts.
-_VIEWPOINT_RELATIVE_SPIKE_STATES = frozenset(
-    {"carried_by_player", "carried_by_ally", "not_carried"}
-)
-
-
-def _player_scoped_spike_state(spike_state: Any, player_valid: bool) -> Any:
-    if not player_valid and spike_state in _VIEWPOINT_RELATIVE_SPIKE_STATES:
-        return "unknown"
-    return spike_state
 
 
 def _shared_timer_facts(observations: Sequence[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -558,7 +546,7 @@ class RoundPackageBuilder:
                 "hp": values.get("hp") if player_valid else None,
                 "armor": values.get("armor") if player_valid else None,
                 "weapon": values.get("weapon_text") if player_valid else None,
-                "spike_state": _player_scoped_spike_state(
+                "spike_state": player_scoped_spike_state(
                     values.get("spike_state", "unknown"), player_valid
                 ),
                 "round_time_remaining_sec": values.get("round_time_remaining_sec"),

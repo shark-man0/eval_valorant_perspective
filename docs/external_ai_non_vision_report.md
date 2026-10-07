@@ -57,7 +57,7 @@
 ## 4. 未実施（次の作業）
 
 - Priority 2: 依頼の6ケースは、good: TC-006、improve: TC-017、unscored(必須fact不足): TC-025、unscored(低confidence): `test_downstream_contract.py`、authority: `test_round_analysis.py`、spectator: builder層テスト、で網羅。`RoundAnalyzer` 経由のspectator end-to-endは未作成。
-- Priority 3: `DerivedEventBuilder` のevent_idが入力indexに依存する点（入力順序・間引きで変わる）、confidence propagationの精査
+- Priority 3: 完了（§7）
 - Priority 4: 完了。`docs/external_ai_rules_criteria_diff.md` 参照（44ルールすべて一致、rule変更不要。要判断2点）
 - Priority 5/6: AI Coach検証層、UI（PySide6未導入のため smoke 未実行）、ClipService
 - 全体 `pytest` / `ruff check .` / `mypy src` の最終結果
@@ -103,8 +103,46 @@
 
 テスト: `tests/unit/test_temporal_scope.py`（20件）。全38 fixtureが範囲検証を通ることを確認済み。
 
-## 7. merge時の注意
+## 7. Event / Fact / Rule の責務整理（Priority 3）
 
-- 変更ファイル: `rules/temporal_scope.py`（新規）、`application/round_analyzer.py`、`rules/__init__.py`、`config/valorant_evaluation_rules_v4.json`（誤記1行）、`rounds/builder.py`、`rules/engine.py`、`rules/mock_evaluator.py`、`ai/coach.py`、`tests/cases/TC-005,TC-017/expected_assertions.json`、`tests/unit/test_rule_engine.py`、`tests/integration/test_visual_review_regressions.py`（1パラメータ）、`tests/unit/test_downstream_contract.py`（新規）、docs
+### 7.1 見つけて修正した問題
+
+| 問題 | 実測 | 対応 |
+|---|---|---|
+| `DerivedEventBuilder` のevent_idが**動画全体のobservation位置**由来 | 先頭に低confidenceのobservationを1件足すだけで、同じ観測のidが `...000000` → `...000001` に変わる | idを観測時刻（ms）由来に変更（`DERIVED-STATE-000005000`）。同一ms衝突は決定論的ソート順で `-02` を付与 |
+| 同時刻observationの出力が入力順に依存しうる | — | 時刻＋正規化JSONで安定ソート。任意順で同一出力をテストで固定 |
+| spectator視点で、派生event（`state_snapshot` / `objective_state`）に `spike_state=carried_by_player` が出る（イベントログはAIにも渡る） | 再現確認 | 視点相対の3値を `unknown` に。`rounds/builder.py` と**同じ規則を共有ヘルパー `player_scoped_spike_state` に一本化**（重複実装を削除） |
+| 他プレイヤーのhp/armor変化がplayerの `state_snapshot` event を生む | — | 非player視点ではhp/armorを変化検知から除外 |
+| `time_sec` がNaN→黙って0.0秒、欠落→0.0秒 | 再現確認 | `DerivedEventInputError` で明示的に拒否（NaN/inf/負/非数値/bool/欠落、valuesが無いobservation）。`hud_confidence` が使えない値のときは従来どおり安全側（0扱いで除外） |
+| factのconfidenceが、provenanceで参照するeventより高くても通る | 本番の事前計算fact（`_shared_timer_facts` / `_owned_hp_facts`）はeventを参照せず問題なし。fixture 65件・`FactBuilder` 生成66件で違反0 | `validate_round_package` に「factのconfidence ≤ 参照eventの最小confidence」を追加（引き上げ禁止） |
+
+テスト: `tests/unit/test_derived_events.py`（28件）、`test_downstream_contract.py` に confidence ガードのテストを追加。
+
+### 7.2 契約への影響
+
+- **event_idの形式が変わった。** 既存の保存済み結果のidは変わらない（移行なし）。AI結果キャッシュはpackage内容をキーにするため、派生eventを含むpackageは1回キャッシュミスになる。
+- `validate_round_package` が厳しくなった（confidence引き上げ、`DerivedEventInputError` は組み立て時）。
+- schema / config は未変更。
+
+### 7.3 責務の整理（読んで確認）
+
+| 概念 | 生成層 |
+|---|---|
+| direct observation | HUD / Visual（vision側） |
+| normalized event | HUD / Visual のevent（`EventSourceContract` で検証） |
+| derived event | `DerivedEventBuilder`（`state_snapshot` / `objective_state` のみ。位置・utility・save判断は作らない） |
+| deterministic fact | `FactBuilder`（snapshot / eventから）、`rounds/builder.py`（HP・タイマーのROI信頼度から直接） |
+| deterministic decision | `DeterministicRuleEngine` |
+
+- `state_snapshot` eventと `state_snapshots` はどちらも ally/enemy/spike を持つ。前者は変化点、後者は時系列という役割分担で、意図的な重複と判断し統合していない。
+
+### 7.4 未解決（要判断・contract変更を伴う）
+
+- **snapshot由来factのconfidenceが、package全体の集約値（受理observationの集約）になる。** snapshotにconfidence欄が無いためで、0.65〜0.90のobservationから作られたfactが、集約値によって決定論の信頼度ゲート（0.90）を超えうる。直すにはstate_snapshotのschemaにper-snapshotのconfidenceを足す必要があり、未実施。発生頻度は未測定。
+- 画像解析側の `aggregate_observation_quality` の集約方法は変更していない。
+
+## 8. merge時の注意
+
+- 変更ファイル: `events/derived.py`、`schema_validation.py`、`rules/temporal_scope.py`（新規）、`application/round_analyzer.py`、`rules/__init__.py`、`config/valorant_evaluation_rules_v4.json`（誤記1行）、`rounds/builder.py`、`rules/engine.py`、`rules/mock_evaluator.py`、`ai/coach.py`、`tests/cases/TC-005,TC-017/expected_assertions.json`、`tests/unit/test_rule_engine.py`、`tests/integration/test_visual_review_regressions.py`（1パラメータ）、`tests/unit/test_downstream_contract.py`（新規）、docs
 - `rounds/builder.py` と `test_visual_review_regressions.py` はvision側が触る可能性がある隣接ファイル。前者は `_state_snapshots` 内1箇所とヘルパー追加のみ、後者は1行。
 - 既存contractを変更した（§3.1、§3.2、§6）。schema・registry・評価ロジックのconfig semanticsは未変更（configの変更は文字列の誤記修正1行のみ）。
