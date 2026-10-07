@@ -22,6 +22,8 @@ _REDACTIONS = (
 )
 _WINDOWS_USER_PATH = re.compile(r"(?i)\b[A-Z]:\\Users\\[^\\\s]+(?:\\[^\s\"']*)?")
 _POSIX_USER_PATH = re.compile(r"/(?:home|Users)/[^/\s]+(?:/[^\s\"']*)?")
+_WINDOWS_ABSOLUTE_PATH = re.compile(r"(?i)(?<![A-Za-z0-9])(?:[A-Z]:\\|\\\\)[^\s\"']+")
+_POSIX_ABSOLUTE_PATH = re.compile(r"(?<![:/A-Za-z0-9])/(?:[^/\s\"']+/)*[^/\s\"']+")
 
 
 def _looks_absolute_path(value: str) -> bool:
@@ -49,6 +51,8 @@ def sanitize_text(value: str) -> str:
         )
     text = _WINDOWS_USER_PATH.sub("<path>", text)
     text = _POSIX_USER_PATH.sub("<path>", text)
+    text = _WINDOWS_ABSOLUTE_PATH.sub(lambda match: _path_placeholder(match.group(0)), text)
+    text = _POSIX_ABSOLUTE_PATH.sub(lambda match: _path_placeholder(match.group(0)), text)
     if _looks_absolute_path(text) and not any(char.isspace() for char in text):
         text = _path_placeholder(text)
     return text

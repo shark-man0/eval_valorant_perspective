@@ -214,11 +214,14 @@ def test_dependency_snapshot_has_no_machine_identity(monkeypatch: pytest.MonkeyP
 
 def test_sanitize_text_removes_secret_and_private_home_path() -> None:
     text = sanitize_text(
-        "Authorization: Bearer topsecret token=abc123 /home/alice/private/video.mp4"
+        "Authorization: Bearer topsecret token=abc123 /home/alice/private/video.mp4 "
+        "/mnt/data/private/video.mp4 C:\\private\\video.mp4"
     )
     assert "topsecret" not in text
     assert "abc123" not in text
     assert "/home/alice" not in text
+    assert "/mnt/data/private" not in text
+    assert "C:\\private" not in text
 
 
 def test_diagnostic_bundle_is_allowlist_only_bounded_and_sanitized(tmp_path: Path) -> None:
@@ -232,7 +235,7 @@ def test_diagnostic_bundle_is_allowlist_only_bounded_and_sanitized(tmp_path: Pat
     )
     snap.write_text(json.dumps({"username": "should-not-be-added-by-snapshot"}), encoding="utf-8")
     log.write_text(
-        "\n".join([f"line {i} token=abc123" for i in range(1000)]),
+        "\n".join([f"line {i} token=abc123 /mnt/data/private/video.mp4" for i in range(1000)]),
         encoding="utf-8",
     )
     raw_video.write_bytes(b"private")
@@ -262,6 +265,7 @@ def test_diagnostic_bundle_is_allowlist_only_bounded_and_sanitized(tmp_path: Pat
     assert "abc123" not in combined
     assert "should-not-be-added-by-snapshot" not in combined
     assert "/home/alice" not in combined
+    assert "/mnt/data/private" not in combined
     assert "line 0" not in combined
     assert "line 999" in combined
 
