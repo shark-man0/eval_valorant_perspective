@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from contextlib import suppress
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -84,10 +85,8 @@ class InstrumentationSession:
 
     def close(self) -> None:
         for target, method_name, original in reversed(self._restore):
-            try:
+            with suppress(AttributeError, TypeError):
                 setattr(target, method_name, original)
-            except (AttributeError, TypeError):
-                pass
         self._restore.clear()
 
     def __enter__(self) -> InstrumentationSession:

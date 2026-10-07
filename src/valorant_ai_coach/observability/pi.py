@@ -3,6 +3,7 @@ from __future__ import annotations
 import platform
 import shutil
 import subprocess
+from contextlib import suppress
 from pathlib import Path
 from typing import Any
 
@@ -18,17 +19,15 @@ def raspberry_pi_metrics() -> dict[str, Any]:
         return result
 
     temperature_path = Path("/sys/class/thermal/thermal_zone0/temp")
-    try:
+    with suppress(OSError, ValueError):
         if temperature_path.is_file():
             raw_temperature = float(temperature_path.read_text().strip())
             result["cpu_temperature_c"] = round(raw_temperature / 1000.0, 2)
             result["available"] = True
-    except (OSError, ValueError):
-        pass
 
     vcgencmd = shutil.which("vcgencmd")
     if vcgencmd is not None:
-        try:
+        with suppress(OSError, subprocess.TimeoutExpired):
             completed = subprocess.run(
                 [vcgencmd, "get_throttled"],
                 capture_output=True,
@@ -40,6 +39,4 @@ def raspberry_pi_metrics() -> dict[str, Any]:
             if completed.returncode == 0 and line.startswith("throttled="):
                 result["throttling_state"] = line.split("=", 1)[1]
                 result["available"] = True
-        except (OSError, subprocess.TimeoutExpired):
-            pass
     return result
