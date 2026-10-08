@@ -13,7 +13,7 @@
 - **選択した履歴を削除**: 選択した解析結果を削除します。
 - **解析履歴（ダブルクリックで開く）**: 保存済み結果を開きます。
 - **再生 / 一時停止** とseek bar: 選択した元動画をホーム画面で再生します。
-- 右上相当のmode表示: `Mock AI / Mock HUD`、または現在のOpenAI model / 実HUDを表示します。
+- mode表示: `Mock AI / Mock HUD`、または現在のOpenAI model / 実HUDを表示します。
 - メニューバーの **設定**: API、HUD、FFmpeg、data directory等を変更します。
 
 ## 動画選択と動画情報

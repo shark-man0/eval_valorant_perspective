@@ -86,7 +86,7 @@ PATHを整えるか、設定画面の **参照…** から各実行ファイル�
 - 設定画面でkeyを保存したか。
 - Mock AIが意図せずOFFになっていないか。
 - Windows Credential Manager / keyringが利用できる環境か。
-- Credentialがない場合に限り、source/support環境では `OPENAI_API_KEY` fallbackが使われます。
+- Credentialがない場合に限り、`OPENAI_API_KEY` 環境変数がfallbackとして使われます。
 
 **次の行動**
 

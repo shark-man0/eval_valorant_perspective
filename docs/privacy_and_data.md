@@ -34,7 +34,7 @@
 | `temp\` | 一時処理data。既定では解析後に削除する設定です。 |
 | `visual-semantic-budget.sqlite` | Semantic Visionを利用する場合のcall/result budget状態。 |
 
-設定でdata directoryを変更した場合は、その指定先が基準になります。
+`settings.json` は標準SettingsStore（既定では `%LOCALAPPDATA%\\ValorantAICoach\\settings.json`）に残り、そこに設定された `data_dir` をDB、clip、match/evidence、cache、log、temp等のruntime保存先として使用します。
 
 ### 元動画
 
