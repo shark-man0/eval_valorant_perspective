@@ -81,9 +81,14 @@ Administrator rights are not required for the normal installation path.
 
 Application binaries live under the install directory or the extracted portable folder.
 
-Persistent user data remains under:
+By default, persistent application data uses:
 
 `%LOCALAPPDATA%\ValorantAICoach`
+
+The GUI can configure a different `data_dir` for runtime data. The settings store itself
+remains at the standard per-user settings location and records that selected `data_dir`.
+Neither the default runtime directory nor a user-selected runtime directory is owned by
+the installer.
 
 The current application contract stores data such as:
 
@@ -106,9 +111,10 @@ clips, analysis output, API key, or local credential material.
 Installing a newer version with the same `AppId` updates application files in the
 per-user install directory.
 
-The installer does not own `%LOCALAPPDATA%\ValorantAICoach`, so an upgrade must not
-remove settings, SQLite data, generated clips, saved analysis results, or the keyring
-credential.
+The installer does not own the per-user settings/runtime data directories, so an upgrade
+must not remove settings, SQLite data, generated clips, saved analysis results, or the
+keyring credential. The release smoke test verifies the default
+`%LOCALAPPDATA%\ValorantAICoach` layout.
 
 Database schema migration remains the responsibility of the existing storage contract.
 Release Engineering must not invent a migration when the storage schema changes.
