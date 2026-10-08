@@ -159,6 +159,11 @@ Actionsの `Windows verification` は実FFmpegテスト、カバレッジ、oned
 `constraints-windows.txt` はWindows/Python 3.12で検証する直接依存関係を固定し、通常起動・
 ビルド・CIのすべてで同じ制約を使用します。
 
+Portable ZIP、通常ユーザー権限のInstaller、SHA-256、Release候補の作成手順は
+[Windows distribution](docs/windows_distribution.md) と
+[Release process](docs/release_process.md) を参照してください。正式ReleaseではFFmpeg/ffprobeを
+同梱せず、利用者のPATHまたは設定画面で指定した実行ファイルを使用します。
+
 ## Windows実動画E2EとMacへの結果共有
 
 動画はWindowsローカルだけに置き、既存E2Eの結果を軽量JSONとして共有できます。
