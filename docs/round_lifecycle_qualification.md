@@ -485,3 +485,42 @@ unknown versus zero, generic ROI confidence versus reader provenance, and
 non-mutation of the source observation. No full canonical run was authorized by
 these diagnostic candidates' qualification status: result/roster and continuity
 remain unqualified, so real start/end/package completion remains unproven.
+
+### Portrait placement diagnostic: fixed slots do not describe this roster
+
+Source-image review shows five ally portraits in the initial calibration cohort,
+but the remaining portrait at the end is right-aligned near the score. Equal
+five-way subdivision of the configured broad roster ROI is not a stable mapping
+of individual players. The ROI also includes scene/background pixels. A new
+**diagnostic-only** `diagnose_roster_portraits.py` tests shape correspondence,
+without turning template nonmatches into deaths or missing slots into zero.
+
+The frozen local v1 manifest uses five 36×40 gray portrait crops from the first
+source frame and hashes of three initial source frames. Coordinates are training
+data, not embedded runtime constants. Manifest/layout/source hashes are checked
+before and after the replay; training/probe overlap, changed inputs, out-of-ROI
+crops, nonflat-invalid references, and existing output targets fail closed.
+Output contains hashes and descriptive NCC maxima/locations, not image paths,
+OCR, expected counts, live classifications or boundary decisions.
+
+On the already-reviewed 21-image dense end cohort, the first training portrait
+at x447 matches at x711, y30 in the first six probes: NCC 0.9658–0.9682. Thus its
+location differs by 264 px from the training position. Its later maxima are only
+0.399–0.518; those measurements are **unknown**, not verified absence. Other
+portrait-reference maxima in this cohort are 0.380–0.475. These are correspondence
+observations on a development cohort, not new independent holdout accuracy.
+
+Two of the five references also fail a .90 comparison at their fixed original
+training location on one of the other training frames (0.875 and 0.850). Neither
+threshold nor cropping was adjusted after observing these outputs. A single
+static portrait reference is not yet qualified, and cannot provide a trustworthy
+zero-player/elimination fact. No roster values or lifecycle policy were changed.
+
+Private report: `mac-roster-portrait-location-v1.json`. Focused diagnostic tests:
+**9 PASS** (eight new plus the prior roster formatter regression). They cover
+location matching, flat/invalid input rejection, source integrity, split
+separation, bounded crop validation, non-mutation and non-positive outputs.
+Next useful candidate must account for compacted portrait placement and rendering
+variation with training-only fitting, then use fresh independent positive and
+natural-background controls. Existing gray match failures cannot be repaired by
+lowering thresholds or declaring absent portraits dead.
