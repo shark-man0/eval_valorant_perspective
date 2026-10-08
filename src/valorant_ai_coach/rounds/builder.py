@@ -553,12 +553,17 @@ class RoundPackageBuilder:
                         for window in windows
                     )
                     if uncovered and not has_prior_end:
+                        fragment_start = min(uncovered)
+                        # Keep later observed-but-unusable samples inside the
+                        # partial window. They must not establish gameplay
+                        # continuity, but accepted shared-value facts at those
+                        # timestamps still belong to the observed fragment.
+                        fragment_end = min(
+                            timestamp,
+                            max(previous_observation, fragment_start + 0.1),
+                        )
                         windows.append(
-                            _RoundWindow(
-                                min(uncovered),
-                                min(timestamp, max(max(uncovered), min(uncovered) + 0.1)),
-                                False,
-                            )
+                            _RoundWindow(fragment_start, fragment_end, False)
                         )
                 cursor = max(cursor, previous_observation)
                 continue
