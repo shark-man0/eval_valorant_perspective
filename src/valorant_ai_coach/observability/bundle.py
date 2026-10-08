@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import zipfile
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -13,6 +14,7 @@ _MAX_JSON_BYTES = 1_000_000
 _MAX_LOG_BYTES = 64_000
 _MAX_LOG_LINES = 400
 _MAX_STACK_CHARS = 16_000
+_SAFE_RUN_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$")
 
 
 @dataclass(frozen=True, slots=True)
@@ -26,6 +28,8 @@ class DiagnosticBundleRequest:
 
 
 def _load_bounded_json(path: Path) -> dict[str, Any]:
+    if path.is_symlink():
+        return {"status": "omitted", "reason": "symlink"}
     try:
         raw = path.read_bytes()
     except OSError as exc:
@@ -42,6 +46,8 @@ def _load_bounded_json(path: Path) -> dict[str, Any]:
 
 
 def _bounded_log_tail(path: Path) -> str:
+    if path.is_symlink():
+        return ""
     try:
         with path.open("rb") as stream:
             stream.seek(0, 2)
@@ -56,6 +62,8 @@ def _bounded_log_tail(path: Path) -> str:
 
 
 def create_diagnostic_bundle(request: DiagnosticBundleRequest) -> Path:
+    if not _SAFE_RUN_ID.fullmatch(request.run_id) or request.run_id in {".", ".."}:
+        raise ValueError("diagnostic run_id contains unsafe characters")
     destination = Path(request.output_path)
     destination.parent.mkdir(parents=True, exist_ok=True)
     manifest = {
@@ -96,7 +104,7 @@ def create_diagnostic_bundle(request: DiagnosticBundleRequest) -> Path:
         json.dumps(sanitize_value(manifest), ensure_ascii=False, indent=2) + "\n"
     )
 
-    with zipfile.ZipFile(destination, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+    with zipfile.ZipFile(destination, "x", compression=zipfile.ZIP_DEFLATED) as archive:
         for name in sorted(entries):
             archive.writestr(name, entries[name])
     return destination
