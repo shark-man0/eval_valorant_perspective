@@ -1432,3 +1432,14 @@ Problem/Evidence: candidate16 full accepts1:26→4:26,1:15→4:15,0:55→10:55 a
 Change/Tests: no production code change. Clone16 to local17 and enable existing fixed200 white OCR, retaining0.90 confidence, complete identity/mask assets and disabled score fallback. Previously blind-labeled64 even training gives56 correct8 unknown0 wrong (raw44 correct20 unknown after identical timer format gate). Freeze profilefingerprint621dfa6941e3111749ec415b499769f4e12a3480c0622d693f66d29b038322c2 before new64 odd-holdout pixel labels/predictions. These holdout images give53 correct11 unknown0 wrong. Three known16 errors become2 correct1 unknown; these already inspected errors are diagnostic controls, not independent qualification.
 
 E2E before/after: native targeted13 frames149.921s gives1 PASS12 FAIL0 NE; native fixed sampled30 frames325.078s gives8 PASS11 FAIL11 NE (baseline7/12/11). Terminal verified sampled pixel review is27 correct2 unknown1 wrong: PTS124.536003,actual1:26→4:26 atconfidence0.93759. States, flags, ownership and all non-timer values equal sampled13. Conclusion: reject17 before full despite aggregate PASS gain and independent holdout success; profile not adopted. No further full run or confidence retuning on this failure. Source changes/tests/full rerun are not applicable to this local configuration diagnosis; future recognizer changes require their own regression and real-video qualification. Evidence remains local at outputs/recognition-investigation/timer-white-ocr-training.
+
+
+### 2026-10-08: Round lifecycle prerequisite audit after failure classification
+
+- Problem: round/package scope affects 33 FAILs; no new numeric candidate is justified.
+- Evidence: current-main safe profile13 replay of six saved real frames is unknown with HUD confidence 0; R1 start lacks Ability/Weapon identity, R2 start lacks Weapon identity. Purchase banners visible in two images have shared_banner=false, while two combat/death backgrounds have texture shared_banner=true. Saved full16 boundary ranges contain 32 unknown observations, no semantic phase flags or known score pairs, even where numeric timer resets exist.
+- Hypothesis: timer-only improvements cannot establish round lifecycle; source-qualified phase/score and independent identity are prerequisites.
+- Change: read-only saved-frame diagnostics plus `docs/round_lifecycle_prerequisite_audit.md`; no production/profile/GT/threshold changes.
+- Tests: existing native diagnostic hook completed six isolated queries with three genuine calibration frames each. No claim about continuity/events from sparse input.
+- E2E before / after: unchanged 23 PASS / 55 FAIL / 4 NE; no additional full run.
+- Conclusion: next work must qualify phase/score/identity inputs together before boundary integration. No new recognizer candidate, guaranteed PASS gain, or adopted timer profile.
