@@ -11,6 +11,7 @@ DIRECTORIES = {"src", "tests", "config", "schemas", ".github", "scripts", "datas
 ROOT_EXTENSIONS = {".md", ".toml", ".ps1", ".spec", ".txt"}
 EXCLUDED_PARTS = {"__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache"}
 PRIVATE_SUFFIXES = {
+    ".avi",
     ".db",
     ".db-shm",
     ".db-wal",
@@ -25,9 +26,12 @@ PRIVATE_SUFFIXES = {
     ".webm",
 }
 PRIVATE_NAMES = {
+    "api_key.txt",
+    "credentials.json",
     "diagnostic_bundle.zip",
     "hud_layout.json",
     "hud_layout.templates.json",
+    "secrets.json",
     "settings.json",
     "visual_runtime.json",
 }
