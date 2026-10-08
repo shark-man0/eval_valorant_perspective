@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import os
+import stat
 from pathlib import Path
 
 import pytest
@@ -115,3 +117,10 @@ def test_settings_write_failure_rolls_back_new_credential(
 
     assert store.get_stored_api_key() is None
     assert json.loads((tmp_path / "settings.json").read_text(encoding="utf-8"))["mock_ai"] is True
+
+
+@pytest.mark.skipif(os.name == "nt", reason="POSIX permission bits are not authoritative on Windows")
+def test_settings_file_is_private_on_posix(tmp_path: Path) -> None:
+    path = tmp_path / "settings.json"
+    SettingsStore(path, credential_backend=MemoryCredentials()).save(AppSettings.defaults(tmp_path))
+    assert stat.S_IMODE(path.stat().st_mode) == 0o600
