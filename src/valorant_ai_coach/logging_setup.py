@@ -3,9 +3,10 @@ from __future__ import annotations
 import logging
 import os
 from contextlib import suppress
+from io import TextIOWrapper
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
-from typing import TextIO
+from typing import Any
 
 from .observability.context import DiagnosticContextFilter
 from .observability.sanitize import sanitize_text
@@ -13,7 +14,7 @@ from .settings import default_data_dir
 
 
 class _PrivateRotatingFileHandler(RotatingFileHandler):
-    def _open(self) -> TextIO:
+    def _open(self) -> TextIOWrapper[Any]:
         stream = super()._open()
         if os.name != "nt":
             with suppress(OSError):
