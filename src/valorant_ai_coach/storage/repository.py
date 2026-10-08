@@ -4,9 +4,8 @@ import json
 import logging
 import os
 import sqlite3
-from contextlib import suppress
 from collections.abc import Iterator
-from contextlib import contextmanager
+from contextlib import contextmanager, suppress
 from dataclasses import asdict, is_dataclass
 from datetime import UTC, datetime
 from pathlib import Path
