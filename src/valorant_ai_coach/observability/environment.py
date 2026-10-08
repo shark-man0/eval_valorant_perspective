@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.metadata
 import json
+import os
 import platform
 import subprocess
 import sys
@@ -28,6 +29,12 @@ DEFAULT_PACKAGES: tuple[str, ...] = (
 )
 
 
+def _subprocess_environment() -> dict[str, str]:
+    environment = os.environ.copy()
+    environment.pop("OPENAI_API_KEY", None)
+    return environment
+
+
 def package_versions(names: Sequence[str] = DEFAULT_PACKAGES) -> dict[str, str | None]:
     versions: dict[str, str | None] = {}
     for name in names:
@@ -46,6 +53,7 @@ def tool_version(executable: str, *args: str, timeout_sec: float = 3.0) -> str |
             text=True,
             timeout=timeout_sec,
             check=False,
+        env=_subprocess_environment(),
         )
     except (OSError, subprocess.TimeoutExpired):
         return None
@@ -65,6 +73,7 @@ def repository_state(repository_root: Path | None) -> dict[str, str | bool | Non
             text=True,
             timeout=3.0,
             check=False,
+        env=_subprocess_environment(),
         )
         if commit.returncode != 0:
             return {"commit_sha": None, "dirty": None}
@@ -74,6 +83,7 @@ def repository_state(repository_root: Path | None) -> dict[str, str | bool | Non
             text=True,
             timeout=3.0,
             check=False,
+        env=_subprocess_environment(),
         )
     except (OSError, subprocess.TimeoutExpired):
         return {"commit_sha": None, "dirty": None}
@@ -92,6 +102,7 @@ def pip_check() -> dict[str, Any]:
             text=True,
             timeout=30.0,
             check=False,
+        env=_subprocess_environment(),
         )
     except (OSError, subprocess.TimeoutExpired) as exc:
         return {"status": "unavailable", "detail": sanitize_text(str(exc))}
