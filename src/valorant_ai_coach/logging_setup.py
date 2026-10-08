@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import os
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
@@ -37,6 +38,11 @@ def configure_logging(
         backupCount=max(0, int(backup_count)),
         encoding="utf-8",
     )
+    if os.name != "nt":
+        try:
+            log_path.chmod(0o600)
+        except OSError:
+            pass
     handler.addFilter(DiagnosticContextFilter())
     handler.setFormatter(
         _RedactingFormatter(
