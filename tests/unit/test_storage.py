@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import json
 import os
-import stat
 import sqlite3
+import stat
 from pathlib import Path
 
 import pytest
@@ -319,7 +319,9 @@ def test_delete_match_cascades_rows_but_keeps_clips_shared_by_other_matches(
     assert len(repository.list_clips("M-2")) == 1
 
 
-@pytest.mark.skipif(os.name == "nt", reason="POSIX permission bits are not authoritative on Windows")
+@pytest.mark.skipif(
+    os.name == "nt", reason="POSIX permission bits are not authoritative on Windows"
+)
 def test_sqlite_file_is_private_on_posix(tmp_path: Path) -> None:
     path = tmp_path / "app.db"
     SQLiteRepository(path)
