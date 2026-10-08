@@ -30,7 +30,13 @@ from tests.e2e.trace_adapter import to_e2e_trace  # noqa: E402
 from valorant_ai_coach.events import EventSourceContract  # noqa: E402
 from valorant_ai_coach.hud.analyzers import RealHudAnalyzer  # noqa: E402
 from valorant_ai_coach.hud.calibrate_temporal import _check_output_privacy  # noqa: E402
+from valorant_ai_coach.hud.round_lifecycle import (  # noqa: E402
+    confidence,
+    is_discontinuous,
+    score_is_continuous,
+)
 from valorant_ai_coach.hud.templates import SubregionReader  # noqa: E402
+from valorant_ai_coach.hud.temporal import _round_start_confirmed  # noqa: E402
 from valorant_ai_coach.hud.timer_glyphs import StrictTimerGlyphReader  # noqa: E402
 from valorant_ai_coach.resources import resource_path  # noqa: E402
 from valorant_ai_coach.rounds import RoundPackageBuilder  # noqa: E402
@@ -54,6 +60,39 @@ class AuditedReader:
             "cross_checked": result.cross_checked,
         })
         return result
+
+
+def start_gate_rows(observations, diagnostics):
+    """Measure the existing start predicate, without hypothetical promotion.
+
+    A missing discontinuity marker is not a source continuity attestation.
+    Shared reader confidence is reported independently of player HUD confidence.
+    """
+    by_frame = {row["frame_index"]: row for row in diagnostics}
+    rows = []
+    for before, current in zip(observations, observations[1:], strict=False):
+        evidence = by_frame[current["frame_index"]]["signals"]
+        prior_timer = before["values"].get("round_time_remaining_sec")
+        timer = current["values"].get("round_time_remaining_sec")
+        numeric_timers = all(type(t) in (int, float) and math.isfinite(t)
+                             for t in (prior_timer, timer))
+        rows.append({
+            "pts_sec": current["time_sec"], "previous_pts_sec": before["time_sec"],
+            "prior_buy_phase": "buy_phase_banner" in before["state_flags"],
+            "current_buy_phase": "buy_phase_banner" in current["state_flags"],
+            "current_primary_state": current["primary_state"],
+            "timer_reset_observed": numeric_timers and timer > prior_timer + 3,
+            "score_pair_continuous": score_is_continuous(before, current),
+            "minimum_player_hud_confidence": min(confidence(before), confidence(current)),
+            "current_shared_value_confidence": {
+                key: current["quality"]["roi_confidence"].get(key, 0.0)
+                for key in ("round_timer_value", "score_ally_value", "score_enemy_value")
+            },
+            "native_start_predicate": _round_start_confirmed(before, current, evidence),
+            "native_discontinuity_or_gap": is_discontinuous(before, current, evidence),
+            "absence_of_cut_marker_is_not_continuity_proof": True,
+        })
+    return rows
 
 
 class FixedGaussianTimerComparison(StrictTimerGlyphReader):
@@ -351,6 +390,10 @@ def main() -> None:
                              ("score_enemy", "score_enemy_value"),
                          )
                      }} for row in observed
+                ],
+                "start_gate_diagnostic": [
+                    row for row in start_gate_rows(result.observations, diagnostics)
+                    if start <= row["pts_sec"] <= end
                 ],
                 "numeric_reader_attempts": [
                     {"pts_sec": context[row["frame_index"]], **attempt}

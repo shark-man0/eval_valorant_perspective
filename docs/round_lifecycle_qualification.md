@@ -618,3 +618,54 @@ round evidence gate. Those remain necessary before actual start/end and package
 separation can be claimed. Next priority is the global phase/timer/score lifecycle
 gate rather than repeatedly fitting portrait references: a presence-only bank
 cannot manufacture the missing elimination proof.
+
+### Start score continuity and native gate attribution — 2026-10-09
+
+The existing live-state start path could confirm a timer reset while a score
+value was missing, invalid, or changed during confirmation. This contradicted
+the required independent score context. The existing FSM now latches a complete
+nonnegative integer score pair and requires it unchanged through candidate and
+confirmation; bools, floats, negatives and nulls are not score evidence. The
+native candidate predicate uses the same helper, and source provenance records
+`score_continuity`. A malformed candidate timer also fails closed instead of
+being passed into `float(None)`. No identity/confidence threshold was changed and
+no new positive recognition path was introduced. Existing positive tests remain
+unchanged. New regressions cover each side at all three evidence positions,
+invalid values, score changes, and explicit score provenance.
+
+The existing diagnostic now reports `start_gate_diagnostic` directly from native
+predicates, without creating alternate lifecycle logic or hypothetical promoted
+observations. It separates accepted shared-value confidence from aggregate
+player HUD confidence, and explicitly states that no cut marker is **not** a
+continuity proof. Diagnostic regression tests confirm unknown stays unknown and
+source observations are not mutated.
+
+Same 19 archived source images and frozen numeric diagnostic candidates, profile
+fingerprint `8b5955f1d7de7139949815a7853260b9a66b6fd48140b64351030a6e78e9a5db`:
+
+| Current source PTS | Prior PTS | Prior buy flag | Current buy flag | Score stable | Timer/ally/enemy value confidence |
+| --- | --- | --- | --- | --- | --- |
+| 4.152669 | 4.086003 | true | false | true | .961 / .947 / .994 |
+| 111.436003 | 111.402669 | true | false | true | .936 / .952 / .962 |
+
+These are observed timer-reset pairs, not adopted boundaries or verified phase
+absence. Both native start predicates remain false because current primary
+state is unknown; aggregate player HUD confidence is zero. All 19 source states
+remain unknown, events/packages remain zero. The next largest start blocker is
+the independent global match-evidence/confidence and qualified source-continuity
+contract, not an invented live identity. Phase template nonmatch still cannot
+serve as verified absence. No continuity assertion or global confidence fallback
+was installed from this diagnostic.
+
+An attempted replay with the older phase-only profile was rejected by the
+frozen-comparison guard: that profile does not declare Gaussian timer comparison.
+Its bytes were not edited to bypass the guard. The successful replay uses the
+same originally declared numeric profile as the previous 19-frame comparison.
+Private output: `mac-start-gates-20261009.json`.
+
+Related native lifecycle/phase tests: **89 PASS**; new diagnostic tests: **2 PASS**.
+Fresh full suite: **1278 PASS / 5 baseline FAIL / 5 SKIP**, 151.77 s,
+`pytest-score-continuity.xml`. Failures are the same previously reproduced macOS
+path and Spectator cases; no assertion was weakened. Ruff, source mypy (98 files)
+and diff check pass. Actual start/end/package completion and canonical full E2E
+remain unproven; the task goal is still active.
