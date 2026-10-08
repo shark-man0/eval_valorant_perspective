@@ -753,10 +753,21 @@ class RoundPackageBuilder:
         values = observation.get("values")
         flags = set(observation.get("state_flags", ()))
         quality = observation.get("quality")
+        if not isinstance(quality, dict):
+            return False
+        roi_confidence = quality.get("roi_confidence")
+        # Source-qualified global phase can establish preparation context while
+        # player identity remains unknown. Never use it as an active boundary.
         if (
-            not isinstance(quality, dict)
-            or _bounded_confidence(quality.get("hud_confidence")) < 0.65
+            "buy_phase_banner" in flags
+            and isinstance(values, dict)
+            and values.get("buy_phase_visible") is True
+            and isinstance(roi_confidence, dict)
+            and _bounded_confidence(roi_confidence.get("center_phase_banner_semantic_text"))
+            >= 0.90
         ):
+            return True
+        if _bounded_confidence(quality.get("hud_confidence")) < 0.65:
             return False
         return (
             observation.get("primary_state") == "buy_menu_open"

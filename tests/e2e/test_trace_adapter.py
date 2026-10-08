@@ -9,6 +9,30 @@ import pytest
 from trace_adapter import to_e2e_trace
 
 
+def test_global_phase_confidence_does_not_authorize_player_ownership():
+    result = SimpleNamespace(
+        round_packages=[{"round_window": {"start_sec": 0, "end_sec": 1}}],
+        observations=[
+            {
+                "time_sec": timestamp,
+                "primary_state": "unknown",
+                "state_flags": ["buy_phase_banner"],
+                "quality": {
+                    "hud_confidence": 0,
+                    "roi_confidence": {"center_phase_banner_semantic_text": confidence},
+                },
+            }
+            for timestamp, confidence in [(0, 0.96), (0.1, 0.94), (0.2, 0.95)]
+        ],
+    )
+    trace = to_e2e_trace(result)
+    phase = next(row for row in trace["state_intervals"] if row["state"] == "buy_phase_banner")
+    assert phase["confidence"] == 0.94
+    assert phase["interval"] == [0, 0.2]
+    assert all(row["owner"] == "unknown" for row in trace["ownership_intervals"])
+    assert not trace["events"]
+
+
 @pytest.mark.parametrize("confidence", [None, float("nan"), float("inf"), -0.1, 1.1, True])
 def test_trace_rejects_invalid_or_missing_confidence(confidence):
     result = SimpleNamespace(round_packages=[{

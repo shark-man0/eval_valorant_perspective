@@ -22,6 +22,39 @@ class SequenceReader:
         return ReaderResult(next(self.values), 0.95)
 
 
+def test_supported_phase_is_global_context_without_player_or_numeric_inference():
+    analyzer = RealHudAnalyzer(resource_path("config/hud_layout_1080p_v3.json"), readers={})
+    source = {
+        "buy_phase_template": True,
+        "buy_phase_template_confidence": 0.96,
+        "buy_phase_template_matcher": "semantic_text_ncc_v1",
+    }
+    anchors = {
+        name: analyzer.layout.normalized_roi(name)
+        for name in ("round_timer", "top_match_bar", "player_hp_armor", "abilities")
+    }
+    frames = [np.full((1080, 1920, 3), 60, dtype=np.uint8)] * 3
+    result = analyzer.observe_frames(
+        frames, anchor_detections=anchors, additional_signals=[source, source, {}]
+    )
+    first, confirmed, missing = result.observations
+    assert "buy_phase_banner" not in first["state_flags"]
+    assert "buy_phase_banner" in confirmed["state_flags"]
+    assert confirmed["values"]["buy_phase_visible"] is True
+    assert confirmed["quality"]["roi_confidence"]["center_phase_banner_semantic_text"] == 0.96
+    assert "buy_phase_banner" not in missing["state_flags"]
+    for observation in result.observations:
+        assert observation["primary_state"] == "unknown"
+        assert observation["quality"]["hud_confidence"] == 0
+        assert observation["values"]["player_specific_hud_valid"] is False
+        assert observation["values"]["hp"] is None
+        assert observation["values"]["score_ally"] is None
+        assert observation["values"]["score_enemy"] is None
+        assert observation["values"]["round_time_remaining_sec"] is None
+        SchemaValidator().validate_hud_observation(observation)
+    assert not {"round_start", "round_end"} & {event["type"] for event in result.hud_events}
+
+
 def test_real_analyzer_connects_round_boundaries_roster_and_feed(live_identity_signals):
     analyzer = RealHudAnalyzer(
         resource_path("config/hud_layout_1080p_v3.json"),

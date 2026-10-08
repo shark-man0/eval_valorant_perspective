@@ -28,6 +28,8 @@ from .readers import (
     crop_roi,
     load_frame,
 )
+from .semantic_text import CONFIDENCE_KEY as PHASE_TEXT_CONFIDENCE_KEY
+from .semantic_text import SemanticPhaseContext
 from .templates import (
     DEFAULT_DIGIT_OCR_ROIS,
     HudTemplateProfile,
@@ -329,6 +331,7 @@ class RealHudAnalyzer:
             calibration = CalibrationResult(False, ("frame_resolution_changed",), 0, None, None)
 
         observations: list[dict[str, Any]] = []
+        semantic_phase = SemanticPhaseContext()
         evidence_by_frame: dict[int, Mapping[str, Any]] = {}
         diagnostics: list[str] = [*self.profile_diagnostics, *anchor_diagnostics]
         if not calibration.calibrated:
@@ -374,6 +377,11 @@ class RealHudAnalyzer:
             signals["template_anchor_scores"] = dict(anchor_scores)
             supplemental = {} if additional_signals is None else dict(additional_signals[index])
             signals.update(supplemental)
+            signals.update(
+                semantic_phase.advance(
+                    time_sec, signals, geometry_valid=calibration.calibrated
+                )
+            )
             values = empty_hud_values()
             reader_confidence: dict[str, float] = {}
             raw_accepted_reader_values: dict[str, Any] | None = (
@@ -489,7 +497,7 @@ class RealHudAnalyzer:
                 hp_value_confidence = 0.0
             else:
                 hp_value_confidence = min(1.0, max(0.0, float(hp_value_confidence)))
-            quality = {
+            quality: dict[str, Any] = {
                 "hud_confidence": min([classified.confidence, *reader_confidence.values()])
                 if calibration.calibrated
                 else 0.0,
@@ -522,6 +530,15 @@ class RealHudAnalyzer:
                     "hp_value": hp_value_confidence,
                 },
             }
+            if (
+                signals.get("semantic_buy_phase_confirmed") is True
+                and "buy_phase_banner" in classified.state_flags
+            ):
+                # Global phase confidence is distinct from player HUD identity.
+                # The existing extensible ROI map preserves the source contract.
+                quality["roi_confidence"][PHASE_TEXT_CONFIDENCE_KEY] = signals[
+                    "semantic_buy_phase_confidence"
+                ]
             observation = HudObservationV2(
                 time_sec=time_sec,
                 frame_index=index,
@@ -692,8 +709,16 @@ def _enrich_temporal_evidence(
         signals["score_stable"] = not signals["score_changed"]
         if signals["score_changed"]:
             signals["score_changed_within_sec"] = 0.0
-    if signals.get("buy_phase_template") and signals.get("score_stable"):
-        signals["banner_confidence"] = signals.get("buy_phase_template_confidence", 0.9)
+    semantic_phase = signals.get("semantic_buy_phase_confirmed") is True
+    if (
+        signals.get("buy_phase_template") and signals.get("score_stable")
+        or semantic_phase and signals.get("score_changed") is not True
+    ):
+        signals["banner_confidence"] = (
+            signals["semantic_buy_phase_confidence"]
+            if semantic_phase
+            else signals.get("buy_phase_template_confidence", 0.9)
+        )
         signals.update(
             shared_banner=True,
             pre_round_context=True,

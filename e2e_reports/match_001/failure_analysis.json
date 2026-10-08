@@ -13474,5 +13474,64 @@
     "map resolution": 3,
     "visual event": 3,
     "event detection": 1
+  },
+  "post_analysis_followup": {
+    "git_head": "8e3cf32f1ac331c747e85fd1dcdcffcb4179e987",
+    "historical_full_assertion_status_counts_unchanged": {
+      "FAIL": 55,
+      "NE": 4,
+      "PASS": 23
+    },
+    "actor_contract_gap_resolved_in_code": true,
+    "actual_round_boundaries_qualified": false,
+    "phase_reference_report": "e2e_reports/match_001/phase_reference_qualification.json",
+    "phase_reference_report_sha256": "a4cd4fd7395eed24ec5c0a89d2b1697aadd26a941f94ee9bdca67a243a867fc7",
+    "phase_reference_adopted": false,
+    "native_component_metrics": {
+      "semantic_phase_matches_on_same_18_pts": {
+        "previous": 0,
+        "current": 11,
+        "delta": 11
+      },
+      "unknown_on_same_18_pts": {
+        "previous": 18,
+        "current": 18,
+        "delta": 0
+      },
+      "round_start_events": {
+        "previous": 0,
+        "current": 0,
+        "delta": 0
+      },
+      "round_end_events": {
+        "previous": 0,
+        "current": 0,
+        "delta": 0
+      },
+      "canonical_pass": {
+        "previous": 23,
+        "current": null,
+        "delta": null,
+        "reason": "no new canonical candidate full evaluation"
+      },
+      "canonical_fail": {
+        "previous": 55,
+        "current": null,
+        "delta": null
+      },
+      "canonical_ne": {
+        "previous": 4,
+        "current": null,
+        "delta": null
+      }
+    },
+    "scope": "component diagnostics and pipeline unit coverage; not a new canonical full result",
+    "next_blockers": [
+      "score readers unconfigured; score stability unavailable",
+      "safe baseline timer unavailable; rejected timer hypotheses cannot be adopted",
+      "boundary frames still unknown under full independent identity policy",
+      "R1 end requires separately qualified semantic end/score evidence",
+      "source content-jump markers missing"
+    ]
   }
 }
