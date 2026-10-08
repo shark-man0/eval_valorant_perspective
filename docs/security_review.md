@@ -4,7 +4,8 @@
 
 - Repository: `shark-man0/eval_valorant_perspective`
 - Review branch: `external/security-review`
-- Start commit: `deaf3c8ed34a571f38a46e947ade5beea187d930`
+- Latest-main baseline at resumed review: `9bb50abd463ab0ef41fb35c59dbe0d7679a64082`
+- Original security-review branch base: `deaf3c8ed34a571f38a46e947ade5beea187d930`
 - Review date: 2026-10-08
 - Scope: security/privacy audit and narrowly scoped security fixes only
 - Explicitly out of scope: recognition thresholds, Analyzer accuracy, event/evaluation semantics, schema redesign, installer redesign
@@ -110,6 +111,7 @@ Two material privacy risks remain intentionally unresolved because they cross ot
 - Impact:
   - a crafted local invocation could escape the intended diagnostics directory or overwrite an existing bundle
   - a symlink could cause an unintended local file to be read into a shared diagnostic path
+  - a pre-existing symlinked run directory could redirect bundle output outside the selected diagnostics root
 - Exploitability:
   - local-only and requires control of CLI arguments/files; reduced by the trusted-local-user model, but still unsafe file handling
 - Fix:
@@ -118,6 +120,7 @@ Two material privacy risks remain intentionally unresolved because they cross ot
   - validate before creating parent directories
   - create ZIP with mode `x` (create-only)
   - omit symlinked JSON/log inputs
+  - resolve the selected diagnostics root and reject symlinked run directories that escape it
   - regression tests added
 
 ### SEC-02: raw traceback and remote exception details exposed through user-visible errors/logs
@@ -249,6 +252,7 @@ Two material privacy risks remain intentionally unresolved because they cross ot
   - transitive packages remain pip-resolved by design
   - pip itself is a build tool and is not pinned by project constraints
 - Public advisory review (2026-10-08):
+  - PyInstaller GHSA-9fxf-4qw3-ghmr (published 2026-08-15) affects versions before 6.22.1; Windows baseline 6.22.3 is patched
   - PyInstaller CVE-2025-59042 / GHSA-p2xp-xx3r-mffc affects versions before 6.0.0; Windows baseline is 6.22.3
   - opencv-python PYSEC-2023-183 affects versions before 4.8.1.78; baseline is 4.14.0.94
   - historical keyring advisory PYSEC-2019-182 was fixed in 0.10.1; baseline is 25.7.0
@@ -324,6 +328,7 @@ Assessment: **Strong containment in security-sensitive output paths.**
 - match deletion validates IDs and uses a contained safe-tree removal
 - repository clip cleanup verifies ownership root before unlink
 - diagnostic run IDs now cannot traverse directories
+- diagnostic CLI rejects a symlinked run directory that resolves outside the selected diagnostics root
 - valid absolute source-video and explicit FFmpeg paths remain allowed as required by contract
 
 ## Temporary files
