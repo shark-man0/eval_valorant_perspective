@@ -4,10 +4,22 @@ import logging
 import os
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
+from typing import TextIO
 
 from .observability.context import DiagnosticContextFilter
 from .observability.sanitize import sanitize_text
 from .settings import default_data_dir
+
+
+class _PrivateRotatingFileHandler(RotatingFileHandler):
+    def _open(self) -> TextIO:
+        stream = super()._open()
+        if os.name != "nt":
+            try:
+                Path(self.baseFilename).chmod(0o600)
+            except OSError:
+                pass
+        return stream
 
 
 class _RedactingFormatter(logging.Formatter):
@@ -32,17 +44,12 @@ def configure_logging(
         root.removeHandler(handler)
         handler.close()
 
-    handler = RotatingFileHandler(
+    handler = _PrivateRotatingFileHandler(
         log_path,
         maxBytes=max(1024, int(max_bytes)),
         backupCount=max(0, int(backup_count)),
         encoding="utf-8",
     )
-    if os.name != "nt":
-        try:
-            log_path.chmod(0o600)
-        except OSError:
-            pass
     handler.addFilter(DiagnosticContextFilter())
     handler.setFormatter(
         _RedactingFormatter(
