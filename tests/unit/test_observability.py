@@ -408,3 +408,28 @@ def test_private_observability_files_use_owner_only_permissions(tmp_path: Path) 
         assert stat.S_IMODE(bundle_path.stat().st_mode) == 0o600
     finally:
         _close_root_handlers()
+
+
+def test_diagnostic_subprocess_does_not_inherit_openai_api_key(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    captured: dict[str, str] = {}
+
+    class Result:
+        returncode = 0
+        stdout = "tool 1.0\n"
+        stderr = ""
+
+    def fake_run(*_args: object, **kwargs: object) -> Result:
+        env = kwargs.get("env")
+        assert isinstance(env, dict)
+        captured.update({str(key): str(value) for key, value in env.items()})
+        return Result()
+
+    monkeypatch.setenv("OPENAI_API_KEY", "do-not-inherit")
+    monkeypatch.setenv("SECURITY_TEST_SENTINEL", "preserved")
+    monkeypatch.setattr(environment_module.subprocess, "run", fake_run)
+
+    assert environment_module.tool_version("tool") == "tool 1.0"
+    assert "OPENAI_API_KEY" not in captured
+    assert captured["SECURITY_TEST_SENTINEL"] == "preserved"
