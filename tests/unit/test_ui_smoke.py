@@ -245,7 +245,7 @@ def test_analysis_failure_dialog_hides_traceback_and_private_paths(
     def fake_exec(dialog: QMessageBox) -> int:
         captured["text"] = dialog.text()
         captured["details"] = dialog.detailedText()
-        return int(QMessageBox.StandardButton.Ok)
+        return 0
 
     monkeypatch.setattr(QMessageBox, "exec", fake_exec)
     window._on_failed(
