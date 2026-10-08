@@ -10,8 +10,10 @@ if str(ROOT) not in sys.path:
 
 from scripts.diagnostics.roster_edge_reference import (  # noqa: E402
     build_reference,
+    locate_bank,
     locate_edges,
     masked_locations,
+    validate_groups,
 )
 
 
@@ -65,3 +67,30 @@ def test_insufficient_source_and_edge_support_fail_closed():
         build_reference([flat, flat, flat])
     with pytest.raises(ValueError, match="support"):
         masked_locations(flat, np.zeros_like(flat), flat)
+
+
+@pytest.mark.parametrize("groups", [
+    [[0, 1, 2], [2, 3, 4]], [[0, 1, 2]], [[0, 1], [2, 3, 4, 5]],
+    [[False, 1, 2], [3, 4, 5]], [[0, 1, 2], [3, 4, 6]],
+])
+def test_bank_groups_cannot_recycle_sources_or_bypass_support(groups):
+    with pytest.raises(ValueError):
+        validate_groups(groups, 6)
+    assert validate_groups([[0, 1, 2], [3, 4, 5]], 6) == [[0, 1, 2], [3, 4, 5]]
+
+
+def test_bank_selects_only_supported_reference_without_confidence_inflation():
+    rng = np.random.default_rng(10)
+    a = rng.integers(0, 255, (20, 20), dtype=np.uint8)
+    b = rng.integers(0, 255, (20, 20), dtype=np.uint8)
+    mask = np.full_like(a, 255)
+    variants = [(a, mask, {"available": True}), (b, mask, {"available": True})]
+    result = locate_bank(variants, b)
+    assert result["variant_index"] == 1
+    assert result["similarity"] == locate_edges(b, mask, b)["similarity"]
+    variants[1][2]["available"] = False
+    result = locate_bank(variants, b)
+    assert result["variant_index"] == 0
+    assert result["similarity"] < .90
+    assert "alive" not in result
+    assert locate_bank([], b)["reason"] == "training_reference_insufficient"

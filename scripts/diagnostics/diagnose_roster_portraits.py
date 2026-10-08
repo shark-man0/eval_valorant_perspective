@@ -16,11 +16,14 @@ import cv2
 import numpy as np
 
 from scripts.diagnostics.roster_edge_reference import (
-    METHOD as EDGE_METHOD,
+    BANK_METHOD,
+    build_reference,
+    locate_bank,
+    locate_edges,
+    validate_groups,
 )
 from scripts.diagnostics.roster_edge_reference import (
-    build_reference,
-    locate_edges,
+    METHOD as EDGE_METHOD,
 )
 from valorant_ai_coach.hud.calibrate_temporal import _check_output_privacy
 from valorant_ai_coach.hud.layout import HudLayout
@@ -65,13 +68,15 @@ def replay(layout_path, manifest_path, training_root, probe_root, output):
     original[matcher_path] = digest(matcher_path)
     manifest = json.loads(manifest_path.read_bytes())
     method = manifest["method"]
-    if method not in {METHOD, EDGE_METHOD}:
+    if method not in {METHOD, EDGE_METHOD, BANK_METHOD}:
         raise ValueError("portrait method differs from frozen declaration")
     layout = HudLayout.load(layout_path)
     width, height = layout.reference_resolution or (0, 0)
     sources = manifest["training_frames"]
     if len(sources) < 3 or len({row["sha256"] for row in sources}) != len(sources):
         raise ValueError("three distinct frozen training frames required")
+    groups = validate_groups(manifest.get("training_groups"), len(sources)) \
+        if method == BANK_METHOD else None
     training = []
     for row in sources:
         path = (training_root / row["frame"]).resolve()
@@ -86,6 +91,7 @@ def replay(layout_path, manifest_path, training_root, probe_root, output):
     if not probes or len(probes) > 128:
         raise ValueError("portrait diagnostic requires 1..128 bounded probe frames")
     references = {}
+    banks = {}
     for name, crop in manifest["crops"].items():
         side = crop["side"]
         if side not in {"ally", "enemy"}:
@@ -100,7 +106,13 @@ def replay(layout_path, manifest_path, training_root, probe_root, output):
         if not left <= x1 < x2 <= right or not top <= y1 < y2 <= bottom:
             raise ValueError("portrait training crop outside configured ROI")
         crops = [image[y1:y2, x1:x2] for image in training]
-        if method == EDGE_METHOD:
+        if method == BANK_METHOD:
+            banks[name] = [build_reference([crops[i] for i in group]) for group in groups]
+            reference, mask, _ = banks[name][0]
+            support = {"variants": [{**diagnostic,
+                        "mask_sha256": hashlib.sha256(variant_mask.tobytes()).hexdigest()}
+                       for _, variant_mask, diagnostic in banks[name]]}
+        elif method == EDGE_METHOD:
             reference, mask, support = build_reference(crops)
             support["mask_sha256"] = hashlib.sha256(mask.tobytes()).hexdigest()
         else:
@@ -122,7 +134,9 @@ def replay(layout_path, manifest_path, training_root, probe_root, output):
                 width, height
             )
             search = image[top:bottom, left:right]
-            if mask is None:
+            if method == BANK_METHOD:
+                measured = locate_bank(banks[name], search)
+            elif mask is None:
                 measured = locate(reference, search)
             elif support["available"]:
                 measured = locate_edges(reference, mask, search)
@@ -137,6 +151,7 @@ def replay(layout_path, manifest_path, training_root, probe_root, output):
                 cl, ct, cr, cb = region.pixel_bounds(width, height)
                 control = image[ct:cb, cl:cr]
                 locations[name]["control"] = (
+                    locate_bank(banks[name], control) if method == BANK_METHOD else
                     locate(reference, control) if mask is None else
                     locate_edges(reference, mask, control) if support["available"] else
                     {"similarity": None, "offset_xy": None,

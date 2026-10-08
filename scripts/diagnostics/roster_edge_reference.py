@@ -12,6 +12,33 @@ import cv2
 import numpy as np
 
 METHOD = "roster_portrait_stable_edge_ncc_location_v2"
+BANK_METHOD = "roster_portrait_stable_edge_bank_location_v3"
+
+
+def validate_groups(groups, source_count):
+    if not isinstance(groups, list) or not 1 <= len(groups) <= 3:
+        raise ValueError("one to three independent portrait training groups required")
+    indices = []
+    for group in groups:
+        if (not isinstance(group, list) or len(group) < 3
+                or any(type(i) is not int or not 0 <= i < source_count for i in group)):
+            raise ValueError("three in-bounds source indices per training group required")
+        indices.extend(group)
+    if sorted(indices) != list(range(source_count)):
+        raise ValueError("training groups must partition sources without reuse")
+    return groups
+
+
+def locate_bank(variants, search):
+    measured = [(index, locate_edges(ref, mask, search))
+                for index, (ref, mask, support) in enumerate(variants) if support["available"]]
+    usable = [(index, row) for index, row in measured if row["similarity"] is not None]
+    if usable:
+        index, best = max(usable, key=lambda pair: pair[1]["similarity"])
+        return {**best, "variant_index": index}
+    return {"similarity": None, "offset_xy": None, "variant_index": None,
+            "reason": "search_contrast_insufficient" if measured
+            else "training_reference_insufficient"}
 
 
 def masked_locations(reference, mask, search):

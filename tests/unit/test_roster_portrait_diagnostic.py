@@ -12,6 +12,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts.diagnostics.diagnose_roster_portraits import (  # noqa: E402
+    BANK_METHOD,
     EDGE_METHOD,
     METHOD,
     locate,
@@ -113,3 +114,30 @@ def test_edge_reference_without_training_support_cannot_probe_positive(tmp_path)
     assert location["similarity"] is None
     assert location["reason"] == "training_reference_insufficient"
     assert location["control"]["similarity"] is None
+
+
+def test_bank_replay_uses_distinct_supported_training_group(tmp_path):
+    args = fixture(tmp_path)
+    manifest = json.loads(args[1].read_bytes())
+    manifest["method"] = BANK_METHOD
+    manifest["training_groups"] = [[0, 1, 2], [3, 4, 5]]
+    base = cv2.imread(str(args[2] / "0.jpg"), cv2.IMREAD_GRAYSCALE)
+    for i in range(3, 6):
+        image = base.copy()
+        image[-10:, -10:] = i * 30
+        path = args[2] / f"{i}.jpg"
+        cv2.imwrite(str(path), image)
+        manifest["training_frames"].append({
+            "frame": path.name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
+    args[1].write_text(json.dumps(manifest))
+    base[-10:, -10:] = 200
+    cv2.imwrite(str(args[3] / "probe.jpg"), base)
+    report = replay(*args)
+    variants = report["references"]["portrait"]["variants"]
+    assert variants[0]["available"] is False
+    assert variants[1]["available"] is True
+    location = report["rows"][0]["locations"]["portrait"]
+    assert location["variant_index"] == 1
+    assert location["similarity"] >= .90
+    assert report["liveness_counts"] is None
+    assert report["qualification_created"] is False

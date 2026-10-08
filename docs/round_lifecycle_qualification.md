@@ -574,3 +574,47 @@ mypy (98 files), diff check: PASS. No production source changed in this follow-u
 the previously reported full-suite result remains 1229 PASS / 5 baseline FAIL /
 5 SKIP, not a fresh full run including the new diagnostic tests. Canonical full
 E2E and real round boundary completion remain unproven.
+
+### Independent rendering bank: presence correspondence recovered
+
+V3 keeps v2's edge-mask construction and .90 NCC, but supports a bounded bank of
+up to three independently trained variants per portrait. Each group needs at
+least three distinct source images; groups must partition the declared training
+sources without reuse, and all source/probe hashes stay disjoint. Unsupported
+variants cannot contribute even when a probe perfectly matches their pixels.
+The output retains the original best variant's NCC and index; it does not sum
+confidence, infer death, assign a living-player count or install a profile.
+
+An additional training-only source window 2.0–2.1 was decoded (six native frames).
+The first, third and last frames, 2.002669 / 2.036003 / 2.086003, form the second
+group. The five unchanged training crop bounds were not moved. Each additional
+reference has three-frame support >=.9926; no prior missed probe was inserted
+into training. The two-group manifest was frozen before new probe decoding.
+
+Development regression on the previously seen 0.8–1.1 cohort now gives .90
+matches for all five portraits on all 18 frames, whereas v2 missed the first
+portrait on all 18. This is a same-population diagnostic delta, not new holdout
+accuracy. Spatial controls have no .90 matches, maximum .600.
+
+Fresh native-PTS selectors 1.4–1.7 and 73.5–73.8 yield 36 new probe images, with
+exact source PTS preserved and the same source SHA/quality100/no-resize policy.
+First window: every portrait has 18/18 .90 matches; per-role minimum NCC .990,
+.984, .980, .987, .976. Second window: first portrait 18/18 matches, the other
+four 0/18. The 180 spatial non-HUD comparisons have no .90 match, maximum .562.
+These are predictor outputs; they are not exhaustive manually labeled accuracy,
+and correlated frames from narrow windows do not establish general performance.
+
+Private reports: `mac-roster-bank-v3-development.json` and
+`mac-roster-bank-v3-unseen.json`. Code/manifest/matcher/mask/source hashes bind
+each run. Focused tests **21 PASS**, covering numerical NCC, group partition,
+unavailable-reference suppression, bank variant provenance, immutable inputs and
+no liveness inference. Ruff/source mypy/diff check pass. No production source or
+confidence policy changed; no canonical full E2E was executed.
+
+This resolves the measured single-reference presence miss without lowering a
+threshold. It does **not** resolve current-frame verified portrait absence,
+empty-roster observability, content-cut attestation, or the independent global
+round evidence gate. Those remain necessary before actual start/end and package
+separation can be claimed. Next priority is the global phase/timer/score lifecycle
+gate rather than repeatedly fitting portrait references: a presence-only bank
+cannot manufacture the missing elimination proof.
