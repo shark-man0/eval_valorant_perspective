@@ -30,10 +30,11 @@ The existing design already has several strong controls:
 
 This review fixed security issues in diagnostic path handling, source ZIP privacy, error/traceback privacy, prompt-injection boundaries, and POSIX private-file permissions.
 
-Two material privacy risks remain intentionally unresolved because they cross other owners' contracts:
+One material privacy risk remains intentionally unresolved because it crosses the Vision/UI contract:
 
-1. PyInstaller currently packages the local `config/` directory wholesale, so an ignored/private local configuration file can be included in a distributable.
-2. selected gameplay/evidence frames sent to OpenAI may contain player names, chat, minimap, or other on-screen private content because the current contract sends the selected frame image, not a privacy-redacted crop.
+1. selected gameplay/evidence frames sent to OpenAI may contain player names, chat, minimap, or other on-screen private content because the current contract sends the selected frame image, not a privacy-redacted crop.
+
+The previous PyInstaller whole-`config/` risk (SEC-06) was resolved by the Windows release work merged into main: the spec now uses an explicit runtime-resource allowlist instead of packaging the directory wholesale.
 
 ## Threat model
 
@@ -198,20 +199,18 @@ Two material privacy risks remain intentionally unresolved because they cross ot
 ### SEC-06: PyInstaller packages the complete local config directory
 
 - Severity: **Medium**
-- Status: **Unresolved — handoff to Windows packaging / installer owner**
+- Status: **Resolved by Windows release work merged into main**
 - Affected file: `VALORANT-AI-Coach.spec`
-- Evidence:
-  - `datas` contains `(str(project / "config"), "config")`
-  - `.gitignore` excludes local `config/hud_layout.json`, but PyInstaller packages the working tree rather than Git-tracked files only
-- Impact:
-  - a private/generated local calibration/config file can be unintentionally embedded in a distributable even though it is not committed
-- Exploitability:
-  - accidental leakage during packaging from a developer machine
-- Recommended fix:
-  - package an explicit allowlist of canonical config assets, or explicitly exclude local/generated/private filenames from the PyInstaller data collection
-  - add a packaging test that fails when private runtime artifacts occur in `dist/`
-- Why not fixed here:
-  - installer/PyInstaller ownership is explicitly assigned to another worker; changing the data manifest may alter packaging behavior
+- Previous evidence:
+  - the old spec packaged the complete local `config/` directory
+  - ignored/private local configuration could therefore enter a distributable
+- Resolution verified during re-review:
+  - the current spec defines explicit `add_file(...)` and `add_json_tree(...)` runtime resources
+  - canonical config assets are allowlisted instead of copying the entire `config/` tree
+  - map fixtures are explicitly excluded from the packaged map config tree
+  - the one built-in mock case is remapped explicitly rather than packaging the test tree
+- Residual note:
+  - release packaging should retain artifact-content checks so future spec changes do not reintroduce broad directory inclusion
 
 ### SEC-07: selected remote-AI frames may contain incidental private HUD/on-screen content
 
@@ -472,8 +471,8 @@ Positive:
 - application data directory is per-user writable; executable directory is not used as the runtime database/settings root
 - current PyInstaller baseline 6.22.3 is newer than both the 6.0.0 fix for CVE-2025-59042 and the 6.22.1 fix for GHSA-9fxf-4qw3-ghmr
 
-Unresolved:
-- complete local `config/` directory is included. See SEC-06.
+Resolved:
+- SEC-06: the current spec uses an explicit allowlist for runtime config/assets rather than including the complete local `config/` directory.
 
 ## Fixed findings
 
@@ -482,13 +481,14 @@ Unresolved:
 - SEC-03 source-package private artifact inclusion
 - SEC-04 POSIX owner-only permissions for core private artifacts
 - SEC-05 explicit prompt-injection trust boundary
+- SEC-06 PyInstaller runtime-resource allowlist (resolved by Windows release work)
 
 ## Unresolved findings / handoff
 
 ### Windows Packaging / Installer owner
 
-1. Replace `VALORANT-AI-Coach.spec` whole-`config/` inclusion with an allowlisted/tracked canonical asset set, or explicitly exclude private/generated config.
-2. Add a packaged-distribution privacy assertion that rejects `hud_layout.json`, settings, DB, logs, `.env`, credentials, and diagnostics.
+1. Keep a packaged-distribution privacy assertion that rejects local/private runtime artifacts such as settings, DB, logs, `.env`, credentials, and diagnostics.
+2. Preserve the explicit PyInstaller runtime-resource allowlist added by the Windows release work.
 3. Ensure release build tooling uses a non-vulnerable pip (>=26.2 as of this review).
 
 ### Vision / UI owner
