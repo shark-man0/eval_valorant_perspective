@@ -123,7 +123,10 @@ def to_e2e_trace(result: Any) -> dict[str, list[dict[str, Any]]]:
             trace["snapshots"].append(row)
 
     def containing_round(timestamp: float) -> int | None:
-        for index, package in enumerate(packages, start=1):
+        # A shared context endpoint belongs to the upcoming package. Native
+        # builders exclude it from the preceding observation window, while its
+        # round_end event remains explicitly attached to the preceding package.
+        for index, package in reversed(tuple(enumerate(packages, start=1))):
             window = package.get("round_window", {})
             if float(window.get("start_sec", 0)) <= timestamp <= float(window.get("end_sec", 0)):
                 return index

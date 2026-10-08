@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import math
 from collections.abc import Sequence
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 from typing import Any
 
 from valorant_ai_coach.events import DerivedEventBuilder, EventSourceContract
@@ -17,12 +17,14 @@ class RoundPackageBuildError(ValueError):
     pass
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(slots=True)
 class _RoundWindow:
     start_sec: float
     end_sec: float
     complete: bool = True
     include_end: bool = True
+    start_event_sec: float | None = None
+    end_event_sec: float | None = None
 
     def contains(self, timestamp: float) -> bool:
         return self.start_sec <= timestamp and (
@@ -305,14 +307,17 @@ class RoundPackageBuilder:
                 event
                 for event in all_events
                 if (
-                    window.contains(float(event["time_sec"]))
-                    and not (
-                        event["type"] == "round_end"
-                        and number > 1
-                        and float(event["time_sec"]) == windows[number - 2].end_sec
-                    )
+                    event["type"] == "round_start"
+                    and window.start_event_sec == float(event["time_sec"])
                 )
-                or (event["type"] == "round_end" and float(event["time_sec"]) == window.end_sec)
+                or (
+                    event["type"] == "round_end"
+                    and window.end_event_sec == float(event["time_sec"])
+                )
+                or (
+                    event["type"] not in {"round_start", "round_end"}
+                    and window.contains(float(event["time_sec"]))
+                )
             ]
             score_before = self._score_before(round_observations)
             result = self._round_result(round_events)
@@ -480,40 +485,348 @@ class RoundPackageBuilder:
                 and 0 <= float(item["time_sec"]) <= video_duration
             }
         )  # round_end sorts before round_start at an identical timestamp.
+        boundary_segments = {
+            (float(item["time_sec"]), item["type"]): self._continuity_segment(item)
+            for item in hud_events
+            if item.get("type") in {"round_start", "round_end"}
+            and 0 <= float(item["time_sec"]) <= video_duration
+        }
+        observed_times = sorted({self._time(item) for item in observations})
+        timeline: list[tuple[float, int, str, int | None]] = [
+            (
+                timestamp,
+                0 if kind == "round_end" else 2,
+                kind,
+                boundary_segments.get((timestamp, kind)),
+            )
+            for timestamp, kind in boundaries
+        ]
+        timeline.extend(
+            (following, 1, "_observation_gap", None)
+            for previous, following in zip(
+                observed_times, observed_times[1:], strict=False
+            )
+            if following - previous > 1.0
+        )
+        timeline.sort()
         active_start: float | None = None
+        active_start_segment: int | None = None
         cursor = -math.inf
 
         def first_observed_until(end: float) -> float | None:
             return next((time for time in usable if cursor < time < end), None)
 
-        for timestamp, kind in boundaries:
+        for timestamp, _priority, kind, segment in timeline:
+            if kind == "_observation_gap":
+                previous_observation = max(
+                    (time_sec for time_sec in observed_times if time_sec < timestamp),
+                    default=cursor,
+                )
+                if active_start is not None:
+                    observed_end = (
+                        previous_observation
+                        if previous_observation > active_start
+                        else min(timestamp, active_start + 0.1)
+                    )
+                    windows.append(
+                        _RoundWindow(
+                            active_start,
+                            observed_end,
+                            False,
+                            previous_observation > active_start,
+                            active_start,
+                            None,
+                        )
+                    )
+                    active_start = None
+                    active_start_segment = None
+                else:
+                    uncovered = [
+                        time_sec
+                        for time_sec in usable
+                        if cursor < time_sec <= previous_observation
+                        and not any(window.contains(time_sec) for window in windows)
+                    ]
+                    has_prior_end = any(
+                        window.end_event_sec is not None
+                        and window.end_event_sec <= previous_observation
+                        for window in windows
+                    )
+                    if uncovered and not has_prior_end:
+                        windows.append(
+                            _RoundWindow(
+                                min(uncovered),
+                                min(timestamp, max(max(uncovered), min(uncovered) + 0.1)),
+                                False,
+                            )
+                        )
+                cursor = max(cursor, previous_observation)
+                continue
             if kind == "round_start":
-                start = (
-                    active_start if active_start is not None else first_observed_until(timestamp)
+                if (
+                    active_start is not None
+                    and active_start_segment is not None
+                    and segment is not None
+                    and active_start_segment != segment
+                ):
+                    windows.append(
+                        _RoundWindow(
+                            active_start,
+                            timestamp,
+                            False,
+                            False,
+                            active_start,
+                            None,
+                        )
+                    )
+                    active_start = None
+                    active_start_segment = None
+                    cursor = max(cursor, timestamp)
+                previous_boundary = max(
+                    (boundary_time for boundary_time, _ in boundaries if boundary_time < timestamp),
+                    default=None,
                 )
+                preparation_start = self._preparation_context_start(
+                    observations, timestamp, floor_sec=previous_boundary
+                )
+                has_prior_end = any(
+                    boundary_kind == "round_end" and boundary_time < timestamp
+                    for boundary_time, boundary_kind in boundaries
+                )
+                start = (
+                    active_start
+                    if active_start is not None
+                    else first_observed_until(timestamp)
+                )
+                if active_start is None and (has_prior_end or preparation_start is not None):
+                    start = None
                 if start is not None and timestamp > start:
-                    windows.append(_RoundWindow(start, timestamp, False, False))
+                    windows.append(
+                        _RoundWindow(start, timestamp, False, False, active_start, None)
+                    )
                 active_start = timestamp
+                active_start_segment = segment
             else:
+                if (
+                    active_start is not None
+                    and active_start_segment is not None
+                    and segment is not None
+                    and active_start_segment != segment
+                ):
+                    windows.append(
+                        _RoundWindow(
+                            active_start,
+                            timestamp,
+                            False,
+                            False,
+                            active_start,
+                            None,
+                        )
+                    )
+                    active_start = None
+                    active_start_segment = None
+                    cursor = max(cursor, timestamp)
+                    windows.append(
+                        _RoundWindow(
+                            max(0.0, timestamp - 0.1),
+                            timestamp,
+                            False,
+                            True,
+                            None,
+                            timestamp,
+                        )
+                    )
+                    cursor = timestamp
+                    continue
                 start = (
                     active_start if active_start is not None else first_observed_until(timestamp)
                 )
                 if start is not None and timestamp > start:
-                    windows.append(_RoundWindow(start, timestamp, active_start is not None))
+                    windows.append(
+                        _RoundWindow(
+                            start,
+                            timestamp,
+                            active_start is not None,
+                            True,
+                            active_start,
+                            timestamp,
+                        )
+                    )
                 active_start = None
+                active_start_segment = None
             cursor = timestamp
         if active_start is not None and video_duration > active_start:
-            windows.append(_RoundWindow(active_start, video_duration, False))
+            windows.append(
+                _RoundWindow(active_start, video_duration, False, True, active_start, None)
+            )
         elif active_start is None:
             remaining = [time for time in usable if time > cursor]
             if remaining:
                 end = min(video_duration, max(remaining[-1], remaining[0] + 0.1))
                 if end > remaining[0]:
                     windows.append(_RoundWindow(remaining[0], end, False))
+
+        # Extend observed context around actual round starts. Preparation samples
+        # are assigned to the upcoming round, while contiguous post-end samples
+        # before preparation remain with the round that just ended.
+        starts = [window for window in windows if window.start_event_sec is not None]
+        for window in starts:
+            event_start = window.start_event_sec
+            assert event_start is not None
+            previous_boundary = max(
+                (boundary_time for boundary_time, _ in boundaries if boundary_time < event_start),
+                default=None,
+            )
+            preparation_start = self._preparation_context_start(
+                observations, event_start, floor_sec=previous_boundary
+            )
+            if preparation_start is None:
+                continue
+            window.start_sec = min(window.start_sec, preparation_start)
+            prior_ended = next(
+                (
+                    prior
+                    for prior in reversed(windows)
+                    if prior is not window
+                    and prior.end_event_sec is not None
+                    and prior.end_event_sec <= preparation_start
+                    and prior.end_event_sec < event_start
+                ),
+                None,
+            )
+            if prior_ended is not None:
+                prior_end_event = prior_ended.end_event_sec
+                assert prior_end_event is not None
+                prior_ended.end_sec, prior_ended.include_end = self._observed_context_end(
+                    observations,
+                    prior_end_event,
+                    preparation_start,
+                )
+
+        # With no next preparatory context, keep a contiguous observed tail on
+        # the ended round. A gap over one second stops this extension.
+        for window in windows:
+            if window.end_event_sec is None:
+                continue
+            next_preparation = min(
+                (
+                    candidate.start_sec
+                    for candidate in starts
+                    if candidate.start_event_sec is not None
+                    and candidate.start_event_sec > window.end_event_sec
+                    and candidate.start_sec > window.end_event_sec
+                    and candidate.start_sec < candidate.start_event_sec
+                ),
+                default=math.inf,
+            )
+            if next_preparation == math.inf:
+                next_round_start = min(
+                    (
+                        candidate.start_event_sec
+                        for candidate in starts
+                        if candidate.start_event_sec is not None
+                        and candidate.start_event_sec > window.end_event_sec
+                    ),
+                    default=min(
+                        (
+                            candidate.start_sec
+                            for candidate in windows
+                            if candidate.start_event_sec is None
+                            and candidate.start_sec > window.end_event_sec
+                        ),
+                        default=video_duration,
+                    ),
+                )
+                window.end_sec, window.include_end = self._observed_context_end(
+                    observations, window.end_event_sec, next_round_start
+                )
+        windows.sort(key=lambda item: (item.start_sec, item.end_sec))
         for index in range(len(windows) - 1):
-            if windows[index].end_sec == windows[index + 1].start_sec:
-                windows[index] = replace(windows[index], include_end=False)
+            current, following = windows[index], windows[index + 1]
+            if current.end_sec >= following.start_sec:
+                current.end_sec = following.start_sec
+                current.include_end = False
         return windows
+
+    @staticmethod
+    def _is_preparation_observation(observation: dict[str, Any]) -> bool:
+        values = observation.get("values")
+        flags = set(observation.get("state_flags", ()))
+        quality = observation.get("quality")
+        if (
+            not isinstance(quality, dict)
+            or _bounded_confidence(quality.get("hud_confidence")) < 0.65
+        ):
+            return False
+        return (
+            observation.get("primary_state") == "buy_menu_open"
+            or "buy_phase_banner" in flags
+            or isinstance(values, dict) and values.get("buy_phase_visible") is True
+        )
+
+    @staticmethod
+    def _continuity_segment(event: dict[str, Any]) -> int | None:
+        attributes = event.get("attributes")
+        provenance = attributes.get("evidence_provenance") if isinstance(attributes, dict) else None
+        segment = provenance.get("continuity_segment") if isinstance(provenance, dict) else None
+        return segment if type(segment) is int and segment >= 0 else None
+
+    def _preparation_context_start(
+        self,
+        observations: Sequence[dict[str, Any]],
+        event_start: float,
+        *,
+        floor_sec: float | None = None,
+    ) -> float | None:
+        before = [
+            item
+            for item in observations
+            if self._time(item) < event_start
+            and (floor_sec is None or self._time(item) > floor_sec)
+        ]
+        if not before or event_start - self._time(before[-1]) > 1.0:
+            return None
+        chain: list[dict[str, Any]] = [before[-1]]
+        for item in reversed(before[:-1]):
+            if self._time(chain[0]) - self._time(item) > 1.0:
+                break
+            chain.insert(0, item)
+        prep_indices = [
+            index
+            for index, item in enumerate(chain)
+            if self._is_preparation_observation(item)
+        ]
+        if not prep_indices:
+            return None
+        # Choose the beginning of the latest contiguous preparation episode,
+        # rather than an earlier round's prep or the final repeated sample.
+        prep_index = prep_indices[-1]
+        while prep_index > 0 and self._is_preparation_observation(chain[prep_index - 1]):
+            prep_index -= 1
+        if any(
+            self._time(right) - self._time(left) > 1.0
+            for left, right in zip(chain[prep_index:], chain[prep_index + 1 :], strict=False)
+        ):
+            return None
+        return self._time(chain[prep_index])
+
+    def _observed_context_end(
+        self, observations: Sequence[dict[str, Any]], event_end: float, limit: float
+    ) -> tuple[float, bool]:
+        end = event_end
+        include_end = True
+        previous = event_end
+        for observation in observations:
+            timestamp = self._time(observation)
+            if timestamp <= event_end:
+                continue
+            if timestamp >= limit or timestamp - previous > 1.0:
+                break
+            if self._is_preparation_observation(observation):
+                break
+            end = timestamp
+            previous = timestamp
+        return end, include_end
 
     def _state_snapshots(self, observations: Sequence[dict[str, Any]]) -> list[dict[str, Any]]:
         snapshots: list[dict[str, Any]] = []
