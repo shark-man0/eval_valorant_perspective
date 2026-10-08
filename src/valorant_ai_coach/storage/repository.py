@@ -2,9 +2,10 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import sqlite3
 from collections.abc import Iterator
-from contextlib import contextmanager
+from contextlib import contextmanager, suppress
 from dataclasses import asdict, is_dataclass
 from datetime import UTC, datetime
 from pathlib import Path
@@ -49,6 +50,9 @@ class SQLiteRepository:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.clips_dir = Path(clips_dir).expanduser().resolve() if clips_dir else None
         self._migrate()
+        if os.name != "nt":
+            with suppress(OSError):
+                self.path.chmod(0o600)
 
     @contextmanager
     def _connect(self) -> Iterator[sqlite3.Connection]:
