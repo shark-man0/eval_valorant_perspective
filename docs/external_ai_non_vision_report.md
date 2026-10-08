@@ -54,25 +54,24 @@
 - 旧契約を前提にした既存テスト2件の期待値を更新: `tests/unit/test_rule_engine.py`、`tests/integration/test_visual_review_regressions.py`（vision側のテストファイル、1パラメータ: 0.86 は `None` → `unscored`）。
 - 既知の挙動: `unscored` は `evidence_range` を持たないため集約で統合されず、同一factの MOV-02 / AIM-03 が `unscored` では2件別々に出る。統合するかは未決定。
 
-## 4. 未実施（次の作業）
+## 4. 完了状況と未実施（詳細・今後の方針は `docs/external_ai_non_vision_progress_and_plan.md`）
 
-- Priority 2: 依頼の6ケースは、good: TC-006、improve: TC-017、unscored(必須fact不足): TC-025、unscored(低confidence): `test_downstream_contract.py`、authority: `test_round_analysis.py`、spectator: builder層テスト、で網羅。`RoundAnalyzer` 経由のspectator end-to-endは未作成。
-- Priority 3: 完了（§7）
-- Priority 4: 完了。`docs/external_ai_rules_criteria_diff.md` 参照（44ルールすべて一致、rule変更不要。要判断2点）
-- Priority 5/6: AI Coach検証層、UI（PySide6未導入のため smoke 未実行）、ClipService
-- 全体 `pytest` / `ruff check .` / `mypy src` の最終結果
+- Priority 1〜4: 完了（P2の `RoundAnalyzer` 経由のspectator end-to-endテストのみ未作成）
+- Priority 5（AI Coach検証層）/ Priority 6（Clip・Result UI、ClipService）: 未着手
+- 評価のconfidenceが引用factのconfidenceを超えうる問題（P5で扱う）は未解決
+- 実モデル（OpenAI API）での検証は未実施（mock / スタブのみ）
 
-### 4.1 残る確認事項
+## 5. テスト・静的解析
 
-- 入力済みfactのconfidenceが、provenanceで参照するeventのconfidenceより高くてもそのまま採用される（TC-006でeventのみ0.3にしても決定論 `good` が維持される）。`FactBuilder` 由来factは元eventから導出されるため、事前計算済みfactを渡すfixture特有の挙動の可能性が高い。本番経路で事前計算済みfactが渡る箇所があるか未確認（`rounds/builder.py` の `_owned_hp_facts` / `_shared_timer_facts` は直接factを生成する）。
+最終確認は、`origin/main`（`fd099fd`）をマージした状態のツリーで行った（マージ前に使い捨てworktreeで試行マージし、衝突0を確認）。環境は1CPU、PySide6未導入。
 
-## 5. テスト・静的解析（このセッションの環境、1CPU）
-
-- 後段関連の主要14ファイル: 141 passed, 2 skipped（PySide6未導入のUI 2件）
-- 全100ファイルを個別実行し、完了した50ファイルは失敗2件のみ: `test_real_ffmpeg`（変更前から失敗、環境起因）、`test_hud_pixels_e2e`（vision側の重いテスト、120秒タイムアウト）
-- 残りのvision側テスト（hud / visual系の大半）は未実行。vision側production codeは未変更
-- `ruff check`: 変更ファイルは指摘0。リポジトリ全体は変更前から386件の既存指摘
-- `mypy src`: 22件、変更前と同数（PySide6未導入、hud側の既存分）。変更ファイルに指摘なし
+- 全119テストファイルを個別実行（各150秒上限）: **1,342 passed / 1 failed / 7 skipped**、タイムアウト0
+  - 失敗1件は `test_real_ffmpeg`（`PySide6` の import 失敗）。`origin/main` 単独でも同一の結果で、環境要因
+  - skip 7件はPySide6未導入のUI関連
+- `python tests/validate_dataset.py`: OK（38ケース）
+- `ruff check src tests scripts/e2e`（CIと同じ範囲）: 指摘0
+- `mypy src/valorant_ai_coach`: 22件。`origin/main` 単独と同数・同内容（PySide6未導入に起因。CIは `gui` extra を入れる）。マージで増えたエラーなし
+- 未確認: カバレッジ75%以上のゲート（CIの条件）、GitHub Actions上での実行結果
 
 ## 6. 「AIが見る範囲」（temporal_context）の評価ロジックへの反映（ユーザー承認済み）
 
@@ -151,7 +150,7 @@ package集約値がsnapshot由来factのconfidenceに使われ、元観測より
   合成fixture 38ファイルは明示的に移行（追加のみ、旧実装とfact一致）。保存済み実データは移行しない。
 - 未解決: 評価のconfidenceが引用factのconfidenceを超えうる（§9 of the doc、fixture 2/31件）。
 
-## 8. merge時の注意
+## 8. merge時の注意（merge方針は `docs/external_ai_non_vision_progress_and_plan.md` §5）
 
 - 変更ファイル: `facts/builder.py`、`rounds/builder.py`（`source_confidence`）、`schemas/round_package_schema_v2.json`（任意フィールドの追加のみ）、`tests/cases/TC-*/input.json`（38ファイル、409行追加のみ）、`scripts/`（計測・fixture移行）、`events/derived.py`、`schema_validation.py`、`rules/temporal_scope.py`（新規）、`application/round_analyzer.py`、`rules/__init__.py`、`config/valorant_evaluation_rules_v4.json`（誤記1行）、`rounds/builder.py`、`rules/engine.py`、`rules/mock_evaluator.py`、`ai/coach.py`、`tests/cases/TC-005,TC-017/expected_assertions.json`、`tests/unit/test_rule_engine.py`、`tests/integration/test_visual_review_regressions.py`（1パラメータ）、`tests/unit/test_downstream_contract.py`（新規）、docs
 - `rounds/builder.py` と `test_visual_review_regressions.py` はvision側が触る可能性がある隣接ファイル。前者は `_state_snapshots` 内1箇所とヘルパー追加のみ、後者は1行。
