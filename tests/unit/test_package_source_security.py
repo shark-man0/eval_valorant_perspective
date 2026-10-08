@@ -11,6 +11,7 @@ def test_source_package_excludes_private_runtime_artifacts(tmp_path: Path) -> No
     (project / "src").mkdir(parents=True)
     (project / "config").mkdir()
     (project / "scripts").mkdir()
+    (project / "tests").mkdir()
     (project / "src" / "app.py").write_text("print('safe')\n", encoding="utf-8")
     (project / "config" / "canonical.json").write_text("{}\n", encoding="utf-8")
 
