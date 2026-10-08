@@ -34,7 +34,11 @@ class DerivedEventBuilder:
             )
             timestamp = self._time(observation)
             confidence = self._hud_confidence(observation)
-            if confidence < 0.65:
+            # A high aggregate HUD confidence is not evidence of an acquired
+            # value. Primary state/phase remain in the observation timeline;
+            # an all-missing value tuple must not become a derived fact event.
+            has_values = any(value is not None and value != "unknown" for value in state)
+            if confidence < 0.65 or not has_values:
                 previous_state = None
                 previous_spike = None
                 continue

@@ -286,6 +286,7 @@ class RoundPackageBuilder:
         direct_visual = [dict(item) for item in visual_events]
         self.contract.validate_events(direct_hud, "hud_analyzer")
         self.contract.validate_events(direct_visual, "visual_analyzer")
+        direct_hud = self._unique_boundaries(direct_hud)
         derived = self.derived.build(observations)
         all_events = sorted(direct_hud + direct_visual + derived, key=self._event_sort_key)
         windows = self._round_windows(observations, direct_hud, video_metadata.duration_sec)
@@ -453,6 +454,39 @@ class RoundPackageBuilder:
             by_time[timestamp] = snapshot
         return [by_time[key] for key in sorted(by_time)]
 
+    def _unique_boundaries(self, events: Sequence[dict[str, Any]]) -> list[dict[str, Any]]:
+        """Use the same boundary population for windows and package events.
+
+        Replayed copies of a decision must not multiply trace event counts. A
+        conflicting continuity segment is not a duplicate and cannot safely
+        determine round membership. Non-lifecycle events are left untouched.
+        """
+        result: list[dict[str, Any]] = []
+        indices: dict[tuple[str, float], int] = {}
+        for event in events:
+            if event["type"] not in {"round_start", "round_end"}:
+                result.append(event)
+                continue
+            key = (event["type"], float(event["time_sec"]))
+            if key not in indices:
+                indices[key] = len(result)
+                result.append(event)
+                continue
+            index = indices[key]
+            existing = result[index]
+            before, after = self._continuity_segment(existing), self._continuity_segment(event)
+            if before != after:
+                raise RoundPackageBuildError(
+                    "同一ラウンド境界のcontinuity segmentが一致しません"
+                )
+            # Keep one existing decision, including its original provenance;
+            # never merge signals or manufacture higher confidence.
+            if _bounded_confidence(event.get("confidence")) > _bounded_confidence(
+                existing.get("confidence")
+            ):
+                result[index] = event
+        return result
+
     def _round_windows(
         self,
         observations: Sequence[dict[str, Any]],
@@ -556,7 +590,7 @@ class RoundPackageBuilder:
                         windows.append(
                             _RoundWindow(
                                 min(uncovered),
-                                min(timestamp, max(max(uncovered), min(uncovered) + 0.1)),
+                                min(timestamp, max(previous_observation, min(uncovered) + 0.1)),
                                 False,
                             )
                         )

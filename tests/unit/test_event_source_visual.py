@@ -129,3 +129,35 @@ def test_derived_events_suppress_low_confidence_facts() -> None:
         ]
     )
     assert events == []
+
+
+def test_derived_events_require_observed_values_not_only_aggregate_confidence() -> None:
+    from valorant_ai_coach.events import DerivedEventBuilder
+
+    contract = EventSourceContract.load(ROOT / "config" / "event_source_contract_v1.json")
+    events = DerivedEventBuilder(contract).build([
+        {
+            "time_sec": 1.0, "primary_state": "live_first_person",
+            "values": {"spike_state": "unknown"},
+            "quality": {"hud_confidence": 0.95},
+        },
+        {
+            "time_sec": 2.0, "primary_state": "live_first_person",
+            "values": {"ally_alive": 0, "spike_state": "unknown"},
+            "quality": {"hud_confidence": 0.95},
+        },
+        {
+            "time_sec": 3.0, "primary_state": "live_first_person",
+            "values": {"spike_state": "unknown"},
+            "quality": {"hud_confidence": 0.95},
+        },
+        {
+            "time_sec": 4.0, "primary_state": "live_first_person",
+            "values": {"ally_alive": 0, "spike_state": "unknown"},
+            "quality": {"hud_confidence": 0.95},
+        },
+    ])
+    assert [(e["type"], e["time_sec"]) for e in events] == [
+        ("state_snapshot", 2.0), ("state_snapshot", 4.0)
+    ]
+    assert all(e["attributes"]["ally_alive"] == 0 for e in events)
