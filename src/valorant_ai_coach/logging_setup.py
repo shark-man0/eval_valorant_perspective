@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import logging
 import os
+from contextlib import suppress
+import os
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 from typing import TextIO
@@ -15,10 +17,8 @@ class _PrivateRotatingFileHandler(RotatingFileHandler):
     def _open(self) -> TextIO:
         stream = super()._open()
         if os.name != "nt":
-            try:
+            with suppress(OSError):
                 Path(self.baseFilename).chmod(0o600)
-            except OSError:
-                pass
         return stream
 
 
