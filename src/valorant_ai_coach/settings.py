@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 import tempfile
+from contextlib import suppress
 from dataclasses import asdict, dataclass, field, replace
 from pathlib import Path
 from typing import Any, Protocol
@@ -118,10 +119,8 @@ class SettingsStore:
                 os.fsync(stream.fileno())
             os.replace(tmp_path, self.path)
             if os.name != "nt":
-                try:
+                with suppress(OSError):
                     self.path.chmod(0o600)
-                except OSError:
-                    pass
         except Exception:
             tmp_path.unlink(missing_ok=True)
             raise
