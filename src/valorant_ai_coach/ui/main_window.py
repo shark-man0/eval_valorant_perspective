@@ -783,7 +783,7 @@ class MainWindow(QMainWindow):
 
     def _media_error(self, _error: QMediaPlayer.Error, error_string: str) -> None:
         if error_string:
-            self.statusBar().showMessage(f"動画再生エラー: {error_string}", 8000)
+            self.statusBar().showMessage(f"動画再生エラー: {sanitize_text(error_string)}", 8000)
 
     def _new_audio_track_combo(self) -> QComboBox:
         combo = QComboBox()
