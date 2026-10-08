@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 import zipfile
 from dataclasses import dataclass, field
@@ -107,4 +108,9 @@ def create_diagnostic_bundle(request: DiagnosticBundleRequest) -> Path:
     with zipfile.ZipFile(destination, "x", compression=zipfile.ZIP_DEFLATED) as archive:
         for name in sorted(entries):
             archive.writestr(name, entries[name])
+    if os.name != "nt":
+        try:
+            destination.chmod(0o600)
+        except OSError:
+            pass
     return destination
