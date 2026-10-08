@@ -1,5 +1,7 @@
 # E2E failure analysis
 
+> Post-analysis follow-up (2026-10-08, main `8e3cf32`): the match lifecycle actor contract is now consistently `system`, with conservative lifecycle/package/trace unit coverage. The historical report below describes the earlier full run; its actor mismatch is no longer an unresolved code-contract gap. Real boundaries remain unqualified and no additional canonical PASS is proven. [Purchase-phase reference qualification](phase_reference_qualification.md) subsequently verified 11 semantic matches over 18 native boundary-window frames, with unchanged unknown states, no accepted score/timer pairs and zero boundary events. This diagnostic profile is not adopted; the 23/55/4 classification and 29 package-scope failures remain authoritative until a new canonical evaluation proves otherwise.
+
 ## 1. Executive Summary
 
 **最大の最初の阻害条件はround packageの範囲・所属で、29/55 FAIL（52.73%）です。** 25件はround2の出力がすべて`sample_round_1`に入ること、4件は最初のpackage開始より前のR1 snapshot／derived zoneに対応します。直接のround境界4件を合わせると33件に影響しますが、33件のPASS増加を意味しません。

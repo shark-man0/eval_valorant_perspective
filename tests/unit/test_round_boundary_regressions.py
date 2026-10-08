@@ -60,6 +60,30 @@ def build(samples, boundaries, *, continuity_segments=None):
     )
 
 
+def test_global_phase_can_associate_preparation_without_inventing_player_identity():
+    phase = observation(1)
+    phase["primary_state"] = "unknown"
+    phase["view_context"]["is_player_world_view_trustworthy"] = False
+    phase["state_flags"] = ["buy_phase_banner"]
+    phase["values"] = empty_hud_values()
+    phase["values"]["buy_phase_visible"] = True
+    phase["quality"]["hud_confidence"] = 0
+    phase["quality"]["state_confidence"] = 0
+    phase["quality"]["roi_confidence"]["center_phase_banner_semantic_text"] = 0.94
+    active = observation(2)
+    packages = build([phase, active, observation(3)], [(2, "round_start"), (3, "round_end")])
+    assert packages[0]["round_window"]["start_sec"] == 1
+    assert [event["time_sec"] for event in packages[0]["events"]] == [2, 3]
+    assert phase["values"]["player_specific_hud_valid"] is False
+    assert phase["values"]["hp"] is None
+    assert phase["primary_state"] == "unknown"
+    phase["quality"]["roi_confidence"]["center_phase_banner_semantic_text"] = 0.89
+    assert not make_builder()._is_preparation_observation(phase)
+    phase["quality"]["roi_confidence"]["center_phase_banner_semantic_text"] = 0.94
+    phase["state_flags"] = []
+    assert not make_builder()._is_preparation_observation(phase)
+
+
 def test_missing_starts_preserve_all_later_round_fragments():
     result = build([observation(5), observation(45)], [(30, "round_end"), (60, "round_end")])
     assert [item["round_window"] for item in result] == [

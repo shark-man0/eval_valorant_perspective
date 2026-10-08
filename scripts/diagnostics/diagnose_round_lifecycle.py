@@ -128,10 +128,17 @@ def main() -> None:
                 ),
                 "frames": hashes,
                 "state_counts": dict(Counter(row["primary_state"] for row in observed)),
+                "state_flag_counts": dict(
+                    Counter(flag for row in observed for flag in row["state_flags"])
+                ),
                 "identity_reasons": dict(Counter(row["identity"]["reason"] for row in inputs)),
                 "input_counts": {
                     "buy_phase_template": sum(
                         row["signals"].get("buy_phase_template") is True for row in inputs
+                    ),
+                    "semantic_buy_phase_confirmed": sum(
+                        row["signals"].get("semantic_buy_phase_confirmed") is True
+                        for row in inputs
                     ),
                     "round_end_template": sum(
                         row["signals"].get("round_end_template") is True for row in inputs
@@ -146,6 +153,22 @@ def main() -> None:
                     ),
                 },
                 "hud_events": [e for e in result.hud_events if start <= e["time_sec"] <= end],
+                "phase_evidence": [
+                    {
+                        "pts_sec": row["time_sec"],
+                        "template_match": evidence["signals"].get("buy_phase_template"),
+                        "template_confidence": evidence["signals"].get(
+                            "buy_phase_template_confidence"
+                        ),
+                        "confirmed": evidence["signals"].get("semantic_buy_phase_confirmed")
+                        is True,
+                        "source_pts": evidence["signals"].get("semantic_buy_phase_source_pts"),
+                        "phase_confidence": row["quality"]["roi_confidence"].get(
+                            "center_phase_banner_semantic_text"
+                        ),
+                    }
+                    for row, evidence in zip(observed, inputs, strict=True)
+                ],
                 "geometry": result.calibration_diagnostics,
             }
         )
@@ -181,6 +204,7 @@ def main() -> None:
                             "window_sec",
                             "processed_frames",
                             "state_counts",
+                            "state_flag_counts",
                             "input_counts",
                             "hud_events",
                         )

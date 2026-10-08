@@ -1,0 +1,622 @@
+{
+  "schema_version": "1.0",
+  "git_head": "8e3cf32f1ac331c747e85fd1dcdcffcb4179e987",
+  "status": "component_supported_but_lifecycle_unqualified",
+  "scope": "diagnostic profile only; not adopted; canonical full not rerun",
+  "target_assertions": [
+    "GT-R1-ROUND-START",
+    "GT-R2-ROUND-START",
+    "event_count_constraints-000",
+    "event_count_constraints-004",
+    "ordering_constraints-001",
+    "GT-R1-BUY-FLAG"
+  ],
+  "root_cause": "unconfigured semantic buy-phase template; independent score/timer/identity dependencies remain",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "raw_processing_sha256": "e0c3b9667b15aee9e6802e1b1b58aa61c916ee50b21ca4b00fd94cb2ea6a7152",
+  "baseline_profile_fingerprint": "253a571ecff51dd1043ef9469af27df2644f3bc7647581b7919af4e559183511",
+  "candidate_profile_fingerprint": "8b5d65cc1f495fe76535d2e9ffb7c1318096e37fbe25b35a130a15837e15e9cb",
+  "template_sha256": "396c45514417ac6f58ae040ceacd82abd896cf47312b77fe10de1790cfaa615e",
+  "template_crop_xyxy": [
+    765,
+    170,
+    1155,
+    240
+  ],
+  "template_shape": [
+    70,
+    390
+  ],
+  "threshold": 0.9,
+  "generation": "median grayscale from three manually reviewed R1 semantic text crops; round label, timer, scores and purchase hotkey excluded",
+  "freeze_provenance": "training-manifest.json persisted before initial and expanded holdout predictions; no retuning after misses",
+  "review_provenance": "manual pixel review of phase-contact-sheet.jpg and additional-review.jpg before respective predictions; diagnostic labels only, validation pack unchanged",
+  "qualification": {
+    "training_support": 3,
+    "training_accepted": 3,
+    "holdout_positive_count": 8,
+    "holdout_positive_correct": 5,
+    "holdout_positive_unknown": 3,
+    "holdout_negative_count": 13,
+    "holdout_negative_false_accepts": 0,
+    "negative_nonmatch_semantics": "unknown, never verified absence",
+    "rows": [
+      {
+        "pts_ms": 1.503,
+        "split": "training",
+        "expected_present": true,
+        "present": true,
+        "confidence": 0.9857401251792908,
+        "pts_sec": 1.502669,
+        "frame_sha256": "deb2e4ba2b083c17c6b31c1aab5e3f550ed38cba9530b5c1f5fe4b8eae6d0302"
+      },
+      {
+        "pts_ms": 2.503,
+        "split": "training",
+        "expected_present": true,
+        "present": true,
+        "confidence": 0.9513707160949707,
+        "pts_sec": 2.502669,
+        "frame_sha256": "fc04d0e5d56d89195d0cf96ed68dea5163ff8acd337467b03f7ec0927bbee174"
+      },
+      {
+        "pts_ms": 3.903,
+        "split": "training",
+        "expected_present": true,
+        "present": true,
+        "confidence": 0.9841556549072266,
+        "pts_sec": 3.902669,
+        "frame_sha256": "84bb6ee112a2f77cd7af6e2e743fe0865599ef7427cc609184eb8c3dad0e1b84"
+      },
+      {
+        "pts_ms": 4.153,
+        "split": "diagnostic_holdout",
+        "expected_present": false,
+        "present": false,
+        "confidence": 0.2909611463546753,
+        "pts_sec": 4.152669,
+        "frame_sha256": "82f4c671ca25c3eae9a7caf9f2cdf824b642838f70cab53645e4cee2d9ea9524"
+      },
+      {
+        "pts_ms": 20.003,
+        "split": "diagnostic_holdout",
+        "expected_present": false,
+        "present": false,
+        "confidence": 0.26089102029800415,
+        "pts_sec": 20.002669,
+        "frame_sha256": "1dcb96141265dce3752d17577b5f27c397a0affab5c91f70b1e75403b861f572"
+      },
+      {
+        "pts_ms": 40.003,
+        "split": "diagnostic_holdout",
+        "expected_present": false,
+        "present": false,
+        "confidence": 0.31317079067230225,
+        "pts_sec": 40.002669,
+        "frame_sha256": "0bffc4e5e8f809408d2b2c27038e3399f01063b03b28e29970e4511bd5a706be"
+      },
+      {
+        "pts_ms": 74.319,
+        "split": "diagnostic_holdout",
+        "expected_present": false,
+        "present": false,
+        "confidence": 0.3189271092414856,
+        "pts_sec": 74.319336,
+        "frame_sha256": "bfec6656b85a2d5eb49c01acc634c596adec48f9470190fd37243f19b313bd6d"
+      },
+      {
+        "pts_ms": 74.486,
+        "split": "diagnostic_holdout",
+        "expected_present": false,
+        "present": false,
+        "confidence": 0.1759326010942459,
+        "pts_sec": 74.486003,
+        "frame_sha256": "6e1824962aab7891889450111c49f237338c9b54e6f56916d15468d39ccba490"
+      },
+      {
+        "pts_ms": 80.003,
+        "split": "diagnostic_holdout",
+        "expected_present": false,
+        "present": false,
+        "confidence": 0.3122214078903198,
+        "pts_sec": 80.002669,
+        "frame_sha256": "8b0d1e877cc80a5c5e05d8ea1e0a6b0e34ce306eeec0ccbe54f419914f00160b"
+      },
+      {
+        "pts_ms": 100.003,
+        "split": "diagnostic_holdout",
+        "expected_present": true,
+        "present": true,
+        "confidence": 0.90035080909729,
+        "pts_sec": 100.002669,
+        "frame_sha256": "0bcc486701c45cb2738cefce5d5b2a61f06c5be2b6e9521c4db834836d4ace88"
+      },
+      {
+        "pts_ms": 108.803,
+        "split": "diagnostic_holdout",
+        "expected_present": false,
+        "present": false,
+        "confidence": 0.19170372188091278,
+        "pts_sec": 108.802669,
+        "frame_sha256": "b32a4724002e17e214e5c60d4a4358ef2baabf149c976521b98560e7d9eab69c"
+      },
+      {
+        "pts_ms": 109.503,
+        "split": "diagnostic_holdout",
+        "expected_present": false,
+        "present": false,
+        "confidence": 0.18881911039352417,
+        "pts_sec": 109.502669,
+        "frame_sha256": "e2e3805381dbc1275f07db53bc6a119e2010bce6cfe0ba3eaeaa8f3b989d55fa"
+      },
+      {
+        "pts_ms": 110.803,
+        "split": "diagnostic_holdout",
+        "expected_present": false,
+        "present": false,
+        "confidence": 0.2216353714466095,
+        "pts_sec": 110.802669,
+        "frame_sha256": "40e7cad1dfabb8032a64dce1244093aa38db2896815594affd84968d248425d9"
+      },
+      {
+        "pts_ms": 111.353,
+        "split": "diagnostic_holdout",
+        "expected_present": true,
+        "present": true,
+        "confidence": 0.9824095964431763,
+        "pts_sec": 111.352669,
+        "frame_sha256": "d67e7233186ee4e3c67474c802bdfce08e3cc1201c3597a9f7f9998151c7e687"
+      },
+      {
+        "pts_ms": 111.436,
+        "split": "diagnostic_holdout",
+        "expected_present": false,
+        "present": false,
+        "confidence": 0.2329523116350174,
+        "pts_sec": 111.436003,
+        "frame_sha256": "5e8fb732293eb53d40b9f27bb2c5923f65e4d4e59ff3f5b62e91607cd235b3e5"
+      },
+      {
+        "pts_ms": 120.003,
+        "split": "diagnostic_holdout",
+        "expected_present": false,
+        "present": false,
+        "confidence": 0.2857967019081116,
+        "pts_sec": 120.002669,
+        "frame_sha256": "7fd9f789d5c45f369df9a36d5bd721eb7485ad50b2b8778d8e5a0c67ecc7fa7a"
+      },
+      {
+        "pts_ms": 140.003,
+        "split": "diagnostic_holdout",
+        "expected_present": false,
+        "present": false,
+        "confidence": 0.18228812515735626,
+        "pts_sec": 140.002669,
+        "frame_sha256": "21d4f97cbd62fac2a38d2978b80a502e1fa972f03cd8e557cfa095111b90e5ef"
+      },
+      {
+        "pts_ms": 165.003,
+        "split": "diagnostic_holdout",
+        "expected_present": false,
+        "present": false,
+        "confidence": 0.14702437818050385,
+        "pts_sec": 165.002669,
+        "frame_sha256": "8a370d7c6896916a0682161902884081c7675ce54a832d8957f21efef575e72f"
+      },
+      {
+        "pts_ms": 97.003,
+        "split": "diagnostic_holdout",
+        "expected_present": true,
+        "present": true,
+        "confidence": 0.9157305955886841,
+        "frame_sha256": "4e58c85752993be063cd6e70a9bde767c05b579d02863d491eca01c56fac8921",
+        "pts_sec": 97.002669
+      },
+      {
+        "pts_ms": 99.003,
+        "split": "diagnostic_holdout",
+        "expected_present": true,
+        "present": false,
+        "confidence": 0.8638629913330078,
+        "frame_sha256": "a344318c203aa6a42be0ec01522e271900c857192c5f63429a05c3237f4241a6",
+        "pts_sec": 99.002669
+      },
+      {
+        "pts_ms": 101.003,
+        "split": "diagnostic_holdout",
+        "expected_present": true,
+        "present": true,
+        "confidence": 0.9072970151901245,
+        "frame_sha256": "402554b0a5a6e35f8ba9c423f2acb687937690c3f1ac1319ce85c6e0b5d9a197",
+        "pts_sec": 101.002669
+      },
+      {
+        "pts_ms": 103.003,
+        "split": "diagnostic_holdout",
+        "expected_present": true,
+        "present": false,
+        "confidence": 0.8468096256256104,
+        "frame_sha256": "0ee17e7b9ec717200cccd0aebf5874cda99159a25150de1ff49f9ddeaa37fd80",
+        "pts_sec": 103.002669
+      },
+      {
+        "pts_ms": 105.003,
+        "split": "diagnostic_holdout",
+        "expected_present": true,
+        "present": false,
+        "confidence": 0.8959250450134277,
+        "frame_sha256": "4d86e94d70f597043559d4523b33ec4d513356415933d9e6725a3124ba71c7ec",
+        "pts_sec": 105.002669
+      },
+      {
+        "pts_ms": 107.003,
+        "split": "diagnostic_holdout",
+        "expected_present": true,
+        "present": true,
+        "confidence": 0.9624091386795044,
+        "frame_sha256": "7a0a3ed9982a216b6ec83c1700c61b94431861457b5b6ca1f7c0745b4a3b3448",
+        "pts_sec": 107.002669
+      }
+    ]
+  },
+  "native_continuous": {
+    "wall_clock_sec": 38.74586726198322,
+    "processed_frames": 18,
+    "windows": [
+      {
+        "window_sec": [
+          3.8,
+          4.25
+        ],
+        "processed_frames": 12,
+        "state_counts": {
+          "unknown": 12
+        },
+        "input_counts": {
+          "buy_phase_template": 9,
+          "round_end_template": 0,
+          "both_scores_known": 0,
+          "numeric_timer_known": 0
+        },
+        "hud_events": []
+      },
+      {
+        "window_sec": [
+          111.25,
+          111.6
+        ],
+        "processed_frames": 6,
+        "state_counts": {
+          "unknown": 6
+        },
+        "input_counts": {
+          "buy_phase_template": 2,
+          "round_end_template": 0,
+          "both_scores_known": 0,
+          "numeric_timer_known": 0
+        },
+        "hud_events": []
+      }
+    ],
+    "calibration_prefix_excluded_from_metrics": true,
+    "R1_training_overlap_pts": [
+      3.902669
+    ],
+    "R1_scope": "training overlap exists, not independent R1 holdout qualification",
+    "R2_scope": "separate episode; no R2 frames used in generation"
+  },
+  "comparisons": {
+    "semantic_phase_matches_on_same_18_pts": {
+      "previous": 0,
+      "current": 11,
+      "delta": 11
+    },
+    "unknown_on_same_18_pts": {
+      "previous": 18,
+      "current": 18,
+      "delta": 0
+    },
+    "round_start_events": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "round_end_events": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "canonical_pass": {
+      "previous": 23,
+      "current": null,
+      "delta": null,
+      "reason": "no new canonical candidate full evaluation"
+    },
+    "canonical_fail": {
+      "previous": 55,
+      "current": null,
+      "delta": null
+    },
+    "canonical_ne": {
+      "previous": 4,
+      "current": null,
+      "delta": null
+    }
+  },
+  "remaining_blockers": [
+    "score readers unconfigured; score stability unavailable",
+    "safe baseline timer unavailable; rejected timer hypotheses cannot be adopted",
+    "boundary frames still unknown under full independent identity policy",
+    "R1 end requires separately qualified semantic end/score evidence",
+    "source content-jump markers missing"
+  ],
+  "full_e2e_executed": false,
+  "full_gate_reason": "no accepted independent round boundaries; extra full supplies no required evidence",
+  "production_code_changed": false,
+  "validation_or_assertion_changed": false,
+  "threshold_changed": false,
+  "artifact_hashes": {
+    "training-manifest.json": "c3bb2df4148b4a02de04e5d5df7aac8d180184da02efef2b2c827a8fd6ead35b",
+    "expanded-qualification.json": "c809ef3574ee5b8a39e6a2cbf390838eee9a07c230e1a2df1932f50064271ed0",
+    "native-continuous.json": "24aa1bd2495e46eedfbc5bcdd6bf7699827db050386ea978c2630c510dfb70b0",
+    "phase-transitions.json": "3848ff3d6cc5f4cfa8d672150d1f80f1e9931263fae1bf01c17d116f5e1dfb30"
+  },
+  "R1_end_prerequisite_followup": {
+    "scope": "read-only existing roster heuristic on nominal ROIs; not accepted native output or new ground truth",
+    "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "rows": [
+      {
+        "pts_sec": 74.319336,
+        "frame_sha256": "bfec6656b85a2d5eb49c01acc634c596adec48f9470190fd37243f19b313bd6d",
+        "nominal_roi_candidates": {
+          "ally": [
+            {
+              "alive_candidate": null,
+              "confidence": 0.0
+            },
+            {
+              "alive_candidate": null,
+              "confidence": 0.0
+            },
+            {
+              "alive_candidate": null,
+              "confidence": 0.0
+            },
+            {
+              "alive_candidate": null,
+              "confidence": 0.0
+            },
+            {
+              "alive_candidate": true,
+              "confidence": 0.8708
+            }
+          ],
+          "enemy": [
+            {
+              "alive_candidate": null,
+              "confidence": 0.0
+            },
+            {
+              "alive_candidate": null,
+              "confidence": 0.0
+            },
+            {
+              "alive_candidate": true,
+              "confidence": 1.0
+            },
+            {
+              "alive_candidate": true,
+              "confidence": 1.0
+            },
+            {
+              "alive_candidate": true,
+              "confidence": 1.0
+            }
+          ]
+        },
+        "historical_native_accepted_counts": {
+          "ally_alive": null,
+          "enemy_alive": null
+        }
+      },
+      {
+        "pts_sec": 74.402669,
+        "frame_sha256": "80b04a970045afc93b9344e218512d0856476820e1ddd2535c367b2d4ba40802",
+        "nominal_roi_candidates": {
+          "ally": [
+            {
+              "alive_candidate": null,
+              "confidence": 0.0
+            },
+            {
+              "alive_candidate": null,
+              "confidence": 0.0
+            },
+            {
+              "alive_candidate": true,
+              "confidence": 0.6526
+            },
+            {
+              "alive_candidate": null,
+              "confidence": 0.0
+            },
+            {
+              "alive_candidate": null,
+              "confidence": 0.0
+            }
+          ],
+          "enemy": [
+            {
+              "alive_candidate": true,
+              "confidence": 0.8698
+            },
+            {
+              "alive_candidate": true,
+              "confidence": 0.9431
+            },
+            {
+              "alive_candidate": true,
+              "confidence": 0.8074
+            },
+            {
+              "alive_candidate": true,
+              "confidence": 0.913
+            },
+            {
+              "alive_candidate": true,
+              "confidence": 0.9128
+            }
+          ]
+        },
+        "historical_native_accepted_counts": {
+          "ally_alive": null,
+          "enemy_alive": null
+        }
+      },
+      {
+        "pts_sec": 74.486003,
+        "frame_sha256": "6e1824962aab7891889450111c49f237338c9b54e6f56916d15468d39ccba490",
+        "nominal_roi_candidates": {
+          "ally": [
+            {
+              "alive_candidate": true,
+              "confidence": 0.7783
+            },
+            {
+              "alive_candidate": true,
+              "confidence": 1.0
+            },
+            {
+              "alive_candidate": true,
+              "confidence": 1.0
+            },
+            {
+              "alive_candidate": true,
+              "confidence": 0.8721
+            },
+            {
+              "alive_candidate": null,
+              "confidence": 0.0
+            }
+          ],
+          "enemy": [
+            {
+              "alive_candidate": true,
+              "confidence": 0.7145
+            },
+            {
+              "alive_candidate": null,
+              "confidence": 0.0
+            },
+            {
+              "alive_candidate": null,
+              "confidence": 0.0
+            },
+            {
+              "alive_candidate": true,
+              "confidence": 0.8366
+            },
+            {
+              "alive_candidate": true,
+              "confidence": 0.6719
+            }
+          ]
+        },
+        "historical_native_accepted_counts": {
+          "ally_alive": null,
+          "enemy_alive": null
+        }
+      },
+      {
+        "pts_sec": 75.802669,
+        "frame_sha256": "9f51380e00db3f4633ad18d2e80519744e0146466b28f1d3987ae7a1080ac6cf",
+        "nominal_roi_candidates": {
+          "ally": [
+            {
+              "alive_candidate": null,
+              "confidence": 0.0
+            },
+            {
+              "alive_candidate": null,
+              "confidence": 0.0
+            },
+            {
+              "alive_candidate": null,
+              "confidence": 0.0
+            },
+            {
+              "alive_candidate": true,
+              "confidence": 0.9844
+            },
+            {
+              "alive_candidate": true,
+              "confidence": 0.9627
+            }
+          ],
+          "enemy": [
+            {
+              "alive_candidate": true,
+              "confidence": 1.0
+            },
+            {
+              "alive_candidate": true,
+              "confidence": 0.9301
+            },
+            {
+              "alive_candidate": true,
+              "confidence": 0.9447
+            },
+            {
+              "alive_candidate": true,
+              "confidence": 0.9464
+            },
+            {
+              "alive_candidate": true,
+              "confidence": 0.8473
+            }
+          ]
+        },
+        "historical_native_accepted_counts": {
+          "ally_alive": null,
+          "enemy_alive": 5
+        }
+      }
+    ],
+    "pixel_review": {
+      "74.319336": {
+        "ally_score": 0,
+        "enemy_score": 1,
+        "timer_display": "0:29",
+        "semantic_end_banner_visible": false
+      },
+      "74.402669": {
+        "ally_score": 0,
+        "enemy_score": 1,
+        "timer_display": "0:29",
+        "semantic_end_banner_visible": false
+      },
+      "74.486003": {
+        "ally_score": 0,
+        "enemy_score": 2,
+        "timer_display": "0:06",
+        "semantic_end_banner_visible": false
+      },
+      "75.802669": {
+        "ally_score": 0,
+        "enemy_score": 2,
+        "timer_display": "0:05",
+        "semantic_end_banner_visible": true,
+        "text": "TEAM ACE"
+      }
+    },
+    "scope_note": "manual diagnostic pixel readings, not production OCR or validation edits; known cut is between the two score displays, so this does not qualify a continuous score change"
+  },
+  "verification": {
+    "ruff": "PASS: src tests scripts/e2e scripts/diagnostics",
+    "mypy": "PASS: 97 source files",
+    "related_unit_tests": "46 PASS in 4.59s; tests/unit/test_hud_templates.py tests/unit/test_hud_runtime_semantics.py tests/unit/test_round_lifecycle.py",
+    "full_regression_executed": false,
+    "sampled_e2e_executed_for_this_profile": false,
+    "reason": "input component qualification only; profile not adopted, positive boundaries absent"
+  }
+}

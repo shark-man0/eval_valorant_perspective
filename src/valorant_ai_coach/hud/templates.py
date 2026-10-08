@@ -33,6 +33,8 @@ from .hp_glyphs import StrictHpGlyphReader, UnavailableStrictHpGlyphReader
 from .layout import HudLayout, NormalizedRoi
 from .readers import HudReader, ReaderResult
 from .report_header import ReportHeader, report_header_evidence
+from .semantic_text import MATCHER as SEMANTIC_TEXT_MATCHER
+from .semantic_text import SIGNAL_ROIS, SemanticTextReference
 from .spectator import PanelReference, detect_panel
 from .spectator_icon import detect_icon, menu_overlay_candidate
 from .timer_glyphs import StrictTimerGlyphReader, UnavailableStrictTimerGlyphReader
@@ -95,6 +97,7 @@ class HudTemplateProfile:
         self._signal_templates: dict[str, tuple[str, LoadedTemplate]] = {}
         self._signal_bounds: dict[str, tuple[float, float, float, float]] = {}
         self._signal_masks: dict[str, ImageU8] = {}
+        self._semantic_text: dict[str, SemanticTextReference] = {}
         self._edge_signals: set[str] = set()
         self._value_regions: dict[str, ImageU8] = {}
         self._consensus_allowed: dict[str, ImageU8] = {}
@@ -116,7 +119,43 @@ class HudTemplateProfile:
                     raise ValueError("menu witness requires its independent ROI and NCC >= .90")
                 if "roi_bounds" in spec:
                     self._signal_bounds[str(name)] = _bounds(spec["roi_bounds"])
-                if "mask" in spec:
+                if spec.get("matcher") == SEMANTIC_TEXT_MATCHER:
+                    if (
+                        name not in SIGNAL_ROIS
+                        or spec["roi"] != SIGNAL_ROIS[name]
+                        or "roi_bounds" not in spec
+                        or isinstance(spec.get("threshold", 0.90), bool)
+                    ):
+                        raise ValueError("semantic text requires its banner role and bounded crop")
+                    raw_training = spec.get("training")
+                    if not isinstance(raw_training, list) or any(
+                        not isinstance(row, Mapping)
+                        or not isinstance(row.get("template"), str)
+                        or not isinstance(row.get("frame_sha256"), str)
+                        for row in raw_training
+                    ):
+                        raise ValueError("semantic text requires source-backed training templates")
+
+                    def gray_asset(value: str) -> ImageU8:
+                        image = cv2.imdecode(
+                            np.frombuffer(self.resolve_asset(value).read_bytes(), np.uint8),
+                            cv2.IMREAD_GRAYSCALE,
+                        )
+                        if image is None:
+                            raise ValueError("semantic text asset is unreadable")
+                        return np.asarray(image, dtype=np.uint8)
+
+                    self._semantic_text[str(name)] = SemanticTextReference(
+                        template.image,
+                        gray_asset(str(spec["mask"])),
+                        gray_asset(str(spec["support_regions"])),
+                        [
+                            (row["frame_sha256"], gray_asset(row["template"]))
+                            for row in raw_training
+                        ],
+                        template.threshold,
+                    )
+                elif "mask" in spec:
                     value_matcher = spec.get("matcher") in (MATCHER, WEAPON_MATCHER)
                     if spec.get("matcher") == WEAPON_MATCHER and name != "weapon_ammo_structure":
                         raise ValueError("consensus slots require Weapon role")
@@ -356,7 +395,12 @@ class HudTemplateProfile:
                         round(top * ch) : round(bottom * ch),
                         round(left * cw) : round(right * cw),
                     ]
-                if name in self._signal_masks:
+                if name in self._semantic_text:
+                    confidence = self._semantic_text[name].score(crop)
+                    result: ReaderResult[Any] = ReaderResult(
+                        True if confidence >= template.threshold else None, confidence
+                    )
+                elif name in self._signal_masks:
                     reference = template.image
                     if reference.ndim == 3:
                         reference = np.asarray(
@@ -378,7 +422,7 @@ class HudTemplateProfile:
                         if name in self._value_regions
                         else score(reference, crop, self._signal_masks[name])
                     )
-                    result: ReaderResult[Any] = ReaderResult(
+                    result = ReaderResult(
                         True if confidence >= template.threshold else None, confidence
                     )
                 else:
@@ -389,6 +433,8 @@ class HudTemplateProfile:
             if result.value is not None and result.confidence >= 0.85:
                 signals[name] = True
                 signals[f"{name}_confidence"] = result.confidence
+                if name in self._semantic_text:
+                    signals[f"{name}_matcher"] = SEMANTIC_TEXT_MATCHER
                 confidence_key = {
                     "cypher_camera_template": "remote_confidence",
                     "sova_drone_template": "remote_confidence",
