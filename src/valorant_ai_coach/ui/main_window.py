@@ -31,6 +31,8 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from valorant_ai_coach.observability.sanitize import sanitize_text
+
 from .settings_dialog import SettingsDialog
 from .workers import AnalysisWorker, VideoProbeWorker
 
@@ -141,7 +143,7 @@ class MainWindow(QMainWindow):
                     self,
                     "設定を一時的に無効化しました",
                     "保存された設定で初期化できなかったため、この起動中は安全なMock設定を"
-                    f"使用します。設定画面で修正してください。\n\n{backend.startup_warning}",
+                    f"使用します。設定画面で修正してください。\n\n{sanitize_text(backend.startup_warning)}",
                 ),
             )
 
@@ -392,7 +394,7 @@ class MainWindow(QMainWindow):
             return
         self.select_button.setEnabled(True)
         self._history_selection_changed(self.history.currentItem(), None)
-        QMessageBox.critical(self, "動画を開けません", message)
+        QMessageBox.critical(self, "動画を開けません", sanitize_text(message))
 
     def _on_probe_cancelled(self, request_id: str) -> None:
         if request_id != self._probe_request_id:
@@ -448,7 +450,7 @@ class MainWindow(QMainWindow):
             QMessageBox.warning(
                 self,
                 "解析を再開できません",
-                f"元動画が見つかりません。\n{source_path}",
+                f"元動画が見つかりません。\n{source_path.name}",
             )
             return
         self.video_path = source_path
@@ -501,9 +503,8 @@ class MainWindow(QMainWindow):
         dialog = QMessageBox(self)
         dialog.setIcon(QMessageBox.Icon.Critical)
         dialog.setWindowTitle("解析に失敗しました")
-        dialog.setText(message)
+        dialog.setText(sanitize_text(message))
         dialog.setInformativeText("設定、FFmpeg/FFprobe、ログを確認してください。")
-        dialog.setDetailedText(details)
         dialog.exec()
         self._load_history()
         self._show_page(self.home_page)
@@ -562,7 +563,7 @@ class MainWindow(QMainWindow):
             self.backend.delete_match(match_id)
         except Exception as exc:
             LOGGER.exception("Could not delete match %s", match_id)
-            QMessageBox.critical(self, "解析履歴を削除できません", str(exc))
+            QMessageBox.critical(self, "解析履歴を削除できません", sanitize_text(str(exc)))
             return
         self.current_evaluations = []
         self._load_history()
@@ -576,7 +577,7 @@ class MainWindow(QMainWindow):
             result = self.backend.get_match_result(match_id)
         except Exception as exc:
             LOGGER.exception("Could not open match result %s", match_id)
-            QMessageBox.critical(self, "解析結果を開けません", str(exc))
+            QMessageBox.critical(self, "解析結果を開けません", sanitize_text(str(exc)))
             return
         self.player.stop()
         self._player_audio_source_ready = False
@@ -923,7 +924,7 @@ class MainWindow(QMainWindow):
         except Exception as exc:
             LOGGER.exception("Could not save preferred audio track")
             self.statusBar().showMessage(
-                f"音声トラック設定を保存できません: {exc}", 8000
+                f"音声トラック設定を保存できません: {sanitize_text(str(exc))}", 8000
             )
             previous = self._pending_audio_track_index
             if previous is not None:
