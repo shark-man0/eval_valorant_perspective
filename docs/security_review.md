@@ -470,7 +470,7 @@ Residual:
 Positive:
 - no API key, DB, logs, or environment dump is explicitly listed in `datas`
 - application data directory is per-user writable; executable directory is not used as the runtime database/settings root
-- current PyInstaller baseline 6.22.3 is newer than the 6.0.0 fix for CVE-2025-59042
+- current PyInstaller baseline 6.22.3 is newer than both the 6.0.0 fix for CVE-2025-59042 and the 6.22.1 fix for GHSA-9fxf-4qw3-ghmr
 
 Unresolved:
 - complete local `config/` directory is included. See SEC-06.
@@ -519,6 +519,7 @@ Required before merge:
 Security regression coverage added for:
 
 - diagnostic traversal rejection
+- diagnostic run-directory symlink escape rejection
 - create-only diagnostic bundle
 - symlinked diagnostic input omission
 - source ZIP private-artifact exclusions
