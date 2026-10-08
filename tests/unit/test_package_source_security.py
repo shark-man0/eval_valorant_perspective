@@ -17,6 +17,7 @@ def test_source_package_excludes_private_runtime_artifacts(tmp_path: Path) -> No
     private_files = [
         project / "src" / ".env",
         project / "src" / ".env.local",
+        project / "src" / ".ENV",
         project / "config" / "hud_layout.json",
         project / "config" / "hud_layout.templates.json",
         project / "config" / "settings.json",
@@ -28,6 +29,7 @@ def test_source_package_excludes_private_runtime_artifacts(tmp_path: Path) -> No
         project / "scripts" / "cache.sqlite3",
         project / "scripts" / "recording.mp4",
         project / "scripts" / "recording.avi",
+        project / "tests" / "private.zip",
     ]
     for path in private_files:
         path.write_text("private\n", encoding="utf-8")
