@@ -167,6 +167,11 @@ try {
         Invoke-Checked $PythonExe @(
             "-m", "pytest", "tests\unit\test_release_engineering.py", "-q"
         )
+        Invoke-Checked $PythonExe @(
+            "-m", "ruff", "check",
+            "scripts\release\release_tools.py",
+            "tests\unit\test_release_engineering.py"
+        )
     }
 
     Invoke-Checked $PythonExe @(
