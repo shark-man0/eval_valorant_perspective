@@ -143,7 +143,10 @@ class DecodedFrameCache:
             )
             # Ensure file contents reach the filesystem before publishing.
             for name in ("frame.jpg", "metadata.json"):
-                with (temporary / name).open("rb") as file:
+                # On Windows, os.fsync delegates to the CRT commit operation,
+                # which rejects read-only descriptors. Reopen read/write solely
+                # for the durability barrier; the file contents are not changed.
+                with (temporary / name).open("r+b") as file:
                     os.fsync(file.fileno())
             try:
                 os.rename(temporary, directory)

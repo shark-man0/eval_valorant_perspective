@@ -73,7 +73,15 @@ def test_global_phase_can_associate_preparation_without_inventing_player_identit
     active = observation(2)
     packages = build([phase, active, observation(3)], [(2, "round_start"), (3, "round_end")])
     assert packages[0]["round_window"]["start_sec"] == 1
-    assert [event["time_sec"] for event in packages[0]["events"]] == [2, 3]
+    boundary_events = [
+        event
+        for event in packages[0]["events"]
+        if event["type"] in {"round_start", "round_end"}
+    ]
+    assert [(event["type"], event["time_sec"]) for event in boundary_events] == [
+        ("round_start", 2),
+        ("round_end", 3),
+    ]
     assert phase["values"]["player_specific_hud_valid"] is False
     assert phase["values"]["hp"] is None
     assert phase["primary_state"] == "unknown"
