@@ -1,5 +1,34 @@
 # Windows distribution
 
+> このファイルはRelease build時に配布物へ `README-Windows.md` としてコピーされます。
+> 下の「エンドユーザー向けクイックスタート」はInstaller / Portable利用者向け、その後は
+> Release Engineering向けの配布contractです。
+
+## エンドユーザー向けクイックスタート
+
+公式対象はWindows 10 / 11 x64です。Installerは
+`VALORANT-AI-Coach-Setup-<version>-x64.exe`、Portableは
+`VALORANT-AI-Coach-<version>-windows-x64.zip` です。Portableは展開後
+`VALORANT-AI-Coach.exe` を起動してください。どちらもend userへPythonを要求しません。
+
+正式配布物にはFFmpeg / ffprobeを同梱しません。PATHへ用意するか、アプリの **設定** で
+それぞれの実行ファイルを指定してください。初回は既定の **Mock AI + Mock HUD** で
+API keyなしの動作確認を推奨します。
+
+標準user dataは `%LOCALAPPDATA%\ValorantAICoach` に保存されます。upgrade / uninstallで
+このdirectoryを自動削除しません。Uninstall後もsettings、DB、clip、analysis data等が
+残るのが既定動作です。
+
+現在Windows code signingは設定されていません。SmartScreen等が表示された場合は、入手元と
+同じReleaseの `SHA256SUMS.txt` を確認してください。警告を無条件に無視することは推奨しません。
+
+実AIではselected frameをOpenAIへ送信し得ます。raw video全体を送る実装ではありませんが、
+selected frame内のplayer name、chat、minimap、overlay等は現在必ずしもmaskされません。
+Mock AIはAI CoachのOpenAI送信を避けます。詳細はrepositoryの
+`docs/privacy_and_data.md` を参照してください。
+
+---
+
 This document defines the supported Windows distribution contract for VALORANT AI Coach.
 
 ## Supported platform
