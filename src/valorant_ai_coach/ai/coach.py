@@ -362,7 +362,7 @@ class OpenAICoach:
                     "OpenAI transport error; retrying (%s/%s): %s",
                     attempt + 1,
                     attempts - 1,
-                    exc,
+                    type(exc).__name__,
                 )
         raise AssertionError("transport retry loop exhausted unexpectedly")
 
