@@ -4,6 +4,7 @@ import json
 import os
 import re
 import zipfile
+from contextlib import suppress
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, cast
@@ -109,8 +110,6 @@ def create_diagnostic_bundle(request: DiagnosticBundleRequest) -> Path:
         for name in sorted(entries):
             archive.writestr(name, entries[name])
     if os.name != "nt":
-        try:
+        with suppress(OSError):
             destination.chmod(0o600)
-        except OSError:
-            pass
     return destination
