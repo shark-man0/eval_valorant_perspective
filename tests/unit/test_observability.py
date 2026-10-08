@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import json
 import logging
+import os
+import stat
 import zipfile
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -384,3 +386,17 @@ def test_bundle_handles_malformed_optional_json(tmp_path: Path) -> None:
 )
 def test_error_taxonomy(exc: BaseException, expected: str) -> None:
     assert classify_exception(exc) == expected
+
+
+@pytest.mark.skipif(os.name == "nt", reason="POSIX permission bits are not authoritative on Windows")
+def test_private_observability_files_use_owner_only_permissions(tmp_path: Path) -> None:
+    try:
+        log_path = configure_logging(tmp_path / "logs")
+        bundle_path = tmp_path / "bundle.zip"
+        create_diagnostic_bundle(
+            DiagnosticBundleRequest(run_id="secure-run", output_path=bundle_path)
+        )
+        assert stat.S_IMODE(log_path.stat().st_mode) == 0o600
+        assert stat.S_IMODE(bundle_path.stat().st_mode) == 0o600
+    finally:
+        _close_root_handlers()
