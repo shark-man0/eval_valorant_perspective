@@ -388,7 +388,9 @@ def test_error_taxonomy(exc: BaseException, expected: str) -> None:
     assert classify_exception(exc) == expected
 
 
-@pytest.mark.skipif(os.name == "nt", reason="POSIX permission bits are not authoritative on Windows")
+@pytest.mark.skipif(
+    os.name == "nt", reason="POSIX permission bits are not authoritative on Windows"
+)
 def test_private_observability_files_use_owner_only_permissions(tmp_path: Path) -> None:
     try:
         log_path = configure_logging(tmp_path / "logs", max_bytes=256, backup_count=1)
