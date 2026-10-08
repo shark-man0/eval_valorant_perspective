@@ -119,7 +119,9 @@ def test_settings_write_failure_rolls_back_new_credential(
     assert json.loads((tmp_path / "settings.json").read_text(encoding="utf-8"))["mock_ai"] is True
 
 
-@pytest.mark.skipif(os.name == "nt", reason="POSIX permission bits are not authoritative on Windows")
+@pytest.mark.skipif(
+    os.name == "nt", reason="POSIX permission bits are not authoritative on Windows"
+)
 def test_settings_file_is_private_on_posix(tmp_path: Path) -> None:
     path = tmp_path / "settings.json"
     SettingsStore(path, credential_backend=MemoryCredentials()).save(AppSettings.defaults(tmp_path))
