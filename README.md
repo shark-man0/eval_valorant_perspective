@@ -149,15 +149,20 @@ APIキーはWindows Credential Managerへ保存します。`OPENAI_API_KEY` 環�
 dist\VALORANT-AI-Coach\VALORANT-AI-Coach.exe
 ```
 
-自己完結に近い配布物にする場合は、配布権を確認した `ffmpeg.exe` と `ffprobe.exe` を
-ビルド前に `bin\` へ置いてください。specが検出して同梱し、実行時に自動解決します。
-置かない場合は、利用者側の `PATH` または設定画面のパスを使用します。
+正式なWindows配布物では `ffmpeg.exe` と `ffprobe.exe` を同梱しません。
+利用者側の `PATH` または設定画面で指定した実行ファイルを使用します。任意のFFmpeg
+binaryをReleaseへ含める場合は、別途provenanceとredistribution/license確認が必要です。
 
 PyInstallerはクロスコンパイルしないため、Windows用 `.exe` はWindows上で作成して
 ください。ビルド後は `--smoke-test` で同梱資源とGUI初期化を自動確認します。GitHub
 Actionsの `Windows verification` は実FFmpegテスト、カバレッジ、onedir生成、成果物起動を検証します。
 `constraints-windows.txt` はWindows/Python 3.12で検証する直接依存関係を固定し、通常起動・
 ビルド・CIのすべてで同じ制約を使用します。
+
+Portable ZIP、通常ユーザー権限のInstaller、SHA-256、Release候補の作成手順は
+[Windows distribution](docs/windows_distribution.md) と
+[Release process](docs/release_process.md) を参照してください。正式ReleaseではFFmpeg/ffprobeを
+同梱せず、利用者のPATHまたは設定画面で指定した実行ファイルを使用します。
 
 ## Windows実動画E2EとMacへの結果共有
 
