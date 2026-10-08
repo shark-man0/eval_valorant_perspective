@@ -70,8 +70,7 @@ def _image_part(path: Path) -> dict[str, str]:
 def _response_text(response: Any) -> str:
     status = getattr(response, "status", None)
     if status == "incomplete":
-        details = getattr(response, "incomplete_details", None)
-        raise OpenAIIncompleteError(f"OpenAI応答が途中で終了しました: {details}")
+        raise OpenAIIncompleteError("OpenAI応答が途中で終了しました")
     direct = getattr(response, "output_text", None)
     if isinstance(direct, str) and direct.strip():
         return direct
@@ -87,7 +86,7 @@ def _response_text(response: Any) -> str:
                 if isinstance(text, str):
                     texts.append(text)
     if refusal:
-        raise OpenAIRefusalError(refusal)
+        raise OpenAIRefusalError("OpenAIが応答を拒否しました")
     if texts:
         return "".join(texts)
     raise OpenAIResponseError("OpenAI応答にJSONテキストがありません")
