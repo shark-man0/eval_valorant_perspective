@@ -4,6 +4,7 @@ import json
 import logging
 import os
 import sqlite3
+from contextlib import suppress
 from collections.abc import Iterator
 from contextlib import contextmanager
 from dataclasses import asdict, is_dataclass
@@ -51,10 +52,8 @@ class SQLiteRepository:
         self.clips_dir = Path(clips_dir).expanduser().resolve() if clips_dir else None
         self._migrate()
         if os.name != "nt":
-            try:
+            with suppress(OSError):
                 self.path.chmod(0o600)
-            except OSError:
-                pass
 
     @contextmanager
     def _connect(self) -> Iterator[sqlite3.Connection]:
