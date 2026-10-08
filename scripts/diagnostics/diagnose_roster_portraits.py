@@ -15,6 +15,13 @@ from pathlib import Path
 import cv2
 import numpy as np
 
+from scripts.diagnostics.roster_edge_reference import (
+    METHOD as EDGE_METHOD,
+)
+from scripts.diagnostics.roster_edge_reference import (
+    build_reference,
+    locate_edges,
+)
 from valorant_ai_coach.hud.calibrate_temporal import _check_output_privacy
 from valorant_ai_coach.hud.layout import HudLayout
 
@@ -54,8 +61,11 @@ def replay(layout_path, manifest_path, training_root, probe_root, output):
     if output.exists():
         raise FileExistsError("portrait diagnostic output must be new")
     original = {layout_path: digest(layout_path), manifest_path: digest(manifest_path)}
+    matcher_path = Path(__file__).with_name("roster_edge_reference.py")
+    original[matcher_path] = digest(matcher_path)
     manifest = json.loads(manifest_path.read_bytes())
-    if manifest["method"] != METHOD:
+    method = manifest["method"]
+    if method not in {METHOD, EDGE_METHOD}:
         raise ValueError("portrait method differs from frozen declaration")
     layout = HudLayout.load(layout_path)
     width, height = layout.reference_resolution or (0, 0)
@@ -89,9 +99,14 @@ def replay(layout_path, manifest_path, training_root, probe_root, output):
         )
         if not left <= x1 < x2 <= right or not top <= y1 < y2 <= bottom:
             raise ValueError("portrait training crop outside configured ROI")
-        reference = training[0][y1:y2, x1:x2]
-        support = [locate(reference, image[y1:y2, x1:x2])["similarity"] for image in training]
-        references[name] = (side, reference, support)
+        crops = [image[y1:y2, x1:x2] for image in training]
+        if method == EDGE_METHOD:
+            reference, mask, support = build_reference(crops)
+            support["mask_sha256"] = hashlib.sha256(mask.tobytes()).hexdigest()
+        else:
+            reference, mask = crops[0], None
+            support = {"training_similarity": [locate(reference, c)["similarity"] for c in crops]}
+        references[name] = (side, reference, mask, support)
     rows = []
     for path in probes:
         hash_value = digest(path)
@@ -102,25 +117,43 @@ def replay(layout_path, manifest_path, training_root, probe_root, output):
             raise ValueError("portrait probe resolution mismatch")
         original[path] = hash_value
         locations = {}
-        for name, (side, reference, _) in references.items():
+        for name, (side, reference, mask, support) in references.items():
             left, top, right, bottom = layout.normalized_roi(f"{side}_roster").pixel_bounds(
                 width, height
             )
-            measured = locate(reference, image[top:bottom, left:right])
+            search = image[top:bottom, left:right]
+            if mask is None:
+                measured = locate(reference, search)
+            elif support["available"]:
+                measured = locate_edges(reference, mask, search)
+            else:
+                measured = {"similarity": None, "offset_xy": None,
+                            "reason": "training_reference_insufficient"}
             offset = measured["offset_xy"]
             locations[name] = {**measured, "frame_xy": None if offset is None else
                                [left + offset[0], top + offset[1]]}
+            if manifest.get("control_roi"):
+                region = layout.normalized_roi(manifest["control_roi"])
+                cl, ct, cr, cb = region.pixel_bounds(width, height)
+                control = image[ct:cb, cl:cr]
+                locations[name]["control"] = (
+                    locate(reference, control) if mask is None else
+                    locate_edges(reference, mask, control) if support["available"] else
+                    {"similarity": None, "offset_xy": None,
+                     "reason": "training_reference_insufficient"}
+                )
         rows.append({"frame_sha256": hash_value, "locations": locations})
     if any(digest(path) != hash_value for path, hash_value in original.items()):
         raise ValueError("portrait diagnostic inputs changed")
     report = {
-        "method": METHOD, "qualification_created": False, "continuity_attested": False,
+        "method": method, "qualification_created": False, "continuity_attested": False,
         "liveness_counts": None, "layout_sha256": original[layout_path],
         "manifest_sha256": original[manifest_path], "implementation_sha256": digest(Path(__file__)),
+        "matcher_implementation_sha256": original[matcher_path],
         "training_frame_hashes": [row["sha256"] for row in sources],
         "references": {name: {"side": side, "dimensions": list(reference.shape[::-1]),
-                              "training_similarity": support}
-                       for name, (side, reference, support) in references.items()},
+                              **support}
+                       for name, (side, reference, _, support) in references.items()},
         "rows": rows,
     }
     output.parent.mkdir(parents=True, exist_ok=True)

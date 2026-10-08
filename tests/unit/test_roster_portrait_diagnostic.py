@@ -12,6 +12,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts.diagnostics.diagnose_roster_portraits import (  # noqa: E402
+    EDGE_METHOD,
     METHOD,
     locate,
     replay,
@@ -94,3 +95,21 @@ def test_replay_rejects_unbound_or_changed_inputs(tmp_path, failure):
     with pytest.raises(ValueError):
         replay(*args)
     assert not args[-1].exists()
+
+
+def test_edge_reference_without_training_support_cannot_probe_positive(tmp_path):
+    args = fixture(tmp_path)
+    manifest = json.loads(args[1].read_bytes())
+    manifest["method"] = EDGE_METHOD
+    manifest["control_roi"] = "ally_roster"
+    args[1].write_text(json.dumps(manifest))
+    # Probe contains an exact copy of reference pixels but is a distinct frame.
+    image = cv2.imread(str(args[2] / "0.jpg"), cv2.IMREAD_GRAYSCALE)
+    image[-1, -1] = 255 - image[-1, -1]
+    cv2.imwrite(str(args[3] / "probe.jpg"), image)
+    report = replay(*args)
+    assert report["references"]["portrait"]["available"] is False
+    location = report["rows"][0]["locations"]["portrait"]
+    assert location["similarity"] is None
+    assert location["reason"] == "training_reference_insufficient"
+    assert location["control"]["similarity"] is None

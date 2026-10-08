@@ -524,3 +524,53 @@ Next useful candidate must account for compacted portrait placement and renderin
 variation with training-only fitting, then use fresh independent positive and
 natural-background controls. Existing gray match failures cannot be repaired by
 lowering thresholds or declaring absent portraits dead.
+
+### Training-edge candidate and fresh source cohorts
+
+Full-ROI location search on the three initial training sources does not repair
+v1's 0.875/0.850 support failures. Fixed Gaussian 3×3 preprocessing, tested on
+training only, also does not repair them. Neither was adopted. The next frozen
+diagnostic method, `roster_portrait_stable_edge_ncc_location_v2`, uses Canny
+60/120 and retains reference edges within one pixel of an edge in **every**
+training crop. A fixed 3×3 dilation retains contrast neighbourhoods. It fits no
+probe images, uses no geometry anchor, and keeps original zero-mean NCC .90.
+Minimum support is 128 mask pixels and gray std5. Constant/undefined searches
+remain unknown. A reference failing .90 on any training source cannot probe.
+
+All five v2 training references meet the original .90 criterion: minimum per-role
+NCC 0.926, 0.929, 0.984, 0.972, 0.947, with mask populations 1119, 1007, 1151,
+1088, 1223. The numerical masked NCC implementation is tested against direct
+Pearson correlation. Training-only mask fitting is deterministic and leaves
+source arrays unchanged.
+
+After freezing this candidate, the unchanged source video was decoded at all
+native PTS in offline selectors 73.8–74.1 / 74.7–75.0 (36 frames), and then
+0.8–1.1 (18 frames). Source SHA remains `71d585…36b06`; returned PTS exactly
+match requested PTS. Encoding is quality100, no resizing. These frames were not
+used to fit v2; no direct accuracy delta with differently encoded archives is
+claimed. The fixed layout's `center_crosshair_area` supplies a separate spatial
+non-HUD search control. Runtime recognition never receives these selectors.
+
+Results on the 36-frame end cohort: first portrait .90 matches 18/18 in the first
+window, 0/18 in the second; the other four have no .90 matches. Spatial controls
+have 0/180 .90 matches, maximum .519. Review of the four cohort endpoints shows
+one ally portrait before the ending animation and none in the later animation;
+that limited review is not annotation of every frame or verified runtime absence.
+
+The 18-frame preparation cohort exposes a remaining positive miss: first portrait
+0/18 at .90 (minimum .855), other four 18/18 each. Controls 0/90, maximum .569.
+The predictor was not changed after these results. The single-reference edge
+candidate therefore **does not qualify** complete roster counting or elimination,
+even though it handles a relocated portrait. No nonmatch becomes death/zero and
+no positive lifecycle behavior was installed. This narrows the next training
+requirement to independent rendering variants, not lower confidence thresholds.
+
+Private reports: `mac-roster-portrait-v2-fresh.json` and
+`mac-roster-portrait-v2-preparation.json`. Follow-up report schema now also binds
+the edge-matcher implementation hash, since driver hash alone cannot identify
+changes in the helper. The first reports precede that added field; their archived
+bytes were not rewritten. Focused portrait/roster tests: **14 PASS**. Ruff, source
+mypy (98 files), diff check: PASS. No production source changed in this follow-up;
+the previously reported full-suite result remains 1229 PASS / 5 baseline FAIL /
+5 SKIP, not a fresh full run including the new diagnostic tests. Canonical full
+E2E and real round boundary completion remain unproven.
