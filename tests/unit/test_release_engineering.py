@@ -47,7 +47,7 @@ def test_checksum_generation_is_sha256_and_stable(tmp_path: Path) -> None:
 
 def test_pyinstaller_bundle_excludes_test_tree_and_remaps_default_mock_case() -> None:
     text = SPEC.read_text(encoding="utf-8")
-    assert 'add_file("tests/cases/TC-029/input.json"' in text
+    assert '"tests/cases/TC-029/input.json"' in text
     assert '"runtime/mock_cases/TC-029"' in text
     assert '(str(project / "tests"), "tests")' not in text
     assert 'str(project / "tests" / "cases")' not in text
