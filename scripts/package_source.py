@@ -10,6 +10,35 @@ from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 DIRECTORIES = {"src", "tests", "config", "schemas", ".github", "scripts", "datasets"}
 ROOT_EXTENSIONS = {".md", ".toml", ".ps1", ".spec", ".txt"}
 EXCLUDED_PARTS = {"__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache"}
+PRIVATE_SUFFIXES = {
+    ".db",
+    ".db-shm",
+    ".db-wal",
+    ".key",
+    ".log",
+    ".mkv",
+    ".mov",
+    ".mp4",
+    ".pem",
+    ".sqlite",
+    ".sqlite3",
+    ".webm",
+}
+PRIVATE_NAMES = {
+    "diagnostic_bundle.zip",
+    "hud_layout.json",
+    "hud_layout.templates.json",
+    "settings.json",
+    "visual_runtime.json",
+}
+
+
+def _is_private_runtime_artifact(relative: Path) -> bool:
+    if any(part == ".env" or part.startswith(".env.") for part in relative.parts):
+        return True
+    if relative.name.lower() in PRIVATE_NAMES:
+        return True
+    return relative.suffix.lower() in PRIVATE_SUFFIXES
 
 
 def package(project: Path, destination: Path) -> tuple[int, str]:
@@ -24,8 +53,10 @@ def package(project: Path, destination: Path) -> tuple[int, str]:
             continue
         if any(part in EXCLUDED_PARTS or part.endswith(".egg-info") for part in relative.parts):
             continue
+        if _is_private_runtime_artifact(relative):
+            continue
         if relative.parts[0] in DIRECTORIES:
-            if path.suffix in {".pyc", ".db", ".sqlite", ".mp4", ".mkv"}:
+            if path.suffix == ".pyc":
                 continue
         elif len(relative.parts) != 1 or (
             path.suffix not in ROOT_EXTENSIONS and path.name != ".gitignore"
