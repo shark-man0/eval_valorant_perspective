@@ -10,6 +10,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 from contextlib import suppress
 from datetime import UTC, datetime
 from pathlib import Path
@@ -226,10 +227,26 @@ def parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Check Python, headless imports and tools only; no analysis/evaluation",
     )
+    p.add_argument("--mode", choices=("targeted", "sampled", "full"), default="full")
+    p.add_argument("--frame-suite")
+    p.add_argument("--category", action="append", default=[])
+    p.add_argument("--previous", help="Comparable previous run directory or runtime_summary.json")
+    p.add_argument("--cache-dir", default="outputs/e2e_cache")
     return p
 
 
 def run_case(args, *, root=APP_ROOT, runner=subprocess.run, probe=None) -> int:
+    from scripts.e2e.run_metrics import FullRunLock
+
+    if getattr(args, "mode", "full") == "full":
+        if getattr(args, "frame_suite", None) or getattr(args, "category", []):
+            raise CaseError("BOUNDED_OPTIONS_REQUIRE_BOUNDED_MODE")
+        with FullRunLock(root):
+            return _run_case(args, root=root, runner=runner, probe=probe)
+    return _run_case(args, root=root, runner=runner, probe=probe)
+
+
+def _run_case(args, *, root=APP_ROOT, runner=subprocess.run, probe=None) -> int:
     from scripts.e2e.report_context import save_context
     from scripts.e2e.share_report import export_report
     from valorant_ai_coach.video import VideoService
@@ -263,8 +280,23 @@ def run_case(args, *, root=APP_ROOT, runner=subprocess.run, probe=None) -> int:
     raw, trace, assertions = {}, {}, {}
     evaluation = {"pass": False, "schema_valid": False, "failures": []}
     assertions_hash = None
+    mode = getattr(args, "mode", "full")
+    started = time.perf_counter()
+    command_results = []
+    orchestration_stages = {}
+    suite = None
+    from scripts.e2e.run_metrics import code_fingerprint
+
+    initial_code = code_fingerprint(root)
+    initial_settings = None
+
+    def record_stage(name, seconds):
+        row = orchestration_stages.setdefault(name, {"calls": 0, "total_sec": 0.0})
+        row["calls"] += 1
+        row["total_sec"] += seconds
 
     def command(argv, name, allowed=(0,)):
+        command_started = time.perf_counter()
         with (output / f"{name}.log").open("wb") as log:
             result = runner(
                 argv,
@@ -274,6 +306,15 @@ def run_case(args, *, root=APP_ROOT, runner=subprocess.run, probe=None) -> int:
                 check=False,
                 env={**os.environ, "PYTHONUTF8": "1"},
             )
+        seconds = time.perf_counter() - command_started
+        command_results.append(
+            {"command": name, "exit_code": result.returncode, "wall_sec": seconds}
+        )
+        temporary = output / ".command_results.tmp"
+        temporary.write_text(json.dumps(command_results, indent=2) + "\n", encoding="utf-8")
+        temporary.replace(output / "command_results.json")
+        if name == "evaluation":
+            record_stage("evaluator", seconds)
         if result.returncode not in allowed:
             raise CaseError(name.upper() + "_FAILED")
         return result.returncode
@@ -369,31 +410,129 @@ def run_case(args, *, root=APP_ROOT, runner=subprocess.run, probe=None) -> int:
         metadata["settings_fingerprint"] = hashlib.sha256(
             json.dumps(settings, sort_keys=True).encode()
         ).hexdigest()
-        print("Running existing E2E pipeline; detailed logs stay in outputs/.", flush=True)
+        initial_settings = metadata["settings_fingerprint"]
+        if mode != "full":
+            from scripts.e2e.frame_suite import load_suite, selected_frames
+
+            suite_path = native_path(
+                getattr(args, "frame_suite", None) or f"datasets/e2e_suites/{video_id}/{mode}.json",
+                root,
+            )
+            suite = load_suite(
+                suite_path,
+                mode=mode,
+                source_sha256=digest,
+                categories=getattr(args, "category", []),
+            )
+            if suite["video_id"] != video_id:
+                raise CaseError("SUITE_VIDEO_ID_MISMATCH")
+            points = selected_frames(suite, getattr(args, "category", []))
+            if not points:
+                raise CaseError("EMPTY_FRAME_SELECTION")
+            frame_input = {
+                "schema_version": 1,
+                "mode": mode,
+                "input_scope": "isolated_points",
+                "source_sha256": digest,
+                "calibration_prefix": suite["calibration_prefix"],
+                "pts_sec": [row["pts_sec"] for row in points],
+            }
+            (output / "frame_input.json").write_text(
+                json.dumps(frame_input, indent=2) + "\n", encoding="utf-8"
+            )
+            cmd.extend(
+                [
+                    "--frame-input",
+                    str(output / "frame_input.json"),
+                    "--cache-dir",
+                    str(native_path(getattr(args, "cache_dir", "outputs/e2e_cache"), root)),
+                ]
+            )
+        print(f"Running {mode} E2E; detailed logs stay in outputs/.", flush=True)
         save_context(output, metadata, assertions_sha256=assertions_hash)
         command(cmd, "analyzer")
         raw = read_json(output / "raw_processing.json")
         if raw.get("status") != "complete":
             raise CaseError("ANALYZER_INCOMPLETE")
         trace = read_json(output / "e2e_trace.json")
-        code = command(
-            [
-                sys.executable,
-                str(root / "tests/e2e/evaluate_saved_trace.py"),
-                "--pack",
-                str(pack),
-                "--trace",
-                str(output / "e2e_trace.json"),
-                "--output",
-                str(output / "evaluation_report.json"),
-            ],
-            "evaluation",
-            allowed=(0, 1),
-        )
-        evaluation = read_json(output / "evaluation_report.json")
-        if evaluation.get("pass") is not (code == 0):
-            raise CaseError("EVALUATOR_RESULT_INCONSISTENT")
-        if args.include_evidence and code:
+        if mode == "full":
+            code = command(
+                [
+                    sys.executable,
+                    str(root / "tests/e2e/evaluate_saved_trace.py"),
+                    "--pack",
+                    str(pack),
+                    "--trace",
+                    str(output / "e2e_trace.json"),
+                    "--output",
+                    str(output / "evaluation_report.json"),
+                ],
+                "evaluation",
+                allowed=(0, 1),
+            )
+            evaluation = read_json(output / "evaluation_report.json")
+            if evaluation.get("pass") is not (code == 0):
+                raise CaseError("EVALUATOR_RESULT_INCONSISTENT")
+        else:
+            from scripts.e2e.frame_suite import evaluate_frames
+
+            evaluation_started = time.perf_counter()
+            actual_pixels = raw.get("replay_metadata", {}).get("decoded_pixel_sha256", {})
+            pixel_mismatches = [
+                {
+                    "pts_sec": row["pts_sec"],
+                    "expected": row["decoded_pixel_sha256"],
+                    "actual": actual_pixels.get(str(row["pts_sec"])),
+                }
+                for row in suite["frames"]
+                if "decoded_pixel_sha256" in row
+                and actual_pixels.get(str(row["pts_sec"])) != row["decoded_pixel_sha256"]
+            ]
+            (output / "pixel_witness_diagnostics.json").write_text(
+                json.dumps(
+                    {
+                        "checked_frames": sum(
+                            "decoded_pixel_sha256" in row for row in suite["frames"]
+                        ),
+                        "mismatches": pixel_mismatches,
+                    },
+                    indent=2,
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            if pixel_mismatches:
+                raise CaseError("REVIEWED_PIXEL_WITNESS_MISMATCH")
+            evaluation = evaluate_frames(suite, raw["observations"])
+            evaluation["full_validation_pack_evaluated"] = False
+            evaluation["temporal_assertions_evaluated"] = False
+            code = 1 if evaluation["counts"]["failed"] else 0
+            evaluation["pass"] = code == 0
+            (output / "evaluation_report.json").write_text(
+                json.dumps(evaluation, indent=2) + "\n", encoding="utf-8"
+            )
+            record_stage("evaluator", time.perf_counter() - evaluation_started)
+        if sha256_file(video) != digest or code_fingerprint(root) != initial_code:
+            raise CaseError("INPUT_OR_CODE_CHANGED_DURING_RUN")
+        if pack_identity(pack)[1] != pack_hash:
+            raise CaseError("VALIDATION_PACK_CHANGED_DURING_RUN")
+        current_settings = {}
+        for option in ("hud_layout", "visual_profile", "manual_map_id", "map_client_build"):
+            value = getattr(args, option)
+            if value:
+                current_settings[option] = (
+                    sha256_file(Path(value)) if option.endswith(("layout", "profile")) else value
+                )
+        if metadata["hud_layout_sha256"] != (sha256_file(layout) if layout.is_file() else None):
+            raise CaseError("PROFILE_CHANGED_DURING_RUN")
+        if sidecar.is_file():
+            current_settings["hud_assets"] = HudTemplateProfile.load(sidecar).fingerprint(layout)
+        if (
+            hashlib.sha256(json.dumps(current_settings, sort_keys=True).encode()).hexdigest()
+            != initial_settings
+        ):
+            raise CaseError("PROFILE_CHANGED_DURING_RUN")
+        if mode == "full" and args.include_evidence and code:
             from scripts.e2e.evidence import export_evidence
 
             metadata["evidence_files"] = export_evidence(
@@ -418,21 +557,45 @@ def run_case(args, *, root=APP_ROOT, runner=subprocess.run, probe=None) -> int:
         print(error, file=sys.stderr)
         code = 2
     save_context(output, metadata, assertions_sha256=assertions_hash, exit_code=code)
+    report_started = time.perf_counter()
     try:
-        export_report(
-            raw=raw,
-            trace=trace,
-            evaluation=evaluation,
-            assertions=assertions,
-            metadata=metadata,
-            output_dir=shared,
-        )
+        if mode == "full":
+            export_report(
+                raw=raw,
+                trace=trace,
+                evaluation=evaluation,
+                assertions=assertions,
+                metadata=metadata,
+                output_dir=shared,
+            )
     except (OSError, ValueError):
         print(
             "SHARED_EXPORT_FAILED: local run and metadata retained for re-export.", file=sys.stderr
         )
         return 2
-    print(f"Generated share report: e2e_reports/{video_id}/summary.json")
+    record_stage("report_generation", time.perf_counter() - report_started)
+    from scripts.e2e.runtime_summary import export_runtime_summary
+
+    export_runtime_summary(
+        output=output,
+        shared=shared,
+        mode=mode,
+        raw=raw,
+        evaluation=evaluation,
+        suite=suite,
+        frame_input=locals().get("frame_input"),
+        metadata=metadata,
+        assertions_hash=assertions_hash,
+        stages=orchestration_stages,
+        started=started,
+        initial_code=initial_code,
+        initial_settings=initial_settings,
+        previous_path=getattr(args, "previous", None),
+        root=root,
+    )
+    print(f"Generated {mode} runtime summary: {output / 'runtime_summary.json'}")
+    if mode == "full":
+        print(f"Generated share report: e2e_reports/{video_id}/summary.json")
     return code
 
 

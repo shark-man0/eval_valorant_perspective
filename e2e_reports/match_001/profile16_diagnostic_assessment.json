@@ -1,0 +1,54 @@
+{
+  "candidate": "profile16",
+  "decision": "rejected_not_adopted",
+  "reason": "At least three false accepted timer values remain at confidence >= 0.90; partial qualification does not establish full accuracy.",
+  "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "profile_fingerprint": "2c54d7e1f886e9f1851cbb10fea0b1f230d7856df8bcb4e793e6c6f8746df6b9",
+  "code_fingerprint": "22defc36d2986b2e45164d240cba550e856a9d7474e88ed768901bd06986a336",
+  "terminal_exit_code": 1,
+  "terminal_hashes_verified": {
+    "raw_processing.json": true,
+    "e2e_trace.json": true,
+    "evaluation_report.json": true
+  },
+  "full_counts": {
+    "pass": 23,
+    "fail": 55,
+    "not_evaluated": 4
+  },
+  "new_assertion_regressions": 0,
+  "negative_assertion_failures": 0,
+  "discontinuity_violations": 0,
+  "common_pts": 4634,
+  "removed_pts": 0,
+  "added_pts": 27,
+  "non_timer_common_changes_excluding_frame_index": 0,
+  "accepted_timer_values": 3411,
+  "review_scope": "Three suspicious full-run images visually reviewed after predictions; diagnostic error evidence, not independent full ground truth or training. Other accepted outputs remain unqualified.",
+  "confirmed_false_accepts": [
+    {
+      "pts_sec": 124.486003,
+      "visually_read_timer_sec": 86,
+      "recognized_timer_sec": 266.0,
+      "confidence": 0.9383367200000001,
+      "frame_file_sha256": "0076afe93596e8cb9ec8655b2fb9ee13e60ab6f454fd65ce06874cb2219283e2"
+    },
+    {
+      "pts_sec": 135.802669,
+      "visually_read_timer_sec": 75,
+      "recognized_timer_sec": 255.0,
+      "confidence": 0.95371284,
+      "frame_file_sha256": "77283336906276d7d3b8dcaaf040a0ba17ff1d55063674e42e368b5b34f6fc29"
+    },
+    {
+      "pts_sec": 156.002669,
+      "visually_read_timer_sec": 55,
+      "recognized_timer_sec": 655.0,
+      "confidence": 0.9205036200000001,
+      "frame_file_sha256": "8c7860d9181c462189b7fc895f01150e60d9b8d1b1724af1d15e9adcf352afeb"
+    }
+  ],
+  "wall_sec": 15149.128760428983,
+  "profile_adopted": false,
+  "windows_runtime_verified": false
+}

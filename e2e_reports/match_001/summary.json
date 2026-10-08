@@ -5,37 +5,37 @@
     "schema_version": 1,
     "profile_present": true,
     "counts": {
-      "frames": 4634,
+      "frames": 4661,
       "fresh_geometry_success": 1,
-      "effective_geometry_success": 4634,
-      "retained_geometry_frames": 4633,
+      "effective_geometry_success": 4661,
+      "retained_geometry_frames": 4660,
       "geometry_invalid_unknown": 0,
-      "geometry_valid_state_unknown": 3715,
-      "live_identity_evidence_insufficient": 3744,
-      "insufficient_anchors_frames": 4633
+      "geometry_valid_state_unknown": 3731,
+      "live_identity_evidence_insufficient": 3771,
+      "insufficient_anchors_frames": 4660
     },
-    "fresh_geometry_success_rate": 0.00021579628830384117,
+    "fresh_geometry_success_rate": 0.00021454623471358077,
     "effective_geometry_success_rate": 1.0,
     "reasons": {
-      "insufficient_anchors": 4633
+      "insufficient_anchors": 4660
     },
     "identity_evidence_policy": "independent_current_frame_structures_v1",
     "identity_reasons": {
-      "spectator_exclusion_unverified": 2324,
+      "spectator_exclusion_unverified": 2351,
       "competing_view_evidence": 356,
       "structure_evidence_insufficient": 1499,
       "independent_hud_structures": 455
     },
     "identity_missing": {
       "hp_hud_structure": 794,
-      "ability_bar_structure": 2291,
+      "ability_bar_structure": 2318,
       "weapon_ammo_structure": 2610
     },
     "spectator_checks": {
       "roi_unobservable": 10,
-      "panel_structure_present": 163,
+      "panel_structure_present": 174,
       "panel_structure_excluded": 2310,
-      "panel_structure_ambiguous": 1885,
+      "panel_structure_ambiguous": 1901,
       "panel_structure_mismatch": 266
     },
     "automatic_identity_generation": {
@@ -1640,9 +1640,9 @@
         "threshold": 0.9,
         "geometry_success_rate_when_accepted": 0.5,
         "accepted_count": 2,
-        "rejected_count": 4632,
+        "rejected_count": 4659,
         "unscored_count": 0,
-        "missing_during_insufficient_anchors": 4632,
+        "missing_during_insufficient_anchors": 4659,
         "accepted_during_geometry_success": 1,
         "content_hash": "b479ec4f00a1e271cd559d23c1843ae45da39abc04bdf794bf926bdba394ffbd",
         "mask_content_hash": null,
@@ -1652,7 +1652,7 @@
         ],
         "match_confidence": {
           "min": 0.31304964423179626,
-          "median": 0.7713905870914459,
+          "median": 0.7707666158676147,
           "max": 0.9994843602180481
         }
       },
@@ -1663,8 +1663,8 @@
         "mask_presence": true,
         "asset_readable": true,
         "threshold": 0.9,
-        "geometry_success_rate_when_accepted": 0.00021579628830384117,
-        "accepted_count": 4634,
+        "geometry_success_rate_when_accepted": 0.00021454623471358077,
+        "accepted_count": 4661,
         "rejected_count": 0,
         "unscored_count": 0,
         "missing_during_insufficient_anchors": 0,
@@ -1677,7 +1677,7 @@
         ],
         "match_confidence": {
           "min": 0.9577085971832275,
-          "median": 0.9957875609397888,
+          "median": 0.9957627058029175,
           "max": 0.9983332753181458
         }
       },
@@ -1690,9 +1690,9 @@
         "threshold": 0.9,
         "geometry_success_rate_when_accepted": 1.0,
         "accepted_count": 1,
-        "rejected_count": 4633,
+        "rejected_count": 4660,
         "unscored_count": 0,
-        "missing_during_insufficient_anchors": 4633,
+        "missing_during_insufficient_anchors": 4660,
         "accepted_during_geometry_success": 1,
         "content_hash": "31d71802e579aabcd257926af9707687b4dfa1bb3faf9e5df410c0d8bf6bf574",
         "mask_content_hash": null,
@@ -1702,7 +1702,7 @@
         ],
         "match_confidence": {
           "min": 0.0,
-          "median": 0.524396538734436,
+          "median": 0.5244625806808472,
           "max": 0.9994807243347168
         }
       },
@@ -1715,9 +1715,9 @@
         "threshold": 0.9,
         "geometry_success_rate_when_accepted": 1.0,
         "accepted_count": 1,
-        "rejected_count": 4633,
+        "rejected_count": 4660,
         "unscored_count": 0,
-        "missing_during_insufficient_anchors": 4633,
+        "missing_during_insufficient_anchors": 4660,
         "accepted_during_geometry_success": 1,
         "content_hash": "f9faf779c0490d9ef79d3cc7fa3824de0fbcb7cbed4947df3af93f7ce5a3d847",
         "mask_content_hash": null,
@@ -1727,7 +1727,7 @@
         ],
         "match_confidence": {
           "min": 0.0,
-          "median": 0.43273308873176575,
+          "median": 0.43284133076667786,
           "max": 0.9993156790733337
         }
       }
@@ -1738,13 +1738,13 @@
     "manual_map_id": null,
     "video_id": "match_001",
     "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
-    "analyzer_commit": "c24a4f7d71bbc490d10ba650ecdb5da780f499be",
+    "analyzer_commit": "e05c49543ada515530ed3ba6c6f6438f927aebc5",
     "git_is_dirty": true,
-    "executed_at": "2026-10-06T22:44:30.521025+00:00",
+    "executed_at": "2026-10-07T13:19:14.437947+00:00",
     "validation_pack": "valorant_e2e_validation_pack_v3",
     "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
-    "git_dirty_fingerprint": "29f04727fc1d685ed813a06031f31025c34c43a813e0b66efabb2bfd233044de",
-    "settings_fingerprint": "2611cfecc2b148e381d760290c14d70a060efcea2bd837657fe55627ef75554b"
+    "git_dirty_fingerprint": "ef06db82fb70388fea6baeb9433e719b49a56bd98b25b2a7ff0021a613ae0c91",
+    "settings_fingerprint": "2c54d7e1f886e9f1851cbb10fea0b1f230d7856df8bcb4e793e6c6f8746df6b9"
   },
   "result": {
     "status": "fail",
@@ -1755,10 +1755,10 @@
     "detail_truncated": true
   },
   "counts": {
-    "events": 189,
+    "events": 262,
     "state_intervals": 185,
-    "ownership_intervals": 4472,
-    "snapshots": 919,
+    "ownership_intervals": 4499,
+    "snapshots": 930,
     "visual_observations": 4,
     "temporal_features": 0
   },
@@ -2024,7 +2024,7 @@
         "state_coverage"
       ],
       "section": "HUD",
-      "nearby_trace_row_count": 555,
+      "nearby_trace_row_count": 560,
       "context_only": true
     },
     {
@@ -2049,7 +2049,7 @@
         "state_coverage"
       ],
       "section": "HUD",
-      "nearby_trace_row_count": 1113,
+      "nearby_trace_row_count": 1121,
       "context_only": true
     },
     {
@@ -2074,7 +2074,7 @@
         "state_coverage"
       ],
       "section": "HUD",
-      "nearby_trace_row_count": 488,
+      "nearby_trace_row_count": 495,
       "context_only": true
     },
     {
@@ -2099,7 +2099,7 @@
         "state_coverage"
       ],
       "section": "HUD",
-      "nearby_trace_row_count": 198,
+      "nearby_trace_row_count": 199,
       "context_only": true
     },
     {
@@ -2199,7 +2199,7 @@
         "state_coverage"
       ],
       "section": "HUD",
-      "nearby_trace_row_count": 663,
+      "nearby_trace_row_count": 731,
       "context_only": true
     },
     {
@@ -2210,8 +2210,8 @@
         "min_core_coverage": 0.9
       },
       "actual": {
-        "owner": "self",
         "confidence": 0.7314,
+        "owner": "self",
         "interval": [
           7.369336,
           7.402669
@@ -2231,7 +2231,7 @@
         "ownership_coverage"
       ],
       "section": "round_package",
-      "nearby_trace_row_count": 2560,
+      "nearby_trace_row_count": 2576,
       "context_only": true
     },
     {
@@ -2242,8 +2242,8 @@
         "min_core_coverage": 0.9
       },
       "actual": {
-        "owner": "unknown",
         "confidence": 0.0,
+        "owner": "unknown",
         "interval": [
           74.319336,
           74.402669
@@ -2288,7 +2288,7 @@
         "ownership_coverage"
       ],
       "section": "round_package",
-      "nearby_trace_row_count": 2367,
+      "nearby_trace_row_count": 2394,
       "context_only": true
     },
     {
@@ -2338,16 +2338,16 @@
         "ownership_coverage"
       ],
       "section": "round_package",
-      "nearby_trace_row_count": 678,
+      "nearby_trace_row_count": 746,
       "context_only": true
     },
     {
       "assertion_id": "GT-R1-SNAP-0035",
       "category": "missing_snapshot",
       "expected": {
-        "buy_phase_banner": true,
         "primary_state": "live_first_person",
-        "player_alive": true
+        "player_alive": true,
+        "buy_phase_banner": true
       },
       "actual": null,
       "time_sec": 3.5,
@@ -2367,12 +2367,12 @@
       "assertion_id": "GT-R1-SNAP-0415",
       "category": "missing_snapshot",
       "expected": {
-        "buy_phase_banner": false,
-        "primary_state": "live_first_person",
         "game_timer_display": "1:39",
-        "score_player": 0,
+        "primary_state": "live_first_person",
+        "player_alive": true,
         "score_enemy": 1,
-        "player_alive": true
+        "buy_phase_banner": false,
+        "score_player": 0
       },
       "actual": null,
       "time_sec": 4.15,
@@ -2396,26 +2396,26 @@
         "player_alive": true
       },
       "actual": {
-        "player_hp": 100,
-        "buy_phase_banner": false,
         "primary_state": "live_first_person",
-        "vision_obscured_smoke": false,
-        "enemy_alive": null,
-        "ally_alive": null,
-        "score_player": null,
-        "combat_report_visible": false,
-        "visual_confidence": 0.0,
-        "round_time_remaining_sec": null,
         "zone_id": null,
-        "ammo_reserve": null,
-        "time_sec": 47.469336,
-        "armor": null,
+        "player_alive": true,
         "score_enemy": null,
         "hud_confidence": 0.88,
-        "hp": 100,
-        "ammo_mag": null,
+        "time_sec": 47.469336,
+        "vision_obscured_smoke": false,
+        "armor": null,
+        "visual_confidence": 0.0,
+        "ally_alive": null,
+        "ammo_reserve": null,
+        "buy_phase_banner": false,
         "view_owner": "self",
-        "player_alive": true
+        "ammo_mag": null,
+        "enemy_alive": null,
+        "score_player": null,
+        "player_hp": 100,
+        "hp": 100,
+        "combat_report_visible": false,
+        "round_time_remaining_sec": 56.0
       },
       "time_sec": 47.5,
       "interval": null,
@@ -2477,9 +2477,9 @@
       "category": "missing_snapshot",
       "expected": {
         "primary_state": "live_first_person",
+        "player_alive": true,
         "ammo_reserve": 36,
-        "ammo_mag": 9,
-        "player_alive": true
+        "ammo_mag": 9
       },
       "actual": null,
       "time_sec": 72.8,
@@ -2500,9 +2500,9 @@
       "category": "missing_snapshot",
       "expected": {
         "primary_state": "live_first_person",
+        "player_alive": true,
         "ammo_reserve": 36,
-        "ammo_mag": 9,
-        "player_alive": true
+        "ammo_mag": 9
       },
       "actual": null,
       "time_sec": 73.3,
@@ -2523,9 +2523,9 @@
       "category": "missing_snapshot",
       "expected": {
         "primary_state": "live_first_person",
+        "player_alive": true,
         "ammo_reserve": 33,
-        "ammo_mag": 12,
-        "player_alive": true
+        "ammo_mag": 12
       },
       "actual": null,
       "time_sec": 73.4,
@@ -2545,9 +2545,9 @@
       "assertion_id": "GT-R1-SNAP-7425",
       "category": "missing_snapshot",
       "expected": {
-        "player_hp": 48,
         "primary_state": "live_first_person",
-        "player_alive": true
+        "player_alive": true,
+        "player_hp": 48
       },
       "actual": null,
       "time_sec": 74.25,
@@ -2567,11 +2567,11 @@
       "assertion_id": "GT-R1-SNAP-7438",
       "category": "missing_snapshot",
       "expected": {
-        "primary_state": "live_first_person",
         "game_timer_display": "0:29",
-        "score_player": 0,
+        "primary_state": "live_first_person",
+        "player_alive": true,
         "score_enemy": 1,
-        "player_alive": true
+        "score_player": 0
       },
       "actual": null,
       "time_sec": 74.38,
@@ -2591,8 +2591,8 @@
       "assertion_id": "GT-R1-SNAP-7440",
       "category": "missing_snapshot",
       "expected": {
-        "combat_report_visible": true,
-        "player_alive": false
+        "player_alive": false,
+        "combat_report_visible": true
       },
       "actual": null,
       "time_sec": 74.4,
@@ -2613,10 +2613,10 @@
       "category": "missing_snapshot",
       "expected": {
         "game_timer_display": "0:06",
-        "score_player": 0,
-        "combat_report_visible": true,
+        "player_alive": false,
         "score_enemy": 2,
-        "player_alive": false
+        "score_player": 0,
+        "combat_report_visible": true
       },
       "actual": null,
       "time_sec": 74.45,
@@ -2636,11 +2636,11 @@
       "assertion_id": "GT-R2-SNAP-820",
       "category": "missing_snapshot",
       "expected": {
-        "player_hp": 100,
-        "buy_phase_banner": true,
         "primary_state": "live_first_person",
-        "combat_report_visible": true,
-        "player_alive": true
+        "player_alive": true,
+        "buy_phase_banner": true,
+        "player_hp": 100,
+        "combat_report_visible": true
       },
       "actual": null,
       "time_sec": 82.0,
@@ -2660,10 +2660,10 @@
       "assertion_id": "GT-R2-SNAP-1050",
       "category": "missing_snapshot",
       "expected": {
-        "buy_phase_banner": true,
         "primary_state": "live_first_person",
-        "combat_report_visible": true,
-        "player_alive": true
+        "player_alive": true,
+        "buy_phase_banner": true,
+        "combat_report_visible": true
       },
       "actual": null,
       "time_sec": 105.0,
@@ -2683,11 +2683,11 @@
       "assertion_id": "GT-R2-SNAP-11145",
       "category": "missing_snapshot",
       "expected": {
-        "buy_phase_banner": false,
         "game_timer_display": "1:40",
-        "score_player": 0,
+        "player_alive": true,
         "score_enemy": 2,
-        "player_alive": true
+        "buy_phase_banner": false,
+        "score_player": 0
       },
       "actual": null,
       "time_sec": 111.45,
@@ -2707,9 +2707,9 @@
       "assertion_id": "GT-R2-SNAP-143",
       "category": "missing_snapshot",
       "expected": {
-        "player_hp": 80,
         "primary_state": "live_first_person",
-        "player_alive": true
+        "player_alive": true,
+        "player_hp": 80
       },
       "actual": null,
       "time_sec": 143.0,
@@ -2729,9 +2729,9 @@
       "assertion_id": "GT-R2-SNAP-1475",
       "category": "missing_snapshot",
       "expected": {
-        "player_hp": 80,
         "primary_state": "live_first_person",
-        "player_alive": true
+        "player_alive": true,
+        "player_hp": 80
       },
       "actual": null,
       "time_sec": 147.5,
@@ -2751,9 +2751,9 @@
       "assertion_id": "GT-R2-SNAP-1476",
       "category": "missing_snapshot",
       "expected": {
-        "player_hp": 22,
         "primary_state": "live_first_person",
-        "player_alive": true
+        "player_alive": true,
+        "player_hp": 22
       },
       "actual": null,
       "time_sec": 147.6,
@@ -2773,8 +2773,8 @@
       "assertion_id": "GT-R2-SNAP-1477",
       "category": "missing_snapshot",
       "expected": {
-        "combat_report_visible": true,
-        "player_alive": false
+        "player_alive": false,
+        "combat_report_visible": true
       },
       "actual": null,
       "time_sec": 147.7,
@@ -2795,8 +2795,8 @@
       "category": "missing_snapshot",
       "expected": {
         "primary_state": "expanded_tactical_map",
-        "combat_report_visible": true,
-        "player_alive": false
+        "player_alive": false,
+        "combat_report_visible": true
       },
       "actual": null,
       "time_sec": 149.0,
@@ -2817,12 +2817,12 @@
       "category": "missing_snapshot",
       "expected": {
         "primary_state": "spectator_first_person",
-        "spectated_hp": 100,
-        "combat_report_visible": true,
-        "spectated_ammo_mag": 21,
+        "player_alive": false,
         "spectated_ammo_reserve": 50,
+        "spectated_hp": 100,
         "view_owner": "teammate_spectated",
-        "player_alive": false
+        "spectated_ammo_mag": 21,
+        "combat_report_visible": true
       },
       "actual": null,
       "time_sec": 151.0,
@@ -2843,12 +2843,12 @@
       "category": "missing_snapshot",
       "expected": {
         "primary_state": "spectator_first_person",
-        "spectated_hp": 85,
-        "combat_report_visible": true,
-        "spectated_ammo_mag": 22,
+        "player_alive": false,
         "spectated_ammo_reserve": 31,
+        "spectated_hp": 85,
         "view_owner": "teammate_spectated",
-        "player_alive": false
+        "spectated_ammo_mag": 22,
+        "combat_report_visible": true
       },
       "actual": null,
       "time_sec": 170.0,
@@ -3148,18 +3148,18 @@
     "images": "opt_in_manual_privacy_review_required"
   },
   "hud": {
-    "observations": 4634,
-    "unknown": 3715,
+    "observations": 4661,
+    "unknown": 3731,
     "states": 4,
     "detected_states": {
-      "unknown": 3715,
+      "unknown": 3731,
       "live_first_person": 455,
       "buy_menu_open": 301,
-      "spectator_first_person": 163
+      "spectator_first_person": 174
     }
   },
   "visual": {
-    "observations": 4634,
+    "observations": 4661,
     "events": 0,
     "missing_expected": [
       "GT-R1-MUZZLE-1",
@@ -3173,22 +3173,22 @@
   },
   "map_zone": {
     "resolved": 0,
-    "unknown": 4634,
+    "unknown": 4661,
     "zones": [],
     "diagnostic_counts": {
-      "map_selection_or_calibration_required": 4634,
-      "map_definition_unresolved": 4634,
-      "map_ownership_blocked": 4179,
-      "map_calibration_skipped_hud_eligibility": 4179,
-      "map_marker_not_evaluated": 4634,
-      "map_location_not_evaluated": 4634,
+      "map_selection_or_calibration_required": 4661,
+      "map_definition_unresolved": 4661,
+      "map_ownership_blocked": 4206,
+      "map_calibration_skipped_hud_eligibility": 4206,
+      "map_marker_not_evaluated": 4661,
+      "map_location_not_evaluated": 4661,
       "map_ownership_accepted": 455,
       "map_auto_selection_failed": 455
     }
   },
   "round_package": {
     "rounds": 1,
-    "event_count": 189,
+    "event_count": 262,
     "round_count": 1
   },
   "e2e": {

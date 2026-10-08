@@ -233,6 +233,34 @@ def test_video_probe_is_dispatched_without_blocking_gui(
     app.processEvents()
 
 
+def test_analysis_failure_dialog_hides_traceback_and_private_paths(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    app = QApplication.instance() or QApplication([])
+    store = SettingsStore(tmp_path / "settings.json", credential_backend=MemoryCredentials())
+    store.save(AppSettings.defaults(tmp_path))
+    window = MainWindow(BackendFacade(store))
+    captured: dict[str, str] = {}
+
+    def fake_exec(dialog: QMessageBox) -> int:
+        captured["text"] = dialog.text()
+        captured["details"] = dialog.detailedText()
+        return 0
+
+    monkeypatch.setattr(QMessageBox, "exec", fake_exec)
+    window._on_failed(
+        "failed at /home/alice/private/video.mp4 api_key=sk-supersecretvalue",
+        "Traceback (most recent call last):\n  File /home/alice/project/app.py",
+    )
+
+    assert "/home/alice" not in captured["text"]
+    assert "sk-supersecretvalue" not in captured["text"]
+    assert captured["details"] == ""
+
+    window.close()
+    app.processEvents()
+
+
 def test_close_waits_until_analysis_worker_has_stopped(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

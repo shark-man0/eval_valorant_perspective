@@ -1414,3 +1414,50 @@ Candidate14 full regression completed:1034 PASS/6 SKIP/0 FAIL in1250.36s; full R
 While native14 runs with frozen source/profile, examine the same3 hash-verified even-training digit7 glyphs with one common dx/dy in[-1,1] and zero border. One pair improves fromNCC0.8062 to0.9414, but supported-frame counts remain1/2/2 at0.90, below minimum3 and80% class support. No eligible reference exists. Reject this local-registration-only explanation; no holdout, candidate export, reader/profile or production change. Diagnostic SHA256 b83f962c2f23016dd117ddec75b579c733fd67d13a29e19c0fb62fc141487371. The glyph montage shows stroke/normalization differences beyond common translation; their precise cause is not yet qualified.
 
 Long-command observation policy updated following user AGENTS instructions: native14 E2E continues unchanged; kernel pidfd exit notification replaces manual short-interval process/log checks. Existing review coordinator with a5-second status loop is suspended until driver exit, then automatically resumed for the already queued terminal audits. No E2E restart, growing log read, recognition/profile or safety-policy change. Waiter metadata:outputs/recognition-investigation/profile14-terminal-waiter.json; exec session27662.
+
+## Timer-only candidates15/16: full qualification rejected (2026-10-08)
+
+Problem/Evidence: the rejected combined OCR candidate12 included wrong score values; profile13 deliberately disables implicit timer/score fallback. Its timer therefore remains unknown. Training-frozen timer crop [925,27,1000,67] permits a distinct explicit timer-only reader without changing identity references or numeric score policy.
+
+Hypothesis/Change: candidate15 adds only the explicit timer reader. Its fixed sampled blind review finds23 correct,5 unknown,2 wrong; reject15 before full. Add an optional portable digits/fields `minimum_confidence` safety gate with fail-closed invalid configuration, retaining omitted-key behavior. Candidate16 uses0.90, the existing shared-timer fact requirement; no geometry/NCC/identity/spectator threshold is loosened. Training and original64-frame holdout remain separate. No Windows/Pi recognition branch.
+
+Tests/Before/After: candidate16 independent holdout48 correct16 unknown0 wrong; fixed sampled23 correct7 unknown0 wrong; targeted timer field failures13→4 while score failures and frame-level FAIL remain unchanged. Ruff/mypy PASS; all regression1109 PASS6 SKIP in1344s. One standard full completes15149.129s with23 PASS55 FAIL4 NE, same assertion statuses as13, negative failures0 anddiscontinuity0.3411 timer values are accepted. Common4634PTS retain identical non-timer observations excluding index renumbering; adaptive sampling adds27PTS, removes0. No genuine round-start/end or visual/map event improvement is established.
+
+Conclusion: reject16, not adopted. Actual full frames show1:26→4:26 atPTS124.486003/confidence0.93834,1:15→4:15 at135.802669/0.95371,0:55→10:55 at156.002669/0.92050. High OCR confidence and sparse holdout success do not establish full safety. These post-prediction error reviews are diagnostic evidence, not training or independent full ground truth. Do not increase the threshold to fit these errors, infer expected timer values from temporal sequence, or claim remaining3411 values correct. E2E infrastructure remains useful; timer OCR profile remains unqualified. Evidence: e2e_reports/match_001/profile16_diagnostic_assessment.json and local outputs/recognition-investigation/timer-only-profile15/full16. Geometry, identity, round-boundary and score shortcomings remain open; Windows runtime unverified.
+
+## Candidate17: fixed white OCR rejected by sampled pixel review (2026-10-08)
+
+Problem/Evidence: candidate16 full accepts1:26→4:26,1:15→4:15,0:55→10:55 aboveconfidence0.90. Hypothesis: background contributes misleading bright strokes; existing digits OCR `white_text_threshold: 200` could remove contamination. This fixed threshold comes from previous numeric preprocessing, not a sweep on errors/holdout.
+
+Change/Tests: no production code change. Clone16 to local17 and enable existing fixed200 white OCR, retaining0.90 confidence, complete identity/mask assets and disabled score fallback. Previously blind-labeled64 even training gives56 correct8 unknown0 wrong (raw44 correct20 unknown after identical timer format gate). Freeze profilefingerprint621dfa6941e3111749ec415b499769f4e12a3480c0622d693f66d29b038322c2 before new64 odd-holdout pixel labels/predictions. These holdout images give53 correct11 unknown0 wrong. Three known16 errors become2 correct1 unknown; these already inspected errors are diagnostic controls, not independent qualification.
+
+E2E before/after: native targeted13 frames149.921s gives1 PASS12 FAIL0 NE; native fixed sampled30 frames325.078s gives8 PASS11 FAIL11 NE (baseline7/12/11). Terminal verified sampled pixel review is27 correct2 unknown1 wrong: PTS124.536003,actual1:26→4:26 atconfidence0.93759. States, flags, ownership and all non-timer values equal sampled13. Conclusion: reject17 before full despite aggregate PASS gain and independent holdout success; profile not adopted. No further full run or confidence retuning on this failure. Source changes/tests/full rerun are not applicable to this local configuration diagnosis; future recognizer changes require their own regression and real-video qualification. Evidence remains local at outputs/recognition-investigation/timer-white-ocr-training.
+
+
+### 2026-10-08: Round lifecycle prerequisite audit after failure classification
+
+- Problem: round/package scope affects 33 FAILs; no new numeric candidate is justified.
+- Evidence: current-main safe profile13 replay of six saved real frames is unknown with HUD confidence 0; R1 start lacks Ability/Weapon identity, R2 start lacks Weapon identity. Purchase banners visible in two images have shared_banner=false, while two combat/death backgrounds have texture shared_banner=true. Saved full16 boundary ranges contain 32 unknown observations, no semantic phase flags or known score pairs, even where numeric timer resets exist.
+- Hypothesis: timer-only improvements cannot establish round lifecycle; source-qualified phase/score and independent identity are prerequisites.
+- Change: read-only saved-frame diagnostics plus `docs/round_lifecycle_prerequisite_audit.md`; no production/profile/GT/threshold changes.
+- Tests: existing native diagnostic hook completed six isolated queries with three genuine calibration frames each. No claim about continuity/events from sparse input.
+- E2E before / after: unchanged 23 PASS / 55 FAIL / 4 NE; no additional full run.
+- Conclusion: next work must qualify phase/score/identity inputs together before boundary integration. No new recognizer candidate, guaranteed PASS gain, or adopted timer profile.
+
+
+### 2026-10-08: Round lifecycle pipeline foundation and evidence gate
+
+- Problem: 33 FAILs depend on lifecycle/package scope; reader evidence remains unqualified.
+- Evidence: 342 saved real frames over three continuous native-PTS windows, 813.722s, no phase/score/timer values or boundary events. No injected anchors/signals. R1 start/end windows entirely unknown; R2 window 34 menu /130 unknown /21 live.
+- Change: source-actor contract system for match lifecycle, start corroboration and duplicate latch, semantic end join, gap/source-marker reset, source provenance, pre/post package context and shared trace endpoint association. Recognition/profile/GT/sampler thresholds unchanged; no new OCR/spectator candidate.
+- Tests: 82 related unit/integration PASS, 1 optional fixture SKIP; Ruff and mypy PASS (97 sources). Sampled30: 7 PASS /12 FAIL /11 NE in285.415s, unchanged from326.450s baseline. Final-source archived contract replay: all82 canonical statuses unchanged23/55/4, packages/trace equal, negative20 PASS. A vacuous discontinuity check is not proof of real cut detection.
+- E2E before/after: no new full; saved-full contract comparison23/55/4→23/55/4. No newly passing assertion or accepted real boundary. Do not claim29 failures solved.
+- Conclusion: pipeline foundation is tested but real boundary acceptance is BLOCKED by missing qualified phase/numeric/identity inputs and source cut markers. Full regression/full gate stays closed. Details: docs/round_lifecycle_implementation.md and e2e_reports/match_001/round_lifecycle_diagnostics.json.
+
+### 2026-10-08: Source-backed purchase-phase reference input qualification
+
+- Problem/targets: unconfigured semantic phase input upstream of GT-R1/R2-ROUND-START, start count constraints, ordering_constraints-001 and GT-R1-BUY-FLAG. R1 end and other predicates remain separate blockers.
+- Hypothesis/change: three reviewed R1 semantic text crops produce a frozen median reference in the existing template/profile format at NCC0.90. Dynamic number regions are excluded; background remains a limitation. Diagnostic profile only, no production/GT/sampler/policy or OCR candidate change.
+- Evidence: training3/3 accepted; separate R2 positive holdout5 correct/3 unknown; 13 reviewed non-purchase frames have no false acceptance. No retuning after misses. Native short continuous replay18 frames in38.746s confirms11 phase matches, score/timer0, unknown18 and boundary events0. R1 replay has one training overlap; R2 is a separate episode.
+- Previous/Current/Delta on same18 PTS: phase0/11/+11, unknown18/18/0, round start0/0/0, round end0/0/0. No new canonical full: last verified23/55/4; candidate full metrics unmeasured.
+- Conclusion: real phase evidence reaches production, but lifecycle acceptance stays unqualified. No profile adoption or additional full run; stable score, accepted timer, independent identity, semantic end evidence and source cut markers remain. See docs/phase_reference_qualification.md and e2e_reports/match_001/phase_reference_qualification.json.

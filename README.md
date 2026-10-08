@@ -1,26 +1,74 @@
 # VALORANT AI Coach
 
-VALORANTのプレイ録画から、ユーザー定義ルールに基づく `GOOD` / `IMPROVE` /
-`UNSCORED` と根拠クリップを作成・保存・再生するWindows 10/11向けデスクトップ
-アプリです。Python 3.12、PySide6、FFmpeg / FFprobe、OpenCV、SQLite、OpenAI
-Responses APIで構成しています。
+VALORANTのプレイ録画を解析し、ルールに基づく `GOOD` / `IMPROVE` /
+`UNSCORED` と、その判断に使った根拠や再生用クリップを確認できるWindows向け
+デスクトップアプリです。
 
-HUD / Video Analyzer v2パッチを統合しています。実HUDモードではOpenCVで録画を2段階
-サンプリングし、HUD Observation、Event、Round Packageを生成して本体へ渡します。
-ROIは同梱の `hud_layout_1080p_v3.json` を使用し、認識用の参照画像とテンプレート設定は
-録画環境に合わせて追加します。参照画像がなく校正できない場合は `calibration_required`
-で停止します。APIキーや参照画像がない場合もMockモードで本体E2Eを実行できます。
-実装・検証範囲と残課題の詳細は [HUD_INTEGRATION.md](HUD_INTEGRATION.md) を参照してください。
+公式配布対象は **Windows 10 / 11 x64** です。InstallerとPortable ZIPのどちらも
+Pythonの別途インストールは不要ですが、実動画の読み取りとクリップ生成には
+**FFmpeg / ffprobe** が必要です。正式配布物にはFFmpeg / ffprobeを同梱しません。
 
-Visual Analyzer v2の追加実装・設定・検証範囲は [VISUAL_INTEGRATION.md](VISUAL_INTEGRATION.md) を参照してください。
-実HUDモードにVisual処理を接続しましたが、実ゲーム用の認識profile・Mapデータの調整は必要です。
-Semantic Visionは既定OFFで、Mock AIがONの間は呼び出しません。
+> [!IMPORTANT]
+> 初回は既定の **Mock AI + Mock HUD** で動作確認してください。Mock AIではOpenAI API
+> キーは不要です。実AIへ切り替えるとOpenAI API通信が発生し、利用料が発生する場合が
+> あります。
 
-Map / Zone v3も統合済みです。新runtime contract v4だけを位置解決に使用します。
-Map選択・画像校正・ZoneResolution・Visualイベントの分離、旧profile移行、確認範囲は
-[MAP_ZONE_INTEGRATION.md](MAP_ZONE_INTEGRATION.md) を参照してください。
+## 最短で始める
 
-## 処理フロー
+1. Releaseから `VALORANT-AI-Coach-Setup-<version>-x64.exe` をインストールするか、
+   `VALORANT-AI-Coach-<version>-windows-x64.zip` を展開します。
+2. FFmpeg / ffprobeをPATHへ入れるか、アプリの **設定** でそれぞれの実行ファイルを
+   指定します。
+3. アプリを起動します。初期設定は **Mock AI + Mock HUD** です。
+4. **録画を選択** から動画を選び、メタデータが表示されたら **解析を開始** を押します。
+   既定Mockケース `TC-029` の動作確認には35秒以上の動画を使用してください。
+5. 解析後、結果画面でGOOD / IMPROVE / UNSCORED、根拠、利用可能なクリップを確認します。
+
+詳しい初回手順は [Getting Started](docs/getting_started.md) を参照してください。
+
+## 評価ラベル
+
+- **GOOD**: 対象ルールについて、観測された根拠から肯定的に評価できた項目です。
+- **IMPROVE**: 対象ルールについて、根拠に基づき改善点として評価できた項目です。
+- **UNSCORED**: 証拠不足、必要なFact不足、曖昧な例外、低信頼などにより採点できなかった
+  項目です。**悪いプレイという意味ではありません。**
+
+HUDやVisualの `unknown`、`calibration_required` も評価ラベルではありません。
+「認識できなかった／根拠を確定できなかった」状態を表します。
+
+## 実AIとプライバシー
+
+元動画全体をOpenAIへ送信する実装ではありません。Mock AIをOFFにした実AIでは、
+選択されたRound Package、候補ルール、決定論的Fact/decision、選択された根拠フレーム
+などがAPI入力になります。OpenAI requestでは `store=False` を指定しています。
+
+ただし、**送信対象に選ばれたゲーム画面のフレームには、プレイヤー名、チャット、
+ミニマップ、オーバーレイ等が映り込む可能性があります**。現在はそれらを必ずマスクした
+privacy-safe cropを保証していません。Semantic Visionも有効化した場合は、別の画像入力
+として選択フレームを送信し得ます。詳細は
+[Privacy / Data Guide](docs/privacy_and_data.md) を確認してください。
+
+## ユーザー向けDocumentation
+
+- [Getting Started](docs/getting_started.md) — インストールから最初の解析まで
+- [User Guide](docs/user_guide.md) — 普段のGUI操作、結果、履歴、再開、削除
+- [Troubleshooting](docs/troubleshooting.md) — 症状 → 確認 → 次の行動
+- [Privacy / Data Guide](docs/privacy_and_data.md) — ローカル保存とremote送信
+- [FAQ](docs/faq.md) — よくある短い質問
+- [Windows distribution](docs/windows_distribution.md) — 配布形式・upgrade・uninstallの正本
+
+開発・検証の詳細は
+[Security review](docs/security_review.md)、
+[Observability](docs/observability.md)、
+[Dependency reproducibility](docs/dependency_reproducibility.md)、
+[Release process](docs/release_process.md)を参照してください。
+
+---
+
+以下は開発者・研究用途の詳細です。一般ユーザーが通常利用のためにPython仮想環境、
+pytest、Validation Pack、E2E runner、HUD校正実験を実行する必要はありません。
+
+## 開発者・研究者向け: 処理フロー
 
 ```text
 録画 -> ffprobeメタデータ -> HUD/Event Analyzer
@@ -35,7 +83,7 @@ Map選択・画像校正・ZoneResolution・Visualイベントの分離、旧pro
 Round Package、選択済みルール、決定論的Fact、最大32枚の抽出フレームです。APIへの
 保存は `store=false` で要求します。
 
-## 実装済み
+## 開発者・研究者向け: 実装済み
 
 - MP4 / MKV / MOV / AVI / WebM選択、非同期ffprobeメタデータ取得、Qt動画再生
 - ラウンド/Event/Factモデル、正本JSON SchemaのDraft 2020-12検証と実行時整合性検証
@@ -57,7 +105,7 @@ Round Package、選択済みルール、決定論的Fact、最大32枚の抽出�
 - Round Package生成、HUD観測診断と採用フレーム保存、校正プロファイル作成コマンド
 - 全音声トラックのクリップ保持、既定トラック選択と再生切替・設定保存
 
-## 実データで追加が必要な部分
+## 開発者・研究者向け: 実データで追加が必要な部分
 
 - 未加工スクリーンショットによるアンカー・数字・アイコンの参照テンプレート
 - 元の171秒録画に対するHUD検出精度の検証と調整（ZIPには元録画がありません）
@@ -67,7 +115,7 @@ Round Package、選択済みルール、決定論的Fact、最大32枚の抽出�
 HUDだけでは全44ルールを実動画で評価できません。Visual Analyzerは交換可能な
 インターフェースとして分離し、未観測のイベントは生成しません。
 
-## Windowsで開発実行
+## 開発者向け: Windowsで開発実行
 
 前提:
 
@@ -120,7 +168,7 @@ APIキーはWindows Credential Managerへ保存します。`OPENAI_API_KEY` 環�
 削除しますが、元の録画ファイルは保持します。
 検証済みAI結果キャッシュは最終アクセス順で最大512件または合計256 MiBに制限されます。
 
-## テスト
+## 開発者向け: テスト
 
 ```powershell
 .\.venv\Scripts\python.exe tests\validate_dataset.py
@@ -135,7 +183,7 @@ APIキーはWindows Credential Managerへ保存します。`OPENAI_API_KEY` 環�
 実OpenCVを検証します。FFmpegが利用できる環境では合成動画の実クリップ試験も実行します。
 カバレッジは75%未満で失敗します。
 
-## `.exe` ビルド
+## 開発者向け: `.exe` ビルド
 
 正式な初期配布形式はPyInstaller `onedir` です。
 
@@ -149,9 +197,9 @@ APIキーはWindows Credential Managerへ保存します。`OPENAI_API_KEY` 環�
 dist\VALORANT-AI-Coach\VALORANT-AI-Coach.exe
 ```
 
-自己完結に近い配布物にする場合は、配布権を確認した `ffmpeg.exe` と `ffprobe.exe` を
-ビルド前に `bin\` へ置いてください。specが検出して同梱し、実行時に自動解決します。
-置かない場合は、利用者側の `PATH` または設定画面のパスを使用します。
+正式なWindows配布物では `ffmpeg.exe` と `ffprobe.exe` を同梱しません。
+利用者側の `PATH` または設定画面で指定した実行ファイルを使用します。任意のFFmpeg
+binaryをReleaseへ含める場合は、別途provenanceとredistribution/license確認が必要です。
 
 PyInstallerはクロスコンパイルしないため、Windows用 `.exe` はWindows上で作成して
 ください。ビルド後は `--smoke-test` で同梱資源とGUI初期化を自動確認します。GitHub
@@ -159,7 +207,12 @@ Actionsの `Windows verification` は実FFmpegテスト、カバレッジ、oned
 `constraints-windows.txt` はWindows/Python 3.12で検証する直接依存関係を固定し、通常起動・
 ビルド・CIのすべてで同じ制約を使用します。
 
-## Windows実動画E2EとMacへの結果共有
+Portable ZIP、通常ユーザー権限のInstaller、SHA-256、Release候補の作成手順は
+[Windows distribution](docs/windows_distribution.md) と
+[Release process](docs/release_process.md) を参照してください。正式ReleaseではFFmpeg/ffprobeを
+同梱せず、利用者のPATHまたは設定画面で指定した実行ファイルを使用します。
+
+## 研究・E2E向け: Windows実動画E2EとMacへの結果共有
 
 動画はWindowsローカルだけに置き、既存E2Eの結果を軽量JSONとして共有できます。
 初回にValidation Packを別途展開し、`VALORANT_E2E_PACK`を設定してください。
@@ -175,7 +228,7 @@ Actionsの `Windows verification` は実FFmpegテスト、カバレッジ、oned
 runnerはGitへのcommit/pushをしません。結果・privacyを確認してから利用者が実行します。
 パスの優先順位、環境確認、FAILの解釈、最小5ステップは [WINDOWS_E2E.md](WINDOWS_E2E.md)。
 
-## 実HUDの設定
+## 上級者・研究向け: 実HUDの設定
 
 未加工の1920x1080通常一人称スクリーンショットから、参照用のアンカー画像を作れます。
 プレビュー図やROI線を描き込んだ画像は使用しないでください。
@@ -230,7 +283,7 @@ $env:VALORANT_HUD_TEST_LAYOUT = 'C:\captures\my_hud_profile\hud_layout.json'
 未指定の場合、この実録画試験だけは明示的にskipします。通常のテストでは合成画像・動画で
 校正、reader、分類、時系列差分、Round Package、本体との接続を検証します。
 
-## 正本ファイル
+## 開発者向け: 正本ファイル
 
 - `CODEX_MASTER_SPEC.md`
 - `REVIEW_FIXES.md`
@@ -252,7 +305,7 @@ $env:VALORANT_HUD_TEST_LAYOUT = 'C:\captures\my_hud_profile\hud_layout.json'
 
 これらのSchema・ルール・テストデータは、アプリ固有の別形式へ置き換えず直接使用しています。
 
-## Cross-platform source E2E
+## 研究・E2E向け: Cross-platform source E2E
 
 Windows and Linux/Pi use the same `scripts/e2e/run_dataset_case.py`.
 See [Windows E2E](WINDOWS_E2E.md), [Raspberry Pi setup](RASPBERRY_PI_E2E.md),

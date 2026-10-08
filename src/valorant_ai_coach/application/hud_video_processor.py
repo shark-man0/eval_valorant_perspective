@@ -7,6 +7,7 @@ from pathlib import Path
 from threading import Event
 from typing import Any, Protocol
 
+from valorant_ai_coach.diagnostics.runtime_timing import timing_stage
 from valorant_ai_coach.events import EventSourceContract
 from valorant_ai_coach.resources import resource_path
 from valorant_ai_coach.rounds import RoundPackageBuilder
@@ -142,10 +143,11 @@ class HudVideoProcessor:
         micro: tuple[SampleRequest, ...] = ()
         if callable(triggers):
             progress(0.45, "Visual Pass Bのammo・recoil候補を走査しています")
-            micro = micro_requests(
-                metadata.duration_sec,
-                triggers(pass_a_frames, observations_a, video_metadata=metadata),
-            )
+            with timing_stage("visual_trigger_scan"):
+                trigger_windows = triggers(
+                    pass_a_frames, observations_a, video_metadata=metadata
+                )
+                micro = micro_requests(metadata.duration_sec, trigger_windows)
         pass_b_requests = self._only_new_requests(
             self.sampler.merge(self.sampler.pass_b(metadata.duration_sec, change_times), micro),
             pass_a_requests,
@@ -221,11 +223,12 @@ class HudVideoProcessor:
         if callable(begin_match):
             begin_match(match_id, hud_events)
 
-        visual = self.visual_analyzer.analyze(
-            combined,
-            observations,
-            video_metadata=metadata,
-        )
+        with timing_stage("visual_analysis"):
+            visual = self.visual_analyzer.analyze(
+                combined,
+                observations,
+                video_metadata=metadata,
+            )
         self._check_cancel(cancel_event)
         visual_events = tuple(
             dict(item)
@@ -233,26 +236,28 @@ class HudVideoProcessor:
             if WorldViewGate.allows_event(dict(item), observations)
         )
         dropped_visual = len(visual.events) - len(visual_events)
-        hud_events, visual_events, fusion_notes = EvidenceFusion(self.event_contract).events(
-            hud_events, visual_events
-        )
+        with timing_stage("event_fusion"):
+            hud_events, visual_events, fusion_notes = EvidenceFusion(self.event_contract).events(
+                hud_events, visual_events
+            )
         visual_confidences = dict(visual.frame_confidences)
         for observation in observations:
             if WorldViewGate.is_trustworthy(observation):
                 confidence = visual_confidences.get(float(observation["time_sec"]), 0.0)
                 observation["quality"]["visual_confidence"] = confidence
         self._validate_observations(observations)
-        packages = self.package_builder.build(
-            match_id=match_id,
-            video_metadata=metadata,
-            hud_observations=observations,
-            hud_events=hud_events,
-            visual_events=visual_events,
-            visual_observations=visual.observations,
-            zone_resolutions=visual.zone_resolutions,
-            map_name=getattr(self.visual_analyzer, "map_name", "unknown"),
-            require_detected_rounds=require_detected_rounds,
-        )
+        with timing_stage("round_package_build"):
+            packages = self.package_builder.build(
+                match_id=match_id,
+                video_metadata=metadata,
+                hud_observations=observations,
+                hud_events=hud_events,
+                visual_events=visual_events,
+                visual_observations=visual.observations,
+                zone_resolutions=visual.zone_resolutions,
+                map_name=getattr(self.visual_analyzer, "map_name", "unknown"),
+                require_detected_rounds=require_detected_rounds,
+            )
         diagnostics = (
             tuple(getattr(final, "diagnostics", ())) + tuple(visual.diagnostics) + fusion_notes
         )

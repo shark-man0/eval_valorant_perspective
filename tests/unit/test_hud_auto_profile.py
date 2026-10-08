@@ -62,7 +62,9 @@ def test_bundled_assets_keep_bytes_and_load_after_source_directory_moves(tmp_pat
     source = tmp_path / "source"
     source.mkdir()
     asset = source / "参照.png"
-    assert cv2.imwrite(str(asset), _frames()[0][36:162, 19:147])
+    ok, encoded = cv2.imencode(".png", _frames()[0][36:162, 19:147])
+    assert ok
+    asset.write_bytes(encoded.tobytes())
     original = asset.read_bytes()
     stage = tmp_path / "profile"
     stage.mkdir()
@@ -437,7 +439,7 @@ def test_replaced_source_geometry_cannot_be_inherited_as_identity(
     )
     base = create_anchor_profile(layout, shot, tmp_path / "base")
     sidecar = base.with_suffix(".templates.json")
-    raw = json.loads(sidecar.read_text())
+    raw = json.loads(sidecar.read_text(encoding="utf-8"))
     old_anchor = sidecar.parent / raw["anchors"]["player_hp_armor"]["template"]
     asset = old_anchor
     if copy_asset:

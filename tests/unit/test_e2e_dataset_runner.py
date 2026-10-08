@@ -284,3 +284,105 @@ def test_evidence_failure_selection_is_bounded_and_only_for_failures():
     evaluation = {"failures": [f"missing_point:p{i}" for i in range(20)]}
     assert len(failure_times(evaluation, assertions, 3)) == 3
     assert failure_times({"failures": []}, assertions, 3) == []
+
+
+@pytest.mark.parametrize("mode", ["targeted", "sampled"])
+def test_bounded_modes_keep_expectations_outside_native_runner_and_shared_history(case, mode):
+    case.args.mode = mode
+    suite_path = case.root / "suite.json"
+    write_json(
+        suite_path,
+        {
+            "schema_version": 1,
+            "suite_id": "boundary-test",
+            "mode": mode,
+            "video_id": "match_001",
+            "source_sha256": runner.sha256_file(case.video),
+            "calibration_prefix": [0.1],
+            "frames": [
+                {
+                    "pts_sec": 1.0,
+                    "categories": ["live"],
+                    "expected_state": "live_first_person",
+                    "provenance": [{"path": "missing/review.json", "sha256": "b" * 64}],
+                }
+            ],
+        },
+    )
+    case.args.frame_suite = str(suite_path)
+    assert execute(case) == 1  # Native stub omitted the expected observation.
+    assert not (case.root / "e2e_reports").exists()
+    assert not any("evaluate_saved_trace.py" in str(arg) for cmd in case.calls for arg in cmd)
+    cmd = next(cmd for cmd in case.calls if "run_real_video.py" in str(cmd))
+    native_input = json.loads(Path(cmd[cmd.index("--frame-input") + 1]).read_text())
+    assert set(native_input) == {
+        "schema_version",
+        "mode",
+        "input_scope",
+        "source_sha256",
+        "calibration_prefix",
+        "pts_sec",
+    }
+    assert native_input["pts_sec"] == [1.0]
+    output = Path(cmd[cmd.index("--output") + 1])
+    report = json.loads((output / "evaluation_report.json").read_text())
+    assert report["counts"] == {"passed": 0, "failed": 1, "not_evaluated": 0}
+    assert report["full_validation_pack_evaluated"] is False
+    assert report["temporal_assertions_evaluated"] is False
+    runtime = json.loads((output / "runtime_summary.json").read_text())
+    assert runtime["mode"] == mode
+    assert runtime["terminal_context"]["exit_code"] == 1
+
+
+def test_analyzer_exit_is_durable_even_when_no_terminal_artifacts_exist(case):
+    original = case.command
+
+    def killed(cmd, **kwargs):
+        if "run_real_video.py" in str(cmd):
+            return subprocess.CompletedProcess(cmd, -9)
+        return original(cmd, **kwargs)
+
+    case.command = killed
+    assert execute(case) == 2
+    output = next((case.root / "outputs/e2e/match_001").iterdir())
+    results = json.loads((output / "command_results.json").read_text())
+    assert results[-1]["command"] == "analyzer"
+    assert results[-1]["exit_code"] == -9
+    assert json.loads((output / "run_metadata.json").read_text())["exit_code"] == 2
+
+
+def test_full_mode_rejects_bounded_options_before_starting_any_process(case):
+    case.args.category = ["live"]
+    with pytest.raises(runtime.CaseError, match="BOUNDED_OPTIONS_REQUIRE_BOUNDED_MODE"):
+        execute(case)
+    assert case.calls == []
+
+
+def test_adapting_point_raw_never_creates_temporal_intervals(tmp_path):
+    import runpy
+
+    module = runpy.run_path(str(runner.APP_ROOT / "tests/e2e/run_real_video.py"))
+    raw_path = tmp_path / "point-raw.json"
+    write_json(
+        raw_path,
+        {
+            "status": "complete",
+            "runtime_mode": {"input_scope": "isolated_points"},
+            "observations": [
+                {"time_sec": 1.0, "primary_state": "live_first_person"},
+                {"time_sec": 1.1, "primary_state": "live_first_person"},
+            ],
+        },
+    )
+    output = tmp_path / "adapted"
+    assert module["main"](["--from-raw", str(raw_path), "--output", str(output)]) == 0
+    trace = json.loads((output / "e2e_trace.json").read_text())
+    assert set(trace) == {
+        "events",
+        "state_intervals",
+        "ownership_intervals",
+        "snapshots",
+        "visual_observations",
+        "temporal_features",
+    }
+    assert all(value == [] for value in trace.values())

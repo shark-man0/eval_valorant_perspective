@@ -327,3 +327,32 @@ def test_large_evidence_frame_is_resized_before_jpeg_encoding(tmp_path: Path) ->
 
     assert resize_calls == [(1600, 900)]
     assert len(samples) == 1 and samples[0].path.is_file()
+
+
+def test_media_subprocess_does_not_inherit_openai_api_key(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    captured: dict[str, str] = {}
+
+    class FakeProcess:
+        returncode = 0
+
+        def __init__(self, _command: list[str], **kwargs: Any) -> None:
+            captured.update(kwargs["env"])
+
+        def communicate(self, timeout: float) -> tuple[str, str]:
+            del timeout
+            return "", ""
+
+        def poll(self) -> int:
+            return 0
+
+    monkeypatch.setenv("OPENAI_API_KEY", "do-not-inherit")
+    monkeypatch.setenv("SECURITY_TEST_SENTINEL", "preserved")
+    monkeypatch.setattr("valorant_ai_coach.video.service.subprocess.Popen", FakeProcess)
+
+    completed = _run_cancellable_process(["ffprobe", "--version"], 1)
+
+    assert completed.returncode == 0
+    assert "OPENAI_API_KEY" not in captured
+    assert captured["SECURITY_TEST_SENTINEL"] == "preserved"
