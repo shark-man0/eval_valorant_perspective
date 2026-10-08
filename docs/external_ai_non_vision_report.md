@@ -57,7 +57,8 @@
 ## 4. 完了状況と未実施（詳細・今後の方針は `docs/external_ai_non_vision_progress_and_plan.md`）
 
 - Priority 1〜4: 完了（P2の `RoundAnalyzer` 経由のspectator end-to-endテストのみ未作成）
-- Priority 5（AI Coach検証層）/ Priority 6（Clip・Result UI、ClipService）: 未着手
+- Priority 5（AI Coach検証層）: 未着手
+- Priority 6（Clip・Result UI、ClipService）: 実施済み（`docs/external_ai_non_vision_progress_and_plan.md` §2.4）。実ウィンドウ全体の検証は未実施
 - 評価のconfidenceが引用factのconfidenceを超えうる問題（P5で扱う）は未解決
 - 実モデル（OpenAI API）での検証は未実施（mock / スタブのみ）
 

@@ -34,6 +34,7 @@ from PySide6.QtWidgets import (
 from valorant_ai_coach.observability.sanitize import sanitize_text
 
 from .settings_dialog import SettingsDialog
+from .view_model import clip_status, filter_evaluations, time_range_text
 from .workers import AnalysisWorker, VideoProbeWorker
 
 LOGGER = logging.getLogger(__name__)
@@ -636,17 +637,12 @@ class MainWindow(QMainWindow):
         category = self.category_filter.currentData()
         round_no = self.round_filter.currentData()
         displayed = 0
-        for evaluation in self.current_evaluations:
-            if label_filter == "scored" and evaluation.label not in {"good", "improve"}:
-                continue
-            if label_filter == "review" and not evaluation.needs_review:
-                continue
-            if label_filter not in {"all", "scored", "review"} and evaluation.label != label_filter:
-                continue
-            if category != "all" and evaluation.category != category:
-                continue
-            if round_no != -1 and evaluation.round_no != round_no:
-                continue
+        for evaluation in filter_evaluations(
+            self.current_evaluations,
+            label=label_filter,
+            category=category,
+            round_no=round_no,
+        ):
             self.cards_layout.insertWidget(
                 self.cards_layout.count() - 1, self._evaluation_card(evaluation)
             )
@@ -680,6 +676,23 @@ class MainWindow(QMainWindow):
         meta.setObjectName("muted")
         meta.setWordWrap(True)
         layout.addWidget(meta)
+        provenance = [
+            line
+            for line in (
+                f"該当時刻: {time_range_text(evaluation.time_range)}"
+                if evaluation.time_range
+                else None,
+                f"使用したfact: {', '.join(evaluation.fact_refs)}"
+                if evaluation.fact_refs
+                else None,
+                clip_status(evaluation),
+            )
+            if line
+        ]
+        provenance_label = QLabel(" / ".join(provenance))
+        provenance_label.setObjectName("muted")
+        provenance_label.setWordWrap(True)
+        layout.addWidget(provenance_label)
         if evaluation.needs_review:
             review = QLabel("要確認: 信頼度0.75未満の参考評価です")
             review.setObjectName("reviewBadge")

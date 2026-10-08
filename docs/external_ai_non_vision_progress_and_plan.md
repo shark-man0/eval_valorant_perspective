@@ -16,7 +16,7 @@
 | 3 | Event / Fact / Ruleの責務整理 | 完了 |
 | 4 | 評価ロジックの強化（Excel照合・範囲反映） | 完了 |
 | 5 | AI Coachの責務整理（出力検証層） | **未着手** |
-| 6 | Clip / Result UI | **未着手** |
+| 6 | Clip / Result UI | **実施済み（§2.4。実ウィンドウ全体の検証のみ未実施）** |
 
 ## 2. 完了したタスク
 
@@ -56,6 +56,16 @@
 
 `test_downstream_contract.py`（72件）、`test_temporal_scope.py`（20件）、`test_derived_events.py`（28件）、`test_snapshot_source_confidence.py`（30件）。全38 fixtureが `RoundAnalyzer` + mock を通る確認も含む。`facts/` と `rounds/` を変更前に戻すと、`test_snapshot_source_confidence.py` の30件中23件が失敗することを確認済み（依頼の4件を含む）。
 
+### 2.4 Priority 6（Clip / Result UI）
+
+既存のUIには、件数表示、ラベル・カテゴリ・ラウンドのフィルタ、title / situation / reason / improvement / confidence / missing_information / decision_source / 根拠、クリップ再生ボタンが既にあった。不足を次のとおり補った。
+
+- **Qt非依存のview model**（`ui/view_model.py`）: 件数、フィルタ、時刻表示、クリップ有無。フィルタ判定を `main_window.py` から切り出し（動作は同一。未知のlabelは何も表示しない）
+- `EvaluationView` に `fact_refs`（使用したfact）と `time_range`（該当時刻）を追加。保存済みの `fact_refs` / `evidence_range` をそのまま写し、無ければ空 / None（推測しない）
+- カードに「該当時刻 / 使用したfact / クリップの有無」を表示
+- **clip workflow**: 本物の `ClipService` と本物のpipelineをつなぎ、FFmpegだけをprocess境界でmock。評価の `display_clip` の範囲と、FFmpegに渡る範囲が一致すること（clip生成で時刻が動かない）、`unscored` にクリップが付かないこと等を検証
+- テスト: `test_result_view_model.py`（25件）、`test_result_cards_ui.py`（5件、実際の描画メソッドを使う最小ハーネス）、`test_clip_workflow.py`（5件）。検証: `main_window.py` を戻すとカード描画のテストが失敗、`ClipService` の開始時刻を1秒ずらすとclipテストが2件失敗することを確認済み
+
 ## 3. 未完了のタスク
 
 ### 3.1 Priority 5: AI Coach検証層
@@ -65,9 +75,10 @@
 3. **`unscored` の重複表示**: 同一factの MOV-02 / AIM-03 が `unscored` では集約されず2件別々に出る
 4. 出力検証の追加項目の洗い出し（timestampやlabelをAIが変えていないこと等）とテスト整備
 
-### 3.2 Priority 6: Clip / Result UI
+### 3.2 Priority 6: 残り
 
-依頼書の最低限の機能（`GOOD / IMPROVE / UNSCORED` の件数表示・ラベルfilter・title / situation / reason / improvement / confidence / missing_information / decision_source / 使用したfact・evidence / clipの有無と再生・timestamp確認）と、FFmpegをmockしたclip workflowのテスト。`ui/`、`ClipService` は未精査。PySide6が未導入の環境ではUI smokeを実行できない。
+- 実ウィンドウ（`MainWindow`）全体の検証。このサンドボックスでは `QAudioOutput` の生成でsegfaultするため構築できない（オーディオサーバが無いコンテナの制約で、変更前のコミットでも同じ）。`test_ui_smoke.py` / `test_main.py` はPySide6が無ければskip、有ればこの環境ではクラッシュするため未実行。Windows CIでの実行結果を確認する必要がある
+- `_play_clip`（クリップ再生）のテスト、元動画の該当時刻へのジャンプ機能（未実装）
 
 ### 3.3 その他
 
@@ -96,7 +107,7 @@
    - 評価confidenceの上限化: `evaluation.confidence ≤ 引用factの最小confidence` を出力検証に追加し、mockの上限もpackage集約値から引用factに変える。実モデルの出力が通らなくなる可能性があるため、**修復ループで再生成するか、決定論的に引き下げるか**を実装前に確認する
    - 範囲違反・文脈不足の扱い（修復 / `unscored` への降格）を同じ方針で決める
    - `unscored` の重複表示の扱いを決める
-2. **Priority 6**: まず `ui/` と `ClipService` を読み、Qt非依存のview modelに切り出せる部分をテストする。clip workflowはFFmpegをmockする
+2. ~~**Priority 6**~~: 実施済み（§2.4）。残りは §3.2
 3. 残件（§3.3）と、`RoundAnalyzer` 経由のspectator end-to-endテスト
 4. 最終成果物の整備（依頼書の「最終成果物」の各項目を `docs/external_ai_non_vision_report.md` に反映）
 
