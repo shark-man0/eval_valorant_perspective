@@ -67,7 +67,7 @@ def test_release_workflow_is_release_only() -> None:
     text = WORKFLOW.read_text(encoding="utf-8")
     assert "workflow_dispatch:" in text
     assert "tags:" in text
-    assert "- "v*"" in text
+    assert '- "v*"' in text
     assert re.search(r"(?m)^\s{2}push:\s*$", text)
     assert "branches:" not in text
     assert "release create" not in text.lower()
