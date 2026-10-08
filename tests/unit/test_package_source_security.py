@@ -20,10 +20,14 @@ def test_source_package_excludes_private_runtime_artifacts(tmp_path: Path) -> No
         project / "config" / "hud_layout.json",
         project / "config" / "hud_layout.templates.json",
         project / "config" / "settings.json",
+        project / "config" / "credentials.json",
+        project / "config" / "secrets.json",
+        project / "config" / "api_key.txt",
         project / "scripts" / "private.key",
         project / "scripts" / "runtime.log",
         project / "scripts" / "cache.sqlite3",
         project / "scripts" / "recording.mp4",
+        project / "scripts" / "recording.avi",
     ]
     for path in private_files:
         path.write_text("private\n", encoding="utf-8")
