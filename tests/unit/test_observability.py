@@ -391,12 +391,20 @@ def test_error_taxonomy(exc: BaseException, expected: str) -> None:
 @pytest.mark.skipif(os.name == "nt", reason="POSIX permission bits are not authoritative on Windows")
 def test_private_observability_files_use_owner_only_permissions(tmp_path: Path) -> None:
     try:
-        log_path = configure_logging(tmp_path / "logs")
+        log_path = configure_logging(tmp_path / "logs", max_bytes=256, backup_count=1)
+        logger = logging.getLogger("permission-rotation-test")
+        for _ in range(40):
+            logger.info("rotate-%s", "x" * 40)
+        for handler in logging.getLogger().handlers:
+            handler.flush()
         bundle_path = tmp_path / "bundle.zip"
         create_diagnostic_bundle(
             DiagnosticBundleRequest(run_id="secure-run", output_path=bundle_path)
         )
         assert stat.S_IMODE(log_path.stat().st_mode) == 0o600
+        rotated = log_path.with_name(log_path.name + ".1")
+        assert rotated.exists()
+        assert stat.S_IMODE(rotated.stat().st_mode) == 0o600
         assert stat.S_IMODE(bundle_path.stat().st_mode) == 0o600
     finally:
         _close_root_handlers()
