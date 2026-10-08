@@ -4,7 +4,7 @@
 
 - Repository: `shark-man0/eval_valorant_perspective`
 - Review branch: `external/security-review`
-- Latest-main baseline at resumed review: `9bb50abd463ab0ef41fb35c59dbe0d7679a64082`
+- Latest-main baseline after revalidation: `124a262cabbcdcadd3c0d9e38dd6adcf1184e515`
 - Original security-review branch base: `deaf3c8ed34a571f38a46e947ade5beea187d930`
 - Review date: 2026-10-08
 - Scope: security/privacy audit and narrowly scoped security fixes only
@@ -503,6 +503,23 @@ Resolved:
 - regex redaction is not a substitute for allowlisting; shared diagnostic collection should remain allowlist-only.
 - raw/evidence frame privacy depends on the content visible in the selected game frame.
 - complete transitive dependency vulnerability status requires a fresh environment-specific audit at release time.
+
+## Revalidation against latest main
+
+Revalidation was performed after merging main commit `124a262cabbcdcadd3c0d9e38dd6adcf1184e515` into `external/security-review`.
+
+- branch was confirmed `behind_by: 0` before revalidation
+- latest-main and security-review changes had no overlapping modified files before the merge
+- Linux Basic CI on security-review: 1206 passed, 6 skipped, 2 failed; coverage 83.10%
+- Windows verification on security-review: 1197 passed, 9 skipped, 8 failed; coverage 83.04%
+- the two Linux failures exactly match latest main:
+  - `test_round_boundary_regressions.py::test_global_phase_can_associate_preparation_without_inventing_player_identity`
+  - `test_shared_timer_facts.py::test_shared_timer_builder_keeps_windows_events_snapshots_and_fact_confidence`
+- Windows has those same two failures plus six existing `frame_cache` / `frame_replay` failures caused by `os.fsync(...)` raising `OSError: [Errno 9] Bad file descriptor`
+- no new pytest failure attributable to the security-review diff was observed
+- coverage remains above the unchanged 75% threshold on both platforms
+- the fail-fast workflow therefore does not reach Ruff, mypy, PyInstaller, smoke-test, or artifact-upload steps on the revalidated head; this is blocked by the same latest-main pytest failures rather than by a new security-review failure
+- SEC-06 was rechecked against the Windows release changes now in main and is resolved: the current PyInstaller spec uses explicit runtime-resource allowlisting instead of whole-`config/` inclusion
 
 ## Verification plan
 
