@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "scope": "opt-in source evidence trust boundary and segment-local preparation contract; synthetic regression and optimistic archived-source projection, not fresh recognition/qualification/E2E",
+  "git_head": "9bb50abd463ab0ef41fb35c59dbe0d7679a64082",
+  "code_fingerprint": "d36ea6ce342abf4a51634876bf7186a161c4967081179ee5afc304942c9606fa",
+  "profile_fingerprint": "8b5955f1d7de7139949815a7853260b9a66b6fd48140b64351030a6e78e9a5db",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "target_assertion_ids": [
+    "GT-R1-ROUND-START",
+    "GT-R1-ROUND-END",
+    "GT-R2-ROUND-START",
+    "event_count_constraints-000",
+    "event_count_constraints-002",
+    "event_count_constraints-004",
+    "ordering_constraints-001"
+  ],
+  "fixed_contracts": [
+    "qualified phase/result/continuity signals cannot be supplied by external diagnostic input",
+    "final evidence merge cannot overwrite internal continuity or measured reader confidence",
+    "content cut notices remain effective; genuine source measurements are retained",
+    "at least two source-attested phase observations spanning existing0.05sec minimum inside one segment",
+    "start provenance carries actual preparation endpoints/count and minimum phase confidence"
+  ],
+  "regression_comparison": {
+    "external_proof_overwrites": {
+      "previous": 4,
+      "current": 0,
+      "delta": -4,
+      "cases": 4,
+      "scope": "synthetic actual analyzer-to-real event builder contract tests; before-fix source replay reproduced overwrite"
+    },
+    "too_short_phase_start_events": {
+      "previous": 1,
+      "current": 0,
+      "delta": -1,
+      "cases": 1,
+      "scope": "synthetic same-segment phase10ms with semantic prefix outside segment; remove duration gate control"
+    },
+    "dense_phase_control": {
+      "phase_observations": 3,
+      "actual_span_sec": 0.05,
+      "event_actor": "system",
+      "event_count": 1
+    }
+  },
+  "source_projection_comparison": {
+    "processed_frames": {
+      "previous": 263,
+      "current": 263,
+      "delta": 0
+    },
+    "round_start_events": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "pre_round_samples": {
+      "previous": 3,
+      "current": 3,
+      "delta": 0
+    },
+    "unobserved_samples": {
+      "previous": 260,
+      "current": 260,
+      "delta": 0
+    },
+    "continuity_outcome_changes": 0,
+    "older_semantic_prefix_on_consumed_phase_samples": 7,
+    "wall_clock_sec": {
+      "previous": 24.890820429020096,
+      "current": 26.482417824008735,
+      "delta": 1.5915973949886393,
+      "delta_percent": 6.394314721474603,
+      "interpretation": "diagnostic simulation timing; recording differs, not a performance-gain claim or E2E runtime"
+    },
+    "windows": [
+      {
+        "window_sec": [
+          3.0,
+          6.0
+        ],
+        "frame_count": 78,
+        "state_counts": {
+          "unobserved": 75,
+          "pre_round": 3
+        },
+        "continuity_reason_counts": {
+          "initial_frame": 1,
+          "insufficient_spatial_camera_support": 36,
+          "attested_composite_link": 15,
+          "accepted_timer_pair_unavailable": 26
+        },
+        "simulated_events": [],
+        "previous_event_count": 0,
+        "current_event_count": 0,
+        "event_count_delta": 0,
+        "attested_phase_with_older_semantic_prefix_count": 7
+      },
+      {
+        "window_sec": [
+          109.0,
+          114.0
+        ],
+        "frame_count": 185,
+        "state_counts": {
+          "unobserved": 185
+        },
+        "continuity_reason_counts": {
+          "initial_frame": 1,
+          "attested_composite_link": 124,
+          "insufficient_spatial_camera_support": 17,
+          "accepted_timer_pair_unavailable": 43
+        },
+        "simulated_events": [],
+        "previous_event_count": 0,
+        "current_event_count": 0,
+        "event_count_delta": 0,
+        "attested_phase_with_older_semantic_prefix_count": 0
+      }
+    ]
+  },
+  "canonical_previous": {
+    "PASS": 23,
+    "FAIL": 55,
+    "NE": 4
+  },
+  "canonical_current": null,
+  "canonical_delta": null,
+  "qualification_created": false,
+  "profile_adopted": false,
+  "new_full_e2e_runs": 0,
+  "player_ownership_policy_changed": false,
+  "thresholds_changed": false,
+  "validation_or_sampler_changed": false,
+  "verification": {
+    "related_tests": "183 PASS in22.94sec with local Validation Pack path; no skips",
+    "ruff": "PASS src tests scripts/e2e scripts/diagnostics",
+    "mypy": "PASS100 source files",
+    "windows": "unverified",
+    "full_e2e": "not run: real qualified phase/start/end gates incomplete"
+  },
+  "remaining_blockers": [
+    "source-supported preparation continuity before timer resets remains absent; cannot use old semantic prefix to arm",
+    "no real current-code qualification report or independent current-code reset/cut holdout",
+    "transient R1 result source frame absent from archived full input; end and score corroboration remain unqualified",
+    "native two-package success is synthetic only; downstream package predicates still need independent evidence"
+  ],
+  "next_evidence_task": "inspect actual native frames between saved analysis PTS for source continuity and phase support; preserve acceptance thresholds, no skipped unknowns or new recognition claim",
+  "artifacts": {
+    "outputs/recognition-investigation/phase-evidence/source-contract-projection.json": "64de3749d23f030d88d47f5ab54fe62ad23dff691aff7fe5280bac8ba07a52de"
+  }
+}

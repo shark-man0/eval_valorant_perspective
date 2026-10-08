@@ -1,0 +1,781 @@
+{
+  "scope": "Archived source roster diagnostic and synthetic source-link regression controls; no new image qualification or canonical E2E",
+  "git_head": "9bb50abd463ab0ef41fb35c59dbe0d7679a64082",
+  "recognizer_fingerprint": "8ea9523eb35014d6301e778970c34c3b16192e0edac255c6f06aa9db5fd564ec",
+  "previous_diagnostic_recognizer_fingerprint": "6011f168b640de47d9b592041b4f696d2ff92796dec0c28dd96636f7b84140af",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "target_assertions": [
+    "GT-R1-ROUND-END",
+    "event_count_constraints-002"
+  ],
+  "source_rows": [
+    {
+      "source_pts_ticks": 1142313,
+      "time_base": "1/15360",
+      "pts_sec": 74.3693359375,
+      "frame_sha256": "877b720fa9b180a3d9f77478b7f43bf2a25e8f274ca559fa70af2d0df1957604",
+      "manual_visible_portraits": {
+        "ally": 1,
+        "enemy": 5
+      },
+      "manual_review_scope": "visible portrait UI only; not qualified liveness, death or player identity",
+      "index": 1,
+      "ally_candidates": [
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.9398
+        }
+      ],
+      "enemy_candidates": [
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.8727
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.9715
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 1.0
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 1.0
+        }
+      ],
+      "camera_witnesses": []
+    },
+    {
+      "source_pts_ticks": 1142569,
+      "time_base": "1/15360",
+      "pts_sec": 74.38600260416666,
+      "frame_sha256": "683a5fea89d6b2e551ff33d3d7ae7eef6c824a68045f28b1aa0ca2d21ac38db4",
+      "manual_visible_portraits": {
+        "ally": 1,
+        "enemy": 5
+      },
+      "manual_review_scope": "visible portrait UI only; not qualified liveness, death or player identity",
+      "index": 2,
+      "ally_candidates": [
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.914
+        }
+      ],
+      "enemy_candidates": [
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.9664
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 1.0
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 1.0
+        }
+      ],
+      "camera_witnesses": [
+        [
+          0,
+          0,
+          0.9798986315727234
+        ],
+        [
+          0,
+          1,
+          0.9412457346916199
+        ],
+        [
+          1,
+          0,
+          0.9451833367347717
+        ]
+      ]
+    },
+    {
+      "source_pts_ticks": 1142825,
+      "time_base": "1/15360",
+      "pts_sec": 74.40266927083333,
+      "frame_sha256": "022acf8c07e77b79aee8ac5c65018cae6ae803508ef610dff7bf366c5b3d4dbe",
+      "manual_visible_portraits": {
+        "ally": 0,
+        "enemy": 5
+      },
+      "manual_review_scope": "visible portrait UI only; not qualified liveness, death or player identity",
+      "index": 3,
+      "ally_candidates": [
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.6598
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        }
+      ],
+      "enemy_candidates": [
+        {
+          "alive_candidate": true,
+          "confidence": 0.9123
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.982
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.8083
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.9151
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.9132
+        }
+      ],
+      "camera_witnesses": []
+    },
+    {
+      "source_pts_ticks": 1143081,
+      "time_base": "1/15360",
+      "pts_sec": 74.4193359375,
+      "frame_sha256": "9f941a254c40b4fab11dd375653ba7622b37ac630f553c7f5de879a71edd3314",
+      "manual_visible_portraits": {
+        "ally": 0,
+        "enemy": 5
+      },
+      "manual_review_scope": "visible portrait UI only; not qualified liveness, death or player identity",
+      "index": 4,
+      "ally_candidates": [
+        {
+          "alive_candidate": true,
+          "confidence": 0.958
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        }
+      ],
+      "enemy_candidates": [
+        {
+          "alive_candidate": true,
+          "confidence": 0.9003
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.9328
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.8012
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.9391
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.8222
+        }
+      ],
+      "camera_witnesses": [
+        [
+          0,
+          1,
+          0.932512640953064
+        ]
+      ]
+    },
+    {
+      "source_pts_ticks": 1143337,
+      "time_base": "1/15360",
+      "pts_sec": 74.43600260416666,
+      "frame_sha256": "8dba92b8ce2af487a45d04d182d2f35a1406518b60d1fa4c09e0ef4f1130d942",
+      "manual_visible_portraits": {
+        "ally": 0,
+        "enemy": 5
+      },
+      "manual_review_scope": "visible portrait UI only; not qualified liveness, death or player identity",
+      "index": 5,
+      "ally_candidates": [
+        {
+          "alive_candidate": true,
+          "confidence": 0.9641
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        }
+      ],
+      "enemy_candidates": [
+        {
+          "alive_candidate": true,
+          "confidence": 0.9348
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.8917
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.7985
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.9572
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.8111
+        }
+      ],
+      "camera_witnesses": []
+    },
+    {
+      "source_pts_ticks": 1143593,
+      "time_base": "1/15360",
+      "pts_sec": 74.45266927083334,
+      "frame_sha256": "7ed7df9c55a483ae454b00bbaa7ace857879444d9d5502ce6340da109fa8fd8b",
+      "manual_visible_portraits": {
+        "ally": 0,
+        "enemy": 5
+      },
+      "manual_review_scope": "visible portrait UI only; not qualified liveness, death or player identity",
+      "index": 6,
+      "ally_candidates": [
+        {
+          "alive_candidate": true,
+          "confidence": 0.9989
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.9927
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        }
+      ],
+      "enemy_candidates": [
+        {
+          "alive_candidate": true,
+          "confidence": 0.9424
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.8624
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.7962
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.9181
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.8185
+        }
+      ],
+      "camera_witnesses": [
+        [
+          0,
+          2,
+          0.9398053884506226
+        ],
+        [
+          1,
+          2,
+          0.9830869436264038
+        ],
+        [
+          2,
+          2,
+          0.9917800426483154
+        ]
+      ]
+    },
+    {
+      "source_pts_ticks": 1143849,
+      "time_base": "1/15360",
+      "pts_sec": 74.4693359375,
+      "frame_sha256": "e61922fa0e000c6506c6c65da008fc4a42d6dc9f62a6f9b992d6f3d521a04d16",
+      "manual_visible_portraits": {
+        "ally": 0,
+        "enemy": 5
+      },
+      "manual_review_scope": "visible portrait UI only; not qualified liveness, death or player identity",
+      "index": 7,
+      "ally_candidates": [
+        {
+          "alive_candidate": true,
+          "confidence": 0.7428
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.8156
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 1.0
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.9403
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.6313
+        }
+      ],
+      "enemy_candidates": [
+        {
+          "alive_candidate": true,
+          "confidence": 0.698
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.7172
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.7363
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.8533
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.6847
+        }
+      ],
+      "camera_witnesses": []
+    },
+    {
+      "source_pts_ticks": 1144105,
+      "time_base": "1/15360",
+      "pts_sec": 74.48600260416667,
+      "frame_sha256": "ee73d20c37b73e0ddd5f807a3a4c89d75ddcba39e1ce01f86ccb74d645ba74de",
+      "manual_visible_portraits": {
+        "ally": 0,
+        "enemy": 5
+      },
+      "manual_review_scope": "visible portrait UI only; not qualified liveness, death or player identity",
+      "index": 8,
+      "ally_candidates": [
+        {
+          "alive_candidate": true,
+          "confidence": 0.7796
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 1.0
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 1.0
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.888
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        }
+      ],
+      "enemy_candidates": [
+        {
+          "alive_candidate": true,
+          "confidence": 0.732
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.8699
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.6972
+        }
+      ],
+      "camera_witnesses": [
+        [
+          0,
+          2,
+          0.9500663876533508
+        ],
+        [
+          1,
+          2,
+          0.9856558442115784
+        ],
+        [
+          2,
+          2,
+          0.9954786896705627
+        ]
+      ]
+    },
+    {
+      "source_pts_ticks": 1144361,
+      "time_base": "1/15360",
+      "pts_sec": 74.50266927083334,
+      "frame_sha256": "1bddd849bd6ed81c98c849e2eafa70de9fbb453a3a8e29a1a1aec2b67340f86d",
+      "manual_visible_portraits": {
+        "ally": 0,
+        "enemy": 5
+      },
+      "manual_review_scope": "visible portrait UI only; not qualified liveness, death or player identity",
+      "index": 9,
+      "ally_candidates": [
+        {
+          "alive_candidate": true,
+          "confidence": 0.8191
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 1.0
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.9667
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.8444
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        }
+      ],
+      "enemy_candidates": [
+        {
+          "alive_candidate": true,
+          "confidence": 0.7437
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.8866
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.712
+        }
+      ],
+      "camera_witnesses": [
+        [
+          0,
+          1,
+          0.9055972695350647
+        ],
+        [
+          0,
+          2,
+          0.9592692255973816
+        ],
+        [
+          1,
+          2,
+          0.9850928783416748
+        ],
+        [
+          2,
+          2,
+          0.99614417552948
+        ]
+      ]
+    },
+    {
+      "source_pts_ticks": 1144617,
+      "time_base": "1/15360",
+      "pts_sec": 74.5193359375,
+      "frame_sha256": "42ef4b551abd79737a566de59ec15ad5112da63af17510618722d66bcfd6e43a",
+      "manual_visible_portraits": {
+        "ally": 0,
+        "enemy": 5
+      },
+      "manual_review_scope": "visible portrait UI only; not qualified liveness, death or player identity",
+      "index": 10,
+      "ally_candidates": [
+        {
+          "alive_candidate": true,
+          "confidence": 0.7908
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 1.0
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.9525
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.8792
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        }
+      ],
+      "enemy_candidates": [
+        {
+          "alive_candidate": true,
+          "confidence": 0.7573
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        },
+        {
+          "alive_candidate": null,
+          "confidence": 0.0
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.881
+        },
+        {
+          "alive_candidate": true,
+          "confidence": 0.6847
+        }
+      ],
+      "camera_witnesses": [
+        [
+          0,
+          0,
+          0.9003780484199524
+        ],
+        [
+          0,
+          1,
+          0.9367895126342773
+        ],
+        [
+          0,
+          2,
+          0.9556659460067749
+        ],
+        [
+          1,
+          2,
+          0.9841052889823914
+        ],
+        [
+          2,
+          2,
+          0.9963250756263733
+        ]
+      ]
+    }
+  ],
+  "source_conclusion": "Color/contrast heuristics can mark empty portrait slots alive; frame7 has five true ally candidates despite zero visible ally portraits. No independently qualified roster/count/result evidence established. Static camera links alone do not prove continuity.",
+  "synthetic_comparison": {
+    "previous_invalid_endpoint_corroborations": 6,
+    "current_invalid_endpoint_corroborations": 0,
+    "delta": -6,
+    "rows": [
+      {
+        "case": "duplicate_pts",
+        "current_index": 0,
+        "previous": [
+          5,
+          0.9
+        ],
+        "current": null
+      },
+      {
+        "case": "duplicate_pts",
+        "current_index": 1,
+        "previous": [
+          5,
+          0.9
+        ],
+        "current": null
+      },
+      {
+        "case": "backward_pts",
+        "current_index": 0,
+        "previous": [
+          5,
+          0.9
+        ],
+        "current": null
+      },
+      {
+        "case": "backward_pts",
+        "current_index": 1,
+        "previous": [
+          5,
+          0.9
+        ],
+        "current": null
+      },
+      {
+        "case": "content_cut",
+        "current_index": 0,
+        "previous": [
+          5,
+          0.9
+        ],
+        "current": null
+      },
+      {
+        "case": "content_cut",
+        "current_index": 1,
+        "previous": [
+          5,
+          0.9
+        ],
+        "current": null
+      }
+    ],
+    "scope": "synthetic invalid-link controls; old helper extracted verbatim from HEAD, no tracked source rollback"
+  },
+  "change": "Reject duplicate, backward, non-finite or missing PTS and source-cut links; supplemental and extracted cut markers are honored; fresh adjacent agreement after cut remains eligible under unchanged confidence/count policy.",
+  "new_parameterized_unit_cases": 6,
+  "recognition_thresholds_changed": false,
+  "player_ownership_relaxed": false,
+  "qualification_report_created": false,
+  "profile_adopted": false,
+  "full_e2e_executed": false,
+  "canonical_previous": {
+    "pass": 23,
+    "fail": 55,
+    "not_evaluated": 4
+  },
+  "canonical_current": null,
+  "canonical_delta": null,
+  "verification": {
+    "related_tests_passed": 198,
+    "initial_missing_pack_test_skipped": 1,
+    "ruff": "PASS",
+    "mypy": "PASS:101 source files",
+    "related_test_runtime_sec": 28.71,
+    "external_pack_trace_adapter_tests_passed": 9,
+    "external_pack_trace_adapter_runtime_sec": 0.29,
+    "external_pack_trace_adapter_skip_count": 0,
+    "unique_related_cases_passed_after_pack_check": 199
+  },
+  "next_action": "Obtain independently qualified source-safe global lifecycle evidence; color-only roster is rejected as a boundary input, no cross-cut corroboration. Additional source-video path question remains pending.",
+  "windows_verified": false,
+  "bindings": {
+    "src/valorant_ai_coach/hud/analyzers.py": "6f3e1f85f826059a80a6fe71cc43b3bf31ccde4bb528b29c8a95540b3c4b129a",
+    "tests/unit/test_hud_runtime_semantics.py": "621b385651211f33f92da393eb239247508f5b38e0ea6785ea7e65750dd1d8b7",
+    "outputs/recognition-investigation/phase-evidence/dense-r1-end/roster-feature-measurements.json": "34f9f37ee473145127c6f1f50dff70e6d997f670d0fc3af4757c559cba256c35",
+    "outputs/recognition-investigation/phase-evidence/dense-r1-end/roster-debounce-before-after.json": "16446f4ab8f615f2691eb142dfa3f904018ef3cce6d8ff489facdbb9ce64f7ec",
+    "e2e_reports/match_001/r1_end_dense_source_diagnostics.json": "d2570bfbb914fa74beb44cce1b6d5362a6cff0506d10a6b2e7c602df5353927b"
+  }
+}

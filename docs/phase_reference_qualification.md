@@ -1,5 +1,35 @@
 # Purchase-phase reference qualification
 
+## Current follow-up: structural reference and phase contract
+
+The sections below record the initial unmasked experiment. The current working-tree follow-up adds an opt-in `semantic_text_ncc_v1` profile matcher and an independent phase-confidence contract; the safe default profile remains unchanged. Training uses the same three R1 crops, excluding numeric fields. A frozen stable-foreground mask with a one-pixel contrast ring is split into three support groups. Every group must independently reach NCC 0.90. Invalid profiles fail closed, and this matcher cannot replace identity or spectator evidence.
+
+After freezing the mask, 21 additional frames were selected and reviewed before prediction: eight purchase-phase positives and thirteen negatives. Production matching accepts all eight positives and none of the negatives. On these same frames, the previous unmasked reference accepted seven positives. The previously reviewed R2 cohort is a regression control rather than fresh holdout: seven of eight positives now match; PTS 103.002669 remains unknown. No threshold was relaxed to accept it.
+
+The production phase tracker requires corroborating frames over at least 0.05 seconds and resets on missing evidence, invalid geometry, discontinuity markers or a gap exceeding one second. It preserves unknown player identity and unknown numeric values. Independent phase confidence travels through the existing ROI-confidence field to trace state intervals. It does not generate round events. Explicit discontinuity handling does not establish that real content jumps have been detected upstream.
+
+On the same 18 native frames used below, the new continuous check produces eight confirmed purchase-phase flags (six in R1, two in R2), while timer and both scores remain unknown and round starts/ends remain zero. Runtime is 47.336 seconds; the initial experiment used a different OCR runtime environment, so these times are not a comparable performance measurement. Local evidence: `outputs/recognition-investigation/phase-evidence/structural-text/native-phase-contract.json`.
+
+| Check | Previous | Current | Delta |
+| --- | ---: | ---: | ---: |
+| Targeted PASS / FAIL / NE | 0 / 5 / 2 | 0 / 5 / 2 | 0 / 0 / 0 |
+| Targeted runtime (seconds) | 76.505 | 76.886 | +0.382 |
+| Sampled PASS / FAIL / NE | 7 / 12 / 11 | 7 / 12 / 11 | 0 / 0 / 0 |
+| Sampled runtime (seconds) | 285.415 | 285.123 | -0.292 |
+| Confirmed phase flags on 18 native frames | 0 | 8 | +8 |
+
+The sampled and targeted runs completed with their existing assertion failures and no changed failure set. These partial checks do not prove full negative-assertion or discontinuity safety. No new full E2E has run, and no new canonical PASS is claimed. The required complete boundary windows and all three genuine lifecycle boundaries remain acceptance blockers.
+
+### Native pre-round package check
+
+At HEAD `9bb50abd463ab0ef41fb35c59dbe0d7679a64082` plus the documented diagnostic/test changes, the 0–9 second replay processed all 224 archived native PTS in 460.752 seconds. Video SHA256, terminal archive SHA256 and profile fingerprint were verified before and after processing. Results: unknown 217, live 7, semantic purchase matches 69, confirmed phase flags 64, accepted timer/score pairs zero, native boundary events zero. Confirmed phase spans PTS 0.202669–4.086003; the first live observation is 7.369336.
+
+The native builder preserves one partial fragment `[7.369336, 8.502669]` with timeline completeness zero, one snapshot, six derived state snapshots and no round boundaries. Preparation confidence can extend context around an actual detected start, but cannot create that start or turn this fragment into a completed round. The 3.283333-second difference between the last phase confirmation and first live observation is an evidence gap, not itself proof of an adjacent-frame continuity violation. The continuous input includes intermediate unknown observations. No missing boundary was injected to force association.
+
+This rejects the hypothesis that phase confidence alone will resolve the native pre-round package scope. The immediate blocker remains a source-qualified round-start event. The package unit test separately verifies that qualified preparation associates with a supplied start and that the same preparation without a start leaves a partial fragment unchanged. Local terminal evidence: `outputs/recognition-investigation/phase-evidence/structural-text/native-pre-round-package.json`.
+
+Related package and trace tests: **25 passed, zero skipped in 13.25 seconds**, with `VALORANT_E2E_VALIDATION_PACK` pointing to the existing local pack. The unchanged reference evaluator still rejects the synthetic spectator HUD leakage through `NEG-SPECTATOR-POISON-151`; this is a targeted contract regression check, not full-video negative acceptance. Ruff passes for src/tests/E2E/diagnostics, mypy passes for 98 source files, and `git diff --check` passes. Machine-readable current evidence and verification are in [semantic phase contract diagnostics](../e2e_reports/match_001/semantic_phase_contract_diagnostics.json).
+
 ## Problem and scope
 
 At main `8e3cf32f1ac331c747e85fd1dcdcffcb4179e987`, the lifecycle pipeline has no qualified buy-phase input. This investigation tests that input using archived real frames and the existing production `HudTemplateProfile` matcher. It does not qualify a round boundary or adopt a new profile.
@@ -57,3 +87,9 @@ Do not launch full E2E or claim lifecycle completion from this result. The next 
 Windows uses the same profile format, relative asset paths and matcher. These assets have not been tested on a Windows machine; OpenCV scores and image decoding still require verification there.
 
 Verification on the current source: Ruff PASS; mypy PASS (97 files); 46 related template, runtime-semantics and lifecycle unit tests PASS in 4.59 s. No sampled/full run or full regression was executed for this unadopted input component.
+
+## Dense R1 end source review (2026-10-08)
+
+The earlier review compared archived full PTS 74.402669 and 74.486003, which contain no semantic end banner. A closer review found `TEAM ACE` at **74.436003**, already present in an older targeted frame archive but absent from full16 native observation PTS. A fresh source decode of **every frame in 74.36–74.52** confirms ten consecutive frames with 256-tick spacing at time base 1/15360. All ten were manually inspected. Exactly one in this range shows the banner, at tick1143337 (74.436002604...). Timer remains `0:29` there, switches to `0:06` at74.452669, and displayed score updates from0–1 to0–2 at74.486003. These are diagnostic visual observations, not accepted reader values or runtime labels.
+
+This changes the next investigation: R1 end has real semantic evidence between archived full-native observations; it must not be described as absent throughout the source. It still does not qualify production end detection: a single banner frame lacks temporal corroboration and independent training/holdout support; archived score pairs and player HUD confidence are unknown/zero. The previously documented content discontinuity still prohibits treating later score/banner evidence as uninterrupted corroboration. No cut timestamp or GT value is injected, no sampler changes, template candidate or boundary events were made, and no new full E2E or canonical PASS is claimed. Next investigate independently corroborated end evidence within the same content segment and how its source timing can reach the existing production contract. [Source ticks, image hashes and detailed limits](../e2e_reports/match_001/r1_end_dense_source_diagnostics.json).

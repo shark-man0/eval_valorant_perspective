@@ -1,0 +1,101 @@
+{
+  "scope": "Opt-in production score reader with native-source development evaluation; no independent qualification or canonical acceptance",
+  "git_head": "9bb50abd463ab0ef41fb35c59dbe0d7679a64082",
+  "target_assertions": [
+    "GT-R1-ROUND-END",
+    "event_count_constraints-002",
+    "GT-R1-ROUND-START",
+    "GT-R2-ROUND-START"
+  ],
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "recognizer_fingerprint": "a29d6e364552d23c8720c36dd3053bbd8744ab36c500b31c6f75a5bd185c662d",
+  "profile_fingerprint": "6ce96a23d3084e62b115ecd3bfe75925dcf9d21e497032fba227f6707e129fe4",
+  "measurement_diagnostic_script_sha256": "270f204ecb942b730b9af895102157627c807634192acf0abc1784fd6a36c55a",
+  "current_diagnostic_script_sha256": "c30df77b52289699b2cc92d5721ef178149e0b5a9c04dd9391f7c6607160ea1a",
+  "measurement_script_change": "Only explicit strict-reader-kind validation added after measurement; exact measured harness preserved privately with matching SHA",
+  "bindings": {
+    "outputs/recognition-investigation/score-glyph-development-20261008/selection.json": "0372e7f146ba95890d0753f630c93549d5665ef7f774a08d49886a174126254b",
+    "outputs/recognition-investigation/score-glyph-development-20261008/results.json": "98c0d2b794541120424f90828eeb67a64e9529a2e01b85122df1faf33f8a5923",
+    "outputs/recognition-investigation/score-glyph-development-20261008/source-review.json": "9dc1f07dfa2b08cc7d23a381a99e6fc631c833d4f6e2cb0815f060c3e077e748",
+    "outputs/recognition-investigation/score-glyph-development-20261008/measured-harness.py": "270f204ecb942b730b9af895102157627c807634192acf0abc1784fd6a36c55a"
+  },
+  "change": {
+    "reader_kind": "strict_score_glyphs",
+    "allowed_roles": [
+      "ally_score",
+      "enemy_score"
+    ],
+    "ncc_threshold": 0.9,
+    "competitor_margin": 0.04,
+    "digit_competitors": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9"
+    ],
+    "grammar": "one or two aligned digits; no leading zero, colon, additional components or clipped foreground",
+    "invalid_configuration": "explicit unknown; no OCR fallback",
+    "scope": "current frame display only; never identity, player ownership or boundary proof"
+  },
+  "reference_provenance": "Existing manually reviewed timer glyph assets and unchanged gaussian3x3 comparison, all ten classes; no score expected values used",
+  "cohort": {
+    "frames": 60,
+    "score_readings": 120,
+    "kind": "development, not fresh independent holdout",
+    "manual_review_timing": "after predictions",
+    "source_hashes_verified_after_review": true
+  },
+  "summary": {
+    "correct": 84,
+    "unknown": 36,
+    "wrong": 0,
+    "ally_correct": 60,
+    "ally_unknown": 0,
+    "enemy_correct": 24,
+    "enemy_unknown": 36
+  },
+  "unknown_causes": {
+    "foreground_touches_roi_border": 36,
+    "source_observed_detail": "R1 enemy visible1:30unknown; R2 enemy visible2:first6unknown,remaining24correct. Foreground Otsu threshold140 in inspected R1 development crop includes background/card edges"
+  },
+  "runtime": {
+    "mode": "native_score_development_diagnostic",
+    "processed_frames": 60,
+    "wall_clock_sec": 8.265256881015375,
+    "frames_per_sec": 7.259302507320146,
+    "previous_comparable_run": null,
+    "runtime_delta": null
+  },
+  "qualification_created": false,
+  "profile_adopted": false,
+  "events_emitted": 0,
+  "full_sampler_changed": false,
+  "validation_pack_changed": false,
+  "full_e2e_executed": false,
+  "tests": {
+    "related_passed": 194,
+    "wall_clock_sec": 24.49,
+    "ruff": "PASS",
+    "mypy": "PASS:101 source files",
+    "scope": "focused related suite, not full regression"
+  },
+  "canonical_previous": {
+    "pass": 23,
+    "fail": 55,
+    "not_evaluated": 4
+  },
+  "canonical_current": null,
+  "canonical_delta": null,
+  "next_blocker": "Qualify score foreground extraction on separate source-frame training/holdout/negative cohorts; preserve rejected development result, do not replace unknown with observed labels",
+  "other_blockers": [
+    "Starts lack qualified native clock/phase/continuity evidence",
+    "R1 end lacks same-segment corroboration; no joining across content discontinuity"
+  ],
+  "windows_verified": false
+}

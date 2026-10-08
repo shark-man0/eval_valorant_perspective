@@ -14,12 +14,19 @@ import sys
 import time
 from collections import Counter
 from pathlib import Path
+from types import SimpleNamespace
 
 APP_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(APP_ROOT / "src"))
+sys.path.insert(0, str(APP_ROOT))
 
+from scripts.diagnostics.global_round_start_hypothesis import GlobalStartHypothesis  # noqa: E402
+from valorant_ai_coach.events import EventSourceContract  # noqa: E402
 from valorant_ai_coach.hud.analyzers import RealHudAnalyzer  # noqa: E402
-from valorant_ai_coach.video import FrameSample  # noqa: E402
+from valorant_ai_coach.resources import resource_path  # noqa: E402
+from valorant_ai_coach.rounds import RoundPackageBuilder, RoundPackageBuildError  # noqa: E402
+from valorant_ai_coach.schema_validation import SchemaValidator  # noqa: E402
+from valorant_ai_coach.video import FrameSample, VideoMetadata  # noqa: E402
 
 
 def sha256_file(path: Path) -> str:
@@ -64,8 +71,16 @@ def main() -> None:
     parser.add_argument("--raw-processing", required=True, type=Path)
     parser.add_argument("--frames-root", required=True, type=Path)
     parser.add_argument("--profile", required=True, type=Path)
+    parser.add_argument(
+        "--timer-reader-layout", type=Path,
+        help="Diagnostic-only reuse of an existing timer reader; never profile adoption",
+    )
     parser.add_argument("--window", required=True, action="append", nargs=2, type=float)
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument(
+        "--package-diagnostics", action="store_true",
+        help="Build native packages from replay outputs without injecting boundaries",
+    )
     args = parser.parse_args()
     started = time.perf_counter()
     source_sha = sha256_file(args.video)
@@ -91,6 +106,7 @@ def main() -> None:
     prefix = native_times[:3]
     summaries = []
     fingerprints = set()
+    timer_reader_fingerprint = None
     for start, end in args.window:
         if not 0 <= start < end <= metadata["duration_sec"]:
             raise ValueError("window must be inside source duration")
@@ -100,7 +116,31 @@ def main() -> None:
         context = sorted(set([t for t in prefix if t < start] + times))
         frames, hashes = archived_frames(context, args.frames_root)
         diagnostics: list[dict] = []
-        analyzer = RealHudAnalyzer(args.profile, diagnostic_sink=diagnostics.append)
+        lifecycle_diagnostics: list[dict] = []
+        reader_override = {}
+        timer_analyzer = None
+        if args.timer_reader_layout:
+            timer_analyzer = RealHudAnalyzer(args.timer_reader_layout)
+            reader = timer_analyzer.readers.get("round_timer")
+            if reader is None or timer_analyzer.template_profile is None:
+                raise ValueError("existing configured timer reader required")
+            reader_override["round_timer"] = reader
+            reader_fingerprint = timer_analyzer.fingerprint()
+            if (
+                timer_reader_fingerprint is not None
+                and reader_fingerprint != timer_reader_fingerprint
+            ):
+                raise ValueError("timer reader profile/assets changed between diagnostic windows")
+            timer_reader_fingerprint = reader_fingerprint
+        analyzer = RealHudAnalyzer(
+            args.profile, readers=reader_override, diagnostic_sink=diagnostics.append,
+            lifecycle_diagnostic_sink=lifecycle_diagnostics.append,
+        )
+        if timer_analyzer is not None and (
+            analyzer.layout.normalized_roi("round_timer")
+            != timer_analyzer.layout.normalized_roi("round_timer")
+        ):
+            raise ValueError("timer reader and replay layout ROI mismatch")
         if analyzer.template_profile is None:
             raise ValueError("complete template sidecar required")
         before = analyzer.template_profile.fingerprint(args.profile)
@@ -110,12 +150,86 @@ def main() -> None:
         after = analyzer.template_profile.fingerprint(args.profile)
         if before != after:
             raise ValueError("profile/assets changed during diagnostic")
+        if timer_analyzer is not None and timer_analyzer.fingerprint() != timer_reader_fingerprint:
+            raise ValueError("timer reader profile/assets changed during diagnostic")
         fingerprints.add(before)
         indices = {i for i, t in enumerate(context) if start <= t <= end}
         observed = [row for row in result.observations if start <= row["time_sec"] <= end]
         if [row["time_sec"] for row in observed] != times:
             raise ValueError("native replay failed to preserve every requested PTS")
         inputs = [row for row in diagnostics if row["frame_index"] in indices]
+        hypotheses = []
+        if args.timer_reader_layout:
+            hypothetical = GlobalStartHypothesis()
+            for row, evidence in zip(observed, inputs, strict=True):
+                signals = evidence["signals"]
+                proposal = hypothetical.advance(
+                    row, discontinuity=signals.get("content_jump") is True
+                    or signals.get("discontinuity") is True,
+                )
+                if proposal is not None:
+                    hypotheses.append(proposal)
+        package_summary = None
+        package_build_error = None
+        trace_timer_displays = None
+        if args.package_diagnostics:
+            builder = RoundPackageBuilder(
+                contract=EventSourceContract.load(
+                    resource_path("config/event_source_contract_v1.json")
+                ),
+                validator=SchemaValidator(),
+            )
+            try:
+                packages = builder.build(
+                    match_id="continuous_diagnostic",
+                    video_metadata=VideoMetadata(
+                        args.video, metadata["duration_sec"], metadata["width"],
+                        metadata["height"], metadata["fps"], metadata["video_codec"],
+                        metadata["audio_codec"], metadata["has_audio"], metadata["file_size"],
+                    ),
+                    hud_observations=observed,
+                    hud_events=[e for e in result.hud_events if start <= e["time_sec"] <= end],
+                )
+            except RoundPackageBuildError as exc:
+                packages = ()
+                package_build_error = str(exc)
+            package_summary = [
+                {
+                    "round_no": package["round_no"],
+                    "round_window": package["round_window"],
+                    "timeline_completeness": package["observation_quality"][
+                        "timeline_completeness"
+                    ],
+                    "snapshot_count": len(package["state_snapshots"]),
+                    "event_counts": dict(Counter(e["type"] for e in package["events"])),
+                    "boundary_events": [
+                        e for e in package["events"]
+                        if e["type"] in {"round_start", "round_end"}
+                    ],
+                    "source_timer_displays": [
+                        {key: snapshot[key] for key in (
+                            "time_sec", "round_time_remaining_sec",
+                            "round_time_remaining_display",
+                            "round_time_remaining_display_provenance",
+                        )}
+                        for snapshot in package["state_snapshots"]
+                        if "round_time_remaining_display" in snapshot
+                    ],
+                }
+                for package in packages
+            ]
+            from tests.e2e.trace_adapter import to_e2e_trace
+
+            trace = to_e2e_trace(
+                SimpleNamespace(round_packages=packages, observations=observed)
+            )
+            trace_timer_displays = [
+                {key: snapshot[key] for key in (
+                    "time_sec", "game_timer_display", "game_timer_display_provenance"
+                )}
+                for snapshot in trace["snapshots"]
+                if "game_timer_display" in snapshot
+            ]
         summaries.append(
             {
                 "window_sec": [start, end],
@@ -169,7 +283,28 @@ def main() -> None:
                     }
                     for row, evidence in zip(observed, inputs, strict=True)
                 ],
+                "timer_display_evidence": [
+                    {
+                        "pts_sec": row["time_sec"],
+                        "numeric_seconds": row["values"].get("round_time_remaining_sec"),
+                        "display": row["values"].get("round_time_remaining_display"),
+                        "provenance": row["values"].get(
+                            "round_time_remaining_display_provenance"
+                        ),
+                        "accepted_value_confidence": row["quality"]["roi_confidence"].get(
+                            "round_timer_value"
+                        ),
+                    }
+                    for row in observed
+                ],
                 "geometry": result.calibration_diagnostics,
+                "native_package_diagnostics": package_summary,
+                "native_package_build_error": package_build_error,
+                "trace_timer_displays": trace_timer_displays,
+                "global_start_hypotheses": hypotheses,
+                "lifecycle_diagnostics": [
+                    row for row in lifecycle_diagnostics if start <= row["time_sec"] <= end
+                ],
             }
         )
     if (
@@ -185,6 +320,7 @@ def main() -> None:
         "source_video_sha256": source_sha,
         "raw_processing_sha256": raw_sha,
         "profile_fingerprint": next(iter(fingerprints)),
+        "diagnostic_timer_reader_fingerprint": timer_reader_fingerprint,
         "wall_clock_sec": time.perf_counter() - started,
         "windows": summaries,
     }

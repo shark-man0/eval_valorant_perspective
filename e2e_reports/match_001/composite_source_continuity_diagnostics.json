@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "scope": "opt-in composite source continuity implementation and training-only simulation, not qualification or adoption",
+  "git_head": "9bb50abd463ab0ef41fb35c59dbe0d7679a64082",
+  "candidate_freeze": {
+    "scope": "unqualified composite-method training freeze before new independent holdout; timer/phase assets unchanged; previous timer results historical, current code binding differs",
+    "profile_fingerprint": "8b5955f1d7de7139949815a7853260b9a66b6fd48140b64351030a6e78e9a5db",
+    "recognizer_fingerprint": "6196da336c58f83bcb31a7d29879442fb6ddd3d307015598086a8143bb1023cb",
+    "method": "camera_grid_timer_phase_v1",
+    "camera_tiles": 9,
+    "minimum_witnesses": 3,
+    "minimum_rows": 2,
+    "minimum_columns": 2,
+    "NCC": 0.9,
+    "minimum_nonflat_std": 1.0,
+    "timer_threshold": 0.9,
+    "component_qualification_report_created": false,
+    "source_pair_manifest_sha256": "4fa038599eee80483c6ff2fbb4271f1abd4c5e1d0157ce7975520501aa2e6222"
+  },
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "training_diagnostic_sha256": "37fad0a391855e81a370533c0d7f729c5a460e3fe2f9cd037d060709f2128273",
+  "source_rows": 135,
+  "simulation_reason_counts": {
+    "initial_frame": 1,
+    "accepted_timer_pair_unavailable": 56,
+    "insufficient_spatial_camera_support": 11,
+    "attested_composite_link": 63,
+    "invalid_geometry_shape_or_gap": 4
+  },
+  "wall_clock_sec": 5.990640989009989,
+  "selected_source_rows": [
+    {
+      "pts_sec": 4.152669,
+      "source_frame_sha256": "82f4c671ca25c3eae9a7caf9f2cdf824b642838f70cab53645e4cee2d9ea9524",
+      "timer_display": "1:39",
+      "timer_confidence": 0.9607433676719666,
+      "phase_confirmed": false,
+      "phase_confidence": null,
+      "method_relation": "attested_composite_link",
+      "diagnostic_link": {
+        "previous_pts": 4.086003,
+        "camera_cells": [
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "camera_ncc": [
+          0.9226223230361938,
+          0.9633510112762451,
+          0.9132622480392456
+        ]
+      }
+    },
+    {
+      "pts_sec": 74.486003,
+      "source_frame_sha256": "6e1824962aab7891889450111c49f237338c9b54e6f56916d15468d39ccba490",
+      "timer_display": null,
+      "timer_confidence": 0.0,
+      "phase_confirmed": false,
+      "phase_confidence": null,
+      "method_relation": "accepted_timer_pair_unavailable",
+      "diagnostic_link": null
+    },
+    {
+      "pts_sec": 111.436003,
+      "source_frame_sha256": "5e8fb732293eb53d40b9f27bb2c5923f65e4d4e59ff3f5b62e91607cd235b3e5",
+      "timer_display": "1:40",
+      "timer_confidence": 0.9361436367034912,
+      "phase_confirmed": false,
+      "phase_confidence": null,
+      "method_relation": "attested_composite_link",
+      "diagnostic_link": {
+        "previous_pts": 111.402669,
+        "camera_cells": [
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        "camera_ncc": [
+          0.934931218624115,
+          0.9761844873428345,
+          0.9411039352416992,
+          0.9774536490440369,
+          0.9023825526237488
+        ]
+      }
+    }
+  ],
+  "implementation": {
+    "qualified_global_report_required": true,
+    "external_tokens_ignored": true,
+    "timer_unknown_breaks_segment": true,
+    "same_source_countdown_or_confirmed_phase_reset_required": true,
+    "camera_NCC": 0.9,
+    "minimum_camera_witnesses": 3,
+    "minimum_spatial_rows": 2,
+    "minimum_spatial_columns": 2,
+    "unknown_does_not_authorize_player_facts": true,
+    "default_profiles_changed": false
+  },
+  "qualification": {
+    "training_only": true,
+    "fresh_holdout_run": false,
+    "negative_qualification_complete": false,
+    "runtime_report_created": false,
+    "profile_adopted": false,
+    "global_boundary_acceptance_verified": false
+  },
+  "tests": {
+    "related_tests": 168,
+    "wall_clock_sec": 21.91,
+    "ruff": "PASS",
+    "mypy": "PASS, 100 source files",
+    "diff_check": "PASS",
+    "targeted_sampled_full": "not newly run for this composite candidate",
+    "full_regression": "not run",
+    "windows": "unverified"
+  },
+  "comparison": {
+    "previous": "no production source-continuity producer; flow alone insufficient",
+    "current": "opt-in composite producer implemented, inactive without qualified report",
+    "canonical_previous": {
+      "PASS": 23,
+      "FAIL": 55,
+      "NE": 4
+    },
+    "canonical_current": null,
+    "canonical_delta": null
+  },
+  "remaining_blockers": [
+    "fresh frame-disjoint continuity holdout and independently reviewed negative controls",
+    "natural timer-absent ROI qualification",
+    "real code/profile-bound global report",
+    "same-segment R1 end score/result evidence",
+    "continuous boundary/sample/full acceptance"
+  ],
+  "simulation_limitations": [
+    "test-only qualification dataclass, never installed beside a runtime profile or passed to production analyzer",
+    "reference-coordinate geometry assumption, no independent geometry qualification",
+    "phase outputs reused from previous calibrated replay, not new holdout",
+    "no global lifecycle events evaluated in this simulation",
+    "previous timer candidate freeze binds older code; historical holdout outputs are not a current composite qualification"
+  ]
+}

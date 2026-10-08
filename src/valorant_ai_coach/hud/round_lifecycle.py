@@ -17,6 +17,7 @@ LifecycleState = Literal[
 ]
 MAX_SAMPLE_GAP_SEC = 1.0
 MIN_START_CONFIRMATION_SEC = 0.05
+SEMANTIC_PHASE_CONFIDENCE_KEY = "center_phase_banner_semantic_text"
 
 
 def confidence(observation: Mapping[str, Any]) -> float:
@@ -24,6 +25,32 @@ def confidence(observation: Mapping[str, Any]) -> float:
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         return 0.0
     return float(value) if math.isfinite(value) and 0 <= value <= 1 else 0.0
+
+
+def preparation_confidence(observation: Mapping[str, Any]) -> float:
+    """Use qualified global phase confidence only for preparation evidence.
+
+    The producer's ROI confidence is emitted after semantic-text temporal
+    corroboration. It never establishes current player identity or an active
+    round, and the legacy HUD confidence path remains unchanged.
+    """
+    score = confidence(observation)
+    values = observation.get("values", {})
+    flags = observation.get("state_flags", ())
+    quality = observation.get("quality", {})
+    roi = quality.get("roi_confidence", {}) if isinstance(quality, Mapping) else {}
+    value = roi.get(SEMANTIC_PHASE_CONFIDENCE_KEY) if isinstance(roi, Mapping) else None
+    if (
+        "buy_phase_banner" in flags
+        and isinstance(values, Mapping)
+        and values.get("buy_phase_visible") is True
+        and isinstance(value, (int, float))
+        and not isinstance(value, bool)
+        and math.isfinite(value)
+        and 0.90 <= value <= 1.0
+    ):
+        return max(score, float(value))
+    return score
 
 
 def is_discontinuous(
@@ -91,7 +118,7 @@ class RoundLifecycle:
         flags = set(current.get("state_flags", ()))
         phase = "buy_phase_banner" in flags
         menu = current.get("primary_state") == "buy_menu_open"
-        trustworthy_preparation = score >= 0.65 and (phase or menu)
+        trustworthy_preparation = preparation_confidence(current) >= 0.65 and (phase or menu)
 
         if self._candidate is not None and self._candidate.kind == "round_start":
             value = current.get("values", {}).get("round_time_remaining_sec")
@@ -144,7 +171,7 @@ class RoundLifecycle:
             }
             and previous is not None
         ):
-            prior_score = confidence(previous)
+            prior_score = preparation_confidence(previous)
             if min(score, prior_score) >= 0.65:
                 timer = current.get("values", {}).get("round_time_remaining_sec")
                 self._start_timer = float(timer)
@@ -154,6 +181,13 @@ class RoundLifecycle:
                     min(score, prior_score),
                     [float(previous["time_sec"]), timestamp],
                     ["buy_to_live", "timer_reset"],
+                )
+                provenance = self._candidate.attributes["evidence_provenance"]
+                provenance["preparation_confidence"] = prior_score
+                provenance["preparation_confidence_source"] = (
+                    SEMANTIC_PHASE_CONFIDENCE_KEY
+                    if prior_score > confidence(previous)
+                    else "hud_confidence"
                 )
 
         if end_candidate and self.state not in {"round_ended", "next_round_preparation"}:

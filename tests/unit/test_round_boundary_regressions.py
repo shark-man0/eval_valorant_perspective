@@ -85,6 +85,14 @@ def test_global_phase_can_associate_preparation_without_inventing_player_identit
     assert phase["values"]["player_specific_hud_valid"] is False
     assert phase["values"]["hp"] is None
     assert phase["primary_state"] == "unknown"
+    # Global preparation evidence alone cannot establish a real round start or
+    # extend an unbounded fragment into a presumed round.
+    partial = build([phase, active, observation(3)], [])
+    assert partial[0]["round_window"]["start_sec"] == 2
+    assert not any(
+        event["type"] in {"round_start", "round_end"}
+        for package in partial for event in package["events"]
+    )
     phase["quality"]["roi_confidence"]["center_phase_banner_semantic_text"] = 0.89
     assert not make_builder()._is_preparation_observation(phase)
     phase["quality"]["roi_confidence"]["center_phase_banner_semantic_text"] = 0.94

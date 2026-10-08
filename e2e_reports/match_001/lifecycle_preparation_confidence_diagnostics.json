@@ -1,0 +1,270 @@
+{
+  "schema_version": "1.0",
+  "scope": "production preparation confidence contract and source-window state diagnostics; not full lifecycle acceptance",
+  "head_commit": "9bb50abd463ab0ef41fb35c59dbe0d7679a64082",
+  "working_tree_is_dirty": true,
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "raw_processing_sha256": "e0c3b9667b15aee9e6802e1b1b58aa61c916ee50b21ca4b00fd94cb2ea6a7152",
+  "profile_fingerprint": "1712eb642d82a82eede1c32e155e03ee7c75804e3a5670f8c6b0c0a14f20690e",
+  "native_diagnostic": {
+    "path": "outputs/recognition-investigation/phase-evidence/structural-text/native-lifecycle-state-contract-v2.json",
+    "sha256": "d489c2a54bd5cc728f6825ba28277beb52283bf51dd5e78588bef61e20fd441d",
+    "wall_clock_sec": 48.959458138997434,
+    "previous_comparable_state_diagnostic": null,
+    "runtime_delta": null,
+    "windows": [
+      {
+        "window_sec": [
+          3.8,
+          4.25
+        ],
+        "processed_frames": 12,
+        "state_counts": {
+          "unknown": 12
+        },
+        "state_flag_counts": {
+          "buy_phase_banner": 6
+        },
+        "input_counts": {
+          "buy_phase_template": 9,
+          "semantic_buy_phase_confirmed": 6,
+          "round_end_template": 0,
+          "both_scores_known": 0,
+          "numeric_timer_known": 0
+        },
+        "hud_events": [],
+        "native_package_diagnostics": [],
+        "native_package_build_error": "信頼できるラウンド区間を検出できませんでした。HUD校正と録画範囲を確認してください",
+        "lifecycle_states": {
+          "unobserved": 3,
+          "pre_round": 9
+        },
+        "first_pre_round": {
+          "frame_index": 6,
+          "time_sec": 3.902669,
+          "state": "pre_round",
+          "hud_confidence": 0.0,
+          "preparation_confidence": 0.9821759696365082,
+          "start_candidate": false,
+          "end_candidate": false
+        }
+      },
+      {
+        "window_sec": [
+          111.25,
+          111.6
+        ],
+        "processed_frames": 6,
+        "state_counts": {
+          "unknown": 6
+        },
+        "state_flag_counts": {
+          "buy_phase_banner": 2
+        },
+        "input_counts": {
+          "buy_phase_template": 3,
+          "semantic_buy_phase_confirmed": 2,
+          "round_end_template": 0,
+          "both_scores_known": 0,
+          "numeric_timer_known": 0
+        },
+        "hud_events": [],
+        "native_package_diagnostics": [],
+        "native_package_build_error": "信頼できるラウンド区間を検出できませんでした。HUD校正と録画範囲を確認してください",
+        "lifecycle_states": {
+          "unobserved": 1,
+          "pre_round": 5
+        },
+        "first_pre_round": {
+          "frame_index": 4,
+          "time_sec": 111.352669,
+          "state": "pre_round",
+          "hud_confidence": 0.0,
+          "preparation_confidence": 0.9531418110102443,
+          "start_candidate": false,
+          "end_candidate": false
+        }
+      }
+    ]
+  },
+  "partial_e2e_runs": [
+    {
+      "path": "outputs/recognition-investigation/phase-evidence/targeted-lifecycle-phase-contract",
+      "mode": "targeted",
+      "processed_frames": 7,
+      "frames_per_sec": 0.09099959532714218,
+      "counts": {
+        "passed": 0,
+        "failed": 5,
+        "not_evaluated": 2
+      },
+      "wall_clock_sec": 76.92341899801977,
+      "comparison": {
+        "comparable": true,
+        "reason": null,
+        "deltas": {
+          "wall_sec": {
+            "current": 76.92341899801977,
+            "previous": 76.88620723198983,
+            "delta": 0.03721176602994092,
+            "percent_change": 0.048398493526493426
+          },
+          "evaluation_pass": {
+            "current": 0.0,
+            "previous": 0.0,
+            "delta": 0.0,
+            "percent_change": null
+          },
+          "failed": {
+            "current": 5.0,
+            "previous": 5.0,
+            "delta": 0.0,
+            "percent_change": 0.0
+          },
+          "not_evaluated": {
+            "current": 2.0,
+            "previous": 2.0,
+            "delta": 0.0,
+            "percent_change": 0.0
+          },
+          "passed": {
+            "current": 0.0,
+            "previous": 0.0,
+            "delta": 0.0,
+            "percent_change": null
+          },
+          "schema_valid": {
+            "current": 0.0,
+            "previous": 0.0,
+            "delta": 0.0,
+            "percent_change": null
+          },
+          "state_unknown": {
+            "current": 7.0,
+            "previous": 7.0,
+            "delta": 0.0,
+            "percent_change": 0.0
+          }
+        }
+      },
+      "failure_set_unchanged": true,
+      "terminal_hash_checks": {
+        "raw_processing.json": true,
+        "e2e_trace.json": true,
+        "evaluation_report.json": true
+      },
+      "full_validation_pack_evaluated": false,
+      "temporal_assertions_evaluated": false,
+      "scope": "fixed isolated frame E2E, completed with existing assertion failures; optional state sink was added afterward and tested for event-output invariance"
+    },
+    {
+      "path": "outputs/recognition-investigation/phase-evidence/sampled-lifecycle-phase-contract",
+      "mode": "sampled",
+      "processed_frames": 30,
+      "frames_per_sec": 0.10452277302260057,
+      "counts": {
+        "passed": 7,
+        "failed": 12,
+        "not_evaluated": 11
+      },
+      "wall_clock_sec": 287.0187915270217,
+      "comparison": {
+        "comparable": true,
+        "reason": null,
+        "deltas": {
+          "wall_sec": {
+            "current": 287.0187915270217,
+            "previous": 285.1229574480094,
+            "delta": 1.8958340790122747,
+            "percent_change": 0.6649180746373149
+          },
+          "evaluation_pass": {
+            "current": 0.0,
+            "previous": 0.0,
+            "delta": 0.0,
+            "percent_change": null
+          },
+          "failed": {
+            "current": 12.0,
+            "previous": 12.0,
+            "delta": 0.0,
+            "percent_change": 0.0
+          },
+          "not_evaluated": {
+            "current": 11.0,
+            "previous": 11.0,
+            "delta": 0.0,
+            "percent_change": 0.0
+          },
+          "passed": {
+            "current": 7.0,
+            "previous": 7.0,
+            "delta": 0.0,
+            "percent_change": 0.0
+          },
+          "schema_valid": {
+            "current": 0.0,
+            "previous": 0.0,
+            "delta": 0.0,
+            "percent_change": null
+          },
+          "state_buy_menu_open": {
+            "current": 2.0,
+            "previous": 2.0,
+            "delta": 0.0,
+            "percent_change": 0.0
+          },
+          "state_live_first_person": {
+            "current": 3.0,
+            "previous": 3.0,
+            "delta": 0.0,
+            "percent_change": 0.0
+          },
+          "state_spectator_first_person": {
+            "current": 5.0,
+            "previous": 5.0,
+            "delta": 0.0,
+            "percent_change": 0.0
+          },
+          "state_unknown": {
+            "current": 20.0,
+            "previous": 20.0,
+            "delta": 0.0,
+            "percent_change": 0.0
+          }
+        }
+      },
+      "failure_set_unchanged": true,
+      "terminal_hash_checks": {
+        "raw_processing.json": true,
+        "e2e_trace.json": true,
+        "evaluation_report.json": true
+      },
+      "full_validation_pack_evaluated": false,
+      "temporal_assertions_evaluated": false,
+      "scope": "fixed isolated frame E2E, completed with existing assertion failures; optional state sink was added afterward and tested for event-output invariance"
+    }
+  ],
+  "verification": {
+    "related_tests_before_optional_state_sink": "143 passed in 38.45 sec",
+    "state_sink_and_runtime_tests": "34 passed in 7.10 sec",
+    "ruff": "PASS src tests scripts/e2e scripts/diagnostics",
+    "mypy": "PASS 98 source files",
+    "full_regression": "not run; real boundary acceptance gates unmet"
+  },
+  "canonical_previous": {
+    "PASS": 23,
+    "FAIL": 55,
+    "NE": 4
+  },
+  "canonical_current": null,
+  "canonical_delta": null,
+  "newly_passing_canonical_assertions": [],
+  "remaining_blockers": [
+    "accepted current-frame phase and active timers for genuine reset",
+    "qualified active live identity at boundary",
+    "source-backed end evidence within its acceptance window",
+    "image-based discontinuity producer; explicit reset consumption is not real cut detection"
+  ],
+  "safety": "NCC .90, current live confidence .65, timer reset >3 and later accepted-timer corroboration unchanged; no phase-only boundary or ownership attribution"
+}

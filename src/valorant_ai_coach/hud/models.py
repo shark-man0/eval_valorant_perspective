@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+import re
 from dataclasses import dataclass, field
 from typing import Any, Literal
 
@@ -228,6 +229,37 @@ def accept_hud_value(value: Any, confidence: float, *, cross_checked: bool = Fal
     return value
 
 
+def timer_display_evidence(values: dict[str, Any]) -> dict[str, Any] | None:
+    """Validate source-preserved timer text; never format a numeric timer."""
+    text = values.get("round_time_remaining_display")
+    proof = values.get("round_time_remaining_display_provenance")
+    if text is None and proof is None:
+        return None
+    seconds = values.get("round_time_remaining_sec")
+    if not isinstance(text, str) or re.fullmatch(r"[0-9]{1,2}:[0-5][0-9]", text) is None:
+        raise ValueError("timer display must be source-preserved MM:SS text")
+    minutes, remainder = (int(part) for part in text.split(":"))
+    if (
+        isinstance(seconds, bool) or not isinstance(seconds, (int, float))
+        or not math.isfinite(seconds) or seconds != minutes * 60 + remainder
+    ):
+        raise ValueError("timer display and accepted seconds disagree")
+    if (
+        not isinstance(proof, dict)
+        or set(proof) != {"reader", "sources", "confidence", "cross_checked"}
+        or proof["reader"] != "round_timer"
+        or not isinstance(proof["sources"], list) or not proof["sources"]
+        or not all(isinstance(source, str) and source.strip() for source in proof["sources"])
+        or not isinstance(proof["cross_checked"], bool)
+        or isinstance(proof["confidence"], bool)
+        or not isinstance(proof["confidence"], (int, float))
+    ):
+        raise ValueError("timer display requires reader provenance")
+    if accept_hud_value(text, proof["confidence"], cross_checked=proof["cross_checked"]) is None:
+        raise ValueError("timer display reader confidence is not accepted")
+    return {"display": text, "provenance": _copy_json_value(proof)}
+
+
 def _validate_values(values: dict[str, Any]) -> None:
     required = {
         "round_time_remaining_sec",
@@ -251,6 +283,8 @@ def _validate_values(values: dict[str, Any]) -> None:
         "round_end_text",
         "zone_id",
         "player_specific_hud_valid",
+        "round_time_remaining_display",
+        "round_time_remaining_display_provenance",
     }
     if required - set(values) or set(values) - allowed:
         raise ValueError("valuesがHUD Observation v2スキーマと一致しません")
@@ -272,6 +306,7 @@ def _validate_values(values: dict[str, Any]) -> None:
     if len(values["ability_slots"]) > 4:
         raise ValueError("ability_slotsは最大4件です")
     _optional_number(values["round_time_remaining_sec"], minimum=0)
+    timer_display_evidence(values)
     for key in ("score_ally", "score_enemy"):
         _optional_int(values[key], minimum=0)
     for key in ("ally_alive", "enemy_alive"):

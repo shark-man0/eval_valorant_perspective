@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "scope": "training-supported opt-in timer representation and frozen same-video source-field validation; not adoption or canonical E2E",
+  "git_head": "9bb50abd463ab0ef41fb35c59dbe0d7679a64082",
+  "target_root_cause": "qualified global lifecycle timer input; round package scope upstream",
+  "target_assertion_ids": [
+    "GT-R1-ROUND-START",
+    "GT-R1-ROUND-END",
+    "GT-R2-ROUND-START",
+    "event_count_constraints-000",
+    "event_count_constraints-002",
+    "event_count_constraints-004",
+    "ordering_constraints-001"
+  ],
+  "candidate": {
+    "scope": "training-only candidate freeze before fresh holdout selection/predictions; not adopted",
+    "profile_path": "outputs/hud_profiles/round-global-timer-glyph-20261008/hud_layout.json",
+    "profile_fingerprint": "8b5955f1d7de7139949815a7853260b9a66b6fd48140b64351030a6e78e9a5db",
+    "recognizer_fingerprint": "0c22b76dddd7b322fc92e93862cf4a18e9f0e0cccb2027155f6c71be7b5a634d",
+    "training_report_sha256": "9b3409179cd84bd47ad2d9f778195421f5818032a3e18eb311a3e1780eb0a46c",
+    "NCC_threshold": 0.9,
+    "class_margin": 0.04,
+    "comparison_preprocessing": "gaussian3x3_v1",
+    "full_alphabet_training_support": true,
+    "holdout_predictions_made": false,
+    "global_qualification_report_created": false,
+    "profile_adopted": false,
+    "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "reader_loaded": "SubregionReader"
+  },
+  "rejected_raw_glyph_seven_hypothesis": {
+    "training_frames": 10,
+    "maximum_support": 7,
+    "required_support_fraction": 0.8,
+    "eligible_references": 0
+  },
+  "training_summary": {
+    "classes_supported": 10,
+    "minimum_support_frames": 3,
+    "minimum_support_fraction": 0.8,
+    "correct_glyphs": 153,
+    "unknown_glyphs": 1,
+    "wrong_glyphs": 0,
+    "note": "training only; correlated additional seven frames do not prove temporal or independent-video generalization"
+  },
+  "fresh_same_video_frame_holdout": {
+    "selected_frames": 32,
+    "correct": 25,
+    "unknown": 7,
+    "wrong": 0,
+    "wall_clock_sec": 0.9670873940049205,
+    "excluded_prior_pts": 1676,
+    "exclusion_radius_sec": 0.12,
+    "review": "manual source crop labels frozen before any predictions; 32 uniform-rank source frames selected after candidate freeze",
+    "limitations": [
+      "same video, not independent-video coverage",
+      "prior cached JPEG decode, reference-coordinate crop; no calibrated analyzer evaluation",
+      "no temporal validation",
+      "milliseconds in source cached filenames are rounded"
+    ]
+  },
+  "source_field_type_controls": {
+    "frames": 8,
+    "false_positives": 0,
+    "limitations": [
+      "score-adjacent or HP-adjacent fields, not natural timer-absent canonical ROI",
+      "not proven disjoint from all historical reviews"
+    ]
+  },
+  "previously_reviewed_error_controls": {
+    "correct": 0,
+    "unknown": 4,
+    "wrong": 0
+  },
+  "control_wall_clock_sec": 0.35585053198155947,
+  "qualification": {
+    "global_manifest_created": false,
+    "profile_adopted": false,
+    "independent_continuity_producer_qualified": false,
+    "real_round_boundaries_verified": false
+  },
+  "canonical_comparison": {
+    "previous": {
+      "PASS": 23,
+      "FAIL": 55,
+      "NE": 4
+    },
+    "current": "not rerun; latest accepted baseline unchanged",
+    "delta": "unmeasured, no gain claimed"
+  },
+  "verification": {
+    "related_unit_tests": 146,
+    "ruff": "PASS",
+    "mypy": "PASS (99 source files)",
+    "git_diff_check": "PASS",
+    "source_video_sha256_verified_after": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "full_regression": "not run",
+    "targeted": "not run for this timer candidate",
+    "sampled": "not run for this timer candidate",
+    "full_e2e": "not run; qualification/continuity/three-boundary gates incomplete",
+    "windows": "unverified"
+  },
+  "remaining_blockers": [
+    "natural timer-absent full-frame negative qualification",
+    "calibrated production analyzer and continuous boundary validation",
+    "qualified source continuity producer",
+    "qualified same-segment round result/score input for R1 end",
+    "sampled safety and canonical full E2E"
+  ],
+  "artifact_hashes": {
+    "outputs/recognition-investigation/timer-seven-support/candidate-freeze.json": "b7ac029df2b565d7f4164eb8ddf3a91f539bbed39ed599b277e58ca0f3270a5a",
+    "outputs/recognition-investigation/timer-seven-support/training-selection.json": "0c9128bec2e50b552b6af0bc55c75dd3766c5d704f168ac7d14baa8672e6d481",
+    "outputs/recognition-investigation/timer-seven-support/training-labels.json": "98574a6ab72991b89fc8539254d503e10273c1060a43520e7339380c07fae42a",
+    "outputs/recognition-investigation/timer-seven-support/training-support.json": "b80122ffa59dd8a73ddbde6d7320f083a7bc76c72b336886c4a9895d3850f543",
+    "outputs/recognition-investigation/timer-seven-support/blur-alphabet-training.json": "9b3409179cd84bd47ad2d9f778195421f5818032a3e18eb311a3e1780eb0a46c",
+    "outputs/recognition-investigation/timer-gaussian-fresh-holdout/selection.json": "4311f0a51b5de242ff19364e6545b0d97a11869df533c0c71c3818653b0cfd00",
+    "outputs/recognition-investigation/timer-gaussian-fresh-holdout/blind-labels.json": "f4f2f8fad63d5aa1528bc023f4d235b167cede20fbad7b25d85f1d168d9826d0",
+    "outputs/recognition-investigation/timer-gaussian-fresh-holdout/reader-results.json": "4fabaca01fdc5414f55e116776e911e2f76339903a33e6806938fed3e8dd0c5b",
+    "outputs/recognition-investigation/timer-gaussian-fresh-holdout/negative-selection.json": "3cde9ce4809eaa80c383765dddba718b0cd2de33d207e36b8bd71809f225bcdb",
+    "outputs/recognition-investigation/timer-gaussian-fresh-holdout/negative-labels.json": "795e3f4bea3bbd10e55d1025f0a22ae67c8d411486a99e210479b46952227236",
+    "outputs/recognition-investigation/timer-gaussian-fresh-holdout/known-error-selection.json": "820720ea2109caf131ca2b74a3fdb8de83731c9df87ce3ed261427204d12fcd3",
+    "outputs/recognition-investigation/timer-gaussian-fresh-holdout/known-error-labels.json": "84a268c4a8cc970dd8fb59e0c32bcee26321f8937632e5dfb5e9db3da95210d0",
+    "outputs/recognition-investigation/timer-gaussian-fresh-holdout/controls-results.json": "58d32f4241fdc299f29408ccf26468153e6e6dac6bc5e14b976dd00a3ec142f6"
+  }
+}

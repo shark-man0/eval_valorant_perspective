@@ -17,6 +17,7 @@ from valorant_ai_coach.video.sampling import HudFrameSampler
 
 from .classifier import HudStateClassifier
 from .diagnostics import CalibrationTelemetry
+from .global_lifecycle import GlobalLifecycleQualification
 from .identity import live_identity
 from .layout import CalibrationResult, HudLayout, NormalizedRoi
 from .models import HudObservationV2, accept_hud_value, empty_hud_values
@@ -30,6 +31,7 @@ from .readers import (
 )
 from .semantic_text import CONFIDENCE_KEY as PHASE_TEXT_CONFIDENCE_KEY
 from .semantic_text import SemanticPhaseContext
+from .source_continuity import CompositeSourceContinuity
 from .templates import (
     DEFAULT_DIGIT_OCR_ROIS,
     HudTemplateProfile,
@@ -165,6 +167,8 @@ class RealHudAnalyzer:
         readers: Mapping[str, HudReader[Any]] | None = None,
         template_profile_path: Path | None = None,
         diagnostic_sink: Callable[[dict[str, Any]], None] | None = None,
+        lifecycle_diagnostic_sink: Callable[[dict[str, Any]], None] | None = None,
+        global_qualification_path: Path | None = None,
     ) -> None:
         self.layout_path = Path(layout_path)
         self.layout = HudLayout.load(self.layout_path)
@@ -195,16 +199,42 @@ class RealHudAnalyzer:
         self.feature_reader = OpenCvHudFeatureReader(self.layout)
         self.state_classifier = HudStateClassifier()
         self.diagnostic_sink = diagnostic_sink
+        self.lifecycle_diagnostic_sink = lifecycle_diagnostic_sink
+        self.global_qualification_path = global_qualification_path or self.layout_path.with_name(
+            f"{self.layout_path.stem}.global_qualification.json"
+        )
+        self.global_qualification: GlobalLifecycleQualification | None = None
+        if self.global_qualification_path.exists():
+            try:
+                if readers or ocr_reader is not None:
+                    raise ValueError("Injected readers cannot inherit profile qualification")
+                self.global_qualification = GlobalLifecycleQualification.load(
+                    self.global_qualification_path, self._base_fingerprint()
+                )
+            except (OSError, ValueError) as exc:
+                self.profile_diagnostics.append(f"global lifecycle qualification: {exc}")
 
     def fingerprint(self) -> str:
         """Hash the layout, selected profile, and all referenced template bytes."""
 
-        if self.template_profile is not None:
-            return self.template_profile.fingerprint(self.layout_path)
-        digest = hashlib.sha256(self.layout_path.read_bytes())
-        if self.template_profile_path.exists():
-            digest.update(self.template_profile_path.read_bytes())
+        base = self._base_fingerprint()
+        path = getattr(self, "global_qualification_path", None)
+        if path is None or not path.exists():
+            return base
+        digest = hashlib.sha256(base.encode("ascii"))
+        digest.update(path.read_bytes())
         return digest.hexdigest()
+
+    def _base_fingerprint(self) -> str:
+
+        if self.template_profile is not None:
+            base = self.template_profile.fingerprint(self.layout_path)
+        else:
+            base_digest = hashlib.sha256(self.layout_path.read_bytes())
+            if self.template_profile_path.exists():
+                base_digest.update(self.template_profile_path.read_bytes())
+            base = base_digest.hexdigest()
+        return base
 
     def analyze(
         self,
@@ -248,6 +278,10 @@ class RealHudAnalyzer:
         if additional_signals is not None and len(additional_signals) != len(frames):
             raise ValueError("additional_signalsの件数はframesと一致する必要があります")
         telemetry = CalibrationTelemetry(self.template_profile, self.layout)
+        global_continuity = (
+            CompositeSourceContinuity(self.global_qualification)
+            if self.global_qualification is not None else None
+        )
         self.last_calibration_diagnostics = telemetry.snapshot()
         if not frames:
             calibration = CalibrationResult(
@@ -339,6 +373,17 @@ class RealHudAnalyzer:
 
         current_anchors = detected_anchors or {}
         current_calibration = calibration
+        roster_cut_indices = frozenset(
+            position for position, feature in enumerate(features)
+            if any(
+                feature.signals.get(marker) is True
+                or (
+                    additional_signals is not None
+                    and additional_signals[position].get(marker) is True
+                )
+                for marker in ("content_jump", "discontinuity")
+            )
+        )
         for index, (frame, feature) in enumerate(zip(frames, features, strict=True)):
             if cancel_event is not None and cancel_event.is_set():
                 raise InterruptedError("HUD frame analysis was cancelled")
@@ -376,6 +421,17 @@ class RealHudAnalyzer:
                 )
             signals["template_anchor_scores"] = dict(anchor_scores)
             supplemental = {} if additional_signals is None else dict(additional_signals[index])
+            if self.global_qualification is not None:
+                # Qualification binds the profile's source producers. External
+                # diagnostics may report cuts, but cannot replace qualified
+                # phase/result measurements or supply their provenance.
+                supplemental = {
+                    key: value for key, value in supplemental.items()
+                    if not key.startswith((
+                        "global_", "semantic_buy_phase_", "buy_phase_template",
+                        "round_end_template",
+                    ))
+                }
             signals.update(supplemental)
             signals.update(
                 semantic_phase.advance(
@@ -399,7 +455,9 @@ class RealHudAnalyzer:
                         raw_accepted_reader_values,
                     )
                 for side, key in (("ally", "ally_alive"), ("enemy", "enemy_alive")):
-                    debounced = _debounced_roster_count(features, index, side)
+                    debounced = _debounced_roster_count(
+                        features, index, side, source_cut_indices=roster_cut_indices
+                    )
                     if debounced is not None and f"{side}_roster" not in self.readers:
                         values[key], confidence = debounced
                         reader_confidence[f"{side}_roster"] = confidence
@@ -539,6 +597,11 @@ class RealHudAnalyzer:
                 quality["roi_confidence"][PHASE_TEXT_CONFIDENCE_KEY] = signals[
                     "semantic_buy_phase_confidence"
                 ]
+            if self.global_qualification is not None:
+                for side in ("ally", "enemy"):
+                    quality["roi_confidence"][f"{side}_score_value"] = reader_confidence.get(
+                        f"{side}_score", 0.0
+                    ) if type(values.get(f"score_{side}")) is int else 0.0
             observation = HudObservationV2(
                 time_sec=time_sec,
                 frame_index=index,
@@ -565,6 +628,20 @@ class RealHudAnalyzer:
                 "enemy_alive_confidence": reader_confidence.get("enemy_roster", 0.0),
                 "player_specific_hud_valid": values["player_specific_hud_valid"],
             }
+            if self.global_qualification is not None:
+                # External signal tokens cannot attest source continuity. This
+                # opt-in producer uses actual camera pixels and accepted inputs.
+                assert global_continuity is not None
+                row_evidence["global_continuity"] = global_continuity.advance(
+                    image, observations[-1], row_evidence,
+                    geometry_valid=calibration.calibrated,
+                )
+                row_evidence["global_round_result_present"] = signals.get(
+                    "round_end_template"
+                ) is True
+                row_evidence["global_round_result_confidence"] = signals.get(
+                    "round_end_template_confidence", 0.0
+                )
             if classified.primary_state == "spectator_first_person":
                 row_evidence["spectator_transition"] = (
                     index > 0 and observations[index - 1]["primary_state"] == "live_first_person"
@@ -580,11 +657,19 @@ class RealHudAnalyzer:
                         status_confidence=classified.flag_confidence[flag],
                         status_cross_checked=True,
                     )
-            evidence_by_frame[index] = {**row_evidence, **supplemental}
+            # In the qualified route, all allowed supplemental signals already
+            # entered signals above. Reapplying them here would overwrite the
+            # source continuity proof and measured reader confidence.
+            evidence_by_frame[index] = (
+                row_evidence if self.global_qualification is not None
+                else {**row_evidence, **supplemental}
+            )
 
         with timing_stage("hud_event_detection"):
             hud_events = HudDirectEventBuilder().build(
-                observations, evidence_by_frame=evidence_by_frame
+                observations, evidence_by_frame=evidence_by_frame,
+                lifecycle_sink=self.lifecycle_diagnostic_sink,
+                global_qualification=self.global_qualification,
             )
         change_times = set(_observation_change_times(observations, evidence_by_frame))
         change_times.update(float(event["time_sec"]) for event in hud_events)
@@ -648,6 +733,19 @@ class RealHudAnalyzer:
                         continue
                     values[target] = normalized
                     reader_confidence[region_name] = min(1.0, max(0.0, result.confidence))
+                    if (
+                        value_kind == "timer" and isinstance(accepted, str) and result.sources
+                        and all(
+                            isinstance(source, str) and source.strip() for source in result.sources
+                        )
+                    ):
+                        values["round_time_remaining_display"] = accepted.strip()
+                        values["round_time_remaining_display_provenance"] = {
+                            "reader": region_name,
+                            "sources": list(result.sources),
+                            "confidence": result.confidence,
+                            "cross_checked": result.cross_checked,
+                        }
             except (AttributeError, TypeError, ValueError, KeyError) as exc:
                 diagnostics.append(f"reader {region_name}: {exc}")
 
@@ -883,7 +981,8 @@ def _observation_change_times(
 
 
 def _debounced_roster_count(
-    features: Sequence[FrameFeatureObservation], index: int, side: str
+    features: Sequence[FrameFeatureObservation], index: int, side: str,
+    *, source_cut_indices: frozenset[int] = frozenset(),
 ) -> tuple[int, float] | None:
     """Require two adjacent agreeing roster reads; ambiguity stays unknown."""
 
@@ -902,8 +1001,17 @@ def _debounced_roster_count(
     for neighbor in (index - 1, index + 1):
         if not 0 <= neighbor < len(features):
             continue
-        time, other_time = features[index].time_sec, features[neighbor].time_sec
-        if time is None or other_time is None or abs(time - other_time) > 1.0:
+        earlier, later = sorted((index, neighbor))
+        first_time, second_time = features[earlier].time_sec, features[later].time_sec
+        if (
+            first_time is None or second_time is None
+            or type(first_time) not in (int, float) or type(second_time) not in (int, float)
+            or not math.isfinite(first_time) or not math.isfinite(second_time)
+            or not 0 < second_time - first_time <= 1.0
+            or later in source_cut_indices
+            or any(features[later].signals.get(marker) is True
+                   for marker in ("content_jump", "discontinuity"))
+        ):
             continue
         other = candidate(neighbor)
         if other is not None and other[0] == current[0]:

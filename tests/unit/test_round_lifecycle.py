@@ -6,6 +6,7 @@ import pytest
 from tests.e2e.trace_adapter import to_e2e_trace
 from valorant_ai_coach.events import EventSourceContract
 from valorant_ai_coach.hud.models import HudObservationV2, empty_hud_quality, empty_hud_values
+from valorant_ai_coach.hud.round_lifecycle import RoundLifecycle
 from valorant_ai_coach.hud.temporal import HudDirectEventBuilder
 from valorant_ai_coach.resources import resource_path
 from valorant_ai_coach.rounds import RoundPackageBuilder
@@ -40,6 +41,83 @@ def boundaries(samples, evidence=None):
         for e in HudDirectEventBuilder().build(samples, evidence_by_frame=evidence)
         if e["type"] in {"round_start", "round_end"}
     ]
+
+
+def global_phase(index=0, time=0, *, timer=0):
+    observation = sample(index, time, phase=True, timer=timer, confidence=0)
+    observation["primary_state"] = "unknown"
+    observation["view_context"]["is_player_world_view_trustworthy"] = False
+    observation["values"]["player_specific_hud_valid"] = False
+    observation["quality"]["roi_confidence"]["center_phase_banner_semantic_text"] = 0.94
+    return observation
+
+
+def test_independent_global_phase_reaches_lifecycle_without_player_confidence():
+    phase = global_phase()
+    lifecycle = RoundLifecycle()
+    assert lifecycle.advance(None, phase, {}, start_candidate=False, end_candidate=False) == ()
+    assert lifecycle.state == "pre_round"
+    events = boundaries([phase, sample(1, 0.2), sample(2, 0.4, timer=99)])
+    assert [(e["type"], e["actor"], e["time_sec"], e["confidence"]) for e in events] == [
+        ("round_start", "system", 0.2, 0.94)
+    ]
+    assert phase["primary_state"] == "unknown"
+    assert phase["quality"]["hud_confidence"] == 0
+    assert phase["values"]["player_specific_hud_valid"] is False
+    proof = events[0]["attributes"]["evidence_provenance"]
+    assert proof["preparation_confidence_source"] == "center_phase_banner_semantic_text"
+    assert proof["preparation_confidence"] == 0.94
+
+
+@pytest.mark.parametrize("bad_score", [None, True, float("nan"), 0.89, 1.01])
+def test_weak_or_invalid_global_phase_cannot_rearm_start(bad_score):
+    phase = global_phase()
+    phase["quality"]["roi_confidence"]["center_phase_banner_semantic_text"] = bad_score
+    assert not boundaries([phase, sample(1, 0.2), sample(2, 0.4)])
+
+
+@pytest.mark.parametrize("missing", ["phase_flag", "phase_visible", "phase_timer", "live", "timer"])
+def test_global_phase_does_not_replace_independent_start_inputs(missing):
+    phase = global_phase()
+    current = sample(1, 0.2)
+    if missing == "phase_flag":
+        phase["state_flags"] = []
+    elif missing == "phase_visible":
+        phase["values"]["buy_phase_visible"] = None
+    elif missing == "phase_timer":
+        phase["values"]["round_time_remaining_sec"] = None
+    elif missing == "live":
+        current["primary_state"] = "unknown"
+    else:
+        current["values"]["round_time_remaining_sec"] = None
+    assert not boundaries([phase, current, sample(2, 0.4)])
+
+
+def test_global_phase_and_unknown_timer_never_emit_boundaries():
+    phase = global_phase(timer=None)
+    next_phase = global_phase(1, 0.2, timer=None)
+    assert not boundaries([phase, next_phase, sample(2, 0.4, timer=None)])
+    assert not boundaries(
+        [global_phase(), sample(1, 0.2), sample(2, 0.4)], {2: {"content_jump": True}}
+    )
+
+
+def test_lifecycle_diagnostics_preserve_production_output():
+    samples = [global_phase(), sample(1, 0.2), sample(2, 0.4, timer=99)]
+    records = []
+    builder = HudDirectEventBuilder()
+    expected = builder.build(samples)
+    actual = builder.build(samples, lifecycle_sink=records.append)
+    assert actual == expected
+    assert [record["state"] for record in records] == [
+        "pre_round", "pre_round", "round_active"
+    ]
+    assert records[0]["hud_confidence"] == 0
+    assert records[0]["preparation_confidence"] == 0.94
+    assert records[1]["start_candidate"] is True
+    # Diagnostic records contain detached scalar data, not producer objects.
+    records[0]["state"] = "changed_in_diagnostic"
+    assert builder.build(samples) == expected
 
 
 @pytest.mark.parametrize("offset", [0, 500])

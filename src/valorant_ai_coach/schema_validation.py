@@ -153,6 +153,7 @@ class SchemaValidator:
             if not start <= float(event["time_sec"]) <= end:
                 raise ContractValidationError(f"イベントがラウンド範囲外です: {event_id}")
         for index, snapshot in enumerate(value["state_snapshots"]):
+            self._validate_timer_display(snapshot)
             snapshot_time = float(snapshot["time_sec"])
             if not math.isfinite(snapshot_time):
                 raise ContractValidationError(
@@ -206,11 +207,23 @@ class SchemaValidator:
                 raise ContractValidationError(f"frames[{index}].time_sec がラウンド範囲外です")
         return value
 
+    @staticmethod
+    def _validate_timer_display(values: dict[str, Any]) -> None:
+        if not any(key.startswith("round_time_remaining_display") for key in values):
+            return
+        from .hud.models import timer_display_evidence
+
+        try:
+            timer_display_evidence(values)
+        except ValueError as exc:
+            raise ContractValidationError(str(exc)) from exc
+
     def validate_hud_observation(self, value: dict[str, Any]) -> dict[str, Any]:
         """Validate the patch intermediate without changing Round Package v2."""
 
         self._validate_finite_numbers(value, "HUD Observation")
         self._raise_errors(self._hud_observation, value, "HUD Observation")
+        self._validate_timer_display(value["values"])
         if value["primary_state"] != "remote_control_view":
             remote_type = value["view_context"]["remote_view_type"]
             if remote_type != "none":
