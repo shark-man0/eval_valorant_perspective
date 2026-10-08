@@ -6,6 +6,8 @@ from dataclasses import dataclass
 from statistics import median
 from typing import Any
 
+from .round_lifecycle import RoundLifecycle, is_discontinuous
+
 
 @dataclass(frozen=True, slots=True)
 class KillSideAssignment:
@@ -93,7 +95,7 @@ class HudDirectEventBuilder:
         death_latched = False
         active_status: dict[str, Any] | None = None
         status_contiguous = True
-        ended_scores: set[tuple[Any, Any]] = set()
+        lifecycle = RoundLifecycle()
         for index, observation in enumerate(ordered):
             values = observation.get("values", {})
             values = values if isinstance(values, dict) else {}
@@ -101,6 +103,13 @@ class HudDirectEventBuilder:
             evidence = joined_evidence.get(frame_index, {})
             timestamp = max(0.0, float(observation.get("time_sec", 0.0)))
             confidence = _hud_confidence(observation)
+            if is_discontinuous(previous, observation, evidence):
+                previous = None
+                previous_evidence = {}
+                death_latched = False
+                active_status = None
+                status_contiguous = True
+                lifecycle.reset()
             if evidence.get("player_revived_confirmed") is True:
                 death_latched = False
             is_start = (
@@ -108,48 +117,36 @@ class HudDirectEventBuilder:
                 and _round_start_confirmed(previous, observation, evidence)
                 and min(confidence, _hud_confidence(previous)) >= 0.65
             )
-            if is_start:
-                death_latched = False
-                ended_scores.clear()
-                active_status = None
-                status_contiguous = True
             is_end = evidence.get("round_end_joined") is True or (
                 previous is not None and _round_end_confirmed(previous, observation, evidence)
             )
-            score_key = tuple(
-                evidence.get(
-                    "round_end_score", (values.get("score_ally"), values.get("score_enemy"))
-                )
-            )
-            if is_end and score_key not in ended_scores:
-                end_confidence = min(
-                    confidence, float(evidence.get("round_end_join_confidence", confidence))
-                )
-                if end_confidence >= 0.65:
-                    events.append(
-                        _event(
-                            "round_end", timestamp, "team", {}, end_confidence, cross_checked=True
-                        )
+            for boundary in lifecycle.advance(
+                previous,
+                observation,
+                evidence,
+                start_candidate=is_start,
+                end_candidate=is_end,
+            ):
+                if boundary.kind == "round_start":
+                    death_latched = False
+                    active_status = None
+                    status_contiguous = True
+                events.append(
+                    _event(
+                        boundary.kind,
+                        boundary.time_sec,
+                        "system",
+                        boundary.attributes,
+                        boundary.confidence,
+                        cross_checked=True,
                     )
-                    ended_scores.add(score_key)
+                )
 
             if previous is not None:
                 prior_values = previous.get("values", {})
                 prior_values = prior_values if isinstance(prior_values, dict) else {}
                 prior_confidence = _hud_confidence(previous)
                 event_confidence = min(confidence, prior_confidence)
-
-                if is_start:
-                    events.append(
-                        _event(
-                            "round_start",
-                            timestamp,
-                            "team",
-                            {},
-                            event_confidence,
-                            cross_checked=True,
-                        )
-                    )
 
                 if _buy_phase_confirmed(observation, evidence) and not _buy_phase_confirmed(
                     previous, previous_evidence
@@ -211,7 +208,8 @@ class HudDirectEventBuilder:
             )
             # A combat report can remain open after respawn; it is not a new death.
             death_event = (
-                None if pre_round or is_start
+                None
+                if pre_round or is_start
                 else _player_death_event(timestamp, confidence, values, evidence)
             )
             if death_event is not None and not death_latched and _event_acceptable(death_event):
@@ -322,6 +320,7 @@ class HudDirectEventBuilder:
                 continue
             event["confidence"] = confidence
             accepted.append(event)
+        accepted.sort(key=lambda event: float(event["time_sec"]))
         _ensure_unique_event_ids(accepted)
         if any(event["type"] not in allowed for event in accepted):
             raise AssertionError("HUD emitted an event outside the HUD contract")

@@ -1443,3 +1443,13 @@ E2E before/after: native targeted13 frames149.921s gives1 PASS12 FAIL0 NE; nativ
 - Tests: existing native diagnostic hook completed six isolated queries with three genuine calibration frames each. No claim about continuity/events from sparse input.
 - E2E before / after: unchanged 23 PASS / 55 FAIL / 4 NE; no additional full run.
 - Conclusion: next work must qualify phase/score/identity inputs together before boundary integration. No new recognizer candidate, guaranteed PASS gain, or adopted timer profile.
+
+
+### 2026-10-08: Round lifecycle pipeline foundation and evidence gate
+
+- Problem: 33 FAILs depend on lifecycle/package scope; reader evidence remains unqualified.
+- Evidence: 342 saved real frames over three continuous native-PTS windows, 813.722s, no phase/score/timer values or boundary events. No injected anchors/signals. R1 start/end windows entirely unknown; R2 window 34 menu /130 unknown /21 live.
+- Change: source-actor contract system for match lifecycle, start corroboration and duplicate latch, semantic end join, gap/source-marker reset, source provenance, pre/post package context and shared trace endpoint association. Recognition/profile/GT/sampler thresholds unchanged; no new OCR/spectator candidate.
+- Tests: 82 related unit/integration PASS, 1 optional fixture SKIP; Ruff and mypy PASS (97 sources). Sampled30: 7 PASS /12 FAIL /11 NE in285.415s, unchanged from326.450s baseline. Final-source archived contract replay: all82 canonical statuses unchanged23/55/4, packages/trace equal, negative20 PASS. A vacuous discontinuity check is not proof of real cut detection.
+- E2E before/after: no new full; saved-full contract comparison23/55/4→23/55/4. No newly passing assertion or accepted real boundary. Do not claim29 failures solved.
+- Conclusion: pipeline foundation is tested but real boundary acceptance is BLOCKED by missing qualified phase/numeric/identity inputs and source cut markers. Full regression/full gate stays closed. Details: docs/round_lifecycle_implementation.md and e2e_reports/match_001/round_lifecycle_diagnostics.json.

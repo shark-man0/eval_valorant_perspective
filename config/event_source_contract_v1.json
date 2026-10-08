@@ -6,11 +6,13 @@
     "round_start": {
       "primary_producer": "hud_analyzer",
       "mvp_status": "mvp_direct",
+      "allowed_actors": ["system"],
       "notes": "Generated from HUD observation timeline with stated cross-checks."
     },
     "round_end": {
       "primary_producer": "hud_analyzer",
       "mvp_status": "mvp_direct",
+      "allowed_actors": ["system"],
       "notes": "Generated from HUD observation timeline with stated cross-checks."
     },
     "state_snapshot": {

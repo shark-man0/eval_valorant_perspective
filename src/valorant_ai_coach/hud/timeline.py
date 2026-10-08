@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections.abc import Mapping, Sequence
 from typing import Any
 
+from .round_lifecycle import is_discontinuous
 from .temporal import resolve_kill_sides
 
 
@@ -45,6 +46,7 @@ def join_hud_timeline(
                 all(type(number) is int for number in (*before_score, *after_score))
                 and before_score != after_score
                 and times[i] - times[i - 1] <= round_window_sec
+                and not is_discontinuous(observations[i - 1], observations[i], proof)
             ):
                 score_changes.append(i)
         if (
@@ -77,8 +79,7 @@ def join_hud_timeline(
     banners = [
         i
         for i, item in enumerate(observations)
-        if evidence[keys[i]].get("shared_banner")
-        or evidence[keys[i]].get("round_end_template")
+        if evidence[keys[i]].get("round_end_template")
         or "round_end_banner" in item.get("state_flags", ())
     ]
     for i in range(len(observations)):
@@ -92,6 +93,10 @@ def join_hud_timeline(
             and abs(times[i] - times[change]) <= round_window_sec
             and confidences[i] >= 0.65
             and not evidence[keys[i]].get("pre_round_context")
+            and not any(
+                is_discontinuous(observations[j - 1], observations[j], evidence[keys[j]])
+                for j in range(min(i, change - 1) + 1, max(i, change) + 1)
+            )
         ]
         if not candidates:
             continue
@@ -100,6 +105,7 @@ def join_hud_timeline(
         proof = evidence[keys[chosen]]
         proof.update(
             round_end_joined=True,
+            round_end_evidence_pts=sorted({times[chosen], times[change - 1], times[change]}),
             round_end_score=(values[change].get("score_ally"), values[change].get("score_enemy")),
             round_end_join_confidence=min(
                 confidences[chosen], confidences[change], confidences[change - 1]
