@@ -11,10 +11,12 @@ DIRECTORIES = {"src", "tests", "config", "schemas", ".github", "scripts", "datas
 ROOT_EXTENSIONS = {".md", ".toml", ".ps1", ".spec", ".txt"}
 EXCLUDED_PARTS = {"__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache"}
 PRIVATE_SUFFIXES = {
+    ".7z",
     ".avi",
     ".db",
     ".db-shm",
     ".db-wal",
+    ".gz",
     ".key",
     ".log",
     ".mkv",
@@ -23,7 +25,10 @@ PRIVATE_SUFFIXES = {
     ".pem",
     ".sqlite",
     ".sqlite3",
+    ".tar",
+    ".tgz",
     ".webm",
+    ".zip",
 }
 PRIVATE_NAMES = {
     "api_key.txt",
@@ -38,7 +43,7 @@ PRIVATE_NAMES = {
 
 
 def _is_private_runtime_artifact(relative: Path) -> bool:
-    if any(part == ".env" or part.startswith(".env.") for part in relative.parts):
+    if any(part.lower() == ".env" or part.lower().startswith(".env.") for part in relative.parts):
         return True
     if relative.name.lower() in PRIVATE_NAMES:
         return True
