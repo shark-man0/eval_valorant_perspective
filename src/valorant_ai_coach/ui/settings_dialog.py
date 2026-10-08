@@ -230,7 +230,7 @@ class SettingsDialog(QDialog):
         try:
             self.backend.update_settings(values, api_key=self.api_key.text().strip() or None)
         except Exception as exc:  # Keep settings failures inside the dialog.
-            QMessageBox.critical(self, "設定を保存できません", str(exc))
+            QMessageBox.critical(self, "設定を保存できません", sanitize_text(str(exc)))
             return
         self.accept()
 
