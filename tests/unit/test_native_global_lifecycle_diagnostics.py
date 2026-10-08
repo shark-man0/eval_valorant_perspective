@@ -56,7 +56,8 @@ def test_skipped_missing_or_rebased_decoded_frames_are_rejected(actual, expected
         verify_native_frames(actual, expected, count)
 
 
-def test_real_ffmpeg_window_keeps_nonzero_origin_and_every_native_pts(tmp_path):
+@pytest.mark.parametrize("gop", [1, 12])
+def test_real_ffmpeg_window_keeps_nonzero_origin_and_every_native_pts(tmp_path, gop):
     ffmpeg, ffprobe = shutil.which("ffmpeg"), shutil.which("ffprobe")
     if ffmpeg is None or ffprobe is None:
         pytest.skip("native extraction contract requires local ffmpeg and ffprobe")
@@ -64,7 +65,8 @@ def test_real_ffmpeg_window_keeps_nonzero_origin_and_every_native_pts(tmp_path):
     subprocess.run([
         ffmpeg, "-hide_banner", "-loglevel", "error", "-f", "lavfi", "-i",
         "testsrc2=size=64x64:rate=60", "-t", "1", "-vf", "setpts=PTS+0.137/TB",
-        "-fps_mode", "passthrough", "-c:v", "mpeg4", "-threads", "1", str(video),
+        "-fps_mode", "passthrough", "-c:v", "mpeg4", "-g", str(gop),
+        "-threads", "1", str(video),
     ], check=True)
     metadata = probe_json(ffprobe, video, [
         "-show_streams", "-show_entries", "stream=time_base,r_frame_rate",

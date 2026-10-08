@@ -98,8 +98,12 @@ def extract_window(
     start: float, end: float, time_base: Fraction,
 ) -> tuple[list[Path], list[int]]:
     directory.mkdir()
+    # FFprobe can seek directly to the first frame AFTER start, especially for
+    # all-intra sources. Probe context before the window rather than assuming
+    # keyframe seeking supplies it. Keep the coverage guard and exact tick audit.
+    probe_start = max(0.0, start - 1.0)
     probe = probe_json(ffprobe, video, [
-        "-read_intervals", f"{start}%{end + 1.0}", "-show_frames",
+        "-read_intervals", f"{probe_start}%{end + 1.0}", "-show_frames",
         "-show_entries", "frame=best_effort_timestamp",
     ])
     expected = native_pts_in_window(

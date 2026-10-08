@@ -36,7 +36,7 @@ def load_method(path):
     return method
 
 
-def measure(before, after, method):
+def measure(before, after, method, *, excluded_bounds_norm=()):
     if (
         not isinstance(before, np.ndarray) or not isinstance(after, np.ndarray)
         or before.dtype != np.uint8 or after.dtype != np.uint8
@@ -52,6 +52,28 @@ def measure(before, after, method):
     )]
     mask = np.zeros((height, width), np.uint8)
     mask[y1:y2, x1:x2] = 255
+    # Keep the original feature population for an apples-to-apples exclusion
+    # comparison. Reject entire NCC footprints at BOTH endpoints, not merely
+    # points whose centers fall inside a UI ROI. Tracking is descriptive only.
+    allowed = mask.copy()
+    radius = math.ceil(method["patch_width"] / 2)
+    exclusions = []
+    for bounds in excluded_bounds_norm:
+        if (
+            len(bounds) != 4
+            or any(type(value) not in (int, float) or not math.isfinite(value)
+                   for value in bounds)
+            or not 0 <= bounds[0] < bounds[2] <= 1
+            or not 0 <= bounds[1] < bounds[3] <= 1
+        ):
+            raise ValueError("finite normalized UI exclusion rectangles required")
+        left, top, right, bottom = bounds
+        px = (max(0, math.floor(left * width) - radius),
+              max(0, math.floor(top * height) - radius),
+              min(width, math.ceil(right * width) + radius),
+              min(height, math.ceil(bottom * height) + radius))
+        allowed[px[1]:px[3], px[0]:px[2]] = 0
+        exclusions.append(list(bounds))
     delta = np.abs(gray[0][y1:y2, x1:x2].astype(float) - gray[1][y1:y2, x1:x2])
     result = {
         "source_pixels_identical": bool(np.array_equal(before, after)),
@@ -62,6 +84,13 @@ def measure(before, after, method):
         "descriptive_ncc_match_count": 0, "grid_match_counts": [0] * 9,
         "patch_ncc": {"min": None, "median": None, "max": None},
         "continuity_attested": False,
+        "excluded_bounds_norm": exclusions,
+        "excluded_ui_patch_count": 0,
+        "unexcluded_camera_pixel_count": int(np.count_nonzero(allowed)),
+        "unexcluded_camera_mean_absolute_difference": (
+            float(np.abs(gray[0].astype(float) - gray[1].astype(float))[allowed > 0].mean() / 255)
+            if np.any(allowed) else None
+        ),
     }
     p0 = cv2.goodFeaturesToTrack(gray[0], mask=mask, **method["corners"])
     if p0 is None:
@@ -89,6 +118,10 @@ def measure(before, after, method):
                for p in (initial, moved)):
             continue
         if not x1 <= moved[0] < x2 or not y1 <= moved[1] < y2:
+            continue
+        if any(allowed[math.floor(point[1]), math.floor(point[0])] == 0
+               for point in (initial, moved)):
+            result["excluded_ui_patch_count"] += 1
             continue
         patches = [cv2.getRectSubPix(image, (patch_width, patch_width), tuple(map(float, point)))
                    for image, point in zip(gray, (initial, moved), strict=True)]

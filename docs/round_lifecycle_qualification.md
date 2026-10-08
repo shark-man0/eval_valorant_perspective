@@ -738,3 +738,98 @@ and artifacts were not independently edited here.
 
 No qualification sidecar was installed, safe defaults remain unchanged, and no
 canonical full E2E was rerun. Start/end/package completion remains unproven.
+
+## Independent scene exclusion and clock-run diagnosis (2026-10-09)
+
+Added a same-population source-link diagnostic:
+`python -m scripts.diagnostics.measure_native_scene_correspondence`.
+It consumes a verified private native diagnostic and its hash-bound PNGs,
+checks the video/report/layout/method hashes before and after measurement, and
+rejects missing ROI declarations, altered images, invalid PTS or unverified
+native coverage. It reads no Validation Pack labels. It never emits runtime
+continuity, phases or boundaries.
+
+The original frozen LK / forward-backward / NCC parameters remain unchanged.
+Both raw and exclusion measurements use the **same initial corner population**.
+Configured exclusion rectangles include a conservative six-thumbnail-pixel
+halo for the 11-pixel subpixel patch. A patch must avoid these rectangles at
+both the initial and tracked endpoint. No corner-count improvement is obtained
+by reselection. Synthetic tests cover static UI, retained world texture,
+overlapping patch footprints at either endpoint, invalid geometry declarations
+and broken source manifests.
+
+Measured all 58 adjacent links in the previously frozen 60 native start frames,
+not a fresh holdout. Compare exclusion policies rather than declaring every
+discarded patch UI: a coarse configured ROI also contains world pixels.
+
+| Window | Raw NCC≥0.90 matches across all links | Phase-only exclusion | Core UI exclusions |
+| --- | ---: | ---: | ---: |
+| R1 development | 1482 | 1341 | 1117 |
+| R2 development | 2583 | 2187 | 1940 |
+
+Core exclusions are the configured phase/result banner, minimap, performance,
+chat and weapon-inventory ROIs. A separate, deliberately broader sensitivity
+measurement also excludes report, spectator and crosshair ROIs; its totals
+633/830 are not an estimate of actual UI contamination. The broad crosshair
+ROI contains substantial ordinary world area. The per-pair comparison and
+actual exclusion rectangles/hashes are retained privately.
+
+At R2 link 111.352669→111.369336, 18 raw matches shrink to six in one spatial
+cell under phase-only exclusion, and zero with core UI excluded. Those raw
+matches do not supply an independent spatially distributed scene witness.
+However, this does **not** justify relaxing scene support: in the reviewed
+content-cut control at 74.436003→74.452669, **72** core-excluded high-NCC patches
+remain across several cells (84 raw). Motion correspondence can survive an
+edit. A flow-count fallback is therefore rejected as sufficient continuity
+evidence; no runtime fallback or threshold change was installed.
+
+Extracted all 21 native PTS in 74.302669–74.636003, audited against FFprobe and
+the FFmpeg source-tick log. The first attempt failed closed because an accurate
+FFprobe seek started just after the requested left boundary, leaving no prefix
+for the independent coverage guard. The extractor now probes one second of
+context before the requested window, without changing the requested decoded
+population, source ticks or before/after coverage requirement. Real FFmpeg
+regressions exercise both all-intra and inter-frame sources with nonzero PTS
+origin. The failed attempt remains private and was not counted as complete.
+The complete control has 6 accepted timer / 15 unknown reads and zero simulated
+decisions. It is a correlated reviewed cut control, not independent holdout.
+
+Added descriptive numeric-consistency runs to distinguish accurate displayed
+text from a potential clock interpretation. They use unchanged reader confidence
+0.90, countdown physics, maximum one-second gap and the existing 50-ms duration
+floor. Unknown/weak inputs break a run; no neighbor repairs them. These runs
+**do not attest source continuity or prove clock semantics**:
+
+- R1: displayed zero has 13 samples over 200 ms; displayed 145 has two samples
+  over 16.667 ms and fails the duration floor; displayed 99 has 15 samples over
+  233.333 ms. No rule special-cases these numeric values.
+- R2: displayed zero has eight samples over 116.667 ms; the subsequent 100→99
+  sequence has 16 samples over 250 ms. Numeric consistency cannot repair the
+  missing scene-attested preparation context.
+
+This excludes the hypothesis that every correctly read transient value should
+immediately be interpreted as a stable lifecycle clock. It does not yet supply
+the qualified missing phase/clock/source transition.
+
+Private artifacts include `mac-native-scene-clock-20261009.json`,
+`mac-native-cut-scene-clock-20261009.json` and the source PNGs in
+`mac-native-cut-control-context-20261009/`; none is committed. Source SHA and
+profile are unchanged from the preceding section. Runtime recognition,
+qualification sidecars and safe default profile are unchanged.
+
+Verification: latest focused diagnostic suite **46 PASS** (including eight new
+numeric-run cases). Full regression before those eight numeric-run cases were
+added: **1511 PASS / 5 baseline FAIL / 5 SKIP**, 156.85 seconds,
+`pytest-scene-exclusion-20261009.xml`. The failures are the same independently
+reproduced upstream cases. Ruff, mypy on 101 source files and diff check pass.
+No full real-video E2E or boundary improvement is claimed.
+
+Next independently observable end candidate: the source frame showing TEAM ACE
+also changes the Combat Report from the visible `round in progress` line to
+an ability/detail report. This is a **candidate UI observation**, not a verified
+end detector or proof of semantics. Investigate explicit positive structures
+for both report states and their controls; nonmatching an in-progress template
+must not mean ended. Any result/report qualification must remain separate from
+post-cut score, broad scene correspondence and player identity. The inspected
+source frame lies in the already documented cut-uncertainty interval; no
+pre-cut continuity claim is made from visual similarity alone.
