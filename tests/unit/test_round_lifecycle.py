@@ -124,6 +124,29 @@ def test_low_confidence_confirmation_and_unknown_timer_fail_closed():
         )
 
 
+@pytest.mark.parametrize("index", [0, 1, 2])
+@pytest.mark.parametrize("field", ["score_ally", "score_enemy"])
+@pytest.mark.parametrize("value", [None, True, -1, 1.0])
+def test_start_requires_current_complete_score_evidence(index, field, value):
+    samples = [sample(0, 0, phase=True, timer=0), sample(1, .2), sample(2, .4, timer=99)]
+    samples[index]["values"][field] = value
+    assert not boundaries(samples)
+
+
+@pytest.mark.parametrize("index", [1, 2])
+def test_score_change_cannot_corrobate_start(index):
+    samples = [sample(0, 0, phase=True, timer=0), sample(1, .2), sample(2, .4, timer=99)]
+    samples[index]["values"]["score_enemy"] = 1
+    assert not boundaries(samples)
+
+
+def test_start_provenance_records_score_continuity_without_changing_identity():
+    samples = [sample(0, 0, phase=True, timer=0), sample(1, .2), sample(2, .4, timer=99)]
+    event = boundaries(samples)[0]
+    assert "score_continuity" in event["attributes"]["evidence_provenance"]["signals"]
+    assert all(row["primary_state"] == "live_first_person" for row in samples)
+
+
 def test_texture_banner_and_score_change_do_not_prove_semantic_round_end():
     samples = [sample(0, 0), sample(1, 0.2, score=1), sample(2, 0.4, score=1)]
     assert not boundaries(samples, {1: {"shared_banner": True}})
