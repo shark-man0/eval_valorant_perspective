@@ -11,6 +11,9 @@ Set-StrictMode -Version Latest
 if ([System.Environment]::OSVersion.Platform -ne [System.PlatformID]::Win32NT) {
     throw "Windows 10/11 x64で実行してください。"
 }
+if ([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture -ne [System.Runtime.InteropServices.Architecture]::X64) {
+    throw "Windows x64 is required for the official release artifact."
+}
 
 $Root = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
 Push-Location $Root
