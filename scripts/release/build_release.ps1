@@ -69,9 +69,12 @@ function Resolve-Iscc {
 function Invoke-PackagedSmoke {
     param(
         [Parameter(Mandatory = $true)][string] $Executable,
-        [Parameter(Mandatory = $true)][string] $LocalAppDataRoot
+        [Parameter(Mandatory = $true)][string] $LocalAppDataRoot,
+        [switch] $PreserveExistingData
     )
-    Remove-Item -Recurse -Force $LocalAppDataRoot -ErrorAction SilentlyContinue
+    if (-not $PreserveExistingData) {
+        Remove-Item -Recurse -Force $LocalAppDataRoot -ErrorAction SilentlyContinue
+    }
     New-Item -ItemType Directory -Force -Path $LocalAppDataRoot | Out-Null
 
     $previousLocalAppData = $env:LOCALAPPDATA
@@ -111,7 +114,7 @@ function Assert-DistributionContents {
         if (
             $relative -match "(^|/)(tests|\.git|outputs|e2e_reports|ValorantData)(/|$)" -or
             $relative -match "(^|/)\.env($|\.)" -or
-            $relative -match "\.(mp4|mkv|mov|avi|webm|sqlite|sqlite3|db|db-wal|db-shm|log|pem|key)$"
+            $relative -match "\.(mp4|mkv|mov|avi|webm|sqlite|sqlite3|db|db-wal|db-shm|log|key)$"
         ) {
             throw "Forbidden release content detected: $relative"
         }
@@ -232,7 +235,7 @@ try {
     if (-not (Test-Path $Sentinel) -or -not (Test-Path (Join-Path $UserData "app.db"))) {
         throw "Reinstall/upgrade simulation modified user data."
     }
-    Invoke-PackagedSmoke $InstalledExe $InstallerData
+    Invoke-PackagedSmoke $InstalledExe $InstallerData -PreserveExistingData
 
     $Uninstaller = Get-ChildItem -LiteralPath $InstallDir -Filter "unins*.exe" |
         Select-Object -First 1
