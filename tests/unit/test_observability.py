@@ -304,6 +304,48 @@ def test_diagnostic_bundle_is_allowlist_only_bounded_and_sanitized(tmp_path: Pat
     assert "line 999" in combined
 
 
+def test_diagnostic_bundle_rejects_unsafe_run_id_before_writing(tmp_path: Path) -> None:
+    target = tmp_path / "outside" / "diagnostic_bundle.zip"
+    with pytest.raises(ValueError, match="run_id"):
+        create_diagnostic_bundle(
+            DiagnosticBundleRequest(run_id="../outside", output_path=target)
+        )
+    assert not target.exists()
+
+
+def test_diagnostic_bundle_never_overwrites_existing_archive(tmp_path: Path) -> None:
+    target = tmp_path / "bundle.zip"
+    target.write_bytes(b"keep-me")
+    with pytest.raises(FileExistsError):
+        create_diagnostic_bundle(
+            DiagnosticBundleRequest(run_id="safe-run", output_path=target)
+        )
+    assert target.read_bytes() == b"keep-me"
+
+
+def test_diagnostic_bundle_omits_symlinked_json_input(tmp_path: Path) -> None:
+    source = tmp_path / "private.json"
+    source.write_text('{"path": "/home/private/video.mp4"}', encoding="utf-8")
+    link = tmp_path / "performance.json"
+    try:
+        link.symlink_to(source)
+    except OSError:
+        pytest.skip("symlinks are unavailable on this platform")
+    target = tmp_path / "bundle.zip"
+
+    create_diagnostic_bundle(
+        DiagnosticBundleRequest(
+            run_id="safe-run",
+            output_path=target,
+            performance_path=link,
+        )
+    )
+
+    with zipfile.ZipFile(target) as archive:
+        value = json.loads(archive.read("performance.json"))
+    assert value == {"status": "omitted", "reason": "symlink"}
+
+
 def test_bundle_records_missing_optional_report_without_failing(tmp_path: Path) -> None:
     target = tmp_path / "bundle.zip"
     create_diagnostic_bundle(
