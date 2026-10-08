@@ -117,6 +117,11 @@ class SettingsStore:
                 stream.flush()
                 os.fsync(stream.fileno())
             os.replace(tmp_path, self.path)
+            if os.name != "nt":
+                try:
+                    self.path.chmod(0o600)
+                except OSError:
+                    pass
         except Exception:
             tmp_path.unlink(missing_ok=True)
             raise
