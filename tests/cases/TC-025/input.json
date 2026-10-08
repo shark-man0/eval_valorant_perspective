@@ -67,6 +67,11 @@
         "line_of_sight_state": "unknown",
         "exposed_directions_count": null,
         "view_target_zone_id": null
+      },
+      "source_confidence": {
+        "weapon": 0.35,
+        "spike_state": 0.35,
+        "player_location": 0.95
       }
     }
   ],

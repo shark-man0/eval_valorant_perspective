@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 from collections.abc import Iterable
 from copy import deepcopy
 from typing import Any, Literal
@@ -63,57 +64,69 @@ class FactBuilder:
         economy = meta.get("economy_context") or {}
         add("team_buy_class", economy.get("team_buy_class"), 1.0, "config")
         add("player_buy_class", economy.get("player_buy_class"), 1.0, "config")
-        quality = round_package.get("observation_quality", {})
-        hud_confidence = float(quality.get("hud_confidence", 0.0))
-        visual_confidence = float(quality.get("visual_confidence", 0.0))
-
+        # Snapshot-derived facts take the confidence of the observation each field was read
+        # from (snapshot.source_confidence), never the package-level aggregate, and never
+        # more than that source. A field without a source confidence counts as 0.0, so it
+        # cannot pass any deterministic gate.
         for snapshot in round_package.get("state_snapshots", []):
             timestamp = float(snapshot["time_sec"])
             ally, enemy = snapshot.get("ally_alive"), snapshot.get("enemy_alive")
             if ally is not None and enemy is not None:
-                state = "advantage" if ally > enemy else "disadvantage" if ally < enemy else "even"
-                add("numbers_state", state, hud_confidence, "derived_code", timestamp)
-                add(
-                    "clutch_state",
-                    ally == 1 and enemy > 1,
-                    hud_confidence,
-                    "derived_code",
-                    timestamp,
+                numbers = min(
+                    self._source_confidence(snapshot, "ally_alive"),
+                    self._source_confidence(snapshot, "enemy_alive"),
                 )
-            add("weapon", snapshot.get("weapon"), hud_confidence, "hud", timestamp)
+                state = "advantage" if ally > enemy else "disadvantage" if ally < enemy else "even"
+                add("numbers_state", state, numbers, "derived_code", timestamp)
+                add("clutch_state", ally == 1 and enemy > 1, numbers, "derived_code", timestamp)
+            add(
+                "weapon",
+                snapshot.get("weapon"),
+                self._source_confidence(snapshot, "weapon"),
+                "hud",
+                timestamp,
+            )
             spike = snapshot.get("spike_state")
             if spike and spike != "unknown":
+                spike_confidence = self._source_confidence(snapshot, "spike_state")
                 add(
                     "spike_carried_by_player",
                     spike == "carried_by_player",
-                    hud_confidence,
+                    spike_confidence,
                     "derived_code",
                     timestamp,
                 )
                 add(
                     "spike_planted",
                     spike in {"planted", "defusing"},
-                    hud_confidence,
+                    spike_confidence,
                     "derived_code",
                     timestamp,
                 )
             add(
                 "round_time_remaining_sec",
                 snapshot.get("round_time_remaining_sec"),
-                hud_confidence,
+                self._source_confidence(snapshot, "round_time_remaining_sec"),
                 "hud",
                 timestamp,
             )
             add(
                 "utility_available_count",
                 snapshot.get("utility_available_count"),
-                hud_confidence,
+                self._source_confidence(snapshot, "utility_available_count"),
                 "hud",
                 timestamp,
             )
             location = snapshot.get("player_location") or {}
-            add("zone_id", location.get("zone_id"), visual_confidence, "visual", timestamp)
+            add(
+                "zone_id",
+                location.get("zone_id"),
+                self._source_confidence(snapshot, "player_location"),
+                "visual",
+                timestamp,
+            )
             spatial = snapshot.get("spatial_context") or {}
+            spatial_confidence = self._source_confidence(snapshot, "spatial_context")
             spatial_values = [
                 spatial.get("cover_available"),
                 spatial.get("escape_route_available"),
@@ -126,27 +139,33 @@ class FactBuilder:
                 "unknown",
             }
             if available:
-                add("spatial_context_available", True, visual_confidence, "derived_code", timestamp)
+                add(
+                    "spatial_context_available",
+                    True,
+                    spatial_confidence,
+                    "derived_code",
+                    timestamp,
+                )
             add(
                 "cover_available",
                 spatial.get("cover_available"),
-                visual_confidence,
+                spatial_confidence,
                 "visual",
                 timestamp,
             )
             add(
                 "escape_route_available",
                 spatial.get("escape_route_available"),
-                visual_confidence,
+                spatial_confidence,
                 "visual",
                 timestamp,
             )
             if los not in {None, "unknown"}:
-                add("line_of_sight_state", los, visual_confidence, "visual", timestamp)
+                add("line_of_sight_state", los, spatial_confidence, "visual", timestamp)
             add(
                 "exposed_directions_count",
                 spatial.get("exposed_directions_count"),
-                visual_confidence,
+                spatial_confidence,
                 "visual",
                 timestamp,
             )
@@ -435,6 +454,17 @@ class FactBuilder:
             fact.to_dict() for fact in self.build(round_package)
         )
         return result
+
+    @staticmethod
+    def _source_confidence(snapshot: dict[str, Any], field: str) -> float:
+        """Confidence of the observation a snapshot field came from; absent means 0.0."""
+        source = snapshot.get("source_confidence")
+        value = source.get(field) if isinstance(source, dict) else None
+        if isinstance(value, bool) or not isinstance(value, int | float):
+            return 0.0
+        if not math.isfinite(value) or not 0.0 <= value <= 1.0:
+            return 0.0
+        return float(value)
 
     @staticmethod
     def _freeze(value: Any) -> Any:

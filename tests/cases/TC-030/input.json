@@ -76,6 +76,13 @@
         "line_of_sight_state": "unknown",
         "exposed_directions_count": null,
         "view_target_zone_id": null
+      },
+      "source_confidence": {
+        "ally_alive": 0.98,
+        "enemy_alive": 0.98,
+        "weapon": 0.98,
+        "spike_state": 0.98,
+        "player_location": 0.98
       }
     }
   ],

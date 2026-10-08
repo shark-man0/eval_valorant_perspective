@@ -136,13 +136,23 @@
 
 - `state_snapshot` eventと `state_snapshots` はどちらも ally/enemy/spike を持つ。前者は変化点、後者は時系列という役割分担で、意図的な重複と判断し統合していない。
 
-### 7.4 未解決（要判断・contract変更を伴う）
+### 7.4 snapshot由来factのconfidence provenance（ユーザー指示により schema 修正）
 
-- **snapshot由来factのconfidenceが、package全体の集約値（受理observationの集約）になる。** snapshotにconfidence欄が無いためで、0.65〜0.90のobservationから作られたfactが、集約値によって決定論の信頼度ゲート（0.90）を超えうる。直すにはstate_snapshotのschemaにper-snapshotのconfidenceを足す必要があり、未実施。発生頻度は未測定。
-- 画像解析側の `aggregate_observation_quality` の集約方法は変更していない。
+package集約値がsnapshot由来factのconfidenceに使われ、元観測より高い値で決定論 `0.90` gateを通過しうる問題を、
+`state_snapshot.source_confidence`（フィールド別）の追加で修正した。詳細・計測・後方互換性は
+**`docs/external_ai_snapshot_source_confidence.md`**。
+
+- 変更前の計測（合成分布、本番経路）: 高信頼な観測が多い分布で、snapshot由来factの 23.1% / 7.4% が
+  obs<0.90 → fact≥0.90（最大乖離 0.318）。集約値が低い分布では逆に 19.8% が過小評価。
+  実録画での頻度は、生のobservationが無いため計測不能。
+- 変更後: 4分布すべてで過大評価・過小評価・「元観測より高い」が 0。
+- 回帰テスト30件（依頼の4件を含む）。変更前の実装に戻すと23件が失敗する。
+- 旧packageは `source_confidence` が無いと snapshot由来factが 0.0（黙って高confidence扱いするフォールバックは無し）。
+  合成fixture 38ファイルは明示的に移行（追加のみ、旧実装とfact一致）。保存済み実データは移行しない。
+- 未解決: 評価のconfidenceが引用factのconfidenceを超えうる（§9 of the doc、fixture 2/31件）。
 
 ## 8. merge時の注意
 
-- 変更ファイル: `events/derived.py`、`schema_validation.py`、`rules/temporal_scope.py`（新規）、`application/round_analyzer.py`、`rules/__init__.py`、`config/valorant_evaluation_rules_v4.json`（誤記1行）、`rounds/builder.py`、`rules/engine.py`、`rules/mock_evaluator.py`、`ai/coach.py`、`tests/cases/TC-005,TC-017/expected_assertions.json`、`tests/unit/test_rule_engine.py`、`tests/integration/test_visual_review_regressions.py`（1パラメータ）、`tests/unit/test_downstream_contract.py`（新規）、docs
+- 変更ファイル: `facts/builder.py`、`rounds/builder.py`（`source_confidence`）、`schemas/round_package_schema_v2.json`（任意フィールドの追加のみ）、`tests/cases/TC-*/input.json`（38ファイル、409行追加のみ）、`scripts/`（計測・fixture移行）、`events/derived.py`、`schema_validation.py`、`rules/temporal_scope.py`（新規）、`application/round_analyzer.py`、`rules/__init__.py`、`config/valorant_evaluation_rules_v4.json`（誤記1行）、`rounds/builder.py`、`rules/engine.py`、`rules/mock_evaluator.py`、`ai/coach.py`、`tests/cases/TC-005,TC-017/expected_assertions.json`、`tests/unit/test_rule_engine.py`、`tests/integration/test_visual_review_regressions.py`（1パラメータ）、`tests/unit/test_downstream_contract.py`（新規）、docs
 - `rounds/builder.py` と `test_visual_review_regressions.py` はvision側が触る可能性がある隣接ファイル。前者は `_state_snapshots` 内1箇所とヘルパー追加のみ、後者は1行。
-- 既存contractを変更した（§3.1、§3.2、§6）。schema・registry・評価ロジックのconfig semanticsは未変更（configの変更は文字列の誤記修正1行のみ）。
+- 既存contractを変更した（§3.1、§3.2、§6）。registry・評価ロジックのconfig semanticsは未変更（configの変更は文字列の誤記修正1行のみ）。schemaは `state_snapshot.source_confidence` を任意で追加（`schema_version` 据え置き）。
