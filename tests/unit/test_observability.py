@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import json
 import logging
+import os
+import stat
 import zipfile
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -304,6 +306,48 @@ def test_diagnostic_bundle_is_allowlist_only_bounded_and_sanitized(tmp_path: Pat
     assert "line 999" in combined
 
 
+def test_diagnostic_bundle_rejects_unsafe_run_id_before_writing(tmp_path: Path) -> None:
+    target = tmp_path / "outside" / "diagnostic_bundle.zip"
+    with pytest.raises(ValueError, match="run_id"):
+        create_diagnostic_bundle(
+            DiagnosticBundleRequest(run_id="../outside", output_path=target)
+        )
+    assert not target.exists()
+
+
+def test_diagnostic_bundle_never_overwrites_existing_archive(tmp_path: Path) -> None:
+    target = tmp_path / "bundle.zip"
+    target.write_bytes(b"keep-me")
+    with pytest.raises(FileExistsError):
+        create_diagnostic_bundle(
+            DiagnosticBundleRequest(run_id="safe-run", output_path=target)
+        )
+    assert target.read_bytes() == b"keep-me"
+
+
+def test_diagnostic_bundle_omits_symlinked_json_input(tmp_path: Path) -> None:
+    source = tmp_path / "private.json"
+    source.write_text('{"path": "/home/private/video.mp4"}', encoding="utf-8")
+    link = tmp_path / "performance.json"
+    try:
+        link.symlink_to(source)
+    except OSError:
+        pytest.skip("symlinks are unavailable on this platform")
+    target = tmp_path / "bundle.zip"
+
+    create_diagnostic_bundle(
+        DiagnosticBundleRequest(
+            run_id="safe-run",
+            output_path=target,
+            performance_path=link,
+        )
+    )
+
+    with zipfile.ZipFile(target) as archive:
+        value = json.loads(archive.read("performance.json"))
+    assert value == {"status": "omitted", "reason": "symlink"}
+
+
 def test_bundle_records_missing_optional_report_without_failing(tmp_path: Path) -> None:
     target = tmp_path / "bundle.zip"
     create_diagnostic_bundle(
@@ -342,3 +386,52 @@ def test_bundle_handles_malformed_optional_json(tmp_path: Path) -> None:
 )
 def test_error_taxonomy(exc: BaseException, expected: str) -> None:
     assert classify_exception(exc) == expected
+
+
+@pytest.mark.skipif(
+    os.name == "nt", reason="POSIX permission bits are not authoritative on Windows"
+)
+def test_private_observability_files_use_owner_only_permissions(tmp_path: Path) -> None:
+    try:
+        log_path = configure_logging(tmp_path / "logs", max_bytes=256, backup_count=1)
+        logger = logging.getLogger("permission-rotation-test")
+        for _ in range(40):
+            logger.info("rotate-%s", "x" * 40)
+        for handler in logging.getLogger().handlers:
+            handler.flush()
+        bundle_path = tmp_path / "bundle.zip"
+        create_diagnostic_bundle(
+            DiagnosticBundleRequest(run_id="secure-run", output_path=bundle_path)
+        )
+        assert stat.S_IMODE(log_path.stat().st_mode) == 0o600
+        rotated = log_path.with_name(log_path.name + ".1")
+        assert rotated.exists()
+        assert stat.S_IMODE(rotated.stat().st_mode) == 0o600
+        assert stat.S_IMODE(bundle_path.stat().st_mode) == 0o600
+    finally:
+        _close_root_handlers()
+
+
+def test_diagnostic_subprocess_does_not_inherit_openai_api_key(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    captured: dict[str, str] = {}
+
+    class Result:
+        returncode = 0
+        stdout = "tool 1.0\n"
+        stderr = ""
+
+    def fake_run(*_args: object, **kwargs: object) -> Result:
+        env = kwargs.get("env")
+        assert isinstance(env, dict)
+        captured.update({str(key): str(value) for key, value in env.items()})
+        return Result()
+
+    monkeypatch.setenv("OPENAI_API_KEY", "do-not-inherit")
+    monkeypatch.setenv("SECURITY_TEST_SENTINEL", "preserved")
+    monkeypatch.setattr(environment_module.subprocess, "run", fake_run)
+
+    assert environment_module.tool_version("tool") == "tool 1.0"
+    assert "OPENAI_API_KEY" not in captured
+    assert captured["SECURITY_TEST_SENTINEL"] == "preserved"

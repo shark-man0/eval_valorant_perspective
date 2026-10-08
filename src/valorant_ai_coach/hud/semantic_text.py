@@ -9,7 +9,11 @@ from typing import Any
 import numpy as np
 from numpy.typing import NDArray
 
-from .round_lifecycle import MAX_SAMPLE_GAP_SEC, MIN_START_CONFIRMATION_SEC
+from .round_lifecycle import (
+    MAX_SAMPLE_GAP_SEC,
+    MIN_START_CONFIRMATION_SEC,
+    SEMANTIC_PHASE_CONFIDENCE_KEY,
+)
 from .weapon_identity import masked_score
 
 MATCHER = "semantic_text_ncc_v1"
@@ -17,7 +21,7 @@ SIGNAL_ROIS = {
     "buy_phase_template": "center_phase_banner",
     "round_end_template": "round_end_banner",
 }
-CONFIDENCE_KEY = "center_phase_banner_semantic_text"
+CONFIDENCE_KEY = SEMANTIC_PHASE_CONFIDENCE_KEY
 
 ImageU8 = NDArray[np.uint8]
 

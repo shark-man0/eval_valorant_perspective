@@ -1,0 +1,138 @@
+{
+  "schema_version": "1.0",
+  "scope": "legacy archived native inputs rebuilt with current package/trace code; not fresh recognition or full E2E",
+  "runs": {
+    "profile13": {
+      "schema_version": "1.0",
+      "mode": "legacy_full_contract_compatibility",
+      "scope": "archived recognizer outputs -> current native builder/trace adapter -> unchanged canonical evaluator; not fresh recognition or full E2E",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "input_hashes": {
+        "raw_processing.json": "32b758e5766ca746b4ec42ceda10dfc08afaa8fa53fbf99e8cb495cd008db6f9",
+        "e2e_trace.json": "7356d3733536ffbe8c4115b160a67a8001d4f7f9facaf6c0c043f786dc0f495b",
+        "evaluation_report.json": "926b638f63171a52b6d78a7ab5aa45aae39d69441a7f061212edfebbf54264b5"
+      },
+      "head_commit": "9bb50abd463ab0ef41fb35c59dbe0d7679a64082",
+      "working_tree_is_dirty": true,
+      "profile_decision": "adoptable profile13 archived outputs used for contract compatibility; no fresh recognition qualification",
+      "archived_observations": 4634,
+      "wall_clock_sec": 37.82400866399985,
+      "packages_equal": true,
+      "trace_equal": true,
+      "assertion_outcomes_equal": true,
+      "failure_set_equal": true,
+      "previous_counts": {
+        "fail": 55,
+        "not_evaluated": 4,
+        "pass": 23
+      },
+      "current_counts": {
+        "fail": 55,
+        "not_evaluated": 4,
+        "pass": 23
+      },
+      "delta": {
+        "fail": 0,
+        "not_evaluated": 0,
+        "pass": 0
+      },
+      "schema_valid": true,
+      "trace_counts": {
+        "events": 189,
+        "state_intervals": 185,
+        "ownership_intervals": 4472,
+        "snapshots": 919,
+        "visual_observations": 4,
+        "temporal_features": 0
+      },
+      "negative_assertion_count": 20,
+      "negative_failures": [],
+      "discontinuity_failures": [],
+      "previous_comparable_runtime": null,
+      "runtime_delta": null,
+      "new_canonical_passes_claimed": [],
+      "terminal_report": {
+        "path": "outputs/recognition-investigation/phase-evidence/profile13-legacy-full-contract-compatibility.json",
+        "sha256": "7b68f235eb9fcd305bc3f019d8170d8f162dae214a332ec9e49bcec14557f5b5"
+      }
+    },
+    "profile16": {
+      "schema_version": "1.0",
+      "mode": "legacy_full_contract_compatibility",
+      "scope": "archived recognizer outputs -> current native builder/trace adapter -> unchanged canonical evaluator; not fresh recognition or full E2E",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "input_hashes": {
+        "raw_processing.json": "e0c3b9667b15aee9e6802e1b1b58aa61c916ee50b21ca4b00fd94cb2ea6a7152",
+        "e2e_trace.json": "cc1e23121b939b5d2b133958c42aef1ee33b67a916d807cab1ca71b05f11d269",
+        "evaluation_report.json": "1c0b7356139454565bace5c1796ce179a88e6ce0bd016ddbf129840fdec930e7"
+      },
+      "head_commit": "9bb50abd463ab0ef41fb35c59dbe0d7679a64082",
+      "working_tree_is_dirty": true,
+      "profile_decision": "historical rejected profile16 outputs used only for contract compatibility; no adoption",
+      "archived_observations": 4661,
+      "wall_clock_sec": 43.489488772989716,
+      "packages_equal": true,
+      "trace_equal": true,
+      "assertion_outcomes_equal": true,
+      "failure_set_equal": true,
+      "previous_counts": {
+        "fail": 55,
+        "not_evaluated": 4,
+        "pass": 23
+      },
+      "current_counts": {
+        "fail": 55,
+        "not_evaluated": 4,
+        "pass": 23
+      },
+      "delta": {
+        "fail": 0,
+        "not_evaluated": 0,
+        "pass": 0
+      },
+      "schema_valid": true,
+      "round_windows": [
+        {
+          "start_sec": 7.369336,
+          "end_sec": 171.002669
+        }
+      ],
+      "trace_counts": {
+        "events": 262,
+        "state_intervals": 185,
+        "ownership_intervals": 4499,
+        "snapshots": 930,
+        "visual_observations": 4,
+        "temporal_features": 0
+      },
+      "negative_assertion_count": 20,
+      "negative_failures": [],
+      "discontinuity_failures": [],
+      "previous_comparable_runtime": null,
+      "runtime_delta": null,
+      "new_canonical_passes_claimed": [],
+      "terminal_report": {
+        "path": "outputs/recognition-investigation/phase-evidence/legacy-full-contract-compatibility.json",
+        "sha256": "654a47fef3ffb0d09ba66b8e4942778765b7c3107e92be6393d44b6dd91b2cd4"
+      }
+    }
+  },
+  "code_and_schema_sha256": {
+    "src/valorant_ai_coach/rounds/builder.py": "d7b0fde2dff9384e357c3096eebd5b9a182540e5aaf8f1596586ceaa4308f7bb",
+    "src/valorant_ai_coach/hud/models.py": "0b81d856d75d304e138a215d46f9279295c52e0533c1f88a843b702067adec88",
+    "src/valorant_ai_coach/schema_validation.py": "f8977a753c3b1fbbd544fc87d289bfef21b5777edc2402b605e367872d33c1a1",
+    "tests/e2e/trace_adapter.py": "f9b0eeeffc9cc3522d3a7494d3c7b4413dbab50db5ce9baa1980732fef8e77fe",
+    "tests/e2e/evaluate_saved_trace.py": "2f024851af559c4192bea17cf2a7ea179603c740128ef7185785bc53d2d40f7d",
+    "schemas/hud_observation_schema_v2.json": "d902c1c4438b7b08c50fb43d7c8f3e41bbd8e6b87e4393ff06c766d7ce6dc853",
+    "schemas/round_package_schema_v2.json": "bf962a5d89eefcf3d07792f5133d3ede6f356285138d379b10206fb2fdd09743"
+  },
+  "limits": [
+    "No new frame decoding, recognition, lifecycle detection or safe-profile qualification.",
+    "The 20 passing negative assertions cover unchanged archived traces only.",
+    "Both traces contain zero temporal features; discontinuity safety of new behavior remains unproven.",
+    "Profile16 remains rejected.",
+    "No archived timer display is reconstructed from numeric seconds.",
+    "Windows execution remains unverified."
+  ],
+  "next_required_work": "Resolve pending global-start production contract and numeric development scope; qualify safe timer/end/continuity inputs before production lifecycle acceptance."
+}

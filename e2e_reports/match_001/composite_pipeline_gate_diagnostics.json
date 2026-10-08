@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "scope": "source-native known-cut regression and optimistic current-input lifecycle projection, not independent qualification or native E2E",
+  "git_head": "9bb50abd463ab0ef41fb35c59dbe0d7679a64082",
+  "code_fingerprint": "b5510a0bb67eb57df3153a6bf769a57ae69bae40de80d635293d58627addbe34",
+  "profile_fingerprint": "8b5955f1d7de7139949815a7853260b9a66b6fd48140b64351030a6e78e9a5db",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "known_source_cut_controls": {
+    "pairs": 3,
+    "independent_cut_episodes": 1,
+    "false_cut_links": 0,
+    "wall_clock_sec": 1.1769822089991067,
+    "limitations": [
+      "previously reviewed cut, correlated controls; not independent negative holdout",
+      "reference-coordinate geometry assumption/test-only qualification",
+      "no explicit cut/GT flags passed to producer"
+    ],
+    "observations": [
+      {
+        "source_pair": [
+          {
+            "source_pts_ticks": 1143337,
+            "time_base": "1/15360",
+            "pts_sec": 74.43600260416666,
+            "source_frame_sha256": "8dba92b8ce2af487a45d04d182d2f35a1406518b60d1fa4c09e0ef4f1130d942",
+            "current_reader_display": null,
+            "current_reader_confidence": 0.0,
+            "rejection_sources": [
+              "strict_timer_expected_exactly_two_separator_dots"
+            ],
+            "manual_display": "0:29",
+            "reason": "initial_frame"
+          },
+          {
+            "source_pts_ticks": 1143593,
+            "time_base": "1/15360",
+            "pts_sec": 74.45266927083334,
+            "source_frame_sha256": "7ed7df9c55a483ae454b00bbaa7ace857879444d9d5502ce6340da109fa8fd8b",
+            "current_reader_display": "0:06",
+            "current_reader_confidence": 0.9442667961120605,
+            "rejection_sources": [
+              "strict_timer_glyphs",
+              "comparison_gaussian3x3_v1"
+            ],
+            "manual_display": "0:06",
+            "reason": "accepted_timer_pair_unavailable"
+          }
+        ],
+        "false_cut_link": false,
+        "reason": "accepted_timer_pair_unavailable"
+      },
+      {
+        "source_pair": [
+          {
+            "source_pts_ticks": 1143081,
+            "time_base": "1/15360",
+            "pts_sec": 74.4193359375,
+            "source_frame_sha256": "9f941a254c40b4fab11dd375653ba7622b37ac630f553c7f5de879a71edd3314",
+            "current_reader_display": "0:29",
+            "current_reader_confidence": 0.9602194428443909,
+            "rejection_sources": [
+              "strict_timer_glyphs",
+              "comparison_gaussian3x3_v1"
+            ],
+            "manual_display": "0:29",
+            "reason": "initial_frame"
+          },
+          {
+            "source_pts_ticks": 1143849,
+            "time_base": "1/15360",
+            "pts_sec": 74.4693359375,
+            "source_frame_sha256": "e61922fa0e000c6506c6c65da008fc4a42d6dc9f62a6f9b992d6f3d521a04d16",
+            "current_reader_display": "0:06",
+            "current_reader_confidence": 0.9177671670913696,
+            "rejection_sources": [
+              "strict_timer_glyphs",
+              "comparison_gaussian3x3_v1"
+            ],
+            "manual_display": "0:06",
+            "reason": "timer_transition_inconsistent"
+          }
+        ],
+        "false_cut_link": false,
+        "reason": "timer_transition_inconsistent"
+      },
+      {
+        "source_pair": [
+          {
+            "source_pts_ticks": 1142825,
+            "time_base": "1/15360",
+            "pts_sec": 74.40266927083333,
+            "source_frame_sha256": "022acf8c07e77b79aee8ac5c65018cae6ae803508ef610dff7bf366c5b3d4dbe",
+            "current_reader_display": null,
+            "current_reader_confidence": 0.0,
+            "rejection_sources": [
+              "strict_timer_expected_exactly_two_separator_dots"
+            ],
+            "manual_display": "0:29",
+            "reason": "initial_frame"
+          },
+          {
+            "source_pts_ticks": 1144105,
+            "time_base": "1/15360",
+            "pts_sec": 74.48600260416667,
+            "source_frame_sha256": "ee73d20c37b73e0ddd5f807a3a4c89d75ddcba39e1ce01f86ccb74d645ba74de",
+            "current_reader_display": null,
+            "current_reader_confidence": 0.0,
+            "rejection_sources": [
+              "strict_timer_glyph_below_0_90"
+            ],
+            "manual_display": "0:06",
+            "reason": "accepted_timer_pair_unavailable"
+          }
+        ],
+        "false_cut_link": false,
+        "reason": "accepted_timer_pair_unavailable"
+      }
+    ]
+  },
+  "lifecycle_projection": {
+    "scope": "optimistic lifecycle/input projection diagnosis only: actual calibrated timer/phase outputs and source images, test-only qualification object; other state flags omitted and primary state projected unknown; not native production acceptance or full-run equivalence",
+    "wall_clock_sec": 24.890820429020096,
+    "windows": [
+      {
+        "window_sec": [
+          3.0,
+          6.0
+        ],
+        "frame_count": 78,
+        "state_counts": {
+          "unobserved": 75,
+          "pre_round": 3
+        },
+        "continuity_reason_counts": {
+          "initial_frame": 1,
+          "insufficient_spatial_camera_support": 36,
+          "attested_composite_link": 15,
+          "accepted_timer_pair_unavailable": 26
+        },
+        "simulated_events": []
+      },
+      {
+        "window_sec": [
+          109.0,
+          114.0
+        ],
+        "frame_count": 185,
+        "state_counts": {
+          "unobserved": 185
+        },
+        "continuity_reason_counts": {
+          "initial_frame": 1,
+          "attested_composite_link": 124,
+          "insufficient_spatial_camera_support": 17,
+          "accepted_timer_pair_unavailable": 43
+        },
+        "simulated_events": []
+      }
+    ]
+  },
+  "finding": "even optimistic unknown-state projection with actual timer/phase values produces zero starts; rejected links reset preparation and previous observation, requiring two more phase frames after a newly established segment. Confirmed semantic phase temporal provenance is not carried across the producer/consumer contract.",
+  "next_fix_target": "source-qualified semantic purchase-phase temporal provenance into continuity/lifecycle initialization; retain existing minimum duration, distinct source frames and acceptance confidence; never count unsupported prior frames or join across cut",
+  "qualification_created": false,
+  "profile_adopted": false,
+  "canonical_previous": {
+    "PASS": 23,
+    "FAIL": 55,
+    "NE": 4
+  },
+  "canonical_current": null,
+  "canonical_delta": null,
+  "verification": {
+    "source_changes": false,
+    "new_tests": "not needed: diagnostic evidence only; previous170/Ruff/mypy100 remain historical",
+    "full_e2e": "not run; optimistic projection already fails start acceptance",
+    "windows": "unverified"
+  },
+  "artifacts": {
+    "outputs/recognition-investigation/composite-native-cut-controls/results.json": "2196dbc70d1552808daf1c4da99cc96489077ec8f07cdd647034f1cc26592ea2",
+    "outputs/recognition-investigation/phase-evidence/composite-v2-lifecycle-projection.json": "0391581a3405b8d32398711d29b51a61e8332b9b3c8ca52ae6697de288a7e2a9",
+    "outputs/recognition-investigation/composite-native-cut-controls/selection.json": "8142c9a86ae65b7e2b2a437a10c550892616258b4723bd2c226d0f248c0a360f"
+  }
+}

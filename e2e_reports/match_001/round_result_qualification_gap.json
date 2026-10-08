@@ -1,0 +1,66 @@
+{
+  "scope": "Rechecked current frozen reader/composite inputs at reviewed R1 end; labels used only for post-prediction evaluation, not fresh holdout or lifecycle qualification",
+  "git_head": "9bb50abd463ab0ef41fb35c59dbe0d7679a64082",
+  "recognizer_fingerprint": "6011f168b640de47d9b592041b4f696d2ff92796dec0c28dd96636f7b84140af",
+  "score_profile_fingerprint": "287c6453d04b8f334cb32ba3631b91e935b563c070bb0a717548d8daa138d1b5",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "target_assertions": [
+    "GT-R1-ROUND-END",
+    "event_count_constraints-002"
+  ],
+  "source_frames": 10,
+  "numeric_source_review": {
+    "score": {
+      "correct": 18,
+      "unknown": 2,
+      "wrong": 0
+    },
+    "timer": {
+      "correct": 4,
+      "unknown": 6,
+      "wrong": 0
+    }
+  },
+  "current_composite_attested_links": 0,
+  "composite_reason_counts": {
+    "accepted_timer_pair_unavailable": 8,
+    "initial_frame": 1,
+    "insufficient_spatial_camera_support": 1
+  },
+  "geometry_assumed": true,
+  "test_only_qualification_object_installed": false,
+  "temporal_phase_not_inferred": true,
+  "timer_at_reviewed_banner_frame": null,
+  "score_at_reviewed_banner_frame": [
+    "0",
+    "1"
+  ],
+  "verified_result_positive_examples_available_in_reviewed_local_window": 1,
+  "positive_example_scope": "one in the reviewed10native-frame end window; not a verified whole-video count and not proof no other global cues exist",
+  "qualification_gap": "Current runtime semantic reference requires3supported independent training source images, and complete global qualification requires disjoint reviewed holdout/negative splits; these are not established for the result route",
+  "corroboration_gap": "Later0-2score is source observed, but not a same-segment qualified corroboration of the earlier TEAM ACE; no joining across content discontinuity, no backdating",
+  "source_video_terminal_sha_verified": true,
+  "source_frames_verified_before_and_after": true,
+  "wall_clock_sec": 5.161496070999419,
+  "previous_comparable_run": null,
+  "runtime_delta": null,
+  "production_source_changed": false,
+  "qualification_report_created": false,
+  "profile_adopted": false,
+  "full_e2e_executed": false,
+  "canonical_previous": {
+    "pass": 23,
+    "fail": 55,
+    "not_evaluated": 4
+  },
+  "canonical_current": null,
+  "canonical_delta": null,
+  "external_data_question": "Asked for Pi path of additional unedited phase/start or result/score source video; no answer assumed and no threshold change requested",
+  "verification": "Previous217relatedtests/Ruff/mypy101 apply to unchanged production/scripts; this is archived-source numeric diagnosis, not a new regression/full E2E",
+  "bindings": {
+    "outputs/recognition-investigation/score-white-pipeline-20261008/end-inputs.json": "72f58472bb46a8dca9edc55af4600618b6272c83903dd0dccff5562bd165f300",
+    "outputs/recognition-investigation/score-white-pipeline-20261008/end-inputs.py": "b9b48442b3eae1c014770a40d9f4f5f0b5462377be2691d2efc58f96c4790245",
+    "e2e_reports/match_001/r1_end_dense_source_diagnostics.json": "d2570bfbb914fa74beb44cce1b6d5362a6cff0506d10a6b2e7c602df5353927b"
+  },
+  "next_action": "Additional qualified source data or another independently qualified same-segment global cue is required before accepting the result route; investigate only source-backed alternatives, never fabricate support"
+}

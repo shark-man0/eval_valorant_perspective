@@ -18,13 +18,11 @@ from pathlib import Path
 from types import SimpleNamespace
 from typing import Any
 
-import cv2
-import numpy as np
-
 APP_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(APP_ROOT / "src"))
 sys.path.insert(0, str(APP_ROOT))
 
+from scripts.diagnostics.global_round_start_hypothesis import GlobalStartHypothesis  # noqa: E402
 from scripts.diagnostics.score_numeric import load_score_candidate  # noqa: E402
 from tests.e2e.trace_adapter import to_e2e_trace  # noqa: E402
 from valorant_ai_coach.events import EventSourceContract  # noqa: E402
@@ -39,7 +37,7 @@ from valorant_ai_coach.hud.templates import SubregionReader  # noqa: E402
 from valorant_ai_coach.hud.temporal import _round_start_confirmed  # noqa: E402
 from valorant_ai_coach.hud.timer_glyphs import StrictTimerGlyphReader  # noqa: E402
 from valorant_ai_coach.resources import resource_path  # noqa: E402
-from valorant_ai_coach.rounds import RoundPackageBuilder  # noqa: E402
+from valorant_ai_coach.rounds import RoundPackageBuilder, RoundPackageBuildError  # noqa: E402
 from valorant_ai_coach.schema_validation import SchemaValidator  # noqa: E402
 from valorant_ai_coach.video import FrameSample, VideoMetadata  # noqa: E402
 
@@ -96,29 +94,18 @@ def start_gate_rows(observations, diagnostics):
 
 
 class FixedGaussianTimerComparison(StrictTimerGlyphReader):
-    """Diagnostic-only frozen comparison representation, not profile adoption.
-
-    Keep all production segmentation/format/threshold/margin gates. Apply one
-    fixed Gaussian3x3 sigma0 to both normalized glyph and binary reference.
-    No blur is applied to the source frame, ROI, colon or component geometry.
-    """
+    """Diagnostic wrapper using the native frozen comparison exactly once."""
 
     def __init__(self, original: StrictTimerGlyphReader) -> None:
-        super().__init__(original.templates)
-        self.templates = {
-            digit: tuple(cv2.GaussianBlur(ref, (3, 3), 0) for ref in refs)
-            for digit, refs in self.templates.items()
-        }
-
-    @classmethod
-    def _normalize_known_white(cls, image: np.ndarray) -> np.ndarray:
-        return cv2.GaussianBlur(super()._normalize_known_white(image), (3, 3), 0)
+        super().__init__(original.templates, comparison_preprocessing="gaussian3x3_v1")
 
 
 def diagnostic_timer_comparison(reader: Any) -> Any:
     if isinstance(reader, SubregionReader):
         return SubregionReader(diagnostic_timer_comparison(reader.reader), reader.bounds)
     if isinstance(reader, StrictTimerGlyphReader):
+        # The native reader now owns preprocessing. Reconstruct from its binary
+        # references rather than blurring a configured Gaussian reader twice.
         return FixedGaussianTimerComparison(reader)
     raise ValueError("Gaussian comparison requires a configured strict timer glyph reader")
 
@@ -231,6 +218,10 @@ def main() -> None:
     parser.add_argument("--raw-processing", required=True, type=Path)
     parser.add_argument("--frames-root", required=True, type=Path)
     parser.add_argument("--profile", required=True, type=Path)
+    parser.add_argument(
+        "--timer-reader-layout", type=Path,
+        help="Diagnostic-only reuse of an existing timer reader; never profile adoption",
+    )
     parser.add_argument("--window", required=True, action="append", nargs=2, type=float)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument(
@@ -240,6 +231,10 @@ def main() -> None:
     parser.add_argument(
         "--score-candidate", type=Path,
         help="Frozen diagnostic-only score sidecar; does not install production readers",
+    )
+    parser.add_argument(
+        "--package-diagnostics", action="store_true",
+        help="Build native packages from replay outputs without injecting boundaries",
     )
     args = parser.parse_args()
     _check_output_privacy(args.output.resolve())
@@ -274,6 +269,7 @@ def main() -> None:
     summaries = []
     fingerprints = set()
     score_fingerprints = set()
+    timer_reader_fingerprint = None
     for start, end in args.window:
         if not 0 <= start < end <= metadata["duration_sec"]:
             raise ValueError("window must be inside source duration")
@@ -295,14 +291,38 @@ def main() -> None:
             diagnostics.append({**row, "numeric_reader_attempts": list(pending_reads)})
             pending_reads.clear()
 
-        analyzer = RealHudAnalyzer(args.profile, diagnostic_sink=record_diagnostics)
-        if analyzer.template_profile is None:
-            raise ValueError("complete template sidecar required")
-        before = analyzer.template_profile.fingerprint(args.profile)
+        lifecycle_diagnostics: list[dict] = []
+        reader_override = {}
         if args.score_candidate:
             score_readers, score_fingerprint = load_score_candidate(args.score_candidate)
             score_fingerprints.add(score_fingerprint)
-            analyzer.readers.update(score_readers)
+            reader_override.update(score_readers)
+        timer_analyzer = None
+        if args.timer_reader_layout:
+            timer_analyzer = RealHudAnalyzer(args.timer_reader_layout)
+            reader = timer_analyzer.readers.get("round_timer")
+            if reader is None or timer_analyzer.template_profile is None:
+                raise ValueError("existing configured timer reader required")
+            reader_override["round_timer"] = reader
+            reader_fingerprint = timer_analyzer.fingerprint()
+            if (
+                timer_reader_fingerprint is not None
+                and reader_fingerprint != timer_reader_fingerprint
+            ):
+                raise ValueError("timer reader profile/assets changed between diagnostic windows")
+            timer_reader_fingerprint = reader_fingerprint
+        analyzer = RealHudAnalyzer(
+            args.profile, readers=reader_override, diagnostic_sink=record_diagnostics,
+            lifecycle_diagnostic_sink=lifecycle_diagnostics.append,
+        )
+        if timer_analyzer is not None and (
+            analyzer.layout.normalized_roi("round_timer")
+            != timer_analyzer.layout.normalized_roi("round_timer")
+        ):
+            raise ValueError("timer reader and replay layout ROI mismatch")
+        if analyzer.template_profile is None:
+            raise ValueError("complete template sidecar required")
+        before = analyzer.template_profile.fingerprint(args.profile)
         reader_classes = {role: type(reader).__name__ for role, reader in analyzer.readers.items()}
         if args.timer_comparison != "production":
             spec = analyzer.template_profile.raw.get("readers", {}).get("round_timer", {})
@@ -310,6 +330,12 @@ def main() -> None:
                 raise ValueError("diagnostic comparison must match the frozen profile declaration")
             analyzer.readers["round_timer"] = diagnostic_timer_comparison(
                 analyzer.readers.get("round_timer")
+            )
+            # A diagnostic implementation is not covered by the profile-bound
+            # production qualification, even when its scores happen to agree.
+            analyzer.global_qualification = None
+            analyzer.profile_diagnostics.append(
+                "global lifecycle qualification disabled: diagnostic timer comparison"
             )
         for role in ("round_timer", "ally_score", "enemy_score"):
             if role in analyzer.readers:
@@ -324,12 +350,86 @@ def main() -> None:
             _, after_score = load_score_candidate(args.score_candidate)
             if after_score != score_fingerprint:
                 raise ValueError("score candidate changed during diagnostic")
+        if timer_analyzer is not None and timer_analyzer.fingerprint() != timer_reader_fingerprint:
+            raise ValueError("timer reader profile/assets changed during diagnostic")
         fingerprints.add(before)
         indices = {i for i, t in enumerate(context) if start <= t <= end}
         observed = [row for row in result.observations if start <= row["time_sec"] <= end]
         if [row["time_sec"] for row in observed] != times:
             raise ValueError("native replay failed to preserve every requested PTS")
         inputs = [row for row in diagnostics if row["frame_index"] in indices]
+        hypotheses = []
+        if args.timer_reader_layout:
+            hypothetical = GlobalStartHypothesis()
+            for row, evidence in zip(observed, inputs, strict=True):
+                signals = evidence["signals"]
+                proposal = hypothetical.advance(
+                    row, discontinuity=signals.get("content_jump") is True
+                    or signals.get("discontinuity") is True,
+                )
+                if proposal is not None:
+                    hypotheses.append(proposal)
+        package_summary = None
+        package_build_error = None
+        trace_timer_displays = None
+        if args.package_diagnostics:
+            builder = RoundPackageBuilder(
+                contract=EventSourceContract.load(
+                    resource_path("config/event_source_contract_v1.json")
+                ),
+                validator=SchemaValidator(),
+            )
+            try:
+                packages = builder.build(
+                    match_id="continuous_diagnostic",
+                    video_metadata=VideoMetadata(
+                        args.video, metadata["duration_sec"], metadata["width"],
+                        metadata["height"], metadata["fps"], metadata["video_codec"],
+                        metadata["audio_codec"], metadata["has_audio"], metadata["file_size"],
+                    ),
+                    hud_observations=observed,
+                    hud_events=[e for e in result.hud_events if start <= e["time_sec"] <= end],
+                )
+            except RoundPackageBuildError as exc:
+                packages = ()
+                package_build_error = str(exc)
+            package_summary = [
+                {
+                    "round_no": package["round_no"],
+                    "round_window": package["round_window"],
+                    "timeline_completeness": package["observation_quality"][
+                        "timeline_completeness"
+                    ],
+                    "snapshot_count": len(package["state_snapshots"]),
+                    "event_counts": dict(Counter(e["type"] for e in package["events"])),
+                    "boundary_events": [
+                        e for e in package["events"]
+                        if e["type"] in {"round_start", "round_end"}
+                    ],
+                    "source_timer_displays": [
+                        {key: snapshot[key] for key in (
+                            "time_sec", "round_time_remaining_sec",
+                            "round_time_remaining_display",
+                            "round_time_remaining_display_provenance",
+                        )}
+                        for snapshot in package["state_snapshots"]
+                        if "round_time_remaining_display" in snapshot
+                    ],
+                }
+                for package in packages
+            ]
+            from tests.e2e.trace_adapter import to_e2e_trace
+
+            trace = to_e2e_trace(
+                SimpleNamespace(round_packages=packages, observations=observed)
+            )
+            trace_timer_displays = [
+                {key: snapshot[key] for key in (
+                    "time_sec", "game_timer_display", "game_timer_display_provenance"
+                )}
+                for snapshot in trace["snapshots"]
+                if "game_timer_display" in snapshot
+            ]
         summaries.append(
             {
                 "window_sec": [start, end],
@@ -416,12 +516,33 @@ def main() -> None:
                     }
                     for row, evidence in zip(observed, inputs, strict=True)
                 ],
+                "timer_display_evidence": [
+                    {
+                        "pts_sec": row["time_sec"],
+                        "numeric_seconds": row["values"].get("round_time_remaining_sec"),
+                        "display": row["values"].get("round_time_remaining_display"),
+                        "provenance": row["values"].get(
+                            "round_time_remaining_display_provenance"
+                        ),
+                        "accepted_value_confidence": row["quality"]["roi_confidence"].get(
+                            "round_timer_value"
+                        ),
+                    }
+                    for row in observed
+                ],
                 "geometry": result.calibration_diagnostics,
                 "package_trace": package_trace_diagnostic(
                     observed,
                     [e for e in result.hud_events if start <= e["time_sec"] <= end],
                     video_metadata,
                 ),
+                "native_package_diagnostics": package_summary,
+                "native_package_build_error": package_build_error,
+                "trace_timer_displays": trace_timer_displays,
+                "global_start_hypotheses": hypotheses,
+                "lifecycle_diagnostics": [
+                    row for row in lifecycle_diagnostics if start <= row["time_sec"] <= end
+                ],
             }
         )
     if (
@@ -437,6 +558,7 @@ def main() -> None:
         "timer_comparison": args.timer_comparison,
         "production_reader_replay": (
             args.timer_comparison == "production" and args.score_candidate is None
+            and args.timer_reader_layout is None
         ),
         "score_candidate_fingerprint": next(iter(score_fingerprints), None),
         "score_diagnostic_implementation_sha256": sha256_file(
@@ -447,6 +569,7 @@ def main() -> None:
         "source_video_sha256": source_sha,
         "raw_processing_sha256": raw_sha,
         "profile_fingerprint": next(iter(fingerprints)),
+        "diagnostic_timer_reader_fingerprint": timer_reader_fingerprint,
         "wall_clock_sec": time.perf_counter() - started,
         "windows": summaries,
     }

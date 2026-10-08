@@ -1,0 +1,95 @@
+{
+  "schema_version": "1.0",
+  "scope": "component and native package diagnostic; not canonical full acceptance",
+  "head_commit": "9bb50abd463ab0ef41fb35c59dbe0d7679a64082",
+  "working_tree_changes": [
+    "scripts/diagnostics/diagnose_round_lifecycle.py",
+    "tests/unit/test_round_boundary_regressions.py",
+    "docs/phase_reference_qualification.md"
+  ],
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "raw_processing_sha256": "e0c3b9667b15aee9e6802e1b1b58aa61c916ee50b21ca4b00fd94cb2ea6a7152",
+  "profile_fingerprint": "1712eb642d82a82eede1c32e155e03ee7c75804e3a5670f8c6b0c0a14f20690e",
+  "terminal_evidence": {
+    "path": "outputs/recognition-investigation/phase-evidence/structural-text/native-pre-round-package.json",
+    "sha256": "c1c2e475bf39e1e576a2cefc1e64ea2a966a0a2bb6f248e3b87a97690dab6c9b",
+    "status": "complete"
+  },
+  "window": {
+    "window_sec": [
+      0.0,
+      9.0
+    ],
+    "processed_frames": 224,
+    "state_counts": {
+      "unknown": 217,
+      "live_first_person": 7
+    },
+    "state_flag_counts": {
+      "combat_report_visible": 21,
+      "buy_phase_banner": 64
+    },
+    "input_counts": {
+      "buy_phase_template": 69,
+      "semantic_buy_phase_confirmed": 64,
+      "round_end_template": 0,
+      "both_scores_known": 0,
+      "numeric_timer_known": 0
+    },
+    "hud_events": [],
+    "native_package_diagnostics": [
+      {
+        "round_no": 1,
+        "round_window": {
+          "start_sec": 7.369336,
+          "end_sec": 8.502669
+        },
+        "timeline_completeness": 0.0,
+        "snapshot_count": 1,
+        "event_counts": {
+          "state_snapshot": 6
+        },
+        "boundary_events": []
+      }
+    ]
+  },
+  "wall_clock_sec": 460.75165661101346,
+  "frames_per_sec": 0.49508834678569213,
+  "maximum_sample_gap_sec": 0.20000000000000018,
+  "previous_comparable_native_package_run": null,
+  "runtime_delta": null,
+  "canonical_counts": {
+    "previous": {
+      "PASS": 23,
+      "FAIL": 55,
+      "NE": 4
+    },
+    "current": null,
+    "delta": null,
+    "reason": "no new full canonical evaluation"
+  },
+  "conclusion": "confirmed global preparation does not invent a round start or extend a partial fragment; source-qualified round start remains required",
+  "acceptance_gates": {
+    "R1_start": false,
+    "R1_end": false,
+    "R2_start": false,
+    "R2_false_end_generated": false,
+    "full_negative_regression_evaluated": false,
+    "full_discontinuity_regression_evaluated": false
+  },
+  "windows_verification": "Windows not tested; portable profile and production code shared",
+  "verification": {
+    "related_unit_and_trace_tests": {
+      "passed": 25,
+      "failed": 0,
+      "skipped": 0,
+      "wall_clock_sec": 13.25,
+      "validation_pack_env": "VALORANT_E2E_VALIDATION_PACK",
+      "negative_assertion": "NEG-SPECTATOR-POISON-151 synthetic leakage is still rejected by unchanged reference evaluator"
+    },
+    "ruff": "PASS src tests scripts/e2e scripts/diagnostics",
+    "mypy": "PASS 98 source files",
+    "git_diff_check": "PASS",
+    "full_regression": "not run; lifecycle acceptance gates remain unmet"
+  }
+}

@@ -19,7 +19,15 @@ class StrictTimerGlyphReader:
     CLASS_MARGIN = 0.04
     TEMPLATE_SHAPE = (32, 24)
 
-    def __init__(self, templates: Mapping[str, Sequence[ImageU8]]) -> None:
+    def __init__(
+        self, templates: Mapping[str, Sequence[ImageU8]], *,
+        comparison_preprocessing: str = "binary_v1",
+    ) -> None:
+        if not isinstance(comparison_preprocessing, str) or comparison_preprocessing not in {
+            "binary_v1", "gaussian3x3_v1"
+        }:
+            raise ValueError("unsupported strict timer comparison preprocessing")
+        self.comparison_preprocessing = comparison_preprocessing
         if set(templates) != DIGITS:
             raise ValueError("strict timer templates must contain exactly digits 0 through 9")
         validated: dict[str, tuple[ImageU8, ...]] = {}
@@ -39,6 +47,15 @@ class StrictTimerGlyphReader:
                 images.append(np.ascontiguousarray(image))
             validated[digit] = tuple(images)
         self.templates = validated
+        self.comparison_templates = {
+            digit: tuple(self._comparison_image(reference) for reference in refs)
+            for digit, refs in validated.items()
+        }
+
+    def _comparison_image(self, image: ImageU8) -> ImageU8:
+        if self.comparison_preprocessing == "gaussian3x3_v1":
+            return np.asarray(cv2.GaussianBlur(image, (3, 3), 0), dtype=np.uint8)
+        return image
 
     def read(self, image: ImageU8, roi: ImageU8) -> ReaderResult[str]:
         del image
@@ -113,8 +130,9 @@ class StrictTimerGlyphReader:
             glyph = self._normalize_known_white(
                 np.asarray(mask[y : y + height, x : x + width], dtype=np.uint8)
             )
+            glyph = self._comparison_image(glyph)
             class_scores: dict[str, float] = {}
-            for digit, refs in self.templates.items():
+            for digit, refs in self.comparison_templates.items():
                 values = [
                     float(cv2.matchTemplate(glyph, reference, cv2.TM_CCOEFF_NORMED)[0, 0])
                     for reference in refs
@@ -144,7 +162,9 @@ class StrictTimerGlyphReader:
         return ReaderResult(
             f"{digits_text[:-2]}:{digits_text[-2:]}",
             min(scores),
-            ("strict_timer_glyphs",),
+            ("strict_timer_glyphs",)
+            if self.comparison_preprocessing == "binary_v1"
+            else ("strict_timer_glyphs", "comparison_gaussian3x3_v1"),
         )
 
     @staticmethod

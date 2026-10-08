@@ -1,0 +1,785 @@
+{
+  "scope": "Accepted profile13 archived recognizer outputs -> latest-main builder/trace -> unchanged canonical evaluator; no fresh recognition or full E2E",
+  "git_head": "fd099fd938830745c749d1a58e9092565bcd7ed3",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "archive_bindings": {
+    "outputs/recognition-investigation/e2e-tiered-final-verification/full-profile13/raw_processing.json": "32b758e5766ca746b4ec42ceda10dfc08afaa8fa53fbf99e8cb495cd008db6f9",
+    "outputs/recognition-investigation/e2e-tiered-final-verification/full-profile13/e2e_trace.json": "7356d3733536ffbe8c4115b160a67a8001d4f7f9facaf6c0c043f786dc0f495b",
+    "outputs/recognition-investigation/e2e-tiered-final-verification/full-profile13/evaluation_report.json": "926b638f63171a52b6d78a7ab5aa45aae39d69441a7f061212edfebbf54264b5"
+  },
+  "production_bindings": {
+    "src/valorant_ai_coach/rounds/builder.py": "4051a806c7b14b161a386994be69fc60ec53a3aecb9048fa5b427a3b84653cfa",
+    "tests/e2e/trace_adapter.py": "f9b0eeeffc9cc3522d3a7494d3c7b4413dbab50db5ce9baa1980732fef8e77fe",
+    "tests/e2e/evaluate_saved_trace.py": "2f024851af559c4192bea17cf2a7ea179603c740128ef7185785bc53d2d40f7d",
+    "config/event_source_contract_v1.json": "220471d206853b431e810608ad11b16be0136644349ba9d8e7236940ed0c9e40"
+  },
+  "assertions_sha256": "c5e242b611ce227d1d2633e5e24c00dfe65168d8124ab58fbdea84b1d7f0d820",
+  "observations": 4634,
+  "previous_counts": {
+    "fail": 55,
+    "not_evaluated": 4,
+    "pass": 23
+  },
+  "current_counts": {
+    "fail": 55,
+    "not_evaluated": 4,
+    "pass": 23
+  },
+  "delta": {
+    "pass": 0,
+    "fail": 0,
+    "not_evaluated": 0
+  },
+  "assertion_outcomes_equal": true,
+  "failure_set_equal": true,
+  "packages_equal": true,
+  "trace_equal": true,
+  "previous_packages": 1,
+  "current_packages": 1,
+  "round_windows": [
+    {
+      "start_sec": 7.369336,
+      "end_sec": 171.002669
+    }
+  ],
+  "trace_counts_previous": {
+    "events": 189,
+    "state_intervals": 185,
+    "ownership_intervals": 4472,
+    "snapshots": 919,
+    "visual_observations": 4,
+    "temporal_features": 0
+  },
+  "trace_counts_current": {
+    "events": 189,
+    "state_intervals": 185,
+    "ownership_intervals": 4472,
+    "snapshots": 919,
+    "visual_observations": 4,
+    "temporal_features": 0
+  },
+  "negative_failures": 0,
+  "wall_clock_sec": 34.0472687339643,
+  "profile_adopted": false,
+  "full_e2e_executed": false,
+  "terminal_hashes_verified": true,
+  "assertion_results": [
+    {
+      "assertion_id": "GT-R1-ROUND-START",
+      "group": "required_point_events",
+      "index": 0,
+      "status": "fail",
+      "failures": [
+        "missing_point:GT-R1-ROUND-START"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-DEATH",
+      "group": "required_point_events",
+      "index": 1,
+      "status": "fail",
+      "failures": [
+        "missing_point:GT-R1-DEATH"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-ROUND-END",
+      "group": "required_point_events",
+      "index": 2,
+      "status": "fail",
+      "failures": [
+        "missing_point:GT-R1-ROUND-END"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-ROUND-START",
+      "group": "required_point_events",
+      "index": 3,
+      "status": "fail",
+      "failures": [
+        "missing_point:GT-R2-ROUND-START"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-DEATH",
+      "group": "required_point_events",
+      "index": 4,
+      "status": "fail",
+      "failures": [
+        "missing_point:GT-R2-DEATH"
+      ]
+    },
+    {
+      "assertion_id": "ordering_constraints-000",
+      "group": "ordering_constraints",
+      "index": 0,
+      "status": "not_evaluated",
+      "failures": []
+    },
+    {
+      "assertion_id": "ordering_constraints-001",
+      "group": "ordering_constraints",
+      "index": 1,
+      "status": "not_evaluated",
+      "failures": []
+    },
+    {
+      "assertion_id": "ordering_constraints-002",
+      "group": "ordering_constraints",
+      "index": 2,
+      "status": "not_evaluated",
+      "failures": []
+    },
+    {
+      "assertion_id": "ordering_constraints-003",
+      "group": "ordering_constraints",
+      "index": 3,
+      "status": "not_evaluated",
+      "failures": []
+    },
+    {
+      "assertion_id": "GT-R1-BUY-FLAG",
+      "group": "required_state_intervals",
+      "index": 0,
+      "status": "fail",
+      "failures": [
+        "state_coverage:GT-R1-BUY-FLAG"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-ASTRAL-1",
+      "group": "required_state_intervals",
+      "index": 1,
+      "status": "fail",
+      "failures": [
+        "state_coverage:GT-R1-ASTRAL-1"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-ASTRAL-2",
+      "group": "required_state_intervals",
+      "index": 2,
+      "status": "fail",
+      "failures": [
+        "state_coverage:GT-R1-ASTRAL-2"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SMOKE",
+      "group": "required_state_intervals",
+      "index": 3,
+      "status": "fail",
+      "failures": [
+        "state_coverage:GT-R1-SMOKE"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-COMBAT-REPORT",
+      "group": "required_state_intervals",
+      "index": 4,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "GT-R2-BUY-FLAG",
+      "group": "required_state_intervals",
+      "index": 5,
+      "status": "fail",
+      "failures": [
+        "state_coverage:GT-R2-BUY-FLAG"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-BUY-MENU-1",
+      "group": "required_state_intervals",
+      "index": 6,
+      "status": "fail",
+      "failures": [
+        "state_coverage:GT-R2-BUY-MENU-1"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-BUY-MENU-2",
+      "group": "required_state_intervals",
+      "index": 7,
+      "status": "fail",
+      "failures": [
+        "state_coverage:GT-R2-BUY-MENU-2"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-ASTRAL-1",
+      "group": "required_state_intervals",
+      "index": 8,
+      "status": "fail",
+      "failures": [
+        "state_coverage:GT-R2-ASTRAL-1"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-ASTRAL-2",
+      "group": "required_state_intervals",
+      "index": 9,
+      "status": "fail",
+      "failures": [
+        "state_coverage:GT-R2-ASTRAL-2"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-EXPANDED-MAP",
+      "group": "required_state_intervals",
+      "index": 10,
+      "status": "fail",
+      "failures": [
+        "state_coverage:GT-R2-EXPANDED-MAP"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-SPECTATOR",
+      "group": "required_state_intervals",
+      "index": 11,
+      "status": "fail",
+      "failures": [
+        "state_coverage:GT-R2-SPECTATOR"
+      ]
+    },
+    {
+      "assertion_id": "OWN-R1-SELF",
+      "group": "required_ownership_intervals",
+      "index": 0,
+      "status": "fail",
+      "failures": [
+        "ownership_coverage:OWN-R1-SELF"
+      ]
+    },
+    {
+      "assertion_id": "OWN-R1-SELF-DEAD",
+      "group": "required_ownership_intervals",
+      "index": 1,
+      "status": "fail",
+      "failures": [
+        "ownership_coverage:OWN-R1-SELF-DEAD"
+      ]
+    },
+    {
+      "assertion_id": "OWN-R2-SELF",
+      "group": "required_ownership_intervals",
+      "index": 2,
+      "status": "fail",
+      "failures": [
+        "ownership_coverage:OWN-R2-SELF"
+      ]
+    },
+    {
+      "assertion_id": "OWN-R2-SELF-DEAD",
+      "group": "required_ownership_intervals",
+      "index": 3,
+      "status": "fail",
+      "failures": [
+        "ownership_coverage:OWN-R2-SELF-DEAD"
+      ]
+    },
+    {
+      "assertion_id": "OWN-R2-TEAMMATE",
+      "group": "required_ownership_intervals",
+      "index": 4,
+      "status": "fail",
+      "failures": [
+        "ownership_coverage:OWN-R2-TEAMMATE"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-0035",
+      "group": "required_snapshots",
+      "index": 0,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R1-SNAP-0035"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-0415",
+      "group": "required_snapshots",
+      "index": 1,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R1-SNAP-0415"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-475",
+      "group": "required_snapshots",
+      "index": 2,
+      "status": "fail",
+      "failures": [
+        "snapshot:GT-R1-SNAP-475:nonself_killfeed_row_visible"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-585",
+      "group": "required_snapshots",
+      "index": 3,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R1-SNAP-585"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-595",
+      "group": "required_snapshots",
+      "index": 4,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R1-SNAP-595"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-705",
+      "group": "required_snapshots",
+      "index": 5,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-728",
+      "group": "required_snapshots",
+      "index": 6,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R1-SNAP-728"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-733",
+      "group": "required_snapshots",
+      "index": 7,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R1-SNAP-733"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-734",
+      "group": "required_snapshots",
+      "index": 8,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R1-SNAP-734"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-7425",
+      "group": "required_snapshots",
+      "index": 9,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R1-SNAP-7425"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-7438",
+      "group": "required_snapshots",
+      "index": 10,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R1-SNAP-7438"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-7440",
+      "group": "required_snapshots",
+      "index": 11,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R1-SNAP-7440"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-7445",
+      "group": "required_snapshots",
+      "index": 12,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R1-SNAP-7445"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-820",
+      "group": "required_snapshots",
+      "index": 13,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R2-SNAP-820"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-1050",
+      "group": "required_snapshots",
+      "index": 14,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R2-SNAP-1050"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-11145",
+      "group": "required_snapshots",
+      "index": 15,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R2-SNAP-11145"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-143",
+      "group": "required_snapshots",
+      "index": 16,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R2-SNAP-143"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-1475",
+      "group": "required_snapshots",
+      "index": 17,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R2-SNAP-1475"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-1476",
+      "group": "required_snapshots",
+      "index": 18,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R2-SNAP-1476"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-1477",
+      "group": "required_snapshots",
+      "index": 19,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R2-SNAP-1477"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-149",
+      "group": "required_snapshots",
+      "index": 20,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R2-SNAP-149"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-151",
+      "group": "required_snapshots",
+      "index": 21,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R2-SNAP-151"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-170",
+      "group": "required_snapshots",
+      "index": 22,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R2-SNAP-170"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-0035-DERIVED-zone_id",
+      "group": "derived_assertions",
+      "index": 0,
+      "status": "fail",
+      "failures": [
+        "missing_derived_snapshot:GT-R1-SNAP-0035-DERIVED-zone_id"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-0415-DERIVED-zone_id",
+      "group": "derived_assertions",
+      "index": 1,
+      "status": "fail",
+      "failures": [
+        "missing_derived_snapshot:GT-R1-SNAP-0415-DERIVED-zone_id"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-820-DERIVED-zone_id",
+      "group": "derived_assertions",
+      "index": 2,
+      "status": "fail",
+      "failures": [
+        "missing_derived_snapshot:GT-R2-SNAP-820-DERIVED-zone_id"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-MUZZLE-1",
+      "group": "required_visual_observations",
+      "index": 0,
+      "status": "fail",
+      "failures": [
+        "missing_visual_observation:GT-R1-MUZZLE-1"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-MUZZLE-2",
+      "group": "required_visual_observations",
+      "index": 1,
+      "status": "fail",
+      "failures": [
+        "missing_visual_observation:GT-R1-MUZZLE-2"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-MUZZLE-3",
+      "group": "required_visual_observations",
+      "index": 2,
+      "status": "fail",
+      "failures": [
+        "missing_visual_observation:GT-R1-MUZZLE-3"
+      ]
+    },
+    {
+      "assertion_id": "event_count_constraints-000",
+      "group": "event_count_constraints",
+      "index": 0,
+      "status": "fail",
+      "failures": [
+        "count:sample_round_1:round_start"
+      ]
+    },
+    {
+      "assertion_id": "event_count_constraints-001",
+      "group": "event_count_constraints",
+      "index": 1,
+      "status": "fail",
+      "failures": [
+        "count:sample_round_1:player_death"
+      ]
+    },
+    {
+      "assertion_id": "event_count_constraints-002",
+      "group": "event_count_constraints",
+      "index": 2,
+      "status": "fail",
+      "failures": [
+        "count:sample_round_1:round_end"
+      ]
+    },
+    {
+      "assertion_id": "event_count_constraints-003",
+      "group": "event_count_constraints",
+      "index": 3,
+      "status": "fail",
+      "failures": [
+        "count:sample_round_1:shot"
+      ]
+    },
+    {
+      "assertion_id": "event_count_constraints-004",
+      "group": "event_count_constraints",
+      "index": 4,
+      "status": "fail",
+      "failures": [
+        "count:sample_round_2:round_start"
+      ]
+    },
+    {
+      "assertion_id": "event_count_constraints-005",
+      "group": "event_count_constraints",
+      "index": 5,
+      "status": "fail",
+      "failures": [
+        "count:sample_round_2:player_death"
+      ]
+    },
+    {
+      "assertion_id": "event_count_constraints-006",
+      "group": "event_count_constraints",
+      "index": 6,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-REMOTE-R1A",
+      "group": "negative_assertions",
+      "index": 0,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-REMOTE-R1B",
+      "group": "negative_assertions",
+      "index": 1,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-REMOTE-R2A",
+      "group": "negative_assertions",
+      "index": 2,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-REMOTE-R2B",
+      "group": "negative_assertions",
+      "index": 3,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-ASTRAL-NOT-SMOKE",
+      "group": "negative_assertions",
+      "index": 4,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-SMOKE-NOT-ASTRAL",
+      "group": "negative_assertions",
+      "index": 5,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-SMOKE-WORLD-SPOT",
+      "group": "negative_assertions",
+      "index": 6,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-NONSELF-KILLFEED",
+      "group": "negative_assertions",
+      "index": 7,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-RELOAD-NOT-SHOT",
+      "group": "negative_assertions",
+      "index": 8,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-BUY-MENU-1",
+      "group": "negative_assertions",
+      "index": 9,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-BUY-MENU-2",
+      "group": "negative_assertions",
+      "index": 10,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-SPECTATOR-COUNT-TEXT",
+      "group": "negative_assertions",
+      "index": 11,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-DEAD-PLAYER-MECHANICS",
+      "group": "negative_assertions",
+      "index": 12,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-EXPANDED-MAP-MECHANICS",
+      "group": "negative_assertions",
+      "index": 13,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-SPECTATOR-POISON-151",
+      "group": "negative_assertions",
+      "index": 14,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-SPECTATOR-POISON-170",
+      "group": "negative_assertions",
+      "index": 15,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-STALE-COMBAT-REPORT",
+      "group": "negative_assertions",
+      "index": 16,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-R2-NO-ROUND-END",
+      "group": "negative_assertions",
+      "index": 17,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-SAME-ZONE-CALLOUT-CHANGE",
+      "group": "negative_assertions",
+      "index": 18,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-CONTENT-JUMP-SPAN",
+      "group": "negative_assertions",
+      "index": 19,
+      "status": "pass",
+      "failures": []
+    }
+  ],
+  "negative_assertions": 20,
+  "main_sync": {
+    "previous_head": "9bb50abd463ab0ef41fb35c59dbe0d7679a64082",
+    "current_head": "fd099fd938830745c749d1a58e9092565bcd7ed3",
+    "new_upstream_commits": 87,
+    "local_changes_preserved_and_byte_verified": true,
+    "overlapping_files": [
+      "src/valorant_ai_coach/rounds/builder.py",
+      "tests/unit/test_round_boundary_regressions.py"
+    ],
+    "conflict_resolution": "Equivalent boundary-event filtering follows upstream style; local partial-fragment safety test retained",
+    "git_commit_created": false,
+    "git_push_executed": false
+  },
+  "checks": {
+    "related_tests": {
+      "passed": 199,
+      "skipped": 0,
+      "runtime_sec": 31.44
+    },
+    "round_package_builder_tests": {
+      "passed": 3,
+      "runtime_sec": 1.9
+    },
+    "ruff": "PASS:src/tests/scripts/e2e/scripts/diagnostics",
+    "mypy": "PASS:101 source files",
+    "diff_check": "PASS"
+  },
+  "new_fresh_recognition_evidence": false,
+  "full_acceptance_current": null,
+  "full_acceptance_delta": null,
+  "remaining_blocker": "Real global lifecycle qualification and the three actual continuous boundary acceptance points remain unmet; archived equality is compatibility only",
+  "private_result_sha256": "6fa93e0a4c3bf676272ff5e6cdcf9e6031455830def2945cdeb97feedc49d005"
+}

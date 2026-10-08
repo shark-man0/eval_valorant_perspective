@@ -1,0 +1,546 @@
+{
+  "scope": "Actual production RealHudAnalyzer source validation of opt-in score sidecar; no runtime qualification, package acceptance or canonical E2E",
+  "git_head": "9bb50abd463ab0ef41fb35c59dbe0d7679a64082",
+  "binding": {
+    "video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "profile_fingerprint": "ad747fd04c8d5a0567455da3253cd316e0b94065d7e2d0c87120b15d63f6f000",
+    "code_fingerprint": "6011f168b640de47d9b592041b4f696d2ff92796dec0c28dd96636f7b84140af",
+    "script_sha256": "21534791e2b114508da9610467e21aa26881479671ead20ae4b1ef61172b8abf",
+    "native_manifest_sha256": "9210e1fbb145a4fb414006a278cd5629001e40ce412d25d85ae5bc911fd5e6bf",
+    "prefix_sha256": "44fa518cf0268f1ef69e64ff94a1cb732a05cccb5174352e64290039638267d6"
+  },
+  "target_assertions": [
+    "GT-R1-ROUND-END",
+    "event_count_constraints-002",
+    "GT-R1-ROUND-START",
+    "GT-R2-ROUND-START"
+  ],
+  "input": {
+    "processed_frames": 36,
+    "heldout_source_frames": 27,
+    "calibration_prefix_frames_processed": 9,
+    "independent_analyzer_instances": 3,
+    "native_window_count": 3,
+    "frame_skips_inside_windows": 0,
+    "prefix_scope": "three historically source-associated calibration prefix frames per independent window; long gap never used for lifecycle corroboration"
+  },
+  "no_injected_geometry_readers_signals_or_qualification": true,
+  "score_comparison": {
+    "previous_scope": "frozen reader-only on same27frames, assumed reference geometry",
+    "current_scope": "actual calibrated source analyzer on same27frames",
+    "previous": {
+      "correct": 36,
+      "unknown": 18,
+      "wrong": 0
+    },
+    "current": {
+      "unknown": 18,
+      "correct": 36,
+      "wrong": 0
+    },
+    "delta": {
+      "correct": 0,
+      "unknown": 0,
+      "wrong": 0
+    }
+  },
+  "source_evaluation_rows": [
+    {
+      "pts_sec": 142.5193359375,
+      "field": "score_ally",
+      "actual": null,
+      "source_visible_display": "0",
+      "outcome": "unknown",
+      "reader_confidence": 1.0
+    },
+    {
+      "pts_sec": 142.5193359375,
+      "field": "score_enemy",
+      "actual": 2,
+      "source_visible_display": "2",
+      "outcome": "correct",
+      "reader_confidence": 0.9536582827568054
+    },
+    {
+      "pts_sec": 142.53600260416667,
+      "field": "score_ally",
+      "actual": null,
+      "source_visible_display": "0",
+      "outcome": "unknown",
+      "reader_confidence": 1.0
+    },
+    {
+      "pts_sec": 142.53600260416667,
+      "field": "score_enemy",
+      "actual": 2,
+      "source_visible_display": "2",
+      "outcome": "correct",
+      "reader_confidence": 0.9539545178413391
+    },
+    {
+      "pts_sec": 142.55266927083332,
+      "field": "score_ally",
+      "actual": null,
+      "source_visible_display": "0",
+      "outcome": "unknown",
+      "reader_confidence": 1.0
+    },
+    {
+      "pts_sec": 142.55266927083332,
+      "field": "score_enemy",
+      "actual": 2,
+      "source_visible_display": "2",
+      "outcome": "correct",
+      "reader_confidence": 0.9539545178413391
+    },
+    {
+      "pts_sec": 142.5693359375,
+      "field": "score_ally",
+      "actual": null,
+      "source_visible_display": "0",
+      "outcome": "unknown",
+      "reader_confidence": 0.9777777777777777
+    },
+    {
+      "pts_sec": 142.5693359375,
+      "field": "score_enemy",
+      "actual": 2,
+      "source_visible_display": "2",
+      "outcome": "correct",
+      "reader_confidence": 0.9523216485977173
+    },
+    {
+      "pts_sec": 142.58600260416668,
+      "field": "score_ally",
+      "actual": null,
+      "source_visible_display": "0",
+      "outcome": "unknown",
+      "reader_confidence": 1.0
+    },
+    {
+      "pts_sec": 142.58600260416668,
+      "field": "score_enemy",
+      "actual": 2,
+      "source_visible_display": "2",
+      "outcome": "correct",
+      "reader_confidence": 0.9499372839927673
+    },
+    {
+      "pts_sec": 142.60266927083333,
+      "field": "score_ally",
+      "actual": null,
+      "source_visible_display": "0",
+      "outcome": "unknown",
+      "reader_confidence": 1.0
+    },
+    {
+      "pts_sec": 142.60266927083333,
+      "field": "score_enemy",
+      "actual": 2,
+      "source_visible_display": "2",
+      "outcome": "correct",
+      "reader_confidence": 0.9497019052505493
+    },
+    {
+      "pts_sec": 142.6193359375,
+      "field": "score_ally",
+      "actual": null,
+      "source_visible_display": "0",
+      "outcome": "unknown",
+      "reader_confidence": 1.0
+    },
+    {
+      "pts_sec": 142.6193359375,
+      "field": "score_enemy",
+      "actual": 2,
+      "source_visible_display": "2",
+      "outcome": "correct",
+      "reader_confidence": 0.9497019052505493
+    },
+    {
+      "pts_sec": 142.63600260416666,
+      "field": "score_ally",
+      "actual": null,
+      "source_visible_display": "0",
+      "outcome": "unknown",
+      "reader_confidence": 1.0
+    },
+    {
+      "pts_sec": 142.63600260416666,
+      "field": "score_enemy",
+      "actual": 2,
+      "source_visible_display": "2",
+      "outcome": "correct",
+      "reader_confidence": 0.9497019052505493
+    },
+    {
+      "pts_sec": 142.65266927083334,
+      "field": "score_ally",
+      "actual": null,
+      "source_visible_display": "0",
+      "outcome": "unknown",
+      "reader_confidence": 1.0
+    },
+    {
+      "pts_sec": 142.65266927083334,
+      "field": "score_enemy",
+      "actual": 2,
+      "source_visible_display": "2",
+      "outcome": "correct",
+      "reader_confidence": 0.9540109038352966
+    },
+    {
+      "pts_sec": 24.436002604166667,
+      "field": "score_ally",
+      "actual": 0,
+      "source_visible_display": "0",
+      "outcome": "correct",
+      "reader_confidence": 0.9465780854225159
+    },
+    {
+      "pts_sec": 24.436002604166667,
+      "field": "score_enemy",
+      "actual": null,
+      "source_visible_display": "1",
+      "outcome": "unknown",
+      "reader_confidence": 0.4893313435597647
+    },
+    {
+      "pts_sec": 24.452669270833333,
+      "field": "score_ally",
+      "actual": 0,
+      "source_visible_display": "0",
+      "outcome": "correct",
+      "reader_confidence": 0.9465780854225159
+    },
+    {
+      "pts_sec": 24.452669270833333,
+      "field": "score_enemy",
+      "actual": null,
+      "source_visible_display": "1",
+      "outcome": "unknown",
+      "reader_confidence": 0.48838565447056376
+    },
+    {
+      "pts_sec": 24.4693359375,
+      "field": "score_ally",
+      "actual": 0,
+      "source_visible_display": "0",
+      "outcome": "correct",
+      "reader_confidence": 0.9465780854225159
+    },
+    {
+      "pts_sec": 24.4693359375,
+      "field": "score_enemy",
+      "actual": null,
+      "source_visible_display": "1",
+      "outcome": "unknown",
+      "reader_confidence": 0.4880091244906681
+    },
+    {
+      "pts_sec": 24.486002604166668,
+      "field": "score_ally",
+      "actual": 0,
+      "source_visible_display": "0",
+      "outcome": "correct",
+      "reader_confidence": 0.9465780854225159
+    },
+    {
+      "pts_sec": 24.486002604166668,
+      "field": "score_enemy",
+      "actual": null,
+      "source_visible_display": "1",
+      "outcome": "unknown",
+      "reader_confidence": 0.4846248098191427
+    },
+    {
+      "pts_sec": 24.502669270833334,
+      "field": "score_ally",
+      "actual": 0,
+      "source_visible_display": "0",
+      "outcome": "correct",
+      "reader_confidence": 0.9465780854225159
+    },
+    {
+      "pts_sec": 24.502669270833334,
+      "field": "score_enemy",
+      "actual": null,
+      "source_visible_display": "1",
+      "outcome": "unknown",
+      "reader_confidence": 0.48055069375885584
+    },
+    {
+      "pts_sec": 24.5193359375,
+      "field": "score_ally",
+      "actual": 0,
+      "source_visible_display": "0",
+      "outcome": "correct",
+      "reader_confidence": 0.9465780854225159
+    },
+    {
+      "pts_sec": 24.5193359375,
+      "field": "score_enemy",
+      "actual": null,
+      "source_visible_display": "1",
+      "outcome": "unknown",
+      "reader_confidence": 0.48455931545682995
+    },
+    {
+      "pts_sec": 24.536002604166665,
+      "field": "score_ally",
+      "actual": 0,
+      "source_visible_display": "0",
+      "outcome": "correct",
+      "reader_confidence": 0.9465780854225159
+    },
+    {
+      "pts_sec": 24.536002604166665,
+      "field": "score_enemy",
+      "actual": null,
+      "source_visible_display": "1",
+      "outcome": "unknown",
+      "reader_confidence": 0.4857389275331423
+    },
+    {
+      "pts_sec": 24.552669270833334,
+      "field": "score_ally",
+      "actual": 0,
+      "source_visible_display": "0",
+      "outcome": "correct",
+      "reader_confidence": 0.9465780854225159
+    },
+    {
+      "pts_sec": 24.552669270833334,
+      "field": "score_enemy",
+      "actual": null,
+      "source_visible_display": "1",
+      "outcome": "unknown",
+      "reader_confidence": 0.4830413190762427
+    },
+    {
+      "pts_sec": 24.5693359375,
+      "field": "score_ally",
+      "actual": 0,
+      "source_visible_display": "0",
+      "outcome": "correct",
+      "reader_confidence": 0.9465780854225159
+    },
+    {
+      "pts_sec": 24.5693359375,
+      "field": "score_enemy",
+      "actual": null,
+      "source_visible_display": "1",
+      "outcome": "unknown",
+      "reader_confidence": 0.48269882957977267
+    },
+    {
+      "pts_sec": 73.30266927083333,
+      "field": "score_ally",
+      "actual": 0,
+      "source_visible_display": "0",
+      "outcome": "correct",
+      "reader_confidence": 0.9315125942230225
+    },
+    {
+      "pts_sec": 73.30266927083333,
+      "field": "score_enemy",
+      "actual": 1,
+      "source_visible_display": "1",
+      "outcome": "correct",
+      "reader_confidence": 0.9662814140319824
+    },
+    {
+      "pts_sec": 73.3193359375,
+      "field": "score_ally",
+      "actual": 0,
+      "source_visible_display": "0",
+      "outcome": "correct",
+      "reader_confidence": 0.9384577870368958
+    },
+    {
+      "pts_sec": 73.3193359375,
+      "field": "score_enemy",
+      "actual": 1,
+      "source_visible_display": "1",
+      "outcome": "correct",
+      "reader_confidence": 0.9662814140319824
+    },
+    {
+      "pts_sec": 73.33600260416667,
+      "field": "score_ally",
+      "actual": 0,
+      "source_visible_display": "0",
+      "outcome": "correct",
+      "reader_confidence": 0.9269326329231262
+    },
+    {
+      "pts_sec": 73.33600260416667,
+      "field": "score_enemy",
+      "actual": 1,
+      "source_visible_display": "1",
+      "outcome": "correct",
+      "reader_confidence": 0.9662814140319824
+    },
+    {
+      "pts_sec": 73.35266927083333,
+      "field": "score_ally",
+      "actual": 0,
+      "source_visible_display": "0",
+      "outcome": "correct",
+      "reader_confidence": 0.9287377595901489
+    },
+    {
+      "pts_sec": 73.35266927083333,
+      "field": "score_enemy",
+      "actual": 1,
+      "source_visible_display": "1",
+      "outcome": "correct",
+      "reader_confidence": 0.9662814140319824
+    },
+    {
+      "pts_sec": 73.3693359375,
+      "field": "score_ally",
+      "actual": 0,
+      "source_visible_display": "0",
+      "outcome": "correct",
+      "reader_confidence": 0.9527857899665833
+    },
+    {
+      "pts_sec": 73.3693359375,
+      "field": "score_enemy",
+      "actual": 1,
+      "source_visible_display": "1",
+      "outcome": "correct",
+      "reader_confidence": 0.9662814140319824
+    },
+    {
+      "pts_sec": 73.38600260416666,
+      "field": "score_ally",
+      "actual": 0,
+      "source_visible_display": "0",
+      "outcome": "correct",
+      "reader_confidence": 0.9527857899665833
+    },
+    {
+      "pts_sec": 73.38600260416666,
+      "field": "score_enemy",
+      "actual": 1,
+      "source_visible_display": "1",
+      "outcome": "correct",
+      "reader_confidence": 0.9662814140319824
+    },
+    {
+      "pts_sec": 73.40266927083333,
+      "field": "score_ally",
+      "actual": 0,
+      "source_visible_display": "0",
+      "outcome": "correct",
+      "reader_confidence": 0.9527857899665833
+    },
+    {
+      "pts_sec": 73.40266927083333,
+      "field": "score_enemy",
+      "actual": 1,
+      "source_visible_display": "1",
+      "outcome": "correct",
+      "reader_confidence": 0.9662814140319824
+    },
+    {
+      "pts_sec": 73.4193359375,
+      "field": "score_ally",
+      "actual": 0,
+      "source_visible_display": "0",
+      "outcome": "correct",
+      "reader_confidence": 0.9527857899665833
+    },
+    {
+      "pts_sec": 73.4193359375,
+      "field": "score_enemy",
+      "actual": 1,
+      "source_visible_display": "1",
+      "outcome": "correct",
+      "reader_confidence": 0.9662814140319824
+    },
+    {
+      "pts_sec": 73.43600260416666,
+      "field": "score_ally",
+      "actual": 0,
+      "source_visible_display": "0",
+      "outcome": "correct",
+      "reader_confidence": 0.9514408111572266
+    },
+    {
+      "pts_sec": 73.43600260416666,
+      "field": "score_enemy",
+      "actual": 1,
+      "source_visible_display": "1",
+      "outcome": "correct",
+      "reader_confidence": 0.9680429100990295
+    }
+  ],
+  "observed_primary_state_counts": {
+    "unknown": 27
+  },
+  "player_fact_counts": {
+    "player_specific_hud_valid": 0,
+    "hp_known": 0,
+    "armor_known": 0,
+    "weapon_text_known": 0,
+    "ability_slots_populated": 0
+  },
+  "calibration_counts_including_prefixes": {
+    "frames": 36,
+    "fresh_geometry_success": 3,
+    "effective_geometry_success": 36,
+    "retained_geometry_frames": 33,
+    "geometry_invalid_unknown": 0,
+    "geometry_valid_state_unknown": 36,
+    "live_identity_evidence_insufficient": 26,
+    "insufficient_anchors_frames": 33
+  },
+  "round_start_count": 0,
+  "round_end_count": 0,
+  "event_count": 0,
+  "runtime": {
+    "mode": "source_analyzer_score_shadow",
+    "processed_frames": 36,
+    "wall_clock_sec": 85.39870223999606,
+    "frames_per_sec": 0.4215520734592566,
+    "previous_comparable_run": null,
+    "runtime_delta": null,
+    "reader_only_seconds": 5.560424483992392,
+    "not_comparable_reason": "full analyzer adds template/identity/state/calibration/HP OCR and9prefix inputs"
+  },
+  "production_source_changed_this_diagnostic": false,
+  "qualifying_report_created": false,
+  "profile_adopted": false,
+  "validation_pack_loaded": false,
+  "full_e2e_executed": false,
+  "canonical_previous": {
+    "pass": 23,
+    "fail": 55,
+    "not_evaluated": 4
+  },
+  "canonical_current": null,
+  "canonical_delta": null,
+  "verification": {
+    "source_video_and_profile_and_code_and_script_and_input_frames_checked_before_after": true,
+    "related_unit_tests": "217PASS25.14sec from preceding unchanged-code run; not rerun for source-only diagnostic",
+    "ruff": "prior PASS, production/scripts source unchanged",
+    "mypy": "prior PASS101, production source unchanged"
+  },
+  "bindings": {
+    "outputs/recognition-investigation/score-white-pipeline-20261008/run.py": "21534791e2b114508da9610467e21aa26881479671ead20ae4b1ef61172b8abf",
+    "outputs/recognition-investigation/score-white-pipeline-20261008/prefix.json": "44fa518cf0268f1ef69e64ff94a1cb732a05cccb5174352e64290039638267d6",
+    "outputs/recognition-investigation/score-white-pipeline-20261008/selection.json": "fd394c7c0c564c3dc4203fc94af229b8997a837c5670f2816325a9e4e33cef67",
+    "outputs/recognition-investigation/score-white-pipeline-20261008/results.json": "d4309c9a7848e5f0dcb2c5174d6e7331f772dd65ab866e455f8fb87884dedde3",
+    "outputs/recognition-investigation/score-white-holdout-20261008/blind-source-labels.json": "d605b04e7abe8155adb82eb49b10d669d91134ed697b47d4874697444f3349b4"
+  },
+  "remaining_blockers": [
+    "No real global lifecycle qualification loaded, no round boundary acceptance",
+    "Bright source contamination still causes18unknown score reads",
+    "R1 end lacks qualified same-segment result/score corroboration",
+    "Retained geometry across prefix gap is a geometry assumption of existing policy, not proof of content continuity; no policy changed"
+  ],
+  "windows_verified": false
+}

@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import logging
 import math
+import os
 import shutil
 import subprocess
 import time
@@ -32,6 +33,12 @@ class _ProcessCancelled(InterruptedError):
     pass
 
 
+def _subprocess_environment() -> dict[str, str]:
+    environment = os.environ.copy()
+    environment.pop("OPENAI_API_KEY", None)
+    return environment
+
+
 def _run_cancellable_process(
     command: list[str], timeout_sec: float, cancel_event: Event | None = None
 ) -> subprocess.CompletedProcess[str]:
@@ -45,6 +52,7 @@ def _run_cancellable_process(
         text=True,
         encoding="utf-8",
         errors="replace",
+        env=_subprocess_environment(),
     )
     deadline = time.monotonic() + timeout_sec
     try:

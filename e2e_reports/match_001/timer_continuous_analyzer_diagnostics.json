@@ -1,0 +1,463 @@
+{
+  "schema_version": 1,
+  "scope": "actual calibrated RealHudAnalyzer replay of every archived canonical PTS in three explicit continuous diagnostic windows; not native-60fps/all-source-frame coverage, not independent holdout or canonical evaluation",
+  "status": "complete",
+  "git_head": "9bb50abd463ab0ef41fb35c59dbe0d7679a64082",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "raw_processing_sha256": "e0c3b9667b15aee9e6802e1b1b58aa61c916ee50b21ca4b00fd94cb2ea6a7152",
+  "profile_fingerprint": "8b5955f1d7de7139949815a7853260b9a66b6fd48140b64351030a6e78e9a5db",
+  "recognizer_fingerprint_at_freeze": "0c22b76dddd7b322fc92e93862cf4a18e9f0e0cccb2027155f6c71be7b5a634d",
+  "diagnostic_sha256": "a59ddd382c8bf213357cc1afddfa45a5c6e38d73d55ca18a001618c7f9258aca",
+  "wall_clock_sec": 835.4215446750168,
+  "total_window_observations": 342,
+  "calibration_prefix_observations": 9,
+  "timer_numeric_accepted": 224,
+  "scores_both_known": 0,
+  "round_start_events": 0,
+  "round_end_events": 0,
+  "windows": [
+    {
+      "window_sec": [
+        3.0,
+        6.0
+      ],
+      "processed_frames": 78,
+      "calibration_prefix": [
+        0.036003,
+        0.202669,
+        0.402669
+      ],
+      "wall_clock_sec": 168.5938417139987,
+      "frames_per_sec": 0.48044459498946457,
+      "maximum_sample_gap_sec": 0.15000000000000036,
+      "state_counts": {
+        "unknown": 78
+      },
+      "state_flag_counts": {
+        "buy_phase_banner": 29,
+        "combat_report_visible": 4
+      },
+      "input_counts": {
+        "buy_phase_template": 30,
+        "semantic_buy_phase_confirmed": 29,
+        "round_end_template": 0,
+        "both_scores_known": 0,
+        "numeric_timer_known": 60
+      },
+      "hud_events": [],
+      "native_package_diagnostics": [],
+      "native_package_build_error": "信頼できるラウンド区間を検出できませんでした。HUD校正と録画範囲を確認してください",
+      "trace_timer_displays": [],
+      "selected_boundary_timer_diagnostics": [
+        {
+          "pts_sec": 4.002669,
+          "numeric_seconds": 0.0,
+          "display": "0:00",
+          "provenance": {
+            "reader": "round_timer",
+            "sources": [
+              "strict_timer_glyphs",
+              "comparison_gaussian3x3_v1"
+            ],
+            "confidence": 0.9559454321861267,
+            "cross_checked": false
+          },
+          "accepted_value_confidence": 0.9559454321861267
+        },
+        {
+          "pts_sec": 4.069336,
+          "numeric_seconds": 0.0,
+          "display": "0:00",
+          "provenance": {
+            "reader": "round_timer",
+            "sources": [
+              "strict_timer_glyphs",
+              "comparison_gaussian3x3_v1"
+            ],
+            "confidence": 0.9537631869316101,
+            "cross_checked": false
+          },
+          "accepted_value_confidence": 0.9537631869316101
+        },
+        {
+          "pts_sec": 4.086003,
+          "numeric_seconds": 0.0,
+          "display": "0:00",
+          "provenance": {
+            "reader": "round_timer",
+            "sources": [
+              "strict_timer_glyphs",
+              "comparison_gaussian3x3_v1"
+            ],
+            "confidence": 0.9587987661361694,
+            "cross_checked": false
+          },
+          "accepted_value_confidence": 0.9587987661361694
+        },
+        {
+          "pts_sec": 4.152669,
+          "numeric_seconds": 99.0,
+          "display": "1:39",
+          "provenance": {
+            "reader": "round_timer",
+            "sources": [
+              "strict_timer_glyphs",
+              "comparison_gaussian3x3_v1"
+            ],
+            "confidence": 0.9607433676719666,
+            "cross_checked": false
+          },
+          "accepted_value_confidence": 0.9607433676719666
+        },
+        {
+          "pts_sec": 4.169336,
+          "numeric_seconds": 99.0,
+          "display": "1:39",
+          "provenance": {
+            "reader": "round_timer",
+            "sources": [
+              "strict_timer_glyphs",
+              "comparison_gaussian3x3_v1"
+            ],
+            "confidence": 0.9636812210083008,
+            "cross_checked": false
+          },
+          "accepted_value_confidence": 0.9636812210083008
+        },
+        {
+          "pts_sec": 4.202669,
+          "numeric_seconds": 99.0,
+          "display": "1:39",
+          "provenance": {
+            "reader": "round_timer",
+            "sources": [
+              "strict_timer_glyphs",
+              "comparison_gaussian3x3_v1"
+            ],
+            "confidence": 0.9672865271568298,
+            "cross_checked": false
+          },
+          "accepted_value_confidence": 0.9672865271568298
+        },
+        {
+          "pts_sec": 4.252669,
+          "numeric_seconds": 99.0,
+          "display": "1:39",
+          "provenance": {
+            "reader": "round_timer",
+            "sources": [
+              "strict_timer_glyphs",
+              "comparison_gaussian3x3_v1"
+            ],
+            "confidence": 0.966324508190155,
+            "cross_checked": false
+          },
+          "accepted_value_confidence": 0.966324508190155
+        }
+      ],
+      "geometry_summary": {
+        "schema_version": 1,
+        "profile_present": true,
+        "fresh_geometry_success_rate": 0.012345679012345678,
+        "effective_geometry_success_rate": 1.0,
+        "counts": {
+          "frames": 81,
+          "fresh_geometry_success": 1,
+          "effective_geometry_success": 81,
+          "retained_geometry_frames": 80,
+          "geometry_invalid_unknown": 0,
+          "geometry_valid_state_unknown": 81,
+          "live_identity_evidence_insufficient": 81,
+          "insufficient_anchors_frames": 80
+        }
+      }
+    },
+    {
+      "window_sec": [
+        72.0,
+        77.0
+      ],
+      "processed_frames": 79,
+      "calibration_prefix": [
+        0.036003,
+        0.202669,
+        0.402669
+      ],
+      "wall_clock_sec": 245.4350417680107,
+      "frames_per_sec": 0.33410062153026937,
+      "maximum_sample_gap_sec": 0.20000000000000284,
+      "state_counts": {
+        "unknown": 79
+      },
+      "state_flag_counts": {
+        "combat_report_visible": 56
+      },
+      "input_counts": {
+        "buy_phase_template": 0,
+        "semantic_buy_phase_confirmed": 0,
+        "round_end_template": 0,
+        "both_scores_known": 0,
+        "numeric_timer_known": 20
+      },
+      "hud_events": [],
+      "native_package_diagnostics": [],
+      "native_package_build_error": "信頼できるラウンド区間を検出できませんでした。HUD校正と録画範囲を確認してください",
+      "trace_timer_displays": [],
+      "selected_boundary_timer_diagnostics": [
+        {
+          "pts_sec": 74.319336,
+          "numeric_seconds": 29.0,
+          "display": "0:29",
+          "provenance": {
+            "reader": "round_timer",
+            "sources": [
+              "strict_timer_glyphs",
+              "comparison_gaussian3x3_v1"
+            ],
+            "confidence": 0.9584905505180359,
+            "cross_checked": false
+          },
+          "accepted_value_confidence": 0.9584905505180359
+        },
+        {
+          "pts_sec": 74.402669,
+          "numeric_seconds": null,
+          "display": null,
+          "provenance": null,
+          "accepted_value_confidence": 0.0
+        },
+        {
+          "pts_sec": 74.486003,
+          "numeric_seconds": null,
+          "display": null,
+          "provenance": null,
+          "accepted_value_confidence": 0.0
+        },
+        {
+          "pts_sec": 74.502669,
+          "numeric_seconds": null,
+          "display": null,
+          "provenance": null,
+          "accepted_value_confidence": 0.0
+        },
+        {
+          "pts_sec": 74.569336,
+          "numeric_seconds": null,
+          "display": null,
+          "provenance": null,
+          "accepted_value_confidence": 0.0
+        }
+      ],
+      "geometry_summary": {
+        "schema_version": 1,
+        "profile_present": true,
+        "fresh_geometry_success_rate": 0.012195121951219513,
+        "effective_geometry_success_rate": 1.0,
+        "counts": {
+          "frames": 82,
+          "fresh_geometry_success": 1,
+          "effective_geometry_success": 82,
+          "retained_geometry_frames": 81,
+          "geometry_invalid_unknown": 0,
+          "geometry_valid_state_unknown": 82,
+          "live_identity_evidence_insufficient": 80,
+          "insufficient_anchors_frames": 81
+        }
+      }
+    },
+    {
+      "window_sec": [
+        109.0,
+        114.0
+      ],
+      "processed_frames": 185,
+      "calibration_prefix": [
+        0.036003,
+        0.202669,
+        0.402669
+      ],
+      "wall_clock_sec": 409.5783884069824,
+      "frames_per_sec": 0.4590085935227412,
+      "maximum_sample_gap_sec": 0.08333399999999358,
+      "state_counts": {
+        "buy_menu_open": 34,
+        "unknown": 130,
+        "live_first_person": 21
+      },
+      "state_flag_counts": {
+        "combat_report_visible": 52,
+        "buy_phase_banner": 7
+      },
+      "input_counts": {
+        "buy_phase_template": 9,
+        "semantic_buy_phase_confirmed": 7,
+        "round_end_template": 0,
+        "both_scores_known": 0,
+        "numeric_timer_known": 144
+      },
+      "hud_events": [],
+      "native_package_diagnostics": [
+        {
+          "round_no": 1,
+          "round_window": {
+            "start_sec": 112.686003,
+            "end_sec": 113.786003
+          },
+          "timeline_completeness": 0.0,
+          "snapshot_count": 3,
+          "event_counts": {
+            "state_snapshot": 8
+          },
+          "boundary_events": [],
+          "source_timer_displays": [
+            {
+              "time_sec": 113.119336,
+              "round_time_remaining_sec": 98.0,
+              "round_time_remaining_display": "1:38",
+              "round_time_remaining_display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9207835793495178,
+                "cross_checked": false
+              }
+            }
+          ]
+        }
+      ],
+      "native_package_build_error": null,
+      "trace_timer_displays": [
+        {
+          "time_sec": 113.119336,
+          "game_timer_display": "1:38",
+          "game_timer_display_provenance": {
+            "reader": "round_timer",
+            "sources": [
+              "strict_timer_glyphs",
+              "comparison_gaussian3x3_v1"
+            ],
+            "confidence": 0.9207835793495178,
+            "cross_checked": false,
+            "source_pts_sec": 113.119336
+          }
+        }
+      ],
+      "selected_boundary_timer_diagnostics": [
+        {
+          "pts_sec": 111.352669,
+          "numeric_seconds": 0.0,
+          "display": "0:00",
+          "provenance": {
+            "reader": "round_timer",
+            "sources": [
+              "strict_timer_glyphs",
+              "comparison_gaussian3x3_v1"
+            ],
+            "confidence": 0.963474452495575,
+            "cross_checked": false
+          },
+          "accepted_value_confidence": 0.963474452495575
+        },
+        {
+          "pts_sec": 111.402669,
+          "numeric_seconds": 0.0,
+          "display": "0:00",
+          "provenance": {
+            "reader": "round_timer",
+            "sources": [
+              "strict_timer_glyphs",
+              "comparison_gaussian3x3_v1"
+            ],
+            "confidence": 0.9634609818458557,
+            "cross_checked": false
+          },
+          "accepted_value_confidence": 0.9634609818458557
+        },
+        {
+          "pts_sec": 111.436003,
+          "numeric_seconds": 100.0,
+          "display": "1:40",
+          "provenance": {
+            "reader": "round_timer",
+            "sources": [
+              "strict_timer_glyphs",
+              "comparison_gaussian3x3_v1"
+            ],
+            "confidence": 0.9361436367034912,
+            "cross_checked": false
+          },
+          "accepted_value_confidence": 0.9361436367034912
+        },
+        {
+          "pts_sec": 111.502669,
+          "numeric_seconds": 99.0,
+          "display": "1:39",
+          "provenance": {
+            "reader": "round_timer",
+            "sources": [
+              "strict_timer_glyphs",
+              "comparison_gaussian3x3_v1"
+            ],
+            "confidence": 0.9705124497413635,
+            "cross_checked": false
+          },
+          "accepted_value_confidence": 0.9705124497413635
+        },
+        {
+          "pts_sec": 111.519336,
+          "numeric_seconds": 99.0,
+          "display": "1:39",
+          "provenance": {
+            "reader": "round_timer",
+            "sources": [
+              "strict_timer_glyphs",
+              "comparison_gaussian3x3_v1"
+            ],
+            "confidence": 0.9743687510490417,
+            "cross_checked": false
+          },
+          "accepted_value_confidence": 0.9743687510490417
+        }
+      ],
+      "geometry_summary": {
+        "schema_version": 1,
+        "profile_present": true,
+        "fresh_geometry_success_rate": 0.005319148936170213,
+        "effective_geometry_success_rate": 1.0,
+        "counts": {
+          "frames": 188,
+          "fresh_geometry_success": 1,
+          "effective_geometry_success": 188,
+          "retained_geometry_frames": 187,
+          "geometry_invalid_unknown": 0,
+          "geometry_valid_state_unknown": 133,
+          "live_identity_evidence_insufficient": 165,
+          "insufficient_anchors_frames": 187
+        }
+      }
+    }
+  ],
+  "qualification": {
+    "global_manifest_exists": false,
+    "global_path_exercised": false,
+    "continuity_producer_qualified": false,
+    "profile_adopted": false
+  },
+  "comparison": {
+    "previous": "no comparable run with same frozen timer profile and all three full windows",
+    "current": "342 window observations, 224 accepted timers, zero boundary events",
+    "delta": "not comparable to earlier shorter windows or different readers",
+    "canonical_current": "not measured; historical adopted baseline 23/55/4"
+  },
+  "remaining_blockers": [
+    "qualified global timer/phase/continuity component reports",
+    "source-qualified continuity producer; current global path intentionally inactive",
+    "score and same-segment result evidence for end; no new OCR readers developed here",
+    "natural timer-absent canonical ROI negative qualification",
+    "sampled safety and canonical full acceptance"
+  ],
+  "safety_scope": "zero events in this replay does not establish real negative/discontinuity acceptance; no expected values/windows/round IDs used by production analyzer",
+  "windows_execution": "unverified"
+}

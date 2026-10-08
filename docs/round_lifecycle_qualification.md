@@ -669,3 +669,72 @@ Fresh full suite: **1278 PASS / 5 baseline FAIL / 5 SKIP**, 151.77 s,
 path and Spectator cases; no assertion was weakened. Ruff, source mypy (98 files)
 and diff check pass. Actual start/end/package completion and canonical full E2E
 remain unproven; the task goal is still active.
+
+## Main integration and native source replay (2026-10-09)
+
+Integrated official main `0a606a0` into `work/round-lifecycle-boundaries`.
+Resolved conflicts in the lifecycle, temporal builder, package builder and
+continuous diagnostic without replacing either implementation wholesale:
+
+- Preserve main's opt-in qualified global-system lifecycle and its single-path
+  selection; no second independently emitting FSM was introduced.
+- Preserve this branch's complete score-pair continuity checks on the legacy
+  path, finite timer guards, boundary normalization and partial-window scope.
+- Use main's semantic preparation confidence rather than the aggregate
+  player-identity confidence for preparation provenance.
+- Retain numeric reader audit, package/trace association diagnostic, source
+  timer-display transport, lifecycle diagnostics and global hypotheses.
+- Score-reader overrides are supplied to the analyzer constructor so they
+  cannot inherit a production profile's global qualification. Diagnostic timer
+  substitution also explicitly disables that qualification.
+- Gaussian timer comparison now delegates to the native reader. Binary assets
+  remain binary and preprocessing is applied exactly once, including when the
+  configured native reader already selects Gaussian comparison. A regression
+  checks asset and result equality, not just a successful timer value.
+
+Read-only SSH confirmed remote HEAD `0a606a0` and a clean remote worktree;
+retrieved six private native-preparation diagnostic JSON files into ignored
+`outputs/pi-import-20261009/native-global-preparation-complete/`. No remote code,
+profile or running process was changed, and no private images were committed.
+
+Replayed the **same 60 native source frames** locally using the configured
+numeric profile fingerprint
+`8b5955f1d7de7139949815a7853260b9a66b6fd48140b64351030a6e78e9a5db`.
+Source SHA remains `71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06`.
+Private output: `outputs/round-lifecycle/mac-native-global-merged-20261009/`.
+All timer, phase, continuity-reason and lifecycle-state counts agree with the
+retrieved remote diagnostic. This is an optimistic reference-geometry
+simulation with a test-only qualification object, **not an actually qualified
+production run**, and it does not load the Validation Pack.
+
+| Development window | Frames | Timer accepted / unknown | Confirmed phase | Simulated starts / ends |
+| --- | ---: | ---: | ---: | ---: |
+| 3.902669–4.402669 | 30 | 30 / 0 | 8 | 0 / 0 |
+| 111.186003–111.686003 | 30 | 24 / 6 | 9 | 0 / 0 |
+
+Local replay took 10.38 seconds; remote runtime was 69.29 seconds. These are
+diagnostic runtimes only, not a canonical E2E speed comparison. No boundary,
+package or accuracy improvement is claimed.
+
+The next blocking contract is now more specific than missing OCR: R1 displays
+`2:25` for two source samples before `1:39`; recognizing that text correctly
+does not establish stable clock semantics. R2 source segments contain only
+16.667 ms of attested preparation before camera-support breaks, below the
+unchanged 50 ms confirmation requirement. Immediate prior phase confirmation
+is absent at both timer resets. Known phase-UI edges must not be double-counted
+as independent scene correspondence. Do not repair this by lowering thresholds,
+borrowing earlier segments or labeling a transient display an OCR error.
+
+Verification: focused lifecycle/source/timer/diagnostic suite **160 PASS**;
+post-integration diagnostic subset **17 PASS**. Full suite **1493 PASS / 5 FAIL /
+5 SKIP**, 155.33 seconds, XML `pytest-main-integration-20261009.xml`. All five
+failures reproduce in an isolated `git archive origin/main` copy (**46 PASS /
+5 FAIL** in the affected subset): one macOS `/var` path assertion and four
+Spectator synthetic assertions. No tests were weakened to conceal them.
+Ruff passes; mypy passes on 101 source files. `git diff origin/main --check`
+passes for this branch's changes. The combined merge's cached diff also reports
+an inherited trailing space in main's release-notes template; release policy
+and artifacts were not independently edited here.
+
+No qualification sidecar was installed, safe defaults remain unchanged, and no
+canonical full E2E was rerun. Start/end/package completion remains unproven.

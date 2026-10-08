@@ -173,12 +173,29 @@ def test_diagnostic_gaussian_timer_keeps_gates_and_original_assets():
     assert wrapped.reader.CLASS_MARGIN == original.CLASS_MARGIN == 0.04
     for digit, ref in original_assets.items():
         np.testing.assert_array_equal(original.templates[digit][0], ref)
-        np.testing.assert_array_equal(wrapped.reader.templates[digit][0],
+        np.testing.assert_array_equal(wrapped.reader.templates[digit][0], ref)
+        np.testing.assert_array_equal(wrapped.reader.comparison_templates[digit][0],
                                       cv2.GaussianBlur(ref, (3, 3), 0))
     blank = np.zeros((48, 69), np.uint8)
     assert wrapped.reader.read(blank, blank) == original.read(blank, blank)
     with pytest.raises(ValueError, match="configured strict timer"):
         diagnostic_timer_comparison(None)
+
+
+def test_diagnostic_gaussian_does_not_double_blur_native_gaussian_reader():
+    from scripts.diagnostics.diagnose_round_lifecycle import diagnostic_timer_comparison
+    from tests.unit.test_timer_glyphs import _render_timer, _templates
+    from valorant_ai_coach.hud.timer_glyphs import StrictTimerGlyphReader
+
+    original = StrictTimerGlyphReader(_templates(), comparison_preprocessing="gaussian3x3_v1")
+    wrapped = diagnostic_timer_comparison(original)
+    for digit in original.templates:
+        np.testing.assert_array_equal(wrapped.templates[digit][0], original.templates[digit][0])
+        np.testing.assert_array_equal(
+            wrapped.comparison_templates[digit][0], original.comparison_templates[digit][0]
+        )
+    field = _render_timer("1:14")
+    assert wrapped.read(field, field) == original.read(field, field)
 
 
 @pytest.mark.parametrize("malformation", ["missing_colon", "double_colon", "dot", "slash"])

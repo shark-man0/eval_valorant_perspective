@@ -11,6 +11,8 @@ import math
 from collections.abc import Mapping
 from typing import Any
 
+from valorant_ai_coach.hud.models import timer_display_evidence
+
 # Match the HUD temporal detector's own >1s discontinuity cutoff.
 MAX_SAMPLE_GAP_SEC = 1.0
 
@@ -117,9 +119,15 @@ def to_e2e_trace(result: Any) -> dict[str, list[dict[str, Any]]]:
                         quality.get(key), f"HUD snapshot {key} at {timestamp}")
                 # The semantic timer display is intentionally not reconstructed
                 # from seconds; only source-preserved display text may be emitted.
-                timer_text = values.get("round_time_remaining_display")
-                if timer_text is not None:
-                    row["game_timer_display"] = timer_text
+                timer = timer_display_evidence(values)
+                native_timer = timer_display_evidence(snapshot)
+                if native_timer is not None:
+                    if native_timer != timer:
+                        raise ValueError(f"Snapshot timer source mismatch at {timestamp}")
+                    row["game_timer_display"] = timer["display"]
+                    row["game_timer_display_provenance"] = {
+                        **timer["provenance"], "source_pts_sec": timestamp,
+                    }
             trace["snapshots"].append(row)
 
     def containing_round(timestamp: float) -> int | None:

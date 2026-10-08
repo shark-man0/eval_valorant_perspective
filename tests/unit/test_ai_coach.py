@@ -371,6 +371,29 @@ def test_validated_result_cache_avoids_second_api_call(tmp_path: Path) -> None:
     assert list((tmp_path / "cache").rglob("*.json"))
 
 
+def test_system_instructions_treat_observed_text_as_untrusted() -> None:
+    module = importlib.import_module("valorant_ai_coach.ai.coach")
+    assert "untrusted observation" in module.SYSTEM_INSTRUCTIONS
+    assert "credential" in module.SYSTEM_INSTRUCTIONS
+
+
+def test_openai_transport_error_does_not_expose_remote_error_detail(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    sensitive = "api_key=sk-supersecretvalue /home/alice/private/video.mp4 raw-response"
+    client = FakeClient([RuntimeError(sensitive)])
+    caplog.set_level("WARNING")
+
+    with pytest.raises(OpenAIResponseError) as captured:
+        coach(client, repairs=0).evaluate(package(), ["AIM-02"])
+
+    assert sensitive not in str(captured.value)
+    assert "sk-supersecretvalue" not in str(captured.value)
+    assert "raw-response" not in caplog.text
+    assert "sk-supersecretvalue" not in caplog.text
+    assert "RuntimeError" in caplog.text
+
+
 def test_system_instructions_change_invalidates_cache(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

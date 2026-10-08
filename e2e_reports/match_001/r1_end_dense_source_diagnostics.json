@@ -1,0 +1,154 @@
+{
+  "schema_version": "1.0",
+  "head_commit": "9bb50abd463ab0ef41fb35c59dbe0d7679a64082",
+  "scope": "manual source-frame diagnostic only; no recognizer candidate, production event or canonical PASS",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "decode_window_sec": [
+    74.36,
+    74.52
+  ],
+  "decode_method": "FFmpeg -ss 73 -copyts, select between(t,74.36,74.52), passthrough output; all ten native frames in this explicit range; source PTS ticks from showinfo",
+  "decode_log_sha256": "6f85369b7f93262bfcec657843eb3605b5f724387e4872629c6d93d2a64d856e",
+  "source_pts_time_base": "1/15360",
+  "source_frames": [
+    {
+      "source_pts_ticks": 1142313,
+      "time_base": "1/15360",
+      "pts_sec": 74.3693359375,
+      "frame_sha256": "877b720fa9b180a3d9f77478b7f43bf2a25e8f274ca559fa70af2d0df1957604",
+      "manual_review": {
+        "team_ace_banner_visible": false,
+        "timer_display": "0:29",
+        "score_display": "0-1"
+      },
+      "role": "manual diagnostic source review only; no runtime signal or new validation GT"
+    },
+    {
+      "source_pts_ticks": 1142569,
+      "time_base": "1/15360",
+      "pts_sec": 74.38600260416666,
+      "frame_sha256": "683a5fea89d6b2e551ff33d3d7ae7eef6c824a68045f28b1aa0ca2d21ac38db4",
+      "manual_review": {
+        "team_ace_banner_visible": false,
+        "timer_display": "0:29",
+        "score_display": "0-1"
+      },
+      "role": "manual diagnostic source review only; no runtime signal or new validation GT"
+    },
+    {
+      "source_pts_ticks": 1142825,
+      "time_base": "1/15360",
+      "pts_sec": 74.40266927083333,
+      "frame_sha256": "022acf8c07e77b79aee8ac5c65018cae6ae803508ef610dff7bf366c5b3d4dbe",
+      "manual_review": {
+        "team_ace_banner_visible": false,
+        "timer_display": "0:29",
+        "score_display": "0-1"
+      },
+      "role": "manual diagnostic source review only; no runtime signal or new validation GT"
+    },
+    {
+      "source_pts_ticks": 1143081,
+      "time_base": "1/15360",
+      "pts_sec": 74.4193359375,
+      "frame_sha256": "9f941a254c40b4fab11dd375653ba7622b37ac630f553c7f5de879a71edd3314",
+      "manual_review": {
+        "team_ace_banner_visible": false,
+        "timer_display": "0:29",
+        "score_display": "0-1"
+      },
+      "role": "manual diagnostic source review only; no runtime signal or new validation GT"
+    },
+    {
+      "source_pts_ticks": 1143337,
+      "time_base": "1/15360",
+      "pts_sec": 74.43600260416666,
+      "frame_sha256": "8dba92b8ce2af487a45d04d182d2f35a1406518b60d1fa4c09e0ef4f1130d942",
+      "manual_review": {
+        "team_ace_banner_visible": true,
+        "timer_display": "0:29",
+        "score_display": "0-1"
+      },
+      "role": "manual diagnostic source review only; no runtime signal or new validation GT"
+    },
+    {
+      "source_pts_ticks": 1143593,
+      "time_base": "1/15360",
+      "pts_sec": 74.45266927083334,
+      "frame_sha256": "7ed7df9c55a483ae454b00bbaa7ace857879444d9d5502ce6340da109fa8fd8b",
+      "manual_review": {
+        "team_ace_banner_visible": false,
+        "timer_display": "0:06",
+        "score_display": "0-1"
+      },
+      "role": "manual diagnostic source review only; no runtime signal or new validation GT"
+    },
+    {
+      "source_pts_ticks": 1143849,
+      "time_base": "1/15360",
+      "pts_sec": 74.4693359375,
+      "frame_sha256": "e61922fa0e000c6506c6c65da008fc4a42d6dc9f62a6f9b992d6f3d521a04d16",
+      "manual_review": {
+        "team_ace_banner_visible": false,
+        "timer_display": "0:06",
+        "score_display": "0-1"
+      },
+      "role": "manual diagnostic source review only; no runtime signal or new validation GT"
+    },
+    {
+      "source_pts_ticks": 1144105,
+      "time_base": "1/15360",
+      "pts_sec": 74.48600260416667,
+      "frame_sha256": "ee73d20c37b73e0ddd5f807a3a4c89d75ddcba39e1ce01f86ccb74d645ba74de",
+      "manual_review": {
+        "team_ace_banner_visible": false,
+        "timer_display": "0:06",
+        "score_display": "0-2"
+      },
+      "role": "manual diagnostic source review only; no runtime signal or new validation GT"
+    },
+    {
+      "source_pts_ticks": 1144361,
+      "time_base": "1/15360",
+      "pts_sec": 74.50266927083334,
+      "frame_sha256": "1bddd849bd6ed81c98c849e2eafa70de9fbb453a3a8e29a1a1aec2b67340f86d",
+      "manual_review": {
+        "team_ace_banner_visible": false,
+        "timer_display": "0:06",
+        "score_display": "0-2"
+      },
+      "role": "manual diagnostic source review only; no runtime signal or new validation GT"
+    },
+    {
+      "source_pts_ticks": 1144617,
+      "time_base": "1/15360",
+      "pts_sec": 74.5193359375,
+      "frame_sha256": "42ef4b551abd79737a566de59ec15ad5112da63af17510618722d66bcfd6e43a",
+      "manual_review": {
+        "team_ace_banner_visible": false,
+        "timer_display": "0:06",
+        "score_display": "0-2"
+      },
+      "role": "manual diagnostic source review only; no runtime signal or new validation GT"
+    }
+  ],
+  "banner_observation_count": 1,
+  "banner_observation_pts_sec": 74.436003,
+  "full16_contains_banner_pts": false,
+  "targeted_archived_input_contains_banner_pts": true,
+  "reviewed_timer_transition_pts_sec": 74.452669,
+  "reviewed_score_update_pts_sec": 74.486003,
+  "production_events_generated": 0,
+  "canonical_status_changed": false,
+  "findings": [
+    "Physical end banner exists between previously reviewed full-native PTS; absence at those PTS is not absence in the source video.",
+    "Only one semantic banner frame is visible in this ten-frame reviewed range; no temporal corroboration or independent training/holdout support is established.",
+    "Timer changes on next frame and score updates later; existing documented discontinuity prevents assuming an uninterrupted gameplay interval.",
+    "Current joined-end path requires accepted score pairs and HUD confidence; neither is available in archived observations.",
+    "Do not adopt a single-frame template, inject this timestamp, backdate later banner/score evidence, or change full sampler."
+  ],
+  "next_required_evidence": "Independent end semantics/roster corroboration within the same content segment, and a runtime evidence transport design that preserves source timing without changing the full sampler; full adoption remains unqualified.",
+  "full_e2e_run": false,
+  "numeric_candidate_created": false,
+  "production_changed": false
+}

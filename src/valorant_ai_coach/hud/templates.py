@@ -4,7 +4,8 @@ Profiles are JSON files next to a layout by default, named
 ``<layout-stem>.templates.json``. Asset paths are relative to the profile.
 Anchor entries have ``template``, ``search_region`` (a layout ROI name or
 normalized ``[x1, y1, x2, y2]``), and optional ``threshold``. Reader entries
-use ``kind`` values ``digits``, ``strict_timer_glyphs``, ``template_values``,
+use ``kind`` values ``digits``, ``strict_timer_glyphs``, ``strict_score_glyphs``,
+``template_values``,
 ``fields``, ``ability_slots``, ``weapon_templates``, or opt-in
 ``strict_hp_glyphs``. Missing assets produce no match.
 """
@@ -33,6 +34,7 @@ from .hp_glyphs import StrictHpGlyphReader, UnavailableStrictHpGlyphReader
 from .layout import HudLayout, NormalizedRoi
 from .readers import HudReader, ReaderResult
 from .report_header import ReportHeader, report_header_evidence
+from .score_glyphs import StrictScoreGlyphReader, UnavailableStrictScoreGlyphReader
 from .semantic_text import MATCHER as SEMANTIC_TEXT_MATCHER
 from .semantic_text import SIGNAL_ROIS, SemanticTextReference
 from .spectator import PanelReference, detect_panel
@@ -786,8 +788,13 @@ class HudTemplateProfile:
                     if isinstance(values, Mapping):
                         loaded = self._load_values(values, float(raw_spec.get("threshold", 0.90)))
                         readers[str(roi_name)] = TemplateValueReader(loaded)
-                elif kind == "strict_timer_glyphs":
-                    if str(roi_name) != "round_timer":
+                elif kind in {"strict_timer_glyphs", "strict_score_glyphs"}:
+                    score_reader = kind == "strict_score_glyphs"
+                    if score_reader and str(roi_name) not in {"ally_score", "enemy_score"}:
+                        raise ValueError(
+                            "strict_score_glyphs is only supported for ally/enemy_score"
+                        )
+                    if not score_reader and str(roi_name) != "round_timer":
                         raise ValueError("strict_timer_glyphs is only supported for round_timer")
                     threshold = raw_spec.get("glyph_threshold", 0.90)
                     margin = raw_spec.get("glyph_margin", 0.04)
@@ -825,7 +832,18 @@ class HudTemplateProfile:
                                 f"strict timer digit {digit} template cannot be decoded"
                             )
                         loaded_templates[digit] = [np.asarray(reference, dtype=np.uint8)]
-                    readers[str(roi_name)] = StrictTimerGlyphReader(loaded_templates)
+                    comparison = raw_spec.get("comparison_preprocessing", "binary_v1")
+                    if score_reader:
+                        readers[str(roi_name)] = StrictScoreGlyphReader(
+                            loaded_templates, comparison_preprocessing=comparison,
+                            foreground_preprocessing=raw_spec.get(
+                                "foreground_preprocessing", "otsu_v1"
+                            ),
+                        )
+                    else:
+                        readers[str(roi_name)] = StrictTimerGlyphReader(
+                            loaded_templates, comparison_preprocessing=comparison,
+                        )
                 elif kind == "strict_hp_glyphs":
                     if str(roi_name) != "player_hp_armor":
                         raise ValueError("strict_hp_glyphs is only supported for player_hp_armor")
@@ -936,6 +954,8 @@ class HudTemplateProfile:
                 if kind == "strict_hp_glyphs":
                     # Explicit opt-in HP configurations fail closed, including wrong roles.
                     readers[str(roi_name)] = UnavailableStrictHpGlyphReader()
+                if kind == "strict_score_glyphs":
+                    readers[str(roi_name)] = UnavailableStrictScoreGlyphReader()
         return readers
 
     def _load_values(

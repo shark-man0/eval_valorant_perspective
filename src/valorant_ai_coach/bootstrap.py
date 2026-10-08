@@ -18,7 +18,7 @@ from valorant_ai_coach.events import EventSourceContract
 from valorant_ai_coach.facts import FactBuilder
 from valorant_ai_coach.hud import HudAnalyzer, MockHudAnalyzer, RealHudAnalyzer
 from valorant_ai_coach.models import RoleResolver
-from valorant_ai_coach.resources import executable_path, resource_path
+from valorant_ai_coach.resources import executable_path, resource_path, resource_root
 from valorant_ai_coach.rounds import RoundPackageBuilder
 from valorant_ai_coach.rules import (
     DeterministicRuleEngine,
@@ -93,7 +93,14 @@ def build_services(
 
     hud_processor = None
     if selected.hud_mode == "mock":
-        fixture = resource_path(f"tests/cases/{selected.mock_case_id}/input.json")
+        packaged_fixture = (
+            resource_root() / "runtime" / "mock_cases" / selected.mock_case_id / "input.json"
+        )
+        fixture = (
+            packaged_fixture
+            if packaged_fixture.is_file()
+            else resource_path(f"tests/cases/{selected.mock_case_id}/input.json")
+        )
         hud: HudAnalyzer = MockHudAnalyzer(fixture)
     elif selected.hud_mode == "real":
         layout_path = (

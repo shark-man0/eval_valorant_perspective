@@ -76,10 +76,26 @@ def test_global_phase_can_associate_preparation_without_inventing_player_identit
     active = observation(2)
     packages = build([phase, active, observation(3)], [(2, "round_start"), (3, "round_end")])
     assert packages[0]["round_window"]["start_sec"] == 1
-    assert [event["time_sec"] for event in packages[0]["events"]] == [2, 3]
+    boundary_events = [
+        event
+        for event in packages[0]["events"]
+        if event["type"] in {"round_start", "round_end"}
+    ]
+    assert [(event["type"], event["time_sec"]) for event in boundary_events] == [
+        ("round_start", 2),
+        ("round_end", 3),
+    ]
     assert phase["values"]["player_specific_hud_valid"] is False
     assert phase["values"]["hp"] is None
     assert phase["primary_state"] == "unknown"
+    # Global preparation evidence alone cannot establish a real round start or
+    # extend an unbounded fragment into a presumed round.
+    partial = build([phase, active, observation(3)], [])
+    assert partial[0]["round_window"]["start_sec"] == 2
+    assert not any(
+        event["type"] in {"round_start", "round_end"}
+        for package in partial for event in package["events"]
+    )
     phase["quality"]["roi_confidence"]["center_phase_banner_semantic_text"] = 0.89
     assert not make_builder()._is_preparation_observation(phase)
     phase["quality"]["roi_confidence"]["center_phase_banner_semantic_text"] = 0.94

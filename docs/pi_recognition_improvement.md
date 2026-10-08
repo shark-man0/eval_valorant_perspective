@@ -1461,3 +1461,178 @@ E2E before/after: native targeted13 frames149.921s gives1 PASS12 FAIL0 NE; nativ
 - Evidence: training3/3 accepted; separate R2 positive holdout5 correct/3 unknown; 13 reviewed non-purchase frames have no false acceptance. No retuning after misses. Native short continuous replay18 frames in38.746s confirms11 phase matches, score/timer0, unknown18 and boundary events0. R1 replay has one training overlap; R2 is a separate episode.
 - Previous/Current/Delta on same18 PTS: phase0/11/+11, unknown18/18/0, round start0/0/0, round end0/0/0. No new canonical full: last verified23/55/4; candidate full metrics unmeasured.
 - Conclusion: real phase evidence reaches production, but lifecycle acceptance stays unqualified. No profile adoption or additional full run; stable score, accepted timer, independent identity, semantic end evidence and source cut markers remain. See docs/phase_reference_qualification.md and e2e_reports/match_001/phase_reference_qualification.json.
+
+## 2026-10-08: Native phase-to-package qualification
+
+- Problem / targets: round lifecycle/package scope; `GT-R1-ROUND-START`, `GT-R1-ROUND-END`, `GT-R2-ROUND-START` and their count/ordering dependencies remain unqualified.
+- Hypothesis: independently confirmed global phase confidence could preserve preparation context in a native package without granting player ownership.
+- Evidence: every archived native PTS in 0–9 seconds was replayed once with the structural phase profile and production analyzer; 224 frames, 460.752 seconds, 64 confirmed phase flags, seven live observations. Source/archive/profile hashes were checked before and after processing.
+- Result: one partial fragment `[7.369336, 8.502669]`, zero boundary events, zero accepted timer/score pairs. Phase confidence alone does not resolve package scope. Context extension requires a detected start; no start was injected.
+- Previous / Current / Delta: canonical previous 23/55/4; current and delta unmeasured because no new full evaluation ran. Targeted remains 0/5/2 and sampled 7/12/11, with unchanged failure sets. No comparable earlier native package replay exists for this profile/window, so its runtime delta is unmeasured.
+- Change: optional native package diagnostics; regression protects preparation association with a real start and preserves partial fragments without one. External-pack test location can be explicitly provided through `VALORANT_E2E_VALIDATION_PACK`.
+- Remaining blockers: source-qualified start/end input and real discontinuity evidence. Full acceptance safety and Windows runtime remain unverified. No threshold, GT, validation assertion or full sampler changed. No new numeric reader candidate was added.
+- Reports: `docs/phase_reference_qualification.md`, `e2e_reports/match_001/semantic_phase_contract_diagnostics.json`.
+
+## 2026-10-08: Source discontinuity prerequisite audit
+
+- Targets: R1 end/start and R2 start plus negative content-jump constraints. P1 still requires genuine boundaries.
+- Evidence: production consumes explicit content-jump markers but has no source-image marker producer. Marker unit tests do not prove that real edits are detected.
+- Diagnostic: 135 source images / 130 adjacent PTS pairs in five fixed windows; verified source/archive hashes; 96×54 RGB thumbnail differences and 3×3 spatial statistics; 12.093 seconds. No recognition results were reused or supplied to the detector.
+- Rejected hypothesis: global change magnitude can safely reset continuity. Reviewed score/timer discontinuity has difference 0.182667; TEAM ACE/ability animation 0.336146; purple ability transition 0.230095. Pair gaps differ. A single magnitude threshold cannot select the first while rejecting both stronger normal transitions.
+- Change: diagnostic artifacts and implementation/failure-analysis documentation only. No production cut predicate, OCR candidate or policy adjustment.
+- Previous / Current / Delta: canonical previous 23/55/4, current/delta unmeasured; no comparable earlier diagnostic measurement. No new PASS claimed.
+- Remaining blocker: independent compound source-continuity evidence, accepted boundary inputs. Windows runtime and full safety remain unverified.
+
+## 2026-10-08: Independent preparation confidence reaches lifecycle
+
+- Problem: global purchase phase confidence survived package/trace conversion but the direct start-candidate gate and lifecycle preparation state still required player HUD confidence. This discarded source-qualified preparation when identity remained unknown.
+- Targets: P1 start/count/ordering dependencies, especially `GT-R1-ROUND-START` and `GT-R2-ROUND-START`; actual acceptance still requires timers/live evidence.
+- Change: shared preparation-confidence helper accepts only the qualified phase flag/value and finite ROI confidence >=0.90; direct candidate and lifecycle use it for prior preparation. Active live confidence, accepted timer-reset/confirmation requirements, end policy and ownership remain unchanged. Event provenance records confidence source. Optional detached lifecycle diagnostic sink does not change event output.
+- Tests: 143 related tests passed; 34 state-sink/runtime follow-up tests passed; Ruff and mypy (98 source files) passed. Native package diagnostic records expected rejection in all-unknown windows rather than inventing a package.
+- Source evidence: 18 native frames across the two short start windows show first `pre_round` at 3.902669 / 111.352669, confidence 0.982176 / 0.953142 and player HUD confidence zero. Primary unknown remains 18; accepted timers/score pairs and emitted boundaries remain zero. Runtime 48.959 seconds; previous state diagnostic and runtime delta unmeasured.
+- Previous / Current / Delta: targeted 0/5/2 →0/5/2 (zero change), 76.886→76.923 sec (+0.037); sampled 7/12/11→7/12/11 (zero change), 285.123→287.019 sec (+1.896). Complete failure sets and terminal hashes match. No new full canonical result; historical23/55/4 remains.
+- Conclusion: preparation transport defect fixed; actual boundary detection is not qualified. Missing accepted timer/live/end/continuity inputs remain the next P1 blockers. No numeric candidate, threshold relaxation, fake round or GT change; default profile not replaced.
+
+## 2026-10-08: Source timer display through native and trace contracts
+
+- Problem / targets: accepted timer strings were reduced to seconds; HUD schema had no legal display field. Four snapshot assertions (`GT-R1-SNAP-0415`, `GT-R1-SNAP-7438`, `GT-R1-SNAP-7445`, `GT-R2-SNAP-11145`) need source display plus other upstream predicates.
+- Change: optional typed display/provenance in HUD values and native snapshots. Producer preserves accepted strings with reader sources. Native display requires source score and reserved accepted timer-value confidence >=0.90. Trace verifies native/source agreement at exact PTS. Numeric-only input never becomes display; missing evidence never reuses old text. Display changes/removal participate in snapshot deduplication. Legacy required fields/default output shape remain unchanged; updated schemas are necessary for new optional output.
+- Tests: 73 related unit/integration/trace tests passed in 32.97 seconds, including leading-zero preservation, stale/weak/mismatched evidence rejection and spectator negative contract. Ruff and mypy (98 source files) passed.
+- Real evidence: final diagnostic replay of 11 native PTS in 70.4–70.6 seconds plus three calibration frames, using rejected profile16 solely for transport, preserves `0:33` from Tesseract to native and trace at 70.402669 with confidence0.96916542 and exact PTS. One source image manually reviewed correct; the remaining ten frames are unreviewed numerically, not qualified holdout. Source/archive/profile hashes verified before/after. Runtime41.488 seconds; no comparable previous whole-transport run/delta.
+- Previous / Current / Delta: canonical previous23/55/4, current/delta unmeasured. No new passing assertion. Earlier targeted/sample lifecycle checks precede this display change, so no fresh E2E validation of the display change is claimed.
+- Conclusion: transport defect fixed; adoptable timer input and the three real boundaries remain missing. Known profile16 wrong timers remain rejected. No OCR candidate, threshold relaxation, validation pack/GT/assertion change or full E2E. Windows execution remains unverified.
+- Evidence: `docs/timer_display_contract.md`, `e2e_reports/match_001/timer_display_contract_diagnostics.json`.
+
+## 2026-10-08: Global start contract hypothesis from real images
+
+- Problem: production starts require player-live classification, although round lifecycle actor is system. Qualified phase confidence alone did not remove this gate; missing timer frames also cancel pending candidates immediately.
+- Targets: R1/R2 starts and their count constraints. Source hypothesis is diagnostic-only, never a production event or canonical PASS.
+- Experiment: reuse existing rejected profile16's timer reader through the normal reader interface of the structural phase analyzer, verifying identical timer ROI and immutable fingerprints for both profiles. No new OCR/reference/profile, thresholds, state labels or production acceptance changes. Nineteen selected native PTS plus real prefixes processed once in59.966 seconds.
+- Evidence: proposed starts4.152669 /111.436003, confirmed4.252669 /111.519336, with confidence0.963303 /0.953142. Phase and numeric positive evidence are separate; unknown timer frames remain null and only bridge within a one-second diagnostic deadline. Six source images manually reviewed after prediction;15 accepted timers, six reviewed correct, nine accepted/unreviewed, four reader unknowns. This is not numeric holdout qualification, and known profile16 wrong results remain disqualifying.
+- Previous / Current / Delta: production start/end0/0 →0/0 (zero change); diagnostic hypotheses2, previous comparable replay/runtime delta unmeasured; canonical previous23/55/4, current/delta unmeasured. All19 states remain unknown and native package generation is refused in these short windows.
+- Tests:16 hypothesis tests passed; broader related verification recorded in diagnostics. Default production never imports/uses the hypothesis; source inputs remain unmodified. No full E2E.
+- Conclusion: numeric configuration alone is not sufficient; system-event evidence and player identity are conflated at the start gate. Global evidence acceptance and bounded neutral readings are a production contract decision, not a justified automatic relaxation. Asked which contract to use after saving a concrete reviewed proposal; dependent production change is pending that answer. Safe timer/end/continuity inputs and full negative verification remain separate blockers.
+- Reports: `docs/global_round_start_contract.md`, `e2e_reports/match_001/global_start_contract_diagnostics.json`.
+
+### Archived full package/trace compatibility (2026-10-08)
+
+- Problem: new optional source-display fields and preparation-confidence plumbing must preserve existing archived native/trace outputs.
+- Evidence: profile13 4634 observations reconstructed in 37.824 s; rejected profile16 4661 observations in 43.489 s. Complete package/trace equality, 82 outcome equality and failure-set equality all true; source/archive terminal hashes verified. Current builder runs its native schema validation and the unchanged canonical evaluator validates the trace.
+- Previous / Current / Delta: PASS 23 / 23 / 0; FAIL 55 / 55 / 0; NE 4 / 4 / 0 for each archive. No comparable previous reconstruction runtime.
+- Change: diagnostic results and compatibility documentation only in this follow-up. First profile13 invocation terminated before rebuilding because the diagnostic call passed a keyword-only constructor argument positionally; correcting the call yielded a successful terminal verification.
+- Conclusion: legacy archived input compatibility proven for both runs; no fresh full E2E, adopted reader, or new canonical PASS.
+- Remaining blockers: pending global-start contract and numeric scope decisions, safe timer, R1 end, positive discontinuity evidence, and real lifecycle/package acceptance. Twenty unchanged negative PASS results and zero temporal features do not qualify new behavior.
+- Report: `e2e_reports/match_001/legacy_contract_compatibility.json`.
+
+### R1 end dense source evidence (2026-10-08)
+
+- Problem/target: `GT-R1-ROUND-END` remains unqualified; archived full observations surrounding the end lacked a semantic banner.
+- Evidence: an older targeted input includes74.436003. Fresh source decode preserves all ten frames in74.36–74.52, with source ticks/time base and image hashes; manual review finds `TEAM ACE` in one frame at74.436003, before the reviewed timer change at74.452669 and score update at74.486003. Source video and archived terminal hashes match recorded metadata.
+- Root cause refinement: full-native PTS omit the transient visible banner; absence at archived observations does not prove absence in the video. Single-frame semantics lack required independent corroboration, while accepted score/HUD inputs remain missing. Later corroboration cannot assume gameplay continuity across the documented content jump.
+- Change: diagnostics/documentation only. No banner reference generation, reader candidate, production threshold, GT, sampler or evaluator changes. No new runtime boundary and no new full E2E.
+- Previous / Current / Delta: historical canonical PASS23 /23 /0, FAIL55 /55 /0, NE4 /4 /0; these unchanged values are not a fresh full evaluation. Newly inspected source-banner presence is diagnostic only, with no comparable previous dense review.
+- Next: investigate independently corroborated end evidence in the same content segment and transport of its genuine source PTS. The start-contract and numeric-scope questions remain pending.
+- Verification: `git diff --check` PASS; documentation/JSON-only follow-up does not change previously tested source code. Report: `e2e_reports/match_001/r1_end_dense_source_diagnostics.json`.
+
+### Authorized global system lifecycle implementation
+
+- Problem/targets: player-live gates block system round boundaries with unknown identity; targets remain R1/R2 starts, R1 end, lifecycle count/ordering assertions.
+- Authorization: independent qualified global system evidence and assertion-fixed numeric development approved by user; player-owned reuse and GT runtime/selection inputs prohibited.
+- Change: opt-in profile/code-bound qualification loader, continuity-attested global lifecycle, exclusive boundary path in event builder, analyzer qualification discovery/fingerprinting and reserved score-value confidence.
+- Evidence/tests:159 related tests PASS27.15s, Ruff PASS, mypy99 PASS. Synthetic integration proves2 starts/1 end/2 native packages and trace actor/time/provenance, without self ownership; qualification overlap/stale code/profile and source discontinuities fail closed. Initial new tests had fixture key/path errors, corrected without changing production to fit them.
+- Previous: canonical23/55/4. Current fresh canonical result/delta unmeasured; no new PASS claim and no full E2E. Legacy profiles are not opted in.
+- Remaining: safe timer/score qualification, actual qualified continuity producer, same-segment R1 end evidence, continuous/negative validation and final canonical full. No qualified manifest was written to a runtime profile; rejected profile16 remains rejected.
+
+
+### 2026-10-08: authorized global timer input, frozen glyph holdout
+
+Problem: round lifecycle still lacks qualified global timer and continuity input. Historical candidate17 is already rejected for sampled wrong read; raw seven support max7/10 fails80%. Hypothesis: fixed symmetric Gaussian3x3 comparison, no threshold/segmentation change. Training ten-class support passes; glyph153 correct/1unknown/0wrong. Candidate profile/code frozen before fixed32 fresh same-video frames and blind source labels. Production reader diagnostics:25correct/7unknown/0wrong, 0.967s; prior wrong controls0correct/4unknown/0wrong; eight spatial type negatives0false, controls0.356s. Source SHA256 verified after. Related146 tests22.66s, Ruff/mypy99/diff-check pass. No new targeted/sampled/full, no adoption/global qualification, canonical23/55/4 remains historical. Remaining: natural timer-absent negatives, calibrated continuous inputs, qualified continuity and same-segment end evidence. Full report: `e2e_reports/match_001/timer_glyph_training_holdout_diagnostics.json`; implementation scope: `docs/round_lifecycle_implementation.md`. Windows unverified; no automatic commit/push.
+
+
+### Frozen timer: calibrated continuous replay
+
+Completed once: all342 archived canonical observations in3–6/72–77/109–114sec, plus9 genuine prefix calibration frames, source/archive/profile hash checks before/after. Actual RealHudAnalyzer accepted224 timers:60/78,20/79,144/185. R1 reset0:00→1:39 andR2 reset0:00→1:40→1:39 observed; these are not qualified boundary events. Scores/result absent, global report/continuity producer absent, starts0/end0. Firsttwo unknown-only windows correctly rejectnativepackages; thirdonepartialfragment112.686003–113.786003 andone1:38snapshotat113.119336 reachestrace. Overall835.422sec, no comparable prior identical windows/profile. No newproductionchange/full/GT/threshold/sampler/adoption. Nextsource-qualifiedcontinuityproducer andnatural timer-absent controls. Machine-readable `e2e_reports/match_001/timer_continuous_analyzer_diagnostics.json`.
+
+
+### Source correspondence continuity diagnostic
+
+Problem: qualified global lifecycle is inactive without positive continuity proof. Fixed camera-LK forward/back+patch NCC diagnostic on135 archivedsourceframes/130pairs, hashes verified,18.596sec. R1 start2 high-NCC tracks in2cells, R2 start3 in1cell, reviewed cut2 in2cells, strong normal animation0. Thus sparseflowalone is insufficient; do not lower support or create segments from absence of cut flags. Reused source pairs, no newholdout/qualification. Addedportable diagnostic script and8tests PASS0.46sec; Ruff/diff-checkPASS; no productionchange/full/autoGit. Canonical23/55/4 remains historical. Next composite qualifiedcurrent-frame lifecycle/continuity evidence throughlow-texture abilityviews. `e2e_reports/match_001/source_correspondence_diagnostics.json`.
+
+
+### Opt-in composite source continuity producer
+
+Problem: no source continuity producer reaches qualifiedglobal lifecycle. Change: internal camera3x3nonflat NCC.90 support>=3 across>=2rows/columns plusacceptedprior/currenttimerphysics (phase-qualifiedreset allowed), exactPTS/gap/geometry checks; missingevidence breaks epoch; externaltokens ignored. Defaultprofilesinactive untilreal report. Training135sources:63proposedlinks,56timerunavailable,11spatialfailures,4gaps,1initial;5.991sec. Diagnosticuses test-only qualificationobject/referencegeometryassumption, no realqualification/events. Source/code/profile methodfreeze savedbeforefreshholdout; oldtimerholdout historicalbindingonly. Related168tests21.91sec, Ruff/mypy100/diff-checkPASS; no targeted/sample/full/fullregression/autoGit. Nextfreshholdout+negativequalification, then realcontinuousboundaries. Public `e2e_reports/match_001/composite_source_continuity_diagnostics.json`; canonical23/55/4 remains historical. Windowsunverified.
+
+
+### Fixed composite positive holdout
+
+After unchanged method/code freeze, fixed16contexts from434eligible,64unique frames excluded.12s around3164prior metadataPTS. Allpair/context sheets and32timerlabels/16visiblecontinuitylabels frozenbeforepredictions. ActualRealHudAnalyzer67frames incl3prefix: effective67/fresh1/retained66,allprimaryunknown; timer27correct5unknown0wrong. Separatecomposite/test-onlyqualification simulation5proposedlinks11abstentions(8spatial/3timer),noqualifiedevents. Analyzer135.131sec; priortrainingreader-only5.991s notcomparable. Hashescode/profile/source/archive verified beforeafter. Initialharness missing scripts import stoppedbeforeinference; PYTHONPATHfixed,onecompletedreplay. No production/threshold/GT/sampler change, no realreport/adoption/newfull. Nextindependentcut/phase-reset/negative qualification,endinput. Canonical23/55/4 remains historical. `e2e_reports/match_001/composite_continuity_holdout_diagnostics.json`.
+
+
+### Composite v1 rejected by stale-source control; v2 frozen
+
+Fixednine sourceframes disjoint fromspecifiedtraining/positiveholdout/readertraining selectedbeforepredictions; manualtimers9correct. Counterfactualreplay ofidenticalpixels+timer withtestPTS+.1s falselyattests9/9 underfrozenv1. New v2 rejects identicaldecodedpixelSHA, breaks epoch and preservescurrent/priorpixelhash; no thresholdchange. Controls9→0false(-9); priorpositive regression5→5links/11→11abstentions,0outcomechanges. Syntheticqualificationobjects neverinstalled; controlsnotnaturalcuts orfreshv2qualification. Sourcevideo SHA verifiedafter; method/code/profilefreeze renewed. Related170tests23.15s,Ruff/mypy100/diff-checkPASS. Nofull orprofileadoption/autoGit; canonical23/55/4 historical. Nextfreshv2negative/holdout/reset andend evidence. Public `e2e_reports/match_001/composite_stale_source_diagnostics.json`.
+### Global lifecycle authorization and gate diagnosis
+
+The user authorizes identity-independent, qualified system round events from global timer/score/phase/result evidence, and fixed-assertion timer/score development with separate training and holdout. This does not authorize player facts while identity is unknown, Validation Pack inputs to production, or cross-content-cut corroboration.
+
+Latest completed diagnostic: three correlated native-frame cut controls produce zero false continuity links in 1.177 seconds. The optimistic saved-source lifecycle projection produces zero R1/R2 starts despite accepted timer resets. Preparation is cleared at failed source links, and semantic temporal PTS are not consumed/bound by the global lifecycle contract. Additional code inspection finds an external supplemental mapping can overwrite internal evidence in the final merge; protect that contract before qualifying the route. These are next implementation targets, not completed fixes. No new canonical E2E run, adoption or PASS increase is claimed; last accepted result remains 23/55/4. Prior 170 related unit tests, Ruff and mypy (100 source files) passed before this documentation-only follow-up. R1 end still needs independent qualified evidence; full E2E remains gated. Windows is unverified.
+
+### Qualified-source merge and phase-duration fix
+
+Problem/root cause: external supplemental merge overwrites internal qualified evidence; old semantic phase endpoints can precede the currently consumed continuity segment. Before-fix controls reproduce4/4 proof overwrites and one start from10ms preparation. Change: opt-in analyzer excludes external global/semantic phase/result-template input and preserves the final internal evidence; content-cut notifications remain effective. Consumer requires two actual source-attested phase points over existing0.05sec in one segment, preserving preparation endpoints/count and minimum confidence. Default profiles/player safety and all thresholds/GT/sampler are unchanged.
+
+Targets remain the three round boundary IDs, event_count_constraints000/002/004 and ordering_constraints001. Tests: related183PASS22.94sec with local Validation Pack path/no skips; Ruff/mypy100/diff-checkPASS. Initial bare pytest stopped at a `tests` import error before tests; PYTHONPATH corrected. Negative controls restore exact source bytes afterward. Actual-source optimistic projection:263→263 inputs,0→0 starts,3→3 pre-round and260→260 unobserved; continuity outcomes unchanged. Runtime24.891→26.482sec(+1.592,+6.39%) includes different recording and is not a speed claim. Source/archive/frame/code/profile bindings checked; no test-only qualification installed or historical split rebound. Canonical23/55/4 is historical; new current/delta unmeasured. No targeted/sampled/full or automatic Git write. Remaining real phase/continuity, current-code qualification, R1 result/end and downstream package blockers persist; Windows unverified. Next inspect native contiguous evidence between saved analysis PTS without skipping failed source links. Public `e2e_reports/match_001/global_source_contract_diagnostics.json`.
+
+### Native source preparation rejects density-only fix
+
+Problem/hypothesis: archived sampling can omit transition evidence; test every native frame without changing the full sampler. Added portable diagnostic and16unit tests for exact integer PTS, nonzero video origin, skipped/rebased/order errors and source-probe coverage. Initial extraction tests failed on inaccurate prefix/tail seeking and were fixed. First58-frame real cohort later failed whole-window coverage audit (ffprobe itself truncated its interval); preserve it as listed-frame development data, exclude it from continuous acceptance. Corrected60-frame cohort freezes source/code/profile/script, probes both sides of each window and verifies PNG/pixel hashes, with reference geometry/test-only qualification/unknown-state assumptions. No production or threshold change.
+
+Source review after predictions:54correct display/6unknown/0wrong, not blind holdout or semantic clock qualification. R1 actual `2:25` appears in two native frames before `1:39`; five/six camera witnesses still coexist with rejected clock transitions. R2 phase preparation fragments span only16.667ms after camera/timer gaps, below0.05sec. Previous archived projection0starts→native-window0starts, delta0 on different cohorts. Native runtime69.292s, not comparable to wider projection or incomplete first run. Density alone and phase latching alone are insufficient. Existing23/55/4 historical canonical matrix remains; no fresh current/delta or native two-package acceptance. New16tests PASS1.98s, Ruff/mypy100/diff-checkPASS; prior183related tests historical, production fingerprint unchanged. No targeted/sampled/full/full-regression/automatic Git write. Next source-derived clock temporal qualification and phase-context contract, without special-casing observed values or bypassing continuity. Independent qualification, R1 end and downstream package predicates remain blockers; Windows unverified. `e2e_reports/match_001/native_global_preparation_diagnostics.json`.
+
+Follow-up: native motion correspondence at111.319336 yields18→14high-NCC points after excluding the known purchase UI; at111.369336 six→two points, and the apparent second-column support vanishes. Reject combining those UI-derived points as independent camera evidence. Three previously reviewed cut pairs fail static-grid spatial distribution, not new independent qualification. Recorded source point coordinates/masks privately and shared descriptive hashes/counts. No threshold, camera/geometry policy or production behavior changed.
+
+
+### Active round phase-jitter contract fix
+
+Problem: confirmed phase overwrites active state, allowing duplicate start and hiding real end. Before-fix synthetic EventBuilder control:2starts/0ends; after active-state latch:1start/1end (delta-1/+1). Fresh preparation after explicit source cut still allows a new start, and existing two-round package/trace tests remain PASS.151relatedtests23.86sec, Ruff/mypy100 PASS. No actual source qualification or canonical PASS gain;23/55/4 remains historical, current/delta unmeasured. New code fingerprint invalidates previous qualification bindings. No new targeted/sampled/full or Git write, no threshold/GT/sampler/player policy change; Windows unverified. Next: independently qualify raw-display versus lifecycle-clock evidence and source-local preparation. See `e2e_reports/match_001/global_active_round_diagnostics.json`.
+
+
+### Global score source reader development
+
+Added opt-in strict_score_glyphs for ally/enemy only: full ten-class references, NCC.90/margin.04, independent one/two-digit grammar, source display retention and invalid-config unknown without OCR fallback. Existing timer references reused; no GT/value/class shortcuts. Frozen native development60frames/120reads:84correct36unknown0wrong reviewed after predictions; no holdout qualification. Allunknown foreground-border failures, enemy1 includes background under Otsu140 in inspected crop. Do not fill labels or relax rejection. Runtime8.265sec/no comparable previous;194relatedtests24.49sec,Ruff/mypy101 PASS. No report/adoption/canonical change;23/55/4 historical,current/delta unmeasured. No full/Git writes; Windows unverified. Next separate-training value-invariant score foreground extraction and fresh holdout/negative qualification. `e2e_reports/match_001/score_glyph_development_diagnostics.json`.
+
+
+### Score white foreground: heldout comparison
+
+Added explicit fixed white200_v1 preprocessing; default Otsu/NCC.90/margin.04/alltenclasses/bordergrammar unchanged, no retries. Development120reads84→114correct36→6unknown0wrong. Frozen code/profile before fixed-fraction source selection, excluded.12sec around specified reference/development sources; native54frames extracted46.697sec, allPTS preserved and terminalPNG/pixel hashes checked. Blind source labels before predictions; heldout54reads19→36correct35→18unknown0wrong,17unknown→correct/no newwrong.54spatial negatives from disjoint27frames:0false3.473sec, not natural absentUI/cut controls. Heldout runtime5.561358→5.560424sec tiny noise; development8.265→8.807sec notspeedgain.217relatedtests25.14sec,Ruff/mypy101PASS. No report/adoption/canonical/full/Git write;23/55/4 historical,currentdelta unmeasured. Bright-source contamination18unknown, source continuity/starts/end corroboration remain. Samevideo/correlatedcontext/classes0/1/2limits, Windows unverified. `e2e_reports/match_001/score_white_holdout_diagnostics.json`.
+
+
+### Actual source analyzer score contract verification
+
+Merged development-only sidecar, three actual analyzer instances,27heldout native frames+9historical geometry-prefix inputs; no injected readers/anchors/signals/qualification/GT. Same54score reads reader-only36correct18unknown0wrong→actual36/18/0, delta0.27unknown primary states,0player-owned HP/armor/weapon/abilities/validity facts,0events. Geometryaggregate3fresh36effective33retained includesprefix, notfullgeometryimprovement or cutcontinuityproof. Allsource/video/profile/code/script/framehashes checked beforeafter.85.399sec36inputs.422fps notcomparable toreader-only5.560sec27inputs. No production change; prior217tests/Ruff/mypy101validunchanged, no newfull/profileadoption/Gitwrites.23/55/4historical,currentdelta unmeasured; Windowsunverified. NextqualifiedglobalabsentUI/clock/phase/end sourceevidence. `e2e_reports/match_001/score_source_analyzer_diagnostics.json`.
+
+
+### R1 end current-input and qualification gap
+
+Current fixed readers on10reviewednativeendframes:score18correct2unknown0wrong;timer4correct6unknown0wrong.Optimisticactualcamera/test-onlyq/assumedgeometrycomposite0links(1initial8timerpairmissing1spatialfail),5.161sec/no comparableprior.Originalframeshashes checked beforeafter,terminalvideoSHA verified.Manualreviewlabels evaluator-only; no sourcefactsfilled.RESULTpositiveavailable1onlyinreviewedlocalrange,notwholevideoabsenceproof;3independentsemantictraining+holdout/negative supportnotestablished.Contentcutpreventsjoininglaterscore0/2toearlierTEAMACE.Askedforadditionaluneditedsourcevideopath,replynotassumed; source-backedalternativeglobalcueallowed.No production/threshold/GT/samplerchange,report/adoption/newfullorGitwrite.Historical23/55/4,currentdeltaunmeasured;prior217tests/Ruff/mypy101unchangedsource.See`e2e_reports/match_001/round_result_qualification_gap.json`.
+
+
+### Roster source-link safety and rejected global cue
+
+Ten archived end images show ally portraits1→0, but color heuristic has five true ally slots on a visibly empty frame7; unqualified, no alive/death/round facts inferred. Existing HEAD debounce accepts both endpoints of duplicate/backward/cut links:6 synthetic invalid corroborations→0 after strictly increasing finite PTS and source-cut guards. Extracted and supplemental cuts both honored, post-cut new-segment agreement retained, five-slot/confidence thresholds unchanged. Six new unit cases;198related PASS28.71sec, Ruff/mypy101PASS, initial missing-pack trace check rerun with installed pack:9PASS0.29sec/0skips,199unique related cases total. Core fingerprint8ea9523e invalidates older qualifications. No full/profile adoption/canonical gain;23/55/4historical,current delta unmeasured. Additional source input pending; Windows unverified. See `e2e_reports/match_001/roster_source_link_diagnostics.json`.
+
+
+### Broader archived score contexts and missing natural controls
+
+Reviewed3fixedmenu topbars and all64uniform archived unknown topbars:timer/scores present, no natural absence in this cohort; notwhole-video absence proof. FrozenOtsu/white score evaluation50sourceframes after.12sec numeric/training/prior-evaluation exclusions14:100reads55→76correct45→24unknown0wrongboth,21unknown→correct/no newwrong. Manualreviewbeforepredictions,labelsserializedafteronlyevaluation; reader/selectornoGT/labels. Terminalsource/code/profile/script/PNGbindingschecked, roundedarchivedPTS/referencegeometry notcontinuous/calibratedqualification.3.677137→3.646539sec−.030598/−.83%noise. No production/sharedscriptchange; prior199unique related/Ruff/mypy101remain. No report/adoption/full/newcanonical gain;23/55/4historical,currentdeltaunmeasured. StillneednaturalabsentUI/independentsame-segmentlifecycleevidence; pendingadditionalvideoquestion, Windowsunverified. `e2e_reports/match_001/score_archived_context_diagnostics.json`.
+
+
+### Later TEAM ACE reference development and failed early transfer
+
+Rechecked75.802source;25reviewedhash-boundarchivedpositives75.2–76.4, singleepisodeaftercut/notindependentevents. Fixed3distincttraining75.402/75.802/76.269bright210intersection+ring+median+3groups, existingSemanticTextReferenceNCC.90 supports3. Frozenbeforeprediction,11sameepisodeholdout3correct8unknown0wrong;3naturalbannerROIcontrols0FP. Priorreviewedearly10regression:oneTEAMACEpositiveNCC.3876unknown,9negative0FP. Rejectas sufficientR1end input;no tuning/relaxation/backdating/sourcecutjoin.1.446sec/no comparableprior. Productioncodeunchanged/prior199unique related/Ruff/mypy101valid; no adoption/report/boundary/full/canonicalgain,23/55/4historical,currentdeltaunmeasured. Imageslocal,stats `e2e_reports/match_001/round_result_reference_development.json`; independentglobal/continuous evidence still needed, Windowsunverified.
+
+
+### Current main fd099fd synchronization and adopted13 replay
+
+Remoteadvanced87commits; preservedalllocaltracked/untrackedchanges andfast-forwardedmain9bb50ab→fd099fd938830745c749d1a58e9092565bcd7ed3. Twooverlappingfiles:buildercleanmerge,equivalentboundarytestconflictresolvedupstreamstyle+localnegativefragmenttestretained; unaffectedlocalbytesverified/privatebackup. No commit/push. Latest199related31.44sec/0skip+3builder1.90sec PASS,Ruff/mypy101/diffcheckPASS. Adopted13saved4634observations→actualcurrentbuilder/trace/unchangedevaluator,allarchive/source/assertion/codehashescheckedbeforeafter. Packages/trace/all82statuses/failuresetsidentical23/55/4delta0,onepartial7.369336–171.002669,negative0archivedcompatibilitynotfreshsafety.34.047sec/no comparableprevious(lastreplayusedrejected16). Nofreshrecognition/qualification/newfull/newPASS; real3boundariesremainunsupported,Windowsunverified. `e2e_reports/match_001/latest_main_contract_compatibility.json`.

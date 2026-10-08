@@ -118,6 +118,36 @@ def _reader(templates: dict[str, list[np.ndarray]] | None = None) -> StrictTimer
     return StrictTimerGlyphReader(templates or _templates())
 
 
+def test_opt_in_gaussian_comparison_keeps_threshold_margin_and_source_text():
+    image = _render_timer("1:14")
+    reader = StrictTimerGlyphReader(_templates(), comparison_preprocessing="gaussian3x3_v1")
+    result = reader.read(image, image)
+    assert result.value == "1:14"
+    assert result.confidence >= 0.90
+    assert reader.THRESHOLD == 0.90 and reader.CLASS_MARGIN == 0.04
+    assert result.sources == ("strict_timer_glyphs", "comparison_gaussian3x3_v1")
+    for digit in "0123456789":
+        assert np.array_equal(reader.comparison_templates[digit][0], cv2.GaussianBlur(
+            reader.templates[digit][0], (3, 3), 0
+        ))
+    assert _reader().read(image, image) == StrictTimerGlyphReader(
+        _templates(), comparison_preprocessing="binary_v1"
+    ).read(image, image)
+
+
+@pytest.mark.parametrize("extra", ["dot", "slash", "missing_colon"])
+def test_gaussian_comparison_does_not_bypass_structural_rejections(extra):
+    image = _render_timer("1:14", extra=extra)
+    reader = StrictTimerGlyphReader(_templates(), comparison_preprocessing="gaussian3x3_v1")
+    assert reader.read(image, image).value is None
+
+
+@pytest.mark.parametrize("invalid", [None, True, [], {}, "blur5x5", ""])
+def test_invalid_comparison_mode_is_rejected(invalid):
+    with pytest.raises(ValueError, match="comparison preprocessing"):
+        StrictTimerGlyphReader(_templates(), comparison_preprocessing=invalid)
+
+
 def _save_profile_assets(root: Path) -> dict[str, str]:
     assets = {}
     for digit, refs in _templates().items():
