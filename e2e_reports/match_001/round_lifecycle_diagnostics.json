@@ -1,0 +1,1076 @@
+{
+  "schema_version": 1,
+  "start_commit": "deaf3c8ed34a571f38a46e947ade5beea187d930",
+  "implementation_status": "pipeline foundation implemented; real boundary acceptance not qualified",
+  "new_full_e2e_executed": false,
+  "new_full_regression_executed": false,
+  "continuous": {
+    "status": "complete",
+    "mode": "continuous_round_diagnostic",
+    "scope": "every archived native PTS in explicit windows; no GT or signal injection",
+    "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "raw_processing_sha256": "e0c3b9667b15aee9e6802e1b1b58aa61c916ee50b21ca4b00fd94cb2ea6a7152",
+    "profile_fingerprint": "253a571ecff51dd1043ef9469af27df2644f3bc7647581b7919af4e559183511",
+    "wall_clock_sec": 813.7222488599946
+  },
+  "continuous_windows": [
+    {
+      "window_sec": [
+        3.0,
+        6.0
+      ],
+      "processed_frames": 78,
+      "calibration_prefix": [
+        0.036003,
+        0.202669,
+        0.402669
+      ],
+      "wall_clock_sec": 163.86344252998242,
+      "frames_per_sec": 0.49431403825889514,
+      "maximum_sample_gap_sec": 0.15000000000000036,
+      "state_counts": {
+        "unknown": 78
+      },
+      "identity_reasons": {
+        "spectator_exclusion_unverified": 37,
+        "structure_evidence_insufficient": 39,
+        "competing_view_evidence": 2
+      },
+      "input_counts": {
+        "buy_phase_template": 0,
+        "round_end_template": 0,
+        "both_scores_known": 0,
+        "numeric_timer_known": 0
+      },
+      "hud_events": []
+    },
+    {
+      "window_sec": [
+        72.0,
+        77.0
+      ],
+      "processed_frames": 79,
+      "calibration_prefix": [
+        0.036003,
+        0.202669,
+        0.402669
+      ],
+      "wall_clock_sec": 241.0488559519872,
+      "frames_per_sec": 0.34018000075608323,
+      "maximum_sample_gap_sec": 0.20000000000000284,
+      "state_counts": {
+        "unknown": 79
+      },
+      "identity_reasons": {
+        "spectator_exclusion_unverified": 70,
+        "structure_evidence_insufficient": 8,
+        "competing_view_evidence": 1
+      },
+      "input_counts": {
+        "buy_phase_template": 0,
+        "round_end_template": 0,
+        "both_scores_known": 0,
+        "numeric_timer_known": 0
+      },
+      "hud_events": []
+    },
+    {
+      "window_sec": [
+        109.0,
+        114.0
+      ],
+      "processed_frames": 185,
+      "calibration_prefix": [
+        0.036003,
+        0.202669,
+        0.402669
+      ],
+      "wall_clock_sec": 399.4429394849867,
+      "frames_per_sec": 0.47065545893086463,
+      "maximum_sample_gap_sec": 0.08333399999999358,
+      "state_counts": {
+        "buy_menu_open": 34,
+        "unknown": 130,
+        "live_first_person": 21
+      },
+      "identity_reasons": {
+        "spectator_exclusion_unverified": 101,
+        "structure_evidence_insufficient": 63,
+        "independent_hud_structures": 21
+      },
+      "input_counts": {
+        "buy_phase_template": 0,
+        "round_end_template": 0,
+        "both_scores_known": 0,
+        "numeric_timer_known": 0
+      },
+      "hud_events": []
+    }
+  ],
+  "sampled": {
+    "mode": "sampled",
+    "frame_count": 30,
+    "wall_sec": 285.4150514439971,
+    "input_fingerprint": {
+      "video_id": "match_001",
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
+      "assertions_sha256": "c5e242b611ce227d1d2633e5e24c00dfe65168d8124ab58fbdea84b1d7f0d820",
+      "input_scope": "isolated_points",
+      "profile_fingerprint": "2611cfecc2b148e381d760290c14d70a060efcea2bd837657fe55627ef75554b",
+      "code_fingerprint": "be0b931aa2201bc65239027b52ca6f053186407af7a8b0e4068160703555a250",
+      "suite_sha256": "9fe21d77675c79af05b2adecbaa2984d098624196bc80d876e1d89b7e712fc11",
+      "selected_categories": [],
+      "pts_sec": [
+        0.036003,
+        4.102669,
+        4.152669,
+        15.186003,
+        42.969336,
+        44.502669,
+        59.502669,
+        74.386003,
+        74.402669,
+        74.419336,
+        74.436003,
+        82.002669,
+        83.419336,
+        88.786003,
+        104.219336,
+        111.402669,
+        111.452669,
+        124.536003,
+        141.936003,
+        146.919336,
+        147.019336,
+        147.502669,
+        147.602669,
+        151.002669,
+        157.302669,
+        161.636003,
+        170.002669,
+        170.919336,
+        170.936003,
+        171.002669
+      ],
+      "calibration_prefix": [
+        0.036003,
+        0.102669,
+        0.169336
+      ]
+    },
+    "metrics": {
+      "passed": 7,
+      "failed": 12,
+      "not_evaluated": 11,
+      "evaluation_pass": 0,
+      "schema_valid": 0,
+      "state_buy_menu_open": 2,
+      "state_live_first_person": 3,
+      "state_spectator_first_person": 5,
+      "state_unknown": 20
+    },
+    "current_previous_delta": {
+      "comparable": true,
+      "reason": null,
+      "deltas": {
+        "wall_sec": {
+          "current": 285.4150514439971,
+          "previous": 326.4500869959884,
+          "delta": -41.035035551991314,
+          "percent_change": -12.570079527194483
+        },
+        "evaluation_pass": {
+          "current": 0.0,
+          "previous": 0.0,
+          "delta": 0.0,
+          "percent_change": null
+        },
+        "failed": {
+          "current": 12.0,
+          "previous": 12.0,
+          "delta": 0.0,
+          "percent_change": 0.0
+        },
+        "not_evaluated": {
+          "current": 11.0,
+          "previous": 11.0,
+          "delta": 0.0,
+          "percent_change": 0.0
+        },
+        "passed": {
+          "current": 7.0,
+          "previous": 7.0,
+          "delta": 0.0,
+          "percent_change": 0.0
+        },
+        "schema_valid": {
+          "current": 0.0,
+          "previous": 0.0,
+          "delta": 0.0,
+          "percent_change": null
+        },
+        "state_buy_menu_open": {
+          "current": 2.0,
+          "previous": 2.0,
+          "delta": 0.0,
+          "percent_change": 0.0
+        },
+        "state_live_first_person": {
+          "current": 3.0,
+          "previous": 3.0,
+          "delta": 0.0,
+          "percent_change": 0.0
+        },
+        "state_spectator_first_person": {
+          "current": 5.0,
+          "previous": 5.0,
+          "delta": 0.0,
+          "percent_change": 0.0
+        },
+        "state_unknown": {
+          "current": 20.0,
+          "previous": 20.0,
+          "delta": 0.0,
+          "percent_change": 0.0
+        }
+      }
+    },
+    "code_fingerprint": "be0b931aa2201bc65239027b52ca6f053186407af7a8b0e4068160703555a250",
+    "profile_fingerprint": "2611cfecc2b148e381d760290c14d70a060efcea2bd837657fe55627ef75554b",
+    "comparison_eligible": true
+  },
+  "offline_contract_replay": {
+    "classification": "offline archival contract replay; not a new recognition run, profile qualification, or full E2E",
+    "evaluation": {
+      "all_package_scope_failures_remain_fail": true,
+      "current_status_counts": {
+        "fail": 55,
+        "not_evaluated": 4,
+        "pass": 23
+      },
+      "discontinuity_review": {
+        "cut_interval_sec": [
+          74.433,
+          74.45
+        ],
+        "interpretation": "The passing temporal-feature prohibition does not check state/ownership interval spans; no interval was repaired.",
+        "negative_assertion_definition": {
+          "id": "NEG-CONTENT-JUMP-SPAN",
+          "must_not_span_temporal_features": [
+            "movement_state.duration_sec",
+            "rotation_started.delay_since_enemy_info_sec",
+            "rotation_completed.duration_sec",
+            "preaim_started.lead_sec"
+          ],
+          "reason": "Known source content jump invalidates continuous-time features across the boundary.",
+          "window": [
+            74.433,
+            74.45
+          ]
+        },
+        "negative_assertion_id": "NEG-CONTENT-JUMP-SPAN",
+        "negative_assertion_status": "pass",
+        "state_or_ownership_intervals_crossing_cut": {
+          "ownership_intervals": [
+            {
+              "confidence": 0.0,
+              "interval": [
+                74.402669,
+                83.336003
+              ],
+              "label": "unknown",
+              "round_id": "sample_round_1"
+            }
+          ],
+          "state_intervals": [
+            {
+              "confidence": 0.0,
+              "interval": [
+                74.402669,
+                83.336003
+              ],
+              "label": "combat_report_visible",
+              "round_id": "sample_round_1"
+            }
+          ]
+        },
+        "temporal_features_in_trace": 0,
+        "vacuous_for_state_and_ownership_intervals": true
+      },
+      "negative_assertion_count": 20,
+      "negative_assertion_status_counts": {
+        "fail": 0,
+        "not_evaluated": 0,
+        "pass": 20
+      },
+      "negative_violation_count": 0,
+      "previous_status_counts": {
+        "fail": 55,
+        "not_evaluated": 4,
+        "pass": 23
+      },
+      "round_package_scope_29": [
+        {
+          "analysis_start_secondary_blockers": [
+            {
+              "kind": "round_id_neutral_diagnostic",
+              "remaining_failures": "missing_point"
+            },
+            {
+              "kind": "event_actor_contract",
+              "producer_actor": "team",
+              "required_actor": "system"
+            }
+          ],
+          "assertion_id": "GT-R2-ROUND-START",
+          "current_contract_notes": [
+            "Current temporal round-boundary producer emits actor=system (src/valorant_ai_coach/hud/temporal.py:134-143), matching this assertion. Rebuilt raw contains zero hud_events, so missing boundary point/count remains the observed blocker."
+          ],
+          "current_failure_codes": [
+            "missing_point:GT-R2-ROUND-START"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        },
+        {
+          "analysis_start_secondary_blockers": [
+            {
+              "kind": "round_id_neutral_diagnostic",
+              "remaining_failures": "missing_point"
+            },
+            {
+              "kind": "event_attribute_contract",
+              "producer_attributes": [
+                "cause_known"
+              ],
+              "required_point_attributes": [
+                "victim_name",
+                "killer_agent",
+                "combat_report_damage_received"
+              ]
+            }
+          ],
+          "assertion_id": "GT-R2-DEATH",
+          "current_contract_notes": [
+            "Current unresolved evidence is the canonical failure code shown above; listed secondary blockers are historical analysis-start diagnoses, not independently asserted as all current blockers."
+          ],
+          "current_failure_codes": [
+            "missing_point:GT-R2-DEATH"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        },
+        {
+          "analysis_start_secondary_blockers": [
+            {
+              "kind": "round_id_neutral_diagnostic",
+              "remaining_failures": "state_coverage"
+            }
+          ],
+          "assertion_id": "GT-R2-BUY-FLAG",
+          "current_contract_notes": [
+            "Current unresolved evidence is the canonical failure code shown above; listed secondary blockers are historical analysis-start diagnoses, not independently asserted as all current blockers."
+          ],
+          "current_failure_codes": [
+            "state_coverage:GT-R2-BUY-FLAG"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        },
+        {
+          "analysis_start_secondary_blockers": [
+            {
+              "kind": "round_id_neutral_diagnostic",
+              "remaining_failures": "state_overreach,state_start_edge,state_end_edge"
+            }
+          ],
+          "assertion_id": "GT-R2-BUY-MENU-1",
+          "current_contract_notes": [
+            "Current unresolved evidence is the canonical failure code shown above; listed secondary blockers are historical analysis-start diagnoses, not independently asserted as all current blockers."
+          ],
+          "current_failure_codes": [
+            "state_coverage:GT-R2-BUY-MENU-1"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        },
+        {
+          "analysis_start_secondary_blockers": [
+            {
+              "kind": "round_id_neutral_diagnostic",
+              "remaining_failures": "state_coverage,state_start_edge,state_end_edge"
+            }
+          ],
+          "assertion_id": "GT-R2-BUY-MENU-2",
+          "current_contract_notes": [
+            "Current unresolved evidence is the canonical failure code shown above; listed secondary blockers are historical analysis-start diagnoses, not independently asserted as all current blockers."
+          ],
+          "current_failure_codes": [
+            "state_coverage:GT-R2-BUY-MENU-2"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        },
+        {
+          "analysis_start_secondary_blockers": [
+            {
+              "kind": "round_id_neutral_diagnostic",
+              "remaining_failures": "state_coverage"
+            }
+          ],
+          "assertion_id": "GT-R2-ASTRAL-1",
+          "current_contract_notes": [
+            "Current unresolved evidence is the canonical failure code shown above; listed secondary blockers are historical analysis-start diagnoses, not independently asserted as all current blockers."
+          ],
+          "current_failure_codes": [
+            "state_coverage:GT-R2-ASTRAL-1"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        },
+        {
+          "analysis_start_secondary_blockers": [
+            {
+              "kind": "round_id_neutral_diagnostic",
+              "remaining_failures": "state_coverage"
+            }
+          ],
+          "assertion_id": "GT-R2-ASTRAL-2",
+          "current_contract_notes": [
+            "Current unresolved evidence is the canonical failure code shown above; listed secondary blockers are historical analysis-start diagnoses, not independently asserted as all current blockers."
+          ],
+          "current_failure_codes": [
+            "state_coverage:GT-R2-ASTRAL-2"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        },
+        {
+          "analysis_start_secondary_blockers": [
+            {
+              "kind": "round_id_neutral_diagnostic",
+              "remaining_failures": "state_coverage"
+            }
+          ],
+          "assertion_id": "GT-R2-EXPANDED-MAP",
+          "current_contract_notes": [
+            "Current unresolved evidence is the canonical failure code shown above; listed secondary blockers are historical analysis-start diagnoses, not independently asserted as all current blockers."
+          ],
+          "current_failure_codes": [
+            "state_coverage:GT-R2-EXPANDED-MAP"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        },
+        {
+          "analysis_start_secondary_blockers": [
+            {
+              "kind": "round_id_neutral_diagnostic",
+              "remaining_failures": "state_coverage"
+            }
+          ],
+          "assertion_id": "GT-R2-SPECTATOR",
+          "current_contract_notes": [
+            "Current unresolved evidence is the canonical failure code shown above; listed secondary blockers are historical analysis-start diagnoses, not independently asserted as all current blockers."
+          ],
+          "current_failure_codes": [
+            "state_coverage:GT-R2-SPECTATOR"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        },
+        {
+          "analysis_start_secondary_blockers": [
+            {
+              "kind": "round_id_neutral_diagnostic",
+              "remaining_failures": "ownership_coverage"
+            },
+            {
+              "detail": "adapter maps only live→self and spectator→teammate; buy/remote/dead contexts need independently evidenced ownership semantics; no HUD attribution policy relaxation",
+              "kind": "ownership_contract"
+            }
+          ],
+          "assertion_id": "OWN-R2-SELF",
+          "current_contract_notes": [
+            "Current unresolved evidence is the canonical failure code shown above; listed secondary blockers are historical analysis-start diagnoses, not independently asserted as all current blockers."
+          ],
+          "current_failure_codes": [
+            "ownership_coverage:OWN-R2-SELF"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        },
+        {
+          "analysis_start_secondary_blockers": [
+            {
+              "kind": "round_id_neutral_diagnostic",
+              "remaining_failures": "ownership_coverage"
+            },
+            {
+              "detail": "adapter maps only live→self and spectator→teammate; buy/remote/dead contexts need independently evidenced ownership semantics; no HUD attribution policy relaxation",
+              "kind": "ownership_contract"
+            }
+          ],
+          "assertion_id": "OWN-R2-SELF-DEAD",
+          "current_contract_notes": [
+            "Current unresolved evidence is the canonical failure code shown above; listed secondary blockers are historical analysis-start diagnoses, not independently asserted as all current blockers."
+          ],
+          "current_failure_codes": [
+            "ownership_coverage:OWN-R2-SELF-DEAD"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        },
+        {
+          "analysis_start_secondary_blockers": [
+            {
+              "kind": "round_id_neutral_diagnostic",
+              "remaining_failures": "ownership_coverage"
+            },
+            {
+              "detail": "adapter maps only live→self and spectator→teammate; buy/remote/dead contexts need independently evidenced ownership semantics; no HUD attribution policy relaxation",
+              "kind": "ownership_contract"
+            }
+          ],
+          "assertion_id": "OWN-R2-TEAMMATE",
+          "current_contract_notes": [
+            "Current unresolved evidence is the canonical failure code shown above; listed secondary blockers are historical analysis-start diagnoses, not independently asserted as all current blockers."
+          ],
+          "current_failure_codes": [
+            "ownership_coverage:OWN-R2-TEAMMATE"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        },
+        {
+          "analysis_start_secondary_blockers": [],
+          "assertion_id": "GT-R1-SNAP-0035",
+          "current_contract_notes": [
+            "Current unresolved evidence is the canonical failure code shown above; listed secondary blockers are historical analysis-start diagnoses, not independently asserted as all current blockers."
+          ],
+          "current_failure_codes": [
+            "missing_snapshot:GT-R1-SNAP-0035"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        },
+        {
+          "analysis_start_secondary_blockers": [
+            {
+              "fields": [
+                "game_timer_display"
+              ],
+              "kind": "missing_trace_fields"
+            }
+          ],
+          "assertion_id": "GT-R1-SNAP-0415",
+          "current_contract_notes": [
+            "Current unresolved evidence is the canonical failure code shown above; listed secondary blockers are historical analysis-start diagnoses, not independently asserted as all current blockers."
+          ],
+          "current_failure_codes": [
+            "missing_snapshot:GT-R1-SNAP-0415"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        },
+        {
+          "analysis_start_secondary_blockers": [
+            {
+              "kind": "round_id_neutral_diagnostic",
+              "remaining_failures": "missing_snapshot"
+            }
+          ],
+          "assertion_id": "GT-R2-SNAP-820",
+          "current_contract_notes": [
+            "Current unresolved evidence is the canonical failure code shown above; listed secondary blockers are historical analysis-start diagnoses, not independently asserted as all current blockers."
+          ],
+          "current_failure_codes": [
+            "missing_snapshot:GT-R2-SNAP-820"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        },
+        {
+          "analysis_start_secondary_blockers": [
+            {
+              "kind": "round_id_neutral_diagnostic",
+              "remaining_failures": "missing_snapshot"
+            }
+          ],
+          "assertion_id": "GT-R2-SNAP-1050",
+          "current_contract_notes": [
+            "Current unresolved evidence is the canonical failure code shown above; listed secondary blockers are historical analysis-start diagnoses, not independently asserted as all current blockers."
+          ],
+          "current_failure_codes": [
+            "missing_snapshot:GT-R2-SNAP-1050"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        },
+        {
+          "analysis_start_secondary_blockers": [
+            {
+              "kind": "round_id_neutral_diagnostic",
+              "remaining_failures": "missing_snapshot"
+            },
+            {
+              "fields": [
+                "game_timer_display"
+              ],
+              "kind": "missing_trace_fields"
+            }
+          ],
+          "assertion_id": "GT-R2-SNAP-11145",
+          "current_contract_notes": [
+            "Current unresolved evidence is the canonical failure code shown above; listed secondary blockers are historical analysis-start diagnoses, not independently asserted as all current blockers."
+          ],
+          "current_failure_codes": [
+            "missing_snapshot:GT-R2-SNAP-11145"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        },
+        {
+          "analysis_start_secondary_blockers": [
+            {
+              "kind": "round_id_neutral_diagnostic",
+              "remaining_failures": "missing_snapshot"
+            }
+          ],
+          "assertion_id": "GT-R2-SNAP-143",
+          "current_contract_notes": [
+            "Current unresolved evidence is the canonical failure code shown above; listed secondary blockers are historical analysis-start diagnoses, not independently asserted as all current blockers."
+          ],
+          "current_failure_codes": [
+            "missing_snapshot:GT-R2-SNAP-143"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        },
+        {
+          "analysis_start_secondary_blockers": [
+            {
+              "kind": "round_id_neutral_diagnostic",
+              "remaining_failures": "missing_snapshot"
+            }
+          ],
+          "assertion_id": "GT-R2-SNAP-1475",
+          "current_contract_notes": [
+            "Current unresolved evidence is the canonical failure code shown above; listed secondary blockers are historical analysis-start diagnoses, not independently asserted as all current blockers."
+          ],
+          "current_failure_codes": [
+            "missing_snapshot:GT-R2-SNAP-1475"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        },
+        {
+          "analysis_start_secondary_blockers": [
+            {
+              "kind": "round_id_neutral_diagnostic",
+              "remaining_failures": "missing_snapshot"
+            }
+          ],
+          "assertion_id": "GT-R2-SNAP-1476",
+          "current_contract_notes": [
+            "Current unresolved evidence is the canonical failure code shown above; listed secondary blockers are historical analysis-start diagnoses, not independently asserted as all current blockers."
+          ],
+          "current_failure_codes": [
+            "missing_snapshot:GT-R2-SNAP-1476"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        },
+        {
+          "analysis_start_secondary_blockers": [
+            {
+              "kind": "round_id_neutral_diagnostic",
+              "remaining_failures": "missing_snapshot"
+            }
+          ],
+          "assertion_id": "GT-R2-SNAP-1477",
+          "current_contract_notes": [
+            "Current unresolved evidence is the canonical failure code shown above; listed secondary blockers are historical analysis-start diagnoses, not independently asserted as all current blockers."
+          ],
+          "current_failure_codes": [
+            "missing_snapshot:GT-R2-SNAP-1477"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        },
+        {
+          "analysis_start_secondary_blockers": [
+            {
+              "kind": "round_id_neutral_diagnostic",
+              "remaining_failures": "missing_snapshot"
+            }
+          ],
+          "assertion_id": "GT-R2-SNAP-149",
+          "current_contract_notes": [
+            "Current unresolved evidence is the canonical failure code shown above; listed secondary blockers are historical analysis-start diagnoses, not independently asserted as all current blockers."
+          ],
+          "current_failure_codes": [
+            "missing_snapshot:GT-R2-SNAP-149"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        },
+        {
+          "analysis_start_secondary_blockers": [
+            {
+              "kind": "round_id_neutral_diagnostic",
+              "remaining_failures": "missing_snapshot"
+            },
+            {
+              "fields": [
+                "spectated_name"
+              ],
+              "kind": "missing_trace_fields"
+            }
+          ],
+          "assertion_id": "GT-R2-SNAP-151",
+          "current_contract_notes": [
+            "Current unresolved evidence is the canonical failure code shown above; listed secondary blockers are historical analysis-start diagnoses, not independently asserted as all current blockers."
+          ],
+          "current_failure_codes": [
+            "missing_snapshot:GT-R2-SNAP-151"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        },
+        {
+          "analysis_start_secondary_blockers": [
+            {
+              "kind": "round_id_neutral_diagnostic",
+              "remaining_failures": "player_alive,spectated_name,spectated_hp,spectated_ammo_mag,spectated_ammo_reserve,spectated_weapon,muzzle_flash_visible,spectated_location_label_raw"
+            },
+            {
+              "fields": [
+                "spectated_name",
+                "muzzle_flash_visible"
+              ],
+              "kind": "missing_trace_fields"
+            }
+          ],
+          "assertion_id": "GT-R2-SNAP-170",
+          "current_contract_notes": [
+            "Current unresolved evidence is the canonical failure code shown above; listed secondary blockers are historical analysis-start diagnoses, not independently asserted as all current blockers."
+          ],
+          "current_failure_codes": [
+            "missing_snapshot:GT-R2-SNAP-170"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        },
+        {
+          "analysis_start_secondary_blockers": [],
+          "assertion_id": "GT-R1-SNAP-0035-DERIVED-zone_id",
+          "current_contract_notes": [
+            "Current unresolved evidence is the canonical failure code shown above; listed secondary blockers are historical analysis-start diagnoses, not independently asserted as all current blockers."
+          ],
+          "current_failure_codes": [
+            "missing_derived_snapshot:GT-R1-SNAP-0035-DERIVED-zone_id"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        },
+        {
+          "analysis_start_secondary_blockers": [],
+          "assertion_id": "GT-R1-SNAP-0415-DERIVED-zone_id",
+          "current_contract_notes": [
+            "Current unresolved evidence is the canonical failure code shown above; listed secondary blockers are historical analysis-start diagnoses, not independently asserted as all current blockers."
+          ],
+          "current_failure_codes": [
+            "missing_derived_snapshot:GT-R1-SNAP-0415-DERIVED-zone_id"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        },
+        {
+          "analysis_start_secondary_blockers": [
+            {
+              "kind": "round_id_neutral_diagnostic",
+              "remaining_failures": "missing_derived_snapshot"
+            }
+          ],
+          "assertion_id": "GT-R2-SNAP-820-DERIVED-zone_id",
+          "current_contract_notes": [
+            "Current unresolved evidence is the canonical failure code shown above; listed secondary blockers are historical analysis-start diagnoses, not independently asserted as all current blockers."
+          ],
+          "current_failure_codes": [
+            "missing_derived_snapshot:GT-R2-SNAP-820-DERIVED-zone_id"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        },
+        {
+          "analysis_start_secondary_blockers": [
+            {
+              "kind": "round_id_neutral_diagnostic",
+              "remaining_failures": "count:round_start"
+            },
+            {
+              "kind": "event_actor_contract",
+              "producer_actor": "team",
+              "required_actor": "system"
+            }
+          ],
+          "assertion_id": "event_count_constraints-004",
+          "current_contract_notes": [
+            "Current temporal round-boundary producer emits actor=system (src/valorant_ai_coach/hud/temporal.py:134-143), matching this assertion. Rebuilt raw contains zero hud_events, so missing boundary point/count remains the observed blocker."
+          ],
+          "current_failure_codes": [
+            "count:sample_round_2:round_start"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        },
+        {
+          "analysis_start_secondary_blockers": [
+            {
+              "kind": "round_id_neutral_diagnostic",
+              "remaining_failures": "count:player_death"
+            },
+            {
+              "kind": "event_attribute_contract",
+              "producer_attributes": [
+                "cause_known"
+              ],
+              "required_point_attributes": [
+                "victim_name",
+                "killer_agent",
+                "combat_report_damage_received"
+              ]
+            }
+          ],
+          "assertion_id": "event_count_constraints-005",
+          "current_contract_notes": [
+            "Current unresolved evidence is the canonical failure code shown above; listed secondary blockers are historical analysis-start diagnoses, not independently asserted as all current blockers."
+          ],
+          "current_failure_codes": [
+            "count:sample_round_2:player_death"
+          ],
+          "current_status": "fail",
+          "previous_status": "fail",
+          "secondary_blockers_scope": "historical analysis-start diagnosis; not asserted as all current blockers"
+        }
+      ],
+      "seven_acceptance_ids": {
+        "GT-R1-ROUND-END": {
+          "current_failures": [
+            "missing_point:GT-R1-ROUND-END"
+          ],
+          "current_status": "fail",
+          "previous_failures": [
+            "missing_point:GT-R1-ROUND-END"
+          ],
+          "previous_status": "fail"
+        },
+        "GT-R1-ROUND-START": {
+          "current_failures": [
+            "missing_point:GT-R1-ROUND-START"
+          ],
+          "current_status": "fail",
+          "previous_failures": [
+            "missing_point:GT-R1-ROUND-START"
+          ],
+          "previous_status": "fail"
+        },
+        "GT-R2-ROUND-START": {
+          "current_failures": [
+            "missing_point:GT-R2-ROUND-START"
+          ],
+          "current_status": "fail",
+          "previous_failures": [
+            "missing_point:GT-R2-ROUND-START"
+          ],
+          "previous_status": "fail"
+        },
+        "event_count_constraints-000": {
+          "current_failures": [
+            "count:sample_round_1:round_start"
+          ],
+          "current_status": "fail",
+          "previous_failures": [
+            "count:sample_round_1:round_start"
+          ],
+          "previous_status": "fail"
+        },
+        "event_count_constraints-002": {
+          "current_failures": [
+            "count:sample_round_1:round_end"
+          ],
+          "current_status": "fail",
+          "previous_failures": [
+            "count:sample_round_1:round_end"
+          ],
+          "previous_status": "fail"
+        },
+        "event_count_constraints-004": {
+          "current_failures": [
+            "count:sample_round_2:round_start"
+          ],
+          "current_status": "fail",
+          "previous_failures": [
+            "count:sample_round_2:round_start"
+          ],
+          "previous_status": "fail"
+        },
+        "ordering_constraints-001": {
+          "current_failures": [],
+          "current_status": "not_evaluated",
+          "previous_failures": [],
+          "previous_status": "not_evaluated"
+        }
+      },
+      "status_or_failure_code_diff_count": 0,
+      "status_or_failure_code_diffs": [],
+      "warning": "Zero negative violations is not proof of detection: empty outputs can satisfy prohibitions."
+    },
+    "final_source_sha256": {
+      "config/event_source_contract_v1.json": "220471d206853b431e810608ad11b16be0136644349ba9d8e7236940ed0c9e40",
+      "src/valorant_ai_coach/hud/analyzers.py": "b9cd3ffe613f0a92f60c64c1f49697f6c7be1668f0c568d5c51aef4893c1ab2b",
+      "src/valorant_ai_coach/hud/round_lifecycle.py": "8b1a98883ee2cdcf21b74169b92774e45f80b704580b141fc1cfd973bc8559ba",
+      "src/valorant_ai_coach/hud/temporal.py": "e6858efdd6cf65ee0f70c2bb19360acb93c0b540b714f6e784f9a2a583c661b9",
+      "src/valorant_ai_coach/hud/timeline.py": "2b38a160e1a0fe3bbf3dc1dcc28ace9f8ae599b4eaaf5f82f86e2ef98e7f0f5d",
+      "src/valorant_ai_coach/rounds/builder.py": "ccb5ea43bce80553cb93fd6ed1cdf8b32984f324568b43f3dc7204a96d030804",
+      "tests/e2e/trace_adapter.py": "7466edca985063c6e073c67410999557505dd7791f6eddbf09f0ce084815e4b9"
+    },
+    "input": {
+      "existing_evaluation_report_sha256": "1c0b7356139454565bace5c1796ce179a88e6ce0bd016ddbf129840fdec930e7",
+      "existing_trace_path": "outputs/recognition-investigation/timer-only-profile15/full16/e2e_trace.json",
+      "existing_trace_sha256": "cc1e23121b939b5d2b133958c42aef1ee33b67a916d807cab1ca71b05f11d269",
+      "pack_assertions_path": "ValorantData/valorant_e2e_validation_pack_v3/tests/generated/e2e_assertions_v3.json",
+      "pack_assertions_sha256": "c5e242b611ce227d1d2633e5e24c00dfe65168d8124ab58fbdea84b1d7f0d820",
+      "preserved_map_context": {
+        "economy_context": null,
+        "map": "unknown",
+        "player_agent": "unknown",
+        "player_role": "unknown",
+        "round_result": "unknown",
+        "score_before": null,
+        "side": "unknown"
+      },
+      "preserved_raw_observations": 4661,
+      "preserved_visual_events": 0,
+      "preserved_visual_observations": 4661,
+      "preserved_zone_resolutions": 4661,
+      "raw_processing_path": "outputs/recognition-investigation/timer-only-profile15/full16/raw_processing.json",
+      "raw_processing_sha256": "e0c3b9667b15aee9e6802e1b1b58aa61c916ee50b21ca4b00fd94cb2ea6a7152",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06"
+    },
+    "reconstruction": {
+      "builder": "current RoundPackageBuilder.build",
+      "current_package_count": 1,
+      "current_trace_counts": {
+        "events": 262,
+        "ownership_intervals": 4499,
+        "snapshots": 930,
+        "state_intervals": 185,
+        "temporal_features": 0,
+        "visual_observations": 4
+      },
+      "elapsed_sec": 37.97625419101678,
+      "ground_truth_loaded": false,
+      "hud_events_injected": 0,
+      "package_semantic_differences": [],
+      "previous_package_count": 1,
+      "previous_trace_counts": {
+        "events": 262,
+        "ownership_intervals": 4499,
+        "snapshots": 930,
+        "state_intervals": 185,
+        "temporal_features": 0,
+        "visual_observations": 4
+      },
+      "require_detected_rounds": false,
+      "synthetic_observations_or_signals": false,
+      "trace_collection_comparison": {
+        "events": {
+          "current_count": 262,
+          "current_sha256": "bd8cea11480589738fd84de04649e70eb93bd66706b56c8af39edd1d8d6b70a0",
+          "equal": true,
+          "previous_count": 262,
+          "previous_sha256": "bd8cea11480589738fd84de04649e70eb93bd66706b56c8af39edd1d8d6b70a0"
+        },
+        "ownership_intervals": {
+          "current_count": 4499,
+          "current_sha256": "94ca38606ab061ef2fd61ff8cb455026222d120dec8e98ea561abd32a53fb5ba",
+          "equal": true,
+          "previous_count": 4499,
+          "previous_sha256": "94ca38606ab061ef2fd61ff8cb455026222d120dec8e98ea561abd32a53fb5ba"
+        },
+        "snapshots": {
+          "current_count": 930,
+          "current_sha256": "74e96a4bf9ec8ce522f120864ab6a7757f65e35895d8fc59ade1b3f2b88f7bbe",
+          "equal": true,
+          "previous_count": 930,
+          "previous_sha256": "74e96a4bf9ec8ce522f120864ab6a7757f65e35895d8fc59ade1b3f2b88f7bbe"
+        },
+        "state_intervals": {
+          "current_count": 185,
+          "current_sha256": "df508466fe6645434ecf03f06ac35fbc3f5c2713edba51f9a25e7a6efd3395da",
+          "equal": true,
+          "previous_count": 185,
+          "previous_sha256": "df508466fe6645434ecf03f06ac35fbc3f5c2713edba51f9a25e7a6efd3395da"
+        },
+        "temporal_features": {
+          "current_count": 0,
+          "current_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "equal": true,
+          "previous_count": 0,
+          "previous_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "visual_observations": {
+          "current_count": 4,
+          "current_sha256": "a426bb22ecfb2b1e3c62995ace5d9371a0a253c9e916da8eb46130dc0c6e228d",
+          "equal": true,
+          "previous_count": 4,
+          "previous_sha256": "a426bb22ecfb2b1e3c62995ace5d9371a0a253c9e916da8eb46130dc0c6e228d"
+        }
+      }
+    },
+    "schema_version": 1
+  },
+  "checks": {
+    "related_tests_passed": 82,
+    "related_tests_skipped": 1,
+    "ruff": "pass",
+    "mypy": "pass"
+  },
+  "local_artifact_sha256": {
+    "continuous-validation.json": "0872fd1b4d5fd6756202310366507881196a1083b52131297bbb56ea313a6504",
+    "frame-coverage.json": "f63701e9f83a46f9777df3ea18c2a11be2624efd076dd33e34585295a1760a5c",
+    "offline-contract-regression.json": "1d9e260273038b362d15c5b509e0b49a681287fa41f5e32c368cf12c080eff67",
+    "sampled-round-lifecycle/runtime_summary.json": "33d9788ae8eb11647cb7a0832612da2158df67b90f24a41795d1450d46b5f753"
+  }
+}

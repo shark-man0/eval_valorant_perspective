@@ -123,7 +123,10 @@ def to_e2e_trace(result: Any) -> dict[str, list[dict[str, Any]]]:
             trace["snapshots"].append(row)
 
     def containing_round(timestamp: float) -> int | None:
-        for index, package in enumerate(packages, start=1):
+        # A shared context endpoint belongs to the upcoming package. Native
+        # builders exclude it from the preceding observation window, while its
+        # round_end event remains explicitly attached to the preceding package.
+        for index, package in reversed(tuple(enumerate(packages, start=1))):
             window = package.get("round_window", {})
             if float(window.get("start_sec", 0)) <= timestamp <= float(window.get("end_sec", 0)):
                 return index
@@ -164,7 +167,18 @@ def to_e2e_trace(result: Any) -> dict[str, list[dict[str, Any]]]:
             )
             row = {"round_id": rid, "state": name, "subtype": subtype,
                    "interval": interval, "state_class": state_class}
-            row["confidence"] = confidence
+            state_confidence = confidence
+            if state_class == "flag" and name == "buy_phase_banner":
+                phase_confidence = (
+                    (observation.get("quality") or {}).get("roi_confidence") or {}
+                ).get("center_phase_banner_semantic_text")
+                if phase_confidence is not None:
+                    state_confidence = _required_confidence(
+                        phase_confidence, f"source-backed phase confidence at {t}"
+                    )
+                    if state_confidence < 0.90:
+                        raise ValueError("source-backed phase confidence must be >= .90")
+            row["confidence"] = state_confidence
             # Merge only touching samples with the identical detector state.
             # This preserves observed episode edges and never spans unknown samples.
             key = (rid, state_class, name, subtype)
@@ -172,7 +186,7 @@ def to_e2e_trace(result: Any) -> dict[str, list[dict[str, Any]]]:
             if (interval[1] > interval[0] and previous is not None
                     and previous["interval"][1] == interval[0]):
                 previous["interval"][1] = interval[1]
-                previous["confidence"] = min(previous["confidence"], confidence)
+                previous["confidence"] = min(previous["confidence"], state_confidence)
             elif interval[1] > interval[0]:
                 trace["state_intervals"].append(row)
                 last_interval_by_state[key] = row
