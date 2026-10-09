@@ -192,6 +192,9 @@ class OpenAICoach:
                 "evaluation_language": "ja",
                 "do_not_output_neutral_or_not_applicable": True,
                 "use_absolute_source_video_seconds": True,
+                "fact_backed_confidence_not_above_weakest_fact": True,
+                "scored_output_must_respect_analysis_scopes": True,
+                "missing_required_context_must_be_unscored": True,
             },
         }
         content: list[dict[str, str]] = [
@@ -206,6 +209,7 @@ class OpenAICoach:
             selected_ids,
             paths,
             deterministic_decisions or {},
+            analysis_scopes or {},
             cancel_event,
         )
         if self.cache is not None:
@@ -417,16 +421,18 @@ class OpenAICoach:
         selected_ids: list[str],
         paths: list[Path],
         deterministic_decisions: Mapping[str, Mapping[str, Any]],
+        analysis_scopes: Mapping[str, Mapping[str, Any]],
         cancel_event: threading.Event | None,
     ) -> str:
         digest = hashlib.sha256()
         payload = {
-            "cache_contract": 2,
+            "cache_contract": 3,
             "model": self.model,
             "system_instructions": SYSTEM_INSTRUCTIONS,
             "round_package": _stable_package_for_remote(round_package),
             "candidate_rules": [self.rules_by_id[rule_id] for rule_id in selected_ids],
             "deterministic_decisions": deterministic_decisions,
+            "analysis_scopes": analysis_scopes,
             "output_schema": self.validator.schemas.ai_output,
         }
         digest.update(
