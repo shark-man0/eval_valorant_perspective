@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from valorant_ai_coach.non_video.features import NonVideoFeatures
 from valorant_ai_coach.ai import FileResultCache, OpenAICoach
 from valorant_ai_coach.application import (
     FramePlanner,
@@ -167,6 +168,7 @@ def build_services(
             rules_by_id=rules_by_id,
             validator=validator,
             cache=FileResultCache(data_dir / "cache" / "ai"),
+            usage_recorder=NonVideoFeatures(repository),
         )
 
     analyzer = RoundAnalyzer(
