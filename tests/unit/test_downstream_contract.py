@@ -398,3 +398,40 @@ def test_spectator_safe_package_stays_player_safe_through_round_analyzer() -> No
         if fact["key"] in {"hp", "armor", "weapon", "utility_available_count"}
     }
     assert referenced.isdisjoint(forbidden_ids)
+
+
+@pytest.mark.parametrize("case_id", ["TC-014", "TC-016"])
+def test_mock_fact_backed_confidence_is_bounded_by_referenced_facts(case_id: str) -> None:
+    result = make_analyzer().analyze(load_case(case_id))
+    facts = {
+        fact["fact_id"]: float(fact["confidence"])
+        for fact in result.round_package["deterministic_facts"]
+    }
+    for evaluation in result.output["evaluations"]:
+        refs = [str(fact_id) for fact_id in evaluation["fact_refs"]]
+        if refs:
+            assert float(evaluation["confidence"]) <= min(facts[fact_id] for fact_id in refs)
+
+
+def test_same_basis_low_confidence_unscored_rules_are_deduplicated() -> None:
+    package = load_case("TC-005")
+    fact = next(
+        item for item in package["deterministic_facts"] if item["key"] == "first_shot_stationary"
+    )
+    fact["confidence"] = 0.3
+
+    result = make_analyzer().analyze(package)
+
+    evaluations = [
+        item
+        for item in result.output["evaluations"]
+        if item["primary_rule_id"] in {"AIM-03", "MOV-02"}
+        or set(item.get("related_rule_ids", [])) & {"AIM-03", "MOV-02"}
+    ]
+    assert len(evaluations) == 1
+    evaluation = evaluations[0]
+    assert evaluation["primary_rule_id"] == "AIM-03"
+    assert evaluation["related_rule_ids"] == ["MOV-02"]
+    assert evaluation["label"] == "unscored"
+    assert evaluation["unscored_reason_code"] == "low_confidence"
+    assert evaluation["fact_refs"] == [fact["fact_id"]]

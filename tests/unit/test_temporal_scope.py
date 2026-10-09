@@ -22,6 +22,7 @@ from valorant_ai_coach.rules.temporal_scope import (
     AnalysisScope,
     scope_round_package,
     validate_output_scope,
+    validate_output_scope_payload,
 )
 from valorant_ai_coach.schema_validation import ContractValidationError, SchemaValidator
 
@@ -304,3 +305,38 @@ def test_analysis_scopes_are_exposed_on_the_result_for_mock_coach() -> None:
     ).analyze(json.loads((CASES / "TC-006" / "input.json").read_text(encoding="utf-8")))
     assert set(result.analysis_scopes) == {c.rule_id for c in result.candidates}
     assert result.analysis_scopes["AIM-02"].level == "micro"
+
+
+def test_serialized_scope_validation_matches_runtime_scope_contract() -> None:
+    output = {"evaluations": [evaluation("good", 29.0, 31.0)]}
+    payload = {
+        "AIM-02": {
+            "level": "micro",
+            "scope": "event_windows",
+            "windows_sec": [{"start_sec": 28.0, "end_sec": 32.0}],
+            "missing_context": [],
+        }
+    }
+    validate_output_scope_payload(output, payload)
+
+    output["evaluations"][0]["evidence_range"] = {"start_sec": 40.0, "end_sec": 41.0}
+    with pytest.raises(ContractValidationError, match="分析範囲外"):
+        validate_output_scope_payload(output, payload)
+
+
+def test_serialized_scope_rejects_scoring_when_required_context_is_missing() -> None:
+    output = {"evaluations": [evaluation("good", 29.0, 31.0)]}
+    payload = {
+        "AIM-02": {
+            "level": "cross_round",
+            "scope": "whole_round",
+            "windows_sec": [],
+            "missing_context": ["previous_round_context"],
+        }
+    }
+    with pytest.raises(ContractValidationError, match="採点"):
+        validate_output_scope_payload(output, payload)
+
+    output["evaluations"][0]["label"] = "unscored"
+    output["evaluations"][0]["evidence_range"] = None
+    validate_output_scope_payload(output, payload)
