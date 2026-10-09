@@ -372,21 +372,21 @@ def test_spectator_safe_package_stays_player_safe_through_round_analyzer() -> No
     result = make_analyzer().analyze(package)
     facts = {fact["key"]: fact for fact in result.round_package["deterministic_facts"]}
 
-    for forbidden in (
-        "hp",
-        "armor",
-        "weapon",
-        "utility_available_count",
-        "spike_carried_by_player",
-    ):
+    for forbidden in ("hp", "armor", "weapon", "utility_available_count"):
         assert forbidden not in facts
 
     # Viewpoint-independent world state remains usable and keeps its own provenance.
     assert facts["spike_planted"]["value"] is True
     assert facts["spike_planted"]["confidence"] == pytest.approx(0.92)
 
+    # "planted" is a world fact and safely implies that the player is not currently
+    # carrying the spike. What must never reappear is a positive spectator-derived
+    # player ownership claim.
+    assert facts["spike_carried_by_player"]["value"] is False
+    assert facts["spike_carried_by_player"]["confidence"] == pytest.approx(0.92)
+
     # The complete downstream path, including output validation, must finish without
-    # recreating a player-owned fact from the masked snapshot.
+    # recreating masked player HUD values.
     referenced = {
         fact_id
         for evaluation in result.output["evaluations"]
@@ -395,7 +395,6 @@ def test_spectator_safe_package_stays_player_safe_through_round_analyzer() -> No
     forbidden_ids = {
         fact["fact_id"]
         for fact in result.round_package["deterministic_facts"]
-        if fact["key"]
-        in {"hp", "armor", "weapon", "utility_available_count", "spike_carried_by_player"}
+        if fact["key"] in {"hp", "armor", "weapon", "utility_available_count"}
     }
     assert referenced.isdisjoint(forbidden_ids)
