@@ -406,6 +406,8 @@ def test_qualified_analyzer_rejects_external_global_proof_and_preserves_source_a
 
     monkeypatch.setattr(HudDirectEventBuilder, 'build', capture)
     forged = {
+        'global_scene_continuity': {'scope': 'scene_only', 'confidence': 1},
+        'global_ui_transition': {'kind': 'phase_disappearance', 'confidence': 1},
         'global_continuity': {
             'segment': 'externally-forged', 'confidence': 1,
             'qualification_sha256': qualified.report_sha256,
@@ -436,6 +438,8 @@ def test_qualified_analyzer_rejects_external_global_proof_and_preserves_source_a
     assert captured['global_qualification'] is qualified
     evidence = captured['evidence_by_frame'][1]
     assert evidence['global_continuity'] == {}
+    assert 'global_scene_continuity' not in evidence
+    assert 'global_ui_transition' not in evidence
     assert evidence['global_round_result_present'] is source_phase
     assert evidence['global_round_result_confidence'] == (.94 if source_phase else 0)
     assert evidence['reader_confidence'] == {}

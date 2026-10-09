@@ -1,0 +1,47 @@
+{
+  "scope": "Current worktree selected verification; not canonical E2E or qualification",
+  "base_commit": "0a606a0a3edb19ba4cd10d8007c2d045c39b2006",
+  "related_unit_tests": {
+    "status": "PASS",
+    "passed": 204,
+    "wall_clock_seconds": 26.4,
+    "scope": "scene, motion, UI transition, composite source, global lifecycle, round lifecycle, temporal regression/calibration and native diagnostics tests"
+  },
+  "ruff": "PASS: src, unit/e2e tests and changed scene diagnostic scripts",
+  "mypy": "PASS: 102 production source files",
+  "git_diff_check": "PASS",
+  "assertion_matrix_rows": 82,
+  "assertion_matrix_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776",
+  "assertion_status_counts_historical": {
+    "FAIL": 55,
+    "NE": 4,
+    "PASS": 23
+  },
+  "canonical_current": null,
+  "canonical_delta": null,
+  "fresh_e2e_executed": false,
+  "qualification_created": false,
+  "new_real_boundaries": 0,
+  "holdout": {
+    "native_frames": 36,
+    "adjacent_links": 30,
+    "accepted_links": 0,
+    "wall_clock_seconds": 41.61396901396802,
+    "decision": "Positive qualification NOT_MET"
+  },
+  "file_sha256": {
+    "docs/scene_world_feature_holdout.md": "feec66aad74d5411139d92ba140093b20b8ec684226a9cd3d19243d083b41654",
+    "docs/r1_scene_transition_investigation.md": "93a7a5cb66a3dc1bcb0c229a40f141c8d2e8ba99abbb5f3fba5c4ac5c79355e9",
+    "docs/round_lifecycle_implementation.md": "3577ed6facbceaf34e10212fd17f5b8eb659310175b9e886c313587fa998efeb",
+    "docs/e2e_failure_analysis.md": "b819b1d4f591239f5b5db6437e28a8c4a1b6c3c0b839d12106b24167305b77f0",
+    "e2e_reports/match_001/scene_world_feature_holdout_diagnostics.json": "4b9c27cb0b190968285d252cf04ce3177f8ecc93189fbda22a4880266d30b043",
+    "e2e_reports/match_001/scene_world_feature_holdout_review.json": "dbfedf636eaac016e808aaa77c9d8e115c85e6fccce0201bbac8598184cba9a4",
+    "e2e_reports/match_001/scene_world_feature_holdout_reservation.json": "7f7b6d82ddc7781b4acb831874943f020589e48699a1e82b022ae04929e777ac",
+    "scripts/diagnostics/validate_scene_world_holdout.py": "6f198518951d3e38a6ba599908e88f95077df05da9f5bfd05d7dd6f3a805aa9b",
+    "src/valorant_ai_coach/hud/global_lifecycle.py": "f4a9ea0220bfd2c5ce1eb5c940d61b8dc955abfe6642c95073b9b88bb94d638d",
+    "src/valorant_ai_coach/hud/source_continuity.py": "f0e4179b4c43ca44c54b13dcbeffc9af0ed1701d4c08f750a5eced0f90c07448",
+    "src/valorant_ai_coach/hud/round_lifecycle.py": "d84b0aa97ac251983efc5b376f2b575e8838feec4354741490645579a1cdf50a",
+    "src/valorant_ai_coach/hud/temporal.py": "f309285577d0fa4fbde98a86140ed830e67e147f08ea725c5b90afc70e1e74b2",
+    "src/valorant_ai_coach/hud/ui_transition.py": "1a94ff2f93b08d7a489353a47f29832ff992e660099add832f826ff9bf4d4388"
+  }
+}

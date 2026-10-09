@@ -10,6 +10,7 @@ from typing import Any, Literal
 LifecycleState = Literal[
     "unobserved",
     "pre_round",
+    "transient_ui_transition",
     "round_active",
     "round_end_candidate",
     "round_ended",

@@ -1,0 +1,38 @@
+{
+  "scope": "Rejected development image method; not qualification or canonical E2E",
+  "base_commit": "0a606a0a3edb19ba4cd10d8007c2d045c39b2006",
+  "new_unit_tests": {
+    "passed": 9,
+    "seconds": 0.94,
+    "status": "PASS"
+  },
+  "ruff": "PASS src tests scripts/e2e plus both new diagnostic scripts",
+  "mypy": "Prior PASS102source files remains applicable; production source hashes unchanged",
+  "production_source_sha256": {
+    "src/valorant_ai_coach/hud/global_lifecycle.py": "f4a9ea0220bfd2c5ce1eb5c940d61b8dc955abfe6642c95073b9b88bb94d638d",
+    "src/valorant_ai_coach/hud/source_continuity.py": "f0e4179b4c43ca44c54b13dcbeffc9af0ed1701d4c08f750a5eced0f90c07448",
+    "src/valorant_ai_coach/hud/round_lifecycle.py": "d84b0aa97ac251983efc5b376f2b575e8838feec4354741490645579a1cdf50a",
+    "src/valorant_ai_coach/hud/temporal.py": "f309285577d0fa4fbde98a86140ed830e67e147f08ea725c5b90afc70e1e74b2",
+    "src/valorant_ai_coach/hud/ui_transition.py": "1a94ff2f93b08d7a489353a47f29832ff992e660099add832f826ff9bf4d4388"
+  },
+  "assertion_matrix_rows": 82,
+  "assertion_matrix_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776",
+  "historical_canonical_counts": {
+    "FAIL": 55,
+    "NE": 4,
+    "PASS": 23
+  },
+  "canonical_current": null,
+  "qualification_created": false,
+  "new_real_boundaries": 0,
+  "fresh_e2e_executed": false,
+  "method_decision": "Current finite translation model does not qualify actual source inputs",
+  "file_sha256": {
+    "docs/scene_constellation_investigation.md": "ddbbb9d63ae558823c44e4d46cc60ab1455bc5f99f0ef22978d8b3c6a214b089",
+    "scripts/diagnostics/scene_constellation.py": "f107450eb97dcfbd388ec4b16d191123bcc2472b7331d74917f6f2983e5558b8",
+    "scripts/diagnostics/probe_scene_constellation.py": "1ce2dc530369c2d0f3d9656b90ecb300049a331fd4b97f71abe1eaf61805be00",
+    "tests/unit/test_scene_constellation.py": "42a2157a311fed69515abe677f7bae9e9156845b6bd1c8f698cde22b8869e2bc",
+    "e2e_reports/match_001/scene_constellation_development.json": "6331c9cd4050cab96bcf9f7f4ab7c6331d781ed7b33b1c6610121dc44bcf6f4a",
+    "e2e_reports/match_001/scene_constellation_reference_eligibility.json": "a0ab6a1dc45fe15e6efeae5691ef4ad79463fd21eba779c3271c41f6b566185a"
+  }
+}

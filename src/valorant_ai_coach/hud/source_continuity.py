@@ -5,6 +5,7 @@ accepted current/prior timer evidence and a physically consistent transition.
 Unknown input breaks the segment; this producer never fills a player fact.
 Different PTS for identical source pixels do not corroborate new evidence.
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -24,7 +25,11 @@ SourceSnapshot = tuple[float, float | None, float, float, ImageU8, tuple[int, ..
 
 
 class CompositeSourceContinuity:
-    METHOD = "camera_grid_timer_phase_v2"
+    METHOD = "camera_grid_timer_phase_v3_phase_excluded"
+    # Canonical 640x360 coordinates, including a conservative border around
+    # the phase/result banner. This is image geometry, never a boundary time.
+    # The camera crop begins at (128,72); descriptors are not computed here.
+    PHASE_EXCLUSION = (224, 28, 416, 120)
 
     def __init__(self, qualification: GlobalLifecycleQualification) -> None:
         if not {"timer", "purchase_phase", "continuity"} <= qualification.components:
@@ -47,21 +52,35 @@ class CompositeSourceContinuity:
     @staticmethod
     def camera_support(before: ImageU8, after: ImageU8) -> list[tuple[int, int, float]]:
         witnesses = []
+        mask = np.ones((216, 448), dtype=bool)
+        x1, y1, x2, y2 = CompositeSourceContinuity.PHASE_EXCLUSION
+        mask[max(0, y1 - 72) : y2 - 72, x1 - 128 : x2 - 128] = False
         for row in range(3):
             for column in range(3):
                 ys = slice(row * 72, (row + 1) * 72)
                 xs = slice(round(column * 448 / 3), round((column + 1) * 448 / 3))
-                previous, current = before[ys, xs], after[ys, xs]
+                # Excluded pixels are removed, not zero-filled into NCC:
+                # shared constant fill could itself inflate similarity.
+                valid = mask[ys, xs]
+                previous, current = before[ys, xs][valid], after[ys, xs][valid]
                 if min(float(previous.std()), float(current.std())) < 1.0:
                     continue
-                score = float(cv2.matchTemplate(previous, current, cv2.TM_CCOEFF_NORMED)[0, 0])
+                score = float(
+                    cv2.matchTemplate(
+                        previous.reshape(1, -1), current.reshape(1, -1), cv2.TM_CCOEFF_NORMED
+                    )[0, 0]
+                )
                 if math.isfinite(score) and score >= 0.90:
                     witnesses.append((row, column, score))
         return witnesses
 
     def advance(
-        self, image: ImageU8, observation: Mapping[str, Any], evidence: Mapping[str, Any],
-        *, geometry_valid: bool,
+        self,
+        image: ImageU8,
+        observation: Mapping[str, Any],
+        evidence: Mapping[str, Any],
+        *,
+        geometry_valid: bool,
     ) -> dict[str, Any]:
         timestamp = observation.get("time_sec")
         if geometry_valid is not True:
@@ -70,7 +89,8 @@ class CompositeSourceContinuity:
             self.last_reason = "invalid_geometry"
             return {}
         if (
-            isinstance(timestamp, bool) or not isinstance(timestamp, (int, float))
+            isinstance(timestamp, bool)
+            or not isinstance(timestamp, (int, float))
             or not math.isfinite(timestamp)
         ):
             self.previous = None
@@ -89,7 +109,13 @@ class CompositeSourceContinuity:
         pixel_hash = hashlib.sha256(image.tobytes()).hexdigest()
         previous = self.previous
         self.previous = (
-            float(timestamp), timer, timer_score, phase, camera, image.shape, pixel_hash,
+            float(timestamp),
+            timer,
+            timer_score,
+            phase,
+            camera,
+            image.shape,
+            pixel_hash,
         )
         if previous is None:
             self.origin = hashlib.sha256(camera.tobytes() + repr(timestamp).encode()).hexdigest()
@@ -113,7 +139,8 @@ class CompositeSourceContinuity:
             reason = "timer_transition_inconsistent"
         witnesses = self.camera_support(prior_camera, camera) if reason is None else []
         if reason is None and (
-            len(witnesses) < 3 or len({r for r, _, _ in witnesses}) < 2
+            len(witnesses) < 3
+            or len({r for r, _, _ in witnesses}) < 2
             or len({c for _, c, _ in witnesses}) < 2
         ):
             reason = "insufficient_spatial_camera_support"
@@ -132,6 +159,7 @@ class CompositeSourceContinuity:
             "source_pixel_sha256": pixel_hash,
             "previous_source_pixel_sha256": prior_hash,
             "method": self.METHOD,
+            "camera_phase_exclusion_640x360": list(self.PHASE_EXCLUSION),
             "camera_witness_cells": [[r, c] for r, c, _ in witnesses],
             "camera_witness_ncc": [score for _, _, score in witnesses],
         }

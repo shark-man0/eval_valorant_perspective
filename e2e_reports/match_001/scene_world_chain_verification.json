@@ -1,0 +1,61 @@
+{
+  "scope": "Diagnostic checkpoint; no canonical E2E or qualification",
+  "related_unit_tests": {
+    "status": "PASS",
+    "passed": 7,
+    "seconds": 1.41
+  },
+  "ruff": "PASS",
+  "mypy": "Prior PASS for 102 source files; production SHA256s verified unchanged",
+  "production_sha256": {
+    "src/valorant_ai_coach/hud/global_lifecycle.py": "f4a9ea0220bfd2c5ce1eb5c940d61b8dc955abfe6642c95073b9b88bb94d638d",
+    "src/valorant_ai_coach/hud/source_continuity.py": "f0e4179b4c43ca44c54b13dcbeffc9af0ed1701d4c08f750a5eced0f90c07448",
+    "src/valorant_ai_coach/hud/round_lifecycle.py": "d84b0aa97ac251983efc5b376f2b575e8838feec4354741490645579a1cdf50a",
+    "src/valorant_ai_coach/hud/temporal.py": "f309285577d0fa4fbde98a86140ed830e67e147f08ea725c5b90afc70e1e74b2",
+    "src/valorant_ai_coach/hud/ui_transition.py": "1a94ff2f93b08d7a489353a47f29832ff992e660099add832f826ff9bf4d4388"
+  },
+  "assertion_matrix_rows": 82,
+  "assertion_matrix_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776",
+  "reports": {
+    "scene_world_chain_development": {
+      "native_frames": 36,
+      "adjacent_links": 35,
+      "supported_links": 0,
+      "wall_clock_seconds": 8.479057663993444
+    },
+    "scene_world_chain_stable_development": {
+      "native_frames": 30,
+      "adjacent_links": 29,
+      "supported_links": 4,
+      "wall_clock_seconds": 7.821178668993525
+    },
+    "scene_world_chain_dense_spatial_diagnostics": {
+      "native_frames": 30,
+      "adjacent_links": 29,
+      "supported_links": 3,
+      "wall_clock_seconds": 8.015978038019966
+    },
+    "scene_world_chain_reviewed_row2": {
+      "native_frames": 30,
+      "adjacent_links": 29,
+      "supported_links": 3,
+      "wall_clock_seconds": 7.9675979589810595
+    }
+  },
+  "qualification_created": false,
+  "new_runtime_events": 0,
+  "fresh_e2e_executed": false,
+  "canonical_current": null,
+  "canonical_delta": null,
+  "file_sha256": {
+    "docs/scene_world_chain_investigation.md": "18f618c153ad45e097676498fb1c8db29b0e2af223009b44f4e451b257ccabf3",
+    "e2e_reports/match_001/failure_analysis.json": "8f55005a62f494d2c433cd430bb632b20922333b5fe1f362b7e764655d45bc1c",
+    "scripts/diagnostics/scene_world_chain.py": "9ea254695ab8478d9d7448262cf94ad4d6d13daaa5dcc1ba8e0dfaaf4eba2eec",
+    "scripts/diagnostics/probe_scene_world_chain.py": "7e4fe5a66808263f35dae58779d4d4edd6f8cfbccf9d06958e6dd8cddb2fbce4",
+    "tests/unit/test_scene_world_chain.py": "db5d1a04f8afd0e94602a96c2beaad0e82ccb3d11d5c138b21eac2c48ce5122b",
+    "e2e_reports/match_001/scene_world_chain_development.json": "5828ad21aa03cd75064b1291fde164bfc70d6b08cd9807a1518ae33e9be8b7ff",
+    "e2e_reports/match_001/scene_world_chain_stable_development.json": "51a26191226baf084e5c6344cc996bc887ecd2d8e7c221365a966b51ad144792",
+    "e2e_reports/match_001/scene_world_chain_dense_spatial_diagnostics.json": "2c1b353f2e491d72cfa6035ba3e7241a20702fbe49c86a91cc99236180f8a562",
+    "e2e_reports/match_001/scene_world_chain_reviewed_row2.json": "1eeb2a9bbe851d296c65eafa30c70f99efb614892147d9d49eb3d1648a36e839"
+  }
+}
