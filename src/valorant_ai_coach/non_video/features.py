@@ -347,7 +347,7 @@ class NonVideoFeatures:
             import io
             stream = io.StringIO(newline="")
             writer = csv.writer(stream)
-            fields = ("match_id", "round_no", "evaluation_id", "primary_rule_id",
+            fields: tuple[str, ...] = ("match_id", "round_no", "evaluation_id", "primary_rule_id",
                       "category", "label", "confidence", "reason", "improvement",
                       "evidence_range", "unscored_reason_code")
             writer.writerow(fields)

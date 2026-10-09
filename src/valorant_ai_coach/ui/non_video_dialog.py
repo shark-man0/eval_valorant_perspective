@@ -147,8 +147,8 @@ class NonVideoDialog(QDialog):
             self.compare_right.setCurrentIndex(1)
         compare_button = QPushButton("2試合を比較")
         compare_button.clicked.connect(lambda: self._execute(self._compare))
-        for widget in (self.compare_left, self.compare_right, compare_button):
-            compare_row.addWidget(widget)
+        for compare_widget in (self.compare_left, self.compare_right, compare_button):
+            compare_row.addWidget(compare_widget)
         root.addLayout(compare_row)
         self.compare_text = QPlainTextEdit()
         self.compare_text.setReadOnly(True)
@@ -253,8 +253,9 @@ class NonVideoDialog(QDialog):
         )
         while self.stat_bars.count():
             item = self.stat_bars.takeAt(0)
-            if item and item.widget():
-                item.widget().deleteLater()
+            widget_to_remove = item.widget() if item is not None else None
+            if widget_to_remove is not None:
+                widget_to_remove.deleteLater()
         max_count = max(1, *counts.values())
         for label in ("good", "improve", "unscored"):
             bar = QProgressBar()
@@ -436,10 +437,13 @@ class NonVideoDialog(QDialog):
             if not isinstance(price.get("currency"), str) or not price["currency"].strip():
                 raise ValueError("通貨を指定してください")
         budget = data.get("monthly_budget")
-        if budget is not None and (
-            type(budget) not in (int, float) or not 0 <= budget < 1e9
-        ):
-            raise ValueError("月間予算は0以上またはnullで指定してください")
+        if budget is not None:
+            if (
+                isinstance(budget, bool)
+                or not isinstance(budget, (int, float))
+                or not 0 <= float(budget) < 1e9
+            ):
+                raise ValueError("月間予算は0以上またはnullで指定してください")
         return data
 
     def _save_prices(self) -> None:

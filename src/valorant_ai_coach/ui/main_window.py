@@ -749,11 +749,11 @@ class MainWindow(QMainWindow):
                 stored_feedback = {}
             feedback_row = QHBoxLayout()
             verdict = QComboBox()
-            for name, code in (
+            for name, verdict_code in (
                 ("未登録・削除", ""), ("妥当", "valid"),
                 ("不適切", "inappropriate"), ("判断保留", "pending")
             ):
-                verdict.addItem(name, code)
+                verdict.addItem(name, verdict_code)
             selected = verdict.findData(stored_feedback.get("verdict", ""))
             if selected >= 0:
                 verdict.setCurrentIndex(selected)
