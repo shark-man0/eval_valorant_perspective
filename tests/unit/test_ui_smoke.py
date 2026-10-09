@@ -8,8 +8,9 @@ import pytest
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 pytest.importorskip("PySide6")
 
+from PySide6.QtCore import QCoreApplication, QEvent  # noqa: E402
 from PySide6.QtGui import QCloseEvent  # noqa: E402
-from PySide6.QtWidgets import QApplication, QMessageBox  # noqa: E402
+from PySide6.QtWidgets import QApplication, QMessageBox, QWidget  # noqa: E402
 
 from valorant_ai_coach.settings import AppSettings, SettingsStore  # noqa: E402
 from valorant_ai_coach.ui.backend import BackendFacade  # noqa: E402
@@ -17,6 +18,14 @@ from valorant_ai_coach.ui.contracts import VideoMetadataView  # noqa: E402
 from valorant_ai_coach.ui.main_window import MainWindow, _AudioProbeWorker  # noqa: E402
 from valorant_ai_coach.ui.settings_dialog import SettingsDialog  # noqa: E402
 from valorant_ai_coach.video import AudioTrackMetadata  # noqa: E402
+
+
+def _destroy_widget(widget: QWidget, app: QApplication) -> None:
+    """Destroy Qt-owned multimedia children while QApplication is still alive."""
+    widget.close()
+    widget.deleteLater()
+    QCoreApplication.sendPostedEvents(None, QEvent.Type.DeferredDelete)
+    app.processEvents()
 
 
 class MemoryCredentials:
@@ -37,8 +46,7 @@ def test_main_window_starts_with_scored_results_filter(tmp_path: Path) -> None:
     assert window.label_filter.currentData() == "scored"
     assert window.start_button.isEnabled() is False
 
-    window.close()
-    app.processEvents()
+    _destroy_widget(window, app)
 
 
 def test_audio_track_selector_prefers_saved_track_then_container_default(
@@ -77,8 +85,7 @@ def test_audio_track_selector_prefers_saved_track_then_container_default(
     window._populate_audio_track_combos()
     assert window.home_audio_track.currentData() == 4
 
-    window.close()
-    app.processEvents()
+    _destroy_widget(window, app)
 
 
 def test_audio_track_choice_is_persisted_from_playback_selector(tmp_path: Path) -> None:
@@ -96,8 +103,7 @@ def test_audio_track_choice_is_persisted_from_playback_selector(tmp_path: Path) 
 
     assert store.load().preferred_audio_track_index == 2
 
-    window.close()
-    app.processEvents()
+    _destroy_widget(window, app)
 
 
 def test_settings_dialog_exposes_audio_preference_for_multiple_tracks(tmp_path: Path) -> None:
@@ -116,8 +122,7 @@ def test_settings_dialog_exposes_audio_preference_for_multiple_tracks(tmp_path: 
     assert dialog.preferred_audio_track.currentData() == 8
     assert dialog._show_audio_preference is True
 
-    dialog.close()
-    app.processEvents()
+    _destroy_widget(dialog, app)
 
 
 def test_selection_probe_uses_audio_metadata_without_a_second_probe(tmp_path: Path) -> None:
@@ -160,8 +165,7 @@ def test_selection_probe_uses_audio_metadata_without_a_second_probe(tmp_path: Pa
     assert window.home_audio_track.count() == 2
     assert window.home_audio_track.currentData() == 2
     assert window._audio_track_cache[video.resolve()] == tracks
-    window.close()
-    app.processEvents()
+    _destroy_widget(window, app)
 
 
 def test_clip_audio_metadata_worker_uses_backend_facade(tmp_path: Path) -> None:
@@ -229,8 +233,7 @@ def test_video_probe_is_dispatched_without_blocking_gui(
     assert window._probe_request_id is not None
     window._on_probe_cancelled(window._probe_request_id)
     assert window.select_button.isEnabled() is True
-    window.close()
-    app.processEvents()
+    _destroy_widget(window, app)
 
 
 def test_analysis_failure_dialog_hides_traceback_and_private_paths(
@@ -257,8 +260,7 @@ def test_analysis_failure_dialog_hides_traceback_and_private_paths(
     assert "sk-supersecretvalue" not in captured["text"]
     assert captured["details"] == ""
 
-    window.close()
-    app.processEvents()
+    _destroy_widget(window, app)
 
 
 def test_close_waits_until_analysis_worker_has_stopped(
@@ -330,8 +332,7 @@ def test_history_exposes_resumable_job_and_forwards_identity(
     window._resume_selected_analysis()
 
     assert forwarded == [(video, "M-RESUME-UI", True)]
-    window.close()
-    app.processEvents()
+    _destroy_widget(window, app)
 
 
 def test_history_delete_removes_analysis_but_keeps_source_video(
@@ -361,5 +362,4 @@ def test_history_delete_removes_analysis_but_keeps_source_video(
     assert window.history.count() == 0
     assert window.delete_button.isEnabled() is False
 
-    window.close()
-    app.processEvents()
+    _destroy_widget(window, app)
