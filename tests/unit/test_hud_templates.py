@@ -124,7 +124,7 @@ def test_tesseract_tsv_success_invalid_text_and_timeout():
     ) as run:
         result = reader.read(image, image)
         assert result.value == "1:40" and result.confidence == pytest.approx(0.94)
-        assert run.call_args.args[0][-1] == "tsv"
+        assert run.call_args.args[0][-2:] == ["-c", "tessedit_create_tsv=1"]
     with patch(
         "valorant_ai_coach.hud.templates.subprocess.run",
         return_value=subprocess.CompletedProcess(

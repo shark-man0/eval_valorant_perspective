@@ -143,8 +143,11 @@ class OpenCvHudFeatureReader:
             # Aggregate texture can exclude live attribution but cannot verify
             # a remote-operation interface. Preserve that provenance explicitly.
             "remote_texture_candidate": all(score >= 0.90 for score in astral.values()),
-            "shared_banner": banner_score >= 0.8,
-            "banner_confidence": banner_score,
+            # World texture can have the same edge/contrast distribution as
+            # text. It is not a semantic purchase/result banner, even when a
+            # score changes. Configured semantic detectors promote separately.
+            "phase_banner_candidate": banner_score >= 0.8,
+            "phase_banner_candidate_confidence": banner_score,
             **smoke_features,
             **flash_features,
             "hud_anchors_stable": stable_anchors,

@@ -585,6 +585,17 @@ class RealHudAnalyzer:
                     "round_timer_value": reader_confidence.get("round_timer", 0.0)
                     if values["round_time_remaining_sec"] is not None
                     else 0.0,
+                    # These are current accepted shared-value provenance, not
+                    # player identity or a qualified lifecycle confidence.
+                    # Do not substitute generic ROI/geometry feature scores.
+                    **{
+                        f"{target}_value": reader_confidence.get(region, 0.0)
+                        if type(values.get(target)) is int and values[target] >= 0
+                        and calibration.calibrated else 0.0
+                        for region, target in (
+                            ("ally_score", "score_ally"), ("enemy_score", "score_enemy")
+                        )
+                    },
                     "hp_value": hp_value_confidence,
                 },
             }

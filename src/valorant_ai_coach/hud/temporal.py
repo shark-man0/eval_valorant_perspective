@@ -7,7 +7,12 @@ from statistics import median
 from typing import Any
 
 from .global_lifecycle import GlobalLifecycleQualification, GlobalRoundLifecycle
-from .round_lifecycle import RoundLifecycle, is_discontinuous, preparation_confidence
+from .round_lifecycle import (
+    RoundLifecycle,
+    is_discontinuous,
+    preparation_confidence,
+    score_is_continuous,
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -402,7 +407,10 @@ def _round_start_confirmed(
         and _is_finite_number(values.get("round_time_remaining_sec"))
         and values["round_time_remaining_sec"] > prior_values["round_time_remaining_sec"] + 3
     )
-    return (buy_to_live or buy_banner_to_live) and "buy_phase_banner" not in flags and timer_reset
+    return (
+        (buy_to_live or buy_banner_to_live) and "buy_phase_banner" not in flags
+        and timer_reset and score_is_continuous(previous, current)
+    )
 
 
 def _buy_phase_confirmed(observation: Mapping[str, Any], evidence: Mapping[str, Any]) -> bool:

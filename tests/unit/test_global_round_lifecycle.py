@@ -288,6 +288,32 @@ def test_end_requires_independent_current_evidence_in_same_segment(tmp_path, mis
     assert [e['type'] for e in build(rows, qualified, evidence)] == ['round_start']
 
 
+@pytest.mark.parametrize('ordering', ['result_before_score', 'result_after_score',
+                                    'result_and_score_after_cut'])
+def test_separated_end_evidence_cannot_be_backfilled_into_prior_round(tmp_path, ordering):
+    qualified = qualification(tmp_path)
+    rows = starts() + [observation(i, .6 + (i-5)*.1) for i in range(5, 9)]
+    for row in rows[5:]:
+        row['values'].update(score_ally=0, score_enemy=1)
+        row['quality']['roi_confidence'].update(ally_score_value=.97, enemy_score_value=.98)
+    for row in rows[7:]:
+        row['values']['score_enemy'] = 2
+    evidence = proofs(rows, qualified)
+    result_index = 6 if ordering == 'result_before_score' else 8
+    if ordering == 'result_and_score_after_cut':
+        result_index = 7
+        evidence[7]['content_jump'] = True
+        for index in (7, 8):
+            evidence[index]['global_continuity']['segment'] = 'fresh-segment'
+    evidence[result_index].update(global_round_result_present=True,
+                                  global_round_result_confidence=.95)
+    original = deepcopy(rows)
+    events = build(rows, qualified, evidence)
+    assert [(event['type'], event['time_sec']) for event in events] == [('round_start', .2)]
+    assert rows == original
+    assert all(event['actor'] == 'system' for event in events)
+
+
 @pytest.mark.parametrize('bad', [
     'profile', 'code', 'overlap', 'wrong', 'unreviewed', 'negative', 'too_small', 'expected',
 ])

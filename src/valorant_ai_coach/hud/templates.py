@@ -1030,7 +1030,8 @@ class TesseractDigitsReader:
             str(self.psm),
             "-c",
             f"tessedit_char_whitelist={self.whitelist}",
-            "tsv",
+            "-c",
+            "tessedit_create_tsv=1",
         ]
         try:
             result = subprocess.run(
@@ -1131,7 +1132,11 @@ class TesseractTextReader:
         command = [self.executable, "stdin", "stdout"]
         if self.tessdata_dir:
             command.extend(("--tessdata-dir", self.tessdata_dir))
-        command.extend(("-l", self.language, "--psm", str(self.psm), "tsv"))
+        # An isolated tessdata directory may contain only trained languages,
+        # not configs/tsv. Request the renderer directly instead of silently
+        # receiving plain text that the TSV parser would treat as no evidence.
+        command.extend(("-l", self.language, "--psm", str(self.psm),
+                        "-c", "tessedit_create_tsv=1"))
         try:
             result = subprocess.run(
                 command,

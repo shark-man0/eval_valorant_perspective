@@ -1,9 +1,12 @@
 from pathlib import Path
 
+import pytest
+
 from valorant_ai_coach.events import EventSourceContract
 from valorant_ai_coach.hud.models import HudObservationV2, empty_hud_quality, empty_hud_values
 from valorant_ai_coach.resources import resource_path
 from valorant_ai_coach.rounds import RoundPackageBuilder
+from valorant_ai_coach.rounds.builder import RoundPackageBuildError
 from valorant_ai_coach.schema_validation import SchemaValidator
 from valorant_ai_coach.video import VideoMetadata
 
@@ -324,3 +327,107 @@ def test_low_confidence_buy_menu_does_not_extend_context():
     )
     assert len(result) == 1
     assert result[0]["round_window"]["start_sec"] == 5
+
+
+def test_duplicate_out_of_order_boundaries_have_one_shared_window_and_event_population():
+    samples = [observation(time / 2) for time in range(20, 41)]
+    result = build(
+        samples,
+        [(20, "round_end"), (10, "round_start"), (10, "round_start"), (20, "round_end")],
+    )
+    assert len(result) == 1
+    assert result[0]["round_window"] == {"start_sec": 10, "end_sec": 20}
+    assert result[0]["observation_quality"]["timeline_completeness"] == 1
+    boundaries = [e for e in result[0]["events"] if e["type"] in {"round_start", "round_end"}]
+    assert [(e["type"], e["time_sec"]) for e in boundaries] == [
+        ("round_start", 10), ("round_end", 20)
+    ]
+    assert [e["event_id"] for e in boundaries] == ["e1", "e0"]
+
+
+def test_same_boundary_with_conflicting_segments_fails_closed():
+    with pytest.raises(RoundPackageBuildError, match="continuity segment"):
+        build(
+            [observation(10), observation(11)],
+            [(10, "round_start"), (10, "round_start")],
+            continuity_segments={0: 3, 1: 4},
+        )
+
+
+def test_boundary_with_missing_segment_cannot_discard_known_segment():
+    with pytest.raises(RoundPackageBuildError, match="continuity segment"):
+        build(
+            [observation(10), observation(11)],
+            [(10, "round_start"), (10, "round_start")],
+            continuity_segments={0: 3},
+        )
+
+
+def test_bounded_diagnostic_preserves_native_boundary_and_trace_association():
+    from scripts.diagnostics.diagnose_round_lifecycle import package_trace_diagnostic
+
+    samples = [observation(time / 2) for time in range(20, 61)]
+    events = [
+        {
+            "event_id": f"b{i}", "time_sec": time, "type": kind,
+            "actor": "system", "confidence": 0.95, "attributes": {},
+        }
+        for i, (time, kind) in enumerate([
+            (10, "round_start"), (20, "round_end"), (21, "round_start"), (30, "round_end")
+        ])
+    ]
+    result = package_trace_diagnostic(
+        samples, events,
+        VideoMetadata(Path("video.mp4"), 90, 1920, 1080, 60, "h264", None, False, 0),
+    )
+    assert result["package_count"] == 2
+    assert [w["complete"] for w in result["windows"]] == [True, True]
+    assert result["unassigned_observation_pts_sec"] == []
+    assert [(e["round_id"], e["type"], e["time_sec"], e["actor"])
+            for e in result["trace_boundary_events"]] == [
+        ("sample_round_1", "round_start", 10, "system"),
+        ("sample_round_1", "round_end", 20, "system"),
+        ("sample_round_2", "round_start", 21, "system"),
+        ("sample_round_2", "round_end", 30, "system"),
+    ]
+    assert all(
+        (row["time_sec"] < 21) == (row["round_id"] == "sample_round_1")
+        for row in result["trace_snapshot_association"]
+    )
+
+
+def test_bounded_diagnostic_does_not_invent_package_for_unknown_only_window():
+    from scripts.diagnostics.diagnose_round_lifecycle import package_trace_diagnostic
+
+    sample = observation(2)
+    sample["primary_state"] = "unknown"
+    sample["values"] = empty_hud_values()
+    sample["view_context"]["is_player_world_view_trustworthy"] = False
+    sample["quality"]["hud_confidence"] = 0
+    result = package_trace_diagnostic(
+        [sample], [],
+        VideoMetadata(Path("video.mp4"), 90, 1920, 1080, 60, "h264", None, False, 0),
+    )
+    assert result["package_count"] == 0
+    assert result["trace_boundary_events"] == []
+    assert result["unassigned_observation_pts_sec"] == [2]
+
+
+def test_partial_fragment_keeps_unknown_observations_before_gap_without_crossing_it():
+    unknown = observation(1)
+    unknown["primary_state"] = "unknown"
+    unknown["values"] = empty_hud_values()
+    unknown["view_context"]["is_player_world_view_trustworthy"] = False
+    unknown["quality"]["hud_confidence"] = 0
+    windows = make_builder()._round_windows([observation(0), unknown, observation(3)], [], 90)
+    assert len(windows) == 2
+    assert windows[0].start_sec == 0
+    assert windows[0].end_sec == 1
+    assert windows[0].contains(1)
+    assert not windows[0].contains(2)
+    assert windows[1].start_sec == 3
+    assert not windows[1].contains(1)
+    assert all(not window.complete for window in windows)
+    assert all(
+        window.start_event_sec is None and window.end_event_sec is None for window in windows
+    )
