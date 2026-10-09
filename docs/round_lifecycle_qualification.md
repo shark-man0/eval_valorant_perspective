@@ -833,3 +833,53 @@ must not mean ended. Any result/report qualification must remain separate from
 post-cut score, broad scene correspondence and player identity. The inspected
 source frame lies in the already documented cut-uncertainty interval; no
 pre-cut continuity claim is made from visual similarity alone.
+
+## Isolated OCR protocol and explicit report-text candidates (2026-10-09)
+
+Found a protocol defect while using an isolated Japanese trained-language
+directory: invoking the `tsv` config name relies on `configs/tsv`, which is
+absent when only traineddata is installed. Tesseract can exit successfully with
+plain text, subsequently parsed as missing TSV evidence. Both text and numeric
+readers now explicitly set `tessedit_create_tsv=1`. Confidence, grammar and
+lifecycle policy are unchanged. A real-engine regression copies only the
+English language model into an isolated directory and verifies identical
+recognized text/confidence to the default directory. Default English OCR on
+the fixed 21-frame end cohort is identical before/after for all 21 rows.
+Initial Japanese runs without the explicit renderer are protocol failures,
+not measurements of recognition accuracy.
+
+Added a frozen, local-only result/report OCR diagnostic. Video, native-frame
+manifest, images, layout, method, executable, trained language and implementation
+are hash-bound; changes fail closed. Method files specify ROI/subregion and
+preprocessing before prediction. Exact vocabulary and confidence 0.90 are
+required; missing text is not absence and recognized words do not emit events.
+No validation-pack input, qualification sidecar or adopted profile is created.
+Japanese whitespace removal corrects token spacing only, not characters.
+
+Development results, not independent event qualification:
+
+- English gray and thresholded candidates accept 0/21 early end-context frames.
+  A separately declared horizontal-scaling candidate was first tested on six
+  late training frames and accepts only 1/6. Several high-confidence `TEAM AGE`
+  reads remain rejected; they are not repaired to `TEAM ACE`.
+- Correct-protocol Japanese progress-text OCR accepts `ラウンドが進行中` at
+  native PTS 74.419336, confidence 0.9506, out of 21 early frames. This is a
+  positive progress-text observation, not a timer or round-state assignment.
+- A separately configured ability-header crop accepts `アビリティー` in 3/6
+  late training frames, then 13/21 early development frames beginning at
+  74.436003 (confidence 0.9291 at that frame). It accepts 0/18 additional context
+  samples at six coarse times. These populations are correlated development
+  data, not blind holdout or measured whole-video false-positive rates.
+
+The ability header alone does not prove round end. The first early acceptance
+lies inside the documented cut-uncertainty interval. No post-cut score is
+joined to it and no new boundary is emitted. More independent semantic-result
+and continuity evidence remains necessary. All source images, method files,
+model assets and full OCR outputs remain in ignored local `outputs/`.
+
+Verification after the renderer fix and diagnostic tests: full pytest
+**1554 PASS / 5 baseline FAIL / 5 SKIP**, 162.60 seconds, private
+`pytest-tsv-protocol-20261009.xml`. The five failures are the independently
+reproduced upstream path-resolution case and four spectator synthetic cases;
+they are not changed here. Focused OCR/template/real-engine coverage is
+**61 PASS**. No canonical full E2E or production boundary improvement is claimed.
