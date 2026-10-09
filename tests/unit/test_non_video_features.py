@@ -131,12 +131,14 @@ def test_usage_unknown_cost_and_restart_persistence(tmp_path: Path) -> None:
     before = app.usage()
     assert all(entry["estimated_cost"] is None for entry in before)
     assert before[0]["cache_hit"] == 1
+    assert before[0]["total_tokens"] is None
     rates = {"mock-model": {
         "input_per_million": 1.0, "output_per_million": 2.0, "currency": "USD"
     }}
     after = app.usage(rates)
     priced = next(entry for entry in after if entry["input_tokens"] == 100)
     assert priced["estimated_cost"] == pytest.approx(0.0002)
+    assert priced["total_tokens"] == 150
     assert all(x["estimated_cost"] is None for x in after if x["input_tokens"] is None)
     assert len(NonVideoFeatures(SQLiteRepository(tmp_path / "store.db")).usage()) == 3
     with pytest.raises(ValueError):

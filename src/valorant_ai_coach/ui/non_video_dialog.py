@@ -391,7 +391,7 @@ class NonVideoDialog(QDialog):
         self.usage_summary = QLabel()
         root.addWidget(self.usage_summary)
         self.usage_table = self._grid(
-            ("日時", "機能", "モデル", "状態", "Input", "Output", "Cache", "推定料金")
+            ("日時", "機能", "モデル", "状態", "Input", "Output", "Total", "Cache", "推定料金")
         )
         root.addWidget(self.usage_table)
         self.price_path = self.backend.settings_store.path.parent / "api_prices.json"
@@ -457,6 +457,7 @@ class NonVideoDialog(QDialog):
             (x["recorded_at"], x["feature"], x["model"], x["status"],
              x["input_tokens"] if x["input_tokens"] is not None else "不明",
              x["output_tokens"] if x["output_tokens"] is not None else "不明",
+             x["total_tokens"] if x["total_tokens"] is not None else "不明",
              "HIT" if x["cache_hit"] else "-",
              f"{x['estimated_cost']:.6f} {x.get('currency', '')}"
              if x["estimated_cost"] is not None else "不明")
@@ -480,7 +481,8 @@ class NonVideoDialog(QDialog):
             f"{amount:.6f} {currency}" for currency, amount in sorted(totals.items())
         ) or "不明"
         self.usage_summary.setText(
-            f"当月記録: {len(current)}件 / 推定額が計算可能: {len(known)}件"
+            f"当月記録（直近2000件中）: {len(current)}件 / "
+            f"推定額が計算可能: {len(known)}件"
             f" / 合計（通貨別・既知分のみ） {total_text}"
             + (" / 予算目安へ到達（参考警告）" if exceeds else "")
         )

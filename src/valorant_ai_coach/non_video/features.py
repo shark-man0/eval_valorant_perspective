@@ -442,6 +442,11 @@ class NonVideoFeatures:
         result = []
         for row in rows:
             item = dict(row)
+            item["total_tokens"] = (
+                item["input_tokens"] + item["output_tokens"]
+                if item["input_tokens"] is not None and item["output_tokens"] is not None
+                else None
+            )
             price = prices.get(item["model"])
             item["estimated_cost"] = None
             if (isinstance(price, dict) and
