@@ -351,8 +351,8 @@ class NonVideoFeatures:
                 ])
             content = stream.getvalue()
         else:
-            fields = ("round_no", "primary_rule_id", "label", "confidence",
-                      "reason", "improvement", "fact_refs",
+            fields = ("round_no", "primary_rule_id", "title", "label", "confidence",
+                      "reason", "improvement", "fact_refs", "evidence",
                       "evidence_range", "unscored_reason_code")
             trs = []
             for item in record["evaluations"]:
