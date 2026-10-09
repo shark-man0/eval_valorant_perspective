@@ -339,3 +339,63 @@ def test_low_confidence_event_cannot_yield_a_deterministic_label_through_a_raise
     package = _package_with_fact_confidence(0.98, 0.3)
     with pytest.raises(ContractValidationError):
         make_analyzer().analyze(package)
+
+
+# --- Spectator-safe Round Package through the complete downstream path --------------------
+
+
+def test_spectator_safe_package_stays_player_safe_through_round_analyzer() -> None:
+    """Post-Vision masking must survive Fact -> Rule -> Coach -> validation unchanged."""
+
+    package = load_case("TC-006")
+    snapshot = package["state_snapshots"][0]
+    snapshot.update(
+        hp=None,
+        armor=None,
+        weapon=None,
+        utility_available_count=None,
+        spike_state="planted",
+        source_confidence={
+            "ally_alive": 0.94,
+            "enemy_alive": 0.93,
+            "spike_state": 0.92,
+        },
+    )
+    # Remove fixture-authored player facts so only the normalized spectator-safe
+    # snapshot can contribute state facts in this integration path.
+    package["deterministic_facts"] = [
+        fact
+        for fact in package["deterministic_facts"]
+        if fact["key"] in {"side", "player_role"}
+    ]
+
+    result = make_analyzer().analyze(package)
+    facts = {fact["key"]: fact for fact in result.round_package["deterministic_facts"]}
+
+    for forbidden in (
+        "hp",
+        "armor",
+        "weapon",
+        "utility_available_count",
+        "spike_carried_by_player",
+    ):
+        assert forbidden not in facts
+
+    # Viewpoint-independent world state remains usable and keeps its own provenance.
+    assert facts["spike_planted"]["value"] is True
+    assert facts["spike_planted"]["confidence"] == pytest.approx(0.92)
+
+    # The complete downstream path, including output validation, must finish without
+    # recreating a player-owned fact from the masked snapshot.
+    referenced = {
+        fact_id
+        for evaluation in result.output["evaluations"]
+        for fact_id in evaluation.get("fact_refs", [])
+    }
+    forbidden_ids = {
+        fact["fact_id"]
+        for fact in result.round_package["deterministic_facts"]
+        if fact["key"]
+        in {"hp", "armor", "weapon", "utility_available_count", "spike_carried_by_player"}
+    }
+    assert referenced.isdisjoint(forbidden_ids)

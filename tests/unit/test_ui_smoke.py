@@ -14,7 +14,11 @@ from PySide6.QtWidgets import QApplication, QMessageBox, QWidget  # noqa: E402
 
 from valorant_ai_coach.settings import AppSettings, SettingsStore  # noqa: E402
 from valorant_ai_coach.ui.backend import BackendFacade  # noqa: E402
-from valorant_ai_coach.ui.contracts import VideoMetadataView  # noqa: E402
+from valorant_ai_coach.ui.contracts import (  # noqa: E402
+    EvaluationView,
+    MatchResultView,
+    VideoMetadataView,
+)
 from valorant_ai_coach.ui.main_window import MainWindow, _AudioProbeWorker  # noqa: E402
 from valorant_ai_coach.ui.settings_dialog import SettingsDialog  # noqa: E402
 from valorant_ai_coach.video import AudioTrackMetadata  # noqa: E402
@@ -362,4 +366,192 @@ def test_history_delete_removes_analysis_but_keeps_source_video(
     assert window.history.count() == 0
     assert window.delete_button.isEnabled() is False
 
+    _destroy_widget(window, app)
+
+
+def _evaluation_view(
+    label: str,
+    evaluation_id: str,
+    *,
+    clip_path: str | None = None,
+) -> EvaluationView:
+    return EvaluationView(
+        evaluation_id=evaluation_id,
+        label=label,
+        title=f"title-{evaluation_id}",
+        rule_id="AIM-02" if label != "unscored" else "PEEK-02",
+        related_rule_ids=(),
+        situation="観測された場面",
+        evidence=("00:30  first_shot_stationary=True（deterministic_fact）",)
+        if label != "unscored"
+        else (),
+        missing_information=("必要な視覚情報が不足しています",)
+        if label == "unscored"
+        else (),
+        reason="保存済み根拠に基づく評価",
+        improvement="停止して初弾を撃つ" if label == "improve" else None,
+        confidence=0.91 if label != "unscored" else 0.4,
+        category="Aim",
+        round_no=1,
+        requires_round_context=False,
+        decision_source="deterministic" if label != "unscored" else "hybrid",
+        clip_path=clip_path,
+        needs_review=False,
+        unscored_reason_code="insufficient_visual_evidence"
+        if label == "unscored"
+        else None,
+        fact_refs=("F-SAFE-1",) if label != "unscored" else (),
+        time_range=(29.5, 30.5) if label != "unscored" else None,
+    )
+
+
+def test_real_main_window_renders_results_filters_evidence_and_page_transition(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    app = QApplication.instance() or QApplication([])
+    store = SettingsStore(tmp_path / "settings.json", credential_backend=MemoryCredentials())
+    store.save(AppSettings.defaults(tmp_path))
+    backend = BackendFacade(store)
+    clip = tmp_path / "clip.mp4"
+    clip.write_bytes(b"clip")
+    result = MatchResultView(
+        match_id="M-UI-RESULT",
+        source_video_path=str(tmp_path / "source.mp4"),
+        status="completed",
+        evaluations=(
+            _evaluation_view("good", "g1", clip_path=str(clip)),
+            _evaluation_view("improve", "i1"),
+            _evaluation_view("unscored", "u1"),
+        ),
+        good_count=1,
+        improve_count=1,
+        unscored_count=1,
+        map_name="Ascent",
+        player_agent="Omen",
+    )
+    monkeypatch.setattr(backend, "get_match_result", lambda _match_id: result)
+
+    window = MainWindow(backend)
+    window._show_results("M-UI-RESULT")
+
+    assert window.pages.currentWidget() is window.results_page
+    assert "GOOD 1 / 改善 1 / UNSCORED 1" in window.result_title.text()
+    assert window.label_filter.currentData() == "scored"
+
+    cards = [
+        window.cards_layout.itemAt(index).widget()
+        for index in range(window.cards_layout.count() - 1)
+    ]
+    assert len(cards) == 2
+    scored_text = "\n".join(
+        label.text()
+        for card in cards
+        if card is not None
+        for label in card.findChildren(QLabel)
+    )
+    assert "使用したfact: F-SAFE-1" in scored_text
+    assert "該当時刻: 00:30" in scored_text
+    assert any(card is not None and card.findChildren(QPushButton) for card in cards)
+
+    window.label_filter.setCurrentIndex(window.label_filter.findData("unscored"))
+    window._render_cards()
+    unscored_card = window.cards_layout.itemAt(0).widget()
+    assert unscored_card is not None
+    unscored_text = "\n".join(label.text() for label in unscored_card.findChildren(QLabel))
+    assert "UNSCORED" in unscored_text
+    assert "必要な視覚情報が不足しています" in unscored_text
+    assert "insufficient_visual_evidence" in unscored_text
+    assert not unscored_card.findChildren(QPushButton)
+
+    window._show_page(window.home_page)
+    assert window.pages.currentWidget() is window.home_page
+    _destroy_widget(window, app)
+
+
+def test_play_clip_switches_source_replays_and_uses_cached_audio_tracks(
+    tmp_path: Path,
+) -> None:
+    app = QApplication.instance() or QApplication([])
+    store = SettingsStore(tmp_path / "settings.json", credential_backend=MemoryCredentials())
+    store.save(AppSettings.defaults(tmp_path))
+    store.update({"preferred_audio_track_index": 2})
+    window = MainWindow(BackendFacade(store))
+    first = tmp_path / "first.mp4"
+    second = tmp_path / "second.mp4"
+    first.write_bytes(b"first")
+    second.write_bytes(b"second")
+    tracks = (
+        AudioTrackMetadata(1, "aac", "jpn", "Japanese", False),
+        AudioTrackMetadata(2, "aac", "eng", "English", True),
+    )
+    window._audio_track_cache[first.resolve()] = tracks
+    window._audio_track_cache[second.resolve()] = tracks
+
+    class FakePlayer:
+        def __init__(self) -> None:
+            self.outputs: list[object] = []
+            self.sources: list[object] = []
+            self.positions: list[int] = []
+            self.play_count = 0
+            self.stop_count = 0
+
+        def setVideoOutput(self, output: object) -> None:
+            self.outputs.append(output)
+
+        def setSource(self, source: object) -> None:
+            self.sources.append(source)
+
+        def play(self) -> None:
+            self.play_count += 1
+
+        def stop(self) -> None:
+            self.stop_count += 1
+
+        def setPosition(self, position: int) -> None:
+            self.positions.append(position)
+
+    fake = FakePlayer()
+    window.player = fake  # type: ignore[assignment]
+
+    window._play_clip(str(first))
+    assert window._current_media_path == first.resolve()
+    assert fake.outputs[-1] is window.result_player
+    assert fake.sources[-1].toLocalFile() == str(first)
+    assert fake.play_count == 1
+    assert window.result_audio_track.count() == 2
+    assert window.result_audio_track.currentData() == 2
+
+    window._play_clip(str(second))
+    assert window._current_media_path == second.resolve()
+    assert fake.sources[-1].toLocalFile() == str(second)
+    assert window._player_audio_source_ready is False
+
+    window._replay()
+    assert fake.positions[-1] == 0
+    assert fake.play_count == 3
+
+    _destroy_widget(window, app)
+
+
+def test_play_clip_missing_file_is_safe_and_does_not_replace_current_source(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    app = QApplication.instance() or QApplication([])
+    store = SettingsStore(tmp_path / "settings.json", credential_backend=MemoryCredentials())
+    store.save(AppSettings.defaults(tmp_path))
+    window = MainWindow(BackendFacade(store))
+    current = tmp_path / "current.mp4"
+    current.write_bytes(b"current")
+    window._current_media_path = current.resolve()
+    warnings: list[tuple[str, str]] = []
+
+    monkeypatch.setattr(
+        QMessageBox,
+        "warning",
+        lambda _parent, title, message: warnings.append((title, message)),
+    )
+    window._play_clip(str(tmp_path / "missing.mp4"))
+
+    assert window._current_media_path == current.resolve()
+    assert warnings == [("クリップを再生できません", "クリップファイルが見つかりません")]
     _destroy_widget(window, app)
