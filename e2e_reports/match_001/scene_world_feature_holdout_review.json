@@ -1,0 +1,399 @@
+{
+  "schema_version": 1,
+  "scope": "Post-measurement image review; no qualification or new ground truth",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "diagnostic_report": "e2e_reports/match_001/scene_world_feature_holdout_diagnostics.json",
+  "diagnostic_report_sha256": "4b9c27cb0b190968285d252cf04ce3177f8ecc93189fbda22a4880266d30b043",
+  "reservation_sha256": "7f7b6d82ddc7781b4acb831874943f020589e48699a1e82b022ae04929e777ac",
+  "code_binding": "Reservation indirectly pins five method files through candidate-report SHA; empty direct code map is not unrestricted. Resolved predecode map and terminal hashes are in the raw report.",
+  "reviews": [
+    {
+      "window_sec": [
+        3.8,
+        3.9
+      ],
+      "review_provenance": "Manual visual inspection of all six native panels in timer/phase-masked contact sheet; model-assisted scene review, not ground truth",
+      "contact_sheet_local_path": "outputs/recognition-investigation/scene-world-feature-holdout-20261009/review-000.png",
+      "contact_sheet_sha256": "5e5db2d8436d9dd8c8785d3a9842d47df4eea76ee31199948efe9e629cbdd480",
+      "masked_source_pixels": {
+        "top_band": [
+          0,
+          0,
+          1920,
+          125
+        ],
+        "phase_result_rectangle": [
+          672,
+          84,
+          1248,
+          360
+        ]
+      },
+      "reviewed_native_frames": [
+        {
+          "pts_sec": 3.8026692708333334,
+          "frame_sha256": "4f625647a6f386a9a64cfdeb57b6942c90c320a69231fb6b223b8dd068ff79ba",
+          "source_pixel_sha256": "84a1bb5181d5ccfb108b443855a7fdb505aa8ade5f529aadeb59a8e9919dae29"
+        },
+        {
+          "pts_sec": 3.8193359375,
+          "frame_sha256": "5fde5ca22a18fbe6e91401208504ed9b82543b6cd9489683478285004d1493a5",
+          "source_pixel_sha256": "776601ca37c63cc79671653b0ef5596e8c0c4f605593bfe7454035c4702516f3"
+        },
+        {
+          "pts_sec": 3.8360026041666666,
+          "frame_sha256": "cb2081c52d7d15979fe7c7c337b9eb9299ddf68de2f1a422fd6b9f43dda91112",
+          "source_pixel_sha256": "b4f33e523cae8802f6c02c7558c9a4792f264588937834e609a9e2bacb69065b"
+        },
+        {
+          "pts_sec": 3.852669270833333,
+          "frame_sha256": "346211e1ea63c280745303f5b06dfcfabcbc5f34e7b1bb8ddc2eccc542fd127a",
+          "source_pixel_sha256": "796a16ce78db1e325a00e66082e2bcc02d3b05720ca8edd8ad39da0770a4f4cd"
+        },
+        {
+          "pts_sec": 3.8693359375,
+          "frame_sha256": "e5c7fe3f921d537b317f7df9e172093d833790e465ebac0a8e4f73584df1c0ea",
+          "source_pixel_sha256": "9e31b11d65c1aeb05b1ab1706f477957ce2d52eafbd8c39f95203ae9526d0029"
+        },
+        {
+          "pts_sec": 3.886002604166667,
+          "frame_sha256": "4e5468fc6df69255d5e695afcef7d90c896a8045f2ac02adbdd9e1b2ae51987c",
+          "source_pixel_sha256": "44fa119d8597b243ed77bab82d3fa89ca800055fa823574481759d26214d1ba3"
+        }
+      ],
+      "frames": 6,
+      "links": 5,
+      "supported_links": 0,
+      "visible_scene_observation": "Same wall/crack view with knife motion and camera pose change. Early frames lack reference matches; later frames regain tracks but not a qualified adjacent distributed link. UI occlusion/search-crop limits can hide reviewed world features.",
+      "content_cut_label": "not_established",
+      "uninterrupted_game_time": "not_established",
+      "runtime_authorization": false
+    },
+    {
+      "window_sec": [
+        4.39,
+        4.5
+      ],
+      "review_provenance": "Manual visual inspection of all six native panels in timer/phase-masked contact sheet; model-assisted scene review, not ground truth",
+      "contact_sheet_local_path": "outputs/recognition-investigation/scene-world-feature-holdout-20261009/review-001.png",
+      "contact_sheet_sha256": "6d5a4ee485813aa7b0a5dd756355f329037125bc89f3bb6afb9764cb17cf8e96",
+      "masked_source_pixels": {
+        "top_band": [
+          0,
+          0,
+          1920,
+          125
+        ],
+        "phase_result_rectangle": [
+          672,
+          84,
+          1248,
+          360
+        ]
+      },
+      "reviewed_native_frames": [
+        {
+          "pts_sec": 4.402669270833333,
+          "frame_sha256": "865d86c05a9a51dd11650f0550ef973d1517bc0b855388ecabc412f3c6d02503",
+          "source_pixel_sha256": "14c15a3c447743b864b4e61e3a6ca72002e6a36390cdea755a96845726bc11b3"
+        },
+        {
+          "pts_sec": 4.4193359375,
+          "frame_sha256": "e6859d09306127fbf5ba45cc3257d45936a3ecdb1ee2cdef7e912395cd00b6e6",
+          "source_pixel_sha256": "b0cbe453d06ccfd655102da808733f1fb9fffb63242ee707b46bcd69a48e9d95"
+        },
+        {
+          "pts_sec": 4.436002604166666,
+          "frame_sha256": "8304227211be2e4c94e53328a6ef9e3bd2a57d0d45077f38d5a9f5a5f26b057c",
+          "source_pixel_sha256": "95d855611715d11d078c4d196aff16d559f664b0b3f6be62754d2f10a02ccfa0"
+        },
+        {
+          "pts_sec": 4.452669270833334,
+          "frame_sha256": "f131510796b400c98408512c4dbce29849dab5e068afa0bc8e9fc4e5d8db74e4",
+          "source_pixel_sha256": "c8f4085f36c2266bc6be4e9a84cc9f5705907f72c4b5e42876be29a386720f70"
+        },
+        {
+          "pts_sec": 4.4693359375,
+          "frame_sha256": "862c47bd51ba5eadc464d4fe002b59f713efc97b57ffae0fd7c8f6de46616fef",
+          "source_pixel_sha256": "b5a42e2960f7e5207bb070c95893211ff119b53c4e89a595a65fa1f206a418b5"
+        },
+        {
+          "pts_sec": 4.486002604166667,
+          "frame_sha256": "f0365cf2c4d16c537089835e69cc14fca99d875560dc9a787dae701d78bbabbc",
+          "source_pixel_sha256": "04cb162886453d67b9e12205b142b6b67f6ebbb7b0a1985aaeba58cf68f001a8"
+        }
+      ],
+      "frames": 6,
+      "links": 5,
+      "supported_links": 0,
+      "visible_scene_observation": "Same wall/crack view; arms/knife foreground and rightward camera pan, with another character entering at the right. Initial matches are confined to region2; later frames lack matches.",
+      "content_cut_label": "not_established",
+      "uninterrupted_game_time": "not_established",
+      "runtime_authorization": false
+    },
+    {
+      "window_sec": [
+        31.0,
+        31.1
+      ],
+      "review_provenance": "Manual visual inspection of all six native panels in timer/phase-masked contact sheet; model-assisted scene review, not ground truth",
+      "contact_sheet_local_path": "outputs/recognition-investigation/scene-world-feature-holdout-20261009/review-002.png",
+      "contact_sheet_sha256": "599183ae9ece38d59efe978d25e45259f13ef39a2c14aba2738b07ea438f6d4e",
+      "masked_source_pixels": {
+        "top_band": [
+          0,
+          0,
+          1920,
+          125
+        ],
+        "phase_result_rectangle": [
+          672,
+          84,
+          1248,
+          360
+        ]
+      },
+      "reviewed_native_frames": [
+        {
+          "pts_sec": 31.002669270833334,
+          "frame_sha256": "374eb9665870b977cc08d5529203fe638e9b617f4d9b616e537ca64b20107368",
+          "source_pixel_sha256": "052f81cbb99b265c223ae1fcdcb835b91d97f4cdd4611083bd9dde3ebc17c048"
+        },
+        {
+          "pts_sec": 31.0193359375,
+          "frame_sha256": "31f32cc73cb8e09a83a92dd0ebf92c9f804c50e7c545bb21e8ca223a618913b9",
+          "source_pixel_sha256": "988c656f369189448562c812718259d0bb561099d53c1d59f0dbf2482e050b51"
+        },
+        {
+          "pts_sec": 31.036002604166665,
+          "frame_sha256": "0b02e802d38dda4365dd7780d53f4a5dd4d75fbcf641ac1eb7409167380e5e65",
+          "source_pixel_sha256": "70bc1baee119279e3ffe28585227ba8ab9eece6e9d27e341e82d6ac48a0d3f44"
+        },
+        {
+          "pts_sec": 31.052669270833334,
+          "frame_sha256": "b896fb131ad56fd55f0851022ed761161973da5fb3f423df046f861108894bab",
+          "source_pixel_sha256": "1b457b9b7541e41b21f2677bf5fa88c131a49c0f6f0497986117305f1d0a0950"
+        },
+        {
+          "pts_sec": 31.0693359375,
+          "frame_sha256": "bd78e97c3e954bca557bbe35c34ec0e0921635063a7e4e4ee6042df4887224b6",
+          "source_pixel_sha256": "177cabd3ed3e78b5b48e74a6371515241f4381c58d1b10b99ac32fb33e3b6154"
+        },
+        {
+          "pts_sec": 31.086002604166666,
+          "frame_sha256": "b26370d7c11433bea11989e4b55463e74aba8aba3c06703ee5879eb0c9de4a15",
+          "source_pixel_sha256": "232ad31d5b638540dcb0f46ea82b0362c4abab616861b44dbecb230b3dcbc379"
+        }
+      ],
+      "frames": 6,
+      "links": 5,
+      "supported_links": 0,
+      "visible_scene_observation": "Different courtyard/corridor view with camera motion, a purple box and foreground/edge character. The R1 reference bank has no accepted tracks.",
+      "content_cut_label": "not_established",
+      "uninterrupted_game_time": "not_established",
+      "runtime_authorization": false
+    },
+    {
+      "window_sec": [
+        0.6,
+        0.7
+      ],
+      "review_provenance": "Manual visual inspection of all six native panels in timer/phase-masked contact sheet; model-assisted scene review, not ground truth",
+      "contact_sheet_local_path": "outputs/recognition-investigation/scene-world-feature-holdout-20261009/review-003.png",
+      "contact_sheet_sha256": "daa6da33c1b5f395f913d93c3c427bade62be43f9e5bb0b60c89c69953f8e2f7",
+      "masked_source_pixels": {
+        "top_band": [
+          0,
+          0,
+          1920,
+          125
+        ],
+        "phase_result_rectangle": [
+          672,
+          84,
+          1248,
+          360
+        ]
+      },
+      "reviewed_native_frames": [
+        {
+          "pts_sec": 0.6026692708333333,
+          "frame_sha256": "98eaa036ec706bbdaa6465cc07d8881054e8462d3d388012027841350012ee8d",
+          "source_pixel_sha256": "4d5c9bf27609ce6afc1b24b34bfb8d36371b5d15aec9caad50f8a57adffa718d"
+        },
+        {
+          "pts_sec": 0.6193359375,
+          "frame_sha256": "9bc280270fd4354964acd49d3c39a5f3d30d9fc088aa1730bbee4343ee6a4386",
+          "source_pixel_sha256": "f767e3785982b9e2a3562d1513ee85df14c296ade200f4086cb2a478afad5b6f"
+        },
+        {
+          "pts_sec": 0.6360026041666667,
+          "frame_sha256": "20e637c23131b494da9870ea5ccb4298cfcde182d88dae9b11f63b12831728ea",
+          "source_pixel_sha256": "73124afd2f0474787515eeedfbef7f8e1f5f13749b5db9eb5ce3c23e8af81629"
+        },
+        {
+          "pts_sec": 0.6526692708333334,
+          "frame_sha256": "b66ffeaef9d9b711c053b1a924016d89448258b0bdd730ed998b4dceda0a1761",
+          "source_pixel_sha256": "aba471443ff2a3d765e564c476383a4d983ecd9a8106018905fb2a9c30456236"
+        },
+        {
+          "pts_sec": 0.6693359375,
+          "frame_sha256": "7dbb2ce2fd0a8abd265cec050ef5966ae9871087e585f7ee4173452e7055d25f",
+          "source_pixel_sha256": "b2c564ec8c37fabe6fb0c3b28ebe55a68f52e9ae78e2053d820af814a2120ffe"
+        },
+        {
+          "pts_sec": 0.6860026041666667,
+          "frame_sha256": "902257cb6ae404127b6209ada5537b44732116e6e8a6a493dff51f7394c142c4",
+          "source_pixel_sha256": "984b87237cb266d40d848850ed6614c08c2c08fff7996557d87ad46f297b5fa6"
+        }
+      ],
+      "frames": 6,
+      "links": 5,
+      "supported_links": 0,
+      "visible_scene_observation": "Different A-wall/barrier view, foreground characters and combat-report UI. The R1 reference bank has no accepted tracks.",
+      "content_cut_label": "not_established",
+      "uninterrupted_game_time": "not_established",
+      "runtime_authorization": false
+    },
+    {
+      "window_sec": [
+        100.0,
+        100.1
+      ],
+      "review_provenance": "Manual visual inspection of all six native panels in timer/phase-masked contact sheet; model-assisted scene review, not ground truth",
+      "contact_sheet_local_path": "outputs/recognition-investigation/scene-world-feature-holdout-20261009/review-004.png",
+      "contact_sheet_sha256": "65fa76c9b66fe518317602c510f31361b1d084e4773e7589eaf61aa6806dc848",
+      "masked_source_pixels": {
+        "top_band": [
+          0,
+          0,
+          1920,
+          125
+        ],
+        "phase_result_rectangle": [
+          672,
+          84,
+          1248,
+          360
+        ]
+      },
+      "reviewed_native_frames": [
+        {
+          "pts_sec": 100.00266927083334,
+          "frame_sha256": "ad09f33cb76cf539adab0d194a49c815f1431bacb25b9789f9729730c78c67d1",
+          "source_pixel_sha256": "e6c6ff8368a47152e385d68accfdb857ad877885374870f99c8fc873fac2f615"
+        },
+        {
+          "pts_sec": 100.0193359375,
+          "frame_sha256": "96b96bf1825b9f5f59648eb72f970264d6c7d3a3e26c67a7aaf1f277204416f7",
+          "source_pixel_sha256": "b409a576e8e41038ca0dda680d594d35c0c1b154bace61eee3ad0ee5a2932b58"
+        },
+        {
+          "pts_sec": 100.03600260416667,
+          "frame_sha256": "d62336fe3761fa39c7a55ba4cf610ab7d0a22fdc184c65906f9062d1b503fe37",
+          "source_pixel_sha256": "f49a21802b27e5383fed021d83291264e1c89821f42851aff5bb80ff6e863503"
+        },
+        {
+          "pts_sec": 100.05266927083333,
+          "frame_sha256": "eaa5f9fba22a1cfbf6c4fcef301727ca60b7f4781cd1d05ce29627d73f1f43aa",
+          "source_pixel_sha256": "17eee7e7580b53627d743c79ffa767caa63046d3511c18f60fdbed83e1e6e06c"
+        },
+        {
+          "pts_sec": 100.0693359375,
+          "frame_sha256": "5ff163147cae512e2975f82f3c32127e0a267198682561f59dfaecc36bd28939",
+          "source_pixel_sha256": "d4bcc8d7259b464f9e89d66b907002c906e048babc973c0655fc3376ca991a60"
+        },
+        {
+          "pts_sec": 100.08600260416667,
+          "frame_sha256": "6a2d8f1055c8c5858fed421bad1806c843127c816622ffe271611143faa5d4bf",
+          "source_pixel_sha256": "7b058ecb6dc945f10cd7c729e4ea667f7a1247082e4f99a91ad7aa4cdf316a61"
+        }
+      ],
+      "frames": 6,
+      "links": 5,
+      "supported_links": 0,
+      "visible_scene_observation": "Different open courtyard view with foreground characters, weapon and combat-report UI. The R1 reference bank has no accepted tracks.",
+      "content_cut_label": "not_established",
+      "uninterrupted_game_time": "not_established",
+      "runtime_authorization": false
+    },
+    {
+      "window_sec": [
+        150.0,
+        150.1
+      ],
+      "review_provenance": "Manual visual inspection of all six native panels in timer/phase-masked contact sheet; model-assisted scene review, not ground truth",
+      "contact_sheet_local_path": "outputs/recognition-investigation/scene-world-feature-holdout-20261009/review-005.png",
+      "contact_sheet_sha256": "609fc4be293d006ef26bb142e7a358e50119c3fc4276cd2b551bfc46dd82d3b6",
+      "masked_source_pixels": {
+        "top_band": [
+          0,
+          0,
+          1920,
+          125
+        ],
+        "phase_result_rectangle": [
+          672,
+          84,
+          1248,
+          360
+        ]
+      },
+      "reviewed_native_frames": [
+        {
+          "pts_sec": 150.00266927083334,
+          "frame_sha256": "b79f495d0299c4b9b196cf3134d02103f5d1a1edfdc69580f18d3354fc7ba381",
+          "source_pixel_sha256": "6c50acba14d7be9d22e494779d4d54a1571dc5afbe58e0c51fd8c0c61c8579be"
+        },
+        {
+          "pts_sec": 150.0193359375,
+          "frame_sha256": "d421032bf9a02a5ad4995e373eccd5a53b12d770653a636245d4405ce318f8e4",
+          "source_pixel_sha256": "adaef0222f58e303f65a8f8af3df28ebc727dd89af8ca556c168274578644603"
+        },
+        {
+          "pts_sec": 150.03600260416667,
+          "frame_sha256": "f3ffffa79e0fcc232b1175f8bd5c245cf5939efdd27026b1fcc245f08e208350",
+          "source_pixel_sha256": "246462731df1612d18b1fe6ffb31e39e1bfb8bb3442cfe2a77bd8d98aedebbb7"
+        },
+        {
+          "pts_sec": 150.05266927083332,
+          "frame_sha256": "968dc5bfbdb2b4de5551c464629a7c8d4def586262cef39900f3694e6557fcbc",
+          "source_pixel_sha256": "99ae455b746c8109ebce5dcf5293f2a32c343a0743967f8cff97b4767b4264c1"
+        },
+        {
+          "pts_sec": 150.0693359375,
+          "frame_sha256": "3aa56e194d3341dba45abe8cca8d6bf218bab5de1640b536a6c4bfcbaf30c33a",
+          "source_pixel_sha256": "71d38ae598f5307965dbe33ae19cbe933716b67a64022954c32a443318e2b459"
+        },
+        {
+          "pts_sec": 150.08600260416668,
+          "frame_sha256": "f0d5f1056c1903350c1675ec346dfd52d2f908ce2ebe9014e5a9751368ce46e2",
+          "source_pixel_sha256": "0784f487bf83f084a31068574a3d3996dbda71080ff8e10f162c8c80a5dd6499"
+        }
+      ],
+      "frames": 6,
+      "links": 5,
+      "supported_links": 0,
+      "visible_scene_observation": "Dark camera view with large foreground body, expanded-map/combat-report overlays. The R1 reference bank has no accepted tracks. No ownership/death fact is authorized.",
+      "content_cut_label": "not_established",
+      "uninterrupted_game_time": "not_established",
+      "runtime_authorization": false
+    }
+  ],
+  "total_frames": 36,
+  "total_links": 30,
+  "accepted_links": 0,
+  "positive_qualification": "NOT_MET",
+  "accepted_false_positive_links_observed": 0,
+  "correctness_rate": null,
+  "correctness_rate_reason": "No accepted links to assess; neither scene-preserving edits nor uninterrupted game time were independently labelled.",
+  "holdout_limits": [
+    "Same-video correlated views, not independent lifecycle episodes",
+    "Review establishes visible image content only",
+    "This cohort becomes development if used to redesign references or method"
+  ],
+  "qualification_created": false,
+  "new_runtime_events": 0,
+  "wall_clock_seconds": 41.61396901396802,
+  "decision": "Reject this reference bank for production qualification; abstain on unsupported links, do not label them cuts."
+}

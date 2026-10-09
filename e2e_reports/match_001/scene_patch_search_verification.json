@@ -1,0 +1,40 @@
+{
+  "scope": "Rejected diagnostic search design, not qualification/canonical E2E",
+  "base_commit": "0a606a0a3edb19ba4cd10d8007c2d045c39b2006",
+  "new_unit_tests": {
+    "passed": 10,
+    "seconds": 8.06,
+    "status": "PASS"
+  },
+  "ruff": "PASS src tests scripts/e2e and three new diagnostic scripts",
+  "mypy": "Prior PASS102source files remains applicable; production source hashes verified unchanged",
+  "prior_related_unit_tests": 204,
+  "production_source_sha256": {
+    "src/valorant_ai_coach/hud/global_lifecycle.py": "f4a9ea0220bfd2c5ce1eb5c940d61b8dc955abfe6642c95073b9b88bb94d638d",
+    "src/valorant_ai_coach/hud/source_continuity.py": "f0e4179b4c43ca44c54b13dcbeffc9af0ed1701d4c08f750a5eced0f90c07448",
+    "src/valorant_ai_coach/hud/round_lifecycle.py": "d84b0aa97ac251983efc5b376f2b575e8838feec4354741490645579a1cdf50a",
+    "src/valorant_ai_coach/hud/temporal.py": "f309285577d0fa4fbde98a86140ed830e67e147f08ea725c5b90afc70e1e74b2",
+    "src/valorant_ai_coach/hud/ui_transition.py": "1a94ff2f93b08d7a489353a47f29832ff992e660099add832f826ff9bf4d4388"
+  },
+  "assertion_matrix_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776",
+  "assertion_matrix_rows": 82,
+  "historical_canonical_counts": {
+    "FAIL": 55,
+    "NE": 4,
+    "PASS": 23
+  },
+  "canonical_current": null,
+  "qualification_created": false,
+  "new_real_boundaries": 0,
+  "full_e2e_executed": false,
+  "method_decision": "Rejected: wider search does not restore qualified coverage",
+  "file_sha256": {
+    "docs/scene_patch_search_investigation.md": "1bf52ab10e3a274dd2aee344ea5e855b21785ec5c2ebd76a10aeca33f09ca035",
+    "scripts/diagnostics/scene_patch_search.py": "53e66f692c42cbaab695cdea9910e3326c50089a18468f6b0d01bd463e9c2dd9",
+    "scripts/diagnostics/probe_scene_patch_search.py": "8073fb6e4cfb6b16986c6c8424bdcb80e61344a461051d860d450d932aa7b4bb",
+    "scripts/diagnostics/probe_scene_patch_rejections.py": "92e33566bda821ed512c889723e69d53567b3f43015010a4b888d53a7906da2c",
+    "tests/unit/test_scene_patch_search.py": "00946438752dad5f9b80f9fac6a46389747817692ccb557b1a99cbdca13bf4fa",
+    "e2e_reports/match_001/scene_patch_search_development.json": "b6fdba8cb5ab03fb67087b997e1956ab075399c00a74d4567308ec49d042e7d3",
+    "e2e_reports/match_001/scene_patch_search_rejections.json": "da793027d169ea92e21c090952fab70c9233eb93c5e7091f4ccc764be17f526a"
+  }
+}

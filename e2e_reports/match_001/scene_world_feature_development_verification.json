@@ -1,0 +1,46 @@
+{
+  "scope": "Development verification only, not qualification/canonical results",
+  "production_recognizer_fingerprint": "c1d9b29459e7d7f814a4e4d26aba90846f737d6f544884645dfb0380f592c828",
+  "production_unchanged_from_previous_mypy_check": true,
+  "verification": {
+    "document": "docs/scene_world_feature_development.md",
+    "report": "e2e_reports/match_001/scene_world_feature_bank_verified_controls.json",
+    "replay": "e2e_reports/match_001/scene_world_feature_verified_temporal_replay.json",
+    "holdout_reservation": "e2e_reports/match_001/scene_world_feature_holdout_reservation.json",
+    "r1_supported_links": {
+      "previous": 21,
+      "current": 26,
+      "delta": 5
+    },
+    "r2_supported_links": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "r1_prototype_states": {
+      "unobserved": 7,
+      "phase_candidate": 3,
+      "pre_round": 5,
+      "transient_ui_transition": 15
+    },
+    "new_real_boundaries": 0,
+    "canonical_current": null,
+    "assertion_statuses_changed": false,
+    "production_changed": false,
+    "diagnostic_initial_unsupported_phase_fixed": true,
+    "related_unit_tests_passed": 219,
+    "unit_seconds": 26.05,
+    "ruff": "PASS",
+    "mypy": "Prior PASS102files remains applicable: unchanged production/HUD fingerprint",
+    "qualification_created": false,
+    "fresh_e2e_executed": false,
+    "next_target": "Reserved independent same-video holdout and natural negative review, then trusted scene/UI producer qualification"
+  },
+  "assertion_matrix_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776",
+  "file_sha256": {
+    "docs/scene_world_feature_development.md": "26f1ca1f4189edb4079d908f95f3a76dee1a9a5a8e2bdeed97c6e08952b46e9c",
+    "e2e_reports/match_001/scene_world_feature_bank_verified_controls.json": "4eb7e8487eea028f5786539d98fed75289919b2a4b1e1fdae86a53fe32941267",
+    "e2e_reports/match_001/scene_world_feature_verified_temporal_replay.json": "03bedd4a260bf91b0a5d7d9cd67dd98a8b6a55289312af2f760ef1d6e94bfc55",
+    "e2e_reports/match_001/scene_world_feature_holdout_reservation.json": "7f7b6d82ddc7781b4acb831874943f020589e48699a1e82b022ae04929e777ac"
+  }
+}

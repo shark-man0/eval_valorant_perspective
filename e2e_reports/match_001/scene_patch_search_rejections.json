@@ -1,0 +1,220 @@
+{
+  "scope": "Development-stage rejection explanation only; no holdout or qualification",
+  "reference_selection": "Existing frozen image reference16, no timer/phase input",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "rows": [
+    {
+      "label": "critical-ui",
+      "pts_sec": 4.1193359375,
+      "reference_id": "16",
+      "reference_patches": 114,
+      "metrics": {
+        "accepted_reference_tracks": 22,
+        "model_inliers": 22,
+        "track_regions": [
+          0,
+          1,
+          2,
+          4
+        ],
+        "reference_to_current_affine": [
+          [
+            1.013830278343731,
+            -0.0016216289145279776,
+            -4.932982770715518
+          ],
+          [
+            0.0016216289145279776,
+            1.013830278343731,
+            -3.113894952562651
+          ]
+        ],
+        "runtime_proof_authorized": false
+      },
+      "tracks_by_region": {
+        "0": 3,
+        "1": 1,
+        "2": 1,
+        "4": 17
+      },
+      "rejections": [
+        {
+          "stage": "forward",
+          "reason": "ambiguous_second_peak",
+          "count": 86
+        },
+        {
+          "stage": "forward",
+          "reason": "multiple_search_regions",
+          "count": 2
+        },
+        {
+          "stage": "forward",
+          "reason": "no_ncc_qualified_peak",
+          "count": 2
+        },
+        {
+          "stage": "reverse",
+          "reason": "ambiguous_second_peak",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "label": "early-pose",
+      "pts_sec": 3.8026692708333334,
+      "reference_id": "16",
+      "reference_patches": 114,
+      "metrics": {
+        "accepted_reference_tracks": 1,
+        "model_inliers": 0,
+        "track_regions": [
+          1
+        ],
+        "reference_to_current_affine": null,
+        "runtime_proof_authorized": false
+      },
+      "tracks_by_region": {
+        "1": 1
+      },
+      "rejections": [
+        {
+          "stage": "forward",
+          "reason": "ambiguous_second_peak",
+          "count": 20
+        },
+        {
+          "stage": "forward",
+          "reason": "multiple_search_regions",
+          "count": 1
+        },
+        {
+          "stage": "forward",
+          "reason": "no_ncc_qualified_peak",
+          "count": 87
+        },
+        {
+          "stage": "reverse",
+          "reason": "ambiguous_second_peak",
+          "count": 4
+        },
+        {
+          "stage": "reverse",
+          "reason": "reciprocal_error",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "label": "returning-pose",
+      "pts_sec": 3.886002604166667,
+      "reference_id": "16",
+      "reference_patches": 114,
+      "metrics": {
+        "accepted_reference_tracks": 3,
+        "model_inliers": 0,
+        "track_regions": [
+          2,
+          4
+        ],
+        "reference_to_current_affine": null,
+        "runtime_proof_authorized": false
+      },
+      "tracks_by_region": {
+        "2": 1,
+        "4": 2
+      },
+      "rejections": [
+        {
+          "stage": "forward",
+          "reason": "ambiguous_second_peak",
+          "count": 76
+        },
+        {
+          "stage": "forward",
+          "reason": "no_ncc_qualified_peak",
+          "count": 27
+        },
+        {
+          "stage": "reverse",
+          "reason": "ambiguous_second_peak",
+          "count": 4
+        },
+        {
+          "stage": "reverse",
+          "reason": "multiple_search_regions",
+          "count": 1
+        },
+        {
+          "stage": "reverse",
+          "reason": "reciprocal_error",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "label": "later-pose",
+      "pts_sec": 4.402669270833333,
+      "reference_id": "16",
+      "reference_patches": 114,
+      "metrics": {
+        "accepted_reference_tracks": 4,
+        "model_inliers": 3,
+        "track_regions": [
+          0,
+          1,
+          2
+        ],
+        "reference_to_current_affine": [
+          [
+            0.8332869545859305,
+            -0.011910062333036587,
+            23.409756233303668
+          ],
+          [
+            0.011910062333036587,
+            0.8332869545859305,
+            27.511353517364203
+          ]
+        ],
+        "runtime_proof_authorized": false
+      },
+      "tracks_by_region": {
+        "0": 1,
+        "1": 1,
+        "2": 2
+      },
+      "rejections": [
+        {
+          "stage": "forward",
+          "reason": "ambiguous_second_peak",
+          "count": 63
+        },
+        {
+          "stage": "forward",
+          "reason": "no_ncc_qualified_peak",
+          "count": 39
+        },
+        {
+          "stage": "reverse",
+          "reason": "ambiguous_second_peak",
+          "count": 8
+        }
+      ]
+    }
+  ],
+  "file_sha256": {
+    "e2e_reports/match_001/scene_world_feature_bank_verified_controls.json": "4eb7e8487eea028f5786539d98fed75289919b2a4b1e1fdae86a53fe32941267",
+    "e2e_reports/match_001/scene_world_feature_holdout_diagnostics.json": "4b9c27cb0b190968285d252cf04ce3177f8ecc93189fbda22a4880266d30b043",
+    "/home/admin/eval_valorant_perspective/scripts/diagnostics/probe_scene_patch_rejections.py": "92e33566bda821ed512c889723e69d53567b3f43015010a4b888d53a7906da2c",
+    "/home/admin/eval_valorant_perspective/scripts/diagnostics/scene_patch_search.py": "53e66f692c42cbaab695cdea9910e3326c50089a18468f6b0d01bd463e9c2dd9",
+    "/home/admin/eval_valorant_perspective/scripts/diagnostics/scene_correspondence.py": "667fb4f7b0626fbbf4770716eefc18976a9409a4f0646084b95d479dab7273a3",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000016.png": "40a1ca141705ef466d3cdcd339bfa1e519a8bd998cabb9ea204da72dcaa6d382",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000014.png": "ffc878007fe550701c8e5be11f78b1a6d91bc88f77972cc48b370ac4cf7e7bb6",
+    "outputs/recognition-investigation/scene-world-feature-holdout-20261009/window-000/frame_000001.png": "4f625647a6f386a9a64cfdeb57b6942c90c320a69231fb6b223b8dd068ff79ba",
+    "outputs/recognition-investigation/scene-world-feature-holdout-20261009/window-000/frame_000006.png": "4e5468fc6df69255d5e695afcef7d90c896a8045f2ac02adbdd9e1b2ae51987c",
+    "outputs/recognition-investigation/scene-world-feature-holdout-20261009/window-001/frame_000001.png": "865d86c05a9a51dd11650f0550ef973d1517bc0b855388ecabc412f3c6d02503"
+  },
+  "runtime_proof_authorized": false,
+  "new_runtime_events": 0
+}

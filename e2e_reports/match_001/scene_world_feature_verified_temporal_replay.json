@@ -1,0 +1,939 @@
+{
+  "scope": "Descriptive bank temporal replay; archived observed readers, no qualification",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "input_sha256": {
+    "e2e_reports/match_001/scene_world_feature_bank_verified_controls.json": "4eb7e8487eea028f5786539d98fed75289919b2a4b1e1fdae86a53fe32941267",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/results.json": "b6c41f52eed4d9d41e5cda9ebd4d5cdfda97a2d736ff7de541584c2df61a58e6",
+    "/home/admin/eval_valorant_perspective/scripts/diagnostics/replay_scene_reference_bank.py": "970bf41a77f89be858e888f2327b151fa7189464c8b11cf176772daf57ca4b1f",
+    "/home/admin/eval_valorant_perspective/scripts/diagnostics/ui_transition_contract.py": "d84d1b43eb64c84a659cc11e557ca791a4ba2e2273751beeca74eb771cdd81a9"
+  },
+  "sets": [
+    {
+      "window_index": 0,
+      "rows": [
+        {
+          "pts_sec": 3.9026692708333335,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "0:00",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 3.9193359375,
+          "state": "unobserved",
+          "scene_supported_descriptive": true,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "0:00",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 3.9360026041666667,
+          "state": "unobserved",
+          "scene_supported_descriptive": true,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "0:00",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 3.9526692708333333,
+          "state": "unobserved",
+          "scene_supported_descriptive": true,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "0:00",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 3.9693359375,
+          "state": "phase_candidate",
+          "scene_supported_descriptive": true,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "0:00",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 3.9860026041666665,
+          "state": "phase_candidate",
+          "scene_supported_descriptive": true,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "0:00",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 4.002669270833334,
+          "state": "phase_candidate",
+          "scene_supported_descriptive": true,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "0:00",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 4.0193359375,
+          "state": "pre_round",
+          "scene_supported_descriptive": true,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "0:00",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 4.036002604166667,
+          "state": "pre_round",
+          "scene_supported_descriptive": true,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "0:00",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 4.052669270833333,
+          "state": "pre_round",
+          "scene_supported_descriptive": true,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "0:00",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 4.0693359375,
+          "state": "pre_round",
+          "scene_supported_descriptive": true,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "0:00",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 4.086002604166667,
+          "state": "pre_round",
+          "scene_supported_descriptive": true,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "0:00",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 4.102669270833333,
+          "state": "transient_ui_transition",
+          "scene_supported_descriptive": true,
+          "content_veto": false,
+          "transient_begin_pts_sec": 4.102669270833333,
+          "raw_display": "0:00",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 4.1193359375,
+          "state": "transient_ui_transition",
+          "scene_supported_descriptive": true,
+          "content_veto": false,
+          "transient_begin_pts_sec": 4.102669270833333,
+          "raw_display": "2:25",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 4.136002604166666,
+          "state": "transient_ui_transition",
+          "scene_supported_descriptive": true,
+          "content_veto": false,
+          "transient_begin_pts_sec": 4.102669270833333,
+          "raw_display": "2:25",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 4.152669270833333,
+          "state": "transient_ui_transition",
+          "scene_supported_descriptive": true,
+          "content_veto": false,
+          "transient_begin_pts_sec": 4.102669270833333,
+          "raw_display": "1:39",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 4.1693359375,
+          "state": "transient_ui_transition",
+          "scene_supported_descriptive": true,
+          "content_veto": false,
+          "transient_begin_pts_sec": 4.102669270833333,
+          "raw_display": "1:39",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 4.186002604166666,
+          "state": "transient_ui_transition",
+          "scene_supported_descriptive": true,
+          "content_veto": false,
+          "transient_begin_pts_sec": 4.102669270833333,
+          "raw_display": "1:39",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 4.202669270833334,
+          "state": "transient_ui_transition",
+          "scene_supported_descriptive": true,
+          "content_veto": false,
+          "transient_begin_pts_sec": 4.102669270833333,
+          "raw_display": "1:39",
+          "display_stable": true,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 4.2193359375,
+          "state": "transient_ui_transition",
+          "scene_supported_descriptive": true,
+          "content_veto": false,
+          "transient_begin_pts_sec": 4.102669270833333,
+          "raw_display": "1:39",
+          "display_stable": true,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 4.236002604166667,
+          "state": "transient_ui_transition",
+          "scene_supported_descriptive": true,
+          "content_veto": false,
+          "transient_begin_pts_sec": 4.102669270833333,
+          "raw_display": "1:39",
+          "display_stable": true,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 4.252669270833334,
+          "state": "transient_ui_transition",
+          "scene_supported_descriptive": true,
+          "content_veto": false,
+          "transient_begin_pts_sec": 4.102669270833333,
+          "raw_display": "1:39",
+          "display_stable": true,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 4.2693359375,
+          "state": "transient_ui_transition",
+          "scene_supported_descriptive": true,
+          "content_veto": false,
+          "transient_begin_pts_sec": 4.102669270833333,
+          "raw_display": "1:39",
+          "display_stable": true,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 4.286002604166667,
+          "state": "transient_ui_transition",
+          "scene_supported_descriptive": true,
+          "content_veto": false,
+          "transient_begin_pts_sec": 4.102669270833333,
+          "raw_display": "1:39",
+          "display_stable": true,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 4.302669270833333,
+          "state": "transient_ui_transition",
+          "scene_supported_descriptive": true,
+          "content_veto": false,
+          "transient_begin_pts_sec": 4.102669270833333,
+          "raw_display": "1:39",
+          "display_stable": true,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 4.3193359375,
+          "state": "transient_ui_transition",
+          "scene_supported_descriptive": true,
+          "content_veto": false,
+          "transient_begin_pts_sec": 4.102669270833333,
+          "raw_display": "1:39",
+          "display_stable": true,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 4.336002604166667,
+          "state": "transient_ui_transition",
+          "scene_supported_descriptive": true,
+          "content_veto": false,
+          "transient_begin_pts_sec": 4.102669270833333,
+          "raw_display": "1:39",
+          "display_stable": true,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 4.352669270833333,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "1:39",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 4.3693359375,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "1:39",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 4.386002604166666,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "1:39",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        }
+      ],
+      "state_counts": {
+        "unobserved": 7,
+        "phase_candidate": 3,
+        "pre_round": 5,
+        "transient_ui_transition": 15
+      },
+      "raw_display_history": [
+        {
+          "pts_sec": 3.9026692708333335,
+          "display": "0:00"
+        },
+        {
+          "pts_sec": 3.9193359375,
+          "display": "0:00"
+        },
+        {
+          "pts_sec": 3.9360026041666667,
+          "display": "0:00"
+        },
+        {
+          "pts_sec": 3.9526692708333333,
+          "display": "0:00"
+        },
+        {
+          "pts_sec": 3.9693359375,
+          "display": "0:00"
+        },
+        {
+          "pts_sec": 3.9860026041666665,
+          "display": "0:00"
+        },
+        {
+          "pts_sec": 4.002669270833334,
+          "display": "0:00"
+        },
+        {
+          "pts_sec": 4.0193359375,
+          "display": "0:00"
+        },
+        {
+          "pts_sec": 4.036002604166667,
+          "display": "0:00"
+        },
+        {
+          "pts_sec": 4.052669270833333,
+          "display": "0:00"
+        },
+        {
+          "pts_sec": 4.0693359375,
+          "display": "0:00"
+        },
+        {
+          "pts_sec": 4.086002604166667,
+          "display": "0:00"
+        },
+        {
+          "pts_sec": 4.102669270833333,
+          "display": "0:00"
+        },
+        {
+          "pts_sec": 4.1193359375,
+          "display": "2:25"
+        },
+        {
+          "pts_sec": 4.136002604166666,
+          "display": "2:25"
+        },
+        {
+          "pts_sec": 4.152669270833333,
+          "display": "1:39"
+        },
+        {
+          "pts_sec": 4.1693359375,
+          "display": "1:39"
+        },
+        {
+          "pts_sec": 4.186002604166666,
+          "display": "1:39"
+        },
+        {
+          "pts_sec": 4.202669270833334,
+          "display": "1:39"
+        },
+        {
+          "pts_sec": 4.2193359375,
+          "display": "1:39"
+        },
+        {
+          "pts_sec": 4.236002604166667,
+          "display": "1:39"
+        },
+        {
+          "pts_sec": 4.252669270833334,
+          "display": "1:39"
+        },
+        {
+          "pts_sec": 4.2693359375,
+          "display": "1:39"
+        },
+        {
+          "pts_sec": 4.286002604166667,
+          "display": "1:39"
+        },
+        {
+          "pts_sec": 4.302669270833333,
+          "display": "1:39"
+        },
+        {
+          "pts_sec": 4.3193359375,
+          "display": "1:39"
+        },
+        {
+          "pts_sec": 4.336002604166667,
+          "display": "1:39"
+        },
+        {
+          "pts_sec": 4.352669270833333,
+          "display": "1:39"
+        },
+        {
+          "pts_sec": 4.3693359375,
+          "display": "1:39"
+        },
+        {
+          "pts_sec": 4.386002604166666,
+          "display": "1:39"
+        }
+      ]
+    },
+    {
+      "window_index": 1,
+      "rows": [
+        {
+          "pts_sec": 111.20266927083334,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": null,
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.2193359375,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": null,
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.23600260416667,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": null,
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.25266927083334,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": null,
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.2693359375,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": null,
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.28600260416667,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": null,
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.30266927083333,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "0:00",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.3193359375,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "0:00",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.33600260416667,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "0:00",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.35266927083333,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "0:00",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.3693359375,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "0:00",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.38600260416666,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "0:00",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.40266927083333,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "0:00",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.4193359375,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "0:00",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.43600260416666,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "1:40",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.45266927083334,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "1:40",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.4693359375,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "1:39",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.48600260416667,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "1:39",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.50266927083334,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "1:39",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.5193359375,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "1:39",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.53600260416667,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "1:39",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.55266927083333,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "1:39",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.5693359375,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "1:39",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.58600260416667,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "1:39",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.60266927083333,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "1:39",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.6193359375,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "1:39",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.63600260416666,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "1:39",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.65266927083333,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "1:39",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.6693359375,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "1:39",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        },
+        {
+          "pts_sec": 111.68600260416666,
+          "state": "unobserved",
+          "scene_supported_descriptive": false,
+          "content_veto": false,
+          "transient_begin_pts_sec": null,
+          "raw_display": "1:39",
+          "display_stable": false,
+          "clock_semantics": "unqualified",
+          "round_event_authorized": false
+        }
+      ],
+      "state_counts": {
+        "unobserved": 30
+      },
+      "raw_display_history": [
+        {
+          "pts_sec": 111.20266927083334,
+          "display": null
+        },
+        {
+          "pts_sec": 111.2193359375,
+          "display": null
+        },
+        {
+          "pts_sec": 111.23600260416667,
+          "display": null
+        },
+        {
+          "pts_sec": 111.25266927083334,
+          "display": null
+        },
+        {
+          "pts_sec": 111.2693359375,
+          "display": null
+        },
+        {
+          "pts_sec": 111.28600260416667,
+          "display": null
+        },
+        {
+          "pts_sec": 111.30266927083333,
+          "display": "0:00"
+        },
+        {
+          "pts_sec": 111.3193359375,
+          "display": "0:00"
+        },
+        {
+          "pts_sec": 111.33600260416667,
+          "display": "0:00"
+        },
+        {
+          "pts_sec": 111.35266927083333,
+          "display": "0:00"
+        },
+        {
+          "pts_sec": 111.3693359375,
+          "display": "0:00"
+        },
+        {
+          "pts_sec": 111.38600260416666,
+          "display": "0:00"
+        },
+        {
+          "pts_sec": 111.40266927083333,
+          "display": "0:00"
+        },
+        {
+          "pts_sec": 111.4193359375,
+          "display": "0:00"
+        },
+        {
+          "pts_sec": 111.43600260416666,
+          "display": "1:40"
+        },
+        {
+          "pts_sec": 111.45266927083334,
+          "display": "1:40"
+        },
+        {
+          "pts_sec": 111.4693359375,
+          "display": "1:39"
+        },
+        {
+          "pts_sec": 111.48600260416667,
+          "display": "1:39"
+        },
+        {
+          "pts_sec": 111.50266927083334,
+          "display": "1:39"
+        },
+        {
+          "pts_sec": 111.5193359375,
+          "display": "1:39"
+        },
+        {
+          "pts_sec": 111.53600260416667,
+          "display": "1:39"
+        },
+        {
+          "pts_sec": 111.55266927083333,
+          "display": "1:39"
+        },
+        {
+          "pts_sec": 111.5693359375,
+          "display": "1:39"
+        },
+        {
+          "pts_sec": 111.58600260416667,
+          "display": "1:39"
+        },
+        {
+          "pts_sec": 111.60266927083333,
+          "display": "1:39"
+        },
+        {
+          "pts_sec": 111.6193359375,
+          "display": "1:39"
+        },
+        {
+          "pts_sec": 111.63600260416666,
+          "display": "1:39"
+        },
+        {
+          "pts_sec": 111.65266927083333,
+          "display": "1:39"
+        },
+        {
+          "pts_sec": 111.6693359375,
+          "display": "1:39"
+        },
+        {
+          "pts_sec": 111.68600260416666,
+          "display": "1:39"
+        }
+      ]
+    }
+  ],
+  "production_changed": false,
+  "runtime_events_created": 0,
+  "qualification_created": false,
+  "canonical_current": null
+}

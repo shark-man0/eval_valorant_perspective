@@ -159,6 +159,9 @@ class HudDirectEventBuilder:
                         "time_sec": timestamp,
                         "state": global_lifecycle.state if global_lifecycle else lifecycle.state,
                         "boundary_scope": "global_system" if global_lifecycle else "legacy_hud",
+                        "global_transition_reason": (
+                            global_lifecycle.diagnostic_reason if global_lifecycle else None
+                        ),
                         "hud_confidence": confidence,
                         "preparation_confidence": preparation_confidence(observation),
                         "start_candidate": is_start,

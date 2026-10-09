@@ -1,0 +1,62 @@
+{
+  "schema_version": "diagnostic-contract-verification-1.0",
+  "base_commit": "0a606a0a3edb19ba4cd10d8007c2d045c39b2006",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "production_recognizer_fingerprint": "c1d9b29459e7d7f814a4e4d26aba90846f737d6f544884645dfb0380f592c828",
+  "file_sha256": {
+    "src/valorant_ai_coach/hud/global_lifecycle.py": "f4a9ea0220bfd2c5ce1eb5c940d61b8dc955abfe6642c95073b9b88bb94d638d",
+    "src/valorant_ai_coach/hud/ui_transition.py": "1a94ff2f93b08d7a489353a47f29832ff992e660099add832f826ff9bf4d4388",
+    "src/valorant_ai_coach/hud/source_continuity.py": "f0e4179b4c43ca44c54b13dcbeffc9af0ed1701d4c08f750a5eced0f90c07448",
+    "src/valorant_ai_coach/hud/round_lifecycle.py": "d84b0aa97ac251983efc5b376f2b575e8838feec4354741490645579a1cdf50a",
+    "src/valorant_ai_coach/hud/temporal.py": "f309285577d0fa4fbde98a86140ed830e67e147f08ea725c5b90afc70e1e74b2",
+    "tests/unit/test_qualified_ui_transition.py": "7c950bd8c88a06dadf7e63ab0ad50d33adcddf27a0c86da4dbc97dc6cfbf619d",
+    "tests/unit/test_global_round_lifecycle.py": "ee14ee8872e999625799c47cc43dd13198deeae182b01350e192bd78e371c89c"
+  },
+  "scope": "Synthetic downstream contract verification, not real source qualification or canonical evaluation",
+  "real_scene_ui_producer_implemented": false,
+  "real_paired_qualification_installed": false,
+  "real_boundaries_newly_accepted": 0,
+  "verification": {
+    "related_unit_tests_passed": 200,
+    "unit_wall_seconds": 24.97,
+    "ruff": "PASS",
+    "mypy": "PASS",
+    "mypy_source_files": 102,
+    "fresh_e2e_executed": false,
+    "windows_runtime_verified": false
+  },
+  "canonical_comparison": {
+    "pass": {
+      "previous": 23,
+      "current": null,
+      "delta": null
+    },
+    "fail": {
+      "previous": 55,
+      "current": null,
+      "delta": null
+    },
+    "not_evaluated": {
+      "previous": 4,
+      "current": null,
+      "delta": null
+    },
+    "negative_failures": {
+      "previous": 0,
+      "current": null,
+      "delta": null
+    },
+    "discontinuity_violations": {
+      "previous": 0,
+      "current": null,
+      "delta": null
+    }
+  },
+  "r1_diagnostic_decision": "Visible scene continuity and UI transition supported at critical native links; scene-preserving edit / uninterrupted time unresolved",
+  "r2_diagnostic_decision": "Inconclusive through occlusion; no transferred qualification",
+  "production_default_changed": false,
+  "qualified_opt_in_contract_changed": true,
+  "thresholds_gt_assertions_sampler_changed": false,
+  "reports_are_not_qualification_assets": true,
+  "remaining_blocker": "Trusted visible-background and positive UI-transition producer with new independent same-video holdout and negative controls"
+}
