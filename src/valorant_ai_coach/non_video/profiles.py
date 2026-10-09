@@ -56,6 +56,9 @@ class ProfileStore:
             if value is None:
                 if defaults[key] is not None:
                     raise ValueError(f"{key}にnullは使えません")
+            elif key == "preferred_audio_track_index":
+                if type(value) is not int or value < 0:
+                    raise ValueError("preferred_audio_track_indexは0以上の整数またはnullです")
             elif type(value) is not type(defaults[key]):
                 raise ValueError(f"{key}の型が正しくありません")
         if data.get("hud_mode", "mock") not in ("mock", "real"):

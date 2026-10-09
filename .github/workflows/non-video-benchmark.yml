@@ -22,6 +22,10 @@ jobs:
           python-version: '3.12'
       - name: Install application
         run: python -m pip install -e .
+      - name: Install lint checker
+        run: python -m pip install ruff==0.16.9
+      - name: Lint full repository
+        run: python -m ruff check src tests scripts/e2e scripts/non_video_benchmark.py
       - name: Run synthetic before/after benchmark
         run: python scripts/non_video_benchmark.py | tee non-video-benchmark-results.json
       - uses: actions/upload-artifact@v4

@@ -109,3 +109,4 @@ def test_nonvideo_dialog_navigation_uses_only_persisted_results(tmp_path: Path) 
     dialog.deleteLater()
     QCoreApplication.sendPostedEvents(None, QEvent.Type.DeferredDelete)
     application.processEvents()
+    del dialog

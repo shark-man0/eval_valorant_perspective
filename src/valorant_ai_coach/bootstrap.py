@@ -5,8 +5,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from valorant_ai_coach.non_video.features import NonVideoFeatures
 from valorant_ai_coach.ai import FileResultCache, OpenAICoach
+from valorant_ai_coach.non_video.features import NonVideoFeatures
 from valorant_ai_coach.application import (
     FramePlanner,
     HudVideoProcessor,

@@ -200,7 +200,9 @@ class BackendFacade:
         return self.non_video.compare(first, second)
 
     def export_report(self, match_id: str, destination: Path, fmt: str) -> None:
-        self.non_video.export_report(match_id, destination, fmt)
+        self.non_video.export_report(
+            match_id, destination, fmt, rule_categories=self._rule_category
+        )
 
     def get_feedback(self, evaluation_id: str) -> dict[str, Any] | None:
         return self.non_video.feedback(evaluation_id)

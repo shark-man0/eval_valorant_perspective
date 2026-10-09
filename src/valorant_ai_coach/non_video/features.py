@@ -14,6 +14,7 @@ import re
 import sqlite3
 import tempfile
 from collections import Counter
+from collections.abc import Mapping
 from contextlib import contextmanager
 from datetime import UTC, datetime
 from pathlib import Path
@@ -285,7 +286,9 @@ class NonVideoFeatures:
             result[key] = values
         return result
 
-    def report(self, match_id: str) -> dict[str, Any]:
+    def report(
+        self, match_id: str, rule_categories: Mapping[str, str] | None = None
+    ) -> dict[str, Any]:
         result = self.repository.get_match_result(match_id)
         if result is None:
             raise KeyError(f"matchがありません: {match_id}")
@@ -297,7 +300,12 @@ class NonVideoFeatures:
             "missing_information", "unscored_reason_code", "decision_source",
         )
         evaluations = [
-            {key: self._clean_value(e.get(key)) for key in allowed}
+            {
+                **{key: self._clean_value(e.get(key)) for key in allowed},
+                "category": self._clean_value(
+                    (rule_categories or {}).get(str(e.get("primary_rule_id")), "Other")
+                ),
+            }
             for e in result["evaluations"]
         ]
         return {
@@ -326,10 +334,13 @@ class NonVideoFeatures:
             return [cls._clean_value(part) for part in value]
         return value
 
-    def export_report(self, match_id: str, destination: Path, fmt: str) -> None:
+    def export_report(
+        self, match_id: str, destination: Path, fmt: str,
+        rule_categories: Mapping[str, str] | None = None,
+    ) -> None:
         if fmt not in {"json", "csv", "html"}:
             raise ValueError("形式はjson/csv/htmlのみ")
-        record = self.report(match_id)
+        record = self.report(match_id, rule_categories)
         if fmt == "json":
             content = json.dumps(record, ensure_ascii=False, indent=2, allow_nan=False) + "\n"
         elif fmt == "csv":
@@ -337,7 +348,7 @@ class NonVideoFeatures:
             stream = io.StringIO(newline="")
             writer = csv.writer(stream)
             fields = ("match_id", "round_no", "evaluation_id", "primary_rule_id",
-                      "label", "confidence", "reason", "improvement",
+                      "category", "label", "confidence", "reason", "improvement",
                       "evidence_range", "unscored_reason_code")
             writer.writerow(fields)
             for item in record["evaluations"]:
@@ -351,8 +362,8 @@ class NonVideoFeatures:
                 ])
             content = stream.getvalue()
         else:
-            fields = ("round_no", "primary_rule_id", "title", "label", "confidence",
-                      "reason", "improvement", "fact_refs", "evidence",
+            fields = ("round_no", "primary_rule_id", "category", "title",
+                      "label", "confidence", "reason", "improvement", "fact_refs", "evidence",
                       "evidence_range", "unscored_reason_code")
             trs = []
             for item in record["evaluations"]:
