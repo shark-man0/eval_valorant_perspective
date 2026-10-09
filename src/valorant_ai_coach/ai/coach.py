@@ -383,6 +383,7 @@ class OpenAICoach:
             except AiCoachCancelled:
                 raise
             except Exception as exc:
+                self._record_usage('transport_error', retry_attempt=attempt)
                 if not self._is_transient(exc) or attempt >= attempts - 1:
                     raise
                 delay = self.retry_delays[attempt]
