@@ -516,3 +516,30 @@ def test_missing_context_scored_output_is_repaired_to_unscored() -> None:
     assert len(client.responses.calls) == 2
     repair = json.loads(client.responses.calls[1]["input"][0]["content"][0]["text"])
     assert "採点(good/improve)できません" in repair["validation_error"]
+
+
+def test_analysis_scope_changes_invalidate_ai_cache(tmp_path: Path) -> None:
+    cache = FileResultCache(tmp_path / "cache")
+    first_client = FakeClient([json.dumps(output(), ensure_ascii=False)])
+    coach(first_client, cache=cache).evaluate(
+        package(),
+        ["AIM-02"],
+        analysis_scopes=_micro_scope(),
+    )
+
+    whole_round_scope = {
+        "AIM-02": {
+            "level": "micro",
+            "scope": "whole_round",
+            "windows_sec": [],
+            "missing_context": [],
+        }
+    }
+    second_client = FakeClient([json.dumps(output(), ensure_ascii=False)])
+    coach(second_client, cache=cache).evaluate(
+        package(),
+        ["AIM-02"],
+        analysis_scopes=whole_round_scope,
+    )
+
+    assert len(second_client.responses.calls) == 1
