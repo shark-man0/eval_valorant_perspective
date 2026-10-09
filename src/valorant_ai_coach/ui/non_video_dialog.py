@@ -3,9 +3,10 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Callable
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 from PySide6.QtWidgets import (
     QComboBox,
@@ -372,7 +373,9 @@ class NonVideoDialog(QDialog):
         QMessageBox.information(self, "初期化しました", "履歴を保持したまま設定を初期化しました。")
 
     def _profile_export(self) -> None:
-        path, _ = QFileDialog.getSaveFileName(self, "プロファイルを書き出し", "profile.json", "JSON (*.json)")
+        path, _ = QFileDialog.getSaveFileName(
+            self, "プロファイルを書き出し", "profile.json", "JSON (*.json)"
+        )
         if path:
             self.backend.profiles.export_file(self._selected_profile(), Path(path))
 

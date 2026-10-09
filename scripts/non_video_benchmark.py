@@ -12,8 +12,9 @@ import tempfile
 import time
 import tracemalloc
 from collections import Counter
+from collections.abc import Callable
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 from valorant_ai_coach.non_video.features import NonVideoFeatures
 from valorant_ai_coach.storage.repository import SQLiteRepository
@@ -111,15 +112,19 @@ def main() -> int:
                 "match_count": matches,
                 "evaluation_count": matches * 5,
                 "matches_incomplete": (matches + 9) // 10,
-                "legacy_search": measure(lambda: old_search(repo)),
-                "indexed_search": measure(lambda: new_search(features)),
-                "legacy_statistics": measure(lambda: old_statistics(repo)),
-                "sql_statistics": measure(lambda: features.statistics()),
+                "legacy_search": measure(lambda repo=repo: old_search(repo)),
+                "indexed_search": measure(lambda features=features: new_search(features)),
+                "legacy_statistics": measure(lambda repo=repo: old_statistics(repo)),
+                "sql_statistics": measure(lambda features=features: features.statistics()),
                 "json_export": measure(
-                    lambda: features.export_report("bench-00000", destination, "json")
+                    lambda features=features, destination=destination: features.export_report(
+                        "bench-00000", destination, "json"
+                    )
                 ),
                 "csv_export": measure(
-                    lambda: features.export_report("bench-00000", destination, "csv")
+                    lambda features=features, destination=destination: features.export_report(
+                        "bench-00000", destination, "csv"
+                    )
                 ),
                 "consistency": "passed",
             }

@@ -6,7 +6,6 @@ from pathlib import Path
 from typing import Any
 
 from valorant_ai_coach.ai import FileResultCache, OpenAICoach
-from valorant_ai_coach.non_video.features import NonVideoFeatures
 from valorant_ai_coach.application import (
     FramePlanner,
     HudVideoProcessor,
@@ -19,6 +18,7 @@ from valorant_ai_coach.events import EventSourceContract
 from valorant_ai_coach.facts import FactBuilder
 from valorant_ai_coach.hud import HudAnalyzer, MockHudAnalyzer, RealHudAnalyzer
 from valorant_ai_coach.models import RoleResolver
+from valorant_ai_coach.non_video.features import NonVideoFeatures
 from valorant_ai_coach.resources import executable_path, resource_path, resource_root
 from valorant_ai_coach.rounds import RoundPackageBuilder
 from valorant_ai_coach.rules import (

@@ -14,11 +14,11 @@ import re
 import sqlite3
 import tempfile
 from collections import Counter
-from collections.abc import Mapping
+from collections.abc import Iterator, Mapping
 from contextlib import contextmanager
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Iterator
+from typing import Any
 
 from valorant_ai_coach.storage.repository import SQLiteRepository
 
@@ -124,7 +124,7 @@ class NonVideoFeatures:
         """Stable, paginated, fully parameterized filtering on persisted evaluations."""
         if label and label not in _LABELS:
             raise ValueError("未対応の評価ラベル")
-        if not (1 <= limit <= 500 and 0 <= offset):
+        if not (1 <= limit <= 500 and offset >= 0):
             raise ValueError("ページング範囲が不正です")
         conditions: list[str] = []
         params: list[Any] = []
@@ -163,7 +163,7 @@ class NonVideoFeatures:
             rows = db.execute(sql, (*params, limit, offset)).fetchall()
         return [
             {
-                **{key: row[key] for key in row.keys() if key != "payload_json"},
+                **{key: row[key] for key in row if key != "payload_json"},
                 "payload": json.loads(row["payload_json"]),
             }
             for row in rows

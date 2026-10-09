@@ -6,10 +6,10 @@ from pathlib import Path
 from threading import Event
 from typing import Any
 
-from valorant_ai_coach.non_video.features import NonVideoFeatures
-from valorant_ai_coach.non_video.profiles import ProfileStore
 from valorant_ai_coach.bootstrap import build_services
 from valorant_ai_coach.logging_setup import configure_logging
+from valorant_ai_coach.non_video.features import NonVideoFeatures
+from valorant_ai_coach.non_video.profiles import ProfileStore
 from valorant_ai_coach.settings import AppSettings, SettingsStore, default_data_dir
 
 from .contracts import EvaluationView, MatchResultView, UiSettings, VideoMetadataView
