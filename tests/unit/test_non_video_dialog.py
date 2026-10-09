@@ -97,6 +97,10 @@ def test_nonvideo_dialog_navigation_uses_only_persisted_results(tmp_path: Path) 
     assert dialog.tabs.count() == 5
     assert dialog.query_table.rowCount() == 1
     assert dialog.stat_table.rowCount() == 1
+    assert dialog.stat_bars.count() == 3
+    assert dialog.stat_category_bars.count() == 1
+    assert dialog.stat_day_bars.count() == 1
+    assert dialog.stat_improve_bars.count() == 0 + 1
     dialog.query_label.setCurrentIndex(dialog.query_label.findData("unscored"))
     dialog._search()
     assert dialog.query_table.rowCount() == 0

@@ -21,6 +21,7 @@ from PySide6.QtWidgets import (
     QPlainTextEdit,
     QProgressBar,
     QPushButton,
+    QScrollArea,
     QSpinBox,
     QTableWidget,
     QTableWidgetItem,
@@ -201,7 +202,13 @@ class NonVideoDialog(QDialog):
 
     def _statistics_tab(self) -> None:
         page = QWidget()
-        root = QVBoxLayout(page)
+        outer = QVBoxLayout(page)
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        content = QWidget()
+        root = QVBoxLayout(content)
+        scroll.setWidget(content)
+        outer.addWidget(scroll)
         form = QHBoxLayout()
         self.stat_start = QLineEdit()
         self.stat_start.setPlaceholderText("開始日 YYYY-MM-DD")
@@ -217,8 +224,19 @@ class NonVideoDialog(QDialog):
         self.stat_summary = QLabel()
         self.stat_summary.setWordWrap(True)
         root.addWidget(self.stat_summary)
+        root.addWidget(QLabel("評価ラベル別分布"))
         self.stat_bars = QVBoxLayout()
         root.addLayout(self.stat_bars)
+        root.addWidget(QLabel("カテゴリ別評価件数（上位8件）"))
+        self.stat_category_bars = QVBoxLayout()
+        root.addLayout(self.stat_category_bars)
+        root.addWidget(QLabel("日付別評価件数（直近14日分の観測日）"))
+        self.stat_day_bars = QVBoxLayout()
+        root.addLayout(self.stat_day_bars)
+        root.addWidget(QLabel("頻出する改善ルール（上位8件）"))
+        self.stat_improve_bars = QVBoxLayout()
+        root.addLayout(self.stat_improve_bars)
+        root.addWidget(QLabel("カテゴリ・ルール・日付の全件表"))
         self.stat_category_table = self._grid(("カテゴリ", "評価件数"))
         root.addWidget(self.stat_category_table)
         self.stat_table = self._grid(("ルール", "件数", "カテゴリ"))
@@ -230,6 +248,25 @@ class NonVideoDialog(QDialog):
         ))
         self.tabs.addTab(page, "統計")
         self._execute(self._refresh_stats)
+
+    @staticmethod
+    def _render_chart(layout: QVBoxLayout, entries: list[tuple[str, int]]) -> None:
+        while layout.count():
+            entry = layout.takeAt(0)
+            old_widget = entry.widget() if entry is not None else None
+            if old_widget is not None:
+                old_widget.deleteLater()
+        if not entries:
+            layout.addWidget(QLabel("該当データなし"))
+            return
+        maximum = max(1, *(count for _, count in entries))
+        for name, count in entries:
+            bar = QProgressBar()
+            bar.setRange(0, maximum)
+            bar.setValue(count)
+            bar.setFormat(f"{name}: {count}")
+            bar.setTextVisible(True)
+            layout.addWidget(bar)
 
     def _refresh_stats(self) -> None:
         stats = self.backend.get_statistics(
@@ -251,31 +288,28 @@ class NonVideoDialog(QDialog):
             f"IMPROVE {counts['improve']} / UNSCORED {counts['unscored']} "
             "/ 採点済みGOOD割合: 分母なし"
         )
-        while self.stat_bars.count():
-            item = self.stat_bars.takeAt(0)
-            widget_to_remove = item.widget() if item is not None else None
-            if widget_to_remove is not None:
-                widget_to_remove.deleteLater()
-        max_count = max(1, *counts.values())
-        for label in ("good", "improve", "unscored"):
-            bar = QProgressBar()
-            bar.setRange(0, max_count)
-            bar.setValue(counts[label])
-            bar.setFormat(f"{label.upper()} {counts[label]}")
-            self.stat_bars.addWidget(bar)
+        self._render_chart(
+            self.stat_bars,
+            [(label.upper(), counts[label]) for label in ("good", "improve", "unscored")],
+        )
         by_rule = stats["by_rule"]
         categories: dict[str, int] = {}
         for rule, count in by_rule.items():
             category = str(self.rules.get(rule, {}).get("category", "Other"))
             categories[category] = categories.get(category, 0) + count
-        self._fill(self.stat_category_table, sorted(categories.items(),
-                   key=lambda item: (-item[1], item[0])))
+        category_items = sorted(categories.items(), key=lambda item: (-item[1], item[0]))
+        self._fill(self.stat_category_table, category_items)
+        self._render_chart(self.stat_category_bars, category_items[:8])
         self._fill(self.stat_table, [
             (rule, count, self.rules.get(rule, {}).get("category", "Other"))
             for rule, count in sorted(by_rule.items(), key=lambda it: (-it[1], it[0]))
         ])
-        self._fill(self.stat_timeline, list(stats["by_day"].items()))
+        day_items = list(stats["by_day"].items())
+        self._fill(self.stat_timeline, day_items)
+        self._render_chart(self.stat_day_bars, day_items[-14:])
         frequent = stats["by_improve_rule"]
+        frequent_items = sorted(frequent.items(), key=lambda item: (-item[1], item[0]))
+        self._render_chart(self.stat_improve_bars, frequent_items[:8])
         if frequent:
             self.stat_summary.setText(
                 self.stat_summary.text() + "\n頻出改善ルール: " +
