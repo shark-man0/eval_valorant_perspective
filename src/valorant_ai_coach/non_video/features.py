@@ -163,7 +163,7 @@ class NonVideoFeatures:
             rows = db.execute(sql, (*params, limit, offset)).fetchall()
         return [
             {
-                **{key: row[key] for key in row if key != "payload_json"},
+                **{key: value for key, value in dict(row).items() if key != "payload_json"},
                 "payload": json.loads(row["payload_json"]),
             }
             for row in rows

@@ -27,8 +27,11 @@ jobs:
       - name: Lint full repository
         run: python -m ruff check src tests scripts/e2e scripts/non_video_benchmark.py
       - name: Run synthetic before/after benchmark
-        run: python scripts/non_video_benchmark.py | tee non-video-benchmark-results.json
+        run: |
+          set -o pipefail
+          python scripts/non_video_benchmark.py | tee non-video-benchmark-results.json
       - uses: actions/upload-artifact@v4
         with:
           name: non-video-benchmark-results
           path: non-video-benchmark-results.json
+          if-no-files-found: error
