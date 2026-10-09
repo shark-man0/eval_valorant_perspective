@@ -543,3 +543,25 @@ def test_analysis_scope_changes_invalidate_ai_cache(tmp_path: Path) -> None:
     )
 
     assert len(second_client.responses.calls) == 1
+
+
+def test_fact_confidence_violation_uses_schema_repair_loop() -> None:
+    weak_package = package()
+    weak_package["deterministic_facts"][-1]["confidence"] = 0.61
+    invalid = output()
+    invalid["evaluations"][0]["confidence"] = 0.96
+    repaired = output()
+    repaired["evaluations"][0]["confidence"] = 0.61
+    client = FakeClient(
+        [
+            json.dumps(invalid, ensure_ascii=False),
+            json.dumps(repaired, ensure_ascii=False),
+        ]
+    )
+
+    result = coach(client).evaluate(weak_package, ["AIM-02"])
+
+    assert result["evaluations"][0]["confidence"] == pytest.approx(0.61)
+    assert len(client.responses.calls) == 2
+    repair = json.loads(client.responses.calls[1]["input"][0]["content"][0]["text"])
+    assert "参照factの最小confidence" in repair["validation_error"]

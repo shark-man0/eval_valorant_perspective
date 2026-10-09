@@ -180,8 +180,6 @@ class RoundAnalyzer:
                     key=lambda item: order.get(str(item["primary_rule_id"]), len(order)),
                 )
                 related = [str(rule_id) for rule_id in primary.get("related_rule_ids", [])]
-                missing = [str(text) for text in primary.get("missing_information", [])]
-                primary["confidence"] = min(float(item["confidence"]) for item in cluster)
                 for item in cluster:
                     if item is primary:
                         continue
@@ -189,12 +187,17 @@ class RoundAnalyzer:
                         str(item["primary_rule_id"]),
                         *[str(value) for value in item.get("related_rule_ids", [])],
                     ]:
-                        if (
-                            rule_id != primary["primary_rule_id"]
-                            and rule_id not in related
-                            and len(related) < 2
-                        ):
+                        if rule_id != primary["primary_rule_id"] and rule_id not in related:
                             related.append(rule_id)
+                # Schema v3 allows at most two related rules. Do not deduplicate if
+                # doing so would erase an existing rule identity.
+                if len(related) > 2:
+                    continue
+                missing = [str(text) for text in primary.get("missing_information", [])]
+                primary["confidence"] = min(float(item["confidence"]) for item in cluster)
+                for item in cluster:
+                    if item is primary:
+                        continue
                     for text in item.get("missing_information", []):
                         text = str(text)
                         if text not in missing:

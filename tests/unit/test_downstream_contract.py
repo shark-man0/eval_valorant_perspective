@@ -435,3 +435,69 @@ def test_same_basis_low_confidence_unscored_rules_are_deduplicated() -> None:
     assert evaluation["label"] == "unscored"
     assert evaluation["unscored_reason_code"] == "low_confidence"
     assert evaluation["fact_refs"] == [fact["fact_id"]]
+
+
+def test_round_analyzer_deduplicates_same_basis_unscored_from_any_coach() -> None:
+    package = load_case("TC-005")
+    fact = next(
+        item for item in package["deterministic_facts"] if item["key"] == "first_shot_stationary"
+    )
+    fact["confidence"] = 0.3
+
+    class DuplicateUnscoredCoach:
+        @staticmethod
+        def evaluate(
+            round_package: dict[str, Any],
+            candidate_rule_ids: list[str],
+            **_kwargs: Any,
+        ) -> dict[str, Any]:
+            assert {"AIM-03", "MOV-02"} <= set(candidate_rule_ids)
+
+            def item(rule_id: str, title: str) -> dict[str, Any]:
+                return {
+                    "evaluation_id": f"dup-{rule_id}",
+                    "clip_id": None,
+                    "primary_rule_id": rule_id,
+                    "related_rule_ids": [],
+                    "label": "unscored",
+                    "decision_source": "deterministic",
+                    "fact_refs": [fact["fact_id"]],
+                    "concept_tags": ["first_shot"],
+                    "title": title,
+                    "situation": "同一の低信頼観測",
+                    "reason": "観測信頼度が不足",
+                    "improvement": None,
+                    "confidence": 0.3,
+                    "evidence": [],
+                    "evidence_range": None,
+                    "display_clip": None,
+                    "missing_information": ["first_shot_stationaryの観測信頼度が不足"],
+                    "unscored_reason_code": "low_confidence",
+                }
+
+            return {
+                "schema_version": "3.0",
+                "analysis_id": "duplicate-unscored",
+                "match_id": round_package["match_id"],
+                "round_no": round_package["round_no"],
+                "evaluations": [
+                    item("AIM-03", "初弾"),
+                    item("MOV-02", "ストッピング"),
+                ],
+            }
+
+    analyzer = RoundAnalyzer(
+        fact_builder=FactBuilder(),
+        selector=RuleSelector(resource_path("config/rule_trigger_registry_v2.json")),
+        rule_engine=DeterministicRuleEngine(),
+        coach=DuplicateUnscoredCoach(),
+        validator=SchemaValidator(),
+    )
+    result = analyzer.analyze(package)
+
+    assert len(result.output["evaluations"]) == 1
+    evaluation = result.output["evaluations"][0]
+    assert evaluation["primary_rule_id"] == "AIM-03"
+    assert evaluation["related_rule_ids"] == ["MOV-02"]
+    assert evaluation["fact_refs"] == [fact["fact_id"]]
+    assert evaluation["unscored_reason_code"] == "low_confidence"
