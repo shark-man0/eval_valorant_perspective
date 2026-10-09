@@ -23,4 +23,25 @@ python scripts/non_video_benchmark.py
 
 ## 計測結果と制約
 
-数値結果は専用GitHub Actionsの`Non-video synthetic benchmark` artifact `non-video-benchmark-results.json`を正として参照する。ここでは未実行の時間・改善率を捏造しない。SQLiteの`LIKE`全文走査、GUI大量行の描画、他プロセスとの同時使用は別途性能検証の対象。合成結果は実運用の保証ではない。
+2026-10-10、GitHub Actions Linux runner（Python 3.12）の同一runで3回ずつ計測した中央値。
+計測run: [Non-video synthetic benchmark #37966879010](https://github.com/shark-man0/eval_valorant_perspective/actions/runs/37966879010)。
+実動画や有料APIは使用しない。
+
+| Match数（評価件数） | 旧検索 ms | 新検索 ms | 旧統計 ms | SQL統計 ms |
+|---|---:|---:|---:|---:|
+| 10（50） | 7.102 | 2.072 | 7.851 | 1.115 |
+| 100（500） | 66.092 | 16.139 | 66.725 | 2.995 |
+| 1,000（5,000） | 652.563 | 198.053 | 658.936 | 22.879 |
+
+1,000 Matchでの検索時間は約3.3倍、統計集計は約28.8倍の高速化。
+検索対象の評価ID集合とラベル件数は全条件で一致。
+ただし全件検索のPython追跡メモリpeakは旧807,800 byte→新1,795,361 byteに増加。
+これは結果オブジェクト全件を一度に収集する合成比較の数値であり、
+GUIでは50件ずつページングする。大量の全件エクスポートやメモリ削減まで達成したとは主張しない。
+
+`csv_export` / `json_export`は特定の1 Match（5評価）の反復出力であり、
+データセット全体の一括エクスポート性能を測定したものではない。
+相対的な速度はGitHub runner・負荷・依存バージョンで変動する。
+SQLiteの`LIKE`全文走査、GUI大量行の描画、他プロセスとの同時使用は
+別途性能検証の対象。合成結果は実運用の保証ではない。
+
