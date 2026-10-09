@@ -7,7 +7,7 @@
 - 開始時main: 同上（PR #8 merge commit）
 - 実動画認識精度改善: 担当外
 - Vision production code: 変更なし
-- 現在の状態: 契約変更を要しない調査・統合テストを進行済み。Priority Aの契約判断待ち。
+- 現在の状態: Priority Aの承認済み契約変更、統合テスト、Qt CI修正まで完了。
 
 ## 1. Phase 1: 最新mainの検証
 
@@ -57,20 +57,20 @@ version差は原因候補だが、先にtest側QObject lifecycleを明示cleanup
 
 `fact_refs`はSchema上uniqueである。
 
-一方、次は未検証。
+承認済み契約として次を実装した。
+
+`evaluation.fact_refs` が非空なら、
 
 `evaluation.confidence <= min(confidence of referenced facts)`
 
-MockEvaluatorはhybrid評価のconfidenceをpackage aggregateとevent confidenceから計算し、
-その後にrule関連factを`fact_refs`へ付けるため、引用factより高いconfidenceになり得る。
+を必須とする。frame-only評価の `fact_refs=[]` は従来どおり合法で、Fact由来ではない
+独立画像根拠へ機械的なconfidence capを掛けない。
 
-既存調査どおりTC-014 / TC-016が代表例である。
-
-- TC-014: evaluation 0.98に対し引用可能なvisual factに0.90が存在する
-- TC-016: evaluation 0.98に対し引用可能なzone factに0.90が存在する
-
-ただしframe-onlyの独立画像根拠まで無関係なfact confidenceで上限化するのは不適切なので、
-適用範囲の契約決定が必要。
+- SchemaValidatorで超過をContractValidationErrorにする
+- OpenAICoachでは既存repair loopの対象になる
+- MockEvaluatorも生成時点で参照Factの最小confidenceを上限にする
+- TC-014 / TC-016を含む回帰testで上限を確認
+- analysis scopeも含めAI cache keyをv3へ更新した
 
 ### A-2 output scope / context
 
@@ -78,14 +78,18 @@ Round Package自体の不正はAPI呼出し前にvalidationされる。
 
 AI outputの通常Schema/identity違反は`OpenAICoach`内の修復loopへ入る。
 
-一方、`validate_output_scope`は現在`RoundAnalyzer`でCoach返却後に呼ばれるため、
+承認済み方針により、正しい入力に対するAI outputのscope/context違反を
+OpenAICoachのrepair loop内でも検証するようにした。
 
-- rule analysis window外のevidence_range
-- missing previous-round contextでのGOOD/IMPROVE
+- rule analysis window外のevidence_range → repair対象
+- missing required contextでのGOOD/IMPROVE → repair対象
+- repair requestへanalysis_scopesを再掲
+- 修復後も不正なら既存OpenAIResponseErrorで拒否
+- RoundAnalyzer側のpost-checkは防御層として維持
+- Round Package自体の不正は従来どおりAPI呼出し前に拒否
 
-は修復loopの外で`ContractValidationError`になる。
-
-入力不正と、正しい入力に対するAI output不正を分けた扱いが必要。
+missing contextを理由にすべてを自動UNSCOREDへ書き換える実装にはしていない。
+モデルへUNSCOREDを要求し、契約を満たす出力だけを受理する。
 
 ### A-3 UNSCORED duplication
 
@@ -94,8 +98,17 @@ MOV-02 / AIM-03のscored resultは既存dedup groupで1件へ集約される。
 低confidenceで両方UNSCOREDになった場合、UNSCOREDはevidence_rangeを持たないため
 `_same_scene`が成立せず2件残る。
 
-原因・provenanceまで同一の場合だけ統合するか、rule identityを優先して2件保持するかは
-契約判断待ち。
+承認済み方針として、同じdedup groupで、
+
+- `unscored_reason_code` が同一
+- 非空の `fact_refs` 集合が同一
+
+の場合だけ1件へ統合する。
+
+MockEvaluatorのEvaluationAggregatorに加え、実AIを含む任意Coach出力へ同じ契約を適用するため、
+RoundAnalyzer最終境界にも防御的dedupを追加した。primaryはdedup groupのprimary_orderに従い、
+他ruleはrelated_rule_idsへ保持する。Schema上のrelated上限を超えてidentityを失う場合は
+統合しない。missing_informationはunionし、confidenceはclusterの最小値を採用する。
 
 ### A-4 deterministic authority
 
@@ -277,35 +290,77 @@ windowed rule群とwhole-round rule群を別API callへ分離すれば削減可�
 最初の切り分けとして、productionやCI dependencyを変えず、UI testのwidgetを
 `deleteLater` + DeferredDelete event deliveryでQApplication生存中に明示破棄する修正を追加した。
 
-結果はCI完了後に追記する。これで解消しない場合、PySide6 6.12.0固有回帰かを
-6.11.2との比較で確認し、CI pinが必要なら最小変更案を先に報告する。
+UI testのQt widgetをQApplication生存中に `deleteLater` し、DeferredDelete eventまで
+明示的に処理するよう修正した。
 
-## 9. 承認待ちの契約判断
+LinuxではPySide6 6.12.0のままフルsuiteが正常終了し、開始時のQObject warning / exit 139は
+再発しなかった。このためdependency pinやtest skipは追加していない。
 
-実装前にユーザー承認が必要:
+## 9. 契約判断の結果
 
-1. fact-backed evaluation confidence超過の処理方式
-2. AI output scope/context違反のrepair / UNSCORED / reject方針
-3. 同一原因UNSCOREDのdedup方針
-4. 元動画jumpの新UI
-5. API call分割による入力効率化
+ユーザー承認を受け、次を実装した。
 
-詳細な選択肢は作業会話で提示し、承認後に回帰test → production修正へ進む。
+1. fact-backed evaluation confidence超過は不正出力としてrepair対象
+2. 正規入力に対するAI scope/context違反はrepair対象。修復不能なら拒否
+3. 同一dedup group・同一UNSCORED reason・同一fact provenanceだけ統合
+
+次は意図的に未実装。
+
+4. 元動画の該当時刻jump: 新UIのため設計案まで
+5. API call分割: call数・料金・cache/aggregation責務が変わるため計測・設計まで
+
+未承認の新UIやmulti-call architectureを、この完了作業で先回りして導入していない。
 
 ## 10. 後方互換性
 
-ここまでのcompletion branch追加はtest/docsのみでproduction behaviorを変更していない。
-PR #8までのsource_confidence / deterministic authority / 38 fixture contractをそのまま維持する。
+Vision production code、Validation Pack/GT、HUD/Visual精度ロジックは変更していない。
+
+production側の変更は承認済み非画像contractに限定した。
+
+- fact-backed evaluation confidence上限
+- OpenAI output scope/context repair
+- same-basis UNSCORED dedup
+- AI cache scope identity
+
+PR #8までのsource_confidence / deterministic authorityを維持し、38 fixture dataset validationも
+両CIで成功している。
 
 ## 11. CI / 最終検証
 
-最終状態で次を更新する。
+最終コードcommit `a1f0df9d9e446be629e4f63c2a847129403fc683` で確認した結果:
 
-- Dataset validation 38 cases
-- pytest / coverage
-- Ruff
-- mypy
-- Linux Basic CI
-- Windows verification
-- packaged smoke
-- negative controls
+### Linux Basic CI
+
+- Dataset validation: PASS
+- pytest: 1872 passed / 7 skipped
+- coverage: 84.84%
+- Ruff: PASS
+- mypy: PASS（104 source files）
+- PySide6 6.12.0でQt teardown crash再発なし
+- workflow run: 37890472812 / success
+
+### Windows verification
+
+- Dataset validation: PASS
+- pytest: 1869 passed / 10 skipped
+- coverage: 84.79%
+- Ruff: PASS
+- mypy: PASS（104 source files）
+- PyInstaller: PASS
+- packaged smoke: PASS
+- workflow run: 37890472839 / success
+
+### Negative / regression controls
+
+- unknown fact ref rejection
+- non-finite confidence rejection
+- fact-backed confidence overclaim rejection
+- frame-only empty fact_refs remains valid
+- scope violation repair
+- missing context scored-output repair
+- analysis scope cache invalidation
+- same-basis UNSCORED dedup
+- spectator-safe Round Package -> RoundAnalyzer
+- real MainWindow result/filter/evidence/clip transition
+- missing clip safe handling
+- Qt explicit teardown
