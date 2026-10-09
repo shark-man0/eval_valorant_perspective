@@ -145,11 +145,13 @@ class SchemaValidator:
         if end <= start or end > duration + 0.05:
             raise ContractValidationError("round_windowが動画範囲外、または終了<=開始です")
         event_ids: set[str] = set()
+        event_confidence: dict[str, float] = {}
         for event in value["events"]:
             event_id = str(event["event_id"])
             if event_id in event_ids:
                 raise ContractValidationError(f"event_idが重複しています: {event_id}")
             event_ids.add(event_id)
+            event_confidence[event_id] = float(event["confidence"])
             if not start <= float(event["time_sec"]) <= end:
                 raise ContractValidationError(f"イベントがラウンド範囲外です: {event_id}")
         for index, snapshot in enumerate(value["state_snapshots"]):
@@ -173,6 +175,12 @@ class SchemaValidator:
             if unknown:
                 raise ContractValidationError(
                     f"{fact_id} が未知のevent_idを参照しています: {sorted(unknown)}"
+                )
+            cited = [event_confidence[i] for i in fact["provenance_event_ids"]]
+            if cited and float(fact["confidence"]) > min(cited) + 1e-9:
+                raise ContractValidationError(
+                    f"{fact_id} のconfidenceが根拠eventの最小confidence({min(cited):.3f})より高く"
+                    "なっています。confidenceを引き上げることはできません"
                 )
             fact_time = fact.get("time_sec")
             if fact_time is not None:

@@ -159,6 +159,7 @@ class OpenAICoach:
         *,
         frame_paths: Sequence[Path] | None = None,
         deterministic_decisions: Mapping[str, Mapping[str, Any]] | None = None,
+        analysis_scopes: Mapping[str, Mapping[str, Any]] | None = None,
         cancel_event: threading.Event | None = None,
     ) -> dict[str, Any]:
         self._check_cancel(cancel_event)
@@ -184,6 +185,7 @@ class OpenAICoach:
             "round_package": _stable_package_for_remote(round_package),
             "candidate_rules": [self.rules_by_id[rule_id] for rule_id in selected_ids],
             "binding_deterministic_decisions": dict(deterministic_decisions or {}),
+            "analysis_scopes": dict(analysis_scopes or {}),
             "requirements": {
                 "candidate_rule_ids": selected_ids,
                 "evaluation_language": "ja",
@@ -724,6 +726,33 @@ class OpenAICoach:
                 "unscored_reason_code": None,
             }
         )
+        if label == "unscored":
+            # Unscored never carries a clip, evidence window or improvement (schema v3).
+            item.update(
+                {
+                    "clip_id": None,
+                    "display_clip": None,
+                    "evidence": [],
+                    "evidence_range": None,
+                    "improvement": None,
+                    "missing_information": list(
+                        dict.fromkeys(
+                            str(text)
+                            for decision in selected
+                            for text in decision.get("missing_information", [])
+                        )
+                    )
+                    or ["評価に必要な観測情報が不足しています"],
+                    "unscored_reason_code": next(
+                        (
+                            str(decision["unscored_reason_code"])
+                            for decision in selected
+                            if decision.get("unscored_reason_code")
+                        ),
+                        "other",
+                    ),
+                }
+            )
         if label == "improve":
             fallback = rule.get("human_policy") or rule.get("evaluation_instruction")
             item["improvement"] = str(

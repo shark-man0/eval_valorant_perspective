@@ -57,6 +57,8 @@ class EvaluationView:
     clip_path: str | None
     needs_review: bool
     unscored_reason_code: str | None
+    fact_refs: tuple[str, ...] = ()
+    time_range: tuple[float, float] | None = None
 
 
 @dataclass(frozen=True, slots=True)

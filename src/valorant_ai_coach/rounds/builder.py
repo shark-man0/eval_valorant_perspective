@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from valorant_ai_coach.events import DerivedEventBuilder, EventSourceContract
+from valorant_ai_coach.events.derived import player_scoped_spike_state
 from valorant_ai_coach.hud.models import timer_display_evidence
 from valorant_ai_coach.hud.temporal import aggregate_observation_quality as aggregate_confidences
 from valorant_ai_coach.maps.registry import MapRegistry
@@ -39,6 +40,17 @@ def _bounded_confidence(value: Any) -> float:
     except (TypeError, ValueError):
         return 0.0
     return min(1.0, max(0.0, parsed)) if math.isfinite(parsed) else 0.0
+
+
+def _source_confidence(value: Any) -> float:
+    """Provenance confidence: a finite number within [0, 1], otherwise 0.0.
+
+    Unlike _bounded_confidence, a bool, a numeric string or an out-of-range value never
+    counts as confidence (it is not clamped up to a usable value).
+    """
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return 0.0
+    return float(value) if math.isfinite(value) and 0.0 <= value <= 1.0 else 0.0
 
 
 
@@ -433,6 +445,10 @@ class RoundPackageBuilder:
                 # Copy only v3 fields. Intermediate sources/scores never leak.
                 for key in snapshot["spatial_context"]:
                     snapshot["spatial_context"][key] = spatial[key]
+                snapshot.setdefault("source_confidence", {})["spatial_context"] = min(
+                    _source_confidence(spatial["confidence"]),
+                    _source_confidence(visual["quality"]["visual_confidence"]),
+                )
             by_time[timestamp] = snapshot
         for resolution in resolutions:
             timestamp = self._time(resolution)
@@ -452,6 +468,11 @@ class RoundPackageBuilder:
             )
             zone = resolution["zone_id"] if usable else None
             snapshot["player_location"] = {"zone_id": zone, "zone_name": zone}
+            source = snapshot.setdefault("source_confidence", {})
+            if zone is None:
+                source.pop("player_location", None)
+            else:
+                source["player_location"] = _source_confidence(resolution["zone_confidence"])
             by_time[timestamp] = snapshot
         return [by_time[key] for key in sorted(by_time)]
 
@@ -909,7 +930,9 @@ class RoundPackageBuilder:
                 "hp": values.get("hp") if player_valid else None,
                 "armor": values.get("armor") if player_valid else None,
                 "weapon": values.get("weapon_text") if player_valid else None,
-                "spike_state": values.get("spike_state", "unknown"),
+                "spike_state": player_scoped_spike_state(
+                    values.get("spike_state", "unknown"), player_valid
+                ),
                 "round_time_remaining_sec": values.get("round_time_remaining_sec"),
                 "utility_available_count": utility_count,
                 "player_location": {
@@ -925,6 +948,9 @@ class RoundPackageBuilder:
                     "view_target_zone_id": None,
                 },
             }
+            snapshot["source_confidence"] = self._hud_source_confidence(
+                observation, snapshot
+            )
             timer_display = timer_display_evidence(values)
             if (
                 timer_display is not None
@@ -954,6 +980,35 @@ class RoundPackageBuilder:
                 last_key = key
                 last_time = timestamp
         return snapshots
+
+    @staticmethod
+    def _hud_source_confidence(
+        observation: dict[str, Any], snapshot: dict[str, Any]
+    ) -> dict[str, float]:
+        """Per-field confidence of the HUD observation this snapshot was read from.
+
+        hud_confidence is the minimum over the observation's accepted readers, so it never
+        exceeds any reader's confidence. The round timer additionally has a reserved
+        value-level score; generic ROI/feature confidence is never used as value provenance.
+        The package-level aggregate is not consulted.
+        """
+        quality = observation.get("quality") or {}
+        hud = _source_confidence(quality.get("hud_confidence"))
+        roi = quality.get("roi_confidence")
+        timer = _source_confidence(roi.get("round_timer_value")) if isinstance(roi, dict) else 0.0
+        source: dict[str, float] = {}
+        for field in (
+            "ally_alive",
+            "enemy_alive",
+            "weapon",
+            "spike_state",
+            "utility_available_count",
+        ):
+            if snapshot[field] is not None:
+                source[field] = hud
+        if snapshot["round_time_remaining_sec"] is not None:
+            source["round_time_remaining_sec"] = timer
+        return source
 
     @staticmethod
     def _score_before(observations: Sequence[dict[str, Any]]) -> dict[str, int] | None:

@@ -94,15 +94,13 @@ class MockEvaluator:
             decision = self.engine.evaluate("AIM-02", facts, events)
             if decision:
                 emit("AIM-02", decision.label, event=first("peek"), decision=decision)
-        stationary = fact("first_shot_stationary")
-        if stationary is True and "MOV-02" in candidate_ids:
-            decision = self.engine.evaluate("MOV-02", facts, events)
-            if decision:
-                emit("MOV-02", decision.label, event=first("shot"), decision=decision)
-        elif stationary is False and "AIM-03" in candidate_ids:
-            decision = self.engine.evaluate("AIM-03", facts, events)
-            if decision:
-                emit("AIM-03", decision.label, event=first("shot"), decision=decision)
+        # One fact may drive several deterministic rules (MOV-02 and AIM-03 share
+        # first_shot_stationary). Like the real coach, emit every rule that has a decision.
+        for rule_id in ("MOV-02", "AIM-03"):
+            if rule_id in candidate_ids and by_key.get("first_shot_stationary"):
+                decision = self.engine.evaluate(rule_id, facts, events)
+                if decision:
+                    emit(rule_id, decision.label, event=first("shot"), decision=decision)
         if "PEEK-04" in candidate_ids:
             decision = self.engine.evaluate("PEEK-04", facts, events)
             if decision:
@@ -309,7 +307,15 @@ class MockEvaluator:
         timestamp = float(event["time_sec"] if event else package["round_window"]["start_sec"])
         start = max(float(package["round_window"]["start_sec"]), timestamp - 5)
         end = min(float(package["round_window"]["end_sec"]), timestamp + 5)
+        # Evidence is the observed moment only (same as the real coach); the wider
+        # window is just the display clip. Keeping them apart lets the rule's analysis
+        # scope bound the evidence without constraining the clip.
+        evidence_start = max(float(package["round_window"]["start_sec"]), timestamp - 0.75)
+        evidence_end = min(float(package["round_window"]["end_sec"]), timestamp + 0.75)
         scored = label in {"good", "improve"}
+        if decision is not None and decision.label == "unscored":
+            missing = list(decision.missing_information) or missing
+            reason_code = decision.unscored_reason_code or reason_code
         fact_refs = list(decision.fact_refs) if decision else self._fact_refs(package, rule_id)
         confidence = decision.confidence if decision else self._confidence(package, event)
         if label == "unscored":
@@ -346,7 +352,9 @@ class MockEvaluator:
             ),
             "confidence": round(float(confidence), 3),
             "evidence": evidence,
-            "evidence_range": {"start_sec": start, "end_sec": end} if scored else None,
+            "evidence_range": (
+                {"start_sec": evidence_start, "end_sec": evidence_end} if scored else None
+            ),
             "display_clip": {"start_sec": start, "end_sec": end} if scored else None,
             "missing_information": missing,
             "unscored_reason_code": reason_code,

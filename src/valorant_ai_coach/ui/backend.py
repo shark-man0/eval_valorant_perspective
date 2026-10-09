@@ -11,6 +11,7 @@ from valorant_ai_coach.logging_setup import configure_logging
 from valorant_ai_coach.settings import AppSettings, SettingsStore, default_data_dir
 
 from .contracts import EvaluationView, MatchResultView, UiSettings, VideoMetadataView
+from .view_model import parse_time_range
 
 LOGGER = logging.getLogger(__name__)
 
@@ -208,6 +209,8 @@ class BackendFacade:
             clip_path=str(clip["file_path"]) if clip.get("file_path") else None,
             needs_review=item.get("label") in {"good", "improve"} and confidence < 0.75,
             unscored_reason_code=item.get("unscored_reason_code"),
+            fact_refs=tuple(str(value) for value in item.get("fact_refs", [])),
+            time_range=parse_time_range(item.get("evidence_range")),
         )
 
     @staticmethod

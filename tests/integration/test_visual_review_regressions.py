@@ -65,7 +65,7 @@ def events_and_facts(candidates):
     return events, FactBuilder().build({"events": events})
 
 
-@pytest.mark.parametrize("confidence,expected", [(0.86, None), (0.95, "good")])
+@pytest.mark.parametrize("confidence,expected", [(0.86, "unscored"), (0.95, "good")])
 def test_movement_confidence_is_not_promoted_by_ammo(confidence, expected):
     engine = VisualEventEngine()
     candidates = engine.process([sample(0, stationary=confidence, fired=True)])

@@ -44,12 +44,20 @@ class DeterministicRuleEngine:
         if rule_id == "AIM-02":
             self._require_catalog_key("preaim_lead_sec")
             return self._threshold(
-                rule_id, by_key.get("preaim_lead_sec", []), 0.5, "gte", "約0.5秒前のプリエイム"
+                rule_id,
+                by_key.get("preaim_lead_sec", []),
+                0.5,
+                "gte",
+                "約0.5秒前のプリエイム",
+                "preaim_lead_sec",
             )
         if rule_id == "AIM-03":
             self._require_catalog_key("first_shot_stationary")
             return self._boolean(
-                rule_id, by_key.get("first_shot_stationary", []), "初弾時の完全停止"
+                rule_id,
+                by_key.get("first_shot_stationary", []),
+                "初弾時の完全停止",
+                "first_shot_stationary",
             )
         if rule_id == "MOV-02":
             self._require_catalog_key("first_shot_stationary")
@@ -57,13 +65,16 @@ class DeterministicRuleEngine:
             if self._smoke_suppression(events, facts_for_rule):
                 return None
             return self._boolean(
-                rule_id, facts_for_rule, "初弾時の完全停止"
+                rule_id, facts_for_rule, "初弾時の完全停止", "first_shot_stationary"
             )
         if rule_id == "PEEK-04":
             self._require_catalog_key("exposed_directions_count")
-            facts_for_rule = self._confident(by_key.get("exposed_directions_count", []))
+            observed = by_key.get("exposed_directions_count", [])
+            facts_for_rule = self._confident(observed)
             if not facts_for_rule:
-                return None
+                return self._low_confidence(
+                    rule_id, observed, "3方向以上への同時露出", "exposed_directions_count"
+                )
             values = [self._number(self._get(item, "value")) for item in facts_for_rule]
             if any(value is None for value in values):
                 return None
@@ -85,10 +96,33 @@ class DeterministicRuleEngine:
         if key not in self.fact_catalog:
             raise ValueError(f"正本Fact catalogに必要なkeyがありません: {key}")
 
-    def _boolean(self, rule_id: str, facts: list[Any], reason: str) -> RuleDecision | None:
+    def _low_confidence(
+        self, rule_id: str, facts: list[Any], reason: str, key: str
+    ) -> RuleDecision | None:
+        """Explicit `unscored` when the fact was observed but is below the confidence gate.
+
+        An absent fact stays `None` (the selector / hybrid path owns missing evidence).
+        """
+        if not facts:
+            return None
+        best = max(self._confidence(item) for item in facts)
+        return RuleDecision(
+            rule_id,
+            "unscored",
+            "deterministic",
+            min(0.5, max(0.0, best)),
+            self._fact_refs(facts),
+            f"{reason}の根拠となる観測の信頼度が基準({self.minimum_confidence:.2f})未満のため評価できません",
+            (f"{key}の観測信頼度が{self.minimum_confidence:.2f}未満",),
+            "low_confidence",
+        )
+
+    def _boolean(
+        self, rule_id: str, facts: list[Any], reason: str, key: str
+    ) -> RuleDecision | None:
         confident = self._confident(facts)
         if not confident:
-            return None
+            return self._low_confidence(rule_id, facts, reason, key)
         values = [self._get(item, "value") for item in confident]
         if any(value is not True and value is not False for value in values):
             return None
@@ -107,11 +141,17 @@ class DeterministicRuleEngine:
         )
 
     def _threshold(
-        self, rule_id: str, facts: list[Any], threshold: float, operator: str, reason: str
+        self,
+        rule_id: str,
+        facts: list[Any],
+        threshold: float,
+        operator: str,
+        reason: str,
+        key: str,
     ) -> RuleDecision | None:
         confident = self._confident(facts)
         if not confident:
-            return None
+            return self._low_confidence(rule_id, facts, reason, key)
         values = [self._number(self._get(item, "value")) for item in confident]
         if any(value is None for value in values):
             return None
