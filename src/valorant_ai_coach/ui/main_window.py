@@ -17,6 +17,7 @@ from PySide6.QtWidgets import (
     QFrame,
     QHBoxLayout,
     QLabel,
+    QLineEdit,
     QListWidget,
     QListWidgetItem,
     QMainWindow,
@@ -33,6 +34,7 @@ from PySide6.QtWidgets import (
 
 from valorant_ai_coach.observability.sanitize import sanitize_text
 
+from .non_video_dialog import NonVideoDialog
 from .settings_dialog import SettingsDialog
 from .view_model import clip_status, filter_evaluations, time_range_text
 from .workers import AnalysisWorker, VideoProbeWorker
@@ -100,6 +102,7 @@ class MainWindow(QMainWindow):
         self._close_after_worker = False
         self._allow_close = False
         self.current_evaluations: list[Any] = []
+        self._current_match_id: str | None = None
         self.pool = QThreadPool.globalInstance()
 
         self.setWindowTitle("VALORANT AI Coach")
@@ -133,6 +136,9 @@ class MainWindow(QMainWindow):
         settings_action.setShortcut("Ctrl+,")
         settings_action.triggered.connect(self._open_settings)
         self.menuBar().addAction(settings_action)
+        tools_action = QAction("履歴・統計ツール", self)
+        tools_action.triggered.connect(self._open_non_video_tools)
+        self.menuBar().addAction(tools_action)
         self.statusBar().showMessage("準備完了")
         self._load_history()
         self._show_page(self.home_page)
@@ -255,6 +261,9 @@ class MainWindow(QMainWindow):
         header.addWidget(back)
         header.addWidget(self.result_title)
         header.addStretch()
+        self.export_result_button = QPushButton("レポート出力")
+        self.export_result_button.clicked.connect(self._export_current_match)
+        header.addWidget(self.export_result_button)
         root.addLayout(header)
 
         self.result_diagnostics = QLabel()
@@ -587,6 +596,7 @@ class MainWindow(QMainWindow):
             self.audio_probe_worker.cancel()
         self._audio_probe_request_id = None
         self._clear_audio_track_metadata()
+        self._current_match_id = match_id
         self.current_evaluations = list(result.evaluations)
         context = [
             value
@@ -727,6 +737,39 @@ class MainWindow(QMainWindow):
             context.setWordWrap(True)
             context.setObjectName("muted")
             layout.addWidget(context)
+        if (
+            hasattr(self, "backend")
+            and callable(getattr(self.backend, "get_feedback", None))
+            and evaluation.evaluation_id
+        ):
+            try:
+                stored_feedback = self.backend.get_feedback(evaluation.evaluation_id) or {}
+            except Exception:
+                LOGGER.warning("Could not read evaluation feedback", exc_info=True)
+                stored_feedback = {}
+            feedback_row = QHBoxLayout()
+            verdict = QComboBox()
+            for name, code in (
+                ("未登録・削除", ""), ("妥当", "valid"),
+                ("不適切", "inappropriate"), ("判断保留", "pending")
+            ):
+                verdict.addItem(name, code)
+            selected = verdict.findData(stored_feedback.get("verdict", ""))
+            if selected >= 0:
+                verdict.setCurrentIndex(selected)
+            memo = QLineEdit(str(stored_feedback.get("memo", "")))
+            memo.setMaxLength(4000)
+            memo.setPlaceholderText("評価へのメモ（元のAI評価は変更されません）")
+            save = QPushButton("意見を保存")
+            save.clicked.connect(
+                lambda _checked=False, identity=evaluation.evaluation_id,
+                select=verdict, note=memo:
+                self._save_card_feedback(identity, str(select.currentData()), note.text())
+            )
+            feedback_row.addWidget(verdict)
+            feedback_row.addWidget(memo, 1)
+            feedback_row.addWidget(save)
+            layout.addLayout(feedback_row)
         if evaluation.clip_path:
             play = QPushButton("根拠クリップを再生")
             play.clicked.connect(
@@ -734,6 +777,46 @@ class MainWindow(QMainWindow):
             )
             layout.addWidget(play, 0, Qt.AlignmentFlag.AlignLeft)
         return card
+
+    def _save_card_feedback(self, evaluation_id: str, verdict: str, memo: str) -> None:
+        try:
+            if verdict:
+                self.backend.save_feedback(evaluation_id, verdict, memo)
+            else:
+                self.backend.delete_feedback(evaluation_id)
+            self.statusBar().showMessage("評価への意見を保存しました（元の評価は不変）", 5000)
+        except Exception as exc:
+            QMessageBox.warning(self, "フィードバックの保存に失敗", sanitize_text(str(exc)))
+
+    def _export_current_match(self) -> None:
+        if not self._current_match_id:
+            QMessageBox.warning(self, "出力できません", "解析結果が選択されていません")
+            return
+        formats = "HTML (*.html);;CSV (*.csv);;JSON (*.json)"
+        destination, selected = QFileDialog.getSaveFileName(
+            self, "評価レポートを書き出し", "valorant-report.html", formats
+        )
+        if not destination:
+            return
+        extension = {"HTML (*.html)": "html", "CSV (*.csv)": "csv",
+                     "JSON (*.json)": "json"}[selected]
+        try:
+            self.backend.export_report(self._current_match_id, Path(destination), extension)
+            self.statusBar().showMessage("評価レポートを書き出しました", 5000)
+        except Exception as exc:
+            QMessageBox.critical(self, "レポートの保存に失敗", sanitize_text(str(exc)))
+
+    def _open_non_video_tools(self) -> None:
+        if self.worker is not None or self.probe_worker is not None:
+            QMessageBox.information(self, "処理中", "解析・動画確認中は履歴ツールを開けません")
+            return
+        try:
+            NonVideoDialog(self.backend, self).exec()
+            self._refresh_mode_label()
+            self._load_history()
+        except Exception as exc:
+            LOGGER.exception("Could not open non-video tools")
+            QMessageBox.critical(self, "ツールを開けません", sanitize_text(str(exc)))
 
     def _play_clip(self, path: str) -> None:
         clip = Path(path)
