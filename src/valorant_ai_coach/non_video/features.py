@@ -184,36 +184,72 @@ class NonVideoFeatures:
 
     def statistics(self, *, start: str = "", end: str = "", rule: str = "",
                    category_rules: tuple[str, ...] = ()) -> dict[str, Any]:
-        rows: list[dict[str, Any]] = []
-        cursor = 0
-        while True:
-            page = self.search(start=start, end=end, rule=rule,
-                               category_rules=category_rules, limit=500, offset=cursor)
-            rows.extend(page)
-            if len(page) < 500:
-                break
-            cursor += len(page)
-        result = self.summarize(rows)
+        """Aggregate in SQL: bounded memory even with thousands of saved evaluations."""
+        predicates: list[str] = []
+        params: list[Any] = []
+        if start:
+            predicates.append("m.created_at>=?")
+            params.append(start)
+        if end:
+            predicates.append("m.created_at<?")
+            params.append(end)
+        if rule:
+            predicates.append("e.primary_rule_id=?")
+            params.append(rule)
+        if category_rules:
+            predicates.append(
+                f"e.primary_rule_id IN ({','.join('?' for _ in category_rules)})"
+            )
+            params.extend(category_rules)
+        base = (
+            " FROM evaluations e JOIN matches m ON e.match_id=m.match_id"
+            + (" WHERE " + " AND ".join(predicates) if predicates else "")
+        )
         with self._connect() as db:
-            all_matches = db.execute(
-                "SELECT match_id,status,created_at FROM matches "
-                "WHERE (?='' OR created_at>=?) AND (?='' OR created_at<?)",
+            count_rows = db.execute(
+                "SELECT e.label,COUNT(*) as amount" + base +
+                " GROUP BY e.label", params
+            ).fetchall()
+            rule_rows = db.execute(
+                "SELECT e.primary_rule_id,COUNT(*) as amount" + base +
+                " GROUP BY e.primary_rule_id", params
+            ).fetchall()
+            day_rows = db.execute(
+                "SELECT substr(m.created_at,1,10) as day,COUNT(*) as amount" + base +
+                " GROUP BY substr(m.created_at,1,10)", params
+            ).fetchall()
+            evaluated_rows = db.execute(
+                "SELECT DISTINCT e.match_id,m.status" + base, params
+            ).fetchall()
+            matches = db.execute(
+                "SELECT match_id,status FROM matches WHERE "
+                "(?='' OR created_at>=?) AND (?='' OR created_at<?)",
                 (start, start, end, end),
             ).fetchall()
-        # Empty matches are counted, but never treated as evaluated.
-        existing = {row["match_id"] for row in rows}
-        result["match_count"] = len(all_matches)
-        result["evaluable_match_count"] = len({
-            r["match_id"] for r in all_matches
-            if r["status"] == "completed" and r["match_id"] in existing
-        })
-        result["incomplete_match_count"] = sum(
-            r["status"] != "completed" for r in all_matches
-        )
-        result["matches_without_evaluations"] = sum(
-            r["match_id"] not in existing for r in all_matches
-        )
-        return result
+        labels = {row["label"]: int(row["amount"]) for row in count_rows}
+        good, improve = labels.get("good", 0), labels.get("improve", 0)
+        scored = good + improve
+        seen = {row["match_id"] for row in evaluated_rows}
+        return {
+            "match_count": len(matches),
+            "evaluable_match_count": sum(
+                row["status"] == "completed" for row in evaluated_rows
+            ),
+            "incomplete_match_count": sum(
+                row["status"] != "completed" for row in matches
+            ),
+            "matches_without_evaluations": sum(
+                row["match_id"] not in seen for row in matches
+            ),
+            "counts": {label: labels.get(label, 0) for label in _LABELS},
+            "good_share_of_scored": good / scored if scored else None,
+            "by_rule": dict(sorted(
+                (row["primary_rule_id"], int(row["amount"])) for row in rule_rows
+            )),
+            "by_day": dict(sorted(
+                (row["day"], int(row["amount"])) for row in day_rows
+            )),
+        }
 
     def compare(self, left: str, right: str) -> dict[str, Any]:
         if left == right:
