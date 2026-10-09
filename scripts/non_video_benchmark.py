@@ -39,7 +39,9 @@ def measure(func: Callable[[], Any], repeats: int = 3) -> dict[str, Any]:
     }
 
 
-def make_data(root: Path, matches: int, per_match: int = 5) -> tuple[SQLiteRepository, NonVideoFeatures]:
+def make_data(
+    root: Path, matches: int, per_match: int = 5
+) -> tuple[SQLiteRepository, NonVideoFeatures]:
     repo = SQLiteRepository(root / "app.db")
     for i in range(matches):
         match_id = f"bench-{i:05d}"

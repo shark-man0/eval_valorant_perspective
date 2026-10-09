@@ -95,8 +95,12 @@ class NonVideoFeatures:
                 repair_attempt INTEGER NOT NULL DEFAULT 0,
                 retry_attempt INTEGER NOT NULL DEFAULT 0)""")
             db.execute("CREATE INDEX IF NOT EXISTS nv_usage_date ON api_usage_events(recorded_at)")
-            db.execute("CREATE INDEX IF NOT EXISTS nv_feedback_match ON evaluation_feedback(match_id)")
-            db.execute("CREATE INDEX IF NOT EXISTS nv_evals_rule ON evaluations(primary_rule_id,label)")
+            db.execute(
+                "CREATE INDEX IF NOT EXISTS nv_feedback_match ON evaluation_feedback(match_id)"
+            )
+            db.execute(
+                "CREATE INDEX IF NOT EXISTS nv_evals_rule ON evaluations(primary_rule_id,label)"
+            )
             db.execute("CREATE INDEX IF NOT EXISTS nv_matches_date ON matches(created_at)")
             db.execute(
                 "INSERT OR IGNORE INTO non_video_migrations VALUES(1, ?)",
@@ -218,6 +222,11 @@ class NonVideoFeatures:
                 "SELECT substr(m.created_at,1,10) as day,COUNT(*) as amount" + base +
                 " GROUP BY substr(m.created_at,1,10)", params
             ).fetchall()
+            improve_base = base + (" AND " if predicates else " WHERE ") + "e.label='improve'"
+            improve_rows = db.execute(
+                "SELECT e.primary_rule_id,COUNT(*) as amount" + improve_base +
+                " GROUP BY e.primary_rule_id", params
+            ).fetchall()
             evaluated_rows = db.execute(
                 "SELECT DISTINCT e.match_id,m.status" + base, params
             ).fetchall()
@@ -248,6 +257,9 @@ class NonVideoFeatures:
             )),
             "by_day": dict(sorted(
                 (row["day"], int(row["amount"])) for row in day_rows
+            )),
+            "by_improve_rule": dict(sorted(
+                (row["primary_rule_id"], int(row["amount"])) for row in improve_rows
             )),
         }
 

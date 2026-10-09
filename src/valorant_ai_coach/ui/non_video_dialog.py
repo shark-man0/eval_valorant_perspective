@@ -186,10 +186,14 @@ class NonVideoDialog(QDialog):
         result = self.backend.compare_matches(first, second)
         lines = []
         for match_id, info in result.items():
+            categories: dict[str, int] = {}
+            for rule, count in info["by_rule"].items():
+                category = str(self.rules.get(rule, {}).get("category", "Other"))
+                categories[category] = categories.get(category, 0) + count
             lines.append(
                 f"{match_id} [{info['status']}]: GOOD {info['counts']['good']} / "
                 f"IMPROVE {info['counts']['improve']} / UNSCORED {info['counts']['unscored']}"
-                f" / カテゴリ別集計の元となるRule {info['by_rule']}"
+                f" / カテゴリ {categories} / Rule {info['by_rule']}"
             )
         lines.append("※ 観測量・不完全Matchの差を考慮。総合的な優劣は判定しません。")
         self.compare_text.setPlainText("\n".join(lines))
@@ -269,6 +273,13 @@ class NonVideoDialog(QDialog):
             for rule, count in sorted(by_rule.items(), key=lambda it: (-it[1], it[0]))
         ])
         self._fill(self.stat_timeline, list(stats["by_day"].items()))
+        frequent = stats["by_improve_rule"]
+        if frequent:
+            self.stat_summary.setText(
+                self.stat_summary.text() + "\n頻出改善ルール: " +
+                ", ".join(f"{rule}={count}" for rule, count in
+                          sorted(frequent.items(), key=lambda item: (-item[1], item[0]))[:5])
+            )
 
     def _report_tab(self) -> None:
         page = QWidget()
@@ -429,8 +440,10 @@ class NonVideoDialog(QDialog):
         return data
 
     def _save_prices(self) -> None:
+        values = self._parsed_prices()
+        values["configured_at_utc"] = datetime.now(UTC).isoformat()
         _atomic_write(self.price_path, json.dumps(
-            self._parsed_prices(), ensure_ascii=False, indent=2
+            values, ensure_ascii=False, indent=2
         ) + "\n")
         self._refresh_usage()
 

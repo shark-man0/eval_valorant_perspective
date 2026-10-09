@@ -53,7 +53,10 @@ class ProfileStore:
             raise ValueError("未知または禁止された設定項目があります")
         defaults = asdict(AppSettings.defaults())
         for key, value in data.items():
-            if type(value) is not type(defaults[key]) and value is not None:
+            if value is None:
+                if defaults[key] is not None:
+                    raise ValueError(f"{key}にnullは使えません")
+            elif type(value) is not type(defaults[key]):
                 raise ValueError(f"{key}の型が正しくありません")
         if data.get("hud_mode", "mock") not in ("mock", "real"):
             raise ValueError("hud_modeが不正です")
