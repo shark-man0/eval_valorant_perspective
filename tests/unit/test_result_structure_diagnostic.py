@@ -10,7 +10,10 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from scripts.diagnostics.diagnose_result_structure import structural_candidate  # noqa: E402
+from scripts.diagnostics.diagnose_result_structure import (  # noqa: E402
+    glyph_candidate,
+    structural_candidate,
+)
 
 
 def text_image(text="TEAM ACE"):
@@ -61,3 +64,32 @@ def test_reused_training_hashes_cannot_establish_support():
 def test_invalid_training_rejected(crops):
     with pytest.raises(ValueError):
         structural_candidate(crops, source_hashes()[:len(crops)])
+
+
+def test_glyph_tiles_reject_the_whole_group_confusable_counterexample():
+    image = text_image()
+    report = glyph_candidate([image.copy() for _ in range(3)], source_hashes(),
+                             [image.copy(), text_image("TEAM AGE"), np.full_like(image, 25)])
+    assert report["training_support"] == 3
+    assert len(report["glyph_boxes"]) == 7
+    assert report["evaluation_scores"][0] >= .90
+    assert report["evaluation_scores"][1] < .90
+    assert report["evaluation_scores"][2] < .90
+    assert report["semantic_identity_verified"] is False
+    assert report["qualification_created"] is False
+    assert report["events_emitted"] == 0
+
+
+def test_glyph_training_failure_does_not_evaluate_controls():
+    image = np.zeros((90, 360), np.uint8)
+    report = glyph_candidate([image.copy() for _ in range(3)], source_hashes(), [text_image()])
+    assert report["status"] == "training_rejected"
+    assert "evaluation_scores" not in report
+
+
+def test_glyph_boxes_ignore_subtile_width_components():
+    image = np.zeros((90, 360), np.uint8)
+    image[5:85, 10] = 255
+    report = glyph_candidate([image.copy() for _ in range(3)], source_hashes())
+    assert report["status"] == "training_rejected"
+    assert report["glyph_boxes"] == []

@@ -981,3 +981,29 @@ mypy on 101 source files and diff check pass. Production code and qualification
 profiles are unchanged in this audit; full pytest was not rerun for these
 three additional synthetic cases. The prior full result remains 1554 PASS /
 5 upstream FAIL / 5 SKIP, not an updated full-suite result.
+
+## Per-glyph contrast tiles, training rejection (2026-10-09)
+
+Added an explicitly separate diagnostic matcher, not a replacement for the
+four-group method. It segments the median training foreground (same white210
+rule) into connected tall glyph boxes, then evaluates every 3x3 tile within
+each whole box. Mixed tiles use NCC at the unchanged 0.90 floor; constant
+tiles compare foreground/background agreement, so extra strokes in nominally
+blank glyph interiors are not ignored. No character substitution, spatial
+search, threshold scan or qualification is performed. In the fixed synthetic
+font it rejects the previous `TEAM AGE` counterexample that the whole-group
+matcher scored at 0.99229, and retains the exact source text.
+
+Real training frames yield seven glyph boxes of height 56 pixels, but
+**0/6** meet the tile minimum. Scores are 0, 0, 0.65465, 0.74981, 0 and 0.
+Small binary-tile changes therefore make this candidate too brittle for the
+actual source appearance. Evaluation is not run after this training failure;
+no holdout-based adjustment, runtime matcher or profile is installed. This
+isolates the next design requirement: glyph discrimination and tolerance to
+rendering/compression variation must be supported together, rather than
+replacing word errors with indiscriminate rejection or lowering acceptance.
+
+Local report: `outputs/round-lifecycle/result-glyph-tiles-training-v1-20261009.json`.
+Synthetic regressions additionally cover empty text and sub-tile-width
+components without undefined scores. Focused diagnostics/semantic tests:
+**71 PASS**. No production boundary or canonical E2E improvement is claimed.
