@@ -122,6 +122,7 @@ class OpenAICoach:
         retry_delays: Sequence[float] = (0.5, 1.5),
         sleep: Callable[[float], None] = time.sleep,
         cache: ResultCache | None = None,
+        usage_recorder: Any | None = None,
     ) -> None:
         if not api_key.strip():
             raise ValueError("OpenAI APIキーが空です")
@@ -139,6 +140,26 @@ class OpenAICoach:
         self.retry_delays = tuple(retry_delays)
         self.sleep = sleep
         self.cache = cache
+        self.usage_recorder = usage_recorder
+
+    def _record_usage(self, status: str, *, response: Any | None = None,
+                      cache_hit: bool = False, repair_attempt: int = 0,
+                      retry_attempt: int = 0) -> None:
+        if self.usage_recorder is None:
+            return
+        usage = getattr(response, "usage", None)
+        def token(field: str) -> int | None:
+            raw = usage.get(field) if isinstance(usage, dict) else getattr(usage, field, None)
+            return raw if type(raw) is int and raw >= 0 else None
+        try:
+            self.usage_recorder.record_usage(
+                "ai_coach", self.model, status,
+                input_tokens=token("input_tokens"), output_tokens=token("output_tokens"),
+                cache_hit=cache_hit, repair_attempt=repair_attempt,
+                retry_attempt=retry_attempt,
+            )
+        except Exception:
+            LOGGER.warning("API usage metadata could not be recorded", exc_info=True)
 
     @property
     def client(self) -> ResponseClient:
@@ -232,6 +253,7 @@ class OpenAICoach:
                     self._validate_deterministic_alignment(
                         validated, deterministic_decisions or {}
                     )
+                    self._record_usage('cache_hit', cache_hit=True)
                     return validated
                 except (ContractValidationError, KeyError, TypeError, ValueError):
                     LOGGER.warning("AI Coach cache entry is invalid and will be ignored")
@@ -287,6 +309,7 @@ class OpenAICoach:
                 ]
             try:
                 response = self._create_with_transport_retries(request_content, cancel_event)
+                self._record_usage('response_received', response=response, repair_attempt=attempt)
                 previous_text = _response_text(response)
                 parsed = json.loads(previous_text)
                 if not isinstance(parsed, dict):
