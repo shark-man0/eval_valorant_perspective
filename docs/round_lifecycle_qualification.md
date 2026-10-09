@@ -945,3 +945,39 @@ version to use PSM 13 and verify it reaches the reader without event promotion.
 Next semantic candidates must address condensed-glyph discrimination rather
 than treating OCR confidence as proof that C and G were distinguished. The
 separate source-continuity and start-evidence blockers remain unresolved.
+
+## End-gate ordering audit on exact native images (2026-10-09)
+
+Replayed the existing strict score candidate on the exact 21 native PNGs used
+by the result OCR diagnostic, not earlier JPEG encodings. The reader accepts
+15/21 ally values and 20/21 enemy values. Current accepted complete pairs are
+0–1 at 74.402669, 74.419336, 74.436003, 74.452669 and 74.469336. The score change
+to 0–2 is first accepted at **74.486003**, with ally/enemy confidence
+0.9552/0.9577. The visible result-text candidate at 74.436003 therefore precedes
+the accepted score update; the documented source discontinuity separates them.
+This is source-based diagnostic ordering, not a production timestamp rule.
+
+On the newly selected follow-up cohort, only the six 77.10–77.20 frames have
+accepted complete pairs, all already 0–2. The raw-line text acceptance at
+77.186003 is not accompanied by a score transition. At 78.10–78.20 ally score
+is unknown; at 79.10–79.20 both score values are unknown. Missing values are
+not filled from the earlier accepted pair. Private source-backed reports are
+`mac-end-score-ordering-20261009/` and `mac-late-result-score-ordering-20261009/`.
+
+The current global end gate requires an active round, qualified score/result
+components, accepted consecutive score change and current semantic result in
+the same positively attested segment. Thus improving OCR alone cannot satisfy
+this recorded end contract. No temporal score/result cache, cut bypass, delayed
+end backfill or threshold change was introduced. Synthetic regressions cover
+result-before-score, score-before-result and simultaneous result/score after
+a cut; none may fabricate an end for the preceding active round. These tests
+do not establish the correctness of a real source segment or qualify a reader.
+
+Focused end/lifecycle, semantic-text and OCR regressions: **102 PASS**, using
+`env -u PYTHONPATH .venv/bin/python -m pytest` so the repository test package is
+resolved from the project root. The console-script invocation without that
+root failed collection; it was not a recognition/test assertion failure. Ruff,
+mypy on 101 source files and diff check pass. Production code and qualification
+profiles are unchanged in this audit; full pytest was not rerun for these
+three additional synthetic cases. The prior full result remains 1554 PASS /
+5 upstream FAIL / 5 SKIP, not an updated full-suite result.
