@@ -318,6 +318,14 @@ class MockEvaluator:
             reason_code = decision.unscored_reason_code or reason_code
         fact_refs = list(decision.fact_refs) if decision else self._fact_refs(package, rule_id)
         confidence = decision.confidence if decision else self._confidence(package, event)
+        if fact_refs:
+            facts_by_id = {
+                str(fact["fact_id"]): fact for fact in package["deterministic_facts"]
+            }
+            confidence = min(
+                confidence,
+                *(float(facts_by_id[fact_id]["confidence"]) for fact_id in fact_refs),
+            )
         if label == "unscored":
             confidence = min(confidence, 0.5)
         evidence = (

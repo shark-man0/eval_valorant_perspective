@@ -13,6 +13,7 @@ from collections.abc import Callable, Mapping, Sequence
 from pathlib import Path
 from typing import Any, Protocol, cast
 
+from valorant_ai_coach.rules.temporal_scope import validate_output_scope_payload
 from valorant_ai_coach.schema_validation import ContractValidationError, SchemaValidator
 
 LOGGER = logging.getLogger(__name__)
@@ -223,6 +224,7 @@ class OpenAICoach:
                         round_package=round_package,
                         candidate_rule_ids=set(selected_ids),
                     )
+                    validate_output_scope_payload(validated, analysis_scopes or {})
                     self._validate_deterministic_alignment(
                         validated, deterministic_decisions or {}
                     )
@@ -273,6 +275,7 @@ class OpenAICoach:
                                 "binding_deterministic_decisions": dict(
                                     deterministic_decisions or {}
                                 ),
+                                "analysis_scopes": dict(analysis_scopes or {}),
                             },
                             ensure_ascii=False,
                         ),
@@ -292,6 +295,7 @@ class OpenAICoach:
                     round_package=round_package,
                     candidate_rule_ids=set(selected_ids),
                 )
+                validate_output_scope_payload(validated, analysis_scopes or {})
                 self._validate_deterministic_alignment(validated, deterministic_decisions or {})
                 if self.cache is not None:
                     try:
