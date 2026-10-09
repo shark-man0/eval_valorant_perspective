@@ -883,3 +883,33 @@ Verification after the renderer fix and diagnostic tests: full pytest
 reproduced upstream path-resolution case and four spectator synthetic cases;
 they are not changed here. Focused OCR/template/real-engine coverage is
 **61 PASS**. No canonical full E2E or production boundary improvement is claimed.
+
+## Result-text structural feasibility and confusable control (2026-10-09)
+
+Without further SSH access, tested a declared training-only structural method:
+median grayscale crop, white foreground >=210, 3x3 neighbourhood dilation and
+four spatial groups, using the existing semantic matcher at NCC 0.90. The
+configured result crop is unchanged. All six late training frames support the
+reference (minimum per-group scores 0.90397–0.94269). Generation and evaluation
+hash-check the native manifests, source images and source video; no expected
+states, GT or qualification sidecars are inputs. Source images shared with
+training are prohibited in evaluation. The diagnostic emits no events and
+explicitly does not verify semantic identity or adopt a profile.
+
+The frozen early development population has **0/21** matches (maximum score
+0.49258); start-context frames have **0/60** and additional coarse context
+frames **0/18**. These are already exposed development populations, not blind
+holdout accuracy. Different training appearance versus the early result
+display therefore remains unresolved by this method. Full local rows are in
+`outputs/round-lifecycle/result-structure-development-v1-20261009.json`.
+
+An additional synthetic counterexample makes adoption unsafe even if recall
+improves: changing `TEAM ACE` to `TEAM AGE` can retain a per-group masked score
+of **0.99229** in the fixed synthetic font. Foreground-neighbourhood masks and
+whole-group NCC can overlook a single altered glyph. A high score therefore
+does not establish exact result semantics. The regression records this
+counterexample and maintains zero event/qualification/profile promotion; it
+does not repair the word or lower the threshold. Neither this reference nor
+the synthetic font is installed in a production profile. Future semantic
+candidates need explicit confusable-glyph controls in addition to background
+controls and independently held-out result appearances.
