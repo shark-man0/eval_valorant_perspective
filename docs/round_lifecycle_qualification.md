@@ -1007,3 +1007,42 @@ Local report: `outputs/round-lifecycle/result-glyph-tiles-training-v1-20261009.j
 Synthetic regressions additionally cover empty text and sub-tile-width
 components without undefined scores. Focused diagnostics/semantic tests:
 **71 PASS**. No production boundary or canonical E2E improvement is claimed.
+
+## Completion feasibility audit and required input (2026-10-09)
+
+This task is **not complete**. The latest source/result/score manifests were
+cross-checked: all refer to source SHA
+`71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06`,
+and all 21 end-context image hashes match across the three populations.
+Native coverage is verified, qualification/profile adoption are false, and
+the native diagnostic emits zero decisions. Local branch before this audit:
+`a3b30e8`, clean. This is not a clean canonical full-E2E result.
+
+| Required outcome | Current evidence / missing proof |
+| --- | --- |
+| Qualified production phase/timer/continuity | Diagnostic candidates exist; no adopted complete qualification proves the target boundaries. |
+| Two trustworthy native starts | R1's transient 145-second display and R2's interrupted preparation remain unqualified; zero starts in the fixed native replay. |
+| Trustworthy R1 end | Reviewed result appearance precedes the accepted score update across documented discontinuity; joining them remains prohibited. |
+| Independent elimination-based end | Portrait correspondence is location-only; nonmatch does not prove death or zero survivors. No qualified current-frame elimination proof is available. |
+| R1/R2 packages with real boundaries | Synthetic association coverage is present; actual boundary evidence has not produced the required split. |
+| Trace/evaluator association and negative regression | Synthetic coverage is not a substitute for a qualified real run; no fresh canonical final result is claimed. |
+
+The supplied request explicitly forbids source-discontinuity joins and permits
+stopping for required additional source evidence or a necessary safety-policy
+decision. The same continuity/qualification blocker has persisted through the
+raw-line, score-ordering and per-glyph investigations. More OCR parameter
+experiments cannot reconstruct a missing trustworthy lifecycle history.
+This is not a claim that every future recognizer is impossible; it is a limit
+on what can currently be verified under the existing contract and supplied
+evidence. Thresholds, root schema, source safety and attribution are unchanged.
+
+Required next input: preferably the **unedited source** for the affected
+sequence, retaining purchase-phase end, active-round progression, victory/
+defeat presentation and the next purchase/start without removed time. Also
+provide a separate recording with these transitions for independent
+qualification. A local file path is enough; source video and private HUD assets
+must remain outside Git. No additional SSH verification is needed unless a new
+file path on that host is supplied. If only the current edited source exists,
+the user must decide the intended treatment of interrupted rounds; the agent
+must not fabricate the requested complete boundary history or relax safety
+to satisfy evaluator labels.
