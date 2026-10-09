@@ -3,11 +3,10 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Callable
 
-from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QComboBox,
     QDialog,
@@ -215,7 +214,9 @@ class NonVideoDialog(QDialog):
         root.addWidget(self.stat_summary)
         self.stat_bars = QVBoxLayout()
         root.addLayout(self.stat_bars)
-        self.stat_table = self._grid(("項目", "件数", "カテゴリ"))
+        self.stat_category_table = self._grid(("カテゴリ", "評価件数"))
+        root.addWidget(self.stat_category_table)
+        self.stat_table = self._grid(("ルール", "件数", "カテゴリ"))
         root.addWidget(self.stat_table)
         self.stat_timeline = self._grid(("日付", "評価件数"))
         root.addWidget(self.stat_timeline)
@@ -257,6 +258,12 @@ class NonVideoDialog(QDialog):
             bar.setFormat(f"{label.upper()} {counts[label]}")
             self.stat_bars.addWidget(bar)
         by_rule = stats["by_rule"]
+        categories: dict[str, int] = {}
+        for rule, count in by_rule.items():
+            category = str(self.rules.get(rule, {}).get("category", "Other"))
+            categories[category] = categories.get(category, 0) + count
+        self._fill(self.stat_category_table, sorted(categories.items(),
+                   key=lambda item: (-item[1], item[0])))
         self._fill(self.stat_table, [
             (rule, count, self.rules.get(rule, {}).get("category", "Other"))
             for rule, count in sorted(by_rule.items(), key=lambda it: (-it[1], it[0]))
@@ -439,19 +446,25 @@ class NonVideoDialog(QDialog):
              if x["estimated_cost"] is not None else "不明")
             for x in events[:250]
         ])
-        now_month = datetime.now().strftime("%Y-%m")
+        now_month = datetime.now(UTC).strftime("%Y-%m")
         current = [x for x in events if x["recorded_at"].startswith(now_month)]
         amounts = [x["estimated_cost"] for x in current]
         known = [v for v in amounts if v is not None]
         budget = prices.get("monthly_budget")
-        value = sum(known)
-        currency = sorted({x.get("currency", "") for x in current if x["estimated_cost"] is not None})
-        budget_note = (
-            " / 予算目安へ到達（参考警告）" if budget is not None and
-            len(currency) == 1 and value >= budget else ""
+        totals: dict[str, float] = {}
+        for item in current:
+            if item["estimated_cost"] is not None:
+                currency = str(item.get("currency", ""))
+                totals[currency] = totals.get(currency, 0.0) + float(item["estimated_cost"])
+        one_currency = len(totals) == 1
+        exceeds = one_currency and budget is not None and (
+            next(iter(totals.values())) >= budget
         )
+        total_text = ", ".join(
+            f"{amount:.6f} {currency}" for currency, amount in sorted(totals.items())
+        ) or "不明"
         self.usage_summary.setText(
             f"当月記録: {len(current)}件 / 推定額が計算可能: {len(known)}件"
-            f" / 合計（既知分のみ） {value:.6f} {','.join(currency) or '通貨未設定'}"
-            + budget_note
+            f" / 合計（通貨別・既知分のみ） {total_text}"
+            + (" / 予算目安へ到達（参考警告）" if exceeds else "")
         )

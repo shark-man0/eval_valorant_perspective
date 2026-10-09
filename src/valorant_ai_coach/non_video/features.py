@@ -259,7 +259,15 @@ class NonVideoFeatures:
             match = self.repository.get_match(key)
             if match is None:
                 raise KeyError(f"matchが存在しません: {key}")
-            values = self.summarize(self.search(match_id=key, limit=500))
+            rows: list[dict[str, Any]] = []
+            offset = 0
+            while True:
+                page = self.search(match_id=key, limit=500, offset=offset)
+                rows.extend(page)
+                if len(page) < 500:
+                    break
+                offset += len(page)
+            values = self.summarize(rows)
             values["status"] = match["status"]
             values["match_id"] = key
             result[key] = values
@@ -286,7 +294,9 @@ class NonVideoFeatures:
                 "match_id": match_id,
                 "recorded_at": match["created_at"],
                 "status": match["status"],
-                "source_video_filename": Path(match["source_video_path"]).name,
+                "source_video_filename": _redact(
+                    str(match["source_video_path"]).replace("\\", "/").rsplit("/", 1)[-1]
+                ),
             },
             "counts": {label: result[label + "_count"] for label in _LABELS},
             "evaluations": evaluations,
