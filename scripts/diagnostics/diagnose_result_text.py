@@ -45,11 +45,15 @@ def load_method(path: Path) -> dict:
     valid_role = (
         raw.get("version") == "semantic_result_ocr_diagnostic_v1"
         and raw.get("language") == "eng"
+        or raw.get("version") == "semantic_result_rawline_ocr_diagnostic_v1"
+        and raw.get("language") == "eng"
         or raw.get("version") == "combat_report_text_ocr_diagnostic_v1"
         and raw.get("language") == "jpn" and raw.get("roi") == "combat_report"
     )
+    expected_psm = 13 if raw.get("version") == "semantic_result_rawline_ocr_diagnostic_v1" else 7
     if (not valid_role or type(raw.get("psm")) is not int
-            or raw["psm"] != 7 or type(raw.get("minimum_confidence")) not in (int, float)
+            or raw["psm"] != expected_psm
+            or type(raw.get("minimum_confidence")) not in (int, float)
             or raw["minimum_confidence"] != .90
             or not isinstance(raw.get("roi"), str)
             or raw.get("preprocessing", "gray_v1") not in {

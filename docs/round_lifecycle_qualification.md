@@ -913,3 +913,35 @@ does not repair the word or lower the threshold. Neither this reference nor
 the synthetic font is installed in a production profile. Future semantic
 candidates need explicit confusable-glyph controls in addition to background
 controls and independently held-out result appearances.
+
+## Frozen raw-line OCR hypothesis (2026-10-09)
+
+Tested a distinct raw-line segmentation method (PSM 13), rather than modifying
+the prior PSM-7 method. The existing crop, threshold-210 preprocessing,
+horizontal-2 scaling, exact-word grammar and confidence 0.90 remain unchanged.
+Method declaration preceded training predictions. It accepts `TEAM ACE` on
+**5/6** late training frames, with accepted confidence 0.90028–0.94723; the
+remaining `TRAN ACE` is rejected. This improvement on training does not qualify
+the method.
+
+The unchanged method accepts **0/21** early end-context frames, **0/60**
+start-context frames and **0/18** coarse later-context frames. In particular,
+the isolated visibly readable frame at 74.436003 returns `TEAM AGE`, confidence
+0.7889: neither word repair nor threshold reduction is used.
+
+Before viewing predictions, selected three new native windows [77.10,77.20],
+[78.10,78.20] and [79.10,79.20]. FFprobe and decoded source ticks confirm all
+six source frames in each window. These are held-out frames of the **same
+result-display episode**, not independent event holdout. Only **1/18** accepts
+exact `TEAM ACE` (77.186003, confidence 0.9082). Several `TEAM AGE` reads exceed
+0.90 but remain unknown. The fixed method fails adequate held-out support and
+is not installed as a result detector. No observed text is joined to pre-cut
+score, and no boundary event or qualification report is created.
+
+Private artifacts are `mac-result-ocr-v4-rawline-*` and
+`mac-result-rawline-followup-native-20261009/` under local `outputs/round-lifecycle/`.
+PSM-7 method validation remains strict; tests require the distinct raw-line
+version to use PSM 13 and verify it reaches the reader without event promotion.
+Next semantic candidates must address condensed-glyph discrimination rather
+than treating OCR confidence as proof that C and G were distinguished. The
+separate source-continuity and start-evidence blockers remain unresolved.

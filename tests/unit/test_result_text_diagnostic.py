@@ -39,9 +39,27 @@ def test_changed_frozen_method_is_rejected(tmp_path, change):
         diagnostic.load_method(path)
 
 
-def fixture(tmp_path, monkeypatch, *, mutate_model=False, language="eng"):
+@pytest.mark.parametrize("version,psm,valid", [
+    ("semantic_result_rawline_ocr_diagnostic_v1", 13, True),
+    ("semantic_result_rawline_ocr_diagnostic_v1", 7, False),
+    ("semantic_result_ocr_diagnostic_v1", 13, False),
+    ("semantic_result_rawline_ocr_diagnostic_v1", True, False),
+])
+def test_rawline_is_a_separate_frozen_method_not_an_override(tmp_path, version, psm, valid):
+    path = tmp_path / "rawline.json"
+    path.write_text(json.dumps({**method(), "version": version, "psm": psm}))
+    if valid:
+        assert diagnostic.load_method(path)["psm"] == 13
+    else:
+        with pytest.raises(ValueError):
+            diagnostic.load_method(path)
+
+
+def fixture(tmp_path, monkeypatch, *, mutate_model=False, language="eng", rawline=False):
     video, native, layout, declared = inputs(tmp_path)
     declaration = method()
+    if rawline:
+        declaration.update(version="semantic_result_rawline_ocr_diagnostic_v1", psm=13)
     if language == "jpn":
         declaration.update(version="combat_report_text_ocr_diagnostic_v1",
                            language="jpn", roi="combat_report")
@@ -60,7 +78,8 @@ def fixture(tmp_path, monkeypatch, *, mutate_model=False, language="eng"):
         diagnostics = []
 
         def __init__(self, **kwargs):
-            assert kwargs == {"language": language, "psm": 7, "tessdata_dir": str(tessdata)}
+            assert kwargs == {"language": language, "psm": 13 if rawline else 7,
+                              "tessdata_dir": str(tessdata)}
             self.executable = str(executable)
 
         def read(self, image, roi):
@@ -85,6 +104,16 @@ def test_text_recognition_never_emits_events_or_installs_profile(tmp_path, monke
                for window in result["windows"] for row in window["rows"])
     assert (args[4] / "selection.json").exists()
     assert (args[4] / "results.json").exists()
+
+
+def test_rawline_mode_reaches_reader_without_promoting_result(tmp_path, monkeypatch):
+    args = fixture(tmp_path, monkeypatch, rawline=True)
+    result = diagnostic.run(*args)
+    assert result["method"]["psm"] == 13
+    assert result["text_role"] == "result"
+    assert result["events_emitted"] == 0
+    assert result["qualification_created"] is False
+    assert result["profile_adopted"] is False
 
 
 def test_model_mutation_cannot_produce_completed_diagnostic(tmp_path, monkeypatch):
