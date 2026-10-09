@@ -10,7 +10,13 @@ pytest.importorskip("PySide6")
 
 from PySide6.QtCore import QCoreApplication, QEvent  # noqa: E402
 from PySide6.QtGui import QCloseEvent  # noqa: E402
-from PySide6.QtWidgets import QApplication, QLabel, QMessageBox, QWidget  # noqa: E402
+from PySide6.QtWidgets import (  # noqa: E402
+    QApplication,
+    QLabel,
+    QMessageBox,
+    QPushButton,
+    QWidget,
+)
 
 from valorant_ai_coach.settings import AppSettings, SettingsStore  # noqa: E402
 from valorant_ai_coach.ui.backend import BackendFacade  # noqa: E402
