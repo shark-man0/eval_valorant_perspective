@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from copy import deepcopy
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from threading import Event
@@ -126,9 +127,86 @@ class RoundAnalyzer:
             round_package=enriched,
             candidate_rule_ids=set(candidate_ids),
         )
-        self._validate_deterministic_authority(output, decisions)
         validate_output_scope(output, scopes)
+        output = self._deduplicate_same_basis_unscored(output)
+        self.validator.validate_ai_output(
+            output,
+            round_package=enriched,
+            candidate_rule_ids=set(candidate_ids),
+        )
+        self._validate_deterministic_authority(output, decisions)
         return RoundAnalysis(enriched, tuple(candidates), decisions, output, scopes)
+
+    def _deduplicate_same_basis_unscored(self, output: dict[str, Any]) -> dict[str, Any]:
+        """Merge only UNSCORED items that are demonstrably the same missing evidence.
+
+        Scored examples still use their normal aggregation path. UNSCORED has no
+        evidence_range/display_clip, so scene overlap cannot prove identity; require
+        a configured dedup group plus identical reason code and non-empty fact refs.
+        """
+
+        value = deepcopy(output)
+        evaluations = value.get("evaluations")
+        if not isinstance(evaluations, list):
+            return value
+        groups = self.selector.registry.get("dedup_groups", {})
+        for group in groups.values():
+            members = {str(rule_id) for rule_id in group.get("members", [])}
+            order = {
+                str(rule_id): index
+                for index, rule_id in enumerate(group.get("primary_order", []))
+            }
+            candidates = [
+                item
+                for item in evaluations
+                if isinstance(item, dict)
+                and item.get("label") == "unscored"
+                and str(item.get("primary_rule_id")) in members
+                and item.get("unscored_reason_code") is not None
+                and item.get("fact_refs")
+            ]
+            clusters: dict[tuple[str, tuple[str, ...]], list[dict[str, Any]]] = {}
+            for item in candidates:
+                key = (
+                    str(item["unscored_reason_code"]),
+                    tuple(sorted(str(ref) for ref in item.get("fact_refs", []))),
+                )
+                clusters.setdefault(key, []).append(item)
+            for cluster in clusters.values():
+                if len(cluster) < 2:
+                    continue
+                primary = min(
+                    cluster,
+                    key=lambda item: order.get(str(item["primary_rule_id"]), len(order)),
+                )
+                related = [str(rule_id) for rule_id in primary.get("related_rule_ids", [])]
+                for item in cluster:
+                    if item is primary:
+                        continue
+                    for rule_id in [
+                        str(item["primary_rule_id"]),
+                        *[str(value) for value in item.get("related_rule_ids", [])],
+                    ]:
+                        if rule_id != primary["primary_rule_id"] and rule_id not in related:
+                            related.append(rule_id)
+                # Schema v3 allows at most two related rules. Do not deduplicate if
+                # doing so would erase an existing rule identity.
+                if len(related) > 2:
+                    continue
+                missing = [str(text) for text in primary.get("missing_information", [])]
+                primary["confidence"] = min(float(item["confidence"]) for item in cluster)
+                for item in cluster:
+                    if item is primary:
+                        continue
+                    for text in item.get("missing_information", []):
+                        text = str(text)
+                        if text not in missing:
+                            missing.append(text)
+                primary["related_rule_ids"] = related
+                primary["missing_information"] = missing
+                removed = {id(item) for item in cluster if item is not primary}
+                evaluations[:] = [item for item in evaluations if id(item) not in removed]
+        return value
 
     @staticmethod
     def _validate_deterministic_authority(

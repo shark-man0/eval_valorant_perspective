@@ -9,6 +9,7 @@ import pytest
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 pytest.importorskip("PySide6")
 
+from PySide6.QtCore import QCoreApplication, QEvent  # noqa: E402
 from PySide6.QtWidgets import (  # noqa: E402
     QApplication,
     QComboBox,
@@ -60,7 +61,7 @@ class Harness:
     _evaluation_card = MainWindow._evaluation_card
 
     def __init__(self) -> None:
-        QApplication.instance() or QApplication([])
+        self.app = QApplication.instance() or QApplication([])
         self.container = QWidget()
         self.cards_layout = QVBoxLayout(self.container)
         self.cards_layout.addStretch()
@@ -90,7 +91,11 @@ class Harness:
 
 @pytest.fixture
 def window() -> Harness:
-    return Harness()
+    harness = Harness()
+    yield harness
+    harness.container.deleteLater()
+    QCoreApplication.sendPostedEvents(None, QEvent.Type.DeferredDelete)
+    harness.app.processEvents()
 
 
 def card_texts(main: Harness) -> list[str]:

@@ -445,3 +445,123 @@ def test_in_flight_api_request_can_be_cancelled() -> None:
     canceller.join(timeout=2)
 
     assert client.closed is True
+
+
+def _micro_scope(*, missing: list[str] | None = None) -> dict[str, dict[str, object]]:
+    return {
+        "AIM-02": {
+            "level": "micro",
+            "scope": "event_windows",
+            "windows_sec": [{"start_sec": 28.0, "end_sec": 32.0}],
+            "missing_context": missing or [],
+        }
+    }
+
+
+def test_scope_violation_is_repaired_inside_openai_coach() -> None:
+    outside = output()
+    outside["evaluations"][0]["evidence"][0]["time_sec"] = 40.0
+    outside["evaluations"][0]["evidence_range"] = {"start_sec": 39.0, "end_sec": 41.0}
+    outside["evaluations"][0]["display_clip"] = {"start_sec": 38.0, "end_sec": 42.0}
+    client = FakeClient(
+        [
+            json.dumps(outside, ensure_ascii=False),
+            json.dumps(output(), ensure_ascii=False),
+        ]
+    )
+
+    result = coach(client).evaluate(
+        package(),
+        ["AIM-02"],
+        analysis_scopes=_micro_scope(),
+    )
+
+    assert result["evaluations"][0]["evidence_range"] == {"start_sec": 29.0, "end_sec": 31.0}
+    assert len(client.responses.calls) == 2
+    repair = json.loads(client.responses.calls[1]["input"][0]["content"][0]["text"])
+    assert "分析範囲外" in repair["validation_error"]
+    assert repair["analysis_scopes"] == _micro_scope()
+
+
+def test_missing_context_scored_output_is_repaired_to_unscored() -> None:
+    unscored = output()
+    evaluation = unscored["evaluations"][0]
+    evaluation.update(
+        {
+            "label": "unscored",
+            "clip_id": None,
+            "evidence": [],
+            "evidence_range": None,
+            "display_clip": None,
+            "improvement": None,
+            "confidence": 0.5,
+            "missing_information": ["previous_round_context"],
+            "unscored_reason_code": "missing_required_fact",
+        }
+    )
+    client = FakeClient(
+        [
+            json.dumps(output(), ensure_ascii=False),
+            json.dumps(unscored, ensure_ascii=False),
+        ]
+    )
+
+    result = coach(client).evaluate(
+        package(),
+        ["AIM-02"],
+        analysis_scopes=_micro_scope(missing=["previous_round_context"]),
+    )
+
+    assert result["evaluations"][0]["label"] == "unscored"
+    assert len(client.responses.calls) == 2
+    repair = json.loads(client.responses.calls[1]["input"][0]["content"][0]["text"])
+    assert "採点(good/improve)できません" in repair["validation_error"]
+
+
+def test_analysis_scope_changes_invalidate_ai_cache(tmp_path: Path) -> None:
+    cache = FileResultCache(tmp_path / "cache")
+    first_client = FakeClient([json.dumps(output(), ensure_ascii=False)])
+    coach(first_client, cache=cache).evaluate(
+        package(),
+        ["AIM-02"],
+        analysis_scopes=_micro_scope(),
+    )
+
+    whole_round_scope = {
+        "AIM-02": {
+            "level": "micro",
+            "scope": "whole_round",
+            "windows_sec": [],
+            "missing_context": [],
+        }
+    }
+    second_client = FakeClient([json.dumps(output(), ensure_ascii=False)])
+    coach(second_client, cache=cache).evaluate(
+        package(),
+        ["AIM-02"],
+        analysis_scopes=whole_round_scope,
+    )
+
+    assert len(second_client.responses.calls) == 1
+
+
+def test_fact_confidence_violation_uses_schema_repair_loop() -> None:
+    weak_package = package()
+    weak_package["deterministic_facts"][-1]["confidence"] = 0.61
+    invalid = output()
+    invalid["evaluations"][0]["confidence"] = 0.96
+    repaired = output()
+    repaired["evaluations"][0]["confidence"] = 0.61
+    client = FakeClient(
+        [
+            json.dumps(invalid, ensure_ascii=False),
+            json.dumps(repaired, ensure_ascii=False),
+        ]
+    )
+
+    result = coach(client).evaluate(weak_package, ["AIM-02"])
+
+    assert result["evaluations"][0]["confidence"] == pytest.approx(0.61)
+    assert len(client.responses.calls) == 2
+    repair = json.loads(client.responses.calls[1]["input"][0]["content"][0]["text"])
+    assert "参照factの最小confidence" in repair["validation_error"]

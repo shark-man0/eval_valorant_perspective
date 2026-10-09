@@ -13,6 +13,7 @@ from collections.abc import Callable, Mapping, Sequence
 from pathlib import Path
 from typing import Any, Protocol, cast
 
+from valorant_ai_coach.rules.temporal_scope import validate_output_scope_payload
 from valorant_ai_coach.schema_validation import ContractValidationError, SchemaValidator
 
 LOGGER = logging.getLogger(__name__)
@@ -191,6 +192,9 @@ class OpenAICoach:
                 "evaluation_language": "ja",
                 "do_not_output_neutral_or_not_applicable": True,
                 "use_absolute_source_video_seconds": True,
+                "fact_backed_confidence_not_above_weakest_fact": True,
+                "scored_output_must_respect_analysis_scopes": True,
+                "missing_required_context_must_be_unscored": True,
             },
         }
         content: list[dict[str, str]] = [
@@ -205,6 +209,7 @@ class OpenAICoach:
             selected_ids,
             paths,
             deterministic_decisions or {},
+            analysis_scopes or {},
             cancel_event,
         )
         if self.cache is not None:
@@ -223,6 +228,7 @@ class OpenAICoach:
                         round_package=round_package,
                         candidate_rule_ids=set(selected_ids),
                     )
+                    validate_output_scope_payload(validated, analysis_scopes or {})
                     self._validate_deterministic_alignment(
                         validated, deterministic_decisions or {}
                     )
@@ -273,6 +279,7 @@ class OpenAICoach:
                                 "binding_deterministic_decisions": dict(
                                     deterministic_decisions or {}
                                 ),
+                                "analysis_scopes": dict(analysis_scopes or {}),
                             },
                             ensure_ascii=False,
                         ),
@@ -292,6 +299,7 @@ class OpenAICoach:
                     round_package=round_package,
                     candidate_rule_ids=set(selected_ids),
                 )
+                validate_output_scope_payload(validated, analysis_scopes or {})
                 self._validate_deterministic_alignment(validated, deterministic_decisions or {})
                 if self.cache is not None:
                     try:
@@ -413,16 +421,18 @@ class OpenAICoach:
         selected_ids: list[str],
         paths: list[Path],
         deterministic_decisions: Mapping[str, Mapping[str, Any]],
+        analysis_scopes: Mapping[str, Mapping[str, Any]],
         cancel_event: threading.Event | None,
     ) -> str:
         digest = hashlib.sha256()
         payload = {
-            "cache_contract": 2,
+            "cache_contract": 3,
             "model": self.model,
             "system_instructions": SYSTEM_INSTRUCTIONS,
             "round_package": _stable_package_for_remote(round_package),
             "candidate_rules": [self.rules_by_id[rule_id] for rule_id in selected_ids],
             "deterministic_decisions": deterministic_decisions,
+            "analysis_scopes": analysis_scopes,
             "output_schema": self.validator.schemas.ai_output,
         }
         digest.update(

@@ -280,7 +280,10 @@ class SchemaValidator:
             raise ContractValidationError("AI出力のmatch_idが入力と一致しません")
         if value["round_no"] != round_package["round_no"]:
             raise ContractValidationError("AI出力のround_noが入力と一致しません")
-        fact_ids = {str(item["fact_id"]) for item in round_package["deterministic_facts"]}
+        facts_by_id = {
+            str(item["fact_id"]): item for item in round_package["deterministic_facts"]
+        }
+        fact_ids = set(facts_by_id)
         round_start = float(round_package["round_window"]["start_sec"])
         round_end = float(round_package["round_window"]["end_sec"])
         seen_evaluation_ids: set[str] = set()
@@ -299,11 +302,21 @@ class SchemaValidator:
                     raise ContractValidationError(
                         f"候補外related_rule_idsが出力されました: {sorted(unknown_related)}"
                     )
-            unknown_facts = set(evaluation["fact_refs"]) - fact_ids
+            fact_refs = [str(fact_id) for fact_id in evaluation["fact_refs"]]
+            unknown_facts = set(fact_refs) - fact_ids
             if unknown_facts:
                 raise ContractValidationError(
                     f"{evaluation_id} が未知のfact_idを参照しています: {sorted(unknown_facts)}"
                 )
+            if fact_refs:
+                maximum_confidence = min(
+                    float(facts_by_id[fact_id]["confidence"]) for fact_id in fact_refs
+                )
+                if float(evaluation["confidence"]) > maximum_confidence + 1e-9:
+                    raise ContractValidationError(
+                        f"{evaluation_id}.confidenceが参照factの最小confidence"
+                        f"({maximum_confidence:.3f})を超えています"
+                    )
             for key in ("evidence_range", "display_clip"):
                 interval = evaluation[key]
                 if interval is None:

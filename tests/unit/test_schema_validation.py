@@ -205,3 +205,25 @@ def test_clip_id_must_be_safe_for_local_file_generation() -> None:
 
     with pytest.raises(ContractValidationError, match="clip_id"):
         validator.validate_ai_output(output, round_package=package, candidate_rule_ids={"AIM-02"})
+
+
+def test_fact_backed_evaluation_confidence_cannot_exceed_weakest_referenced_fact() -> None:
+    validator = SchemaValidator()
+    package = load_case("TC-006")
+    package["deterministic_facts"][-1]["confidence"] = 0.61  # type: ignore[index]
+    output = valid_output()
+    output["evaluations"][0]["confidence"] = 0.62  # type: ignore[index]
+
+    with pytest.raises(ContractValidationError, match="参照factの最小confidence"):
+        validator.validate_ai_output(output, round_package=package, candidate_rule_ids={"AIM-02"})
+
+
+def test_frame_only_evaluation_without_fact_refs_is_not_fact_confidence_capped() -> None:
+    validator = SchemaValidator()
+    package = load_case("TC-006")
+    output = valid_output()
+    evaluation = output["evaluations"][0]  # type: ignore[index]
+    evaluation["fact_refs"] = []
+    evaluation["confidence"] = 0.99
+
+    validator.validate_ai_output(output, round_package=package, candidate_rule_ids={"AIM-02"})

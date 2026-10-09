@@ -339,3 +339,165 @@ def test_low_confidence_event_cannot_yield_a_deterministic_label_through_a_raise
     package = _package_with_fact_confidence(0.98, 0.3)
     with pytest.raises(ContractValidationError):
         make_analyzer().analyze(package)
+
+
+# --- Spectator-safe Round Package through the complete downstream path --------------------
+
+
+def test_spectator_safe_package_stays_player_safe_through_round_analyzer() -> None:
+    """Post-Vision masking must survive Fact -> Rule -> Coach -> validation unchanged."""
+
+    package = load_case("TC-006")
+    snapshot = package["state_snapshots"][0]
+    snapshot.update(
+        hp=None,
+        armor=None,
+        weapon=None,
+        utility_available_count=None,
+        spike_state="planted",
+        source_confidence={
+            "ally_alive": 0.94,
+            "enemy_alive": 0.93,
+            "spike_state": 0.92,
+        },
+    )
+    # Remove fixture-authored player facts so only the normalized spectator-safe
+    # snapshot can contribute state facts in this integration path.
+    package["deterministic_facts"] = [
+        fact
+        for fact in package["deterministic_facts"]
+        if fact["key"] in {"side", "player_role"}
+    ]
+
+    result = make_analyzer().analyze(package)
+    facts = {fact["key"]: fact for fact in result.round_package["deterministic_facts"]}
+
+    for forbidden in ("hp", "armor", "weapon", "utility_available_count"):
+        assert forbidden not in facts
+
+    # Viewpoint-independent world state remains usable and keeps its own provenance.
+    assert facts["spike_planted"]["value"] is True
+    assert facts["spike_planted"]["confidence"] == pytest.approx(0.92)
+
+    # "planted" is a world fact and safely implies that the player is not currently
+    # carrying the spike. What must never reappear is a positive spectator-derived
+    # player ownership claim.
+    assert facts["spike_carried_by_player"]["value"] is False
+    assert facts["spike_carried_by_player"]["confidence"] == pytest.approx(0.92)
+
+    # The complete downstream path, including output validation, must finish without
+    # recreating masked player HUD values.
+    referenced = {
+        fact_id
+        for evaluation in result.output["evaluations"]
+        for fact_id in evaluation.get("fact_refs", [])
+    }
+    forbidden_ids = {
+        fact["fact_id"]
+        for fact in result.round_package["deterministic_facts"]
+        if fact["key"] in {"hp", "armor", "weapon", "utility_available_count"}
+    }
+    assert referenced.isdisjoint(forbidden_ids)
+
+
+@pytest.mark.parametrize("case_id", ["TC-014", "TC-016"])
+def test_mock_fact_backed_confidence_is_bounded_by_referenced_facts(case_id: str) -> None:
+    result = make_analyzer().analyze(load_case(case_id))
+    facts = {
+        fact["fact_id"]: float(fact["confidence"])
+        for fact in result.round_package["deterministic_facts"]
+    }
+    for evaluation in result.output["evaluations"]:
+        refs = [str(fact_id) for fact_id in evaluation["fact_refs"]]
+        if refs:
+            assert float(evaluation["confidence"]) <= min(facts[fact_id] for fact_id in refs)
+
+
+def test_same_basis_low_confidence_unscored_rules_are_deduplicated() -> None:
+    package = load_case("TC-005")
+    fact = next(
+        item for item in package["deterministic_facts"] if item["key"] == "first_shot_stationary"
+    )
+    fact["confidence"] = 0.3
+
+    result = make_analyzer().analyze(package)
+
+    evaluations = [
+        item
+        for item in result.output["evaluations"]
+        if item["primary_rule_id"] in {"AIM-03", "MOV-02"}
+        or set(item.get("related_rule_ids", [])) & {"AIM-03", "MOV-02"}
+    ]
+    assert len(evaluations) == 1
+    evaluation = evaluations[0]
+    assert evaluation["primary_rule_id"] == "AIM-03"
+    assert evaluation["related_rule_ids"] == ["MOV-02"]
+    assert evaluation["label"] == "unscored"
+    assert evaluation["unscored_reason_code"] == "low_confidence"
+    assert evaluation["fact_refs"] == [fact["fact_id"]]
+
+
+def test_round_analyzer_deduplicates_same_basis_unscored_from_any_coach() -> None:
+    package = load_case("TC-005")
+    fact = next(
+        item for item in package["deterministic_facts"] if item["key"] == "first_shot_stationary"
+    )
+    fact["confidence"] = 0.3
+
+    class DuplicateUnscoredCoach:
+        @staticmethod
+        def evaluate(
+            round_package: dict[str, Any],
+            candidate_rule_ids: list[str],
+            **_kwargs: Any,
+        ) -> dict[str, Any]:
+            assert {"AIM-03", "MOV-02"} <= set(candidate_rule_ids)
+
+            def item(rule_id: str, title: str) -> dict[str, Any]:
+                return {
+                    "evaluation_id": f"dup-{rule_id}",
+                    "clip_id": None,
+                    "primary_rule_id": rule_id,
+                    "related_rule_ids": [],
+                    "label": "unscored",
+                    "decision_source": "deterministic",
+                    "fact_refs": [fact["fact_id"]],
+                    "concept_tags": ["first_shot"],
+                    "title": title,
+                    "situation": "同一の低信頼観測",
+                    "reason": "観測信頼度が不足",
+                    "improvement": None,
+                    "confidence": 0.3,
+                    "evidence": [],
+                    "evidence_range": None,
+                    "display_clip": None,
+                    "missing_information": ["first_shot_stationaryの観測信頼度が不足"],
+                    "unscored_reason_code": "low_confidence",
+                }
+
+            return {
+                "schema_version": "3.0",
+                "analysis_id": "duplicate-unscored",
+                "match_id": round_package["match_id"],
+                "round_no": round_package["round_no"],
+                "evaluations": [
+                    item("AIM-03", "初弾"),
+                    item("MOV-02", "ストッピング"),
+                ],
+            }
+
+    analyzer = RoundAnalyzer(
+        fact_builder=FactBuilder(),
+        selector=RuleSelector(resource_path("config/rule_trigger_registry_v2.json")),
+        rule_engine=DeterministicRuleEngine(),
+        coach=DuplicateUnscoredCoach(),
+        validator=SchemaValidator(),
+    )
+    result = analyzer.analyze(package)
+
+    assert len(result.output["evaluations"]) == 1
+    evaluation = result.output["evaluations"][0]
+    assert evaluation["primary_rule_id"] == "AIM-03"
+    assert evaluation["related_rule_ids"] == ["MOV-02"]
+    assert evaluation["fact_refs"] == [fact["fact_id"]]
+    assert evaluation["unscored_reason_code"] == "low_confidence"

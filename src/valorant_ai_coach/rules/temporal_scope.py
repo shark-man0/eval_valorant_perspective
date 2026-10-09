@@ -183,27 +183,53 @@ def scope_round_package(
     return scoped, kept
 
 
-def validate_output_scope(output: Mapping[str, Any], scopes: Mapping[str, AnalysisScope]) -> None:
-    """Scored evaluations must respect the rules' analysis scope."""
+def validate_output_scope_payload(
+    output: Mapping[str, Any],
+    scopes: Mapping[str, Mapping[str, Any]],
+) -> None:
+    """Validate scored output against the serialized analysis-scope contract.
+
+    This representation is also sent to the remote coach, so the same check can run
+    inside its repair loop instead of only after the API call has already returned.
+    """
+
+    def contains(scope: Mapping[str, Any], start: float, end: float) -> bool:
+        return any(
+            start >= float(window["start_sec"]) - _TOLERANCE_SEC
+            and end <= float(window["end_sec"]) + _TOLERANCE_SEC
+            for window in scope.get("windows_sec", [])
+        )
+
     for evaluation in output["evaluations"]:
         if evaluation["label"] not in SCORED_LABELS:
             continue
         rule_ids = [str(evaluation["primary_rule_id"])]
         rule_ids += [str(rule_id) for rule_id in evaluation.get("related_rule_ids", [])]
         involved = [scopes[rule_id] for rule_id in rule_ids if rule_id in scopes]
-        for scope in involved:
-            if scope.missing_context:
+        for rule_id, scope in (
+            (rule_id, scopes[rule_id]) for rule_id in rule_ids if rule_id in scopes
+        ):
+            missing = [str(item) for item in scope.get("missing_context", [])]
+            if missing:
                 raise ContractValidationError(
-                    f"{scope.rule_id} は必要な文脈({', '.join(scope.missing_context)})が無いため"
+                    f"{rule_id} は必要な文脈({', '.join(missing)})が無いため"
                     "採点(good/improve)できません"
                 )
-        if not involved or any(scope.whole_round for scope in involved):
+        if not involved or any(scope.get("scope") == "whole_round" for scope in involved):
             continue
         interval = evaluation.get("evidence_range")
         if interval is None:
             continue
         start, end = float(interval["start_sec"]), float(interval["end_sec"])
-        if not any(scope.contains(start, end) for scope in involved):
+        if not any(contains(scope, start, end) for scope in involved):
             raise ContractValidationError(
                 f"{evaluation['evaluation_id']}.evidence_range が評価ルールの分析範囲外です"
             )
+
+
+def validate_output_scope(output: Mapping[str, Any], scopes: Mapping[str, AnalysisScope]) -> None:
+    """Scored evaluations must respect the rules' analysis scope."""
+    validate_output_scope_payload(
+        output,
+        {rule_id: scope.to_prompt() for rule_id, scope in scopes.items()},
+    )

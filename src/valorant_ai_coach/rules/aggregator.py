@@ -62,7 +62,11 @@ class EvaluationAggregator:
                     same_scene = [
                         item
                         for item in present
-                        if id(item) not in removed_ids and self._same_scene(seed, item)
+                        if id(item) not in removed_ids
+                        and (
+                            self._same_scene(seed, item)
+                            or self._same_unscored_basis(seed, item)
+                        )
                     ]
                     if not same_scene:
                         continue
@@ -123,6 +127,24 @@ class EvaluationAggregator:
                 evidence.append(item)
         if evidence:
             target["evidence"] = evidence
+
+        missing = list(target.get("missing_information", []))
+        for item in source.get("missing_information", []):
+            if item not in missing:
+                missing.append(item)
+        if missing:
+            target["missing_information"] = missing
+
+    @staticmethod
+    def _same_unscored_basis(first: dict[str, Any], second: dict[str, Any]) -> bool:
+        if first.get("label") != "unscored" or second.get("label") != "unscored":
+            return False
+        reason = first.get("unscored_reason_code")
+        if reason is None or reason != second.get("unscored_reason_code"):
+            return False
+        first_refs = tuple(sorted(str(value) for value in first.get("fact_refs", [])))
+        second_refs = tuple(sorted(str(value) for value in second.get("fact_refs", [])))
+        return bool(first_refs) and first_refs == second_refs
 
     @staticmethod
     def _time(item: dict[str, Any]) -> float:

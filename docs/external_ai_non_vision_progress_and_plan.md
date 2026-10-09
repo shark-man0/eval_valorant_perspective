@@ -1,5 +1,14 @@
 # 非画像解析パイプライン 進捗と今後の方針
 
+> 2026-10-09 completion handoff update
+>
+> - completion branch: `external/non-vision-completion`
+> - completion開始SHA: `80d0d460b8e3a76d3c181e035c72cd10026f4252`（PR #8 merge commit）
+> - completion status: implementation / regression / Linux+Windows CI complete
+> - 詳細: [non_vision_completion_report.md](non_vision_completion_report.md)
+> - 既存の下記記録はPR #8までの履歴として保持する
+>
+
 - ブランチ: `external/non-vision-pipeline`
 - 依頼書: `EXTERNAL_AI_REQUEST.md`（Priority 1〜6）
 - 開始commit: `e05c49543ada515530ed3ba6c6f6438f927aebc5`
