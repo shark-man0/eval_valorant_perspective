@@ -467,7 +467,14 @@ def test_real_main_window_renders_results_filters_evidence_and_page_transition(
     assert "UNSCORED" in unscored_text
     assert "必要な視覚情報が不足しています" in unscored_text
     assert "insufficient_visual_evidence" in unscored_text
-    assert not unscored_card.findChildren(QPushButton)
+    assert not any(
+        button.text() == "根拠クリップを再生"
+        for button in unscored_card.findChildren(QPushButton)
+    )
+    assert any(
+        button.text() == "意見を保存"
+        for button in unscored_card.findChildren(QPushButton)
+    )
 
     window._show_page(window.home_page)
     assert window.pages.currentWidget() is window.home_page
