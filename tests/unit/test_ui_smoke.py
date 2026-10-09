@@ -10,7 +10,7 @@ pytest.importorskip("PySide6")
 
 from PySide6.QtCore import QCoreApplication, QEvent  # noqa: E402
 from PySide6.QtGui import QCloseEvent  # noqa: E402
-from PySide6.QtWidgets import QApplication, QMessageBox, QWidget  # noqa: E402
+from PySide6.QtWidgets import QApplication, QLabel, QMessageBox, QWidget  # noqa: E402
 
 from valorant_ai_coach.settings import AppSettings, SettingsStore  # noqa: E402
 from valorant_ai_coach.ui.backend import BackendFacade  # noqa: E402
@@ -516,14 +516,14 @@ def test_play_clip_switches_source_replays_and_uses_cached_audio_tracks(
     window._play_clip(str(first))
     assert window._current_media_path == first.resolve()
     assert fake.outputs[-1] is window.result_player
-    assert fake.sources[-1].toLocalFile() == str(first)
+    assert Path(fake.sources[-1].toLocalFile()).resolve() == first.resolve()
     assert fake.play_count == 1
     assert window.result_audio_track.count() == 2
     assert window.result_audio_track.currentData() == 2
 
     window._play_clip(str(second))
     assert window._current_media_path == second.resolve()
-    assert fake.sources[-1].toLocalFile() == str(second)
+    assert Path(fake.sources[-1].toLocalFile()).resolve() == second.resolve()
     assert window._player_audio_source_ready is False
 
     window._replay()
