@@ -471,13 +471,12 @@ class NonVideoDialog(QDialog):
             if not isinstance(price.get("currency"), str) or not price["currency"].strip():
                 raise ValueError("通貨を指定してください")
         budget = data.get("monthly_budget")
-        if budget is not None:
-            if (
-                isinstance(budget, bool)
-                or not isinstance(budget, (int, float))
-                or not 0 <= float(budget) < 1e9
-            ):
-                raise ValueError("月間予算は0以上またはnullで指定してください")
+        if budget is not None and (
+            isinstance(budget, bool)
+            or not isinstance(budget, (int, float))
+            or not 0 <= float(budget) < 1e9
+        ):
+            raise ValueError("月間予算は0以上またはnullで指定してください")
         return data
 
     def _save_prices(self) -> None:
