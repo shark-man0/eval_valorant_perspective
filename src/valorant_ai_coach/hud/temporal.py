@@ -1,12 +1,18 @@
 from __future__ import annotations
 
 import math
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
 from statistics import median
 from typing import Any
 
-from .round_lifecycle import RoundLifecycle, is_discontinuous
+from .global_lifecycle import GlobalLifecycleQualification, GlobalRoundLifecycle
+from .round_lifecycle import (
+    RoundLifecycle,
+    is_discontinuous,
+    preparation_confidence,
+    score_is_continuous,
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -84,6 +90,8 @@ class HudDirectEventBuilder:
         observations: Sequence[dict[str, Any]],
         *,
         evidence_by_frame: Mapping[int, Mapping[str, Any]] | None = None,
+        lifecycle_sink: Callable[[dict[str, Any]], None] | None = None,
+        global_qualification: GlobalLifecycleQualification | None = None,
     ) -> tuple[dict[str, Any], ...]:
         from .timeline import join_hud_timeline
 
@@ -96,6 +104,9 @@ class HudDirectEventBuilder:
         active_status: dict[str, Any] | None = None
         status_contiguous = True
         lifecycle = RoundLifecycle()
+        global_lifecycle = (
+            GlobalRoundLifecycle(global_qualification) if global_qualification is not None else None
+        )
         for index, observation in enumerate(ordered):
             values = observation.get("values", {})
             values = values if isinstance(values, dict) else {}
@@ -110,23 +121,27 @@ class HudDirectEventBuilder:
                 active_status = None
                 status_contiguous = True
                 lifecycle.reset()
+                if global_lifecycle is not None:
+                    global_lifecycle.reset()
             if evidence.get("player_revived_confirmed") is True:
                 death_latched = False
             is_start = (
                 previous is not None
                 and _round_start_confirmed(previous, observation, evidence)
-                and min(confidence, _hud_confidence(previous)) >= 0.65
+                and min(confidence, preparation_confidence(previous)) >= 0.65
             )
             is_end = evidence.get("round_end_joined") is True or (
                 previous is not None and _round_end_confirmed(previous, observation, evidence)
             )
-            for boundary in lifecycle.advance(
-                previous,
-                observation,
-                evidence,
-                start_candidate=is_start,
-                end_candidate=is_end,
-            ):
+            decisions = (
+                global_lifecycle.advance(observation, evidence)
+                if global_lifecycle is not None
+                else lifecycle.advance(
+                    previous, observation, evidence,
+                    start_candidate=is_start, end_candidate=is_end,
+                )
+            )
+            for boundary in decisions:
                 if boundary.kind == "round_start":
                     death_latched = False
                     active_status = None
@@ -140,6 +155,23 @@ class HudDirectEventBuilder:
                         boundary.confidence,
                         cross_checked=True,
                     )
+                )
+
+            if lifecycle_sink is not None:
+                lifecycle_sink(
+                    {
+                        "frame_index": frame_index,
+                        "time_sec": timestamp,
+                        "state": global_lifecycle.state if global_lifecycle else lifecycle.state,
+                        "boundary_scope": "global_system" if global_lifecycle else "legacy_hud",
+                        "global_transition_reason": (
+                            global_lifecycle.diagnostic_reason if global_lifecycle else None
+                        ),
+                        "hud_confidence": confidence,
+                        "preparation_confidence": preparation_confidence(observation),
+                        "start_candidate": is_start,
+                        "end_candidate": is_end,
+                    }
                 )
 
             if previous is not None:
@@ -375,7 +407,10 @@ def _round_start_confirmed(
         and _is_finite_number(values.get("round_time_remaining_sec"))
         and values["round_time_remaining_sec"] > prior_values["round_time_remaining_sec"] + 3
     )
-    return (buy_to_live or buy_banner_to_live) and "buy_phase_banner" not in flags and timer_reset
+    return (
+        (buy_to_live or buy_banner_to_live) and "buy_phase_banner" not in flags
+        and timer_reset and score_is_continuous(previous, current)
+    )
 
 
 def _buy_phase_confirmed(observation: Mapping[str, Any], evidence: Mapping[str, Any]) -> bool:

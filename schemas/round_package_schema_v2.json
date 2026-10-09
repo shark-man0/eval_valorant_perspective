@@ -503,55 +503,49 @@
         "spatial_context": {
           "$ref": "#/$defs/spatial_context"
         },
+        "round_time_remaining_display": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9]{1,2}:[0-5][0-9]$"
+        },
+        "round_time_remaining_display_provenance": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "required": [
+            "reader",
+            "sources",
+            "confidence",
+            "cross_checked"
+          ],
+          "properties": {
+            "reader": {
+              "const": "round_timer"
+            },
+            "sources": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "confidence": {
+              "type": "number",
+              "minimum": 0.9,
+              "maximum": 1
+            },
+            "cross_checked": {
+              "type": "boolean"
+            }
+          }
+        },
         "source_confidence": {
           "$ref": "#/$defs/snapshot_source_confidence"
-        }
-      }
-    },
-    "snapshot_source_confidence": {
-      "description": "Confidence of the observation each snapshot field was read from, per field. Snapshot-derived facts take their confidence from here and never exceed it. A field without an entry has no source confidence and is treated as 0.0; package-level observation_quality is never a substitute.",
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "ally_alive": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 1
-        },
-        "enemy_alive": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 1
-        },
-        "weapon": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 1
-        },
-        "spike_state": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 1
-        },
-        "round_time_remaining_sec": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 1
-        },
-        "utility_available_count": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 1
-        },
-        "player_location": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 1
-        },
-        "spatial_context": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 1
         }
       }
     },
@@ -722,6 +716,53 @@
         },
         "economy": {
           "type": "object"
+        }
+      }
+    },
+    "snapshot_source_confidence": {
+      "description": "Confidence of the observation each snapshot field was read from, per field. Snapshot-derived facts take their confidence from here and never exceed it. A field without an entry has no source confidence and is treated as 0.0; package-level observation_quality is never a substitute.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ally_alive": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "enemy_alive": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "weapon": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "spike_state": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "round_time_remaining_sec": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "utility_available_count": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "player_location": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "spatial_context": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
         }
       }
     }

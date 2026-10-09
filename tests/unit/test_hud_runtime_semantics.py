@@ -116,6 +116,47 @@ def test_roster_debounce_rejects_single_frame_and_long_gaps():
     assert _debounced_roster_count([unknown, unknown], 0, "ally") is None
 
 
+@pytest.mark.parametrize('interruption', ['duplicate_pts', 'backward_pts', 'feature_cut'])
+def test_roster_corroboration_cannot_cross_invalid_source_links(interruption):
+    slots = [{'alive_candidate': True, 'confidence': .9}] * 5
+    first = FrameFeatureObservation(0, {}, {'ally_liveness_candidates': slots}, {}, {})
+    second = replace(first, time_sec=.25)
+    if interruption == 'duplicate_pts':
+        second = replace(second, time_sec=0)
+    elif interruption == 'backward_pts':
+        second = replace(second, time_sec=-.25)
+    else:
+        second = replace(second, signals={**second.signals, 'content_jump': True})
+    assert _debounced_roster_count([first, second], 0, 'ally') is None
+    assert _debounced_roster_count([first, second], 1, 'ally') is None
+
+
+def test_roster_can_corroborate_new_segment_without_using_previous_segment():
+    slots = [{'alive_candidate': True, 'confidence': .9}] * 5
+    first = FrameFeatureObservation(0, {}, {'ally_liveness_candidates': slots}, {}, {})
+    frames = [first, replace(first, time_sec=.25), replace(first, time_sec=.5)]
+    cuts = frozenset({1})
+    assert _debounced_roster_count(frames, 0, 'ally', source_cut_indices=cuts) is None
+    assert _debounced_roster_count(frames, 1, 'ally', source_cut_indices=cuts) == (5, .9)
+    assert _debounced_roster_count(frames, 2, 'ally', source_cut_indices=cuts) == (5, .9)
+
+
+@pytest.mark.parametrize('marker', ['content_jump', 'discontinuity'])
+def test_analyzer_roster_debounce_honors_supplemental_source_cut(monkeypatch, marker):
+    analyzer = RealHudAnalyzer(resource_path('config/hud_layout_1080p_v3.json'), readers={})
+    slots = [{'alive_candidate': True, 'confidence': .9}] * 5
+    signals = {'frame_width': 1920, 'frame_height': 1080, 'ally_liveness_candidates': slots}
+    features = [FrameFeatureObservation(t, {}, signals, {}, {}) for t in (0, 1)]
+    monkeypatch.setattr(analyzer.feature_reader, 'observe_sequence', lambda *a, **k: features)
+    anchors = {name: analyzer.layout.normalized_roi(name)
+               for name in ('round_timer', 'top_match_bar', 'player_hp_armor', 'abilities')}
+    images = [np.full((1080, 1920, 3), 60, dtype=np.uint8)] * 2
+    result = analyzer.observe_frames(images, anchor_detections=anchors,
+                                    additional_signals=[{}, {marker: True}])
+    assert [row['values']['ally_alive'] for row in result.observations] == [None, None]
+    assert all(row['values']['player_specific_hud_valid'] is False for row in result.observations)
+
+
 @pytest.mark.parametrize(
     "target,value", [("hp", 101), ("armor", 99), ("ally_alive", 6), ("hp", True)]
 )

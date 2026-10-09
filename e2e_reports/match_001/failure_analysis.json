@@ -13533,5 +13533,546 @@
       "R1 end requires separately qualified semantic end/score evidence",
       "source content-jump markers missing"
     ]
+  },
+  "semantic_phase_followup": {
+    "report": "e2e_reports/match_001/semantic_phase_contract_diagnostics.json",
+    "canonical_status_changed": false,
+    "native_phase_confirmed_0_to_9_sec": 64,
+    "native_round_boundaries": 0,
+    "native_package_scope_resolved": false,
+    "next_blocker": "source-qualified round start/end evidence; independent phase confidence alone cannot resolve package scope"
+  },
+  "source_discontinuity_followup": {
+    "report": "e2e_reports/match_001/source_discontinuity_diagnostics.json",
+    "source_marker_producer_found": false,
+    "magnitude_only_cut_policy": "rejected; animation and ability transitions produce larger differences",
+    "canonical_status_changed": false
+  },
+  "lifecycle_preparation_confidence_followup": {
+    "report": "e2e_reports/match_001/lifecycle_preparation_confidence_diagnostics.json",
+    "phase_to_pre_round_contract": "fixed; source confirmed in short continuous R1/R2 windows",
+    "real_start_end_qualified": false,
+    "canonical_status_changed": false,
+    "next_blocker": "qualified current-frame timer/live inputs and source-qualified end/continuity evidence"
+  },
+  "timer_display_contract_followup": {
+    "report": "e2e_reports/match_001/timer_display_contract_diagnostics.json",
+    "source_display_transport": "implemented with optional typed fields and provenance; real reader/native/trace correspondence verified",
+    "adopted_safe_timer_profile_available": false,
+    "canonical_status_changed": false,
+    "four_target_assertions_still_unqualified": [
+      "GT-R1-SNAP-0415",
+      "GT-R1-SNAP-7438",
+      "GT-R1-SNAP-7445",
+      "GT-R2-SNAP-11145"
+    ]
+  },
+  "global_start_contract_followup": {
+    "report": "e2e_reports/match_001/global_start_contract_diagnostics.json",
+    "root_cause_addition": "global start is gated by player-live identity; short missing-reader frames also cancel pending candidates",
+    "diagnostic_start_candidates": [
+      4.152669,
+      111.436003
+    ],
+    "production_start_events": 0,
+    "canonical_status_changed": false,
+    "timer_profile16_still_rejected": true
+  },
+  "legacy_contract_compatibility_followup": {
+    "report": "e2e_reports/match_001/legacy_contract_compatibility.json",
+    "profile13_observations": 4634,
+    "profile16_observations": 4661,
+    "all_packages_traces_and_assertion_outcomes_equal": true,
+    "canonical_status_changed": false,
+    "new_full_e2e": false,
+    "discontinuity_safety_proven": false
+  },
+  "r1_end_dense_source_followup": {
+    "report": "e2e_reports/match_001/r1_end_dense_source_diagnostics.json",
+    "semantic_end_banner_source_pts_sec": 74.436003,
+    "archived_full_native_pts_contains_banner": false,
+    "single_frame_not_qualified": true,
+    "canonical_status_changed": false,
+    "production_changed": false
+  },
+  "authorized_global_lifecycle_followup": {
+    "report": "e2e_reports/match_001/global_lifecycle_implementation_diagnostics.json",
+    "user_contract_authorized": true,
+    "production_opt_in_path_implemented": true,
+    "real_input_qualification_complete": false,
+    "canonical_status_changed": false
+  },
+  "timer_glyph_training_holdout_followup": {
+    "report": "e2e_reports/match_001/timer_glyph_training_holdout_diagnostics.json",
+    "training_classes_supported": 10,
+    "fresh_frame_holdout": {
+      "correct": 25,
+      "unknown": 7,
+      "wrong": 0
+    },
+    "known_error_controls": {
+      "correct": 0,
+      "unknown": 4,
+      "wrong": 0
+    },
+    "source_field_negative_false_positive": 0,
+    "canonical_status_changed": false,
+    "profile_adopted": false,
+    "remaining_blocker": "qualified continuity, real end evidence and production continuous/sampled qualification"
+  },
+  "timer_continuous_analyzer_followup": {
+    "report": "e2e_reports/match_001/timer_continuous_analyzer_diagnostics.json",
+    "window_observations": 342,
+    "accepted_timers": 224,
+    "round_start": 0,
+    "round_end": 0,
+    "wall_clock_sec": 835.4215446750168,
+    "canonical_status_changed": false,
+    "profile_adopted": false,
+    "blocker": "no qualified continuity producer/global component report, no score/result evidence for end"
+  },
+  "source_correspondence_followup": {
+    "report": "e2e_reports/match_001/source_correspondence_diagnostics.json",
+    "pairs": 130,
+    "qualification_created": false,
+    "production_behavior_changed": false,
+    "canonical_status_changed": false,
+    "conclusion": "sparse camera flow alone has insufficient support at genuine starts and nonzero support at reviewed content jump"
+  },
+  "composite_source_continuity_followup": {
+    "report": "e2e_reports/match_001/composite_source_continuity_diagnostics.json",
+    "producer_implemented": true,
+    "runtime_qualified": false,
+    "profile_adopted": false,
+    "canonical_status_changed": false,
+    "next": "fresh composite continuity holdout and negative qualification"
+  },
+  "composite_continuity_holdout_followup": {
+    "report": "e2e_reports/match_001/composite_continuity_holdout_diagnostics.json",
+    "positive_contexts": 16,
+    "proposed_links": 5,
+    "abstentions": 11,
+    "timer_correct": 27,
+    "timer_unknown": 5,
+    "timer_wrong": 0,
+    "independent_negative_complete": false,
+    "runtime_qualified": false,
+    "profile_adopted": false,
+    "canonical_status_changed": false
+  },
+  "composite_stale_source_followup": {
+    "report": "e2e_reports/match_001/composite_stale_source_diagnostics.json",
+    "v1_rejected": true,
+    "v2_qualified": false,
+    "before_false_stale_attestations": 9,
+    "after_false_stale_attestations": 0,
+    "prior_positive_links_before": 5,
+    "prior_positive_links_after": 5,
+    "canonical_status_changed": false,
+    "profile_adopted": false
+  },
+  "composite_pipeline_gate_followup": {
+    "report": "e2e_reports/match_001/composite_pipeline_gate_diagnostics.json",
+    "cut_pairs_rejected": 3,
+    "independent_cut_episodes": 1,
+    "optimistic_start_events": 0,
+    "canonical_status_changed": false,
+    "profile_adopted": false,
+    "next_root_cause": "qualified phase temporal provenance not consumed during source segment initialization"
+  },
+  "global_source_contract_followup": {
+    "report": "e2e_reports/match_001/global_source_contract_diagnostics.json",
+    "report_sha256": "05d03230d576deb0b5f5052c065b25e01771edc99c420041b9be3d6b358c9582",
+    "canonical_status_changed": false,
+    "guaranteed_real_pass_gain": 0,
+    "source_projection_events_previous": 0,
+    "source_projection_events_current": 0,
+    "fixed": "external qualified-evidence overwrite and short phase duration from old semantic context",
+    "next": "native contiguous source evidence between saved analysis PTS, then independent qualification"
+  },
+  "native_global_preparation_followup": {
+    "report": "e2e_reports/match_001/native_global_preparation_diagnostics.json",
+    "report_sha256": "7d9e0dd9f950ccf0ed960841b5997e4088b6281a4b3b2bf31ffbae9a045863de",
+    "canonical_status_changed": false,
+    "guaranteed_pass_gain": 0,
+    "source_frames": 60,
+    "display_correct_unknown_wrong": [
+      54,
+      6,
+      0
+    ],
+    "source_review_after_prediction": true,
+    "independent_holdout": false,
+    "simulated_starts_previous": 0,
+    "simulated_starts_current": 0,
+    "simulated_starts_delta": 0,
+    "native_input_density_alone_resolves_gate": false,
+    "next_target": "source-derived clock temporal qualification and phase-context semantics, with native source continuity and independent negative/holdout evidence; distinguish accurate visible text from stable lifecycle clock; no special-casing2:25 or expected values",
+    "raw_motion_extra_support_is_ui_confounded": true
+  },
+  "global_active_round_followup": {
+    "diagnostics": "e2e_reports/match_001/global_active_round_diagnostics.json",
+    "recognizer_fingerprint": "e9cd7c81e972a3e548b0da40819b31bef99f8329366c1be58ab216c9454bca9e",
+    "canonical_result_changed": false,
+    "related_unit_tests_passed": 151,
+    "scope": "Synthetic analyzer-consumer contract regression; not source image qualification or canonical E2E",
+    "next_blocker": "Native source starts still unsupported by present clock/phase/continuity evidence"
+  },
+  "score_glyph_development_followup": {
+    "diagnostics": "e2e_reports/match_001/score_glyph_development_diagnostics.json",
+    "recognizer_fingerprint": "a29d6e364552d23c8720c36dd3053bbd8744ab36c500b31c6f75a5bd185c662d",
+    "source_development_correct": 84,
+    "source_development_unknown": 36,
+    "source_development_wrong": 0,
+    "canonical_result_changed": false,
+    "profile_adopted": false,
+    "next_blocker": "Qualify score foreground extraction on separate source-frame training/holdout/negative cohorts; preserve rejected development result, do not replace unknown with observed labels"
+  },
+  "score_white_holdout_followup": {
+    "diagnostics": "e2e_reports/match_001/score_white_holdout_diagnostics.json",
+    "recognizer_fingerprint": "6011f168b640de47d9b592041b4f696d2ff92796dec0c28dd96636f7b84140af",
+    "holdout_correct": 36,
+    "holdout_unknown": 18,
+    "holdout_wrong": 0,
+    "unknown_to_correct": 17,
+    "spatial_negative_false_positive": 0,
+    "qualification_report_created": false,
+    "canonical_result_changed": false
+  },
+  "score_source_analyzer_followup": {
+    "diagnostics": "e2e_reports/match_001/score_source_analyzer_diagnostics.json",
+    "score_correct": 36,
+    "score_unknown": 18,
+    "score_wrong": 0,
+    "player_owned_facts_released": false,
+    "events": 0,
+    "canonical_result_changed": false
+  },
+  "round_result_qualification_gap_followup": {
+    "diagnostics": "e2e_reports/match_001/round_result_qualification_gap.json",
+    "score_correct": 18,
+    "score_unknown": 2,
+    "score_wrong": 0,
+    "timer_correct": 4,
+    "timer_unknown": 6,
+    "timer_wrong": 0,
+    "continuity_links": 0,
+    "result_positive_source_support_established": false,
+    "canonical_result_changed": false
+  },
+  "roster_source_link_followup": {
+    "diagnostics": "e2e_reports/match_001/roster_source_link_diagnostics.json",
+    "synthetic_invalid_endpoint_corroborations_previous": 6,
+    "synthetic_invalid_endpoint_corroborations_current": 0,
+    "canonical_result_changed": false,
+    "color_roster_qualified_as_round_evidence": false,
+    "recognizer_fingerprint": "8ea9523eb35014d6301e778970c34c3b16192e0edac255c6f06aa9db5fd564ec"
+  },
+  "score_archived_context_followup": {
+    "diagnostics": "e2e_reports/match_001/score_archived_context_diagnostics.json",
+    "frames": 50,
+    "score_correct_previous": 55,
+    "score_correct_current": 76,
+    "score_unknown_previous": 45,
+    "score_unknown_current": 24,
+    "score_wrong_previous": 0,
+    "score_wrong_current": 0,
+    "natural_absent_ui_controls_found_in64": 0,
+    "qualification_report_created": false,
+    "canonical_result_changed": false
+  },
+  "round_result_reference_development_followup": {
+    "diagnostics": "e2e_reports/match_001/round_result_reference_development.json",
+    "later_source_positive_frames": 25,
+    "distinct_training_frames_supported": 3,
+    "same_episode_holdout_correct": 3,
+    "same_episode_holdout_unknown": 8,
+    "banner_roi_negative_false_positive": 0,
+    "earlier_target_regression_positive_accepted": 0,
+    "profile_adopted": false,
+    "canonical_result_changed": false
+  },
+  "latest_main_contract_compatibility_followup": {
+    "diagnostics": "e2e_reports/match_001/latest_main_contract_compatibility.json",
+    "head": "fd099fd938830745c749d1a58e9092565bcd7ed3",
+    "archived_profile13_replay_counts": {
+      "fail": 55,
+      "not_evaluated": 4,
+      "pass": 23
+    },
+    "assertion_matrix_unchanged": true,
+    "fresh_full_e2e_executed": false,
+    "new_canonical_gain_claimed": false
+  },
+  "r1_independent_scene_followup": {
+    "report": "e2e_reports/match_001/r1_independent_scene_diagnostics.json",
+    "document": "docs/r1_scene_transition_investigation.md",
+    "r1_scene_decision": "Scene continuity supported at critical phase/reset/drop links; UI transition hypothesis supported, full content-time continuity unproven",
+    "r2_scene_decision": "Inconclusive through purple occlusion; frozen R1 crops not universally background-only",
+    "qualified_events_added": 0,
+    "canonical_current": null,
+    "assertion_status_changed": false,
+    "production_behavior_changed": false,
+    "thresholds_changed": false,
+    "next_target": "Qualified transient UI contract separating scene and clock evidence while retaining content-time vetoes"
+  },
+  "transient_ui_contract_prototype_followup": {
+    "report": "e2e_reports/match_001/transient_ui_contract_replay.json",
+    "unit_cases_passed": 11,
+    "actual_native_observations": 60,
+    "r1_state_counts": {
+      "phase_candidate": 6,
+      "unobserved": 24
+    },
+    "r2_state_counts": {
+      "phase_candidate": 2,
+      "unobserved": 28
+    },
+    "automated_evidence_hypothesis": "Rejected all-six raw NCC per-frame span; camera motion resets preparation",
+    "production_behavior_changed": false,
+    "new_boundary_events": 0,
+    "current_canonical_result": null,
+    "next_target": "Motion-compensated distributed background correspondence and explicit occlusion validity"
+  },
+  "scene_motion_compensation_followup": {
+    "report": "e2e_reports/match_001/scene_motion_compensation_diagnostics.json",
+    "raw_metrics_unchanged": true,
+    "original_code_snapshot_sha256": "2d9b7ceb9a47227b183dabb05aace4838e0c8228c28a4e0d4fb51a8e58771648",
+    "related_tests_passed": 107,
+    "related_test_seconds": 7.31,
+    "ruff": "PASS",
+    "mypy": "PASS: 101 source files",
+    "production_behavior_changed": false,
+    "new_qualified_boundaries": 0,
+    "canonical_current": null,
+    "next_target": "Semantic occlusion/background validity, independent holdout and negative controls"
+  },
+  "phase_excluded_camera_followup": {
+    "report": "e2e_reports/match_001/phase_excluded_camera_diagnostics.json",
+    "production_changed": "opt-in CompositeSourceContinuity camera NCC excludes phase/result panel; code-bound requalification required",
+    "thresholds_and_timer_content_vetoes_unchanged": true,
+    "default_identity_owned_path_unchanged": true,
+    "r1_camera_quorum_links": {
+      "previous": 25,
+      "current": 25,
+      "delta": 0
+    },
+    "r2_camera_quorum_links": {
+      "previous": 24,
+      "current": 23,
+      "delta": -1
+    },
+    "new_unit_cases": 4,
+    "related_tests_passed": 135,
+    "ruff": "PASS",
+    "mypy": "PASS: 101 production files",
+    "qualification_adopted": false,
+    "canonical_current": null,
+    "assertion_statuses_changed": false,
+    "new_qualified_boundaries": 0
+  },
+  "scene_holdout_followup": {
+    "reservation": "e2e_reports/match_001/scene_holdout_reservation.json",
+    "raw_report": "e2e_reports/match_001/scene_holdout_diagnostics.json",
+    "review": "e2e_reports/match_001/scene_holdout_review.json",
+    "frames": 90,
+    "adjacent_links": 87,
+    "scene_development_hashes_disjoint": true,
+    "camera_spatial_quorum": 23,
+    "camera_abstentions": 64,
+    "all_six_raw_ncc_links": 0,
+    "distributed_lk_links": 87,
+    "qualification": "Rejected universal fixed-region background claim; no event/content-time correctness labels",
+    "production_changed_this_followup": false,
+    "canonical_current": null,
+    "new_boundaries": 0,
+    "next_target": "Explicit region visibility/foreground validity plus motion-aware correspondence with a newly reserved holdout cohort"
+  },
+  "out_of_region_motion_followup": {
+    "report": "e2e_reports/match_001/out_of_region_motion_diagnostics.json",
+    "frames": 150,
+    "adjacent_links": 145,
+    "actual_controls": 3,
+    "production_changed": false,
+    "new_unit_cases": 6,
+    "related_tests_passed": 141,
+    "qualification_created": false,
+    "canonical_current": null,
+    "new_boundaries": 0,
+    "finding": "Cross-region motion prediction contradicts surviving LK patches at known discontinuity; critical R1timer links have small residuals. Ordinary foreground/parallax spans also have high residuals, so not a semantic background/cut classifier."
+  },
+  "qualified_transient_ui_contract_followup": {
+    "report": "e2e_reports/match_001/transient_ui_contract_verification.json",
+    "document": "docs/transient_ui_lifecycle_contract.md",
+    "related_tests_passed": 200,
+    "ruff": "PASS",
+    "mypy_source_files_passed": 102,
+    "real_source_producer_implemented": false,
+    "real_qualification_installed": false,
+    "production_change_scope": "Opt-in qualified global-system pending UI contract; no player facts",
+    "assertion_statuses_changed": false,
+    "new_real_boundaries": 0,
+    "canonical_current": null,
+    "fresh_e2e_executed": false,
+    "next_target": "Trusted visible-background and positive UI-transition producer with new independent same-video holdout and negative controls"
+  },
+  "scene_world_feature_development_followup": {
+    "document": "docs/scene_world_feature_development.md",
+    "report": "e2e_reports/match_001/scene_world_feature_bank_verified_controls.json",
+    "replay": "e2e_reports/match_001/scene_world_feature_verified_temporal_replay.json",
+    "holdout_reservation": "e2e_reports/match_001/scene_world_feature_holdout_reservation.json",
+    "r1_supported_links": {
+      "previous": 21,
+      "current": 26,
+      "delta": 5
+    },
+    "r2_supported_links": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "r1_prototype_states": {
+      "unobserved": 7,
+      "phase_candidate": 3,
+      "pre_round": 5,
+      "transient_ui_transition": 15
+    },
+    "new_real_boundaries": 0,
+    "canonical_current": null,
+    "assertion_statuses_changed": false,
+    "production_changed": false,
+    "diagnostic_initial_unsupported_phase_fixed": true,
+    "related_unit_tests_passed": 219,
+    "unit_seconds": 26.05,
+    "ruff": "PASS",
+    "mypy": "Prior PASS102files remains applicable: unchanged production/HUD fingerprint",
+    "qualification_created": false,
+    "fresh_e2e_executed": false,
+    "next_target": "Reserved independent same-video holdout and natural negative review, then trusted scene/UI producer qualification"
+  },
+  "scene_world_feature_holdout_followup": {
+    "document": "docs/scene_world_feature_holdout.md",
+    "review": "e2e_reports/match_001/scene_world_feature_holdout_review.json",
+    "native_frames": 36,
+    "adjacent_links": 30,
+    "supported_links": 0,
+    "qualification": "NOT_MET",
+    "new_events": 0,
+    "canonical_current": null,
+    "assertion_statuses_changed": false,
+    "production_changed_in_this_followup": false,
+    "full_e2e_executed": false,
+    "remaining_blocker": "World-reference pose/view coverage and independent positive holdout qualification; trusted scene and positive UI producers remain unavailable."
+  },
+  "scene_patch_search_followup": {
+    "document": "docs/scene_patch_search_investigation.md",
+    "report": "e2e_reports/match_001/scene_patch_search_development.json",
+    "rejections": "e2e_reports/match_001/scene_patch_search_rejections.json",
+    "target_assertions": [
+      "GT-R1-ROUND-START",
+      "GT-R1-ROUND-END",
+      "GT-R2-ROUND-START"
+    ],
+    "frames": 96,
+    "adjacent_links": 88,
+    "r1_links": {
+      "previous": 26,
+      "current": 19,
+      "delta": -7
+    },
+    "r2_links": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "former_holdout_links": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "decision": "Reject wider patch search as sufficient qualification remedy",
+    "root_cause_evidence": "Poor destination appearance support and repeated world texture ambiguity remain; no content cut inferred",
+    "qualification_created": false,
+    "new_real_events": 0,
+    "production_changed": false,
+    "canonical_current": null,
+    "assertion_statuses_changed": false,
+    "new_full_e2e_runs": 0
+  },
+  "scene_constellation_followup": {
+    "document": "docs/scene_constellation_investigation.md",
+    "reports": [
+      "e2e_reports/match_001/scene_constellation_development.json",
+      "e2e_reports/match_001/scene_constellation_reference_eligibility.json"
+    ],
+    "reference_id": "16",
+    "development_poses": 4,
+    "reference_features": {
+      "previous": 114,
+      "eligible_static_source": 93,
+      "delta": -21
+    },
+    "all_patch_track_counts": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "source_eligible_track_counts": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "decision": "Reject current bounded translation-constellation implementation for qualification; no universal rejection of joint spatial methods",
+    "root_cause_evidence": [
+      "Unassessed candidate alternatives exceed bounded budget",
+      "No coherent distributed translation under changed pose"
+    ],
+    "qualification_created": false,
+    "new_real_events": 0,
+    "production_changed": false,
+    "canonical_current": null,
+    "new_full_e2e_runs": 0,
+    "assertion_statuses_changed": false,
+    "next_target": "Reviewed distinguishable background structures and pose coverage in common reference/profile contract; keep source qualification mandatory"
+  },
+  "scene_world_chain_followup": {
+    "scope": "Diagnostic development only; user-requested pause checkpoint",
+    "document": "docs/scene_world_chain_investigation.md",
+    "reports": {
+      "scene_world_chain_development": {
+        "native_frames": 36,
+        "adjacent_links": 35,
+        "supported_links": 0,
+        "wall_clock_seconds": 8.479057663993444
+      },
+      "scene_world_chain_stable_development": {
+        "native_frames": 30,
+        "adjacent_links": 29,
+        "supported_links": 4,
+        "wall_clock_seconds": 7.821178668993525
+      },
+      "scene_world_chain_dense_spatial_diagnostics": {
+        "native_frames": 30,
+        "adjacent_links": 29,
+        "supported_links": 3,
+        "wall_clock_seconds": 8.015978038019966
+      },
+      "scene_world_chain_reviewed_row2": {
+        "native_frames": 30,
+        "adjacent_links": 29,
+        "supported_links": 3,
+        "wall_clock_seconds": 7.9675979589810595
+      }
+    },
+    "decision": "Not qualified; abstention is not a content cut",
+    "production_changed_in_followup": false,
+    "qualification_created": false,
+    "new_runtime_events": 0,
+    "fresh_e2e_executed": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "assertion_matrix_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776"
   }
 }

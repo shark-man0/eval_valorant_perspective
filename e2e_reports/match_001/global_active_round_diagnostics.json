@@ -1,0 +1,66 @@
+{
+  "scope": "Synthetic analyzer-consumer contract regression; not source image qualification or canonical E2E",
+  "git_head": "9bb50abd463ab0ef41fb35c59dbe0d7679a64082",
+  "recognizer_fingerprint_previous": "d36ea6ce342abf4a51634876bf7186a161c4967081179ee5afc304942c9606fa",
+  "recognizer_fingerprint_current": "e9cd7c81e972a3e548b0da40819b31bef99f8329366c1be58ab216c9454bca9e",
+  "files": {
+    "src/valorant_ai_coach/hud/global_lifecycle.py": "7c4732e24660aa2e8c3340db9717509de691c5d0cf69357a9ad2495703f813c9",
+    "tests/unit/test_global_round_lifecycle.py": "cd9170a1138b185d8a1c14e07868497bdeb4df6f52e09a9bd31c55bea4dfbba3"
+  },
+  "target_assertions": [
+    "GT-R1-ROUND-START",
+    "GT-R1-ROUND-END",
+    "GT-R2-ROUND-START",
+    "event_count_constraints-000",
+    "event_count_constraints-002",
+    "event_count_constraints-004",
+    "ordering_constraints-001"
+  ],
+  "root_cause": "Confirmed purchase phase could overwrite round_active with pre_round before a qualified end; subsequent timer reset duplicates start and phase during genuine end hides end",
+  "change": "An active round does not consume phase as new preparation; qualified end or source reset must close it first",
+  "synthetic_before_fix": {
+    "round_start_events": 2,
+    "round_end_events": 0,
+    "unit_status": "FAIL"
+  },
+  "synthetic_after_fix": {
+    "round_start_events": 1,
+    "round_end_events": 1,
+    "unit_status": "PASS"
+  },
+  "delta": {
+    "round_start_events": -1,
+    "round_end_events": 1
+  },
+  "tests": {
+    "related_passed": 151,
+    "wall_clock_sec": 23.86,
+    "ruff": "PASS",
+    "mypy": "PASS: 100 source files",
+    "before_fix_control": "1 failed, 1 passed"
+  },
+  "positive_and_negative_controls": [
+    "phase jitter cannot duplicate a start or hide qualified end",
+    "cut discards old preparation and requires fresh phase before start",
+    "existing two-round system event/package/trace contract remains passing"
+  ],
+  "qualification_report_created": false,
+  "profile_adopted": false,
+  "full_e2e_executed": false,
+  "canonical_status": {
+    "previous": {
+      "pass": 23,
+      "fail": 55,
+      "not_evaluated": 4
+    },
+    "current": null,
+    "delta": null,
+    "reason": "No new canonical run; historical accepted baseline unchanged, new acceptance not measured"
+  },
+  "remaining_blockers": [
+    "Native source starts still unsupported by present clock/phase/continuity evidence",
+    "Independent holdout and negative qualification bound to current code missing",
+    "R1 end lacks corroborated same-segment result/score evidence"
+  ],
+  "windows_verified": false
+}

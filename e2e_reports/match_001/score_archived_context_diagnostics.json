@@ -1,0 +1,103 @@
+{
+  "scope": "supplementary archived same-video source score evaluation; selected50of64uniform historical unknown review frames after proximity exclusion, not native temporal or independent qualification",
+  "git_head": "9bb50abd463ab0ef41fb35c59dbe0d7679a64082",
+  "target_root_cause": "qualified global lifecycle numeric evidence, upstream round package scope",
+  "target_assertions": [
+    "GT-R1-ROUND-START",
+    "GT-R1-ROUND-END",
+    "GT-R2-ROUND-START"
+  ],
+  "recognizer_fingerprint": "8ea9523eb35014d6301e778970c34c3b16192e0edac255c6f06aa9db5fd564ec",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "source_video_sha256_verified_at_terminal": true,
+  "archived_source_pixel_hashes_verified": 64,
+  "frames_examined_for_natural_absence": 64,
+  "natural_timer_absent_examples": 0,
+  "natural_score_absent_examples": 0,
+  "absence_scope": "Only this64-frame fixed historical unknown-review cohort; no claim that the entire video lacks absent UI",
+  "menu_topbar_triage_pts_sec": [
+    83.419336,
+    88.786003,
+    110.019336
+  ],
+  "menu_triage_conclusion": "All three reviewed buy-menu topbars still display timer/scores; they are positives, not absent-UI controls",
+  "selected_source_frames": 50,
+  "excluded_for_training_or_previous_evaluation_proximity": 14,
+  "exclusion_radius_sec": 0.12,
+  "sampling": "existing uniformly ranked archived unknown cohort; no GT windows or values select frames; all relevant numeric/reference/evaluation-source PTS excluded before predictions",
+  "previous": {
+    "correct": 55,
+    "unknown": 45,
+    "wrong": 0
+  },
+  "current": {
+    "correct": 76,
+    "unknown": 24,
+    "wrong": 0
+  },
+  "delta": {
+    "correct": 21,
+    "unknown": -21,
+    "wrong": 0
+  },
+  "transitions": {
+    "correct->correct": 55,
+    "unknown->correct": 21,
+    "unknown->unknown": 24
+  },
+  "score_readings": 100,
+  "runtime_previous_sec": 3.67713675001869,
+  "runtime_current_sec": 3.6465386310010217,
+  "runtime_delta_sec": -0.03059811901766807,
+  "runtime_delta_percent": -0.8321180608121944,
+  "runtime_interpretation": "short score-only measurements, variation; not E2E or speedup qualification",
+  "label_provenance": "Manual source topbar review before prediction, label JSON serialized after prediction for evaluation only; labels not supplied to readers/selector",
+  "source_pts_scope": "Archived native observation time rounded to six decimals; not new exact integer PTS extraction or continuous temporal proof",
+  "roi_geometry_assumed": true,
+  "classes_reviewed": [
+    0,
+    1,
+    2
+  ],
+  "independent_video": false,
+  "qualified_natural_absence_controls": false,
+  "qualification_report_created": false,
+  "profile_adopted": false,
+  "player_fact_gate_changed": false,
+  "production_source_changed_this_diagnostic": false,
+  "canonical_previous": {
+    "pass": 23,
+    "fail": 55,
+    "not_evaluated": 4
+  },
+  "canonical_current": null,
+  "canonical_delta": null,
+  "new_assertion_passes_claimed": [],
+  "full_e2e_executed": false,
+  "full_e2e_not_run_reason": "No real qualification report; actual three boundary points and continuous source corroboration remain unsupported",
+  "verification": "No production/test/script change in this archived diagnostic. Prior199unique related cases, Ruff and mypy101 PASS apply to unchanged tracked source. Private diagnostic script is not shared production orchestration. Windows unverified.",
+  "bindings": {
+    "outputs/recognition-investigation/score-menu-controls-20261008/source-inventory.json": "d898550dad9502413fa1f6ab4b72b4aaf6a65e945d25d9357eb7fbfadac6e631",
+    "outputs/recognition-investigation/score-menu-controls-20261008/source-labels.json": "fa4c4ce8868fd3e6b467f6b2080348487b20fb496753e3d281e53b4bf7cdf25d",
+    "outputs/recognition-investigation/score-menu-controls-20261008/run-archived-score.py": "93fd34bea0bdd35adbfb04c406f48c6ecc972b6e546307706ac796b5d19faae2",
+    "outputs/recognition-investigation/score-menu-controls-20261008/archived-selection.json": "50693176b6d8ec649b92e24c81c52a2fb595c6e4c4f05affa988f1cc8f3c54aa",
+    "outputs/recognition-investigation/score-menu-controls-20261008/archived-predictions.json": "4e66f34bb6c760d0cc560319bb22a5740ff2e1d0b5bf3bafb6f6012819283f6e",
+    "outputs/recognition-investigation/score-menu-controls-20261008/archived-evaluation.json": "306434739dd33f0157cbcb0dbdf05d7549975c52fea67217b5e0b744e88cd409"
+  },
+  "previous_binding": {
+    "code": "8ea9523eb35014d6301e778970c34c3b16192e0edac255c6f06aa9db5fd564ec",
+    "script": "93fd34bea0bdd35adbfb04c406f48c6ecc972b6e546307706ac796b5d19faae2",
+    "manifest": "19fdbae71a45f52604f33e8a7fefeb873ac54d767b6e7d29f7a1787594929c47",
+    "profile": {
+      "otsu": "6ce96a23d3084e62b115ecd3bfe75925dcf9d21e497032fba227f6707e129fe4",
+      "white": "287c6453d04b8f334cb32ba3631b91e935b563c070bb0a717548d8daa138d1b5"
+    },
+    "exclusions": {
+      "outputs/recognition-investigation/timer-glyph-cohort-v2/selection.json": "b8689784b6b08e8856e347a29952b25cba7aa853ee45d4a73b4915c5494bd050",
+      "outputs/recognition-investigation/timer-seven-support/training-selection.json": "0c9128bec2e50b552b6af0bc55c75dd3766c5d704f168ac7d14baa8672e6d481",
+      "outputs/recognition-investigation/native-global-preparation-complete-20261008/results.json": "b6c41f52eed4d9d41e5cda9ebd4d5cdfda97a2d736ff7de541584c2df61a58e6",
+      "outputs/recognition-investigation/score-white-holdout-20261008/native-manifest.json": "9210e1fbb145a4fb414006a278cd5629001e40ce412d25d85ae5bc911fd5e6bf"
+    }
+  },
+  "next_action": "Additional independently reviewed natural absent-UI source controls and same-segment lifecycle evidence are needed; neither color-only roster nor post-cut score changes qualify a boundary."
+}

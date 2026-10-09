@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "head_commit": "9bb50abd463ab0ef41fb35c59dbe0d7679a64082",
+  "working_tree_is_dirty": true,
+  "scope": "production system-event path implementation and synthetic contract verification; no fresh canonical E2E qualification",
+  "authorization": {
+    "identity_independent_global_system_events": true,
+    "assertion_fixed_timer_score_development": true,
+    "player_owned_reuse": false,
+    "gt_runtime_or_selection_input": false
+  },
+  "recognizer_fingerprint": "0e3737634a834a5c37c0ed7f0bc426cce8c4e1db1ccbbe8299e72788e1f08080",
+  "implementation_files_sha256": {
+    "src/valorant_ai_coach/hud/global_lifecycle.py": "f0aaa7a0abb2ad93abbf06be1614a96ef424e08fdeed819b085514cdce2c70e3",
+    "src/valorant_ai_coach/hud/analyzers.py": "5c003a9f944652f326579310b772fc94ba0f9fff9ff440b73de91c7fa9318748",
+    "src/valorant_ai_coach/hud/temporal.py": "ad8a4f6404c7153c9cb98e31c00a7482e0b380b7e36545b6dcae8e33674dc29d",
+    "tests/unit/test_global_round_lifecycle.py": "e36129fce492b5411ed22c96117aea49b18325387fb0d310011d71813b6f4e0d"
+  },
+  "qualification_contract": {
+    "profile_and_code_bound": true,
+    "component_and_cross_component_split_overlap_rejected": true,
+    "holdout_wrong_allowed": 0,
+    "negative_false_positive_allowed": 0,
+    "runtime_continuity_attestation_required": true,
+    "continuity_source_pts_required": true,
+    "missing_or_invalid_report_enables_global_path": false,
+    "existing_profile16_adopted": false
+  },
+  "synthetic_contract_results": {
+    "start_actor": "system",
+    "end_actor": "system",
+    "two_starts_one_end_two_packages": true,
+    "no_false_second_end": true,
+    "package_trace_provenance_preserved": true,
+    "unknown_identity_and_no_self_ownership_preserved": true,
+    "cut_segment_gap_timeout_weak_stale_evidence_rejected": true
+  },
+  "verification": {
+    "related_tests": "159 passed in 27.15s",
+    "ruff": "PASS src/tests/scripts/e2e/scripts/diagnostics",
+    "mypy": "PASS 99 source files",
+    "related_test_log_sha256": "afbe7de51082b3630c88b0156425c976fe24072ae523e6e99a79dc96cd68764c",
+    "mypy_log_sha256": "36dda6f9cde9c4724b81d27ea2de1d55f45a24bcb058ea63cdcf553e01f019e1"
+  },
+  "canonical_previous": {
+    "PASS": 23,
+    "FAIL": 55,
+    "NE": 4
+  },
+  "canonical_current": null,
+  "canonical_delta": null,
+  "new_full_e2e": false,
+  "new_canonical_passes": [],
+  "remaining_gates": [
+    "Real safe timer/score qualification with independent splits and fixed assertions.",
+    "Qualified current-frame runtime continuity producer (no producer yet supplies attestation).",
+    "R1 end corroboration within one content segment.",
+    "Continuous R1 start/end/R2 start and negative-control validation.",
+    "Sampled and full regression gates, followed by canonical full E2E.",
+    "Windows runtime and packaged source-fingerprint availability verification."
+  ]
+}

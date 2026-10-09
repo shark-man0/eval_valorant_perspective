@@ -1,0 +1,278 @@
+{
+  "schema_version": 1,
+  "git_head": "9bb50abd463ab0ef41fb35c59dbe0d7679a64082",
+  "scope": "all native source PTS in explicit interior development windows; source timer review after prediction; reference geometry and unknown-state projection; test-only qualification; not blind holdout, actual qualified pipeline or canonical E2E",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "code_fingerprint": "d36ea6ce342abf4a51634876bf7186a161c4967081179ee5afc304942c9606fa",
+  "profile_fingerprint": "8b5955f1d7de7139949815a7853260b9a66b6fd48140b64351030a6e78e9a5db",
+  "diagnostic_script_sha256": "326758283666c5141172b56d4679e2135829afbd49d657197cc9b456eebb2a69",
+  "native_pts_coverage_verified": true,
+  "target_assertion_ids": [
+    "GT-R1-ROUND-START",
+    "GT-R1-ROUND-END",
+    "GT-R2-ROUND-START",
+    "event_count_constraints-000",
+    "event_count_constraints-002",
+    "event_count_constraints-004",
+    "ordering_constraints-001"
+  ],
+  "source_review": {
+    "review_order": "after predictions, development windows",
+    "cases": 60,
+    "correct_display": 54,
+    "unknown": 6,
+    "wrong_display": 0,
+    "interpretation": "recognition of displayed text only; not qualification of game clock semantics, phase, continuity or boundaries"
+  },
+  "windows": [
+    {
+      "window_sec": [
+        3.902669,
+        4.402669
+      ],
+      "processed_frames": 30,
+      "timer_accepted": 30,
+      "timer_unknown": 0,
+      "phase_confirmed": 8,
+      "continuity_reasons": {
+        "initial_frame": 1,
+        "attested_composite_link": 23,
+        "timer_transition_inconsistent": 2,
+        "insufficient_spatial_camera_support": 4
+      },
+      "lifecycle_states": {
+        "unobserved": 24,
+        "pre_round": 6
+      },
+      "simulated_decisions": [],
+      "wall_clock_sec": 34.38790212199092
+    },
+    {
+      "window_sec": [
+        111.186003,
+        111.686003
+      ],
+      "processed_frames": 30,
+      "timer_accepted": 24,
+      "timer_unknown": 6,
+      "phase_confirmed": 9,
+      "continuity_reasons": {
+        "initial_frame": 1,
+        "accepted_timer_pair_unavailable": 6,
+        "insufficient_spatial_camera_support": 4,
+        "attested_composite_link": 18,
+        "timer_transition_inconsistent": 1
+      },
+      "lifecycle_states": {
+        "unobserved": 30
+      },
+      "simulated_decisions": [],
+      "wall_clock_sec": 33.020913633023156
+    }
+  ],
+  "source_findings": [
+    {
+      "window_index": 0,
+      "first_reset_pts_sec": 4.1193359375,
+      "first_reset_display": "2:25",
+      "last_two_transient_pts_sec": [
+        4.1193359375,
+        4.136002604166666
+      ],
+      "next_display_pts_sec": 4.152669270833333,
+      "next_display": "1:39",
+      "review": "2:25 is genuinely visible, not OCR error; duration between its two source samples is16.667ms; source image evidence does not establish whether clock semantics or content is discontinuous",
+      "camera_support_cells_at_reset": 5,
+      "camera_support_cells_at_drop": 6,
+      "failure": "last confirmed phase4.086002604166667; immediate prior phase confirmation absent at4.102669270833333; composer rejects reset and subsequent46sec drop. Preparation was valid earlier; elapsed source span does not satisfy0.05sec confirmation of transient value",
+      "last_confirmed_phase_pts_sec": 4.086002604166667,
+      "phase_to_reset_gap_sec": 0.033333333333333215,
+      "immediate_prior_frame_phase_confirmed": false,
+      "transient_observed_span_sec": 0.016666666666666607,
+      "transient_until_next_display_sec": 0.033333333333333215
+    },
+    {
+      "window_index": 1,
+      "first_reset_pts_sec": 111.43600260416666,
+      "first_reset_display": "1:40",
+      "phase_source_fragment_pts_sec": [
+        111.38600260416666,
+        111.40266927083333
+      ],
+      "fragment_duration_sec": 0.01666666666666572,
+      "failure": "six accepted timer gaps and camera support failures prevent preparation. Last segment has less than0.05sec confirmed phase; current source at111.4193359375 no longer confirms phase. Reset has6camera cells but prior-frame phase is absent; consumer cannot borrow earlier segment",
+      "last_confirmed_phase_pts_sec": 111.40266927083333,
+      "phase_to_reset_gap_sec": 0.03333333333333144,
+      "immediate_prior_frame_phase_confirmed": false
+    }
+  ],
+  "hypothesis_assessment": {
+    "more_native_frames_alone": "rejected as sufficient fix: still zero starts with every native frame and unchanged thresholds",
+    "latched_phase_alone": "insufficient: R1 transient clock later contradicts future confirmation; R2 same-segment preparation is not qualified",
+    "camera_support_alone": "insufficient: five/six witnesses at R1 clock jumps do not establish clock semantics or absence of content discontinuity"
+  },
+  "comparison": {
+    "previous_scope": "optimistic archived-image contract projection,263frames over wider windows; cannot compare acceptance rates",
+    "previous_simulated_starts": 0,
+    "current_simulated_starts": 0,
+    "delta_simulated_starts": 0,
+    "rejected_initial_cohort": {
+      "frames": 58,
+      "coverage_verified": false,
+      "reason": "truncated ffprobe interval reached neither complete requested tail nor independent coverage audit; retained only as listed-frame development observations"
+    },
+    "complete_cohort": {
+      "frames": 60,
+      "coverage_verified": true,
+      "wall_clock_sec": 69.29240232598386,
+      "frames_per_sec": 0.8658957978932805
+    },
+    "runtime_delta": "not comparable to archived projection or incomplete first cohort; current diagnostic69.292sec, not full E2E runtime"
+  },
+  "canonical_previous": {
+    "PASS": 23,
+    "FAIL": 55,
+    "NE": 4
+  },
+  "canonical_current": null,
+  "canonical_delta": null,
+  "qualification_created": false,
+  "profile_adopted": false,
+  "new_full_e2e_runs": 0,
+  "production_recognition_changed": false,
+  "thresholds_changed": false,
+  "validation_or_sampler_changed": false,
+  "verification": {
+    "new_tests": "16PASS1.98sec including real FFmpeg nonzero source origin and before/after probe coverage guards",
+    "prior_related_tests": "183PASS; production source fingerprint unchanged",
+    "ruff": "PASS src tests scripts/e2e scripts/diagnostics",
+    "mypy": "PASS100source files",
+    "windows": "unverified"
+  },
+  "next_target": "source-derived clock temporal qualification and phase-context semantics, with native source continuity and independent negative/holdout evidence; distinguish accurate visible text from stable lifecycle clock; no special-casing2:25 or expected values",
+  "remaining_blockers": [
+    "no real qualified global report",
+    "R1 clock handoff and R2 preparation continuity remain unsupported",
+    "R1 end has only transient source banner; score/result confirmation incomplete",
+    "native packages/negative assertions/canonical statuses not newly measured"
+  ],
+  "artifacts": {
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/selection.json": "69f2193f2170c4b7c48a90ace8851d5dcef5582308cb9baa95c15a1541bb2ac3",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/results.json": "b6c41f52eed4d9d41e5cda9ebd4d5cdfda97a2d736ff7de541584c2df61a58e6",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/source-review.json": "a017d932de37e5f933591773379b889b5f1c8c31545ac319e4251a07bc05536f",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/rejected-link-camera-diagnostics.json": "8f88b0112af2ab386bf50b16ffd7a15ccec7ccbe4171ecb493b1423f1c2573b7",
+    "outputs/recognition-investigation/native-global-preparation-20261008/coverage-audit.json": "08f45d71de4676ff91227f1ad364640f6d4d507541db9e43936154572bff08b9",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/native-motion-followup.json": "f35ce03af6f6016904ea58da47432c63d31d6f1073213c23adb0d74109eb059a",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/native-motion-ui-exclusion.json": "54e892d3910b5e1ebd490ed908a5707f7e945cd8f5fb197d7dc68d3ec8f09246"
+  },
+  "native_motion_independence_followup": {
+    "scope": "descriptive follow-up, no source continuity proof or production adoption",
+    "roi_exclusion": "center_phase_banner profile ROI, expanded6camera pixels for11x11 patch support",
+    "pairs": [
+      {
+        "pts_sec": 111.3193359375,
+        "raw_patch_ncc_0_90_count": 18,
+        "raw_patch_cells": [
+          3,
+          11,
+          0,
+          0,
+          4,
+          0,
+          0,
+          0,
+          0
+        ],
+        "outside_ui_patch_ncc_0_90_count": 14,
+        "outside_ui_patch_cells": [
+          2,
+          8,
+          0,
+          0,
+          4,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "pts_sec": 111.3693359375,
+        "raw_patch_ncc_0_90_count": 6,
+        "raw_patch_cells": [
+          3,
+          3,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "outside_ui_patch_ncc_0_90_count": 2,
+        "outside_ui_patch_cells": [
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "finding": "At111.369336 apparent extra flow support in a second camera column disappears when known purchase UI is excluded. Combining those UI points with camera evidence would double-count phase UI, not supply independent scene continuity. Motion fallback alone is rejected as sufficient repair.",
+    "known_native_cut_grid_support": [
+      {
+        "scope": "previously reviewed native content cut; correlated regression, not independent holdout",
+        "source_frame_numbers": [
+          5,
+          6
+        ],
+        "camera_cells": [
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        "camera_scores": [
+          0.9398053884506226,
+          0.9830869436264038,
+          0.9917800426483154
+        ],
+        "camera_meets_support": false
+      },
+      {
+        "scope": "previously reviewed native content cut; correlated regression, not independent holdout",
+        "source_frame_numbers": [
+          4,
+          7
+        ],
+        "camera_cells": [],
+        "camera_scores": [],
+        "camera_meets_support": false
+      },
+      {
+        "scope": "previously reviewed native content cut; correlated regression, not independent holdout",
+        "source_frame_numbers": [
+          3,
+          8
+        ],
+        "camera_cells": [],
+        "camera_scores": [],
+        "camera_meets_support": false
+      }
+    ]
+  }
+}

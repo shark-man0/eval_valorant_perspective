@@ -7,6 +7,7 @@ from typing import Any
 
 from valorant_ai_coach.events import DerivedEventBuilder, EventSourceContract
 from valorant_ai_coach.events.derived import player_scoped_spike_state
+from valorant_ai_coach.hud.models import timer_display_evidence
 from valorant_ai_coach.hud.temporal import aggregate_observation_quality as aggregate_confidences
 from valorant_ai_coach.maps.registry import MapRegistry
 from valorant_ai_coach.models import DeterministicFact, RoleResolver
@@ -298,6 +299,7 @@ class RoundPackageBuilder:
         direct_visual = [dict(item) for item in visual_events]
         self.contract.validate_events(direct_hud, "hud_analyzer")
         self.contract.validate_events(direct_visual, "visual_analyzer")
+        direct_hud = self._unique_boundaries(direct_hud)
         derived = self.derived.build(observations)
         all_events = sorted(direct_hud + direct_visual + derived, key=self._event_sort_key)
         windows = self._round_windows(observations, direct_hud, video_metadata.duration_sec)
@@ -473,6 +475,39 @@ class RoundPackageBuilder:
                 source["player_location"] = _source_confidence(resolution["zone_confidence"])
             by_time[timestamp] = snapshot
         return [by_time[key] for key in sorted(by_time)]
+
+    def _unique_boundaries(self, events: Sequence[dict[str, Any]]) -> list[dict[str, Any]]:
+        """Use the same boundary population for windows and package events.
+
+        Replayed copies of a decision must not multiply trace event counts. A
+        conflicting continuity segment is not a duplicate and cannot safely
+        determine round membership. Non-lifecycle events are left untouched.
+        """
+        result: list[dict[str, Any]] = []
+        indices: dict[tuple[str, float], int] = {}
+        for event in events:
+            if event["type"] not in {"round_start", "round_end"}:
+                result.append(event)
+                continue
+            key = (event["type"], float(event["time_sec"]))
+            if key not in indices:
+                indices[key] = len(result)
+                result.append(event)
+                continue
+            index = indices[key]
+            existing = result[index]
+            before, after = self._continuity_segment(existing), self._continuity_segment(event)
+            if before != after:
+                raise RoundPackageBuildError(
+                    "同一ラウンド境界のcontinuity segmentが一致しません"
+                )
+            # Keep one existing decision, including its original provenance;
+            # never merge signals or manufacture higher confidence.
+            if _bounded_confidence(event.get("confidence")) > _bounded_confidence(
+                existing.get("confidence")
+            ):
+                result[index] = event
+        return result
 
     def _round_windows(
         self,
@@ -916,6 +951,18 @@ class RoundPackageBuilder:
             snapshot["source_confidence"] = self._hud_source_confidence(
                 observation, snapshot
             )
+            timer_display = timer_display_evidence(values)
+            if (
+                timer_display is not None
+                and timer_display["provenance"]["confidence"] >= 0.90
+                and _bounded_confidence(
+                    (observation.get("quality", {}).get("roi_confidence") or {}).get(
+                        "round_timer_value"
+                    )
+                ) >= 0.90
+            ):
+                snapshot["round_time_remaining_display"] = timer_display["display"]
+                snapshot["round_time_remaining_display_provenance"] = timer_display["provenance"]
             key = (
                 snapshot["ally_alive"],
                 snapshot["enemy_alive"],
@@ -925,6 +972,7 @@ class RoundPackageBuilder:
                 snapshot["spike_state"],
                 snapshot["utility_available_count"],
                 zone_id,
+                snapshot.get("round_time_remaining_display"),
             )
             timestamp = float(snapshot["time_sec"])
             if key != last_key or timestamp - last_time >= 2.0:

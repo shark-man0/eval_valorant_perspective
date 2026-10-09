@@ -1,0 +1,206 @@
+{
+  "schema_version": 1,
+  "scope": "descriptive source correspondence only; no production continuity qualification or decision",
+  "head_commit": "9bb50abd463ab0ef41fb35c59dbe0d7679a64082",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "pair_manifest_sha256": "4fa038599eee80483c6ff2fbb4271f1abd4c5e1d0157ce7975520501aa2e6222",
+  "method": {
+    "version": "camera_lk_fb_ncc_diagnostic_v1",
+    "thumbnail_wh": [
+      640,
+      360
+    ],
+    "camera_bounds_norm": [
+      0.2,
+      0.2,
+      0.9,
+      0.8
+    ],
+    "corners": {
+      "maxCorners": 300,
+      "qualityLevel": 0.01,
+      "minDistance": 8
+    },
+    "lk": {
+      "winSize": [
+        21,
+        21
+      ],
+      "maxLevel": 3
+    },
+    "forward_backward_error_px": 1.0,
+    "patch_width": 11,
+    "descriptive_patch_ncc": 0.9,
+    "spatial_grid": [
+      3,
+      3
+    ],
+    "policy": "measurement only; no continuity confidence, segment or cut decision"
+  },
+  "source_frame_count": 135,
+  "pair_count": 130,
+  "wall_clock_sec": 18.59550361399306,
+  "evidence_path": "outputs/recognition-investigation/phase-evidence/source-flow-correspondence.json",
+  "evidence_sha256": "a20716e95381cb1f03668ce09b65968bebe7a32384c2a58295fbfe2c3562c439",
+  "diagnostic_script_sha256": "f386428f95c9f28963f84df467ff995de3c4dbab9715d7d30b7537eb42d8ecd6",
+  "method_freeze_sha256": "54643e6d5c6f857a0c82a3ca9e9f5db8c047d29bdbee6ed6dc2c3d9a34de541e",
+  "selected_pairs": [
+    {
+      "previous_pts": 4.086003,
+      "current_pts": 4.152669,
+      "gap_sec": 0.06666600000000056,
+      "previous_frame_sha256": "3fe9c5a2ddfbc16d61fe64f81b344d03a54a1eecc0d84a79df8a78cbc4915343",
+      "current_frame_sha256": "82f4c671ca25c3eae9a7caf9f2cdf824b642838f70cab53645e4cee2d9ea9524",
+      "corner_count": 62,
+      "forward_track_count": 17,
+      "bidirectional_track_count": 2,
+      "patch_ncc_0_90_count": 2,
+      "patch_ncc_cells": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "median_patch_ncc": 0.9861008524894714,
+      "median_flow_px": 0.08798101544380188,
+      "median_forward_backward_error_px": 0.00041914728353731334,
+      "measurement_reason": "measured"
+    },
+    {
+      "previous_pts": 74.402669,
+      "current_pts": 74.486003,
+      "gap_sec": 0.08333399999999358,
+      "previous_frame_sha256": "80b04a970045afc93b9344e218512d0856476820e1ddd2535c367b2d4ba40802",
+      "current_frame_sha256": "6e1824962aab7891889450111c49f237338c9b54e6f56916d15468d39ccba490",
+      "corner_count": 143,
+      "forward_track_count": 75,
+      "bidirectional_track_count": 5,
+      "patch_ncc_0_90_count": 2,
+      "patch_ncc_cells": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0
+      ],
+      "median_patch_ncc": 0.8715498447418213,
+      "median_flow_px": 21.273441314697266,
+      "median_forward_backward_error_px": 0.40154528617858887,
+      "measurement_reason": "measured"
+    },
+    {
+      "previous_pts": 75.786003,
+      "current_pts": 75.802669,
+      "gap_sec": 0.016666000000000736,
+      "previous_frame_sha256": "d2bd574f87098182b90271c651d2e00798990a0e7f6e840b02adaaf400e2142c",
+      "current_frame_sha256": "9f51380e00db3f4633ad18d2e80519744e0146466b28f1d3987ae7a1080ac6cf",
+      "corner_count": 300,
+      "forward_track_count": 23,
+      "bidirectional_track_count": 0,
+      "patch_ncc_0_90_count": 0,
+      "patch_ncc_cells": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "median_patch_ncc": null,
+      "median_flow_px": null,
+      "median_forward_backward_error_px": null,
+      "measurement_reason": "no_bidirectional_camera_tracks"
+    },
+    {
+      "previous_pts": 111.269336,
+      "current_pts": 111.352669,
+      "gap_sec": 0.08333300000001032,
+      "previous_frame_sha256": "6507ef5baac6a5dff9ade550c4a8f2493d20dab70e5c36e5949cec5a37186814",
+      "current_frame_sha256": "d67e7233186ee4e3c67474c802bdfce08e3cc1201c3597a9f7f9998151c7e687",
+      "corner_count": 256,
+      "forward_track_count": 209,
+      "bidirectional_track_count": 7,
+      "patch_ncc_0_90_count": 3,
+      "patch_ncc_cells": [
+        2,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "median_patch_ncc": 0.8738479018211365,
+      "median_flow_px": 0.5381675362586975,
+      "median_forward_backward_error_px": 0.12185253947973251,
+      "measurement_reason": "measured"
+    },
+    {
+      "previous_pts": 111.402669,
+      "current_pts": 111.436003,
+      "gap_sec": 0.03333399999999642,
+      "previous_frame_sha256": "aa225a82440f26dc5a13e0762a4617b26f5a55ee151807ab285c7b48fd6b6ec7",
+      "current_frame_sha256": "5e8fb732293eb53d40b9f27bb2c5923f65e4d4e59ff3f5b62e91607cd235b3e5",
+      "corner_count": 24,
+      "forward_track_count": 9,
+      "bidirectional_track_count": 3,
+      "patch_ncc_0_90_count": 3,
+      "patch_ncc_cells": [
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "median_patch_ncc": 0.9991704225540161,
+      "median_flow_px": 0.018572188913822174,
+      "median_forward_backward_error_px": 0.0026625876780599356,
+      "measurement_reason": "measured"
+    }
+  ],
+  "review_provenance": "source-flow-selected-review.png manual post-measurement review: first-start wall/weapon animation; second-start purple scene; known discontinuity has overlapping room geometry. Historical source review reused, not blind new holdout. No Validation Pack loaded by script.",
+  "conclusion": "raw scene change magnitude was insufficient; camera sparse optical flow is also insufficient as a standalone positive continuity proof. R1 start has two high-NCC tracks across two cells, R2 start three tracks within one cell, reviewed cut two high-NCC tracks. Do not lower support or infer confidence/segments from this diagnostic.",
+  "qualification_created": false,
+  "training_holdout_claimed": false,
+  "production_behavior_changed": false,
+  "verification": {
+    "diagnostic_tests": "8 PASS in 0.46 seconds",
+    "ruff": "PASS",
+    "mypy": "no production src changes in this follow-up; previous 99-source-file pass remains historical",
+    "source_and_manifest_hashes": "verified before/after",
+    "frame_hashes": "verified against completed source-pair manifest before measurements",
+    "windows": "unverified"
+  },
+  "comparison": {
+    "previous": "130 RGB-difference pairs, 12.093 sec, no qualified producer",
+    "current": "same 130 pairs with camera correspondence, 18.596 sec, no qualified producer",
+    "runtime_delta_sec": 6.50279,
+    "runtime_note": "different diagnostic work, not a speed regression or comparable E2E runtime",
+    "canonical_previous": {
+      "PASS": 23,
+      "FAIL": 55,
+      "NE": 4
+    },
+    "canonical_current": null,
+    "canonical_delta": null
+  },
+  "next_work": "qualify complementary current-frame lifecycle evidence and evaluate composite continuity; spatial tracks alone cannot supply sufficient support at either genuine start"
+}

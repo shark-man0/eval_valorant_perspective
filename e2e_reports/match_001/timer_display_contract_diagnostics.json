@@ -1,0 +1,287 @@
+{
+  "schema_version": "1.0",
+  "scope": "existing rejected profile used only to qualify display transport; not profile adoption or numeric accuracy qualification",
+  "head_commit": "9bb50abd463ab0ef41fb35c59dbe0d7679a64082",
+  "working_tree_is_dirty": true,
+  "mode": "continuous_timer_contract_diagnostic",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "raw_processing_sha256": "e0c3b9667b15aee9e6802e1b1b58aa61c916ee50b21ca4b00fd94cb2ea6a7152",
+  "profile_fingerprint": "ac25857f855177ac202c4a1ee34c8dc786c1b570bcce369e2532dcb6403900a4",
+  "profile_decision": "profile16 remains rejected for three known high-confidence wrong timers; safe profile13/default unchanged",
+  "source_window_sec": [
+    70.4,
+    70.6
+  ],
+  "processed_frames": 11,
+  "calibration_prefix": [
+    0.036003,
+    0.202669,
+    0.402669
+  ],
+  "wall_clock_sec": 41.48783077500411,
+  "frames_per_sec": 0.39789992946450903,
+  "previous_comparable_run": null,
+  "runtime_delta": null,
+  "terminal_evidence": {
+    "path": "outputs/recognition-investigation/phase-evidence/source-timer-display-trace-contract.json",
+    "sha256": "5007b71751dd4d7bc1d214b5a67ace37bc3cf16e136bac869094ac1a1b69a05b"
+  },
+  "observations": [
+    {
+      "pts_sec": 70.402669,
+      "numeric_seconds": 33.0,
+      "display": "0:33",
+      "provenance": {
+        "reader": "round_timer",
+        "sources": [
+          "tesseract_digits"
+        ],
+        "confidence": 0.96916542,
+        "cross_checked": false
+      },
+      "accepted_value_confidence": 0.96916542
+    },
+    {
+      "pts_sec": 70.419336,
+      "numeric_seconds": 33.0,
+      "display": "0:33",
+      "provenance": {
+        "reader": "round_timer",
+        "sources": [
+          "tesseract_digits"
+        ],
+        "confidence": 0.96922714,
+        "cross_checked": false
+      },
+      "accepted_value_confidence": 0.96922714
+    },
+    {
+      "pts_sec": 70.436003,
+      "numeric_seconds": 33.0,
+      "display": "0:33",
+      "provenance": {
+        "reader": "round_timer",
+        "sources": [
+          "tesseract_digits"
+        ],
+        "confidence": 0.96905594,
+        "cross_checked": false
+      },
+      "accepted_value_confidence": 0.96905594
+    },
+    {
+      "pts_sec": 70.452669,
+      "numeric_seconds": 33.0,
+      "display": "0:33",
+      "provenance": {
+        "reader": "round_timer",
+        "sources": [
+          "tesseract_digits"
+        ],
+        "confidence": 0.96928139,
+        "cross_checked": false
+      },
+      "accepted_value_confidence": 0.96928139
+    },
+    {
+      "pts_sec": 70.469336,
+      "numeric_seconds": 33.0,
+      "display": "0:33",
+      "provenance": {
+        "reader": "round_timer",
+        "sources": [
+          "tesseract_digits"
+        ],
+        "confidence": 0.96924232,
+        "cross_checked": false
+      },
+      "accepted_value_confidence": 0.96924232
+    },
+    {
+      "pts_sec": 70.486003,
+      "numeric_seconds": 33.0,
+      "display": "0:33",
+      "provenance": {
+        "reader": "round_timer",
+        "sources": [
+          "tesseract_digits"
+        ],
+        "confidence": 0.96943115,
+        "cross_checked": false
+      },
+      "accepted_value_confidence": 0.96943115
+    },
+    {
+      "pts_sec": 70.502669,
+      "numeric_seconds": 33.0,
+      "display": "0:33",
+      "provenance": {
+        "reader": "round_timer",
+        "sources": [
+          "tesseract_digits"
+        ],
+        "confidence": 0.96869484,
+        "cross_checked": false
+      },
+      "accepted_value_confidence": 0.96869484
+    },
+    {
+      "pts_sec": 70.536003,
+      "numeric_seconds": 33.0,
+      "display": "0:33",
+      "provenance": {
+        "reader": "round_timer",
+        "sources": [
+          "tesseract_digits"
+        ],
+        "confidence": 0.96901123,
+        "cross_checked": false
+      },
+      "accepted_value_confidence": 0.96901123
+    },
+    {
+      "pts_sec": 70.552669,
+      "numeric_seconds": 33.0,
+      "display": "0:33",
+      "provenance": {
+        "reader": "round_timer",
+        "sources": [
+          "tesseract_digits"
+        ],
+        "confidence": 0.9685013600000001,
+        "cross_checked": false
+      },
+      "accepted_value_confidence": 0.9685013600000001
+    },
+    {
+      "pts_sec": 70.569336,
+      "numeric_seconds": 33.0,
+      "display": "0:33",
+      "provenance": {
+        "reader": "round_timer",
+        "sources": [
+          "tesseract_digits"
+        ],
+        "confidence": 0.96905807,
+        "cross_checked": false
+      },
+      "accepted_value_confidence": 0.96905807
+    },
+    {
+      "pts_sec": 70.586003,
+      "numeric_seconds": 33.0,
+      "display": "0:33",
+      "provenance": {
+        "reader": "round_timer",
+        "sources": [
+          "tesseract_digits"
+        ],
+        "confidence": 0.9693244900000001,
+        "cross_checked": false
+      },
+      "accepted_value_confidence": 0.9693244900000001
+    }
+  ],
+  "native_packages": [
+    {
+      "round_no": 1,
+      "round_window": {
+        "start_sec": 70.402669,
+        "end_sec": 70.586003
+      },
+      "timeline_completeness": 0.0,
+      "snapshot_count": 1,
+      "event_counts": {
+        "state_snapshot": 1
+      },
+      "boundary_events": [],
+      "source_timer_displays": [
+        {
+          "time_sec": 70.402669,
+          "round_time_remaining_sec": 33.0,
+          "round_time_remaining_display": "0:33",
+          "round_time_remaining_display_provenance": {
+            "reader": "round_timer",
+            "sources": [
+              "tesseract_digits"
+            ],
+            "confidence": 0.96916542,
+            "cross_checked": false
+          }
+        }
+      ]
+    }
+  ],
+  "trace_timer_displays": [
+    {
+      "time_sec": 70.402669,
+      "game_timer_display": "0:33",
+      "game_timer_display_provenance": {
+        "reader": "round_timer",
+        "sources": [
+          "tesseract_digits"
+        ],
+        "confidence": 0.96916542,
+        "cross_checked": false,
+        "source_pts_sec": 70.402669
+      }
+    }
+  ],
+  "manual_review": {
+    "pts_sec": 70.402669,
+    "frame_sha256": "a009ca13f7e64c3296813908b917453e4a1d4a1b545935b8ac60cfc19b1dc890",
+    "visible_display": "0:33",
+    "scope": "single image diagnostic review; no GT changes, training or holdout qualification"
+  },
+  "transport_delta": {
+    "native_source_display_present": {
+      "previous": 0,
+      "current": 1,
+      "delta": 1,
+      "comparison_scope": "previous code had no legal source display field; code contract comparison, not a previous comparable run"
+    },
+    "trace_source_display_present": {
+      "previous": 0,
+      "current": 1,
+      "delta": 1,
+      "comparison_scope": "code contract comparison, not canonical assertion gain"
+    }
+  },
+  "target_assertion_ids": [
+    "GT-R1-SNAP-0415",
+    "GT-R1-SNAP-7438",
+    "GT-R1-SNAP-7445",
+    "GT-R2-SNAP-11145"
+  ],
+  "canonical_previous": {
+    "PASS": 23,
+    "FAIL": 55,
+    "NE": 4
+  },
+  "canonical_current": null,
+  "canonical_delta": null,
+  "newly_passing_assertions": [],
+  "verification": {
+    "related_tests": "73 passed in 32.97 sec",
+    "ruff": "PASS src tests scripts/e2e scripts/diagnostics",
+    "mypy": "PASS 98 source files",
+    "targeted_after_display_change": "not run; preceding lifecycle targeted 0/5/2 is not verification of this display change",
+    "sampled_after_display_change": "not run; preceding lifecycle sampled 7/12/11 is not verification of this display change",
+    "full_e2e": "not run; actual three-boundary gates unmet"
+  },
+  "remaining_blockers": [
+    "safe adopted timer profile is still unavailable",
+    "boundary current-frame live/timer/score/end evidence missing",
+    "target snapshots also require package/state/ownership/other predicates"
+  ],
+  "schema_compatibility": "optional fields only; legacy required fields and default numeric-only output remain unchanged; new outputs require updated shared production schemas on both operating systems",
+  "numeric_accuracy_scope": {
+    "accepted_source_strings": 11,
+    "manually_reviewed_correct": 1,
+    "unreviewed_frames": 10,
+    "qualified_holdout_correct": null,
+    "qualified_holdout_unknown": null,
+    "qualified_holdout_wrong": null,
+    "reason": "transport diagnostic, no independent numerical accuracy cohort; profile16 remains rejected"
+  }
+}

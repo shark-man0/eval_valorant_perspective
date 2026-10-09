@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "scope": "fixed candidate same-video frame-disjoint positive continuity holdout with manually reviewed four-frame context; negative/content-cut qualification still incomplete",
+  "git_head": "9bb50abd463ab0ef41fb35c59dbe0d7679a64082",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "profile_fingerprint": "8b5955f1d7de7139949815a7853260b9a66b6fd48140b64351030a6e78e9a5db",
+  "recognizer_fingerprint": "6196da336c58f83bcb31a7d29879442fb6ddd3d307015598086a8143bb1023cb",
+  "selection": {
+    "fixed_contexts": 16,
+    "heldout_frames": 64,
+    "calibration_prefix_frames": 3,
+    "eligible_contexts": 434,
+    "prior_metadata_exclusion_pts": 3164,
+    "exclusion_radius_sec": 0.12,
+    "no_overlap_between_selected_contexts": true,
+    "manual_labels_frozen_before_predictions": true
+  },
+  "timer_summary": {
+    "correct": 27,
+    "unknown": 5,
+    "wrong": 0
+  },
+  "continuity_summary": {
+    "reviewed_visible_continuity": 16,
+    "proposed_links": 5,
+    "abstentions": 11,
+    "negative_controls": 0,
+    "false_positive_rate": "not measured without negative controls"
+  },
+  "reason_counts": {
+    "attested_composite_link": 5,
+    "insufficient_spatial_camera_support": 8,
+    "accepted_timer_pair_unavailable": 3
+  },
+  "geometry_counts": {
+    "frames": 67,
+    "fresh_geometry_success": 1,
+    "effective_geometry_success": 67,
+    "retained_geometry_frames": 66,
+    "geometry_invalid_unknown": 0,
+    "geometry_valid_state_unknown": 67,
+    "live_identity_evidence_insufficient": 56,
+    "insufficient_anchors_frames": 66
+  },
+  "analyzer_wall_clock_sec": 135.1314161059854,
+  "native_round_boundary_count": 0,
+  "qualification_created": false,
+  "profile_adopted": false,
+  "limitations": [
+    "same-video frame-disjoint coverage, not independent-video generalization",
+    "visible continuity reviewed across four archived frames; unseen native frames not reviewed",
+    "positive-case-only cohort; false positive rate cannot be computed",
+    "composite evaluated separately with test-only qualification object, never loaded by production analyzer",
+    "geometry_valid=True supplied to separate simulation; calibrated analyzer has effective geometry on every source input but standalone simulation not a separate geometry qualification",
+    "no phase-reset cases in this holdout; temporal boundary qualification incomplete"
+  ],
+  "comparison": {
+    "previous": "training135 source frames,63 proposed links; not comparable cohort",
+    "current": "positive holdout16 contexts,5 proposed links,11 abstentions; timer27correct5unknown0wrong",
+    "delta": "cohorts differ; no accuracy delta or canonical PASS gain claimed",
+    "runtime_previous_sec": 5.990640989009989,
+    "runtime_current_sec": 135.1314161059854,
+    "runtime_delta": "not comparable: previous reader-only reference crop simulation versus current actual calibrated analyzer",
+    "canonical_previous": {
+      "PASS": 23,
+      "FAIL": 55,
+      "NE": 4
+    },
+    "canonical_current": null,
+    "canonical_delta": null
+  },
+  "verification": {
+    "source_video_archive_hashes": "before/after verified against terminal association",
+    "source_frame_hashes": "verified before analyzer replay",
+    "code_profile_fingerprints": "frozen and verified before/after",
+    "production_source_changed_this_followup": false,
+    "previous_related_tests": 168,
+    "previous_ruff": "PASS",
+    "previous_mypy": "PASS,100source files",
+    "diff_check": "PASS",
+    "full_e2e": "not run; independent negatives and end evidence gates incomplete",
+    "windows": "unverified",
+    "harness_correction": "initial launch stopped at missing scripts import before inference; PYTHONPATH corrected, recognition replay completed once"
+  },
+  "remaining_blockers": [
+    "independent reviewed content-discontinuity negative controls",
+    "natural timer-absent or other independently qualified numeric negative controls",
+    "holdout phase reset and full continuous lifecycle verification",
+    "qualified same-segment R1 end score/result evidence",
+    "real qualification report, sampled safety, canonical full acceptance"
+  ],
+  "artifact_hashes": {
+    "outputs/recognition-investigation/composite-continuity-holdout/selection.json": "3377ee47030bd75a12ad2487dc2c0b706986d5d30c52f108d06eccca3d3cbe2b",
+    "outputs/recognition-investigation/composite-continuity-holdout/blind-labels.json": "cc8925383715468c13faf34c9ece36b84eab2b9a81c628979d41b736062eb338",
+    "outputs/recognition-investigation/composite-continuity-holdout/predictions.json": "a271b15a54b02e7a92718212e688d695becf53e175137e6a512aa1ac5703b00a",
+    "outputs/recognition-investigation/composite-continuity-holdout/review-comparison.json": "2dbd2c99224989b387ef268c4d1c955a50dfb95bfd891e2dbe698d5841093cde",
+    "outputs/recognition-investigation/composite-continuity-holdout/replay.py": "7ce992be30eb732b6aee9db2456d05c91f5b3f0ff92bb7470dff0034bf60dec8"
+  }
+}

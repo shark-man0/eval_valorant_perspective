@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "scope": "counterfactual stale-source controls exposed candidate-v1 defect; candidate-v2 regression fix, no natural-cut qualification or adoption",
+  "git_head": "9bb50abd463ab0ef41fb35c59dbe0d7679a64082",
+  "source_video_sha256_verified_after": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "negative_controls": {
+    "count": 9,
+    "rule": "same decoded source image and its accepted reader result replayed with test presentation PTS +0.1sec",
+    "source_frames": "PTS-disjoint from specified composite training, prior positive holdout and timer training manifests; not proven disjoint from all earlier historical reviews",
+    "manual_timer_labels_frozen_before_predictions": true,
+    "timer_summary": {
+      "correct": 9,
+      "unknown": 0,
+      "wrong": 0
+    },
+    "limitations": [
+      "counterfactual replay/stale-observation controls, not natural content jumps",
+      "test presentation PTS used only in simulation; original source video/PTS and Validation Pack unchanged",
+      "test-only qualification object not installed for production analyzer"
+    ]
+  },
+  "comparison": {
+    "stale_false_attestations": {
+      "previous": 9,
+      "current": 0,
+      "delta": -9
+    },
+    "prior_positive_links": {
+      "previous": 5,
+      "current": 5,
+      "delta": 0
+    },
+    "prior_positive_abstentions": {
+      "previous": 11,
+      "current": 11,
+      "delta": 0
+    },
+    "positive_outcome_changes": 0,
+    "canonical_previous": {
+      "PASS": 23,
+      "FAIL": 55,
+      "NE": 4
+    },
+    "canonical_current": null,
+    "canonical_delta": null
+  },
+  "candidate_v1_rejected_reason": "identical source pixels at different PTS were treated as independent continuity evidence",
+  "candidate_v2_freeze": {
+    "scope": "new unqualified candidate freeze after stale-source failure; older holdout/control results are regression data, not fresh qualification",
+    "method": "camera_grid_timer_phase_v2",
+    "profile_fingerprint": "8b5955f1d7de7139949815a7853260b9a66b6fd48140b64351030a6e78e9a5db",
+    "recognizer_fingerprint": "b5510a0bb67eb57df3153a6bf769a57ae69bae40de80d635293d58627addbe34",
+    "duplicate_source_pixels_rejected": true,
+    "runtime_qualification_created": false,
+    "old_candidate_rejected_for_stale_source_attestation": true
+  },
+  "change": "exact decoded-pixel SHA256 equality breaks continuity epoch; source/prior pixel hashes retained in internal attestation; no camera NCC/timer/phase threshold changes",
+  "positive_regression_scope": "prior calibrated accepted timer outputs/source images, projected inputs with unavailable phase confidence; no reset cases; geometry true simulation assumption. Not fresh v2 qualification or rerun analyzer.",
+  "control_reader_wall_clock_sec": 1.5123938430042472,
+  "tests": {
+    "related_tests": 170,
+    "wall_clock_sec": 23.15,
+    "ruff": "PASS",
+    "mypy": "PASS,100 source files",
+    "diff_check": "PASS",
+    "targeted_sampled_full": "not run for v2",
+    "full_regression": "not run",
+    "windows": "unverified"
+  },
+  "qualification_created": false,
+  "profile_adopted": false,
+  "remaining_blockers": [
+    "fresh v2 holdout and independent natural content-cut negative controls",
+    "phase-reset and full continuous lifecycle qualification",
+    "qualified same-segment R1 end score/result evidence",
+    "current code/profile-bound component report and sampled/canonical full acceptance"
+  ],
+  "artifact_hashes": {
+    "outputs/recognition-investigation/composite-stale-frame-controls/selection.json": "35d41f977b2f83ac1982a3fe4cb918444cd4ea72cc61cb49c350cc90fcfb1a8f",
+    "outputs/recognition-investigation/composite-stale-frame-controls/blind-labels.json": "5da7a8a546607e62ef02a380a31f50b3da4e6b5b96b241fd11a53c5cf13a0ac7",
+    "outputs/recognition-investigation/composite-stale-frame-controls/before-fix.json": "522ec9b12ab2c48a411d7d4bab8999d88fc3cdea3f92ca1c1c6e5d2924275de1",
+    "outputs/recognition-investigation/composite-stale-frame-controls/after-fix.json": "92785c3deb31d533ccb727448254c9905aef028d15ddd7a94acbe9085c4f4aca"
+  }
+}

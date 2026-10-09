@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
 from pathlib import Path
 from types import SimpleNamespace
@@ -98,7 +99,12 @@ def test_trace_adapter_keeps_unknowns_confidence_and_package_order() -> None:
     assert trace["visual_observations"][0]["confidence"] == 0.67
     assert trace["temporal_features"] == []
 
-    pack_root = Path(__file__).resolve().parents[3] / "valorant_e2e_validation_pack_v3"
+    pack_root = Path(
+        os.environ.get(
+            "VALORANT_E2E_VALIDATION_PACK",
+            str(Path(__file__).resolve().parents[3] / "valorant_e2e_validation_pack_v3"),
+        )
+    )
     evaluator_dir = pack_root / "tests"
     if not evaluator_dir.is_dir():
         pytest.skip("sibling E2E validation pack is not present")

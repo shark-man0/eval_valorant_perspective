@@ -1,0 +1,135 @@
+{
+  "schema_version": "1.0",
+  "scope": "diagnostics only; no acceptance policy or production behavior changes",
+  "head_commit": "9bb50abd463ab0ef41fb35c59dbe0d7679a64082",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "raw_processing_sha256": "e0c3b9667b15aee9e6802e1b1b58aa61c916ee50b21ca4b00fd94cb2ea6a7152",
+  "source_frames": 135,
+  "frame_pairs": 130,
+  "source_windows_sec": [
+    [
+      3.8,
+      4.3
+    ],
+    [
+      69,
+      69.6
+    ],
+    [
+      73.5,
+      76.8
+    ],
+    [
+      108.8,
+      109.4
+    ],
+    [
+      111.25,
+      111.6
+    ]
+  ],
+  "method": {
+    "thumbnail_wh": [
+      96,
+      54
+    ],
+    "resize": "OpenCV INTER_AREA",
+    "difference": "mean absolute RGB channel difference normalized to [0,1]",
+    "tiles": "3x3 nonoverlapping; row-major",
+    "pixel_fraction_threshold": 0.25,
+    "threshold_use": "descriptive statistic only; not a recognition acceptance condition"
+  },
+  "wall_clock_sec": 12.092713724006899,
+  "evidence_file": {
+    "path": "outputs/recognition-investigation/phase-evidence/source-frame-changes.json",
+    "sha256": "4fa038599eee80483c6ff2fbb4271f1abd4c5e1d0157ce7975520501aa2e6222"
+  },
+  "image_review": {
+    "path": "outputs/recognition-investigation/phase-evidence/source-change-review.jpg",
+    "role": "manual diagnostic review; not validation GT or runtime evidence"
+  },
+  "selected_pairs": [
+    {
+      "previous_pts": 74.402669,
+      "current_pts": 74.486003,
+      "gap_sec": 0.08333399999999358,
+      "mean_abs_rgb_difference": 0.18266713619232178,
+      "tile_mean_abs_rgb_difference": [
+        0.18441812694072723,
+        0.17197485268115997,
+        0.12062908709049225,
+        0.20892111957073212,
+        0.19903095066547394,
+        0.12640024721622467,
+        0.33484479784965515,
+        0.2103690207004547,
+        0.08741602301597595
+      ],
+      "changed_pixel_fraction_at_0_25": 0.25482253086419754,
+      "image_review_note": "manually reviewed score/timer discontinuity; no runtime numeric acceptance",
+      "production_discontinuity_flag": null,
+      "production_round_boundary": null
+    },
+    {
+      "previous_pts": 75.786003,
+      "current_pts": 75.802669,
+      "gap_sec": 0.016666000000000736,
+      "mean_abs_rgb_difference": 0.33614590764045715,
+      "tile_mean_abs_rgb_difference": [
+        0.3292165994644165,
+        0.49751725792884827,
+        0.4582403004169464,
+        0.2958196997642517,
+        0.3630197048187256,
+        0.32363834977149963,
+        0.07404684275388718,
+        0.31744733452796936,
+        0.3663671016693115
+      ],
+      "changed_pixel_fraction_at_0_25": 0.6271219135802469,
+      "image_review_note": "TEAM ACE with strong ability animation",
+      "production_discontinuity_flag": null,
+      "production_round_boundary": null
+    },
+    {
+      "previous_pts": 111.269336,
+      "current_pts": 111.352669,
+      "gap_sec": 0.08333300000001032,
+      "mean_abs_rgb_difference": 0.23009538650512695,
+      "tile_mean_abs_rgb_difference": [
+        0.17731936275959015,
+        0.21691404283046722,
+        0.23853939771652222,
+        0.23115696012973785,
+        0.2010076344013214,
+        0.25200390815734863,
+        0.2567038834095001,
+        0.2702115476131439,
+        0.2270016372203827
+      ],
+      "changed_pixel_fraction_at_0_25": 0.455054012345679,
+      "image_review_note": "purchase phase with purple ability view transition",
+      "production_discontinuity_flag": null,
+      "production_round_boundary": null
+    }
+  ],
+  "producer_audit": {
+    "supports_explicit_content_jump": true,
+    "supports_explicit_discontinuity": true,
+    "source_image_marker_producer_found": false,
+    "source_paths": [
+      "src/valorant_ai_coach/hud/round_lifecycle.py",
+      "src/valorant_ai_coach/hud/semantic_text.py",
+      "src/valorant_ai_coach/hud/analyzers.py"
+    ]
+  },
+  "conclusion": "global image change magnitude does not distinguish the reviewed discontinuity from normal ability/animation changes; do not introduce a magnitude-only reset policy",
+  "negative_full_safety_proven": false,
+  "canonical_current": null,
+  "canonical_previous": {
+    "PASS": 23,
+    "FAIL": 55,
+    "NE": 4
+  },
+  "canonical_delta": null
+}
