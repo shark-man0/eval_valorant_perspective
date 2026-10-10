@@ -26,6 +26,22 @@ Pythonの別途インストールは不要ですが、実動画の読み取り�
 
 詳しい初回手順は [Getting Started](docs/getting_started.md) を参照してください。
 
+## 保存済み結果の便利機能
+
+メニューバーの **履歴・統計ツール** で、保存済み評価の検索・試合比較、
+成績統計、HTML/CSV/JSON出力、設定プロファイル管理、API使用量と推定費用を確認できます。
+結果画面の **レポート出力**、各評価カードの **意見を保存** からも操作できます。
+元のAI評価は変更されず、UNSCOREDもそのまま維持されます。
+
+関連ドキュメント: [Report export](docs/report_export.md)、
+[Statistics dashboard](docs/statistics_dashboard.md)、
+[History search](docs/history_search_and_comparison.md)、
+[API usage](docs/api_usage_and_cost.md)、
+[Settings profiles](docs/settings_profiles.md)、
+[Evaluation feedback](docs/evaluation_feedback.md)、
+[Recovery](docs/recovery_and_resilience.md)、
+[Performance](docs/non_video_performance_report.md)。
+
 ## 評価ラベル
 
 - **GOOD**: 対象ルールについて、観測された根拠から肯定的に評価できた項目です。
