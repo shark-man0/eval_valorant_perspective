@@ -144,6 +144,34 @@ class SchemaValidator:
             raise ContractValidationError("動画時刻は有限値である必要があります")
         if end <= start or end > duration + 0.05:
             raise ContractValidationError("round_windowが動画範囲外、または終了<=開始です")
+        lifecycle = value.get("round_lifecycle")
+        if lifecycle is not None:
+            from valorant_ai_coach.rounds.boundaries import BoundaryObservation
+
+            for name, kind in (("start", "round_start"), ("end", "round_end")):
+                endpoint = lifecycle[name]
+                if endpoint["status"] == "confirmed" and not any(
+                    item["event_id"] == endpoint["formal_event_id"]
+                    and item["type"] == kind for item in value["events"]
+                ):
+                    raise ContractValidationError("confirmed boundary requires its formal event")
+                if endpoint["status"] == "provisional":
+                    try:
+                        boundary = BoundaryObservation.from_dict(endpoint["candidate"])
+                    except ValueError as exc:
+                        raise ContractValidationError(str(exc)) from exc
+                    if (boundary.kind != kind or boundary.boundary_time_sec is None
+                            or not start <= boundary.boundary_time_sec <= end):
+                        raise ContractValidationError(
+                            "provisional boundary kind or package range mismatch"
+                        )
+            if any(lifecycle[name]["status"] != "confirmed" for name in ("start", "end")):
+                quality = value["observation_quality"]
+                if any(quality[key] != 0 for key in
+                       ("hud_confidence", "visual_confidence", "timeline_completeness")):
+                    raise ContractValidationError(
+                        "uncertain boundary cannot claim full-round confidence"
+                    )
         event_ids: set[str] = set()
         event_confidence: dict[str, float] = {}
         for event in value["events"]:

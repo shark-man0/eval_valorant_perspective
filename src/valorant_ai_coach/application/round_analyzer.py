@@ -88,6 +88,22 @@ class RoundAnalyzer:
         self.validator.validate_round_package(round_package)
         enriched = self.fact_builder.enrich(round_package)
         self.validator.validate_round_package(enriched)
+        lifecycle = enriched.get("round_lifecycle")
+        if lifecycle is not None and any(
+            lifecycle[name]["status"] != "confirmed" for name in ("start", "end")
+        ):
+            # Persist and expose observed facts, but do not let an incomplete
+            # round denominator become scored coaching. Individual rules may be
+            # admitted later after proving independence from uncertain boundaries.
+            output = {
+                "schema_version": "3.0",
+                "analysis_id": f"partial-{enriched['match_id']}-R{enriched['round_no']}",
+                "match_id": enriched["match_id"],
+                "round_no": enriched["round_no"],
+                "evaluations": [],
+            }
+            self.validator.validate_ai_output(output, round_package=enriched)
+            return RoundAnalysis(enriched, (), {}, output, {})
         candidates = self.selector.select(enriched)
         candidate_ids = [candidate.rule_id for candidate in candidates]
         decisions: dict[str, dict[str, Any]] = {}
