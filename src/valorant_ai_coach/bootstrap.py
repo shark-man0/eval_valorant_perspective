@@ -13,6 +13,7 @@ from valorant_ai_coach.application import (
     MockCoachAdapter,
     RoundAnalyzer,
 )
+from valorant_ai_coach.application.hud_video_processor import NativeLifecycleOptions
 from valorant_ai_coach.clips import ClipService
 from valorant_ai_coach.events import EventSourceContract
 from valorant_ai_coach.facts import FactBuilder
@@ -196,6 +197,13 @@ def build_services(
         validator=validator,
         delete_temp_frames=selected.delete_temp_frames,
         hud_video_processor=hud_processor,
+        round_boundary_mode=selected.round_boundary_mode,
+        native_lifecycle_options=(
+            NativeLifecycleOptions(
+                max_png_bytes=selected.native_png_budget_mb * 1024 * 1024,
+                unedited_input_contract_path=Path(selected.unedited_input_contract_path),
+            ) if selected.round_boundary_mode == "practical" else None
+        ),
     )
     return Services(
         selected,

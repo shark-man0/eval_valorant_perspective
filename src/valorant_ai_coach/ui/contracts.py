@@ -23,6 +23,9 @@ class UiSettings:
     map_client_build: str = ""
     visual_semantic_enabled: bool = False
     visual_semantic_model: str = ""
+    round_boundary_mode: str = "strict"
+    unedited_input_contract_path: str = ""
+    native_png_budget_mb: int = 8192
 
 
 @dataclass(frozen=True, slots=True)
@@ -62,6 +65,25 @@ class EvaluationView:
 
 
 @dataclass(frozen=True, slots=True)
+class RoundObservationView:
+    time_sec: float
+    timer_display: str | None
+    hp: float | None
+    score_ally: int | None
+    score_enemy: int | None
+
+
+@dataclass(frozen=True, slots=True)
+class RoundPartitionView:
+    round_no: int
+    start_sec: float
+    end_sec: float
+    start_status: str
+    end_status: str
+    observations: tuple[RoundObservationView, ...]
+
+
+@dataclass(frozen=True, slots=True)
 class MatchResultView:
     match_id: str
     source_video_path: str
@@ -73,6 +95,7 @@ class MatchResultView:
     map_name: str | None = None
     player_agent: str | None = None
     diagnostics: tuple[str, ...] = ()
+    round_partitions: tuple[RoundPartitionView, ...] = ()
 
 
 __all__ = [

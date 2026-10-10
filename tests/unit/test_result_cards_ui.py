@@ -15,6 +15,7 @@ from PySide6.QtWidgets import (  # noqa: E402
     QComboBox,
     QLabel,
     QPushButton,
+    QTreeWidget,
     QVBoxLayout,
     QWidget,
 )
@@ -58,10 +59,12 @@ class Harness:
     """
 
     _render_cards = MainWindow._render_cards
+    _render_round_observations = MainWindow._render_round_observations
     _evaluation_card = MainWindow._evaluation_card
 
     def __init__(self) -> None:
         self.app = QApplication.instance() or QApplication([])
+        self.round_observations = QTreeWidget()
         self.container = QWidget()
         self.cards_layout = QVBoxLayout(self.container)
         self.cards_layout.addStretch()
@@ -157,3 +160,21 @@ def test_no_match_shows_the_empty_message(window: Harness) -> None:
     first = window.cards_layout.itemAt(0).widget()
     assert isinstance(first, QLabel)
     assert "一致する評価はありません" in first.text()
+
+
+def test_provisional_partition_is_visible_and_does_not_fill_missing_hp() -> None:
+    from valorant_ai_coach.ui.contracts import RoundObservationView, RoundPartitionView
+
+    window = Harness()
+    window.current_round_partitions = (
+        RoundPartitionView(1, 1., 3., 'provisional', 'unknown', (
+            RoundObservationView(2., '1:39', None, 0, 1),
+        )),
+    )
+    window._render_round_observations()
+    parent = window.round_observations.topLevelItem(0)
+    assert '暫定区間' in parent.text(0)
+    assert parent.text(1) == '開始:暫定 / 終了:不明'
+    assert parent.child(0).text(1) == '1:39'
+    assert parent.child(0).text(2) == '—'
+    window.container.close()

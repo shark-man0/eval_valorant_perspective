@@ -12,7 +12,14 @@ from valorant_ai_coach.non_video.features import NonVideoFeatures
 from valorant_ai_coach.non_video.profiles import ProfileStore
 from valorant_ai_coach.settings import AppSettings, SettingsStore, default_data_dir
 
-from .contracts import EvaluationView, MatchResultView, UiSettings, VideoMetadataView
+from .contracts import (
+    EvaluationView,
+    MatchResultView,
+    RoundObservationView,
+    RoundPartitionView,
+    UiSettings,
+    VideoMetadataView,
+)
 from .view_model import parse_time_range
 
 LOGGER = logging.getLogger(__name__)
@@ -66,6 +73,9 @@ class BackendFacade:
             map_client_build=value.map_client_build,
             visual_semantic_enabled=value.visual_semantic_enabled,
             visual_semantic_model=value.visual_semantic_model,
+            round_boundary_mode=value.round_boundary_mode,
+            unedited_input_contract_path=value.unedited_input_contract_path,
+            native_png_budget_mb=value.native_png_budget_mb,
         )
 
     def update_settings(self, values: dict[str, Any], api_key: str | None = None) -> None:
@@ -188,6 +198,27 @@ class BackendFacade:
             map_name=round_meta.get("map"),
             player_agent=round_meta.get("player_agent"),
             diagnostics=tuple(str(item) for item in diagnostics),
+            round_partitions=tuple(self._round_partition_view(package) for package in packages),
+        )
+
+    @staticmethod
+    def _round_partition_view(package: dict[str, Any]) -> RoundPartitionView:
+        lifecycle = package.get("round_lifecycle", {})
+        statuses = {}
+        for name, kind in (("start", "round_start"), ("end", "round_end")):
+            statuses[name] = lifecycle.get(name, {}).get("status") or (
+                "confirmed" if any(e["type"] == kind for e in package["events"]) else "unknown"
+            )
+        return RoundPartitionView(
+            round_no=int(package["round_no"]),
+            start_sec=float(package["round_window"]["start_sec"]),
+            end_sec=float(package["round_window"]["end_sec"]),
+            start_status=statuses["start"], end_status=statuses["end"],
+            observations=tuple(RoundObservationView(
+                time_sec=float(row["time_sec"]),
+                timer_display=row.get("round_time_remaining_display"), hp=row.get("hp"),
+                score_ally=row.get("score_ally"), score_enemy=row.get("score_enemy"),
+            ) for row in package["state_snapshots"]),
         )
 
     def search_evaluations(self, **filters: Any) -> list[dict[str, Any]]:

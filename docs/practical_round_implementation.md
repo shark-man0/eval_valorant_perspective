@@ -199,3 +199,58 @@ PASS results. Remaining application work: automatic verified native collection
 for practical mode, settings/GUI opt-in and boundary labels, fingerprinted
 checkpoint/resume, practical multi-event evaluation, real R2 current-phase scans,
 continuous Match-level Package validation, full regression, CI and final PR.
+
+## Application opt-in, GUI and resume checkpoint
+
+The existing native collection orchestration now accepts explicit practical mode,
+uses the same whole-source decoder/storage ceiling and per-frame binding/terminal
+verification, then calls `collect_practical_lifecycle` instead of the qualified
+formal producer. Strict collection remains the default. Missing input contracts
+and changed source/profile/code are rejected before publishing results. This
+reuses the existing decoder/Package pipeline; no second Round processing system
+or production GT inputs were introduced.
+
+App settings now persist:
+
+- `round_boundary_mode`: strict by default, practical explicitly selected.
+- `unedited_input_contract_path`: mandatory for practical real-HUD processing.
+- `native_png_budget_mb`: bounded temporary native-image storage ceiling.
+
+The settings dialog exposes mode, contract file and temporary storage ceiling.
+It explains that provisional observations are saved while uncertain boundaries
+remain unscored. Practical mode requires real HUD; mock input does not inherit
+the video assurance contract. The actual video SHA-256 must match the selected
+contract at runtime, so assurance is not automatically applied to other videos.
+
+The pipeline passes the opt-in and native collection options. Its practical
+resume fingerprint binds mode, options, input-contract file contents and current
+recognizer code. Changing the mode or contract rejects resume. Package fingerprints
+already include persisted lifecycle metadata. Uncertain packages skip AI evidence
+frame planning as well as coaching; known observations/facts are saved. Resume
+restores the same provisional boundary records/facts and does not reuse scored
+results on uncertain context. Progress text explicitly says observations were
+saved/restored with scoring deferred rather than saying they were evaluated.
+
+The result screen shows interval start/end status as confirmed/provisional/unknown
+and expands saved observations to display their original timer string, HP and
+scores. Missing values stay missing. Interval numbers are storage/order keys.
+Neither successful segmentation nor a displayed value increases Fact confidence.
+The standard scored-evaluation aggregator and non-video features are unchanged.
+
+Verification so far: 62 selected settings/GUI/native-provider/Package/pipeline tests
+PASS. A follow-up 20-test set covering practical resume and existing mock pipeline
+flows PASS. Full source mypy (127 files) and Ruff PASS. These are scoped regression
+results, not full pytest or Windows CI certification. The GUI renderer was tested
+with actual offscreen Qt widgets, retaining the existing audio-free test harness.
+
+The consumer resume integration cancels after storing an actual synthetic
+provisional-start Package, resumes, compares its boundary metadata and facts,
+and verifies zero scored evaluations, zero AI-evidence frame requests and zero
+clips. Source collection is separately tested with a synthetic decoder-owned
+continuous two-round sequence through the real common collector and terminal
+verification. No real video full run was added for these application contracts.
+
+Remaining work includes automatic confirmed-boundary priority when valid
+qualification is available, complete one-to-one practical precision metrics, fresh
+current-reader R2 evidence and continuous real-video Package validation, Linux/
+Windows CI, full regression and the final PR. The broad goal remains active.

@@ -21,7 +21,7 @@ from valorant_ai_coach.storage import SQLiteRepository
 from valorant_ai_coach.video import FrameSample, VideoMetadata
 
 from .frame_planner import FramePlanner, PlannedFrame
-from .hud_video_processor import HudVideoProcessingResult, HudVideoProcessor
+from .hud_video_processor import HudVideoProcessingResult, HudVideoProcessor, NativeLifecycleOptions
 from .round_analyzer import RoundAnalysis, RoundAnalyzer
 
 LOGGER = logging.getLogger(__name__)
@@ -89,7 +89,18 @@ class MatchAnalysisPipeline:
         validator: SchemaValidator,
         delete_temp_frames: bool = True,
         hud_video_processor: HudVideoProcessor | None = None,
+        round_boundary_mode: str = "strict",
+        native_lifecycle_options: NativeLifecycleOptions | None = None,
     ) -> None:
+        if round_boundary_mode not in {"strict", "practical"}:
+            raise ValueError("unsupported boundary mode")
+        if round_boundary_mode == "practical" and (
+            hud_video_processor is None or native_lifecycle_options is None
+            or native_lifecycle_options.unedited_input_contract_path is None
+        ):
+            raise ValueError(
+                "Practical Mode requires a video processor and explicit input contract"
+            )
         self.data_dir = Path(data_dir).expanduser().resolve()
         self.data_dir.mkdir(parents=True, exist_ok=True)
         self.repository = repository
@@ -102,6 +113,8 @@ class MatchAnalysisPipeline:
         self.validator = validator
         self.delete_temp_frames = delete_temp_frames
         self.hud_video_processor = hud_video_processor
+        self.round_boundary_mode = round_boundary_mode
+        self.native_lifecycle_options = native_lifecycle_options
 
     def analyze_video(
         self,
@@ -189,12 +202,19 @@ class MatchAnalysisPipeline:
             self._check_cancel(cancel)
             observations: HudVideoProcessingResult | HudObservations
             if self.hud_video_processor is not None:
+                lifecycle_arguments: dict[str, Any] = {}
+                if self.round_boundary_mode == "practical":
+                    lifecycle_arguments = {
+                        "boundary_mode": "practical",
+                        "native_lifecycle_options": self.native_lifecycle_options,
+                    }
                 observations = self.hud_video_processor.process(
                     metadata=metadata,
                     match_id=identifier,
                     output_dir=temp_root / "hud",
                     cancel_event=cancel,
                     progress_cb=lambda value, message: progress(0.03 + 0.22 * value, message),
+                    **lifecycle_arguments,
                 )
                 self._persist_hud_report(identifier, observations)
             else:
@@ -244,7 +264,9 @@ class MatchAnalysisPipeline:
                         round_results.append(restored)
                         progress(
                             round_progress_start + round_progress_span * (index + 1) / total,
-                            f"ラウンド {round_no} は保存済み結果を使用しました",
+                            f"区間 {round_no} の保存済み観測を復元しました（採点保留）"
+                            if RoundAnalyzer.boundary_context_is_uncertain(restored.round_package)
+                            else f"ラウンド {round_no} は保存済み結果を使用しました",
                         )
                         continue
                     completed.remove(round_no)
@@ -265,7 +287,9 @@ class MatchAnalysisPipeline:
                     round_diagnostics.pop(str(round_no), None)
                     progress(
                         round_progress_start + round_progress_span * (index + 1) / total,
-                        f"ラウンド {round_no} を評価しました",
+                        f"区間 {round_no} の観測を保存しました（境界未確定・採点保留）"
+                        if RoundAnalyzer.boundary_context_is_uncertain(result.round_package)
+                        else f"ラウンド {round_no} を評価しました",
                     )
                 except AnalysisCancelled:
                     raise
@@ -464,6 +488,9 @@ class MatchAnalysisPipeline:
         output_dir: Path,
         cancel_event: ThreadEvent,
     ) -> dict[str, Any]:
+        if RoundAnalyzer.boundary_context_is_uncertain(package):
+            package["frames"] = []
+            return package
         prepared = self.round_analyzer.fact_builder.enrich(package)
         candidates = self.round_analyzer.selector.select(prepared)
         plan = self.frame_planner.plan(prepared, candidates)
@@ -572,6 +599,16 @@ class MatchAnalysisPipeline:
                 return None
         try:
             self.validator.validate_round_package(package)
+            if RoundAnalyzer.boundary_context_is_uncertain(package):
+                if self.repository.list_round_evaluations(match_id, round_no):
+                    LOGGER.warning("暫定境界の保存済み採点を再利用しません: %s", round_no)
+                    return None
+                output = {
+                    "schema_version": "3.0", "analysis_id": f"RESTORED-{match_id}-R{round_no}",
+                    "match_id": match_id, "round_no": round_no, "evaluations": [],
+                }
+                self.validator.validate_ai_output(output, round_package=package)
+                return RoundAnalysis(package, (), {}, output, {})
             candidates = self.round_analyzer.selector.select(package)
             output = {
                 "schema_version": "3.0",
@@ -678,6 +715,18 @@ class MatchAnalysisPipeline:
                 "hud": self.validator.schemas.hud_observation,
             },
         }
+        if self.round_boundary_mode == "practical":
+            assert self.native_lifecycle_options is not None
+            contract_path = self.native_lifecycle_options.unedited_input_contract_path
+            assert contract_path is not None
+            payload["round_partition"] = {
+                "mode": self.round_boundary_mode,
+                "native_options": asdict(self.native_lifecycle_options),
+                "input_contract_sha256": hashlib.sha256(contract_path.read_bytes()).hexdigest(),
+            }
+            from valorant_ai_coach.hud.global_lifecycle import global_recognizer_fingerprint
+
+            payload["round_partition"]["recognizer_fingerprint"] = global_recognizer_fingerprint()
         if self.hud_video_processor is not None:
             processor = self.hud_video_processor
             payload["hud_processing"] = {

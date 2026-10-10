@@ -28,6 +28,8 @@ from PySide6.QtWidgets import (
     QSlider,
     QSplitter,
     QStackedWidget,
+    QTreeWidget,
+    QTreeWidgetItem,
     QVBoxLayout,
     QWidget,
 )
@@ -272,6 +274,14 @@ class MainWindow(QMainWindow):
         self.result_diagnostics.setTextFormat(Qt.TextFormat.PlainText)
         self.result_diagnostics.setVisible(False)
         root.addWidget(self.result_diagnostics)
+        self.round_observations = QTreeWidget()
+        self.round_observations.setObjectName("roundObservations")
+        self.round_observations.setHeaderLabels(
+            ["区間 / 観測時刻", "境界状態 / タイマー", "HP", "味方スコア", "敵スコア"]
+        )
+        self.round_observations.setMaximumHeight(240)
+        self.round_observations.setVisible(False)
+        root.addWidget(self.round_observations)
 
         filters = QHBoxLayout()
         self.label_filter = QComboBox()
@@ -598,6 +608,7 @@ class MainWindow(QMainWindow):
         self._clear_audio_track_metadata()
         self._current_match_id = match_id
         self.current_evaluations = list(result.evaluations)
+        self.current_round_partitions = getattr(result, "round_partitions", ())
         context = [
             value
             for value in (
@@ -630,6 +641,7 @@ class MainWindow(QMainWindow):
         self.round_filter.addItem("すべてのラウンド", -1)
         for round_no in sorted(
             {item.round_no for item in result.evaluations if item.round_no is not None}
+            | {item.round_no for item in self.current_round_partitions}
         ):
             self.round_filter.addItem(f"ラウンド {round_no}", round_no)
         self.category_filter.blockSignals(False)
@@ -638,7 +650,35 @@ class MainWindow(QMainWindow):
         self._render_cards()
         self._show_page(self.results_page)
 
+    def _render_round_observations(self) -> None:
+        self.round_observations.clear()
+        selected = self.round_filter.currentData()
+        statuses = {"confirmed": "確定", "provisional": "暫定", "unknown": "不明"}
+        for partition in getattr(self, "current_round_partitions", ()):
+            if selected not in (None, -1, partition.round_no):
+                continue
+            uncertain = any(status != "confirmed" for status in
+                            (partition.start_status, partition.end_status))
+            label = "暫定区間" if uncertain else "区間"
+            item = QTreeWidgetItem([
+                f"{label} {partition.round_no}："
+                f"{partition.start_sec:.3f}–{partition.end_sec:.3f}秒",
+                f"開始:{statuses.get(partition.start_status, '不明')} / "
+                f"終了:{statuses.get(partition.end_status, '不明')}",
+            ])
+            item.setToolTip(0, "境界未確定のため採点保留" if uncertain else "正式境界を検出")
+            for observation in partition.observations:
+                item.addChild(QTreeWidgetItem([
+                    f"{observation.time_sec:.3f}秒", observation.timer_display or "—",
+                    "—" if observation.hp is None else str(observation.hp),
+                    "—" if observation.score_ally is None else str(observation.score_ally),
+                    "—" if observation.score_enemy is None else str(observation.score_enemy),
+                ]))
+            self.round_observations.addTopLevelItem(item)
+        self.round_observations.setVisible(self.round_observations.topLevelItemCount() > 0)
+
     def _render_cards(self) -> None:
+        self._render_round_observations()
         while self.cards_layout.count() > 1:
             child = self.cards_layout.takeAt(0)
             if child is not None and (widget := child.widget()) is not None:

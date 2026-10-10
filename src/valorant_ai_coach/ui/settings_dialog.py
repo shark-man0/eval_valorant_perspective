@@ -15,6 +15,7 @@ from PySide6.QtWidgets import (
     QLineEdit,
     QMessageBox,
     QPushButton,
+    QSpinBox,
     QVBoxLayout,
     QWidget,
 )
@@ -62,6 +63,20 @@ class SettingsDialog(QDialog):
         self.mock_case_id.setPlaceholderText("例: TC-029")
         self.hud_layout_path = QLineEdit(settings.hud_layout_path)
         self.hud_layout_path.setPlaceholderText("空欄なら保存先/hud_layout.json")
+        self.round_boundary_mode = QComboBox()
+        self.round_boundary_mode.addItem("Strict：正式境界のみ", "strict")
+        self.round_boundary_mode.addItem("Practical：暫定区間を利用", "practical")
+        self.round_boundary_mode.setCurrentIndex(max(0, self.round_boundary_mode.findData(
+            getattr(settings, "round_boundary_mode", "strict")
+        )))
+        self.unedited_input_contract = QLineEdit(
+            getattr(settings, "unedited_input_contract_path", "")
+        )
+        self.unedited_input_contract.setPlaceholderText("対象動画の未編集保証を記録したJSON")
+        self.native_png_budget = QSpinBox()
+        self.native_png_budget.setRange(64, 65536)
+        self.native_png_budget.setSingleStep(256)
+        self.native_png_budget.setValue(getattr(settings, "native_png_budget_mb", 8192))
         self.visual_profile_path = QLineEdit(getattr(settings, "visual_profile_path", ""))
         from valorant_ai_coach.maps.registry import MapRegistry
 
@@ -117,6 +132,17 @@ class SettingsDialog(QDialog):
         form.addRow("OpenAIモデル", self.model_id)
         form.addRow("Mock AI", self.mock_ai)
         form.addRow("HUD解析", self.hud_mode)
+        form.addRow("Round分割", self.round_boundary_mode)
+        form.addRow("未編集動画の入力契約", self._file_field(
+            self.unedited_input_contract, "対象動画の入力契約を選択", "JSON (*.json)"
+        ))
+        form.addRow("連続フレームの一時保存上限（MiB）", self.native_png_budget)
+        boundary_notice = QLabel(
+            "Practicalは実HUD解析で利用できます。暫定区間の観測を保存し、"
+            "境界が未確定の区間は採点を保留します。入力契約は対象動画と照合します。"
+        )
+        boundary_notice.setWordWrap(True)
+        form.addRow(boundary_notice)
         form.addRow("Mockケース", self.mock_case_id)
         form.addRow(
             "Visualプロファイル",
@@ -215,6 +241,9 @@ class SettingsDialog(QDialog):
             "mock_ai": self.mock_ai.isChecked(),
             "hud_mode": str(self.hud_mode.currentData()),
             "hud_layout_path": self.hud_layout_path.text().strip(),
+            "round_boundary_mode": self.round_boundary_mode.currentData(),
+            "unedited_input_contract_path": self.unedited_input_contract.text().strip(),
+            "native_png_budget_mb": self.native_png_budget.value(),
             "visual_profile_path": self.visual_profile_path.text().strip(),
             "manual_map_id": self.manual_map_id.currentData(),
             "map_client_build": self.map_client_build.text().strip(),

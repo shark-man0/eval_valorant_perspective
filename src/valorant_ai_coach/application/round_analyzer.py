@@ -88,10 +88,7 @@ class RoundAnalyzer:
         self.validator.validate_round_package(round_package)
         enriched = self.fact_builder.enrich(round_package)
         self.validator.validate_round_package(enriched)
-        lifecycle = enriched.get("round_lifecycle")
-        if lifecycle is not None and any(
-            lifecycle[name]["status"] != "confirmed" for name in ("start", "end")
-        ):
+        if self.boundary_context_is_uncertain(enriched):
             # Persist and expose observed facts, but do not let an incomplete
             # round denominator become scored coaching. Individual rules may be
             # admitted later after proving independence from uncertain boundaries.
@@ -152,6 +149,13 @@ class RoundAnalyzer:
         )
         self._validate_deterministic_authority(output, decisions)
         return RoundAnalysis(enriched, tuple(candidates), decisions, output, scopes)
+
+    @staticmethod
+    def boundary_context_is_uncertain(package: dict[str, Any]) -> bool:
+        lifecycle = package.get("round_lifecycle")
+        return lifecycle is not None and any(
+            lifecycle[name]["status"] != "confirmed" for name in ("start", "end")
+        )
 
     def _deduplicate_same_basis_unscored(self, output: dict[str, Any]) -> dict[str, Any]:
         """Merge only UNSCORED items that are demonstrably the same missing evidence.

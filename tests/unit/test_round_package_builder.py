@@ -285,3 +285,48 @@ def test_practical_separate_source_segments_never_pair_boundaries(practical_buil
                for p in packages)
     assert all(not (p["round_lifecycle"]["start"]["status"] == "provisional"
                     and p["round_lifecycle"]["end"]["status"] == "provisional") for p in packages)
+
+
+def test_practical_consumer_pipeline_resume_preserves_uncertainty_without_scoring(
+    practical_build, tmp_path: Path,
+) -> None:
+    from threading import Event
+
+    from tests.integration.test_mock_e2e import build_pipeline
+    from valorant_ai_coach.application import AnalysisCancelled
+
+    source = tmp_path / 'match.mp4'
+    source.write_bytes(b'video')
+    packages = practical_build(boundary_mode='practical', provisional_boundaries=[
+        practical_candidate('round_start', 1., 1.5),
+        practical_candidate('round_end', 3., 4.),
+        practical_candidate('round_start', 5., 5.5),
+    ])
+    # Consumer integration uses already produced synthetic Packages; no pixel or
+    # qualification claim. Native source collection has separate integration tests.
+    pipeline, repository, video, clips = build_pipeline(tmp_path, source, list(packages))
+    cancel = Event()
+    retained_number = next(p['round_no'] for p in packages
+                           if p['round_lifecycle']['start']['status'] == 'provisional')
+
+    def cancel_after_first(_progress, message):
+        if message == f'区間 {retained_number} の観測を保存しました（境界未確定・採点保留）':
+            cancel.set()
+
+    with pytest.raises(AnalysisCancelled):
+        pipeline.analyze_video(source, match_id='P-RESUME', cancel_event=cancel,
+                               progress_cb=cancel_after_first)
+    stored = repository.get_round_package('P-RESUME', retained_number)
+    assert stored['round_lifecycle'] == packages[retained_number - 1]['round_lifecycle']
+    assert stored['frames'] == []
+    first_facts = stored['deterministic_facts']
+    restored = pipeline.resume_analysis('P-RESUME')
+    assert restored.status == 'completed'
+    stored = repository.get_round_package('P-RESUME', retained_number)
+    assert stored['deterministic_facts'] == first_facts
+    assert stored['round_lifecycle'] == packages[retained_number - 1]['round_lifecycle']
+    assert repository.get_match_result('P-RESUME')['evaluations'] == []
+    assert video.requested_timestamps == [] and clips.calls == 0
+    assert restored.rounds[retained_number - 1].output['analysis_id'] == (
+        f'RESTORED-P-RESUME-R{retained_number}'
+    )

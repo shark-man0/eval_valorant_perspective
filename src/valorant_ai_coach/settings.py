@@ -46,6 +46,22 @@ class AppSettings:
     delete_temp_frames: bool = True
     debug_logging: bool = False
     preferred_audio_track_index: int | None = None
+    round_boundary_mode: str = "strict"
+    unedited_input_contract_path: str = ""
+    native_png_budget_mb: int = 8192
+
+    def __post_init__(self) -> None:
+        if self.round_boundary_mode not in {"strict", "practical"}:
+            raise ValueError("round_boundary_mode must be strict or practical")
+        if (type(self.native_png_budget_mb) is not int
+                or not 64 <= self.native_png_budget_mb <= 65536):
+            raise ValueError("native_png_budget_mb must be an integer between 64 and 65536")
+        if not isinstance(self.unedited_input_contract_path, str):
+            raise ValueError("unedited_input_contract_path must be a path string")
+        if self.round_boundary_mode == "practical" and (
+            self.hud_mode != "real" or not self.unedited_input_contract_path.strip()
+        ):
+            raise ValueError("Practical Mode requires real HUD and an explicit input contract")
 
     @classmethod
     def defaults(cls, data_dir: Path | None = None) -> AppSettings:
