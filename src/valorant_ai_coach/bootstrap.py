@@ -18,6 +18,7 @@ from valorant_ai_coach.events import EventSourceContract
 from valorant_ai_coach.facts import FactBuilder
 from valorant_ai_coach.hud import HudAnalyzer, MockHudAnalyzer, RealHudAnalyzer
 from valorant_ai_coach.models import RoleResolver
+from valorant_ai_coach.non_video.features import NonVideoFeatures
 from valorant_ai_coach.resources import executable_path, resource_path, resource_root
 from valorant_ai_coach.rounds import RoundPackageBuilder
 from valorant_ai_coach.rules import (
@@ -173,6 +174,7 @@ def build_services(
             rules_by_id=rules_by_id,
             validator=validator,
             cache=FileResultCache(data_dir / "cache" / "ai"),
+            usage_recorder=NonVideoFeatures(repository),
         )
 
     analyzer = RoundAnalyzer(
