@@ -12,9 +12,10 @@
 | 既存の安全条件（confidence上限・scope修復・UNSCORED重複集約・spectator安全性）の維持 | 維持。既存テストはすべて通過 |
 | 新規コード（Task Aのmatch集計）にも同じ安全条件を適用 | 適用済み（§3 の4章） |
 | production codeの変更 | **1箇所**（§2）。fail-closed方向への厳格化のみ |
-| 再現した既知の欠陥 | **D-1**（§5）。strict xfailでピン留め。修正はconfidenceの意味が変わるため**承認待ち** |
+| 再現した既知の欠陥 | **D-1**（§5）。**承認を受けて修正済み**（PR #11追加修正）。strict xfail 2件は通常のPASSテストへ変更 |
+| 未解決として残す事項 | L-1 / L-2 / L-3 / L-5、およびMatch全体の総合評価。**今回は変更しない**（§5, §8、`match_aggregation_design.md` §9） |
 | 既知のsnapshot/fact課題4件（依頼§C-3） | 現状を再現するテストで固定。変更は未実施（§5, L-1〜L-4） |
-| negative control | 8件中7件を検出。1件は等価変異体と確認（§4） |
+| negative control | 12件中11件を検出。1件（N7）は等価変異体と確認（§4）。D-1用の4件（N9〜N12）はすべて検出 |
 
 ## 2. production codeの変更（1箇所）
 
@@ -49,7 +50,7 @@
 | 未定義confidenceを高信頼として扱わない | `test_an_undefined_or_malformed_fact_confidence_never_reaches_the_deterministic_gate`（11値）/ `test_a_fact_without_any_confidence_never_reaches_the_deterministic_gate` / `test_the_deterministic_gate_edges_use_real_numbers_only` |
 | NaN / Infinityを拒否 | `test_non_finite_numbers_are_rejected_wherever_they_appear_in_an_evaluation`（confidence・evidence_range・display_clip・evidence.time_sec × 3値）/ `test_non_finite_fact_confidence_cannot_enter_through_the_round_package` |
 | 0.0とnullの区別 | `test_zero_confidence_is_a_real_value_but_null_or_missing_is_not` / `test_zero_and_null_confidence_stay_distinguishable_in_the_match_view` / [M]`test_numeric_helpers_never_turn_null_or_non_finite_values_into_numbers` |
-| 集約時にconfidenceを引き上げない | `test_aggregation_never_invents_labels_ids_rules_or_confidence`（60 seed）/ `test_merging_never_lowers_the_cap_below_what_the_representative_already_had` / [M]`test_confidence_is_copied_exactly_and_never_aggregated` ／ **例外: D-1（§5）** |
+| 集約時にconfidenceを引き上げない（統合後は最弱メンバー以下・引用Factの最弱値以下） | `test_aggregation_never_invents_labels_ids_rules_or_confidence`（60 seed）/ `test_merged_evaluation_keeps_the_confidence_cap_of_every_fact_it_cites`（実validatorを通す。D-1の回帰テスト）/ `test_merged_confidence_is_the_weakest_member_in_every_time_and_input_order` / `test_a_three_member_group_takes_the_weakest_of_all_three` / `test_same_rule_merge_keeps_the_strongest_member_as_representative_and_the_weakest_confidence` / [M]`test_confidence_is_copied_exactly_and_never_aggregated`（Match集計は供給値をそのままコピー） |
 | Factなしの画像根拠評価を誤って拒否しない | `test_an_evaluation_with_image_evidence_and_no_fact_refs_is_not_rejected` |
 | 不正なFact参照を拒否 | `test_fact_references_must_match_exactly_not_loosely`（`f008`/空白付き/桁違い/空文字）/ `test_duplicate_fact_references_are_rejected_not_double_counted` |
 
@@ -83,7 +84,7 @@
 
 | # | 壊した条件 | 結果 | 落ちたテスト数 |
 |---|---|---|---|
-| N1 | AI評価のconfidence上限チェックを無効化 | **検出** | 4 |
+| N1 | AI評価のconfidence上限チェックを無効化 | **検出** | 5 |
 | N2 | 未知`fact_id`参照の検査を無効化 | **検出** | 9 |
 | N3 | FactのEvent上限チェックを無効化 | **検出** | 2 |
 | N4 | Match ID混在の検査を無効化 | **検出** | 4 |
@@ -91,6 +92,12 @@
 | N6 | UNSCORED統合で空の根拠同士の統合を許す | **検出** | 1 |
 | N7 | `_same_unscored_basis`のlabelガードを外す | **未検出（等価変異体）** | 0 |
 | N8 | `engine._confidence`を`float()`方式に戻す | **検出** | 3 |
+| N9 | D-1: 同一ruleの統合で強い方のconfidenceを残す（上限を失う） | **検出** | 32 |
+| N10 | D-1: dedup groupの統合で`min`を`max`にする | **検出** | 13 |
+| N11 | D-1: 代表の選択に、下げたconfidenceを使う（初稿の退行） | **検出** | 12 |
+| N12 | D-1: 統合後にfact_refsの和集合を保持しない（根拠の欠落） | **検出** | 44 |
+
+合計12件中11件を検出。N1の件数は、D-1の回帰テスト追加で4→5になった。
 
 **N7の判断**: `EvaluationAggregator.aggregate()`は呼び出し側で既に`item.get("label") == label`で同一labelの項目だけを比較対象にしており、
 `_same_unscored_basis`内のlabelガードは**到達不能な防御的重複**。テストの穴ではなく、挙動が変わらない変異（等価変異体）と判断した。
@@ -98,28 +105,41 @@
 
 ## 5. 既知の欠陥・制約（再現と改善方針）
 
-「再現」はテストで固定済み。**いずれもconfidenceの意味に関わるため、承認前は変更していない。**
-`test_known_limitation_*`は現状を固定する特性化テスト（承認後に変更する際、意図的に反転させる）、
-`xfail(strict=True)`は欠陥の再現（修正されると失敗し、xfailの除去を促す）。
+「再現」はテストで固定済み。**D-1以外は、confidenceの意味やschema・保存形式に関わるため、承認前は変更していない。**
+`test_known_limitation_*` / `test_known_consequence_*`は現状を固定する特性化テスト（承認後に変更する際、意図的に反転させる）。
 
-### D-1. 統合されたevaluationのconfidenceが、統合で増えたfact_refsの最弱値を超え得る【欠陥】
+### D-1. 統合されたevaluationのconfidenceが、統合で増えたfact_refsの最弱値を超え得る【欠陥・**修正済み（承認済み）**】
 
-- **再現**: `test_merged_evaluation_keeps_the_confidence_cap_of_every_fact_it_cites[same_rule|dedup_group]`（strict xfail）
-- **現状**: `EvaluationAggregator._merge_same_label()`は`fact_refs`を**和集合**にするが、confidenceは代表（primary）の値のまま。
+- **経緯**: 初回提出時はstrict xfail 2件で再現のみ行い、修正はconfidenceの意味が変わるため承認待ちとしていた。
+  ユーザーの承認（PR #11追加修正依頼）を受けて修正した。
+- **旧挙動**: `EvaluationAggregator`は統合時に`fact_refs`を**和集合**にするが、confidenceは強い方のまま。
   例: F008(0.98)を引く0.98のgoodと、F007(0.90)を引く0.90のgoodを統合すると、`fact_refs=[F008,F007]`でconfidence 0.98 → 最弱Fact(0.90)を超える。
-- **実際の影響**（コード読解 + 検証器での再現。パイプライン全体のE2E実行はしていない）:
-  `application/pipeline.py`は集約後に`validate_ai_output`を再度呼ぶ（L323）。上限違反は`ContractValidationError`となり、
-  Matchの解析が失敗する。つまり**水増しされた値が保存・表示されることは無い（fail-closed）が、解析全体が止まり得る**。
-  `_enforce_confidence_policy`は0.55未満の降格のみで上限は掛けない。
-- **選択肢**:
-  1. 統合時のconfidenceを`min(統合した各evaluationのconfidence)`にする
-  2. 統合してもfact_refsを和集合にせず、代表のfact_refsだけを保持する
-  3. 現状維持（失敗を許容）
-- **推奨**: 1。
-- **理由**: 各evaluationは自分のFactの最弱値以下なので、`min(各confidence)`は和集合の最弱値以下になる（上限条件を必ず満たす）。
-  fact_refs（根拠の保持）を失わず、confidenceを上げることもない。
-- **影響**: 統合された評価のconfidenceが（下がる方向に）変わる。表示上のconfidenceが変わるため**承認が必要**。
-  既存38 fixtureの期待値への影響は**未確認**。承認後に修正する際、`validate_dataset.py`と既存テストで確認する。
+  `application/pipeline.py`は集約後に`validate_ai_output`を再度呼ぶ（L323）ため、上限違反は`ContractValidationError`となりMatchの解析が止まり得た
+  （水増しされた値が保存・表示されることは無いfail-closed。コード読解 + 検証器での再現で、パイプラインのE2E実行はしていない）。
+- **修正**（`rules/aggregator.py`）: 統合した各evaluationの**confidenceの最小値**を、統合後のevaluationのconfidenceにする。
+  同一ruleの重複排除（時間窓）とdedup group（同一場面）の両方に適用。
+  - 各evaluationは自分のFactの最弱値以下なので、`min`は和集合の最弱値以下になる（上限条件を必ず満たす）。
+  - **代表の選び方は変えていない。** どのevaluationが代表（evaluation_id・clip・evidence窓）になるかは従来どおり「元のconfidenceが最も強いもの」。
+    confidenceの最小値と、代表選択に使う最大値は別々に保持する（初稿の実装は、下げた値を次メンバーとの比較に使い、3件以上の統合で
+    代表が中間メンバーに入れ替わる退行を起こした。新規テストで再現し、修正した）。
+- **変更前後の影響確認**（コミット済みの旧aggregatorと比較）:
+  | 比較 | 結果 |
+  |---|---|
+  | 既存38ケース（実際のmock pipeline経由、評価36件） | 出力に**差なし** |
+  | ランダム3000通りの評価集合 | confidenceが下がったのは297通り、**上がったのは0通り**。confidence以外（evaluation_id・label・fact_refs・primary/related rule・evidence・clip）の差は**0通り** |
+  | `validate_dataset.py` | 38 cases OK |
+- **保たれる性質**: confidenceの不正昇格なし / `fact_refs`は和集合のまま保持 / Rule identity（primary + related）保持 / label（GOOD・IMPROVE・UNSCORED）は変わらず、UNSCOREDは統合しても`unscored_reason_code`を保つ。
+- **テスト**: strict xfail 2件を通常のPASSテストに変更（`test_merged_evaluation_keeps_the_confidence_cap_of_every_fact_it_cites`。実validatorを通す。
+  入力は列挙順・逆順の両方）。加えて、時間順×入力順（`test_merged_confidence_is_the_weakest_member_in_every_time_and_input_order`）、
+  3メンバー全順列、代表の安定性（24通り）、等しいconfidence、UNSCORED統合、修正前の統合結果が実際に上限理由で拒否されること
+  （`test_the_unfixed_merge_really_fails_the_validator_for_the_cap_reason`）を追加。`test_rule_engine`の期待値は0.9→0.8
+  （0.8 / 0.9 / 0.8を統合した結果は最弱メンバーの0.8）に更新。
+- **留意すべき副作用（`test_known_consequence_a_weak_member_can_demote_a_merged_good_to_unscored`）**:
+  パイプラインには既存の下限`_enforce_confidence_policy`（confidence < 0.55 のgood/improveを`unscored`/`low_confidence`に降格）がある。
+  旧挙動では、0.50のgoodと0.90のgoodを統合すると強い方の0.90が残り、goodのままだった。
+  修正後は統合結果が0.50となり、既存の下限によって`unscored`に降格される（`fact_refs`は保持）。新しいlabelロジックは無く、
+  既存の下限が「正直になったconfidence」に作用した結果である。0.55以上のメンバー同士の統合ではlabelは変わらない。
+  この副作用をどう扱うか（例: 弱いメンバーを統合せず別件として残す）は、今回は変更していない。**将来の判断事項**として残す。
 
 ### L-1. zone factのconfidenceにpackage aggregateが上限として使われる【特性化】
 
@@ -179,11 +199,13 @@
 |---|---|
 | `python tests/validate_dataset.py` | `OK: 38 cases; schemas + candidate selection contract valid`（既存38 fixtureの契約を維持） |
 | `python -m ruff check src tests scripts/e2e` | All checks passed |
-| `python -m mypy src/valorant_ai_coach` | Success: no issues found in 106 source files |
-| `python -m pytest`（`tests/unit/test_ui_smoke.py`を除く） | **2243 passed / 9 skipped / 2 xfailed / 0 failed** |
+| `python -m mypy src/valorant_ai_coach` | Success: no issues found in 127 source files |
+| `python -m pytest --cov=valorant_ai_coach --cov-fail-under=75`（`tests/unit/test_ui_smoke.py`を除く） | **2905 passed / 9 skipped / 0 xfailed / 0 failed**、coverage **82.91%**（ゲート75%を達成） |
 
-- main（`e9ecaf8`）の収集数1879 → 本ブランチ2268（+389: match集計55 / temporal契約77 / 安全性257）。
-- **2 xfailed** = D-1（`same_rule` / `dedup_group`）。strictなので、修正されると失敗して除去を促す。
+- 上記は**最新main（`27c8465`）を取り込んだ統合状態**での結果（pytestはmainの新規テストを含む全体）。
+- 初回提出時（`e9ecaf8`起点）は2243 passed / 2 xfailed だった。xfail 2件はD-1の修正で通常のPASSになり、0件になった。
+- 収集数: 最新main 2496件 → 本ブランチ 2928件（**+432件**: match集計55 / temporal契約77 / 安全性300）。
+  2928件 = 実行2905 + skip 9 + 除外した`test_ui_smoke.py` 14件。
 - **9 skipped**はすべて既存の環境依存で、今回の変更とは無関係:
   外部Validation Pack未配置（4）、実録画が未供給（1）、Windows固有パス（1）、PowerShell Core無し（3）。
 - **`tests/unit/test_ui_smoke.py`を除外した理由**: この開発サンドボックスではQtがセグメンテーションフォールトで落ちる。
@@ -200,12 +222,27 @@
 - Vision側（`hud/` `visual/` `maps/` `application/hud_video_processor.py`）は変更していない。
 - 新しいAPI通信・実機・実映像は使っていない。
 
-## 8. 承認が必要な事項のまとめ
+## 8. 未解決事項（承認が必要で、今回は変更しない）
+
+D-1は承認を受けて修正済み（§5）。次の項目は**今回の更新でも変更していない**未解決事項で、いずれも承認が必要。
 
 | ID | 内容 | 推奨 | 影響 |
 |---|---|---|---|
-| D-1 | 統合evaluationのconfidenceを`min(各confidence)`にする | 承認して修正 | 統合結果のconfidenceが下がる方向に変わる |
 | L-1 | zone factのconfidenceをフィールド別source confidenceへ | 承認して修正 | confidenceが上がり得る |
 | L-2 | 同一状態の間引きで高confidence観測を残す | 承認して修正（(c)優先） | confidenceが上がり得る |
 | L-3 | HP/Armorのprovenance統一（schema変更を伴う） | 承認して修正 | schema・保存形式 |
 | L-5 | 表示上限の数え方・保存と表示の分離 | 将来検討 | 保存形式・表示結果 |
+| M-1 | Match全体の総合評価（GOOD/IMPROVE・総合スコア） | 作らない（`match_aggregation_design.md` §9-1） | 新しいlabel/confidenceの意味 |
+| D-1付随 | 統合で弱いメンバーのconfidenceが0.55未満になると、既存の下限で`unscored`に降格される（§5） | 現状維持。扱いは将来判断 | goodの表示件数が減り得る |
+
+## 9. CI上の既知の不安定性（Linux Qt終了処理）
+
+- **事象**: PR #11の初回Linux Basic CI（pull_request）が、pytestステップでexit code 134（SIGABRT）で失敗した。
+  同一コミットのpush側は成功し、再実行（attempt 2）でも成功した。
+- **原因**（ユーザー確認）: 全テストが成功した後の**Qt終了処理で発生したプロセスabort**。assertion失敗ではない。
+  PR #9で対処された「Linux Qt teardown」問題と同系統の、既存の不安定性として扱う。
+- **本PRとの関係**: 本PRはGUI・Qt関連のコードを変更していない（`ui/`・`application/hud_video_processor.py`を含まない）。
+  今回の追加修正（`rules/aggregator.py`）は純粋Pythonのルール層で、Qtと接点がない。新たな回帰かどうかは、
+  最新main統合状態でのLinux CIの結果（§6）で確認する。
+- **未解決**: abortの根本原因（Qt終了処理の順序）は本PRの範囲外であり、修正していない。CI失敗時は、ログのテスト結果（passed件数）と
+  exit codeを併せて確認し、assertion失敗かprocess abortかを区別すること。

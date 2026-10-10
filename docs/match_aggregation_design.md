@@ -96,6 +96,9 @@ package内のみ**で行うため、隣のRoundのFactを所有したことに�
 - **出力は読み込める。** 統合済みの評価（`related_rule_ids`を持つ）を`related_counts`で受ける。
 - `max_display_exemplars_per_match`に達したルールには`display_limit_reached`を立て、
   「件数は下限値の可能性がある」ことを`issues[]`で明示する（保存結果から超過分は消えているため）。
+- 統合された評価のconfidenceは、D-1の修正（承認済み）により**統合した各評価のconfidenceの最小値**になっている。
+  Match集計はこの値を**供給されたまま**コピーするだけで、再計算・平均・引き上げはしない。
+  詳細は`docs/non_vision_safety_regression_report.md` §5。
 
 ## 5. 不完全Roundの扱いと完全性
 
@@ -190,12 +193,22 @@ Fixtureは`tests/unit/match_fixtures.py`が、既存の合成`tests/cases`（`ma
 - **現状**: 保存済みの結果は上限超過分が消えており、件数は下限値。`display_limit_reached`で警告のみ。
 - **選択肢**: (a)警告のみ (b)表示用の間引きを保存前の全件と分離して保存する
 - **推奨**: (b)を将来検討（ただし保存形式の変更になるため承認が必要）。
-- **関連**: `docs/non_vision_safety_regression_report.md`のL-5。
+- **関連**: `docs/non_vision_safety_regression_report.md`のL-5。**今回も変更していない（未解決）。**
 
 ### 9-4. `aggregate_repeated_occurrences` / `summary_required_if_occurrences_at_least`
 - **現状**: 設定値を`rules[]`へ**そのまま転記**するだけ。要約は生成しない。
 - **選択肢**: 要約の出力形式と生成主体（コード / LLM）の定義
 - **推奨**: 形式の定義を先に決める。LLM要約は事前承認が必要。
+
+### 9-5. snapshot由来factのconfidence / provenance（L-1 / L-2 / L-3）
+- **現状**: 3件とも**変更していない（未解決）**。現状を再現するテストで固定済みで、いずれも水増しはせず安全側に倒れている。
+  zone factのpackage aggregate上限（L-1）、snapshot間引きで後続の高confidence観測が消える（L-2）、HP/Armorのprovenanceの不統一（L-3）。
+- **選択肢・推奨・理由・影響**: `docs/non_vision_safety_regression_report.md` §5を参照。
+- **Match集計との関係**: Match集計はFactのconfidenceを再計算せず、`evaluations[].facts[]`に供給されたまま保持する。
+  上記の承認・修正が入った場合は、Factのconfidenceが変わるだけで、Match集計側のコードは変更不要。
+
+### 9-6. Match全体の総合評価
+- §9-1のとおり。**今回も作っていない（未解決）。**
 
 ## 10. 互換性
 
@@ -203,7 +216,8 @@ Fixtureは`tests/unit/match_fixtures.py`が、既存の合成`tests/cases`（`ma
 - 変更した既存コード: `rules/temporal_scope.py`は`previous_round_context_missing()`を共有関数として切り出しただけで、
   既存の判定結果は同じ（空のplaceholderをresolverと下流で同一に扱うため）。
 - `rules/__init__.py`に新規モジュールのexportを追加（既存exportは維持）。
-- `rules/engine.py`のconfidence判定の厳格化は別件（`docs/non_vision_safety_regression_report.md`§2）。
+- `rules/engine.py`のconfidence判定の厳格化と、`rules/aggregator.py`の統合confidence（D-1、承認済み）は別件
+  （`docs/non_vision_safety_regression_report.md`§2・§5）。Match集計モジュール自体は`aggregator.py`を呼ばない。
 
 ## 11. テスト結果
 
