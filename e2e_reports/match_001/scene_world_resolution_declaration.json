@@ -1,0 +1,19 @@
+{
+  "hypothesis": "1920x1080 grayscale preserves world texture lost by 640x360 INTER_AREA",
+  "target_assertion_ids": [
+    "GT-R1-ROUND-START"
+  ],
+  "population": "Existing 36-frame development prefix and separate 30-frame stable development; not holdout",
+  "method": "Existing world_features chain, no reseeding; scale spatial parameters by source resolution, preserve normalized limits",
+  "ncc_floor": 0.9,
+  "minimum_regions": 3,
+  "minimum_rows": 2,
+  "minimum_columns": 2,
+  "qualification_created": false,
+  "new_runtime_events": 0,
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "method_sha256": {
+    "scripts/diagnostics/scene_world_chain.py": "1b819ee2753d45040a01fa2ed7cfafcf2d9daf96882d0cfde3229fe5569cf67b",
+    "scripts/diagnostics/probe_scene_world_chain.py": "8c8a7b7bdfb4f83dbb02a0ce903e72163c6b51578a199c40caeb9afe776ffe5a"
+  }
+}

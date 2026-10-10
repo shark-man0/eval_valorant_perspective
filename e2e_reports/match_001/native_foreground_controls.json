@@ -1,0 +1,5589 @@
+{
+  "scope": "offline exposed source/control comparison; not qualification",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "window_sec": [
+    0.2,
+    2.3
+  ],
+  "reference_frame_numbers": [
+    13,
+    14
+  ],
+  "native_roi_bounds": [
+    [
+      940,
+      750,
+      1120,
+      850
+    ],
+    [
+      1080,
+      600,
+      1190,
+      740
+    ],
+    [
+      1440,
+      930,
+      1600,
+      1050
+    ]
+  ],
+  "code_sha256": {
+    "/home/admin/eval_valorant_perspective/scripts/diagnostics/compare_native_foreground.py": "0500228cb5d31dfd143e68e4ec5e3d2fc64b1c973944f4bde90f3834cd4f4b14",
+    "src/valorant_ai_coach/hud/scene_domains.py": "92989f763253138980d726f8a34914f52c6097581e7ca17646b83ba57ff9e091",
+    "src/valorant_ai_coach/video/native.py": "7ba16420dc32cb095895ae3fcea6c3fbedf5a593582cb271b871fdaca8648934",
+    "src/valorant_ai_coach/video/service.py": "be3f8c7c269bb12f67b39493eae5a3e477f1d334a6a0399f71281941ffd367c9"
+  },
+  "reference_png_sha256": {
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000013.png": "3f7f964b6993d20bba3396e160e6b6edf41cc5352b0b0ad57de9254ddb7fe0a5",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000014.png": "ffc878007fe550701c8e5be11f78b1a6d91bc88f77972cc48b370ac4cf7e7bb6"
+  },
+  "reference_source_report_sha256": "b6c41f52eed4d9d41e5cda9ebd4d5cdfda97a2d736ff7de541584c2df61a58e6",
+  "rows": [
+    {
+      "source_pts_ticks": 3113,
+      "source_pts_sec": 0.20266927083333333,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "b0f1232287876d2e56de2ae1739a155623f907e5ae436adccf644cfe8afef6cb",
+      "source_pixel_sha256": "23e29412e77319bef71b847f85ab68757529f96d4437a06fd2ccb6a7d4dcfe6b",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.03566713631153107,
+            0.04590443894267082,
+            -0.1793230026960373
+          ],
+          "minimum_ncc": -0.1793230026960373,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.11484216153621674,
+            -0.11895155906677246,
+            0.3349652886390686
+          ],
+          "minimum_ncc": -0.11895155906677246,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": null
+    },
+    {
+      "source_pts_ticks": 3369,
+      "source_pts_sec": 0.2193359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "97f34b51a43a715ab0bd9836a9400cbdaa5f1be6b31447af67107029ddebdd75",
+      "source_pixel_sha256": "75ed6577be481072f57ef9019920757462d962a0c471c67ceeee40d0dbe5bc58",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.03383853659033775,
+            0.02540581487119198,
+            -0.21788674592971802
+          ],
+          "minimum_ncc": -0.21788674592971802,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.11310925334692001,
+            -0.12804700434207916,
+            0.24835403263568878
+          ],
+          "minimum_ncc": -0.12804700434207916,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 3113,
+        "before_crop_ncc": [
+          0.03566713631153107,
+          0.04590443894267082,
+          -0.1793230026960373
+        ],
+        "after_crop_ncc": [
+          -0.11310925334692001,
+          -0.12804700434207916,
+          0.24835403263568878
+        ],
+        "minimum_ncc": -0.1793230026960373
+      }
+    },
+    {
+      "source_pts_ticks": 3625,
+      "source_pts_sec": 0.23600260416666666,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "bbec07efc8b9aae45c7067ffbc77b720af9fdfb0cbbf1f2b4155d7c13ed95088",
+      "source_pixel_sha256": "38ecedd21324e2dd480ca723e982acfa1fa3b31559708bbc46d16658448c7f93",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.03218934312462807,
+            0.008608777076005936,
+            -0.20387914776802063
+          ],
+          "minimum_ncc": -0.20387914776802063,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.11300959438085556,
+            -0.10493454337120056,
+            0.18702304363250732
+          ],
+          "minimum_ncc": -0.11300959438085556,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 3369,
+        "before_crop_ncc": [
+          0.03383853659033775,
+          0.02540581487119198,
+          -0.21788674592971802
+        ],
+        "after_crop_ncc": [
+          -0.11300959438085556,
+          -0.10493454337120056,
+          0.18702304363250732
+        ],
+        "minimum_ncc": -0.21788674592971802
+      }
+    },
+    {
+      "source_pts_ticks": 3881,
+      "source_pts_sec": 0.25266927083333335,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "4598a41da9cc409171c6b0d10d639b8a2569d9526a8ce5d4d91c7cc78c24fe5d",
+      "source_pixel_sha256": "79e5eedc38ea99389493f359f86812513068fd67ba9fe699285330f6f349ea09",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.03074781410396099,
+            -0.00942640844732523,
+            -0.19461892545223236
+          ],
+          "minimum_ncc": -0.19461892545223236,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.10446527600288391,
+            -0.0449182502925396,
+            0.141147181391716
+          ],
+          "minimum_ncc": -0.10446527600288391,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 3625,
+        "before_crop_ncc": [
+          0.03218934312462807,
+          0.008608777076005936,
+          -0.20387914776802063
+        ],
+        "after_crop_ncc": [
+          -0.10446527600288391,
+          -0.0449182502925396,
+          0.141147181391716
+        ],
+        "minimum_ncc": -0.20387914776802063
+      }
+    },
+    {
+      "source_pts_ticks": 4137,
+      "source_pts_sec": 0.2693359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "0378b3933ca9fd159e921885a16b1cb4fe8edd58cc5fcd164a081e24f2d35e9a",
+      "source_pixel_sha256": "5b27e3eebfed3bd3ccdfe254f4bbb3f89a430a705fbcd521bf72beedfe969940",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.0029662293381989002,
+            -0.010182092897593975,
+            -0.16582471132278442
+          ],
+          "minimum_ncc": -0.16582471132278442,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.06146245449781418,
+            -0.04586640000343323,
+            0.17828014492988586
+          ],
+          "minimum_ncc": -0.06146245449781418,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 3881,
+        "before_crop_ncc": [
+          0.03074781410396099,
+          -0.00942640844732523,
+          -0.19461892545223236
+        ],
+        "after_crop_ncc": [
+          -0.06146245449781418,
+          -0.04586640000343323,
+          0.17828014492988586
+        ],
+        "minimum_ncc": -0.19461892545223236
+      }
+    },
+    {
+      "source_pts_ticks": 4393,
+      "source_pts_sec": 0.2860026041666667,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "0fe167a0a7766e4ba992ca91fd8c487ce0fc0208d62fd718452ce7d4c26ffdc1",
+      "source_pixel_sha256": "79b697cf55f23fb66c3db3f25883cadf18f5c0408b8b3782e880818fe6f93fa1",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.0028369633946567774,
+            -0.010182092897593975,
+            -0.16579227149486542
+          ],
+          "minimum_ncc": -0.16579227149486542,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.06184840947389603,
+            -0.04586640000343323,
+            0.17827658355236053
+          ],
+          "minimum_ncc": -0.06184840947389603,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 4137,
+        "before_crop_ncc": [
+          0.0029662293381989002,
+          -0.010182092897593975,
+          -0.16582471132278442
+        ],
+        "after_crop_ncc": [
+          -0.06184840947389603,
+          -0.04586640000343323,
+          0.17827658355236053
+        ],
+        "minimum_ncc": -0.16582471132278442
+      }
+    },
+    {
+      "source_pts_ticks": 4649,
+      "source_pts_sec": 0.30266927083333334,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "abbf3ab31203e9c46667008722a97b470000cd0e9822c3281a0dbad859ba8552",
+      "source_pixel_sha256": "7a695f812e9418fd574cc6387676fb92ed15c525182615ece4274c5fd4a26e12",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.005944001954048872,
+            -0.007315080612897873,
+            -0.1575564444065094
+          ],
+          "minimum_ncc": -0.1575564444065094,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.02635936439037323,
+            -0.0471532866358757,
+            0.2366541475057602
+          ],
+          "minimum_ncc": -0.0471532866358757,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 4393,
+        "before_crop_ncc": [
+          0.0028369633946567774,
+          -0.010182092897593975,
+          -0.16579227149486542
+        ],
+        "after_crop_ncc": [
+          -0.02635936439037323,
+          -0.0471532866358757,
+          0.2366541475057602
+        ],
+        "minimum_ncc": -0.16579227149486542
+      }
+    },
+    {
+      "source_pts_ticks": 4905,
+      "source_pts_sec": 0.3193359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "2c2931030a3bcaa26b4ee24ef960ae3b37fdb3ab3b979bf73dd6898f8a07c184",
+      "source_pixel_sha256": "569dae2e58126ab554205209f7c3880999e5fe5e4bee793406af0111dcf90a68",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.020100047811865807,
+            -0.03619296848773956,
+            -0.23294857144355774
+          ],
+          "minimum_ncc": -0.23294857144355774,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.03677229583263397,
+            -0.04034842923283577,
+            0.3088727593421936
+          ],
+          "minimum_ncc": -0.04034842923283577,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 4649,
+        "before_crop_ncc": [
+          0.005944001954048872,
+          -0.007315080612897873,
+          -0.1575564444065094
+        ],
+        "after_crop_ncc": [
+          0.03677229583263397,
+          -0.04034842923283577,
+          0.3088727593421936
+        ],
+        "minimum_ncc": -0.1575564444065094
+      }
+    },
+    {
+      "source_pts_ticks": 5161,
+      "source_pts_sec": 0.33600260416666666,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "1a34a8639e57583304efdc47168882e28c97efc7f499c52ed4316a311995fd74",
+      "source_pixel_sha256": "befc566abe0f564a28b9673043670c92b53989a3b8938008d1ea6c13c67d7c97",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.030304929241538048,
+            -0.0861564353108406,
+            -0.14825116097927094
+          ],
+          "minimum_ncc": -0.14825116097927094,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.02779766544699669,
+            0.026003718376159668,
+            0.3419482111930847
+          ],
+          "minimum_ncc": 0.026003718376159668,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 4905,
+        "before_crop_ncc": [
+          0.020100047811865807,
+          -0.03619296848773956,
+          -0.23294857144355774
+        ],
+        "after_crop_ncc": [
+          0.02779766544699669,
+          0.026003718376159668,
+          0.3419482111930847
+        ],
+        "minimum_ncc": -0.23294857144355774
+      }
+    },
+    {
+      "source_pts_ticks": 5417,
+      "source_pts_sec": 0.3526692708333333,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "6315e75db6661b9dec1e4666bfb1a2ba294dc0586c1e8723a6111c4187d0daec",
+      "source_pixel_sha256": "22ef20861d6ac22ad38549063fff25e6c9e1d2cc4b38c2548c33620a89c9ebc6",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.015472658909857273,
+            -0.12484431266784668,
+            -0.13521617650985718
+          ],
+          "minimum_ncc": -0.13521617650985718,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.09275200217962265,
+            0.020819786936044693,
+            0.35723641514778137
+          ],
+          "minimum_ncc": -0.09275200217962265,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 5161,
+        "before_crop_ncc": [
+          0.030304929241538048,
+          -0.0861564353108406,
+          -0.14825116097927094
+        ],
+        "after_crop_ncc": [
+          -0.09275200217962265,
+          0.020819786936044693,
+          0.35723641514778137
+        ],
+        "minimum_ncc": -0.14825116097927094
+      }
+    },
+    {
+      "source_pts_ticks": 5673,
+      "source_pts_sec": 0.3693359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "5cc7a20e45b4b08644bce67f3e80db892d01ee70e9adfe6c32134aebc55556d9",
+      "source_pixel_sha256": "94f121485a6bb1a53423cc699c2ae0db5d7e3724f7b05661f644aaac8e1ed119",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.05464668944478035,
+            -0.16400495171546936,
+            -0.15649724006652832
+          ],
+          "minimum_ncc": -0.16400495171546936,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.1261904388666153,
+            0.05769661068916321,
+            0.18581423163414001
+          ],
+          "minimum_ncc": -0.1261904388666153,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 5417,
+        "before_crop_ncc": [
+          0.015472658909857273,
+          -0.12484431266784668,
+          -0.13521617650985718
+        ],
+        "after_crop_ncc": [
+          -0.1261904388666153,
+          0.05769661068916321,
+          0.18581423163414001
+        ],
+        "minimum_ncc": -0.13521617650985718
+      }
+    },
+    {
+      "source_pts_ticks": 5929,
+      "source_pts_sec": 0.38600260416666665,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "ac26e8351dcd40a2cc045e81032bdbd078172c1a0b8312288ef6461b6a515a03",
+      "source_pixel_sha256": "f0088bb727b5ad56646f429df99aaec8404e1ebad4f1a07f7ce7c0b9709aecb5",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.04092409834265709,
+            -0.31155523657798767,
+            0.03028673678636551
+          ],
+          "minimum_ncc": -0.31155523657798767,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.14617908000946045,
+            0.27709928154945374,
+            0.07284899801015854
+          ],
+          "minimum_ncc": -0.14617908000946045,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 5673,
+        "before_crop_ncc": [
+          0.05464668944478035,
+          -0.16400495171546936,
+          -0.15649724006652832
+        ],
+        "after_crop_ncc": [
+          -0.14617908000946045,
+          0.27709928154945374,
+          0.07284899801015854
+        ],
+        "minimum_ncc": -0.16400495171546936
+      }
+    },
+    {
+      "source_pts_ticks": 6185,
+      "source_pts_sec": 0.4026692708333333,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "b303ece74ffbb465b750b349e999dcc46d301adf90d0efe2cf10757425e9346c",
+      "source_pixel_sha256": "abd83f1606c99107aa34505534e61e3eff41316d21444f2d3ec3db50b29d9a20",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.02123810350894928,
+            -0.47149235010147095,
+            0.04521363601088524
+          ],
+          "minimum_ncc": -0.47149235010147095,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.0682077631354332,
+            0.2974599003791809,
+            -0.02730935625731945
+          ],
+          "minimum_ncc": -0.02730935625731945,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 5929,
+        "before_crop_ncc": [
+          0.04092409834265709,
+          -0.31155523657798767,
+          0.03028673678636551
+        ],
+        "after_crop_ncc": [
+          0.0682077631354332,
+          0.2974599003791809,
+          -0.02730935625731945
+        ],
+        "minimum_ncc": -0.31155523657798767
+      }
+    },
+    {
+      "source_pts_ticks": 6441,
+      "source_pts_sec": 0.4193359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "722f058da19e8b3d5094f2c701186a5dede671c8bb333399da20e719e3a0522f",
+      "source_pixel_sha256": "ab83850bd78924a2a9044ba2ca30ab78a50a28354ed52db1b88fa666516ee7c3",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.06379951536655426,
+            -0.49996519088745117,
+            0.047559864819049835
+          ],
+          "minimum_ncc": -0.49996519088745117,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.19874192774295807,
+            -0.042887426912784576,
+            0.08675501495599747
+          ],
+          "minimum_ncc": -0.042887426912784576,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 6185,
+        "before_crop_ncc": [
+          -0.02123810350894928,
+          -0.47149235010147095,
+          0.04521363601088524
+        ],
+        "after_crop_ncc": [
+          0.19874192774295807,
+          -0.042887426912784576,
+          0.08675501495599747
+        ],
+        "minimum_ncc": -0.47149235010147095
+      }
+    },
+    {
+      "source_pts_ticks": 6697,
+      "source_pts_sec": 0.43600260416666664,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "4ab8cf5f76aa4a3f6890e74f1d40be6a57db5e6cc495f2b0f278364667f716d5",
+      "source_pixel_sha256": "00e5189b55f98c922b8bbf42e3291e4704fe1d747203c29e92877956d976fe71",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.20598387718200684,
+            0.17146551609039307,
+            0.10585989058017731
+          ],
+          "minimum_ncc": -0.20598387718200684,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.24056757986545563,
+            0.009531865827739239,
+            -0.12176910042762756
+          ],
+          "minimum_ncc": -0.12176910042762756,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 6441,
+        "before_crop_ncc": [
+          -0.06379951536655426,
+          -0.49996519088745117,
+          0.047559864819049835
+        ],
+        "after_crop_ncc": [
+          0.24056757986545563,
+          0.009531865827739239,
+          -0.12176910042762756
+        ],
+        "minimum_ncc": -0.49996519088745117
+      }
+    },
+    {
+      "source_pts_ticks": 6953,
+      "source_pts_sec": 0.45266927083333336,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "3ec903f18e57274ee6736fdc3a3ec8a2dee885f54d1b90d2b82dc529d45f3ba9",
+      "source_pixel_sha256": "b90be3094eaed07feb5f1f885ce7297b5bf4f8a62d8489cf78c28cee60309b3f",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.3130126893520355,
+            -0.26291918754577637,
+            0.14188142120838165
+          ],
+          "minimum_ncc": -0.3130126893520355,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.26625752449035645,
+            -0.11007094383239746,
+            -0.13966749608516693
+          ],
+          "minimum_ncc": -0.13966749608516693,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 6697,
+        "before_crop_ncc": [
+          -0.20598387718200684,
+          0.17146551609039307,
+          0.10585989058017731
+        ],
+        "after_crop_ncc": [
+          0.26625752449035645,
+          -0.11007094383239746,
+          -0.13966749608516693
+        ],
+        "minimum_ncc": -0.20598387718200684
+      }
+    },
+    {
+      "source_pts_ticks": 7209,
+      "source_pts_sec": 0.4693359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "029bfc3a6c3e9d40f03f267b4df728f9a79967cc0b08008d6ad31f0472bcdc39",
+      "source_pixel_sha256": "55c7802a29b95724825afd0edb5b28e8cbdb51c5fb370d04a9b29dbef7d1b2ff",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.31660109758377075,
+            -0.1617947369813919,
+            0.11887853592634201
+          ],
+          "minimum_ncc": -0.31660109758377075,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.24478866159915924,
+            0.04596519097685814,
+            -0.2444683015346527
+          ],
+          "minimum_ncc": -0.2444683015346527,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 6953,
+        "before_crop_ncc": [
+          -0.3130126893520355,
+          -0.26291918754577637,
+          0.14188142120838165
+        ],
+        "after_crop_ncc": [
+          0.24478866159915924,
+          0.04596519097685814,
+          -0.2444683015346527
+        ],
+        "minimum_ncc": -0.3130126893520355
+      }
+    },
+    {
+      "source_pts_ticks": 7465,
+      "source_pts_sec": 0.4860026041666667,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "7847f78fc72903a5394e8f0c64c5539aef65a770a0d7191f7307eb38a81f3065",
+      "source_pixel_sha256": "3e6a9997b516491cc1dd32bae4ba17374cd0d91a5f37808948dfa2807326dfa1",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.2604442238807678,
+            0.014712277799844742,
+            0.19166815280914307
+          ],
+          "minimum_ncc": -0.2604442238807678,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.22136053442955017,
+            -0.01597561314702034,
+            -0.08536124974489212
+          ],
+          "minimum_ncc": -0.08536124974489212,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 7209,
+        "before_crop_ncc": [
+          -0.31660109758377075,
+          -0.1617947369813919,
+          0.11887853592634201
+        ],
+        "after_crop_ncc": [
+          0.22136053442955017,
+          -0.01597561314702034,
+          -0.08536124974489212
+        ],
+        "minimum_ncc": -0.31660109758377075
+      }
+    },
+    {
+      "source_pts_ticks": 7721,
+      "source_pts_sec": 0.5026692708333333,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "6266a45c405b1bc70c5b494b1fc2eba442f0278c28bc3f77c17ff3a431230967",
+      "source_pixel_sha256": "93b120cfdd48402066af88811d8cca92e9406fc6850954823a5129eb0097002a",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.19034618139266968,
+            0.08837782591581345,
+            0.23022885620594025
+          ],
+          "minimum_ncc": -0.19034618139266968,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.21564537286758423,
+            -0.02736232429742813,
+            -0.05831759050488472
+          ],
+          "minimum_ncc": -0.05831759050488472,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 7465,
+        "before_crop_ncc": [
+          -0.2604442238807678,
+          0.014712277799844742,
+          0.19166815280914307
+        ],
+        "after_crop_ncc": [
+          0.21564537286758423,
+          -0.02736232429742813,
+          -0.05831759050488472
+        ],
+        "minimum_ncc": -0.2604442238807678
+      }
+    },
+    {
+      "source_pts_ticks": 7977,
+      "source_pts_sec": 0.5193359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "717a161e67cf30d04de7ef843ae7dcead2eeaa3e86054943916deeec12733775",
+      "source_pixel_sha256": "c77861e84a646a840669f884530c171aece1057443b9406194083d469f96a844",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.19197754561901093,
+            -0.04833134636282921,
+            0.23671071231365204
+          ],
+          "minimum_ncc": -0.19197754561901093,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.236192986369133,
+            -0.02046901360154152,
+            -0.05042358487844467
+          ],
+          "minimum_ncc": -0.05042358487844467,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 7721,
+        "before_crop_ncc": [
+          -0.19034618139266968,
+          0.08837782591581345,
+          0.23022885620594025
+        ],
+        "after_crop_ncc": [
+          0.236192986369133,
+          -0.02046901360154152,
+          -0.05042358487844467
+        ],
+        "minimum_ncc": -0.19034618139266968
+      }
+    },
+    {
+      "source_pts_ticks": 8233,
+      "source_pts_sec": 0.5360026041666667,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "fde61111a73d76382ab33111ab5ad716f2af61ba995c703f0a4603fa41988a24",
+      "source_pixel_sha256": "03b9856aeb93ee2845eff22cf83394ba0fbf90f79fbfefccbacce11e234260d0",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.12009226530790329,
+            -0.06406570971012115,
+            0.27074065804481506
+          ],
+          "minimum_ncc": -0.12009226530790329,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.24026116728782654,
+            -0.07036611437797546,
+            -0.08598115295171738
+          ],
+          "minimum_ncc": -0.08598115295171738,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 7977,
+        "before_crop_ncc": [
+          -0.19197754561901093,
+          -0.04833134636282921,
+          0.23671071231365204
+        ],
+        "after_crop_ncc": [
+          0.24026116728782654,
+          -0.07036611437797546,
+          -0.08598115295171738
+        ],
+        "minimum_ncc": -0.19197754561901093
+      }
+    },
+    {
+      "source_pts_ticks": 8489,
+      "source_pts_sec": 0.5526692708333333,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "6a5494cc7fe148077780ce6f26555207a113ba933fc85e655dea41390a814f06",
+      "source_pixel_sha256": "c6fd3bf5e145923fcd7df02bd2fa9f15bbfa98754c730f63f86288a11d1a32c2",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.07568560540676117,
+            -0.05501573905348778,
+            0.4912697970867157
+          ],
+          "minimum_ncc": -0.05501573905348778,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.16501717269420624,
+            -0.09579752385616302,
+            0.03491955250501633
+          ],
+          "minimum_ncc": -0.16501717269420624,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 8233,
+        "before_crop_ncc": [
+          -0.12009226530790329,
+          -0.06406570971012115,
+          0.27074065804481506
+        ],
+        "after_crop_ncc": [
+          -0.16501717269420624,
+          -0.09579752385616302,
+          0.03491955250501633
+        ],
+        "minimum_ncc": -0.16501717269420624
+      }
+    },
+    {
+      "source_pts_ticks": 8745,
+      "source_pts_sec": 0.5693359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "eba966c5cab3ce376c50e9cabcf217724e670d6d4bbb71a013e72417da1006eb",
+      "source_pixel_sha256": "ad49706074bf9310fea33f8f9f171de9ee26e342116762265eed4eb32a605686",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.04396248236298561,
+            -0.024141808971762657,
+            0.4274781346321106
+          ],
+          "minimum_ncc": -0.024141808971762657,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.10453909635543823,
+            -0.02949492447078228,
+            0.06919962912797928
+          ],
+          "minimum_ncc": -0.10453909635543823,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 8489,
+        "before_crop_ncc": [
+          0.07568560540676117,
+          -0.05501573905348778,
+          0.4912697970867157
+        ],
+        "after_crop_ncc": [
+          -0.10453909635543823,
+          -0.02949492447078228,
+          0.06919962912797928
+        ],
+        "minimum_ncc": -0.10453909635543823
+      }
+    },
+    {
+      "source_pts_ticks": 9001,
+      "source_pts_sec": 0.5860026041666667,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "30f817e6609cdb550aa862c82e224f4aa93c3814a7462a2b68d2d02491444176",
+      "source_pixel_sha256": "86e95bbb929edc4ab8e1ece1db65fd53cdb5fe7d9d97c50fb1e3ae63660b0391",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.14812788367271423,
+            0.07629013806581497,
+            0.015423326753079891
+          ],
+          "minimum_ncc": 0.015423326753079891,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.10879790037870407,
+            -0.02610546350479126,
+            0.1967850625514984
+          ],
+          "minimum_ncc": -0.10879790037870407,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 8745,
+        "before_crop_ncc": [
+          0.04396248236298561,
+          -0.024141808971762657,
+          0.4274781346321106
+        ],
+        "after_crop_ncc": [
+          -0.10879790037870407,
+          -0.02610546350479126,
+          0.1967850625514984
+        ],
+        "minimum_ncc": -0.10879790037870407
+      }
+    },
+    {
+      "source_pts_ticks": 9257,
+      "source_pts_sec": 0.6026692708333333,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "98eaa036ec706bbdaa6465cc07d8881054e8462d3d388012027841350012ee8d",
+      "source_pixel_sha256": "4d5c9bf27609ce6afc1b24b34bfb8d36371b5d15aec9caad50f8a57adffa718d",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.21107037365436554,
+            0.012559828348457813,
+            0.08728295564651489
+          ],
+          "minimum_ncc": 0.012559828348457813,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.11493444442749023,
+            0.1327473223209381,
+            -0.12780891358852386
+          ],
+          "minimum_ncc": -0.12780891358852386,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 9001,
+        "before_crop_ncc": [
+          0.14812788367271423,
+          0.07629013806581497,
+          0.015423326753079891
+        ],
+        "after_crop_ncc": [
+          -0.11493444442749023,
+          0.1327473223209381,
+          -0.12780891358852386
+        ],
+        "minimum_ncc": -0.12780891358852386
+      }
+    },
+    {
+      "source_pts_ticks": 9513,
+      "source_pts_sec": 0.6193359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "9bc280270fd4354964acd49d3c39a5f3d30d9fc088aa1730bbee4343ee6a4386",
+      "source_pixel_sha256": "f767e3785982b9e2a3562d1513ee85df14c296ade200f4086cb2a478afad5b6f",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.11629906296730042,
+            -0.05227384343743324,
+            0.20140577852725983
+          ],
+          "minimum_ncc": -0.05227384343743324,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.24705740809440613,
+            -0.10278322547674179,
+            0.13566355407238007
+          ],
+          "minimum_ncc": -0.10278322547674179,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 9257,
+        "before_crop_ncc": [
+          0.21107037365436554,
+          0.012559828348457813,
+          0.08728295564651489
+        ],
+        "after_crop_ncc": [
+          0.24705740809440613,
+          -0.10278322547674179,
+          0.13566355407238007
+        ],
+        "minimum_ncc": -0.10278322547674179
+      }
+    },
+    {
+      "source_pts_ticks": 9769,
+      "source_pts_sec": 0.6360026041666667,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "20e637c23131b494da9870ea5ccb4298cfcde182d88dae9b11f63b12831728ea",
+      "source_pixel_sha256": "73124afd2f0474787515eeedfbef7f8e1f5f13749b5db9eb5ce3c23e8af81629",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.12735432386398315,
+            -0.018174055963754654,
+            0.2996141016483307
+          ],
+          "minimum_ncc": -0.12735432386398315,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.1943696290254593,
+            -0.12216901034116745,
+            0.11004343628883362
+          ],
+          "minimum_ncc": -0.12216901034116745,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 9513,
+        "before_crop_ncc": [
+          0.11629906296730042,
+          -0.05227384343743324,
+          0.20140577852725983
+        ],
+        "after_crop_ncc": [
+          0.1943696290254593,
+          -0.12216901034116745,
+          0.11004343628883362
+        ],
+        "minimum_ncc": -0.12216901034116745
+      }
+    },
+    {
+      "source_pts_ticks": 10025,
+      "source_pts_sec": 0.6526692708333334,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "b66ffeaef9d9b711c053b1a924016d89448258b0bdd730ed998b4dceda0a1761",
+      "source_pixel_sha256": "aba471443ff2a3d765e564c476383a4d983ecd9a8106018905fb2a9c30456236",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.09715493768453598,
+            -0.028926633298397064,
+            0.31727334856987
+          ],
+          "minimum_ncc": -0.09715493768453598,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.09210005402565002,
+            -0.1351323127746582,
+            0.06385204195976257
+          ],
+          "minimum_ncc": -0.1351323127746582,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 9769,
+        "before_crop_ncc": [
+          -0.12735432386398315,
+          -0.018174055963754654,
+          0.2996141016483307
+        ],
+        "after_crop_ncc": [
+          0.09210005402565002,
+          -0.1351323127746582,
+          0.06385204195976257
+        ],
+        "minimum_ncc": -0.1351323127746582
+      }
+    },
+    {
+      "source_pts_ticks": 10281,
+      "source_pts_sec": 0.6693359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "7dbb2ce2fd0a8abd265cec050ef5966ae9871087e585f7ee4173452e7055d25f",
+      "source_pixel_sha256": "b2c564ec8c37fabe6fb0c3b28ebe55a68f52e9ae78e2053d820af814a2120ffe",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.07159312069416046,
+            -0.029759716242551804,
+            0.3212471306324005
+          ],
+          "minimum_ncc": -0.07159312069416046,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.06051167473196983,
+            -0.12404505163431168,
+            0.03855258226394653
+          ],
+          "minimum_ncc": -0.12404505163431168,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 10025,
+        "before_crop_ncc": [
+          -0.09715493768453598,
+          -0.028926633298397064,
+          0.31727334856987
+        ],
+        "after_crop_ncc": [
+          0.06051167473196983,
+          -0.12404505163431168,
+          0.03855258226394653
+        ],
+        "minimum_ncc": -0.12404505163431168
+      }
+    },
+    {
+      "source_pts_ticks": 10537,
+      "source_pts_sec": 0.6860026041666667,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "902257cb6ae404127b6209ada5537b44732116e6e8a6a493dff51f7394c142c4",
+      "source_pixel_sha256": "984b87237cb266d40d848850ed6614c08c2c08fff7996557d87ad46f297b5fa6",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.0018684505484998226,
+            -0.02954946830868721,
+            0.32730039954185486
+          ],
+          "minimum_ncc": -0.02954946830868721,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.029640449211001396,
+            -0.08736181259155273,
+            0.01423016469925642
+          ],
+          "minimum_ncc": -0.08736181259155273,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 10281,
+        "before_crop_ncc": [
+          -0.07159312069416046,
+          -0.029759716242551804,
+          0.3212471306324005
+        ],
+        "after_crop_ncc": [
+          -0.029640449211001396,
+          -0.08736181259155273,
+          0.01423016469925642
+        ],
+        "minimum_ncc": -0.08736181259155273
+      }
+    },
+    {
+      "source_pts_ticks": 10793,
+      "source_pts_sec": 0.7026692708333333,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "a2c76ed0a4e6bd70a21769276d989d57344935273d553cafa027bbc9966a2c16",
+      "source_pixel_sha256": "974da4abab552d97d663c67c3a8ba5dc2638ed9c076690365c54eac1657e651b",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.01668616570532322,
+            -0.029951702803373337,
+            0.3108244240283966
+          ],
+          "minimum_ncc": -0.029951702803373337,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.03712611272931099,
+            -0.0827728658914566,
+            0.027005458250641823
+          ],
+          "minimum_ncc": -0.0827728658914566,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 10537,
+        "before_crop_ncc": [
+          0.0018684505484998226,
+          -0.02954946830868721,
+          0.32730039954185486
+        ],
+        "after_crop_ncc": [
+          -0.03712611272931099,
+          -0.0827728658914566,
+          0.027005458250641823
+        ],
+        "minimum_ncc": -0.0827728658914566
+      }
+    },
+    {
+      "source_pts_ticks": 11049,
+      "source_pts_sec": 0.7193359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "d250da17278442be88036b322489859d4caa97e3efa18e7619cf0b92fdd9c957",
+      "source_pixel_sha256": "0fcfa0189358f5527f96b4f369af84aac40c6aa9d0135b8409de2a0d8f7af4a6",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.011729191988706589,
+            -0.04428129270672798,
+            0.2977519631385803
+          ],
+          "minimum_ncc": -0.04428129270672798,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.06536629796028137,
+            -0.07742839306592941,
+            0.05019568279385567
+          ],
+          "minimum_ncc": -0.07742839306592941,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 10793,
+        "before_crop_ncc": [
+          0.01668616570532322,
+          -0.029951702803373337,
+          0.3108244240283966
+        ],
+        "after_crop_ncc": [
+          -0.06536629796028137,
+          -0.07742839306592941,
+          0.05019568279385567
+        ],
+        "minimum_ncc": -0.07742839306592941
+      }
+    },
+    {
+      "source_pts_ticks": 11305,
+      "source_pts_sec": 0.7360026041666666,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "2e650e96deaa33252039ce56bff6649aac4c4578d2d86fce0866eddf093efc2a",
+      "source_pixel_sha256": "d4d22f32bd6647b6a75cf61227f27e16a80cedc719fa3f76cb4668044c536a53",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.023988191038370132,
+            -0.04165668785572052,
+            0.322101891040802
+          ],
+          "minimum_ncc": -0.04165668785572052,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.16051258146762848,
+            -0.06716017425060272,
+            0.08779425173997879
+          ],
+          "minimum_ncc": -0.16051258146762848,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 11049,
+        "before_crop_ncc": [
+          0.011729191988706589,
+          -0.04428129270672798,
+          0.2977519631385803
+        ],
+        "after_crop_ncc": [
+          -0.16051258146762848,
+          -0.06716017425060272,
+          0.08779425173997879
+        ],
+        "minimum_ncc": -0.16051258146762848
+      }
+    },
+    {
+      "source_pts_ticks": 11561,
+      "source_pts_sec": 0.7526692708333333,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "4e2733c0a4e9a887cecd2af107cc3742f10064577286b09477e5f86d8c2712cc",
+      "source_pixel_sha256": "98b154aabc8a3865499ff6ae817017fa990704124342a72717ae9d26a4ff0abb",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.0026272761169821024,
+            -0.044497568160295486,
+            0.34937354922294617
+          ],
+          "minimum_ncc": -0.044497568160295486,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.21632999181747437,
+            -0.07285872101783752,
+            0.11335866153240204
+          ],
+          "minimum_ncc": -0.21632999181747437,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 11305,
+        "before_crop_ncc": [
+          -0.023988191038370132,
+          -0.04165668785572052,
+          0.322101891040802
+        ],
+        "after_crop_ncc": [
+          -0.21632999181747437,
+          -0.07285872101783752,
+          0.11335866153240204
+        ],
+        "minimum_ncc": -0.21632999181747437
+      }
+    },
+    {
+      "source_pts_ticks": 11817,
+      "source_pts_sec": 0.7693359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "35a2002016add0ec14e3f36dc9078e5a0e6cab822b9af6aa4a4c722a29f607a6",
+      "source_pixel_sha256": "ff3cacbd0577437eda9c15cd3a8a47e6adf2711702d132b213b040740983a7ab",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.15220212936401367,
+            0.029545383527874947,
+            0.30951082706451416
+          ],
+          "minimum_ncc": 0.029545383527874947,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.1370735764503479,
+            -0.019677655771374702,
+            0.14757566154003143
+          ],
+          "minimum_ncc": -0.1370735764503479,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 11561,
+        "before_crop_ncc": [
+          -0.0026272761169821024,
+          -0.044497568160295486,
+          0.34937354922294617
+        ],
+        "after_crop_ncc": [
+          -0.1370735764503479,
+          -0.019677655771374702,
+          0.14757566154003143
+        ],
+        "minimum_ncc": -0.1370735764503479
+      }
+    },
+    {
+      "source_pts_ticks": 12073,
+      "source_pts_sec": 0.7860026041666667,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "6142f4854bf83b34564381b2e052e94963b030b1fc67f1ae131f1318be294f01",
+      "source_pixel_sha256": "2fc6d4fd27d60c5143852ead1a05711fad20174ac0daf3411a9d920a361c598a",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.16811124980449677,
+            0.15348096191883087,
+            0.32985976338386536
+          ],
+          "minimum_ncc": 0.15348096191883087,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.17949537932872772,
+            -0.12197787314653397,
+            0.12234669178724289
+          ],
+          "minimum_ncc": -0.12197787314653397,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 11817,
+        "before_crop_ncc": [
+          0.15220212936401367,
+          0.029545383527874947,
+          0.30951082706451416
+        ],
+        "after_crop_ncc": [
+          0.17949537932872772,
+          -0.12197787314653397,
+          0.12234669178724289
+        ],
+        "minimum_ncc": -0.12197787314653397
+      }
+    },
+    {
+      "source_pts_ticks": 12329,
+      "source_pts_sec": 0.8026692708333333,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "223e81eeebd4bd456007b3bd47257e0518d2cc353a169c1a9432f6d05b527b7a",
+      "source_pixel_sha256": "7d947ff47207a64b9c96d9f13c573753dd26f532147aaf44ce191909b2bd4fd3",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.12626980245113373,
+            0.18051916360855103,
+            0.16480965912342072
+          ],
+          "minimum_ncc": 0.12626980245113373,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.08908402174711227,
+            0.016411300748586655,
+            0.09067674726247787
+          ],
+          "minimum_ncc": 0.016411300748586655,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 12073,
+        "before_crop_ncc": [
+          0.16811124980449677,
+          0.15348096191883087,
+          0.32985976338386536
+        ],
+        "after_crop_ncc": [
+          0.08908402174711227,
+          0.016411300748586655,
+          0.09067674726247787
+        ],
+        "minimum_ncc": 0.016411300748586655
+      }
+    },
+    {
+      "source_pts_ticks": 12585,
+      "source_pts_sec": 0.8193359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "090c5826197038a77dbb2b5e1a6053ddf338d651bdca855a4c0fa9538ba925c2",
+      "source_pixel_sha256": "d59722a7a1e75a144d614c38a059ff419edebad76412312f8e9af333ef2fd389",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.02392234094440937,
+            0.1560559719800949,
+            0.12978626787662506
+          ],
+          "minimum_ncc": -0.02392234094440937,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.33344560861587524,
+            0.17383882403373718,
+            0.08400858938694
+          ],
+          "minimum_ncc": 0.08400858938694,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 12329,
+        "before_crop_ncc": [
+          0.12626980245113373,
+          0.18051916360855103,
+          0.16480965912342072
+        ],
+        "after_crop_ncc": [
+          0.33344560861587524,
+          0.17383882403373718,
+          0.08400858938694
+        ],
+        "minimum_ncc": 0.08400858938694
+      }
+    },
+    {
+      "source_pts_ticks": 12841,
+      "source_pts_sec": 0.8360026041666667,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "f2ee2763b3e45f88e5db91f76b27ac33d618dc6f3b777b4410e0b2908f57c318",
+      "source_pixel_sha256": "45df207d519ec9007ee23b86b321cb6e97e3519db277b2fae77263f0debe4fab",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.04496387019753456,
+            -0.09482376277446747,
+            0.026425883173942566
+          ],
+          "minimum_ncc": -0.09482376277446747,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.17708590626716614,
+            0.10594861954450607,
+            -0.06151651591062546
+          ],
+          "minimum_ncc": -0.06151651591062546,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 12585,
+        "before_crop_ncc": [
+          -0.02392234094440937,
+          0.1560559719800949,
+          0.12978626787662506
+        ],
+        "after_crop_ncc": [
+          0.17708590626716614,
+          0.10594861954450607,
+          -0.06151651591062546
+        ],
+        "minimum_ncc": -0.06151651591062546
+      }
+    },
+    {
+      "source_pts_ticks": 13097,
+      "source_pts_sec": 0.8526692708333333,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "5a311dab65fdc18d3e411956b6c60471311bea1fe93629b5468c578639f13984",
+      "source_pixel_sha256": "943bb5261c263c193df16e2dbddbf12256bf8072dfbe0e481d94540850863aa0",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.10096203535795212,
+            -0.11527292430400848,
+            0.01645599491894245
+          ],
+          "minimum_ncc": -0.11527292430400848,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.11296964436769485,
+            -0.010353745892643929,
+            -0.03373979777097702
+          ],
+          "minimum_ncc": -0.03373979777097702,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 12841,
+        "before_crop_ncc": [
+          0.04496387019753456,
+          -0.09482376277446747,
+          0.026425883173942566
+        ],
+        "after_crop_ncc": [
+          0.11296964436769485,
+          -0.010353745892643929,
+          -0.03373979777097702
+        ],
+        "minimum_ncc": -0.09482376277446747
+      }
+    },
+    {
+      "source_pts_ticks": 13353,
+      "source_pts_sec": 0.8693359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "41f7647f739453bc9af6cf9ac92de6f47ed01adbf5ed28521ae479f1e8ee6167",
+      "source_pixel_sha256": "9ad154e6a87bdb05c630cc9f19206d1f9f33276ff9b359c0ea5f5057935bac52",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.09219212085008621,
+            -0.02212546020746231,
+            -0.02083531767129898
+          ],
+          "minimum_ncc": -0.09219212085008621,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.1876705139875412,
+            -0.11682188510894775,
+            -0.12089001387357712
+          ],
+          "minimum_ncc": -0.12089001387357712,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 13097,
+        "before_crop_ncc": [
+          0.10096203535795212,
+          -0.11527292430400848,
+          0.01645599491894245
+        ],
+        "after_crop_ncc": [
+          0.1876705139875412,
+          -0.11682188510894775,
+          -0.12089001387357712
+        ],
+        "minimum_ncc": -0.12089001387357712
+      }
+    },
+    {
+      "source_pts_ticks": 13609,
+      "source_pts_sec": 0.8860026041666667,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "e13ceb835b25254048c364999982397bd6ff980fb4aedd8daad1d4f34c144e38",
+      "source_pixel_sha256": "e1107f8ffbd006faf9c6091961ce8d979e4a3ef4e36139b75e6567d43180fd5f",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.1120491698384285,
+            7.429334800690413e-05,
+            -0.013904123567044735
+          ],
+          "minimum_ncc": -0.1120491698384285,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.19908404350280762,
+            -0.05464556813240051,
+            -0.11559191346168518
+          ],
+          "minimum_ncc": -0.11559191346168518,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 13353,
+        "before_crop_ncc": [
+          -0.09219212085008621,
+          -0.02212546020746231,
+          -0.02083531767129898
+        ],
+        "after_crop_ncc": [
+          0.19908404350280762,
+          -0.05464556813240051,
+          -0.11559191346168518
+        ],
+        "minimum_ncc": -0.11559191346168518
+      }
+    },
+    {
+      "source_pts_ticks": 13865,
+      "source_pts_sec": 0.9026692708333334,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "c046294115b654c3960aad2daccac3c621b92a485758ec51042cce5273c0e592",
+      "source_pixel_sha256": "74a0a54d9b6c3263cc21ca5a691c3f222da548fcef621e4b59b1a8a323d7afdd",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.1241341307759285,
+            0.08187094330787659,
+            -0.0019521064823493361
+          ],
+          "minimum_ncc": -0.1241341307759285,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.22035062313079834,
+            0.10496397316455841,
+            -0.07435141503810883
+          ],
+          "minimum_ncc": -0.07435141503810883,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 13609,
+        "before_crop_ncc": [
+          -0.1120491698384285,
+          7.429334800690413e-05,
+          -0.013904123567044735
+        ],
+        "after_crop_ncc": [
+          0.22035062313079834,
+          0.10496397316455841,
+          -0.07435141503810883
+        ],
+        "minimum_ncc": -0.1120491698384285
+      }
+    },
+    {
+      "source_pts_ticks": 14121,
+      "source_pts_sec": 0.9193359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "a45fc742d97b3e87a23fbca7a12cf50d3a19960edb858aa769f0337492cde255",
+      "source_pixel_sha256": "494e05b069e22e3c7780e63ceb1e9bf7c22d18cdd0f0f2ac347a8ebe861d021e",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.10558465123176575,
+            0.10108685493469238,
+            0.0026795980520546436
+          ],
+          "minimum_ncc": -0.10558465123176575,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.2461378276348114,
+            0.13608448207378387,
+            -0.038654912263154984
+          ],
+          "minimum_ncc": -0.038654912263154984,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 13865,
+        "before_crop_ncc": [
+          -0.1241341307759285,
+          0.08187094330787659,
+          -0.0019521064823493361
+        ],
+        "after_crop_ncc": [
+          0.2461378276348114,
+          0.13608448207378387,
+          -0.038654912263154984
+        ],
+        "minimum_ncc": -0.1241341307759285
+      }
+    },
+    {
+      "source_pts_ticks": 14377,
+      "source_pts_sec": 0.9360026041666667,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "b5e9ca66e0fb5d3086f38acda96e371c715d40fa1bd76be2417a7e0d658eec19",
+      "source_pixel_sha256": "41bde1caa7169be334bd2c45f1686caf956fd3f844f3a9e8e3d6160a0c922a84",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.09125576913356781,
+            0.12110274285078049,
+            0.03680165112018585
+          ],
+          "minimum_ncc": -0.09125576913356781,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.29540199041366577,
+            0.1921224147081375,
+            -0.03446594253182411
+          ],
+          "minimum_ncc": -0.03446594253182411,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 14121,
+        "before_crop_ncc": [
+          -0.10558465123176575,
+          0.10108685493469238,
+          0.0026795980520546436
+        ],
+        "after_crop_ncc": [
+          0.29540199041366577,
+          0.1921224147081375,
+          -0.03446594253182411
+        ],
+        "minimum_ncc": -0.10558465123176575
+      }
+    },
+    {
+      "source_pts_ticks": 14633,
+      "source_pts_sec": 0.9526692708333333,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "2a3536236828b73d2bac1c5c409d43d8b81a1124e12b75f11d1bfa685dcd6fb4",
+      "source_pixel_sha256": "9c66515eda386ead6fb6482c14d49a44249738726d8c33e979c178ededac99c1",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.16992120444774628,
+            0.09505487978458405,
+            0.13639070093631744
+          ],
+          "minimum_ncc": -0.16992120444774628,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.3273395895957947,
+            0.18115583062171936,
+            -0.040057223290205
+          ],
+          "minimum_ncc": -0.040057223290205,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 14377,
+        "before_crop_ncc": [
+          -0.09125576913356781,
+          0.12110274285078049,
+          0.03680165112018585
+        ],
+        "after_crop_ncc": [
+          0.3273395895957947,
+          0.18115583062171936,
+          -0.040057223290205
+        ],
+        "minimum_ncc": -0.09125576913356781
+      }
+    },
+    {
+      "source_pts_ticks": 14889,
+      "source_pts_sec": 0.9693359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "2728e52e484d6716eabd1c4ef3139e282d448cc1bd47776d74bfbfcb6fb644b4",
+      "source_pixel_sha256": "529458ee270bc120410ecc0018de5d81777f51520534636a3eab86f95afd1ef9",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.26168566942214966,
+            0.05539369583129883,
+            0.09822717308998108
+          ],
+          "minimum_ncc": -0.26168566942214966,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.38574784994125366,
+            0.1747705042362213,
+            0.014040926471352577
+          ],
+          "minimum_ncc": 0.014040926471352577,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 14633,
+        "before_crop_ncc": [
+          -0.16992120444774628,
+          0.09505487978458405,
+          0.13639070093631744
+        ],
+        "after_crop_ncc": [
+          0.38574784994125366,
+          0.1747705042362213,
+          0.014040926471352577
+        ],
+        "minimum_ncc": -0.16992120444774628
+      }
+    },
+    {
+      "source_pts_ticks": 15145,
+      "source_pts_sec": 0.9860026041666666,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "3fbebec386fbe4479f4d280e809eed1dc4eea87fe50aea47bac75323f0a3df32",
+      "source_pixel_sha256": "466af1b64bb4780bd44960efaade1ae258ca1fe4e3cc2588c1ae36c047336e9a",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.2645677626132965,
+            0.017997154965996742,
+            0.08837411552667618
+          ],
+          "minimum_ncc": -0.2645677626132965,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.35560178756713867,
+            0.13731834292411804,
+            0.045865897089242935
+          ],
+          "minimum_ncc": 0.045865897089242935,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 14889,
+        "before_crop_ncc": [
+          -0.26168566942214966,
+          0.05539369583129883,
+          0.09822717308998108
+        ],
+        "after_crop_ncc": [
+          0.35560178756713867,
+          0.13731834292411804,
+          0.045865897089242935
+        ],
+        "minimum_ncc": -0.26168566942214966
+      }
+    },
+    {
+      "source_pts_ticks": 15401,
+      "source_pts_sec": 1.0026692708333333,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "f8774a693cfdbc58c9b56402a4fb3c664726b7f7fd4980b0300882e78ba804ac",
+      "source_pixel_sha256": "00b90ba2655f8643907a947109ee752e2fad408f52feee58859acc0d79c54257",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.26150843501091003,
+            -0.02816236950457096,
+            0.07051582634449005
+          ],
+          "minimum_ncc": -0.26150843501091003,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.20526222884655,
+            0.19516392052173615,
+            0.06934548169374466
+          ],
+          "minimum_ncc": 0.06934548169374466,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 15145,
+        "before_crop_ncc": [
+          -0.2645677626132965,
+          0.017997154965996742,
+          0.08837411552667618
+        ],
+        "after_crop_ncc": [
+          0.20526222884655,
+          0.19516392052173615,
+          0.06934548169374466
+        ],
+        "minimum_ncc": -0.2645677626132965
+      }
+    },
+    {
+      "source_pts_ticks": 15657,
+      "source_pts_sec": 1.0193359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "91b805d50a6f1949961cce470f3664b473aae166e49a9a0c57ebdff86f16fe5e",
+      "source_pixel_sha256": "7025cf6c63fda0552ee0e4992555a0c41d8168d45dc85e7a5590dc8b2b97c209",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.19594793021678925,
+            -0.042874108999967575,
+            0.09228972345590591
+          ],
+          "minimum_ncc": -0.19594793021678925,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.12865689396858215,
+            0.1803358793258667,
+            0.059394028037786484
+          ],
+          "minimum_ncc": 0.059394028037786484,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 15401,
+        "before_crop_ncc": [
+          -0.26150843501091003,
+          -0.02816236950457096,
+          0.07051582634449005
+        ],
+        "after_crop_ncc": [
+          0.12865689396858215,
+          0.1803358793258667,
+          0.059394028037786484
+        ],
+        "minimum_ncc": -0.26150843501091003
+      }
+    },
+    {
+      "source_pts_ticks": 15913,
+      "source_pts_sec": 1.0360026041666666,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "4fb290bae77805e0ac2dcc6909f96090d178196871769ab8746aaca8cf8cce76",
+      "source_pixel_sha256": "f6e5da0536f7512752e8a7e76f029ec4f40acd76d18e02771fe577f26e944132",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.11179372668266296,
+            -0.06498798727989197,
+            0.1087370365858078
+          ],
+          "minimum_ncc": -0.11179372668266296,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.08565347641706467,
+            0.1228029653429985,
+            0.06211651861667633
+          ],
+          "minimum_ncc": 0.06211651861667633,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 15657,
+        "before_crop_ncc": [
+          -0.19594793021678925,
+          -0.042874108999967575,
+          0.09228972345590591
+        ],
+        "after_crop_ncc": [
+          0.08565347641706467,
+          0.1228029653429985,
+          0.06211651861667633
+        ],
+        "minimum_ncc": -0.19594793021678925
+      }
+    },
+    {
+      "source_pts_ticks": 16169,
+      "source_pts_sec": 1.0526692708333334,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "ad4c9879f8b574973bedffb2a70b64a4ed3d9ba668ff294ed11c4379c1878cc1",
+      "source_pixel_sha256": "28e9fc555cbe9609559502d77545a065dea70acbbbc8563a6ec8f1c417b52adb",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.09880993515253067,
+            -0.07387889176607132,
+            0.11109882593154907
+          ],
+          "minimum_ncc": -0.09880993515253067,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.08902700245380402,
+            0.09349949657917023,
+            0.05923722684383392
+          ],
+          "minimum_ncc": 0.05923722684383392,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 15913,
+        "before_crop_ncc": [
+          -0.11179372668266296,
+          -0.06498798727989197,
+          0.1087370365858078
+        ],
+        "after_crop_ncc": [
+          0.08902700245380402,
+          0.09349949657917023,
+          0.05923722684383392
+        ],
+        "minimum_ncc": -0.11179372668266296
+      }
+    },
+    {
+      "source_pts_ticks": 16425,
+      "source_pts_sec": 1.0693359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "912a73ea44e5aeb5b4f8a7fc43c7c4890929948f45c9aaff67731a447fd0c762",
+      "source_pixel_sha256": "c964a33e53e4e214e56ac5c57751d79f4c1a8619c48f07bc60abf13e3a61d91c",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.07261193543672562,
+            -0.0912405326962471,
+            0.11266059428453445
+          ],
+          "minimum_ncc": -0.0912405326962471,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.07621040940284729,
+            -0.01841099001467228,
+            0.05443345755338669
+          ],
+          "minimum_ncc": -0.01841099001467228,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 16169,
+        "before_crop_ncc": [
+          -0.09880993515253067,
+          -0.07387889176607132,
+          0.11109882593154907
+        ],
+        "after_crop_ncc": [
+          0.07621040940284729,
+          -0.01841099001467228,
+          0.05443345755338669
+        ],
+        "minimum_ncc": -0.09880993515253067
+      }
+    },
+    {
+      "source_pts_ticks": 16681,
+      "source_pts_sec": 1.0860026041666666,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "046fa5be096c66957315daec99f8e3f671b0e899f7a6ae429484284ef88d17fd",
+      "source_pixel_sha256": "96166c1254c5fabee2674e3c92c6c186f053fbfc45b51e0cbb323aa65e0a4b0a",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.07395660132169724,
+            -0.09804697334766388,
+            0.10936553031206131
+          ],
+          "minimum_ncc": -0.09804697334766388,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.07945331186056137,
+            -0.09542780369520187,
+            0.05494805797934532
+          ],
+          "minimum_ncc": -0.09542780369520187,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 16425,
+        "before_crop_ncc": [
+          -0.07261193543672562,
+          -0.0912405326962471,
+          0.11266059428453445
+        ],
+        "after_crop_ncc": [
+          0.07945331186056137,
+          -0.09542780369520187,
+          0.05494805797934532
+        ],
+        "minimum_ncc": -0.09542780369520187
+      }
+    },
+    {
+      "source_pts_ticks": 16937,
+      "source_pts_sec": 1.1026692708333334,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "e3cf07796720e4f8a557d33979dc3f24d0b15ef24beb633738b4f4bbd32b4937",
+      "source_pixel_sha256": "d6c57e2d8db9b37566d4c27c5ec090e59094addbfcc25320847794d5e58adbc5",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.07589180767536163,
+            -0.09934546798467636,
+            0.10954992473125458
+          ],
+          "minimum_ncc": -0.09934546798467636,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.08545348048210144,
+            -0.11792033910751343,
+            0.0577862411737442
+          ],
+          "minimum_ncc": -0.11792033910751343,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 16681,
+        "before_crop_ncc": [
+          -0.07395660132169724,
+          -0.09804697334766388,
+          0.10936553031206131
+        ],
+        "after_crop_ncc": [
+          0.08545348048210144,
+          -0.11792033910751343,
+          0.0577862411737442
+        ],
+        "minimum_ncc": -0.11792033910751343
+      }
+    },
+    {
+      "source_pts_ticks": 17193,
+      "source_pts_sec": 1.1193359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "d1329be6996837654978da0df2365209e3cf84edf3bd37959b1c06680e5f997d",
+      "source_pixel_sha256": "7fb83c1d6d81de20ec7a4d6a2510591a8310a650a89080ef20ff9a40815042f0",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.05265246331691742,
+            -0.08719126135110855,
+            0.11145147681236267
+          ],
+          "minimum_ncc": -0.08719126135110855,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.092036172747612,
+            -0.15000291168689728,
+            0.05858534574508667
+          ],
+          "minimum_ncc": -0.15000291168689728,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 16937,
+        "before_crop_ncc": [
+          -0.07589180767536163,
+          -0.09934546798467636,
+          0.10954992473125458
+        ],
+        "after_crop_ncc": [
+          0.092036172747612,
+          -0.15000291168689728,
+          0.05858534574508667
+        ],
+        "minimum_ncc": -0.15000291168689728
+      }
+    },
+    {
+      "source_pts_ticks": 17449,
+      "source_pts_sec": 1.1360026041666667,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "57914b3a0ecf2609959f33fcd835aa801cc63c050c823ed44e1adf0ddab0a4db",
+      "source_pixel_sha256": "2b2f9d773f67c40daf9e8eac46bce2ca20399dd06f1fd2cc7f55c7681c7f76c9",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.03613932430744171,
+            -0.027225492522120476,
+            0.11394811421632767
+          ],
+          "minimum_ncc": -0.03613932430744171,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.10624223202466965,
+            -0.14245948195457458,
+            0.05588245019316673
+          ],
+          "minimum_ncc": -0.14245948195457458,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 17193,
+        "before_crop_ncc": [
+          -0.05265246331691742,
+          -0.08719126135110855,
+          0.11145147681236267
+        ],
+        "after_crop_ncc": [
+          0.10624223202466965,
+          -0.14245948195457458,
+          0.05588245019316673
+        ],
+        "minimum_ncc": -0.14245948195457458
+      }
+    },
+    {
+      "source_pts_ticks": 17705,
+      "source_pts_sec": 1.1526692708333333,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "da2fa6f68bdf42b808555866f57da0e7dbbba794c989657fcebcd02dca2de7ef",
+      "source_pixel_sha256": "59f61256d67f35fdc28b27bb3f3464466105977355884f09ee92677616cb26a4",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.038320355117321014,
+            0.00027128556394018233,
+            0.11143475025892258
+          ],
+          "minimum_ncc": -0.038320355117321014,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.11451148241758347,
+            -0.11883240938186646,
+            0.05512023717164993
+          ],
+          "minimum_ncc": -0.11883240938186646,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 17449,
+        "before_crop_ncc": [
+          -0.03613932430744171,
+          -0.027225492522120476,
+          0.11394811421632767
+        ],
+        "after_crop_ncc": [
+          0.11451148241758347,
+          -0.11883240938186646,
+          0.05512023717164993
+        ],
+        "minimum_ncc": -0.11883240938186646
+      }
+    },
+    {
+      "source_pts_ticks": 17961,
+      "source_pts_sec": 1.1693359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "6605f4c52644fc91662994b660317794ed203d7a491b584e5a52c7de85528f3e",
+      "source_pixel_sha256": "995e2256c83facaa06c4f7da8e78a284aba9c8b3f41390b4a97b3afedc870a94",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.0615205354988575,
+            0.18321388959884644,
+            0.0991608127951622
+          ],
+          "minimum_ncc": -0.0615205354988575,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.15915407240390778,
+            0.06320969760417938,
+            0.04051564633846283
+          ],
+          "minimum_ncc": 0.04051564633846283,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 17705,
+        "before_crop_ncc": [
+          -0.038320355117321014,
+          0.00027128556394018233,
+          0.11143475025892258
+        ],
+        "after_crop_ncc": [
+          0.15915407240390778,
+          0.06320969760417938,
+          0.04051564633846283
+        ],
+        "minimum_ncc": -0.038320355117321014
+      }
+    },
+    {
+      "source_pts_ticks": 18217,
+      "source_pts_sec": 1.1860026041666667,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "d832191028beb8edf0360af84108214913cf987fcc083d833a0c90dca495682c",
+      "source_pixel_sha256": "e3dd59ffcf7ca3bac6340cf5d34ddb17b93ff4602495f74fb2991a647c30ae2d",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.0714457780122757,
+            0.18669965863227844,
+            0.09419286251068115
+          ],
+          "minimum_ncc": -0.0714457780122757,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.17180389165878296,
+            0.074952132999897,
+            0.03537677600979805
+          ],
+          "minimum_ncc": 0.03537677600979805,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 17961,
+        "before_crop_ncc": [
+          -0.0615205354988575,
+          0.18321388959884644,
+          0.0991608127951622
+        ],
+        "after_crop_ncc": [
+          0.17180389165878296,
+          0.074952132999897,
+          0.03537677600979805
+        ],
+        "minimum_ncc": -0.0615205354988575
+      }
+    },
+    {
+      "source_pts_ticks": 18473,
+      "source_pts_sec": 1.2026692708333333,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "bde155eaeb70d6954d1389a0e3a20be0bed2bc1dab093a7597932ad542d0ab8c",
+      "source_pixel_sha256": "b6d3e12dfc4e861fec894098eba2b500858dfbde90f3ffaa0d90848113bf0bf0",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.1430438607931137,
+            0.1861312836408615,
+            0.0817485824227333
+          ],
+          "minimum_ncc": -0.1430438607931137,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.14441931247711182,
+            0.10508780926465988,
+            0.026673929765820503
+          ],
+          "minimum_ncc": 0.026673929765820503,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 18217,
+        "before_crop_ncc": [
+          -0.0714457780122757,
+          0.18669965863227844,
+          0.09419286251068115
+        ],
+        "after_crop_ncc": [
+          0.14441931247711182,
+          0.10508780926465988,
+          0.026673929765820503
+        ],
+        "minimum_ncc": -0.0714457780122757
+      }
+    },
+    {
+      "source_pts_ticks": 18729,
+      "source_pts_sec": 1.2193359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "c19955db7056e65abb90034fa6c0da10bc4c85b034b08e7ed1fc1b03e6a13c61",
+      "source_pixel_sha256": "bdb1328b9f3fc754b4ccf5debd11a198fa9c6c2e48c8a99acc77f7f07ce1ed5d",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.2426190972328186,
+            0.1921127289533615,
+            0.07069792598485947
+          ],
+          "minimum_ncc": -0.2426190972328186,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.12250490486621857,
+            0.14169389009475708,
+            0.010343765839934349
+          ],
+          "minimum_ncc": 0.010343765839934349,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 18473,
+        "before_crop_ncc": [
+          -0.1430438607931137,
+          0.1861312836408615,
+          0.0817485824227333
+        ],
+        "after_crop_ncc": [
+          0.12250490486621857,
+          0.14169389009475708,
+          0.010343765839934349
+        ],
+        "minimum_ncc": -0.1430438607931137
+      }
+    },
+    {
+      "source_pts_ticks": 18985,
+      "source_pts_sec": 1.2360026041666667,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "6bee9a224e2164306dd86d8a54a7caf74193a07204181c14e1d483b4c35ecd00",
+      "source_pixel_sha256": "2dee6c6d44b8dfc74307ce0fb94f46b4f1626169afd3bb9ea0886b0c4ebe93a7",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.2231360524892807,
+            0.19490885734558105,
+            0.0723545253276825
+          ],
+          "minimum_ncc": -0.2231360524892807,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.017077380791306496,
+            0.1600426584482193,
+            0.00901178177446127
+          ],
+          "minimum_ncc": 0.00901178177446127,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 18729,
+        "before_crop_ncc": [
+          -0.2426190972328186,
+          0.1921127289533615,
+          0.07069792598485947
+        ],
+        "after_crop_ncc": [
+          0.017077380791306496,
+          0.1600426584482193,
+          0.00901178177446127
+        ],
+        "minimum_ncc": -0.2426190972328186
+      }
+    },
+    {
+      "source_pts_ticks": 19241,
+      "source_pts_sec": 1.2526692708333333,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "344e7ab8de36921abd0d33af9f40f7eeea743faa5aa7621ed800b6390314c5c8",
+      "source_pixel_sha256": "c7e4c2e654af6c3e9eab3191e4914be0e9ed9afece87fcd3d8e6067649490a6c",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.14699847996234894,
+            0.17083650827407837,
+            0.0797463059425354
+          ],
+          "minimum_ncc": -0.14699847996234894,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.06613154709339142,
+            0.11396900564432144,
+            0.012785985134541988
+          ],
+          "minimum_ncc": -0.06613154709339142,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 18985,
+        "before_crop_ncc": [
+          -0.2231360524892807,
+          0.19490885734558105,
+          0.0723545253276825
+        ],
+        "after_crop_ncc": [
+          -0.06613154709339142,
+          0.11396900564432144,
+          0.012785985134541988
+        ],
+        "minimum_ncc": -0.2231360524892807
+      }
+    },
+    {
+      "source_pts_ticks": 19497,
+      "source_pts_sec": 1.2693359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "a6eb007556996ea5e9a4fa208e564a915ddb4d8c0d4a9c0e423292391a46dc89",
+      "source_pixel_sha256": "838fc0234c5f5094366063c81f60fec2da6bc797811633d34aa7f384385381b3",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.1650014966726303,
+            0.1300317347049713,
+            0.06611766666173935
+          ],
+          "minimum_ncc": -0.1650014966726303,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.002093289280310273,
+            0.03683369979262352,
+            0.009176220744848251
+          ],
+          "minimum_ncc": -0.002093289280310273,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 19241,
+        "before_crop_ncc": [
+          -0.14699847996234894,
+          0.17083650827407837,
+          0.0797463059425354
+        ],
+        "after_crop_ncc": [
+          -0.002093289280310273,
+          0.03683369979262352,
+          0.009176220744848251
+        ],
+        "minimum_ncc": -0.14699847996234894
+      }
+    },
+    {
+      "source_pts_ticks": 19753,
+      "source_pts_sec": 1.2860026041666666,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "e6e678b1968359a117c8c6b0afd9463b1f92619aa364786b742704796e4a26d2",
+      "source_pixel_sha256": "71ff19c1582f5f5fc0485d14d3acf5a929c36364bb39d1d63c364ef5a72ec1f0",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.15711675584316254,
+            -0.05912906676530838,
+            0.08866050094366074
+          ],
+          "minimum_ncc": -0.15711675584316254,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.09471797198057175,
+            -0.19212907552719116,
+            0.01351617369800806
+          ],
+          "minimum_ncc": -0.19212907552719116,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 19497,
+        "before_crop_ncc": [
+          -0.1650014966726303,
+          0.1300317347049713,
+          0.06611766666173935
+        ],
+        "after_crop_ncc": [
+          0.09471797198057175,
+          -0.19212907552719116,
+          0.01351617369800806
+        ],
+        "minimum_ncc": -0.19212907552719116
+      }
+    },
+    {
+      "source_pts_ticks": 20009,
+      "source_pts_sec": 1.3026692708333334,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "60e63f2cd33036671f30c6dbde206b3aa55779a4a59c77204dfe5fae5e1e8729",
+      "source_pixel_sha256": "ef40b5075b9ac3e20ad06a47ae04139d7a78247c3febb9385eededd70f4f58f4",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.37744608521461487,
+            -0.18504631519317627,
+            0.08775223046541214
+          ],
+          "minimum_ncc": -0.37744608521461487,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.2890823185443878,
+            0.1703200489282608,
+            0.015545548871159554
+          ],
+          "minimum_ncc": 0.015545548871159554,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 19753,
+        "before_crop_ncc": [
+          -0.15711675584316254,
+          -0.05912906676530838,
+          0.08866050094366074
+        ],
+        "after_crop_ncc": [
+          0.2890823185443878,
+          0.1703200489282608,
+          0.015545548871159554
+        ],
+        "minimum_ncc": -0.15711675584316254
+      }
+    },
+    {
+      "source_pts_ticks": 20265,
+      "source_pts_sec": 1.3193359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "0bfd781763ab8b1c14887a7ef9b1e7244b36104647122e0400f473ab08bf0245",
+      "source_pixel_sha256": "e97f2b338723373c45112b5c6e927a548ffa691c41e56b3655a78b6dd4fb8858",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.3555406928062439,
+            -0.20650625228881836,
+            0.08709025382995605
+          ],
+          "minimum_ncc": -0.3555406928062439,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.2993119955062866,
+            0.18051107227802277,
+            0.014005336910486221
+          ],
+          "minimum_ncc": 0.014005336910486221,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 20009,
+        "before_crop_ncc": [
+          -0.37744608521461487,
+          -0.18504631519317627,
+          0.08775223046541214
+        ],
+        "after_crop_ncc": [
+          0.2993119955062866,
+          0.18051107227802277,
+          0.014005336910486221
+        ],
+        "minimum_ncc": -0.37744608521461487
+      }
+    },
+    {
+      "source_pts_ticks": 20521,
+      "source_pts_sec": 1.3360026041666666,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "5b71b7d60b8749fc270102700f2caf6ef9d7037c8255deb4fbd934f1984036d7",
+      "source_pixel_sha256": "9bac4f20af6c082331eb1eac785c7e46e0af8cdbf8363082d7fc50190599d9dd",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.16474883258342743,
+            0.047415364533662796,
+            0.08078660815954208
+          ],
+          "minimum_ncc": -0.16474883258342743,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.28217020630836487,
+            0.3206478953361511,
+            0.017601387575268745
+          ],
+          "minimum_ncc": 0.017601387575268745,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 20265,
+        "before_crop_ncc": [
+          -0.3555406928062439,
+          -0.20650625228881836,
+          0.08709025382995605
+        ],
+        "after_crop_ncc": [
+          0.28217020630836487,
+          0.3206478953361511,
+          0.017601387575268745
+        ],
+        "minimum_ncc": -0.3555406928062439
+      }
+    },
+    {
+      "source_pts_ticks": 20777,
+      "source_pts_sec": 1.3526692708333334,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "4be1e8cfcb3b1c50f7096173cd9bda1fa02d497ac483ec5a0b242e109e593cca",
+      "source_pixel_sha256": "d69f3dfb3e854bc6e0b566299a375dbbba9b56afebe41d85dcd5ea3d1714a77e",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.12006090581417084,
+            0.22465424239635468,
+            0.0819946750998497
+          ],
+          "minimum_ncc": -0.12006090581417084,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.12695376574993134,
+            0.010042460635304451,
+            0.026816703379154205
+          ],
+          "minimum_ncc": 0.010042460635304451,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 20521,
+        "before_crop_ncc": [
+          -0.16474883258342743,
+          0.047415364533662796,
+          0.08078660815954208
+        ],
+        "after_crop_ncc": [
+          0.12695376574993134,
+          0.010042460635304451,
+          0.026816703379154205
+        ],
+        "minimum_ncc": -0.16474883258342743
+      }
+    },
+    {
+      "source_pts_ticks": 21033,
+      "source_pts_sec": 1.3693359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "3b737f78901eed36c9d095511d08d338c399b9e3eb21be5f73dcb372b9bc797d",
+      "source_pixel_sha256": "886c0932072f127973f37cb73e26fc0514483eed01568150dca26e1330b39876",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.24584510922431946,
+            -0.11795242875814438,
+            0.0823565125465393
+          ],
+          "minimum_ncc": -0.24584510922431946,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.1229594275355339,
+            -0.042039066553115845,
+            0.035686470568180084
+          ],
+          "minimum_ncc": -0.042039066553115845,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 20777,
+        "before_crop_ncc": [
+          -0.12006090581417084,
+          0.22465424239635468,
+          0.0819946750998497
+        ],
+        "after_crop_ncc": [
+          0.1229594275355339,
+          -0.042039066553115845,
+          0.035686470568180084
+        ],
+        "minimum_ncc": -0.12006090581417084
+      }
+    },
+    {
+      "source_pts_ticks": 21289,
+      "source_pts_sec": 1.3860026041666667,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "369930ce366e0bebd05978ecf0f1201b11d04f83a743c0e56f2e618043612ef9",
+      "source_pixel_sha256": "08195af9cad45b29829d86e0022bba67bc5895ba52c3bf9408d34a0eda1a428e",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.23795686662197113,
+            -0.0892878994345665,
+            0.08354707807302475
+          ],
+          "minimum_ncc": -0.23795686662197113,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.12417495250701904,
+            -0.1441037654876709,
+            0.038828250020742416
+          ],
+          "minimum_ncc": -0.1441037654876709,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 21033,
+        "before_crop_ncc": [
+          -0.24584510922431946,
+          -0.11795242875814438,
+          0.0823565125465393
+        ],
+        "after_crop_ncc": [
+          0.12417495250701904,
+          -0.1441037654876709,
+          0.038828250020742416
+        ],
+        "minimum_ncc": -0.24584510922431946
+      }
+    },
+    {
+      "source_pts_ticks": 21545,
+      "source_pts_sec": 1.4026692708333333,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "cb1df094574e190b8c04c3de4c89a7a276d7fda72c5643a4164d286724504d13",
+      "source_pixel_sha256": "52d0ffa59bf20d7885af918efa32df7bace258d49c2165999d5739facff3ee48",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.2122601717710495,
+            0.23137463629245758,
+            0.0974002331495285
+          ],
+          "minimum_ncc": -0.2122601717710495,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.1090482622385025,
+            -0.21244700253009796,
+            0.056396786123514175
+          ],
+          "minimum_ncc": -0.21244700253009796,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 21289,
+        "before_crop_ncc": [
+          -0.23795686662197113,
+          -0.0892878994345665,
+          0.08354707807302475
+        ],
+        "after_crop_ncc": [
+          0.1090482622385025,
+          -0.21244700253009796,
+          0.056396786123514175
+        ],
+        "minimum_ncc": -0.23795686662197113
+      }
+    },
+    {
+      "source_pts_ticks": 21801,
+      "source_pts_sec": 1.4193359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "4a9693c469f2120e8c4d3c1f0a25774901f3fc98c0ec147095383b694738b19d",
+      "source_pixel_sha256": "67aecd1f44135727daf4db81793f6ed5d919558c52fb7847a94fd30e442f251e",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.18413428962230682,
+            0.24589161574840546,
+            0.10742485523223877
+          ],
+          "minimum_ncc": -0.18413428962230682,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.0845109224319458,
+            -0.1691122204065323,
+            0.023378886282444
+          ],
+          "minimum_ncc": -0.1691122204065323,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 21545,
+        "before_crop_ncc": [
+          -0.2122601717710495,
+          0.23137463629245758,
+          0.0974002331495285
+        ],
+        "after_crop_ncc": [
+          0.0845109224319458,
+          -0.1691122204065323,
+          0.023378886282444
+        ],
+        "minimum_ncc": -0.2122601717710495
+      }
+    },
+    {
+      "source_pts_ticks": 22057,
+      "source_pts_sec": 1.4360026041666667,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "e79a5070d1e8185088ba2bea751c636193778933fe6037d3190b8317e7aed12a",
+      "source_pixel_sha256": "0c54375de9464b9def86ce4d62350d0c68f3d8eecb96970b27360174b7c94af4",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.1371297538280487,
+            0.24942491948604584,
+            0.07248351722955704
+          ],
+          "minimum_ncc": -0.1371297538280487,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.05584684759378433,
+            -0.15072748064994812,
+            0.10436779260635376
+          ],
+          "minimum_ncc": -0.15072748064994812,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 21801,
+        "before_crop_ncc": [
+          -0.18413428962230682,
+          0.24589161574840546,
+          0.10742485523223877
+        ],
+        "after_crop_ncc": [
+          0.05584684759378433,
+          -0.15072748064994812,
+          0.10436779260635376
+        ],
+        "minimum_ncc": -0.18413428962230682
+      }
+    },
+    {
+      "source_pts_ticks": 22313,
+      "source_pts_sec": 1.4526692708333333,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "f6e0b5c77f750cec429e4af80b12fba6bb988553cc928cf0c06b448a2cd551df",
+      "source_pixel_sha256": "6e78ce64dae02fbf5837b4419cd210018df6997fe06547bb03db1225cb4abd34",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.06886199861764908,
+            0.2464223951101303,
+            0.11760232597589493
+          ],
+          "minimum_ncc": -0.06886199861764908,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.00669481884688139,
+            -0.14550183713436127,
+            0.05428503453731537
+          ],
+          "minimum_ncc": -0.14550183713436127,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 22057,
+        "before_crop_ncc": [
+          -0.1371297538280487,
+          0.24942491948604584,
+          0.07248351722955704
+        ],
+        "after_crop_ncc": [
+          0.00669481884688139,
+          -0.14550183713436127,
+          0.05428503453731537
+        ],
+        "minimum_ncc": -0.14550183713436127
+      }
+    },
+    {
+      "source_pts_ticks": 22569,
+      "source_pts_sec": 1.4693359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "b893b8a8ea6de99f5b8b8269ae11a0697fc11a2dfdf4c3be054d6b7e965f1e6d",
+      "source_pixel_sha256": "9dbb5172b80a167a06431cd30b05d5b510fa03ac55d13aaba2318561d45fd388",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.03949770703911781,
+            0.3055390417575836,
+            0.11766992509365082
+          ],
+          "minimum_ncc": -0.03949770703911781,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.010084706358611584,
+            -0.1329779326915741,
+            0.04740796983242035
+          ],
+          "minimum_ncc": -0.1329779326915741,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 22313,
+        "before_crop_ncc": [
+          -0.06886199861764908,
+          0.2464223951101303,
+          0.11760232597589493
+        ],
+        "after_crop_ncc": [
+          -0.010084706358611584,
+          -0.1329779326915741,
+          0.04740796983242035
+        ],
+        "minimum_ncc": -0.1329779326915741
+      }
+    },
+    {
+      "source_pts_ticks": 22825,
+      "source_pts_sec": 1.4860026041666667,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "381098c89647a3da84650e953779e34bca0cf3bca069316785236b53c87d624e",
+      "source_pixel_sha256": "10a6e4e5ca8365c326b365a3c4ca335632822835ebe5801f1bf35a3df0872896",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.04765621945261955,
+            0.28754347562789917,
+            0.11758269369602203
+          ],
+          "minimum_ncc": -0.04765621945261955,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.003947767429053783,
+            -0.1267876923084259,
+            0.03504820168018341
+          ],
+          "minimum_ncc": -0.1267876923084259,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 22569,
+        "before_crop_ncc": [
+          -0.03949770703911781,
+          0.3055390417575836,
+          0.11766992509365082
+        ],
+        "after_crop_ncc": [
+          0.003947767429053783,
+          -0.1267876923084259,
+          0.03504820168018341
+        ],
+        "minimum_ncc": -0.1267876923084259
+      }
+    },
+    {
+      "source_pts_ticks": 23081,
+      "source_pts_sec": 1.5026692708333333,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "0aab97c4236685e670d2b89e9001b59a8e77c1b393bbe193ace0a98df6df17d9",
+      "source_pixel_sha256": "470b5f982ae904f52c30a4e5d305d01bc40eac26cedef528b9dbdcc7def9100f",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.06696025282144547,
+            0.31812697649002075,
+            0.12007845193147659
+          ],
+          "minimum_ncc": -0.06696025282144547,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.016054073348641396,
+            -0.1134621873497963,
+            0.0373421236872673
+          ],
+          "minimum_ncc": -0.1134621873497963,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 22825,
+        "before_crop_ncc": [
+          -0.04765621945261955,
+          0.28754347562789917,
+          0.11758269369602203
+        ],
+        "after_crop_ncc": [
+          0.016054073348641396,
+          -0.1134621873497963,
+          0.0373421236872673
+        ],
+        "minimum_ncc": -0.1134621873497963
+      }
+    },
+    {
+      "source_pts_ticks": 23337,
+      "source_pts_sec": 1.5193359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "43a12becba3f7f65fcd554965442a793b26ac07e6165c97ff8bb52a4bd145683",
+      "source_pixel_sha256": "1fa1b80f2cff6d408c1db59f8645466064acf26b3646f48caf7d004a899676f0",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.08591339737176895,
+            0.3338170349597931,
+            0.12273582071065903
+          ],
+          "minimum_ncc": -0.08591339737176895,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.02668781206011772,
+            -0.11432179808616638,
+            0.04421011358499527
+          ],
+          "minimum_ncc": -0.11432179808616638,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 23081,
+        "before_crop_ncc": [
+          -0.06696025282144547,
+          0.31812697649002075,
+          0.12007845193147659
+        ],
+        "after_crop_ncc": [
+          0.02668781206011772,
+          -0.11432179808616638,
+          0.04421011358499527
+        ],
+        "minimum_ncc": -0.11432179808616638
+      }
+    },
+    {
+      "source_pts_ticks": 23593,
+      "source_pts_sec": 1.5360026041666666,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "accbda495a51efd10baea50b972cbceb4d2235345bd2aa3d2d6a66e19d7dd9cb",
+      "source_pixel_sha256": "fd4ca60acb2071904cab098ac4db24f6407e37f81e539ef030621f0f86992f7f",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.08618873357772827,
+            0.33538755774497986,
+            0.03892458975315094
+          ],
+          "minimum_ncc": 0.03892458975315094,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.11287413537502289,
+            -0.07356414943933487,
+            -0.05520665645599365
+          ],
+          "minimum_ncc": -0.11287413537502289,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 23337,
+        "before_crop_ncc": [
+          -0.08591339737176895,
+          0.3338170349597931,
+          0.12273582071065903
+        ],
+        "after_crop_ncc": [
+          -0.11287413537502289,
+          -0.07356414943933487,
+          -0.05520665645599365
+        ],
+        "minimum_ncc": -0.11287413537502289
+      }
+    },
+    {
+      "source_pts_ticks": 23849,
+      "source_pts_sec": 1.5526692708333334,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "16201833a4aa1a144d28c1c8ee5d9c8f8fbec5ad339120f378958b1418064d63",
+      "source_pixel_sha256": "0b956ee4245d5a1f79dcad0ef5d71a1b60b03836637682c7f5bab772daab514b",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.05894044414162636,
+            0.3520260751247406,
+            0.26776260137557983
+          ],
+          "minimum_ncc": 0.05894044414162636,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.16501212120056152,
+            -0.04822171479463577,
+            0.016655094921588898
+          ],
+          "minimum_ncc": -0.16501212120056152,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 23593,
+        "before_crop_ncc": [
+          0.08618873357772827,
+          0.33538755774497986,
+          0.03892458975315094
+        ],
+        "after_crop_ncc": [
+          -0.16501212120056152,
+          -0.04822171479463577,
+          0.016655094921588898
+        ],
+        "minimum_ncc": -0.16501212120056152
+      }
+    },
+    {
+      "source_pts_ticks": 24105,
+      "source_pts_sec": 1.5693359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "3929c1ad1187750ebe7fd62839f72d579744b59de8d89bf2d01942d9baae5131",
+      "source_pixel_sha256": "0ed78b037109ad32a5351810d654accf75e249c2ab68b3270ae5803c21517be9",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.0500764399766922,
+            0.3865913152694702,
+            0.21505919098854065
+          ],
+          "minimum_ncc": 0.0500764399766922,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.1353399157524109,
+            -0.03769847750663757,
+            -0.011406001634895802
+          ],
+          "minimum_ncc": -0.1353399157524109,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 23849,
+        "before_crop_ncc": [
+          0.05894044414162636,
+          0.3520260751247406,
+          0.26776260137557983
+        ],
+        "after_crop_ncc": [
+          -0.1353399157524109,
+          -0.03769847750663757,
+          -0.011406001634895802
+        ],
+        "minimum_ncc": -0.1353399157524109
+      }
+    },
+    {
+      "source_pts_ticks": 24361,
+      "source_pts_sec": 1.5860026041666666,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "0806326cb7a099fe80f8abc7f8e0ea69a5598a0ceb85c5e0e94dd797a4397af5",
+      "source_pixel_sha256": "cdf26b7b90f46b93779d488a3f6a82cda8f910ec68d103668d315344eb9aab75",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.01994793303310871,
+            0.3453718423843384,
+            0.2797389030456543
+          ],
+          "minimum_ncc": 0.01994793303310871,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.0898653045296669,
+            -0.0754113420844078,
+            -0.03986172378063202
+          ],
+          "minimum_ncc": -0.0898653045296669,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 24105,
+        "before_crop_ncc": [
+          0.0500764399766922,
+          0.3865913152694702,
+          0.21505919098854065
+        ],
+        "after_crop_ncc": [
+          -0.0898653045296669,
+          -0.0754113420844078,
+          -0.03986172378063202
+        ],
+        "minimum_ncc": -0.0898653045296669
+      }
+    },
+    {
+      "source_pts_ticks": 24617,
+      "source_pts_sec": 1.6026692708333334,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "6c8736984c76cd4daa66076ef62b2c4e4589c1c5fa079fc9342beac2c02b9509",
+      "source_pixel_sha256": "cacbf04aba9c513485cfc806b3327b7e43e7ac53af2c9623cfabe9ae05aabc2b",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.0058838315308094025,
+            0.33413225412368774,
+            0.3323774039745331
+          ],
+          "minimum_ncc": -0.0058838315308094025,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.06779205799102783,
+            -0.10835500061511993,
+            -0.033501606434583664
+          ],
+          "minimum_ncc": -0.10835500061511993,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 24361,
+        "before_crop_ncc": [
+          0.01994793303310871,
+          0.3453718423843384,
+          0.2797389030456543
+        ],
+        "after_crop_ncc": [
+          -0.06779205799102783,
+          -0.10835500061511993,
+          -0.033501606434583664
+        ],
+        "minimum_ncc": -0.10835500061511993
+      }
+    },
+    {
+      "source_pts_ticks": 24873,
+      "source_pts_sec": 1.6193359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "18bd51a1cf20c4750c55877e344c50aff8033d70fa322b9eccebe3f790d9c049",
+      "source_pixel_sha256": "8c2aeda6b7ea656ef8715883f4a3e654a00af697d384cca4b689513fcc7b3206",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.004502075258642435,
+            0.2963654100894928,
+            0.48349618911743164
+          ],
+          "minimum_ncc": -0.004502075258642435,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.021748889237642288,
+            -0.12683671712875366,
+            0.020489932969212532
+          ],
+          "minimum_ncc": -0.12683671712875366,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 24617,
+        "before_crop_ncc": [
+          -0.0058838315308094025,
+          0.33413225412368774,
+          0.3323774039745331
+        ],
+        "after_crop_ncc": [
+          -0.021748889237642288,
+          -0.12683671712875366,
+          0.020489932969212532
+        ],
+        "minimum_ncc": -0.12683671712875366
+      }
+    },
+    {
+      "source_pts_ticks": 25129,
+      "source_pts_sec": 1.6360026041666667,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "d64c6a5485b998548713f93cb64a93c5f95945b2fbb4a84daee057f34bc5b962",
+      "source_pixel_sha256": "bfe0ace8e5760cff61da7ae1cb57ab58cd3ed2bf52d8d32d03e20547e523765f",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.013470470905303955,
+            0.3191261291503906,
+            0.6346992254257202
+          ],
+          "minimum_ncc": 0.013470470905303955,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.023931432515382767,
+            -0.0985468178987503,
+            0.05163963884115219
+          ],
+          "minimum_ncc": -0.0985468178987503,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 24873,
+        "before_crop_ncc": [
+          -0.004502075258642435,
+          0.2963654100894928,
+          0.48349618911743164
+        ],
+        "after_crop_ncc": [
+          -0.023931432515382767,
+          -0.0985468178987503,
+          0.05163963884115219
+        ],
+        "minimum_ncc": -0.0985468178987503
+      }
+    },
+    {
+      "source_pts_ticks": 25385,
+      "source_pts_sec": 1.6526692708333333,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "527e8f59d0b12ebcc159d1324d059c504712917bad4a07b1fd83990d4e59c4a7",
+      "source_pixel_sha256": "44261eb5a3169a5fd3e8d5c412b84ffe2d1ea8ca79d3b39b49468986214ca75b",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.011555180884897709,
+            0.285205215215683,
+            0.6478520631790161
+          ],
+          "minimum_ncc": 0.011555180884897709,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.06502187252044678,
+            -0.08700446039438248,
+            0.054996587336063385
+          ],
+          "minimum_ncc": -0.08700446039438248,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 25129,
+        "before_crop_ncc": [
+          0.013470470905303955,
+          0.3191261291503906,
+          0.6346992254257202
+        ],
+        "after_crop_ncc": [
+          0.06502187252044678,
+          -0.08700446039438248,
+          0.054996587336063385
+        ],
+        "minimum_ncc": -0.08700446039438248
+      }
+    },
+    {
+      "source_pts_ticks": 25641,
+      "source_pts_sec": 1.6693359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "d0c6a17f33e81875f6dc7f46914979f6457255ad5e00b531a3b78356d0c705ff",
+      "source_pixel_sha256": "f370682ffd04b18f4b8ab4de86469ed299def1106b3935cf4c4e9571f91f1795",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.02882564067840576,
+            0.29160574078559875,
+            0.6506773233413696
+          ],
+          "minimum_ncc": 0.02882564067840576,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.06999953836202621,
+            -0.10364890098571777,
+            0.06047183275222778
+          ],
+          "minimum_ncc": -0.10364890098571777,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 25385,
+        "before_crop_ncc": [
+          0.011555180884897709,
+          0.285205215215683,
+          0.6478520631790161
+        ],
+        "after_crop_ncc": [
+          0.06999953836202621,
+          -0.10364890098571777,
+          0.06047183275222778
+        ],
+        "minimum_ncc": -0.10364890098571777
+      }
+    },
+    {
+      "source_pts_ticks": 25897,
+      "source_pts_sec": 1.6860026041666667,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "526179a547017fd1207724a9ffc340d8803fb142690074a2dec976c8e39bf102",
+      "source_pixel_sha256": "037a1909876a3752795b049311737b3b23c1c9abe0204b0a5f9ad8f4fd224dc5",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.038065336644649506,
+            0.30730706453323364,
+            0.6495345234870911
+          ],
+          "minimum_ncc": 0.038065336644649506,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.07916977256536484,
+            -0.09230658411979675,
+            0.06326369941234589
+          ],
+          "minimum_ncc": -0.09230658411979675,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 25641,
+        "before_crop_ncc": [
+          0.02882564067840576,
+          0.29160574078559875,
+          0.6506773233413696
+        ],
+        "after_crop_ncc": [
+          0.07916977256536484,
+          -0.09230658411979675,
+          0.06326369941234589
+        ],
+        "minimum_ncc": -0.09230658411979675
+      }
+    },
+    {
+      "source_pts_ticks": 26153,
+      "source_pts_sec": 1.7026692708333333,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "81202b3b00a12200d7a3100bd47e3c300fe273c0a3b11e165fb39c775c7d6357",
+      "source_pixel_sha256": "bb98fccb827dabc8663b72d4b12bc3b41edd11b8a061f7dd01e10c27ae60a780",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.021213393658399582,
+            0.3846268057823181,
+            0.6482659578323364
+          ],
+          "minimum_ncc": 0.021213393658399582,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.05313851311802864,
+            -0.11484746634960175,
+            0.06280028820037842
+          ],
+          "minimum_ncc": -0.11484746634960175,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 25897,
+        "before_crop_ncc": [
+          0.038065336644649506,
+          0.30730706453323364,
+          0.6495345234870911
+        ],
+        "after_crop_ncc": [
+          0.05313851311802864,
+          -0.11484746634960175,
+          0.06280028820037842
+        ],
+        "minimum_ncc": -0.11484746634960175
+      }
+    },
+    {
+      "source_pts_ticks": 26409,
+      "source_pts_sec": 1.7193359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "0ec9ab8526a4f6c93a289058952787b90ae8474c90e56c26cbee05bec901665a",
+      "source_pixel_sha256": "4977535bf8a2ead081d1ba20a85f6a6958ee7103ac530ae918cd548a7597906a",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.018410561606287956,
+            -0.28514087200164795,
+            0.6482486724853516
+          ],
+          "minimum_ncc": -0.28514087200164795,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.07056891173124313,
+            0.07044979929924011,
+            0.07430252432823181
+          ],
+          "minimum_ncc": 0.07044979929924011,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 26153,
+        "before_crop_ncc": [
+          0.021213393658399582,
+          0.3846268057823181,
+          0.6482659578323364
+        ],
+        "after_crop_ncc": [
+          0.07056891173124313,
+          0.07044979929924011,
+          0.07430252432823181
+        ],
+        "minimum_ncc": 0.021213393658399582
+      }
+    },
+    {
+      "source_pts_ticks": 26665,
+      "source_pts_sec": 1.7360026041666667,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "b77bfefb84546a3a40eada4c9e6bb62d82c34a86720eae4cc4686644e6e49781",
+      "source_pixel_sha256": "b9ab01aa1b5d132b74bb8a1cfb93b162f393399e43ee3e0303897794f8e9cbc5",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.034805044531822205,
+            -0.28756093978881836,
+            0.6475698351860046
+          ],
+          "minimum_ncc": -0.28756093978881836,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.053565166890621185,
+            0.078109011054039,
+            0.07916220277547836
+          ],
+          "minimum_ncc": 0.053565166890621185,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 26409,
+        "before_crop_ncc": [
+          0.018410561606287956,
+          -0.28514087200164795,
+          0.6482486724853516
+        ],
+        "after_crop_ncc": [
+          0.053565166890621185,
+          0.078109011054039,
+          0.07916220277547836
+        ],
+        "minimum_ncc": -0.28514087200164795
+      }
+    },
+    {
+      "source_pts_ticks": 26921,
+      "source_pts_sec": 1.7526692708333333,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "b93682997f8d2363fabb3f951e67089b6aa53d3da434a4c28ce4aac810b0f02f",
+      "source_pixel_sha256": "63d6e3f59ec745eb0d861560a068038453b068420a452a9fda31f6f0e19275eb",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.011052301153540611,
+            -0.15722344815731049,
+            -0.26075685024261475
+          ],
+          "minimum_ncc": -0.26075685024261475,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.04561946541070938,
+            0.3429208993911743,
+            0.11385492980480194
+          ],
+          "minimum_ncc": 0.04561946541070938,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 26665,
+        "before_crop_ncc": [
+          0.034805044531822205,
+          -0.28756093978881836,
+          0.6475698351860046
+        ],
+        "after_crop_ncc": [
+          0.04561946541070938,
+          0.3429208993911743,
+          0.11385492980480194
+        ],
+        "minimum_ncc": -0.28756093978881836
+      }
+    },
+    {
+      "source_pts_ticks": 27177,
+      "source_pts_sec": 1.7693359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "0419eb79ea133df51147c79773ecb8233149f0b1c648da2cb46d8f37f1ca7593",
+      "source_pixel_sha256": "6ff3e0663276c2b6f38ce1dffbf5a997690602f90fa069472e2fa8283d253968",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.009983183816075325,
+            -0.03801749274134636,
+            0.031642090529203415
+          ],
+          "minimum_ncc": -0.03801749274134636,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.05747270956635475,
+            0.1105952188372612,
+            -0.29708731174468994
+          ],
+          "minimum_ncc": -0.29708731174468994,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 26921,
+        "before_crop_ncc": [
+          0.011052301153540611,
+          -0.15722344815731049,
+          -0.26075685024261475
+        ],
+        "after_crop_ncc": [
+          0.05747270956635475,
+          0.1105952188372612,
+          -0.29708731174468994
+        ],
+        "minimum_ncc": -0.29708731174468994
+      }
+    },
+    {
+      "source_pts_ticks": 27433,
+      "source_pts_sec": 1.7860026041666666,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "b71fff39868ff54b1afafcdedd781fadf80bb00272e0abf1298a4fa049e1e0be",
+      "source_pixel_sha256": "79cfdc83bfa783275faa57af40e8259be9ac460086c044fb20650e2be4c31dee",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.010196770541369915,
+            -0.07563703507184982,
+            0.6629617214202881
+          ],
+          "minimum_ncc": -0.07563703507184982,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.05640749633312225,
+            -0.12859773635864258,
+            0.08073023706674576
+          ],
+          "minimum_ncc": -0.12859773635864258,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 27177,
+        "before_crop_ncc": [
+          0.009983183816075325,
+          -0.03801749274134636,
+          0.031642090529203415
+        ],
+        "after_crop_ncc": [
+          0.05640749633312225,
+          -0.12859773635864258,
+          0.08073023706674576
+        ],
+        "minimum_ncc": -0.12859773635864258
+      }
+    },
+    {
+      "source_pts_ticks": 27689,
+      "source_pts_sec": 1.8026692708333334,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "054ca9b46b56f8af45ed78f46f6d259f9db68a00e1412e7c176855bc1ada781f",
+      "source_pixel_sha256": "b0f173a2f7f94c919c52de4ec8092a802d02a9c5cdb819faeca26529b91d96f0",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.033241868019104004,
+            -0.18693141639232635,
+            0.831933319568634
+          ],
+          "minimum_ncc": -0.18693141639232635,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.044325586408376694,
+            0.10374689847230911,
+            0.05810004100203514
+          ],
+          "minimum_ncc": 0.044325586408376694,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 27433,
+        "before_crop_ncc": [
+          0.010196770541369915,
+          -0.07563703507184982,
+          0.6629617214202881
+        ],
+        "after_crop_ncc": [
+          0.044325586408376694,
+          0.10374689847230911,
+          0.05810004100203514
+        ],
+        "minimum_ncc": -0.07563703507184982
+      }
+    },
+    {
+      "source_pts_ticks": 27945,
+      "source_pts_sec": 1.8193359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "50590dc756139bcfc162a9d4453be8b836895d0f84c521e9468339ab4a5352f8",
+      "source_pixel_sha256": "a6bfae32ce7776877835aee68c562e9868da9d382bb0131f81bb9876b64b3848",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.026897897943854332,
+            -0.22601260244846344,
+            0.9288514256477356
+          ],
+          "minimum_ncc": -0.22601260244846344,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.0520302839577198,
+            0.06377798318862915,
+            0.039362188428640366
+          ],
+          "minimum_ncc": 0.039362188428640366,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 27689,
+        "before_crop_ncc": [
+          0.033241868019104004,
+          -0.18693141639232635,
+          0.831933319568634
+        ],
+        "after_crop_ncc": [
+          0.0520302839577198,
+          0.06377798318862915,
+          0.039362188428640366
+        ],
+        "minimum_ncc": -0.18693141639232635
+      }
+    },
+    {
+      "source_pts_ticks": 28201,
+      "source_pts_sec": 1.8360026041666666,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "85d7a4c68fee265b8561db6e3f7c4aff608c4e99d35955cf10691a14c4611f77",
+      "source_pixel_sha256": "acbd4810ff4331901ca143e1bb013210aa1f155b022a2902b1290dfa03708a94",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.028336340561509132,
+            -0.12190151959657669,
+            0.8086923956871033
+          ],
+          "minimum_ncc": -0.12190151959657669,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.04453632980585098,
+            0.03498770669102669,
+            0.05701639503240585
+          ],
+          "minimum_ncc": 0.03498770669102669,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 27945,
+        "before_crop_ncc": [
+          0.026897897943854332,
+          -0.22601260244846344,
+          0.9288514256477356
+        ],
+        "after_crop_ncc": [
+          0.04453632980585098,
+          0.03498770669102669,
+          0.05701639503240585
+        ],
+        "minimum_ncc": -0.22601260244846344
+      }
+    },
+    {
+      "source_pts_ticks": 28457,
+      "source_pts_sec": 1.8526692708333334,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "c2e681d2d9c7f8b1db9b676a5f473b145dcccfa5db8b77a9e1bbefbf70d1933e",
+      "source_pixel_sha256": "7bc6042f9ae85a66dee61687cdda4d591ec1f84971424fe05b47bb1fa97651f3",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.02769596315920353,
+            -0.0742029994726181,
+            0.6778193712234497
+          ],
+          "minimum_ncc": -0.0742029994726181,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.04308374598622322,
+            0.06486331671476364,
+            0.09202712029218674
+          ],
+          "minimum_ncc": 0.04308374598622322,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 28201,
+        "before_crop_ncc": [
+          0.028336340561509132,
+          -0.12190151959657669,
+          0.8086923956871033
+        ],
+        "after_crop_ncc": [
+          0.04308374598622322,
+          0.06486331671476364,
+          0.09202712029218674
+        ],
+        "minimum_ncc": -0.12190151959657669
+      }
+    },
+    {
+      "source_pts_ticks": 28713,
+      "source_pts_sec": 1.8693359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "d56f456a9c47d2f913b0a97058c5e3f3202744637fb8264b159ff13a815d40b3",
+      "source_pixel_sha256": "dc40f0ebf0d946148b95f2c14a609a72179a4bfada9e6e3cf8ddaeeec4d9fdaa",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.028445040807127953,
+            -0.039844587445259094,
+            0.6801455020904541
+          ],
+          "minimum_ncc": -0.039844587445259094,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.04322920739650726,
+            0.08458853513002396,
+            0.0927184447646141
+          ],
+          "minimum_ncc": 0.04322920739650726,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 28457,
+        "before_crop_ncc": [
+          0.02769596315920353,
+          -0.0742029994726181,
+          0.6778193712234497
+        ],
+        "after_crop_ncc": [
+          0.04322920739650726,
+          0.08458853513002396,
+          0.0927184447646141
+        ],
+        "minimum_ncc": -0.0742029994726181
+      }
+    },
+    {
+      "source_pts_ticks": 28969,
+      "source_pts_sec": 1.8860026041666667,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "de832c6745c550c511fd2b6183ae64b15689655fe2a7423de2b70a2dbcad1cf1",
+      "source_pixel_sha256": "ec03ad655726468632f41c17f4be47c5643a0057c04c4eafd5e3aea93ef3256e",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.03059023804962635,
+            -0.042832307517528534,
+            0.6943529844284058
+          ],
+          "minimum_ncc": -0.042832307517528534,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.0431169718503952,
+            0.0905052050948143,
+            0.08648655563592911
+          ],
+          "minimum_ncc": 0.0431169718503952,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 28713,
+        "before_crop_ncc": [
+          0.028445040807127953,
+          -0.039844587445259094,
+          0.6801455020904541
+        ],
+        "after_crop_ncc": [
+          0.0431169718503952,
+          0.0905052050948143,
+          0.08648655563592911
+        ],
+        "minimum_ncc": -0.039844587445259094
+      }
+    },
+    {
+      "source_pts_ticks": 29225,
+      "source_pts_sec": 1.9026692708333333,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "76047d0667a5f93449b216907e914398193116936e3074614ca50c4cfb058076",
+      "source_pixel_sha256": "f5e7adf59e86c12978e230d8e801f52ec968050c076a170e5d2ac8781825ceeb",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.028660815209150314,
+            -0.028134850785136223,
+            0.76695317029953
+          ],
+          "minimum_ncc": -0.028134850785136223,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.03819635137915611,
+            0.096196249127388,
+            0.07151395827531815
+          ],
+          "minimum_ncc": 0.03819635137915611,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 28969,
+        "before_crop_ncc": [
+          0.03059023804962635,
+          -0.042832307517528534,
+          0.6943529844284058
+        ],
+        "after_crop_ncc": [
+          0.03819635137915611,
+          0.096196249127388,
+          0.07151395827531815
+        ],
+        "minimum_ncc": -0.042832307517528534
+      }
+    },
+    {
+      "source_pts_ticks": 29481,
+      "source_pts_sec": 1.9193359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "2ae148a9bc8ca8e2d204caa857ea0135c5eb7d07d45d3a7c6424d6a32bd0c5bd",
+      "source_pixel_sha256": "38440da83c021c1390833667795d539bd823d9e783d793fedfc5bf7f95490a26",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.026496512815356255,
+            0.000995990470983088,
+            0.8585039973258972
+          ],
+          "minimum_ncc": 0.000995990470983088,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.04118482396006584,
+            0.08833178877830505,
+            0.04147186875343323
+          ],
+          "minimum_ncc": 0.04118482396006584,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 29225,
+        "before_crop_ncc": [
+          0.028660815209150314,
+          -0.028134850785136223,
+          0.76695317029953
+        ],
+        "after_crop_ncc": [
+          0.04118482396006584,
+          0.08833178877830505,
+          0.04147186875343323
+        ],
+        "minimum_ncc": -0.028134850785136223
+      }
+    },
+    {
+      "source_pts_ticks": 29737,
+      "source_pts_sec": 1.9360026041666667,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "7f927663ea7a604824314b3f543f7574fd3878e2ad7963cf09e45bfe8eed46a9",
+      "source_pixel_sha256": "28ba7592d4b523e9d5437e8b478fd5ee7e0ffd500df074d073534bc06b0e9e09",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.23880413174629211,
+            0.06351861357688904,
+            0.8420917987823486
+          ],
+          "minimum_ncc": 0.06351861357688904,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.10093509405851364,
+            0.08686059713363647,
+            0.016978831961750984
+          ],
+          "minimum_ncc": -0.10093509405851364,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 29481,
+        "before_crop_ncc": [
+          0.026496512815356255,
+          0.000995990470983088,
+          0.8585039973258972
+        ],
+        "after_crop_ncc": [
+          -0.10093509405851364,
+          0.08686059713363647,
+          0.016978831961750984
+        ],
+        "minimum_ncc": -0.10093509405851364
+      }
+    },
+    {
+      "source_pts_ticks": 29993,
+      "source_pts_sec": 1.9526692708333333,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "70da54a6b5bd498cd2a82081a82d5d4d6e2af714edc41fc8e9ad3c518095d986",
+      "source_pixel_sha256": "7043f933618d76ddc39f6dd85014d381774f6d4b89a46372815cfb5f76e64fd2",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.07533018290996552,
+            0.10773354023694992,
+            0.8152744174003601
+          ],
+          "minimum_ncc": 0.07533018290996552,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.12139284610748291,
+            0.10910852253437042,
+            0.010940348729491234
+          ],
+          "minimum_ncc": -0.12139284610748291,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 29737,
+        "before_crop_ncc": [
+          0.23880413174629211,
+          0.06351861357688904,
+          0.8420917987823486
+        ],
+        "after_crop_ncc": [
+          -0.12139284610748291,
+          0.10910852253437042,
+          0.010940348729491234
+        ],
+        "minimum_ncc": -0.12139284610748291
+      }
+    },
+    {
+      "source_pts_ticks": 30249,
+      "source_pts_sec": 1.9693359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "670eb57e477bca28c395751eee5cdbc248fd7cfb9f944d4ff1a12caa67842838",
+      "source_pixel_sha256": "c949e8dfda8bf228849830334a99e8e653a0b3dff1aa7eeb003158953f47461b",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.149317666888237,
+            0.16655413806438446,
+            0.8068518042564392
+          ],
+          "minimum_ncc": -0.149317666888237,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.09730324149131775,
+            0.13481923937797546,
+            0.00859942939132452
+          ],
+          "minimum_ncc": 0.00859942939132452,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 29993,
+        "before_crop_ncc": [
+          0.07533018290996552,
+          0.10773354023694992,
+          0.8152744174003601
+        ],
+        "after_crop_ncc": [
+          0.09730324149131775,
+          0.13481923937797546,
+          0.00859942939132452
+        ],
+        "minimum_ncc": 0.00859942939132452
+      }
+    },
+    {
+      "source_pts_ticks": 30505,
+      "source_pts_sec": 1.9860026041666667,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "94b8768f06d7a384155b60fa1aa076814d761b02bcc124ee9ed6c1582ee86e0e",
+      "source_pixel_sha256": "fa3dc6294cdce601ba339d2b964461ad3940cbaf9c8a1cbe0b014999f904286f",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.2393917292356491,
+            0.19357098639011383,
+            0.8230640292167664
+          ],
+          "minimum_ncc": 0.19357098639011383,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.0936114639043808,
+            0.13545657694339752,
+            0.01442455593496561
+          ],
+          "minimum_ncc": -0.0936114639043808,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 30249,
+        "before_crop_ncc": [
+          -0.149317666888237,
+          0.16655413806438446,
+          0.8068518042564392
+        ],
+        "after_crop_ncc": [
+          -0.0936114639043808,
+          0.13545657694339752,
+          0.01442455593496561
+        ],
+        "minimum_ncc": -0.149317666888237
+      }
+    },
+    {
+      "source_pts_ticks": 30761,
+      "source_pts_sec": 2.002669270833333,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "8a5c883deca160a0e22d96c0b0161a71667994b388d4c34d75d1f4a288e17e7c",
+      "source_pixel_sha256": "fc0748348fa2300d4ef0a768b7d86e5946ce550e5d0e6bdb5c0766aa05fa0e15",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.004221042152494192,
+            0.20466488599777222,
+            0.921023428440094
+          ],
+          "minimum_ncc": 0.004221042152494192,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.0013416085857897997,
+            0.1187499389052391,
+            0.03870314359664917
+          ],
+          "minimum_ncc": -0.0013416085857897997,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 30505,
+        "before_crop_ncc": [
+          0.2393917292356491,
+          0.19357098639011383,
+          0.8230640292167664
+        ],
+        "after_crop_ncc": [
+          -0.0013416085857897997,
+          0.1187499389052391,
+          0.03870314359664917
+        ],
+        "minimum_ncc": -0.0013416085857897997
+      }
+    },
+    {
+      "source_pts_ticks": 31017,
+      "source_pts_sec": 2.0193359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "37a53246aa753f3ec583c18ac08dd60658c555e6b20558dc38fee1bde535519a",
+      "source_pixel_sha256": "5d378b7d7bad293bd82f3d0a6628b4751cb758f16c674e7447731d76e7b1fb7e",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.4141313135623932,
+            -0.17953592538833618,
+            0.01680915243923664
+          ],
+          "minimum_ncc": -0.4141313135623932,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.931516706943512,
+            0.8421716094017029,
+            0.9129391312599182
+          ],
+          "minimum_ncc": 0.8421716094017029,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 30761,
+        "before_crop_ncc": [
+          0.004221042152494192,
+          0.20466488599777222,
+          0.921023428440094
+        ],
+        "after_crop_ncc": [
+          0.931516706943512,
+          0.8421716094017029,
+          0.9129391312599182
+        ],
+        "minimum_ncc": 0.004221042152494192
+      }
+    },
+    {
+      "source_pts_ticks": 31273,
+      "source_pts_sec": 2.036002604166667,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "0983554a075f8610803d9bb14711941cc25aa627622317907105a969e0a1b78f",
+      "source_pixel_sha256": "dfa5e836faea102a5ba1f15cfb76471d66637f595eaa0af9788bd4e29ae5d17f",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.36702096462249756,
+            -0.27988532185554504,
+            0.061672672629356384
+          ],
+          "minimum_ncc": -0.36702096462249756,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.7886951565742493,
+            0.7806848287582397,
+            0.7036407589912415
+          ],
+          "minimum_ncc": 0.7036407589912415,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 31017,
+        "before_crop_ncc": [
+          -0.4141313135623932,
+          -0.17953592538833618,
+          0.01680915243923664
+        ],
+        "after_crop_ncc": [
+          0.7886951565742493,
+          0.7806848287582397,
+          0.7036407589912415
+        ],
+        "minimum_ncc": -0.4141313135623932
+      }
+    },
+    {
+      "source_pts_ticks": 31529,
+      "source_pts_sec": 2.0526692708333334,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "fe8a3384d9b16f6fc780f47811e5fec92cd544e99268b2e92fdb09b4566c8c8c",
+      "source_pixel_sha256": "bba10b6d3ba7c4504a8c40f363f43e2073fc1f7be1f091d497651f99a4de6cc4",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.28590691089630127,
+            -0.3094581663608551,
+            0.08608397096395493
+          ],
+          "minimum_ncc": -0.3094581663608551,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.6171213388442993,
+            0.6919145584106445,
+            0.5509844422340393
+          ],
+          "minimum_ncc": 0.5509844422340393,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 31273,
+        "before_crop_ncc": [
+          -0.36702096462249756,
+          -0.27988532185554504,
+          0.061672672629356384
+        ],
+        "after_crop_ncc": [
+          0.6171213388442993,
+          0.6919145584106445,
+          0.5509844422340393
+        ],
+        "minimum_ncc": -0.36702096462249756
+      }
+    },
+    {
+      "source_pts_ticks": 31785,
+      "source_pts_sec": 2.0693359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "dcd77a643ce41a91fe66f5bb6789814d9f2f0149c7c76c968c5bfa3de4443b10",
+      "source_pixel_sha256": "cc3ea9b040dfd5990fa3b761e034255ce445f0ee2bb8d124e224764483d3ed85",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.19907091557979584,
+            -0.31726309657096863,
+            0.08219502866268158
+          ],
+          "minimum_ncc": -0.31726309657096863,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.5401333570480347,
+            0.5863348841667175,
+            0.4008229076862335
+          ],
+          "minimum_ncc": 0.4008229076862335,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 31529,
+        "before_crop_ncc": [
+          -0.28590691089630127,
+          -0.3094581663608551,
+          0.08608397096395493
+        ],
+        "after_crop_ncc": [
+          0.5401333570480347,
+          0.5863348841667175,
+          0.4008229076862335
+        ],
+        "minimum_ncc": -0.3094581663608551
+      }
+    },
+    {
+      "source_pts_ticks": 32041,
+      "source_pts_sec": 2.0860026041666666,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "10be4615843f49fdcee85bf429afa6953412e1bda3a043ad8c69e76122b3fb09",
+      "source_pixel_sha256": "5b0f6aff444c1b597b9c56b02719b6a055d96fda1e3de6cb0290d7b207b374c5",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.15644115209579468,
+            -0.2910078167915344,
+            -0.01098294835537672
+          ],
+          "minimum_ncc": -0.2910078167915344,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.4912837743759155,
+            0.3868090510368347,
+            0.20718461275100708
+          ],
+          "minimum_ncc": 0.20718461275100708,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 31785,
+        "before_crop_ncc": [
+          -0.19907091557979584,
+          -0.31726309657096863,
+          0.08219502866268158
+        ],
+        "after_crop_ncc": [
+          0.4912837743759155,
+          0.3868090510368347,
+          0.20718461275100708
+        ],
+        "minimum_ncc": -0.31726309657096863
+      }
+    },
+    {
+      "source_pts_ticks": 32297,
+      "source_pts_sec": 2.102669270833333,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "0eeb6bbfa41a450a2e87f234e6b230cde0b5c84e2addba4c709e861a48ce3df7",
+      "source_pixel_sha256": "bc27bcaddf99bb7fbb9ca24cd0051e4df0c09135c6314b382832214425cf45e3",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.1468133181333542,
+            -0.30628982186317444,
+            0.012266465462744236
+          ],
+          "minimum_ncc": -0.30628982186317444,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.48055192828178406,
+            0.4501967132091522,
+            0.09611478447914124
+          ],
+          "minimum_ncc": 0.09611478447914124,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 32041,
+        "before_crop_ncc": [
+          -0.15644115209579468,
+          -0.2910078167915344,
+          -0.01098294835537672
+        ],
+        "after_crop_ncc": [
+          0.48055192828178406,
+          0.4501967132091522,
+          0.09611478447914124
+        ],
+        "minimum_ncc": -0.2910078167915344
+      }
+    },
+    {
+      "source_pts_ticks": 32553,
+      "source_pts_sec": 2.1193359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "534139365fd4300a5c27c000a31a1fd4220d2b27d97db52e14cfef68c7128e2c",
+      "source_pixel_sha256": "6fad3f42ae167d7796cbdcde7fd9c1e71b6285be74326cca5f69a1ce6aca207e",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.1081186980009079,
+            -0.16738523542881012,
+            0.3557136058807373
+          ],
+          "minimum_ncc": -0.16738523542881012,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.39522984623908997,
+            0.44398200511932373,
+            -0.16040292382240295
+          ],
+          "minimum_ncc": -0.16040292382240295,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 32297,
+        "before_crop_ncc": [
+          -0.1468133181333542,
+          -0.30628982186317444,
+          0.012266465462744236
+        ],
+        "after_crop_ncc": [
+          0.39522984623908997,
+          0.44398200511932373,
+          -0.16040292382240295
+        ],
+        "minimum_ncc": -0.30628982186317444
+      }
+    },
+    {
+      "source_pts_ticks": 32809,
+      "source_pts_sec": 2.136002604166667,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "ccbae6efecbaa3a6640f4160e7ab6a091b9e60fbdfc4f36412c3ba3523928d34",
+      "source_pixel_sha256": "ce1f49c7c0c5352efc81ab5518a95bc1de81bc974491283f3f3ad0ec01340eff",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.08813387155532837,
+            -0.1345832198858261,
+            0.37122592329978943
+          ],
+          "minimum_ncc": -0.1345832198858261,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.34609130024909973,
+            0.4307737350463867,
+            -0.20825059711933136
+          ],
+          "minimum_ncc": -0.20825059711933136,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 32553,
+        "before_crop_ncc": [
+          -0.1081186980009079,
+          -0.16738523542881012,
+          0.3557136058807373
+        ],
+        "after_crop_ncc": [
+          0.34609130024909973,
+          0.4307737350463867,
+          -0.20825059711933136
+        ],
+        "minimum_ncc": -0.20825059711933136
+      }
+    },
+    {
+      "source_pts_ticks": 33065,
+      "source_pts_sec": 2.1526692708333335,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "edab026d0f341165a736a2a5d0aee7b473e96daf43d534ac619ab3c37e06c8fe",
+      "source_pixel_sha256": "a1818417e49459b294b06ed0df94c32bccd84c2221cd86c6760cc4780ce5f89b",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.3501315116882324,
+            -0.05092515051364899,
+            0.4990863502025604
+          ],
+          "minimum_ncc": -0.05092515051364899,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.09098125994205475,
+            0.046465903520584106,
+            -0.15006381273269653
+          ],
+          "minimum_ncc": -0.15006381273269653,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 32809,
+        "before_crop_ncc": [
+          -0.08813387155532837,
+          -0.1345832198858261,
+          0.37122592329978943
+        ],
+        "after_crop_ncc": [
+          -0.09098125994205475,
+          0.046465903520584106,
+          -0.15006381273269653
+        ],
+        "minimum_ncc": -0.15006381273269653
+      }
+    },
+    {
+      "source_pts_ticks": 33321,
+      "source_pts_sec": 2.1693359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "e33ec3f7c94cd2f4fd77ccde42068381100d831b56f1e3ff026961b7f6d54e3e",
+      "source_pixel_sha256": "1d790934f042d5319c275560b6c9972ea9cf17aef3b00a6f1e026b9c9fde323f",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.30888140201568604,
+            0.1616637110710144,
+            0.03815958648920059
+          ],
+          "minimum_ncc": 0.03815958648920059,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.5427417159080505,
+            -0.15283681452274323,
+            -0.05912874639034271
+          ],
+          "minimum_ncc": -0.5427417159080505,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 33065,
+        "before_crop_ncc": [
+          0.3501315116882324,
+          -0.05092515051364899,
+          0.4990863502025604
+        ],
+        "after_crop_ncc": [
+          -0.5427417159080505,
+          -0.15283681452274323,
+          -0.05912874639034271
+        ],
+        "minimum_ncc": -0.5427417159080505
+      }
+    },
+    {
+      "source_pts_ticks": 33577,
+      "source_pts_sec": 2.1860026041666667,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "83de78b32573349a51af987a7ff5c8b6a2b6966eb59e4294f9c902206cc90347",
+      "source_pixel_sha256": "56a055079cf92f2664cd63eb57a0a64e5c903d1a7cd07f1be6febdae7382a373",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.3489360511302948,
+            0.3979942798614502,
+            0.18782341480255127
+          ],
+          "minimum_ncc": 0.18782341480255127,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.49189165234565735,
+            -0.07215061038732529,
+            0.0919668972492218
+          ],
+          "minimum_ncc": -0.49189165234565735,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 33321,
+        "before_crop_ncc": [
+          0.30888140201568604,
+          0.1616637110710144,
+          0.03815958648920059
+        ],
+        "after_crop_ncc": [
+          -0.49189165234565735,
+          -0.07215061038732529,
+          0.0919668972492218
+        ],
+        "minimum_ncc": -0.49189165234565735
+      }
+    },
+    {
+      "source_pts_ticks": 33833,
+      "source_pts_sec": 2.2026692708333333,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "0a380f422b06adab17caac2b251c677565f0fc205466fb39cf2305b83cbec8e4",
+      "source_pixel_sha256": "434779826a2d2b0564a492060b86dfa89d67d8d25a142d55c53460952eb82212",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.3700501024723053,
+            0.3982488512992859,
+            0.41319212317466736
+          ],
+          "minimum_ncc": 0.3700501024723053,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.44109785556793213,
+            -0.04996885359287262,
+            -0.019177637994289398
+          ],
+          "minimum_ncc": -0.44109785556793213,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 33577,
+        "before_crop_ncc": [
+          0.3489360511302948,
+          0.3979942798614502,
+          0.18782341480255127
+        ],
+        "after_crop_ncc": [
+          -0.44109785556793213,
+          -0.04996885359287262,
+          -0.019177637994289398
+        ],
+        "minimum_ncc": -0.44109785556793213
+      }
+    },
+    {
+      "source_pts_ticks": 34089,
+      "source_pts_sec": 2.2193359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "1475d2a41e324395f73b8614ffe7d9bbffc6562aba6ed0d1d1cfb11272e35958",
+      "source_pixel_sha256": "cae5efbea3b5f1850ec00879c5539beb482e2e7351e60728f61def1f58aed905",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.356057345867157,
+            -0.3108217120170593,
+            0.10281592607498169
+          ],
+          "minimum_ncc": -0.3108217120170593,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.39107394218444824,
+            0.05662878230214119,
+            0.021188098937273026
+          ],
+          "minimum_ncc": -0.39107394218444824,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 33833,
+        "before_crop_ncc": [
+          0.3700501024723053,
+          0.3982488512992859,
+          0.41319212317466736
+        ],
+        "after_crop_ncc": [
+          -0.39107394218444824,
+          0.05662878230214119,
+          0.021188098937273026
+        ],
+        "minimum_ncc": -0.39107394218444824
+      }
+    },
+    {
+      "source_pts_ticks": 34345,
+      "source_pts_sec": 2.2360026041666665,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "7aa805138a4edf7f1135f3965ae51d06f8f2b436b8a5819b32a1b3990087d4c1",
+      "source_pixel_sha256": "717ac6ba265dfe1aa8e64fecf121372a532c8c977285670c63512d11a49a1931",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.006558232009410858,
+            -0.33789750933647156,
+            -0.16142332553863525
+          ],
+          "minimum_ncc": -0.33789750933647156,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            -0.0010790317319333553,
+            0.1252385824918747,
+            -0.05124257132411003
+          ],
+          "minimum_ncc": -0.05124257132411003,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 34089,
+        "before_crop_ncc": [
+          0.356057345867157,
+          -0.3108217120170593,
+          0.10281592607498169
+        ],
+        "after_crop_ncc": [
+          -0.0010790317319333553,
+          0.1252385824918747,
+          -0.05124257132411003
+        ],
+        "minimum_ncc": -0.3108217120170593
+      }
+    },
+    {
+      "source_pts_ticks": 34601,
+      "source_pts_sec": 2.252669270833333,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "caeb24ca21aa55761a1843f1729de7fa5745febb7b3456dddfdb6572d85de344",
+      "source_pixel_sha256": "7f5389df43fcae581ec2e00455d9a69ae9aa42f44e76a838ae5a48e3e6d48e44",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.10348375886678696,
+            -0.26931148767471313,
+            -0.25872716307640076
+          ],
+          "minimum_ncc": -0.26931148767471313,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.26207590103149414,
+            0.10907348245382309,
+            0.14362196624279022
+          ],
+          "minimum_ncc": 0.10907348245382309,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 34345,
+        "before_crop_ncc": [
+          -0.006558232009410858,
+          -0.33789750933647156,
+          -0.16142332553863525
+        ],
+        "after_crop_ncc": [
+          0.26207590103149414,
+          0.10907348245382309,
+          0.14362196624279022
+        ],
+        "minimum_ncc": -0.33789750933647156
+      }
+    },
+    {
+      "source_pts_ticks": 34857,
+      "source_pts_sec": 2.2693359375,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "8404be58fdd072687cbf082b4d515c8870e4f81dbbea3de782104d24a374cbf9",
+      "source_pixel_sha256": "4d9c8220029767c868a84820aec56b03aa30cb0ff6030e066656ef656cc7d881",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            -0.17188884317874908,
+            -0.2213684618473053,
+            -0.25049883127212524
+          ],
+          "minimum_ncc": -0.25049883127212524,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.2051057368516922,
+            0.10394648462533951,
+            0.2588830590248108
+          ],
+          "minimum_ncc": 0.10394648462533951,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 34601,
+        "before_crop_ncc": [
+          -0.10348375886678696,
+          -0.26931148767471313,
+          -0.25872716307640076
+        ],
+        "after_crop_ncc": [
+          0.2051057368516922,
+          0.10394648462533951,
+          0.2588830590248108
+        ],
+        "minimum_ncc": -0.26931148767471313
+      }
+    },
+    {
+      "source_pts_ticks": 35113,
+      "source_pts_sec": 2.286002604166667,
+      "time_base": "1/15360",
+      "source_epoch": "44d8a6497bf543d1ac747bd084954129",
+      "encoded_sha256": "a14d066a95295fee2364c3cc20110bda59caa6293645137f3f2b082ed8ab8486",
+      "source_pixel_sha256": "0b27ea8fde135aa086edbe10b560a4e8efea527bc539e4378e0e9456412898ea",
+      "reference_pose_comparisons": [
+        {
+          "crop_ncc": [
+            0.14300741255283356,
+            -0.3830954134464264,
+            -0.22090037167072296
+          ],
+          "minimum_ncc": -0.3830954134464264,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        },
+        {
+          "crop_ncc": [
+            0.17636343836784363,
+            0.08351238071918488,
+            0.22830359637737274
+          ],
+          "minimum_ncc": 0.08351238071918488,
+          "runtime_authorized": false,
+          "normal_animation_proven": false
+        }
+      ],
+      "reference_pair_comparison": {
+        "previous_source_pts_ticks": 34857,
+        "before_crop_ncc": [
+          -0.17188884317874908,
+          -0.2213684618473053,
+          -0.25049883127212524
+        ],
+        "after_crop_ncc": [
+          0.17636343836784363,
+          0.08351238071918488,
+          0.22830359637737274
+        ],
+        "minimum_ncc": -0.25049883127212524
+      }
+    }
+  ],
+  "review_sheet_sha256": {
+    "outputs/recognition-investigation/native-foreground-controls-20261010/foreground_00.png": "7c2dbc235151b637100e7f9c81004da9d31107a18bbc51a511fc4315f24195e0",
+    "outputs/recognition-investigation/native-foreground-controls-20261010/foreground_01.png": "01b0db04639511be7e7f86be2df75c9f584a26dabb76598e2c0d582e5b957ede",
+    "outputs/recognition-investigation/native-foreground-controls-20261010/foreground_02.png": "f8ed05bc307c514ec7c7eed5da08de5c174485834415f78f7bd65758b569412c",
+    "outputs/recognition-investigation/native-foreground-controls-20261010/foreground_03.png": "77d1b59643873195c6ac4ac09f1902c06ccee4781ea740101ecbcbbd4266bd8d",
+    "outputs/recognition-investigation/native-foreground-controls-20261010/foreground_04.png": "21304f3a88975e80865c2caa64f304b8ea1368cb993a6a0d9b55c443138091e4"
+  },
+  "wall_clock_sec": 79.05335537303472,
+  "native_frames": 126,
+  "qualification_created": false,
+  "runtime_authorized": false,
+  "canonical_current": null,
+  "canonical_delta": null
+}

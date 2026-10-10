@@ -1,0 +1,20 @@
+{
+  "hypothesis": "Original-seed whole-crop photometric drift rejects otherwise consistent adjacent scene links",
+  "target_assertion_ids": [
+    "GT-R1-ROUND-START"
+  ],
+  "population": "Existing stable 30 and prefix 36 native development frames; not holdout",
+  "mode": "adjacent_dense_world",
+  "retained_source_identity": "Original reviewed feature IDs, adjacent patch NCC and original-seed patch NCC all maintained",
+  "spatial_proof": "Common adjacent photometric regions in 3 cells spanning 2 rows and 2 columns",
+  "motion_proof": "Adjacent affine fitted only to original-seed-qualified world tracks; >=90% inliers from >=3 seed regions",
+  "ncc_floor": 0.9,
+  "variance_floor": 1.0,
+  "no_reseeding": true,
+  "no_runtime_proof": true,
+  "qualification_created": false,
+  "file_sha256": {
+    "scripts/diagnostics/scene_world_chain.py": "85b3e63b0920f3ff69b630cf504f5280a5f276ec9473c7e9056e2738eb0faace",
+    "scripts/diagnostics/probe_scene_world_chain.py": "cb70c4354dc4145783572981a37b5d1181c156d6125796c74cdb7f8f58590ad6"
+  }
+}

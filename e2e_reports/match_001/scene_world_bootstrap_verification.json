@@ -1,0 +1,24 @@
+{
+  "git_head": "80d0d460b8e3a76d3c181e035c72cd10026f4252",
+  "tests": {
+    "related": "62 passed in 14.84s",
+    "focused": "9 passed in 6.09s"
+  },
+  "ruff": "All checks passed: src tests scripts/e2e and bootstrap diagnostic",
+  "mypy": "Success: no issues found in 104 source files",
+  "assertion_count": 82,
+  "assertion_rows_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776",
+  "src_diff_vs_head": "",
+  "full_e2e_run": false,
+  "qualification_created": false,
+  "profile_source_code_terminal_bindings_verified": true,
+  "new_artifact_sha256": {
+    "scripts/diagnostics/scene_world_bootstrap.py": "508f6b24e0845a5335d834b67911d2a25569c8dec5b0208e1f0b0ab76ade743b",
+    "tests/unit/test_scene_world_bootstrap.py": "ba24cf2d0b236f5bec5b39689b328300cb4a46893925b9c75850b7cec55b43f3",
+    "docs/scene_world_bootstrap_contract.md": "c36cba61cb3348b77a06e0ba72f7dd5fb72d9d8830c744d3e0419e0483184306",
+    "e2e_reports/match_001/scene_world_bootstrap_declaration.json": "394b31bbdd2254aba8b89b0b5658db0743097440a9ddfa88edaa4cd07efccb0f",
+    "e2e_reports/match_001/scene_world_bootstrap_development.json": "2759fd930f30541fefce8ecd8666209baa9b8878e47a8fdaf5cdbc23f2cc6876"
+  },
+  "canonical_current": null,
+  "canonical_delta": null
+}

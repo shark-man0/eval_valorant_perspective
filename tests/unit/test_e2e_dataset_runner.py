@@ -386,3 +386,57 @@ def test_adapting_point_raw_never_creates_temporal_intervals(tmp_path):
         "temporal_features",
     }
     assert all(value == [] for value in trace.values())
+
+
+@pytest.mark.parametrize('mode,budget,scene', [
+    ('targeted', 100, 'scene.json'), ('sampled', 100, 'scene.json'),
+    ('full', 0, 'scene.json'), ('full', None, 'scene.json'), ('full', 100, None),
+])
+def test_native_options_reject_before_any_command(case, mode, budget, scene):
+    case.args.mode = mode
+    case.args.native_png_budget = budget
+    case.args.scene_reference_profile = scene
+    with pytest.raises(runner.CaseError, match='NATIVE_LIFECYCLE_REQUIRES'):
+        execute(case)
+    assert case.calls == []
+
+
+def test_native_cli_forwarding_and_settings_binding(case, monkeypatch):
+    # Mocked orchestration boundary, not scene qualification or runtime acceptance.
+    from valorant_ai_coach.hud.scene_source_binding import SceneSourceBinding
+
+    fingerprints = []
+
+    def load(path):
+        fingerprints.append(path)
+        return SimpleNamespace(fingerprint=lambda: 'a' * 64)
+
+    monkeypatch.setattr(SceneSourceBinding, 'load', load)
+    case.args.native_png_budget = 1000
+    case.args.scene_reference_profile = str(case.root / 'scene.json')
+    assert execute(case) == 0
+    cmd = next(c for c in case.calls if 'run_real_video.py' in str(c))
+    assert cmd[cmd.index('--native-png-budget') + 1] == '1000'
+    assert cmd[cmd.index('--scene-reference-profile') + 1] == case.args.scene_reference_profile
+    assert fingerprints == [case.root / 'scene.json', case.root / 'scene.json']
+
+
+def test_unedited_contract_cli_is_source_specific_and_terminally_bound(case):
+    from tests.unit.test_unedited_ui_start import make_contract
+
+    path, _ = make_contract(case.root, runner.sha256_file(case.video))
+    case.args.native_png_budget = 1000
+    case.args.unedited_input_contract = str(path)
+    assert execute(case) == 0
+    cmd = next(c for c in case.calls if 'run_real_video.py' in str(c))
+    assert cmd[cmd.index('--unedited-input-contract') + 1] == str(path)
+    assert '--scene-reference-profile' not in cmd
+
+
+def test_assurance_and_scene_options_are_mutually_exclusive(case):
+    case.args.native_png_budget = 1000
+    case.args.unedited_input_contract = 'contract.json'
+    case.args.scene_reference_profile = 'scene.json'
+    with pytest.raises(runner.CaseError, match='NATIVE_LIFECYCLE'):
+        execute(case)
+    assert case.calls == []

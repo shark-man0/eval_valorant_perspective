@@ -1,0 +1,3168 @@
+{
+  "scope": "Fixed existing image holdouts through actual analyzer; never temporal qualification.\n\nJPEG timestamps retain their original precision. The native geometric prefix\ndoes not make these isolated JPEG images a native continuous sequence. Reviewed\nlabels are used only after prediction and are never given to the analyzer.\n",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "profile_fingerprint": "10bfac00544e510ebf3f3e2c0072c9beba24938b2ff996c9012f7e4046d82c99",
+  "recognizer_fingerprint": "4506882908c892519c96b2acd33c2e78f868d1f3e0d3d50471c7a1e867aa5724",
+  "diagnostic_script_sha256": "11ac94c32a6cb8ec086ad43af6674bf873dc49cbe2342b958dc55ee8cf7d2253",
+  "input_sha256": {
+    "outputs/recognition-investigation/timer-gaussian-fresh-holdout/selection.json": "4311f0a51b5de242ff19364e6545b0d97a11869df533c0c71c3818653b0cfd00",
+    "outputs/recognition-investigation/timer-gaussian-fresh-holdout/blind-labels.json": "f4f2f8fad63d5aa1528bc023f4d235b167cede20fbad7b25d85f1d168d9826d0",
+    "outputs/recognition-investigation/phase-evidence/structural-text/fresh-holdout-selection.json": "1d3b8fb5a8dada31e5f4f5f1ade76d11731758fdf235ec70338f60fb672b7b72",
+    "e2e_reports/match_001/unedited_component_holdout_replay.json": "29e1550cfe4d6e419e3ae8f53ea66ce2e1918e0b95d97986566de3d4d2b23799"
+  },
+  "cohorts": {
+    "phase": {
+      "prefix_frames": 4,
+      "prefix_gap_not_temporal_evidence": true,
+      "rows": [
+        {
+          "image": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-000/frame_00005_000000.869.jpg",
+          "frame_sha256": "42dd4e620def6d42fcb34b8a049fbaca329e3c83435d42710249904d9ca897d4",
+          "pts_sec": 0.869336,
+          "observation": {
+            "schema_version": "2.0",
+            "time_sec": 0.869336,
+            "frame_index": 4,
+            "primary_state": "unknown",
+            "state_flags": [
+              "combat_report_visible",
+              "buy_phase_banner"
+            ],
+            "view_context": {
+              "remote_view_type": "none",
+              "is_player_world_view_trustworthy": false
+            },
+            "values": {
+              "round_time_remaining_sec": 3.0,
+              "score_ally": 0,
+              "score_enemy": 1,
+              "ally_alive": null,
+              "enemy_alive": null,
+              "hp": null,
+              "armor": null,
+              "ammo_current": null,
+              "ammo_reserve": null,
+              "weapon_text": null,
+              "spike_state": "unknown",
+              "location_text": null,
+              "kill_feed_rows": [],
+              "ability_slots": [],
+              "combat_report_visible": true,
+              "buy_phase_visible": true,
+              "round_end_text": null,
+              "zone_id": null,
+              "player_specific_hud_valid": false,
+              "round_time_remaining_display": "0:03",
+              "round_time_remaining_display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9467021226882935,
+                "cross_checked": false
+              }
+            },
+            "quality": {
+              "hud_confidence": 0.0,
+              "visual_confidence": 0.0,
+              "occluded_rois": [],
+              "notes": [],
+              "state_confidence": 0.0,
+              "roi_confidence": {
+                "location_label": 0.33021501511239154,
+                "minimap_normal": 0.521992983932037,
+                "top_match_bar": 0.6988936988936989,
+                "ally_roster": 0.9450617283950618,
+                "enemy_roster": 0.8211382113821138,
+                "ally_score": 0.9551299214363098,
+                "round_timer": 0.9467021226882935,
+                "enemy_score": 0.9914736747741699,
+                "spike_top_center": 0.5292527652493421,
+                "spike_carrier_indicator": 0.7865961199294532,
+                "kill_feed": 0.1049415540775578,
+                "performance_overlay_ignore": 0.42594920080973725,
+                "center_phase_banner": 0.5275807722616234,
+                "round_end_banner": 0.5376950947603122,
+                "player_hp_armor": 0.6117548029312736,
+                "abilities": 0.5971502481145876,
+                "ammo_current_weapon": 0.6798567008630516,
+                "weapon_inventory": 0.41018914367146003,
+                "status_effects_center_bottom": 0.8107122507122507,
+                "combat_report": 0.7303272450532724,
+                "spectated_player_panel": 0.6773798228969007,
+                "chat_broadcast": 0.7394997640396413,
+                "buy_menu_grid": 0.43439113776445115,
+                "buy_menu_close_anchor": 0.09087784096801607,
+                "expanded_tactical_map": 0.4507748661594816,
+                "center_crosshair_area": 0.24473958333333334,
+                "spectator_icon": 0.48715140363026327,
+                "round_timer_value": 0.9467021226882935,
+                "score_ally_value": 0.9551299214363098,
+                "score_enemy_value": 0.9914736747741699,
+                "hp_value": 0.0,
+                "center_phase_banner_semantic_text": 0.9533063759520859
+              }
+            }
+          },
+          "native_ui_measurements": {
+            "content_jump": false,
+            "discontinuity": false,
+            "phase_scan_valid": true,
+            "phase_present": true,
+            "phase_confidence": 0.9693342562738002,
+            "phase_absence_matched": false,
+            "confidence": 0.0,
+            "round_result_matched": false,
+            "round_result_confidence": 0.0
+          },
+          "geometry_calibrated": true,
+          "phase_measurement": {
+            "matcher": "semantic_text_ncc_v1",
+            "threshold": 0.9,
+            "score": 0.9693342562738002,
+            "groups": [
+              {
+                "group": 1,
+                "mask_population": 4727,
+                "current_std": 33.9682190735765,
+                "score": 0.9745605714141506,
+                "reason": "matched"
+              },
+              {
+                "group": 2,
+                "mask_population": 2503,
+                "current_std": 36.58686711688545,
+                "score": 0.9693342562738002,
+                "reason": "matched"
+              },
+              {
+                "group": 3,
+                "mask_population": 2415,
+                "current_std": 46.75617220205853,
+                "score": 0.9766216744202527,
+                "reason": "matched"
+              }
+            ],
+            "presence": true,
+            "absence_checked": false,
+            "runtime_transition_authorized": false,
+            "roi": "center_phase_banner",
+            "pixel_bounds": [
+              765,
+              170,
+              1155,
+              240
+            ],
+            "crop_pixel_sha256": "5d633b560a6ca0f918682ec23af043d1d666329434b3302660f57cd280e5e7f8"
+          },
+          "phase_signals": {
+            "buy_phase_template_scan_valid": true,
+            "buy_phase_template": true,
+            "buy_phase_template_confidence": 0.9693342562738002,
+            "buy_phase_template_matcher": "semantic_text_ncc_v1",
+            "semantic_buy_phase_confirmed": true,
+            "semantic_buy_phase_confidence": 0.9533063759520859,
+            "semantic_buy_phase_source_pts": [
+              0.03600260416666667,
+              0.869336
+            ]
+          },
+          "expected_present": true,
+          "accepted": true,
+          "scan_valid": true,
+          "outcome": "positive_correct",
+          "reader_accepted": true,
+          "reader_outcome": "positive_correct"
+        },
+        {
+          "image": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-000/frame_00017_000001.869.jpg",
+          "frame_sha256": "269ed5bf186e897e7a9d908d9bcc625582277300e4227d3859c54501379b6fa7",
+          "pts_sec": 1.869336,
+          "observation": {
+            "schema_version": "2.0",
+            "time_sec": 1.869336,
+            "frame_index": 5,
+            "primary_state": "unknown",
+            "state_flags": [
+              "buy_phase_banner"
+            ],
+            "view_context": {
+              "remote_view_type": "none",
+              "is_player_world_view_trustworthy": false
+            },
+            "values": {
+              "round_time_remaining_sec": 2.0,
+              "score_ally": 0,
+              "score_enemy": 1,
+              "ally_alive": null,
+              "enemy_alive": null,
+              "hp": null,
+              "armor": null,
+              "ammo_current": null,
+              "ammo_reserve": null,
+              "weapon_text": null,
+              "spike_state": "unknown",
+              "location_text": null,
+              "kill_feed_rows": [],
+              "ability_slots": [],
+              "combat_report_visible": false,
+              "buy_phase_visible": true,
+              "round_end_text": null,
+              "zone_id": null,
+              "player_specific_hud_valid": false,
+              "round_time_remaining_display": "0:02",
+              "round_time_remaining_display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9469844102859497,
+                "cross_checked": false
+              }
+            },
+            "quality": {
+              "hud_confidence": 0.0,
+              "visual_confidence": 0.0,
+              "occluded_rois": [],
+              "notes": [],
+              "state_confidence": 0.0,
+              "roi_confidence": {
+                "location_label": 0.20286849826833822,
+                "minimap_normal": 0.5293649106270043,
+                "top_match_bar": 0.6049395906995192,
+                "ally_roster": 0.9026748971193417,
+                "enemy_roster": 0.580585340943727,
+                "ally_score": 0.9286110401153564,
+                "round_timer": 0.9469844102859497,
+                "enemy_score": 0.994754433631897,
+                "spike_top_center": 0.5884799286768203,
+                "spike_carrier_indicator": 0.7212345229943058,
+                "kill_feed": 0.055688358481398414,
+                "performance_overlay_ignore": 0.9649776453055142,
+                "center_phase_banner": 0.281447433618025,
+                "round_end_banner": 0.2969197851397788,
+                "player_hp_armor": 0.16282689968913996,
+                "abilities": 0.15402715150869384,
+                "ammo_current_weapon": 0.031502014561695074,
+                "weapon_inventory": 0.6541488534784299,
+                "status_effects_center_bottom": 0.03344250320922174,
+                "combat_report": 0.17511415525114155,
+                "spectated_player_panel": 0.29842662871600256,
+                "chat_broadcast": 0.4369199307849615,
+                "buy_menu_grid": 0.09516505103206274,
+                "buy_menu_close_anchor": 0.0,
+                "expanded_tactical_map": 0.0450700316662046,
+                "center_crosshair_area": 0.018734589795006258,
+                "spectator_icon": 0.0,
+                "round_timer_value": 0.9469844102859497,
+                "score_ally_value": 0.9286110401153564,
+                "score_enemy_value": 0.994754433631897,
+                "hp_value": 0.0,
+                "center_phase_banner_semantic_text": 0.9533063759520859
+              }
+            }
+          },
+          "native_ui_measurements": {
+            "content_jump": false,
+            "discontinuity": false,
+            "phase_scan_valid": true,
+            "phase_present": true,
+            "phase_confidence": 0.9665745558558649,
+            "phase_absence_matched": false,
+            "confidence": 0.0,
+            "round_result_matched": false,
+            "round_result_confidence": 0.0
+          },
+          "geometry_calibrated": true,
+          "phase_measurement": {
+            "matcher": "semantic_text_ncc_v1",
+            "threshold": 0.9,
+            "score": 0.9665745558558649,
+            "groups": [
+              {
+                "group": 1,
+                "mask_population": 4727,
+                "current_std": 22.37802862049124,
+                "score": 0.9699420093468917,
+                "reason": "matched"
+              },
+              {
+                "group": 2,
+                "mask_population": 2503,
+                "current_std": 19.239913365447173,
+                "score": 0.9665745558558649,
+                "reason": "matched"
+              },
+              {
+                "group": 3,
+                "mask_population": 2415,
+                "current_std": 20.410827327286036,
+                "score": 0.9674634032851033,
+                "reason": "matched"
+              }
+            ],
+            "presence": true,
+            "absence_checked": false,
+            "runtime_transition_authorized": false,
+            "roi": "center_phase_banner",
+            "pixel_bounds": [
+              765,
+              170,
+              1155,
+              240
+            ],
+            "crop_pixel_sha256": "e63386e1c41ba19d575df9abf0435740881a6c6bc8d1591d47ccf180c5b8ad5f"
+          },
+          "phase_signals": {
+            "buy_phase_template_scan_valid": true,
+            "buy_phase_template": true,
+            "buy_phase_template_confidence": 0.9665745558558649,
+            "buy_phase_template_matcher": "semantic_text_ncc_v1",
+            "semantic_buy_phase_confirmed": true,
+            "semantic_buy_phase_confidence": 0.9533063759520859,
+            "semantic_buy_phase_source_pts": [
+              0.03600260416666667,
+              1.869336
+            ]
+          },
+          "expected_present": true,
+          "accepted": true,
+          "scan_valid": true,
+          "outcome": "positive_correct",
+          "reader_accepted": true,
+          "reader_outcome": "positive_correct"
+        },
+        {
+          "image": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-001/frame_00088_000098.003.jpg",
+          "frame_sha256": "bef2b2c52139cfb1930f00f99c052f117d584742f6b1d0e05295e2afc5dab9e2",
+          "pts_sec": 98.002669,
+          "observation": {
+            "schema_version": "2.0",
+            "time_sec": 98.002669,
+            "frame_index": 6,
+            "primary_state": "unknown",
+            "state_flags": [
+              "combat_report_visible"
+            ],
+            "view_context": {
+              "remote_view_type": "none",
+              "is_player_world_view_trustworthy": false
+            },
+            "values": {
+              "round_time_remaining_sec": 13.0,
+              "score_ally": 0,
+              "score_enemy": 2,
+              "ally_alive": null,
+              "enemy_alive": null,
+              "hp": null,
+              "armor": null,
+              "ammo_current": null,
+              "ammo_reserve": null,
+              "weapon_text": null,
+              "spike_state": "unknown",
+              "location_text": null,
+              "kill_feed_rows": [],
+              "ability_slots": [],
+              "combat_report_visible": true,
+              "buy_phase_visible": false,
+              "round_end_text": null,
+              "zone_id": null,
+              "player_specific_hud_valid": false,
+              "round_time_remaining_display": "0:13",
+              "round_time_remaining_display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9421560168266296,
+                "cross_checked": false
+              }
+            },
+            "quality": {
+              "hud_confidence": 0.0,
+              "visual_confidence": 0.0,
+              "occluded_rois": [],
+              "notes": [],
+              "state_confidence": 0.0,
+              "roi_confidence": {
+                "location_label": 0.5685903373039851,
+                "minimap_normal": 0.7766011204959951,
+                "top_match_bar": 0.6107032206543052,
+                "ally_roster": 0.9660493827160495,
+                "enemy_roster": 0.5751999419530306,
+                "ally_score": 0.948422908782959,
+                "round_timer": 0.9421560168266296,
+                "enemy_score": 0.9656299352645874,
+                "spike_top_center": 0.6191371335720425,
+                "spike_carrier_indicator": 0.7780534750178404,
+                "kill_feed": 0.061284545266357404,
+                "performance_overlay_ignore": 0.49934654178174515,
+                "center_phase_banner": 0.4800739527690489,
+                "round_end_banner": 0.5109465903636856,
+                "player_hp_armor": 0.31370490149696306,
+                "abilities": 0.4181138015774447,
+                "ammo_current_weapon": 0.13713489472099594,
+                "weapon_inventory": 0.4830712078793978,
+                "status_effects_center_bottom": 0.04195667867653479,
+                "combat_report": 0.8070776255707762,
+                "spectated_player_panel": 0.01139747398491126,
+                "chat_broadcast": 0.05231102216735775,
+                "buy_menu_grid": 0.1974963200992444,
+                "buy_menu_close_anchor": 0.0,
+                "expanded_tactical_map": 0.2092192759925069,
+                "center_crosshair_area": 0.36706407397445917,
+                "spectator_icon": 0.0,
+                "round_timer_value": 0.9421560168266296,
+                "score_ally_value": 0.948422908782959,
+                "score_enemy_value": 0.9656299352645874,
+                "hp_value": 0.0
+              }
+            }
+          },
+          "native_ui_measurements": {
+            "content_jump": false,
+            "discontinuity": false,
+            "phase_scan_valid": true,
+            "phase_present": true,
+            "phase_confidence": 0.9658959667555242,
+            "phase_absence_matched": false,
+            "confidence": 0.0,
+            "round_result_matched": false,
+            "round_result_confidence": 0.0
+          },
+          "geometry_calibrated": true,
+          "phase_measurement": {
+            "matcher": "semantic_text_ncc_v1",
+            "threshold": 0.9,
+            "score": 0.9658959667555242,
+            "groups": [
+              {
+                "group": 1,
+                "mask_population": 4727,
+                "current_std": 37.43786801909255,
+                "score": 0.9796271966022576,
+                "reason": "matched"
+              },
+              {
+                "group": 2,
+                "mask_population": 2503,
+                "current_std": 42.60849558893091,
+                "score": 0.9658959667555242,
+                "reason": "matched"
+              },
+              {
+                "group": 3,
+                "mask_population": 2415,
+                "current_std": 41.85865738849837,
+                "score": 0.9804552892190714,
+                "reason": "matched"
+              }
+            ],
+            "presence": true,
+            "absence_checked": false,
+            "runtime_transition_authorized": false,
+            "roi": "center_phase_banner",
+            "pixel_bounds": [
+              765,
+              170,
+              1155,
+              240
+            ],
+            "crop_pixel_sha256": "659b5f11c4d3659bbe8577d610fc5565d8c9825c14090326369c339bf1d881b1"
+          },
+          "phase_signals": {
+            "buy_phase_template_scan_valid": true,
+            "buy_phase_template": true,
+            "buy_phase_template_confidence": 0.9658959667555242,
+            "buy_phase_template_matcher": "semantic_text_ncc_v1"
+          },
+          "expected_present": true,
+          "accepted": false,
+          "scan_valid": true,
+          "outcome": "positive_unknown",
+          "reader_accepted": true,
+          "reader_outcome": "positive_correct"
+        },
+        {
+          "image": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-004/frame_00330_000100.303.jpg",
+          "frame_sha256": "b42fc4807b7265e1fb3215a6ae8e32a234deaa2486ee6ba27d84c3311ba86fbc",
+          "pts_sec": 100.302669,
+          "observation": {
+            "schema_version": "2.0",
+            "time_sec": 100.302669,
+            "frame_index": 7,
+            "primary_state": "unknown",
+            "state_flags": [
+              "combat_report_visible",
+              "buy_phase_banner"
+            ],
+            "view_context": {
+              "remote_view_type": "none",
+              "is_player_world_view_trustworthy": false
+            },
+            "values": {
+              "round_time_remaining_sec": 11.0,
+              "score_ally": 0,
+              "score_enemy": 2,
+              "ally_alive": null,
+              "enemy_alive": null,
+              "hp": null,
+              "armor": null,
+              "ammo_current": null,
+              "ammo_reserve": null,
+              "weapon_text": null,
+              "spike_state": "unknown",
+              "location_text": null,
+              "kill_feed_rows": [],
+              "ability_slots": [],
+              "combat_report_visible": true,
+              "buy_phase_visible": true,
+              "round_end_text": null,
+              "zone_id": null,
+              "player_specific_hud_valid": false,
+              "round_time_remaining_display": "0:11",
+              "round_time_remaining_display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9574357271194458,
+                "cross_checked": false
+              }
+            },
+            "quality": {
+              "hud_confidence": 0.0,
+              "visual_confidence": 0.0,
+              "occluded_rois": [],
+              "notes": [],
+              "state_confidence": 0.0,
+              "roi_confidence": {
+                "location_label": 0.5823982887241687,
+                "minimap_normal": 0.7824844944282884,
+                "top_match_bar": 0.6973363159725143,
+                "ally_roster": 0.975925925925926,
+                "enemy_roster": 0.8046015757384908,
+                "ally_score": 0.9460922479629517,
+                "round_timer": 0.9574357271194458,
+                "enemy_score": 0.95917809009552,
+                "spike_top_center": 0.5098101260133064,
+                "spike_carrier_indicator": 0.7716049382716049,
+                "kill_feed": 0.3081344095319901,
+                "performance_overlay_ignore": 0.5206527110590552,
+                "center_phase_banner": 0.3551352771210928,
+                "round_end_banner": 0.36942586399108135,
+                "player_hp_armor": 0.2896166979638179,
+                "abilities": 0.5141547290867144,
+                "ammo_current_weapon": 0.4121885686370298,
+                "weapon_inventory": 0.5015222179038735,
+                "status_effects_center_bottom": 0.3100779776398615,
+                "combat_report": 0.7838660578386606,
+                "spectated_player_panel": 0.12834552092317814,
+                "chat_broadcast": 0.1414924994271724,
+                "buy_menu_grid": 0.3669135462503451,
+                "buy_menu_close_anchor": 0.2505781477620007,
+                "expanded_tactical_map": 0.37721141514663104,
+                "center_crosshair_area": 0.2748896417134387,
+                "spectator_icon": 0.17284494697419045,
+                "round_timer_value": 0.9574357271194458,
+                "score_ally_value": 0.9460922479629517,
+                "score_enemy_value": 0.95917809009552,
+                "hp_value": 0.0
+              }
+            }
+          },
+          "native_ui_measurements": {
+            "content_jump": false,
+            "discontinuity": false,
+            "phase_scan_valid": true,
+            "phase_present": true,
+            "phase_confidence": 0.9652381422421519,
+            "phase_absence_matched": false,
+            "confidence": 0.0,
+            "round_result_matched": false,
+            "round_result_confidence": 0.0
+          },
+          "geometry_calibrated": true,
+          "phase_measurement": {
+            "matcher": "semantic_text_ncc_v1",
+            "threshold": 0.9,
+            "score": 0.9652381422421519,
+            "groups": [
+              {
+                "group": 1,
+                "mask_population": 4727,
+                "current_std": 36.75603956840738,
+                "score": 0.9652381422421519,
+                "reason": "matched"
+              },
+              {
+                "group": 2,
+                "mask_population": 2503,
+                "current_std": 45.72093551309136,
+                "score": 0.9772603723735688,
+                "reason": "matched"
+              },
+              {
+                "group": 3,
+                "mask_population": 2415,
+                "current_std": 43.41091512222609,
+                "score": 0.9880984370896639,
+                "reason": "matched"
+              }
+            ],
+            "presence": true,
+            "absence_checked": false,
+            "runtime_transition_authorized": false,
+            "roi": "center_phase_banner",
+            "pixel_bounds": [
+              765,
+              170,
+              1155,
+              240
+            ],
+            "crop_pixel_sha256": "712433b802fa42ff8349cfba895fd8a7a79cd735d2c63e52ce02e722fa9dee3e"
+          },
+          "phase_signals": {
+            "buy_phase_template_scan_valid": true,
+            "buy_phase_template": true,
+            "buy_phase_template_confidence": 0.9652381422421519,
+            "buy_phase_template_matcher": "semantic_text_ncc_v1"
+          },
+          "expected_present": true,
+          "accepted": true,
+          "scan_valid": true,
+          "outcome": "positive_correct",
+          "reader_accepted": true,
+          "reader_outcome": "positive_correct"
+        },
+        {
+          "image": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-004/frame_00416_000102.719.jpg",
+          "frame_sha256": "1c37db9bb782a447a4ede8223e6c44ec0eb18ad30d6402fa27858f3987f86316",
+          "pts_sec": 102.719336,
+          "observation": {
+            "schema_version": "2.0",
+            "time_sec": 102.719336,
+            "frame_index": 8,
+            "primary_state": "unknown",
+            "state_flags": [
+              "combat_report_visible"
+            ],
+            "view_context": {
+              "remote_view_type": "none",
+              "is_player_world_view_trustworthy": false
+            },
+            "values": {
+              "round_time_remaining_sec": 8.0,
+              "score_ally": null,
+              "score_enemy": 2,
+              "ally_alive": null,
+              "enemy_alive": null,
+              "hp": null,
+              "armor": null,
+              "ammo_current": null,
+              "ammo_reserve": null,
+              "weapon_text": null,
+              "spike_state": "unknown",
+              "location_text": null,
+              "kill_feed_rows": [],
+              "ability_slots": [],
+              "combat_report_visible": true,
+              "buy_phase_visible": false,
+              "round_end_text": null,
+              "zone_id": null,
+              "player_specific_hud_valid": false,
+              "round_time_remaining_display": "0:08",
+              "round_time_remaining_display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9632306694984436,
+                "cross_checked": false
+              }
+            },
+            "quality": {
+              "hud_confidence": 0.0,
+              "visual_confidence": 0.0,
+              "occluded_rois": [],
+              "notes": [],
+              "state_confidence": 0.0,
+              "roi_confidence": {
+                "location_label": 0.7064628063326828,
+                "minimap_normal": 0.7169021454735741,
+                "top_match_bar": 0.8630952380952381,
+                "ally_roster": 1.0,
+                "enemy_roster": 0.7383124698435751,
+                "ally_score": 0.7091787439613526,
+                "round_timer": 0.9632306694984436,
+                "enemy_score": 0.9653247594833374,
+                "spike_top_center": 0.7258823529411764,
+                "spike_carrier_indicator": 0.9047619047619048,
+                "kill_feed": 0.3033360747211942,
+                "performance_overlay_ignore": 0.49622320974598916,
+                "center_phase_banner": 0.6863015497767271,
+                "round_end_banner": 0.6897296544035675,
+                "player_hp_armor": 0.29574649202300773,
+                "abilities": 0.5767563527653214,
+                "ammo_current_weapon": 0.3234408076860446,
+                "weapon_inventory": 0.7545504599041326,
+                "status_effects_center_bottom": 0.5568091168091168,
+                "combat_report": 0.8295662100456621,
+                "spectated_player_panel": 0.08948830009832719,
+                "chat_broadcast": 0.06032157333428172,
+                "buy_menu_grid": 0.5055222388805597,
+                "buy_menu_close_anchor": 0.0,
+                "expanded_tactical_map": 0.5443505212735982,
+                "center_crosshair_area": 0.5558333333333333,
+                "spectator_icon": 0.14836314938204917,
+                "round_timer_value": 0.9632306694984436,
+                "score_ally_value": 0.0,
+                "score_enemy_value": 0.9653247594833374,
+                "hp_value": 0.0
+              }
+            }
+          },
+          "native_ui_measurements": {
+            "content_jump": false,
+            "discontinuity": false,
+            "phase_scan_valid": true,
+            "phase_present": true,
+            "phase_confidence": 0.9757283308536786,
+            "phase_absence_matched": false,
+            "confidence": 0.0,
+            "round_result_matched": false,
+            "round_result_confidence": 0.0
+          },
+          "geometry_calibrated": true,
+          "phase_measurement": {
+            "matcher": "semantic_text_ncc_v1",
+            "threshold": 0.9,
+            "score": 0.9757283308536786,
+            "groups": [
+              {
+                "group": 1,
+                "mask_population": 4727,
+                "current_std": 45.04864824121166,
+                "score": 0.9771865136899193,
+                "reason": "matched"
+              },
+              {
+                "group": 2,
+                "mask_population": 2503,
+                "current_std": 41.513135393575325,
+                "score": 0.9757283308536786,
+                "reason": "matched"
+              },
+              {
+                "group": 3,
+                "mask_population": 2415,
+                "current_std": 42.61293639549106,
+                "score": 0.9818007906689592,
+                "reason": "matched"
+              }
+            ],
+            "presence": true,
+            "absence_checked": false,
+            "runtime_transition_authorized": false,
+            "roi": "center_phase_banner",
+            "pixel_bounds": [
+              765,
+              170,
+              1155,
+              240
+            ],
+            "crop_pixel_sha256": "48f6806beb8a8a56000213409f83abf61a2f80be8f7b1ad2df72c1f95cc10284"
+          },
+          "phase_signals": {
+            "buy_phase_template_scan_valid": true,
+            "buy_phase_template": true,
+            "buy_phase_template_confidence": 0.9757283308536786,
+            "buy_phase_template_matcher": "semantic_text_ncc_v1"
+          },
+          "expected_present": true,
+          "accepted": false,
+          "scan_valid": true,
+          "outcome": "positive_unknown",
+          "reader_accepted": true,
+          "reader_outcome": "positive_correct"
+        },
+        {
+          "image": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-004/frame_00461_000104.086.jpg",
+          "frame_sha256": "efd0bef0e9260227c910181a43b0309a1dab00b4e49b9317461451a14ec237d7",
+          "pts_sec": 104.086003,
+          "observation": {
+            "schema_version": "2.0",
+            "time_sec": 104.086003,
+            "frame_index": 9,
+            "primary_state": "unknown",
+            "state_flags": [
+              "combat_report_visible"
+            ],
+            "view_context": {
+              "remote_view_type": "none",
+              "is_player_world_view_trustworthy": false
+            },
+            "values": {
+              "round_time_remaining_sec": 7.0,
+              "score_ally": 0,
+              "score_enemy": 2,
+              "ally_alive": null,
+              "enemy_alive": null,
+              "hp": null,
+              "armor": null,
+              "ammo_current": null,
+              "ammo_reserve": null,
+              "weapon_text": null,
+              "spike_state": "unknown",
+              "location_text": null,
+              "kill_feed_rows": [],
+              "ability_slots": [],
+              "combat_report_visible": true,
+              "buy_phase_visible": false,
+              "round_end_text": null,
+              "zone_id": null,
+              "player_specific_hud_valid": false,
+              "round_time_remaining_display": "0:07",
+              "round_time_remaining_display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9461973309516907,
+                "cross_checked": false
+              }
+            },
+            "quality": {
+              "hud_confidence": 0.0,
+              "visual_confidence": 0.0,
+              "occluded_rois": [],
+              "notes": [],
+              "state_confidence": 0.0,
+              "roi_confidence": {
+                "location_label": 0.35511913696335606,
+                "minimap_normal": 0.6354181880791396,
+                "top_match_bar": 0.9693362193362194,
+                "ally_roster": 1.0,
+                "enemy_roster": 0.9564875712470234,
+                "ally_score": 0.9403079748153687,
+                "round_timer": 0.9461973309516907,
+                "enemy_score": 0.9584882855415344,
+                "spike_top_center": 0.7345098039215686,
+                "spike_carrier_indicator": 1.0,
+                "kill_feed": 0.26394906097168375,
+                "performance_overlay_ignore": 0.6917536015896671,
+                "center_phase_banner": 0.8114657210401891,
+                "round_end_banner": 0.8118032329988852,
+                "player_hp_armor": 0.17527050738261166,
+                "abilities": 0.17969166004670628,
+                "ammo_current_weapon": 0.04109117439235839,
+                "weapon_inventory": 0.6305058945459256,
+                "status_effects_center_bottom": 0.04450666285837249,
+                "combat_report": 0.852130898021309,
+                "spectated_player_panel": 0.1325314931907301,
+                "chat_broadcast": 0.09982175648707978,
+                "buy_menu_grid": 0.37489588539063806,
+                "buy_menu_close_anchor": 0.0269076708316332,
+                "expanded_tactical_map": 0.3523245984784446,
+                "center_crosshair_area": 0.2812894901476678,
+                "spectator_icon": 0.212859759680225,
+                "round_timer_value": 0.9461973309516907,
+                "score_ally_value": 0.9403079748153687,
+                "score_enemy_value": 0.9584882855415344,
+                "hp_value": 0.0
+              }
+            }
+          },
+          "native_ui_measurements": {
+            "content_jump": false,
+            "discontinuity": false,
+            "phase_scan_valid": true,
+            "phase_present": true,
+            "phase_confidence": 0.9432282240431661,
+            "phase_absence_matched": false,
+            "confidence": 0.0,
+            "round_result_matched": false,
+            "round_result_confidence": 0.0
+          },
+          "geometry_calibrated": true,
+          "phase_measurement": {
+            "matcher": "semantic_text_ncc_v1",
+            "threshold": 0.9,
+            "score": 0.9432282240431661,
+            "groups": [
+              {
+                "group": 1,
+                "mask_population": 4727,
+                "current_std": 43.03908298369792,
+                "score": 0.975334920178128,
+                "reason": "matched"
+              },
+              {
+                "group": 2,
+                "mask_population": 2503,
+                "current_std": 43.858564479315284,
+                "score": 0.9613913554643243,
+                "reason": "matched"
+              },
+              {
+                "group": 3,
+                "mask_population": 2415,
+                "current_std": 40.284131643292426,
+                "score": 0.9432282240431661,
+                "reason": "matched"
+              }
+            ],
+            "presence": true,
+            "absence_checked": false,
+            "runtime_transition_authorized": false,
+            "roi": "center_phase_banner",
+            "pixel_bounds": [
+              765,
+              170,
+              1155,
+              240
+            ],
+            "crop_pixel_sha256": "a40ac64a6669899f3a35a0460f9c913fa4403fa5fec85a33bbf9a11d865d2620"
+          },
+          "phase_signals": {
+            "buy_phase_template_scan_valid": true,
+            "buy_phase_template": true,
+            "buy_phase_template_confidence": 0.9432282240431661,
+            "buy_phase_template_matcher": "semantic_text_ncc_v1"
+          },
+          "expected_present": true,
+          "accepted": false,
+          "scan_valid": true,
+          "outcome": "positive_unknown",
+          "reader_accepted": true,
+          "reader_outcome": "positive_correct"
+        },
+        {
+          "image": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-005/frame_00010_000106.303.jpg",
+          "frame_sha256": "7f69778e32e4ce79bcbade9303a37c267cf8c85f5386ba29260897cfc9d35999",
+          "pts_sec": 106.302669,
+          "observation": {
+            "schema_version": "2.0",
+            "time_sec": 106.302669,
+            "frame_index": 10,
+            "primary_state": "unknown",
+            "state_flags": [
+              "combat_report_visible",
+              "buy_phase_banner"
+            ],
+            "view_context": {
+              "remote_view_type": "none",
+              "is_player_world_view_trustworthy": false
+            },
+            "values": {
+              "round_time_remaining_sec": 5.0,
+              "score_ally": 0,
+              "score_enemy": 2,
+              "ally_alive": null,
+              "enemy_alive": null,
+              "hp": null,
+              "armor": null,
+              "ammo_current": null,
+              "ammo_reserve": null,
+              "weapon_text": null,
+              "spike_state": "unknown",
+              "location_text": null,
+              "kill_feed_rows": [],
+              "ability_slots": [],
+              "combat_report_visible": true,
+              "buy_phase_visible": true,
+              "round_end_text": null,
+              "zone_id": null,
+              "player_specific_hud_valid": false,
+              "round_time_remaining_display": "0:05",
+              "round_time_remaining_display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9603296518325806,
+                "cross_checked": false
+              }
+            },
+            "quality": {
+              "hud_confidence": 0.0,
+              "visual_confidence": 0.0,
+              "occluded_rois": [],
+              "notes": [],
+              "state_confidence": 0.0,
+              "roi_confidence": {
+                "location_label": 0.44025157232704404,
+                "minimap_normal": 0.8307383483027511,
+                "top_match_bar": 0.8172198172198173,
+                "ally_roster": 0.9514403292181071,
+                "enemy_roster": 0.7221029545807306,
+                "ally_score": 0.9454120397567749,
+                "round_timer": 0.9603296518325806,
+                "enemy_score": 0.9663444757461548,
+                "spike_top_center": 0.8898039215686274,
+                "spike_carrier_indicator": 0.8835978835978836,
+                "kill_feed": 0.030718274898957516,
+                "performance_overlay_ignore": 0.7621294916376884,
+                "center_phase_banner": 0.555424218544786,
+                "round_end_banner": 0.5648690078037905,
+                "player_hp_armor": 0.3028565941391018,
+                "abilities": 0.6406576980568012,
+                "ammo_current_weapon": 0.40944067320248223,
+                "weapon_inventory": 0.34417242303663176,
+                "status_effects_center_bottom": 0.5125925925925926,
+                "combat_report": 0.8189497716894977,
+                "spectated_player_panel": 0.01065067326130076,
+                "chat_broadcast": 0.047501711710413765,
+                "buy_menu_grid": 0.4713643178410795,
+                "buy_menu_close_anchor": 0.0,
+                "expanded_tactical_map": 0.512552831783601,
+                "center_crosshair_area": 0.7183333333333334,
+                "spectator_icon": 0.0,
+                "round_timer_value": 0.9603296518325806,
+                "score_ally_value": 0.9454120397567749,
+                "score_enemy_value": 0.9663444757461548,
+                "hp_value": 0.0
+              }
+            }
+          },
+          "native_ui_measurements": {
+            "content_jump": false,
+            "discontinuity": false,
+            "phase_scan_valid": true,
+            "phase_present": true,
+            "phase_confidence": 0.929449820855404,
+            "phase_absence_matched": false,
+            "confidence": 0.0,
+            "round_result_matched": false,
+            "round_result_confidence": 0.0
+          },
+          "geometry_calibrated": true,
+          "phase_measurement": {
+            "matcher": "semantic_text_ncc_v1",
+            "threshold": 0.9,
+            "score": 0.929449820855404,
+            "groups": [
+              {
+                "group": 1,
+                "mask_population": 4727,
+                "current_std": 45.75821431537435,
+                "score": 0.9488911115882543,
+                "reason": "matched"
+              },
+              {
+                "group": 2,
+                "mask_population": 2503,
+                "current_std": 48.463594286767254,
+                "score": 0.929449820855404,
+                "reason": "matched"
+              },
+              {
+                "group": 3,
+                "mask_population": 2415,
+                "current_std": 51.31270140217653,
+                "score": 0.9878621967145164,
+                "reason": "matched"
+              }
+            ],
+            "presence": true,
+            "absence_checked": false,
+            "runtime_transition_authorized": false,
+            "roi": "center_phase_banner",
+            "pixel_bounds": [
+              765,
+              170,
+              1155,
+              240
+            ],
+            "crop_pixel_sha256": "5837b3ca9d929708c127d96002919612bc16d5711ead4fc414ce355230f6a33c"
+          },
+          "phase_signals": {
+            "buy_phase_template_scan_valid": true,
+            "buy_phase_template": true,
+            "buy_phase_template_confidence": 0.929449820855404,
+            "buy_phase_template_matcher": "semantic_text_ncc_v1"
+          },
+          "expected_present": true,
+          "accepted": true,
+          "scan_valid": true,
+          "outcome": "positive_correct",
+          "reader_accepted": true,
+          "reader_outcome": "positive_correct"
+        },
+        {
+          "image": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-005/frame_00153_000111.269.jpg",
+          "frame_sha256": "6507ef5baac6a5dff9ade550c4a8f2493d20dab70e5c36e5949cec5a37186814",
+          "pts_sec": 111.269336,
+          "observation": {
+            "schema_version": "2.0",
+            "time_sec": 111.269336,
+            "frame_index": 11,
+            "primary_state": "unknown",
+            "state_flags": [],
+            "view_context": {
+              "remote_view_type": "none",
+              "is_player_world_view_trustworthy": false
+            },
+            "values": {
+              "round_time_remaining_sec": null,
+              "score_ally": 0,
+              "score_enemy": null,
+              "ally_alive": null,
+              "enemy_alive": null,
+              "hp": null,
+              "armor": null,
+              "ammo_current": null,
+              "ammo_reserve": null,
+              "weapon_text": null,
+              "spike_state": "unknown",
+              "location_text": null,
+              "kill_feed_rows": [],
+              "ability_slots": [],
+              "combat_report_visible": false,
+              "buy_phase_visible": false,
+              "round_end_text": null,
+              "zone_id": null,
+              "player_specific_hud_valid": false
+            },
+            "quality": {
+              "hud_confidence": 0.0,
+              "visual_confidence": 0.0,
+              "occluded_rois": [],
+              "notes": [],
+              "state_confidence": 0.0,
+              "roi_confidence": {
+                "location_label": 0.8994795055302538,
+                "minimap_normal": 0.6467981704539739,
+                "top_match_bar": 0.9401154401154401,
+                "ally_roster": 1.0,
+                "enemy_roster": 0.9985164134352964,
+                "ally_score": 0.9378656148910522,
+                "round_timer": 0.8619607843137255,
+                "enemy_score": 0.972693032015066,
+                "spike_top_center": 0.8862745098039216,
+                "spike_carrier_indicator": 0.8553791887125222,
+                "kill_feed": 0.15032688849577364,
+                "performance_overlay_ignore": 0.5247357816136226,
+                "center_phase_banner": 0.5389414236931968,
+                "round_end_banner": 0.5682134894091416,
+                "player_hp_armor": 0.2571255171379578,
+                "abilities": 0.43077107642092427,
+                "ammo_current_weapon": 0.8386256310047223,
+                "weapon_inventory": 0.43791978554964905,
+                "status_effects_center_bottom": 0.7356125356125357,
+                "combat_report": 0.14151693063443005,
+                "spectated_player_panel": 0.03328926333820935,
+                "chat_broadcast": 0.048710644860909966,
+                "buy_menu_grid": 0.4381226053639847,
+                "buy_menu_close_anchor": 0.0,
+                "expanded_tactical_map": 0.4830515638207946,
+                "center_crosshair_area": 0.6898958333333334,
+                "spectator_icon": 0.135330496660665,
+                "round_timer_value": 0.0,
+                "score_ally_value": 0.9378656148910522,
+                "score_enemy_value": 0.0,
+                "hp_value": 0.0
+              }
+            }
+          },
+          "native_ui_measurements": {
+            "content_jump": false,
+            "discontinuity": false,
+            "phase_scan_valid": true,
+            "phase_present": true,
+            "phase_confidence": 0.9531418110102443,
+            "phase_absence_matched": false,
+            "confidence": 0.0,
+            "round_result_matched": false,
+            "round_result_confidence": 0.0
+          },
+          "geometry_calibrated": true,
+          "phase_measurement": {
+            "matcher": "semantic_text_ncc_v1",
+            "threshold": 0.9,
+            "score": 0.9531418110102443,
+            "groups": [
+              {
+                "group": 1,
+                "mask_population": 4727,
+                "current_std": 25.35546243697471,
+                "score": 0.9531418110102443,
+                "reason": "matched"
+              },
+              {
+                "group": 2,
+                "mask_population": 2503,
+                "current_std": 46.43977914816093,
+                "score": 0.981052932863844,
+                "reason": "matched"
+              },
+              {
+                "group": 3,
+                "mask_population": 2415,
+                "current_std": 44.48729915398873,
+                "score": 0.9810408642397087,
+                "reason": "matched"
+              }
+            ],
+            "presence": true,
+            "absence_checked": false,
+            "runtime_transition_authorized": false,
+            "roi": "center_phase_banner",
+            "pixel_bounds": [
+              765,
+              170,
+              1155,
+              240
+            ],
+            "crop_pixel_sha256": "e64161e27db6a2e333448b021cb82df66eecd91c216ecbbd20bc072eac6a8b06"
+          },
+          "phase_signals": {
+            "buy_phase_template_scan_valid": true,
+            "buy_phase_template": true,
+            "buy_phase_template_confidence": 0.9531418110102443,
+            "buy_phase_template_matcher": "semantic_text_ncc_v1"
+          },
+          "expected_present": true,
+          "accepted": false,
+          "scan_valid": true,
+          "outcome": "positive_unknown",
+          "reader_accepted": true,
+          "reader_outcome": "positive_correct"
+        },
+        {
+          "image": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-000/frame_00146_000008.003.jpg",
+          "frame_sha256": "c804671682f6b2176577e3470b8da036779263260591b6a7a369bc8a7dd532f6",
+          "pts_sec": 8.002669,
+          "observation": {
+            "schema_version": "2.0",
+            "time_sec": 8.002669,
+            "frame_index": 12,
+            "primary_state": "unknown",
+            "state_flags": [],
+            "view_context": {
+              "remote_view_type": "none",
+              "is_player_world_view_trustworthy": false
+            },
+            "values": {
+              "round_time_remaining_sec": 96.0,
+              "score_ally": 0,
+              "score_enemy": 1,
+              "ally_alive": null,
+              "enemy_alive": null,
+              "hp": null,
+              "armor": null,
+              "ammo_current": null,
+              "ammo_reserve": null,
+              "weapon_text": null,
+              "spike_state": "unknown",
+              "location_text": null,
+              "kill_feed_rows": [],
+              "ability_slots": [],
+              "combat_report_visible": false,
+              "buy_phase_visible": false,
+              "round_end_text": null,
+              "zone_id": null,
+              "player_specific_hud_valid": false,
+              "round_time_remaining_display": "1:36",
+              "round_time_remaining_display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9699339866638184,
+                "cross_checked": false
+              }
+            },
+            "quality": {
+              "hud_confidence": 0.0,
+              "visual_confidence": 0.0,
+              "occluded_rois": [],
+              "notes": [],
+              "state_confidence": 0.0,
+              "roi_confidence": {
+                "location_label": 0.35154499325647304,
+                "minimap_normal": 0.6163499008071827,
+                "top_match_bar": 0.6962170600811213,
+                "ally_roster": 0.967283950617284,
+                "enemy_roster": 0.7524011054365833,
+                "ally_score": 0.941237211227417,
+                "round_timer": 0.9699339866638184,
+                "enemy_score": 0.9662814140319824,
+                "spike_top_center": 0.5627450980392157,
+                "spike_carrier_indicator": 0.9012345679012346,
+                "kill_feed": 0.11563806635367163,
+                "performance_overlay_ignore": 0.5779102500413975,
+                "center_phase_banner": 0.2351953520087567,
+                "round_end_banner": 0.23042309892046955,
+                "player_hp_armor": 0.4354822737175678,
+                "abilities": 0.5674887892376682,
+                "ammo_current_weapon": 0.5736036476143951,
+                "weapon_inventory": 0.4880451223857634,
+                "status_effects_center_bottom": 0.5531155301346729,
+                "combat_report": 0.40500033253693307,
+                "spectated_player_panel": 0.03089620541469572,
+                "chat_broadcast": 0.043728375968813814,
+                "buy_menu_grid": 0.2999583541562552,
+                "buy_menu_close_anchor": 0.11678017111855461,
+                "expanded_tactical_map": 0.31503240349394196,
+                "center_crosshair_area": 0.21447916666666667,
+                "spectator_icon": 0.0,
+                "round_timer_value": 0.9699339866638184,
+                "score_ally_value": 0.941237211227417,
+                "score_enemy_value": 0.9662814140319824,
+                "hp_value": 0.0
+              }
+            }
+          },
+          "native_ui_measurements": {
+            "content_jump": false,
+            "discontinuity": false,
+            "phase_scan_valid": true,
+            "phase_present": false,
+            "phase_confidence": 0.0,
+            "phase_absence_matched": false,
+            "confidence": 0.0,
+            "round_result_matched": false,
+            "round_result_confidence": 0.0
+          },
+          "geometry_calibrated": true,
+          "phase_measurement": {
+            "matcher": "semantic_text_ncc_v1",
+            "threshold": 0.9,
+            "score": 0.021354204787162837,
+            "groups": [
+              {
+                "group": 1,
+                "mask_population": 4727,
+                "current_std": 15.52011883320519,
+                "score": 0.021354204787162837,
+                "reason": "below_threshold"
+              },
+              {
+                "group": 2,
+                "mask_population": 2503,
+                "current_std": 24.31260309891738,
+                "score": 0.08655761855483197,
+                "reason": "below_threshold"
+              },
+              {
+                "group": 3,
+                "mask_population": 2415,
+                "current_std": 11.795337348034693,
+                "score": 0.09526051434666583,
+                "reason": "below_threshold"
+              }
+            ],
+            "presence": null,
+            "absence_checked": false,
+            "runtime_transition_authorized": false,
+            "roi": "center_phase_banner",
+            "pixel_bounds": [
+              765,
+              170,
+              1155,
+              240
+            ],
+            "crop_pixel_sha256": "315ee60a94fd219547bfa9300e5a5b6f894f1a0063464e69b66419a391853dbc"
+          },
+          "phase_signals": {
+            "buy_phase_template_scan_valid": true
+          },
+          "expected_present": false,
+          "accepted": false,
+          "scan_valid": true,
+          "outcome": "negative_rejected",
+          "reader_accepted": false,
+          "reader_outcome": "negative_rejected"
+        },
+        {
+          "image": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-001/frame_00090_000025.003.jpg",
+          "frame_sha256": "4d5ff4be0b072bb31cc6456bbe9c59f9bdcbf534262fa1189cc1704e901d31e9",
+          "pts_sec": 25.002669,
+          "observation": {
+            "schema_version": "2.0",
+            "time_sec": 25.002669,
+            "frame_index": 13,
+            "primary_state": "unknown",
+            "state_flags": [],
+            "view_context": {
+              "remote_view_type": "none",
+              "is_player_world_view_trustworthy": false
+            },
+            "values": {
+              "round_time_remaining_sec": null,
+              "score_ally": 0,
+              "score_enemy": null,
+              "ally_alive": null,
+              "enemy_alive": null,
+              "hp": null,
+              "armor": null,
+              "ammo_current": null,
+              "ammo_reserve": null,
+              "weapon_text": null,
+              "spike_state": "unknown",
+              "location_text": null,
+              "kill_feed_rows": [],
+              "ability_slots": [],
+              "combat_report_visible": false,
+              "buy_phase_visible": false,
+              "round_end_text": null,
+              "zone_id": null,
+              "player_specific_hud_valid": false
+            },
+            "quality": {
+              "hud_confidence": 0.0,
+              "visual_confidence": 0.0,
+              "occluded_rois": [],
+              "notes": [],
+              "state_confidence": 0.0,
+              "roi_confidence": {
+                "location_label": 0.23674108557707824,
+                "minimap_normal": 0.7655849224935877,
+                "top_match_bar": 0.6884319384319384,
+                "ally_roster": 0.8339506172839507,
+                "enemy_roster": 0.7840124655331162,
+                "ally_score": 0.9478898644447327,
+                "round_timer": 0.563921568627451,
+                "enemy_score": 0.48868814179549136,
+                "spike_top_center": 0.531372549019608,
+                "spike_carrier_indicator": 0.46560846560846564,
+                "kill_feed": 0.43970951123839813,
+                "performance_overlay_ignore": 0.47938400397416797,
+                "center_phase_banner": 0.08372734436564225,
+                "round_end_banner": 0.08535395763656634,
+                "player_hp_armor": 0.4097346009110715,
+                "abilities": 0.5411061285500748,
+                "ammo_current_weapon": 0.2473131411822179,
+                "weapon_inventory": 0.10728433017453626,
+                "status_effects_center_bottom": 0.20193732193732195,
+                "combat_report": 0.0943514145064433,
+                "spectated_player_panel": 0.29957305502846304,
+                "chat_broadcast": 0.4293691993078496,
+                "buy_menu_grid": 0.21322671997334666,
+                "buy_menu_close_anchor": 0.12153530415341804,
+                "expanded_tactical_map": 0.1747816286277825,
+                "center_crosshair_area": 0.24442708333333335,
+                "spectator_icon": 0.0,
+                "round_timer_value": 0.0,
+                "score_ally_value": 0.9478898644447327,
+                "score_enemy_value": 0.0,
+                "hp_value": 0.0
+              }
+            }
+          },
+          "native_ui_measurements": {
+            "content_jump": false,
+            "discontinuity": false,
+            "phase_scan_valid": true,
+            "phase_present": false,
+            "phase_confidence": 0.0,
+            "phase_absence_matched": false,
+            "confidence": 0.0,
+            "round_result_matched": false,
+            "round_result_confidence": 0.0
+          },
+          "geometry_calibrated": true,
+          "phase_measurement": {
+            "matcher": "semantic_text_ncc_v1",
+            "threshold": 0.9,
+            "score": 0.0,
+            "groups": [
+              {
+                "group": 1,
+                "mask_population": 4727,
+                "current_std": 53.9516968635031,
+                "score": 0.023845437235996438,
+                "reason": "below_threshold"
+              },
+              {
+                "group": 2,
+                "mask_population": 2503,
+                "current_std": 7.616524207610233,
+                "score": 0.035772172705712445,
+                "reason": "below_threshold"
+              },
+              {
+                "group": 3,
+                "mask_population": 2415,
+                "current_std": 4.522095292323139,
+                "score": 0.0,
+                "reason": "contrast_unavailable"
+              }
+            ],
+            "presence": null,
+            "absence_checked": false,
+            "runtime_transition_authorized": false,
+            "roi": "center_phase_banner",
+            "pixel_bounds": [
+              765,
+              170,
+              1155,
+              240
+            ],
+            "crop_pixel_sha256": "9d090f538157f02009b61159679750a5fac8805a73144958d0497a6c5f886993"
+          },
+          "phase_signals": {
+            "buy_phase_template_scan_valid": true
+          },
+          "expected_present": false,
+          "accepted": false,
+          "scan_valid": true,
+          "outcome": "negative_rejected",
+          "reader_accepted": false,
+          "reader_outcome": "negative_rejected"
+        },
+        {
+          "image": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00300_000050.003.jpg",
+          "frame_sha256": "e49b2c51b96006f1954559d3b1229ca475dd34d69127c4f2e116fba4aa7482a2",
+          "pts_sec": 50.002669,
+          "observation": {
+            "schema_version": "2.0",
+            "time_sec": 50.002669,
+            "frame_index": 14,
+            "primary_state": "unknown",
+            "state_flags": [],
+            "view_context": {
+              "remote_view_type": "none",
+              "is_player_world_view_trustworthy": false
+            },
+            "values": {
+              "round_time_remaining_sec": null,
+              "score_ally": 0,
+              "score_enemy": 1,
+              "ally_alive": null,
+              "enemy_alive": null,
+              "hp": null,
+              "armor": null,
+              "ammo_current": null,
+              "ammo_reserve": null,
+              "weapon_text": null,
+              "spike_state": "unknown",
+              "location_text": null,
+              "kill_feed_rows": [],
+              "ability_slots": [],
+              "combat_report_visible": false,
+              "buy_phase_visible": false,
+              "round_end_text": null,
+              "zone_id": null,
+              "player_specific_hud_valid": false
+            },
+            "quality": {
+              "hud_confidence": 0.0,
+              "visual_confidence": 0.0,
+              "occluded_rois": [],
+              "notes": [],
+              "state_confidence": 0.0,
+              "roi_confidence": {
+                "location_label": 0.4987360810906865,
+                "minimap_normal": 0.7619853513084615,
+                "top_match_bar": 0.7576960076960076,
+                "ally_roster": 0.7576131687242799,
+                "enemy_roster": 0.6111673700117789,
+                "ally_score": 0.9363670945167542,
+                "round_timer": 1.0,
+                "enemy_score": 0.9387593269348145,
+                "spike_top_center": 1.0,
+                "spike_carrier_indicator": 0.11971941674659341,
+                "kill_feed": 0.3999319672218709,
+                "performance_overlay_ignore": 0.24267732026580968,
+                "center_phase_banner": 0.15760441292356187,
+                "round_end_banner": 0.1665273132664437,
+                "player_hp_armor": 0.15922129647088365,
+                "abilities": 0.40791525432407727,
+                "ammo_current_weapon": 0.5819491939423547,
+                "weapon_inventory": 0.03324215440260395,
+                "status_effects_center_bottom": 0.6474074074074074,
+                "combat_report": 0.004770013917408911,
+                "spectated_player_panel": 0.122120533167973,
+                "chat_broadcast": 0.1955256194711835,
+                "buy_menu_grid": 0.2085660249114663,
+                "buy_menu_close_anchor": 0.07697323138536287,
+                "expanded_tactical_map": 0.13811280054971412,
+                "center_crosshair_area": 0.08497309403512,
+                "spectator_icon": 0.0,
+                "round_timer_value": 0.0,
+                "score_ally_value": 0.9363670945167542,
+                "score_enemy_value": 0.9387593269348145,
+                "hp_value": 0.0
+              }
+            }
+          },
+          "native_ui_measurements": {
+            "content_jump": false,
+            "discontinuity": false,
+            "phase_scan_valid": true,
+            "phase_present": false,
+            "phase_confidence": 0.0,
+            "phase_absence_matched": false,
+            "confidence": 0.0,
+            "round_result_matched": false,
+            "round_result_confidence": 0.0
+          },
+          "geometry_calibrated": true,
+          "phase_measurement": {
+            "matcher": "semantic_text_ncc_v1",
+            "threshold": 0.9,
+            "score": 0.0,
+            "groups": [
+              {
+                "group": 1,
+                "mask_population": 4727,
+                "current_std": 5.106019927587205,
+                "score": 0.0,
+                "reason": "below_threshold"
+              },
+              {
+                "group": 2,
+                "mask_population": 2503,
+                "current_std": 38.106906657450935,
+                "score": 0.0,
+                "reason": "below_threshold"
+              },
+              {
+                "group": 3,
+                "mask_population": 2415,
+                "current_std": 3.8335953859691148,
+                "score": 0.0,
+                "reason": "contrast_unavailable"
+              }
+            ],
+            "presence": null,
+            "absence_checked": false,
+            "runtime_transition_authorized": false,
+            "roi": "center_phase_banner",
+            "pixel_bounds": [
+              765,
+              170,
+              1155,
+              240
+            ],
+            "crop_pixel_sha256": "973671d7668ac787c97929ad28ec6904902201309dceecbb7939a213af8e5277"
+          },
+          "phase_signals": {
+            "buy_phase_template_scan_valid": true
+          },
+          "expected_present": false,
+          "accepted": false,
+          "scan_valid": true,
+          "outcome": "negative_rejected",
+          "reader_accepted": false,
+          "reader_outcome": "negative_rejected"
+        },
+        {
+          "image": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00414_000069.003.jpg",
+          "frame_sha256": "afbdfeed435015451e2ea5a980274776f820ffa0fe0bcda85145d3cb00599c60",
+          "pts_sec": 69.002669,
+          "observation": {
+            "schema_version": "2.0",
+            "time_sec": 69.002669,
+            "frame_index": 15,
+            "primary_state": "unknown",
+            "state_flags": [],
+            "view_context": {
+              "remote_view_type": "none",
+              "is_player_world_view_trustworthy": false
+            },
+            "values": {
+              "round_time_remaining_sec": 35.0,
+              "score_ally": 0,
+              "score_enemy": 1,
+              "ally_alive": null,
+              "enemy_alive": null,
+              "hp": null,
+              "armor": null,
+              "ammo_current": null,
+              "ammo_reserve": null,
+              "weapon_text": null,
+              "spike_state": "unknown",
+              "location_text": null,
+              "kill_feed_rows": [],
+              "ability_slots": [],
+              "combat_report_visible": false,
+              "buy_phase_visible": false,
+              "round_end_text": null,
+              "zone_id": null,
+              "player_specific_hud_valid": false,
+              "round_time_remaining_display": "0:35",
+              "round_time_remaining_display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9600576162338257,
+                "cross_checked": false
+              }
+            },
+            "quality": {
+              "hud_confidence": 0.0,
+              "visual_confidence": 0.0,
+              "occluded_rois": [],
+              "notes": [],
+              "state_confidence": 0.0,
+              "roi_confidence": {
+                "location_label": 0.5589893732379093,
+                "minimap_normal": 0.6028514810716217,
+                "top_match_bar": 0.5375788666970406,
+                "ally_roster": 0.3923945801270093,
+                "enemy_roster": 0.8427891567015426,
+                "ally_score": 0.9353469610214233,
+                "round_timer": 0.9600576162338257,
+                "enemy_score": 0.9676377177238464,
+                "spike_top_center": 0.5396078431372549,
+                "spike_carrier_indicator": 0.041903872353601136,
+                "kill_feed": 0.4181662131452927,
+                "performance_overlay_ignore": 0.38807580725972496,
+                "center_phase_banner": 0.08596222499016469,
+                "round_end_banner": 0.09230393070144527,
+                "player_hp_armor": 0.26533856295823455,
+                "abilities": 0.43953662182361736,
+                "ammo_current_weapon": 0.547549259078326,
+                "weapon_inventory": 0.12735107761269215,
+                "status_effects_center_bottom": 0.6125356125356126,
+                "combat_report": 0.011852949336999851,
+                "spectated_player_panel": 0.10089471221551846,
+                "chat_broadcast": 0.2390743366503421,
+                "buy_menu_grid": 0.11134830629362612,
+                "buy_menu_close_anchor": 0.0899771359647492,
+                "expanded_tactical_map": 0.056673769586016214,
+                "center_crosshair_area": 0.00026351530815245253,
+                "spectator_icon": 0.0,
+                "round_timer_value": 0.9600576162338257,
+                "score_ally_value": 0.9353469610214233,
+                "score_enemy_value": 0.9676377177238464,
+                "hp_value": 0.0
+              }
+            }
+          },
+          "native_ui_measurements": {
+            "content_jump": false,
+            "discontinuity": false,
+            "phase_scan_valid": true,
+            "phase_present": false,
+            "phase_confidence": 0.0,
+            "phase_absence_matched": false,
+            "confidence": 0.0,
+            "round_result_matched": false,
+            "round_result_confidence": 0.0
+          },
+          "geometry_calibrated": true,
+          "phase_measurement": {
+            "matcher": "semantic_text_ncc_v1",
+            "threshold": 0.9,
+            "score": 0.0,
+            "groups": [
+              {
+                "group": 1,
+                "mask_population": 4727,
+                "current_std": 9.564251198737031,
+                "score": 0.0,
+                "reason": "below_threshold"
+              },
+              {
+                "group": 2,
+                "mask_population": 2503,
+                "current_std": 0.6210994201605712,
+                "score": 0.0,
+                "reason": "contrast_unavailable"
+              },
+              {
+                "group": 3,
+                "mask_population": 2415,
+                "current_std": 7.045960834815059,
+                "score": 0.0,
+                "reason": "below_threshold"
+              }
+            ],
+            "presence": null,
+            "absence_checked": false,
+            "runtime_transition_authorized": false,
+            "roi": "center_phase_banner",
+            "pixel_bounds": [
+              765,
+              170,
+              1155,
+              240
+            ],
+            "crop_pixel_sha256": "04b50a3f4cbb393c7052edbe185a722132788dd0b8d107432c4da71dc9f884dd"
+          },
+          "phase_signals": {
+            "buy_phase_template_scan_valid": true
+          },
+          "expected_present": false,
+          "accepted": false,
+          "scan_valid": true,
+          "outcome": "negative_rejected",
+          "reader_accepted": false,
+          "reader_outcome": "negative_rejected"
+        },
+        {
+          "image": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00458_000076.403.jpg",
+          "frame_sha256": "74a832b17f1d4cd603dba816b4e63390920aa5e29d4030f3c5fbc14e090b6154",
+          "pts_sec": 76.402669,
+          "observation": {
+            "schema_version": "2.0",
+            "time_sec": 76.402669,
+            "frame_index": 16,
+            "primary_state": "unknown",
+            "state_flags": [
+              "combat_report_visible"
+            ],
+            "view_context": {
+              "remote_view_type": "none",
+              "is_player_world_view_trustworthy": false
+            },
+            "values": {
+              "round_time_remaining_sec": null,
+              "score_ally": 0,
+              "score_enemy": 2,
+              "ally_alive": null,
+              "enemy_alive": null,
+              "hp": null,
+              "armor": null,
+              "ammo_current": null,
+              "ammo_reserve": null,
+              "weapon_text": null,
+              "spike_state": "unknown",
+              "location_text": null,
+              "kill_feed_rows": [],
+              "ability_slots": [],
+              "combat_report_visible": true,
+              "buy_phase_visible": false,
+              "round_end_text": null,
+              "zone_id": null,
+              "player_specific_hud_valid": false
+            },
+            "quality": {
+              "hud_confidence": 0.0,
+              "visual_confidence": 0.0,
+              "occluded_rois": [],
+              "notes": [],
+              "state_confidence": 0.0,
+              "roi_confidence": {
+                "location_label": 0.0545845160285026,
+                "minimap_normal": 0.7293151652130035,
+                "top_match_bar": 0.9132395382395382,
+                "ally_roster": 0.5273662551440329,
+                "enemy_roster": 1.0,
+                "ally_score": 0.9447311162948608,
+                "round_timer": 0.7129411764705882,
+                "enemy_score": 0.9573747515678406,
+                "spike_top_center": 0.5870588235294119,
+                "spike_carrier_indicator": 0.11555356166731037,
+                "kill_feed": 1.0,
+                "performance_overlay_ignore": 1.0,
+                "center_phase_banner": 0.5034804307853954,
+                "round_end_banner": 0.514144370122631,
+                "player_hp_armor": 0.21662705486234898,
+                "abilities": 0.982137518684604,
+                "ammo_current_weapon": 0.8302800846767627,
+                "weapon_inventory": 0.3563706142031923,
+                "status_effects_center_bottom": 0.9560113960113961,
+                "combat_report": 0.753158295281583,
+                "spectated_player_panel": 0.6491245527630248,
+                "chat_broadcast": 0.7385634349046206,
+                "buy_menu_grid": 0.472871897384641,
+                "buy_menu_close_anchor": 1.0,
+                "expanded_tactical_map": 0.47137221752606373,
+                "center_crosshair_area": 0.6096875,
+                "spectator_icon": 0.37146134728080255,
+                "round_timer_value": 0.0,
+                "score_ally_value": 0.9447311162948608,
+                "score_enemy_value": 0.9573747515678406,
+                "hp_value": 0.0
+              }
+            }
+          },
+          "native_ui_measurements": {
+            "content_jump": false,
+            "discontinuity": false,
+            "phase_scan_valid": true,
+            "phase_present": false,
+            "phase_confidence": 0.0,
+            "phase_absence_matched": false,
+            "confidence": 0.0,
+            "round_result_matched": false,
+            "round_result_confidence": 0.0
+          },
+          "geometry_calibrated": true,
+          "phase_measurement": {
+            "matcher": "semantic_text_ncc_v1",
+            "threshold": 0.9,
+            "score": 0.0,
+            "groups": [
+              {
+                "group": 1,
+                "mask_population": 4727,
+                "current_std": 37.97113507180766,
+                "score": 0.0,
+                "reason": "below_threshold"
+              },
+              {
+                "group": 2,
+                "mask_population": 2503,
+                "current_std": 54.67698928431758,
+                "score": 0.1337832766298209,
+                "reason": "below_threshold"
+              },
+              {
+                "group": 3,
+                "mask_population": 2415,
+                "current_std": 57.754329944162514,
+                "score": 0.05794025956720584,
+                "reason": "below_threshold"
+              }
+            ],
+            "presence": null,
+            "absence_checked": false,
+            "runtime_transition_authorized": false,
+            "roi": "center_phase_banner",
+            "pixel_bounds": [
+              765,
+              170,
+              1155,
+              240
+            ],
+            "crop_pixel_sha256": "54a193bc7048852c84ee3b36bf50ad60d91506585b825c1beeff3e9578a28424"
+          },
+          "phase_signals": {
+            "buy_phase_template_scan_valid": true
+          },
+          "expected_present": false,
+          "accepted": false,
+          "scan_valid": true,
+          "outcome": "negative_rejected",
+          "reader_accepted": false,
+          "reader_outcome": "negative_rejected"
+        },
+        {
+          "image": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-001/frame_00010_000085.003.jpg",
+          "frame_sha256": "896cd3012fe1610a65e290c64b5554b10fd3d2387ace7655ce1d67a9f01b035d",
+          "pts_sec": 85.002669,
+          "observation": {
+            "schema_version": "2.0",
+            "time_sec": 85.002669,
+            "frame_index": 17,
+            "primary_state": "buy_menu_open",
+            "state_flags": [],
+            "view_context": {
+              "remote_view_type": "none",
+              "is_player_world_view_trustworthy": false
+            },
+            "values": {
+              "round_time_remaining_sec": 26.0,
+              "score_ally": 0,
+              "score_enemy": 2,
+              "ally_alive": null,
+              "enemy_alive": null,
+              "hp": null,
+              "armor": null,
+              "ammo_current": null,
+              "ammo_reserve": null,
+              "weapon_text": null,
+              "spike_state": "unknown",
+              "location_text": null,
+              "kill_feed_rows": [],
+              "ability_slots": [],
+              "combat_report_visible": false,
+              "buy_phase_visible": false,
+              "round_end_text": null,
+              "zone_id": null,
+              "player_specific_hud_valid": false,
+              "round_time_remaining_display": "0:26",
+              "round_time_remaining_display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9620289206504822,
+                "cross_checked": false
+              }
+            },
+            "quality": {
+              "hud_confidence": 0.88,
+              "visual_confidence": 0.0,
+              "occluded_rois": [],
+              "notes": [],
+              "state_confidence": 0.88,
+              "roi_confidence": {
+                "location_label": 0.01062020094147383,
+                "minimap_normal": 0.7488140275025521,
+                "top_match_bar": 0.44666907166907166,
+                "ally_roster": 0.6578189300411523,
+                "enemy_roster": 0.5786786189775345,
+                "ally_score": 0.9383867383003235,
+                "round_timer": 0.9620289206504822,
+                "enemy_score": 0.9479004740715027,
+                "spike_top_center": 0.3235294117647059,
+                "spike_carrier_indicator": 0.17588649804967732,
+                "kill_feed": 0.2859116876755062,
+                "performance_overlay_ignore": 0.4377037245067185,
+                "center_phase_banner": 0.5312283824047767,
+                "round_end_banner": 0.5332058488231547,
+                "player_hp_armor": 0.26242820360467417,
+                "abilities": 0.30171898355754856,
+                "ammo_current_weapon": 0.26298648428594695,
+                "weapon_inventory": 0.012214079044116206,
+                "status_effects_center_bottom": 0.37094017094017095,
+                "combat_report": 0.3728092448305623,
+                "spectated_player_panel": 0.49410974067046176,
+                "chat_broadcast": 0.07281804416445616,
+                "buy_menu_grid": 0.49380309845077464,
+                "buy_menu_close_anchor": 0.09111881609862629,
+                "expanded_tactical_map": 0.49492530203987467,
+                "center_crosshair_area": 0.5502850693907763,
+                "spectator_icon": 1.0,
+                "round_timer_value": 0.9620289206504822,
+                "score_ally_value": 0.9383867383003235,
+                "score_enemy_value": 0.9479004740715027,
+                "hp_value": 0.0
+              }
+            }
+          },
+          "native_ui_measurements": {
+            "content_jump": false,
+            "discontinuity": false,
+            "phase_scan_valid": true,
+            "phase_present": false,
+            "phase_confidence": 0.0,
+            "phase_absence_matched": false,
+            "confidence": 0.0,
+            "round_result_matched": false,
+            "round_result_confidence": 0.0
+          },
+          "geometry_calibrated": true,
+          "phase_measurement": {
+            "matcher": "semantic_text_ncc_v1",
+            "threshold": 0.9,
+            "score": 0.0,
+            "groups": [
+              {
+                "group": 1,
+                "mask_population": 4727,
+                "current_std": 27.217635154410246,
+                "score": 0.0,
+                "reason": "below_threshold"
+              },
+              {
+                "group": 2,
+                "mask_population": 2503,
+                "current_std": 57.70371870338291,
+                "score": 0.0372629540116234,
+                "reason": "below_threshold"
+              },
+              {
+                "group": 3,
+                "mask_population": 2415,
+                "current_std": 26.841075117936416,
+                "score": 0.02622516197931933,
+                "reason": "below_threshold"
+              }
+            ],
+            "presence": null,
+            "absence_checked": false,
+            "runtime_transition_authorized": false,
+            "roi": "center_phase_banner",
+            "pixel_bounds": [
+              765,
+              170,
+              1155,
+              240
+            ],
+            "crop_pixel_sha256": "f12e866e913c9ed32d767de3a2b474e18c40d2038e7b0b1fadf903ba5e4a5350"
+          },
+          "phase_signals": {
+            "buy_phase_template_scan_valid": true
+          },
+          "expected_present": false,
+          "accepted": false,
+          "scan_valid": true,
+          "outcome": "negative_rejected",
+          "reader_accepted": false,
+          "reader_outcome": "negative_rejected"
+        },
+        {
+          "image": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-005/frame_00044_000108.203.jpg",
+          "frame_sha256": "9109ff0a12d7f8c8a21f9058dec5f64feb4320de132281b9d655deba9126e13c",
+          "pts_sec": 108.202669,
+          "observation": {
+            "schema_version": "2.0",
+            "time_sec": 108.202669,
+            "frame_index": 18,
+            "primary_state": "buy_menu_open",
+            "state_flags": [
+              "combat_report_visible"
+            ],
+            "view_context": {
+              "remote_view_type": "none",
+              "is_player_world_view_trustworthy": false
+            },
+            "values": {
+              "round_time_remaining_sec": 3.0,
+              "score_ally": 0,
+              "score_enemy": 2,
+              "ally_alive": null,
+              "enemy_alive": null,
+              "hp": null,
+              "armor": null,
+              "ammo_current": null,
+              "ammo_reserve": null,
+              "weapon_text": null,
+              "spike_state": "unknown",
+              "location_text": null,
+              "kill_feed_rows": [],
+              "ability_slots": [],
+              "combat_report_visible": true,
+              "buy_phase_visible": false,
+              "round_end_text": null,
+              "zone_id": null,
+              "player_specific_hud_valid": false,
+              "round_time_remaining_display": "0:03",
+              "round_time_remaining_display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9500584602355957,
+                "cross_checked": false
+              }
+            },
+            "quality": {
+              "hud_confidence": 0.88,
+              "visual_confidence": 0.0,
+              "occluded_rois": [],
+              "notes": [],
+              "state_confidence": 0.88,
+              "roi_confidence": {
+                "location_label": 0.012877912202631103,
+                "minimap_normal": 0.7506155047138654,
+                "top_match_bar": 0.44829244829244835,
+                "ally_roster": 0.6637860082304526,
+                "enemy_roster": 0.590040650406504,
+                "ally_score": 0.9397173523902893,
+                "round_timer": 0.9500584602355957,
+                "enemy_score": 0.9609618782997131,
+                "spike_top_center": 0.32941176470588235,
+                "spike_carrier_indicator": 0.2134615328480812,
+                "kill_feed": 0.2980901166443051,
+                "performance_overlay_ignore": 0.5001982241400211,
+                "center_phase_banner": 0.5397065789419226,
+                "round_end_banner": 0.5432158503839878,
+                "player_hp_armor": 0.23420479302832245,
+                "abilities": 0.2882660687593423,
+                "ammo_current_weapon": 0.2473131411822179,
+                "weapon_inventory": 0.4505338264845409,
+                "status_effects_center_bottom": 0.36182336182336183,
+                "combat_report": 0.555960160535433,
+                "spectated_player_panel": 0.47177419354838707,
+                "chat_broadcast": 0.06213530870248642,
+                "buy_menu_grid": 0.4707562885224055,
+                "buy_menu_close_anchor": 0.10000582134280551,
+                "expanded_tactical_map": 0.4798856239565527,
+                "center_crosshair_area": 0.6280208333333334,
+                "spectator_icon": 1.0,
+                "round_timer_value": 0.9500584602355957,
+                "score_ally_value": 0.9397173523902893,
+                "score_enemy_value": 0.9609618782997131,
+                "hp_value": 0.0
+              }
+            }
+          },
+          "native_ui_measurements": {
+            "content_jump": false,
+            "discontinuity": false,
+            "phase_scan_valid": true,
+            "phase_present": false,
+            "phase_confidence": 0.0,
+            "phase_absence_matched": false,
+            "confidence": 0.0,
+            "round_result_matched": false,
+            "round_result_confidence": 0.0
+          },
+          "geometry_calibrated": true,
+          "phase_measurement": {
+            "matcher": "semantic_text_ncc_v1",
+            "threshold": 0.9,
+            "score": 0.0,
+            "groups": [
+              {
+                "group": 1,
+                "mask_population": 4727,
+                "current_std": 30.305207593688138,
+                "score": 0.0,
+                "reason": "below_threshold"
+              },
+              {
+                "group": 2,
+                "mask_population": 2503,
+                "current_std": 59.432027876482756,
+                "score": 0.03611203523504129,
+                "reason": "below_threshold"
+              },
+              {
+                "group": 3,
+                "mask_population": 2415,
+                "current_std": 26.952266220090316,
+                "score": 0.022420688963374947,
+                "reason": "below_threshold"
+              }
+            ],
+            "presence": null,
+            "absence_checked": false,
+            "runtime_transition_authorized": false,
+            "roi": "center_phase_banner",
+            "pixel_bounds": [
+              765,
+              170,
+              1155,
+              240
+            ],
+            "crop_pixel_sha256": "daab6bc8986d5c6a9a63dbbbf32b50c62b2f841472cf1325a6ee1d3ae2a2bc83"
+          },
+          "phase_signals": {
+            "buy_phase_template_scan_valid": true
+          },
+          "expected_present": false,
+          "accepted": false,
+          "scan_valid": true,
+          "outcome": "negative_rejected",
+          "reader_accepted": false,
+          "reader_outcome": "negative_rejected"
+        },
+        {
+          "image": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-005/frame_00129_000110.203.jpg",
+          "frame_sha256": "d5aa243b69fab96d5b31a8fbd5c9d26e759eca31e06da5f696cd80379b06df09",
+          "pts_sec": 110.202669,
+          "observation": {
+            "schema_version": "2.0",
+            "time_sec": 110.202669,
+            "frame_index": 19,
+            "primary_state": "unknown",
+            "state_flags": [],
+            "view_context": {
+              "remote_view_type": "none",
+              "is_player_world_view_trustworthy": false
+            },
+            "values": {
+              "round_time_remaining_sec": 1.0,
+              "score_ally": 0,
+              "score_enemy": 2,
+              "ally_alive": null,
+              "enemy_alive": null,
+              "hp": null,
+              "armor": null,
+              "ammo_current": null,
+              "ammo_reserve": null,
+              "weapon_text": null,
+              "spike_state": "unknown",
+              "location_text": null,
+              "kill_feed_rows": [],
+              "ability_slots": [],
+              "combat_report_visible": false,
+              "buy_phase_visible": false,
+              "round_end_text": null,
+              "zone_id": null,
+              "player_specific_hud_valid": false,
+              "round_time_remaining_display": "0:01",
+              "round_time_remaining_display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9600576162338257,
+                "cross_checked": false
+              }
+            },
+            "quality": {
+              "hud_confidence": 0.0,
+              "visual_confidence": 0.0,
+              "occluded_rois": [],
+              "notes": [],
+              "state_confidence": 0.0,
+              "roi_confidence": {
+                "location_label": 0.013255976843105715,
+                "minimap_normal": 0.7577785212445635,
+                "top_match_bar": 0.44215969215969214,
+                "ally_roster": 0.6539094650205762,
+                "enemy_roster": 0.5676533415324188,
+                "ally_score": 0.9360759854316711,
+                "round_timer": 0.9600576162338257,
+                "enemy_score": 0.9617646932601929,
+                "spike_top_center": 0.3019607843137255,
+                "spike_carrier_indicator": 0.17258829911655532,
+                "kill_feed": 0.28057201431281026,
+                "performance_overlay_ignore": 0.46879876652948205,
+                "center_phase_banner": 0.6021801943787759,
+                "round_end_banner": 0.6085562987736901,
+                "player_hp_armor": 0.2480689245395128,
+                "abilities": 0.30037369207772796,
+                "ammo_current_weapon": 0.25952613580850026,
+                "weapon_inventory": 0.2558206933180376,
+                "status_effects_center_bottom": 0.3637606837606838,
+                "combat_report": 0.5106592423617726,
+                "spectated_player_panel": 0.5011859582542695,
+                "chat_broadcast": 0.06783675366404947,
+                "buy_menu_grid": 0.48750624687656174,
+                "buy_menu_close_anchor": 0.09955190437030556,
+                "expanded_tactical_map": 0.5210340941110172,
+                "center_crosshair_area": 0.6065625000000001,
+                "spectator_icon": 1.0,
+                "round_timer_value": 0.9600576162338257,
+                "score_ally_value": 0.9360759854316711,
+                "score_enemy_value": 0.9617646932601929,
+                "hp_value": 0.0
+              }
+            }
+          },
+          "native_ui_measurements": {
+            "content_jump": false,
+            "discontinuity": false,
+            "phase_scan_valid": true,
+            "phase_present": false,
+            "phase_confidence": 0.0,
+            "phase_absence_matched": false,
+            "confidence": 0.0,
+            "round_result_matched": false,
+            "round_result_confidence": 0.0
+          },
+          "geometry_calibrated": true,
+          "phase_measurement": {
+            "matcher": "semantic_text_ncc_v1",
+            "threshold": 0.9,
+            "score": 0.0,
+            "groups": [
+              {
+                "group": 1,
+                "mask_population": 4727,
+                "current_std": 29.044583009339064,
+                "score": 0.0,
+                "reason": "below_threshold"
+              },
+              {
+                "group": 2,
+                "mask_population": 2503,
+                "current_std": 52.123879091775116,
+                "score": 0.03629491790960081,
+                "reason": "below_threshold"
+              },
+              {
+                "group": 3,
+                "mask_population": 2415,
+                "current_std": 26.949179734995273,
+                "score": 0.03273259384648728,
+                "reason": "below_threshold"
+              }
+            ],
+            "presence": null,
+            "absence_checked": false,
+            "runtime_transition_authorized": false,
+            "roi": "center_phase_banner",
+            "pixel_bounds": [
+              765,
+              170,
+              1155,
+              240
+            ],
+            "crop_pixel_sha256": "c06167c894a5241b200632b4bdc3f8527502696436b1cfed9837cd0aea188cc9"
+          },
+          "phase_signals": {
+            "buy_phase_template_scan_valid": true
+          },
+          "expected_present": false,
+          "accepted": false,
+          "scan_valid": true,
+          "outcome": "negative_rejected",
+          "reader_accepted": false,
+          "reader_outcome": "negative_rejected"
+        },
+        {
+          "image": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-001/frame_00173_000112.203.jpg",
+          "frame_sha256": "0988bdf799061cb472700920d8414f066e1587af446184d57063a70604bc3258",
+          "pts_sec": 112.202669,
+          "observation": {
+            "schema_version": "2.0",
+            "time_sec": 112.202669,
+            "frame_index": 20,
+            "primary_state": "unknown",
+            "state_flags": [],
+            "view_context": {
+              "remote_view_type": "none",
+              "is_player_world_view_trustworthy": false
+            },
+            "values": {
+              "round_time_remaining_sec": 99.0,
+              "score_ally": null,
+              "score_enemy": 2,
+              "ally_alive": null,
+              "enemy_alive": null,
+              "hp": null,
+              "armor": null,
+              "ammo_current": null,
+              "ammo_reserve": null,
+              "weapon_text": null,
+              "spike_state": "unknown",
+              "location_text": null,
+              "kill_feed_rows": [],
+              "ability_slots": [],
+              "combat_report_visible": false,
+              "buy_phase_visible": false,
+              "round_end_text": null,
+              "zone_id": null,
+              "player_specific_hud_valid": false,
+              "round_time_remaining_display": "1:39",
+              "round_time_remaining_display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9766384959220886,
+                "cross_checked": false
+              }
+            },
+            "quality": {
+              "hud_confidence": 0.0,
+              "visual_confidence": 0.0,
+              "occluded_rois": [],
+              "notes": [],
+              "state_confidence": 0.0,
+              "roi_confidence": {
+                "location_label": 0.2597727488125624,
+                "minimap_normal": 0.6556090279743676,
+                "top_match_bar": 0.7243867243867244,
+                "ally_roster": 1.0,
+                "enemy_roster": 0.807352350216464,
+                "ally_score": 0.4709386662334833,
+                "round_timer": 0.9766384959220886,
+                "enemy_score": 0.9622693061828613,
+                "spike_top_center": 0.5767524114890421,
+                "spike_carrier_indicator": 0.8694885361552028,
+                "kill_feed": 0.05202155945429607,
+                "performance_overlay_ignore": 0.5663189269746647,
+                "center_phase_banner": 0.17474389282899921,
+                "round_end_banner": 0.17642140468227427,
+                "player_hp_armor": 0.33471974648445235,
+                "abilities": 0.5920777279521674,
+                "ammo_current_weapon": 0.1273013797014907,
+                "weapon_inventory": 0.3016906335017489,
+                "status_effects_center_bottom": 0.09534710629425532,
+                "combat_report": 0.15445205479452054,
+                "spectated_player_panel": 0.13950822264389628,
+                "chat_broadcast": 0.17720622935346864,
+                "buy_menu_grid": 0.18919706813260037,
+                "buy_menu_close_anchor": 0.0,
+                "expanded_tactical_map": 0.17637362637362639,
+                "center_crosshair_area": 0.24510416666666668,
+                "spectator_icon": 0.0,
+                "round_timer_value": 0.9766384959220886,
+                "score_ally_value": 0.0,
+                "score_enemy_value": 0.9622693061828613,
+                "hp_value": 0.0
+              }
+            }
+          },
+          "native_ui_measurements": {
+            "content_jump": false,
+            "discontinuity": false,
+            "phase_scan_valid": true,
+            "phase_present": false,
+            "phase_confidence": 0.0,
+            "phase_absence_matched": false,
+            "confidence": 0.0,
+            "round_result_matched": false,
+            "round_result_confidence": 0.0
+          },
+          "geometry_calibrated": true,
+          "phase_measurement": {
+            "matcher": "semantic_text_ncc_v1",
+            "threshold": 0.9,
+            "score": 0.018254639128434176,
+            "groups": [
+              {
+                "group": 1,
+                "mask_population": 4727,
+                "current_std": 5.3602664933901085,
+                "score": 0.018254639128434176,
+                "reason": "below_threshold"
+              },
+              {
+                "group": 2,
+                "mask_population": 2503,
+                "current_std": 34.381503391395164,
+                "score": 0.030892140053196977,
+                "reason": "below_threshold"
+              },
+              {
+                "group": 3,
+                "mask_population": 2415,
+                "current_std": 10.837327692504765,
+                "score": 0.025336224801375793,
+                "reason": "below_threshold"
+              }
+            ],
+            "presence": null,
+            "absence_checked": false,
+            "runtime_transition_authorized": false,
+            "roi": "center_phase_banner",
+            "pixel_bounds": [
+              765,
+              170,
+              1155,
+              240
+            ],
+            "crop_pixel_sha256": "d3f4ba23b02cd2d408a88f463ec38a7ed8ed081950ec31b371b8598c733ce4ce"
+          },
+          "phase_signals": {
+            "buy_phase_template_scan_valid": true
+          },
+          "expected_present": false,
+          "accepted": false,
+          "scan_valid": true,
+          "outcome": "negative_rejected",
+          "reader_accepted": false,
+          "reader_outcome": "negative_rejected"
+        },
+        {
+          "image": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-001/frame_00292_000132.003.jpg",
+          "frame_sha256": "0ad9fef058ff19dbcfb1d0b61a30bb8adbc850f80c7e35f5721b66fd1e2c74ef",
+          "pts_sec": 132.002669,
+          "observation": {
+            "schema_version": "2.0",
+            "time_sec": 132.002669,
+            "frame_index": 21,
+            "primary_state": "unknown",
+            "state_flags": [],
+            "view_context": {
+              "remote_view_type": "none",
+              "is_player_world_view_trustworthy": false
+            },
+            "values": {
+              "round_time_remaining_sec": null,
+              "score_ally": 0,
+              "score_enemy": 2,
+              "ally_alive": null,
+              "enemy_alive": null,
+              "hp": null,
+              "armor": null,
+              "ammo_current": null,
+              "ammo_reserve": null,
+              "weapon_text": null,
+              "spike_state": "unknown",
+              "location_text": null,
+              "kill_feed_rows": [],
+              "ability_slots": [],
+              "combat_report_visible": false,
+              "buy_phase_visible": false,
+              "round_end_text": null,
+              "zone_id": null,
+              "player_specific_hud_valid": false
+            },
+            "quality": {
+              "hud_confidence": 0.0,
+              "visual_confidence": 0.0,
+              "occluded_rois": [],
+              "notes": [],
+              "state_confidence": 0.0,
+              "roi_confidence": {
+                "location_label": 0.39152168861222075,
+                "minimap_normal": 0.7856585257053642,
+                "top_match_bar": 0.8428932178932179,
+                "ally_roster": 0.9032921810699589,
+                "enemy_roster": 0.8439024390243903,
+                "ally_score": 0.9315232038497925,
+                "round_timer": 1.0,
+                "enemy_score": 0.9755815863609314,
+                "spike_top_center": 0.9411764705882354,
+                "spike_carrier_indicator": 0.9100529100529101,
+                "kill_feed": 0.4871697340316587,
+                "performance_overlay_ignore": 1.0,
+                "center_phase_banner": 0.8545442605726293,
+                "round_end_banner": 0.8388377926421405,
+                "player_hp_armor": 0.2931273519508814,
+                "abilities": 0.6644992526158445,
+                "ammo_current_weapon": 0.5009363295880149,
+                "weapon_inventory": 0.6083306422559124,
+                "status_effects_center_bottom": 0.8336182336182337,
+                "combat_report": 0.4967275494672755,
+                "spectated_player_panel": 0.28157253535132964,
+                "chat_broadcast": 0.12633965748745501,
+                "buy_menu_grid": 0.482192237214726,
+                "buy_menu_close_anchor": 0.2862930989853293,
+                "expanded_tactical_map": 0.4487602141448296,
+                "center_crosshair_area": 0.32567708333333334,
+                "spectator_icon": 0.08275029692260745,
+                "round_timer_value": 0.0,
+                "score_ally_value": 0.9315232038497925,
+                "score_enemy_value": 0.9755815863609314,
+                "hp_value": 0.0
+              }
+            }
+          },
+          "native_ui_measurements": {
+            "content_jump": false,
+            "discontinuity": false,
+            "phase_scan_valid": true,
+            "phase_present": false,
+            "phase_confidence": 0.0,
+            "phase_absence_matched": false,
+            "confidence": 0.0,
+            "round_result_matched": false,
+            "round_result_confidence": 0.0
+          },
+          "geometry_calibrated": true,
+          "phase_measurement": {
+            "matcher": "semantic_text_ncc_v1",
+            "threshold": 0.9,
+            "score": 0.0,
+            "groups": [
+              {
+                "group": 1,
+                "mask_population": 4727,
+                "current_std": 23.081713061408294,
+                "score": 0.0,
+                "reason": "below_threshold"
+              },
+              {
+                "group": 2,
+                "mask_population": 2503,
+                "current_std": 25.508650632825166,
+                "score": 0.079252336572236,
+                "reason": "below_threshold"
+              },
+              {
+                "group": 3,
+                "mask_population": 2415,
+                "current_std": 48.01585089497074,
+                "score": 0.0,
+                "reason": "below_threshold"
+              }
+            ],
+            "presence": null,
+            "absence_checked": false,
+            "runtime_transition_authorized": false,
+            "roi": "center_phase_banner",
+            "pixel_bounds": [
+              765,
+              170,
+              1155,
+              240
+            ],
+            "crop_pixel_sha256": "1552d789fa7eb462257b972a92ef8acc4ffcba86cdf6dcc2f73a96a4761c2870"
+          },
+          "phase_signals": {
+            "buy_phase_template_scan_valid": true
+          },
+          "expected_present": false,
+          "accepted": false,
+          "scan_valid": true,
+          "outcome": "negative_rejected",
+          "reader_accepted": false,
+          "reader_outcome": "negative_rejected"
+        },
+        {
+          "image": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-007/frame_00052_000150.003.jpg",
+          "frame_sha256": "6f86d44b893d92a530d96a976691bd52a30f04e9ee17f33c80caf4ec74c25b1b",
+          "pts_sec": 150.002669,
+          "observation": {
+            "schema_version": "2.0",
+            "time_sec": 150.002669,
+            "frame_index": 22,
+            "primary_state": "unknown",
+            "state_flags": [
+              "combat_report_visible"
+            ],
+            "view_context": {
+              "remote_view_type": "none",
+              "is_player_world_view_trustworthy": false
+            },
+            "values": {
+              "round_time_remaining_sec": 61.0,
+              "score_ally": 0,
+              "score_enemy": 2,
+              "ally_alive": null,
+              "enemy_alive": null,
+              "hp": null,
+              "armor": null,
+              "ammo_current": null,
+              "ammo_reserve": null,
+              "weapon_text": null,
+              "spike_state": "unknown",
+              "location_text": null,
+              "kill_feed_rows": [],
+              "ability_slots": [],
+              "combat_report_visible": true,
+              "buy_phase_visible": false,
+              "round_end_text": null,
+              "zone_id": null,
+              "player_specific_hud_valid": false,
+              "round_time_remaining_display": "1:01",
+              "round_time_remaining_display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9629915952682495,
+                "cross_checked": false
+              }
+            },
+            "quality": {
+              "hud_confidence": 0.0,
+              "visual_confidence": 0.0,
+              "occluded_rois": [],
+              "notes": [],
+              "state_confidence": 0.0,
+              "roi_confidence": {
+                "location_label": 0.014466085818142006,
+                "minimap_normal": 0.05367848949985905,
+                "top_match_bar": 0.5803270803270804,
+                "ally_roster": 0.7320987654320987,
+                "enemy_roster": 0.6327621409319746,
+                "ally_score": 0.9339721202850342,
+                "round_timer": 0.9629915952682495,
+                "enemy_score": 0.9614231586456299,
+                "spike_top_center": 0.4964705882352941,
+                "spike_carrier_indicator": 0.3924162257495591,
+                "kill_feed": 0.5589772849187075,
+                "performance_overlay_ignore": 0.5948832588176851,
+                "center_phase_banner": 0.14937276975271782,
+                "round_end_banner": 0.14131061868092137,
+                "player_hp_armor": 0.0,
+                "abilities": 0.0041425028681045,
+                "ammo_current_weapon": 0.04760735548292618,
+                "weapon_inventory": 0.18610712280219358,
+                "status_effects_center_bottom": 0.07222648191359017,
+                "combat_report": 0.6461187214611873,
+                "spectated_player_panel": 0.020446553889439247,
+                "chat_broadcast": 0.05813905655773683,
+                "buy_menu_grid": 0.27689488589038813,
+                "buy_menu_close_anchor": 0.0,
+                "expanded_tactical_map": 0.4274443505212736,
+                "center_crosshair_area": 0.8626562500000001,
+                "spectator_icon": 0.0,
+                "round_timer_value": 0.9629915952682495,
+                "score_ally_value": 0.9339721202850342,
+                "score_enemy_value": 0.9614231586456299,
+                "hp_value": 0.0
+              }
+            }
+          },
+          "native_ui_measurements": {
+            "content_jump": false,
+            "discontinuity": false,
+            "phase_scan_valid": true,
+            "phase_present": false,
+            "phase_confidence": 0.0,
+            "phase_absence_matched": false,
+            "confidence": 0.0,
+            "round_result_matched": false,
+            "round_result_confidence": 0.0
+          },
+          "geometry_calibrated": true,
+          "phase_measurement": {
+            "matcher": "semantic_text_ncc_v1",
+            "threshold": 0.9,
+            "score": 0.0,
+            "groups": [
+              {
+                "group": 1,
+                "mask_population": 4727,
+                "current_std": 8.875606582016502,
+                "score": 0.014803419794631791,
+                "reason": "below_threshold"
+              },
+              {
+                "group": 2,
+                "mask_population": 2503,
+                "current_std": 46.767257892249184,
+                "score": 0.0398856714381531,
+                "reason": "below_threshold"
+              },
+              {
+                "group": 3,
+                "mask_population": 2415,
+                "current_std": 1.9413554832082511,
+                "score": 0.0,
+                "reason": "contrast_unavailable"
+              }
+            ],
+            "presence": null,
+            "absence_checked": false,
+            "runtime_transition_authorized": false,
+            "roi": "center_phase_banner",
+            "pixel_bounds": [
+              765,
+              170,
+              1155,
+              240
+            ],
+            "crop_pixel_sha256": "72606f96f5824d82455f518530476e0004826df67c5feb54e1f5a711ddf506fd"
+          },
+          "phase_signals": {
+            "buy_phase_template_scan_valid": true
+          },
+          "expected_present": false,
+          "accepted": false,
+          "scan_valid": true,
+          "outcome": "negative_rejected",
+          "reader_accepted": false,
+          "reader_outcome": "negative_rejected"
+        },
+        {
+          "image": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-001/frame_00460_000160.003.jpg",
+          "frame_sha256": "cd30f58d924fea22413d08a6e54107b1264d8e817b06a49f7ecac19f48d863d2",
+          "pts_sec": 160.002669,
+          "observation": {
+            "schema_version": "2.0",
+            "time_sec": 160.002669,
+            "frame_index": 23,
+            "primary_state": "spectator_first_person",
+            "state_flags": [
+              "combat_report_visible"
+            ],
+            "view_context": {
+              "remote_view_type": "none",
+              "is_player_world_view_trustworthy": false
+            },
+            "values": {
+              "round_time_remaining_sec": null,
+              "score_ally": 0,
+              "score_enemy": 2,
+              "ally_alive": null,
+              "enemy_alive": null,
+              "hp": null,
+              "armor": null,
+              "ammo_current": null,
+              "ammo_reserve": null,
+              "weapon_text": null,
+              "spike_state": "unknown",
+              "location_text": null,
+              "kill_feed_rows": [],
+              "ability_slots": [],
+              "combat_report_visible": true,
+              "buy_phase_visible": false,
+              "round_end_text": null,
+              "zone_id": null,
+              "player_specific_hud_valid": false
+            },
+            "quality": {
+              "hud_confidence": 0.9,
+              "visual_confidence": 0.0,
+              "occluded_rois": [],
+              "notes": [],
+              "state_confidence": 0.9,
+              "roi_confidence": {
+                "location_label": 0.8287925517467668,
+                "minimap_normal": 0.6625010924348648,
+                "top_match_bar": 0.9675925925925926,
+                "ally_roster": 0.8265432098765432,
+                "enemy_roster": 1.0,
+                "ally_score": 0.9479197859764099,
+                "round_timer": 1.0,
+                "enemy_score": 0.9471550583839417,
+                "spike_top_center": 1.0,
+                "spike_carrier_indicator": 0.14459060582777483,
+                "kill_feed": 0.5137470618642167,
+                "performance_overlay_ignore": 0.6068885577082298,
+                "center_phase_banner": 0.5288941423693198,
+                "round_end_banner": 0.534211259754738,
+                "player_hp_armor": 0.23795270311721356,
+                "abilities": 0.5275037369207773,
+                "ammo_current_weapon": 0.6014899853444066,
+                "weapon_inventory": 0.3294740297625849,
+                "status_effects_center_bottom": 0.5410826210826212,
+                "combat_report": 0.7761415525114156,
+                "spectated_player_panel": 0.27614323870498897,
+                "chat_broadcast": 0.30085619679913767,
+                "buy_menu_grid": 0.48230884557721143,
+                "buy_menu_close_anchor": 0.146724316435482,
+                "expanded_tactical_map": 0.4428157292634648,
+                "center_crosshair_area": 0.3670039684538862,
+                "spectator_icon": 1.0,
+                "round_timer_value": 0.0,
+                "score_ally_value": 0.9479197859764099,
+                "score_enemy_value": 0.9471550583839417,
+                "hp_value": 0.0
+              }
+            }
+          },
+          "native_ui_measurements": {
+            "content_jump": false,
+            "discontinuity": false,
+            "phase_scan_valid": true,
+            "phase_present": false,
+            "phase_confidence": 0.0,
+            "phase_absence_matched": false,
+            "confidence": 0.0,
+            "round_result_matched": false,
+            "round_result_confidence": 0.0
+          },
+          "geometry_calibrated": true,
+          "phase_measurement": {
+            "matcher": "semantic_text_ncc_v1",
+            "threshold": 0.9,
+            "score": 0.0,
+            "groups": [
+              {
+                "group": 1,
+                "mask_population": 4727,
+                "current_std": 33.93581541759575,
+                "score": 0.0,
+                "reason": "below_threshold"
+              },
+              {
+                "group": 2,
+                "mask_population": 2503,
+                "current_std": 49.834057500942556,
+                "score": 0.026266312737311146,
+                "reason": "below_threshold"
+              },
+              {
+                "group": 3,
+                "mask_population": 2415,
+                "current_std": 12.8013495156383,
+                "score": 0.07231072230546086,
+                "reason": "below_threshold"
+              }
+            ],
+            "presence": null,
+            "absence_checked": false,
+            "runtime_transition_authorized": false,
+            "roi": "center_phase_banner",
+            "pixel_bounds": [
+              765,
+              170,
+              1155,
+              240
+            ],
+            "crop_pixel_sha256": "957743874c97dade806ee7cd2b44eff344c5f642b78c707a67ed7d56fb65ac52"
+          },
+          "phase_signals": {
+            "buy_phase_template_scan_valid": true
+          },
+          "expected_present": false,
+          "accepted": false,
+          "scan_valid": true,
+          "outcome": "negative_rejected",
+          "reader_accepted": false,
+          "reader_outcome": "negative_rejected"
+        },
+        {
+          "image": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-007/frame_00437_000170.003.jpg",
+          "frame_sha256": "873d8dbef8b774b8b08938589f6a567bf4b4cdce45332d0a649f6b48782b155c",
+          "pts_sec": 170.002669,
+          "observation": {
+            "schema_version": "2.0",
+            "time_sec": 170.002669,
+            "frame_index": 24,
+            "primary_state": "spectator_first_person",
+            "state_flags": [
+              "combat_report_visible"
+            ],
+            "view_context": {
+              "remote_view_type": "none",
+              "is_player_world_view_trustworthy": false
+            },
+            "values": {
+              "round_time_remaining_sec": null,
+              "score_ally": 0,
+              "score_enemy": null,
+              "ally_alive": null,
+              "enemy_alive": null,
+              "hp": null,
+              "armor": null,
+              "ammo_current": null,
+              "ammo_reserve": null,
+              "weapon_text": null,
+              "spike_state": "unknown",
+              "location_text": null,
+              "kill_feed_rows": [],
+              "ability_slots": [],
+              "combat_report_visible": true,
+              "buy_phase_visible": false,
+              "round_end_text": null,
+              "zone_id": null,
+              "player_specific_hud_valid": false
+            },
+            "quality": {
+              "hud_confidence": 0.9,
+              "visual_confidence": 0.0,
+              "occluded_rois": [],
+              "notes": [],
+              "state_confidence": 0.9,
+              "roi_confidence": {
+                "location_label": 0.6462072013641965,
+                "minimap_normal": 0.8449477846010655,
+                "top_match_bar": 0.8391654641654642,
+                "ally_roster": 0.9399176954732511,
+                "enemy_roster": 0.7701219512195122,
+                "ally_score": 0.9513108730316162,
+                "round_timer": 1.0,
+                "enemy_score": 0.5926467411459988,
+                "spike_top_center": 0.9450980392156862,
+                "spike_carrier_indicator": 0.1376997385917662,
+                "kill_feed": 0.4471818279349661,
+                "performance_overlay_ignore": 0.7956615333664514,
+                "center_phase_banner": 0.32167922514388564,
+                "round_end_banner": 0.29553985864317667,
+                "player_hp_armor": 0.26078964425886,
+                "abilities": 0.4991361735599834,
+                "ammo_current_weapon": 0.5654616511968735,
+                "weapon_inventory": 0.4220322177132741,
+                "status_effects_center_bottom": 0.5833618233618234,
+                "combat_report": 0.76175799086758,
+                "spectated_player_panel": 0.1519920168130558,
+                "chat_broadcast": 0.06865604804681662,
+                "buy_menu_grid": 0.39931563971529105,
+                "buy_menu_close_anchor": 0.008976784439202823,
+                "expanded_tactical_map": 0.3690052392343834,
+                "center_crosshair_area": 0.348868594309401,
+                "spectator_icon": 1.0,
+                "round_timer_value": 0.0,
+                "score_ally_value": 0.9513108730316162,
+                "score_enemy_value": 0.0,
+                "hp_value": 0.0
+              }
+            }
+          },
+          "native_ui_measurements": {
+            "content_jump": false,
+            "discontinuity": false,
+            "phase_scan_valid": true,
+            "phase_present": false,
+            "phase_confidence": 0.0,
+            "phase_absence_matched": false,
+            "confidence": 0.0,
+            "round_result_matched": false,
+            "round_result_confidence": 0.0
+          },
+          "geometry_calibrated": true,
+          "phase_measurement": {
+            "matcher": "semantic_text_ncc_v1",
+            "threshold": 0.9,
+            "score": 0.0,
+            "groups": [
+              {
+                "group": 1,
+                "mask_population": 4727,
+                "current_std": 33.865237989371906,
+                "score": 0.06727532330291473,
+                "reason": "below_threshold"
+              },
+              {
+                "group": 2,
+                "mask_population": 2503,
+                "current_std": 18.68346822014004,
+                "score": 0.0,
+                "reason": "below_threshold"
+              },
+              {
+                "group": 3,
+                "mask_population": 2415,
+                "current_std": 15.317811672416779,
+                "score": 0.035496350484613366,
+                "reason": "below_threshold"
+              }
+            ],
+            "presence": null,
+            "absence_checked": false,
+            "runtime_transition_authorized": false,
+            "roi": "center_phase_banner",
+            "pixel_bounds": [
+              765,
+              170,
+              1155,
+              240
+            ],
+            "crop_pixel_sha256": "9a06d996dc17b346508e9da1e02f1682aaa00ecc2fc6ee359e2153b09fc6ac1e"
+          },
+          "phase_signals": {
+            "buy_phase_template_scan_valid": true
+          },
+          "expected_present": false,
+          "accepted": false,
+          "scan_valid": true,
+          "outcome": "negative_rejected",
+          "reader_accepted": false,
+          "reader_outcome": "negative_rejected"
+        }
+      ],
+      "wall_clock_sec": 42.32133896503365
+    }
+  },
+  "comparison": {
+    "timer": null,
+    "phase": {
+      "positive_correct": {
+        "previous": 8,
+        "current": 4,
+        "delta": -4
+      },
+      "positive_unknown": {
+        "previous": 0,
+        "current": 4,
+        "delta": 4
+      },
+      "negative_false_accepts": {
+        "previous": 0,
+        "current": 0,
+        "delta": 0
+      },
+      "negative_rejected": {
+        "previous": null,
+        "current": 13,
+        "delta": null
+      },
+      "invalid_scans": {
+        "previous": null,
+        "current": 0,
+        "delta": null
+      }
+    },
+    "phase_raw_reader": {
+      "positive_correct": {
+        "previous": 8,
+        "current": 8,
+        "delta": 0
+      },
+      "positive_unknown": {
+        "previous": 0,
+        "current": 0,
+        "delta": 0
+      },
+      "negative_false_accepts": {
+        "previous": 0,
+        "current": 0,
+        "delta": 0
+      },
+      "negative_rejected": {
+        "previous": null,
+        "current": 13,
+        "delta": null
+      }
+    }
+  },
+  "comparison_scope": "Previous phase metrics describe isolated raw-reader matches; current phase metrics describe classified temporal flags. Only phase_raw_reader is a like-for-like reader comparison.",
+  "processed_holdout_images": 21,
+  "continuous_temporal_validation": false,
+  "real_qualification_created": false,
+  "native_jpeg_source_pts_verified": false,
+  "natural_timer_absence_controls": false,
+  "released_events": 0,
+  "canonical_current": null,
+  "canonical_delta": null,
+  "previous_comparable_runtime": null,
+  "runtime_delta": null,
+  "wall_clock_sec": 44.95757486001821
+}

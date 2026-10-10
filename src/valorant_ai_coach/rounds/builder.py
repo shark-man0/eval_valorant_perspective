@@ -1,13 +1,19 @@
 from __future__ import annotations
 
 import math
+import re
 from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Any
 
 from valorant_ai_coach.events import DerivedEventBuilder, EventSourceContract
 from valorant_ai_coach.events.derived import player_scoped_spike_state
-from valorant_ai_coach.hud.models import timer_display_evidence
+from valorant_ai_coach.hud.models import (
+    shared_score_evidence,
+    spectator_primary_state_evidence,
+    timer_display_evidence,
+)
+from valorant_ai_coach.hud.round_lifecycle import MAX_SAMPLE_GAP_SEC, MIN_START_CONFIRMATION_SEC
 from valorant_ai_coach.hud.temporal import aggregate_observation_quality as aggregate_confidences
 from valorant_ai_coach.maps.registry import MapRegistry
 from valorant_ai_coach.models import DeterministicFact, RoleResolver
@@ -262,6 +268,8 @@ def aggregate_observation_quality(
 class RoundPackageBuilder:
     """Convert observation/event timelines into canonical Round Package v2 objects."""
 
+    supports_native_source_breaks = True
+
     def __init__(
         self,
         *,
@@ -289,7 +297,13 @@ class RoundPackageBuilder:
         player_agent: str = "unknown",
         side: str = "unknown",
         require_detected_rounds: bool = True,
+        continuity_breaks: Sequence[float] = (),
     ) -> tuple[dict[str, Any], ...]:
+        cuts = tuple(continuity_breaks)
+        if (any(type(value) not in (int, float) or not math.isfinite(value)
+                or not 0 < value < video_metadata.duration_sec for value in cuts)
+                or tuple(sorted(set(cuts))) != cuts):
+            raise RoundPackageBuildError("continuity breaks must be ordered unique source times")
         observations = sorted((dict(item) for item in hud_observations), key=self._time)
         for resolution in zone_resolutions:
             self.validator.validate_zone_resolution(resolution)
@@ -300,9 +314,20 @@ class RoundPackageBuilder:
         self.contract.validate_events(direct_hud, "hud_analyzer")
         self.contract.validate_events(direct_visual, "visual_analyzer")
         direct_hud = self._unique_boundaries(direct_hud)
-        derived = self.derived.build(observations)
+        # A cut is a source boundary, never a game round boundary. Reset temporal
+        # derivation independently of package association; splitting windows alone
+        # would still permit a post-cut event based on pre-cut observations.
+        derived = [
+            event
+            for lower, upper in zip((0.0, *cuts), (*cuts, math.inf), strict=True)
+            for event in self.derived.build([
+                item for item in observations if lower <= self._time(item) < upper
+            ])
+        ] if cuts else self.derived.build(observations)
         all_events = sorted(direct_hud + direct_visual + derived, key=self._event_sort_key)
-        windows = self._round_windows(observations, direct_hud, video_metadata.duration_sec)
+        windows = self._round_windows(
+            observations, direct_hud, video_metadata.duration_sec, continuity_breaks=cuts,
+        )
         # Diagnostics may retain observations without inventing round boundaries.
         # Interactive coaching keeps the strict default. All other validation stays active.
         if not windows and require_detected_rounds:
@@ -514,7 +539,36 @@ class RoundPackageBuilder:
         observations: Sequence[dict[str, Any]],
         hud_events: Sequence[dict[str, Any]],
         video_duration: float,
+        *,
+        continuity_breaks: Sequence[float] = (),
     ) -> list[_RoundWindow]:
+        if continuity_breaks:
+            result: list[_RoundWindow] = []
+            bounds = (0.0, *continuity_breaks, video_duration)
+            for index, (lower, upper) in enumerate(zip(bounds, bounds[1:], strict=False)):
+                final = index == len(bounds) - 2
+
+                def in_segment(
+                    timestamp: float, low: float = lower, high: float = upper,
+                    include_end: bool = final,
+                ) -> bool:
+                    return low <= timestamp and (
+                        timestamp < high or include_end and timestamp == high
+                    )
+
+                local = self._round_windows(
+                    [item for item in observations if in_segment(self._time(item))],
+                    [event for event in hud_events if in_segment(float(event['time_sec']))],
+                    upper,
+                )
+                for window in local:
+                    window.start_sec = max(lower, window.start_sec)
+                    window.end_sec = min(upper, window.end_sec)
+                    if not final and window.end_sec == upper:
+                        window.include_end = False
+                    if window.end_sec > window.start_sec:
+                        result.append(window)
+            return result
         windows: list[_RoundWindow] = []
         usable = sorted(
             {
@@ -648,7 +702,10 @@ class RoundPackageBuilder:
                     default=None,
                 )
                 preparation_start = self._preparation_context_start(
-                    observations, timestamp, floor_sec=previous_boundary
+                    observations, timestamp, floor_sec=previous_boundary,
+                    start_event=next((event for event in hud_events
+                                      if event['type'] == 'round_start'
+                                      and float(event['time_sec']) == timestamp), None),
                 )
                 has_prior_end = any(
                     boundary_kind == "round_end" and boundary_time < timestamp
@@ -739,7 +796,10 @@ class RoundPackageBuilder:
                 default=None,
             )
             preparation_start = self._preparation_context_start(
-                observations, event_start, floor_sec=previous_boundary
+                observations, event_start, floor_sec=previous_boundary,
+                start_event=next((event for event in hud_events
+                                  if event['type'] == 'round_start'
+                                  and float(event['time_sec']) == event_start), None),
             )
             if preparation_start is None:
                 continue
@@ -849,7 +909,33 @@ class RoundPackageBuilder:
         event_start: float,
         *,
         floor_sec: float | None = None,
+        start_event: dict[str, Any] | None = None,
     ) -> float | None:
+        # Native system phase observations have their own source PTS and must
+        # not be retimestamped onto sampled player observations. A verified
+        # native boundary carries its segment-local preparation interval.
+        if start_event is not None:
+            proof = start_event.get('attributes', {}).get('evidence_provenance', {})
+            preparation = proof.get('preparation_pts_sec', []) if isinstance(proof, dict) else []
+            if (
+                isinstance(proof, dict)
+                and _bounded_confidence(start_event.get('confidence')) >= 0.90
+                and proof.get('scope') == 'global_system'
+                and proof.get('source_pts_sec') == event_start
+                and isinstance(proof.get('source_epoch'), str) and proof['source_epoch'].strip()
+                and all(isinstance(proof.get(key), str)
+                        and re.fullmatch(r'[0-9a-f]{64}', proof[key]) is not None
+                        for key in ('source_video_sha256', 'qualification_sha256',
+                                    'profile_fingerprint', 'recognizer_fingerprint'))
+                and isinstance(preparation, list) and len(preparation) == 2
+                and all(type(value) in (int, float) and math.isfinite(value)
+                        for value in preparation)
+                and 0 <= preparation[0] < preparation[1] < event_start
+                and preparation[1] - preparation[0] >= MIN_START_CONFIRMATION_SEC
+                and event_start - preparation[1] <= MAX_SAMPLE_GAP_SEC
+                and (floor_sec is None or preparation[0] > floor_sec)
+            ):
+                return float(preparation[0])
         before = [
             item
             for item in observations
@@ -925,6 +1011,8 @@ class RoundPackageBuilder:
             zone_id = None  # Only the validated resolver timeline supplies location identity.
             snapshot = {
                 "time_sec": self._time(observation),
+                "spectator_primary_state": spectator_primary_state_evidence(observation),
+                **shared_score_evidence(observation),
                 "ally_alive": values.get("ally_alive"),
                 "enemy_alive": values.get("enemy_alive"),
                 "hp": values.get("hp") if player_valid else None,
@@ -951,6 +1039,11 @@ class RoundPackageBuilder:
             snapshot["source_confidence"] = self._hud_source_confidence(
                 observation, snapshot
             )
+            for score_key in ('score_ally', 'score_enemy'):
+                if snapshot[score_key] is not None:
+                    snapshot['source_confidence'][score_key] = observation['quality'][
+                        'roi_confidence'
+                    ][f'{score_key}_value']
             timer_display = timer_display_evidence(values)
             if (
                 timer_display is not None
@@ -973,6 +1066,9 @@ class RoundPackageBuilder:
                 snapshot["utility_available_count"],
                 zone_id,
                 snapshot.get("round_time_remaining_display"),
+                snapshot.get("spectator_primary_state"),
+                snapshot.get('score_ally'),
+                snapshot.get('score_enemy'),
             )
             timestamp = float(snapshot["time_sec"])
             if key != last_key or timestamp - last_time >= 2.0:

@@ -1,0 +1,344 @@
+{
+  "scope": "Post-prediction actual source review and active-context negative replay; not lifecycle qualification",
+  "input_sha256": {
+    "e2e_reports/match_001/frozen_numeric_reader_holdout_plan.json": "caab66f4633d3e72b1e1895adfabe7865422a642c5ef22b576e03bcae0412bd5",
+    "e2e_reports/match_001/frozen_numeric_reader_holdout_predictions.json": "4dfc8d5fe77891853237d51f422bd365e53162b98f1ed1a26c5c7f38c1c0dbf8"
+  },
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "profile_fingerprint": "ad747fd04c8d5a0567455da3253cd316e0b94065d7e2d0c87120b15d63f6f000",
+  "recognizer_fingerprint": "4bd2b67db63b406f3f940909ca9d94019b81df11537c2b52cb28e5d842e3daf8",
+  "review_provenance": "All27 source top-bar crops inspected after predictions; first18display1:29,remaining9display1:28; scores0/2 throughout",
+  "review_before_predictions": false,
+  "training_overlap_exhaustively_proven_absent": false,
+  "timer": {
+    "unknown": 12,
+    "correct": 15,
+    "wrong": 0
+  },
+  "score": {
+    "unknown": 44,
+    "correct": 10,
+    "wrong": 0
+  },
+  "score_pair_frames": 2,
+  "active_context_negative_start_candidates": 0,
+  "raw_player_state_counts": {
+    "unknown": 16,
+    "live_first_person": 11
+  },
+  "global_player_owned_facts": 0,
+  "rebased_indices_for_diagnostic_projection_only": true,
+  "phase_scan_valid_frames": 27,
+  "labels": [
+    {
+      "source_pts_ticks": 1875497,
+      "pts_sec": 122.10266927083333,
+      "frame_sha256": "0ca91514e37a85d10a83b7b7c0d575923dddf4ba38c0d6b00915473c22ee4007",
+      "source_pixel_sha256": "345a206fb667fff0680263a2988e1794d43dc66f2447eeb512cdfc87b6b7aefd",
+      "expected": {
+        "round_time_remaining_display": "1:29",
+        "score_ally": 0,
+        "score_enemy": 2
+      }
+    },
+    {
+      "source_pts_ticks": 1875753,
+      "pts_sec": 122.1193359375,
+      "frame_sha256": "5536cd126b0c68b9d54b67796359ea83ad9ef02e99707f6490fd1606d7e54655",
+      "source_pixel_sha256": "dd8334697e0a850061df20ff4a553d9f68f4282560a0c09b9b52b6eaa8b0b72e",
+      "expected": {
+        "round_time_remaining_display": "1:29",
+        "score_ally": 0,
+        "score_enemy": 2
+      }
+    },
+    {
+      "source_pts_ticks": 1876009,
+      "pts_sec": 122.13600260416666,
+      "frame_sha256": "4ee985ebc1149e7e54461a5bd81603b00645b2466611fc3b18f7e692bb364025",
+      "source_pixel_sha256": "41ae080a38d8196aa5ae8d9954314666fa9b3649a9e75fa627e67bb5d5524c43",
+      "expected": {
+        "round_time_remaining_display": "1:29",
+        "score_ally": 0,
+        "score_enemy": 2
+      }
+    },
+    {
+      "source_pts_ticks": 1876265,
+      "pts_sec": 122.15266927083333,
+      "frame_sha256": "eb4ad5922d56e767cc1e4f9b87c99283f8a50274a2c59ae07e4265d986e49829",
+      "source_pixel_sha256": "3120330a2077b198c505fa4bfb44527f775129dca0245922dbf9e365a725836b",
+      "expected": {
+        "round_time_remaining_display": "1:29",
+        "score_ally": 0,
+        "score_enemy": 2
+      }
+    },
+    {
+      "source_pts_ticks": 1876521,
+      "pts_sec": 122.1693359375,
+      "frame_sha256": "874d209e32a5fa9bbde1575c3200a846c403c804c781f3a8f587b12231d9a6e8",
+      "source_pixel_sha256": "ebeb18f0b97f3b8a00610aa2c9870ba493445956832b5c45fd0e119119d793f1",
+      "expected": {
+        "round_time_remaining_display": "1:29",
+        "score_ally": 0,
+        "score_enemy": 2
+      }
+    },
+    {
+      "source_pts_ticks": 1876777,
+      "pts_sec": 122.18600260416666,
+      "frame_sha256": "bdc9131546ece1a950728696195662492a83ffa9d099b562c8e2c0af6e35e408",
+      "source_pixel_sha256": "aa2305478a3dbc97df4eba7435a7e6554bee41d848b2af97941cf45342b1eef5",
+      "expected": {
+        "round_time_remaining_display": "1:29",
+        "score_ally": 0,
+        "score_enemy": 2
+      }
+    },
+    {
+      "source_pts_ticks": 1877033,
+      "pts_sec": 122.20266927083334,
+      "frame_sha256": "1c752be8b282c02af833462d569a7775c38c6575833528c56925eb54bc7c5ccd",
+      "source_pixel_sha256": "ea8f4a7301be8a286f2569557d4ef454e7b9891c6842f9a1b4dbcbd24af96025",
+      "expected": {
+        "round_time_remaining_display": "1:29",
+        "score_ally": 0,
+        "score_enemy": 2
+      }
+    },
+    {
+      "source_pts_ticks": 1877289,
+      "pts_sec": 122.2193359375,
+      "frame_sha256": "ebc9c42c99c9a1a966a82f4f87794566eb20cb6c720fd81c393c4ee54a32e87c",
+      "source_pixel_sha256": "c254970c004f2e00ddd3c129f1fa7d2c72dc2836c51a6b1354d6311295a8e6b2",
+      "expected": {
+        "round_time_remaining_display": "1:29",
+        "score_ally": 0,
+        "score_enemy": 2
+      }
+    },
+    {
+      "source_pts_ticks": 1877545,
+      "pts_sec": 122.23600260416667,
+      "frame_sha256": "a3a77e260e09bd1431b5816a87b0b3a6eab230afc34434fe4eb6eedd71cbfec8",
+      "source_pixel_sha256": "773d41f18e9d52b0d2f8f646a7fa1b719f74d947e47e2c3e438349702d423526",
+      "expected": {
+        "round_time_remaining_display": "1:29",
+        "score_ally": 0,
+        "score_enemy": 2
+      }
+    },
+    {
+      "source_pts_ticks": 1877801,
+      "pts_sec": 122.25266927083334,
+      "frame_sha256": "e9afdc5ed288c118fc75741cdb82490c05d9728a23096a8220e3f91a085c055f",
+      "source_pixel_sha256": "01c78ba3d7fca1783ab6b32efab321837b10d146af79e68b405d1e341df0ab26",
+      "expected": {
+        "round_time_remaining_display": "1:29",
+        "score_ally": 0,
+        "score_enemy": 2
+      }
+    },
+    {
+      "source_pts_ticks": 1878057,
+      "pts_sec": 122.2693359375,
+      "frame_sha256": "2eebb9350fc00ee6ab046e4529b2e76e31bbc819d90c0b8ae167f1ce746e6c88",
+      "source_pixel_sha256": "243abc7057788f0f285859c0d747964be2067b63c83df78e3d0f26b9e134f7d0",
+      "expected": {
+        "round_time_remaining_display": "1:29",
+        "score_ally": 0,
+        "score_enemy": 2
+      }
+    },
+    {
+      "source_pts_ticks": 1878313,
+      "pts_sec": 122.28600260416667,
+      "frame_sha256": "284e92155a79452e22e100949ee1b2dcac4ba44463d080378c524e550f993778",
+      "source_pixel_sha256": "27b16732febe282cf7a93f6dbca35f8d70d967aa95ad1c11400ef481742b2500",
+      "expected": {
+        "round_time_remaining_display": "1:29",
+        "score_ally": 0,
+        "score_enemy": 2
+      }
+    },
+    {
+      "source_pts_ticks": 1878569,
+      "pts_sec": 122.30266927083333,
+      "frame_sha256": "d1736d685967143381dbf658109ec3985db26bf66c3e879736303f4eb7a11ff1",
+      "source_pixel_sha256": "56268326b1496f13625be2ee78b637069d7bc394347069e73f9a4134ee70c029",
+      "expected": {
+        "round_time_remaining_display": "1:29",
+        "score_ally": 0,
+        "score_enemy": 2
+      }
+    },
+    {
+      "source_pts_ticks": 1878825,
+      "pts_sec": 122.3193359375,
+      "frame_sha256": "82d96c5778ee899c595781849333178bd5e894dfa20259beda3c16fbbfa4fcbb",
+      "source_pixel_sha256": "2f7e751ed45699d8fafdced997c249a6370dcfa029feea649cec40fc882f2462",
+      "expected": {
+        "round_time_remaining_display": "1:29",
+        "score_ally": 0,
+        "score_enemy": 2
+      }
+    },
+    {
+      "source_pts_ticks": 1879081,
+      "pts_sec": 122.33600260416667,
+      "frame_sha256": "95466b1c4f17ad8204dc03ca720e8779928125deea27e25f2ebb089dbc13b542",
+      "source_pixel_sha256": "0f6c0aa3ffff5ef4984cff973160f16ef47f30424969120d2e239404a1af714e",
+      "expected": {
+        "round_time_remaining_display": "1:29",
+        "score_ally": 0,
+        "score_enemy": 2
+      }
+    },
+    {
+      "source_pts_ticks": 1879337,
+      "pts_sec": 122.35266927083333,
+      "frame_sha256": "6ec170d0422ea7821dc528bfede8cdb471176e3bc01b1f5a42b8d867260a5922",
+      "source_pixel_sha256": "c989e2b735ad7053019585f9be0b52e9163b80006afb523137723efab0fd31c2",
+      "expected": {
+        "round_time_remaining_display": "1:29",
+        "score_ally": 0,
+        "score_enemy": 2
+      }
+    },
+    {
+      "source_pts_ticks": 1879593,
+      "pts_sec": 122.3693359375,
+      "frame_sha256": "a99616fce7c84bc40234afc696b496808c0cb32e13e5a2854de2853454b63b5f",
+      "source_pixel_sha256": "5aa9499627d7e1d8b4ffa115e3ab9e4f238fec01e64a2df3ff73d2636ede2b94",
+      "expected": {
+        "round_time_remaining_display": "1:29",
+        "score_ally": 0,
+        "score_enemy": 2
+      }
+    },
+    {
+      "source_pts_ticks": 1879849,
+      "pts_sec": 122.38600260416666,
+      "frame_sha256": "7cb704da638e2bd5d09c159d52c2bc7b6dabb881d02c218d0206b91491c12082",
+      "source_pixel_sha256": "f2877bb849c86cbdd39afd658d47c43e9748b1ac95922e57e861af7c705f0214",
+      "expected": {
+        "round_time_remaining_display": "1:29",
+        "score_ally": 0,
+        "score_enemy": 2
+      }
+    },
+    {
+      "source_pts_ticks": 1880105,
+      "pts_sec": 122.40266927083333,
+      "frame_sha256": "f9a7479b20180b1a5931a4b7ca43cba392bb7bdac6163781599de24c51c87c90",
+      "source_pixel_sha256": "1fcba957dcd98e4e4a02a978ab4ca17f0448df122bc1ef0993c45379d11ca462",
+      "expected": {
+        "round_time_remaining_display": "1:28",
+        "score_ally": 0,
+        "score_enemy": 2
+      }
+    },
+    {
+      "source_pts_ticks": 1880361,
+      "pts_sec": 122.4193359375,
+      "frame_sha256": "639a8f74540e0b739cc1130765976b7c4580e1a912fee93dc19119f682ace78a",
+      "source_pixel_sha256": "351ff4afe0cd536a3bf6d366a21a5561b0d029239c91d417cfb1a476dfbbe55e",
+      "expected": {
+        "round_time_remaining_display": "1:28",
+        "score_ally": 0,
+        "score_enemy": 2
+      }
+    },
+    {
+      "source_pts_ticks": 1880617,
+      "pts_sec": 122.43600260416666,
+      "frame_sha256": "056a152eafc21d689048f5e067d0d6a39a9d6fb2dee4c87ef83c69596e03ee66",
+      "source_pixel_sha256": "cfd83db43d992677d0859810614778296b812333bcfee1402120c89ca215fcde",
+      "expected": {
+        "round_time_remaining_display": "1:28",
+        "score_ally": 0,
+        "score_enemy": 2
+      }
+    },
+    {
+      "source_pts_ticks": 1880873,
+      "pts_sec": 122.45266927083334,
+      "frame_sha256": "fa619e072a01a25879319464a9c6d4a20816056046aff456d232e9a119ab9e2e",
+      "source_pixel_sha256": "856fd38e2e308d6ba5239c29880b26fe6e398d5511a341510519e7d2aade5813",
+      "expected": {
+        "round_time_remaining_display": "1:28",
+        "score_ally": 0,
+        "score_enemy": 2
+      }
+    },
+    {
+      "source_pts_ticks": 1881129,
+      "pts_sec": 122.4693359375,
+      "frame_sha256": "3a069278ab5b84910591e12e59f60fffc751c87841728eaafaed10103d2b9d5d",
+      "source_pixel_sha256": "74ba9af53adc833636044c3eb7122c4fd0393c0417e9ced4e50794679c749605",
+      "expected": {
+        "round_time_remaining_display": "1:28",
+        "score_ally": 0,
+        "score_enemy": 2
+      }
+    },
+    {
+      "source_pts_ticks": 1881385,
+      "pts_sec": 122.48600260416667,
+      "frame_sha256": "fb878c84945071dd101b0a07fd3a3c3fee7fc921c1ba099f963c10335c34a57a",
+      "source_pixel_sha256": "8a8357fdae53dbaee73e46dd7995f01b8fb4c5e598efdf8b2e4ddef70e84e6e9",
+      "expected": {
+        "round_time_remaining_display": "1:28",
+        "score_ally": 0,
+        "score_enemy": 2
+      }
+    },
+    {
+      "source_pts_ticks": 1881641,
+      "pts_sec": 122.50266927083334,
+      "frame_sha256": "40b2b21a8400c7d030e98e4330850229623bcc29362632c5b7480a9b890ce093",
+      "source_pixel_sha256": "7426392ff04d465234944c80280f6e263c23b5cdc1ed93ddea7b2f9216981473",
+      "expected": {
+        "round_time_remaining_display": "1:28",
+        "score_ally": 0,
+        "score_enemy": 2
+      }
+    },
+    {
+      "source_pts_ticks": 1881897,
+      "pts_sec": 122.5193359375,
+      "frame_sha256": "543b18e2c928839fae05a51e02352a82d5bc85c14e554abecdef2bb57979442d",
+      "source_pixel_sha256": "cb5bc1a2d64581fc4e499377667280544b81c958db3b16323f18ebce43a8eb39",
+      "expected": {
+        "round_time_remaining_display": "1:28",
+        "score_ally": 0,
+        "score_enemy": 2
+      }
+    },
+    {
+      "source_pts_ticks": 1882153,
+      "pts_sec": 122.53600260416667,
+      "frame_sha256": "9f8f62c1216732f30a40e1c3d1ea044a0c851051ace29f33687218dbe30c6769",
+      "source_pixel_sha256": "2ae8992c47edce751f180553e6e40d8a0fcfb57ddbd3e60ecd4267c9a127f788",
+      "expected": {
+        "round_time_remaining_display": "1:28",
+        "score_ally": 0,
+        "score_enemy": 2
+      }
+    }
+  ],
+  "wall_clock_sec": 77.19488442502916,
+  "previous_comparable_run": null,
+  "runtime_delta": null,
+  "qualification_created": false,
+  "released_events": 0,
+  "canonical_current": null,
+  "canonical_delta": null,
+  "limitations": [
+    "Same-video correlated active context",
+    "Known native inventory not exhaustive",
+    "No timer/score-absent control",
+    "No independent start/end positive temporal qualification"
+  ]
+}

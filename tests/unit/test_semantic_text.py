@@ -1,3 +1,4 @@
+import hashlib
 import json
 
 import cv2
@@ -106,6 +107,59 @@ def test_profile_detects_presence_and_fingerprints_training_assets(tmp_path):
     before = profile.fingerprint(layout_path)
     (tmp_path / "train-2.png").write_bytes(b"changed")
     assert profile.fingerprint(layout_path) != before
+
+
+@pytest.mark.parametrize("case", ["match", "flat_group", "wrong_text", "wrong_shape"])
+def test_measurement_preserves_score_and_does_not_authorize_absence(case):
+    image, mask, regions, training = _assets()
+    reference = SemanticTextReference(image, mask, regions, training, 0.90)
+    current = image.copy()
+    if case == "flat_group":
+        current[regions == 2] = 100
+    elif case == "wrong_text":
+        current[regions == 2] = 255 - current[regions == 2]
+    elif case == "wrong_shape":
+        current = current[:2, :3]
+    result = reference.measure(current)
+    assert result["score"] == reference.score(current)
+    assert result["absence_checked"] is False
+    assert result["runtime_transition_authorized"] is False
+    if case == "flat_group":
+        assert result["groups"][1]["reason"] == "contrast_unavailable"
+    elif case == "wrong_text":
+        assert result["groups"][1]["reason"] == "below_threshold"
+    elif case == "wrong_shape":
+        assert all(group["reason"] == "shape_mismatch" for group in result["groups"])
+
+
+def test_profile_optional_measurements_preserve_signals_and_source_crop(tmp_path):
+    path, layout, frame = _profile(tmp_path)
+    profile = HudTemplateProfile.load(path)
+    for pixels in (frame, np.zeros_like(frame)):
+        records = {}
+        plain = profile.detect_signals(pixels, layout)
+        measured = profile.detect_signals(pixels, layout, semantic_diagnostics=records)
+        assert measured == plain
+        record = records["buy_phase_template"]
+        assert record["pixel_bounds"] == [0, 0, 120, 40]
+        assert record["crop_pixel_sha256"] == hashlib.sha256(pixels.tobytes()).hexdigest()
+        assert record["absence_checked"] is False
+        assert record["runtime_transition_authorized"] is False
+        if not pixels.any():
+            assert record["presence"] is None
+            assert all(g["reason"] == "contrast_unavailable" for g in record["groups"])
+
+
+def test_profile_missing_roi_is_unknown_not_absence(tmp_path):
+    path, layout, frame = _profile(tmp_path)
+    profile = HudTemplateProfile.load(path)
+    missing = HudLayout("1.0", True, (120, 40), {})
+    records = {}
+    assert profile.detect_signals(frame, missing, semantic_diagnostics=records) == (
+        profile.detect_signals(frame, missing)
+    )
+    assert records["buy_phase_template"]["reason"] == "roi_unavailable"
+    assert records["buy_phase_template"]["absence_checked"] is False
 
 
 @pytest.mark.parametrize(

@@ -1,0 +1,177 @@
+{
+  "scope": "Reviewed source ROI appearance and rejected shared-translation hypothesis; no new GT, production detection or qualification.",
+  "report": "e2e_reports/match_001/result_shared_translation_bound_replay.json",
+  "report_sha256": "a2ea0bfd22337c979edf6eefd0ac39f81c4260eea3a24e80fe8df6efc8c344f9",
+  "profile_fingerprint": "10bfac00544e510ebf3f3e2c0072c9beba24938b2ff996c9012f7e4046d82c99",
+  "recognizer_fingerprint": "4506882908c892519c96b2acd33c2e78f868d1f3e0d3d50471c7a1e867aa5724",
+  "frozen_run_script": "outputs/recognition-investigation/result-shared-translation-rejected/probe-at-run.py",
+  "frozen_run_script_sha256": "863cbe2deb14a28e44d33efcff8068320aa901b1c48ea5b8af5963b5665c9bde",
+  "manual_review": {
+    "source_indices": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32
+    ],
+    "review_scope": "Complete existing round_end_banner ROI on every first32native source frames, before any new reference generation.",
+    "contact_sheet_sha256": "619ccdb572409235f5771d832601ed6635cdbff8d2b449d22f37ad8ec1ad409c",
+    "visible_complete_result_word_source_indices": [
+      15
+    ],
+    "reviewed_source_cases": 32,
+    "source_index15_word": "TEAM ACE; red display overlaps glyph area",
+    "no_player_owned_hit_or_death_fact_claimed": true
+  },
+  "mask_color_overlap_observations": [
+    {
+      "source_index": 15,
+      "pts_sec": 74.43600260416666,
+      "color_rule_diagnostic_only": "R>=120 and R>=1.5G and R>=1.5B; no pixels or masks removed",
+      "groups": [
+        {
+          "group": 1,
+          "mask_population": 2975,
+          "red_overlap_count": 217,
+          "red_overlap_fraction": 0.07294117647058823
+        },
+        {
+          "group": 2,
+          "mask_population": 3199,
+          "red_overlap_count": 704,
+          "red_overlap_fraction": 0.22006877149109097
+        },
+        {
+          "group": 3,
+          "mask_population": 3151,
+          "red_overlap_count": 187,
+          "red_overlap_fraction": 0.05934623928911457
+        }
+      ]
+    },
+    {
+      "source_index": 68,
+      "pts_sec": 75.3193359375,
+      "color_rule_diagnostic_only": "R>=120 and R>=1.5G and R>=1.5B; no pixels or masks removed",
+      "groups": [
+        {
+          "group": 1,
+          "mask_population": 2975,
+          "red_overlap_count": 0,
+          "red_overlap_fraction": 0.0
+        },
+        {
+          "group": 2,
+          "mask_population": 3199,
+          "red_overlap_count": 0,
+          "red_overlap_fraction": 0.0
+        },
+        {
+          "group": 3,
+          "mask_population": 3151,
+          "red_overlap_count": 0,
+          "red_overlap_fraction": 0.0
+        }
+      ]
+    },
+    {
+      "source_index": 73,
+      "pts_sec": 75.40266927083333,
+      "color_rule_diagnostic_only": "R>=120 and R>=1.5G and R>=1.5B; no pixels or masks removed",
+      "groups": [
+        {
+          "group": 1,
+          "mask_population": 2975,
+          "red_overlap_count": 0,
+          "red_overlap_fraction": 0.0
+        },
+        {
+          "group": 2,
+          "mask_population": 3199,
+          "red_overlap_count": 0,
+          "red_overlap_fraction": 0.0
+        },
+        {
+          "group": 3,
+          "mask_population": 3151,
+          "red_overlap_count": 0,
+          "red_overlap_fraction": 0.0
+        }
+      ]
+    }
+  ],
+  "causal_limit": "Overlap is observed; no claim it alone explains all NCC loss. No masking, reference fitting or threshold change was performed.",
+  "hypothesis": "Same reference, masks and threshold with one common translation in the existing ROI recovers early text.",
+  "decision": "rejected; no early match and no added accepted frame",
+  "comparison": {
+    "accepted_result_frames": {
+      "previous": 29,
+      "current": 29,
+      "scope": "Fixed vs shared-translation diagnostic; not boundary or PASS count.",
+      "delta": 0
+    },
+    "early_word_NCC": {
+      "previous": 0.3875529175837342,
+      "current": 0.3875529175837342,
+      "delta": 0.0
+    },
+    "first_match_pts_sec": {
+      "previous": 75.3193359375,
+      "current": 75.3193359375,
+      "delta": 0
+    }
+  },
+  "early_training_eligibility": {
+    "visible_complete_word_support_frames": 1,
+    "minimum_distinct_semantic_training_support": 3,
+    "qualifies": false,
+    "same_frame_duplicates_allowed": false
+  },
+  "wall_clock_sec": 46.8077452769503,
+  "previous_same_input_diagnostic_wall_clock_sec": 48.20094212895492,
+  "runtime_delta_sec": -1.3931968520046212,
+  "runtime_delta_interpretation": "Repeated diagnostic and extra binding checks; no demonstrated performance improvement.",
+  "tests": {
+    "related_unit_passed": 33,
+    "ruff": "PASS",
+    "mypy": "previous PASS on identical production src; no production edits this turn"
+  },
+  "negative_control_evaluation": "Not promoted to new independent controls; hypothesis rejected on development before further evaluation.",
+  "qualification_created": false,
+  "released_events": 0,
+  "canonical_previous": {
+    "PASS": 23,
+    "FAIL": 55,
+    "NE": 4
+  },
+  "canonical_current": null,
+  "canonical_delta": null,
+  "next_action": "Probe whether independently accepted timer reset plus stable one-point score transition can corroborate an end without the occluded early result glyph; keep it diagnostic until independent qualification and actual active lifecycle are proven."
+}

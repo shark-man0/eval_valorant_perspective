@@ -1,0 +1,482 @@
+{
+  "scope": "Post-prediction fixed-cohort source review; no reference change or lifecycle qualification",
+  "input_sha256": {
+    "e2e_reports/match_001/result_late_fixed_native_predictions.json": "8c3392240c9d99953d8f194dd23a29f72a6bd9841cd975a7b7ba4e5229955a31",
+    "e2e_reports/match_001/frozen_result_late_native_cohort.json": "75a233ea6ffa51e98f33cc8d4463811b7a7fd36ab7adb0929b38e3e8c02a845c"
+  },
+  "recognizer_fingerprint": "212c9a0b7c782ff411f7d32c8be6949c6d0c79b85f353d3cb8c32b34e6c3c336",
+  "profile_fingerprint": "10bfac00544e510ebf3f3e2c0072c9beba24938b2ff996c9012f7e4046d82c99",
+  "review_provenance": "All12 source result crops viewed after predictions were exposed; contact sheet showed indices without prediction overlays. TEAM ACE readable in every image. Frozen selected indices3,5,8,9; no GT result/timestamp used. This is not a blind review.",
+  "contact_sheet_sha256": "12ae3b4288665789906c5728451e29d1dd23c3443693f75dda39a2bb1390df7b",
+  "positive_selected_frames": 4,
+  "selected_correct": 0,
+  "selected_unknown": 4,
+  "selected_wrong": 0,
+  "all_positive_source_frames": 12,
+  "all_producer_unknown": 12,
+  "rows": [
+    {
+      "source_pts_ticks": 1172777,
+      "source_pixel_sha256": "955e1ef334c19b605434d9590a78540d71218b6040edd9eaf9121779ad5b5f3c",
+      "selected_in_frozen_plan": false,
+      "source_review_label": "TEAM ACE visible",
+      "fixed_measure": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.8710414264957622,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 2975,
+            "current_std": 26.78824545681057,
+            "score": 0.8943384202969568,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 3199,
+            "current_std": 36.40196721789613,
+            "score": 0.8710414264957622,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 3,
+            "mask_population": 3151,
+            "current_std": 42.768837634516316,
+            "score": 0.9233790246030662,
+            "reason": "matched"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false
+      },
+      "actual_producer_result_present": false
+    },
+    {
+      "source_pts_ticks": 1173033,
+      "source_pixel_sha256": "14c10c967cae7f591a2dd5e8713916726ce26de2f52d7ff4ee3ac3d056edbcd0",
+      "selected_in_frozen_plan": false,
+      "source_review_label": "TEAM ACE visible",
+      "fixed_measure": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.8570211310965344,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 2975,
+            "current_std": 27.35794648649479,
+            "score": 0.8954325124237827,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 3199,
+            "current_std": 34.59737007132043,
+            "score": 0.8570211310965344,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 3,
+            "mask_population": 3151,
+            "current_std": 42.28972672626731,
+            "score": 0.9201798939296297,
+            "reason": "matched"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false
+      },
+      "actual_producer_result_present": false
+    },
+    {
+      "source_pts_ticks": 1173289,
+      "source_pixel_sha256": "424ff1c8caefeff696533896e44ac7b24ac214a07795f3dd07b55d24f779d7bd",
+      "selected_in_frozen_plan": true,
+      "source_review_label": "TEAM ACE visible",
+      "fixed_measure": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.8559340618988908,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 2975,
+            "current_std": 27.866173684028333,
+            "score": 0.8887123469242325,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 3199,
+            "current_std": 34.10015485320686,
+            "score": 0.8559340618988908,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 3,
+            "mask_population": 3151,
+            "current_std": 41.97425181059743,
+            "score": 0.9090093539189028,
+            "reason": "matched"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false
+      },
+      "actual_producer_result_present": false
+    },
+    {
+      "source_pts_ticks": 1173545,
+      "source_pixel_sha256": "a8150766d43268b76f62c2cc4c074da92ec48e18c14f3f657852fd5c85092ecf",
+      "selected_in_frozen_plan": false,
+      "source_review_label": "TEAM ACE visible",
+      "fixed_measure": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.8397628505068269,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 2975,
+            "current_std": 28.293284055276835,
+            "score": 0.8885973652298127,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 3199,
+            "current_std": 32.66268096337919,
+            "score": 0.8397628505068269,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 3,
+            "mask_population": 3151,
+            "current_std": 41.574229157644275,
+            "score": 0.9060400408585777,
+            "reason": "matched"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false
+      },
+      "actual_producer_result_present": false
+    },
+    {
+      "source_pts_ticks": 1173801,
+      "source_pixel_sha256": "97b156c16e25e2e49bc933773ebecc667e878b4210ed2c256a8ac22e32fcb5ac",
+      "selected_in_frozen_plan": true,
+      "source_review_label": "TEAM ACE visible",
+      "fixed_measure": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.8366828823794838,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 2975,
+            "current_std": 28.369432373091044,
+            "score": 0.8916795732504493,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 3199,
+            "current_std": 31.006787106688154,
+            "score": 0.8366828823794838,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 3,
+            "mask_population": 3151,
+            "current_std": 40.57816021949865,
+            "score": 0.9042205627947373,
+            "reason": "matched"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false
+      },
+      "actual_producer_result_present": false
+    },
+    {
+      "source_pts_ticks": 1174057,
+      "source_pixel_sha256": "69d97be445beb031d376071bc20cd268c79c8ab23d59ea21f0e8b93e41625798",
+      "selected_in_frozen_plan": false,
+      "source_review_label": "TEAM ACE visible",
+      "fixed_measure": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.8297963738372807,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 2975,
+            "current_std": 28.59652344102216,
+            "score": 0.890281837641613,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 3199,
+            "current_std": 29.664983161303855,
+            "score": 0.8297963738372807,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 3,
+            "mask_population": 3151,
+            "current_std": 39.57292619952258,
+            "score": 0.895185229367517,
+            "reason": "below_threshold"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false
+      },
+      "actual_producer_result_present": false
+    },
+    {
+      "source_pts_ticks": 1174313,
+      "source_pixel_sha256": "b1f6591ee82037ae1a4e0721550df1e2c202eae98b73b1e6460587b20bc16bd8",
+      "selected_in_frozen_plan": false,
+      "source_review_label": "TEAM ACE visible",
+      "fixed_measure": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.8236028756120355,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 2975,
+            "current_std": 29.042681337713102,
+            "score": 0.8922177084765841,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 3199,
+            "current_std": 28.182020878405698,
+            "score": 0.8236028756120355,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 3,
+            "mask_population": 3151,
+            "current_std": 38.97758626647679,
+            "score": 0.8934490858179326,
+            "reason": "below_threshold"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false
+      },
+      "actual_producer_result_present": false
+    },
+    {
+      "source_pts_ticks": 1174569,
+      "source_pixel_sha256": "ea77504e06f3bb32a2a589f30cd407c69d2d2e6aede1784ca25f8d9f677d80e8",
+      "selected_in_frozen_plan": true,
+      "source_review_label": "TEAM ACE visible",
+      "fixed_measure": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.8143169915122204,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 2975,
+            "current_std": 29.718177250020325,
+            "score": 0.8886160440220302,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 3199,
+            "current_std": 25.770845349853712,
+            "score": 0.8143169915122204,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 3,
+            "mask_population": 3151,
+            "current_std": 38.27818586363106,
+            "score": 0.885395749300143,
+            "reason": "below_threshold"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false
+      },
+      "actual_producer_result_present": false
+    },
+    {
+      "source_pts_ticks": 1174825,
+      "source_pixel_sha256": "927964e129a898265d871270f4d7c1132d016d4bd34587fea347235661cf81b6",
+      "selected_in_frozen_plan": true,
+      "source_review_label": "TEAM ACE visible",
+      "fixed_measure": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.8159621592617211,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 2975,
+            "current_std": 29.96612888939403,
+            "score": 0.8970339049498832,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 3199,
+            "current_std": 24.576414397174055,
+            "score": 0.8159621592617211,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 3,
+            "mask_population": 3151,
+            "current_std": 38.001073902061414,
+            "score": 0.8739264208281501,
+            "reason": "below_threshold"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false
+      },
+      "actual_producer_result_present": false
+    },
+    {
+      "source_pts_ticks": 1175081,
+      "source_pixel_sha256": "609ba7b6fe9af469c775a643534281892957f68a6d94f5b3a177fe7149f13ab1",
+      "selected_in_frozen_plan": false,
+      "source_review_label": "TEAM ACE visible",
+      "fixed_measure": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.800005920128247,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 2975,
+            "current_std": 11.807649115841045,
+            "score": 0.8626399042065976,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 3199,
+            "current_std": 23.55205710109805,
+            "score": 0.800005920128247,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 3,
+            "mask_population": 3151,
+            "current_std": 37.79890848691005,
+            "score": 0.8734133844318153,
+            "reason": "below_threshold"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false
+      },
+      "actual_producer_result_present": false
+    },
+    {
+      "source_pts_ticks": 1175337,
+      "source_pixel_sha256": "590ecfd59652d5313c3e973e864ef63e59b6d84033aee3c75bd61032dacce8a4",
+      "selected_in_frozen_plan": false,
+      "source_review_label": "TEAM ACE visible",
+      "fixed_measure": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.8000214028669159,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 2975,
+            "current_std": 10.313905202188806,
+            "score": 0.8014459275029999,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 3199,
+            "current_std": 22.75711799102652,
+            "score": 0.8000214028669159,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 3,
+            "mask_population": 3151,
+            "current_std": 37.6219330921217,
+            "score": 0.8696511718342506,
+            "reason": "below_threshold"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false
+      },
+      "actual_producer_result_present": false
+    },
+    {
+      "source_pts_ticks": 1175593,
+      "source_pixel_sha256": "31e1f136955a35ff8a7363f522e4a851b83e8ffb4bf19855e4b66ac8e6a6f98e",
+      "selected_in_frozen_plan": false,
+      "source_review_label": "TEAM ACE visible",
+      "fixed_measure": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.8206183057191182,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 2975,
+            "current_std": 11.773528984414144,
+            "score": 0.8356357444852488,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 3199,
+            "current_std": 13.771784438650048,
+            "score": 0.8206183057191182,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 3,
+            "mask_population": 3151,
+            "current_std": 43.04762020179642,
+            "score": 0.9635451204764881,
+            "reason": "matched"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false
+      },
+      "actual_producer_result_present": false
+    }
+  ],
+  "qualification_created": false,
+  "exhaustive_exposure_proven": false,
+  "same_episode_correlated": true,
+  "canonical_current": null,
+  "canonical_delta": null,
+  "next_action": "Reassess reference mask/background dependence from original training images only; keep failed cohort as exposed development, reserve different validation before any new reference adoption",
+  "selection_source_hashes_terminal_verified_before_analysis_update": true
+}

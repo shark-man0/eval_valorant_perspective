@@ -1,0 +1,57 @@
+{
+  "scope": "Current descriptive rule on three previously exposed, historical actual-analyzer score windows. Limited negative controls, not independent end qualification or fresh reader replay.",
+  "input_sha256": {
+    "outputs/recognition-investigation/score-white-pipeline-20261008/results.json": "d4309c9a7848e5f0dcb2c5174d6e7331f772dd65ab866e455f8fb87884dedde3",
+    "outputs/recognition-investigation/score-white-holdout-20261008/native-manifest.json": "9210e1fbb145a4fb414006a278cd5629001e40ce412d25d85ae5bc911fd5e6bf"
+  },
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "windows": [
+    {
+      "window_sec": [
+        142.51611333333335,
+        142.66611333333336
+      ],
+      "processed_frames": 9,
+      "description": {
+        "clock_changes": [],
+        "score_plateaus": [],
+        "conditional_patterns": [],
+        "released_events": 0,
+        "qualification_created": false
+      }
+    },
+    {
+      "window_sec": [
+        24.431333714285714,
+        24.581333714285712
+      ],
+      "processed_frames": 9,
+      "description": {
+        "clock_changes": [],
+        "score_plateaus": [],
+        "conditional_patterns": [],
+        "released_events": 0,
+        "qualification_created": false
+      }
+    },
+    {
+      "window_sec": [
+        73.29400114285714,
+        73.44400114285715
+      ],
+      "processed_frames": 9,
+      "description": {
+        "clock_changes": [],
+        "score_plateaus": [],
+        "conditional_patterns": [],
+        "released_events": 0,
+        "qualification_created": false
+      }
+    }
+  ],
+  "conditional_pattern_count": 0,
+  "released_events": 0,
+  "qualification_created": false,
+  "canonical_current": null,
+  "canonical_delta": null
+}

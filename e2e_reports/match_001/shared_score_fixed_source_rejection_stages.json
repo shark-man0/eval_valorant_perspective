@@ -1,0 +1,647 @@
+{
+  "scope": "Nominal crop rejection-stage diagnostic; not fabricated calibration or qualified runtime evidence",
+  "prediction_sha256": "d00ffe5393ffbfe6f8b53e5fb61898cf362a1b8b3ef597ecfd5b440fb265dce4",
+  "profile_sha256": "8f0f0edf31972fc11d8b2397b545afb51016efafa4b5b1fecf522f21a45cd797",
+  "rows": [
+    {
+      "source_pts_ticks": 2045993,
+      "readers": {
+        "ally_score": {
+          "value": "0",
+          "confidence": 0.954917311668396,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "actual_analyzer_value": 0,
+          "nominal_roi_px": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "actual_analyzer_value": null,
+          "nominal_roi_px": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 2046249,
+      "readers": {
+        "ally_score": {
+          "value": "0",
+          "confidence": 0.954917311668396,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "actual_analyzer_value": 0,
+          "nominal_roi_px": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "actual_analyzer_value": null,
+          "nominal_roi_px": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 2046505,
+      "readers": {
+        "ally_score": {
+          "value": "0",
+          "confidence": 0.954917311668396,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "actual_analyzer_value": 0,
+          "nominal_roi_px": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "actual_analyzer_value": null,
+          "nominal_roi_px": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 2046761,
+      "readers": {
+        "ally_score": {
+          "value": "0",
+          "confidence": 0.954917311668396,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "actual_analyzer_value": 0,
+          "nominal_roi_px": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "actual_analyzer_value": null,
+          "nominal_roi_px": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 2047017,
+      "readers": {
+        "ally_score": {
+          "value": "0",
+          "confidence": 0.954917311668396,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "actual_analyzer_value": 0,
+          "nominal_roi_px": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "actual_analyzer_value": null,
+          "nominal_roi_px": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 2047273,
+      "readers": {
+        "ally_score": {
+          "value": "0",
+          "confidence": 0.954917311668396,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "actual_analyzer_value": 0,
+          "nominal_roi_px": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "actual_analyzer_value": null,
+          "nominal_roi_px": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 2047529,
+      "readers": {
+        "ally_score": {
+          "value": "0",
+          "confidence": 0.9539024829864502,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "actual_analyzer_value": 0,
+          "nominal_roi_px": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "actual_analyzer_value": null,
+          "nominal_roi_px": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 2047785,
+      "readers": {
+        "ally_score": {
+          "value": "0",
+          "confidence": 0.9522124528884888,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "actual_analyzer_value": 0,
+          "nominal_roi_px": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "actual_analyzer_value": null,
+          "nominal_roi_px": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 2048041,
+      "readers": {
+        "ally_score": {
+          "value": "0",
+          "confidence": 0.9522124528884888,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "actual_analyzer_value": 0,
+          "nominal_roi_px": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "actual_analyzer_value": null,
+          "nominal_roi_px": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 2048297,
+      "readers": {
+        "ally_score": {
+          "value": "0",
+          "confidence": 0.9522124528884888,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "actual_analyzer_value": 0,
+          "nominal_roi_px": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "actual_analyzer_value": null,
+          "nominal_roi_px": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 2048553,
+      "readers": {
+        "ally_score": {
+          "value": "0",
+          "confidence": 0.9539024829864502,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "actual_analyzer_value": 0,
+          "nominal_roi_px": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "actual_analyzer_value": null,
+          "nominal_roi_px": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 2048809,
+      "readers": {
+        "ally_score": {
+          "value": "0",
+          "confidence": 0.9539024829864502,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "actual_analyzer_value": 0,
+          "nominal_roi_px": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "actual_analyzer_value": null,
+          "nominal_roi_px": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 2049065,
+      "readers": {
+        "ally_score": {
+          "value": "0",
+          "confidence": 0.9520536065101624,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "actual_analyzer_value": 0,
+          "nominal_roi_px": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "actual_analyzer_value": null,
+          "nominal_roi_px": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 2049321,
+      "readers": {
+        "ally_score": {
+          "value": "0",
+          "confidence": 0.9520536065101624,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "actual_analyzer_value": 0,
+          "nominal_roi_px": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "actual_analyzer_value": null,
+          "nominal_roi_px": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 2049577,
+      "readers": {
+        "ally_score": {
+          "value": "0",
+          "confidence": 0.9503698348999023,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "actual_analyzer_value": 0,
+          "nominal_roi_px": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "value": "2",
+          "confidence": 0.9672123193740845,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "actual_analyzer_value": 2,
+          "nominal_roi_px": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 2049833,
+      "readers": {
+        "ally_score": {
+          "value": "0",
+          "confidence": 0.9317900538444519,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "actual_analyzer_value": 0,
+          "nominal_roi_px": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "value": "2",
+          "confidence": 0.9672123193740845,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "actual_analyzer_value": 2,
+          "nominal_roi_px": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 2050089,
+      "readers": {
+        "ally_score": {
+          "value": "0",
+          "confidence": 0.9456294775009155,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "actual_analyzer_value": 0,
+          "nominal_roi_px": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "value": "2",
+          "confidence": 0.9672123193740845,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "actual_analyzer_value": 2,
+          "nominal_roi_px": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 2050345,
+      "readers": {
+        "ally_score": {
+          "value": "0",
+          "confidence": 0.9528263211250305,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "actual_analyzer_value": 0,
+          "nominal_roi_px": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "value": "2",
+          "confidence": 0.9672123193740845,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "actual_analyzer_value": 2,
+          "nominal_roi_px": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    }
+  ],
+  "qualification_created": false,
+  "production_changed": false
+}

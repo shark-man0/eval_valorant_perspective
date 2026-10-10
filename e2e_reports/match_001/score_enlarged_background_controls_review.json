@@ -1,0 +1,10 @@
+{
+  "scope": "Pi-local two contact sheets reviewed before predictions; all54crops show walls/architectural edges/smoke with no visible numeric digit",
+  "plan_sha256": "2e9cc6d95a04c78a1fa436eaefbd657202d8616eb8d1b2299e6e65edb5ec0473",
+  "expected_numeric_present": false,
+  "review_images_sha256": {
+    "outputs/recognition-investigation/score-enlarged-background-controls/review.png": "fd379143966920b58f1f7c4589e31ef070eee6f9853717fd80ddf55adea6f985",
+    "outputs/recognition-investigation/score-enlarged-background-controls/structure-review.png": "60e3dda5b84e15ea6f308bdb6d180bc5c7aaf0b911a7a2b11d736f7f59c95782"
+  },
+  "natural_score_field_absence": false
+}

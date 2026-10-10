@@ -1,0 +1,126 @@
+{
+  "input": "e2e_reports/match_001/r1_end_current_phase_inputs.json",
+  "input_sha256": "a601e6b9d6c89009a4a980e5c2c506a3956ef812877ba127c231f5ade02c45a6",
+  "numeric_diagnostic_sha256": "5c8c3b95924f6424c2d59865f27c2ab4e56e1137a35bee9f6096e8776b28c242",
+  "recognizer_fingerprint": "4506882908c892519c96b2acd33c2e78f868d1f3e0d3d50471c7a1e867aa5724",
+  "profile_fingerprint": "10bfac00544e510ebf3f3e2c0072c9beba24938b2ff996c9012f7e4046d82c99",
+  "source_frames_identical": 108,
+  "current_phase_presence_fields": 108,
+  "raw_phase_positive": 0,
+  "comparison": {
+    "processed_end_frames": {
+      "previous": 108,
+      "current": 108,
+      "delta": 0
+    },
+    "timer_display_available": {
+      "previous": 17,
+      "current": 17,
+      "delta": 0
+    },
+    "score_pair_available": {
+      "previous": 47,
+      "current": 47,
+      "delta": 0
+    },
+    "phase_scan_valid_frames": {
+      "previous": 108,
+      "current": 108,
+      "delta": 0
+    },
+    "round_result_matched_frames": {
+      "previous": 29,
+      "current": 29,
+      "delta": 0
+    },
+    "released_events": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "wall_clock_sec": {
+      "previous": 297.7844333279645,
+      "current": 229.45830279495567,
+      "delta": -68.32613053300884
+    }
+  },
+  "numeric_feasibility": {
+    "patterns": [
+      {
+        "clock_change_tick": 1143593,
+        "score_change_tick": 1144105,
+        "score_stability_tick": 1144873,
+        "scope": "Observed numeric correlation only; no event time or active-round proof",
+        "confirmation_tick": 1149481,
+        "observed_clock_support": [
+          {
+            "tick": 1143593,
+            "seconds": 6.0,
+            "display": "0:06",
+            "confidence": 0.9442667961120605
+          },
+          {
+            "tick": 1143849,
+            "seconds": 6.0,
+            "display": "0:06",
+            "confidence": 0.9177671670913696
+          },
+          {
+            "tick": 1149481,
+            "seconds": 6.0,
+            "display": "0:06",
+            "confidence": 0.945489764213562
+          }
+        ],
+        "score_before": [
+          0,
+          1
+        ],
+        "score_after": [
+          0,
+          2
+        ],
+        "unknown_clock_frames_are_not_corroboration": true
+      }
+    ],
+    "rejections": [],
+    "released_events": 0,
+    "qualification_created": false,
+    "active_round_proven": false,
+    "missing_raw_phase_presence_frames": 0
+  },
+  "banner_feasibility": {
+    "patterns": [
+      {
+        "clock_change_tick": 1143593,
+        "score_change_tick": 1144105,
+        "score_stability_tick": 1144873,
+        "result_first_tick": 1156905,
+        "result_stability_tick": 1157673,
+        "result_min_confidence": 0.9248682987478553,
+        "score_min_confidence": 0.926630437374115,
+        "current_score_values": [
+          null,
+          null
+        ],
+        "historical_score_evidence": [
+          0,
+          2
+        ],
+        "scope": "Conditional pending-end pattern; no active-round or event proof"
+      }
+    ],
+    "rejections": [],
+    "released_events": 0,
+    "qualification_created": false,
+    "active_round_proven": false
+  },
+  "qualification_created": false,
+  "canonical_previous": {
+    "PASS": 23,
+    "FAIL": 55,
+    "NE": 4
+  },
+  "canonical_current": null,
+  "canonical_delta": null
+}

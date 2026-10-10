@@ -546,6 +546,26 @@
         },
         "source_confidence": {
           "$ref": "#/$defs/snapshot_source_confidence"
+        },
+        "spectator_primary_state": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "score_ally": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "score_enemy": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
         }
       }
     },
@@ -760,6 +780,16 @@
           "maximum": 1
         },
         "spatial_context": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "score_ally": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "score_enemy": {
           "type": "number",
           "minimum": 0,
           "maximum": 1

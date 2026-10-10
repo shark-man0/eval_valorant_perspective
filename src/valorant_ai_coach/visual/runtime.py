@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from bisect import bisect_right
 from collections.abc import Sequence
 from pathlib import Path
@@ -25,7 +26,18 @@ from .pixels import PixelMeasurementExtractor
 from .semantic import SemanticVisualAdapter
 
 
+def _source_cuts(values: Sequence[float], duration: float) -> tuple[float, ...]:
+    cuts = tuple(values)
+    if (any(type(t) not in (int, float) or not math.isfinite(t)
+            or not 0 < t < duration for t in cuts)
+            or tuple(sorted(set(cuts))) != cuts):
+        raise ValueError('continuity breaks must be ordered unique source times')
+    return cuts
+
+
 class RealVisualAnalyzer:
+    supports_native_source_breaks = True
+
     def __init__(
         self,
         contract: EventSourceContract,
@@ -94,7 +106,7 @@ class RealVisualAnalyzer:
             digest.update(filename.encode())
             digest.update(path.read_bytes() if path.is_file() else b"missing")
         return {
-            "implementation": 5,
+            "implementation": 6,
             "profile": self.profile,
             "contracts": digest.hexdigest(),
             "semantic_enabled": self.semantic is not None,
@@ -102,7 +114,8 @@ class RealVisualAnalyzer:
         }
 
     def _measure(
-        self, frames: Sequence[FrameSample], hud: Sequence[dict[str, Any]]
+        self, frames: Sequence[FrameSample], hud: Sequence[dict[str, Any]],
+        *, continuity_breaks: Sequence[float] = (),
     ) -> tuple[list[dict[str, Any]], dict[int, dict[str, Any]], list[str]]:
         extractor = PixelMeasurementExtractor()
         timeline = MapTimeline(self.profile)
@@ -114,8 +127,19 @@ class RealVisualAnalyzer:
         diagnostics: list[str] = []
         previous_image = None
         previous_hud: dict[str, Any] | None = None
+        previous_segment: int | None = None
+        pending_source_break = False
         for index, frame in enumerate(sorted(frames, key=lambda item: item.time_sec)):
             self._check_cancel()
+            segment = bisect_right(continuity_breaks, frame.time_sec)
+            pending_source_break |= previous_segment is not None and segment != previous_segment
+            source_break = pending_source_break
+            previous_segment = segment
+            if source_break:
+                previous_image, previous_hud = None, None
+                extractor = PixelMeasurementExtractor()
+                timeline = MapTimeline(self.profile)
+                self.map_timeline = timeline
             image = cv2.imread(str(frame.path))
             if image is None:
                 diagnostics.append(f"visual_frame_unreadable:{frame.time_sec:.6f}")
@@ -125,6 +149,7 @@ class RealVisualAnalyzer:
             state: dict[str, Any] = (
                 ordered_hud[hi]
                 if hi >= 0 and frame.time_sec - times[hi] <= 0.21
+                and (not segment or times[hi] >= continuity_breaks[segment - 1])
                 else {
                     "time_sec": frame.time_sec,
                     "primary_state": "unknown",
@@ -152,6 +177,8 @@ class RealVisualAnalyzer:
                 image, previous_image, state, previous_hud, profile=pixel_profile
             )
             proof = dict(measured.pop("measurement_meta", {}))
+            if source_break:
+                proof["source_discontinuity"] = True
             proof["map_calibration_attempted"] = map_eligible
             proof["frame_ref"] = str(frame.path)
             proof["hud_confidence"] = state.get("quality", {}).get("hud_confidence", 0.0)
@@ -207,6 +234,7 @@ class RealVisualAnalyzer:
             observations.append(observation)
             evidence[index] = proof
             previous_image, previous_hud = image, state
+            pending_source_break = False
         return observations, evidence, diagnostics
 
     def trigger_windows(
@@ -215,9 +243,12 @@ class RealVisualAnalyzer:
         hud_observations: Sequence[dict[str, Any]],
         *,
         video_metadata: VideoMetadata,
+        continuity_breaks: Sequence[float] = (),
     ) -> tuple[tuple[float, str], ...]:
-        del video_metadata
-        observations, evidence, _ = self._measure(frames, hud_observations)
+        cuts = _source_cuts(continuity_breaks, video_metadata.duration_sec)
+        observations, evidence, _ = self._measure(
+            frames, hud_observations, continuity_breaks=cuts,
+        )
         triggers = []
         previous_enemy = False
         for obs in observations:
@@ -226,6 +257,8 @@ class RealVisualAnalyzer:
                 continue
             action = obs["weapon_action"]
             proof = evidence[obs["frame_index"]]
+            if proof.get('source_discontinuity') is True:
+                previous_enemy = False
             delta = action["ammo_delta"]
             cue = max(action["recoil_score"] or 0, action["muzzle_flash_score"] or 0)
             if (
@@ -250,9 +283,12 @@ class RealVisualAnalyzer:
         hud_observations: Sequence[dict[str, Any]],
         *,
         video_metadata: VideoMetadata,
+        continuity_breaks: Sequence[float] = (),
     ) -> VisualAnalysis:
-        del video_metadata
-        observations, evidence, diagnostics = self._measure(frames, hud_observations)
+        cuts = _source_cuts(continuity_breaks, video_metadata.duration_sec)
+        observations, evidence, diagnostics = self._measure(
+            frames, hud_observations, continuity_breaks=cuts,
+        )
         resolutions = [
             proof["zone_resolution"] for proof in evidence.values() if "zone_resolution" in proof
         ]
@@ -280,11 +316,16 @@ class RealVisualAnalyzer:
                 if raw["semantic_confirmation"] not in {"required", "unavailable"}:
                     continue
                 timestamp = raw["end_sec"]
+                segment = bisect_right(cuts, timestamp)
+                lower = cuts[segment - 1] if segment else 0.0
+                upper = cuts[segment] if segment < len(cuts) else math.inf
                 round_no = bisect_right(self.round_starts, timestamp)
                 # A missing boundary must not create multiple invented budget buckets.
                 round_id = str(round_no) if round_no else "partial"
                 window = [
-                    frame for frame in frames if timestamp - 1 <= frame.time_sec <= timestamp + 1
+                    frame for frame in frames
+                    if timestamp - 1 <= frame.time_sec <= timestamp + 1
+                    and lower <= frame.time_sec < upper
                 ]
                 facts = self.semantic.observe(window, match_id=self.match_id, round_id=round_id)
                 if facts is None:

@@ -1,0 +1,185 @@
+{
+  "scope": "Post-prediction physical source score review, not whole lifecycle qualification",
+  "prediction_sha256": "d00ffe5393ffbfe6f8b53e5fb61898cf362a1b8b3ef597ecfd5b440fb265dce4",
+  "review_provenance": "Original unannotated topbar crops viewed row-major after predictions in /tmp/shared_score_fixed_source_review.png. Ally0/enemy2 visibly present in all18. Labels were not passed to the analyzer. All saved encoded/pixel hashes checked.",
+  "reviewed_rows": [
+    {
+      "source_pts_ticks": 2045993,
+      "frame_sha256": "1fbff67294ddeed6e5edc68078e5c4402ada230570572840f352438c0aebbbdb",
+      "source_pixel_sha256": "cb23f3272aa73a0a8f8b5ad7df10fa8affbc2fd06b81ad0db25e28d7b1f3f063",
+      "reserved_for_review": false,
+      "expected_source_score_ally": 0,
+      "expected_source_score_enemy": 2
+    },
+    {
+      "source_pts_ticks": 2046249,
+      "frame_sha256": "4e353be2d06a7f9afea41b37654583cf00d4559acb355c211d88ad6b1a0696cb",
+      "source_pixel_sha256": "1f91e151c2b10d786553a4134ea592965c2d46e08dc7905ef68bec56c3dd8b31",
+      "reserved_for_review": true,
+      "expected_source_score_ally": 0,
+      "expected_source_score_enemy": 2
+    },
+    {
+      "source_pts_ticks": 2046505,
+      "frame_sha256": "920fd93351952c717428d7a76f631c0d8aebf184dab1e941e493925adca2aaf9",
+      "source_pixel_sha256": "954ac4915271ac91502651ead7336f2823e58d822454c505feff154fd5f02bcc",
+      "reserved_for_review": true,
+      "expected_source_score_ally": 0,
+      "expected_source_score_enemy": 2
+    },
+    {
+      "source_pts_ticks": 2046761,
+      "frame_sha256": "3d2d716ed96319e7d2c4e0b28c36ca18eef92e2baa164e456f1774c1e13de358",
+      "source_pixel_sha256": "ec65d3928223f4666da0da5da703f0142db852c19c4cd1553c3e5e121b212709",
+      "reserved_for_review": true,
+      "expected_source_score_ally": 0,
+      "expected_source_score_enemy": 2
+    },
+    {
+      "source_pts_ticks": 2047017,
+      "frame_sha256": "0ab6dfc3474429279de0e2eb5f477adc197eb8d13e8f7ab2c8a8e0a06a86ce5b",
+      "source_pixel_sha256": "8846f69870785561a4db8ca20c7c5aeb8a4332fa3844fa1d0b4a86b4cdb8645b",
+      "reserved_for_review": true,
+      "expected_source_score_ally": 0,
+      "expected_source_score_enemy": 2
+    },
+    {
+      "source_pts_ticks": 2047273,
+      "frame_sha256": "192add9f53d1f946d74996908e8d7a65432dee33ab2fbb955e89eb4e641517e9",
+      "source_pixel_sha256": "8973af130764d614579b893b6d9aaac10d8fbf6593e0811a5609aa4f2b09e03e",
+      "reserved_for_review": true,
+      "expected_source_score_ally": 0,
+      "expected_source_score_enemy": 2
+    },
+    {
+      "source_pts_ticks": 2047529,
+      "frame_sha256": "da2854d5983e5c0cceab5f746fc379a5a705955afa7c29fcd0d766918cde9200",
+      "source_pixel_sha256": "57897972b13503538943b14e8fa08dc7f047658f490add414b262edbe77c8115",
+      "reserved_for_review": true,
+      "expected_source_score_ally": 0,
+      "expected_source_score_enemy": 2
+    },
+    {
+      "source_pts_ticks": 2047785,
+      "frame_sha256": "d3d25519fe8c280a3d10677c761403b76ac12d567ec0969dcd83807d24ba3ede",
+      "source_pixel_sha256": "c740924758005cc34b7aff18c92bc198e7f13f8b2c1cfd62fa4f2863d4617324",
+      "reserved_for_review": true,
+      "expected_source_score_ally": 0,
+      "expected_source_score_enemy": 2
+    },
+    {
+      "source_pts_ticks": 2048041,
+      "frame_sha256": "c2489b4080500deeb6391a090071a116bef5829d30fab1ee7b6a7b62c1e7c23b",
+      "source_pixel_sha256": "e7750e68314ee7abfb101108213c0691e9b91e7cdb627f66f0ec655ce617efe9",
+      "reserved_for_review": true,
+      "expected_source_score_ally": 0,
+      "expected_source_score_enemy": 2
+    },
+    {
+      "source_pts_ticks": 2048297,
+      "frame_sha256": "698ac66d5898450b87f916032f70dc1173e17db3d72bf100cbb192404fc21f3b",
+      "source_pixel_sha256": "420c12342a7dc3dd6183badf594e355e45cfabae8bbba80ad3f361b4ebe0e94e",
+      "reserved_for_review": true,
+      "expected_source_score_ally": 0,
+      "expected_source_score_enemy": 2
+    },
+    {
+      "source_pts_ticks": 2048553,
+      "frame_sha256": "d107686be30607a8cfaccb79d888e4c320953e44410a3aa1decd58041c425056",
+      "source_pixel_sha256": "2f1ee73c72417e53f28e502782bbf02d1fca789e71fff47a2fe1a231a05b6181",
+      "reserved_for_review": true,
+      "expected_source_score_ally": 0,
+      "expected_source_score_enemy": 2
+    },
+    {
+      "source_pts_ticks": 2048809,
+      "frame_sha256": "ce46d28fdd08b5c3d74169bd01458d820863d423d3fcec0f2c965338ccceaf7a",
+      "source_pixel_sha256": "c571f8f3ded40f4ff2874d16f087a2326aaed7bf99a5e283f1048afb2d8a32c3",
+      "reserved_for_review": true,
+      "expected_source_score_ally": 0,
+      "expected_source_score_enemy": 2
+    },
+    {
+      "source_pts_ticks": 2049065,
+      "frame_sha256": "a7b11b522f5b4a25b8b9a26fad5a8dcf5b3ec97eb23f91d340c6f7f1257c957f",
+      "source_pixel_sha256": "d486761a43d301d7b38aa9dfda55244e17fa4c4044c0afb579f071b29d324f26",
+      "reserved_for_review": false,
+      "expected_source_score_ally": 0,
+      "expected_source_score_enemy": 2
+    },
+    {
+      "source_pts_ticks": 2049321,
+      "frame_sha256": "c3908ab7a63e96177b68402da0bb0abe4c3a7d91812d38e4c83984572b85ad7e",
+      "source_pixel_sha256": "c4b53274c21b13b6f6c426294dd0516435fa50cef615853909b5046618d27f07",
+      "reserved_for_review": true,
+      "expected_source_score_ally": 0,
+      "expected_source_score_enemy": 2
+    },
+    {
+      "source_pts_ticks": 2049577,
+      "frame_sha256": "7e23e7c61aa13bff1f3848d7ed7a3fdbfcca11a169bcff1ff2e0b5108ec84dd5",
+      "source_pixel_sha256": "fd288ff51714d988aa89a54f3fd77d57290e6d4b3990520a1928908036324ca2",
+      "reserved_for_review": true,
+      "expected_source_score_ally": 0,
+      "expected_source_score_enemy": 2
+    },
+    {
+      "source_pts_ticks": 2049833,
+      "frame_sha256": "aeaa730b6cd80db59e63de2ff89a36df4803dec9df7ae694f17b071d949429a6",
+      "source_pixel_sha256": "14d36979b1e59bcd23b1a716dbe66962d746b0959defd4dcaa72d2b9faddc5ff",
+      "reserved_for_review": true,
+      "expected_source_score_ally": 0,
+      "expected_source_score_enemy": 2
+    },
+    {
+      "source_pts_ticks": 2050089,
+      "frame_sha256": "0b618c16ad4e0960a2d07256dbb66775fb9f656d22c5d86edc0536b3211d65f1",
+      "source_pixel_sha256": "aaee9140501640dd037a4280c9f6940d771e961004f2fcc466869d90dd91336d",
+      "reserved_for_review": true,
+      "expected_source_score_ally": 0,
+      "expected_source_score_enemy": 2
+    },
+    {
+      "source_pts_ticks": 2050345,
+      "frame_sha256": "8cbcbdf09efd3e0a9888922ec258d04c1d7128d6906787178a8ff048d24919a6",
+      "source_pixel_sha256": "bb9fb6b73e65ad15f23f007ab2fab03ec44184de1814d442dfd64b330c7c00d9",
+      "reserved_for_review": true,
+      "expected_source_score_ally": 0,
+      "expected_source_score_enemy": 2
+    }
+  ],
+  "reserved_metrics": {
+    "score_ally": {
+      "correct": 16,
+      "unknown": 0,
+      "wrong": 0
+    },
+    "score_enemy": {
+      "correct": 4,
+      "unknown": 12,
+      "wrong": 0
+    }
+  },
+  "all_source_metrics": {
+    "score_ally": {
+      "correct": 18,
+      "unknown": 0,
+      "wrong": 0
+    },
+    "score_enemy": {
+      "correct": 4,
+      "unknown": 14,
+      "wrong": 0
+    }
+  },
+  "negative_controls_not_supplied_by_this_cohort": true,
+  "qualification_created": false,
+  "production_changed": false,
+  "canonical_current": null,
+  "canonical_delta": null,
+  "remaining": [
+    "Natural absent/unsupported score controls and training split provenance remain qualification gates",
+    "Same-video adjacent frame correlation is recorded; no independent episode claim",
+    "All18now exposed and may not be relabeled as new holdout after a future reader adjustment"
+  ]
+}

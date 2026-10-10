@@ -1,0 +1,67 @@
+{
+  "scope": "Timing measurement on native continuous segment; not round-end qualification or proposed event",
+  "input_sha256": "8584618c1609b6fabe2a95bc8029df920f992e1663a19d44cd9d68b992725a41",
+  "frames": 108,
+  "source_cadence_and_epoch_valid": true,
+  "adjacent_repeated_pixels": 0,
+  "explicit_source_break_markers": 0,
+  "result_runs": [
+    {
+      "first_tick": 1156905,
+      "last_tick": 1163561,
+      "frames": 27,
+      "stable_tick": 1157673,
+      "min_confidence": 0.9248682987478553,
+      "first_pts_sec": 75.3193359375,
+      "last_pts_sec": 75.75266927083334,
+      "stable_pts_sec": 75.3693359375
+    },
+    {
+      "first_tick": 1164329,
+      "last_tick": 1164585,
+      "frames": 2,
+      "stable_tick": null,
+      "min_confidence": 0.9271296407669755,
+      "first_pts_sec": 75.80266927083333,
+      "last_pts_sec": 75.8193359375,
+      "stable_pts_sec": null
+    }
+  ],
+  "score_steps": [
+    {
+      "pts_sec": 74.48600260416667,
+      "tick": 1144105,
+      "from": [
+        0,
+        1
+      ],
+      "to": [
+        0,
+        2
+      ]
+    }
+  ],
+  "same_frame_score_step_result_count": 0,
+  "numeric_patterns": [
+    {
+      "clock_change_tick": 1143593,
+      "score_change_tick": 1144105,
+      "score_stability_tick": 1144873,
+      "scope": "Conditional numeric pattern; active round and safe end semantics are unproved."
+    }
+  ],
+  "qualification_created": false,
+  "released_events": 0,
+  "canonical_current": null,
+  "canonical_delta": null,
+  "delays_sec": [
+    {
+      "score_step_to_result_onset": 0.8333333333333334,
+      "score_step_to_result_stability": 0.8833333333333333
+    },
+    {
+      "score_step_to_result_onset": 1.3166666666666667,
+      "score_step_to_result_stability": null
+    }
+  ]
+}

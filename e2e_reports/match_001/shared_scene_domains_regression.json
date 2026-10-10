@@ -1,0 +1,55 @@
+{
+  "scope": "exact pre-extraction/shared-engine actual native-pair regression; no qualification",
+  "head": "e9ecaf8f2f0f0dfa1f9433d40a598ec8909e9ce3",
+  "bindings": {
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000012.png": "0971d607cd0a91eb2c2af8e4949dd601201575ad6050945d1583ecad529797e9",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000013.png": "3f7f964b6993d20bba3396e160e6b6edf41cc5352b0b0ad57de9254ddb7fe0a5"
+  },
+  "code_sha256": {
+    "src/valorant_ai_coach/hud/scene_domains.py": "cb42ee60f09622a6e4cbfe504ce5f4337890c4ac568126134772b2eb5d2780db",
+    "scripts/diagnostics/scene_domain_ambiguity.py": "2f94cffff9a7e750fcac3239dc2f28c263c5a24b6b140c6bca131c3ee3c68a0c",
+    "scripts/diagnostics/scene_joint_domains.py": "c78027c5cbb2724f30e05d3f1ec95cfefaa811d0110121aea9ee43ee0d6b9b2b",
+    "scripts/diagnostics/validate_scene_chain_cohort.py": "67e220bca1b6636c93af0caa1bef6ac03d9f2176001f5beac756ff60d1e2455b",
+    "scripts/diagnostics/audit_fixed_camera_domains.py": "87f1bc86b7d6d6c2d87c2f76e8870d9037ccde942db1cc95466f783140e280b8"
+  },
+  "global_recognizer_fingerprint": "34a5cde6b21aa4a4cf37fe0b36c2d789e82bd3897b27c9dbc9c7e4e646aabf90",
+  "complete_outputs_identical": true,
+  "comparison_output_sha256": "003ee08911bcea9e5c1d5584e29f5901622d0fc44bb10c5f872265e8dea062aa",
+  "offset_measurements": 1734,
+  "source_domains": 6,
+  "wall_clock_sec": 2.459806972008664,
+  "joint": {
+    "fixed_projection_witness_regions": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "distributed_source_and_current_support": true,
+    "joint_competing_offsets": [],
+    "unresolved_offsets": [],
+    "locally_unique_joint_appearance": true,
+    "scope": "fixed affine plus complete local integer-translation lattice only",
+    "world_mask_authorized": false,
+    "runtime_proof_authorized": false
+  },
+  "qualified_source_profiles_added": 0,
+  "runtime_scene_ui_producer_installed": false,
+  "canonical_previous": {
+    "pass": 23,
+    "fail": 55,
+    "not_evaluated": 4
+  },
+  "canonical_current": null,
+  "canonical_delta": null,
+  "tests": {
+    "initial_related_unit_pass": 64,
+    "initial_unit_runtime_sec": 61.06,
+    "final_related_unit_pass": 160,
+    "final_unit_runtime_sec": 64.28,
+    "ruff_pass": true,
+    "mypy_source_files_pass": 105
+  }
+}

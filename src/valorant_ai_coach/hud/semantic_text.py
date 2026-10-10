@@ -6,6 +6,7 @@ import re
 from collections.abc import Mapping, Sequence
 from typing import Any
 
+import cv2
 import numpy as np
 from numpy.typing import NDArray
 
@@ -20,6 +21,9 @@ MATCHER = "semantic_text_ncc_v1"
 SIGNAL_ROIS = {
     "buy_phase_template": "center_phase_banner",
     "round_end_template": "round_end_banner",
+    # Separate positively matched absence structure; a failed presence match
+    # must never populate this signal. Same support/contrast/NCC requirements.
+    "phase_absence_template": "center_phase_banner",
 }
 CONFIDENCE_KEY = SEMANTIC_PHASE_CONFIDENCE_KEY
 
@@ -89,6 +93,41 @@ class SemanticTextReference:
     def score(self, image: ImageU8) -> float:
         """Minimum per-group masked NCC; no search or missing-group substitution."""
         return min(masked_score(self.reference, image, mask) for mask in self.masks)
+
+    def measure(self, image: ImageU8) -> dict[str, Any]:
+        """Expose rejection evidence, never infer absence from a nonmatch.
+
+        Use the identical scoring function and threshold as ``score``. A
+        below-threshold group can mean different text, occlusion or unavailable
+        contrast; it cannot authorize a phase-disappearance event.
+        """
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) if image.ndim == 3 else image
+        shape_valid = gray.shape == self.reference.shape
+        groups: list[dict[str, Any]] = []
+        for index, mask in enumerate(self.masks, start=1):
+            score = masked_score(self.reference, image, mask)
+            contrast = float(gray[mask > 0].std()) if shape_valid else None
+            groups.append({
+                "group": index,
+                "mask_population": int(np.count_nonzero(mask)),
+                "current_std": contrast,
+                "score": score,
+                "reason": (
+                    "shape_mismatch" if not shape_valid else
+                    "contrast_unavailable" if contrast is not None and contrast < 5 else
+                    "matched" if score >= self.threshold else "below_threshold"
+                ),
+            })
+        score = min(group["score"] for group in groups)
+        return {
+            "matcher": MATCHER,
+            "threshold": self.threshold,
+            "score": score,
+            "groups": groups,
+            "presence": True if score >= self.threshold else None,
+            "absence_checked": False,
+            "runtime_transition_authorized": False,
+        }
 
 
 class SemanticPhaseContext:

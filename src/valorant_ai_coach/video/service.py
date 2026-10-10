@@ -1,22 +1,28 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import math
 import os
+import re
 import shutil
 import subprocess
 import time
 import uuid
 from bisect import bisect_left
 from collections.abc import Callable, Sequence
+from contextlib import AbstractContextManager
 from dataclasses import dataclass
 from fractions import Fraction
 from pathlib import Path
 from threading import Event
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from valorant_ai_coach.diagnostics.runtime_timing import timing_stage
+
+if TYPE_CHECKING:
+    from .native import NativeSourceFrame
 
 LOGGER = logging.getLogger(__name__)
 
@@ -105,6 +111,28 @@ class VideoMetadata:
 class FrameSample:
     time_sec: float
     path: Path
+    source_pts_ticks: int | None = None
+    source_time_base: str | None = None
+    source_video_sha256: str | None = None
+    source_image_sha256: str | None = None
+
+    def __post_init__(self) -> None:
+        fields = (self.source_pts_ticks, self.source_time_base,
+                  self.source_video_sha256, self.source_image_sha256)
+        if all(value is None for value in fields):
+            return
+        if (type(self.source_pts_ticks) is not int or self.source_pts_ticks < 0
+                or not isinstance(self.source_time_base, str)
+                or any(not isinstance(value, str) or re.fullmatch(r'[0-9a-f]{64}', value) is None
+                       for value in (self.source_video_sha256, self.source_image_sha256))):
+            raise ValueError('complete decoder source identity required')
+        try:
+            base = Fraction(self.source_time_base)
+        except (ValueError, ZeroDivisionError) as exc:
+            raise ValueError('invalid decoder timebase') from exc
+        if (base <= 0 or not math.isfinite(self.time_sec)
+                or abs(float(self.source_pts_ticks * base) - self.time_sec) > .00000051):
+            raise ValueError('decoder source PTS differs from sampled timestamp')
 
 
 def _rate(value: Any) -> float:
@@ -160,12 +188,14 @@ class VideoService:
         self,
         ffprobe_path: str = "ffprobe",
         *,
+        ffmpeg_path: str | None = None,
         timeout_sec: float = 45.0,
         pts_timeout_sec: float = 1800.0,
         capture_factory: Callable[[str], Any] | None = None,
         cv2_module: Any | None = None,
     ) -> None:
         self.ffprobe_path = str(ffprobe_path or "ffprobe")
+        self.ffmpeg_path = ffmpeg_path
         self.timeout_sec = max(1.0, float(timeout_sec))
         # PTS scanning decodes the entire recording, unlike the metadata probe.
         # Keep a separate bounded budget for slower hosts, with the same cancellation.
@@ -173,6 +203,9 @@ class VideoService:
         self._capture_factory = capture_factory
         self._cv2 = cv2_module
         self._pts_cache: tuple[tuple[str, int, int], tuple[float, ...]] | None = None
+        self._tick_cache: tuple[
+            tuple[str, int, int], tuple[int, ...], str, str,
+        ] | None = None
 
     def presentation_times(
         self, path: Path, *, cancel_event: Event | None = None
@@ -186,23 +219,69 @@ class VideoService:
         try:
             result = _run_cancellable_process(
                 [self.ffprobe_path, "-v", "error", "-select_streams", "v:0",
-                 "-show_frames", "-show_entries", "frame=best_effort_timestamp_time",
+                 "-show_frames", "-show_streams", "-show_entries",
+                 "frame=best_effort_timestamp_time,best_effort_timestamp:stream=time_base",
                  "-of", "json", str(path)],
                 max(self.timeout_sec, self.pts_timeout_sec), cancel_event,
             )
             if result.returncode:
                 raise VideoProbeError("動画のpresentation timestampを取得できません")
+            payload = json.loads(result.stdout)
             points = tuple(float(frame["best_effort_timestamp_time"])
-                           for frame in json.loads(result.stdout)["frames"])
+                           for frame in payload["frames"])
             if (not points or any(not math.isfinite(t) or t < 0 for t in points)
                     or any(b <= a for a, b in zip(points, points[1:], strict=False))):
                 raise ValueError("invalid presentation timeline")
+            self._tick_cache = None
+            streams = payload.get('streams', [])
+            if (len(streams) == 1 and 'time_base' in streams[0]
+                    and all('best_effort_timestamp' in f for f in payload['frames'])):
+                base = Fraction(streams[0]['time_base'])
+                ticks = tuple(int(f['best_effort_timestamp']) for f in payload['frames'])
+                if (base <= 0 or any(t < 0 for t in ticks)
+                        or any(b <= a for a, b in zip(ticks, ticks[1:], strict=False))
+                        or any(abs(float(t * base) - p) > .00000051
+                               for t, p in zip(ticks, points, strict=True))):
+                    raise ValueError('invalid exact presentation timeline')
+                digest = hashlib.sha256()
+                with path.open('rb') as source:
+                    for block in iter(lambda: source.read(1024 * 1024), b''):
+                        digest.update(block)
+                current = path.stat()
+                if (current.st_size, current.st_mtime_ns) != (stat.st_size, stat.st_mtime_ns):
+                    raise ValueError('source changed during presentation probe')
+                self._tick_cache = (key, ticks, str(base), digest.hexdigest())
         except _ProcessCancelled as exc:
             raise VideoCancelled("PTS取得がキャンセルされました") from exc
-        except (OSError, ValueError, KeyError, TypeError, subprocess.TimeoutExpired) as exc:
+        except (OSError, ValueError, KeyError, TypeError, ZeroDivisionError,
+                subprocess.TimeoutExpired) as exc:
             raise VideoProbeError(f"PTS取得に失敗しました: {exc}") from exc
         self._pts_cache = (key, points)
         return points
+
+    def native_window(
+        self,
+        path: Path,
+        *,
+        start_sec: float,
+        end_sec: float | None,
+        source_video_sha256: str,
+        ffmpeg_path: str | None = None,
+        png_prediction: str = "none",
+        max_png_bytes: int | None = None,
+    ) -> AbstractContextManager[tuple[NativeSourceFrame, ...]]:
+        """Explicit native input; end_sec=None means EOF, without changing sampling."""
+        from .native import decode_native_window
+
+        executable = ffmpeg_path or self.ffmpeg_path or shutil.which('ffmpeg')
+        if executable is None:
+            raise VideoProbeError('ffmpeg is required for verified native decoding')
+        return decode_native_window(
+            self._require_video(path), start_sec=start_sec, end_sec=end_sec,
+            source_video_sha256=source_video_sha256, ffmpeg=executable,
+            ffprobe=self.ffprobe_path, timeout_sec=self.pts_timeout_sec,
+            png_prediction=png_prediction, max_png_bytes=max_png_bytes,
+        )
 
     @staticmethod
     def _require_video(path: Path) -> Path:
@@ -363,6 +442,7 @@ class VideoService:
 
         samples: list[FrameSample] = []
         staged_paths: list[tuple[Path, Path, float]] = []
+        identities: list[dict[str, Any]] = []
         staging_dir = output / f".frames-{uuid.uuid4().hex}.staging"
         staging_dir.mkdir(parents=False, exist_ok=False)
         partial: Path | None = None
@@ -434,10 +514,23 @@ class VideoService:
                 partial.replace(staged)
                 partial = None
                 staged_paths.append((staged, target, max(0.0, actual_time)))
+                identity: dict[str, Any] = {}
+                source_stat = video_path.stat()
+                tick_cache = self._tick_cache
+                if (pts and tick_cache is not None and tick_cache[0] == (
+                    str(video_path), source_stat.st_size, source_stat.st_mtime_ns,
+                )):
+                    identity = {
+                        'source_pts_ticks': tick_cache[1][frame_index],
+                        'source_time_base': tick_cache[2],
+                        'source_video_sha256': tick_cache[3],
+                        'source_image_sha256': hashlib.sha256(staged.read_bytes()).hexdigest(),
+                    }
+                identities.append(identity)
             self._publish_staged_frames(staged_paths, cancel_event)
             samples = [
-                FrameSample(time_sec=time_sec, path=target)
-                for _, target, time_sec in staged_paths
+                FrameSample(time_sec=time_sec, path=target, **identity)
+                for (_, target, time_sec), identity in zip(staged_paths, identities, strict=True)
             ]
         except BaseException:
             if partial is not None:

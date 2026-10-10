@@ -1,0 +1,15 @@
+{
+  "input": "e2e_reports/match_001/r2_unedited_actual_analyzer_temporal_replay.json",
+  "input_sha256": "3db4de2e9a0f076889bffcd2fff6c116767d0e3c5aa7082aa698ad01ec8472d9",
+  "diagnostic_sha256": "5c8c3b95924f6424c2d59865f27c2ab4e56e1137a35bee9f6096e8776b28c242",
+  "scope": "Existing exposed R2 start control; raw observations and measurements paired without alteration",
+  "frames": 30,
+  "patterns": [],
+  "rejections": [
+    "conflicting_or_unavailable_context"
+  ],
+  "released_events": 0,
+  "qualification_created": false,
+  "active_round_proven": false,
+  "missing_raw_phase_presence_frames": 5
+}

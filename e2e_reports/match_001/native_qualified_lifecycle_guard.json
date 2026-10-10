@@ -1,0 +1,28 @@
+{
+  "scope": "actual saved native inputs; unqualified explicit production entrance guard only",
+  "source_report_sha256": "86da563d797d54f246d7dc253114bc0a312f847903d393f2532838eca505338c",
+  "source_pts_ticks": [
+    63017,
+    63273,
+    63529,
+    63785
+  ],
+  "source_pixel_sha256": [
+    "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b",
+    "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a",
+    "7b784dd56e27c48a760671568acbd458bc496400335ee4b3181798d0584a4044",
+    "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0"
+  ],
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "profile_fingerprint": "4255cdc888c459d0830d9bd9f66b79151a72595d327184e216760900b969efcc",
+  "recognizer_fingerprint": "678220b5d0beb616b88310a2ff04911e9bbb8f9ac652f75a217c41e08c9da698",
+  "qualification_loaded": false,
+  "qualification_path_exists": false,
+  "phase_absence_reference_configured": false,
+  "guard_reason": "bound scene assets and global qualification required",
+  "events_released": 0,
+  "proofs_released": 0,
+  "qualification_created": false,
+  "canonical_current": null,
+  "canonical_delta": null
+}

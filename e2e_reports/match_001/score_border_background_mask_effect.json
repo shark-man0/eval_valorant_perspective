@@ -1,0 +1,1103 @@
+{
+  "scope": "Offline segmentation differences, not correctness labels",
+  "training_report_sha256": "d5ca0a0649bcd5e706e9676c4e89c01d6948639b55d44cf97d924e159dd02569",
+  "summary": {
+    "accepted_same": {
+      "fields": 86,
+      "native_bright_removed_fields": 0,
+      "resized_mask_changed_fields": 86
+    },
+    "accepted_to_unknown": {
+      "fields": 28,
+      "native_bright_removed_fields": 0,
+      "resized_mask_changed_fields": 28
+    },
+    "unknown_to_unknown": {
+      "fields": 6,
+      "native_bright_removed_fields": 6,
+      "resized_mask_changed_fields": 6
+    }
+  },
+  "rows": [
+    {
+      "source_pts_ticks": 59945,
+      "role": "ally_score",
+      "transition": "accepted_to_unknown",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1829,
+      "enlarged_foreground_removed": 90,
+      "enlarged_foreground_added": 15
+    },
+    {
+      "source_pts_ticks": 59945,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1904,
+      "enlarged_foreground_removed": 43,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 60201,
+      "role": "ally_score",
+      "transition": "accepted_to_unknown",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1831,
+      "enlarged_foreground_removed": 95,
+      "enlarged_foreground_added": 13
+    },
+    {
+      "source_pts_ticks": 60201,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1904,
+      "enlarged_foreground_removed": 43,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 60457,
+      "role": "ally_score",
+      "transition": "accepted_to_unknown",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1828,
+      "enlarged_foreground_removed": 88,
+      "enlarged_foreground_added": 14
+    },
+    {
+      "source_pts_ticks": 60457,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1904,
+      "enlarged_foreground_removed": 43,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 60713,
+      "role": "ally_score",
+      "transition": "accepted_to_unknown",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1829,
+      "enlarged_foreground_removed": 88,
+      "enlarged_foreground_added": 14
+    },
+    {
+      "source_pts_ticks": 60713,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1904,
+      "enlarged_foreground_removed": 45,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 60969,
+      "role": "ally_score",
+      "transition": "accepted_to_unknown",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1829,
+      "enlarged_foreground_removed": 88,
+      "enlarged_foreground_added": 14
+    },
+    {
+      "source_pts_ticks": 60969,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1904,
+      "enlarged_foreground_removed": 45,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 61225,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1829,
+      "enlarged_foreground_removed": 91,
+      "enlarged_foreground_added": 14
+    },
+    {
+      "source_pts_ticks": 61225,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1904,
+      "enlarged_foreground_removed": 45,
+      "enlarged_foreground_added": 2
+    },
+    {
+      "source_pts_ticks": 61481,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1829,
+      "enlarged_foreground_removed": 91,
+      "enlarged_foreground_added": 14
+    },
+    {
+      "source_pts_ticks": 61481,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1904,
+      "enlarged_foreground_removed": 45,
+      "enlarged_foreground_added": 2
+    },
+    {
+      "source_pts_ticks": 61737,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1829,
+      "enlarged_foreground_removed": 91,
+      "enlarged_foreground_added": 14
+    },
+    {
+      "source_pts_ticks": 61737,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1904,
+      "enlarged_foreground_removed": 45,
+      "enlarged_foreground_added": 2
+    },
+    {
+      "source_pts_ticks": 61993,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1839,
+      "enlarged_foreground_removed": 114,
+      "enlarged_foreground_added": 5
+    },
+    {
+      "source_pts_ticks": 61993,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1903,
+      "enlarged_foreground_removed": 43,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 62249,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1840,
+      "enlarged_foreground_removed": 116,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 62249,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1903,
+      "enlarged_foreground_removed": 43,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 62505,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1840,
+      "enlarged_foreground_removed": 116,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 62505,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1903,
+      "enlarged_foreground_removed": 43,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 62761,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1840,
+      "enlarged_foreground_removed": 116,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 62761,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1903,
+      "enlarged_foreground_removed": 43,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 63017,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1840,
+      "enlarged_foreground_removed": 116,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 63017,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1903,
+      "enlarged_foreground_removed": 43,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 63273,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1840,
+      "enlarged_foreground_removed": 116,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 63273,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1903,
+      "enlarged_foreground_removed": 43,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 63529,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1840,
+      "enlarged_foreground_removed": 116,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 63529,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1904,
+      "enlarged_foreground_removed": 43,
+      "enlarged_foreground_added": 3
+    },
+    {
+      "source_pts_ticks": 63785,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1840,
+      "enlarged_foreground_removed": 116,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 63785,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1904,
+      "enlarged_foreground_removed": 43,
+      "enlarged_foreground_added": 3
+    },
+    {
+      "source_pts_ticks": 64041,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1840,
+      "enlarged_foreground_removed": 116,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 64041,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1903,
+      "enlarged_foreground_removed": 43,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 64297,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1839,
+      "enlarged_foreground_removed": 115,
+      "enlarged_foreground_added": 5
+    },
+    {
+      "source_pts_ticks": 64297,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1903,
+      "enlarged_foreground_removed": 43,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 64553,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1840,
+      "enlarged_foreground_removed": 117,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 64553,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1903,
+      "enlarged_foreground_removed": 43,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 64809,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1840,
+      "enlarged_foreground_removed": 117,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 64809,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1903,
+      "enlarged_foreground_removed": 43,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 65065,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1840,
+      "enlarged_foreground_removed": 117,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 65065,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1903,
+      "enlarged_foreground_removed": 43,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 65321,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1840,
+      "enlarged_foreground_removed": 117,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 65321,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1903,
+      "enlarged_foreground_removed": 43,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 65577,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1840,
+      "enlarged_foreground_removed": 117,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 65577,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1903,
+      "enlarged_foreground_removed": 43,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 65833,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1840,
+      "enlarged_foreground_removed": 117,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 65833,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1903,
+      "enlarged_foreground_removed": 43,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 66089,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1840,
+      "enlarged_foreground_removed": 117,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 66089,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1903,
+      "enlarged_foreground_removed": 43,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 66345,
+      "role": "ally_score",
+      "transition": "accepted_to_unknown",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1838,
+      "enlarged_foreground_removed": 113,
+      "enlarged_foreground_added": 6
+    },
+    {
+      "source_pts_ticks": 66345,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1903,
+      "enlarged_foreground_removed": 43,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 66601,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1837,
+      "enlarged_foreground_removed": 112,
+      "enlarged_foreground_added": 6
+    },
+    {
+      "source_pts_ticks": 66601,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1904,
+      "enlarged_foreground_removed": 43,
+      "enlarged_foreground_added": 3
+    },
+    {
+      "source_pts_ticks": 66857,
+      "role": "ally_score",
+      "transition": "accepted_to_unknown",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1836,
+      "enlarged_foreground_removed": 110,
+      "enlarged_foreground_added": 7
+    },
+    {
+      "source_pts_ticks": 66857,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1904,
+      "enlarged_foreground_removed": 43,
+      "enlarged_foreground_added": 3
+    },
+    {
+      "source_pts_ticks": 67113,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1837,
+      "enlarged_foreground_removed": 111,
+      "enlarged_foreground_added": 6
+    },
+    {
+      "source_pts_ticks": 67113,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1903,
+      "enlarged_foreground_removed": 43,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 67369,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1836,
+      "enlarged_foreground_removed": 109,
+      "enlarged_foreground_added": 7
+    },
+    {
+      "source_pts_ticks": 67369,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1903,
+      "enlarged_foreground_removed": 43,
+      "enlarged_foreground_added": 4
+    },
+    {
+      "source_pts_ticks": 1708073,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1823,
+      "enlarged_foreground_removed": 37,
+      "enlarged_foreground_added": 8
+    },
+    {
+      "source_pts_ticks": 1708073,
+      "role": "enemy_score",
+      "transition": "unknown_to_unknown",
+      "native_bright_pixels_removed": 3,
+      "native_subthreshold_pixels_removed": 1705,
+      "enlarged_foreground_removed": 29,
+      "enlarged_foreground_added": 30
+    },
+    {
+      "source_pts_ticks": 1708329,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1825,
+      "enlarged_foreground_removed": 37,
+      "enlarged_foreground_added": 9
+    },
+    {
+      "source_pts_ticks": 1708329,
+      "role": "enemy_score",
+      "transition": "unknown_to_unknown",
+      "native_bright_pixels_removed": 3,
+      "native_subthreshold_pixels_removed": 1710,
+      "enlarged_foreground_removed": 32,
+      "enlarged_foreground_added": 30
+    },
+    {
+      "source_pts_ticks": 1708585,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1825,
+      "enlarged_foreground_removed": 37,
+      "enlarged_foreground_added": 9
+    },
+    {
+      "source_pts_ticks": 1708585,
+      "role": "enemy_score",
+      "transition": "unknown_to_unknown",
+      "native_bright_pixels_removed": 3,
+      "native_subthreshold_pixels_removed": 1711,
+      "enlarged_foreground_removed": 32,
+      "enlarged_foreground_added": 30
+    },
+    {
+      "source_pts_ticks": 1708841,
+      "role": "ally_score",
+      "transition": "accepted_to_unknown",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1825,
+      "enlarged_foreground_removed": 41,
+      "enlarged_foreground_added": 10
+    },
+    {
+      "source_pts_ticks": 1708841,
+      "role": "enemy_score",
+      "transition": "unknown_to_unknown",
+      "native_bright_pixels_removed": 3,
+      "native_subthreshold_pixels_removed": 1705,
+      "enlarged_foreground_removed": 34,
+      "enlarged_foreground_added": 29
+    },
+    {
+      "source_pts_ticks": 1709097,
+      "role": "ally_score",
+      "transition": "accepted_to_unknown",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1825,
+      "enlarged_foreground_removed": 41,
+      "enlarged_foreground_added": 10
+    },
+    {
+      "source_pts_ticks": 1709097,
+      "role": "enemy_score",
+      "transition": "unknown_to_unknown",
+      "native_bright_pixels_removed": 3,
+      "native_subthreshold_pixels_removed": 1705,
+      "enlarged_foreground_removed": 34,
+      "enlarged_foreground_added": 29
+    },
+    {
+      "source_pts_ticks": 1709353,
+      "role": "ally_score",
+      "transition": "accepted_to_unknown",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1825,
+      "enlarged_foreground_removed": 41,
+      "enlarged_foreground_added": 10
+    },
+    {
+      "source_pts_ticks": 1709353,
+      "role": "enemy_score",
+      "transition": "unknown_to_unknown",
+      "native_bright_pixels_removed": 3,
+      "native_subthreshold_pixels_removed": 1705,
+      "enlarged_foreground_removed": 34,
+      "enlarged_foreground_added": 29
+    },
+    {
+      "source_pts_ticks": 1709609,
+      "role": "ally_score",
+      "transition": "accepted_to_unknown",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1826,
+      "enlarged_foreground_removed": 66,
+      "enlarged_foreground_added": 18
+    },
+    {
+      "source_pts_ticks": 1709609,
+      "role": "enemy_score",
+      "transition": "accepted_to_unknown",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1855,
+      "enlarged_foreground_removed": 40,
+      "enlarged_foreground_added": 18
+    },
+    {
+      "source_pts_ticks": 1709865,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1834,
+      "enlarged_foreground_removed": 67,
+      "enlarged_foreground_added": 13
+    },
+    {
+      "source_pts_ticks": 1709865,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1856,
+      "enlarged_foreground_removed": 42,
+      "enlarged_foreground_added": 19
+    },
+    {
+      "source_pts_ticks": 1710121,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1834,
+      "enlarged_foreground_removed": 66,
+      "enlarged_foreground_added": 14
+    },
+    {
+      "source_pts_ticks": 1710121,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1857,
+      "enlarged_foreground_removed": 43,
+      "enlarged_foreground_added": 18
+    },
+    {
+      "source_pts_ticks": 1710377,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1834,
+      "enlarged_foreground_removed": 65,
+      "enlarged_foreground_added": 14
+    },
+    {
+      "source_pts_ticks": 1710377,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1857,
+      "enlarged_foreground_removed": 44,
+      "enlarged_foreground_added": 17
+    },
+    {
+      "source_pts_ticks": 1710633,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1834,
+      "enlarged_foreground_removed": 64,
+      "enlarged_foreground_added": 14
+    },
+    {
+      "source_pts_ticks": 1710633,
+      "role": "enemy_score",
+      "transition": "accepted_to_unknown",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1856,
+      "enlarged_foreground_removed": 47,
+      "enlarged_foreground_added": 17
+    },
+    {
+      "source_pts_ticks": 1710889,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1835,
+      "enlarged_foreground_removed": 67,
+      "enlarged_foreground_added": 13
+    },
+    {
+      "source_pts_ticks": 1710889,
+      "role": "enemy_score",
+      "transition": "accepted_to_unknown",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1856,
+      "enlarged_foreground_removed": 48,
+      "enlarged_foreground_added": 16
+    },
+    {
+      "source_pts_ticks": 1711145,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1837,
+      "enlarged_foreground_removed": 68,
+      "enlarged_foreground_added": 12
+    },
+    {
+      "source_pts_ticks": 1711145,
+      "role": "enemy_score",
+      "transition": "accepted_to_unknown",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1856,
+      "enlarged_foreground_removed": 47,
+      "enlarged_foreground_added": 17
+    },
+    {
+      "source_pts_ticks": 1711401,
+      "role": "ally_score",
+      "transition": "accepted_to_unknown",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1833,
+      "enlarged_foreground_removed": 68,
+      "enlarged_foreground_added": 18
+    },
+    {
+      "source_pts_ticks": 1711401,
+      "role": "enemy_score",
+      "transition": "accepted_to_unknown",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1856,
+      "enlarged_foreground_removed": 47,
+      "enlarged_foreground_added": 17
+    },
+    {
+      "source_pts_ticks": 1711657,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1826,
+      "enlarged_foreground_removed": 54,
+      "enlarged_foreground_added": 13
+    },
+    {
+      "source_pts_ticks": 1711657,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1849,
+      "enlarged_foreground_removed": 41,
+      "enlarged_foreground_added": 23
+    },
+    {
+      "source_pts_ticks": 1711913,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1827,
+      "enlarged_foreground_removed": 55,
+      "enlarged_foreground_added": 14
+    },
+    {
+      "source_pts_ticks": 1711913,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1854,
+      "enlarged_foreground_removed": 45,
+      "enlarged_foreground_added": 20
+    },
+    {
+      "source_pts_ticks": 1712169,
+      "role": "ally_score",
+      "transition": "accepted_to_unknown",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1833,
+      "enlarged_foreground_removed": 69,
+      "enlarged_foreground_added": 16
+    },
+    {
+      "source_pts_ticks": 1712169,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1857,
+      "enlarged_foreground_removed": 43,
+      "enlarged_foreground_added": 21
+    },
+    {
+      "source_pts_ticks": 1712425,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1837,
+      "enlarged_foreground_removed": 68,
+      "enlarged_foreground_added": 14
+    },
+    {
+      "source_pts_ticks": 1712425,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1854,
+      "enlarged_foreground_removed": 40,
+      "enlarged_foreground_added": 25
+    },
+    {
+      "source_pts_ticks": 1712681,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1837,
+      "enlarged_foreground_removed": 68,
+      "enlarged_foreground_added": 15
+    },
+    {
+      "source_pts_ticks": 1712681,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1855,
+      "enlarged_foreground_removed": 42,
+      "enlarged_foreground_added": 27
+    },
+    {
+      "source_pts_ticks": 1712937,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1834,
+      "enlarged_foreground_removed": 65,
+      "enlarged_foreground_added": 18
+    },
+    {
+      "source_pts_ticks": 1712937,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1857,
+      "enlarged_foreground_removed": 42,
+      "enlarged_foreground_added": 26
+    },
+    {
+      "source_pts_ticks": 1713193,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1834,
+      "enlarged_foreground_removed": 65,
+      "enlarged_foreground_added": 18
+    },
+    {
+      "source_pts_ticks": 1713193,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1857,
+      "enlarged_foreground_removed": 42,
+      "enlarged_foreground_added": 26
+    },
+    {
+      "source_pts_ticks": 1713449,
+      "role": "ally_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1836,
+      "enlarged_foreground_removed": 66,
+      "enlarged_foreground_added": 17
+    },
+    {
+      "source_pts_ticks": 1713449,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1859,
+      "enlarged_foreground_removed": 47,
+      "enlarged_foreground_added": 20
+    },
+    {
+      "source_pts_ticks": 1713705,
+      "role": "ally_score",
+      "transition": "accepted_to_unknown",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1811,
+      "enlarged_foreground_removed": 49,
+      "enlarged_foreground_added": 10
+    },
+    {
+      "source_pts_ticks": 1713705,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1859,
+      "enlarged_foreground_removed": 47,
+      "enlarged_foreground_added": 20
+    },
+    {
+      "source_pts_ticks": 1713961,
+      "role": "ally_score",
+      "transition": "accepted_to_unknown",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1820,
+      "enlarged_foreground_removed": 28,
+      "enlarged_foreground_added": 5
+    },
+    {
+      "source_pts_ticks": 1713961,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1851,
+      "enlarged_foreground_removed": 32,
+      "enlarged_foreground_added": 12
+    },
+    {
+      "source_pts_ticks": 1714217,
+      "role": "ally_score",
+      "transition": "accepted_to_unknown",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1820,
+      "enlarged_foreground_removed": 28,
+      "enlarged_foreground_added": 5
+    },
+    {
+      "source_pts_ticks": 1714217,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1851,
+      "enlarged_foreground_removed": 32,
+      "enlarged_foreground_added": 12
+    },
+    {
+      "source_pts_ticks": 1714473,
+      "role": "ally_score",
+      "transition": "accepted_to_unknown",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1820,
+      "enlarged_foreground_removed": 28,
+      "enlarged_foreground_added": 5
+    },
+    {
+      "source_pts_ticks": 1714473,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1851,
+      "enlarged_foreground_removed": 32,
+      "enlarged_foreground_added": 12
+    },
+    {
+      "source_pts_ticks": 1714729,
+      "role": "ally_score",
+      "transition": "accepted_to_unknown",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1827,
+      "enlarged_foreground_removed": 31,
+      "enlarged_foreground_added": 6
+    },
+    {
+      "source_pts_ticks": 1714729,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1852,
+      "enlarged_foreground_removed": 34,
+      "enlarged_foreground_added": 11
+    },
+    {
+      "source_pts_ticks": 1714985,
+      "role": "ally_score",
+      "transition": "accepted_to_unknown",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1828,
+      "enlarged_foreground_removed": 31,
+      "enlarged_foreground_added": 6
+    },
+    {
+      "source_pts_ticks": 1714985,
+      "role": "enemy_score",
+      "transition": "accepted_same",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1854,
+      "enlarged_foreground_removed": 34,
+      "enlarged_foreground_added": 14
+    },
+    {
+      "source_pts_ticks": 1715241,
+      "role": "ally_score",
+      "transition": "accepted_to_unknown",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1832,
+      "enlarged_foreground_removed": 33,
+      "enlarged_foreground_added": 6
+    },
+    {
+      "source_pts_ticks": 1715241,
+      "role": "enemy_score",
+      "transition": "accepted_to_unknown",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1857,
+      "enlarged_foreground_removed": 37,
+      "enlarged_foreground_added": 15
+    },
+    {
+      "source_pts_ticks": 1715497,
+      "role": "ally_score",
+      "transition": "accepted_to_unknown",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1830,
+      "enlarged_foreground_removed": 33,
+      "enlarged_foreground_added": 6
+    },
+    {
+      "source_pts_ticks": 1715497,
+      "role": "enemy_score",
+      "transition": "accepted_to_unknown",
+      "native_bright_pixels_removed": 0,
+      "native_subthreshold_pixels_removed": 1854,
+      "enlarged_foreground_removed": 33,
+      "enlarged_foreground_added": 12
+    }
+  ]
+}

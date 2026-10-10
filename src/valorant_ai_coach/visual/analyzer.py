@@ -110,6 +110,8 @@ class WorldViewGate:
 class NullVisualAnalyzer:
     """Explicit replaceable boundary while high-precision visual models are absent."""
 
+    supports_native_source_breaks = True
+
     def __init__(self, contract: EventSourceContract) -> None:
         self.contract = contract
 
@@ -119,8 +121,9 @@ class NullVisualAnalyzer:
         hud_observations: Sequence[dict[str, Any]],
         *,
         video_metadata: VideoMetadata,
+        continuity_breaks: Sequence[float] = (),
     ) -> VisualAnalysis:
-        del frames, video_metadata
+        del frames, video_metadata, continuity_breaks
         eligible = sum(WorldViewGate.is_trustworthy(item) for item in hud_observations)
         total = len(hud_observations)
         return VisualAnalysis(

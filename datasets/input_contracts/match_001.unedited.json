@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "no_user_edit": true,
+  "no_intentional_frame_deletion_join_or_reorder": true,
+  "no_intentional_speed_change": true,
+  "scene_preserving_edit_excluded": true,
+  "assurance_provenance": "User instruction: 追加前提: 入力動画の無編集保証; applies only to the current validation video. Recording frame loss, PTS anomalies, UI transitions, occlusion and recognition errors remain possible."
+}

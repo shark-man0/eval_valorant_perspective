@@ -1,0 +1,146 @@
+{
+  "scope": "post-exposure fixed pose correspondence; no blind holdout or animation label",
+  "pairs": [
+    [
+      {
+        "report": "e2e_reports/match_001/native_foreground_control_pair.json",
+        "source_pts_ticks": 31017,
+        "source_pixel_sha256": "5d378b7d7bad293bd82f3d0a6628b4751cb758f16c674e7447731d76e7b1fb7e"
+      },
+      {
+        "report": "e2e_reports/match_001/r1_continuous_source.json",
+        "source_pts_ticks": 63273,
+        "source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a"
+      }
+    ],
+    [
+      {
+        "report": "e2e_reports/match_001/native_foreground_control_pair.json",
+        "source_pts_ticks": 31273,
+        "source_pixel_sha256": "dfa5e836faea102a5ba1f15cfb76471d66637f595eaa0af9788bd4e29ae5d17f"
+      },
+      {
+        "report": "e2e_reports/match_001/r1_continuous_source.json",
+        "source_pts_ticks": 63529,
+        "source_pixel_sha256": "7b784dd56e27c48a760671568acbd458bc496400335ee4b3181798d0584a4044"
+      }
+    ],
+    [
+      {
+        "report": "e2e_reports/match_001/native_foreground_control_pair.json",
+        "source_pts_ticks": 31529,
+        "source_pixel_sha256": "bba10b6d3ba7c4504a8c40f363f43e2073fc1f7be1f091d497651f99a4de6cc4"
+      },
+      {
+        "report": "e2e_reports/match_001/r1_continuous_source.json",
+        "source_pts_ticks": 63785,
+        "source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0"
+      }
+    ],
+    [
+      {
+        "report": "e2e_reports/match_001/native_foreground_control_pair.json",
+        "source_pts_ticks": 31785,
+        "source_pixel_sha256": "cc3ea9b040dfd5990fa3b761e034255ce445f0ee2bb8d124e224764483d3ed85"
+      },
+      {
+        "report": "e2e_reports/match_001/r1_continuous_source.json",
+        "source_pts_ticks": 64041,
+        "source_pixel_sha256": "d18c9060f352e53b37967c62e12f3ee51b06e330664ee49da476b3751cda8f83"
+      }
+    ],
+    [
+      {
+        "report": "e2e_reports/match_001/native_foreground_control_pair.json",
+        "source_pts_ticks": 30761,
+        "source_pixel_sha256": "fc0748348fa2300d4ef0a768b7d86e5946ce550e5d0e6bdb5c0766aa05fa0e15"
+      },
+      {
+        "report": "e2e_reports/match_001/r1_continuous_source.json",
+        "source_pts_ticks": 63273,
+        "source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a"
+      }
+    ],
+    [
+      {
+        "report": "e2e_reports/match_001/native_foreground_control_pair.json",
+        "source_pts_ticks": 31017,
+        "source_pixel_sha256": "5d378b7d7bad293bd82f3d0a6628b4751cb758f16c674e7447731d76e7b1fb7e"
+      },
+      {
+        "report": "e2e_reports/match_001/r1_continuous_source.json",
+        "source_pts_ticks": 63017,
+        "source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b"
+      }
+    ]
+  ],
+  "pair_roles": [
+    "repeated-pose hypothesis",
+    "repeated-pose hypothesis",
+    "repeated-pose hypothesis",
+    "repeated-pose hypothesis",
+    "visibly different poses, not a content-cut control",
+    "visibly different poses, not a content-cut control"
+  ],
+  "source_reports": [
+    "e2e_reports/match_001/native_foreground_control_pair.json",
+    "e2e_reports/match_001/r1_continuous_source.json"
+  ],
+  "boxes": [
+    [
+      940,
+      750,
+      1120,
+      850
+    ],
+    [
+      1080,
+      600,
+      1190,
+      740
+    ],
+    [
+      1440,
+      930,
+      1600,
+      1050
+    ]
+  ],
+  "parameters": {
+    "gftt_max": 100,
+    "gftt_quality": 0.01,
+    "gftt_min_distance": 5,
+    "lk_window": [
+      21,
+      21
+    ],
+    "pyramid_levels": 3,
+    "reciprocal_error_max_px": 1,
+    "patch_size": [
+      15,
+      15
+    ],
+    "patch_ncc_floor": 0.9,
+    "masked_contrast_floor": 5,
+    "partial_affine_ransac_px": 2,
+    "consensus_floor": 0.9,
+    "opencv": "4.14.0"
+  },
+  "file_sha256": {
+    "e2e_reports/match_001/native_foreground_control_pair.json": "a8f65cf0fa32f56c6dd5a78deb0fbe3835328ce6910f6d219f88aa6fea9477d2",
+    "e2e_reports/match_001/r1_continuous_source.json": "86da563d797d54f246d7dc253114bc0a312f847903d393f2532838eca505338c",
+    "e2e_reports/match_001/native_foreground_controls.json": "460a6b3e321debf04b620113522429e13ff4aa5dfe296bb0ec11e60ca6f300d5",
+    "scripts/diagnostics/compare_native_pose_correspondence.py": "e3b530e795cfdd049301b90cacd904d2e0297c42593640774103048618bfcc36",
+    "src/valorant_ai_coach/hud/weapon_identity.py": "ae0cfa42f33c2759d75ba2c4db6610d1ccd419993ccb8c46d4b7bbfd0a8d8c23",
+    "outputs/recognition-investigation/native-foreground-controls-20261010/control-pair/frame_30761.png": "8a5c883deca160a0e22d96c0b0161a71667994b388d4c34d75d1f4a288e17e7c",
+    "outputs/recognition-investigation/native-foreground-controls-20261010/control-pair/frame_31017.png": "37a53246aa753f3ec583c18ac08dd60658c555e6b20558dc38fee1bde535519a",
+    "outputs/recognition-investigation/native-foreground-controls-20261010/control-pair/frame_31273.png": "0983554a075f8610803d9bb14711941cc25aa627622317907105a969e0a1b78f",
+    "outputs/recognition-investigation/native-foreground-controls-20261010/control-pair/frame_31529.png": "fe8a3384d9b16f6fc780f47811e5fec92cd544e99268b2e92fdb09b4566c8c8c",
+    "outputs/recognition-investigation/native-foreground-controls-20261010/control-pair/frame_31785.png": "dcd77a643ce41a91fe66f5bb6789814d9f2f0149c7c76c968c5bfa3de4443b10",
+    "outputs/recognition-investigation/r1-continuous-source-20261010/window-000/frame_63017.png": "3f7f964b6993d20bba3396e160e6b6edf41cc5352b0b0ad57de9254ddb7fe0a5",
+    "outputs/recognition-investigation/r1-continuous-source-20261010/window-000/frame_63273.png": "ffc878007fe550701c8e5be11f78b1a6d91bc88f77972cc48b370ac4cf7e7bb6",
+    "outputs/recognition-investigation/r1-continuous-source-20261010/window-000/frame_63529.png": "d72a67e8f64bc6ffe0b90a1f6118c522380a2bd83eabd4e84b6a5f36f7b605fc",
+    "outputs/recognition-investigation/r1-continuous-source-20261010/window-000/frame_63785.png": "40a1ca141705ef466d3cdcd339bfa1e519a8bd998cabb9ea204da72dcaa6d382",
+    "outputs/recognition-investigation/r1-continuous-source-20261010/window-000/frame_64041.png": "87a43e4a4c0e1f7eb1ea8e6fedccbefa5bc6eddd8d29c61dc25e92dbeef418f8"
+  }
+}

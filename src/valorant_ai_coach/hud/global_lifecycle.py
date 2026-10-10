@@ -25,6 +25,7 @@ from .round_lifecycle import (
     is_discontinuous,
 )
 from .ui_transition import PendingUiStart
+from .unedited_input import UneditedInputContract
 
 
 def _hash(value: Any) -> bool:
@@ -37,6 +38,23 @@ def global_recognizer_fingerprint() -> str:
     for source in sorted(Path(__file__).parent.glob("*.py")):
         digest.update(source.name.encode("utf-8"))
         digest.update(source.read_bytes().replace(b"\r\n", b"\n"))
+    # Native decoder ownership is part of the scene entrance's trust boundary.
+    # A decoder change must not inherit a qualification for old source pixels/PTS.
+    for name in ("native.py", "service.py"):
+        source = Path(__file__).parent.parent / "video" / name
+        digest.update(f"video/{name}".encode())
+        digest.update(source.read_bytes().replace(b"\r\n", b"\n"))
+    merge_source = Path(__file__).parent.parent / "application" / "hud_video_processor.py"
+    digest.update(b"application/hud_video_processor.py")
+    digest.update(merge_source.read_bytes().replace(b"\r\n", b"\n"))
+    package_source = Path(__file__).parent.parent / "rounds" / "builder.py"
+    digest.update(b"rounds/builder.py")
+    digest.update(package_source.read_bytes().replace(b"\r\n", b"\n"))
+    # Native source-break transport also controls visual temporal state. A
+    # changed consumer must not inherit a qualification of an older pipeline.
+    for source in sorted((Path(__file__).parent.parent / "visual").glob("*.py")):
+        digest.update(f"visual/{source.name}".encode())
+        digest.update(source.read_bytes().replace(b"\r\n", b"\n"))
     return digest.hexdigest()
 
 
@@ -48,7 +66,10 @@ class GlobalLifecycleQualification:
     recognizer_fingerprint: str
 
     @classmethod
-    def load(cls, path: Path, profile_fingerprint: str) -> GlobalLifecycleQualification:
+    def load(
+        cls, path: Path, profile_fingerprint: str,
+        *, unedited_input_contract: UneditedInputContract | None = None,
+    ) -> GlobalLifecycleQualification:
         """Reject mismatched profiles, overlapping splits and unreviewed results.
 
         The report contains hashes/counts only. Expected values, timestamps,
@@ -69,7 +90,12 @@ class GlobalLifecycleQualification:
         ):
             raise ValueError("Invalid or mismatched global lifecycle qualification")
         components = data["components"]
-        if not {"timer", "purchase_phase", "continuity"} <= set(components) or not set(
+        required = (
+            {"timer", "purchase_phase", "ui_transition"}
+            if unedited_input_contract is not None
+            else {"timer", "purchase_phase", "continuity"}
+        )
+        if not required <= set(components) or not set(
             components
         ) <= {
             "timer",
@@ -79,10 +105,20 @@ class GlobalLifecycleQualification:
             "round_result",
             "scene_continuity",
             "ui_transition",
+            "ui_end_transition",
         }:
             raise ValueError("Missing or unknown global lifecycle component")
+        if 'ui_end_transition' in components and (
+            unedited_input_contract is None
+            or not {'timer', 'score', 'round_result'} <= set(components)
+        ):
+            raise ValueError('UI end transition requires source assurance and qualified inputs')
         scene_components = {"scene_continuity", "ui_transition"}
-        if set(components) & scene_components and not scene_components <= set(components):
+        if (
+            unedited_input_contract is None
+            and set(components) & scene_components
+            and not scene_components <= set(components)
+        ):
             raise ValueError("Scene continuity and UI transition require paired qualification")
         for name, proof in components.items():
             if not isinstance(proof, dict) or set(proof) != {
@@ -588,7 +624,7 @@ class GlobalRoundLifecycle:
         confidence = [
             _score(row.get("quality", {}).get("roi_confidence", {}).get(k))
             for row in (previous, current)
-            for k in ("ally_score_value", "enemy_score_value")
+            for k in ("score_ally_value", "score_enemy_value")
         ]
         if (
             not all(type(n) is int and n >= 0 for n in scores)

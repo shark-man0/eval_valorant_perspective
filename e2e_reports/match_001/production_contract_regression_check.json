@@ -1,0 +1,70 @@
+{
+  "date": "2026-10-10T09:53:53.745266+00:00",
+  "git_head": "e9ecaf8f2f0f0dfa1f9433d40a598ec8909e9ce3",
+  "initial_full_pytest": {
+    "exit_code": 1,
+    "passed": 2459,
+    "failed": 1,
+    "skipped": 9,
+    "wall_clock_sec": 1728.56
+  },
+  "initial_failure": "tests/integration/test_visual_runtime_v2.py::test_semantic_candidate_is_confirmed_in_isolated_adapter_and_reused_on_resume",
+  "cause": "_measure fixture did not accept continuity_breaks keyword added by source-break transport",
+  "fix": "Test fixture accepts and explicitly asserts empty continuity_breaks; production behavior unchanged",
+  "followup": {
+    "passed": 13,
+    "failed": 0,
+    "skipped": 0,
+    "wall_clock_sec": 20.64,
+    "validation_pack_variables": [
+      "VALORANT_E2E_PACK",
+      "VALORANT_E2E_VALIDATION_PACK"
+    ],
+    "files": [
+      "tests/integration/test_visual_runtime_v2.py",
+      "tests/integration/test_e2e_share_workflow.py",
+      "tests/integration/test_e2e_shot_contract.py",
+      "tests/integration/test_e2e_validation_pack_v3.py"
+    ]
+  },
+  "all_suite_rerun_after_fix": false,
+  "remaining_known_test_failures": 0,
+  "remaining_test_skips": [
+    "Optional real HUD recording acceptance not enabled",
+    "Local Tesseract unavailable",
+    "Windows native path unavailable",
+    "Three PowerShell tests unavailable"
+  ],
+  "ruff": "PASS",
+  "mypy": "PASS",
+  "mypy_source_files": 121,
+  "logs": {
+    "initial_suite": {
+      "path": "outputs/recognition-investigation/regression-check-20261010/goal_full_regression_20261010.log",
+      "sha256": "90f1852d18e0fd68c6db815958ff07619bcc8a701c460d6972db7ad90b66427b"
+    },
+    "related_fix": {
+      "path": "outputs/recognition-investigation/regression-check-20261010/goal_integration_fix_20261010.log",
+      "sha256": "7bb7638af3054e0e843437e308ca2f4a049ae1e149b569f9b5c54c0bd2263c05"
+    },
+    "ruff": {
+      "path": "outputs/recognition-investigation/regression-check-20261010/goal_ruff_20261010.log",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    "mypy": {
+      "path": "outputs/recognition-investigation/regression-check-20261010/goal_mypy_20261010.log",
+      "sha256": "0cd98cfd5b35e0e85b86d75459966f02562f9c10fe59fb3d86271d1b9fa33e5c"
+    }
+  },
+  "production_changed_this_checkpoint": false,
+  "new_full_e2e_runs": 0,
+  "canonical_previous": {
+    "PASS": 23,
+    "FAIL": 55,
+    "NE": 4
+  },
+  "canonical_current": null,
+  "canonical_delta": null,
+  "qualification_created": false,
+  "remaining_blocker": "Independent positive temporal UI qualification is not supplied by development starts or unit fixtures; result support and end timing remain separate."
+}

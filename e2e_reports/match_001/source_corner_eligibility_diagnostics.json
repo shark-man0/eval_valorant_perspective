@@ -1,0 +1,144 @@
+{
+  "scope": "Source corner structure eligibility, self only not qualification",
+  "rows": [
+    {
+      "reference_id": "reviewed-wall",
+      "stages": [
+        {
+          "region": 0,
+          "source_features": 51,
+          "forward_unavailable": 0,
+          "reverse_unavailable": 0,
+          "invalid_flow": 36,
+          "forward_backward_rejected": 0,
+          "patch_outside_crop": 4,
+          "texture_unavailable": 0,
+          "patch_ncc_rejected": 0,
+          "accepted": 11
+        },
+        {
+          "region": 1,
+          "source_features": 97,
+          "forward_unavailable": 0,
+          "reverse_unavailable": 0,
+          "invalid_flow": 55,
+          "forward_backward_rejected": 0,
+          "patch_outside_crop": 10,
+          "texture_unavailable": 1,
+          "patch_ncc_rejected": 0,
+          "accepted": 31
+        },
+        {
+          "region": 2,
+          "source_features": 63,
+          "forward_unavailable": 0,
+          "reverse_unavailable": 0,
+          "invalid_flow": 0,
+          "forward_backward_rejected": 0,
+          "patch_outside_crop": 12,
+          "texture_unavailable": 0,
+          "patch_ncc_rejected": 0,
+          "accepted": 51
+        },
+        {
+          "region": 3,
+          "source_features": 79,
+          "forward_unavailable": 0,
+          "reverse_unavailable": 0,
+          "invalid_flow": 74,
+          "forward_backward_rejected": 0,
+          "patch_outside_crop": 4,
+          "texture_unavailable": 0,
+          "patch_ncc_rejected": 0,
+          "accepted": 1
+        },
+        {
+          "region": 4,
+          "source_features": 100,
+          "forward_unavailable": 0,
+          "reverse_unavailable": 0,
+          "invalid_flow": 41,
+          "forward_backward_rejected": 0,
+          "patch_outside_crop": 16,
+          "texture_unavailable": 12,
+          "patch_ncc_rejected": 0,
+          "accepted": 31
+        },
+        {
+          "region": 5,
+          "source_features": 98,
+          "forward_unavailable": 0,
+          "reverse_unavailable": 0,
+          "invalid_flow": 25,
+          "forward_backward_rejected": 0,
+          "patch_outside_crop": 15,
+          "texture_unavailable": 3,
+          "patch_ncc_rejected": 0,
+          "accepted": 55
+        }
+      ],
+      "eligible_corner_regions": 6,
+      "eligible_corners": 180,
+      "self_consensus": 180,
+      "source_only": true
+    },
+    {
+      "reference_id": "reviewed-arch-context",
+      "stages": [
+        {
+          "region": 0,
+          "source_features": 39,
+          "forward_unavailable": 0,
+          "reverse_unavailable": 0,
+          "invalid_flow": 0,
+          "forward_backward_rejected": 0,
+          "patch_outside_crop": 16,
+          "texture_unavailable": 0,
+          "patch_ncc_rejected": 0,
+          "accepted": 23
+        },
+        {
+          "region": 1,
+          "source_features": 72,
+          "forward_unavailable": 0,
+          "reverse_unavailable": 0,
+          "invalid_flow": 1,
+          "forward_backward_rejected": 0,
+          "patch_outside_crop": 25,
+          "texture_unavailable": 0,
+          "patch_ncc_rejected": 0,
+          "accepted": 46
+        },
+        {
+          "region": 2,
+          "source_features": 25,
+          "forward_unavailable": 0,
+          "reverse_unavailable": 0,
+          "invalid_flow": 0,
+          "forward_backward_rejected": 0,
+          "patch_outside_crop": 16,
+          "texture_unavailable": 0,
+          "patch_ncc_rejected": 0,
+          "accepted": 9
+        }
+      ],
+      "eligible_corner_regions": 3,
+      "eligible_corners": 78,
+      "self_consensus": 78,
+      "source_only": true
+    }
+  ],
+  "wall_clock_sec": 0.16447183402488008,
+  "terminal_bindings": {
+    "outputs/recognition-investigation/two-scene-domain-reference-20261009/profile.json": "7c88be66b6d322f037be309ca02464c7ffd5da3236b646b7ec24d21d1f4e7ce2",
+    "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/wall_close.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/arch_context.png": "929aab0a3f014eddff37a663241bd7fe3fcd15e0f800f7afe496b66c3d880579",
+    "scripts/diagnostics/scene_descriptor_acquisition.py": "4c55134d452ce035da5e9bfa38e647450bee0301027b40800b00d8220a7f9642",
+    "scripts/diagnostics/scene_correspondence.py": "667fb4f7b0626fbbf4770716eefc18976a9409a4f0646084b95d479dab7273a3",
+    "scripts/diagnostics/scene_reference_support.py": "aa6cec5c7ea7b10ce69c078fb2a8e2c7c794f6fa610ca3592c113d91a69751a5",
+    "scripts/diagnostics/scene_world_bootstrap.py": "9947a6b0adc00f1e4b4eb63d5a95b1555d48091633712546e8078ee3a2436cfa"
+  },
+  "production_changed": false,
+  "qualification_created": false,
+  "canonical_current": null
+}

@@ -1,0 +1,9 @@
+{
+  "scope": "Passive source-track stage audit; frozen exposed development, no tuning",
+  "bindings": {
+    "outputs/recognition-investigation/two-scene-domain-reference-20261009/profile.json": "7c88be66b6d322f037be309ca02464c7ffd5da3236b646b7ec24d21d1f4e7ce2",
+    "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/arch_context.png": "929aab0a3f014eddff37a663241bd7fe3fcd15e0f800f7afe496b66c3d880579",
+    "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000001.png": "7178c40b9997f559b443c6e1145cffbdef9823d862d5f55c158bc9a7a5cecd6c",
+    "scripts/diagnostics/scene_reference_support.py": "aa6cec5c7ea7b10ce69c078fb2a8e2c7c794f6fa610ca3592c113d91a69751a5"
+  }
+}

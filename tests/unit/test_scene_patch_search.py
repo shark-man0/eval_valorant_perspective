@@ -81,3 +81,27 @@ def test_rejection_observability_preserves_every_match_output():
     assert search_reviewed_world(reference, current, BOXES, rejection_sink=reasons) == expected
     assert reasons
     assert all(x["stage"] in {"forward", "reverse"} for x in reasons)
+
+
+def test_displaced_search_keeps_reference_support_distinct_from_current_candidates():
+    reference = image()
+    current = np.roll(reference, 80, axis=0)
+    destinations = ((0, 120, 640, 360),)
+    metrics, tracks = search_reviewed_world(reference, current, BOXES, current_boxes=destinations)
+    assert len(tracks) > 20
+    assert metrics["model_inliers"] == len(tracks)
+    assert len(metrics["track_regions"]) == 3
+    assert all(t["current_xy"][1] - t["reference_xy"][1] == 80 for t in tracks)
+    assert any(
+        not any(
+            x1 <= t["current_xy"][0] < x2 and y1 <= t["current_xy"][1] < y2
+            for x1, y1, x2, y2 in BOXES
+        )
+        for t in tracks
+    )
+    assert not metrics["runtime_proof_authorized"]
+
+
+def test_displaced_search_still_rejects_protected_destination_pixels():
+    with pytest.raises(ValueError, match="protected"):
+        search_reviewed_world(image(), image(), BOXES, current_boxes=((224, 28, 416, 120),))

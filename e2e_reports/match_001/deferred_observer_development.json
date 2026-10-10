@@ -1,0 +1,5073 @@
+{
+  "scope": "exposed native replay, no qualification",
+  "replays": [
+    {
+      "deferred_initialization": false,
+      "input_count": 30,
+      "rows": [
+        {
+          "source_pts_ticks": 59945,
+          "result": {
+            "reason": "image_supported_observed_seed",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 59945,
+            "source_pixel_sha256": "439c3817810a8d8bcc8c82ed218d5fe0f851c7c5f35308b0b85fcbd328759edd",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "reference_is_observed_previous_frame": false
+          }
+        },
+        {
+          "source_pts_ticks": 60201,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 60201,
+            "previous_source_pts_ticks": 59945,
+            "source_pixel_sha256": "eb69ac61ab1bd4da4517429efa0f2896e520476b6bef244f4e4746bb98c8d850",
+            "previous_source_pixel_sha256": "439c3817810a8d8bcc8c82ed218d5fe0f851c7c5f35308b0b85fcbd328759edd",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9992672289384303,
+                -6.69991549028388e-05,
+                0.46149395897649514
+              ],
+              [
+                6.69991549028388e-05,
+                0.9992672289384303,
+                0.2193143925581848
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9887022376060486
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9951148629188538
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9996223449707031
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9906264543533325
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9856879115104675
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9991869330406189
+              }
+            ],
+            "minimum_witness_ncc": 0.9856879115104675,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 60457,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 60457,
+            "previous_source_pts_ticks": 60201,
+            "source_pixel_sha256": "21d34bc8deaedf9aea2c0f26343d51ec079be4dd71cccb6a7d3b204daeb1735b",
+            "previous_source_pixel_sha256": "eb69ac61ab1bd4da4517429efa0f2896e520476b6bef244f4e4746bb98c8d850",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9999708890882013,
+                6.245900447693317e-05,
+                0.013573537542512417
+              ],
+              [
+                -6.245900447693317e-05,
+                0.9999708890882013,
+                0.05948169940424022
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9955711364746094
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9975654482841492
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9996640682220459
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9970439672470093
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9906466603279114
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9994598031044006
+              }
+            ],
+            "minimum_witness_ncc": 0.9906466603279114,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 60713,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 60713,
+            "previous_source_pts_ticks": 60457,
+            "source_pixel_sha256": "03ad8c60cca1e1a5b02aae0d2395c56886b1654731a31ce39f51e53cda6217c7",
+            "previous_source_pixel_sha256": "21d34bc8deaedf9aea2c0f26343d51ec079be4dd71cccb6a7d3b204daeb1735b",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9994163799400911,
+                0.00040006732417747343,
+                0.25974800430030087
+              ],
+              [
+                -0.00040006732417747343,
+                0.9994163799400911,
+                0.22378602658322444
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9893568754196167
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9965158700942993
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9996877908706665
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9857656359672546
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9810084700584412
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9991405010223389
+              }
+            ],
+            "minimum_witness_ncc": 0.9810084700584412,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 60969,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 60969,
+            "previous_source_pts_ticks": 60713,
+            "source_pixel_sha256": "e7fd447968482a2c92eb2e2f8f0752106aed9b418055b37784edd4a6a866ae34",
+            "previous_source_pixel_sha256": "03ad8c60cca1e1a5b02aae0d2395c56886b1654731a31ce39f51e53cda6217c7",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9988707815333129,
+                0.0009893312413204616,
+                0.44664391880096516
+              ],
+              [
+                -0.0009893312413204616,
+                0.9988707815333129,
+                0.7806685507471308
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9669959545135498
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9948984384536743
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.998522162437439
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9844526648521423
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9723440408706665
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9950947165489197
+              }
+            ],
+            "minimum_witness_ncc": 0.9669959545135498,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 61225,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 61225,
+            "previous_source_pts_ticks": 60969,
+            "source_pixel_sha256": "02563af62baa6c85a8cee7598d67f37170ce3b2905c076fd2bcfea79e40f2333",
+            "previous_source_pixel_sha256": "e7fd447968482a2c92eb2e2f8f0752106aed9b418055b37784edd4a6a866ae34",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9981612228232385,
+                0.0009907323386550678,
+                0.4412571205305696
+              ],
+              [
+                -0.0009907323386550678,
+                0.9981612228232385,
+                0.881886659898652
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.95701664686203
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9957403540611267
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9989297389984131
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9823469519615173
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9836934208869934
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9958227872848511
+              }
+            ],
+            "minimum_witness_ncc": 0.95701664686203,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 61481,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 61481,
+            "previous_source_pts_ticks": 61225,
+            "source_pixel_sha256": "18d2ed2bf656cf0c9432ca7f181a1e736f8f650e6ce32e436f43bcc236ffb75d",
+            "previous_source_pixel_sha256": "02563af62baa6c85a8cee7598d67f37170ce3b2905c076fd2bcfea79e40f2333",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9988917387471938,
+                -0.001986996973963618,
+                1.4031868441668058
+              ],
+              [
+                0.001986996973963618,
+                0.9988917387471938,
+                0.7958172289250688
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9762078523635864
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9989275336265564
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9115911722183228
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9213390350341797
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9955141544342041
+              }
+            ],
+            "minimum_witness_ncc": 0.9115911722183228,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 61737,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 61737,
+            "previous_source_pts_ticks": 61481,
+            "source_pixel_sha256": "59aa489593988887056ed2128bb7f7214b8bcbe8bb67078064cb42007cf89426",
+            "previous_source_pixel_sha256": "18d2ed2bf656cf0c9432ca7f181a1e736f8f650e6ce32e436f43bcc236ffb75d",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9969577142265492,
+                0.0008719146439735044,
+                0.7623819879880043
+              ],
+              [
+                -0.0008719146439735044,
+                0.9969577142265492,
+                1.3927969693111104
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9188662171363831
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.984491229057312
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.999064564704895
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9311407208442688
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9521732926368713
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.996631383895874
+              }
+            ],
+            "minimum_witness_ncc": 0.9188662171363831,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 61993,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 61993,
+            "previous_source_pts_ticks": 61737,
+            "source_pixel_sha256": "ae178f026f79c7b5363e4f20b1f7ede5905aa98cbc58b9d8576ae869447b5009",
+            "previous_source_pixel_sha256": "59aa489593988887056ed2128bb7f7214b8bcbe8bb67078064cb42007cf89426",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                1.0003762890222208,
+                -0.00044567582865042327,
+                0.7271838307434386
+              ],
+              [
+                0.00044567582865042327,
+                1.0003762890222208,
+                0.3758206685550789
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9745734930038452
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9988486766815186
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9097880721092224
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9171323776245117
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9974551796913147
+              }
+            ],
+            "minimum_witness_ncc": 0.9097880721092224,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 62249,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 62249,
+            "previous_source_pts_ticks": 61993,
+            "source_pixel_sha256": "de6a2b93b021a578ea5f0ab661db58638a3a5eb7889492d8f5e9fd6892d2c530",
+            "previous_source_pixel_sha256": "ae178f026f79c7b5363e4f20b1f7ede5905aa98cbc58b9d8576ae869447b5009",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9977251900762995,
+                -0.00021839886460701973,
+                0.8121527795789663
+              ],
+              [
+                0.00021839886460701973,
+                0.9977251900762995,
+                0.9766652491698967
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9558305740356445
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9933258295059204
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9991484880447388
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9695467948913574
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9682856798171997
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9983415603637695
+              }
+            ],
+            "minimum_witness_ncc": 0.9558305740356445,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 62505,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 62505,
+            "previous_source_pts_ticks": 62249,
+            "source_pixel_sha256": "57307d89cff2d12fef8474be2176bfe84a495c0975a33218c64dbcf2411347c9",
+            "previous_source_pixel_sha256": "de6a2b93b021a578ea5f0ab661db58638a3a5eb7889492d8f5e9fd6892d2c530",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9980233984352067,
+                -0.00027100720568228043,
+                0.5689156141025292
+              ],
+              [
+                0.00027100720568228043,
+                0.9980233984352067,
+                0.6120818130850372
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9765285849571228
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9970846176147461
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9994803071022034
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9715425968170166
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.974530041217804
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.998984158039093
+              }
+            ],
+            "minimum_witness_ncc": 0.9715425968170166,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 62761,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 62761,
+            "previous_source_pts_ticks": 62505,
+            "source_pixel_sha256": "6ab7cd27a8756b687f70857d6bf0d2a8732625d15161e2de41a139f31fd193e1",
+            "previous_source_pixel_sha256": "57307d89cff2d12fef8474be2176bfe84a495c0975a33218c64dbcf2411347c9",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9993152975236625,
+                0.00021229323565493486,
+                0.22502270484181902
+              ],
+              [
+                -0.00021229323565493486,
+                0.9993152975236625,
+                0.31792441999776255
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9981522560119629
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.999234139919281
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9996366500854492
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9988192319869995
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9934019446372986
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9991723299026489
+              }
+            ],
+            "minimum_witness_ncc": 0.9934019446372986,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 63017,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 63017,
+            "previous_source_pts_ticks": 62761,
+            "source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b",
+            "previous_source_pixel_sha256": "6ab7cd27a8756b687f70857d6bf0d2a8732625d15161e2de41a139f31fd193e1",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                1.000371710894513,
+                2.6810115829218473e-06,
+                -0.020378635657427955
+              ],
+              [
+                -2.6810115829218473e-06,
+                1.000371710894513,
+                -0.07044028919756365
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9967154264450073
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9999352097511292
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9981988668441772
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9939509034156799
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9997571110725403
+              }
+            ],
+            "minimum_witness_ncc": 0.9939509034156799,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 63273,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 63273,
+            "previous_source_pts_ticks": 63017,
+            "source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a",
+            "previous_source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.999850348228196,
+                -4.140925554387402e-06,
+                0.05349598524434748
+              ],
+              [
+                4.140925554387402e-06,
+                0.999850348228196,
+                0.028187445490356004
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.99870765209198
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9996821284294128
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9999531507492065
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9979313611984253
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9954364895820618
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.999787449836731
+              }
+            ],
+            "minimum_witness_ncc": 0.9954364895820618,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 63529,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 63529,
+            "previous_source_pts_ticks": 63273,
+            "source_pixel_sha256": "7b784dd56e27c48a760671568acbd458bc496400335ee4b3181798d0584a4044",
+            "previous_source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9941675376392474,
+                -5.911629275851256e-05,
+                2.2768559763895473
+              ],
+              [
+                5.911629275851256e-05,
+                0.9941675376392474,
+                0.8996724744257092
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.943096399307251
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9913720488548279
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9991496205329895
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9732360243797302
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9734658002853394
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9985713362693787
+              }
+            ],
+            "minimum_witness_ncc": 0.943096399307251,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 63785,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 63785,
+            "previous_source_pts_ticks": 63529,
+            "source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0",
+            "previous_source_pixel_sha256": "7b784dd56e27c48a760671568acbd458bc496400335ee4b3181798d0584a4044",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9949682939591988,
+                -0.00020993149541429428,
+                2.071685541855656
+              ],
+              [
+                0.00020993149541429428,
+                0.9949682939591988,
+                0.7094818283904211
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9518660306930542
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9923921823501587
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9993191957473755
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9734211564064026
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9686607122421265
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.99851393699646
+              }
+            ],
+            "minimum_witness_ncc": 0.9518660306930542,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 64041,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 64041,
+            "previous_source_pts_ticks": 63785,
+            "source_pixel_sha256": "d18c9060f352e53b37967c62e12f3ee51b06e330664ee49da476b3751cda8f83",
+            "previous_source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9936127235605946,
+                -0.000369366479907551,
+                2.1948676381947405
+              ],
+              [
+                0.000369366479907551,
+                0.9936127235605946,
+                0.9640307019707289
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9595354199409485
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9943629503250122
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9992177486419678
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9757891893386841
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9683620929718018
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9984337687492371
+              }
+            ],
+            "minimum_witness_ncc": 0.9595354199409485,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 64297,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 64297,
+            "previous_source_pts_ticks": 64041,
+            "source_pixel_sha256": "0e795ed52d0eac85bf325988a8d629c2be975f8fbce0d9bfa33a8a0c773eee86",
+            "previous_source_pixel_sha256": "d18c9060f352e53b37967c62e12f3ee51b06e330664ee49da476b3751cda8f83",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9973126269931959,
+                3.470814847077836e-05,
+                0.7709855097489718
+              ],
+              [
+                -3.470814847077836e-05,
+                0.9973126269931959,
+                0.4569872272547675
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9677121639251709
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9951579570770264
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9996978640556335
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9791299700737
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9734113216400146
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9991817474365234
+              }
+            ],
+            "minimum_witness_ncc": 0.9677121639251709,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 64553,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 64553,
+            "previous_source_pts_ticks": 64297,
+            "source_pixel_sha256": "bcb5a25b6b58a0efb563575d4be9ba3507bf290b327fa64996a1d903970695a2",
+            "previous_source_pixel_sha256": "0e795ed52d0eac85bf325988a8d629c2be975f8fbce0d9bfa33a8a0c773eee86",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9947429532630453,
+                -0.00021189294996331866,
+                2.1313136736822207
+              ],
+              [
+                0.00021189294996331866,
+                0.9947429532630453,
+                0.7381912906413928
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9561864137649536
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9937868714332581
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9992949962615967
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.972802460193634
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9634804129600525
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9985043406486511
+              }
+            ],
+            "minimum_witness_ncc": 0.9561864137649536,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 64809,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 64809,
+            "previous_source_pts_ticks": 64553,
+            "source_pixel_sha256": "8e43e3263c8c969fd28631dab3f78166a163ec834e66fae70ad0b70e0c9160b2",
+            "previous_source_pixel_sha256": "bcb5a25b6b58a0efb563575d4be9ba3507bf290b327fa64996a1d903970695a2",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9969906091132562,
+                -4.954419358406119e-05,
+                1.1675051123971283
+              ],
+              [
+                4.954419358406119e-05,
+                0.9969906091132562,
+                0.42137906112760154
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9702686667442322
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9957726001739502
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9995742440223694
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9880130887031555
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9762584567070007
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9988679885864258
+              }
+            ],
+            "minimum_witness_ncc": 0.9702686667442322,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 65065,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 65065,
+            "previous_source_pts_ticks": 64809,
+            "source_pixel_sha256": "4e3154780ca05eed8cf4a465acf13586ee4c64b3476bbf2ed763a88825f9ab16",
+            "previous_source_pixel_sha256": "8e43e3263c8c969fd28631dab3f78166a163ec834e66fae70ad0b70e0c9160b2",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9966157235951146,
+                -0.00015090920389351792,
+                1.1172468815799168
+              ],
+              [
+                0.00015090920389351792,
+                0.9966157235951146,
+                0.518795080784767
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9703441858291626
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9963257312774658
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9996289014816284
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9839177131652832
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9749103784561157
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9989885091781616
+              }
+            ],
+            "minimum_witness_ncc": 0.9703441858291626,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 65321,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 65321,
+            "previous_source_pts_ticks": 65065,
+            "source_pixel_sha256": "323946527efaa7632b1c64f6e43c277ae196535573ee4dec664173841b5d7627",
+            "previous_source_pixel_sha256": "4e3154780ca05eed8cf4a465acf13586ee4c64b3476bbf2ed763a88825f9ab16",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9973335205811092,
+                -3.6009099774372704e-05,
+                0.7626591161673147
+              ],
+              [
+                3.6009099774372704e-05,
+                0.9973335205811092,
+                0.4495478771511205
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.985815167427063
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.997963011264801
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9997599124908447
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9856881499290466
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9814825654029846
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9992624521255493
+              }
+            ],
+            "minimum_witness_ncc": 0.9814825654029846,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 65577,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 65577,
+            "previous_source_pts_ticks": 65321,
+            "source_pixel_sha256": "63d13ea7884ce80b76096daaf2b983bb04a1d1753df6dda8c669342d17dc24ad",
+            "previous_source_pixel_sha256": "323946527efaa7632b1c64f6e43c277ae196535573ee4dec664173841b5d7627",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.997355349302865,
+                -9.042020750457496e-05,
+                0.7207445988037351
+              ],
+              [
+                9.042020750457496e-05,
+                0.997355349302865,
+                0.4172759299355414
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9786969423294067
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9978004097938538
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9997262954711914
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9831064343452454
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9786968231201172
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9992431402206421
+              }
+            ],
+            "minimum_witness_ncc": 0.9786968231201172,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 65833,
+          "result": {
+            "reason": "seed_model_incoherent",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 66089,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 66345,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 66601,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 66857,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 67113,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 67369,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        }
+      ],
+      "links": 22
+    },
+    {
+      "deferred_initialization": false,
+      "input_count": 36,
+      "rows": [
+        {
+          "source_pts_ticks": 58409,
+          "result": {
+            "reason": "image_supported_initialization_unavailable",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 58665,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 58921,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 59177,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 59433,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 59689,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 59945,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 60201,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 60457,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 60713,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 60969,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 61225,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 61481,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 61737,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 61993,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 62249,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 62505,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 62761,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 63017,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 63273,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 63529,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 63785,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 64041,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 64297,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 64553,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 64809,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 65065,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 65321,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 65577,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 65833,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 66089,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 66345,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 66601,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 66857,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 67113,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 67369,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        }
+      ],
+      "links": 0
+    },
+    {
+      "deferred_initialization": true,
+      "input_count": 36,
+      "rows": [
+        {
+          "source_pts_ticks": 58409,
+          "result": {
+            "reason": "image_supported_initialization_pending",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 58665,
+          "result": {
+            "reason": "image_supported_initialization_pending",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 58921,
+          "result": {
+            "reason": "image_supported_initialization_pending",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 59177,
+          "result": {
+            "reason": "image_supported_initialization_pending",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 59433,
+          "result": {
+            "reason": "image_supported_initialization_pending",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 59689,
+          "result": {
+            "reason": "image_supported_observed_seed",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 59689,
+            "source_pixel_sha256": "44fa119d8597b243ed77bab82d3fa89ca800055fa823574481759d26214d1ba3",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "reference_is_observed_previous_frame": false
+          }
+        },
+        {
+          "source_pts_ticks": 59945,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 59945,
+            "previous_source_pts_ticks": 59689,
+            "source_pixel_sha256": "439c3817810a8d8bcc8c82ed218d5fe0f851c7c5f35308b0b85fcbd328759edd",
+            "previous_source_pixel_sha256": "44fa119d8597b243ed77bab82d3fa89ca800055fa823574481759d26214d1ba3",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                1.006411263025174,
+                -0.001694266124089789,
+                -3.686377507044103
+              ],
+              [
+                0.001694266124089789,
+                1.006411263025174,
+                -2.1810822173024733
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9989277720451355
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9465648531913757
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.964984118938446
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9950729012489319
+              }
+            ],
+            "minimum_witness_ncc": 0.9465648531913757,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 60201,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 60201,
+            "previous_source_pts_ticks": 59945,
+            "source_pixel_sha256": "eb69ac61ab1bd4da4517429efa0f2896e520476b6bef244f4e4746bb98c8d850",
+            "previous_source_pixel_sha256": "439c3817810a8d8bcc8c82ed218d5fe0f851c7c5f35308b0b85fcbd328759edd",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.999161500900998,
+                -0.00012209769482902607,
+                0.498642887580685
+              ],
+              [
+                0.00012209769482902607,
+                0.999161500900998,
+                0.23774260500714017
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9900054335594177
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9953672289848328
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9996266961097717
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.989239513874054
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9858344197273254
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9992090463638306
+              }
+            ],
+            "minimum_witness_ncc": 0.9858344197273254,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 60457,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 60457,
+            "previous_source_pts_ticks": 60201,
+            "source_pixel_sha256": "21d34bc8deaedf9aea2c0f26343d51ec079be4dd71cccb6a7d3b204daeb1735b",
+            "previous_source_pixel_sha256": "eb69ac61ab1bd4da4517429efa0f2896e520476b6bef244f4e4746bb98c8d850",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9998504811011921,
+                6.455462219488245e-05,
+                0.03066713479326043
+              ],
+              [
+                -6.455462219488245e-05,
+                0.9998504811011921,
+                0.0852181382902346
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9955711364746094
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9975654482841492
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9996724128723145
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9970439672470093
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9906466603279114
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9994572401046753
+              }
+            ],
+            "minimum_witness_ncc": 0.9906466603279114,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 60713,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 60713,
+            "previous_source_pts_ticks": 60457,
+            "source_pixel_sha256": "03ad8c60cca1e1a5b02aae0d2395c56886b1654731a31ce39f51e53cda6217c7",
+            "previous_source_pixel_sha256": "21d34bc8deaedf9aea2c0f26343d51ec079be4dd71cccb6a7d3b204daeb1735b",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9994748848398125,
+                0.0003730078720631382,
+                0.26514735314612625
+              ],
+              [
+                -0.0003730078720631382,
+                0.9994748848398125,
+                0.208880687463161
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9897996783256531
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9960407614707947
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9996863007545471
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9857656359672546
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9810084700584412
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9991658926010132
+              }
+            ],
+            "minimum_witness_ncc": 0.9810084700584412,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 60969,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 60969,
+            "previous_source_pts_ticks": 60713,
+            "source_pixel_sha256": "e7fd447968482a2c92eb2e2f8f0752106aed9b418055b37784edd4a6a866ae34",
+            "previous_source_pixel_sha256": "03ad8c60cca1e1a5b02aae0d2395c56886b1654731a31ce39f51e53cda6217c7",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9986297342321893,
+                0.0009015626192647227,
+                0.5072318080028084
+              ],
+              [
+                -0.0009015626192647227,
+                0.9986297342321893,
+                0.8277183694388716
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9531863927841187
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9949085712432861
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9985734224319458
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9863288402557373
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.973200798034668
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9955275058746338
+              }
+            ],
+            "minimum_witness_ncc": 0.9531863927841187,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 61225,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 61225,
+            "previous_source_pts_ticks": 60969,
+            "source_pixel_sha256": "02563af62baa6c85a8cee7598d67f37170ce3b2905c076fd2bcfea79e40f2333",
+            "previous_source_pixel_sha256": "e7fd447968482a2c92eb2e2f8f0752106aed9b418055b37784edd4a6a866ae34",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9972257833372199,
+                0.0009606501816207811,
+                0.5762445038654452
+              ],
+              [
+                -0.0009606501816207811,
+                0.9972257833372199,
+                1.079240824492474
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9404407739639282
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9942227602005005
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9989544749259949
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9462217092514038
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9600741267204285
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9958603978157043
+              }
+            ],
+            "minimum_witness_ncc": 0.9404407739639282,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 61481,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 61481,
+            "previous_source_pts_ticks": 61225,
+            "source_pixel_sha256": "18d2ed2bf656cf0c9432ca7f181a1e736f8f650e6ce32e436f43bcc236ffb75d",
+            "previous_source_pixel_sha256": "02563af62baa6c85a8cee7598d67f37170ce3b2905c076fd2bcfea79e40f2333",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9990104706802427,
+                -0.0020694233830406655,
+                1.4112193642841284
+              ],
+              [
+                0.0020694233830406655,
+                0.9990104706802427,
+                0.759577791270802
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9757595062255859
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9988831877708435
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9133545756340027
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9230507612228394
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9952767491340637
+              }
+            ],
+            "minimum_witness_ncc": 0.9133545756340027,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 61737,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 61737,
+            "previous_source_pts_ticks": 61481,
+            "source_pixel_sha256": "59aa489593988887056ed2128bb7f7214b8bcbe8bb67078064cb42007cf89426",
+            "previous_source_pixel_sha256": "18d2ed2bf656cf0c9432ca7f181a1e736f8f650e6ce32e436f43bcc236ffb75d",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9969523892252348,
+                0.0008688841323434776,
+                0.7629324458837361
+              ],
+              [
+                -0.0008688841323434776,
+                0.9969523892252348,
+                1.3934590856034639
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9182623028755188
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9843710660934448
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9990624785423279
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9311407208442688
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9521572589874268
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9966417551040649
+              }
+            ],
+            "minimum_witness_ncc": 0.9182623028755188,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 61993,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 61993,
+            "previous_source_pts_ticks": 61737,
+            "source_pixel_sha256": "ae178f026f79c7b5363e4f20b1f7ede5905aa98cbc58b9d8576ae869447b5009",
+            "previous_source_pixel_sha256": "59aa489593988887056ed2128bb7f7214b8bcbe8bb67078064cb42007cf89426",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                1.0003704450254949,
+                -0.00043645710688409393,
+                0.7258442201411294
+              ],
+              [
+                0.00043645710688409393,
+                1.0003704450254949,
+                0.37802557245067664
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9745322465896606
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9988489747047424
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9097880721092224
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9154670834541321
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9974287152290344
+              }
+            ],
+            "minimum_witness_ncc": 0.9097880721092224,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 62249,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 62249,
+            "previous_source_pts_ticks": 61993,
+            "source_pixel_sha256": "de6a2b93b021a578ea5f0ab661db58638a3a5eb7889492d8f5e9fd6892d2c530",
+            "previous_source_pixel_sha256": "ae178f026f79c7b5363e4f20b1f7ede5905aa98cbc58b9d8576ae869447b5009",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9977733154312461,
+                -0.00019352556190247014,
+                0.8013488213945488
+              ],
+              [
+                0.00019352556190247014,
+                0.9977733154312461,
+                0.9677748347159006
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.956963300704956
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9930974245071411
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9991432428359985
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9667822122573853
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9686960577964783
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.998350203037262
+              }
+            ],
+            "minimum_witness_ncc": 0.956963300704956,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 62505,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 62505,
+            "previous_source_pts_ticks": 62249,
+            "source_pixel_sha256": "57307d89cff2d12fef8474be2176bfe84a495c0975a33218c64dbcf2411347c9",
+            "previous_source_pixel_sha256": "de6a2b93b021a578ea5f0ab661db58638a3a5eb7889492d8f5e9fd6892d2c530",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.998096034205442,
+                -0.00017885363848945838,
+                0.539649073267164
+              ],
+              [
+                0.00017885363848945838,
+                0.998096034205442,
+                0.6033417925004061
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9775106906890869
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9972598552703857
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9994811415672302
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9769065380096436
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9760441184043884
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9989664554595947
+              }
+            ],
+            "minimum_witness_ncc": 0.9760441184043884,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 62761,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 62761,
+            "previous_source_pts_ticks": 62505,
+            "source_pixel_sha256": "6ab7cd27a8756b687f70857d6bf0d2a8732625d15161e2de41a139f31fd193e1",
+            "previous_source_pixel_sha256": "57307d89cff2d12fef8474be2176bfe84a495c0975a33218c64dbcf2411347c9",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9993066843204559,
+                0.0002588290523439035,
+                0.21512357897687379
+              ],
+              [
+                -0.0002588290523439035,
+                0.9993066843204559,
+                0.3246756680942381
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9981522560119629
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9993845820426941
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9996333122253418
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9988192319869995
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9934019446372986
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9991430044174194
+              }
+            ],
+            "minimum_witness_ncc": 0.9934019446372986,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 63017,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 63017,
+            "previous_source_pts_ticks": 62761,
+            "source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b",
+            "previous_source_pixel_sha256": "6ab7cd27a8756b687f70857d6bf0d2a8732625d15161e2de41a139f31fd193e1",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                1.0003646786405387,
+                5.144823182870017e-06,
+                -0.02038468983623503
+              ],
+              [
+                -5.144823182870017e-06,
+                1.0003646786405387,
+                -0.06825444038566791
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9967154264450073
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9999353289604187
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9981988668441772
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9939509034156799
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9997625350952148
+              }
+            ],
+            "minimum_witness_ncc": 0.9939509034156799,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 63273,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 63273,
+            "previous_source_pts_ticks": 63017,
+            "source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a",
+            "previous_source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9998466402068474,
+                4.418790424022357e-06,
+                0.05178104863866685
+              ],
+              [
+                -4.418790424022357e-06,
+                0.9998466402068474,
+                0.029933324814798337
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.99870765209198
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9996821284294128
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9999522566795349
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9979313611984253
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9954364895820618
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.999787449836731
+              }
+            ],
+            "minimum_witness_ncc": 0.9954364895820618,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 63529,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 63529,
+            "previous_source_pts_ticks": 63273,
+            "source_pixel_sha256": "7b784dd56e27c48a760671568acbd458bc496400335ee4b3181798d0584a4044",
+            "previous_source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9940329985130895,
+                -0.00019179167438573074,
+                2.323624852540267
+              ],
+              [
+                0.00019179167438573074,
+                0.9940329985130895,
+                0.9203290828667463
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9441217184066772
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9915294051170349
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9991617798805237
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9738530516624451
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9746719002723694
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9985811710357666
+              }
+            ],
+            "minimum_witness_ncc": 0.9441217184066772,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 63785,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 63785,
+            "previous_source_pts_ticks": 63529,
+            "source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0",
+            "previous_source_pixel_sha256": "7b784dd56e27c48a760671568acbd458bc496400335ee4b3181798d0584a4044",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9948535646740431,
+                -0.00015723850662819448,
+                2.0701302395502603
+              ],
+              [
+                0.00015723850662819448,
+                0.9948535646740431,
+                0.7437883742614648
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9514697790145874
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9922557473182678
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.999326229095459
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9742431044578552
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9676326513290405
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9985077381134033
+              }
+            ],
+            "minimum_witness_ncc": 0.9514697790145874,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 64041,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 64041,
+            "previous_source_pts_ticks": 63785,
+            "source_pixel_sha256": "d18c9060f352e53b37967c62e12f3ee51b06e330664ee49da476b3751cda8f83",
+            "previous_source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9935263306922264,
+                -0.00041010392544650956,
+                2.214215912867266
+              ],
+              [
+                0.00041010392544650956,
+                0.9935263306922264,
+                0.9819513924821548
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9586800932884216
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9943234920501709
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9992221593856812
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9747629165649414
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.967412531375885
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9983766078948975
+              }
+            ],
+            "minimum_witness_ncc": 0.9586800932884216,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 64297,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 64297,
+            "previous_source_pts_ticks": 64041,
+            "source_pixel_sha256": "0e795ed52d0eac85bf325988a8d629c2be975f8fbce0d9bfa33a8a0c773eee86",
+            "previous_source_pixel_sha256": "d18c9060f352e53b37967c62e12f3ee51b06e330664ee49da476b3751cda8f83",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9973291692023336,
+                9.053707559572738e-05,
+                0.7543332762676788
+              ],
+              [
+                -9.053707559572738e-05,
+                0.9973291692023336,
+                0.45852302755296853
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9690305590629578
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9952521324157715
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9996991753578186
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9792369604110718
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9741641283035278
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9991592764854431
+              }
+            ],
+            "minimum_witness_ncc": 0.9690305590629578,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 64553,
+          "result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 64553,
+            "previous_source_pts_ticks": 64297,
+            "source_pixel_sha256": "bcb5a25b6b58a0efb563575d4be9ba3507bf290b327fa64996a1d903970695a2",
+            "previous_source_pixel_sha256": "0e795ed52d0eac85bf325988a8d629c2be975f8fbce0d9bfa33a8a0c773eee86",
+            "source_epoch": "offline-observed-R1",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9946694099783177,
+                -0.0002501338723971831,
+                2.1490705568384665
+              ],
+              [
+                0.0002501338723971831,
+                0.9946694099783177,
+                0.7533096759701211
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9554470181465149
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9938935041427612
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.999299168586731
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9730512499809265
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9635090827941895
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9984960556030273
+              }
+            ],
+            "minimum_witness_ncc": 0.9554470181465149,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          }
+        },
+        {
+          "source_pts_ticks": 64809,
+          "result": {
+            "reason": "seed_model_incoherent",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 65065,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 65321,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 65577,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 65833,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 66089,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 66345,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 66601,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 66857,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 67113,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        },
+        {
+          "source_pts_ticks": 67369,
+          "result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          }
+        }
+      ],
+      "links": 19
+    }
+  ],
+  "wall_clock_sec": 96.53264900599606,
+  "original_30_default_outputs_exact": true,
+  "terminal_bindings_match": true,
+  "qualification_created": false,
+  "canonical_current": null
+}

@@ -1,0 +1,230 @@
+{
+  "scope": "Frozen native cohort; image-derived observed acquisition, unreviewed, not qualification",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "windows": [
+    {
+      "window_sec": [
+        3.2,
+        3.3
+      ],
+      "native_frames": 6,
+      "adjacent_links": 5,
+      "supported_links_descriptive": 0,
+      "known_png_overlaps": 0,
+      "review_status": "unreviewed",
+      "runtime_proof_authorized": false,
+      "rows": [
+        {
+          "source_pts_ticks": 49193,
+          "time_base": "1/15360",
+          "pts_sec": 3.2026692708333333,
+          "local_path": "outputs/recognition-investigation/pts-gap-cohort-20261009/window-000/frame_000001.png",
+          "frame_sha256": "22f52b7e1378a645b1f62d43c91744d65b51283d8613deb15e7cbb9f84003eaf",
+          "source_pixel_sha256": "52f8a01178f8f8621d2363e1d5c7224d348483be58cbe0cc7e015c74f3ce45aa",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "image_supported_initialization_pending",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 49449,
+          "time_base": "1/15360",
+          "pts_sec": 3.2193359375,
+          "local_path": "outputs/recognition-investigation/pts-gap-cohort-20261009/window-000/frame_000002.png",
+          "frame_sha256": "ccf9a7cd5b89efb806925da457d6cdd8f6486f8db09a935bd29847317e46a69f",
+          "source_pixel_sha256": "d2021936c41fc4745db1a3f444f428a92a3ad98dd1eaf513f4b8afb065857edd",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "image_supported_initialization_pending",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 49705,
+          "time_base": "1/15360",
+          "pts_sec": 3.2360026041666665,
+          "local_path": "outputs/recognition-investigation/pts-gap-cohort-20261009/window-000/frame_000003.png",
+          "frame_sha256": "08d92c7734d5a94b76507663f4428b85c9469d9e9fe9ed06c2b560e6de1d1a7d",
+          "source_pixel_sha256": "8dbcca050fe2e4f5363b5903e16affa9ec2bb5aec73fdd3403002dda1eb2df63",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "image_supported_initialization_pending",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 49961,
+          "time_base": "1/15360",
+          "pts_sec": 3.252669270833333,
+          "local_path": "outputs/recognition-investigation/pts-gap-cohort-20261009/window-000/frame_000004.png",
+          "frame_sha256": "36445425b58f853796623094ef7abb3ffc82b40de13b43722129c2c064e85305",
+          "source_pixel_sha256": "71402520c6d770c7f6fdd50352ce569bdce502429d845b77a6d4fe14d4452af5",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "image_supported_initialization_pending",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 50217,
+          "time_base": "1/15360",
+          "pts_sec": 3.2693359375,
+          "local_path": "outputs/recognition-investigation/pts-gap-cohort-20261009/window-000/frame_000005.png",
+          "frame_sha256": "bea25a2a8b7d169bc8baed7dba73e4eede9140f00e6ab00c0a928c3317964472",
+          "source_pixel_sha256": "aff7987b76aad2e642d721b7459f02f2bb5c7bb5a772edb90aad509fa869baea",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "image_supported_initialization_pending",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 50473,
+          "time_base": "1/15360",
+          "pts_sec": 3.286002604166667,
+          "local_path": "outputs/recognition-investigation/pts-gap-cohort-20261009/window-000/frame_000006.png",
+          "frame_sha256": "f2e6dbd53930d35d036f99879e224dbdacb4568f405feabcfd9c9e587014f02b",
+          "source_pixel_sha256": "f1fedf6ae3a5607a2677e14ce59ba4b2ebf4d84175730491e7b1a82b339dc0b8",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "image_supported_initialization_pending",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        }
+      ],
+      "initialization_reason": "image_supported_initialization_pending",
+      "known_native_pixel_overlaps": 0,
+      "pending_initialization_frames": 6,
+      "observed_seed_pts_ticks": []
+    },
+    {
+      "window_sec": [
+        5.14,
+        5.2
+      ],
+      "native_frames": 3,
+      "adjacent_links": 2,
+      "supported_links_descriptive": 0,
+      "known_png_overlaps": 0,
+      "review_status": "unreviewed",
+      "runtime_proof_authorized": false,
+      "rows": [
+        {
+          "source_pts_ticks": 79145,
+          "time_base": "1/15360",
+          "pts_sec": 5.152669270833333,
+          "local_path": "outputs/recognition-investigation/pts-gap-cohort-20261009/window-001/frame_000001.png",
+          "frame_sha256": "2068981774e3ee594b32416f0034bee7b41e72420c98386b9e7f7778815310eb",
+          "source_pixel_sha256": "6fd0b727f5b695af3f469254f1bf05e8c109b195bac923b7d480a464ab822b35",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "image_supported_initialization_pending",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 79401,
+          "time_base": "1/15360",
+          "pts_sec": 5.1693359375,
+          "local_path": "outputs/recognition-investigation/pts-gap-cohort-20261009/window-001/frame_000002.png",
+          "frame_sha256": "39cfd1cb671d9a56ec86700ad42216a47db41e72695ca302449083956625ca3d",
+          "source_pixel_sha256": "ec31f90affd109798bb091fe7a4bbf0be797e167c076d664805af0e62cf89a0c",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "image_supported_initialization_pending",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 79657,
+          "time_base": "1/15360",
+          "pts_sec": 5.186002604166666,
+          "local_path": "outputs/recognition-investigation/pts-gap-cohort-20261009/window-001/frame_000003.png",
+          "frame_sha256": "f80758130a9400f8bb09c288f8629c3e3a05ed8a4054f102809a35f6e4167def",
+          "source_pixel_sha256": "d29ee4c530d22657c083396b6a9b35e012f5b2acafeb79144a27f2c7d18f602b",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "image_supported_initialization_pending",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        }
+      ],
+      "initialization_reason": "image_supported_initialization_pending",
+      "known_native_pixel_overlaps": 0,
+      "pending_initialization_frames": 3,
+      "observed_seed_pts_ticks": []
+    }
+  ],
+  "file_sha256": {
+    "outputs/recognition-investigation/world-domain-bootstrap-20261009/profile.json": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+    "outputs/recognition-investigation/world-domain-bootstrap-20261009/assets/wall_close.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "ValorantData/videos/Valorant_09-25-2026_0-37-29-379.mp4": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "scripts/diagnostics/observed_scene_chain.py": "dca641c48a302fd7bcc70e47306e8505923e04b04afdb948523fafd505e35e06",
+    "scripts/diagnostics/scene_domain_bootstrap.py": "1904b5736301a4cd632a6de1f9eb23cfb62f95c83840379197c20b50d1973b41",
+    "scripts/diagnostics/scene_world_bootstrap.py": "9947a6b0adc00f1e4b4eb63d5a95b1555d48091633712546e8078ee3a2436cfa",
+    "scripts/diagnostics/scene_reference_support.py": "aa6cec5c7ea7b10ce69c078fb2a8e2c7c794f6fa610ca3592c113d91a69751a5",
+    "scripts/diagnostics/scene_domain_ambiguity.py": "74ff5b505f2fd703936acee89dd6e5633a549f5ba2b7cc9a53ba9cd52cd9af10",
+    "scripts/diagnostics/scene_joint_domains.py": "2046cede2304b9493abc5f9ba06cbcfbe820a67f245a6e42cbd0aff5a5f45d34",
+    "scripts/diagnostics/scene_world_chain.py": "8a6d11a151f4afb77d88780b51f0705beca527edce7521831b9c8a590e788e33",
+    "scripts/diagnostics/scene_correspondence.py": "667fb4f7b0626fbbf4770716eefc18976a9409a4f0646084b95d479dab7273a3",
+    "scripts/diagnostics/scene_patch_search.py": "544b61f8dca800968521e9edce918166bb97353f5c2a5fed35f6011a0a04e4c1",
+    "scripts/diagnostics/validate_scene_chain_cohort.py": "cc6aac7be8ad914446b5f977832d695f90003def0ebe1c4be7f70236bb70101f",
+    "scripts/diagnostics/diagnose_native_global_lifecycle.py": "761dcd3e4019014e1691a29aad62f95d1ea4d401a61039c19a933d40d381a396",
+    "e2e_reports/match_001/native_exposure_pts_inventory.json": "2cccdba327d79e0c1fa476887c13c19b14b5eb91b9e2067dbb7404360d8d1018",
+    "scripts/diagnostics/inventory_native_exposure.py": "b8004f02402b0496209ce229fd46e84d2fca1f56de887018346db0ef4c8cb6df",
+    "e2e_reports/match_001/pts_gap_cohort_reservation.json": "2d1073bcce5ffe90ff2a6239f70cc2a4960109ce3345ca876dbc5cb4b2d000f6",
+    "outputs/recognition-investigation/pts-gap-cohort-20261009/window-000/frame_000001.png": "22f52b7e1378a645b1f62d43c91744d65b51283d8613deb15e7cbb9f84003eaf",
+    "outputs/recognition-investigation/pts-gap-cohort-20261009/window-000/frame_000002.png": "ccf9a7cd5b89efb806925da457d6cdd8f6486f8db09a935bd29847317e46a69f",
+    "outputs/recognition-investigation/pts-gap-cohort-20261009/window-000/frame_000003.png": "08d92c7734d5a94b76507663f4428b85c9469d9e9fe9ed06c2b560e6de1d1a7d",
+    "outputs/recognition-investigation/pts-gap-cohort-20261009/window-000/frame_000004.png": "36445425b58f853796623094ef7abb3ffc82b40de13b43722129c2c064e85305",
+    "outputs/recognition-investigation/pts-gap-cohort-20261009/window-000/frame_000005.png": "bea25a2a8b7d169bc8baed7dba73e4eede9140f00e6ab00c0a928c3317964472",
+    "outputs/recognition-investigation/pts-gap-cohort-20261009/window-000/frame_000006.png": "f2e6dbd53930d35d036f99879e224dbdacb4568f405feabcfd9c9e587014f02b",
+    "outputs/recognition-investigation/pts-gap-cohort-20261009/window-001/frame_000001.png": "2068981774e3ee594b32416f0034bee7b41e72420c98386b9e7f7778815310eb",
+    "outputs/recognition-investigation/pts-gap-cohort-20261009/window-001/frame_000002.png": "39cfd1cb671d9a56ec86700ad42216a47db41e72695ca302449083956625ca3d",
+    "outputs/recognition-investigation/pts-gap-cohort-20261009/window-001/frame_000003.png": "f80758130a9400f8bb09c288f8629c3e3a05ed8a4054f102809a35f6e4167def"
+  },
+  "qualification_created": false,
+  "new_runtime_events": 0,
+  "canonical_current": null,
+  "wall_clock_seconds": 17.148138981021475,
+  "observer_options": {
+    "deferred_initialization": true
+  }
+}

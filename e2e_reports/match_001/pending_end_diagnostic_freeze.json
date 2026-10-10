@@ -1,0 +1,21 @@
+{
+  "scope": "Fixed diagnostic training hypothesis before replay; no qualification/adoption",
+  "hypothesis": {
+    "max_corroboration_sec": 1,
+    "minimum_result_and_score_duration_sec": 0.05,
+    "deadline_origin": "observed clock change",
+    "score_evidence": "historical accepted consecutive plateau; current unknown left unchanged",
+    "policy": "Reject source gap/epoch/repeated pixels/break/occlusion/context/phase/contradiction/additional clock; no event timestamp chosen"
+  },
+  "script_sha256": "d14953c7ef03a66076170bec6983224261cdc0db31b0c51df37ee711d378f553",
+  "input_sha256": {
+    "e2e_reports/match_001/r1_end_continuous_result_inputs.json": "8584618c1609b6fabe2a95bc8029df920f992e1663a19d44cd9d68b992725a41",
+    "e2e_reports/match_001/numeric_end_menu_entry_control.json": "d62416433963521094ed5ef3b48c5c819d34302dac5c76e32f521420a136f573",
+    "e2e_reports/match_001/score_rowcontrast_actual_analyzer.json": "f4cf3f35eb45038d105a45a41a45734ffa4a638dc90ff5758b1ab258d166d1b3"
+  },
+  "target_assertions": [
+    "GT-R1-ROUND-END"
+  ],
+  "independent_holdout": false,
+  "qualification_created": false
+}

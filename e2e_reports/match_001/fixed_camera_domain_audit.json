@@ -1,0 +1,2764 @@
+{
+  "scope": "passive fixed-camera whole-domain audit; no acceptance override",
+  "bindings": {
+    "outputs/recognition-investigation/world-domain-bootstrap-20261009/profile.json": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+    "outputs/recognition-investigation/world-domain-bootstrap-20261009/assets/wall_close.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "ValorantData/videos/Valorant_09-25-2026_0-37-29-379.mp4": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "scripts/diagnostics/observed_scene_chain.py": "c60081a951a72b6d5aa68b05231cb3037b9883b0d7a4704b56810f64b88153d5",
+    "scripts/diagnostics/scene_domain_bootstrap.py": "1904b5736301a4cd632a6de1f9eb23cfb62f95c83840379197c20b50d1973b41",
+    "scripts/diagnostics/scene_world_bootstrap.py": "9947a6b0adc00f1e4b4eb63d5a95b1555d48091633712546e8078ee3a2436cfa",
+    "scripts/diagnostics/scene_reference_support.py": "aa6cec5c7ea7b10ce69c078fb2a8e2c7c794f6fa610ca3592c113d91a69751a5",
+    "scripts/diagnostics/scene_domain_ambiguity.py": "74ff5b505f2fd703936acee89dd6e5633a549f5ba2b7cc9a53ba9cd52cd9af10",
+    "scripts/diagnostics/scene_joint_domains.py": "2046cede2304b9493abc5f9ba06cbcfbe820a67f245a6e42cbd0aff5a5f45d34",
+    "scripts/diagnostics/scene_world_chain.py": "8a6d11a151f4afb77d88780b51f0705beca527edce7521831b9c8a590e788e33",
+    "scripts/diagnostics/scene_correspondence.py": "667fb4f7b0626fbbf4770716eefc18976a9409a4f0646084b95d479dab7273a3",
+    "scripts/diagnostics/scene_patch_search.py": "544b61f8dca800968521e9edce918166bb97353f5c2a5fed35f6011a0a04e4c1",
+    "scripts/diagnostics/validate_scene_chain_cohort.py": "ac57a87045c2e77eac6e162b14ba9d82459c6d7fc8d83904f9b10b3d911e68da",
+    "scripts/diagnostics/diagnose_native_global_lifecycle.py": "761dcd3e4019014e1691a29aad62f95d1ea4d401a61039c19a933d40d381a396",
+    "outputs/recognition-investigation/two-scene-domain-reference-20261009/profile.json": "7c88be66b6d322f037be309ca02464c7ffd5da3236b646b7ec24d21d1f4e7ce2",
+    "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/wall_close.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/arch_context.png": "929aab0a3f014eddff37a663241bd7fe3fcd15e0f800f7afe496b66c3d880579",
+    "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000001.png": "7178c40b9997f559b443c6e1145cffbdef9823d862d5f55c158bc9a7a5cecd6c",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000001.png": "ce2dbc370171a4cd637a6e96aa60ec6c9a50d8a1b62914622dd547f1727baa99",
+    "scripts/diagnostics/scene_descriptor_acquisition.py": "e733ca2557d3e7ea1692cb2d1e4542ce2c384faa72c2146e0b35b498e9e2b278",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000013.png": "3f7f964b6993d20bba3396e160e6b6edf41cc5352b0b0ad57de9254ddb7fe0a5",
+    "e2e_reports/match_001/spatial_descriptor_declaration.json": "09569bd6eb7da93fd742834da59e912016706d68285495d90308ad65875011ab",
+    "e2e_reports/match_001/spatial_descriptor_development.json": "9023280efeb06d3808a7125663f0efa87cde2566714554f2226f6c47a0f7a637",
+    "/home/admin/eval_valorant_perspective/scripts/diagnostics/audit_fixed_camera_domains.py": "988bd56806e6588f079109a3d04db573a9dd69c818a37691b8ce7261937e3dac"
+  },
+  "terminal_bindings_match": true,
+  "rows": [
+    {
+      "reference_id": "reviewed-arch-context",
+      "image": "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/arch_context.png",
+      "original_reason": "diagnostic_descriptor_domain_proposal",
+      "original_proposal": true,
+      "original_model": [
+        [
+          1.0000362776939835,
+          2.582504605331212e-06,
+          -0.004779071077681482
+        ],
+        [
+          -2.582504605331212e-06,
+          1.0000362776939835,
+          -0.0037229396103839515
+        ]
+      ],
+      "domain_audit": [
+        {
+          "region": 0,
+          "predicted_ncc": 1.0,
+          "competing_offsets": [
+            {
+              "offset_xy": [
+                1,
+                -3
+              ],
+              "ncc": 0.9023590683937073
+            }
+          ],
+          "invalid_offsets": 102,
+          "locally_unambiguous_appearance": false,
+          "search_scope": "17x17 integer translations of fixed affine projection",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        },
+        {
+          "region": 1,
+          "predicted_ncc": 1.0,
+          "competing_offsets": [
+            {
+              "offset_xy": [
+                -1,
+                3
+              ],
+              "ncc": 0.9390249848365784
+            },
+            {
+              "offset_xy": [
+                0,
+                3
+              ],
+              "ncc": 0.9862874746322632
+            },
+            {
+              "offset_xy": [
+                1,
+                3
+              ],
+              "ncc": 0.9444289803504944
+            },
+            {
+              "offset_xy": [
+                -1,
+                4
+              ],
+              "ncc": 0.9371384382247925
+            },
+            {
+              "offset_xy": [
+                0,
+                4
+              ],
+              "ncc": 0.98380446434021
+            },
+            {
+              "offset_xy": [
+                1,
+                4
+              ],
+              "ncc": 0.943171501159668
+            },
+            {
+              "offset_xy": [
+                -1,
+                5
+              ],
+              "ncc": 0.9324326515197754
+            },
+            {
+              "offset_xy": [
+                0,
+                5
+              ],
+              "ncc": 0.9784110188484192
+            },
+            {
+              "offset_xy": [
+                1,
+                5
+              ],
+              "ncc": 0.939155638217926
+            },
+            {
+              "offset_xy": [
+                -1,
+                6
+              ],
+              "ncc": 0.9267434477806091
+            },
+            {
+              "offset_xy": [
+                0,
+                6
+              ],
+              "ncc": 0.9720852375030518
+            },
+            {
+              "offset_xy": [
+                1,
+                6
+              ],
+              "ncc": 0.9344354271888733
+            },
+            {
+              "offset_xy": [
+                -1,
+                7
+              ],
+              "ncc": 0.9206705689430237
+            },
+            {
+              "offset_xy": [
+                0,
+                7
+              ],
+              "ncc": 0.9650946259498596
+            },
+            {
+              "offset_xy": [
+                1,
+                7
+              ],
+              "ncc": 0.9295300841331482
+            },
+            {
+              "offset_xy": [
+                -1,
+                8
+              ],
+              "ncc": 0.9109708070755005
+            },
+            {
+              "offset_xy": [
+                0,
+                8
+              ],
+              "ncc": 0.9545539617538452
+            },
+            {
+              "offset_xy": [
+                1,
+                8
+              ],
+              "ncc": 0.9201421141624451
+            }
+          ],
+          "invalid_offsets": 102,
+          "locally_unambiguous_appearance": false,
+          "search_scope": "17x17 integer translations of fixed affine projection",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        },
+        {
+          "region": 2,
+          "predicted_ncc": 0.999990701675415,
+          "competing_offsets": [],
+          "invalid_offsets": 85,
+          "locally_unambiguous_appearance": true,
+          "search_scope": "17x17 integer translations of fixed affine projection",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        }
+      ],
+      "joint": {
+        "fixed_projection_witness_regions": [
+          0,
+          1,
+          2
+        ],
+        "distributed_source_and_current_support": true,
+        "joint_competing_offsets": [],
+        "unresolved_offsets": [],
+        "locally_unique_joint_appearance": true,
+        "scope": "fixed affine plus complete local integer-translation lattice only",
+        "world_mask_authorized": false,
+        "runtime_proof_authorized": false
+      },
+      "complete_measurement_count": 867
+    },
+    {
+      "reference_id": "reviewed-arch-context",
+      "image": "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000001.png",
+      "original_reason": "source_camera_model_incoherent",
+      "original_proposal": false,
+      "original_model": [
+        [
+          1.1208160663053865,
+          0.04122834980342183,
+          -22.47540112634117
+        ],
+        [
+          -0.04122834980342183,
+          1.1208160663053865,
+          -0.9382637339281767
+        ]
+      ],
+      "domain_audit": [
+        {
+          "region": 0,
+          "predicted_ncc": 0.20463807880878448,
+          "competing_offsets": [],
+          "invalid_offsets": 229,
+          "locally_unambiguous_appearance": false,
+          "search_scope": "17x17 integer translations of fixed affine projection",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        },
+        {
+          "region": 1,
+          "predicted_ncc": -0.17008812725543976,
+          "competing_offsets": [],
+          "invalid_offsets": 0,
+          "locally_unambiguous_appearance": false,
+          "search_scope": "17x17 integer translations of fixed affine projection",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        },
+        {
+          "region": 2,
+          "predicted_ncc": null,
+          "competing_offsets": [],
+          "invalid_offsets": 289,
+          "locally_unambiguous_appearance": false,
+          "search_scope": "17x17 integer translations of fixed affine projection",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        }
+      ],
+      "joint": {
+        "fixed_projection_witness_regions": [],
+        "distributed_source_and_current_support": false,
+        "joint_competing_offsets": [],
+        "unresolved_offsets": [
+          [
+            -8,
+            -8
+          ],
+          [
+            -8,
+            -7
+          ],
+          [
+            -8,
+            -6
+          ],
+          [
+            -8,
+            -5
+          ],
+          [
+            -8,
+            -4
+          ],
+          [
+            -8,
+            -3
+          ],
+          [
+            -8,
+            -2
+          ],
+          [
+            -8,
+            -1
+          ],
+          [
+            -8,
+            0
+          ],
+          [
+            -8,
+            1
+          ],
+          [
+            -8,
+            2
+          ],
+          [
+            -8,
+            3
+          ],
+          [
+            -8,
+            4
+          ],
+          [
+            -8,
+            5
+          ],
+          [
+            -8,
+            6
+          ],
+          [
+            -8,
+            7
+          ],
+          [
+            -8,
+            8
+          ],
+          [
+            -7,
+            -8
+          ],
+          [
+            -7,
+            -7
+          ],
+          [
+            -7,
+            -6
+          ],
+          [
+            -7,
+            -5
+          ],
+          [
+            -7,
+            -4
+          ],
+          [
+            -7,
+            -3
+          ],
+          [
+            -7,
+            -2
+          ],
+          [
+            -7,
+            -1
+          ],
+          [
+            -7,
+            0
+          ],
+          [
+            -7,
+            1
+          ],
+          [
+            -7,
+            2
+          ],
+          [
+            -7,
+            3
+          ],
+          [
+            -7,
+            4
+          ],
+          [
+            -7,
+            5
+          ],
+          [
+            -7,
+            6
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -7,
+            8
+          ],
+          [
+            -6,
+            -8
+          ],
+          [
+            -6,
+            -7
+          ],
+          [
+            -6,
+            -6
+          ],
+          [
+            -6,
+            -5
+          ],
+          [
+            -6,
+            -4
+          ],
+          [
+            -6,
+            -3
+          ],
+          [
+            -6,
+            -2
+          ],
+          [
+            -6,
+            -1
+          ],
+          [
+            -6,
+            0
+          ],
+          [
+            -6,
+            1
+          ],
+          [
+            -6,
+            2
+          ],
+          [
+            -6,
+            3
+          ],
+          [
+            -6,
+            4
+          ],
+          [
+            -6,
+            5
+          ],
+          [
+            -6,
+            6
+          ],
+          [
+            -6,
+            7
+          ],
+          [
+            -6,
+            8
+          ],
+          [
+            -5,
+            -8
+          ],
+          [
+            -5,
+            -7
+          ],
+          [
+            -5,
+            -6
+          ],
+          [
+            -5,
+            -5
+          ],
+          [
+            -5,
+            -4
+          ],
+          [
+            -5,
+            -3
+          ],
+          [
+            -5,
+            -2
+          ],
+          [
+            -5,
+            -1
+          ],
+          [
+            -5,
+            0
+          ],
+          [
+            -5,
+            1
+          ],
+          [
+            -5,
+            2
+          ],
+          [
+            -5,
+            3
+          ],
+          [
+            -5,
+            4
+          ],
+          [
+            -5,
+            5
+          ],
+          [
+            -5,
+            6
+          ],
+          [
+            -5,
+            7
+          ],
+          [
+            -5,
+            8
+          ],
+          [
+            -4,
+            -8
+          ],
+          [
+            -4,
+            -7
+          ],
+          [
+            -4,
+            -6
+          ],
+          [
+            -4,
+            -5
+          ],
+          [
+            -4,
+            -4
+          ],
+          [
+            -4,
+            -3
+          ],
+          [
+            -4,
+            -2
+          ],
+          [
+            -4,
+            -1
+          ],
+          [
+            -4,
+            0
+          ],
+          [
+            -4,
+            1
+          ],
+          [
+            -4,
+            2
+          ],
+          [
+            -4,
+            3
+          ],
+          [
+            -4,
+            4
+          ],
+          [
+            -4,
+            5
+          ],
+          [
+            -4,
+            6
+          ],
+          [
+            -4,
+            7
+          ],
+          [
+            -4,
+            8
+          ],
+          [
+            -3,
+            -8
+          ],
+          [
+            -3,
+            -7
+          ],
+          [
+            -3,
+            -6
+          ],
+          [
+            -3,
+            -5
+          ],
+          [
+            -3,
+            -4
+          ],
+          [
+            -3,
+            -3
+          ],
+          [
+            -3,
+            -2
+          ],
+          [
+            -3,
+            -1
+          ],
+          [
+            -3,
+            0
+          ],
+          [
+            -3,
+            1
+          ],
+          [
+            -3,
+            2
+          ],
+          [
+            -3,
+            3
+          ],
+          [
+            -3,
+            4
+          ],
+          [
+            -3,
+            5
+          ],
+          [
+            -3,
+            6
+          ],
+          [
+            -3,
+            7
+          ],
+          [
+            -3,
+            8
+          ],
+          [
+            -2,
+            -8
+          ],
+          [
+            -2,
+            -7
+          ],
+          [
+            -2,
+            -6
+          ],
+          [
+            -2,
+            -5
+          ],
+          [
+            -2,
+            -4
+          ],
+          [
+            -2,
+            -3
+          ],
+          [
+            -2,
+            3
+          ],
+          [
+            -2,
+            4
+          ],
+          [
+            -2,
+            5
+          ],
+          [
+            -2,
+            6
+          ],
+          [
+            -2,
+            7
+          ],
+          [
+            -2,
+            8
+          ],
+          [
+            -1,
+            -8
+          ],
+          [
+            -1,
+            -7
+          ],
+          [
+            -1,
+            -6
+          ],
+          [
+            -1,
+            -5
+          ],
+          [
+            -1,
+            -4
+          ],
+          [
+            -1,
+            -3
+          ],
+          [
+            -1,
+            3
+          ],
+          [
+            -1,
+            4
+          ],
+          [
+            -1,
+            5
+          ],
+          [
+            -1,
+            6
+          ],
+          [
+            -1,
+            7
+          ],
+          [
+            -1,
+            8
+          ],
+          [
+            0,
+            -8
+          ],
+          [
+            0,
+            -7
+          ],
+          [
+            0,
+            -6
+          ],
+          [
+            0,
+            -5
+          ],
+          [
+            0,
+            -4
+          ],
+          [
+            0,
+            -3
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            0,
+            5
+          ],
+          [
+            0,
+            6
+          ],
+          [
+            0,
+            7
+          ],
+          [
+            0,
+            8
+          ],
+          [
+            1,
+            -8
+          ],
+          [
+            1,
+            -7
+          ],
+          [
+            1,
+            -6
+          ],
+          [
+            1,
+            -5
+          ],
+          [
+            1,
+            -4
+          ],
+          [
+            1,
+            -3
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            1,
+            5
+          ],
+          [
+            1,
+            6
+          ],
+          [
+            1,
+            7
+          ],
+          [
+            1,
+            8
+          ],
+          [
+            2,
+            -8
+          ],
+          [
+            2,
+            -7
+          ],
+          [
+            2,
+            -6
+          ],
+          [
+            2,
+            -5
+          ],
+          [
+            2,
+            -4
+          ],
+          [
+            2,
+            -3
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            2,
+            5
+          ],
+          [
+            2,
+            6
+          ],
+          [
+            2,
+            7
+          ],
+          [
+            2,
+            8
+          ],
+          [
+            3,
+            -8
+          ],
+          [
+            3,
+            -7
+          ],
+          [
+            3,
+            -6
+          ],
+          [
+            3,
+            -5
+          ],
+          [
+            3,
+            -4
+          ],
+          [
+            3,
+            -3
+          ],
+          [
+            3,
+            -2
+          ],
+          [
+            3,
+            -1
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            3,
+            1
+          ],
+          [
+            3,
+            2
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            3,
+            5
+          ],
+          [
+            3,
+            6
+          ],
+          [
+            3,
+            7
+          ],
+          [
+            3,
+            8
+          ],
+          [
+            4,
+            -8
+          ],
+          [
+            4,
+            -7
+          ],
+          [
+            4,
+            -6
+          ],
+          [
+            4,
+            -5
+          ],
+          [
+            4,
+            -4
+          ],
+          [
+            4,
+            -3
+          ],
+          [
+            4,
+            -2
+          ],
+          [
+            4,
+            -1
+          ],
+          [
+            4,
+            0
+          ],
+          [
+            4,
+            1
+          ],
+          [
+            4,
+            2
+          ],
+          [
+            4,
+            3
+          ],
+          [
+            4,
+            4
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            4,
+            6
+          ],
+          [
+            4,
+            7
+          ],
+          [
+            4,
+            8
+          ],
+          [
+            5,
+            -8
+          ],
+          [
+            5,
+            -7
+          ],
+          [
+            5,
+            -6
+          ],
+          [
+            5,
+            -5
+          ],
+          [
+            5,
+            -4
+          ],
+          [
+            5,
+            -3
+          ],
+          [
+            5,
+            -2
+          ],
+          [
+            5,
+            -1
+          ],
+          [
+            5,
+            0
+          ],
+          [
+            5,
+            1
+          ],
+          [
+            5,
+            2
+          ],
+          [
+            5,
+            3
+          ],
+          [
+            5,
+            4
+          ],
+          [
+            5,
+            5
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            5,
+            7
+          ],
+          [
+            5,
+            8
+          ],
+          [
+            6,
+            -8
+          ],
+          [
+            6,
+            -7
+          ],
+          [
+            6,
+            -6
+          ],
+          [
+            6,
+            -5
+          ],
+          [
+            6,
+            -4
+          ],
+          [
+            6,
+            -3
+          ],
+          [
+            6,
+            -2
+          ],
+          [
+            6,
+            -1
+          ],
+          [
+            6,
+            0
+          ],
+          [
+            6,
+            1
+          ],
+          [
+            6,
+            2
+          ],
+          [
+            6,
+            3
+          ],
+          [
+            6,
+            4
+          ],
+          [
+            6,
+            5
+          ],
+          [
+            6,
+            6
+          ],
+          [
+            6,
+            7
+          ],
+          [
+            6,
+            8
+          ],
+          [
+            7,
+            -8
+          ],
+          [
+            7,
+            -7
+          ],
+          [
+            7,
+            -6
+          ],
+          [
+            7,
+            -5
+          ],
+          [
+            7,
+            -4
+          ],
+          [
+            7,
+            -3
+          ],
+          [
+            7,
+            -2
+          ],
+          [
+            7,
+            -1
+          ],
+          [
+            7,
+            0
+          ],
+          [
+            7,
+            1
+          ],
+          [
+            7,
+            2
+          ],
+          [
+            7,
+            3
+          ],
+          [
+            7,
+            4
+          ],
+          [
+            7,
+            5
+          ],
+          [
+            7,
+            6
+          ],
+          [
+            7,
+            7
+          ],
+          [
+            7,
+            8
+          ],
+          [
+            8,
+            -8
+          ],
+          [
+            8,
+            -7
+          ],
+          [
+            8,
+            -6
+          ],
+          [
+            8,
+            -5
+          ],
+          [
+            8,
+            -4
+          ],
+          [
+            8,
+            -3
+          ],
+          [
+            8,
+            -2
+          ],
+          [
+            8,
+            -1
+          ],
+          [
+            8,
+            0
+          ],
+          [
+            8,
+            1
+          ],
+          [
+            8,
+            2
+          ],
+          [
+            8,
+            3
+          ],
+          [
+            8,
+            4
+          ],
+          [
+            8,
+            5
+          ],
+          [
+            8,
+            6
+          ],
+          [
+            8,
+            7
+          ],
+          [
+            8,
+            8
+          ]
+        ],
+        "locally_unique_joint_appearance": false,
+        "scope": "fixed affine plus complete local integer-translation lattice only",
+        "world_mask_authorized": false,
+        "runtime_proof_authorized": false
+      },
+      "complete_measurement_count": 867
+    },
+    {
+      "reference_id": "reviewed-arch-context",
+      "image": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000001.png",
+      "original_reason": "three_region_descriptor_support_unavailable",
+      "original_proposal": false,
+      "original_model": null,
+      "domain_audit": null,
+      "joint": null
+    },
+    {
+      "reference_id": "reviewed-wall",
+      "image": "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/wall_close.png",
+      "original_reason": "projected_patch_support_unavailable",
+      "original_proposal": false,
+      "original_model": [
+        [
+          0.9999413804904733,
+          1.590299732857492e-05,
+          0.025756993326112802
+        ],
+        [
+          -1.590299732857492e-05,
+          0.9999413804904733,
+          0.014279357388128704
+        ]
+      ],
+      "domain_audit": [
+        {
+          "region": 0,
+          "predicted_ncc": null,
+          "competing_offsets": [],
+          "invalid_offsets": 153,
+          "locally_unambiguous_appearance": false,
+          "search_scope": "17x17 integer translations of fixed affine projection",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        },
+        {
+          "region": 1,
+          "predicted_ncc": 1.0,
+          "competing_offsets": [
+            {
+              "offset_xy": [
+                3,
+                1
+              ],
+              "ncc": 0.9247257709503174
+            },
+            {
+              "offset_xy": [
+                3,
+                2
+              ],
+              "ncc": 0.9509556889533997
+            },
+            {
+              "offset_xy": [
+                4,
+                2
+              ],
+              "ncc": 0.9212491512298584
+            },
+            {
+              "offset_xy": [
+                1,
+                3
+              ],
+              "ncc": 0.9133089184761047
+            },
+            {
+              "offset_xy": [
+                2,
+                3
+              ],
+              "ncc": 0.9438430070877075
+            },
+            {
+              "offset_xy": [
+                3,
+                3
+              ],
+              "ncc": 0.9560741186141968
+            },
+            {
+              "offset_xy": [
+                4,
+                3
+              ],
+              "ncc": 0.9492281675338745
+            },
+            {
+              "offset_xy": [
+                5,
+                3
+              ],
+              "ncc": 0.9234527945518494
+            },
+            {
+              "offset_xy": [
+                2,
+                4
+              ],
+              "ncc": 0.9048149585723877
+            },
+            {
+              "offset_xy": [
+                3,
+                4
+              ],
+              "ncc": 0.9389105439186096
+            },
+            {
+              "offset_xy": [
+                4,
+                4
+              ],
+              "ncc": 0.9559090733528137
+            },
+            {
+              "offset_xy": [
+                5,
+                4
+              ],
+              "ncc": 0.9519268870353699
+            },
+            {
+              "offset_xy": [
+                6,
+                4
+              ],
+              "ncc": 0.9285948872566223
+            },
+            {
+              "offset_xy": [
+                4,
+                5
+              ],
+              "ncc": 0.9365347027778625
+            },
+            {
+              "offset_xy": [
+                5,
+                5
+              ],
+              "ncc": 0.9553194046020508
+            },
+            {
+              "offset_xy": [
+                6,
+                5
+              ],
+              "ncc": 0.9530894756317139
+            },
+            {
+              "offset_xy": [
+                7,
+                5
+              ],
+              "ncc": 0.9270884990692139
+            },
+            {
+              "offset_xy": [
+                5,
+                6
+              ],
+              "ncc": 0.9174522757530212
+            },
+            {
+              "offset_xy": [
+                6,
+                6
+              ],
+              "ncc": 0.9354872703552246
+            },
+            {
+              "offset_xy": [
+                7,
+                6
+              ],
+              "ncc": 0.929688036441803
+            },
+            {
+              "offset_xy": [
+                8,
+                6
+              ],
+              "ncc": 0.9026005268096924
+            }
+          ],
+          "invalid_offsets": 163,
+          "locally_unambiguous_appearance": false,
+          "search_scope": "17x17 integer translations of fixed affine projection",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        },
+        {
+          "region": 2,
+          "predicted_ncc": 0.9999982714653015,
+          "competing_offsets": [
+            {
+              "offset_xy": [
+                3,
+                -1
+              ],
+              "ncc": 0.9533536434173584
+            },
+            {
+              "offset_xy": [
+                4,
+                -1
+              ],
+              "ncc": 0.9511595368385315
+            },
+            {
+              "offset_xy": [
+                5,
+                -1
+              ],
+              "ncc": 0.948033332824707
+            },
+            {
+              "offset_xy": [
+                6,
+                -1
+              ],
+              "ncc": 0.9442269802093506
+            },
+            {
+              "offset_xy": [
+                7,
+                -1
+              ],
+              "ncc": 0.9398130178451538
+            },
+            {
+              "offset_xy": [
+                8,
+                -1
+              ],
+              "ncc": 0.9347936511039734
+            },
+            {
+              "offset_xy": [
+                3,
+                0
+              ],
+              "ncc": 0.9854867458343506
+            },
+            {
+              "offset_xy": [
+                4,
+                0
+              ],
+              "ncc": 0.9764633178710938
+            },
+            {
+              "offset_xy": [
+                5,
+                0
+              ],
+              "ncc": 0.9664004445075989
+            },
+            {
+              "offset_xy": [
+                6,
+                0
+              ],
+              "ncc": 0.9556921124458313
+            },
+            {
+              "offset_xy": [
+                7,
+                0
+              ],
+              "ncc": 0.944432258605957
+            },
+            {
+              "offset_xy": [
+                8,
+                0
+              ],
+              "ncc": 0.9326574206352234
+            },
+            {
+              "offset_xy": [
+                3,
+                1
+              ],
+              "ncc": 0.9213903546333313
+            },
+            {
+              "offset_xy": [
+                4,
+                1
+              ],
+              "ncc": 0.9081540703773499
+            }
+          ],
+          "invalid_offsets": 135,
+          "locally_unambiguous_appearance": false,
+          "search_scope": "17x17 integer translations of fixed affine projection",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        },
+        {
+          "region": 3,
+          "predicted_ncc": 0.9972761273384094,
+          "competing_offsets": [],
+          "invalid_offsets": 0,
+          "locally_unambiguous_appearance": true,
+          "search_scope": "17x17 integer translations of fixed affine projection",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        },
+        {
+          "region": 4,
+          "predicted_ncc": 1.0,
+          "competing_offsets": [],
+          "invalid_offsets": 0,
+          "locally_unambiguous_appearance": true,
+          "search_scope": "17x17 integer translations of fixed affine projection",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        },
+        {
+          "region": 5,
+          "predicted_ncc": 0.9999896883964539,
+          "competing_offsets": [
+            {
+              "offset_xy": [
+                -5,
+                -1
+              ],
+              "ncc": 0.9014325737953186
+            },
+            {
+              "offset_xy": [
+                -4,
+                -1
+              ],
+              "ncc": 0.9083453416824341
+            },
+            {
+              "offset_xy": [
+                -3,
+                -1
+              ],
+              "ncc": 0.914915919303894
+            },
+            {
+              "offset_xy": [
+                3,
+                -1
+              ],
+              "ncc": 0.9406613111495972
+            },
+            {
+              "offset_xy": [
+                4,
+                -1
+              ],
+              "ncc": 0.9418311715126038
+            },
+            {
+              "offset_xy": [
+                5,
+                -1
+              ],
+              "ncc": 0.9422164559364319
+            },
+            {
+              "offset_xy": [
+                6,
+                -1
+              ],
+              "ncc": 0.9421947598457336
+            },
+            {
+              "offset_xy": [
+                7,
+                -1
+              ],
+              "ncc": 0.9417347311973572
+            },
+            {
+              "offset_xy": [
+                8,
+                -1
+              ],
+              "ncc": 0.9408710598945618
+            },
+            {
+              "offset_xy": [
+                -8,
+                0
+              ],
+              "ncc": 0.9687255620956421
+            },
+            {
+              "offset_xy": [
+                -7,
+                0
+              ],
+              "ncc": 0.9746994972229004
+            },
+            {
+              "offset_xy": [
+                -6,
+                0
+              ],
+              "ncc": 0.9801455140113831
+            },
+            {
+              "offset_xy": [
+                -5,
+                0
+              ],
+              "ncc": 0.9851400256156921
+            },
+            {
+              "offset_xy": [
+                -4,
+                0
+              ],
+              "ncc": 0.9895117282867432
+            },
+            {
+              "offset_xy": [
+                -3,
+                0
+              ],
+              "ncc": 0.9932420253753662
+            },
+            {
+              "offset_xy": [
+                3,
+                0
+              ],
+              "ncc": 0.9932816624641418
+            },
+            {
+              "offset_xy": [
+                4,
+                0
+              ],
+              "ncc": 0.9896069765090942
+            },
+            {
+              "offset_xy": [
+                5,
+                0
+              ],
+              "ncc": 0.9855180382728577
+            },
+            {
+              "offset_xy": [
+                6,
+                0
+              ],
+              "ncc": 0.9810468554496765
+            },
+            {
+              "offset_xy": [
+                7,
+                0
+              ],
+              "ncc": 0.9763782620429993
+            },
+            {
+              "offset_xy": [
+                8,
+                0
+              ],
+              "ncc": 0.9716325998306274
+            },
+            {
+              "offset_xy": [
+                -8,
+                1
+              ],
+              "ncc": 0.9391862750053406
+            },
+            {
+              "offset_xy": [
+                -7,
+                1
+              ],
+              "ncc": 0.9401689767837524
+            },
+            {
+              "offset_xy": [
+                -6,
+                1
+              ],
+              "ncc": 0.9406675100326538
+            },
+            {
+              "offset_xy": [
+                -5,
+                1
+              ],
+              "ncc": 0.9407768845558167
+            },
+            {
+              "offset_xy": [
+                -4,
+                1
+              ],
+              "ncc": 0.9402500987052917
+            },
+            {
+              "offset_xy": [
+                -3,
+                1
+              ],
+              "ncc": 0.9391599297523499
+            },
+            {
+              "offset_xy": [
+                3,
+                1
+              ],
+              "ncc": 0.9174296259880066
+            },
+            {
+              "offset_xy": [
+                4,
+                1
+              ],
+              "ncc": 0.9120304584503174
+            },
+            {
+              "offset_xy": [
+                5,
+                1
+              ],
+              "ncc": 0.9066387414932251
+            },
+            {
+              "offset_xy": [
+                6,
+                1
+              ],
+              "ncc": 0.9009827375411987
+            }
+          ],
+          "invalid_offsets": 0,
+          "locally_unambiguous_appearance": false,
+          "search_scope": "17x17 integer translations of fixed affine projection",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        }
+      ],
+      "joint": {
+        "fixed_projection_witness_regions": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "distributed_source_and_current_support": true,
+        "joint_competing_offsets": [],
+        "unresolved_offsets": [],
+        "locally_unique_joint_appearance": true,
+        "scope": "fixed affine plus complete local integer-translation lattice only",
+        "world_mask_authorized": false,
+        "runtime_proof_authorized": false
+      },
+      "complete_measurement_count": 1734
+    },
+    {
+      "reference_id": "reviewed-wall",
+      "image": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000013.png",
+      "original_reason": "source_camera_model_incoherent",
+      "original_proposal": false,
+      "original_model": [
+        [
+          0.9791011412625844,
+          -0.004603736392168277,
+          8.419693838466792
+        ],
+        [
+          0.004603736392168277,
+          0.9791011412625844,
+          7.7329832892542205
+        ]
+      ],
+      "domain_audit": [
+        {
+          "region": 0,
+          "predicted_ncc": 0.7490527629852295,
+          "competing_offsets": [],
+          "invalid_offsets": 102,
+          "locally_unambiguous_appearance": false,
+          "search_scope": "17x17 integer translations of fixed affine projection",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        },
+        {
+          "region": 1,
+          "predicted_ncc": 0.9295183420181274,
+          "competing_offsets": [
+            {
+              "offset_xy": [
+                -6,
+                -6
+              ],
+              "ncc": 0.9354257583618164
+            },
+            {
+              "offset_xy": [
+                -5,
+                -6
+              ],
+              "ncc": 0.9566722512245178
+            },
+            {
+              "offset_xy": [
+                -4,
+                -6
+              ],
+              "ncc": 0.958738386631012
+            },
+            {
+              "offset_xy": [
+                -3,
+                -6
+              ],
+              "ncc": 0.9422957301139832
+            },
+            {
+              "offset_xy": [
+                -2,
+                -6
+              ],
+              "ncc": 0.9096164703369141
+            },
+            {
+              "offset_xy": [
+                -5,
+                -5
+              ],
+              "ncc": 0.9307417869567871
+            },
+            {
+              "offset_xy": [
+                -4,
+                -5
+              ],
+              "ncc": 0.95158451795578
+            },
+            {
+              "offset_xy": [
+                -3,
+                -5
+              ],
+              "ncc": 0.9560204148292542
+            },
+            {
+              "offset_xy": [
+                -2,
+                -5
+              ],
+              "ncc": 0.9430680871009827
+            },
+            {
+              "offset_xy": [
+                -1,
+                -5
+              ],
+              "ncc": 0.9150896668434143
+            },
+            {
+              "offset_xy": [
+                -4,
+                -4
+              ],
+              "ncc": 0.9268661737442017
+            },
+            {
+              "offset_xy": [
+                -3,
+                -4
+              ],
+              "ncc": 0.9511628746986389
+            },
+            {
+              "offset_xy": [
+                -2,
+                -4
+              ],
+              "ncc": 0.9595065116882324
+            },
+            {
+              "offset_xy": [
+                -1,
+                -4
+              ],
+              "ncc": 0.950718104839325
+            },
+            {
+              "offset_xy": [
+                0,
+                -4
+              ],
+              "ncc": 0.9246501326560974
+            },
+            {
+              "offset_xy": [
+                -3,
+                -3
+              ],
+              "ncc": 0.9289869666099548
+            },
+            {
+              "offset_xy": [
+                -2,
+                -3
+              ],
+              "ncc": 0.9565845131874084
+            },
+            {
+              "offset_xy": [
+                -1,
+                -3
+              ],
+              "ncc": 0.9675582051277161
+            },
+            {
+              "offset_xy": [
+                0,
+                -3
+              ],
+              "ncc": 0.9590961933135986
+            },
+            {
+              "offset_xy": [
+                1,
+                -3
+              ],
+              "ncc": 0.9306817650794983
+            },
+            {
+              "offset_xy": [
+                3,
+                -1
+              ],
+              "ncc": 0.9236099123954773
+            },
+            {
+              "offset_xy": [
+                3,
+                0
+              ],
+              "ncc": 0.9480541348457336
+            },
+            {
+              "offset_xy": [
+                4,
+                0
+              ],
+              "ncc": 0.9205528497695923
+            },
+            {
+              "offset_xy": [
+                3,
+                1
+              ],
+              "ncc": 0.9545031189918518
+            },
+            {
+              "offset_xy": [
+                4,
+                1
+              ],
+              "ncc": 0.9478579163551331
+            },
+            {
+              "offset_xy": [
+                5,
+                1
+              ],
+              "ncc": 0.9242931604385376
+            },
+            {
+              "offset_xy": [
+                3,
+                2
+              ],
+              "ncc": 0.9428519606590271
+            },
+            {
+              "offset_xy": [
+                4,
+                2
+              ],
+              "ncc": 0.9571224451065063
+            },
+            {
+              "offset_xy": [
+                5,
+                2
+              ],
+              "ncc": 0.9533377885818481
+            },
+            {
+              "offset_xy": [
+                6,
+                2
+              ],
+              "ncc": 0.9308757185935974
+            },
+            {
+              "offset_xy": [
+                3,
+                3
+              ],
+              "ncc": 0.9132677912712097
+            },
+            {
+              "offset_xy": [
+                4,
+                3
+              ],
+              "ncc": 0.945249080657959
+            },
+            {
+              "offset_xy": [
+                5,
+                3
+              ],
+              "ncc": 0.9609482288360596
+            },
+            {
+              "offset_xy": [
+                6,
+                3
+              ],
+              "ncc": 0.9563978910446167
+            },
+            {
+              "offset_xy": [
+                7,
+                3
+              ],
+              "ncc": 0.9314159154891968
+            },
+            {
+              "offset_xy": [
+                4,
+                4
+              ],
+              "ncc": 0.9113465547561646
+            },
+            {
+              "offset_xy": [
+                5,
+                4
+              ],
+              "ncc": 0.9437114000320435
+            },
+            {
+              "offset_xy": [
+                6,
+                4
+              ],
+              "ncc": 0.9566327929496765
+            },
+            {
+              "offset_xy": [
+                7,
+                4
+              ],
+              "ncc": 0.9493504166603088
+            },
+            {
+              "offset_xy": [
+                8,
+                4
+              ],
+              "ncc": 0.9219152927398682
+            },
+            {
+              "offset_xy": [
+                6,
+                5
+              ],
+              "ncc": 0.9219768047332764
+            },
+            {
+              "offset_xy": [
+                7,
+                5
+              ],
+              "ncc": 0.9325206875801086
+            },
+            {
+              "offset_xy": [
+                8,
+                5
+              ],
+              "ncc": 0.9236013293266296
+            }
+          ],
+          "invalid_offsets": 34,
+          "locally_unambiguous_appearance": false,
+          "search_scope": "17x17 integer translations of fixed affine projection",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        },
+        {
+          "region": 2,
+          "predicted_ncc": 0.9947905540466309,
+          "competing_offsets": [
+            {
+              "offset_xy": [
+                3,
+                -1
+              ],
+              "ncc": 0.9331212639808655
+            },
+            {
+              "offset_xy": [
+                4,
+                -1
+              ],
+              "ncc": 0.9322738647460938
+            },
+            {
+              "offset_xy": [
+                5,
+                -1
+              ],
+              "ncc": 0.9304797649383545
+            },
+            {
+              "offset_xy": [
+                6,
+                -1
+              ],
+              "ncc": 0.9280738830566406
+            },
+            {
+              "offset_xy": [
+                7,
+                -1
+              ],
+              "ncc": 0.925067126750946
+            },
+            {
+              "offset_xy": [
+                8,
+                -1
+              ],
+              "ncc": 0.9215141534805298
+            },
+            {
+              "offset_xy": [
+                -8,
+                0
+              ],
+              "ncc": 0.9197562336921692
+            },
+            {
+              "offset_xy": [
+                -7,
+                0
+              ],
+              "ncc": 0.9313923716545105
+            },
+            {
+              "offset_xy": [
+                -6,
+                0
+              ],
+              "ncc": 0.942939043045044
+            },
+            {
+              "offset_xy": [
+                -5,
+                0
+              ],
+              "ncc": 0.9542201161384583
+            },
+            {
+              "offset_xy": [
+                -4,
+                0
+              ],
+              "ncc": 0.9651431441307068
+            },
+            {
+              "offset_xy": [
+                -3,
+                0
+              ],
+              "ncc": 0.9752541184425354
+            },
+            {
+              "offset_xy": [
+                3,
+                0
+              ],
+              "ncc": 0.9876570701599121
+            },
+            {
+              "offset_xy": [
+                4,
+                0
+              ],
+              "ncc": 0.980656087398529
+            },
+            {
+              "offset_xy": [
+                5,
+                0
+              ],
+              "ncc": 0.9724333882331848
+            },
+            {
+              "offset_xy": [
+                6,
+                0
+              ],
+              "ncc": 0.9633961915969849
+            },
+            {
+              "offset_xy": [
+                7,
+                0
+              ],
+              "ncc": 0.9538196325302124
+            },
+            {
+              "offset_xy": [
+                8,
+                0
+              ],
+              "ncc": 0.9437957406044006
+            },
+            {
+              "offset_xy": [
+                -8,
+                1
+              ],
+              "ncc": 0.9410752058029175
+            },
+            {
+              "offset_xy": [
+                -7,
+                1
+              ],
+              "ncc": 0.9476828575134277
+            },
+            {
+              "offset_xy": [
+                -6,
+                1
+              ],
+              "ncc": 0.9539024829864502
+            },
+            {
+              "offset_xy": [
+                -5,
+                1
+              ],
+              "ncc": 0.9595712423324585
+            },
+            {
+              "offset_xy": [
+                -4,
+                1
+              ],
+              "ncc": 0.9645571112632751
+            },
+            {
+              "offset_xy": [
+                -3,
+                1
+              ],
+              "ncc": 0.9685348272323608
+            },
+            {
+              "offset_xy": [
+                3,
+                1
+              ],
+              "ncc": 0.9478729963302612
+            },
+            {
+              "offset_xy": [
+                4,
+                1
+              ],
+              "ncc": 0.9360513091087341
+            },
+            {
+              "offset_xy": [
+                5,
+                1
+              ],
+              "ncc": 0.9230921268463135
+            },
+            {
+              "offset_xy": [
+                6,
+                1
+              ],
+              "ncc": 0.9096272587776184
+            }
+          ],
+          "invalid_offsets": 0,
+          "locally_unambiguous_appearance": false,
+          "search_scope": "17x17 integer translations of fixed affine projection",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        },
+        {
+          "region": 3,
+          "predicted_ncc": null,
+          "competing_offsets": [],
+          "invalid_offsets": 0,
+          "locally_unambiguous_appearance": false,
+          "search_scope": "17x17 integer translations of fixed affine projection",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        },
+        {
+          "region": 4,
+          "predicted_ncc": 0.7318918108940125,
+          "competing_offsets": [],
+          "invalid_offsets": 0,
+          "locally_unambiguous_appearance": false,
+          "search_scope": "17x17 integer translations of fixed affine projection",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        },
+        {
+          "region": 5,
+          "predicted_ncc": 0.9951515793800354,
+          "competing_offsets": [
+            {
+              "offset_xy": [
+                -8,
+                -1
+              ],
+              "ncc": 0.9000529646873474
+            },
+            {
+              "offset_xy": [
+                -7,
+                -1
+              ],
+              "ncc": 0.9074385762214661
+            },
+            {
+              "offset_xy": [
+                -6,
+                -1
+              ],
+              "ncc": 0.9146538972854614
+            },
+            {
+              "offset_xy": [
+                -5,
+                -1
+              ],
+              "ncc": 0.9214220643043518
+            },
+            {
+              "offset_xy": [
+                -4,
+                -1
+              ],
+              "ncc": 0.9278169870376587
+            },
+            {
+              "offset_xy": [
+                -3,
+                -1
+              ],
+              "ncc": 0.9337661862373352
+            },
+            {
+              "offset_xy": [
+                3,
+                -1
+              ],
+              "ncc": 0.9547752737998962
+            },
+            {
+              "offset_xy": [
+                4,
+                -1
+              ],
+              "ncc": 0.955118715763092
+            },
+            {
+              "offset_xy": [
+                5,
+                -1
+              ],
+              "ncc": 0.9547133445739746
+            },
+            {
+              "offset_xy": [
+                6,
+                -1
+              ],
+              "ncc": 0.9537561535835266
+            },
+            {
+              "offset_xy": [
+                7,
+                -1
+              ],
+              "ncc": 0.9522967338562012
+            },
+            {
+              "offset_xy": [
+                8,
+                -1
+              ],
+              "ncc": 0.9506107568740845
+            },
+            {
+              "offset_xy": [
+                -8,
+                0
+              ],
+              "ncc": 0.9724651575088501
+            },
+            {
+              "offset_xy": [
+                -7,
+                0
+              ],
+              "ncc": 0.9772469997406006
+            },
+            {
+              "offset_xy": [
+                -6,
+                0
+              ],
+              "ncc": 0.9815815687179565
+            },
+            {
+              "offset_xy": [
+                -5,
+                0
+              ],
+              "ncc": 0.9854936003684998
+            },
+            {
+              "offset_xy": [
+                -4,
+                0
+              ],
+              "ncc": 0.98881995677948
+            },
+            {
+              "offset_xy": [
+                -3,
+                0
+              ],
+              "ncc": 0.991536021232605
+            },
+            {
+              "offset_xy": [
+                3,
+                0
+              ],
+              "ncc": 0.9897754192352295
+            },
+            {
+              "offset_xy": [
+                4,
+                0
+              ],
+              "ncc": 0.9862708449363708
+            },
+            {
+              "offset_xy": [
+                5,
+                0
+              ],
+              "ncc": 0.9822462201118469
+            },
+            {
+              "offset_xy": [
+                6,
+                0
+              ],
+              "ncc": 0.9777845144271851
+            },
+            {
+              "offset_xy": [
+                7,
+                0
+              ],
+              "ncc": 0.9730105996131897
+            },
+            {
+              "offset_xy": [
+                8,
+                0
+              ],
+              "ncc": 0.9681042432785034
+            },
+            {
+              "offset_xy": [
+                -8,
+                1
+              ],
+              "ncc": 0.9263949394226074
+            },
+            {
+              "offset_xy": [
+                -7,
+                1
+              ],
+              "ncc": 0.9268540143966675
+            },
+            {
+              "offset_xy": [
+                -6,
+                1
+              ],
+              "ncc": 0.9267758131027222
+            },
+            {
+              "offset_xy": [
+                -5,
+                1
+              ],
+              "ncc": 0.9263168573379517
+            },
+            {
+              "offset_xy": [
+                -4,
+                1
+              ],
+              "ncc": 0.9254724383354187
+            },
+            {
+              "offset_xy": [
+                -3,
+                1
+              ],
+              "ncc": 0.924399733543396
+            },
+            {
+              "offset_xy": [
+                3,
+                1
+              ],
+              "ncc": 0.9065201282501221
+            },
+            {
+              "offset_xy": [
+                4,
+                1
+              ],
+              "ncc": 0.9015498161315918
+            }
+          ],
+          "invalid_offsets": 0,
+          "locally_unambiguous_appearance": false,
+          "search_scope": "17x17 integer translations of fixed affine projection",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        }
+      ],
+      "joint": {
+        "fixed_projection_witness_regions": [
+          1,
+          2,
+          5
+        ],
+        "distributed_source_and_current_support": false,
+        "joint_competing_offsets": [
+          [
+            3,
+            -1
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            3,
+            1
+          ],
+          [
+            4,
+            0
+          ],
+          [
+            4,
+            1
+          ]
+        ],
+        "unresolved_offsets": [],
+        "locally_unique_joint_appearance": false,
+        "scope": "fixed affine plus complete local integer-translation lattice only",
+        "world_mask_authorized": false,
+        "runtime_proof_authorized": false
+      },
+      "complete_measurement_count": 1734
+    }
+  ],
+  "wall_clock_sec": 7.2076869970187545,
+  "qualification_created": false,
+  "runtime_proof_authorized": false
+}

@@ -548,3 +548,13 @@ def test_rotation_completion_and_primary_target_ambiguity():
 def test_unknown_weapon_does_not_confirm_visual_flash_as_shot():
     events, _ = run([obs(weapon_action={"muzzle_flash_score": 0.99, "confidence": 0.99})])
     assert all(item.status != "confirmed" for item in events if item.type == "shot")
+
+
+def test_explicit_source_break_clears_enemy_hysteresis_without_fake_loss():
+    samples = [obs(0, entities={'visible_enemies': [enemy()]}),
+               obs(.1, index=1), obs(.3, index=2), obs(.5, index=3), obs(.7, index=4)]
+    events = VisualEventEngine().process(
+        samples, evidence_by_frame={1: {'source_discontinuity': True}},
+    )
+    assert any(e.type == 'enemy_spotted' for e in events)
+    assert not any(e.type in {'enemy_lost', 'engagement_end'} for e in events)

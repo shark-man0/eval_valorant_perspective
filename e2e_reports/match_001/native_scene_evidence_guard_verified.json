@@ -1,0 +1,32 @@
+{
+  "scope": "actual native source guard after finite-domain validation; no image qualification",
+  "source_report_sha256": "275707bf869fa156f78703141f168e7f318933c3bafe3e00a3398bf362887eb2",
+  "source_pts_ticks": [
+    82985,
+    83241
+  ],
+  "source_pixel_sha256": [
+    "498a84c602e8fb0474b53de741f6fdddb754104d8999e5c6ce2bf9d12c14eee8",
+    "b31d82f6f69464d7c5ba4c6f37af4cfde1ee396b7da6f9d6f0f72428d61e0c79"
+  ],
+  "qualification_path": "/home/admin/eval_valorant_perspective/config/hud_layout_1080p_v3.global_qualification.json",
+  "qualification_file_exists": false,
+  "qualification_loaded": false,
+  "guard_reason": "bound scene assets and global qualification required",
+  "scene_proofs_released": 0,
+  "ui_proofs_released": 0,
+  "events_released": 0,
+  "global_recognizer_fingerprint": "2ac52c859f5360fc83185bc0edd811377b5fcb8b0443beed87fda386ec92d9a1",
+  "code_sha256": {
+    "src/valorant_ai_coach/hud/native_scene_evidence.py": "c4bdd4b2c500d646ee6e857c34834c79d995f59ebd543d4b3fa6f4711964033c",
+    "src/valorant_ai_coach/hud/analyzers.py": "d97f9abf2e91fc2ab1e4b0810b3ecf87eebed24006582cdf8922e3aa4dce03b6"
+  },
+  "previous_guard_report_sha256": "69a89419f59f1bc553e34c657b88139689825bed0efbfaeaba33f85183532cf3",
+  "canonical_current": null,
+  "canonical_delta": null,
+  "tests": {
+    "unit": "65 passed; synthetic positive transport only",
+    "ruff": "PASS",
+    "mypy": "113 source files PASS"
+  }
+}

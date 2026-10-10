@@ -1,0 +1,666 @@
+{
+  "scope": "Declared continuous projected-world development on already exposed12native images; not qualification",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "source_report": "e2e_reports/match_001/scene_final_membership_cohort_diagnostics.json",
+  "window_index": 0,
+  "source_epoch": "offline-continuous-wall",
+  "reviews": [
+    {
+      "source_pts_ticks": 38441,
+      "frame_sha256": "0dc39ee196158fbc91f35b420e7a8f8cffa5a1d26a6a6acb5282dae80e6a10b4",
+      "regions": [
+        [
+          [
+            167,
+            53,
+            213,
+            117
+          ],
+          "world_only"
+        ],
+        [
+          [
+            173,
+            120,
+            283,
+            173
+          ],
+          "world_only"
+        ],
+        [
+          [
+            10,
+            173,
+            167,
+            247
+          ],
+          "world_only"
+        ],
+        [
+          [
+            440,
+            53,
+            567,
+            117
+          ],
+          "world_only"
+        ],
+        [
+          [
+            440,
+            123,
+            567,
+            177
+          ],
+          "world_only"
+        ],
+        [
+          [
+            173,
+            183,
+            267,
+            253
+          ],
+          "world_only"
+        ]
+      ],
+      "provenance": "Native first6images and all12full-context domain overlays reviewed before measurement. First5wall images support approved source/current footprints; image6hand enters lower-middle domain. From image6lower-left is conservatively unknown and lower-middle contaminated; these labels terminate eligibility, not imply a cut."
+    },
+    {
+      "source_pts_ticks": 38697,
+      "frame_sha256": "81efcd3c5540a1056149bfc808905ce801b5d0b4f3a05bc9e1118afc8353a398",
+      "regions": [
+        [
+          [
+            160,
+            45,
+            220,
+            173
+          ],
+          "world_only"
+        ],
+        [
+          [
+            160,
+            120,
+            290,
+            175
+          ],
+          "world_only"
+        ],
+        [
+          [
+            425,
+            45,
+            575,
+            183
+          ],
+          "world_only"
+        ],
+        [
+          [
+            6,
+            173,
+            170,
+            250
+          ],
+          "world_only"
+        ],
+        [
+          [
+            160,
+            178,
+            267,
+            253
+          ],
+          "world_only"
+        ]
+      ],
+      "provenance": "Native first6images and all12full-context domain overlays reviewed before measurement. First5wall images support approved source/current footprints; image6hand enters lower-middle domain. From image6lower-left is conservatively unknown and lower-middle contaminated; these labels terminate eligibility, not imply a cut."
+    },
+    {
+      "source_pts_ticks": 38953,
+      "frame_sha256": "79038d07b20b8fc5708953ce2669746b1184b1fb2119128ab18abea721827f08",
+      "regions": [
+        [
+          [
+            160,
+            45,
+            220,
+            173
+          ],
+          "world_only"
+        ],
+        [
+          [
+            160,
+            120,
+            290,
+            175
+          ],
+          "world_only"
+        ],
+        [
+          [
+            425,
+            45,
+            575,
+            183
+          ],
+          "world_only"
+        ],
+        [
+          [
+            6,
+            173,
+            170,
+            250
+          ],
+          "world_only"
+        ],
+        [
+          [
+            160,
+            178,
+            267,
+            253
+          ],
+          "world_only"
+        ]
+      ],
+      "provenance": "Native first6images and all12full-context domain overlays reviewed before measurement. First5wall images support approved source/current footprints; image6hand enters lower-middle domain. From image6lower-left is conservatively unknown and lower-middle contaminated; these labels terminate eligibility, not imply a cut."
+    },
+    {
+      "source_pts_ticks": 39209,
+      "frame_sha256": "98591802fe2fdd2904b42bffe18e1d894856c4212a30c6c6dee5b0ed32e455aa",
+      "regions": [
+        [
+          [
+            160,
+            45,
+            220,
+            173
+          ],
+          "world_only"
+        ],
+        [
+          [
+            160,
+            120,
+            290,
+            175
+          ],
+          "world_only"
+        ],
+        [
+          [
+            425,
+            45,
+            575,
+            183
+          ],
+          "world_only"
+        ],
+        [
+          [
+            6,
+            173,
+            170,
+            250
+          ],
+          "world_only"
+        ],
+        [
+          [
+            160,
+            178,
+            267,
+            253
+          ],
+          "world_only"
+        ]
+      ],
+      "provenance": "Native first6images and all12full-context domain overlays reviewed before measurement. First5wall images support approved source/current footprints; image6hand enters lower-middle domain. From image6lower-left is conservatively unknown and lower-middle contaminated; these labels terminate eligibility, not imply a cut."
+    },
+    {
+      "source_pts_ticks": 39465,
+      "frame_sha256": "d09d2abf893a6b28f34cc824219d71fe1315c68744c001aa1ab408ab64488c07",
+      "regions": [
+        [
+          [
+            160,
+            45,
+            220,
+            173
+          ],
+          "world_only"
+        ],
+        [
+          [
+            160,
+            120,
+            290,
+            175
+          ],
+          "world_only"
+        ],
+        [
+          [
+            425,
+            45,
+            575,
+            183
+          ],
+          "world_only"
+        ],
+        [
+          [
+            6,
+            173,
+            170,
+            250
+          ],
+          "world_only"
+        ],
+        [
+          [
+            160,
+            178,
+            267,
+            253
+          ],
+          "world_only"
+        ]
+      ],
+      "provenance": "Native first6images and all12full-context domain overlays reviewed before measurement. First5wall images support approved source/current footprints; image6hand enters lower-middle domain. From image6lower-left is conservatively unknown and lower-middle contaminated; these labels terminate eligibility, not imply a cut."
+    },
+    {
+      "source_pts_ticks": 39721,
+      "frame_sha256": "65592b7a2c6f828370f84d22a7aec3f57f308b93a6f02e30968a4b24fbe31b8e",
+      "regions": [
+        [
+          [
+            160,
+            45,
+            220,
+            173
+          ],
+          "world_only"
+        ],
+        [
+          [
+            160,
+            120,
+            290,
+            175
+          ],
+          "world_only"
+        ],
+        [
+          [
+            425,
+            45,
+            575,
+            183
+          ],
+          "world_only"
+        ],
+        [
+          [
+            6,
+            173,
+            170,
+            250
+          ],
+          "unknown"
+        ],
+        [
+          [
+            160,
+            178,
+            267,
+            253
+          ],
+          "contaminated"
+        ]
+      ],
+      "provenance": "Native first6images and all12full-context domain overlays reviewed before measurement. First5wall images support approved source/current footprints; image6hand enters lower-middle domain. From image6lower-left is conservatively unknown and lower-middle contaminated; these labels terminate eligibility, not imply a cut."
+    },
+    {
+      "source_pts_ticks": 39977,
+      "frame_sha256": "29593ec3fd1a4873a7e8496a4e0a58e492331c578a63de4966ad24f99d1dc46a",
+      "regions": [
+        [
+          [
+            160,
+            45,
+            220,
+            173
+          ],
+          "world_only"
+        ],
+        [
+          [
+            160,
+            120,
+            290,
+            175
+          ],
+          "world_only"
+        ],
+        [
+          [
+            425,
+            45,
+            575,
+            183
+          ],
+          "world_only"
+        ],
+        [
+          [
+            6,
+            173,
+            170,
+            250
+          ],
+          "unknown"
+        ],
+        [
+          [
+            160,
+            178,
+            267,
+            253
+          ],
+          "contaminated"
+        ]
+      ],
+      "provenance": "Native first6images and all12full-context domain overlays reviewed before measurement. First5wall images support approved source/current footprints; image6hand enters lower-middle domain. From image6lower-left is conservatively unknown and lower-middle contaminated; these labels terminate eligibility, not imply a cut."
+    },
+    {
+      "source_pts_ticks": 40233,
+      "frame_sha256": "68107fab2e1563fcceb464d82a908b6ccbed47fc45e6d52813600d7d2b224612",
+      "regions": [
+        [
+          [
+            160,
+            45,
+            220,
+            173
+          ],
+          "world_only"
+        ],
+        [
+          [
+            160,
+            120,
+            290,
+            175
+          ],
+          "world_only"
+        ],
+        [
+          [
+            425,
+            45,
+            575,
+            183
+          ],
+          "world_only"
+        ],
+        [
+          [
+            6,
+            173,
+            170,
+            250
+          ],
+          "unknown"
+        ],
+        [
+          [
+            160,
+            178,
+            267,
+            253
+          ],
+          "contaminated"
+        ]
+      ],
+      "provenance": "Native first6images and all12full-context domain overlays reviewed before measurement. First5wall images support approved source/current footprints; image6hand enters lower-middle domain. From image6lower-left is conservatively unknown and lower-middle contaminated; these labels terminate eligibility, not imply a cut."
+    },
+    {
+      "source_pts_ticks": 40489,
+      "frame_sha256": "830035565570ef688dd2f51a8de0ad0518c55bc20edb67d15b2630b6182512c3",
+      "regions": [
+        [
+          [
+            160,
+            45,
+            220,
+            173
+          ],
+          "world_only"
+        ],
+        [
+          [
+            160,
+            120,
+            290,
+            175
+          ],
+          "world_only"
+        ],
+        [
+          [
+            425,
+            45,
+            575,
+            183
+          ],
+          "world_only"
+        ],
+        [
+          [
+            6,
+            173,
+            170,
+            250
+          ],
+          "unknown"
+        ],
+        [
+          [
+            160,
+            178,
+            267,
+            253
+          ],
+          "contaminated"
+        ]
+      ],
+      "provenance": "Native first6images and all12full-context domain overlays reviewed before measurement. First5wall images support approved source/current footprints; image6hand enters lower-middle domain. From image6lower-left is conservatively unknown and lower-middle contaminated; these labels terminate eligibility, not imply a cut."
+    },
+    {
+      "source_pts_ticks": 40745,
+      "frame_sha256": "4f6f55ad9ffba61842d36638a308221cb7f72ee9d21231639db00acc54ecb60b",
+      "regions": [
+        [
+          [
+            160,
+            45,
+            220,
+            173
+          ],
+          "world_only"
+        ],
+        [
+          [
+            160,
+            120,
+            290,
+            175
+          ],
+          "world_only"
+        ],
+        [
+          [
+            425,
+            45,
+            575,
+            183
+          ],
+          "world_only"
+        ],
+        [
+          [
+            6,
+            173,
+            170,
+            250
+          ],
+          "unknown"
+        ],
+        [
+          [
+            160,
+            178,
+            267,
+            253
+          ],
+          "contaminated"
+        ]
+      ],
+      "provenance": "Native first6images and all12full-context domain overlays reviewed before measurement. First5wall images support approved source/current footprints; image6hand enters lower-middle domain. From image6lower-left is conservatively unknown and lower-middle contaminated; these labels terminate eligibility, not imply a cut."
+    },
+    {
+      "source_pts_ticks": 41001,
+      "frame_sha256": "a27989945dfb09dcf604a2579371705d8bf45360c22cdd0644f1cee117e002c6",
+      "regions": [
+        [
+          [
+            160,
+            45,
+            220,
+            173
+          ],
+          "world_only"
+        ],
+        [
+          [
+            160,
+            120,
+            290,
+            175
+          ],
+          "world_only"
+        ],
+        [
+          [
+            425,
+            45,
+            575,
+            183
+          ],
+          "world_only"
+        ],
+        [
+          [
+            6,
+            173,
+            170,
+            250
+          ],
+          "unknown"
+        ],
+        [
+          [
+            160,
+            178,
+            267,
+            253
+          ],
+          "contaminated"
+        ]
+      ],
+      "provenance": "Native first6images and all12full-context domain overlays reviewed before measurement. First5wall images support approved source/current footprints; image6hand enters lower-middle domain. From image6lower-left is conservatively unknown and lower-middle contaminated; these labels terminate eligibility, not imply a cut."
+    },
+    {
+      "source_pts_ticks": 41257,
+      "frame_sha256": "5a6acd346b20360cb257fb0efd58e11ae6d9f932c2e0a0686944a6bcce1097fc",
+      "regions": [
+        [
+          [
+            160,
+            45,
+            220,
+            173
+          ],
+          "world_only"
+        ],
+        [
+          [
+            160,
+            120,
+            290,
+            175
+          ],
+          "world_only"
+        ],
+        [
+          [
+            425,
+            45,
+            575,
+            183
+          ],
+          "world_only"
+        ],
+        [
+          [
+            6,
+            173,
+            170,
+            250
+          ],
+          "unknown"
+        ],
+        [
+          [
+            160,
+            178,
+            267,
+            253
+          ],
+          "contaminated"
+        ]
+      ],
+      "provenance": "Native first6images and all12full-context domain overlays reviewed before measurement. First5wall images support approved source/current footprints; image6hand enters lower-middle domain. From image6lower-left is conservatively unknown and lower-middle contaminated; these labels terminate eligibility, not imply a cut."
+    }
+  ],
+  "mode": "projected_world",
+  "policy": "Original identities only, original current flow footprints100%reviewed, projected appearance>=90%complete source population, NCC>=0.90, native continuity and no rejoin",
+  "file_sha256": {
+    "e2e_reports/match_001/scene_final_membership_cohort_diagnostics.json": "ccdd085713955f4a3694a4b6505ca2f699d81ea151eb06d677bdd4793a530b23",
+    "e2e_reports/match_001/scene_projected_world_declaration.json": "7aa3761636bcc4b3e41d64b5fc6aa6453b81df053f59afe5647091bc546ea08c",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000001.png": "0dc39ee196158fbc91f35b420e7a8f8cffa5a1d26a6a6acb5282dae80e6a10b4",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000002.png": "81efcd3c5540a1056149bfc808905ce801b5d0b4f3a05bc9e1118afc8353a398",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000003.png": "79038d07b20b8fc5708953ce2669746b1184b1fb2119128ab18abea721827f08",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000004.png": "98591802fe2fdd2904b42bffe18e1d894856c4212a30c6c6dee5b0ed32e455aa",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000005.png": "d09d2abf893a6b28f34cc824219d71fe1315c68744c001aa1ab408ab64488c07",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000006.png": "65592b7a2c6f828370f84d22a7aec3f57f308b93a6f02e30968a4b24fbe31b8e",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000007.png": "29593ec3fd1a4873a7e8496a4e0a58e492331c578a63de4966ad24f99d1dc46a",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000008.png": "68107fab2e1563fcceb464d82a908b6ccbed47fc45e6d52813600d7d2b224612",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000009.png": "830035565570ef688dd2f51a8de0ad0518c55bc20edb67d15b2630b6182512c3",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000010.png": "4f6f55ad9ffba61842d36638a308221cb7f72ee9d21231639db00acc54ecb60b",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000011.png": "a27989945dfb09dcf604a2579371705d8bf45360c22cdd0644f1cee117e002c6",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000012.png": "5a6acd346b20360cb257fb0efd58e11ae6d9f932c2e0a0686944a6bcce1097fc",
+    "scripts/diagnostics/scene_world_chain.py": "8a6d11a151f4afb77d88780b51f0705beca527edce7521831b9c8a590e788e33",
+    "scripts/diagnostics/scene_projected_world.py": "432a6c8cfebc7744e5b1e0b68f8e9af5e1de6a93dd7bddc9571b78bb658ae213",
+    "scripts/diagnostics/scene_world_review_gate.py": "57813631ede6e7835d3e21260270924eca3058fa3bb499321cf8698cb79430fd",
+    "scripts/diagnostics/scene_correspondence.py": "667fb4f7b0626fbbf4770716eefc18976a9409a4f0646084b95d479dab7273a3",
+    "scripts/diagnostics/scene_patch_search.py": "53e66f692c42cbaab695cdea9910e3326c50089a18468f6b0d01bd463e9c2dd9"
+  },
+  "runtime_proof_authorized": false
+}

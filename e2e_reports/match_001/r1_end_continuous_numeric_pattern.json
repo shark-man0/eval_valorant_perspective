@@ -1,0 +1,159 @@
+{
+  "clock_changes": [
+    {
+      "before": {
+        "tick": 1143081,
+        "seconds": 29.0,
+        "display": "0:29"
+      },
+      "after": {
+        "tick": 1143593,
+        "seconds": 6.0,
+        "display": "0:06"
+      },
+      "elapsed_sec": 0.03333333333333333,
+      "observed_decrease": 23.0
+    }
+  ],
+  "score_plateaus": [
+    {
+      "values": [
+        0,
+        1
+      ],
+      "first_tick": 1139753,
+      "last_tick": 1140777,
+      "count": 5,
+      "confidence": 0.940267026424408,
+      "minimum_duration_tick": 1140521
+    },
+    {
+      "values": [
+        0,
+        1
+      ],
+      "first_tick": 1141289,
+      "last_tick": 1141289,
+      "count": 1,
+      "confidence": 0.9275346994400024,
+      "minimum_duration_tick": null
+    },
+    {
+      "values": [
+        0,
+        1
+      ],
+      "first_tick": 1141801,
+      "last_tick": 1142057,
+      "count": 2,
+      "confidence": 0.9413385987281799,
+      "minimum_duration_tick": null
+    },
+    {
+      "values": [
+        0,
+        1
+      ],
+      "first_tick": 1142569,
+      "last_tick": 1143849,
+      "count": 6,
+      "confidence": 0.9318736791610718,
+      "minimum_duration_tick": 1143337
+    },
+    {
+      "values": [
+        0,
+        2
+      ],
+      "first_tick": 1144105,
+      "last_tick": 1146153,
+      "count": 9,
+      "confidence": 0.926630437374115,
+      "minimum_duration_tick": 1144873
+    },
+    {
+      "values": [
+        0,
+        2
+      ],
+      "first_tick": 1149481,
+      "last_tick": 1151273,
+      "count": 8,
+      "confidence": 0.9028293490409851,
+      "minimum_duration_tick": 1150249
+    },
+    {
+      "values": [
+        0,
+        2
+      ],
+      "first_tick": 1152297,
+      "last_tick": 1152809,
+      "count": 3,
+      "confidence": 0.9250867962837219,
+      "minimum_duration_tick": null
+    },
+    {
+      "values": [
+        0,
+        2
+      ],
+      "first_tick": 1153321,
+      "last_tick": 1153833,
+      "count": 3,
+      "confidence": 0.9242346882820129,
+      "minimum_duration_tick": null
+    },
+    {
+      "values": [
+        0,
+        2
+      ],
+      "first_tick": 1154857,
+      "last_tick": 1154857,
+      "count": 1,
+      "confidence": 0.9133569002151489,
+      "minimum_duration_tick": null
+    },
+    {
+      "values": [
+        0,
+        2
+      ],
+      "first_tick": 1164329,
+      "last_tick": 1164585,
+      "count": 2,
+      "confidence": 0.928876519203186,
+      "minimum_duration_tick": null
+    },
+    {
+      "values": [
+        0,
+        2
+      ],
+      "first_tick": 1165353,
+      "last_tick": 1166889,
+      "count": 7,
+      "confidence": 0.9116369485855103,
+      "minimum_duration_tick": 1166121
+    }
+  ],
+  "conditional_patterns": [
+    {
+      "clock_change_tick": 1143593,
+      "score_change_tick": 1144105,
+      "score_stability_tick": 1144873,
+      "scope": "Conditional numeric pattern; active round and safe end semantics are unproved."
+    }
+  ],
+  "released_events": 0,
+  "qualification_created": false,
+  "scope": "Describe global numeric transitions; never classify or emit round events.",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "input_report": "e2e_reports/match_001/r1_end_continuous_result_inputs.json",
+  "input_sha256": "8584618c1609b6fabe2a95bc8029df920f992e1663a19d44cd9d68b992725a41",
+  "diagnostic_script_sha256": "e084e8d5646941cb88f06ef174f7427cfe526e41c9b12cb7817316add2b0d363",
+  "time_base": "1/15360",
+  "canonical_current": null,
+  "canonical_delta": null
+}

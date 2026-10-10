@@ -1,0 +1,38 @@
+{
+  "scope": "Existing frozen late-reference assets copied into diagnostic-only opt-in profile; no reference generation/tuning",
+  "parent_freeze_sha256": "3d64ad094aea38847b73d86092b2a53fb93e4e494e277690d20cb849da2fceb1",
+  "profile_path": "outputs/hud_profiles/round-global-timer-glyph-20261008/score-rowcontrast-late-result-diagnostic.templates.json",
+  "profile_sha256": "8f0f0edf31972fc11d8b2397b545afb51016efafa4b5b1fecf522f21a45cd797",
+  "profile_fingerprint": "10bfac00544e510ebf3f3e2c0072c9beba24938b2ff996c9012f7e4046d82c99",
+  "recognizer_fingerprint": "44030c081c6d359c6fd618cfae128c5f339191f31942e0b623a06ae460f1073f",
+  "signal_setup": {
+    "buy_phase_template": {
+      "configured": true,
+      "semantic_matcher_loaded": true,
+      "status": "loaded",
+      "diagnostics": []
+    },
+    "round_end_template": {
+      "configured": true,
+      "semantic_matcher_loaded": true,
+      "status": "loaded",
+      "diagnostics": []
+    }
+  },
+  "training_source_hashes": [
+    "8f48694886e7a490b27ff0548f0fb7b54c834729b52a2d7dbfa375c248cbb62b",
+    "9f51380e00db3f4633ad18d2e80519744e0146466b28f1d3987ae7a1080ac6cf",
+    "734d31fe819a8e40d242917a2e454a1b068107073ec6108d0ef976d6fcbd9269"
+  ],
+  "asset_sha256": {
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/result-late-diagnostic/training-0.png": "b35498a7e55d6e28c9f1f90b2091cbbff67e75ca62d86f9b74c317956b9fb5a9",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/result-late-diagnostic/reference.png": "2d23443d293f7065263ab3a55ff5d26f23fa67db271c10643a5a8de1b6beecd3",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/result-late-diagnostic/mask.png": "304459289001a2ebda8a5864abaa3061e7a08ec291851beaf048bfb3336ce7af",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/result-late-diagnostic/training-1.png": "1fc666c76860e02728d23c2079babcda2dc59acda95686449d3d342c56e7b359",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/result-late-diagnostic/training-2.png": "48257edf4f9f1ccd242f0e0981903a1bb1533a5a39d44501e3d163c958fe7624",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/result-late-diagnostic/regions.png": "5de56e92ed0b63b2b6d8186d41f87c360fe7448fe54631eec425c7fe7f69c038"
+  },
+  "only_addition": "round_end_template",
+  "qualification_created": false,
+  "profile_adopted": false
+}

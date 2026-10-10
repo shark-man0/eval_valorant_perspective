@@ -1,0 +1,20 @@
+{
+  "git_head": "80d0d460b8e3a76d3c181e035c72cd10026f4252",
+  "tests": "13 passed in15.31seconds",
+  "ruff": "PASS src tests scripts/e2e and observer",
+  "mypy_previous_same_source": "PASS104files",
+  "assertions": 82,
+  "assertion_rows_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776",
+  "production_changed": false,
+  "artifact_sha256": {
+    "scripts/diagnostics/observed_scene_chain.py": "d6fb0da98414f553f338f9cd00c092861ddc1bc7d689054fec6ddeb8c15bb123",
+    "tests/unit/test_observed_scene_chain.py": "e899ad17b873b958e02eb0bb2ad7c61ae8e1ed72ebc25e253f1b9b697f87133e",
+    "docs/observed_scene_chain_contract.md": "c62bb5ec0088bb1c71488052185e568b813a96ef3edd5db4bdc3bbe86c603c1b",
+    "e2e_reports/match_001/observed_scene_chain_declaration.json": "dce9b53a442c73b779f250ddea1445ee478615b4de09fed15d7843aa31e4477e",
+    "e2e_reports/match_001/observed_scene_chain_development.json": "f543ec3f33a868b5477ba84e51d7ad50c06ddcd25468ccbeb3aa3a19621bbe88",
+    "e2e_reports/match_001/observed_scene_chain_image_controls.json": "a74cfb17e6b2922734a7afd4f11dab1fb2a2a1762a79b8649ac7914a30bb97cf"
+  },
+  "qualification_created": false,
+  "full_e2e_run": false,
+  "canonical_current": null
+}

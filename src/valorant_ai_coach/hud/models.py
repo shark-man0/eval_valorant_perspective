@@ -229,6 +229,52 @@ def accept_hud_value(value: Any, confidence: float, *, cross_checked: bool = Fal
     return value
 
 
+def shared_score_evidence(observation: dict[str, Any]) -> dict[str, int | None]:
+    """Current accepted team scores, independent of player-owned HUD facts.
+
+    Generic geometry/ROI confidence cannot substitute for reserved value-reader
+    provenance. Unknown, weak or occluded scores remain null, independently.
+    This does not certify a round transition, identity or ownership.
+    """
+    values = observation.get('values') or {}
+    quality = observation.get('quality') or {}
+    confidences = quality.get('roi_confidence') or {}
+    result: dict[str, int | None] = {}
+    for key in ('score_ally', 'score_enemy'):
+        value = values.get(key)
+        confidence = confidences.get(f'{key}_value')
+        accepted_confidence = float(confidence) if (
+            isinstance(confidence, (int, float)) and type(confidence) in (int, float)
+        ) else 0.0
+        result[key] = value if (
+            type(value) is int and value >= 0
+            and math.isfinite(accepted_confidence)
+            and .90 <= accepted_confidence <= 1 and not quality.get('occluded_rois')
+        ) else None
+    return result
+
+
+def spectator_primary_state_evidence(observation: dict[str, Any]) -> bool | None:
+    """Expose established primary state; unknown is never spectator exclusion.
+
+    This does not classify pixels or authorize player facts. Confidence follows
+    the existing snapshot admission floor; live exclusion also needs the current
+    producer's player-specific HUD validity, rather than absence of a panel flag.
+    """
+    quality = observation.get('quality') or {}
+    confidence = quality.get('hud_confidence')
+    if (isinstance(confidence, bool) or not isinstance(confidence, (int, float))
+            or not math.isfinite(confidence) or not .65 <= confidence <= 1):
+        return None
+    state = observation.get('primary_state')
+    if state == 'spectator_first_person':
+        return True
+    if (state == 'live_first_person'
+            and (observation.get('values') or {}).get('player_specific_hud_valid') is True):
+        return False
+    return None
+
+
 def timer_display_evidence(values: dict[str, Any]) -> dict[str, Any] | None:
     """Validate source-preserved timer text; never format a numeric timer."""
     text = values.get("round_time_remaining_display")

@@ -1,0 +1,617 @@
+{
+  "scope": "post-selection exposed control appearance, not qualification",
+  "window_sec": [
+    2.0,
+    2.07
+  ],
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "source_control_report_sha256": "460a6b3e321debf04b620113522429e13ff4aa5dfe296bb0ec11e60ca6f300d5",
+  "code_sha256": {
+    "/tmp/measure-foreground-control-pair.py": "2deea1395fbf4464f875fa4eaea268ccb44e5c40a9a9c62d71a09b384b81b177",
+    "scripts/diagnostics/audit_native_ui_localization.py": "c8f126b7151fc823dbba30146482932e22e2c6efe3cccc1bdab7b34cfd9809dc",
+    "src/valorant_ai_coach/hud/scene_domains.py": "92989f763253138980d726f8a34914f52c6097581e7ca17646b83ba57ff9e091",
+    "src/valorant_ai_coach/video/native.py": "7ba16420dc32cb095895ae3fcea6c3fbedf5a593582cb271b871fdaca8648934",
+    "src/valorant_ai_coach/video/service.py": "be3f8c7c269bb12f67b39493eae5a3e477f1d334a6a0399f71281941ffd367c9"
+  },
+  "phase_box": [
+    738,
+    135,
+    1183,
+    281
+  ],
+  "timer_box": [
+    860,
+    20,
+    1060,
+    90
+  ],
+  "rows": [
+    {
+      "previous_pts_ticks": 30761,
+      "source_pts_ticks": 31017,
+      "source_pts_sec": 2.0193359375,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 1486,
+        "changed_pixels_outside_phase_and_timer": 501848,
+        "outside_mean_max_channel_absdiff": 21.568841338995203,
+        "outside_gray_ncc": 0.5248570442199707,
+        "phase_current_std": 32.144710133038245,
+        "phase_gray_ncc": 0.9979884624481201,
+        "largest_change_components_xywh_area": [
+          [
+            646,
+            0,
+            1274,
+            1080,
+            380839
+          ],
+          [
+            29,
+            470,
+            579,
+            610,
+            76452
+          ],
+          [
+            262,
+            470,
+            28,
+            381,
+            2052
+          ],
+          [
+            31,
+            657,
+            28,
+            322,
+            1796
+          ],
+          [
+            642,
+            69,
+            70,
+            330,
+            1471
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 5.146468773855564,
+            "current_std": 5.138506216499783,
+            "unwarped_ncc": 0.9766603112220764,
+            "mean_max_channel_absdiff": 1.1818765096618358
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 12.377249215734071,
+            "current_std": 12.286616077412988,
+            "unwarped_ncc": 0.9828781485557556,
+            "mean_max_channel_absdiff": 1.413855536497046
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 13.603456679493995,
+            "current_std": 13.540729781747519,
+            "unwarped_ncc": 0.9744693040847778,
+            "mean_max_channel_absdiff": 2.535108356764408
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 13.188217737903216,
+            "current_std": 11.36208963340421,
+            "unwarped_ncc": 0.83359295129776,
+            "mean_max_channel_absdiff": 3.2203904199475066
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 21.35036965652862,
+            "current_std": 20.158321289499014,
+            "unwarped_ncc": 0.9226148724555969,
+            "mean_max_channel_absdiff": 3.6824146981627295
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 4.136145851695874,
+            "current_std": 4.1232446870369,
+            "unwarped_ncc": 0.9669570326805115,
+            "mean_max_channel_absdiff": 1.0701283350219521
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_pts_ticks": 31017,
+      "source_pts_ticks": 31273,
+      "source_pts_sec": 2.036002604166667,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 12343,
+        "changed_pixels_outside_phase_and_timer": 421497,
+        "outside_mean_max_channel_absdiff": 7.722444764191855,
+        "outside_gray_ncc": 0.9328474402427673,
+        "phase_current_std": 32.20780934778738,
+        "phase_gray_ncc": 0.990349531173706,
+        "largest_change_components_xywh_area": [
+          [
+            221,
+            0,
+            1699,
+            1080,
+            313202
+          ],
+          [
+            503,
+            0,
+            277,
+            526,
+            6853
+          ],
+          [
+            16,
+            605,
+            48,
+            459,
+            4978
+          ],
+          [
+            78,
+            442,
+            37,
+            385,
+            3771
+          ],
+          [
+            195,
+            0,
+            107,
+            122,
+            2745
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 5.138506216499783,
+            "current_std": 4.9539719005948495,
+            "unwarped_ncc": 0.9564520120620728,
+            "mean_max_channel_absdiff": 1.9946407004830917
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 12.286616077412988,
+            "current_std": 12.197086032598184,
+            "unwarped_ncc": 0.9549962282180786,
+            "mean_max_channel_absdiff": 2.5022107871164474
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 13.540729781747519,
+            "current_std": 13.241689681901217,
+            "unwarped_ncc": 0.9451103806495667,
+            "mean_max_channel_absdiff": 3.8777758650370115
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 11.36208963340421,
+            "current_std": 8.142069362095688,
+            "unwarped_ncc": 0.6254040598869324,
+            "mean_max_channel_absdiff": 4.676591207349081
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 20.158321289499014,
+            "current_std": 17.605240220989664,
+            "unwarped_ncc": 0.8230666518211365,
+            "mean_max_channel_absdiff": 5.934253588671786
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 4.1232446870369,
+            "current_std": 4.1124544487857255,
+            "unwarped_ncc": 0.9187802672386169,
+            "mean_max_channel_absdiff": 2.221563660925363
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_pts_ticks": 31273,
+      "source_pts_ticks": 31529,
+      "source_pts_sec": 2.0526692708333334,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 8143,
+        "changed_pixels_outside_phase_and_timer": 387211,
+        "outside_mean_max_channel_absdiff": 7.540765455247339,
+        "outside_gray_ncc": 0.9210673570632935,
+        "phase_current_std": 32.34696454925201,
+        "phase_gray_ncc": 0.9898658394813538,
+        "largest_change_components_xywh_area": [
+          [
+            208,
+            0,
+            1712,
+            1080,
+            282836
+          ],
+          [
+            243,
+            470,
+            345,
+            558,
+            12594
+          ],
+          [
+            498,
+            0,
+            310,
+            525,
+            7288
+          ],
+          [
+            1,
+            598,
+            42,
+            415,
+            5819
+          ],
+          [
+            76,
+            0,
+            180,
+            121,
+            5645
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 4.9539719005948495,
+            "current_std": 4.865674587181036,
+            "unwarped_ncc": 0.9493128657341003,
+            "mean_max_channel_absdiff": 1.6768946256038648
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 12.197086032598184,
+            "current_std": 12.013300413887714,
+            "unwarped_ncc": 0.9403440356254578,
+            "mean_max_channel_absdiff": 1.946064417762531
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 13.241689681901217,
+            "current_std": 12.873576756449124,
+            "unwarped_ncc": 0.9323585629463196,
+            "mean_max_channel_absdiff": 3.6979112870832616
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 8.142069362095688,
+            "current_std": 5.791061684654146,
+            "unwarped_ncc": 0.5064197182655334,
+            "mean_max_channel_absdiff": 4.097454615048119
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 17.605240220989664,
+            "current_std": 14.458678975480192,
+            "unwarped_ncc": 0.7010718584060669,
+            "mean_max_channel_absdiff": 6.286785911020382
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 4.1124544487857255,
+            "current_std": 3.9987994821151562,
+            "unwarped_ncc": 0.896440327167511,
+            "mean_max_channel_absdiff": 1.4869638635596083
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_pts_ticks": 31529,
+      "source_pts_ticks": 31785,
+      "source_pts_sec": 2.0693359375,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 12121,
+        "changed_pixels_outside_phase_and_timer": 438111,
+        "outside_mean_max_channel_absdiff": 9.087075798519024,
+        "outside_gray_ncc": 0.894799530506134,
+        "phase_current_std": 32.594095162081956,
+        "phase_gray_ncc": 0.9811418652534485,
+        "largest_change_components_xywh_area": [
+          [
+            648,
+            0,
+            1272,
+            1080,
+            299864
+          ],
+          [
+            192,
+            422,
+            687,
+            646,
+            17864
+          ],
+          [
+            224,
+            464,
+            364,
+            574,
+            15120
+          ],
+          [
+            486,
+            0,
+            321,
+            525,
+            9728
+          ],
+          [
+            44,
+            430,
+            54,
+            507,
+            8429
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 4.865674587181036,
+            "current_std": 4.945060286885582,
+            "unwarped_ncc": 0.9155135154724121,
+            "mean_max_channel_absdiff": 1.9224788647342994
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 12.013300413887714,
+            "current_std": 11.711593059041029,
+            "unwarped_ncc": 0.9009203314781189,
+            "mean_max_channel_absdiff": 2.554068991804841
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 12.873576756449124,
+            "current_std": 12.450645468850585,
+            "unwarped_ncc": 0.9031247496604919,
+            "mean_max_channel_absdiff": 4.453472580861116
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 5.791061684654146,
+            "current_std": 5.8653562351131345,
+            "unwarped_ncc": 0.6567561030387878,
+            "mean_max_channel_absdiff": 3.953193350831146
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 14.458678975480192,
+            "current_std": 11.021613900654689,
+            "unwarped_ncc": 0.5001086592674255,
+            "mean_max_channel_absdiff": 6.482291565406176
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 3.9987994821151562,
+            "current_std": 3.885739363945958,
+            "unwarped_ncc": 0.8458121418952942,
+            "mean_max_channel_absdiff": 1.8987673083417764
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    }
+  ],
+  "native_png_sha256": {
+    "outputs/recognition-investigation/native-foreground-controls-20261010/control-pair/frame_30761.png": "8a5c883deca160a0e22d96c0b0161a71667994b388d4c34d75d1f4a288e17e7c",
+    "outputs/recognition-investigation/native-foreground-controls-20261010/control-pair/frame_31017.png": "37a53246aa753f3ec583c18ac08dd60658c555e6b20558dc38fee1bde535519a",
+    "outputs/recognition-investigation/native-foreground-controls-20261010/control-pair/frame_31273.png": "0983554a075f8610803d9bb14711941cc25aa627622317907105a969e0a1b78f",
+    "outputs/recognition-investigation/native-foreground-controls-20261010/control-pair/frame_31529.png": "fe8a3384d9b16f6fc780f47811e5fec92cd544e99268b2e92fdb09b4566c8c8c",
+    "outputs/recognition-investigation/native-foreground-controls-20261010/control-pair/frame_31785.png": "dcd77a643ce41a91fe66f5bb6789814d9f2f0149c7c76c968c5bfa3de4443b10"
+  },
+  "native_frames": 5,
+  "wall_clock_sec": 32.23322491400177,
+  "runtime_authorized": false,
+  "qualification_created": false,
+  "interpretation": {
+    "review_role": "exposed development comparison; not independent holdout or confirmed no-edit control",
+    "reviewed_native_ticks": [
+      30761,
+      31017
+    ],
+    "foreground_pose": "idle-like to open-hand knife-inspection-like presentation in one native step",
+    "normal_animation_proven": false,
+    "content_discontinuity_ruled_out": false,
+    "timer_phase_used_to_select_or_label_control": false,
+    "minimum_post_pose_crop_ncc": 0.8421716094017029,
+    "qualified_post_pose_match": false,
+    "static_crop_limitation": "Post-pose boxes include wall in pre-pose reference; pre-pose and pair scores do not establish object correspondence.",
+    "background_limitation": "Control background minimum NCC is 0.833593; one of six regions fails 0.90, so this pair cannot qualify all-region continuity.",
+    "decision": "Whole non-UI NCC alone cannot distinguish foreground animation from a cut; retain fail-closed runtime qualification."
+  }
+}

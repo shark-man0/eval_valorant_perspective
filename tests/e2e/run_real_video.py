@@ -89,7 +89,20 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--ffprobe-bin")
     parser.add_argument("--frame-input", type=Path, help="PTS-only bounded replay specification")
     parser.add_argument("--cache-dir", type=Path)
+    parser.add_argument("--native-png-budget", type=int)
+    parser.add_argument("--scene-reference-profile", type=Path)
+    parser.add_argument("--unedited-input-contract", type=Path)
     args = parser.parse_args(argv)
+    native_scope = args.scene_reference_profile or args.unedited_input_contract
+    if (args.native_png_budget is not None or native_scope is not None) and (
+        args.native_png_budget is None or args.native_png_budget <= 0
+        or native_scope is None
+        or (args.scene_reference_profile is not None and args.unedited_input_contract is not None)
+        or args.from_raw or args.frame_input
+    ):
+        parser.error(
+            "native lifecycle requires positive budget, one source contract/profile and full source"
+        )
 
     output = args.output.expanduser().resolve()
     output.mkdir(parents=True, exist_ok=True)
@@ -121,6 +134,10 @@ def main(argv: list[str] | None = None) -> int:
         ),
         visual_profile_path=(
             str(args.visual_profile.expanduser().resolve()) if args.visual_profile else ""
+        ),
+        scene_reference_profile_path=(
+            str(args.scene_reference_profile.expanduser().resolve())
+            if args.scene_reference_profile else ""
         ),
         manual_map_id=args.manual_map_id,
         map_client_build=args.map_client_build,
@@ -190,11 +207,30 @@ def main(argv: list[str] | None = None) -> int:
             raw["runtime_mode"].update(mode=spec["mode"], input_scope="isolated_points")
             raw["replay_metadata"] = result.replay_metadata
         else:
+            from valorant_ai_coach.application.hud_video_processor import NativeLifecycleOptions
+
+            native_options = (
+                NativeLifecycleOptions(
+                    args.native_png_budget,
+                    unedited_input_contract_path=(
+                        args.unedited_input_contract.expanduser().resolve()
+                        if args.unedited_input_contract else None
+                    ),
+                )
+                if args.native_png_budget is not None else None
+            )
+            if native_options is not None:
+                raw["runtime_mode"]["native_lifecycle"] = {
+                    "source_scope": "origin_to_eof", "max_png_bytes": native_options.max_png_bytes,
+                    "png_prediction": native_options.png_prediction,
+                    "source_contract": ("unedited" if args.unedited_input_contract else "scene"),
+                }
             result = processor.process(
                 metadata=metadata,
                 match_id="e2e-runtime",
                 output_dir=output / "processing_frames",
                 require_detected_rounds=False,
+                **({"native_lifecycle_options": native_options} if native_options else {}),
                 progress_cb=lambda fraction, message: print(
                     f"[{fraction:5.1%}] {message}", flush=True
                 ),

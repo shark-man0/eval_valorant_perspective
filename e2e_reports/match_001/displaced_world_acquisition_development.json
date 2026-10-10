@@ -1,0 +1,412 @@
+{
+  "scope": "Frozen exposed displaced-reference acquisition; not runtime proof",
+  "rows": [
+    {
+      "image": "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/arch_context.png",
+      "prediction": {
+        "profile_sha256": "7c88be66b6d322f037be309ca02464c7ffd5da3236b646b7ec24d21d1f4e7ce2",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": false,
+            "reference_tracks": 0,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          },
+          {
+            "reference_id": "reviewed-arch-context",
+            "source_model_coherent": true,
+            "reference_tracks": 9,
+            "reference_model_inliers": 9,
+            "reference_to_current_affine": [
+              [
+                1.0,
+                -0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ]
+            ],
+            "domains": [
+              {
+                "region": 0,
+                "predicted_ncc": 1.0,
+                "competing_offsets": [
+                  {
+                    "offset_xy": [
+                      1,
+                      -3
+                    ],
+                    "ncc": 0.9023590683937073
+                  }
+                ],
+                "invalid_offsets": 102,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 1,
+                "predicted_ncc": 1.0,
+                "competing_offsets": [
+                  {
+                    "offset_xy": [
+                      -1,
+                      3
+                    ],
+                    "ncc": 0.9390249848365784
+                  },
+                  {
+                    "offset_xy": [
+                      0,
+                      3
+                    ],
+                    "ncc": 0.9862874746322632
+                  },
+                  {
+                    "offset_xy": [
+                      1,
+                      3
+                    ],
+                    "ncc": 0.9444289803504944
+                  },
+                  {
+                    "offset_xy": [
+                      -1,
+                      4
+                    ],
+                    "ncc": 0.9371384382247925
+                  },
+                  {
+                    "offset_xy": [
+                      0,
+                      4
+                    ],
+                    "ncc": 0.98380446434021
+                  },
+                  {
+                    "offset_xy": [
+                      1,
+                      4
+                    ],
+                    "ncc": 0.943171501159668
+                  },
+                  {
+                    "offset_xy": [
+                      -1,
+                      5
+                    ],
+                    "ncc": 0.9324326515197754
+                  },
+                  {
+                    "offset_xy": [
+                      0,
+                      5
+                    ],
+                    "ncc": 0.9784110188484192
+                  },
+                  {
+                    "offset_xy": [
+                      1,
+                      5
+                    ],
+                    "ncc": 0.939155638217926
+                  },
+                  {
+                    "offset_xy": [
+                      -1,
+                      6
+                    ],
+                    "ncc": 0.9267434477806091
+                  },
+                  {
+                    "offset_xy": [
+                      0,
+                      6
+                    ],
+                    "ncc": 0.9720852375030518
+                  },
+                  {
+                    "offset_xy": [
+                      1,
+                      6
+                    ],
+                    "ncc": 0.9344354271888733
+                  },
+                  {
+                    "offset_xy": [
+                      -1,
+                      7
+                    ],
+                    "ncc": 0.9206705689430237
+                  },
+                  {
+                    "offset_xy": [
+                      0,
+                      7
+                    ],
+                    "ncc": 0.9650946259498596
+                  },
+                  {
+                    "offset_xy": [
+                      1,
+                      7
+                    ],
+                    "ncc": 0.9295300841331482
+                  },
+                  {
+                    "offset_xy": [
+                      -1,
+                      8
+                    ],
+                    "ncc": 0.9109708070755005
+                  },
+                  {
+                    "offset_xy": [
+                      0,
+                      8
+                    ],
+                    "ncc": 0.9545539617538452
+                  },
+                  {
+                    "offset_xy": [
+                      1,
+                      8
+                    ],
+                    "ncc": 0.9201421141624451
+                  }
+                ],
+                "invalid_offsets": 102,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 2,
+                "predicted_ncc": 0.9999993443489075,
+                "competing_offsets": [],
+                "invalid_offsets": 68,
+                "locally_unambiguous_appearance": true,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              }
+            ],
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            },
+            "diagnostic_initialization_proposed": true,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": true,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false,
+        "acquisition_method": "unique_reciprocal_displaced_patch_search",
+        "current_search_boxes_640x360": [
+          [
+            168,
+            28,
+            224,
+            288
+          ],
+          [
+            416,
+            28,
+            584,
+            288
+          ],
+          [
+            224,
+            120,
+            416,
+            288
+          ],
+          [
+            8,
+            168,
+            168,
+            288
+          ]
+        ]
+      }
+    },
+    {
+      "image": "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000001.png",
+      "prediction": {
+        "profile_sha256": "7c88be66b6d322f037be309ca02464c7ffd5da3236b646b7ec24d21d1f4e7ce2",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": false,
+            "reference_tracks": 0,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          },
+          {
+            "reference_id": "reviewed-arch-context",
+            "source_model_coherent": false,
+            "reference_tracks": 0,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false,
+        "acquisition_method": "unique_reciprocal_displaced_patch_search",
+        "current_search_boxes_640x360": [
+          [
+            168,
+            28,
+            224,
+            288
+          ],
+          [
+            416,
+            28,
+            584,
+            288
+          ],
+          [
+            224,
+            120,
+            416,
+            288
+          ],
+          [
+            8,
+            168,
+            168,
+            288
+          ]
+        ]
+      }
+    },
+    {
+      "image": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000001.png",
+      "prediction": {
+        "profile_sha256": "7c88be66b6d322f037be309ca02464c7ffd5da3236b646b7ec24d21d1f4e7ce2",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": false,
+            "reference_tracks": 2,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          },
+          {
+            "reference_id": "reviewed-arch-context",
+            "source_model_coherent": false,
+            "reference_tracks": 1,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false,
+        "acquisition_method": "unique_reciprocal_displaced_patch_search",
+        "current_search_boxes_640x360": [
+          [
+            168,
+            28,
+            224,
+            288
+          ],
+          [
+            416,
+            28,
+            584,
+            288
+          ],
+          [
+            224,
+            120,
+            416,
+            288
+          ],
+          [
+            8,
+            168,
+            168,
+            288
+          ]
+        ]
+      }
+    }
+  ],
+  "wall_clock_sec": 12.6250091859838,
+  "terminal_bindings": {
+    "outputs/recognition-investigation/world-domain-bootstrap-20261009/profile.json": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+    "outputs/recognition-investigation/world-domain-bootstrap-20261009/assets/wall_close.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "ValorantData/videos/Valorant_09-25-2026_0-37-29-379.mp4": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "scripts/diagnostics/observed_scene_chain.py": "c60081a951a72b6d5aa68b05231cb3037b9883b0d7a4704b56810f64b88153d5",
+    "scripts/diagnostics/scene_domain_bootstrap.py": "1904b5736301a4cd632a6de1f9eb23cfb62f95c83840379197c20b50d1973b41",
+    "scripts/diagnostics/scene_world_bootstrap.py": "9947a6b0adc00f1e4b4eb63d5a95b1555d48091633712546e8078ee3a2436cfa",
+    "scripts/diagnostics/scene_reference_support.py": "aa6cec5c7ea7b10ce69c078fb2a8e2c7c794f6fa610ca3592c113d91a69751a5",
+    "scripts/diagnostics/scene_domain_ambiguity.py": "74ff5b505f2fd703936acee89dd6e5633a549f5ba2b7cc9a53ba9cd52cd9af10",
+    "scripts/diagnostics/scene_joint_domains.py": "2046cede2304b9493abc5f9ba06cbcfbe820a67f245a6e42cbd0aff5a5f45d34",
+    "scripts/diagnostics/scene_world_chain.py": "8a6d11a151f4afb77d88780b51f0705beca527edce7521831b9c8a590e788e33",
+    "scripts/diagnostics/scene_correspondence.py": "667fb4f7b0626fbbf4770716eefc18976a9409a4f0646084b95d479dab7273a3",
+    "scripts/diagnostics/scene_patch_search.py": "544b61f8dca800968521e9edce918166bb97353f5c2a5fed35f6011a0a04e4c1",
+    "scripts/diagnostics/validate_scene_chain_cohort.py": "ac57a87045c2e77eac6e162b14ba9d82459c6d7fc8d83904f9b10b3d911e68da",
+    "scripts/diagnostics/diagnose_native_global_lifecycle.py": "761dcd3e4019014e1691a29aad62f95d1ea4d401a61039c19a933d40d381a396",
+    "outputs/recognition-investigation/two-scene-domain-reference-20261009/profile.json": "7c88be66b6d322f037be309ca02464c7ffd5da3236b646b7ec24d21d1f4e7ce2",
+    "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/wall_close.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/arch_context.png": "929aab0a3f014eddff37a663241bd7fe3fcd15e0f800f7afe496b66c3d880579",
+    "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000001.png": "7178c40b9997f559b443c6e1145cffbdef9823d862d5f55c158bc9a7a5cecd6c",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000001.png": "ce2dbc370171a4cd637a6e96aa60ec6c9a50d8a1b62914622dd547f1727baa99"
+  },
+  "qualification_created": false,
+  "production_changed": false,
+  "canonical_current": null
+}

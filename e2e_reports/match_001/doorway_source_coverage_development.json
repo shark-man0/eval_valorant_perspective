@@ -1,0 +1,564 @@
+{
+  "scope": "one fixed source-profile coverage test; development only, no qualification",
+  "declaration": {
+    "scope": "one fixed source-profile coverage test; development only, no qualification",
+    "source_report_sha256": "275707bf869fa156f78703141f168e7f318933c3bafe3e00a3398bf362887eb2",
+    "source_profile_sha256": "933af05903029b998699491a5b4acd48ecb9a2a2bf749714ed5b670fec3a8fb8",
+    "source_asset_sha256": "01faac8f66d27f0fd4a98edd8667da9ca1e47c61695d6985f70f5d1266fdd612",
+    "recognizer_fingerprint": "c91cc65efc29dd1a25e1bc7a7c6c8e1a99560cff5159be518221d9da472b87ac",
+    "boxes_640x360": [
+      [
+        160,
+        55,
+        220,
+        117
+      ],
+      [
+        425,
+        78,
+        565,
+        117
+      ],
+      [
+        470,
+        125,
+        550,
+        170
+      ]
+    ],
+    "minimum_development_initializations_before_any_holdout": 3,
+    "thresholds_changed": false
+  },
+  "rows": [
+    {
+      "source_pts_ticks": 82985,
+      "source_pixel_sha256": "498a84c602e8fb0474b53de741f6fdddb754104d8999e5c6ce2bf9d12c14eee8",
+      "proposal": {
+        "profile_sha256": "933af05903029b998699491a5b4acd48ecb9a2a2bf749714ed5b670fec3a8fb8",
+        "proposals": [
+          {
+            "reference_id": "reviewed-doorway-development",
+            "source_model_coherent": true,
+            "reference_tracks": 45,
+            "reference_model_inliers": 45,
+            "reference_to_current_affine": [
+              [
+                1.0,
+                -0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ]
+            ],
+            "domains": [
+              {
+                "region": 0,
+                "predicted_ncc": 1.0,
+                "competing_offsets": [],
+                "invalid_offsets": 68,
+                "locally_unambiguous_appearance": true,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 1,
+                "predicted_ncc": 1.0,
+                "competing_offsets": [],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": true,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 2,
+                "predicted_ncc": 1.0,
+                "competing_offsets": [],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": true,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              }
+            ],
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            },
+            "diagnostic_initialization_proposed": true,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": true,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      },
+      "observed": {
+        "reason": "image_supported_observed_seed",
+        "descriptive_scene_link": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "source_pts_ticks": 82985,
+        "source_pixel_sha256": "498a84c602e8fb0474b53de741f6fdddb754104d8999e5c6ce2bf9d12c14eee8",
+        "profile_sha256": "933af05903029b998699491a5b4acd48ecb9a2a2bf749714ed5b670fec3a8fb8",
+        "reference_id": "reviewed-doorway-development",
+        "reference_is_observed_previous_frame": false
+      }
+    },
+    {
+      "source_pts_ticks": 83241,
+      "source_pixel_sha256": "b31d82f6f69464d7c5ba4c6f37af4cfde1ee396b7da6f9d6f0f72428d61e0c79",
+      "proposal": {
+        "profile_sha256": "933af05903029b998699491a5b4acd48ecb9a2a2bf749714ed5b670fec3a8fb8",
+        "proposals": [
+          {
+            "reference_id": "reviewed-doorway-development",
+            "source_model_coherent": true,
+            "reference_tracks": 15,
+            "reference_model_inliers": 15,
+            "reference_to_current_affine": [
+              [
+                1.0516717386959176,
+                0.008929373896201307,
+                -6.4228766354410665
+              ],
+              [
+                -0.008929373896201307,
+                1.0516717386959176,
+                -3.4834018228402366
+              ]
+            ],
+            "domains": [
+              {
+                "region": 0,
+                "predicted_ncc": null,
+                "competing_offsets": [],
+                "invalid_offsets": 170,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 1,
+                "predicted_ncc": 0.9457113146781921,
+                "competing_offsets": [],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": true,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 2,
+                "predicted_ncc": 0.9430248141288757,
+                "competing_offsets": [],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": true,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              }
+            ],
+            "joint": {
+              "fixed_projection_witness_regions": [
+                1,
+                2
+              ],
+              "distributed_source_and_current_support": false,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": false,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            },
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      },
+      "observed": {
+        "reason": "insufficient_reviewed_world_tracks",
+        "descriptive_scene_link": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 83497,
+      "source_pixel_sha256": "ad75cfcd1bfb8fa391be774534c1b13654be7f960e9ac55c7099d164d40d22fc",
+      "proposal": {
+        "profile_sha256": "933af05903029b998699491a5b4acd48ecb9a2a2bf749714ed5b670fec3a8fb8",
+        "proposals": [
+          {
+            "reference_id": "reviewed-doorway-development",
+            "source_model_coherent": false,
+            "reference_tracks": 1,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      },
+      "observed": {
+        "reason": "episode_terminated",
+        "descriptive_scene_link": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 83753,
+      "source_pixel_sha256": "07304a5df3aa174d05ff4de9302fe633ecb4dd21c52f1d3ab436d82f571e77bf",
+      "proposal": {
+        "profile_sha256": "933af05903029b998699491a5b4acd48ecb9a2a2bf749714ed5b670fec3a8fb8",
+        "proposals": [
+          {
+            "reference_id": "reviewed-doorway-development",
+            "source_model_coherent": false,
+            "reference_tracks": 0,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      },
+      "observed": {
+        "reason": "episode_terminated",
+        "descriptive_scene_link": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 84009,
+      "source_pixel_sha256": "1dd0113d42160c2721fb61fdc5d388b369102e48afe13552857f97f121c22c37",
+      "proposal": {
+        "profile_sha256": "933af05903029b998699491a5b4acd48ecb9a2a2bf749714ed5b670fec3a8fb8",
+        "proposals": [
+          {
+            "reference_id": "reviewed-doorway-development",
+            "source_model_coherent": false,
+            "reference_tracks": 1,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      },
+      "observed": {
+        "reason": "episode_terminated",
+        "descriptive_scene_link": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 84265,
+      "source_pixel_sha256": "3adb5fa641e0d6a16bea4131c225d171326b7557d475ba1160842a4ed36e239d",
+      "proposal": {
+        "profile_sha256": "933af05903029b998699491a5b4acd48ecb9a2a2bf749714ed5b670fec3a8fb8",
+        "proposals": [
+          {
+            "reference_id": "reviewed-doorway-development",
+            "source_model_coherent": false,
+            "reference_tracks": 0,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      },
+      "observed": {
+        "reason": "episode_terminated",
+        "descriptive_scene_link": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 84521,
+      "source_pixel_sha256": "b18a4b5f6980d8374930937db072339d2c85e3812781e5d97e079dbeb95f319a",
+      "proposal": {
+        "profile_sha256": "933af05903029b998699491a5b4acd48ecb9a2a2bf749714ed5b670fec3a8fb8",
+        "proposals": [
+          {
+            "reference_id": "reviewed-doorway-development",
+            "source_model_coherent": false,
+            "reference_tracks": 0,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      },
+      "observed": {
+        "reason": "episode_terminated",
+        "descriptive_scene_link": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 84777,
+      "source_pixel_sha256": "bd7e98b2af9bce5c989fea448429cb8717d353fd28d291e365560a63b860fe43",
+      "proposal": {
+        "profile_sha256": "933af05903029b998699491a5b4acd48ecb9a2a2bf749714ed5b670fec3a8fb8",
+        "proposals": [
+          {
+            "reference_id": "reviewed-doorway-development",
+            "source_model_coherent": false,
+            "reference_tracks": 0,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      },
+      "observed": {
+        "reason": "episode_terminated",
+        "descriptive_scene_link": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 85033,
+      "source_pixel_sha256": "eda82f98a822a57088420b987b08cb464af6b09581414664fce268b9eb94fce3",
+      "proposal": {
+        "profile_sha256": "933af05903029b998699491a5b4acd48ecb9a2a2bf749714ed5b670fec3a8fb8",
+        "proposals": [
+          {
+            "reference_id": "reviewed-doorway-development",
+            "source_model_coherent": false,
+            "reference_tracks": 0,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      },
+      "observed": {
+        "reason": "episode_terminated",
+        "descriptive_scene_link": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 85289,
+      "source_pixel_sha256": "9e653fba6417f5450b21a0635a96b799036d70243b78ebd43eb469e716b43791",
+      "proposal": {
+        "profile_sha256": "933af05903029b998699491a5b4acd48ecb9a2a2bf749714ed5b670fec3a8fb8",
+        "proposals": [
+          {
+            "reference_id": "reviewed-doorway-development",
+            "source_model_coherent": false,
+            "reference_tracks": 0,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      },
+      "observed": {
+        "reason": "episode_terminated",
+        "descriptive_scene_link": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 85545,
+      "source_pixel_sha256": "0b7829abee2dbc1b67c3b32e56db1b7de7d0419a98d0dd481180c4203297929f",
+      "proposal": {
+        "profile_sha256": "933af05903029b998699491a5b4acd48ecb9a2a2bf749714ed5b670fec3a8fb8",
+        "proposals": [
+          {
+            "reference_id": "reviewed-doorway-development",
+            "source_model_coherent": false,
+            "reference_tracks": 0,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      },
+      "observed": {
+        "reason": "episode_terminated",
+        "descriptive_scene_link": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 85801,
+      "source_pixel_sha256": "c112b27968c45470330fcbe0c8b22c4672067f8172ada2ae2d67ec0942e47162",
+      "proposal": {
+        "profile_sha256": "933af05903029b998699491a5b4acd48ecb9a2a2bf749714ed5b670fec3a8fb8",
+        "proposals": [
+          {
+            "reference_id": "reviewed-doorway-development",
+            "source_model_coherent": false,
+            "reference_tracks": 0,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      },
+      "observed": {
+        "reason": "episode_terminated",
+        "descriptive_scene_link": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false
+      }
+    }
+  ],
+  "native_frames": 12,
+  "development_initializations": 1,
+  "minimum_development_support_met": false,
+  "wall_clock_sec": 4.189010899979621,
+  "qualification_created": false,
+  "runtime_profile_installed": false,
+  "canonical_current": null,
+  "canonical_delta": null
+}

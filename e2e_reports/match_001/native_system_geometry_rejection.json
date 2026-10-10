@@ -1,0 +1,109 @@
+{
+  "scope": "existing exposed R1 frames; diagnostic anchor measurement with unchanged production detector and policy",
+  "parent_report_sha256": "86da563d797d54f246d7dc253114bc0a312f847903d393f2532838eca505338c",
+  "layout_path": "outputs/hud_profiles/round-global-timer-glyph-20261008/hud_layout.json",
+  "profile_fingerprint": "8b5955f1d7de7139949815a7853260b9a66b6fd48140b64351030a6e78e9a5db",
+  "recognizer_fingerprint": "f330ef45d7e3eebc0c05547106c35e9557d0704e91af615a63da2cb41b28375a",
+  "rows": [
+    {
+      "source_pts_ticks": 63017,
+      "source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b",
+      "accepted_anchors": [
+        "top_match_bar"
+      ],
+      "anchor_scores": {
+        "round_timer": 0.8493643403053284,
+        "top_match_bar": 0.9965769648551941,
+        "player_hp_armor": 0.6062955856323242,
+        "abilities": 0.7266188263893127
+      },
+      "diagnostics": [
+        "anchor round_timer: template score 0.849 below threshold",
+        "anchor player_hp_armor: template score 0.606 below threshold",
+        "anchor abilities: template score 0.727 below threshold"
+      ],
+      "fresh_calibrated": false,
+      "reasons": [
+        "insufficient_anchors"
+      ],
+      "anchor_count": 1,
+      "letterbox_detected": false
+    },
+    {
+      "source_pts_ticks": 63273,
+      "source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a",
+      "accepted_anchors": [
+        "top_match_bar"
+      ],
+      "anchor_scores": {
+        "round_timer": 0.8026745319366455,
+        "top_match_bar": 0.9965769648551941,
+        "player_hp_armor": 0.6421651244163513,
+        "abilities": 0.47495776414871216
+      },
+      "diagnostics": [
+        "anchor round_timer: template score 0.803 below threshold",
+        "anchor player_hp_armor: template score 0.642 below threshold",
+        "anchor abilities: template score 0.475 below threshold"
+      ],
+      "fresh_calibrated": false,
+      "reasons": [
+        "insufficient_anchors"
+      ],
+      "anchor_count": 1,
+      "letterbox_detected": false
+    },
+    {
+      "source_pts_ticks": 63529,
+      "source_pixel_sha256": "7b784dd56e27c48a760671568acbd458bc496400335ee4b3181798d0584a4044",
+      "accepted_anchors": [
+        "top_match_bar"
+      ],
+      "anchor_scores": {
+        "round_timer": 0.8058914542198181,
+        "top_match_bar": 0.9964167475700378,
+        "player_hp_armor": 0.6422747373580933,
+        "abilities": 0.4518106281757355
+      },
+      "diagnostics": [
+        "anchor round_timer: template score 0.806 below threshold",
+        "anchor player_hp_armor: template score 0.642 below threshold",
+        "anchor abilities: template score 0.452 below threshold"
+      ],
+      "fresh_calibrated": false,
+      "reasons": [
+        "insufficient_anchors"
+      ],
+      "anchor_count": 1,
+      "letterbox_detected": false
+    },
+    {
+      "source_pts_ticks": 63785,
+      "source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0",
+      "accepted_anchors": [
+        "top_match_bar"
+      ],
+      "anchor_scores": {
+        "round_timer": 0.796730101108551,
+        "top_match_bar": 0.9965050220489502,
+        "player_hp_armor": 0.6415378451347351,
+        "abilities": 0.43886125087738037
+      },
+      "diagnostics": [
+        "anchor round_timer: template score 0.797 below threshold",
+        "anchor player_hp_armor: template score 0.642 below threshold",
+        "anchor abilities: template score 0.439 below threshold"
+      ],
+      "fresh_calibrated": false,
+      "reasons": [
+        "insufficient_anchors"
+      ],
+      "anchor_count": 1,
+      "letterbox_detected": false
+    }
+  ],
+  "wall_clock_sec": 1.2836615369888023,
+  "qualification_created": false,
+  "canonical_current": null,
+  "canonical_delta": null
+}

@@ -1,0 +1,25 @@
+{
+  "git_head": "80d0d460b8e3a76d3c181e035c72cd10026f4252",
+  "focused_tests": "15 passed in2.92seconds",
+  "ruff": "PASS src tests scripts/e2e and runner",
+  "mypy_previous_same_source": "PASS104files",
+  "native_frames": 36,
+  "native_coverage_verified": true,
+  "decoded_pixel_overlaps": 15,
+  "source_code_terminal_verified": true,
+  "assertions": 82,
+  "assertion_rows_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776",
+  "production_changed": false,
+  "artifact_sha256": {
+    "scripts/diagnostics/validate_scene_chain_cohort.py": "212449e010c49be0e1ec90e7d72bc7a3520b86eb4a7779689646f61d340e27b8",
+    "tests/unit/test_scene_chain_cohort.py": "41ec309b3522a65f1eef49169eda5ddf58947273b705f25b1d26a281e1d1515b",
+    "docs/scene_joint_cohort_investigation.md": "dc27d20582391cca25d68dcd052f05e6146dda3b7c841bba841e8b179b9491cf",
+    "e2e_reports/match_001/scene_joint_cohort_reservation.json": "369b8a48562e79133ee61179068c852df0bdeb016bf13ca90f0d2d4c27938b0d",
+    "e2e_reports/match_001/scene_joint_cohort_diagnostics.json": "afe13a8033042fdcd87eef719a2a448beabe91ea59593bb951a179d1c1b5b419",
+    "e2e_reports/match_001/scene_joint_cohort_failure_stages.json": "4dc51b2dbc869e1f4761fddb335a8609c21b1a61c09b1d67bbe56a5e8a71e7f6",
+    "e2e_reports/match_001/scene_joint_cohort_exposure_inventory.json": "cf0f330cd02e4876fab05b526a8986a5404865a3d6138105b3fa105ae97c1dae"
+  },
+  "qualification_created": false,
+  "full_e2e_run": false,
+  "canonical_current": null
+}

@@ -18,6 +18,8 @@ from pathlib import Path
 import cv2
 import numpy as np
 
+from valorant_ai_coach.hud.scene_domains import canonical_scene_image as _prepare
+
 BACKGROUND_BOXES_PX = (
     (500, 160, 640, 350),
     (520, 360, 850, 520),
@@ -27,14 +29,6 @@ BACKGROUND_BOXES_PX = (
     (520, 550, 800, 760),
 )
 SCALED_BACKGROUND_BOXES = tuple(tuple(round(v / 3) for v in box) for box in BACKGROUND_BOXES_PX)
-
-
-def _prepare(image):
-    if image is None or image.shape != (1080, 1920, 3) or image.dtype != np.uint8:
-        raise ValueError("1920x1080 uint8 BGR source image required")
-    return cv2.cvtColor(
-        cv2.resize(image, (640, 360), interpolation=cv2.INTER_AREA), cv2.COLOR_BGR2GRAY
-    )
 
 
 def _ncc(a, b):

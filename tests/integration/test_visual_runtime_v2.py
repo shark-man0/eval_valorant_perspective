@@ -173,9 +173,13 @@ def test_semantic_candidate_is_confirmed_in_isolated_adapter_and_reused_on_resum
         }
     ).to_dict()
     instance = RealVisualAnalyzer(contract, semantic=semantic)
-    monkeypatch.setattr(
-        instance, "_measure", lambda *_: ([sample], {0: {"frame_ref": str(path)}}, [])
-    )
+    def measure(*_, continuity_breaks=()):
+        # This fixture models an uninterrupted semantic sample. Keep the
+        # source-break contract explicit rather than silently discarding it.
+        assert continuity_breaks == ()
+        return [sample], {0: {"frame_ref": str(path)}}, []
+
+    monkeypatch.setattr(instance, "_measure", measure)
     instance.begin_match("m", [{"type": "round_start", "time_sec": 0}])
     for _ in range(2):
         result = instance.analyze([FrameSample(1, path)], [], video_metadata=metadata(path))

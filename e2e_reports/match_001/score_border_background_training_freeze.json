@@ -1,0 +1,28 @@
+{
+  "scope": "One fixed training-only foreground hypothesis; no GT/expected values or holdout selection used",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "input_sha256": {
+    "outputs/recognition-investigation/score-white-development-20261008/results.json": "d3b98a163707ea1e5d3d9c9e214568936395405f64ca947b26d9c3c8f4f2eabb",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/score-reader-white-development.templates.json": "eb56187bd75a02a8ae69c5fb694ead83648d5bc8a236e8371611137875c66d4c",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/hud_layout.json": "baa99f1c1f0b4b7b959ec80242a58996a85c6f018bbc0895b3ca728dcaa5f3f8",
+    "scripts/diagnostics/score_border_background.py": "90502e9d73e457e3748dd71314f4bdf713d9bbcaf7b6d38ac5cd1027680fa0d8"
+  },
+  "profile_fingerprint": "287c6453d04b8f334cb32ba3631b91e935b563c070bb0a717548d8daa138d1b5",
+  "recognizer_fingerprint": "4bd2b67db63b406f3f940909ca9d94019b81df11537c2b52cb28e5d842e3daf8",
+  "hypothesis": {
+    "background": "maximum of left/right per-row median, four native outer columns per side",
+    "minimum_local_contrast": 12,
+    "retained_pixel_intensity": "original grayscale",
+    "downstream_white_threshold": 200,
+    "ncc": 0.9,
+    "class_margin": 0.04,
+    "grammar": "unchanged strict one/two digit all10competitors",
+    "retries": 0
+  },
+  "training_frames": 60,
+  "previously_exposed_active27_used": false,
+  "qualification_created": false,
+  "production_changed": false,
+  "target": "round lifecycle score evidence, including GT-R1-ROUND-END; no standalone PASS guarantee",
+  "selection": "Training baseline preservation required before any new holdout; exposed active27 excluded"
+}

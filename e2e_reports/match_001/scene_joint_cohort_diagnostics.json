@@ -1,0 +1,838 @@
+{
+  "scope": "Frozen native cohort; hypothetical seed, unreviewed, not qualification",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "windows": [
+    {
+      "window_sec": [
+        3.35,
+        3.55
+      ],
+      "native_frames": 12,
+      "adjacent_links": 11,
+      "supported_links_descriptive": 0,
+      "known_png_overlaps": 12,
+      "review_status": "unreviewed",
+      "runtime_proof_authorized": false,
+      "rows": [
+        {
+          "source_pts_ticks": 51497,
+          "time_base": "1/15360",
+          "pts_sec": 3.352669270833333,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-000/frame_000001.png",
+          "frame_sha256": "ae6ad2a2e72780b8d91a4fa181db9343dd480e20432275c840c81c9fbd40bb3e",
+          "source_pixel_sha256": "a4ada7a98cb21304a24e419c398f3aa7c79705023227394eeceba1200df0f205",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "hypothetical_unreviewed_seed",
+            "descriptive_supported": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 51753,
+          "time_base": "1/15360",
+          "pts_sec": 3.3693359375,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-000/frame_000002.png",
+          "frame_sha256": "82243de4bf7b37162280611368e9cf2f26538a282b1b2d0f86aefc13f23c1d49",
+          "source_pixel_sha256": "ee2b22404701b8bb3870dbe03fa9191048d8796e452ad7396f1c4310a28a5590",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "seed_model_incoherent",
+            "seed_features": 49,
+            "retained_features": 39,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 52009,
+          "time_base": "1/15360",
+          "pts_sec": 3.386002604166667,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-000/frame_000003.png",
+          "frame_sha256": "aebc9f3e83be5d06a53257b26aae2ef7dbecebb0bca171e62c9d00b6955c5acf",
+          "source_pixel_sha256": "ee6b4417533cdfd8edd1c6132db58565e1d235247e5f4f77f87e6fd5661ae118",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 49,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 52265,
+          "time_base": "1/15360",
+          "pts_sec": 3.4026692708333335,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-000/frame_000004.png",
+          "frame_sha256": "e69cf419fbdadf65ad9cf608966c43fbeb759b2c8bade0e487351fcddd523550",
+          "source_pixel_sha256": "fbfb80015d7bcc8a4286e1ea709fd544657d0995a24adf1968133b47f475e624",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 49,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 52521,
+          "time_base": "1/15360",
+          "pts_sec": 3.4193359375,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-000/frame_000005.png",
+          "frame_sha256": "f994288f44dbfa8453d897de15469711fc7abc3ab45fb66fb9465b5c272d822c",
+          "source_pixel_sha256": "c69e8959788fc19cbca7b6213c5671fd0c4abca411196a2bd0a23960caf3d0bc",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 49,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 52777,
+          "time_base": "1/15360",
+          "pts_sec": 3.4360026041666667,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-000/frame_000006.png",
+          "frame_sha256": "7e802618ef2353601ea84f10d62640e17f2a8e4fee01a3cbbaec302176648bb2",
+          "source_pixel_sha256": "67a2fda5d814eec40891902ce7af0b06f7fcaa6ea2fb355a7fe599594febee7c",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 49,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 53033,
+          "time_base": "1/15360",
+          "pts_sec": 3.4526692708333333,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-000/frame_000007.png",
+          "frame_sha256": "01257d7f42358b9a434ef387322ea0a895a9a0a4a3f8267d9984d6866b73d67c",
+          "source_pixel_sha256": "6a3e47b571f351088c80f9c3cbe69cc5791daab9d7474a98cefb958cd226d53f",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 49,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 53289,
+          "time_base": "1/15360",
+          "pts_sec": 3.4693359375,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-000/frame_000008.png",
+          "frame_sha256": "45f0fb404e71f7354a485149f9f05092f4c68e615c58d7d0f654d3be427b7f81",
+          "source_pixel_sha256": "fb01f9dc6c8bc5c3041c07d10245a24700d2b35776421eb20d2814435c1bef06",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 49,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 53545,
+          "time_base": "1/15360",
+          "pts_sec": 3.4860026041666665,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-000/frame_000009.png",
+          "frame_sha256": "2f90939b1eb1d8a63f3599e9aa9fdd3854291710765eecd108bd311214a0ee01",
+          "source_pixel_sha256": "1a552a6d7325dc1743f57ac79c34db83877c7c74fe2ac34c89ea7e8d7f746832",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 49,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 53801,
+          "time_base": "1/15360",
+          "pts_sec": 3.502669270833333,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-000/frame_000010.png",
+          "frame_sha256": "45bbd49318b16011d8eed61b69629e9aa52abc1f13713d5d38d23a49a20f7ede",
+          "source_pixel_sha256": "428502f36748cc5bfb7385e1afee99e9a60a83dd1a7f365e0792358a53caa9e4",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 49,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 54057,
+          "time_base": "1/15360",
+          "pts_sec": 3.5193359375,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-000/frame_000011.png",
+          "frame_sha256": "29df90aa202b3a659f2a9781436ee7c4b64eab2418d0290b85bd4d049a818626",
+          "source_pixel_sha256": "e4737cd7e6a80a69f59b07e1bdfeb8e7f590bc3a2e8ac453dc6c76ff048c9b81",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 49,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 54313,
+          "time_base": "1/15360",
+          "pts_sec": 3.536002604166667,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-000/frame_000012.png",
+          "frame_sha256": "b613749689a7010394da2f8ce582c53d0e76e95c830b07958ce9be92d5491821",
+          "source_pixel_sha256": "befee6969ae1485582643fe71266f0ba879b141ec652257fd896618a1fefcade",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 49,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": true
+        }
+      ]
+    },
+    {
+      "window_sec": [
+        4.5,
+        4.7
+      ],
+      "native_frames": 12,
+      "adjacent_links": 11,
+      "supported_links_descriptive": 0,
+      "known_png_overlaps": 3,
+      "review_status": "unreviewed",
+      "runtime_proof_authorized": false,
+      "rows": [
+        {
+          "source_pts_ticks": 69161,
+          "time_base": "1/15360",
+          "pts_sec": 4.502669270833334,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-001/frame_000001.png",
+          "frame_sha256": "c0b839962c320dc7ee18b88a3f02fb3d9641d19e5c36d593a800e4c023c77bd5",
+          "source_pixel_sha256": "2c44fe27f88b0881a7a08612a8b34775f9f18cdcd88d061f8043c14ee2bebc67",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "hypothetical_unreviewed_seed",
+            "descriptive_supported": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 69417,
+          "time_base": "1/15360",
+          "pts_sec": 4.5193359375,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-001/frame_000002.png",
+          "frame_sha256": "a619f8f9935b8519a164aa0cd88d9b2523062852a9c43187a1a14d2c598a20d2",
+          "source_pixel_sha256": "85d7d52438a3337e7129cc99905296412655da234cff22189cb7f499627ff822",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "seed_model_incoherent",
+            "seed_features": 76,
+            "retained_features": 19,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 69673,
+          "time_base": "1/15360",
+          "pts_sec": 4.536002604166667,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-001/frame_000003.png",
+          "frame_sha256": "2188d308412633b51e1eaba432caefceb7720413ab353579a1bf8f7a6ab747e3",
+          "source_pixel_sha256": "0316da1b15a83d47b3146fe9c7edfc3235d0bdfad6ee306f65641f7be7dca0c1",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 76,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 69929,
+          "time_base": "1/15360",
+          "pts_sec": 4.552669270833333,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-001/frame_000004.png",
+          "frame_sha256": "f91be0c72fedb847382274184105e6c1a84b3ff813d57bd1e13c0750d9e3fda7",
+          "source_pixel_sha256": "a0d5428bb85e032d9bd7960634a2fc37ea460dae8150a151903e3e4db70f40e2",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 76,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 70185,
+          "time_base": "1/15360",
+          "pts_sec": 4.5693359375,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-001/frame_000005.png",
+          "frame_sha256": "2a3bdcb897f802aa3c91221acb235d2608d39ff0bb154c65f542b14d6f5bcf22",
+          "source_pixel_sha256": "a4b64f13177b21bf068afa091876f07589b8d3c4c947669c4c3e8ee6cd354309",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 76,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 70441,
+          "time_base": "1/15360",
+          "pts_sec": 4.586002604166667,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-001/frame_000006.png",
+          "frame_sha256": "130134334d4079430d969109eea8cddbab261469a49abee815ca8cdfbe9ce402",
+          "source_pixel_sha256": "11c8609119d4596a377230178b9cfc54c929716099a5446a0fe452e696d5e261",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 76,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 70697,
+          "time_base": "1/15360",
+          "pts_sec": 4.602669270833333,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-001/frame_000007.png",
+          "frame_sha256": "bd5c11ff540611ed1733afe64c2f2a37ade08005b9a0be2dcc4ea2b5a86d49a3",
+          "source_pixel_sha256": "ea48486d3ea3478f1f796dff167182b40c33fad26b5a68453c5752f81852d66f",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 76,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 70953,
+          "time_base": "1/15360",
+          "pts_sec": 4.6193359375,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-001/frame_000008.png",
+          "frame_sha256": "3c532d1ff0402b8972aee0073f6729197799088357475faf60cee762973882f8",
+          "source_pixel_sha256": "94369fa6a0a13f643a3590f276761417c92245df854795154c6082c4397c1185",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 76,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 71209,
+          "time_base": "1/15360",
+          "pts_sec": 4.636002604166666,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-001/frame_000009.png",
+          "frame_sha256": "adabeb08894a6822abcdbf1961dfdafae72ed3e0393bf0c7c07633a78e7b0405",
+          "source_pixel_sha256": "4c4168a0e1ad9d1a329bac4151dcefd61ecb22092477db6651f272474f05f29b",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 76,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 71465,
+          "time_base": "1/15360",
+          "pts_sec": 4.652669270833333,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-001/frame_000010.png",
+          "frame_sha256": "71940d26bfe3f61de92221155bb87be8e97cd2fd1fd594130dc3d77e2c6a145f",
+          "source_pixel_sha256": "ee20755b75446fe78c8ac16fc0b870a977c2ba4309e18b2043940ef0e5213ee0",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 76,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 71721,
+          "time_base": "1/15360",
+          "pts_sec": 4.6693359375,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-001/frame_000011.png",
+          "frame_sha256": "cd5d0be9e871341b7bd4e9ea30d140a004f95b21a98eb34c0ef9c81935d1e122",
+          "source_pixel_sha256": "ec603cf09271a5bf7cb385f46f1a195d1b8594bce43d2697fd419e2b00b62420",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 76,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 71977,
+          "time_base": "1/15360",
+          "pts_sec": 4.686002604166666,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-001/frame_000012.png",
+          "frame_sha256": "c352f1517b3457eeb626ae25943954ef53bd6c8b21f0dc69024b0b648930b998",
+          "source_pixel_sha256": "a8f40c2bb03846fa04bc7552bdbb15573f79b1c9dec004b5a6429d1e9450549c",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 76,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": true
+        }
+      ]
+    },
+    {
+      "window_sec": [
+        6.0,
+        6.2
+      ],
+      "native_frames": 12,
+      "adjacent_links": 11,
+      "supported_links_descriptive": 0,
+      "known_png_overlaps": 0,
+      "review_status": "unreviewed",
+      "runtime_proof_authorized": false,
+      "rows": [
+        {
+          "source_pts_ticks": 92201,
+          "time_base": "1/15360",
+          "pts_sec": 6.002669270833334,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000001.png",
+          "frame_sha256": "ce2dbc370171a4cd637a6e96aa60ec6c9a50d8a1b62914622dd547f1727baa99",
+          "source_pixel_sha256": "c77e1b1f39bcc6bf23cbdc36ebe8f9dcdd00f835c46b2980bc2c68b632747db6",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "hypothetical_unreviewed_seed",
+            "descriptive_supported": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 92457,
+          "time_base": "1/15360",
+          "pts_sec": 6.0193359375,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000002.png",
+          "frame_sha256": "e5229e4421177fa36be0b53ec6c4e3beff3385fc8873969f653cf0a29cb785e9",
+          "source_pixel_sha256": "a993d7a9e6c5879c4f4733d3547382163e96da18f7e8ca8c4466acdcb400c0a9",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "seed_model_incoherent",
+            "seed_features": 65,
+            "retained_features": 55,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 92713,
+          "time_base": "1/15360",
+          "pts_sec": 6.036002604166667,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000003.png",
+          "frame_sha256": "44bdb32e54a97b24957ce770cc8c9d530f004adc6292f76dd553cc579efc30af",
+          "source_pixel_sha256": "c5b45e3bd846cfbb609fc3dcf73252864e11f8bea5a34a69ba79571321fa2eca",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 65,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 92969,
+          "time_base": "1/15360",
+          "pts_sec": 6.052669270833333,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000004.png",
+          "frame_sha256": "93e4bfe6900af0d9ce9bf7404f71905fdebaa00d3329762658cbe652dcc30693",
+          "source_pixel_sha256": "ed9a425b1ffe3410e53e034ea9d0aac3e7783a333dac4ab58ce099e6a7a28f35",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 65,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 93225,
+          "time_base": "1/15360",
+          "pts_sec": 6.0693359375,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000005.png",
+          "frame_sha256": "77e92fbf9dfae047e031b84cf0f3b26c8443f3908de56415f6da0fe37ae8d9a1",
+          "source_pixel_sha256": "eb8c95071064b44cdbb68ab4b82e9305e3d69d664b7a4c4a9020e85d4905a050",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 65,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 93481,
+          "time_base": "1/15360",
+          "pts_sec": 6.086002604166667,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000006.png",
+          "frame_sha256": "4dd71e43cd97c01813fcfcd517affc93d55cb95a2edf35ea1e11b2c246c0288f",
+          "source_pixel_sha256": "7ac33698e93f8745eb9befd924cdea9c0d61a34686b77769a725a54d547f6db2",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 65,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 93737,
+          "time_base": "1/15360",
+          "pts_sec": 6.102669270833333,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000007.png",
+          "frame_sha256": "0b32587f0e269c88703a132f14e7c3f29cfcb84b86da9e40ba75dbc12a049036",
+          "source_pixel_sha256": "df7ab4dfbf3dde95cbc1d9a618a50f68a69712c65e53106d13a9fece19e47a88",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 65,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 93993,
+          "time_base": "1/15360",
+          "pts_sec": 6.1193359375,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000008.png",
+          "frame_sha256": "f5753eefdc7afd5d6308a5b47fe9a189af646fd3377af7d5fb368f80ecc6cef4",
+          "source_pixel_sha256": "e96a94c0d22bcef15b1c34f207a269b93bac8ea697fe1892b907a46e69d5b9a9",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 65,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 94249,
+          "time_base": "1/15360",
+          "pts_sec": 6.136002604166666,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000009.png",
+          "frame_sha256": "009381b3be57715d9b8802baf4d01f0606060d1119086bd4423d23a8ee0d4b6e",
+          "source_pixel_sha256": "3c51f0759f1eafe8b00576f4c91992d33e3f5d0dc9ad823eb199956ca7f09c88",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 65,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 94505,
+          "time_base": "1/15360",
+          "pts_sec": 6.152669270833333,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000010.png",
+          "frame_sha256": "e89a0a7859ef7469a0e6e9a1fb73af61dc062332993e4c7e2baae3b6c99e7def",
+          "source_pixel_sha256": "561c3cc0627a07be7031271ee11760d66020ca041add8b4e5fa823c71fc5699a",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 65,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 94761,
+          "time_base": "1/15360",
+          "pts_sec": 6.1693359375,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000011.png",
+          "frame_sha256": "a60f1203ea84e6a8bce12c8033457bd46a198f43139843fa724193154eba620d",
+          "source_pixel_sha256": "e5c446566ce6d2f962e25d861cd82ffd7bb9cf504af97d5ddd88c9591f98eeb2",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 65,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 95017,
+          "time_base": "1/15360",
+          "pts_sec": 6.186002604166666,
+          "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000012.png",
+          "frame_sha256": "06da2dd864ad53503758822e5f329f6512b161ffc1307e50a134bf43dc17131c",
+          "source_pixel_sha256": "ffde1bac222b5912032fb074628a7aa29aed9b89d0b3ee0fdeb94ff3146a54cc",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 65,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          },
+          "joint_domain_audit": null,
+          "known_native_pixel_overlap": false
+        }
+      ]
+    }
+  ],
+  "file_sha256": {
+    "ValorantData/videos/Valorant_09-25-2026_0-37-29-379.mp4": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "e2e_reports/match_001/scene_joint_cohort_exposure_inventory.json": "cf0f330cd02e4876fab05b526a8986a5404865a3d6138105b3fa105ae97c1dae",
+    "scripts/diagnostics/validate_scene_chain_cohort.py": "212449e010c49be0e1ec90e7d72bc7a3520b86eb4a7779689646f61d340e27b8",
+    "scripts/diagnostics/scene_world_chain.py": "8a6d11a151f4afb77d88780b51f0705beca527edce7521831b9c8a590e788e33",
+    "scripts/diagnostics/scene_correspondence.py": "667fb4f7b0626fbbf4770716eefc18976a9409a4f0646084b95d479dab7273a3",
+    "scripts/diagnostics/scene_patch_search.py": "53e66f692c42cbaab695cdea9910e3326c50089a18468f6b0d01bd463e9c2dd9",
+    "scripts/diagnostics/diagnose_native_global_lifecycle.py": "761dcd3e4019014e1691a29aad62f95d1ea4d401a61039c19a933d40d381a396",
+    "scripts/diagnostics/scene_domain_ambiguity.py": "eea017aa98bd16051f4e0f3f5b4cebd84a5ae33eb8b538be2d25a6106479ad23",
+    "scripts/diagnostics/scene_joint_domains.py": "2046cede2304b9493abc5f9ba06cbcfbe820a67f245a6e42cbd0aff5a5f45d34",
+    "e2e_reports/match_001/scene_joint_cohort_reservation.json": "369b8a48562e79133ee61179068c852df0bdeb016bf13ca90f0d2d4c27938b0d",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-000/frame_000001.png": "ae6ad2a2e72780b8d91a4fa181db9343dd480e20432275c840c81c9fbd40bb3e",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-000/frame_000002.png": "82243de4bf7b37162280611368e9cf2f26538a282b1b2d0f86aefc13f23c1d49",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-000/frame_000003.png": "aebc9f3e83be5d06a53257b26aae2ef7dbecebb0bca171e62c9d00b6955c5acf",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-000/frame_000004.png": "e69cf419fbdadf65ad9cf608966c43fbeb759b2c8bade0e487351fcddd523550",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-000/frame_000005.png": "f994288f44dbfa8453d897de15469711fc7abc3ab45fb66fb9465b5c272d822c",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-000/frame_000006.png": "7e802618ef2353601ea84f10d62640e17f2a8e4fee01a3cbbaec302176648bb2",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-000/frame_000007.png": "01257d7f42358b9a434ef387322ea0a895a9a0a4a3f8267d9984d6866b73d67c",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-000/frame_000008.png": "45f0fb404e71f7354a485149f9f05092f4c68e615c58d7d0f654d3be427b7f81",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-000/frame_000009.png": "2f90939b1eb1d8a63f3599e9aa9fdd3854291710765eecd108bd311214a0ee01",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-000/frame_000010.png": "45bbd49318b16011d8eed61b69629e9aa52abc1f13713d5d38d23a49a20f7ede",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-000/frame_000011.png": "29df90aa202b3a659f2a9781436ee7c4b64eab2418d0290b85bd4d049a818626",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-000/frame_000012.png": "b613749689a7010394da2f8ce582c53d0e76e95c830b07958ce9be92d5491821",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-001/frame_000001.png": "c0b839962c320dc7ee18b88a3f02fb3d9641d19e5c36d593a800e4c023c77bd5",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-001/frame_000002.png": "a619f8f9935b8519a164aa0cd88d9b2523062852a9c43187a1a14d2c598a20d2",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-001/frame_000003.png": "2188d308412633b51e1eaba432caefceb7720413ab353579a1bf8f7a6ab747e3",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-001/frame_000004.png": "f91be0c72fedb847382274184105e6c1a84b3ff813d57bd1e13c0750d9e3fda7",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-001/frame_000005.png": "2a3bdcb897f802aa3c91221acb235d2608d39ff0bb154c65f542b14d6f5bcf22",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-001/frame_000006.png": "130134334d4079430d969109eea8cddbab261469a49abee815ca8cdfbe9ce402",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-001/frame_000007.png": "bd5c11ff540611ed1733afe64c2f2a37ade08005b9a0be2dcc4ea2b5a86d49a3",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-001/frame_000008.png": "3c532d1ff0402b8972aee0073f6729197799088357475faf60cee762973882f8",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-001/frame_000009.png": "adabeb08894a6822abcdbf1961dfdafae72ed3e0393bf0c7c07633a78e7b0405",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-001/frame_000010.png": "71940d26bfe3f61de92221155bb87be8e97cd2fd1fd594130dc3d77e2c6a145f",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-001/frame_000011.png": "cd5d0be9e871341b7bd4e9ea30d140a004f95b21a98eb34c0ef9c81935d1e122",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-001/frame_000012.png": "c352f1517b3457eeb626ae25943954ef53bd6c8b21f0dc69024b0b648930b998",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000001.png": "ce2dbc370171a4cd637a6e96aa60ec6c9a50d8a1b62914622dd547f1727baa99",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000002.png": "e5229e4421177fa36be0b53ec6c4e3beff3385fc8873969f653cf0a29cb785e9",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000003.png": "44bdb32e54a97b24957ce770cc8c9d530f004adc6292f76dd553cc579efc30af",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000004.png": "93e4bfe6900af0d9ce9bf7404f71905fdebaa00d3329762658cbe652dcc30693",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000005.png": "77e92fbf9dfae047e031b84cf0f3b26c8443f3908de56415f6da0fe37ae8d9a1",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000006.png": "4dd71e43cd97c01813fcfcd517affc93d55cb95a2edf35ea1e11b2c246c0288f",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000007.png": "0b32587f0e269c88703a132f14e7c3f29cfcb84b86da9e40ba75dbc12a049036",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000008.png": "f5753eefdc7afd5d6308a5b47fe9a189af646fd3377af7d5fb368f80ecc6cef4",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000009.png": "009381b3be57715d9b8802baf4d01f0606060d1119086bd4423d23a8ee0d4b6e",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000010.png": "e89a0a7859ef7469a0e6e9a1fb73af61dc062332993e4c7e2baae3b6c99e7def",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000011.png": "a60f1203ea84e6a8bce12c8033457bd46a198f43139843fa724193154eba620d",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000012.png": "06da2dd864ad53503758822e5f329f6512b161ffc1307e50a134bf43dc17131c"
+  },
+  "qualification_created": false,
+  "new_runtime_events": 0,
+  "canonical_current": null,
+  "wall_clock_seconds": 35.2894022410037
+}

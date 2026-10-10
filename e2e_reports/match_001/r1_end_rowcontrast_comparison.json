@@ -1,0 +1,57 @@
+{
+  "scope": "Same10native R1 end frames; score-only profile change, separate result configuration diagnosis",
+  "input_sha256": {
+    "e2e_reports/match_001/r1_end_existing_score_analyzer.json": "26e90fd39ddc408a3beabc10ec9da9adc561b0a2f78230847a288f1ec3d8ff6e",
+    "e2e_reports/match_001/r1_end_rowcontrast_actual_analyzer.json": "5f55edb0df7c43db09f64936bae5edee0d7e6289b2adf9a4d54f9537c31b4b66",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/score-reader-rowcontrast-pipeline.templates.json": "c6e9f7cf99e8263a2159f8676330653db182ad27b656581ed95555567f90b05b"
+  },
+  "score_transitions": {
+    "unknown_to_unknown": 1,
+    "accepted_same": 18,
+    "unknown_to_accepted": 1
+  },
+  "current_score_review": {
+    "correct": 19,
+    "unknown": 1,
+    "wrong": 0
+  },
+  "metrics": {
+    "score_pair_available": {
+      "previous": 8,
+      "current": 9,
+      "delta": 1
+    },
+    "timer_display_available": {
+      "previous": 4,
+      "current": 4,
+      "delta": 0
+    },
+    "round_result_matched_frames": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "wall_clock_sec": {
+      "previous": 33.46169869101141,
+      "current": 33.17015346203698,
+      "delta": -0.29154522897442803
+    }
+  },
+  "global_signal_setup": {
+    "buy_phase_template": {
+      "configured": true,
+      "semantic_matcher_loaded": true,
+      "status": "loaded",
+      "diagnostics": []
+    },
+    "round_end_template": {
+      "configured": false,
+      "semantic_matcher_loaded": false,
+      "status": "not_configured",
+      "diagnostics": []
+    }
+  },
+  "conclusion": "Result0in this profile is unavailable configuration, not a measured banner NCC failure. Separately archived late-reference diagnostic rejects early TEAM ACE. No end proof, event or qualification.",
+  "canonical_current": null,
+  "canonical_delta": null
+}

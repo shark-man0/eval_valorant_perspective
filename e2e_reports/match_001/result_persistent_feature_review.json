@@ -1,0 +1,126 @@
+{
+  "scope": "Post-prediction original-source review; correlated same-episode cases, not lifecycle qualification",
+  "prediction_report_sha256": "1132189164b2aa6c298081375d4ce2f2cbf9718534282bb06ec50901cc1cd29b",
+  "review_provenance": "Original unannotated source crops viewed after predictions, row-major in /tmp/result_persistent_feature_source_review.png; TEAM ACE visibly readable in all12; previously reviewed negatives retain original labels.",
+  "reviewed_rows": [
+    {
+      "source_pts_ticks": 1175849,
+      "source_pixel_sha256": "27ad0ec6271163983e49287d6521f963f9e2862118b3c4df5d1d6575f50da895",
+      "expected_source_text": "TEAM ACE",
+      "reserved_for_review": true
+    },
+    {
+      "source_pts_ticks": 1176105,
+      "source_pixel_sha256": "4440495464346e8b681365f92159a6bf5751be21a8eab4325604ab85681bc85f",
+      "expected_source_text": "TEAM ACE",
+      "reserved_for_review": true
+    },
+    {
+      "source_pts_ticks": 1176361,
+      "source_pixel_sha256": "fbfa42f1692f0548db1faee4e14fb7f55a6e811e68031da99dcfbf866b67df9e",
+      "expected_source_text": "TEAM ACE",
+      "reserved_for_review": true
+    },
+    {
+      "source_pts_ticks": 1176617,
+      "source_pixel_sha256": "f0155c6c4bef722ec25bb5c7eddf6b55eda78357b72a6e821e00dd25ef1b7bfe",
+      "expected_source_text": "TEAM ACE",
+      "reserved_for_review": false
+    },
+    {
+      "source_pts_ticks": 1176873,
+      "source_pixel_sha256": "92c3871f3b678584919e6122a82e3be273034a1a7dedf0f6417f97ea2f8028cc",
+      "expected_source_text": "TEAM ACE",
+      "reserved_for_review": false
+    },
+    {
+      "source_pts_ticks": 1177129,
+      "source_pixel_sha256": "b044b8d69b5d4c4652c86acca11271fefed4119268043e1d11124d92f92bdd51",
+      "expected_source_text": "TEAM ACE",
+      "reserved_for_review": true
+    },
+    {
+      "source_pts_ticks": 1177385,
+      "source_pixel_sha256": "3df58e16ae26b30e90bdbeec75a51fe13ba0f85bc0791d696045b224184c4519",
+      "expected_source_text": "TEAM ACE",
+      "reserved_for_review": true
+    },
+    {
+      "source_pts_ticks": 1177641,
+      "source_pixel_sha256": "97557bf9defd968323865a2d3957daa5c3f8dc98a8233a10314eb95264577a96",
+      "expected_source_text": "TEAM ACE",
+      "reserved_for_review": true
+    },
+    {
+      "source_pts_ticks": 1177897,
+      "source_pixel_sha256": "a7fb3c582cd9b41a457befd60adb1abb5777a418559a66641225ab3d71c7ab66",
+      "expected_source_text": "TEAM ACE",
+      "reserved_for_review": false
+    },
+    {
+      "source_pts_ticks": 1178153,
+      "source_pixel_sha256": "b28bd2fedc08b78b04398c05704680b05b9fd9b15fcab8b0c61d5e131b1ff4ad",
+      "expected_source_text": "TEAM ACE",
+      "reserved_for_review": false
+    },
+    {
+      "source_pts_ticks": 1178409,
+      "source_pixel_sha256": "5e907273225cab5aba910bdf7cd01f879fe3d88a955dc6d7a54e0219c8bba445",
+      "expected_source_text": "TEAM ACE",
+      "reserved_for_review": true
+    },
+    {
+      "source_pts_ticks": 1178665,
+      "source_pixel_sha256": "466e5d33ec4e3639a14867a0108dc70ac6888fbdc986b8dc7d6dce63391ac9b7",
+      "expected_source_text": "TEAM ACE",
+      "reserved_for_review": true
+    }
+  ],
+  "reserved_comparison": {
+    "correct": {
+      "previous": 2,
+      "current": 2,
+      "delta": 0
+    },
+    "unknown": {
+      "previous": 6,
+      "current": 6,
+      "delta": 0
+    },
+    "wrong": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    }
+  },
+  "all_source_comparison": {
+    "previous": {
+      "correct": 3,
+      "unknown": 9,
+      "wrong": 0
+    },
+    "current": {
+      "correct": 3,
+      "unknown": 9,
+      "wrong": 0
+    }
+  },
+  "negative_false_positive": {
+    "previous": 0,
+    "current": 0,
+    "delta": 0
+  },
+  "candidate_decision": "rejected_no_acceptance_improvement_and_insufficient_reserved_positive_support",
+  "production_changed": false,
+  "qualification_created": false,
+  "canonical_current": null,
+  "canonical_delta": null,
+  "observed_transition_counts": {
+    "unknown_to_correct": 0,
+    "unknown_to_wrong": 0,
+    "correct_to_wrong": 0,
+    "wrong_to_unknown": 0,
+    "wrong_to_correct": 0
+  },
+  "remaining_blocker": "Background-dependent reference contrast; this new cohort is now exposed and cannot become a fresh independent holdout."
+}

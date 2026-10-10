@@ -258,7 +258,7 @@ def test_scene_contract_rearms_second_round_and_associates_preparation(tmp_path)
     after.update(frame_index=11, time_sec=0.5)
     for row in (before, after):
         row["values"].update(score_ally=2, score_enemy=3)
-        row["quality"]["roi_confidence"].update(ally_score_value=0.96, enemy_score_value=0.96)
+        row["quality"]["roi_confidence"].update(score_ally_value=0.96, score_enemy_value=0.96)
     after["values"]["score_ally"] = 3
     rows.extend([before, after])
     for i, row in enumerate(sequence(), start=12):

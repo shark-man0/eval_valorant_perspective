@@ -1,0 +1,37 @@
+{
+  "hypothesis": "Conservative dense interior margin omits usable reviewed world signal",
+  "target_assertion_ids": [
+    "GT-R1-ROUND-START"
+  ],
+  "population": "Existing30-frame stable R1 native archive; all development, not holdout",
+  "mode": "adjacent_dense_world",
+  "dense_footprint": "full_valid",
+  "validity": "Float warped all-one crop coverage must equal1; score only actual current pixels with complete source interpolation support",
+  "coverage_fraction_floor": 0.9,
+  "coverage_population": "Entire reviewed crop",
+  "ncc_floor": 0.9,
+  "texture_std_floor": 1.0,
+  "minimum_seed_regions": 3,
+  "minimum_grid_rows": 2,
+  "minimum_grid_columns": 2,
+  "old_defaults_maintained": true,
+  "production_changed": false,
+  "qualification_created": false,
+  "manual_review": {
+    "regions": [
+      0,
+      3
+    ],
+    "panels": 60,
+    "decision": "Both complete source footprints show wall only; no timer/phase/arms/HUD in these30images",
+    "scope": "Development image review only",
+    "review_sha256": {
+      "outputs/recognition-investigation/scene-full-footprint-20261009/full-region-3-review.png": "75040bc4bdfa125079584e5d3c3b9e8783f9bd97aad1ba378098069116055348",
+      "outputs/recognition-investigation/scene-full-footprint-20261009/full-region-0-review.png": "c4277e7a92c1c48df5c51ac76202dd431ea01b99283d1e4ab6385a366e5b4e29"
+    }
+  },
+  "method_sha256": {
+    "scripts/diagnostics/scene_world_chain.py": "6c1fa8fa82ab88f60b22be1c5a453f58699f1c1500c8635e8caed269ce77f28a",
+    "scripts/diagnostics/probe_scene_world_chain.py": "d9349af0728c16952331cd1fcb6a66f131564634bfff3870f8c84c542b9b1e25"
+  }
+}

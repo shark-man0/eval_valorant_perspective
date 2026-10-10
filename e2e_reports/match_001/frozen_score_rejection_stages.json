@@ -1,0 +1,2995 @@
+{
+  "scope": "Frozen production-reader rejection inspection; nominal ROI replay exactly matches all54 actual analyzer values/confidences; not geometry calibration or qualification",
+  "input_sha256": {
+    "e2e_reports/match_001/frozen_numeric_reader_holdout_predictions.json": "4dfc8d5fe77891853237d51f422bd365e53162b98f1ed1a26c5c7f38c1c0dbf8"
+  },
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "profile_fingerprint": "ad747fd04c8d5a0567455da3253cd316e0b94065d7e2d0c87120b15d63f6f000",
+  "recognizer_fingerprint": "4bd2b67db63b406f3f940909ca9d94019b81df11537c2b52cb28e5d842e3daf8",
+  "reader_output_matches_actual_analyzer_fields": 54,
+  "rejection_counts": {
+    "ally_score": {
+      "strict_score_foreground_touches_roi_border": 24,
+      "strict_score_expected_one_or_two_digits": 1,
+      "accepted": 2
+    },
+    "enemy_score": {
+      "strict_score_foreground_touches_roi_border": 16,
+      "strict_score_digit_layout_inconsistent": 1,
+      "strict_score_expected_one_or_two_digits": 2,
+      "accepted": 8
+    }
+  },
+  "rows": [
+    {
+      "source_pts_ticks": 1875497,
+      "pts_sec": 122.10266927083333,
+      "frame_sha256": "0ca91514e37a85d10a83b7b7c0d575923dddf4ba38c0d6b00915473c22ee4007",
+      "role": "ally_score",
+      "outer_roi_px": [
+        785,
+        5,
+        900,
+        80
+      ],
+      "inner_roi_px": [
+        800,
+        25,
+        844,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 0,
+        "left": 3,
+        "right": 7
+      },
+      "foreground_fraction": 0.17032828282828283,
+      "components": [
+        {
+          "x": 33,
+          "y": 31,
+          "width": 30,
+          "height": 51,
+          "area": 953
+        },
+        {
+          "x": 0,
+          "y": 34,
+          "width": 32,
+          "height": 7,
+          "area": 172
+        },
+        {
+          "x": 63,
+          "y": 36,
+          "width": 25,
+          "height": 7,
+          "area": 157
+        },
+        {
+          "x": 47,
+          "y": 62,
+          "width": 1,
+          "height": 1,
+          "area": 1
+        },
+        {
+          "x": 64,
+          "y": 82,
+          "width": 17,
+          "height": 4,
+          "area": 50
+        },
+        {
+          "x": 0,
+          "y": 84,
+          "width": 5,
+          "height": 4,
+          "area": 14
+        },
+        {
+          "x": 49,
+          "y": 86,
+          "width": 1,
+          "height": 1,
+          "area": 1
+        },
+        {
+          "x": 62,
+          "y": 86,
+          "width": 1,
+          "height": 1,
+          "area": 1
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1875497,
+      "pts_sec": 122.10266927083333,
+      "frame_sha256": "0ca91514e37a85d10a83b7b7c0d575923dddf4ba38c0d6b00915473c22ee4007",
+      "role": "enemy_score",
+      "outer_roi_px": [
+        1020,
+        5,
+        1138,
+        80
+      ],
+      "inner_roi_px": [
+        1076,
+        25,
+        1120,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 63,
+        "left": 35,
+        "right": 42
+      },
+      "foreground_fraction": 0.47335858585858587,
+      "components": [
+        {
+          "x": 0,
+          "y": 30,
+          "width": 88,
+          "height": 60,
+          "area": 3749
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1875753,
+      "pts_sec": 122.1193359375,
+      "frame_sha256": "5536cd126b0c68b9d54b67796359ea83ad9ef02e99707f6490fd1606d7e54655",
+      "role": "ally_score",
+      "outer_roi_px": [
+        785,
+        5,
+        900,
+        80
+      ],
+      "inner_roi_px": [
+        800,
+        25,
+        844,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 0,
+        "left": 6,
+        "right": 6
+      },
+      "foreground_fraction": 0.16313131313131313,
+      "components": [
+        {
+          "x": 33,
+          "y": 31,
+          "width": 30,
+          "height": 51,
+          "area": 931
+        },
+        {
+          "x": 0,
+          "y": 32,
+          "width": 32,
+          "height": 6,
+          "area": 171
+        },
+        {
+          "x": 64,
+          "y": 34,
+          "width": 24,
+          "height": 6,
+          "area": 138
+        },
+        {
+          "x": 47,
+          "y": 62,
+          "width": 1,
+          "height": 1,
+          "area": 1
+        },
+        {
+          "x": 64,
+          "y": 82,
+          "width": 17,
+          "height": 4,
+          "area": 35
+        },
+        {
+          "x": 0,
+          "y": 84,
+          "width": 5,
+          "height": 4,
+          "area": 14
+        },
+        {
+          "x": 49,
+          "y": 86,
+          "width": 1,
+          "height": 1,
+          "area": 1
+        },
+        {
+          "x": 62,
+          "y": 86,
+          "width": 1,
+          "height": 1,
+          "area": 1
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1875753,
+      "pts_sec": 122.1193359375,
+      "frame_sha256": "5536cd126b0c68b9d54b67796359ea83ad9ef02e99707f6490fd1606d7e54655",
+      "role": "enemy_score",
+      "outer_roi_px": [
+        1020,
+        5,
+        1138,
+        80
+      ],
+      "inner_roi_px": [
+        1076,
+        25,
+        1120,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 62,
+        "left": 37,
+        "right": 44
+      },
+      "foreground_fraction": 0.48926767676767674,
+      "components": [
+        {
+          "x": 0,
+          "y": 30,
+          "width": 88,
+          "height": 60,
+          "area": 3875
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1876009,
+      "pts_sec": 122.13600260416666,
+      "frame_sha256": "4ee985ebc1149e7e54461a5bd81603b00645b2466611fc3b18f7e692bb364025",
+      "role": "ally_score",
+      "outer_roi_px": [
+        785,
+        5,
+        900,
+        80
+      ],
+      "inner_roi_px": [
+        800,
+        25,
+        844,
+        70
+      ],
+      "sources": [
+        "strict_score_expected_one_or_two_digits"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_expected_one_or_two_digits",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "foreground_fraction": 0.11363636363636363,
+      "components": [
+        {
+          "x": 33,
+          "y": 31,
+          "width": 28,
+          "height": 49,
+          "area": 808
+        },
+        {
+          "x": 38,
+          "y": 78,
+          "width": 2,
+          "height": 2,
+          "area": 4
+        },
+        {
+          "x": 3,
+          "y": 82,
+          "width": 12,
+          "height": 6,
+          "area": 41
+        },
+        {
+          "x": 64,
+          "y": 82,
+          "width": 17,
+          "height": 4,
+          "area": 45
+        },
+        {
+          "x": 49,
+          "y": 86,
+          "width": 1,
+          "height": 1,
+          "area": 1
+        },
+        {
+          "x": 62,
+          "y": 86,
+          "width": 1,
+          "height": 1,
+          "area": 1
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1876009,
+      "pts_sec": 122.13600260416666,
+      "frame_sha256": "4ee985ebc1149e7e54461a5bd81603b00645b2466611fc3b18f7e692bb364025",
+      "role": "enemy_score",
+      "outer_roi_px": [
+        1020,
+        5,
+        1138,
+        80
+      ],
+      "inner_roi_px": [
+        1076,
+        25,
+        1120,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 55,
+        "left": 0,
+        "right": 41
+      },
+      "foreground_fraction": 0.40075757575757576,
+      "components": [
+        {
+          "x": 23,
+          "y": 29,
+          "width": 65,
+          "height": 61,
+          "area": 3174
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1876265,
+      "pts_sec": 122.15266927083333,
+      "frame_sha256": "eb4ad5922d56e767cc1e4f9b87c99283f8a50274a2c59ae07e4265d986e49829",
+      "role": "ally_score",
+      "outer_roi_px": [
+        785,
+        5,
+        900,
+        80
+      ],
+      "inner_roi_px": [
+        800,
+        25,
+        844,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 2,
+        "left": 32,
+        "right": 0
+      },
+      "foreground_fraction": 0.13472222222222222,
+      "components": [
+        {
+          "x": 0,
+          "y": 18,
+          "width": 29,
+          "height": 4,
+          "area": 93
+        },
+        {
+          "x": 78,
+          "y": 19,
+          "width": 8,
+          "height": 3,
+          "area": 21
+        },
+        {
+          "x": 33,
+          "y": 31,
+          "width": 28,
+          "height": 47,
+          "area": 796
+        },
+        {
+          "x": 0,
+          "y": 60,
+          "width": 5,
+          "height": 30,
+          "area": 86
+        },
+        {
+          "x": 20,
+          "y": 83,
+          "width": 8,
+          "height": 4,
+          "area": 26
+        },
+        {
+          "x": 64,
+          "y": 82,
+          "width": 17,
+          "height": 4,
+          "area": 45
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1876265,
+      "pts_sec": 122.15266927083333,
+      "frame_sha256": "eb4ad5922d56e767cc1e4f9b87c99283f8a50274a2c59ae07e4265d986e49829",
+      "role": "enemy_score",
+      "outer_roi_px": [
+        1020,
+        5,
+        1138,
+        80
+      ],
+      "inner_roi_px": [
+        1076,
+        25,
+        1120,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 30,
+        "left": 2,
+        "right": 25
+      },
+      "foreground_fraction": 0.22626262626262628,
+      "components": [
+        {
+          "x": 0,
+          "y": 29,
+          "width": 4,
+          "height": 2,
+          "area": 8
+        },
+        {
+          "x": 7,
+          "y": 29,
+          "width": 2,
+          "height": 2,
+          "area": 3
+        },
+        {
+          "x": 31,
+          "y": 29,
+          "width": 57,
+          "height": 61,
+          "area": 1588
+        },
+        {
+          "x": 33,
+          "y": 49,
+          "width": 6,
+          "height": 4,
+          "area": 12
+        },
+        {
+          "x": 28,
+          "y": 50,
+          "width": 1,
+          "height": 2,
+          "area": 2
+        },
+        {
+          "x": 81,
+          "y": 71,
+          "width": 2,
+          "height": 1,
+          "area": 2
+        },
+        {
+          "x": 73,
+          "y": 74,
+          "width": 15,
+          "height": 16,
+          "area": 177
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1876521,
+      "pts_sec": 122.1693359375,
+      "frame_sha256": "874d209e32a5fa9bbde1575c3200a846c403c804c781f3a8f587b12231d9a6e8",
+      "role": "ally_score",
+      "outer_roi_px": [
+        785,
+        5,
+        900,
+        80
+      ],
+      "inner_roi_px": [
+        800,
+        25,
+        844,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 19,
+        "left": 63,
+        "right": 0
+      },
+      "foreground_fraction": 0.23270202020202022,
+      "components": [
+        {
+          "x": 0,
+          "y": 14,
+          "width": 31,
+          "height": 76,
+          "area": 977
+        },
+        {
+          "x": 79,
+          "y": 16,
+          "width": 7,
+          "height": 3,
+          "area": 15
+        },
+        {
+          "x": 33,
+          "y": 31,
+          "width": 28,
+          "height": 49,
+          "area": 800
+        },
+        {
+          "x": 38,
+          "y": 78,
+          "width": 2,
+          "height": 2,
+          "area": 4
+        },
+        {
+          "x": 64,
+          "y": 82,
+          "width": 17,
+          "height": 4,
+          "area": 45
+        },
+        {
+          "x": 49,
+          "y": 86,
+          "width": 1,
+          "height": 1,
+          "area": 1
+        },
+        {
+          "x": 62,
+          "y": 86,
+          "width": 1,
+          "height": 1,
+          "area": 1
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1876521,
+      "pts_sec": 122.1693359375,
+      "frame_sha256": "874d209e32a5fa9bbde1575c3200a846c403c804c781f3a8f587b12231d9a6e8",
+      "role": "enemy_score",
+      "outer_roi_px": [
+        1020,
+        5,
+        1138,
+        80
+      ],
+      "inner_roi_px": [
+        1076,
+        25,
+        1120,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 18,
+        "left": 2,
+        "right": 23
+      },
+      "foreground_fraction": 0.20656565656565656,
+      "components": [
+        {
+          "x": 0,
+          "y": 26,
+          "width": 11,
+          "height": 2,
+          "area": 12
+        },
+        {
+          "x": 31,
+          "y": 29,
+          "width": 26,
+          "height": 42,
+          "area": 569
+        },
+        {
+          "x": 58,
+          "y": 31,
+          "width": 30,
+          "height": 59,
+          "area": 1042
+        },
+        {
+          "x": 85,
+          "y": 84,
+          "width": 3,
+          "height": 6,
+          "area": 13
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1876777,
+      "pts_sec": 122.18600260416666,
+      "frame_sha256": "bdc9131546ece1a950728696195662492a83ffa9d099b562c8e2c0af6e35e408",
+      "role": "ally_score",
+      "outer_roi_px": [
+        785,
+        5,
+        900,
+        80
+      ],
+      "inner_roi_px": [
+        800,
+        25,
+        844,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 49,
+        "left": 51,
+        "right": 0
+      },
+      "foreground_fraction": 0.3960858585858586,
+      "components": [
+        {
+          "x": 0,
+          "y": 11,
+          "width": 63,
+          "height": 3,
+          "area": 94
+        },
+        {
+          "x": 0,
+          "y": 28,
+          "width": 64,
+          "height": 62,
+          "area": 2985
+        },
+        {
+          "x": 43,
+          "y": 51,
+          "width": 1,
+          "height": 7,
+          "area": 7
+        },
+        {
+          "x": 45,
+          "y": 62,
+          "width": 2,
+          "height": 1,
+          "area": 2
+        },
+        {
+          "x": 62,
+          "y": 82,
+          "width": 19,
+          "height": 4,
+          "area": 49
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1876777,
+      "pts_sec": 122.18600260416666,
+      "frame_sha256": "bdc9131546ece1a950728696195662492a83ffa9d099b562c8e2c0af6e35e408",
+      "role": "enemy_score",
+      "outer_roi_px": [
+        1020,
+        5,
+        1138,
+        80
+      ],
+      "inner_roi_px": [
+        1076,
+        25,
+        1120,
+        70
+      ],
+      "sources": [
+        "strict_score_digit_layout_inconsistent"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_digit_layout_inconsistent",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "foreground_fraction": 0.07247474747474747,
+      "components": [
+        {
+          "x": 61,
+          "y": 24,
+          "width": 7,
+          "height": 1,
+          "area": 7
+        },
+        {
+          "x": 31,
+          "y": 29,
+          "width": 26,
+          "height": 42,
+          "area": 567
+        }
+      ],
+      "conditional_glyph_ranking": [
+        {
+          "best_digit": "2",
+          "best_ncc": 0.9354663491249084,
+          "competitor_digit": "7",
+          "competitor_ncc": 0.6711059212684631,
+          "gap": 0.2643604278564453
+        },
+        {
+          "best_digit": "9",
+          "best_ncc": 0.31701621413230896,
+          "competitor_digit": "6",
+          "competitor_ncc": 0.31034085154533386,
+          "gap": 0.006675362586975098
+        }
+      ]
+    },
+    {
+      "source_pts_ticks": 1877033,
+      "pts_sec": 122.20266927083334,
+      "frame_sha256": "1c752be8b282c02af833462d569a7775c38c6575833528c56925eb54bc7c5ccd",
+      "role": "ally_score",
+      "outer_roi_px": [
+        785,
+        5,
+        900,
+        80
+      ],
+      "inner_roi_px": [
+        800,
+        25,
+        844,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 76,
+        "left": 46,
+        "right": 0
+      },
+      "foreground_fraction": 0.40694444444444444,
+      "components": [
+        {
+          "x": 0,
+          "y": 31,
+          "width": 80,
+          "height": 59,
+          "area": 3214
+        },
+        {
+          "x": 43,
+          "y": 51,
+          "width": 1,
+          "height": 7,
+          "area": 7
+        },
+        {
+          "x": 45,
+          "y": 62,
+          "width": 2,
+          "height": 1,
+          "area": 2
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1877033,
+      "pts_sec": 122.20266927083334,
+      "frame_sha256": "1c752be8b282c02af833462d569a7775c38c6575833528c56925eb54bc7c5ccd",
+      "role": "enemy_score",
+      "outer_roi_px": [
+        1020,
+        5,
+        1138,
+        80
+      ],
+      "inner_roi_px": [
+        1076,
+        25,
+        1120,
+        70
+      ],
+      "sources": [
+        "strict_score_expected_one_or_two_digits"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_expected_one_or_two_digits",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "foreground_fraction": 0.07234848484848484,
+      "components": [
+        {
+          "x": 62,
+          "y": 19,
+          "width": 10,
+          "height": 3,
+          "area": 21
+        },
+        {
+          "x": 75,
+          "y": 19,
+          "width": 2,
+          "height": 2,
+          "area": 3
+        },
+        {
+          "x": 31,
+          "y": 30,
+          "width": 26,
+          "height": 41,
+          "area": 549
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1877289,
+      "pts_sec": 122.2193359375,
+      "frame_sha256": "ebc9c42c99c9a1a966a82f4f87794566eb20cb6c720fd81c393c4ee54a32e87c",
+      "role": "ally_score",
+      "outer_roi_px": [
+        785,
+        5,
+        900,
+        80
+      ],
+      "inner_roi_px": [
+        800,
+        25,
+        844,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 84,
+        "left": 46,
+        "right": 63
+      },
+      "foreground_fraction": 0.5284090909090909,
+      "components": [
+        {
+          "x": 85,
+          "y": 17,
+          "width": 3,
+          "height": 2,
+          "area": 4
+        },
+        {
+          "x": 0,
+          "y": 26,
+          "width": 88,
+          "height": 64,
+          "area": 4171
+        },
+        {
+          "x": 30,
+          "y": 37,
+          "width": 1,
+          "height": 2,
+          "area": 2
+        },
+        {
+          "x": 43,
+          "y": 51,
+          "width": 1,
+          "height": 6,
+          "area": 6
+        },
+        {
+          "x": 46,
+          "y": 62,
+          "width": 2,
+          "height": 1,
+          "area": 2
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1877289,
+      "pts_sec": 122.2193359375,
+      "frame_sha256": "ebc9c42c99c9a1a966a82f4f87794566eb20cb6c720fd81c393c4ee54a32e87c",
+      "role": "enemy_score",
+      "outer_roi_px": [
+        1020,
+        5,
+        1138,
+        80
+      ],
+      "inner_roi_px": [
+        1076,
+        25,
+        1120,
+        70
+      ],
+      "sources": [
+        "strict_score_glyphs",
+        "comparison_gaussian3x3_v1",
+        "foreground_white200_v1"
+      ],
+      "value": 2,
+      "confidence": 0.9410830140113831,
+      "reason": "accepted",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "foreground_fraction": 0.06906565656565657,
+      "components": [
+        {
+          "x": 31,
+          "y": 30,
+          "width": 26,
+          "height": 41,
+          "area": 547
+        }
+      ],
+      "conditional_glyph_ranking": [
+        {
+          "best_digit": "2",
+          "best_ncc": 0.9410830140113831,
+          "competitor_digit": "7",
+          "competitor_ncc": 0.6912862658500671,
+          "gap": 0.24979674816131592
+        }
+      ]
+    },
+    {
+      "source_pts_ticks": 1877545,
+      "pts_sec": 122.23600260416667,
+      "frame_sha256": "a3a77e260e09bd1431b5816a87b0b3a6eab230afc34434fe4eb6eedd71cbfec8",
+      "role": "ally_score",
+      "outer_roi_px": [
+        785,
+        5,
+        900,
+        80
+      ],
+      "inner_roi_px": [
+        800,
+        25,
+        844,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 88,
+        "left": 46,
+        "right": 64
+      },
+      "foreground_fraction": 0.5300505050505051,
+      "components": [
+        {
+          "x": 0,
+          "y": 26,
+          "width": 88,
+          "height": 64,
+          "area": 4158
+        },
+        {
+          "x": 30,
+          "y": 37,
+          "width": 1,
+          "height": 2,
+          "area": 2
+        },
+        {
+          "x": 42,
+          "y": 49,
+          "width": 6,
+          "height": 14,
+          "area": 38
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1877545,
+      "pts_sec": 122.23600260416667,
+      "frame_sha256": "a3a77e260e09bd1431b5816a87b0b3a6eab230afc34434fe4eb6eedd71cbfec8",
+      "role": "enemy_score",
+      "outer_roi_px": [
+        1020,
+        5,
+        1138,
+        80
+      ],
+      "inner_roi_px": [
+        1076,
+        25,
+        1120,
+        70
+      ],
+      "sources": [
+        "strict_score_glyphs",
+        "comparison_gaussian3x3_v1",
+        "foreground_white200_v1"
+      ],
+      "value": 2,
+      "confidence": 0.9410830140113831,
+      "reason": "accepted",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "foreground_fraction": 0.06906565656565657,
+      "components": [
+        {
+          "x": 31,
+          "y": 30,
+          "width": 26,
+          "height": 41,
+          "area": 547
+        }
+      ],
+      "conditional_glyph_ranking": [
+        {
+          "best_digit": "2",
+          "best_ncc": 0.9410830140113831,
+          "competitor_digit": "7",
+          "competitor_ncc": 0.6912862658500671,
+          "gap": 0.24979674816131592
+        }
+      ]
+    },
+    {
+      "source_pts_ticks": 1877801,
+      "pts_sec": 122.25266927083334,
+      "frame_sha256": "e9afdc5ed288c118fc75741cdb82490c05d9728a23096a8220e3f91a085c055f",
+      "role": "ally_score",
+      "outer_roi_px": [
+        785,
+        5,
+        900,
+        80
+      ],
+      "inner_roi_px": [
+        800,
+        25,
+        844,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 85,
+        "left": 46,
+        "right": 40
+      },
+      "foreground_fraction": 0.5006313131313131,
+      "components": [
+        {
+          "x": 0,
+          "y": 31,
+          "width": 88,
+          "height": 59,
+          "area": 3925
+        },
+        {
+          "x": 30,
+          "y": 37,
+          "width": 1,
+          "height": 2,
+          "area": 2
+        },
+        {
+          "x": 42,
+          "y": 49,
+          "width": 6,
+          "height": 14,
+          "area": 38
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1877801,
+      "pts_sec": 122.25266927083334,
+      "frame_sha256": "e9afdc5ed288c118fc75741cdb82490c05d9728a23096a8220e3f91a085c055f",
+      "role": "enemy_score",
+      "outer_roi_px": [
+        1020,
+        5,
+        1138,
+        80
+      ],
+      "inner_roi_px": [
+        1076,
+        25,
+        1120,
+        70
+      ],
+      "sources": [
+        "strict_score_glyphs",
+        "comparison_gaussian3x3_v1",
+        "foreground_white200_v1"
+      ],
+      "value": 2,
+      "confidence": 0.9382475018501282,
+      "reason": "accepted",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "foreground_fraction": 0.07108585858585859,
+      "components": [
+        {
+          "x": 31,
+          "y": 29,
+          "width": 26,
+          "height": 42,
+          "area": 563
+        }
+      ],
+      "conditional_glyph_ranking": [
+        {
+          "best_digit": "2",
+          "best_ncc": 0.9382475018501282,
+          "competitor_digit": "7",
+          "competitor_ncc": 0.6592093706130981,
+          "gap": 0.27903813123703003
+        }
+      ]
+    },
+    {
+      "source_pts_ticks": 1878057,
+      "pts_sec": 122.2693359375,
+      "frame_sha256": "2eebb9350fc00ee6ab046e4529b2e76e31bbc819d90c0b8ae167f1ce746e6c88",
+      "role": "ally_score",
+      "outer_roi_px": [
+        785,
+        5,
+        900,
+        80
+      ],
+      "inner_roi_px": [
+        800,
+        25,
+        844,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 85,
+        "left": 46,
+        "right": 40
+      },
+      "foreground_fraction": 0.5008838383838384,
+      "components": [
+        {
+          "x": 0,
+          "y": 31,
+          "width": 88,
+          "height": 59,
+          "area": 3965
+        },
+        {
+          "x": 30,
+          "y": 37,
+          "width": 1,
+          "height": 2,
+          "area": 2
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1878057,
+      "pts_sec": 122.2693359375,
+      "frame_sha256": "2eebb9350fc00ee6ab046e4529b2e76e31bbc819d90c0b8ae167f1ce746e6c88",
+      "role": "enemy_score",
+      "outer_roi_px": [
+        1020,
+        5,
+        1138,
+        80
+      ],
+      "inner_roi_px": [
+        1076,
+        25,
+        1120,
+        70
+      ],
+      "sources": [
+        "strict_score_glyphs",
+        "comparison_gaussian3x3_v1",
+        "foreground_white200_v1"
+      ],
+      "value": 2,
+      "confidence": 0.9380685687065125,
+      "reason": "accepted",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "foreground_fraction": 0.07108585858585859,
+      "components": [
+        {
+          "x": 31,
+          "y": 29,
+          "width": 26,
+          "height": 42,
+          "area": 563
+        }
+      ],
+      "conditional_glyph_ranking": [
+        {
+          "best_digit": "2",
+          "best_ncc": 0.9380685687065125,
+          "competitor_digit": "7",
+          "competitor_ncc": 0.6545388698577881,
+          "gap": 0.28352969884872437
+        }
+      ]
+    },
+    {
+      "source_pts_ticks": 1878313,
+      "pts_sec": 122.28600260416667,
+      "frame_sha256": "284e92155a79452e22e100949ee1b2dcac4ba44463d080378c524e550f993778",
+      "role": "ally_score",
+      "outer_roi_px": [
+        785,
+        5,
+        900,
+        80
+      ],
+      "inner_roi_px": [
+        800,
+        25,
+        844,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 85,
+        "left": 44,
+        "right": 44
+      },
+      "foreground_fraction": 0.49924242424242427,
+      "components": [
+        {
+          "x": 0,
+          "y": 31,
+          "width": 88,
+          "height": 59,
+          "area": 3954
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1878313,
+      "pts_sec": 122.28600260416667,
+      "frame_sha256": "284e92155a79452e22e100949ee1b2dcac4ba44463d080378c524e550f993778",
+      "role": "enemy_score",
+      "outer_roi_px": [
+        1020,
+        5,
+        1138,
+        80
+      ],
+      "inner_roi_px": [
+        1076,
+        25,
+        1120,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 15,
+        "left": 52,
+        "right": 0
+      },
+      "foreground_fraction": 0.2053030303030303,
+      "components": [
+        {
+          "x": 0,
+          "y": 20,
+          "width": 18,
+          "height": 70,
+          "area": 1004
+        },
+        {
+          "x": 31,
+          "y": 29,
+          "width": 26,
+          "height": 42,
+          "area": 601
+        },
+        {
+          "x": 39,
+          "y": 73,
+          "width": 13,
+          "height": 3,
+          "area": 21
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1878569,
+      "pts_sec": 122.30266927083333,
+      "frame_sha256": "d1736d685967143381dbf658109ec3985db26bf66c3e879736303f4eb7a11ff1",
+      "role": "ally_score",
+      "outer_roi_px": [
+        785,
+        5,
+        900,
+        80
+      ],
+      "inner_roi_px": [
+        800,
+        25,
+        844,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 85,
+        "left": 38,
+        "right": 42
+      },
+      "foreground_fraction": 0.45707070707070707,
+      "components": [
+        {
+          "x": 0,
+          "y": 31,
+          "width": 88,
+          "height": 59,
+          "area": 3620
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1878569,
+      "pts_sec": 122.30266927083333,
+      "frame_sha256": "d1736d685967143381dbf658109ec3985db26bf66c3e879736303f4eb7a11ff1",
+      "role": "enemy_score",
+      "outer_roi_px": [
+        1020,
+        5,
+        1138,
+        80
+      ],
+      "inner_roi_px": [
+        1076,
+        25,
+        1120,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 17,
+        "left": 0,
+        "right": 0
+      },
+      "foreground_fraction": 0.17373737373737375,
+      "components": [
+        {
+          "x": 12,
+          "y": 24,
+          "width": 45,
+          "height": 66,
+          "area": 1372
+        },
+        {
+          "x": 28,
+          "y": 27,
+          "width": 3,
+          "height": 2,
+          "area": 4
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1878825,
+      "pts_sec": 122.3193359375,
+      "frame_sha256": "82d96c5778ee899c595781849333178bd5e894dfa20259beda3c16fbbfa4fcbb",
+      "role": "ally_score",
+      "outer_roi_px": [
+        785,
+        5,
+        900,
+        80
+      ],
+      "inner_roi_px": [
+        800,
+        25,
+        844,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 85,
+        "left": 34,
+        "right": 44
+      },
+      "foreground_fraction": 0.45454545454545453,
+      "components": [
+        {
+          "x": 0,
+          "y": 31,
+          "width": 88,
+          "height": 59,
+          "area": 3600
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1878825,
+      "pts_sec": 122.3193359375,
+      "frame_sha256": "82d96c5778ee899c595781849333178bd5e894dfa20259beda3c16fbbfa4fcbb",
+      "role": "enemy_score",
+      "outer_roi_px": [
+        1020,
+        5,
+        1138,
+        80
+      ],
+      "inner_roi_px": [
+        1076,
+        25,
+        1120,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 17,
+        "left": 0,
+        "right": 0
+      },
+      "foreground_fraction": 0.13547979797979798,
+      "components": [
+        {
+          "x": 31,
+          "y": 29,
+          "width": 28,
+          "height": 61,
+          "area": 1073
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1879081,
+      "pts_sec": 122.33600260416667,
+      "frame_sha256": "95466b1c4f17ad8204dc03ca720e8779928125deea27e25f2ebb089dbc13b542",
+      "role": "ally_score",
+      "outer_roi_px": [
+        785,
+        5,
+        900,
+        80
+      ],
+      "inner_roi_px": [
+        800,
+        25,
+        844,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 62,
+        "left": 22,
+        "right": 44
+      },
+      "foreground_fraction": 0.41174242424242424,
+      "components": [
+        {
+          "x": 0,
+          "y": 31,
+          "width": 88,
+          "height": 59,
+          "area": 3261
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1879081,
+      "pts_sec": 122.33600260416667,
+      "frame_sha256": "95466b1c4f17ad8204dc03ca720e8779928125deea27e25f2ebb089dbc13b542",
+      "role": "enemy_score",
+      "outer_roi_px": [
+        1020,
+        5,
+        1138,
+        80
+      ],
+      "inner_roi_px": [
+        1076,
+        25,
+        1120,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 20,
+        "left": 0,
+        "right": 0
+      },
+      "foreground_fraction": 0.18409090909090908,
+      "components": [
+        {
+          "x": 28,
+          "y": 29,
+          "width": 50,
+          "height": 61,
+          "area": 1458
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1879337,
+      "pts_sec": 122.35266927083333,
+      "frame_sha256": "6ec170d0422ea7821dc528bfede8cdb471176e3bc01b1f5a42b8d867260a5922",
+      "role": "ally_score",
+      "outer_roi_px": [
+        785,
+        5,
+        900,
+        80
+      ],
+      "inner_roi_px": [
+        800,
+        25,
+        844,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 72,
+        "left": 21,
+        "right": 42
+      },
+      "foreground_fraction": 0.3917929292929293,
+      "components": [
+        {
+          "x": 0,
+          "y": 31,
+          "width": 88,
+          "height": 59,
+          "area": 3103
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1879337,
+      "pts_sec": 122.35266927083333,
+      "frame_sha256": "6ec170d0422ea7821dc528bfede8cdb471176e3bc01b1f5a42b8d867260a5922",
+      "role": "enemy_score",
+      "outer_roi_px": [
+        1020,
+        5,
+        1138,
+        80
+      ],
+      "inner_roi_px": [
+        1076,
+        25,
+        1120,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 16,
+        "left": 0,
+        "right": 10
+      },
+      "foreground_fraction": 0.19507575757575757,
+      "components": [
+        {
+          "x": 31,
+          "y": 29,
+          "width": 26,
+          "height": 42,
+          "area": 572
+        },
+        {
+          "x": 63,
+          "y": 34,
+          "width": 25,
+          "height": 56,
+          "area": 925
+        },
+        {
+          "x": 28,
+          "y": 84,
+          "width": 24,
+          "height": 2,
+          "area": 48
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1879593,
+      "pts_sec": 122.3693359375,
+      "frame_sha256": "a99616fce7c84bc40234afc696b496808c0cb32e13e5a2854de2853454b63b5f",
+      "role": "ally_score",
+      "outer_roi_px": [
+        785,
+        5,
+        900,
+        80
+      ],
+      "inner_roi_px": [
+        800,
+        25,
+        844,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 73,
+        "left": 14,
+        "right": 37
+      },
+      "foreground_fraction": 0.38421717171717173,
+      "components": [
+        {
+          "x": 0,
+          "y": 31,
+          "width": 88,
+          "height": 59,
+          "area": 3030
+        },
+        {
+          "x": 42,
+          "y": 51,
+          "width": 2,
+          "height": 6,
+          "area": 8
+        },
+        {
+          "x": 45,
+          "y": 62,
+          "width": 3,
+          "height": 2,
+          "area": 5
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1879593,
+      "pts_sec": 122.3693359375,
+      "frame_sha256": "a99616fce7c84bc40234afc696b496808c0cb32e13e5a2854de2853454b63b5f",
+      "role": "enemy_score",
+      "outer_roi_px": [
+        1020,
+        5,
+        1138,
+        80
+      ],
+      "inner_roi_px": [
+        1076,
+        25,
+        1120,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 2,
+        "left": 0,
+        "right": 24
+      },
+      "foreground_fraction": 0.10416666666666667,
+      "components": [
+        {
+          "x": 31,
+          "y": 29,
+          "width": 26,
+          "height": 42,
+          "area": 578
+        },
+        {
+          "x": 81,
+          "y": 66,
+          "width": 7,
+          "height": 24,
+          "area": 103
+        },
+        {
+          "x": 26,
+          "y": 80,
+          "width": 44,
+          "height": 7,
+          "area": 144
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1879849,
+      "pts_sec": 122.38600260416666,
+      "frame_sha256": "7cb704da638e2bd5d09c159d52c2bc7b6dabb881d02c218d0206b91491c12082",
+      "role": "ally_score",
+      "outer_roi_px": [
+        785,
+        5,
+        900,
+        80
+      ],
+      "inner_roi_px": [
+        800,
+        25,
+        844,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 59,
+        "left": 3,
+        "right": 37
+      },
+      "foreground_fraction": 0.35782828282828283,
+      "components": [
+        {
+          "x": 0,
+          "y": 31,
+          "width": 88,
+          "height": 59,
+          "area": 2831
+        },
+        {
+          "x": 46,
+          "y": 62,
+          "width": 2,
+          "height": 2,
+          "area": 3
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1879849,
+      "pts_sec": 122.38600260416666,
+      "frame_sha256": "7cb704da638e2bd5d09c159d52c2bc7b6dabb881d02c218d0206b91491c12082",
+      "role": "enemy_score",
+      "outer_roi_px": [
+        1020,
+        5,
+        1138,
+        80
+      ],
+      "inner_roi_px": [
+        1076,
+        25,
+        1120,
+        70
+      ],
+      "sources": [
+        "strict_score_expected_one_or_two_digits"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_expected_one_or_two_digits",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "foreground_fraction": 0.0970959595959596,
+      "components": [
+        {
+          "x": 31,
+          "y": 29,
+          "width": 26,
+          "height": 42,
+          "area": 578
+        },
+        {
+          "x": 84,
+          "y": 76,
+          "width": 2,
+          "height": 2,
+          "area": 4
+        },
+        {
+          "x": 28,
+          "y": 80,
+          "width": 57,
+          "height": 7,
+          "area": 187
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1880105,
+      "pts_sec": 122.40266927083333,
+      "frame_sha256": "f9a7479b20180b1a5931a4b7ca43cba392bb7bdac6163781599de24c51c87c90",
+      "role": "ally_score",
+      "outer_roi_px": [
+        785,
+        5,
+        900,
+        80
+      ],
+      "inner_roi_px": [
+        800,
+        25,
+        844,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 69,
+        "left": 0,
+        "right": 22
+      },
+      "foreground_fraction": 0.2964646464646465,
+      "components": [
+        {
+          "x": 1,
+          "y": 31,
+          "width": 87,
+          "height": 59,
+          "area": 2345
+        },
+        {
+          "x": 46,
+          "y": 62,
+          "width": 2,
+          "height": 2,
+          "area": 3
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1880105,
+      "pts_sec": 122.40266927083333,
+      "frame_sha256": "f9a7479b20180b1a5931a4b7ca43cba392bb7bdac6163781599de24c51c87c90",
+      "role": "enemy_score",
+      "outer_roi_px": [
+        1020,
+        5,
+        1138,
+        80
+      ],
+      "inner_roi_px": [
+        1076,
+        25,
+        1120,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 2
+      },
+      "foreground_fraction": 0.09772727272727273,
+      "components": [
+        {
+          "x": 31,
+          "y": 29,
+          "width": 26,
+          "height": 42,
+          "area": 578
+        },
+        {
+          "x": 86,
+          "y": 76,
+          "width": 2,
+          "height": 2,
+          "area": 4
+        },
+        {
+          "x": 26,
+          "y": 80,
+          "width": 60,
+          "height": 7,
+          "area": 187
+        },
+        {
+          "x": 20,
+          "y": 83,
+          "width": 2,
+          "height": 3,
+          "area": 5
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1880361,
+      "pts_sec": 122.4193359375,
+      "frame_sha256": "639a8f74540e0b739cc1130765976b7c4580e1a912fee93dc19119f682ace78a",
+      "role": "ally_score",
+      "outer_roi_px": [
+        785,
+        5,
+        900,
+        80
+      ],
+      "inner_roi_px": [
+        800,
+        25,
+        844,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 62,
+        "left": 5,
+        "right": 14
+      },
+      "foreground_fraction": 0.2595959595959596,
+      "components": [
+        {
+          "x": 11,
+          "y": 31,
+          "width": 77,
+          "height": 59,
+          "area": 2028
+        },
+        {
+          "x": 46,
+          "y": 62,
+          "width": 2,
+          "height": 2,
+          "area": 3
+        },
+        {
+          "x": 0,
+          "y": 85,
+          "width": 6,
+          "height": 5,
+          "area": 25
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1880361,
+      "pts_sec": 122.4193359375,
+      "frame_sha256": "639a8f74540e0b739cc1130765976b7c4580e1a912fee93dc19119f682ace78a",
+      "role": "enemy_score",
+      "outer_roi_px": [
+        1020,
+        5,
+        1138,
+        80
+      ],
+      "inner_roi_px": [
+        1076,
+        25,
+        1120,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 8
+      },
+      "foreground_fraction": 0.09090909090909091,
+      "components": [
+        {
+          "x": 31,
+          "y": 29,
+          "width": 26,
+          "height": 42,
+          "area": 578
+        },
+        {
+          "x": 84,
+          "y": 76,
+          "width": 4,
+          "height": 2,
+          "area": 7
+        },
+        {
+          "x": 28,
+          "y": 80,
+          "width": 60,
+          "height": 7,
+          "area": 135
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1880617,
+      "pts_sec": 122.43600260416666,
+      "frame_sha256": "056a152eafc21d689048f5e067d0d6a39a9d6fb2dee4c87ef83c69596e03ee66",
+      "role": "ally_score",
+      "outer_roi_px": [
+        785,
+        5,
+        900,
+        80
+      ],
+      "inner_roi_px": [
+        800,
+        25,
+        844,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 21,
+        "left": 8,
+        "right": 28
+      },
+      "foreground_fraction": 0.2470959595959596,
+      "components": [
+        {
+          "x": 0,
+          "y": 31,
+          "width": 88,
+          "height": 59,
+          "area": 1957
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1880617,
+      "pts_sec": 122.43600260416666,
+      "frame_sha256": "056a152eafc21d689048f5e067d0d6a39a9d6fb2dee4c87ef83c69596e03ee66",
+      "role": "enemy_score",
+      "outer_roi_px": [
+        1020,
+        5,
+        1138,
+        80
+      ],
+      "inner_roi_px": [
+        1076,
+        25,
+        1120,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 8
+      },
+      "foreground_fraction": 0.08623737373737374,
+      "components": [
+        {
+          "x": 31,
+          "y": 29,
+          "width": 26,
+          "height": 42,
+          "area": 579
+        },
+        {
+          "x": 86,
+          "y": 70,
+          "width": 2,
+          "height": 4,
+          "area": 7
+        },
+        {
+          "x": 44,
+          "y": 82,
+          "width": 44,
+          "height": 4,
+          "area": 97
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1880873,
+      "pts_sec": 122.45266927083334,
+      "frame_sha256": "fa619e072a01a25879319464a9c6d4a20816056046aff456d232e9a119ab9e2e",
+      "role": "ally_score",
+      "outer_roi_px": [
+        785,
+        5,
+        900,
+        80
+      ],
+      "inner_roi_px": [
+        800,
+        25,
+        844,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 21,
+        "left": 8,
+        "right": 22
+      },
+      "foreground_fraction": 0.22828282828282828,
+      "components": [
+        {
+          "x": 0,
+          "y": 31,
+          "width": 88,
+          "height": 59,
+          "area": 1807
+        },
+        {
+          "x": 80,
+          "y": 63,
+          "width": 1,
+          "height": 1,
+          "area": 1
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1880873,
+      "pts_sec": 122.45266927083334,
+      "frame_sha256": "fa619e072a01a25879319464a9c6d4a20816056046aff456d232e9a119ab9e2e",
+      "role": "enemy_score",
+      "outer_roi_px": [
+        1020,
+        5,
+        1138,
+        80
+      ],
+      "inner_roi_px": [
+        1076,
+        25,
+        1120,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 8
+      },
+      "foreground_fraction": 0.08623737373737374,
+      "components": [
+        {
+          "x": 31,
+          "y": 29,
+          "width": 26,
+          "height": 42,
+          "area": 579
+        },
+        {
+          "x": 86,
+          "y": 70,
+          "width": 2,
+          "height": 4,
+          "area": 7
+        },
+        {
+          "x": 44,
+          "y": 82,
+          "width": 44,
+          "height": 4,
+          "area": 97
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1881129,
+      "pts_sec": 122.4693359375,
+      "frame_sha256": "3a069278ab5b84910591e12e59f60fffc751c87841728eaafaed10103d2b9d5d",
+      "role": "ally_score",
+      "outer_roi_px": [
+        785,
+        5,
+        900,
+        80
+      ],
+      "inner_roi_px": [
+        800,
+        25,
+        844,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 21
+      },
+      "foreground_fraction": 0.20063131313131313,
+      "components": [
+        {
+          "x": 33,
+          "y": 31,
+          "width": 28,
+          "height": 44,
+          "area": 713
+        },
+        {
+          "x": 2,
+          "y": 62,
+          "width": 86,
+          "height": 26,
+          "area": 876
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1881129,
+      "pts_sec": 122.4693359375,
+      "frame_sha256": "3a069278ab5b84910591e12e59f60fffc751c87841728eaafaed10103d2b9d5d",
+      "role": "enemy_score",
+      "outer_roi_px": [
+        1020,
+        5,
+        1138,
+        80
+      ],
+      "inner_roi_px": [
+        1076,
+        25,
+        1120,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 6
+      },
+      "foreground_fraction": 0.08611111111111111,
+      "components": [
+        {
+          "x": 31,
+          "y": 29,
+          "width": 26,
+          "height": 42,
+          "area": 579
+        },
+        {
+          "x": 86,
+          "y": 72,
+          "width": 2,
+          "height": 2,
+          "area": 3
+        },
+        {
+          "x": 44,
+          "y": 82,
+          "width": 44,
+          "height": 5,
+          "area": 100
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1881385,
+      "pts_sec": 122.48600260416667,
+      "frame_sha256": "fb878c84945071dd101b0a07fd3a3c3fee7fc921c1ba099f963c10335c34a57a",
+      "role": "ally_score",
+      "outer_roi_px": [
+        785,
+        5,
+        900,
+        80
+      ],
+      "inner_roi_px": [
+        800,
+        25,
+        844,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 18,
+        "left": 0,
+        "right": 2
+      },
+      "foreground_fraction": 0.10909090909090909,
+      "components": [
+        {
+          "x": 33,
+          "y": 31,
+          "width": 26,
+          "height": 44,
+          "area": 684
+        },
+        {
+          "x": 85,
+          "y": 76,
+          "width": 3,
+          "height": 2,
+          "area": 6
+        },
+        {
+          "x": 47,
+          "y": 83,
+          "width": 32,
+          "height": 7,
+          "area": 174
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1881385,
+      "pts_sec": 122.48600260416667,
+      "frame_sha256": "fb878c84945071dd101b0a07fd3a3c3fee7fc921c1ba099f963c10335c34a57a",
+      "role": "enemy_score",
+      "outer_roi_px": [
+        1020,
+        5,
+        1138,
+        80
+      ],
+      "inner_roi_px": [
+        1076,
+        25,
+        1120,
+        70
+      ],
+      "sources": [
+        "strict_score_glyphs",
+        "comparison_gaussian3x3_v1",
+        "foreground_white200_v1"
+      ],
+      "value": 2,
+      "confidence": 0.9360913634300232,
+      "reason": "accepted",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "foreground_fraction": 0.07171717171717172,
+      "components": [
+        {
+          "x": 31,
+          "y": 29,
+          "width": 26,
+          "height": 42,
+          "area": 568
+        }
+      ],
+      "conditional_glyph_ranking": [
+        {
+          "best_digit": "2",
+          "best_ncc": 0.9360913634300232,
+          "competitor_digit": "7",
+          "competitor_ncc": 0.6577242016792297,
+          "gap": 0.27836716175079346
+        }
+      ]
+    },
+    {
+      "source_pts_ticks": 1881641,
+      "pts_sec": 122.50266927083334,
+      "frame_sha256": "40b2b21a8400c7d030e98e4330850229623bcc29362632c5b7480a9b890ce093",
+      "role": "ally_score",
+      "outer_roi_px": [
+        785,
+        5,
+        900,
+        80
+      ],
+      "inner_roi_px": [
+        800,
+        25,
+        844,
+        70
+      ],
+      "sources": [
+        "strict_score_foreground_touches_roi_border"
+      ],
+      "value": null,
+      "confidence": 0.0,
+      "reason": "strict_score_foreground_touches_roi_border",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 17,
+        "left": 0,
+        "right": 5
+      },
+      "foreground_fraction": 0.10366161616161616,
+      "components": [
+        {
+          "x": 33,
+          "y": 31,
+          "width": 26,
+          "height": 43,
+          "area": 691
+        },
+        {
+          "x": 72,
+          "y": 72,
+          "width": 2,
+          "height": 6,
+          "area": 11
+        },
+        {
+          "x": 49,
+          "y": 76,
+          "width": 2,
+          "height": 2,
+          "area": 3
+        },
+        {
+          "x": 68,
+          "y": 82,
+          "width": 20,
+          "height": 8,
+          "area": 116
+        }
+      ],
+      "conditional_glyph_ranking": []
+    },
+    {
+      "source_pts_ticks": 1881641,
+      "pts_sec": 122.50266927083334,
+      "frame_sha256": "40b2b21a8400c7d030e98e4330850229623bcc29362632c5b7480a9b890ce093",
+      "role": "enemy_score",
+      "outer_roi_px": [
+        1020,
+        5,
+        1138,
+        80
+      ],
+      "inner_roi_px": [
+        1076,
+        25,
+        1120,
+        70
+      ],
+      "sources": [
+        "strict_score_glyphs",
+        "comparison_gaussian3x3_v1",
+        "foreground_white200_v1"
+      ],
+      "value": 2,
+      "confidence": 0.9375883340835571,
+      "reason": "accepted",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "foreground_fraction": 0.07146464646464647,
+      "components": [
+        {
+          "x": 31,
+          "y": 29,
+          "width": 26,
+          "height": 42,
+          "area": 566
+        }
+      ],
+      "conditional_glyph_ranking": [
+        {
+          "best_digit": "2",
+          "best_ncc": 0.9375883340835571,
+          "competitor_digit": "7",
+          "competitor_ncc": 0.6607582569122314,
+          "gap": 0.2768300771713257
+        }
+      ]
+    },
+    {
+      "source_pts_ticks": 1881897,
+      "pts_sec": 122.5193359375,
+      "frame_sha256": "543b18e2c928839fae05a51e02352a82d5bc85c14e554abecdef2bb57979442d",
+      "role": "ally_score",
+      "outer_roi_px": [
+        785,
+        5,
+        900,
+        80
+      ],
+      "inner_roi_px": [
+        800,
+        25,
+        844,
+        70
+      ],
+      "sources": [
+        "strict_score_glyphs",
+        "comparison_gaussian3x3_v1",
+        "foreground_white200_v1"
+      ],
+      "value": 0,
+      "confidence": 0.909240186214447,
+      "reason": "accepted",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "foreground_fraction": 0.08207070707070707,
+      "components": [
+        {
+          "x": 33,
+          "y": 31,
+          "width": 26,
+          "height": 43,
+          "area": 650
+        }
+      ],
+      "conditional_glyph_ranking": [
+        {
+          "best_digit": "0",
+          "best_ncc": 0.909240186214447,
+          "competitor_digit": "8",
+          "competitor_ncc": 0.7799856662750244,
+          "gap": 0.1292545199394226
+        }
+      ]
+    },
+    {
+      "source_pts_ticks": 1881897,
+      "pts_sec": 122.5193359375,
+      "frame_sha256": "543b18e2c928839fae05a51e02352a82d5bc85c14e554abecdef2bb57979442d",
+      "role": "enemy_score",
+      "outer_roi_px": [
+        1020,
+        5,
+        1138,
+        80
+      ],
+      "inner_roi_px": [
+        1076,
+        25,
+        1120,
+        70
+      ],
+      "sources": [
+        "strict_score_glyphs",
+        "comparison_gaussian3x3_v1",
+        "foreground_white200_v1"
+      ],
+      "value": 2,
+      "confidence": 0.9390360116958618,
+      "reason": "accepted",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "foreground_fraction": 0.0707070707070707,
+      "components": [
+        {
+          "x": 31,
+          "y": 29,
+          "width": 26,
+          "height": 42,
+          "area": 560
+        }
+      ],
+      "conditional_glyph_ranking": [
+        {
+          "best_digit": "2",
+          "best_ncc": 0.9390360116958618,
+          "competitor_digit": "7",
+          "competitor_ncc": 0.6593509912490845,
+          "gap": 0.27968502044677734
+        }
+      ]
+    },
+    {
+      "source_pts_ticks": 1882153,
+      "pts_sec": 122.53600260416667,
+      "frame_sha256": "9f8f62c1216732f30a40e1c3d1ea044a0c851051ace29f33687218dbe30c6769",
+      "role": "ally_score",
+      "outer_roi_px": [
+        785,
+        5,
+        900,
+        80
+      ],
+      "inner_roi_px": [
+        800,
+        25,
+        844,
+        70
+      ],
+      "sources": [
+        "strict_score_glyphs",
+        "comparison_gaussian3x3_v1",
+        "foreground_white200_v1"
+      ],
+      "value": 0,
+      "confidence": 0.9129340648651123,
+      "reason": "accepted",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "foreground_fraction": 0.07967171717171717,
+      "components": [
+        {
+          "x": 33,
+          "y": 31,
+          "width": 26,
+          "height": 43,
+          "area": 631
+        }
+      ],
+      "conditional_glyph_ranking": [
+        {
+          "best_digit": "0",
+          "best_ncc": 0.9129340648651123,
+          "competitor_digit": "8",
+          "competitor_ncc": 0.7860803008079529,
+          "gap": 0.12685376405715942
+        }
+      ]
+    },
+    {
+      "source_pts_ticks": 1882153,
+      "pts_sec": 122.53600260416667,
+      "frame_sha256": "9f8f62c1216732f30a40e1c3d1ea044a0c851051ace29f33687218dbe30c6769",
+      "role": "enemy_score",
+      "outer_roi_px": [
+        1020,
+        5,
+        1138,
+        80
+      ],
+      "inner_roi_px": [
+        1076,
+        25,
+        1120,
+        70
+      ],
+      "sources": [
+        "strict_score_glyphs",
+        "comparison_gaussian3x3_v1",
+        "foreground_white200_v1"
+      ],
+      "value": 2,
+      "confidence": 0.9445217847824097,
+      "reason": "accepted",
+      "border_foreground": {
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0
+      },
+      "foreground_fraction": 0.0696969696969697,
+      "components": [
+        {
+          "x": 31,
+          "y": 29,
+          "width": 26,
+          "height": 42,
+          "area": 552
+        }
+      ],
+      "conditional_glyph_ranking": [
+        {
+          "best_digit": "2",
+          "best_ncc": 0.9445217847824097,
+          "competitor_digit": "3",
+          "competitor_ncc": 0.6638047695159912,
+          "gap": 0.28071701526641846
+        }
+      ]
+    }
+  ],
+  "threshold": 0.9,
+  "class_margin": 0.04,
+  "mask_white_threshold": 200,
+  "comparison": "gaussian3x3_v1",
+  "production_changed": false,
+  "qualification_created": false,
+  "released_events": 0,
+  "wall_clock_sec": 3.270808663975913,
+  "previous_comparable_run": null,
+  "canonical_current": null,
+  "canonical_delta": null
+}

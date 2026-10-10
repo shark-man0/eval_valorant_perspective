@@ -1,0 +1,262 @@
+{
+  "scope": "Frozen native cohort; image-derived observed acquisition, unreviewed, not qualification",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "windows": [
+    {
+      "window_sec": [
+        13.2,
+        13.4
+      ],
+      "native_frames": 12,
+      "adjacent_links": 11,
+      "supported_links_descriptive": 0,
+      "known_png_overlaps": 0,
+      "review_status": "unreviewed",
+      "runtime_proof_authorized": false,
+      "rows": [
+        {
+          "source_pts_ticks": 202793,
+          "time_base": "1/15360",
+          "pts_sec": 13.202669270833333,
+          "local_path": "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000001.png",
+          "frame_sha256": "7178c40b9997f559b443c6e1145cffbdef9823d862d5f55c158bc9a7a5cecd6c",
+          "source_pixel_sha256": "a0610fbd0e5088fb2edb4b0eb34acd77438187ca88304c3e840a9388cb706bf9",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "image_supported_initialization_unavailable",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 203049,
+          "time_base": "1/15360",
+          "pts_sec": 13.2193359375,
+          "local_path": "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000002.png",
+          "frame_sha256": "eddcb05efdf787e4e1f7c0b0c214d70b13b48ebb725f8d5a66c6e016b1712aa1",
+          "source_pixel_sha256": "3959f365408145ce0a84adee2e17864b6215d43916916a98c7ce58f5dcf7ab0f",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 203305,
+          "time_base": "1/15360",
+          "pts_sec": 13.236002604166666,
+          "local_path": "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000003.png",
+          "frame_sha256": "d0b4fbab959d029eb36ce9899c8e327da4c9a5bf983da7fc73d3baee3826c077",
+          "source_pixel_sha256": "bd113ae29b6dcb4a7febad4e0ca3cb19dbe1c5f03e96852825edbbb760ec3862",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 203561,
+          "time_base": "1/15360",
+          "pts_sec": 13.252669270833334,
+          "local_path": "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000004.png",
+          "frame_sha256": "2ce3260fcf5a215114514c23c7dc0cabcf94016d02f18eda25b9be372ede63d5",
+          "source_pixel_sha256": "6f91aa0580b81c0f3ccb9e780621c5f4138a49ea9c8f8cf961060d84718bed6a",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 203817,
+          "time_base": "1/15360",
+          "pts_sec": 13.2693359375,
+          "local_path": "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000005.png",
+          "frame_sha256": "7f8166f07f48e2ab6be403ab74217380ac302ae50240f8f10d9d5758102e413d",
+          "source_pixel_sha256": "55ae3599ef34fcc1b664f3d5a9381b1535d604b95a4b54684f78e70f4f924679",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 204073,
+          "time_base": "1/15360",
+          "pts_sec": 13.286002604166667,
+          "local_path": "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000006.png",
+          "frame_sha256": "57d2fed87cb045deba1a5a7fc75ada7788f9d073e1b20abe873f7002de459e50",
+          "source_pixel_sha256": "1451164999d19266262210fdbcdf53e2f4f693eeaaa1c54b5d17bcf444a43543",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 204329,
+          "time_base": "1/15360",
+          "pts_sec": 13.302669270833333,
+          "local_path": "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000007.png",
+          "frame_sha256": "05c47bc19153535fca4fb64714e5670b14e20528bf599761c5932e2b7d45b90b",
+          "source_pixel_sha256": "38587356ac8c09d907fe385789a5a923d4e6a9d4667ff46ff27da6549c35ac6c",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 204585,
+          "time_base": "1/15360",
+          "pts_sec": 13.3193359375,
+          "local_path": "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000008.png",
+          "frame_sha256": "dfb889d053a485adec0f8195cf926c3eda45e18ad1e8eb8bd4821a2d70724458",
+          "source_pixel_sha256": "23da8876bf4f05ee41ba394e221e4969176ff9962c527be30b4ce9fe736d4b54",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 204841,
+          "time_base": "1/15360",
+          "pts_sec": 13.336002604166667,
+          "local_path": "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000009.png",
+          "frame_sha256": "84ba5e169a74f8c72352b13b7f71d881d8c421d735cf6dc6f00fb15091bb79e5",
+          "source_pixel_sha256": "5ba1b98d79ff54e70183e0cfbe775560e707dd3dd56b16ef995c00447918f36a",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 205097,
+          "time_base": "1/15360",
+          "pts_sec": 13.352669270833333,
+          "local_path": "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000010.png",
+          "frame_sha256": "e3a1d3107e78f193879232253c30a53e5e6ea77171fa0f96ab8a12d9059a9369",
+          "source_pixel_sha256": "4b856cd386d1d7a7262ca513e5247ad3a754407f56470e032aae5bb8a4f68546",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 205353,
+          "time_base": "1/15360",
+          "pts_sec": 13.3693359375,
+          "local_path": "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000011.png",
+          "frame_sha256": "29b896431269e74800faf5a83bcc8fc91193ff7f36a95c73802834b438854374",
+          "source_pixel_sha256": "585b89dfc906eaf469d0939006ae9f5ea0d8c4bc243975a70b731b59c978ae43",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 205609,
+          "time_base": "1/15360",
+          "pts_sec": 13.386002604166666,
+          "local_path": "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000012.png",
+          "frame_sha256": "00240b02fe48a24947265a8e4ef324af6be0b368b598b8fdb824a2ba25158827",
+          "source_pixel_sha256": "41b302bd90f5c850ea9bb015a14dc6c0c3a3aea8726ea1e96648741661060093",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        }
+      ],
+      "initialization_reason": "image_supported_initialization_unavailable",
+      "known_native_pixel_overlaps": 0
+    }
+  ],
+  "file_sha256": {
+    "outputs/recognition-investigation/world-domain-bootstrap-20261009/profile.json": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+    "outputs/recognition-investigation/world-domain-bootstrap-20261009/assets/wall_close.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "ValorantData/videos/Valorant_09-25-2026_0-37-29-379.mp4": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "scripts/diagnostics/observed_scene_chain.py": "c60081a951a72b6d5aa68b05231cb3037b9883b0d7a4704b56810f64b88153d5",
+    "scripts/diagnostics/scene_domain_bootstrap.py": "1563c223d00085bc6059f720a54a4b6dd9e9acde819babd39d34d3dea4ff0e8d",
+    "scripts/diagnostics/scene_world_bootstrap.py": "9947a6b0adc00f1e4b4eb63d5a95b1555d48091633712546e8078ee3a2436cfa",
+    "scripts/diagnostics/scene_reference_support.py": "ba12d60e89544f37b0f9ac0a24a464c26732e0b1c2b658534c893c819e5af89f",
+    "scripts/diagnostics/scene_domain_ambiguity.py": "eea017aa98bd16051f4e0f3f5b4cebd84a5ae33eb8b538be2d25a6106479ad23",
+    "scripts/diagnostics/scene_joint_domains.py": "2046cede2304b9493abc5f9ba06cbcfbe820a67f245a6e42cbd0aff5a5f45d34",
+    "scripts/diagnostics/scene_world_chain.py": "8a6d11a151f4afb77d88780b51f0705beca527edce7521831b9c8a590e788e33",
+    "scripts/diagnostics/scene_correspondence.py": "667fb4f7b0626fbbf4770716eefc18976a9409a4f0646084b95d479dab7273a3",
+    "scripts/diagnostics/scene_patch_search.py": "53e66f692c42cbaab695cdea9910e3326c50089a18468f6b0d01bd463e9c2dd9",
+    "scripts/diagnostics/validate_scene_chain_cohort.py": "ac57a87045c2e77eac6e162b14ba9d82459c6d7fc8d83904f9b10b3d911e68da",
+    "scripts/diagnostics/diagnose_native_global_lifecycle.py": "761dcd3e4019014e1691a29aad62f95d1ea4d401a61039c19a933d40d381a396",
+    "outputs/recognition-investigation/two-scene-domain-reference-20261009/profile.json": "7c88be66b6d322f037be309ca02464c7ffd5da3236b646b7ec24d21d1f4e7ce2",
+    "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/wall_close.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/arch_context.png": "929aab0a3f014eddff37a663241bd7fe3fcd15e0f800f7afe496b66c3d880579",
+    "e2e_reports/match_001/two_scene_acquisition_reservation.json": "53e8749a4c8ddbb367d36417d35bdf03829cdb1f737241376a106a10ec8fbe5a",
+    "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000001.png": "7178c40b9997f559b443c6e1145cffbdef9823d862d5f55c158bc9a7a5cecd6c",
+    "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000002.png": "eddcb05efdf787e4e1f7c0b0c214d70b13b48ebb725f8d5a66c6e016b1712aa1",
+    "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000003.png": "d0b4fbab959d029eb36ce9899c8e327da4c9a5bf983da7fc73d3baee3826c077",
+    "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000004.png": "2ce3260fcf5a215114514c23c7dc0cabcf94016d02f18eda25b9be372ede63d5",
+    "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000005.png": "7f8166f07f48e2ab6be403ab74217380ac302ae50240f8f10d9d5758102e413d",
+    "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000006.png": "57d2fed87cb045deba1a5a7fc75ada7788f9d073e1b20abe873f7002de459e50",
+    "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000007.png": "05c47bc19153535fca4fb64714e5670b14e20528bf599761c5932e2b7d45b90b",
+    "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000008.png": "dfb889d053a485adec0f8195cf926c3eda45e18ad1e8eb8bd4821a2d70724458",
+    "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000009.png": "84ba5e169a74f8c72352b13b7f71d881d8c421d735cf6dc6f00fb15091bb79e5",
+    "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000010.png": "e3a1d3107e78f193879232253c30a53e5e6ea77171fa0f96ab8a12d9059a9369",
+    "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000011.png": "29b896431269e74800faf5a83bcc8fc91193ff7f36a95c73802834b438854374",
+    "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000012.png": "00240b02fe48a24947265a8e4ef324af6be0b368b598b8fdb824a2ba25158827"
+  },
+  "qualification_created": false,
+  "new_runtime_events": 0,
+  "canonical_current": null,
+  "wall_clock_seconds": 13.920094867993612
+}

@@ -1,0 +1,22 @@
+{
+  "scope": "Frozen same-video reader check; no lifecycle qualification or GT input",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "window_sec": [
+    122.1,
+    122.55
+  ],
+  "native_step_ticks": 256,
+  "selection": "Fixed late active-context window outside saved native exposure ranges; no expected values used",
+  "known_native_overlap": 0,
+  "exhaustive_exposure_proven": false,
+  "review_before_predictions": false,
+  "profile_fingerprint": "ad747fd04c8d5a0567455da3253cd316e0b94065d7e2d0c87120b15d63f6f000",
+  "recognizer_fingerprint": "4bd2b67db63b406f3f940909ca9d94019b81df11537c2b52cb28e5d842e3daf8",
+  "input_sha256": {
+    "e2e_reports/match_001/timer_glyph_training_holdout_diagnostics.json": "f4ddc49f937ee51d0bca967b0a6631a7cd1b64d08bb85832b5412f960dfb15e5",
+    "e2e_reports/match_001/score_white_holdout_diagnostics.json": "28d2a9d05703960ab205655f9a52439526ee63592cc65f1912b111e1a1305b31",
+    "e2e_reports/match_001/native_exposure_before_numeric_holdout.json": "d4914f6262ab493f22ba4c2913482c22a9de0efb91a5854cb192322fc82ff867"
+  },
+  "qualification_created": false,
+  "released_events": 0
+}

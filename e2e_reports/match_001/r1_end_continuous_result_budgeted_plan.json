@@ -1,0 +1,25 @@
+{
+  "scope": "Frozen native continuous R1 end input observation, not event qualification",
+  "window_sec": [
+    74.2,
+    76.0
+  ],
+  "selection": "Explicit continuous interval covers previously observed clock/score changes and late-result support; no recognition tuning or expected values",
+  "profile_binding_sha256": "a87b19bb772f0d61379ebc6178c333e432bf52e6a04983730d8afd3a1a46b050",
+  "profile_path": "outputs/hud_profiles/round-global-timer-glyph-20261008/score-rowcontrast-late-result-diagnostic.templates.json",
+  "recognizer_fingerprint": "44030c081c6d359c6fd618cfae128c5f339191f31942e0b623a06ae460f1073f",
+  "profile_fingerprint": "10bfac00544e510ebf3f3e2c0072c9beba24938b2ff996c9012f7e4046d82c99",
+  "native_step_ticks": 256,
+  "frame_skip": false,
+  "qualification_created": false,
+  "canonical_current": null,
+  "canonical_delta": null,
+  "prior_terminal_attempt": {
+    "exit_status": 1,
+    "reason": "native PNG storage budget exceeded before analyzer",
+    "max_png_bytes": 200000000,
+    "log_sha256": "ac55856ec05084e2c304722d13a94acbed9a54e7026842b119d477a831d62883"
+  },
+  "native_max_png_bytes": 500000000,
+  "runner_sha256": "813ef2e919fcfb348736e9bdde2b85cf28101afe5ad95590fc0946d90c32ead2"
+}

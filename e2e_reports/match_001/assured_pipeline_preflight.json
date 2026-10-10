@@ -1,0 +1,14 @@
+{
+  "scope": "actual source/profile preflight with instrumented decoder boundaries",
+  "qualified_report_exists": false,
+  "calls": {
+    "native_decode": 0,
+    "sampled_decode": 0
+  },
+  "released_events": 0,
+  "profile_fingerprint": "8b5955f1d7de7139949815a7853260b9a66b6fd48140b64351030a6e78e9a5db",
+  "recognizer_fingerprint": "2e0656f216276bcf4319f79d50082dd041889e36ba93dd98eb7210b2f7290543",
+  "reason": "reader/UI qualification unavailable",
+  "canonical_current": null,
+  "canonical_delta": null
+}

@@ -1,0 +1,350 @@
+{
+  "scope": "Fixed foreground diagnostic on exposed source images; not independent qualification, candidate selection or adopted profile.",
+  "hypothesis": "Raw reference transfer might be limited by luminance/background rather than glyph geometry; compare fixed white210 foreground under identical full mask and groups.",
+  "threshold": 0.9,
+  "foreground_level": 210,
+  "mask_changed": false,
+  "rows": [
+    {
+      "split": "training",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00452_000075.403.jpg",
+      "frame_sha256": "8f48694886e7a490b27ff0548f0fb7b54c834729b52a2d7dbfa375c248cbb62b",
+      "scores": {
+        "raw": [
+          0.9591155228197161,
+          0.9279830774428082,
+          0.9319909972925207
+        ],
+        "white210": [
+          0.9753544147988124,
+          0.9004986854471237,
+          0.8269108896869
+        ]
+      }
+    },
+    {
+      "split": "training",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00455_000075.803.jpg",
+      "frame_sha256": "9f51380e00db3f4633ad18d2e80519744e0146466b28f1d3987ae7a1080ac6cf",
+      "scores": {
+        "raw": [
+          0.9494311365285366,
+          0.9430911403723599,
+          0.9799460820780656
+        ],
+        "white210": [
+          0.8766323003231807,
+          0.9507641103522904,
+          0.9693238099115242
+        ]
+      }
+    },
+    {
+      "split": "training",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00458_000076.269.jpg",
+      "frame_sha256": "734d31fe819a8e40d242917a2e454a1b068107073ec6108d0ef976d6fcbd9269",
+      "scores": {
+        "raw": [
+          0.9462018019189586,
+          0.9921974095609237,
+          0.9939512498510178
+        ],
+        "white210": [
+          0.7727908703401783,
+          0.9377293403251763,
+          0.9674830573333889
+        ]
+      }
+    },
+    {
+      "split": "holdout",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00451_000075.203.jpg",
+      "frame_sha256": "f43785b1bb02626de3d43daf87d20590f9fd72eb16258b633dcef8da4d59468d",
+      "scores": {
+        "raw": [
+          0.004150330975744725,
+          0.07733572497927688,
+          0.04229665845615624
+        ],
+        "white210": [
+          0.039986263094607837,
+          0.0480719350741463,
+          0.0
+        ]
+      }
+    },
+    {
+      "split": "holdout",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00444_000075.536.jpg",
+      "frame_sha256": "550aec2599df5b42c3204fba5407d6ef49dee2dc87d95282c3b49bb061a03db5",
+      "scores": {
+        "raw": [
+          0.9578923616426362,
+          0.9323836718454123,
+          0.9452767814140309
+        ],
+        "white210": [
+          0.968432609351453,
+          0.8956442833548008,
+          0.8330574849136277
+        ]
+      }
+    },
+    {
+      "split": "holdout",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00454_000075.603.jpg",
+      "frame_sha256": "a63d7663e071f237932221ca5f5f952596a4777ebee19ea0263812254fd45542",
+      "scores": {
+        "raw": [
+          0.959873533732795,
+          0.9344503389799592,
+          0.9496916165091239
+        ],
+        "white210": [
+          0.9684501024255997,
+          0.8956442833548013,
+          0.8145461667106421
+        ]
+      }
+    },
+    {
+      "split": "holdout",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00445_000075.619.jpg",
+      "frame_sha256": "823e6320bbf400c33e3c64b15cced27cce2d58c5ac0a072a47fb0a207eb2e286",
+      "scores": {
+        "raw": [
+          0.9597638141795661,
+          0.933375621859663,
+          0.9492570929808758
+        ],
+        "white210": [
+          0.9684501024255997,
+          0.8944287617397869,
+          0.8157870423404446
+        ]
+      }
+    },
+    {
+      "split": "holdout",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00450_000075.936.jpg",
+      "frame_sha256": "b8b367581eabf62d4962105724ae605798b05b4529db9fe25fcc72c3ef7c73a2",
+      "scores": {
+        "raw": [
+          0.6437598042691943,
+          0.934018636805303,
+          0.9678619175548853
+        ],
+        "white210": [
+          0.6728678614976017,
+          0.9464440908580625,
+          0.942522277987566
+        ]
+      }
+    },
+    {
+      "split": "holdout",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00451_000075.953.jpg",
+      "frame_sha256": "e5061e41c86c3d5b8e653950e0341dffac3c39855037dbc4cb0953aa14a47b7b",
+      "scores": {
+        "raw": [
+          0.6442333835248826,
+          0.9315837084725354,
+          0.9696833701521598
+        ],
+        "white210": [
+          0.6811326444550071,
+          0.944039408643349,
+          0.9460643085385116
+        ]
+      }
+    },
+    {
+      "split": "holdout",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00456_000076.003.jpg",
+      "frame_sha256": "f2c0c99fc72d4151e602dd533a36c810d12dac475b937e29d1d91fd6354f9a7f",
+      "scores": {
+        "raw": [
+          0.6974799259847269,
+          0.929524003321089,
+          0.976832177637347
+        ],
+        "white210": [
+          0.711189253242158,
+          0.9465209907321598,
+          0.959005793305226
+        ]
+      }
+    },
+    {
+      "split": "holdout",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00452_000076.019.jpg",
+      "frame_sha256": "6fd33db0a3e792e9e85777cf1478fb6d08526afd050f8cff9ccda78f468d5456",
+      "scores": {
+        "raw": [
+          0.7525919017468647,
+          0.932451159944685,
+          0.9812822662385328
+        ],
+        "white210": [
+          0.7665170539041317,
+          0.9446706549265473,
+          0.9571468525658426
+        ]
+      }
+    },
+    {
+      "split": "holdout",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00453_000076.036.jpg",
+      "frame_sha256": "f70af92cfcaeb58e331d3b2d337c455b9967fa05c4d7bc25b024b554b456192d",
+      "scores": {
+        "raw": [
+          0.8450215626829674,
+          0.9323453185078503,
+          0.9817977248888937
+        ],
+        "white210": [
+          0.8545634688102646,
+          0.9469778186015702,
+          0.9513906224843727
+        ]
+      }
+    },
+    {
+      "split": "holdout",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00454_000076.103.jpg",
+      "frame_sha256": "4a3fc8664cfb41bd3e528577d39f25b7ebf273eeb1051c5f10d02313071082d8",
+      "scores": {
+        "raw": [
+          0.8730502404800042,
+          0.9387652415335767,
+          0.9794261992506469
+        ],
+        "white210": [
+          0.8909324591989893,
+          0.9269286651829584,
+          0.9505413860366286
+        ]
+      }
+    },
+    {
+      "split": "holdout",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00455_000076.119.jpg",
+      "frame_sha256": "c7438dfbaa7b2fec24c022d724022081ae7082bc59b7fb94080c5360bd458113",
+      "scores": {
+        "raw": [
+          0.871065402515599,
+          0.9398462798705038,
+          0.9792550771450983
+        ],
+        "white210": [
+          0.8971547010838021,
+          0.9286657545658786,
+          0.9486977204422982
+        ]
+      }
+    },
+    {
+      "split": "negative",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-000/frame_00041_000003.586.jpg",
+      "frame_sha256": "e062e94fba7749b0a7b774a19c193df4e78aa7b2d8e40f605acbd264db7344e6",
+      "scores": {
+        "raw": [
+          0.0,
+          0.07113030453158584,
+          0.027278610963881032
+        ],
+        "white210": [
+          0.004446380678550223,
+          0.06967448647052259,
+          0.012912872824242054
+        ]
+      }
+    },
+    {
+      "split": "negative",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-000/frame_00088_000005.886.jpg",
+      "frame_sha256": "3cc5a947a2f4e57ed3a97f0bfecedf8432de236374725d2d9e6826b0a87d0fdd",
+      "scores": {
+        "raw": [
+          0.14321703245071016,
+          0.18399191594666975,
+          0.1160456371563745
+        ],
+        "white210": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "split": "negative",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-005/frame_00176_000112.269.jpg",
+      "frame_sha256": "d328bfa854351ba690cda57286e75499b04598936456b3411fa3a17b1f361927",
+      "scores": {
+        "raw": [
+          0.09247940926522151,
+          0.082299992141361,
+          0.0
+        ],
+        "white210": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "split": "early",
+      "path": "outputs/recognition-investigation/phase-evidence/dense-r1-end/frame_05.png",
+      "frame_sha256": "8dba92b8ce2af487a45d04d182d2f35a1406518b60d1fa4c09e0ef4f1130d942",
+      "scores": {
+        "raw": [
+          0.3875529175837342,
+          0.4198377768487616,
+          0.526164204608813
+        ],
+        "white210": [
+          0.47194992670681657,
+          0.5267894696887974,
+          0.7278187596307665
+        ]
+      }
+    }
+  ],
+  "profile_adopted": false,
+  "qualification_created": false,
+  "released_events": 0,
+  "canonical_current": null,
+  "canonical_delta": null,
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "reference_freeze_sha256": "3d64ad094aea38847b73d86092b2a53fb93e4e494e277690d20cb849da2fceb1",
+  "asset_sha256": {
+    "reference": "2d23443d293f7065263ab3a55ff5d26f23fa67db271c10643a5a8de1b6beecd3",
+    "mask": "304459289001a2ebda8a5864abaa3061e7a08ec291851beaf048bfb3336ce7af",
+    "regions": "5de56e92ed0b63b2b6d8186d41f87c360fe7448fe54631eec425c7fe7f69c038"
+  },
+  "terminal_source_and_asset_hashes_verified": true,
+  "summary": {
+    "training": {
+      "raw": 3,
+      "white210": 0
+    },
+    "holdout": {
+      "raw": 3,
+      "white210": 0
+    },
+    "negative": {
+      "raw": 0,
+      "white210": 0
+    },
+    "early": {
+      "raw": 0,
+      "white210": 0
+    }
+  },
+  "conclusion": "Rejected: fixed white210 binary foreground under the unchanged full mask does not reach original training support or recognize the early result. Do not tune its threshold or promote it.",
+  "wall_clock_sec": null,
+  "runtime_delta": null,
+  "runtime_note": "Initial quick diagnostic did not retain process wall time; not inferred from observation time."
+}

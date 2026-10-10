@@ -1,0 +1,23 @@
+{
+  "scope": "Exposed diagnostic search failures; frozen inputs unchanged; no qualification",
+  "rows": [
+    {
+      "image": "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/arch_context.png",
+      "rejection_counts": {
+        "forward:ambiguous_second_peak": 69
+      },
+      "accepted_tracks": 9,
+      "reference_patch_count": 78
+    },
+    {
+      "image": "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000001.png",
+      "rejection_counts": {
+        "forward:no_ncc_qualified_peak": 40,
+        "forward:ambiguous_second_peak": 33,
+        "reverse:ambiguous_second_peak": 5
+      },
+      "accepted_tracks": 0,
+      "reference_patch_count": 78
+    }
+  ]
+}

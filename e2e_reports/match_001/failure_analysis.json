@@ -42,7 +42,7 @@
       "category": "round package",
       "fail_count": 29,
       "fail_percent": 52.72727272727272,
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "assertion_ids": [
         "GT-R2-ROUND-START",
         "GT-R2-DEATH",
@@ -87,7 +87,7 @@
       "category": "snapshot",
       "fail_count": 7,
       "fail_percent": 12.727272727272727,
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "assertion_ids": [
         "GT-R1-SNAP-585",
         "GT-R1-SNAP-595",
@@ -110,7 +110,7 @@
       "category": "round start/end",
       "fail_count": 4,
       "fail_percent": 7.2727272727272725,
-      "implementation_status": "部分実装",
+      "implementation_status": "\u90e8\u5206\u5b9f\u88c5",
       "assertion_ids": [
         "GT-R1-ROUND-START",
         "GT-R1-ROUND-END",
@@ -130,7 +130,7 @@
       "category": "visual event",
       "fail_count": 3,
       "fail_percent": 5.454545454545454,
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "assertion_ids": [
         "GT-R1-MUZZLE-1",
         "GT-R1-MUZZLE-2",
@@ -149,7 +149,7 @@
       "category": "kill/death/combat event",
       "fail_count": 2,
       "fail_percent": 3.6363636363636362,
-      "implementation_status": "部分実装",
+      "implementation_status": "\u90e8\u5206\u5b9f\u88c5",
       "assertion_ids": [
         "GT-R1-DEATH",
         "event_count_constraints-001"
@@ -167,7 +167,7 @@
       "category": "remote state",
       "fail_count": 2,
       "fail_percent": 3.6363636363636362,
-      "implementation_status": "認識失敗",
+      "implementation_status": "\u8a8d\u8b58\u5931\u6557",
       "assertion_ids": [
         "GT-R1-ASTRAL-1",
         "GT-R1-ASTRAL-2"
@@ -185,7 +185,7 @@
       "category": "temporal context",
       "fail_count": 2,
       "fail_percent": 3.6363636363636362,
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "assertion_ids": [
         "GT-R1-SNAP-733",
         "GT-R1-SNAP-7445"
@@ -203,7 +203,7 @@
       "category": "buy phase",
       "fail_count": 1,
       "fail_percent": 1.8181818181818181,
-      "implementation_status": "部分実装",
+      "implementation_status": "\u90e8\u5206\u5b9f\u88c5",
       "assertion_ids": [
         "GT-R1-BUY-FLAG"
       ],
@@ -220,7 +220,7 @@
       "category": "smoke state",
       "fail_count": 1,
       "fail_percent": 1.8181818181818181,
-      "implementation_status": "認識失敗",
+      "implementation_status": "\u8a8d\u8b58\u5931\u6557",
       "assertion_ids": [
         "GT-R1-SMOKE"
       ],
@@ -237,7 +237,7 @@
       "category": "live identity",
       "fail_count": 1,
       "fail_percent": 1.8181818181818181,
-      "implementation_status": "認識失敗",
+      "implementation_status": "\u8a8d\u8b58\u5931\u6557",
       "assertion_ids": [
         "OWN-R1-SELF"
       ],
@@ -254,7 +254,7 @@
       "category": "ownership",
       "fail_count": 1,
       "fail_percent": 1.8181818181818181,
-      "implementation_status": "未実装",
+      "implementation_status": "\u672a\u5b9f\u88c5",
       "assertion_ids": [
         "OWN-R1-SELF-DEAD"
       ],
@@ -271,7 +271,7 @@
       "category": "killfeed / snapshot",
       "fail_count": 1,
       "fail_percent": 1.8181818181818181,
-      "implementation_status": "未実装",
+      "implementation_status": "\u672a\u5b9f\u88c5",
       "assertion_ids": [
         "GT-R1-SNAP-475"
       ],
@@ -289,7 +289,7 @@
       "category": "event detection",
       "fail_count": 1,
       "fail_percent": 1.8181818181818181,
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "assertion_ids": [
         "event_count_constraints-003"
       ],
@@ -303,10 +303,10 @@
     }
   ],
   "implementation_status_summary": {
-    "部分実装": 7,
-    "upstream依存": 42,
-    "認識失敗": 4,
-    "未実装": 2,
+    "\u90e8\u5206\u5b9f\u88c5": 7,
+    "upstream\u4f9d\u5b58": 42,
+    "\u8a8d\u8b58\u5931\u6557": 4,
+    "\u672a\u5b9f\u88c5": 2,
     "evaluator / validation": 0
   },
   "category_summary": {
@@ -380,7 +380,7 @@
       "primary_root_cause": "round_boundary",
       "root_cause_description": "No round_start/end HUD events; missing banner/score context for temporal detector",
       "direct_or_upstream": "direct",
-      "implementation_status": "部分実装",
+      "implementation_status": "\u90e8\u5206\u5b9f\u88c5",
       "upstream_dependencies": [
         "round_boundary",
         "round_package_scope"
@@ -480,7 +480,7 @@
       "primary_root_cause": "player_death_semantics",
       "root_cause_description": "No player_death event; death transition evidence and victim/killer/report attributes unavailable",
       "direct_or_upstream": "direct",
-      "implementation_status": "部分実装",
+      "implementation_status": "\u90e8\u5206\u5b9f\u88c5",
       "upstream_dependencies": [
         "current_frame_death_evidence",
         "death_attributes",
@@ -578,7 +578,7 @@
       "primary_root_cause": "round_boundary",
       "root_cause_description": "No round_start/end HUD events; missing banner/score context for temporal detector",
       "direct_or_upstream": "direct",
-      "implementation_status": "部分実装",
+      "implementation_status": "\u90e8\u5206\u5b9f\u88c5",
       "upstream_dependencies": [
         "round_boundary",
         "round_package_scope"
@@ -666,7 +666,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "round_boundary",
         "round_package_scope"
@@ -771,7 +771,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "current_frame_death_evidence",
         "death_attributes",
@@ -848,7 +848,7 @@
       "primary_root_cause": "ordering_point_dependency",
       "root_cause_description": "Required point events missing; no ordering result",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "GT-R1-ROUND-START",
         "GT-R1-DEATH"
@@ -907,7 +907,7 @@
       "primary_root_cause": "ordering_point_dependency",
       "root_cause_description": "Required point events missing; no ordering result",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "GT-R1-ROUND-START",
         "GT-R1-ROUND-END"
@@ -966,7 +966,7 @@
       "primary_root_cause": "ordering_point_dependency",
       "root_cause_description": "Required point events missing; no ordering result",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "GT-R1-DEATH",
         "GT-R1-ROUND-END"
@@ -1025,7 +1025,7 @@
       "primary_root_cause": "ordering_point_dependency",
       "root_cause_description": "Required point events missing; no ordering result",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "GT-R2-ROUND-START",
         "GT-R2-DEATH"
@@ -1115,7 +1115,7 @@
       "primary_root_cause": "buy_phase_evidence",
       "root_cause_description": "buy_phase_banner absent on all4661 observations; profile lacks buy-phase template and score readers",
       "direct_or_upstream": "direct",
-      "implementation_status": "部分実装",
+      "implementation_status": "\u90e8\u5206\u5b9f\u88c5",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -1224,7 +1224,7 @@
       "primary_root_cause": "astra_evidence",
       "root_cause_description": "remote_control_view/astra_astral absent; existing feature/classifier evidence not qualified",
       "direct_or_upstream": "direct",
-      "implementation_status": "認識失敗",
+      "implementation_status": "\u8a8d\u8b58\u5931\u6557",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -1333,7 +1333,7 @@
       "primary_root_cause": "astra_evidence",
       "root_cause_description": "remote_control_view/astra_astral absent; existing feature/classifier evidence not qualified",
       "direct_or_upstream": "direct",
-      "implementation_status": "認識失敗",
+      "implementation_status": "\u8a8d\u8b58\u5931\u6557",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -1442,7 +1442,7 @@
       "primary_root_cause": "smoke_evidence",
       "root_cause_description": "vision_obscured_smoke absent; conservative existing smoke feature conditions not satisfied",
       "direct_or_upstream": "direct",
-      "implementation_status": "認識失敗",
+      "implementation_status": "\u8a8d\u8b58\u5931\u6557",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -1539,12 +1539,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "実装済み",
+      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
       ],
-      "fix_target": "維持・回帰保護",
+      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -1628,7 +1628,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -1743,7 +1743,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -1859,7 +1859,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -1975,7 +1975,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -2090,7 +2090,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -2185,7 +2185,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -2281,7 +2281,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -5108,7 +5108,7 @@
       "primary_root_cause": "live_ownership_coverage",
       "root_cause_description": "455 identified live frames cannot cover90% of required R1 self interval",
       "direct_or_upstream": "direct",
-      "implementation_status": "認識失敗",
+      "implementation_status": "\u8a8d\u8b58\u5931\u6557",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -5126,7 +5126,7 @@
       "secondary_blockers": [
         {
           "kind": "ownership_contract",
-          "detail": "adapter maps only live→self and spectator→teammate; buy/remote/dead contexts need independently evidenced ownership semantics; no HUD attribution policy relaxation"
+          "detail": "adapter maps only live\u2192self and spectator\u2192teammate; buy/remote/dead contexts need independently evidenced ownership semantics; no HUD attribution policy relaxation"
         }
       ],
       "pass_requirements": {
@@ -5196,7 +5196,7 @@
       "primary_root_cause": "self_dead_owner_export",
       "root_cause_description": "trace adapter emits self/teammate_spectated/unknown only; self_dead_ui has no emission path",
       "direct_or_upstream": "direct",
-      "implementation_status": "未実装",
+      "implementation_status": "\u672a\u5b9f\u88c5",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -5214,7 +5214,7 @@
       "secondary_blockers": [
         {
           "kind": "ownership_contract",
-          "detail": "adapter maps only live→self and spectator→teammate; buy/remote/dead contexts need independently evidenced ownership semantics; no HUD attribution policy relaxation"
+          "detail": "adapter maps only live\u2192self and spectator\u2192teammate; buy/remote/dead contexts need independently evidenced ownership semantics; no HUD attribution policy relaxation"
         }
       ],
       "pass_requirements": {
@@ -5225,7 +5225,7 @@
       },
       "failure_category_tags": [
         "ownership",
-        "未実装field / export"
+        "\u672a\u5b9f\u88c5field / export"
       ]
     },
     {
@@ -5285,7 +5285,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -5307,7 +5307,7 @@
         },
         {
           "kind": "ownership_contract",
-          "detail": "adapter maps only live→self and spectator→teammate; buy/remote/dead contexts need independently evidenced ownership semantics; no HUD attribution policy relaxation"
+          "detail": "adapter maps only live\u2192self and spectator\u2192teammate; buy/remote/dead contexts need independently evidenced ownership semantics; no HUD attribution policy relaxation"
         }
       ],
       "pass_requirements": {
@@ -5378,7 +5378,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -5400,7 +5400,7 @@
         },
         {
           "kind": "ownership_contract",
-          "detail": "adapter maps only live→self and spectator→teammate; buy/remote/dead contexts need independently evidenced ownership semantics; no HUD attribution policy relaxation"
+          "detail": "adapter maps only live\u2192self and spectator\u2192teammate; buy/remote/dead contexts need independently evidenced ownership semantics; no HUD attribution policy relaxation"
         }
       ],
       "pass_requirements": {
@@ -5471,7 +5471,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -5493,7 +5493,7 @@
         },
         {
           "kind": "ownership_contract",
-          "detail": "adapter maps only live→self and spectator→teammate; buy/remote/dead contexts need independently evidenced ownership semantics; no HUD attribution policy relaxation"
+          "detail": "adapter maps only live\u2192self and spectator\u2192teammate; buy/remote/dead contexts need independently evidenced ownership semantics; no HUD attribution policy relaxation"
         }
       ],
       "pass_requirements": {
@@ -5522,7 +5522,7 @@
         "primary_state": "live_first_person",
         "buy_phase_banner": true,
         "player_alive": true,
-        "location_label_raw": "A ロビー"
+        "location_label_raw": "A \u30ed\u30d3\u30fc"
       },
       "assertion_definition": {
         "id": "GT-R1-SNAP-0035",
@@ -5533,7 +5533,7 @@
           "primary_state": "live_first_person",
           "buy_phase_banner": true,
           "player_alive": true,
-          "location_label_raw": "A ロビー"
+          "location_label_raw": "A \u30ed\u30d3\u30fc"
         }
       },
       "actual": {
@@ -5600,7 +5600,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -5650,7 +5650,7 @@
         "score_player": 0,
         "score_enemy": 1,
         "game_timer_display": "1:39",
-        "location_label_raw": "A メイン"
+        "location_label_raw": "A \u30e1\u30a4\u30f3"
       },
       "assertion_definition": {
         "id": "GT-R1-SNAP-0415",
@@ -5664,7 +5664,7 @@
           "score_player": 0,
           "score_enemy": 1,
           "game_timer_display": "1:39",
-          "location_label_raw": "A メイン"
+          "location_label_raw": "A \u30e1\u30a4\u30f3"
         }
       },
       "actual": {
@@ -5746,7 +5746,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -5792,7 +5792,7 @@
         "snapshot",
         "timer reader",
         "upstream dependency failure",
-        "未実装field / export"
+        "\u672a\u5b9f\u88c5field / export"
       ]
     },
     {
@@ -5878,7 +5878,7 @@
       "primary_root_cause": "nonself_killfeed_snapshot_field",
       "root_cause_description": "Matching snapshot lacks nonself_killfeed_row_visible; current snapshot/adapter has no producer for this field",
       "direct_or_upstream": "direct",
-      "implementation_status": "未実装",
+      "implementation_status": "\u672a\u5b9f\u88c5",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -5917,7 +5917,7 @@
       "failure_category_tags": [
         "killfeed / snapshot",
         "snapshot",
-        "未実装field / export"
+        "\u672a\u5b9f\u88c5field / export"
       ]
     },
     {
@@ -5998,7 +5998,7 @@
       "primary_root_cause": "snapshot_hud_confidence",
       "root_cause_description": "No HUD observation with hud_confidence>=0.65 inside assertion tolerance; builder admits none",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -6113,7 +6113,7 @@
       "primary_root_cause": "snapshot_hud_confidence",
       "root_cause_description": "No HUD observation with hud_confidence>=0.65 inside assertion tolerance; builder admits none",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -6217,7 +6217,7 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "実装済み",
+      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -6225,7 +6225,7 @@
         "primary_state",
         "vision_obscured_smoke"
       ],
-      "fix_target": "維持・回帰保護",
+      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -6345,7 +6345,7 @@
       "primary_root_cause": "snapshot_hud_confidence",
       "root_cause_description": "No HUD observation with hud_confidence>=0.65 inside assertion tolerance; builder admits none",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -6385,7 +6385,7 @@
       "failure_category_tags": [
         "snapshot",
         "upstream dependency failure",
-        "未実装field / export"
+        "\u672a\u5b9f\u88c5field / export"
       ]
     },
     {
@@ -6487,7 +6487,7 @@
       "primary_root_cause": "native_sample_tolerance",
       "root_cause_description": "No analyzed native HUD sample inside required tolerance; cannot fix by changing returned recognition value alone",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -6528,7 +6528,7 @@
         "snapshot",
         "temporal context",
         "upstream dependency failure",
-        "未実装field / export"
+        "\u672a\u5b9f\u88c5field / export"
       ]
     },
     {
@@ -6630,7 +6630,7 @@
       "primary_root_cause": "snapshot_hud_confidence",
       "root_cause_description": "No HUD observation with hud_confidence>=0.65 inside assertion tolerance; builder admits none",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -6670,7 +6670,7 @@
       "failure_category_tags": [
         "snapshot",
         "upstream dependency failure",
-        "未実装field / export"
+        "\u672a\u5b9f\u88c5field / export"
       ]
     },
     {
@@ -6688,7 +6688,7 @@
         "player_alive": true,
         "player_hp": 48,
         "muzzle_flash_visible": true,
-        "location_label_raw": "中央ファウンテン",
+        "location_label_raw": "\u4e2d\u592e\u30d5\u30a1\u30a6\u30f3\u30c6\u30f3",
         "spectator_primary_state": false
       },
       "assertion_definition": {
@@ -6701,7 +6701,7 @@
           "player_alive": true,
           "player_hp": 48,
           "muzzle_flash_visible": true,
-          "location_label_raw": "中央ファウンテン",
+          "location_label_raw": "\u4e2d\u592e\u30d5\u30a1\u30a6\u30f3\u30c6\u30f3",
           "spectator_primary_state": false
         }
       },
@@ -6779,7 +6779,7 @@
       "primary_root_cause": "snapshot_hud_confidence",
       "root_cause_description": "No HUD observation with hud_confidence>=0.65 inside assertion tolerance; builder admits none",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -6823,7 +6823,7 @@
         "HP reader",
         "snapshot",
         "upstream dependency failure",
-        "未実装field / export"
+        "\u672a\u5b9f\u88c5field / export"
       ]
     },
     {
@@ -6932,7 +6932,7 @@
       "primary_root_cause": "snapshot_hud_confidence",
       "root_cause_description": "No HUD observation with hud_confidence>=0.65 inside assertion tolerance; builder admits none",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -6978,7 +6978,7 @@
         "snapshot",
         "timer reader",
         "upstream dependency failure",
-        "未実装field / export"
+        "\u672a\u5b9f\u88c5field / export"
       ]
     },
     {
@@ -7059,7 +7059,7 @@
       "primary_root_cause": "snapshot_hud_confidence",
       "root_cause_description": "No HUD observation with hud_confidence>=0.65 inside assertion tolerance; builder admits none",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -7188,7 +7188,7 @@
       "primary_root_cause": "native_sample_tolerance",
       "root_cause_description": "No analyzed native HUD sample inside required tolerance; cannot fix by changing returned recognition value alone",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -7232,7 +7232,7 @@
         "temporal context",
         "timer reader",
         "upstream dependency failure",
-        "未実装field / export"
+        "\u672a\u5b9f\u88c5field / export"
       ]
     },
     {
@@ -7250,7 +7250,7 @@
         "buy_phase_banner": true,
         "player_alive": true,
         "player_hp": 100,
-        "location_label_raw": "アタック側スポーン",
+        "location_label_raw": "\u30a2\u30bf\u30c3\u30af\u5074\u30b9\u30dd\u30fc\u30f3",
         "combat_report_visible": true
       },
       "assertion_definition": {
@@ -7263,7 +7263,7 @@
           "buy_phase_banner": true,
           "player_alive": true,
           "player_hp": 100,
-          "location_label_raw": "アタック側スポーン",
+          "location_label_raw": "\u30a2\u30bf\u30c3\u30af\u5074\u30b9\u30dd\u30fc\u30f3",
           "combat_report_visible": true
         }
       },
@@ -7341,7 +7341,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -7474,7 +7474,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -7611,7 +7611,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -7659,7 +7659,7 @@
         "snapshot",
         "timer reader",
         "upstream dependency failure",
-        "未実装field / export"
+        "\u672a\u5b9f\u88c5field / export"
       ]
     },
     {
@@ -7747,7 +7747,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -7870,7 +7870,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -7993,7 +7993,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -8109,7 +8109,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -8230,7 +8230,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -8281,13 +8281,13 @@
         "primary_state": "spectator_first_person",
         "player_alive": false,
         "view_owner": "teammate_spectated",
-        "spectated_name": "チェンバーのおチェンバー",
+        "spectated_name": "\u30c1\u30a7\u30f3\u30d0\u30fc\u306e\u304a\u30c1\u30a7\u30f3\u30d0\u30fc",
         "spectated_hp": 100,
         "spectated_ammo_mag": 21,
         "spectated_ammo_reserve": 50,
         "spectated_weapon": "Vandal",
         "combat_report_visible": true,
-        "spectated_location_label_raw": "中央ファウンテン"
+        "spectated_location_label_raw": "\u4e2d\u592e\u30d5\u30a1\u30a6\u30f3\u30c6\u30f3"
       },
       "assertion_definition": {
         "id": "GT-R2-SNAP-151",
@@ -8298,13 +8298,13 @@
           "primary_state": "spectator_first_person",
           "player_alive": false,
           "view_owner": "teammate_spectated",
-          "spectated_name": "チェンバーのおチェンバー",
+          "spectated_name": "\u30c1\u30a7\u30f3\u30d0\u30fc\u306e\u304a\u30c1\u30a7\u30f3\u30d0\u30fc",
           "spectated_hp": 100,
           "spectated_ammo_mag": 21,
           "spectated_ammo_reserve": 50,
           "spectated_weapon": "Vandal",
           "combat_report_visible": true,
-          "spectated_location_label_raw": "中央ファウンテン"
+          "spectated_location_label_raw": "\u4e2d\u592e\u30d5\u30a1\u30a6\u30f3\u30c6\u30f3"
         }
       },
       "actual": {
@@ -8401,7 +8401,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -8452,7 +8452,7 @@
         "snapshot",
         "spectator detection",
         "upstream dependency failure",
-        "未実装field / export"
+        "\u672a\u5b9f\u88c5field / export"
       ]
     },
     {
@@ -8476,7 +8476,7 @@
         "spectated_weapon": "Vandal",
         "muzzle_flash_visible": true,
         "combat_report_visible": true,
-        "spectated_location_label_raw": "Bメイン"
+        "spectated_location_label_raw": "B\u30e1\u30a4\u30f3"
       },
       "assertion_definition": {
         "id": "GT-R2-SNAP-170",
@@ -8494,7 +8494,7 @@
           "spectated_weapon": "Vandal",
           "muzzle_flash_visible": true,
           "combat_report_visible": true,
-          "spectated_location_label_raw": "Bメイン"
+          "spectated_location_label_raw": "B\u30e1\u30a4\u30f3"
         }
       },
       "actual": {
@@ -8596,7 +8596,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -8650,7 +8650,7 @@
         "snapshot",
         "spectator detection",
         "upstream dependency failure",
-        "未実装field / export"
+        "\u672a\u5b9f\u88c5field / export"
       ]
     },
     {
@@ -8722,7 +8722,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -8823,7 +8823,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -8924,7 +8924,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -9030,7 +9030,7 @@
       "primary_root_cause": "weapon_visual_input_guard",
       "root_cause_description": "No eligible player muzzle observation in required time; HUD identity unknown and visual evidence insufficient",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "player_mechanics_eligibility",
         "weapon_visual_evidence",
@@ -9127,7 +9127,7 @@
       "primary_root_cause": "weapon_visual_input_guard",
       "root_cause_description": "No eligible player muzzle observation in required time; HUD identity unknown and visual evidence insufficient",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "player_mechanics_eligibility",
         "weapon_visual_evidence",
@@ -9224,7 +9224,7 @@
       "primary_root_cause": "weapon_visual_input_guard",
       "root_cause_description": "No eligible player muzzle observation in required time; HUD identity unknown and visual evidence insufficient",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "player_mechanics_eligibility",
         "weapon_visual_evidence",
@@ -9289,7 +9289,7 @@
       "primary_root_cause": "round_boundary",
       "root_cause_description": "No round_start/end HUD events; missing banner/score context for temporal detector",
       "direct_or_upstream": "direct",
-      "implementation_status": "部分実装",
+      "implementation_status": "\u90e8\u5206\u5b9f\u88c5",
       "upstream_dependencies": [
         "event_producer",
         "round_package_scope"
@@ -9359,7 +9359,7 @@
       "primary_root_cause": "player_death_semantics",
       "root_cause_description": "No player_death event; death transition evidence and victim/killer/report attributes unavailable",
       "direct_or_upstream": "direct",
-      "implementation_status": "部分実装",
+      "implementation_status": "\u90e8\u5206\u5b9f\u88c5",
       "upstream_dependencies": [
         "event_producer",
         "round_package_scope"
@@ -9434,7 +9434,7 @@
       "primary_root_cause": "round_boundary",
       "root_cause_description": "No round_start/end HUD events; missing banner/score context for temporal detector",
       "direct_or_upstream": "direct",
-      "implementation_status": "部分実装",
+      "implementation_status": "\u90e8\u5206\u5b9f\u88c5",
       "upstream_dependencies": [
         "event_producer",
         "round_package_scope"
@@ -9517,7 +9517,7 @@
       "primary_root_cause": "shot_evidence",
       "root_cause_description": "No shot in required window; visual candidate path exists but all14 candidates suppressed below threshold",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "event_producer",
         "round_package_scope"
@@ -9581,7 +9581,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "event_producer",
         "round_package_scope"
@@ -9656,7 +9656,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream依存",
+      "implementation_status": "upstream\u4f9d\u5b58",
       "upstream_dependencies": [
         "event_producer",
         "round_package_scope"
@@ -9733,12 +9733,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "実装済み",
+      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
       "upstream_dependencies": [
         "event_producer",
         "round_package_scope"
       ],
-      "fix_target": "維持・回帰保護",
+      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -9832,12 +9832,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "実装済み",
+      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "維持・回帰保護",
+      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -9925,12 +9925,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "実装済み",
+      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "維持・回帰保護",
+      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -10018,12 +10018,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "実装済み",
+      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "維持・回帰保護",
+      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -10111,12 +10111,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "実装済み",
+      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "維持・回帰保護",
+      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -10182,12 +10182,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "実装済み",
+      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "維持・回帰保護",
+      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -10255,12 +10255,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "実装済み",
+      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "維持・回帰保護",
+      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -10334,12 +10334,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "実装済み",
+      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "維持・回帰保護",
+      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -10405,12 +10405,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "実装済み",
+      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "維持・回帰保護",
+      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -10476,12 +10476,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "実装済み",
+      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "維持・回帰保護",
+      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -10557,12 +10557,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "実装済み",
+      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "維持・回帰保護",
+      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -10638,12 +10638,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "実装済み",
+      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "維持・回帰保護",
+      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -10686,7 +10686,7 @@
         "must_not_state_match": {
           "state": "spectator_first_person"
         },
-        "reason": "Live player footage can display 観戦者 N; text alone must not force spectator state."
+        "reason": "Live player footage can display \u89b3\u6226\u8005 N; text alone must not force spectator state."
       },
       "assertion_definition": {
         "id": "NEG-SPECTATOR-COUNT-TEXT",
@@ -10697,7 +10697,7 @@
         "must_not_state_match": {
           "state": "spectator_first_person"
         },
-        "reason": "Live player footage can display 観戦者 N; text alone must not force spectator state."
+        "reason": "Live player footage can display \u89b3\u6226\u8005 N; text alone must not force spectator state."
       },
       "actual": {
         "violations": 0,
@@ -10709,12 +10709,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "実装済み",
+      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "維持・回帰保護",
+      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -10806,12 +10806,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "実装済み",
+      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "維持・回帰保護",
+      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -10887,12 +10887,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "実装済み",
+      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "維持・回帰保護",
+      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -10970,12 +10970,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "実装済み",
+      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "維持・回帰保護",
+      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -11061,12 +11061,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "実装済み",
+      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "維持・回帰保護",
+      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -11132,12 +11132,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "実装済み",
+      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "維持・回帰保護",
+      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -11203,12 +11203,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "実装済み",
+      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "維持・回帰保護",
+      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -11256,7 +11256,7 @@
             "to": "summit_a_approach"
           }
         },
-        "reason": "A ロビー and A メイン are the same operational zone in the current map contract; string change alone is not position_change."
+        "reason": "A \u30ed\u30d3\u30fc and A \u30e1\u30a4\u30f3 are the same operational zone in the current map contract; string change alone is not position_change."
       },
       "assertion_definition": {
         "id": "NEG-SAME-ZONE-CALLOUT-CHANGE",
@@ -11272,7 +11272,7 @@
             "to": "summit_a_approach"
           }
         },
-        "reason": "A ロビー and A メイン are the same operational zone in the current map contract; string change alone is not position_change."
+        "reason": "A \u30ed\u30d3\u30fc and A \u30e1\u30a4\u30f3 are the same operational zone in the current map contract; string change alone is not position_change."
       },
       "actual": {
         "violations": 0,
@@ -11284,12 +11284,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "実装済み",
+      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "維持・回帰保護",
+      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -11361,12 +11361,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "実装済み",
+      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "維持・回帰保護",
+      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -13463,7 +13463,7 @@
     "spectator detection": 4,
     "live identity": 1,
     "ownership": 1,
-    "未実装field / export": 12,
+    "\u672a\u5b9f\u88c5field / export": 12,
     "snapshot": 25,
     "ally score": 4,
     "enemy score": 4,
@@ -14074,5 +14074,3221 @@
     "canonical_current": null,
     "canonical_delta": null,
     "assertion_matrix_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776"
+  },
+  "scene_world_resolution_followup": {
+    "start_commit": "03bfcbf945fbf3d7b04c54d80b3c5ff103475db0",
+    "target_assertion_ids": [
+      "GT-R1-ROUND-START"
+    ],
+    "hypothesis": "Native resolution alone repairs reviewed-world support",
+    "decision": "Rejected: prefix0/35 and stable0/29; spatial support remains missing",
+    "document": "docs/scene_world_resolution_investigation.md",
+    "reports": {
+      "prefix": {
+        "native_frames": 36,
+        "adjacent_links": 35,
+        "supported_links": 0,
+        "wall_clock_seconds": 8.787262784026098
+      },
+      "stable": {
+        "native_frames": 30,
+        "adjacent_links": 29,
+        "supported_links": 0,
+        "wall_clock_seconds": 7.776653674023692
+      }
+    },
+    "production_changed": false,
+    "new_runtime_events": 0,
+    "qualification_created": false,
+    "new_full_e2e_runs": 0,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "assertion_matrix_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776"
+  },
+  "scene_world_stage_followup": {
+    "document": "docs/scene_world_stage_investigation.md",
+    "target_assertion_ids": [
+      "GT-R1-ROUND-START"
+    ],
+    "root_cause_evidence": "Weak upper-region LK conditioning and lost distributed source-world witness; foreground/UI contamination vetoes proposed lower ROI",
+    "decision": "No qualified source continuity proof; not a cut classification",
+    "pass_gain_evidenced": 0,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "qualification_created": false,
+    "new_runtime_events": 0,
+    "production_changed": false,
+    "instrumented_equivalence_links": 128,
+    "assertion_matrix_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776",
+    "report": "e2e_reports/match_001/scene_world_stage_verification.json"
+  },
+  "scene_adjacent_world_followup": {
+    "document": "docs/scene_adjacent_world_investigation.md",
+    "target_assertion_ids": [
+      "GT-R1-ROUND-START"
+    ],
+    "hypothesis": "Cumulative seed-wide photometry rejects adjacent continuity",
+    "decision": "Partial development support improvement; still unqualified before timer transition",
+    "previous_supported_links": 3,
+    "current_supported_links": 5,
+    "supported_link_delta": 2,
+    "prefix_supported_links": 0,
+    "new_runtime_events": 0,
+    "qualification_created": false,
+    "production_changed": false,
+    "new_full_e2e_runs": 0,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "assertion_matrix_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776"
+  },
+  "scene_full_footprint_followup": {
+    "document": "docs/scene_full_footprint_investigation.md",
+    "target_assertion_ids": [
+      "GT-R1-ROUND-START"
+    ],
+    "hypothesis": "Whole fully source-supported background footprint restores lost upper photometric support",
+    "decision": "Development support improves to last preparation image, but phase-disappearance link remains unqualified",
+    "previous_supported_links": 5,
+    "current_supported_links": 11,
+    "delta_supported_links": 6,
+    "first_failure_pts_sec": 4.102669270833333,
+    "first_failure": {
+      "reason": "original_world_support_insufficient",
+      "seed_features": 141,
+      "retained_features": 63,
+      "retained_regions": [
+        2,
+        5
+      ],
+      "previous_witness_cells": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "current_witness_cells": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "descriptive_supported": false,
+      "runtime_proof_authorized": false
+    },
+    "next_blocker": "Original-seed camera model rejects all remaining region1 tracks; only two seed regions survive",
+    "production_changed": false,
+    "new_runtime_events": 0,
+    "qualification_created": false,
+    "new_full_e2e_runs": 0,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "assertion_matrix_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776"
+  },
+  "scene_camera_model_followup": {
+    "scope": "Development-only source-camera investigation; no qualification or canonical replay",
+    "report": "docs/scene_camera_model_investigation.md",
+    "verification": "e2e_reports/match_001/scene_final_membership_verification.json",
+    "supported_links": {
+      "previous": 11,
+      "current": 22,
+      "delta": 11,
+      "delta_percent": 100
+    },
+    "first_unsupported_pts_sec": 4.286002604166667,
+    "cause": "Original RANSAC mask and refined similarity error membership differ at phase disappearance; explicit bidirectional final membership preserves original consensus and NCC gates",
+    "production_changed": false,
+    "qualification_created": false,
+    "new_runtime_events": 0,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "assertion_matrix_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776",
+    "next_task": "Freeze method, reserve independent source-world holdout and negative controls, then qualify trusted scene/UI producers before runtime activation"
+  },
+  "scene_final_membership_cohort_followup": {
+    "source_report": "e2e_reports/match_001/scene_final_membership_cohort_diagnostics.json",
+    "review": "e2e_reports/match_001/scene_final_membership_cohort_review.json",
+    "native_frames": 36,
+    "adjacent_links": 33,
+    "supported_links": 0,
+    "known_png_overlaps": 0,
+    "scope": "Fixed tracker on previously unarchived same-video poses; no general source-world qualification",
+    "production_changed": false,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "assertion_matrix_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776",
+    "next_task": "World-only bootstrap/current occlusion and motion-dependent photometric footprint contract, preserving independent holdout before activation"
+  },
+  "scene_world_review_gate_followup": {
+    "scope": "Offline world review eligibility contract; not production source qualification",
+    "document": "docs/scene_world_review_contract.md",
+    "report": "e2e_reports/match_001/scene_world_review_gate_development.json",
+    "verification": "e2e_reports/match_001/scene_world_review_gate_verification.json",
+    "tracker_initializations": {
+      "previous": 3,
+      "current": 1,
+      "delta": -2
+    },
+    "production_changed": false,
+    "qualification_created": false,
+    "new_runtime_events": 0,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "assertion_matrix_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776",
+    "next_task": "Projected world appearance under motion with reviewed source/current pixel coverage and occlusion exclusion; never install offline frame annotations as runtime truth"
+  },
+  "scene_projected_world_followup": {
+    "scope": "Projected world appearance development; no integrated-chain qualification",
+    "document": "docs/scene_projected_world_investigation.md",
+    "report": "e2e_reports/match_001/scene_projected_world_development.json",
+    "verification": "e2e_reports/match_001/scene_projected_world_verification.json",
+    "appearance_regions_supported": {
+      "previous": 0,
+      "current": 6,
+      "delta": 6
+    },
+    "original_tracker_supported_links": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "production_changed": false,
+    "qualification_created": false,
+    "new_runtime_events": 0,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "assertion_matrix_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776",
+    "next_task": "Continuous projected-world source chain with independently qualified seed/current world pixels and occlusion; freeze integrated contract before holdout"
+  },
+  "scene_projected_chain_followup": {
+    "scope": "Continuous projected-world development; no producer qualification",
+    "document": "docs/scene_projected_chain_implementation.md",
+    "report": "e2e_reports/match_001/scene_projected_chain_consistent_review_development.json",
+    "verification": "e2e_reports/match_001/scene_projected_chain_verification.json",
+    "supported_links": {
+      "previous": 0,
+      "current": 4,
+      "delta": 4
+    },
+    "occlusion_stop_pts_sec": 2.5860026041666666,
+    "later_chain_rejoins": 0,
+    "production_changed": false,
+    "qualification_created": false,
+    "new_runtime_events": 0,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "assertion_matrix_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776",
+    "next_task": "Actual R1transient replay with independently reviewed current world domains, then freeze method before disjoint qualification; no offline annotations as runtime truth"
+  },
+  "r1_projected_chain_followup": {
+    "scope": "R1projected training replay, not producer qualification",
+    "document": "docs/r1_projected_chain_investigation.md",
+    "report": "e2e_reports/match_001/r1_projected_chain_development.json",
+    "verification": "e2e_reports/match_001/r1_projected_chain_verification.json",
+    "supported_links": {
+      "previous": 22,
+      "current": 22,
+      "delta": 0
+    },
+    "first_unsupported_pts_sec": 4.286002604166667,
+    "later_chain_rejoins": 0,
+    "production_changed": false,
+    "qualification_created": false,
+    "new_runtime_events": 0,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "assertion_matrix_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776",
+    "next_task": "Image-derived reviewed-world bootstrap/current occlusion recognition with qualification, never frame-annotation lookup or GT timing"
+  },
+  "scene_world_bootstrap_followup": {
+    "scope": "Image-only exposed development; not qualification",
+    "git_head": "80d0d460b8e3a76d3c181e035c72cd10026f4252",
+    "processed_frames": 7,
+    "landmark_quorum_frames": 1,
+    "self_reference_quorum_frames": 1,
+    "actual_r1_transition_quorum_frames": 0,
+    "wall_clock_sec": 7.0157374370028265,
+    "conclusion": "Existing unique reciprocal reference search is insufficient; no cut inference; matched patches do not attest whole ROI",
+    "qualification_created": false,
+    "production_behavior_changed": false,
+    "full_e2e_run": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "documentation": "docs/scene_world_bootstrap_contract.md",
+    "next_gate": "Image-derived current footprint eligibility with retained seed identities; independent continuous holdout/negative qualification"
+  },
+  "scene_track_footprint_followup": {
+    "documentation": "docs/scene_track_footprint_audit.md",
+    "scope": "Passive exposed development, no mask/qualification",
+    "processed_frames": 30,
+    "previous_supported_links": 22,
+    "current_supported_links": 22,
+    "delta_supported_links": 0,
+    "critical_images_with_distributed_patch_support": 0,
+    "critical_images": 6,
+    "wall_clock_sec": 14.171270243008621,
+    "production_behavior_changed": false,
+    "qualification_created": false,
+    "full_e2e_run": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "blocker": "Local tracked point footprints remain one row; strong mean NCC does not prove absence of small occlusion"
+  },
+  "scene_domain_ambiguity_followup": {
+    "documentation": "docs/scene_domain_ambiguity_investigation.md",
+    "scope": "Passive exposed R1 domain ambiguity; unqualified",
+    "processed_frames": 30,
+    "measured_links": 5,
+    "previous_tracker_supported_links": 22,
+    "current_tracker_supported_links": 22,
+    "delta": 0,
+    "independently_localized_domain_quorum_links": 0,
+    "upper_domain_locally_unique_links": 5,
+    "wall_clock_sec": 12.717765246983618,
+    "qualification_created": false,
+    "production_changed": false,
+    "full_e2e_run": false,
+    "canonical_current": null,
+    "next_gate": "Joint multi-domain camera hypotheses with explicit distributed competitors; no per-domain false independence"
+  },
+  "scene_joint_domains_followup": {
+    "documentation": "docs/scene_joint_domains_investigation.md",
+    "scope": "Exposed local joint fixed-projection appearance; not temporal qualification",
+    "processed_frames": 30,
+    "measured_links": 5,
+    "individually_localized_quorum_previous": 0,
+    "individually_localized_quorum_current": 0,
+    "joint_local_appearance_previous": null,
+    "joint_local_appearance_current": 5,
+    "tracker_previous": 22,
+    "tracker_current": 22,
+    "tracker_delta": 0,
+    "old_domain_outputs_identical": true,
+    "wall_clock_sec": 13.067982682026923,
+    "production_changed": false,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_gate": "Freeze joint source method; unexposed continuous/negative assessment; image-only bootstrap and explicit limited-scope current evidence"
+  },
+  "scene_joint_cohort_followup": {
+    "documentation": "docs/scene_joint_cohort_investigation.md",
+    "processed_frames": 36,
+    "links": 33,
+    "previous_joint_stage_accuracy": null,
+    "current_joint_stage_accuracy": null,
+    "joint_evaluated_links": 0,
+    "tracker_supported_links": 0,
+    "png_overlaps": 15,
+    "decoded_pixel_overlaps": 15,
+    "qualified_holdout_episodes": 0,
+    "seed_world_eligibility": "withheld for all3poses",
+    "reason": "Original seed-model consensus fails before joint stage; source-world image initialization is missing",
+    "wall_clock_sec": 35.2894022410037,
+    "production_changed": false,
+    "qualification_created": false,
+    "full_e2e_run": false,
+    "canonical_current": null,
+    "canonical_delta": null
+  },
+  "scene_domain_bootstrap_followup": {
+    "documentation": "docs/scene_domain_bootstrap_contract.md",
+    "scope": "Stateless exposed reference-domain proposal; no prior-frame or semantic-mask authority",
+    "processed_frames": 8,
+    "initialization_proposals": 1,
+    "self_reference_proposals": 1,
+    "actual_r1_transition_proposals": 0,
+    "wall_clock_sec": 5.024158706015442,
+    "conclusion": "Fixed-reference static model consensus insufficient; reject as qualification/reacquisition remedy",
+    "production_changed": false,
+    "qualification_created": false,
+    "full_e2e_run": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_gate": "Image-supported observed seed -> continuous retained source identities; terminate on unknown/cut; independent continuous qualification"
+  },
+  "observed_scene_chain_followup": {
+    "documentation": "docs/observed_scene_chain_contract.md",
+    "scope": "Image-supported observed native seed/continuous joint scene integration; exposed, unqualified",
+    "processed_frames": 30,
+    "links": 29,
+    "previous_descriptive_links": 22,
+    "current_descriptive_links": 22,
+    "delta": 0,
+    "critical_links": 5,
+    "critical_supported": 5,
+    "per_frame_manual_world_masks_used": false,
+    "reference_asset_supplies_previous_native_frame": false,
+    "protocol_control_positive_links": 0,
+    "protocol_controls": 4,
+    "image_only_synthetic_control_positive_links": 0,
+    "image_only_controls": 2,
+    "first_stop_pts_sec": 4.286002604166667,
+    "first_stop_reason": "seed_model_incoherent",
+    "wall_clock_sec": 55.72131528996397,
+    "production_changed": false,
+    "qualification_created": false,
+    "full_e2e_run": false,
+    "canonical_current": null,
+    "canonical_delta": null
+  },
+  "observed_scene_input_safety_followup": {
+    "documentation": "docs/observed_scene_chain_contract.md",
+    "new_regression_cases": 9,
+    "related_unit_pass": 22,
+    "unit_runtime_sec": 27.03,
+    "ruff": "PASS",
+    "mypy": "PASS: 104 source files",
+    "production_changed": false,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "full_e2e_run": false,
+    "assertions_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776",
+    "observer_sha256": "176f086b1b7ce24ac836a640fdf2f8984294f427ac4889ae3340a27e826cd17e"
+  },
+  "observed_scene_provenance_followup": {
+    "documentation": "docs/observed_scene_chain_contract.md",
+    "declaration": "e2e_reports/match_001/observed_scene_provenance_declaration.json",
+    "report": "e2e_reports/match_001/observed_scene_provenance_development.json",
+    "previous_links": 22,
+    "current_links": 22,
+    "delta": 0,
+    "previous_measured_witness_links": 0,
+    "current_measured_witness_links": 22,
+    "provenance_delta": 22,
+    "minimum_witness_ncc": 0.9097880721092224,
+    "wall_clock_sec": 47.621045391017105,
+    "score_semantics": "appearance only; not calibrated probability",
+    "production_changed": false,
+    "qualification_created": false,
+    "full_e2e_run": false,
+    "canonical_current": null,
+    "canonical_delta": null
+  },
+  "scene_near_seed_acquisition_followup": {
+    "documentation": "docs/scene_near_seed_acquisition.md",
+    "acquisition_report": "e2e_reports/match_001/scene_near_seed_acquisition_development.json",
+    "continuous_report": "e2e_reports/match_001/observed_nonself_seed_development.json",
+    "exposed_acquisition_proposals": 6,
+    "exposed_acquisition_observations": 12,
+    "nonself_seed_pts_ticks": 59689,
+    "continuous_links": 30,
+    "supported_links": 19,
+    "critical_supported": 5,
+    "critical_links": 5,
+    "previous_common_supported_links": 22,
+    "current_common_supported_links": 18,
+    "common_link_delta": -4,
+    "initialization_histories_differ": true,
+    "acquisition_wall_clock_sec": 14.979626915999688,
+    "continuous_wall_clock_sec": 44.322226340009365,
+    "qualification_created": false,
+    "production_changed": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "full_e2e_run": false
+  },
+  "observed_cohort_runner_followup": {
+    "documentation": "docs/observed_scene_cohort_runner.md",
+    "report": "e2e_reports/match_001/observed_cohort_runner_diagnostics.json",
+    "processed_frames": 43,
+    "previous_exposed_links": 19,
+    "current_exposed_links": 19,
+    "delta": 0,
+    "critical_supported": 5,
+    "new_context_frames": 12,
+    "new_context_known_native_pixel_overlaps": 0,
+    "new_context_initialization": "image_supported_initialization_unavailable",
+    "new_context_joint_links_evaluated": 0,
+    "related_unit_pass": 37,
+    "unit_runtime_sec": 32.99,
+    "wall_clock_sec": 70.16514443198685,
+    "production_changed": false,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "full_e2e_run": false
+  },
+  "scene_acquisition_flow_failure_followup": {
+    "documentation": "docs/scene_acquisition_flow_failure.md",
+    "cohort_report": "e2e_reports/match_001/two_scene_acquisition_diagnostics.json",
+    "stage_report": "e2e_reports/match_001/two_scene_track_rejection_diagnostics.json",
+    "native_frames": 12,
+    "known_native_pixel_overlaps": 0,
+    "supported_links": 0,
+    "joint_links_evaluated": 0,
+    "self_reference_tracks": 78,
+    "evaluation_reference_tracks": 0,
+    "evaluation_stage_totals": {
+      "source_features": 136,
+      "forward_unavailable": 0,
+      "reverse_unavailable": 0,
+      "invalid_flow": 107,
+      "forward_backward_rejected": 29,
+      "patch_outside_crop": 0,
+      "texture_unavailable": 0,
+      "patch_ncc_rejected": 0,
+      "accepted": 0
+    },
+    "hypothesis": "Additional static source pose sufficient for acquisition",
+    "hypothesis_adopted": false,
+    "new_profile_production_active": false,
+    "default_bootstrap_outputs_unchanged": true,
+    "related_unit_pass": 45,
+    "unit_runtime_sec": 32.59,
+    "wall_clock_sec": 13.920094867993612,
+    "production_changed": false,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "full_e2e_run": false
+  },
+  "displaced_reference_acquisition_followup": {
+    "documentation": "docs/displaced_reference_acquisition.md",
+    "report": "e2e_reports/match_001/displaced_world_acquisition_development.json",
+    "rejections": "e2e_reports/match_001/displaced_world_acquisition_rejections.json",
+    "previous_evaluation_tracks": 0,
+    "current_evaluation_tracks": 0,
+    "delta": 0,
+    "evaluation_rejections": {
+      "forward:no_ncc_qualified_peak": 40,
+      "forward:ambiguous_second_peak": 33,
+      "reverse:ambiguous_second_peak": 5
+    },
+    "hypothesis_adopted": false,
+    "runtime_active": false,
+    "production_changed": false,
+    "qualification_created": false,
+    "related_unit_pass": 55,
+    "unit_runtime_sec": 52.03,
+    "wall_clock_sec": 12.6250091859838,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "full_e2e_run": false
+  },
+  "descriptor_reference_acquisition_followup": {
+    "documentation": "docs/descriptor_reference_acquisition.md",
+    "report": "e2e_reports/match_001/descriptor_distinct_support_development.json",
+    "exposed_pairs": 5,
+    "proposals": 0,
+    "model_joint_pairs_evaluated": 0,
+    "reasons": [
+      "three_region_descriptor_support_unavailable",
+      "three_region_descriptor_support_unavailable",
+      "three_region_descriptor_support_unavailable",
+      "three_region_descriptor_support_unavailable",
+      "three_region_descriptor_support_unavailable"
+    ],
+    "physical_region_counts": [
+      {
+        "0": 3,
+        "2": 5
+      },
+      {
+        "0": 1
+      },
+      {
+        "0": 1
+      },
+      {
+        "2": 7
+      },
+      {
+        "2": 4
+      }
+    ],
+    "hypothesis_adopted": false,
+    "production_changed": false,
+    "qualification_created": false,
+    "related_unit_pass": 19,
+    "unit_runtime_sec": 10.21,
+    "wall_clock_sec": 3.3143119759624824,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "full_e2e_run": false
+  },
+  "source_structure_eligibility_followup": {
+    "documentation": "docs/source_structure_eligibility.md",
+    "resolution_report": "e2e_reports/match_001/source_descriptor_resolution_diagnostics.json",
+    "corner_report": "e2e_reports/match_001/source_corner_eligibility_diagnostics.json",
+    "r1_canonical_native_descriptor_regions": [
+      1,
+      1
+    ],
+    "arch_canonical_native_descriptor_regions": [
+      2,
+      2
+    ],
+    "existing_r1_corner_regions": 6,
+    "existing_arch_corner_regions": 3,
+    "existing_eligible_corner_counts": [
+      180,
+      78
+    ],
+    "source_only": true,
+    "production_changed": false,
+    "profile_changed": false,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "full_e2e_run": false
+  },
+  "corner_descriptor_acquisition_followup": {
+    "documentation": "docs/corner_descriptor_acquisition.md",
+    "report": "e2e_reports/match_001/corner_descriptor_acquisition_development.json",
+    "candidate_distribution_report": "e2e_reports/match_001/corner_descriptor_eligibility_distributions.json",
+    "previous_exposed_proposals": 0,
+    "current_exposed_proposals": 1,
+    "delta": 1,
+    "new_proposal_self_calibration_only": true,
+    "actual_displaced_arch_proposals": 0,
+    "actual_r1_phasegone_proposals": 0,
+    "default_five_outputs_unchanged": true,
+    "runtime_active": false,
+    "qualification_created": false,
+    "production_changed": false,
+    "related_unit_pass": 24,
+    "unit_runtime_sec": 17.41,
+    "wall_clock_sec": 4.143847742001526,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "full_e2e_run": false
+  },
+  "corner_crop_context_followup": {
+    "documentation": "docs/corner_crop_context_analysis.md",
+    "report": "e2e_reports/match_001/corner_crop_context_diagnostics.json",
+    "head": "e9ecaf8f2f0f0dfa1f9433d40a598ec8909e9ce3",
+    "r1_source_candidates": 295,
+    "r1_current_context_eligible": 264,
+    "r1_below_relative_quality_floor": 249,
+    "r1_same_location_current_candidates": 15,
+    "production_changed": false,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "full_e2e_run": false
+  },
+  "spatial_descriptor_followup": {
+    "documentation": "docs/spatial_descriptor_acquisition.md",
+    "declaration": "e2e_reports/match_001/spatial_descriptor_declaration.json",
+    "report": "e2e_reports/match_001/spatial_descriptor_development.json",
+    "actual_r1_matches_previous_current": [
+      16,
+      52
+    ],
+    "actual_r1_model_inliers": 26,
+    "actual_r1_model_total": 52,
+    "actual_acquisition_proposals": 0,
+    "self_calibration_proposals": 1,
+    "all_previous_corner_outputs_unchanged": true,
+    "production_changed": false,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "full_e2e_run": false,
+    "wall_clock_sec": 6.801370997971389,
+    "related_unit_pass": 28,
+    "related_unit_runtime_sec": 31.65,
+    "final_descriptor_unit_pass": 16,
+    "final_descriptor_unit_runtime_sec": 33.17,
+    "ruff_pass": true,
+    "mypy_source_files_pass": 104
+  },
+  "descriptor_photometry_partition_followup": {
+    "documentation": "docs/descriptor_photometry_partition.md",
+    "report": "e2e_reports/match_001/descriptor_photometry_partition.json",
+    "r1_self_source_texture_missing": 116,
+    "r1_phasegone_source_texture_missing": 1,
+    "r1_phasegone_camera_outliers": 26,
+    "r1_phasegone_camera_outliers_with_supported_ncc": 17,
+    "source_texture_filter_sufficient_remedy": false,
+    "production_changed": false,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "full_e2e_run": false,
+    "unit_pass": 3,
+    "unit_runtime_sec": 0.27
+  },
+  "descriptor_endpoint_ambiguity_followup": {
+    "documentation": "docs/descriptor_endpoint_ambiguity.md",
+    "report": "e2e_reports/match_001/descriptor_endpoint_competitors.json",
+    "audited_tracks": 17,
+    "tracks_with_competing_positions": 17,
+    "high_ncc_descriptor_endpoints": 16,
+    "competitor_position_range": [
+      53,
+      1441
+    ],
+    "positions_are_not_independent_peaks": true,
+    "production_changed": false,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "full_e2e_run": false,
+    "unit_pass": 3,
+    "ruff_pass": true
+  },
+  "fixed_camera_domain_followup": {
+    "documentation": "docs/fixed_camera_domain_audit.md",
+    "report": "e2e_reports/match_001/fixed_camera_domain_audit.json",
+    "actual_r1_fixed_witness_regions": [
+      1,
+      2,
+      5
+    ],
+    "actual_r1_distributed_support": false,
+    "actual_r1_competing_offsets": 5,
+    "actual_r1_joint_support": false,
+    "original_acceptance_changed": false,
+    "production_changed": false,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "full_e2e_run": false,
+    "related_unit_pass": 13,
+    "related_unit_runtime_sec": 2.6
+  },
+  "deferred_observed_initialization_followup": {
+    "documentation": "docs/deferred_observed_initialization.md",
+    "declaration": "e2e_reports/match_001/deferred_observer_declaration.json",
+    "report": "e2e_reports/match_001/deferred_observer_development.json",
+    "original_30_default_outputs_exact": true,
+    "default_prefix_links": 0,
+    "deferred_prefix_links": 19,
+    "deferred_critical_links": 5,
+    "pending_images": 5,
+    "seed_pts_ticks": 59689,
+    "first_stop_pts_ticks": 64809,
+    "reacquisition_after_stop": false,
+    "production_changed": false,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "full_e2e_run": false,
+    "unit_pass": 30,
+    "unit_runtime_sec": 31.74,
+    "wall_clock_sec": 96.53264900599606,
+    "ruff_pass": true,
+    "mypy_source_files_pass": 104
+  },
+  "deferred_observer_cohort_followup": {
+    "documentation": "docs/deferred_observer_cohort.md",
+    "reservation": "e2e_reports/match_001/deferred_cohort_reservation.json",
+    "report": "e2e_reports/match_001/deferred_cohort_diagnostics.json",
+    "processed_native_frames": 54,
+    "candidate_holdout_frames": 18,
+    "candidate_holdout_native_overlaps": 18,
+    "disjoint_holdout_frames": 0,
+    "exposed_r1_links_previous_current": [
+      19,
+      19
+    ],
+    "qualification_created": false,
+    "production_changed": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "full_e2e_run": false,
+    "unit_pass": 45,
+    "unit_runtime_sec": 45.2,
+    "wall_clock_sec": 74.25949039397528,
+    "ruff_pass": true
+  },
+  "pts_gap_source_qualification_followup": {
+    "documentation": "docs/pts_gap_source_qualification.md",
+    "inventory": "e2e_reports/match_001/native_exposure_pts_inventory.json",
+    "reservation": "e2e_reports/match_001/pts_gap_cohort_reservation.json",
+    "report": "e2e_reports/match_001/pts_gap_cohort_diagnostics.json",
+    "rejection_details": "e2e_reports/match_001/pts_gap_acquisition_rejection_details.json",
+    "known_native_ticks": 304,
+    "processed_native_frames": 9,
+    "known_png_overlaps": 0,
+    "known_native_pixel_overlaps": 0,
+    "seeds": 0,
+    "evaluated_scene_links": 0,
+    "all_initializers_reference_tracks": 0,
+    "qualification_created": false,
+    "production_changed": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "full_e2e_run": false,
+    "inventory_unit_pass": 2,
+    "wall_clock_sec": 17.148138981021475,
+    "ruff_pass": true
+  },
+  "lifecycle_runtime_readiness_followup": {
+    "documentation": "docs/lifecycle_runtime_readiness.md",
+    "report": "e2e_reports/match_001/lifecycle_runtime_readiness.json",
+    "paired_runtime_producer_installed": false,
+    "startup_missing_producer_diagnostic_added": true,
+    "timer_display_transport_already_implemented": true,
+    "diagnostic_only_production_change": true,
+    "recognition_behavior_changed": false,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "full_e2e_run": false,
+    "related_unit_pass": 102,
+    "unit_runtime_sec": 12.94,
+    "ruff_pass": true,
+    "mypy_source_files_pass": 104
+  },
+  "semantic_measurement_followup": {
+    "report": "e2e_reports/match_001/r1_semantic_measurements.json",
+    "doc": "docs/r1_phase_rejection_evidence.md",
+    "source_native_frames": 30,
+    "signals_identical_frames": 30,
+    "presence_match": 12,
+    "unknown_nonmatch": 18,
+    "unavailable_contrast_groups": 54,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_blocker": "Independent phase-absence evidence and qualified source producer remain unavailable; do not equate nonmatch with disappearance."
+  },
+  "shared_scene_engine_followup": {
+    "report": "e2e_reports/match_001/shared_scene_domains_regression.json",
+    "doc": "docs/shared_scene_domain_engine.md",
+    "complete_native_outputs_identical": true,
+    "source_domains": 6,
+    "offset_measurements": 1734,
+    "runtime_producer_installed": false,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "final_unit_pass": 160,
+    "next_implementation": "Shared observed native-source acquisition/episode layer, retaining qualification and no-rejoin gates."
+  },
+  "shared_scene_tracking_followup": {
+    "report": "e2e_reports/match_001/shared_scene_tracking_regression.json",
+    "doc": "docs/shared_scene_tracking_engine.md",
+    "normalized_algorithm_ast_equal": [
+      "symmetric_affine_membership",
+      "_validate_resolution",
+      "ReviewedWorldChain",
+      "dense_world_regions",
+      "_check_mask",
+      "projected_world_regions"
+    ],
+    "native_outputs_identical": true,
+    "links_previous": 22,
+    "links_current": 22,
+    "links_delta": 0,
+    "unit_pass": 155,
+    "qualification_created": false,
+    "runtime_producer_installed": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_implementation": "Shared image-only source acquisition and native episode owner; no authorization until independently qualified."
+  },
+  "shared_native_episode_followup": {
+    "doc": "docs/shared_native_scene_episode.md",
+    "report": "e2e_reports/match_001/shared_scene_episode_regression.json",
+    "complete_native_outputs_identical": true,
+    "links_previous": 22,
+    "links_current": 22,
+    "links_delta": 0,
+    "shared_native_episode_owner": true,
+    "analyzer_uses_shared_episode": false,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "unit_pass": 160,
+    "next_implementation": "Shared image-only source reference loader/acquisition followed by independently qualified analyzer source entrance."
+  },
+  "shared_acquisition_followup": {
+    "doc": "docs/shared_scene_acquisition.md",
+    "report": "e2e_reports/match_001/shared_scene_acquisition_regression.json",
+    "native_frame_outputs_identical": true,
+    "reference_assets_terminal_verified": true,
+    "direct_common_package_path": true,
+    "links_previous": 22,
+    "links_current": 22,
+    "links_delta": 0,
+    "unit_pass": 197,
+    "qualification_created": false,
+    "runtime_producer_installed": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_implementation": "Source profile/asset-bound qualification entrance and native lifecycle delivery; independent source/world/phase-absence qualification still required."
+  },
+  "scene_source_binding_followup": {
+    "report": "e2e_reports/match_001/scene_source_binding_audit.json",
+    "documentation": "docs/scene_source_binding.md",
+    "status": "explicit source assets participate in qualification fingerprint; source/UI qualification and native producer remain unavailable",
+    "canonical_current": null,
+    "canonical_delta": null
+  },
+  "native_source_entrance_followup": {
+    "report": "e2e_reports/match_001/native_source_entrance_verification.json",
+    "documentation": "docs/native_source_entrance.md",
+    "status": "production video/analyzer APIs deliver actual native ticks/pixels to common scene measurements; qualified scene/UI producer and native lifecycle event merge still incomplete",
+    "tests": "178 related unit/integration PASS; Ruff PASS; mypy 112 source files PASS",
+    "current_descriptive_links": 22,
+    "descriptive_link_delta": 0,
+    "canonical_current": null,
+    "canonical_delta": null
+  },
+  "native_ui_localization_followup": {
+    "report": "e2e_reports/match_001/native_ui_localization.json",
+    "documentation": "docs/native_ui_localization.md",
+    "status": "R1 background appearance remains supported but pure-timer-only hypothesis is not supported; first transient frame also changes view-model pose",
+    "runtime_qualified": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_action": "investigate native foreground temporal continuity versus normal animation before authorizing UI transition"
+  },
+  "native_foreground_control_followup": {
+    "report": "e2e_reports/match_001/native_foreground_controls.json",
+    "pair_report": "e2e_reports/match_001/native_foreground_control_pair.json",
+    "documentation": "docs/native_foreground_control_analysis.md",
+    "status": "Similar exposed inspect-like presentation and abrupt non-UI change found; normal-animation versus scene-preserving cut remains unqualified",
+    "runtime_qualified": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_action": "Separate view-model presentation from distributed camera evidence; independently qualify phase disappearance and source continuity before native lifecycle integration."
+  },
+  "native_phase_structure_followup": {
+    "report": "e2e_reports/match_001/native_phase_structure.json",
+    "documentation": "docs/native_phase_structure_analysis.md",
+    "status": "Three non-text panel structures weaken together one native frame before the transient timer/view-model change; semantic absence remains unqualified",
+    "runtime_qualified": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_action": "Distinguish background reveal from obscuration using independent source/UI controls before authorizing phase disappearance."
+  },
+  "phase_background_reveal_followup": {
+    "report": "e2e_reports/match_001/phase_background_reveal.json",
+    "documentation": "docs/phase_background_reveal_analysis.md",
+    "status": "Background-color agreement corroborates panel removal imagery but is insufficient to authorize absence; matched-color synthetic replacement remains ambiguous",
+    "runtime_qualified": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_action": "Join independently qualified temporal source/world structure to UI evidence; stop color-fit-only acceptance tuning."
+  },
+  "native_scene_entrance_cohort_followup": {
+    "report": "e2e_reports/match_001/native_scene_entrance_cohort.json",
+    "declaration": "e2e_reports/match_001/native_scene_entrance_cohort_declaration.json",
+    "documentation": "docs/native_scene_entrance_cohort.md",
+    "status": "12 known-native-disjoint frames through production APIs all remain acquisition-pending; no continuity pairs evaluated",
+    "runtime_qualified": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_action": "Reassess reviewed source acquisition coverage separately from temporal tracking and phase absence; do not infer zero wrong or add arbitrary successful reference banks."
+  },
+  "doorway_source_coverage_followup": {
+    "report": "e2e_reports/match_001/doorway_source_coverage_development.json",
+    "documentation": "docs/doorway_source_coverage_assessment.md",
+    "status": "Rejected fixed development source proposal: one self initialization, zero observed links; next-frame model loses independent source/current footprint support",
+    "runtime_qualified": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_action": "Establish multi-frame source training eligibility and projected exclusion diagnostics before more holdouts, rather than growing a favorable reference bank."
+  },
+  "scene_training_support_screen_followup": {
+    "report": "e2e_reports/match_001/scene_training_support_gate_verified.json",
+    "documentation": "docs/scene_training_support_screen.md",
+    "status": "Standalone bound-development screen rejects self-only source support; next-frame projected exclusion affects124/3720upper-left source pixels",
+    "runtime_qualified": false,
+    "generator_integrated": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_action": "Implement actual motion-safe source acquisition coverage, then independently qualify scene/UI and integrate native lifecycle; this diagnostic is not the completed producer."
+  },
+  "qualified_native_scene_transport_followup": {
+    "report": "e2e_reports/match_001/native_scene_evidence_guard_verified.json",
+    "documentation": "docs/qualified_native_scene_transport.md",
+    "status": "Explicit production native scene transport added behind matching paired qualification; actual unqualified input releases zero proofs/events",
+    "runtime_qualified": false,
+    "native_scene_transport_api_added": true,
+    "canonical_orchestration_enabled": false,
+    "complete_paired_producer_installed": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_action": "Independently qualify actual source/current-world and UI-disappearance evidence, implement native system observation/lifecycle merge; do not apply synthetic reports to real frames."
+  },
+  "r1_continuous_source_followup": {
+    "report": "e2e_reports/match_001/r1_continuous_source.json",
+    "seed_failure_report": "e2e_reports/match_001/r1_continuous_seed_failure.json",
+    "model_comparison_report": "e2e_reports/match_001/r1_continuous_seed_model_comparison.json",
+    "documentation": "docs/r1_continuous_source_analysis.md",
+    "native_frames": 180,
+    "descriptive_links": 19,
+    "stop_reason": "seed_model_incoherent",
+    "seed_model_inliers": 52,
+    "seed_model_candidates": 58,
+    "previous_frame_model_inliers": 58,
+    "status": "Long-term seed model fails before adjacent correspondence; no content discontinuity classification or runtime qualification",
+    "runtime_behavior_changed": false,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_action": "Separate source identity/acquisition and adjacent motion under independent image controls before changing continuity; preserve foreground/UI qualification gates."
+  },
+  "r1_stop_appearance_and_graph_followup": {
+    "appearance_report": "e2e_reports/match_001/r1_seed_stop_adjacent_appearance.json",
+    "graph_report": "e2e_reports/match_001/r1_client_graph_history.json",
+    "documentation": "docs/r1_continuous_source_analysis.md",
+    "fixed_adjacent_model_background_domains": 6,
+    "minimum_background_ncc": 0.9735644459724426,
+    "graph_hypothesis": "Rejected color-only graph extraction: transparent world/weapon colors contaminate probe",
+    "status": "Adjacent geometry and independent background photometry support visible continuity at long-term model stop; initial R1 foreground/UI qualification remains unresolved",
+    "production_behavior_changed": false,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_action": "Separate original reference identity and current-step source evidence without bypassing world/appearance/negative controls; do not promote graph color probe to continuity evidence."
+  },
+  "r1_phase_background_reference_followup": {
+    "report": "e2e_reports/match_001/r1_phase_background_support.json",
+    "documentation": "docs/r1_phase_background_reference_feasibility.md",
+    "native_frames": 180,
+    "reference_group_gray_std": [
+      0.8507873538630679,
+      1.6502674781803537,
+      0.5303262028176666
+    ],
+    "existing_masked_contrast_floor": 5,
+    "all_group_support_frames": 0,
+    "status": "Reject near-flat revealed-background reference proposal; high whole-crop NCC does not supply group texture support or semantic absence",
+    "profile_generated": false,
+    "qualification_created": false,
+    "production_behavior_changed": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_action": "Investigate different positive global image/temporal structures for UI transitions; preserve unknown rather than lower contrast or NCC floors."
+  },
+  "r1_foreground_correspondence_followup": {
+    "report": "e2e_reports/match_001/r1_foreground_correspondence.json",
+    "declaration": "e2e_reports/match_001/r1_foreground_correspondence_declaration.json",
+    "documentation": "docs/r1_foreground_correspondence_analysis.md",
+    "same_pose_hypothesis_pairs": 4,
+    "geometric_quorum_pairs": 0,
+    "first_pair_correspondences": 85,
+    "first_pair_inliers": 74,
+    "first_pair_consensus": 0.8705882352941177,
+    "status": "Limited repeated-pose correspondence; no rigid trajectory quorum, animation whitelist or source-continuity qualification",
+    "video_provenance_question_pending": true,
+    "production_behavior_changed": false,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_action": "Resolve source/foreground ambiguity using independent review/provenance; qualification and native lifecycle integration remain required."
+  },
+  "native_system_observation_transport_followup": {
+    "document": "docs/native_system_observation_transport.md",
+    "report": "e2e_reports/match_001/native_system_observation_transport.json",
+    "report_sha256": "804001236a219b0f1d189a7fcfa816d3ca46101757b04c975febdcf00990839d",
+    "scope": "explicit production native global observation entrance; not qualified lifecycle or canonical activation",
+    "processed_frames": 4,
+    "accepted_timer_displays": 0,
+    "rejection_reason": "calibration_required for all four native early-window frames",
+    "owned_facts_released": 0,
+    "proofs_released": 0,
+    "events_released": 0,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "unit_tests": "81 passed in 33.52 seconds",
+    "ruff": "PASS",
+    "mypy": "114 source files PASS",
+    "remaining_blockers": [
+      "early native window accepted geometry/global reader inputs",
+      "independent foreground/source continuity qualification",
+      "paired UI transition producer qualification",
+      "native lifecycle event/package/trace integration"
+    ]
+  },
+  "native_system_prefix_followup": {
+    "document": "docs/native_system_prefix_validation.md",
+    "report": "e2e_reports/match_001/native_system_prefix_validation.json",
+    "report_sha256": "f8c12c896f41d4f51eb5caf0dfe46f0ff2b44ce6077f6d00124fd447ad6ee22a",
+    "comparison": "e2e_reports/match_001/native_system_prefix_comparison.json",
+    "processed_frames": 256,
+    "wall_clock_sec": 500.58811470202636,
+    "native_video_start_pts_ticks": 553,
+    "fresh_geometry_success": 1,
+    "effective_geometry_success": 256,
+    "timer_display_accepted": 234,
+    "timer_display_unknown": 22,
+    "same_four_frame_previous_accepted_displays": 0,
+    "same_four_frame_current_accepted_displays": 4,
+    "same_four_frame_delta": 4,
+    "existing_review_same_pixel_display_agreements": 24,
+    "qualification_created": false,
+    "proofs_released": 0,
+    "events_released": 0,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "new_unit_result": "18 passed in 0.83 seconds; synthetic prefix retention policy test included",
+    "ruff": "PASS",
+    "remaining_blockers": [
+      "independent foreground/source continuity qualification",
+      "qualified phase disappearance/UI producer",
+      "native lifecycle event/package/trace integration"
+    ]
+  },
+  "native_qualified_lifecycle_pipeline_followup": {
+    "document": "docs/native_qualified_lifecycle_pipeline.md",
+    "actual_guard": "e2e_reports/match_001/native_qualified_lifecycle_guard.json",
+    "actual_guard_sha256": "7b774be46e067b51b8f1c206d38d75141412442c6ccc2e3d1f288e0672c6575f",
+    "scope": "explicit analyzer-owned native system/scene/positive-UI join and schema-shaped boundary output; synthetic package/trace verification only",
+    "qualified_real_image_profile_adopted": false,
+    "actual_guard_proofs_released": 0,
+    "actual_guard_events_released": 0,
+    "actual_phase_absence_reference_configured": false,
+    "synthetic_system_start_events": 2,
+    "synthetic_system_end_events": 1,
+    "synthetic_packages": 2,
+    "synthetic_pre_round_association": "next-round preparation belongs to upcoming package",
+    "unit_tests": "150 passed in 70.02 seconds; additional trace-attribute check passed",
+    "ruff": "PASS",
+    "mypy": "115 source files PASS",
+    "canonical_current": null,
+    "canonical_delta": null,
+    "remaining_blockers": [
+      "independent real scene/foreground continuity qualification",
+      "supported positive UI absence reference and producer qualification",
+      "qualified native streaming and merge into standard full orchestration"
+    ]
+  },
+  "native_event_merge_followup": {
+    "document": "docs/native_event_merge.md",
+    "actual_guard": "e2e_reports/match_001/native_event_merge_guard.json",
+    "actual_guard_sha256": "1e0e72643ef7cda08565d7fb70dbe8856d43b728a8d43c1e44a973add6a51ba3",
+    "scope": "explicit native boundary transport into ordinary sampled package/trace processing; synthetic positive integration only",
+    "unit_integration_tests": "227 passed in 82.72 seconds",
+    "ruff": "PASS",
+    "mypy": "116 source files PASS",
+    "synthetic_standard_processor_packages": 2,
+    "sampled_observations_replaced": false,
+    "full_sampler_changed": false,
+    "actual_unqualified_events_released": 0,
+    "actual_unqualified_packages_released": 0,
+    "real_profile_adopted": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "remaining_blockers": [
+      "real scene/foreground/UI qualification and positive absence reference",
+      "automatic native stream/provider with acquisition/EOF/state continuity",
+      "standard CLI activation and canonical evaluation of qualified candidate"
+    ]
+  },
+  "r1_adjacent_regions_followup": {
+    "document": "docs/r1_adjacent_region_analysis.md",
+    "report": "e2e_reports/match_001/r1_adjacent_regions.json",
+    "native_frames": 180,
+    "adjacent_pairs": 179,
+    "wall_clock_sec": 38.93920872599119,
+    "decision": "visible distributed background agreement with abrupt foreground change; source/UI continuity unresolved",
+    "scene_contrast_floor": 1,
+    "masked_reference_contrast_floor": 5,
+    "first_transient_background_scene_regions_measurable": 6,
+    "first_transient_background_masked_reference_regions_measurable": 2,
+    "qualification_created": false,
+    "production_behavior_changed": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "tests": "5 diagnostic tests PASS; Ruff PASS; production mypy unchanged and not rerun"
+  },
+  "native_source_endpoint_followup": {
+    "document": "docs/native_source_endpoint_contract.md",
+    "source_report": "e2e_reports/match_001/native_source_endpoint_validation.json",
+    "source_origin_supported": true,
+    "explicit_eof_supported": true,
+    "incremental_streaming_implemented": false,
+    "source_origin_frames": 7,
+    "source_origin_prior_pixel_matches": 7,
+    "source_origin_wall_clock_sec": 13.607672269979957,
+    "real_source_eof_measured": false,
+    "diagnostic_precedes_final_negative_origin_guard": true,
+    "qualification_created": false,
+    "default_sampler_changed": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "tests": {
+      "decoder_tests_passed": 22,
+      "decoder_test_wall_sec": 15.05,
+      "related_tests_passed": 64,
+      "related_test_wall_sec": 66.18,
+      "related_tests_precede_negative_origin_guard": true,
+      "ruff": "PASS",
+      "mypy_source_files": 116
+    }
+  },
+  "native_full_source_storage_followup": {
+    "document": "docs/native_full_source_storage_assessment.md",
+    "report": "e2e_reports/match_001/native_png_storage_benchmark.json",
+    "source_nb_frames_metadata": 10259,
+    "observed_free_disk_bytes": 17263181824,
+    "cohort_frames": 8,
+    "serial_codec_runs": 6,
+    "source_pixel_mismatches": 0,
+    "level9_size_delta_percent": -9.425997064859882,
+    "level9_encode_wall_delta_percent": 63.72167703569907,
+    "level9_extrapolated_all_source_bytes": 19702978874.5,
+    "whole_source_size_is_estimate": true,
+    "compression_change_adopted": false,
+    "production_behavior_changed": false,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null
+  },
+  "native_pixel_archive_rejection_followup": {
+    "document": "docs/native_pixel_archive_rejection.md",
+    "report": "e2e_reports/match_001/native_pixel_archive_validation.json",
+    "source_frames": 180,
+    "original_png_bytes": 377191642,
+    "archive_bytes": 475393177,
+    "storage_delta_percent": 26.034918080183765,
+    "source_pixel_mismatches": 0,
+    "source_pts_mismatches": 0,
+    "encode_wall_sec": 86.33621576201404,
+    "two_read_passes_wall_sec": 125.24985129002016,
+    "production_adopted": false,
+    "prototype_location": "scripts/diagnostics/pixel_archive_prototype.py",
+    "production_prototype_removed": true,
+    "benchmark_fingerprints_retained_as_historical": true,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "final_tests_passed": 54,
+    "final_test_wall_sec": 15.71,
+    "ruff": "PASS",
+    "mypy_source_files": 116
+  },
+  "native_png_prediction_followup": {
+    "document": "docs/native_png_prediction.md",
+    "benchmark": "e2e_reports/match_001/native_png_prediction_benchmark.json",
+    "source_validation": "e2e_reports/match_001/native_png_prediction_source_validation.json",
+    "explicit_optional_prediction": "up",
+    "default_prediction": "none",
+    "cohort_byte_delta_percent": -18.336455247955673,
+    "cohort_encode_wall_delta_percent": -8.2539,
+    "actual_source_decode_frames_per_case": 7,
+    "source_pixel_pts_timebase_mismatches": 0,
+    "total_storage_budget_implemented": false,
+    "automatic_provider_implemented": false,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "tests_passed": 91,
+    "test_wall_sec": 83.13,
+    "ruff": "PASS",
+    "mypy_source_files": 116
+  },
+  "native_png_budget_followup": {
+    "document": "docs/native_png_budget.md",
+    "source_validation": "e2e_reports/match_001/native_png_budget_source_validation.json",
+    "explicit_pre_write_png_limit_implemented": true,
+    "default_budget": null,
+    "source_prefix_frames": 7,
+    "source_prefix_png_bytes": 14926335,
+    "source_prefix_budget": 20000000,
+    "source_pixel_pts_timebase_mismatches": 0,
+    "source_overflow_budget": 50,
+    "source_overflow_consumer_entered": false,
+    "automatic_lifecycle_provider_implemented": false,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "tests_passed": 101,
+    "test_wall_sec": 87.39,
+    "ruff": "PASS",
+    "mypy_source_files": 116
+  },
+  "native_lifecycle_provider_followup": {
+    "document": "docs/native_lifecycle_provider.md",
+    "automatic_collection": "explicit processor option, single origin-to-EOF epoch",
+    "real_source_ui_qualification": "unavailable",
+    "canonical_current": null,
+    "canonical_delta": null,
+    "full_e2e_executed": false,
+    "remaining_blockers": [
+      "R1 independent source/foreground continuity",
+      "qualified positive UI absence",
+      "CLI activation",
+      "incremental native processing"
+    ],
+    "verification": {
+      "related_tests_passed": 34,
+      "test_wall_sec": 16.69,
+      "ruff": "PASS",
+      "mypy": "PASS (116 source files)",
+      "assertion_records_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776"
+    }
+  },
+  "native_lifecycle_cli_followup": {
+    "document": "docs/native_lifecycle_provider.md",
+    "activation": "paired full-only scene-reference-profile/native-png-budget",
+    "real_source_ui_qualification": "unavailable",
+    "canonical_current": null,
+    "canonical_delta": null,
+    "full_e2e_executed": false,
+    "windows_runtime": "unverified",
+    "remaining_blockers": [
+      "R1 independent source/foreground continuity",
+      "qualified positive UI absence",
+      "incremental native processing"
+    ],
+    "verification": {
+      "tests_passed": 126,
+      "tests_skipped": 1,
+      "skipped_reason": "Windows-host-only path test",
+      "wall_sec": 43.64,
+      "ruff": "PASS",
+      "mypy": "PASS (116 source files)",
+      "assertions_unchanged": true
+    }
+  },
+  "unedited_input_contract_followup": {
+    "document": "docs/unedited_input_lifecycle.md",
+    "input_contract": "datasets/input_contracts/match_001.unedited.json",
+    "diagnostic": "e2e_reports/match_001/r1_unedited_native_start.json",
+    "native_frames": 256,
+    "candidate_count": 1,
+    "candidate_pts_sec": 4.102669270833333,
+    "confirmation_pts_sec": 4.202669270833334,
+    "original_displays_preserved": true,
+    "released_events": 0,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "full_e2e_executed": false,
+    "verification": {
+      "related_tests_passed": 112,
+      "wall_sec": 50.94,
+      "ruff": "PASS",
+      "mypy": "PASS (118 source files)"
+    },
+    "remaining_blockers": [
+      "production assured-route integration",
+      "actual timer/purchase-phase/joint UI holdout and negative qualification"
+    ],
+    "obsolete_blocker_for_assured_source": "proving absence of scene-preserving edits"
+  },
+  "assured_native_pipeline_followup": {
+    "document": "docs/unedited_input_lifecycle.md",
+    "implementation": "qualified native start/event/package/trace receiver and explicit full CLI",
+    "scope": "start-only; no invented end",
+    "real_reader_ui_qualification": "unavailable",
+    "full_e2e_executed": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "verification": {
+      "related_tests_passed": 161,
+      "skipped": 1,
+      "wall_sec": 74.03,
+      "ruff": "PASS",
+      "mypy": "PASS (119 source files)"
+    },
+    "remaining_blockers": [
+      "actual timer/phase/UI holdout and negative qualification",
+      "continuous and sampled acceptance",
+      "separately qualified end lifecycle"
+    ],
+    "actual_preflight": {
+      "report": "e2e_reports/match_001/assured_pipeline_preflight.json",
+      "native_decode_calls": 0,
+      "sampled_decode_calls": 0,
+      "released_events": 0,
+      "reason": "reader/UI qualification unavailable"
+    }
+  },
+  "unedited_r2_temporal_application_followup": {
+    "report": "e2e_reports/match_001/r2_unedited_reader_temporal_replay.json",
+    "sha256": "25ba41c30c11fce78db5c6eda3eedfc1e8fb6781d6936d05f2e052751e8ad03f",
+    "scope": "Frozen reader/temporal application to known R2 development images; reference-coordinate geometry and unoccluded/global-state projection assumed; not analyzer qualification or independent holdout",
+    "frames": 30,
+    "reader_previous": {
+      "correct": 24,
+      "unknown": 6,
+      "wrong": 0
+    },
+    "reader_current": {
+      "correct": 24,
+      "unknown": 6,
+      "wrong": 0
+    },
+    "reader_delta": {
+      "correct": 0,
+      "unknown": 0,
+      "wrong": 0
+    },
+    "candidate_count": 1,
+    "candidate_pts_sec": 111.4193359375,
+    "confirmation_pts_sec": 111.48600260416667,
+    "qualified_events_released": 0,
+    "qualification_created": false,
+    "full_e2e_executed": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_action": "Qualify frozen joint temporal producer on disjoint reviewed continuous controls; R2 development replay is not independent holdout"
+  },
+  "unedited_fixed_negative_controls_followup": {
+    "report": "e2e_reports/match_001/unedited_ui_fixed_negative_controls.json",
+    "report_sha256": "574d1e76e1f8717f2674f3d52e6097303d3432f4c94a482e8ca87574118fe5ee",
+    "scope": "Frozen reference-coordinate readers and fresh candidate tracker on three fixed native negative intervals; not calibrated full-analyzer qualification or phase-jitter regression",
+    "frames": 36,
+    "source_intervals": 3,
+    "timer_results": {
+      "correct": 33,
+      "unknown": 3,
+      "wrong": 0
+    },
+    "phase_false_accepts": 0,
+    "candidate_false_positives": 0,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "previous_comparable_run": null,
+    "limitations": [
+      "No prior preparation context",
+      "Reference geometry and eligible global state assumed",
+      "Not natural timer-absence controls",
+      "Known exposure inventory is not exhaustive"
+    ],
+    "next_action": "Frozen actual-analyzer control replay before joint temporal qualification"
+  },
+  "unedited_actual_analyzer_controls_followup": {
+    "report": "e2e_reports/match_001/unedited_ui_actual_analyzer_combined_controls.json",
+    "report_sha256": "48afd7f13af8ec0c0f48b2118f63840fb492d62dcff63f50dfd9cb287dee8f12",
+    "scope": "Actual analyzer single call per prefix+control batch; real retained calibration within call, prefix gap excluded from candidate corroboration; control indices rebased only for projection; no qualification",
+    "timer_previous": {
+      "correct": 33,
+      "unknown": 3,
+      "wrong": 0
+    },
+    "timer_current": {
+      "correct": 33,
+      "unknown": 3,
+      "wrong": 0
+    },
+    "timer_delta": {
+      "correct": 0,
+      "unknown": 0,
+      "wrong": 0
+    },
+    "state_counts": {
+      "live_first_person": 2,
+      "unknown": 22,
+      "buy_menu_open": 12
+    },
+    "phase_scan_valid_frames": 36,
+    "candidate_false_positives": 0,
+    "raw_unknown_owned_valid": 0,
+    "global_projection_owned_facts": 0,
+    "wall_clock_sec": 89.9746956609888,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "failed_diagnostic": "Separate analyzer calls do not retain geometry; preserved as geometry-gated abstention",
+    "next_action": "Context-bearing independent temporal qualification; not yet suitable for full E2E"
+  },
+  "unedited_actual_r2_start_followup": {
+    "report": "e2e_reports/match_001/r2_unedited_actual_analyzer_temporal_replay.json",
+    "report_sha256": "3db4de2e9a0f076889bffcd2fff6c116767d0e3c5aa7082aa698ad01ec8472d9",
+    "scope": "Actual configured analyzer on archived R2 with real source prefix in same call; prefix gap not temporal evidence; projected indices rebased only; previously exposed development case, not independent holdout",
+    "boundary_frames": 30,
+    "timer_previous": {
+      "correct": 24,
+      "unknown": 6,
+      "wrong": 0
+    },
+    "timer_current": {
+      "correct": 24,
+      "unknown": 6,
+      "wrong": 0
+    },
+    "timer_delta": {
+      "correct": 0,
+      "unknown": 0,
+      "wrong": 0
+    },
+    "actual_state_counts": {
+      "unknown": 30
+    },
+    "phase_scan_valid_frames": 30,
+    "start_candidates": 1,
+    "candidate_delta": 0,
+    "candidate_pts_sec": 111.4193359375,
+    "confirmation_pts_sec": 111.48600260416667,
+    "qualification_created": false,
+    "events_released": 0,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "remaining_blockers": [
+      "Independent joint temporal qualification absent",
+      "R1 result/end qualification absent",
+      "Single-source lifecycle and canonical acceptance not verified"
+    ]
+  },
+  "unedited_result_reference_occlusion_followup": {
+    "report": "e2e_reports/match_001/round_result_occlusion_diagnostics.json",
+    "report_sha256": "6f5fbce0c783771ebda2df4a8014e120c1793b217b54b18c3dc7d06f5ad36e0c",
+    "group_ncc": [
+      0.3875529175837342,
+      0.4198377768487616,
+      0.526164204608813
+    ],
+    "red_support_fraction": [
+      0.0695798319327731,
+      0.21788058768365115,
+      0.05426848619485877
+    ],
+    "all_group_acceptance": false,
+    "upper_band_hypothesis": "All fixed bands fail at least one group at unchanged 0.90",
+    "qualification_created": false,
+    "production_changed": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "upstream_missing_contract": "Assured path is start-only; qualified result/score inputs and end/rearm integration still absent"
+  },
+  "unedited_start_latch_safety_followup": {
+    "report": "e2e_reports/match_001/unedited_start_latch_regression.json",
+    "report_sha256": "bb26d9545da77870d3022924f80db28144dfe7e46b63337115f8ded6c5d46fcc",
+    "root_cause": "Display rejection cleared started latch before qualified end",
+    "synthetic_transition_regression_previous_fail": 6,
+    "synthetic_transition_regression_current_fail": 0,
+    "source_discontinuity_reset_tests": 3,
+    "actual_archived_replay_frames": 322,
+    "actual_candidate_contents_unchanged": true,
+    "verification": {
+      "related_tests": 126,
+      "wall_clock_sec": 30.69,
+      "ruff": "PASS",
+      "mypy": "PASS (119 source files)"
+    },
+    "production_changed": "Started latch preserved through non-source display rejection; no new recognition acceptance",
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "remaining_blockers": [
+      "Qualified actual joint temporal sidecar absent",
+      "Assured end/rearm not integrated",
+      "Canonical final validation not run"
+    ]
+  },
+  "assured_end_rearm_contract_followup": {
+    "report": "e2e_reports/match_001/assured_end_rearm_contract.json",
+    "report_sha256": "0cb2a30abfe54447e2f5962bf292b3a3d2e44f8ee248c1c97dce5fdf744a6531",
+    "scope": "Synthetic qualified contract only; not adopted real qualification",
+    "implementation": "Current qualified result and adjacent accepted +1 score transition close/rearm assured lifecycle",
+    "synthetic_previous": {
+      "start": 1,
+      "end": 0,
+      "packages": 1
+    },
+    "synthetic_current": {
+      "start": 2,
+      "end": 1,
+      "packages": 2
+    },
+    "related_tests": 184,
+    "test_wall_sec": 79.73,
+    "ruff": "PASS",
+    "mypy": "PASS (120 source files)",
+    "canonical_current": null,
+    "canonical_delta": null,
+    "full_e2e_executed": false,
+    "actual_qualification_created": false,
+    "remaining_blockers": [
+      "Actual independent complete-producer qualification absent",
+      "Early result reference fails",
+      "Current reviewed result/score do not satisfy existing simultaneous end predicate"
+    ]
+  },
+  "round_result_alignment_followup": {
+    "report": "e2e_reports/match_001/round_result_alignment_diagnostics.json",
+    "report_sha256": "56c0aa52642dbc8366ee53303e1b0d8e479aa7ec1aae661c26a81d0a42809b99",
+    "scope": "Post-inspection descriptive integer translation search; development target, no reference/candidate selection or production geometry change",
+    "translation_cases_per_mask": 81,
+    "all_group_pass_cases": 0,
+    "best_translation": [
+      0,
+      0
+    ],
+    "full_min_group_ncc": 0.3875529175837342,
+    "top_quarter_min_group_ncc": 0.8713910519411285,
+    "conclusion": "Small translation hypothesis rejected; scale/appearance not excluded",
+    "qualification_created": false,
+    "production_changed": false,
+    "canonical_current": null,
+    "canonical_delta": null
+  },
+  "result_common_structure_training_followup": {
+    "report": "e2e_reports/match_001/round_result_common_structure_training.json",
+    "report_sha256": "886c1b8257e1673527d27330b51389158ff879f037d85584dcdfb2d362e7a064",
+    "target_assertion": "GT-R1-ROUND-END",
+    "training_images": 4,
+    "accepted_training_images": 3,
+    "early_training_previous_ncc": 0.3875529175837342,
+    "early_training_current_ncc": 0.6921343124410407,
+    "early_training_ncc_delta": 0.3045813948573065,
+    "decision": "Reject for target coverage: constructor supported only by three later training images; exposed early training example remains below 0.90",
+    "holdout_predictions_made": false,
+    "profile_adopted": false,
+    "production_changed": false,
+    "canonical_current": null,
+    "canonical_delta": null
+  },
+  "unedited_r1_through6_temporal_followup": {
+    "target_assertion_ids": [
+      "GT-R1-ROUND-START"
+    ],
+    "report": "e2e_reports/match_001/r1_unedited_native_start_through6.json",
+    "git_head": "e9ecaf8f2f0f0dfa1f9433d40a598ec8909e9ce3",
+    "scope": "Fresh actual analyzer; one source-origin-to-6-second native epoch; development temporal diagnostic only.",
+    "comparison": {
+      "processed_frames": {
+        "previous": 256,
+        "current": 358,
+        "delta": 102
+      },
+      "phase_scan_valid_frames": {
+        "previous": 256,
+        "current": 358,
+        "delta": 102
+      },
+      "wall_sec": {
+        "previous": 499.20901025802596,
+        "current": 723.7600455399952,
+        "delta": 224.55103528196923
+      },
+      "released_events": {
+        "previous": 0,
+        "current": 0,
+        "delta": 0
+      },
+      "start_candidates": {
+        "previous": 1,
+        "current": 1,
+        "delta": 0
+      }
+    },
+    "candidate_pts_sec": 4.102669270833333,
+    "confirmation_pts_sec": 4.202669270833334,
+    "original_displays_retained": [
+      "0:00",
+      "2:25",
+      "2:25",
+      "1:39",
+      "1:39",
+      "1:39",
+      "1:39"
+    ],
+    "candidate_duplicate_count": 0,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "remaining_blocker": "Independent reader and joint UI temporal qualification; actual end/result inputs remain unqualified. No source editing proof is required for this assured SHA."
+  },
+  "assured_start_evidence_binding_audit": {
+    "report": "e2e_reports/match_001/assured_start_evidence_audit.json",
+    "target_assertion_ids": [
+      "GT-R1-ROUND-START"
+    ],
+    "audited_reports": 4,
+    "current_code_matches": 1,
+    "historical_code_reports": 3,
+    "declared_dependency_mismatches": 0,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_action": "Freeze whole-producer start validation; independently review temporal holdout and negative context coverage. Separately measure actual R1-end global input availability. Do not resign historical diagnostics or require a new video solely to exclude edits."
+  },
+  "assured_r1_end_global_input_followup": {
+    "report": "e2e_reports/match_001/r1_end_actual_global_inputs.json",
+    "target_assertion_ids": [
+      "GT-R1-ROUND-END",
+      "event_count_constraints-002"
+    ],
+    "actual_input_counts": {
+      "frames": 10,
+      "timer_correct": 4,
+      "timer_unknown": 6,
+      "timer_wrong": 0,
+      "score_pairs_available": 0,
+      "round_result_matches": 0,
+      "phase_scans_valid": 10
+    },
+    "contract_change": "Combat-report flag alone does not veto independently qualified system end evidence; owned fields and spectator/remote/occlusion/reader/source guards remain unchanged. Both current and prior end contexts covered.",
+    "tests": {
+      "related_pass": 139,
+      "wall_sec": 55.93,
+      "ruff": "PASS",
+      "mypy": "PASS (120 source files)"
+    },
+    "canonical_current": null,
+    "canonical_delta": null,
+    "actual_end_qualified": false,
+    "remaining_blocker": "Actual current-frame accepted score and semantic result evidence, including independent qualification; early banner and later score still do not satisfy required simultaneity."
+  },
+  "score_value_provenance_consumer_fix": {
+    "target_assertion_ids": [
+      "GT-R1-ROUND-END",
+      "event_count_constraints-002"
+    ],
+    "report": "e2e_reports/match_001/r1_end_existing_score_analyzer.json",
+    "actual_score_review": {
+      "correct": 18,
+      "unknown": 2,
+      "wrong": 0
+    },
+    "score_pairs": {
+      "previous": 0,
+      "current": 8,
+      "delta": 8
+    },
+    "root_cause": "Both end consumers read reversed score confidence key names; actual analyzer produced canonical score_ally_value and score_enemy_value.",
+    "change": "Both global and assured end consumers use exact producer value-confidence keys; no generic/legacy fallback. Unit fixtures now mirror actual producer.",
+    "tests": {
+      "related_pass": 187,
+      "wall_sec": 94.61,
+      "ruff": "PASS",
+      "mypy": "PASS (120 source files)"
+    },
+    "actual_end_qualified": false,
+    "qualification_created": false,
+    "profile_adopted": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "remaining_blocker": "Qualified actual score/result input and joint temporal validation; early banner/later score do not satisfy simultaneous end predicate."
+  },
+  "result_foreground_diagnostic_followup": {
+    "target_assertion_ids": [
+      "GT-R1-ROUND-END"
+    ],
+    "report": "e2e_reports/match_001/result_white210_structure_diagnostic.json",
+    "hypothesis_rejected": true,
+    "training_raw_to_binary_accepts": [
+      3,
+      0
+    ],
+    "early_raw_to_binary_accepts": [
+      0,
+      0
+    ],
+    "early_min_ncc": {
+      "previous": 0.3875529175837342,
+      "current": 0.47194992670681657,
+      "delta": 0.08439700912308234
+    },
+    "production_changed": false,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "remaining_blocker": "Current reference cannot qualify early result. A different independently supported global end hypothesis is needed; do not repeatedly tune this reference on the same early frame."
+  },
+  "fresh_end_numeric_temporal_evidence": {
+    "target_assertion_ids": [
+      "GT-R1-ROUND-END",
+      "event_count_constraints-002"
+    ],
+    "report": "e2e_reports/match_001/r1_end_fresh_extended_inputs.json",
+    "pattern_report": "e2e_reports/match_001/r1_end_numeric_temporal_pattern_validated.json",
+    "controls_report": "e2e_reports/match_001/global_numeric_archived_controls.json",
+    "comparison": {
+      "previous_report": "e2e_reports/match_001/r1_end_existing_score_analyzer.json",
+      "scope": "Same sidecar; explicit native interval extended. Runtime difference is not a speed-regression measure.",
+      "common_10_observations_equal": true,
+      "metrics": {
+        "processed_end_frames": {
+          "previous": 10,
+          "current": 23,
+          "delta": 13
+        },
+        "score_pair_available": {
+          "previous": 8,
+          "current": 14,
+          "delta": 6
+        },
+        "timer_display_available": {
+          "previous": 4,
+          "current": 4,
+          "delta": 0
+        },
+        "round_result_matched_frames": {
+          "previous": 0,
+          "current": 0,
+          "delta": 0
+        },
+        "wall_clock_sec": {
+          "previous": 33.46169869101141,
+          "current": 84.42687109200051,
+          "delta": 50.965172400989104
+        }
+      }
+    },
+    "accepted_updated_score_frames": 9,
+    "updated_score_duration_sec": 0.13333333333333333,
+    "accepted_reset_timer_frames": 2,
+    "reset_timer_duration_sec": 0.016666666666666666,
+    "conditional_patterns": 1,
+    "archived_control_frames": 27,
+    "archived_control_patterns": 0,
+    "qualification_created": false,
+    "production_changed": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "tests": {
+      "diagnostic_unit_pass": 7,
+      "wall_sec": 0.45,
+      "ruff": "PASS"
+    },
+    "remaining_blocker": "Descriptive pattern does not establish active round, safe end semantics, independent qualification or sufficient clock stability. Additional accepted score predictions are not independently reviewed. No event backdating or unknown filling allowed."
+  },
+  "numeric_end_menu_transition_control": {
+    "target_assertion_ids": [
+      "GT-R1-ROUND-END"
+    ],
+    "report": "e2e_reports/match_001/numeric_end_menu_entry_control.json",
+    "review_report": "e2e_reports/match_001/numeric_end_menu_entry_review.json",
+    "pattern_report": "e2e_reports/match_001/numeric_end_menu_entry_pattern.json",
+    "processed_native_frames": 27,
+    "state_counts": {
+      "unknown": 13,
+      "buy_menu_open": 14
+    },
+    "timer_counts": {
+      "correct": 26,
+      "unknown": 1,
+      "wrong": 0
+    },
+    "score_counts": {
+      "correct": 54,
+      "unknown": 0,
+      "wrong": 0
+    },
+    "conditional_numeric_patterns": 0,
+    "composited_timer_transient_pts_sec": 83.30266927083333,
+    "transient_accepted": false,
+    "wall_clock_sec": 90.20753976900596,
+    "previous_comparable_run": null,
+    "runtime_delta": null,
+    "production_changed": false,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "remaining_blocker": "A limited previously located negative transition does not qualify end semantics or an active full lifecycle. Independent temporal holdout and correct actual end evidence are still required.",
+    "diagnostic_source_guard_followup": {
+      "unit_pass": 11,
+      "wall_sec": 0.46,
+      "ruff": "PASS",
+      "guarded_replay_patterns": 0,
+      "epoch_timebase_and_repeated_pixel_checks": true,
+      "older_missing_epoch_metadata_not_upgraded": true
+    }
+  },
+  "assured_source_break_transport": {
+    "production_change": "Preserve explicit producer break markers, use integer native continuity segments, reject post-start source resets before package publication until native break fragment transport exists",
+    "input_contract": "datasets/input_contracts/match_001.unedited.json",
+    "timer_anomaly_infers_content_break": false,
+    "player_owned_policy_changed": false,
+    "thresholds_changed": false,
+    "qualification_relaxed_for_readers": false,
+    "actual_video_qualification_available": false,
+    "tests": {
+      "related_unit_passed": 100,
+      "seconds": 71.71,
+      "ruff": "PASS",
+      "mypy": "PASS",
+      "mypy_source_files": 120
+    },
+    "canonical": {
+      "previous": {
+        "pass": 23,
+        "fail": 55,
+        "not_evaluated": 4,
+        "negative_failures": 0,
+        "discontinuity_violations": 0
+      },
+      "current": null,
+      "delta": null,
+      "new_run": false
+    },
+    "remaining_blockers": [
+      "Independent timer/phase/joint UI qualification",
+      "Actual R1 result evidence compatible with score transition",
+      "Native break-time package fragment transport"
+    ],
+    "documentation": "docs/unedited_input_lifecycle.md"
+  },
+  "source_break_package_fragment_contract": {
+    "builder_argument": "continuity_breaks",
+    "optional": true,
+    "default_path_changed": false,
+    "native_automatic_transport_complete": false,
+    "hud_visual_native_break_resets_complete": false,
+    "receiver_publication_guard_retained": true,
+    "source_break_generates_round_boundary": false,
+    "tests": {
+      "new_cases": 11,
+      "related_passed": 105,
+      "seconds": 83.44,
+      "ruff": "PASS",
+      "mypy": "PASS",
+      "mypy_source_files": 120
+    },
+    "canonical": {
+      "previous": {
+        "pass": 23,
+        "fail": 55,
+        "not_evaluated": 4
+      },
+      "current": null,
+      "delta": null,
+      "new_run": false
+    },
+    "documentation": "docs/unedited_input_lifecycle.md"
+  },
+  "visual_source_break_consumer_contract": {
+    "entrances": [
+      "analyze",
+      "trigger_windows"
+    ],
+    "pixel_map_event_trigger_state_reset": true,
+    "unreadable_frame_preserves_marker": true,
+    "stale_hud_cross_cut_rejected": true,
+    "semantic_window_source_segment_bounded": true,
+    "visual_source_code_in_global_qualification_fingerprint": true,
+    "native_application_automatic_transport_complete": false,
+    "receiver_post_start_guard_retained": true,
+    "tests": {
+      "new_cases": 14,
+      "visual_regression_passed": 72,
+      "seconds": 48.85,
+      "ruff": "PASS",
+      "mypy": "PASS",
+      "mypy_source_files": 120,
+      "qualification_receiver_regression": {
+        "passed": 61,
+        "seconds": 11.86
+      }
+    },
+    "canonical": {
+      "previous": {
+        "pass": 23,
+        "fail": 55,
+        "not_evaluated": 4
+      },
+      "current": null,
+      "delta": null,
+      "new_run": false
+    },
+    "documentation": "docs/unedited_input_lifecycle.md"
+  },
+  "native_source_break_orchestration": {
+    "assured_route_automatic_transport_complete": true,
+    "consumers": [
+      "HUD Pass A",
+      "HUD final",
+      "Visual trigger",
+      "Visual final",
+      "RoundPackageBuilder"
+    ],
+    "cuts_derived_from_qualified_replay": true,
+    "saved_diagnostics_trusted": false,
+    "unsupported_consumers_rejected": true,
+    "standalone_receiver_default_guard_retained": true,
+    "terminal_events_and_cuts_revalidated": true,
+    "pass_a_preflight_compared_at_terminal": true,
+    "sampler_changed": false,
+    "actual_reader_temporal_qualification_available": false,
+    "tests": {
+      "new_cases": 7,
+      "related_passed": 108,
+      "seconds": 89.75,
+      "ruff": "PASS",
+      "mypy": "PASS",
+      "mypy_source_files": 120
+    },
+    "canonical": {
+      "previous": {
+        "pass": 23,
+        "fail": 55,
+        "not_evaluated": 4,
+        "negative_failures": 0,
+        "discontinuity_violations": 0
+      },
+      "current": null,
+      "delta": null,
+      "new_run": false
+    },
+    "next_blockers": [
+      "Independent real reader/UI qualification",
+      "Actual R1 end evidence"
+    ],
+    "documentation": "docs/unedited_input_lifecycle.md"
+  },
+  "fresh_frozen_numeric_reader_check": {
+    "review": "e2e_reports/match_001/frozen_numeric_reader_holdout_review.json",
+    "source_window_sec": [
+      122.1,
+      122.55
+    ],
+    "native_frames": 27,
+    "prefix_frames": 4,
+    "timer": {
+      "correct": 15,
+      "unknown": 12,
+      "wrong": 0
+    },
+    "score": {
+      "correct": 10,
+      "unknown": 44,
+      "wrong": 0
+    },
+    "score_pair_frames": 2,
+    "phase_scan_valid_frames": 27,
+    "raw_states": {
+      "unknown": 16,
+      "live_first_person": 11
+    },
+    "system_owned_facts": 0,
+    "active_context_start_candidates": 0,
+    "wall_clock_sec": 77.19488442502916,
+    "previous_comparable_run": null,
+    "runtime_delta": null,
+    "exhaustive_exposure_proven": false,
+    "independent_positive_temporal_qualification": false,
+    "natural_numeric_absence_control": false,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "new_full_e2e": false,
+    "source_code_changed": false,
+    "thresholds_changed": false,
+    "validation_changed": false,
+    "next_action": "Diagnose existing score rejection stages on saved pixels without tuning this cohort; preserve actual R1 result/temporal qualification blockers"
+  },
+  "frozen_score_rejection_stage_diagnosis": {
+    "report": "e2e_reports/match_001/frozen_score_rejection_stages.json",
+    "source_frames": 27,
+    "exact_actual_output_matches": 54,
+    "previous": {
+      "accepted": 10,
+      "unknown": 44,
+      "wrong": 0
+    },
+    "current": {
+      "accepted": 10,
+      "unknown": 44,
+      "wrong": 0
+    },
+    "delta": {
+      "accepted": 0,
+      "unknown": 0,
+      "wrong": 0
+    },
+    "unknown_reasons": {
+      "border_foreground": 40,
+      "component_count": 3,
+      "digit_layout": 1,
+      "ncc_or_margin": 0
+    },
+    "border_fraction_of_unknown": 0.9090909090909091,
+    "source_mask_finding": "Bright background is detached near ally glyph but connected to lower enemy glyph; dropping border components could remove genuine digit pixels",
+    "nominal_replay_not_calibration_attestation": true,
+    "future_changed_reader_untouched_holdout_claim_allowed": false,
+    "source_code_changed": false,
+    "thresholds_changed": false,
+    "qualification_created": false,
+    "offline_reader_wall_sec": 3.270808663975913,
+    "previous_comparable_runtime": null,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "new_full_e2e": false,
+    "next_action": "Value-invariant text/background separation using training evidence; independent new holdout and natural negative controls; keep R1 result/UI qualification blockers separate"
+  },
+  "rejected_score_local_opening_hypothesis": {
+    "freeze": "e2e_reports/match_001/score_local_contrast_training_freeze.json",
+    "results": "e2e_reports/match_001/score_local_contrast_training_results.json",
+    "status": "rejected_at_training",
+    "training_frames": 60,
+    "training_fields": 120,
+    "previous": {
+      "accepted": 114,
+      "unknown": 6
+    },
+    "current": {
+      "accepted": 53,
+      "unknown": 67
+    },
+    "delta": {
+      "accepted": -61,
+      "unknown": 61
+    },
+    "transitions": {
+      "accepted_same": 53,
+      "accepted_to_unknown": 61,
+      "unknown_to_unknown": 6,
+      "unknown_to_candidate": 0,
+      "accepted_value_changed": 0
+    },
+    "independent_correctness_claimed": false,
+    "older_manual_source_review_complete": false,
+    "exposed_active27_loaded": false,
+    "new_holdout_run": false,
+    "new_full_e2e": false,
+    "production_changed": false,
+    "profile_adopted": false,
+    "qualification_created": false,
+    "tests": {
+      "diagnostic_unit_passed": 5,
+      "seconds": 0.46,
+      "ruff": "PASS",
+      "mypy": "PASS",
+      "mypy_source_files": 120
+    },
+    "training_replay_wall_sec": 4.260661138978321,
+    "previous_comparable_runtime": null,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_action": "Require independent background support and baseline stroke preservation on training before new holdout"
+  },
+  "rejected_score_border_background_hypothesis": {
+    "scope": "diagnostic training; no production or profile adoption",
+    "target_assertions": [
+      "GT-R1-ROUND-END"
+    ],
+    "training_frames": 60,
+    "training_fields": 120,
+    "previous": {
+      "accepted": 114,
+      "unknown": 6
+    },
+    "current": {
+      "accepted": 86,
+      "unknown": 34
+    },
+    "delta": {
+      "accepted": -28,
+      "unknown": 28
+    },
+    "transitions": {
+      "accepted_to_unknown": 28,
+      "accepted_same": 86,
+      "unknown_to_unknown": 6
+    },
+    "training_wall_clock_sec": 4.28392206702847,
+    "independent_correctness_review": false,
+    "fresh_holdout_run": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "tests": {
+      "unit_pass": 6,
+      "ruff": "PASS",
+      "mypy_source_files": 120
+    },
+    "report": "e2e_reports/match_001/score_border_background_training_results.json",
+    "report_sha256": "d5ca0a0649bcd5e706e9676c4e89c01d6948639b55d44cf97d924e159dd02569",
+    "mask_effect_report": "e2e_reports/match_001/score_border_background_mask_effect.json",
+    "conclusion": "Rejected before holdout. All28 previously accepted reads losing acceptance remove zero native >200 pixels, but change enlarged foreground. Native grayscale suppression changes cubic interpolation and cannot be assumed to preserve digit shape.",
+    "next_action": "Investigate reference-compatible foreground segmentation in the existing enlarged comparison domain; freeze before training and retain all competitors, border checks and NCC/margin. No retries or exposed active27 holdout use."
+  },
+  "enlarged_domain_score_foreground_progress": {
+    "target_assertions": [
+      "GT-R1-ROUND-END"
+    ],
+    "hypothesis": "Same background support after unchanged cubic resize, preserving original white200 foreground",
+    "production_change": "Default foreground stage extracted without numeric behavior change; diagnostic subclass not registered",
+    "training": {
+      "fields": 120,
+      "accepted_previous": 114,
+      "accepted_current": 114,
+      "accepted_delta": 0,
+      "unknown_previous": 6,
+      "unknown_current": 6,
+      "unknown_delta": 0,
+      "baseline_values_confidence_sources_reproduced": 120,
+      "correctness_independently_reviewed": false
+    },
+    "exposed_development": {
+      "fields": 54,
+      "previous": {
+        "correct": 10,
+        "unknown": 44,
+        "wrong": 0
+      },
+      "current": {
+        "correct": 50,
+        "unknown": 4,
+        "wrong": 0
+      },
+      "delta": {
+        "correct": 40,
+        "unknown": -40,
+        "wrong": 0
+      },
+      "independent_holdout": false
+    },
+    "fixed_new_window": {
+      "seconds": [
+        125.1,
+        125.55
+      ],
+      "frames": 27,
+      "previous": {
+        "correct": 46,
+        "unknown": 8,
+        "wrong": 0
+      },
+      "current": {
+        "correct": 47,
+        "unknown": 7,
+        "wrong": 0
+      },
+      "delta": {
+        "correct": 1,
+        "unknown": -1,
+        "wrong": 0
+      },
+      "wall_clock_sec": 29.589515068975743,
+      "previous_comparable_runtime": null,
+      "runtime_delta": null,
+      "exhaustive_training_separation": false
+    },
+    "tests": {
+      "unit_pass": 96,
+      "ruff": "PASS",
+      "mypy_source_files": 120
+    },
+    "profile_adopted": false,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "remaining_blockers": [
+      "natural field-absence/false-digit negatives",
+      "score class and scene generalization",
+      "production profile integration and qualified independent holdout",
+      "UI/start and round-result/end qualification remain separate"
+    ],
+    "next_action": "Run frozen foreground against source-reviewed natural score-absent and difficult negative controls; do not change threshold or select using GT",
+    "reports": [
+      "score_enlarged_background_training_results.json",
+      "score_enlarged_background_development_results.json",
+      "score_enlarged_background_new_window_predictions.json",
+      "score_enlarged_background_new_window_review.json"
+    ]
+  },
+  "score_rowcontrast_opt_in_pipeline_progress": {
+    "target_assertions": [
+      "GT-R1-ROUND-END"
+    ],
+    "negative_background_controls": {
+      "crops": 54,
+      "source_frames": 3,
+      "previous_false_numeric": 0,
+      "current_false_numeric": 0,
+      "delta": 0,
+      "wall_clock_sec": 6.750110856024548,
+      "natural_nominal_field_absence": false,
+      "qualification": false
+    },
+    "existing_review_absence_inventory": {
+      "reviewed_frames": 64,
+      "natural_score_absent": 0,
+      "natural_timer_absent": 0
+    },
+    "production_reader_parity": {
+      "fields": 108,
+      "value_confidence_matches": 108
+    },
+    "actual_analyzer": {
+      "native_frames": 27,
+      "prefix_frames": 4,
+      "counts": {
+        "correct": 47,
+        "unknown": 7,
+        "wrong": 0
+      },
+      "state_counts": {
+        "unknown": 27
+      },
+      "timer_accepted": 16,
+      "score_pair_accepted": 20,
+      "phase_valid": 27,
+      "round_result_matches": 0,
+      "released_events": 0,
+      "qualification_created": false,
+      "player_owned_numeric_facts": 0,
+      "nominal_reader_value_confidence_matches": 54,
+      "wall_clock_sec": 52.23433142900467,
+      "previous_comparable_analyzer": null,
+      "runtime_delta": null
+    },
+    "profile_adopted": false,
+    "code_fingerprint": "44030c081c6d359c6fd618cfae128c5f339191f31942e0b623a06ae460f1073f",
+    "profile_fingerprint": "8f075f9580c8e6e9980d5ab807e6ea7b8c4b0fda181b3a64b1c24546f9c7fa66",
+    "production_mode": "white200_rowcontrast_v1; explicit opt-in with Gaussian3x3 required",
+    "default_profile_changed": false,
+    "tests": {
+      "unit_pass": 82,
+      "ruff": "PASS",
+      "mypy_source_files": 120
+    },
+    "canonical_current": null,
+    "canonical_delta": null,
+    "remaining": [
+      "real current-code/profile score qualification",
+      "integrated targeted/sampled safety",
+      "UI/start and round-result/end qualification"
+    ],
+    "next_action": "Evaluate frozen opt-in reader in native lifecycle boundary/control intervals, then source-backed qualification and tiered canonical gates; no automatic promotion based on background controls"
+  },
+  "r1_end_rowcontrast_and_result_availability": {
+    "target_assertions": [
+      "GT-R1-ROUND-END"
+    ],
+    "comparison_report": "e2e_reports/match_001/r1_end_rowcontrast_comparison.json",
+    "source_frames": 10,
+    "previous": {
+      "score_correct": 18,
+      "score_unknown": 2,
+      "score_wrong": 0,
+      "score_pairs": 8,
+      "timer_accepted": 4,
+      "result_matches": 0,
+      "wall_clock_sec": 33.46169869101141
+    },
+    "current": {
+      "score_correct": 19,
+      "score_unknown": 1,
+      "score_wrong": 0,
+      "score_pairs": 9,
+      "timer_accepted": 4,
+      "result_matches": 0,
+      "wall_clock_sec": 33.17015346203698
+    },
+    "delta": {
+      "score_correct": 1,
+      "score_unknown": -1,
+      "score_wrong": 0,
+      "score_pairs": 1,
+      "timer_accepted": 0,
+      "result_matches": 0,
+      "wall_clock_sec": -0.29154522897442803
+    },
+    "accepted_score_preserved": 18,
+    "result_profile_status": "not_configured",
+    "interpretation": "This actual analyzer result0is unavailable configuration, not lowNCC. Historical early TEAM ACE rejection belongs to a separate diagnostic reference, never inserted into the current score sidecar.",
+    "diagnostic_change": "Expose absent/configured-unavailable/loaded semantic input status, without claiming current-frame match or global qualification",
+    "tests": {
+      "unit_pass": 3,
+      "ruff": "PASS",
+      "mypy_source_files": 120
+    },
+    "production_changed_this_turn": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_action": "Build an explicitly diagnostic profile from the existing hash-bound late-result reference and training assets, then measure actual producer result evidence and temporal alignment; no qualification/promotion until supported"
+  },
+  "late_result_reference_actual_producer_transport": {
+    "target_assertions": [
+      "GT-R1-ROUND-END"
+    ],
+    "production_code_changed": false,
+    "profile_adopted": false,
+    "qualification_created": false,
+    "asset_policy": "Copied original frozen reference/mask/regions unchanged; original3training-source hashes retained, crop assets generated from verified source pixels",
+    "previous_configuration": "not_configured",
+    "current_configuration": "semantic matcher loaded in explicit diagnostic sidecar",
+    "counts": {
+      "training": {
+        "frames": 3,
+        "previous_result_matches": 0,
+        "current_result_matches": 3,
+        "delta": 3
+      },
+      "existing_holdout": {
+        "frames": 11,
+        "previous_result_matches": 0,
+        "current_result_matches": 3,
+        "delta": 3
+      },
+      "negative": {
+        "frames": 3,
+        "previous_false_positive": 0,
+        "current_false_positive": 0,
+        "delta": 0
+      },
+      "early_native": {
+        "frames": 10,
+        "previous_result_matches": 0,
+        "current_result_matches": 0,
+        "delta": 0
+      }
+    },
+    "early_TEAM_ACE_ncc": 0.3875529175837342,
+    "observed_score_transition_pts_sec": 74.48600260416667,
+    "same_frame_result_score_step_conjunction": 0,
+    "wall_clock_sec": 68.83083485194948,
+    "previous_comparable_runtime": null,
+    "runtime_delta": null,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "limits": [
+      "Archived late JPEG frames with gaps are not continuous native evidence",
+      "Reused same-episode holdout is not new independent qualification",
+      "Zero same-frame conjunction observed, no validated delayed end contract"
+    ],
+    "reports": [
+      "late_result_diagnostic_profile_binding.json",
+      "late_result_actual_producer_replay.json",
+      "late_result_score_temporal_alignment.json"
+    ],
+    "next_action": "Collect an explicit continuous native window spanning score/timer transition through result support; then evaluate bounded corroboration with source cadence/discontinuity and independent controls."
+  },
+  "continuous_native_result_score_timing": {
+    "target_assertions": [
+      "GT-R1-ROUND-END"
+    ],
+    "window_sec": [
+      74.2,
+      76.0
+    ],
+    "frames": 108,
+    "prefix_frames": 4,
+    "native_step_ticks": 256,
+    "source_epoch_and_cadence_verified": true,
+    "adjacent_repeated_pixels": 0,
+    "explicit_break_markers": 0,
+    "current_input_counts": {
+      "timer_correct": 17,
+      "timer_unknown": 91,
+      "timer_wrong": 0,
+      "score_pairs": 47,
+      "result_accepted": 29,
+      "phase_scan_valid": 108,
+      "primary_unknown": 108
+    },
+    "clock_transition_pts_sec": 74.45266927083334,
+    "score_transition_pts_sec": 74.48600260416667,
+    "score_stable_pts_sec": 74.53600260416667,
+    "first_result_pts_sec": 75.3193359375,
+    "first_result_stable_pts_sec": 75.3693359375,
+    "score_to_result_onset_delay_sec": 0.8333333333333334,
+    "score_to_result_stability_delay_sec": 0.8833333333333333,
+    "same_frame_result_score_step_conjunction": 0,
+    "wall_clock_sec": 297.7844333279645,
+    "previous_comparable_run": null,
+    "runtime_delta": null,
+    "first_attempt": {
+      "terminal_exit": 1,
+      "reason": "native PNG storage exceeded200MB before analyzer",
+      "retry_max_png_bytes": 500000000,
+      "input_range_or_sampling_changed": false
+    },
+    "production_behavior_changed": false,
+    "profile_adopted": false,
+    "qualification_created": false,
+    "released_events": 0,
+    "tests": {
+      "related_unit_pass": 14,
+      "ruff": "PASS",
+      "mypy_source_files": 120
+    },
+    "canonical_current": null,
+    "canonical_delta": null,
+    "reports": [
+      "r1_end_continuous_result_inputs.json",
+      "r1_end_continuous_numeric_pattern.json",
+      "r1_end_continuous_result_alignment.json",
+      "r1_end_continuous_timer_review.json"
+    ],
+    "next_action": "Specify an explicitly bounded pending-end corroboration contract using native source continuity and independent qualified timer/score/result inputs; validate jitter, unknown fields, contradictions, resets and negative controls before production event release."
+  },
+  "pending_end_diagnostic_contract": {
+    "target_assertions": [
+      "GT-R1-ROUND-END"
+    ],
+    "implementation": "scripts/diagnostics/pending_end_contract.py; not production connected",
+    "fixed_training_hypothesis": {
+      "max_corroboration_sec": 1,
+      "deadline_origin": "observed clock change",
+      "minimum_prior_score_new_score_result_duration_sec": 0.05,
+      "active_round_proven": false
+    },
+    "previous": {
+      "same_frame_conjunction": 0,
+      "released_events": 0
+    },
+    "current": {
+      "conditional_temporal_patterns": 1,
+      "menu_entry_patterns": 0,
+      "active_context_patterns": 0,
+      "released_events": 0
+    },
+    "event_delta": 0,
+    "same_frame_and_conditional_patterns_not_equivalent_metrics": true,
+    "current_score_at_pattern_confirmation": [
+      null,
+      null
+    ],
+    "historical_score_after_update": [
+      0,
+      2
+    ],
+    "no_current_value_imputation": true,
+    "qualification_created": false,
+    "production_behavior_changed": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "tests": {
+      "new_contract_cases": 15,
+      "related_total_pass": 26,
+      "ruff": "PASS",
+      "mypy_source_files": 120
+    },
+    "reports": [
+      "pending_end_diagnostic_freeze.json",
+      "pending_end_diagnostic_results.json"
+    ],
+    "limits": [
+      "Training hypothesis selected after observed native input, not untouched holdout",
+      "Reused menu/active reports have different profiles and do not qualify current profile negatives",
+      "Batch prototype rejects entire input on unsafe source/context; not streaming lifecycle",
+      "Complete active round and accepted boundary/event timestamp still unproved"
+    ],
+    "next_action": "Validate fixed contract with current-profile independent native controls and complete active lifecycle context; then define explicit qualification and streaming pending-end event/provenance before production release."
+  },
+  "pending_end_current_profile_controls": {
+    "target_assertions": [
+      "GT-R1-ROUND-END"
+    ],
+    "hypothesis_changed": false,
+    "production_behavior_changed": false,
+    "profile_adopted": false,
+    "current_profile": "10bfac00544e510ebf3f3e2c0072c9beba24938b2ff996c9012f7e4046d82c99",
+    "menu_control": {
+      "frames": 27,
+      "previous_patterns": 0,
+      "current_patterns": 0,
+      "pattern_delta": 0,
+      "timer_previous": 26,
+      "timer_current": 26,
+      "timer_delta": 0,
+      "pairs_previous": 27,
+      "pairs_current": 27,
+      "pair_delta": 0,
+      "result_false_positive_previous": 0,
+      "result_false_positive_current": 0,
+      "result_delta": 0,
+      "reader_values_preserved": 81,
+      "wall_clock_sec": 66.9434251789935,
+      "reused_source": true
+    },
+    "new_active_control": {
+      "window_sec": [
+        130,
+        131.2
+      ],
+      "frames": 72,
+      "patterns": 0,
+      "timer_accepted": 64,
+      "score_pairs": 27,
+      "result_false_positive": 0,
+      "all72result_ROIs_reviewed": true,
+      "source_native_known_inventory_overlap": false,
+      "exhaustive_training_separation": false,
+      "wall_clock_sec": 156.6450297110132,
+      "previous_comparable_run": null,
+      "runtime_delta": null
+    },
+    "qualification_created": false,
+    "released_events": 0,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "report": "e2e_reports/match_001/pending_end_current_profile_controls.json",
+    "remaining": [
+      "independent positive temporal qualification",
+      "streaming pending-end implementation and explicit qualification gate",
+      "complete R1start\u2192active\u2192end lifecycle context",
+      "canonical targeted/sampled/full validation when qualified"
+    ],
+    "next_action": "Implement streaming pending-end collector behind a separately qualified opt-in contract, preserving default same-frame route; validate state/reset/duplicate/event provenance before real release."
+  },
+  "streaming_pending_end_contract": {
+    "scope": "Separately qualified opt-in production implementation; no real qualification/adoption/canonical run.",
+    "target_assertions": [
+      "GT-R1-ROUND-START",
+      "GT-R1-ROUND-END",
+      "GT-R2-ROUND-START"
+    ],
+    "input_contract": "datasets/input_contracts/match_001.unedited.json",
+    "qualification_component": "ui_end_transition",
+    "qualification_required_inputs": [
+      "timer",
+      "purchase_phase",
+      "ui_transition",
+      "score",
+      "round_result"
+    ],
+    "timestamp_rule": "first_observed_score_change",
+    "diagnostic_report": "e2e_reports/match_001/streaming_end_contract_replay.json",
+    "diagnostic_report_sha256": "295e127b30093f09c750e8284d03cac390d35f2fdfa141067ce3c61830529242",
+    "conditional_pattern_comparison": {
+      "R1": {
+        "previous": 1,
+        "current": 1,
+        "delta": 0
+      },
+      "menu": {
+        "previous": 0,
+        "current": 0,
+        "delta": 0
+      },
+      "active": {
+        "previous": 0,
+        "current": 0,
+        "delta": 0
+      }
+    },
+    "conditional_R1_start_pts_sec": 4.102669270833333,
+    "conditional_R1_end_pts_sec": 74.48600260416667,
+    "diagnostic_released_events": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "canonical_previous": {
+      "PASS": 23,
+      "FAIL": 55,
+      "NE": 4
+    },
+    "canonical_current": null,
+    "canonical_delta": null,
+    "tests": {
+      "related_unit_passed": 191,
+      "ruff": "PASS",
+      "mypy_source_files": 121,
+      "mypy": "PASS"
+    },
+    "remaining": [
+      "Independent temporal qualification, including event timestamp semantics",
+      "Complete actual qualified start-to-end lifecycle",
+      "Targeted/sampled then gated canonical full acceptance"
+    ],
+    "windows_hardware_verified": false,
+    "next_action": "Qualify source-assured R1 start and independently review temporal end timestamp semantics; do not backdate to GT."
+  },
+  "current_frame_phase_presence_contract": {
+    "target_assertions": [
+      "GT-R1-ROUND-START",
+      "GT-R1-ROUND-END",
+      "GT-R2-ROUND-START"
+    ],
+    "report": "e2e_reports/match_001/current_phase_presence_guard_summary.json",
+    "report_sha256": "ef29a0652129d1c1dc602667b223b91a8c016fd41cd04be6e0f01c1311f887ec",
+    "problem": "Debounced phase flag absence is not current-frame text disappearance.",
+    "evidence": "Actual analyzer retains eight raw positive matches; four isolated images lack debounced flags after source gaps.",
+    "change": "Producer-owned phase presence/confidence transported separately; positive unconfirmed text vetoes start candidate and qualified end. No ownership or reader threshold changes.",
+    "component_accuracy_comparison": {
+      "raw_phase_correct": {
+        "previous": 8,
+        "current": 8,
+        "delta": 0
+      },
+      "raw_phase_unknown": {
+        "previous": 0,
+        "current": 0,
+        "delta": 0
+      },
+      "raw_phase_false_accepts": {
+        "previous": 0,
+        "current": 0,
+        "delta": 0
+      },
+      "r1_candidate_count": {
+        "previous": 1,
+        "current": 1,
+        "delta": 0
+      },
+      "diagnostic_released_events": {
+        "previous": 0,
+        "current": 0,
+        "delta": 0
+      }
+    },
+    "phase_transport_parity": {
+      "matched": 21,
+      "total": 21
+    },
+    "r1_source_candidate_pts_sec": 4.102669270833333,
+    "diagnostic_runtimes_sec": {
+      "53_image_component_analyzer": 100.39537756302161,
+      "21_image_phase_diagnostic": 45.05367325799307,
+      "21_image_final_phase_transport": 44.95757486001821,
+      "30_native_r1_analyzer": 58.19315392401768
+    },
+    "comparable_runtime_delta": null,
+    "tests": {
+      "related_unit_passed": 168,
+      "ruff": "PASS",
+      "mypy_source_files": 121,
+      "mypy": "PASS"
+    },
+    "canonical_previous": {
+      "PASS": 23,
+      "FAIL": 55,
+      "NE": 4
+    },
+    "canonical_current": null,
+    "canonical_delta": null,
+    "qualification_created": false,
+    "real_events_released": 0,
+    "remaining_blockers": [
+      "Independent positive temporal qualification is not inferred from isolated component holdouts",
+      "JPEG cases are not native cadence/source proof",
+      "Complete qualified lifecycle and gated tiered canonical verification"
+    ],
+    "next_action": "Review/freeze positive temporal qualification with disjoint source support, preserving the raw-vs-debounced phase distinction; do not manufacture qualification from component counts."
+  },
+  "rejected_shared_result_translation": {
+    "target_assertion": "GT-R1-ROUND-END",
+    "decision": "rejected; no early match and no added accepted frame",
+    "review_report": "e2e_reports/match_001/result_shared_translation_review.json",
+    "review_report_sha256": "cd0794b4c0f24a3b64e308c7ebd98705f9c3f94a60144c210f493a8237140f6e",
+    "comparison": {
+      "accepted_result_frames": {
+        "previous": 29,
+        "current": 29,
+        "scope": "Fixed vs shared-translation diagnostic; not boundary or PASS count.",
+        "delta": 0
+      },
+      "early_word_NCC": {
+        "previous": 0.3875529175837342,
+        "current": 0.3875529175837342,
+        "delta": 0.0
+      },
+      "first_match_pts_sec": {
+        "previous": 75.3193359375,
+        "current": 75.3193359375,
+        "delta": 0
+      }
+    },
+    "early_training_eligibility": {
+      "visible_complete_word_support_frames": 1,
+      "minimum_distinct_semantic_training_support": 3,
+      "qualifies": false,
+      "same_frame_duplicates_allowed": false
+    },
+    "tests": {
+      "related_unit_passed": 33,
+      "ruff": "PASS",
+      "mypy": "previous PASS on identical production src; no production edits this turn"
+    },
+    "production_behavior_changed": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_action": "Probe whether independently accepted timer reset plus stable one-point score transition can corroborate an end without the occluded early result glyph; keep it diagnostic until independent qualification and actual active lifecycle are proven."
+  },
+  "numeric_end_feasibility": {
+    "report": "e2e_reports/match_001/numeric_end_feasibility.json",
+    "r2_control": "e2e_reports/match_001/numeric_end_r2_negative.json",
+    "documentation": "docs/numeric_end_feasibility.md",
+    "conditional_r1_patterns": 1,
+    "negative_control_patterns": {
+      "r1_start": 0,
+      "r2_start": 0,
+      "menu": 0,
+      "active": 0
+    },
+    "released_events": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "qualification_created": false,
+    "production_changed": false,
+    "missing_end_raw_phase_frames": 108,
+    "related_tests_passed": 19,
+    "ruff": "PASS",
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_action": "Current producer replay on existing continuous end source frames, then independent numeric correctness and end timing review"
+  },
+  "current_producer_numeric_end_replay": {
+    "report": "e2e_reports/match_001/r1_end_current_phase_comparison.json",
+    "source_review": "e2e_reports/match_001/r1_end_current_score_review.json",
+    "source_frames": 108,
+    "raw_phase_fields": 108,
+    "raw_phase_positive": 0,
+    "observations_unchanged": 108,
+    "score_correct": 114,
+    "score_wrong": 0,
+    "score_unknown": 102,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_action": "Independent end timing/temporal qualification; do not infer end timestamp from acceptance window"
+  },
+  "native_timer_snapshot_transport": {
+    "documentation": "docs/native_timer_snapshot_transport.md",
+    "related_unit_integration_tests_passed": 28,
+    "ruff": "PASS",
+    "mypy_source_files": 121,
+    "actual_interval_native_frames": 108,
+    "exact_sampled_pts_overlap": 0,
+    "six_decimal_overlap_diagnostic_only": 31,
+    "production_changed": true,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_action": "Preserve decoder frame/tick identity through sampled extraction/cache; no rounded/nearest fallback"
+  },
+  "decoder_tick_identity_transport": {
+    "report": "e2e_reports/match_001/decoder_tick_join_real.json",
+    "actual_frames": 31,
+    "native_source_joins": {
+      "previous": 0,
+      "current": 31,
+      "delta": 31
+    },
+    "changed_sampled_timestamps": 0,
+    "cache_identity_preserved": 31,
+    "matched_native_timer_displays": 3,
+    "wall_clock_sec": 262.4238504850073,
+    "previous_comparable_runtime": null,
+    "runtime_delta": null,
+    "related_tests_passed": 62,
+    "ruff": "PASS",
+    "mypy_source_files": 121,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_action": "Independent lifecycle/reader qualification and end timestamp semantics, then tiered canonical validation"
+  },
+  "spectator_primary_snapshot_contract": {
+    "report": "e2e_reports/match_001/spectator_snapshot_archived_evaluation.json",
+    "documentation": "docs/spectator_primary_snapshot_contract.md",
+    "target_assertion": "GT-R1-SNAP-7425",
+    "target_assertion_solved": false,
+    "archived_evaluator_comparison": {
+      "PASS": {
+        "previous": 23,
+        "current": 23,
+        "delta": 0
+      },
+      "FAIL": {
+        "previous": 55,
+        "current": 55,
+        "delta": 0
+      },
+      "NE": {
+        "previous": 4,
+        "current": 4,
+        "delta": 0
+      },
+      "negative_assertion_failures": {
+        "previous": 0,
+        "current": 0,
+        "delta": 0
+      }
+    },
+    "assertion_status_changes": [],
+    "new_full_e2e_run": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "related_tests_passed": 61,
+    "ruff": "PASS",
+    "mypy_source_files": 121,
+    "field_counts": {
+      "False": 455,
+      "None": 301,
+      "True": 163
+    },
+    "qualification_created": false,
+    "remaining_blockers": [
+      "admitted snapshot",
+      "muzzle evidence",
+      "owned HP/location evidence",
+      "upstream lifecycle qualification"
+    ]
+  },
+  "result_late_fixed_cohort_failure": {
+    "documentation": "docs/result_late_fixed_cohort_failure.md",
+    "review": "e2e_reports/match_001/result_late_fixed_native_review.json",
+    "native_frames": 12,
+    "previously_exposed_excluded": 8,
+    "fixed_review_frames": 4,
+    "correct": 0,
+    "unknown": 4,
+    "wrong": 0,
+    "minimum_group_ncc_range": [
+      0.8143,
+      0.8559
+    ],
+    "qualification_gate_passed": false,
+    "qualification_created": false,
+    "production_changed_this_turn": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_action": "Training-only result mask/representation analysis; keep failed cohort exposed, reserve different validation"
+  },
+  "unedited_input_contract_verification": {
+    "date": "2026-10-10",
+    "git_head": "e9ecaf8f2f0f0dfa1f9433d40a598ec8909e9ce3",
+    "scope": "Existing source-assured path verification; no new image qualification or production change in this checkpoint",
+    "input_contract": "datasets/input_contracts/match_001.unedited.json",
+    "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+    "removed_edit_only_requirements": [
+      "mandatory edit-oriented continuity qualification",
+      "paired scene/world-reference qualification solely for proving no edit"
+    ],
+    "retained_requirements": [
+      "exact source binding",
+      "native cadence and PTS",
+      "capture discontinuity guards",
+      "reader and temporal holdout qualification",
+      "identity and ownership safety",
+      "negative controls"
+    ],
+    "source_evidence_report": "e2e_reports/match_001/current_phase_presence_guard_summary.json",
+    "r1_candidate_pts_sec": 4.102669270833333,
+    "r1_confirmation_pts_sec": 4.202669270833334,
+    "observed_displays_preserved": [
+      "0:00",
+      "2:25",
+      "2:25",
+      "1:39"
+    ],
+    "tests": {
+      "related_unit_passed": 157,
+      "wall_clock_sec": 71.67,
+      "ruff": "PASS",
+      "mypy": "PASS",
+      "mypy_source_files": 121
+    },
+    "new_canonical_e2e_runs": 0,
+    "canonical_previous": {
+      "PASS": 23,
+      "FAIL": 55,
+      "NE": 4
+    },
+    "canonical_current": null,
+    "canonical_delta": null,
+    "original_assertion_matrix_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776",
+    "remaining_blocker": "Independent reader/UI temporal qualification before releasing actual native start events; assurance alone does not qualify readers."
+  },
+  "result_persistent_feature_rejection": {
+    "training_report": "e2e_reports/match_001/result_persistent_minchannel_training.json",
+    "mask_audit": "e2e_reports/match_001/result_training_mask_audit.json",
+    "source_predictions": "e2e_reports/match_001/result_persistent_feature_validation.json",
+    "review_report": "e2e_reports/match_001/result_persistent_feature_review.json",
+    "review_sha256": "399ad8dcf122ce67727ae8910c0224a999f608f079b00dee84743def943976cf",
+    "scope": "Post-prediction original-source review; correlated same-episode cases, not lifecycle qualification",
+    "reserved_comparison": {
+      "correct": {
+        "previous": 2,
+        "current": 2,
+        "delta": 0
+      },
+      "unknown": {
+        "previous": 6,
+        "current": 6,
+        "delta": 0
+      },
+      "wrong": {
+        "previous": 0,
+        "current": 0,
+        "delta": 0
+      }
+    },
+    "decision": "rejected_no_acceptance_improvement_and_insufficient_reserved_positive_support",
+    "production_changed": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "tests": {
+      "unit_passed": 4,
+      "ruff": "PASS"
+    },
+    "next_action": "Stop tuning this representation. Return to source-assured start temporal qualification and source-backed upstream contracts; result evidence and end timestamp remain separate blockers."
+  },
+  "production_contract_regression_check": {
+    "report": "e2e_reports/match_001/production_contract_regression_check.json",
+    "report_sha256": "ec8658bc4c3f61d8ea53e434c4ef6869d8cb8e3f0a2635d7e973f91afe97b01c",
+    "initial_pytest": {
+      "exit_code": 1,
+      "passed": 2459,
+      "failed": 1,
+      "skipped": 9,
+      "wall_clock_sec": 1728.56
+    },
+    "related_fix_pytest": {
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "wall_clock_sec": 20.64,
+      "validation_pack_variables": [
+        "VALORANT_E2E_PACK",
+        "VALORANT_E2E_VALIDATION_PACK"
+      ],
+      "files": [
+        "tests/integration/test_visual_runtime_v2.py",
+        "tests/integration/test_e2e_share_workflow.py",
+        "tests/integration/test_e2e_shot_contract.py",
+        "tests/integration/test_e2e_validation_pack_v3.py"
+      ]
+    },
+    "ruff": "PASS",
+    "mypy": "PASS",
+    "new_full_e2e_runs": 0,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "qualification_created": false
+  },
+  "shared_score_snapshot_transport": {
+    "report": "e2e_reports/match_001/shared_score_snapshot_transport.json",
+    "report_sha256": "cbd904eeeff70c0d12d25b3a1f67c4b3b55b7d3cca8701c253f55da2d4b8b37b",
+    "production_change": "Add nullable accepted shared score fields and source confidence to native snapshots; trace aliases independent of ownership with source mismatch rejection",
+    "target_assertions": [
+      "GT-R1-SNAP-0415",
+      "GT-R2-SNAP-11145"
+    ],
+    "source_rows": 108,
+    "accepted_reader_score_counts": {
+      "score_ally": 53,
+      "score_enemy": 61
+    },
+    "unknown_identity_rows_with_shared_scores": 67,
+    "admitted_native_snapshots": 0,
+    "archived_canonical_status_counts": {
+      "PASS": 23,
+      "FAIL": 55,
+      "NE": 4
+    },
+    "archived_assertion_status_changes": [],
+    "new_canonical_current": null,
+    "new_canonical_delta": null,
+    "qualification_created": false,
+    "next_blocker": "Define explicitly qualified global snapshot admission without borrowing player ownership or weakening existing HUD admission; start temporal qualification remains incomplete."
+  },
+  "shared_score_fixed_source_validation": {
+    "report": "e2e_reports/match_001/shared_score_fixed_source_predictions.json",
+    "review": "e2e_reports/match_001/shared_score_fixed_source_review.json",
+    "review_sha256": "dde3c4ec67dec23285c1aac76ec2b8e9c1433154f8b06223df6d5a8ec3916255",
+    "reserved_frames": 16,
+    "processed_native_frames": 18,
+    "reserved_metrics": {
+      "score_ally": {
+        "correct": 16,
+        "unknown": 0,
+        "wrong": 0
+      },
+      "score_enemy": {
+        "correct": 4,
+        "unknown": 12,
+        "wrong": 0
+      }
+    },
+    "source_rejection_stage": "14/18enemy nominal crops reject foreground_touches_roi_border; nominal accepted/unknown parity18/18with actual analyzer",
+    "wall_clock_sec": 71.82674807601143,
+    "qualification_created": false,
+    "production_changed": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_action": "Keep profile frozen; complete score training provenance and genuine negative controls before global admission. Treat the new exposed background rejection as development evidence, not a threshold-tuning target."
+  },
+  "shared_score_training_and_background_audit": {
+    "training_report": "e2e_reports/match_001/score_training_provenance_audit.json",
+    "background_report": "e2e_reports/match_001/score_background_current_reader_replay.json",
+    "all_ten_training_classes_meet_prior_support": true,
+    "background_counts": {
+      "ally_score": {
+        "unknown": 54,
+        "false_accept": 0
+      },
+      "enemy_score": {
+        "unknown": 54,
+        "false_accept": 0
+      }
+    },
+    "qualification_created": false,
+    "production_changed": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "next_blocker": "Complete source-bound global snapshot admission qualification; background crops do not establish nominal field absence or temporal lifecycle safety."
+  },
+  "assured_start_split_contract_audit": {
+    "same_split_component_frame_sharing_allowed": true,
+    "minimum_distinct_physical_hashes_per_split": 3,
+    "minimum_round_episode_requirement": null,
+    "additional_video_required": false,
+    "cross_component_split_overlap_rejected": true,
+    "target_assertions": [
+      "GT-R1-ROUND-START",
+      "GT-R2-ROUND-START",
+      "event_count_constraints-000",
+      "event_count_constraints-004"
+    ],
+    "tests": {
+      "passed": 4,
+      "seconds": 1.03,
+      "scope": "Synthetic qualification loader contract only"
+    },
+    "ruff": "PASS",
+    "production_changed": false,
+    "qualification_created": false,
+    "canonical_current": null,
+    "canonical_delta": null,
+    "remaining_blocker": "Independent complete temporal UI qualification; exposed development frames cannot be relabeled holdout."
+  },
+  "current_contract_targeted_verification": {
+    "scope": "Actual standard targeted E2E; isolated points, not canonical full or temporal qualification",
+    "run_path": "outputs/recognition-investigation/current-contract-targeted-20261010",
+    "counts": {
+      "passed": 12,
+      "failed": 13,
+      "not_evaluated": 12
+    },
+    "previous_counts": {
+      "passed": 12,
+      "failed": 13,
+      "not_evaluated": 12
+    },
+    "failure_records_identical": true,
+    "runtime_comparison": {
+      "comparable": true,
+      "reason": null,
+      "deltas": {
+        "wall_sec": {
+          "current": 550.0471270009875,
+          "previous": 710.9029106310045,
+          "delta": -160.85578363001696,
+          "percent_change": -22.626969340614988
+        },
+        "evaluation_pass": {
+          "current": 0.0,
+          "previous": 0.0,
+          "delta": 0.0,
+          "percent_change": null
+        },
+        "failed": {
+          "current": 13.0,
+          "previous": 13.0,
+          "delta": 0.0,
+          "percent_change": 0.0
+        },
+        "not_evaluated": {
+          "current": 12.0,
+          "previous": 12.0,
+          "delta": 0.0,
+          "percent_change": 0.0
+        },
+        "passed": {
+          "current": 12.0,
+          "previous": 12.0,
+          "delta": 0.0,
+          "percent_change": 0.0
+        },
+        "schema_valid": {
+          "current": 0.0,
+          "previous": 0.0,
+          "delta": 0.0,
+          "percent_change": null
+        },
+        "state_buy_menu_open": {
+          "current": 3.0,
+          "previous": 3.0,
+          "delta": 0.0,
+          "percent_change": 0.0
+        },
+        "state_live_first_person": {
+          "current": 6.0,
+          "previous": 6.0,
+          "delta": 0.0,
+          "percent_change": 0.0
+        },
+        "state_spectator_first_person": {
+          "current": 6.0,
+          "previous": 6.0,
+          "delta": 0.0,
+          "percent_change": 0.0
+        },
+        "state_unknown": {
+          "current": 22.0,
+          "previous": 22.0,
+          "delta": 0.0,
+          "percent_change": 0.0
+        }
+      }
+    },
+    "state_counts": {
+      "buy_menu_open": 3,
+      "live_first_person": 6,
+      "spectator_first_person": 6,
+      "unknown": 22
+    },
+    "input_fingerprint": {
+      "video_id": "match_001",
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
+      "assertions_sha256": "c5e242b611ce227d1d2633e5e24c00dfe65168d8124ab58fbdea84b1d7f0d820",
+      "input_scope": "isolated_points",
+      "profile_fingerprint": "2611cfecc2b148e381d760290c14d70a060efcea2bd837657fe55627ef75554b",
+      "code_fingerprint": "88c7c906c226ba3ea69bb916f329dc88ea37e519ea61ac4f047162da85063c93",
+      "suite_sha256": "7e31b647825dd19141be161dee315e007f46c098fdc4d7882b52c7572378a898",
+      "selected_categories": [],
+      "pts_sec": [
+        0.036003,
+        4.102669,
+        4.152669,
+        7.369336,
+        15.186003,
+        42.969336,
+        44.502669,
+        59.502669,
+        63.902669,
+        74.386003,
+        74.402669,
+        74.419336,
+        74.436003,
+        74.452669,
+        82.002669,
+        83.419336,
+        88.786003,
+        104.219336,
+        110.019336,
+        111.402669,
+        111.452669,
+        124.536003,
+        141.936003,
+        145.852669,
+        146.919336,
+        147.019336,
+        147.502669,
+        147.602669,
+        147.702669,
+        151.002669,
+        157.302669,
+        161.636003,
+        170.002669,
+        170.802669,
+        170.919336,
+        170.936003,
+        171.002669
+      ],
+      "calibration_prefix": [
+        0.036003,
+        0.102669,
+        0.169336
+      ]
+    },
+    "terminal_artifact_hashes_verified": true,
+    "negative_full_assertions_evaluated": false,
+    "new_qualification": false,
+    "ruff": "PASS",
+    "mypy": "PASS 121 source files"
   }
 }

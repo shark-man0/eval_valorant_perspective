@@ -1,0 +1,102 @@
+{
+  "critical": [
+    {
+      "pts_sec": 4.086002604166667,
+      "candidates": 69,
+      "support_by_size": {
+        "15": 68,
+        "21": 69,
+        "31": 69
+      },
+      "all_sizes_support": 68,
+      "regions": [
+        1,
+        2,
+        5
+      ],
+      "distributed_spatial_support": false
+    },
+    {
+      "pts_sec": 4.102669270833333,
+      "candidates": 68,
+      "support_by_size": {
+        "15": 66,
+        "21": 68,
+        "31": 68
+      },
+      "all_sizes_support": 66,
+      "regions": [
+        1,
+        2,
+        5
+      ],
+      "distributed_spatial_support": false
+    },
+    {
+      "pts_sec": 4.1193359375,
+      "candidates": 65,
+      "support_by_size": {
+        "15": 65,
+        "21": 65,
+        "31": 65
+      },
+      "all_sizes_support": 65,
+      "regions": [
+        1,
+        2,
+        5
+      ],
+      "distributed_spatial_support": false
+    },
+    {
+      "pts_sec": 4.136002604166666,
+      "candidates": 64,
+      "support_by_size": {
+        "15": 64,
+        "21": 64,
+        "31": 64
+      },
+      "all_sizes_support": 64,
+      "regions": [
+        1,
+        2,
+        5
+      ],
+      "distributed_spatial_support": false
+    },
+    {
+      "pts_sec": 4.152669270833333,
+      "candidates": 61,
+      "support_by_size": {
+        "15": 61,
+        "21": 61,
+        "31": 61
+      },
+      "all_sizes_support": 61,
+      "regions": [
+        1,
+        2,
+        5
+      ],
+      "distributed_spatial_support": false
+    },
+    {
+      "pts_sec": 4.1693359375,
+      "candidates": 61,
+      "support_by_size": {
+        "15": 61,
+        "21": 61,
+        "31": 61
+      },
+      "all_sizes_support": 61,
+      "regions": [
+        1,
+        2,
+        5
+      ],
+      "distributed_spatial_support": false
+    }
+  ],
+  "conclusion": "Full-patch appearance passes critical images but all linked witnesses occupy one row. Mean NCC cannot authorize semantic masks.",
+  "canonical_current": null
+}

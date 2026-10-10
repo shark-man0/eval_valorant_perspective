@@ -241,3 +241,102 @@ The [four-pose constellation investigation](scene_constellation_investigation.md
 ## Continuous reviewed-world chain checkpoint
 
 The [continuous tracking investigation](scene_world_chain_investigation.md) preserves reviewed source feature identities without reseeding. Prefix support is0/35; separate stable-input feature support4/29 stops despite86tracks because spatial witnesses occupy one row. Dense source-world crops support3/29; adding a manually reviewed seventh background region leaves3/29 unchanged. Upper and added lower crop NCC values are below0.90 despite full valid warp coverage. These methods remain diagnostic-only and unqualified; missing support is not a cut label. Seven focused tests and Ruff pass. Production fingerprints and all82assertion rows are unchanged; no fresh canonical run, qualification or real boundary is claimed. Work pauses at the requested checkpoint with trusted scene/UI producer qualification still unfinished.
+
+
+## Native-resolution world-chain hypothesis (2026-10-09)
+
+The [latest-main R1 diagnostic](scene_world_resolution_investigation.md) tests original1920×1080grayscale while preserving normalized spatial limits, NCC0.90and the existing reviewed source footprints. Prefix support remains0/35; separate stable support changes4→0/29despite more initial features141→162. Removing downscaling alone is rejected as a remedy. Failure remains unknown rather than a cut label; production/qualification/events/82assertion rows are unchanged. Ten unit tests, Ruff and fresh mypy102files pass. Canonical Current/Delta remain unmeasured; no full E2E was run.
+
+
+## Passive R1 world-chain rejection-stage follow-up
+
+[Per-region evidence](scene_world_stage_investigation.md) identifies the missing source-world row: native upper regions lose all35tracks below unchanged OpenCV conditioning, while95original-world-supported points remain in one row. Canonical support loses its final upper witness as an affine outlier after earlier conditioning losses. A proposed lower ROI is rejected before matching because hands/charm and faint ability UI enter it. Instrumented results exactly match preserved behavior on128links;12tests/Ruff/mypy102files pass. Production, qualification, events and82assertion rows are unchanged. Canonical Current/Delta remain unmeasured; no full E2E was run. Next source work needs distinctive, reviewed world-only structure and pose coverage, rather than looser acceptance.
+
+
+## Adjacent source-world photometry follow-up
+
+[The declared alternative diagnostic](scene_adjacent_world_investigation.md) retains original world-feature identities and their seed NCC while measuring adjacent whole-crop appearance. Stable support3→5/29 confirms cumulative seed comparison explains two early abstentions, but the chain still stops at4.002669 before the timer transition: upper warped NCC0.833926, independent raw NCC0.896447, and the other upper crop's interior texture below1. Prefix remains0/35; no unknown is relabelled as a cut. Existing-mode dictionaries are unchanged on116links;15tests/Ruff/mypy102files pass. Production, qualification, events and82assertion rows are unchanged; canonical Current/Delta remain unmeasured. Strict full-footprint signal assessment is the next untested hypothesis, not a margin/threshold fallback.
+
+
+## Complete source-footprint diagnostic follow-up
+
+[The explicitly declared full-valid footprint](scene_full_footprint_investigation.md) excludes every sampled padding contribution while using complete reviewed crop support. Stable links5→11/29 reach the last purchase-phase image; all six photometric regions are strong there. At phase disappearance4.102669, all five remaining seed-region1tracks are original-seed partial-affine outliers, leaving only two seed regions, so no chain/event is bridged. Existing defaults are exact on174links;18tests/Ruff/mypy102files pass. Production, qualification and82assertion rows are unchanged; canonical Current/Delta are unmeasured. Next diagnose the source-camera projection residual, preserving the third-region requirement and HUD geometry policy.
+
+
+## R1 camera-model membership follow-up
+
+[The source-camera audit](scene_camera_model_investigation.md) finds that the original similarity RANSAC mask contains63/68points at phase disappearance, whereas the final same-matrix2pixel forward error includes66. An explicitly declared diagnostic keeps original consensus>=0.90and adds bidirectional final-model membership, original-seed/adjacent NCC>=0.90and distributed world-only crop photometry. Training support11→22/29now spans both2:25frames and the1:39transition; it stops at4.286003without reacquisition. Visible scene continuity is supported on these development frames; uninterrupted game time and independent qualification remain unproven. Existing defaults are exact on203links; exposed cut/duplicate controls reject,26unit tests/Ruff/mypy102files pass. Production and all82assertion rows are unchanged; canonical Current/Delta are unmeasured. No full E2E was run. Next freeze the method and qualify independent world-only scene/UI evidence before activation, preserving the separate R2/result gates.
+
+
+## Frozen final-membership cohort result
+
+[The pre-reserved camera cohort](scene_final_membership_cohort_investigation.md) yields0/33supported links on36native images, with0PNG-byte overlaps against2098previously stored images. The first wall seed retains94identities in6regions but fails unchanged0.90valid crop coverage; two other poses contain players/knife/UI in the fixed footprints and lack world-only seed attestation. Reviewed panels show continuous-looking motion rather than proving a cut. No qualification or runtime event follows; no code is tuned to this result.28tests/Ruff pass, production and82assertion rows remain unchanged, canonical Current/Delta are unmeasured. The next source contract must separate reviewed seed eligibility, current occlusion and motion-dependent appearance footprint; changing camera models or OCR thresholds does not resolve this blocker.
+
+
+## Frame-bound world review eligibility contract
+
+[The offline review gate](scene_world_review_contract.md) separates reviewed world-only seed/current footprints from matching scores. It pins canonical pixels/native PTS/video/epoch/provenance, rejects unreviewed or occluded footprints and terminates on missing review, gap, duplicate or cut without reacquisition. Three real seed examples change3hypothetical initializations→1reviewed; two unsafe/unattested seeds are rejected before extraction. The valid wall seed still abstains at the original coverage predicate, so no real support or boundary is invented.38related tests/Ruff/fresh mypy102files pass; production and82assertion statuses remain unchanged, canonical Current/Delta unmeasured. This wrapper is diagnostic only: offline annotations are not runtime truth or producer qualification. Next address projected-world appearance coverage and current occlusion without lowering0.90floors.
+
+
+## Reviewed projected-world appearance development
+
+[The declared projected-footprint diagnostic](scene_projected_world_investigation.md) reuses the exact existing adjacent source-camera transform on the exposed wall pair. Current bilinear taps must all lie in explicitly reviewed world; complete-source coverage>=0.90/NCC>=0.90are unchanged. Appearance support0→6regions, minimum NCC0.974528, explains fixed-crop coverage loss while94original identities remain. This is one-link development evidence; the original tracker still abstains and is not revived. Default decisions are exact on203links, exposed cut/duplicate controls reject,44tests/Ruff/fresh mypy102files pass. Production and82assertion rows remain unchanged; canonical Current/Delta unmeasured. Next integrate continuous source/current world eligibility and projected appearance before independent qualification, never copy offline per-frame annotations into runtime truth.
+
+
+## Continuous reviewed projected-world checkpoint
+
+[The integrated diagnostic](scene_projected_chain_implementation.md) preserves original world identities/current flow-footprint review while using projected appearance at unchanged0.90coverage/NCC floors. The exposed12native-frame wall episode changes0→4/11supported links; at2.586003hand/unknown lower-footprint review terminates tracking and no later image rejoins. An initially overlapping unknown annotation was correctly rejected; consistent positive-mask encoding leaves all first5rows unchanged. Existing defaults are exact on203links, exposed cut/duplicate controls reject,53tests/Ruff/fresh mypy102files pass. Production and82assertion rows are unchanged, canonical Current/Delta unmeasured. No qualification/event/full E2E is claimed. Next verify the actual R1transient episode, then independently qualify source/current semantic evidence before runtime activation.
+
+
+## Actual R1 projected-world transient replay
+
+[The frozen30-native-frame replay](r1_projected_chain_investigation.md) supports22/29links, unchanged count versus the previous final-membership diagnostic. Phase disappearance/both2:25frames/first1:39all have six distributed projected world regions with minimum NCC0.995367/0.995436/0.943096/0.952934. At4.286003the unchanged original model-consensus gate fails and tracking never rejoins. This directly reinforces visible scene continuity with transient UI, not uninterrupted hidden game time or runtime qualification. Shared replay CLI verifies code/source/PNG/pixels/coverage terminal bindings in9.819518seconds. Core bytes remain those with53tests/mypy102files passing; fresh Ruff passes. Production and82assertions remain unchanged, canonical Current/Delta unmeasured, no full E2E. Next implement image-derived world reference bootstrap/current occlusion with independent qualification; offline per-frame masks are not runtime truth.
+
+
+## Image-only reviewed-landmark bootstrap result
+
+[The strict diagnostic reference entrance](scene_world_bootstrap_contract.md) consumes current pixels without PTS/GT/per-frame world annotations. The unchanged unique reciprocal matcher supports only its own reference image, 1/7 exposed frames; all four actual R1 start-transition queries lack distributed quorum. This is rejected as a qualification remedy, not interpreted as a content cut. Matched patches do not authorize whole-ROI background masks. 62 related tests pass in14.84seconds, Ruff passes, and fresh mypy passes104source files on main80d0d46. Production and82assertion rows are unchanged; canonical Current/Delta remain unmeasured, with no full E2E. Next retain image-qualified source-world identities and reject current footprint occlusion without manual runtime masks before independent qualification; do not repeat reference-bank/threshold tuning.
+
+
+## R1 tracked footprint scope audit
+
+[The passive 15/21/31-pixel audit](scene_track_footprint_audit.md) finds complete projected original-source appearance support across the timer transient, but every critical all-size witness remains in one spatial row (0/6 distributed queries). Synthetic controls demonstrate both surrounding occlusion hidden by a matching central patch and small foreground hidden by mean NCC. These scores cannot authorize whole-ROI semantic masks or replace the missing distributed runtime producer. The unchanged diagnostic still supports22/29links; no production/qualification/event/canonical gain is claimed. All82assertions remain unchanged; canonical Current/Delta are unmeasured and no full E2E is run. Next source work must provide image-derived distributed background-domain evidence with explicit footprint/ambiguity/occlusion handling, preserving all floors.
+
+
+## Distributed scene-domain ambiguity follow-up
+
+[The frozen five-link domain audit](scene_domain_ambiguity_investigation.md) identifies distinctive upper-wall structure: domain0supports every transient link with NCC>=0.943096and no competing displacement in the declared17×17local lattice. Other high-NCC domains have5–39competing positions, so independently localized domain quorum remains0/5. Source-only tracking decisions stay22/29; no semantic mask, runtime proof, qualification, event or canonical improvement is claimed. Four focused tests pass; source/PNG/pixel/code bindings match terminal hashes. All82assertions are unchanged. Next test joint distributed camera hypotheses, preserving explicit competitors and complete footprints, rather than counting each repeated domain as independent evidence.
+
+
+## Joint background-domain camera hypothesis checkpoint
+
+[The complete local-lattice audit](scene_joint_domains_investigation.md) supports the fixed camera projection jointly on5/5critical native R1links with three-cell/two-row/two-column source/current witnesses and no surviving/unresolved local translation competitor. Per-domain independence remains0/5; it is not relabelled. Optional offset instrumentation preserves all five old domain dictionaries exactly; the tracker remains22/29. Eight new joint tests plus four domain tests pass, Ruff passes, and production/all82assertions are unchanged. This is exposed local appearance, not foreground-free semantic masks, hidden-time proof, qualification or canonical gain. Next freeze continuous source/limited witness scope and verify unexposed holdout/negative controls before runtime activation. No full E2E was run.
+
+
+## Frozen joint source cohort: qualification withheld
+
+[The36-frame native cohort](scene_joint_cohort_investigation.md) finds15previously exposed decoded images and no evaluated joint links. All three first-link original camera consensuses are below0.90(74.36%,84.21%,83.64%); the chain terminates without rejoining. Joint accuracy is not evaluated, rather than0/33wrong. Full-context review finds moving players/arms/knife/barrier/UI in fixed source footprints, so hypothetical seeds are not world-attested. No qualification/runtime event follows.15focused tests/Ruff pass; production and82assertions are unchanged, canonical Current/Delta unmeasured, no full E2E. Next complete image-only source-world seed eligibility before arbitrary-pose positive qualification; do not tune joint/consensus floors to this cohort.
+
+
+## Stateless reference-domain initialization contract
+
+[The image-only source initializer diagnostic](scene_domain_bootstrap_contract.md) explicitly distinguishes reviewed reference assets from previously observed native frames and rejects landmark-scope promotion/competing reference selection. Eight exposed images yield only the self-reference proposal; all actual R1transition queries fail unchanged global model consensus before joint appearance. The static route is rejected as a sufficient reacquisition/qualification remedy; no threshold/bank tuning follows.22related tests/Ruff pass; production and82assertions are unchanged, canonical Current/Delta unmeasured and no full E2E. Next preserve the measured continuous source-world chain from an actual image-supported seed, with explicit current/temporal scope and independent qualification; a reference asset cannot supply a prior native observation.
+
+
+## Observed source seed to continuous image-derived scene links
+
+[The complete observed-source diagnostic](observed_scene_chain_contract.md) binds the first actually observed native PTS/pixels without counting reference assets as a previous source frame. No manual current-frame masks are supplied. Original identities plus fixed joint appearance reproduce22/29native R1links including all5critical transient links; at4.286003original model consensus fails and the episode never rejoins. Four protocol and two image-only synthetic controls reject all links/rejoin.13related tests/Ruff pass; production and82assertions are unchanged, canonical Current/Delta unmeasured, no full E2E. This is exposed limited-scope appearance, not semantic foreground absence/hidden-time proof/runtime qualification. Next freeze independent continuous acquisition/holdout/negative assessment and source-confidence provenance before production integration.
+
+## Native foreground change prevents a timer-only conclusion
+
+[Native UI localization](native_ui_localization.md) measures29adjacent exposed R1
+pairs and verifies saved PNG/pixel/source/profile/code bindings. At the first
+transient frame, all six background NCCs exceed0.995, while non-UI whole-image
+NCC is0.345489 and389,399non-UI pixels enter the descriptive change bin. Native
+images show a different hand/knife presentation. Background scene appearance is
+supported, but a normal view-model transition versus a scene-preserving content
+jump remains unresolved. Do not promote earlier background-only support to a
+pure timer/UI transition claim. No production contract, threshold, proof,
+qualification or82assertion status changes;6diagnostic tests/Ruff pass and no
+canonical E2E is run. Next establish independent foreground animation continuity
+controls within this recording before paired scene/UI authorization.

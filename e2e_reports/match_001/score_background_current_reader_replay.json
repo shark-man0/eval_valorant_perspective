@@ -1,0 +1,1569 @@
+{
+  "scope": "Frozen off-HUD background core-reader challenges only",
+  "input_sha256": {
+    "e2e_reports/match_001/score_enlarged_background_controls_complete_plan.json": "2e9cc6d95a04c78a1fa436eaefbd657202d8616eb8d1b2299e6e65edb5ec0473",
+    "e2e_reports/match_001/score_enlarged_background_controls_review.json": "93d954935700f6ef0aebda8ef19ca1d73ef340cb5a35bb1fd1531f810c68d212",
+    "e2e_reports/match_001/score_enlarged_background_controls_results.json": "77a9c5f72f2d4630af5935a4b33da7ded4f23651a830d87612e8ba9c55671453",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/score-rowcontrast-late-result-diagnostic.templates.json": "8f0f0edf31972fc11d8b2397b545afb51016efafa4b5b1fecf522f21a45cd797",
+    "/home/admin/eval_valorant_perspective/scripts/diagnostics/replay_score_background_controls.py": "0550a4d40bc16f719fc532a97a78535c7bf6c33db4271f832660b10dab702189",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/timer_glyphs/digit-0.png": "601e57a3cdb8cc96a80ba1fa0090673fdc157e8fc729471483342a59a6e4ab45",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/timer_glyphs/digit-1.png": "9d3e1a8f0a492179b1e41043dce7649cc36c26dcea83efe69d8a08088f358da0",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/timer_glyphs/digit-2.png": "ee22e20d6473c1708ce0b6a7f309bc22568966271e158eab0fb6e871f7183477",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/timer_glyphs/digit-3.png": "5ac534136243c34b8adba641b84490a777dc179e52f431b16122c2070b677734",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/timer_glyphs/digit-4.png": "59cdd0993fe7595e0c62157583b2fe96dede31e4a1a89d52ad2790b8117a159c",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/timer_glyphs/digit-5.png": "ca2072c97b90da225cb93c7bcc58475332ed89b9cf0a3c00610beef3340e098f",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/timer_glyphs/digit-6.png": "f31a1175575e4cc6484e73d543b942c38f5e32bf500423968cdf69fc991f4dae",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/timer_glyphs/digit-7.png": "466ab009974a1f11a0763262ce10c2ce93962d2c3a4f5d6db5dcd77057e80a94",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/timer_glyphs/digit-8.png": "f01f3ee9d375b2ec929f27555b66fb69d8a49f87c35dd234944fd5879cfb1ffa",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/timer_glyphs/digit-9.png": "1b219b606e7924e144d89eade5c3e771c248de9a15a2a196b5b6019eb2b212ea",
+    "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+    "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+    "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af"
+  },
+  "recognizer_fingerprint": "b0164cf1d649bf23fe6ba3d87989ef146419a6a0efc0bd6652157934cba43769",
+  "distinct_physical_frames": 3,
+  "counts": {
+    "ally_score": {
+      "unknown": 54,
+      "false_accept": 0
+    },
+    "enemy_score": {
+      "unknown": 54,
+      "false_accept": 0
+    }
+  },
+  "rows": [
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "pixel_sha256": "ec1bfd15dfec560775558bd963420678ee5820372aa4e5765e5eccd92c5528b3",
+      "bounds_px": [
+        1500,
+        300,
+        1544,
+        345
+      ],
+      "frame_index": 1,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "pixel_sha256": "ec1bfd15dfec560775558bd963420678ee5820372aa4e5765e5eccd92c5528b3",
+      "bounds_px": [
+        1580,
+        300,
+        1624,
+        345
+      ],
+      "frame_index": 1,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "pixel_sha256": "ec1bfd15dfec560775558bd963420678ee5820372aa4e5765e5eccd92c5528b3",
+      "bounds_px": [
+        1660,
+        300,
+        1704,
+        345
+      ],
+      "frame_index": 1,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "pixel_sha256": "ec1bfd15dfec560775558bd963420678ee5820372aa4e5765e5eccd92c5528b3",
+      "bounds_px": [
+        1500,
+        400,
+        1544,
+        445
+      ],
+      "frame_index": 1,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "pixel_sha256": "ec1bfd15dfec560775558bd963420678ee5820372aa4e5765e5eccd92c5528b3",
+      "bounds_px": [
+        1580,
+        400,
+        1624,
+        445
+      ],
+      "frame_index": 1,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "pixel_sha256": "ec1bfd15dfec560775558bd963420678ee5820372aa4e5765e5eccd92c5528b3",
+      "bounds_px": [
+        1660,
+        400,
+        1704,
+        445
+      ],
+      "frame_index": 1,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "pixel_sha256": "ec1bfd15dfec560775558bd963420678ee5820372aa4e5765e5eccd92c5528b3",
+      "bounds_px": [
+        1500,
+        500,
+        1544,
+        545
+      ],
+      "frame_index": 1,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "pixel_sha256": "ec1bfd15dfec560775558bd963420678ee5820372aa4e5765e5eccd92c5528b3",
+      "bounds_px": [
+        1580,
+        500,
+        1624,
+        545
+      ],
+      "frame_index": 1,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "pixel_sha256": "ec1bfd15dfec560775558bd963420678ee5820372aa4e5765e5eccd92c5528b3",
+      "bounds_px": [
+        1660,
+        500,
+        1704,
+        545
+      ],
+      "frame_index": 1,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "pixel_sha256": "67e1b57e641a2c0a639a455498a7be19030c6784008d4b75f4421bd275a9877d",
+      "bounds_px": [
+        1500,
+        300,
+        1544,
+        345
+      ],
+      "frame_index": 14,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "pixel_sha256": "67e1b57e641a2c0a639a455498a7be19030c6784008d4b75f4421bd275a9877d",
+      "bounds_px": [
+        1580,
+        300,
+        1624,
+        345
+      ],
+      "frame_index": 14,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_digit_layout_inconsistent"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_digit_layout_inconsistent"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "pixel_sha256": "67e1b57e641a2c0a639a455498a7be19030c6784008d4b75f4421bd275a9877d",
+      "bounds_px": [
+        1660,
+        300,
+        1704,
+        345
+      ],
+      "frame_index": 14,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "pixel_sha256": "67e1b57e641a2c0a639a455498a7be19030c6784008d4b75f4421bd275a9877d",
+      "bounds_px": [
+        1500,
+        400,
+        1544,
+        445
+      ],
+      "frame_index": 14,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "pixel_sha256": "67e1b57e641a2c0a639a455498a7be19030c6784008d4b75f4421bd275a9877d",
+      "bounds_px": [
+        1580,
+        400,
+        1624,
+        445
+      ],
+      "frame_index": 14,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "pixel_sha256": "67e1b57e641a2c0a639a455498a7be19030c6784008d4b75f4421bd275a9877d",
+      "bounds_px": [
+        1660,
+        400,
+        1704,
+        445
+      ],
+      "frame_index": 14,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "pixel_sha256": "67e1b57e641a2c0a639a455498a7be19030c6784008d4b75f4421bd275a9877d",
+      "bounds_px": [
+        1500,
+        500,
+        1544,
+        545
+      ],
+      "frame_index": 14,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "pixel_sha256": "67e1b57e641a2c0a639a455498a7be19030c6784008d4b75f4421bd275a9877d",
+      "bounds_px": [
+        1580,
+        500,
+        1624,
+        545
+      ],
+      "frame_index": 14,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "pixel_sha256": "67e1b57e641a2c0a639a455498a7be19030c6784008d4b75f4421bd275a9877d",
+      "bounds_px": [
+        1660,
+        500,
+        1704,
+        545
+      ],
+      "frame_index": 14,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "pixel_sha256": "e6f2a1c27f5ec9560cf827c7889b647feb1fcd03abe72c4cb8bdb7c312923fcc",
+      "bounds_px": [
+        1500,
+        300,
+        1544,
+        345
+      ],
+      "frame_index": 27,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "pixel_sha256": "e6f2a1c27f5ec9560cf827c7889b647feb1fcd03abe72c4cb8bdb7c312923fcc",
+      "bounds_px": [
+        1580,
+        300,
+        1624,
+        345
+      ],
+      "frame_index": 27,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "pixel_sha256": "e6f2a1c27f5ec9560cf827c7889b647feb1fcd03abe72c4cb8bdb7c312923fcc",
+      "bounds_px": [
+        1660,
+        300,
+        1704,
+        345
+      ],
+      "frame_index": 27,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_glyph_below_0_90"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_glyph_below_0_90"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "pixel_sha256": "e6f2a1c27f5ec9560cf827c7889b647feb1fcd03abe72c4cb8bdb7c312923fcc",
+      "bounds_px": [
+        1500,
+        400,
+        1544,
+        445
+      ],
+      "frame_index": 27,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "pixel_sha256": "e6f2a1c27f5ec9560cf827c7889b647feb1fcd03abe72c4cb8bdb7c312923fcc",
+      "bounds_px": [
+        1580,
+        400,
+        1624,
+        445
+      ],
+      "frame_index": 27,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "pixel_sha256": "e6f2a1c27f5ec9560cf827c7889b647feb1fcd03abe72c4cb8bdb7c312923fcc",
+      "bounds_px": [
+        1660,
+        400,
+        1704,
+        445
+      ],
+      "frame_index": 27,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "pixel_sha256": "e6f2a1c27f5ec9560cf827c7889b647feb1fcd03abe72c4cb8bdb7c312923fcc",
+      "bounds_px": [
+        1500,
+        500,
+        1544,
+        545
+      ],
+      "frame_index": 27,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "pixel_sha256": "e6f2a1c27f5ec9560cf827c7889b647feb1fcd03abe72c4cb8bdb7c312923fcc",
+      "bounds_px": [
+        1580,
+        500,
+        1624,
+        545
+      ],
+      "frame_index": 27,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "pixel_sha256": "e6f2a1c27f5ec9560cf827c7889b647feb1fcd03abe72c4cb8bdb7c312923fcc",
+      "bounds_px": [
+        1660,
+        500,
+        1704,
+        545
+      ],
+      "frame_index": 27,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "pixel_sha256": "ec1bfd15dfec560775558bd963420678ee5820372aa4e5765e5eccd92c5528b3",
+      "bounds_px": [
+        500,
+        150,
+        544,
+        195
+      ],
+      "frame_index": 1,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "pixel_sha256": "ec1bfd15dfec560775558bd963420678ee5820372aa4e5765e5eccd92c5528b3",
+      "bounds_px": [
+        700,
+        150,
+        744,
+        195
+      ],
+      "frame_index": 1,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "pixel_sha256": "ec1bfd15dfec560775558bd963420678ee5820372aa4e5765e5eccd92c5528b3",
+      "bounds_px": [
+        900,
+        150,
+        944,
+        195
+      ],
+      "frame_index": 1,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "pixel_sha256": "ec1bfd15dfec560775558bd963420678ee5820372aa4e5765e5eccd92c5528b3",
+      "bounds_px": [
+        500,
+        250,
+        544,
+        295
+      ],
+      "frame_index": 1,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "pixel_sha256": "ec1bfd15dfec560775558bd963420678ee5820372aa4e5765e5eccd92c5528b3",
+      "bounds_px": [
+        700,
+        250,
+        744,
+        295
+      ],
+      "frame_index": 1,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "pixel_sha256": "ec1bfd15dfec560775558bd963420678ee5820372aa4e5765e5eccd92c5528b3",
+      "bounds_px": [
+        900,
+        250,
+        944,
+        295
+      ],
+      "frame_index": 1,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "pixel_sha256": "ec1bfd15dfec560775558bd963420678ee5820372aa4e5765e5eccd92c5528b3",
+      "bounds_px": [
+        500,
+        350,
+        544,
+        395
+      ],
+      "frame_index": 1,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "pixel_sha256": "ec1bfd15dfec560775558bd963420678ee5820372aa4e5765e5eccd92c5528b3",
+      "bounds_px": [
+        700,
+        350,
+        744,
+        395
+      ],
+      "frame_index": 1,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "pixel_sha256": "ec1bfd15dfec560775558bd963420678ee5820372aa4e5765e5eccd92c5528b3",
+      "bounds_px": [
+        900,
+        350,
+        944,
+        395
+      ],
+      "frame_index": 1,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "pixel_sha256": "67e1b57e641a2c0a639a455498a7be19030c6784008d4b75f4421bd275a9877d",
+      "bounds_px": [
+        500,
+        150,
+        544,
+        195
+      ],
+      "frame_index": 14,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "pixel_sha256": "67e1b57e641a2c0a639a455498a7be19030c6784008d4b75f4421bd275a9877d",
+      "bounds_px": [
+        700,
+        150,
+        744,
+        195
+      ],
+      "frame_index": 14,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "pixel_sha256": "67e1b57e641a2c0a639a455498a7be19030c6784008d4b75f4421bd275a9877d",
+      "bounds_px": [
+        900,
+        150,
+        944,
+        195
+      ],
+      "frame_index": 14,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "pixel_sha256": "67e1b57e641a2c0a639a455498a7be19030c6784008d4b75f4421bd275a9877d",
+      "bounds_px": [
+        500,
+        250,
+        544,
+        295
+      ],
+      "frame_index": 14,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "pixel_sha256": "67e1b57e641a2c0a639a455498a7be19030c6784008d4b75f4421bd275a9877d",
+      "bounds_px": [
+        700,
+        250,
+        744,
+        295
+      ],
+      "frame_index": 14,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "pixel_sha256": "67e1b57e641a2c0a639a455498a7be19030c6784008d4b75f4421bd275a9877d",
+      "bounds_px": [
+        900,
+        250,
+        944,
+        295
+      ],
+      "frame_index": 14,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_glyph_below_0_90"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_glyph_below_0_90"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "pixel_sha256": "67e1b57e641a2c0a639a455498a7be19030c6784008d4b75f4421bd275a9877d",
+      "bounds_px": [
+        500,
+        350,
+        544,
+        395
+      ],
+      "frame_index": 14,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "pixel_sha256": "67e1b57e641a2c0a639a455498a7be19030c6784008d4b75f4421bd275a9877d",
+      "bounds_px": [
+        700,
+        350,
+        744,
+        395
+      ],
+      "frame_index": 14,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "pixel_sha256": "67e1b57e641a2c0a639a455498a7be19030c6784008d4b75f4421bd275a9877d",
+      "bounds_px": [
+        900,
+        350,
+        944,
+        395
+      ],
+      "frame_index": 14,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "pixel_sha256": "e6f2a1c27f5ec9560cf827c7889b647feb1fcd03abe72c4cb8bdb7c312923fcc",
+      "bounds_px": [
+        500,
+        150,
+        544,
+        195
+      ],
+      "frame_index": 27,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "pixel_sha256": "e6f2a1c27f5ec9560cf827c7889b647feb1fcd03abe72c4cb8bdb7c312923fcc",
+      "bounds_px": [
+        700,
+        150,
+        744,
+        195
+      ],
+      "frame_index": 27,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "pixel_sha256": "e6f2a1c27f5ec9560cf827c7889b647feb1fcd03abe72c4cb8bdb7c312923fcc",
+      "bounds_px": [
+        900,
+        150,
+        944,
+        195
+      ],
+      "frame_index": 27,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "pixel_sha256": "e6f2a1c27f5ec9560cf827c7889b647feb1fcd03abe72c4cb8bdb7c312923fcc",
+      "bounds_px": [
+        500,
+        250,
+        544,
+        295
+      ],
+      "frame_index": 27,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "pixel_sha256": "e6f2a1c27f5ec9560cf827c7889b647feb1fcd03abe72c4cb8bdb7c312923fcc",
+      "bounds_px": [
+        700,
+        250,
+        744,
+        295
+      ],
+      "frame_index": 27,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "pixel_sha256": "e6f2a1c27f5ec9560cf827c7889b647feb1fcd03abe72c4cb8bdb7c312923fcc",
+      "bounds_px": [
+        900,
+        250,
+        944,
+        295
+      ],
+      "frame_index": 27,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "pixel_sha256": "e6f2a1c27f5ec9560cf827c7889b647feb1fcd03abe72c4cb8bdb7c312923fcc",
+      "bounds_px": [
+        500,
+        350,
+        544,
+        395
+      ],
+      "frame_index": 27,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "pixel_sha256": "e6f2a1c27f5ec9560cf827c7889b647feb1fcd03abe72c4cb8bdb7c312923fcc",
+      "bounds_px": [
+        700,
+        350,
+        744,
+        395
+      ],
+      "frame_index": 27,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "pixel_sha256": "e6f2a1c27f5ec9560cf827c7889b647feb1fcd03abe72c4cb8bdb7c312923fcc",
+      "bounds_px": [
+        900,
+        350,
+        944,
+        395
+      ],
+      "frame_index": 27,
+      "readings": {
+        "ally_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "enemy_score": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    }
+  ],
+  "wall_clock_sec": 7.084986457019113,
+  "previous": {
+    "unknown": 54
+  },
+  "delta_per_role": {
+    "ally_score": {
+      "unknown": 0,
+      "false_accept": 0
+    },
+    "enemy_score": {
+      "unknown": 0,
+      "false_accept": 0
+    }
+  },
+  "natural_nominal_field_absence_verified": false,
+  "independent_new_holdout": false,
+  "qualification_created": false,
+  "production_changed": false,
+  "canonical_current": null,
+  "canonical_delta": null
+}

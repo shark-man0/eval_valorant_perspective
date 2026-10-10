@@ -229,6 +229,9 @@ def parser() -> argparse.ArgumentParser:
     )
     p.add_argument("--mode", choices=("targeted", "sampled", "full"), default="full")
     p.add_argument("--frame-suite")
+    p.add_argument("--native-png-budget", type=int)
+    p.add_argument("--scene-reference-profile")
+    p.add_argument("--unedited-input-contract")
     p.add_argument("--category", action="append", default=[])
     p.add_argument("--previous", help="Comparable previous run directory or runtime_summary.json")
     p.add_argument("--cache-dir", default="outputs/e2e_cache")
@@ -238,6 +241,15 @@ def parser() -> argparse.ArgumentParser:
 def run_case(args, *, root=APP_ROOT, runner=subprocess.run, probe=None) -> int:
     from scripts.e2e.run_metrics import FullRunLock
 
+    budget = getattr(args, "native_png_budget", None)
+    scene = getattr(args, "scene_reference_profile", None)
+    assurance = getattr(args, "unedited_input_contract", None)
+    if (budget is not None or scene or assurance) and (
+        getattr(args, "mode", "full") != "full"
+        or type(budget) is not int or budget <= 0 or not (scene or assurance)
+        or bool(scene and assurance)
+    ):
+        raise CaseError("NATIVE_LIFECYCLE_REQUIRES_FULL_SOURCE_BUDGET_AND_SCENE_PROFILE")
     if getattr(args, "mode", "full") == "full":
         if getattr(args, "frame_suite", None) or getattr(args, "category", []):
             raise CaseError("BOUNDED_OPTIONS_REQUIRE_BOUNDED_MODE")
@@ -390,7 +402,27 @@ def _run_case(args, *, root=APP_ROOT, runner=subprocess.run, probe=None) -> int:
             "--ffprobe-bin",
             args.ffprobe_bin,
         ]
-        settings = {}
+        native_settings = {}
+        if getattr(args, "native_png_budget", None) is not None:
+            native_settings = {"native_png_budget": args.native_png_budget}
+            cmd.extend(["--native-png-budget", str(args.native_png_budget)])
+            if getattr(args, "unedited_input_contract", None):
+                from valorant_ai_coach.hud.unedited_input import UneditedInputContract
+
+                contract_path = native_path(args.unedited_input_contract, root)
+                native_settings["unedited_input_contract"] = UneditedInputContract.load(
+                    contract_path, source_video_sha256=digest,
+                ).fingerprint
+                cmd.extend(["--unedited-input-contract", str(contract_path)])
+            else:
+                from valorant_ai_coach.hud.scene_source_binding import SceneSourceBinding
+
+                scene_path = native_path(args.scene_reference_profile, root)
+                native_settings["scene_source_binding"] = SceneSourceBinding.load(
+                    scene_path,
+                ).fingerprint()
+                cmd.extend(["--scene-reference-profile", str(scene_path)])
+        settings = dict(native_settings)
         for option in ("hud_layout", "visual_profile", "manual_map_id", "map_client_build"):
             value = getattr(args, option)
             if value:
@@ -516,7 +548,15 @@ def _run_case(args, *, root=APP_ROOT, runner=subprocess.run, probe=None) -> int:
             raise CaseError("INPUT_OR_CODE_CHANGED_DURING_RUN")
         if pack_identity(pack)[1] != pack_hash:
             raise CaseError("VALIDATION_PACK_CHANGED_DURING_RUN")
-        current_settings = {}
+        current_settings = dict(native_settings)
+        if "unedited_input_contract" in native_settings:
+            current_settings["unedited_input_contract"] = UneditedInputContract.load(
+                contract_path, source_video_sha256=digest,
+            ).fingerprint
+        if "scene_source_binding" in native_settings:
+            current_settings["scene_source_binding"] = (
+                SceneSourceBinding.load(scene_path).fingerprint()
+            )
         for option in ("hud_layout", "visual_profile", "manual_map_id", "map_client_build"):
             value = getattr(args, option)
             if value:

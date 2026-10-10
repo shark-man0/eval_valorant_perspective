@@ -1,0 +1,154 @@
+{
+  "scope": "same observed correspondences, competing motion model diagnostics; not continuity qualification",
+  "source_report_sha256": "b7beedc14867747a711765ddccfd06f045cc54b1b15873852e0bc0a6dad6b3c2",
+  "source_pts_ticks": 64809,
+  "fit_parameters": {
+    "method": "RANSAC",
+    "reprojection_threshold_canonical_px": 2,
+    "rng_seed": 0,
+    "opencv": "4.14.0",
+    "acceptance_ratio_unchanged": 0.9
+  },
+  "model_comparisons": {
+    "seed_partial": {
+      "matrix": [
+        [
+          0.9594360764741232,
+          -0.0018609477944800785,
+          16.69792897243569
+        ],
+        [
+          0.0018609477944800785,
+          0.9594360764741232,
+          10.536823706058293
+        ]
+      ],
+      "inliers": 52,
+      "candidates": 58,
+      "inlier_ratio": 0.896551724137931,
+      "residual_p50": 0.5572115489700138,
+      "residual_p90": 1.5224041245560072,
+      "residual_max": 2.035262627803387,
+      "regions": {
+        "1": {
+          "candidates": 3,
+          "inliers": 3
+        },
+        "2": {
+          "candidates": 34,
+          "inliers": 28
+        },
+        "5": {
+          "candidates": 21,
+          "inliers": 21
+        }
+      }
+    },
+    "seed_full": {
+      "matrix": [
+        [
+          0.9627644171363218,
+          0.0174940423931986,
+          12.000846953949742
+        ],
+        [
+          0.00421928949671997,
+          0.9787345014509221,
+          6.109984535512371
+        ]
+      ],
+      "inliers": 47,
+      "candidates": 58,
+      "inlier_ratio": 0.8103448275862069,
+      "residual_p50": 0.3884304392158725,
+      "residual_p90": 1.620340504907626,
+      "residual_max": 2.8735809145216518,
+      "regions": {
+        "1": {
+          "candidates": 3,
+          "inliers": 2
+        },
+        "2": {
+          "candidates": 34,
+          "inliers": 24
+        },
+        "5": {
+          "candidates": 21,
+          "inliers": 21
+        }
+      }
+    },
+    "previous_partial": {
+      "matrix": [
+        [
+          0.9968696185447935,
+          2.1778495735471892e-05,
+          1.1617361694534667
+        ],
+        [
+          -2.1778495735471892e-05,
+          0.9968696185447935,
+          0.45769834691151895
+        ]
+      ],
+      "inliers": 58,
+      "candidates": 58,
+      "inlier_ratio": 1.0,
+      "residual_p50": 0.10048469640733729,
+      "residual_p90": 0.20913074250321284,
+      "residual_max": 0.3220808967773778,
+      "regions": {
+        "1": {
+          "candidates": 3,
+          "inliers": 3
+        },
+        "2": {
+          "candidates": 34,
+          "inliers": 34
+        },
+        "5": {
+          "candidates": 21,
+          "inliers": 21
+        }
+      }
+    },
+    "previous_full": {
+      "matrix": [
+        [
+          0.9969908105955033,
+          0.0008401759248221272,
+          0.9765950947027893
+        ],
+        [
+          0.0001274667220950779,
+          0.9980342809874642,
+          0.18593399812022832
+        ]
+      ],
+      "inliers": 56,
+      "candidates": 58,
+      "inlier_ratio": 0.9655172413793104,
+      "residual_p50": 0.0949474039277155,
+      "residual_p90": 0.18929681658843425,
+      "residual_max": 0.29883421339763344,
+      "regions": {
+        "1": {
+          "candidates": 3,
+          "inliers": 1
+        },
+        "2": {
+          "candidates": 34,
+          "inliers": 34
+        },
+        "5": {
+          "candidates": 21,
+          "inliers": 21
+        }
+      }
+    }
+  },
+  "runtime_behavior_changed": false,
+  "qualification_created": false,
+  "canonical_current": null,
+  "canonical_delta": null
+}
