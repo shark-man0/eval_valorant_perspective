@@ -202,11 +202,14 @@ class DeterministicRuleEngine:
 
     @staticmethod
     def _confidence(fact: Any) -> float:
-        try:
-            value = float(DeterministicRuleEngine._get(fact, "confidence"))
-        except (TypeError, ValueError):
-            return float("-inf")
-        return value if math.isfinite(value) else float("-inf")
+        """A real, finite number, otherwise ``-inf`` (never "confident").
+
+        ``float()`` would accept ``True`` (1.0) and numeric strings, turning an undefined or
+        malformed confidence into a high one. Only genuine int/float values count, which is
+        the same rule ``_number`` applies to fact values.
+        """
+        number = DeterministicRuleEngine._number(DeterministicRuleEngine._get(fact, "confidence"))
+        return float("-inf") if number is None else number
 
     @staticmethod
     def _fact_refs(facts: list[Any]) -> tuple[str, ...]:
