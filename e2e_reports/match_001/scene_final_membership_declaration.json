@@ -1,0 +1,24 @@
+{
+  "scope": "Explicit diagnostic membership alternative, not production adoption",
+  "target_assertion_ids": [
+    "GT-R1-ROUND-START"
+  ],
+  "hypothesis": "RANSAC mask from before final refinement loses valid final-model support",
+  "seed_membership": "symmetric_final",
+  "motion_model": "Original similarity fit unchanged",
+  "original_ransac_fraction_floor": 0.9,
+  "additional_final_residual_fraction_floor": 0.9,
+  "forward_and_inverse_residual_floor_canonical_px": 2,
+  "minimum_seed_regions": 3,
+  "ncc_floor": 0.9,
+  "dense_footprint": "full_valid",
+  "population": "Existing30-frame development native R1 archive",
+  "no_reseeding": true,
+  "qualification_created": false,
+  "new_runtime_events": 0,
+  "file_sha256": {
+    "scripts/diagnostics/scene_world_chain.py": "90687fee878a7305226f133ab1112e74ac224ff08f7be8a08d5618cf88c55f42",
+    "scripts/diagnostics/probe_scene_world_chain.py": "5f77f2e3119e6bafa6bd813f1399d57b04380cf5b48d8acd26a14bb0124ae121",
+    "scripts/diagnostics/scene_camera_model_audit.py": "3317161149f0739577b92003b612e80d9a4cc0a9cc337290ccd47bfaec657195"
+  }
+}

@@ -116,3 +116,27 @@ def test_projective_translation_keeps_same_crop_exclusion_and_validity():
         excluded[y1:y2, x1:x2] = False
     source[excluded], target[excluded] = 0, 255
     assert measure_reference_support(source, target, BOXES, model_family="homography") == measured
+
+
+@pytest.mark.parametrize("target_kind", ["motion", "replacement", "constant"])
+def test_rejection_counts_partition_source_features_without_changing_decisions(target_kind):
+    source = scene()
+    if target_kind == "motion":
+        target = translated(source)
+    elif target_kind == "replacement":
+        target = np.random.default_rng(72).integers(0, 256, source.shape, dtype=np.uint8)
+    else:
+        source = np.zeros_like(source)
+        target = source.copy()
+    original = measure_reference_support(source, target, BOXES)
+    stages = []
+    assert measure_reference_support(source, target, BOXES, rejection_sink=stages) == original
+    assert len(stages) == len(BOXES)
+    for region, counts in enumerate(stages):
+        assert counts["region"] == region
+        assert counts["source_features"] == sum(
+            value for key, value in counts.items() if key not in {"region", "source_features"}
+        )
+    assert sum(row["accepted"] for row in stages) == original["accepted_reference_tracks"]
+    if target_kind == "constant":
+        assert all(row["source_features"] == 0 for row in stages)

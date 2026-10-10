@@ -22,6 +22,22 @@ SOURCE_HASH = hashlib.sha256(b"source video").hexdigest()
 FINGERPRINT = hashlib.sha256(b"decoder configuration").hexdigest()
 
 
+def test_decoder_identity_survives_cache_and_rejects_foreign_source(tmp_path):
+    source = tmp_path / 'decoded.jpg'
+    source.write_bytes(b'decoder output')
+    image_hash = hashlib.sha256(source.read_bytes()).hexdigest()
+    frame = FrameSample(.036003, source, 553, '1/15360', SOURCE_HASH, image_hash)
+    cache = DecodedFrameCache(tmp_path / 'cache', SOURCE_HASH, FINGERPRINT)
+    stored = cache.put(frame)
+    fetched = cache.get(frame.time_sec)
+    assert fetched == stored
+    assert fetched.source_pts_ticks == 553
+    assert fetched.source_image_sha256 == image_hash
+    foreign = FrameSample(.036003, source, 553, '1/15360', 'b' * 64, image_hash)
+    with pytest.raises(ValueError, match='binding mismatch'):
+        cache.put(foreign)
+
+
 def test_put_and_get_preserve_exact_asset_bytes_and_exact_timestamp(tmp_path: Path) -> None:
     original_bytes = b"jpeg bytes from the decoder\x00"
     source = tmp_path / "decoded.jpg"

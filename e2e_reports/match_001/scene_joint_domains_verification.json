@@ -1,0 +1,21 @@
+{
+  "git_head": "80d0d460b8e3a76d3c181e035c72cd10026f4252",
+  "focused_tests": "12 passed in2.58seconds",
+  "ruff": "PASS src tests scripts/e2e and both diagnostics",
+  "mypy_previous_unchanged_source": "PASS104files",
+  "real_default_equivalence_links": 5,
+  "assertions": 82,
+  "assertion_rows_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776",
+  "production_changed": false,
+  "artifact_sha256": {
+    "scripts/diagnostics/scene_joint_domains.py": "2046cede2304b9493abc5f9ba06cbcfbe820a67f245a6e42cbd0aff5a5f45d34",
+    "scripts/diagnostics/scene_domain_ambiguity.py": "eea017aa98bd16051f4e0f3f5b4cebd84a5ae33eb8b538be2d25a6106479ad23",
+    "tests/unit/test_scene_joint_domains.py": "0cd72f8b61d9328dcf29f6a85ef9b1fbaa61e0f4ac35cbc45176be5203c71c28",
+    "docs/scene_joint_domains_investigation.md": "01550ff6b7845d553a1bc819a275324d7c50aaa93d36169fffc782365868c7a5",
+    "e2e_reports/match_001/scene_joint_domains_declaration.json": "9115d054f178ef6ced15b2f86285cb45a3ad701c62c2f705eff6e5ab5fcb93b9",
+    "e2e_reports/match_001/scene_joint_domains_development.json": "b1021d7599920427c0f393aad5157ac9907cb98a316b7fc9f338eb2b53008ec2"
+  },
+  "qualification_created": false,
+  "full_e2e_run": false,
+  "canonical_current": null
+}

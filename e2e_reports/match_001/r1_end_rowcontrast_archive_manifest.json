@@ -1,0 +1,127 @@
+{
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "source_frames": [
+    {
+      "source_pts_ticks": 1142313,
+      "time_base": "1/15360",
+      "pts_sec": 74.3693359375,
+      "frame_sha256": "877b720fa9b180a3d9f77478b7f43bf2a25e8f274ca559fa70af2d0df1957604",
+      "manual_review": {
+        "team_ace_banner_visible": false,
+        "timer_display": "0:29",
+        "score_display": "0-1"
+      },
+      "role": "manual diagnostic source review only; no runtime signal or new validation GT"
+    },
+    {
+      "source_pts_ticks": 1142569,
+      "time_base": "1/15360",
+      "pts_sec": 74.38600260416666,
+      "frame_sha256": "683a5fea89d6b2e551ff33d3d7ae7eef6c824a68045f28b1aa0ca2d21ac38db4",
+      "manual_review": {
+        "team_ace_banner_visible": false,
+        "timer_display": "0:29",
+        "score_display": "0-1"
+      },
+      "role": "manual diagnostic source review only; no runtime signal or new validation GT"
+    },
+    {
+      "source_pts_ticks": 1142825,
+      "time_base": "1/15360",
+      "pts_sec": 74.40266927083333,
+      "frame_sha256": "022acf8c07e77b79aee8ac5c65018cae6ae803508ef610dff7bf366c5b3d4dbe",
+      "manual_review": {
+        "team_ace_banner_visible": false,
+        "timer_display": "0:29",
+        "score_display": "0-1"
+      },
+      "role": "manual diagnostic source review only; no runtime signal or new validation GT"
+    },
+    {
+      "source_pts_ticks": 1143081,
+      "time_base": "1/15360",
+      "pts_sec": 74.4193359375,
+      "frame_sha256": "9f941a254c40b4fab11dd375653ba7622b37ac630f553c7f5de879a71edd3314",
+      "manual_review": {
+        "team_ace_banner_visible": false,
+        "timer_display": "0:29",
+        "score_display": "0-1"
+      },
+      "role": "manual diagnostic source review only; no runtime signal or new validation GT"
+    },
+    {
+      "source_pts_ticks": 1143337,
+      "time_base": "1/15360",
+      "pts_sec": 74.43600260416666,
+      "frame_sha256": "8dba92b8ce2af487a45d04d182d2f35a1406518b60d1fa4c09e0ef4f1130d942",
+      "manual_review": {
+        "team_ace_banner_visible": true,
+        "timer_display": "0:29",
+        "score_display": "0-1"
+      },
+      "role": "manual diagnostic source review only; no runtime signal or new validation GT"
+    },
+    {
+      "source_pts_ticks": 1143593,
+      "time_base": "1/15360",
+      "pts_sec": 74.45266927083334,
+      "frame_sha256": "7ed7df9c55a483ae454b00bbaa7ace857879444d9d5502ce6340da109fa8fd8b",
+      "manual_review": {
+        "team_ace_banner_visible": false,
+        "timer_display": "0:06",
+        "score_display": "0-1"
+      },
+      "role": "manual diagnostic source review only; no runtime signal or new validation GT"
+    },
+    {
+      "source_pts_ticks": 1143849,
+      "time_base": "1/15360",
+      "pts_sec": 74.4693359375,
+      "frame_sha256": "e61922fa0e000c6506c6c65da008fc4a42d6dc9f62a6f9b992d6f3d521a04d16",
+      "manual_review": {
+        "team_ace_banner_visible": false,
+        "timer_display": "0:06",
+        "score_display": "0-1"
+      },
+      "role": "manual diagnostic source review only; no runtime signal or new validation GT"
+    },
+    {
+      "source_pts_ticks": 1144105,
+      "time_base": "1/15360",
+      "pts_sec": 74.48600260416667,
+      "frame_sha256": "ee73d20c37b73e0ddd5f807a3a4c89d75ddcba39e1ce01f86ccb74d645ba74de",
+      "manual_review": {
+        "team_ace_banner_visible": false,
+        "timer_display": "0:06",
+        "score_display": "0-2"
+      },
+      "role": "manual diagnostic source review only; no runtime signal or new validation GT"
+    },
+    {
+      "source_pts_ticks": 1144361,
+      "time_base": "1/15360",
+      "pts_sec": 74.50266927083334,
+      "frame_sha256": "1bddd849bd6ed81c98c849e2eafa70de9fbb453a3a8e29a1a1aec2b67340f86d",
+      "manual_review": {
+        "team_ace_banner_visible": false,
+        "timer_display": "0:06",
+        "score_display": "0-2"
+      },
+      "role": "manual diagnostic source review only; no runtime signal or new validation GT"
+    },
+    {
+      "source_pts_ticks": 1144617,
+      "time_base": "1/15360",
+      "pts_sec": 74.5193359375,
+      "frame_sha256": "42ef4b551abd79737a566de59ec15ad5112da63af17510618722d66bcfd6e43a",
+      "manual_review": {
+        "team_ace_banner_visible": false,
+        "timer_display": "0:06",
+        "score_display": "0-2"
+      },
+      "role": "manual diagnostic source review only; no runtime signal or new validation GT"
+    }
+  ],
+  "scope": "Existing all10native end frames; opt-in current-profile replay, no labels in recognizer",
+  "parent_sha256": "d2570bfbb914fa74beb44cce1b6d5362a6cff0506d10a6b2e7c602df5353927b"
+}

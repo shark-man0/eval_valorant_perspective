@@ -1,0 +1,17 @@
+{
+  "git_head": "80d0d460b8e3a76d3c181e035c72cd10026f4252",
+  "focused_tests": "4 passed in1.05seconds",
+  "assertions": 82,
+  "assertion_rows_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776",
+  "production_changed": false,
+  "source_code_terminal_verified": true,
+  "artifact_sha256": {
+    "scripts/diagnostics/scene_domain_ambiguity.py": "faf76d8e5fa5d7e178e518a5d7176c21ca0e4dba67074d92a11ca1cd76c1363b",
+    "tests/unit/test_scene_domain_ambiguity.py": "56c27e6b6badac710bf0a81ca48d4a11d9c6acf530310bf5c59c6864698a1029",
+    "docs/scene_domain_ambiguity_investigation.md": "1ed225fa6c9137d49d028d1b0ca7e56f9ca2aa5df489c5dd8b55c42f4c9ddfa9",
+    "e2e_reports/match_001/scene_domain_ambiguity_declaration.json": "3c21d2d956b940bf501c612e4c4a217115cfd7f7081976ee511de9b96c10c5bd",
+    "e2e_reports/match_001/scene_domain_ambiguity_development.json": "500d4a784907e8aadd914323e57b4f81e19f96a734e83410489dc969987d6ab2"
+  },
+  "qualification_created": false,
+  "canonical_current": null
+}

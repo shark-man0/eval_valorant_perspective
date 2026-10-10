@@ -1,0 +1,21 @@
+{
+  "scope": "Fixed new native active-context negative check; same video, no exhaustive historical exposure proof",
+  "window_sec": [
+    130.0,
+    131.2
+  ],
+  "selection": "Fixed late context lasting1.2seconds >1second hypothesis budget, no source image or expected value used",
+  "known_saved_native_ranges_overlap": false,
+  "exhaustive_training_separation": false,
+  "training_hypothesis_modified": false,
+  "input_sha256": {
+    "scripts/diagnostics/pending_end_contract.py": "d14953c7ef03a66076170bec6983224261cdc0db31b0c51df37ee711d378f553",
+    "scripts/diagnostics/probe_native_end_inputs.py": "813ef2e919fcfb348736e9bdde2b85cf28101afe5ad95590fc0946d90c32ead2",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/score-rowcontrast-late-result-diagnostic.templates.json": "8f0f0edf31972fc11d8b2397b545afb51016efafa4b5b1fecf522f21a45cd797",
+    "e2e_reports/match_001/native_exposure_before_numeric_holdout.json": "d4914f6262ab493f22ba4c2913482c22a9de0efb91a5854cb192322fc82ff867"
+  },
+  "native_max_png_bytes": 500000000,
+  "qualification_created": false,
+  "canonical_current": null,
+  "canonical_delta": null
+}

@@ -1,0 +1,248 @@
+{
+  "scope": "Passive stage counts; exposed, no qualification",
+  "rows": [
+    {
+      "image": "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/arch_context.png",
+      "stages": [
+        {
+          "region": 0,
+          "source_features": 39,
+          "forward_unavailable": 0,
+          "reverse_unavailable": 0,
+          "invalid_flow": 0,
+          "forward_backward_rejected": 0,
+          "patch_outside_crop": 16,
+          "texture_unavailable": 0,
+          "patch_ncc_rejected": 0,
+          "accepted": 23
+        },
+        {
+          "region": 1,
+          "source_features": 72,
+          "forward_unavailable": 0,
+          "reverse_unavailable": 0,
+          "invalid_flow": 1,
+          "forward_backward_rejected": 0,
+          "patch_outside_crop": 25,
+          "texture_unavailable": 0,
+          "patch_ncc_rejected": 0,
+          "accepted": 46
+        },
+        {
+          "region": 2,
+          "source_features": 25,
+          "forward_unavailable": 0,
+          "reverse_unavailable": 0,
+          "invalid_flow": 0,
+          "forward_backward_rejected": 0,
+          "patch_outside_crop": 16,
+          "texture_unavailable": 0,
+          "patch_ncc_rejected": 0,
+          "accepted": 9
+        }
+      ],
+      "totals": {
+        "source_features": 136,
+        "forward_unavailable": 0,
+        "reverse_unavailable": 0,
+        "invalid_flow": 1,
+        "forward_backward_rejected": 0,
+        "patch_outside_crop": 57,
+        "texture_unavailable": 0,
+        "patch_ncc_rejected": 0,
+        "accepted": 78
+      },
+      "metrics": {
+        "regions": [
+          {
+            "region": 0,
+            "model_scope": "global",
+            "region_reference_tracks": 23,
+            "warp_model": [
+              [
+                1.0,
+                -0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ]
+            ],
+            "ncc": 1.0,
+            "valid_pixels": 1568,
+            "interior_valid_fraction": 1.0,
+            "reference_supported_descriptive": true
+          },
+          {
+            "region": 1,
+            "model_scope": "global",
+            "region_reference_tracks": 46,
+            "warp_model": [
+              [
+                1.0,
+                -0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ]
+            ],
+            "ncc": 0.9999999999999998,
+            "valid_pixels": 3626,
+            "interior_valid_fraction": 1.0,
+            "reference_supported_descriptive": true
+          },
+          {
+            "region": 2,
+            "model_scope": "global",
+            "region_reference_tracks": 9,
+            "warp_model": [
+              [
+                1.0,
+                -0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ]
+            ],
+            "ncc": 0.9999999999999998,
+            "valid_pixels": 5456,
+            "interior_valid_fraction": 1.0,
+            "reference_supported_descriptive": true
+          }
+        ],
+        "accepted_reference_tracks": 78,
+        "track_regions": [
+          0,
+          1,
+          2
+        ],
+        "reference_to_current_affine": [
+          [
+            1.0,
+            -0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ]
+        ],
+        "model_inliers": 78,
+        "scope": "Reviewed reference background correspondence only; unqualified",
+        "runtime_proof_authorized": false
+      },
+      "prior_bootstrap_output_unchanged": true
+    },
+    {
+      "image": "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000001.png",
+      "stages": [
+        {
+          "region": 0,
+          "source_features": 39,
+          "forward_unavailable": 0,
+          "reverse_unavailable": 0,
+          "invalid_flow": 24,
+          "forward_backward_rejected": 15,
+          "patch_outside_crop": 0,
+          "texture_unavailable": 0,
+          "patch_ncc_rejected": 0,
+          "accepted": 0
+        },
+        {
+          "region": 1,
+          "source_features": 72,
+          "forward_unavailable": 0,
+          "reverse_unavailable": 0,
+          "invalid_flow": 72,
+          "forward_backward_rejected": 0,
+          "patch_outside_crop": 0,
+          "texture_unavailable": 0,
+          "patch_ncc_rejected": 0,
+          "accepted": 0
+        },
+        {
+          "region": 2,
+          "source_features": 25,
+          "forward_unavailable": 0,
+          "reverse_unavailable": 0,
+          "invalid_flow": 11,
+          "forward_backward_rejected": 14,
+          "patch_outside_crop": 0,
+          "texture_unavailable": 0,
+          "patch_ncc_rejected": 0,
+          "accepted": 0
+        }
+      ],
+      "totals": {
+        "source_features": 136,
+        "forward_unavailable": 0,
+        "reverse_unavailable": 0,
+        "invalid_flow": 107,
+        "forward_backward_rejected": 29,
+        "patch_outside_crop": 0,
+        "texture_unavailable": 0,
+        "patch_ncc_rejected": 0,
+        "accepted": 0
+      },
+      "metrics": {
+        "regions": [
+          {
+            "region": 0,
+            "model_scope": "global",
+            "region_reference_tracks": 0,
+            "warp_model": null,
+            "ncc": null,
+            "valid_pixels": 0,
+            "interior_valid_fraction": 0.0,
+            "reference_supported_descriptive": false
+          },
+          {
+            "region": 1,
+            "model_scope": "global",
+            "region_reference_tracks": 0,
+            "warp_model": null,
+            "ncc": null,
+            "valid_pixels": 0,
+            "interior_valid_fraction": 0.0,
+            "reference_supported_descriptive": false
+          },
+          {
+            "region": 2,
+            "model_scope": "global",
+            "region_reference_tracks": 0,
+            "warp_model": null,
+            "ncc": null,
+            "valid_pixels": 0,
+            "interior_valid_fraction": 0.0,
+            "reference_supported_descriptive": false
+          }
+        ],
+        "accepted_reference_tracks": 0,
+        "track_regions": [],
+        "reference_to_current_affine": null,
+        "model_inliers": 0,
+        "scope": "Reviewed reference background correspondence only; unqualified",
+        "runtime_proof_authorized": false
+      },
+      "prior_bootstrap_output_unchanged": true
+    }
+  ],
+  "wall_clock_sec": 1.4836410260177217,
+  "terminal_bindings": {
+    "outputs/recognition-investigation/two-scene-domain-reference-20261009/profile.json": "7c88be66b6d322f037be309ca02464c7ffd5da3236b646b7ec24d21d1f4e7ce2",
+    "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/arch_context.png": "929aab0a3f014eddff37a663241bd7fe3fcd15e0f800f7afe496b66c3d880579",
+    "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000001.png": "7178c40b9997f559b443c6e1145cffbdef9823d862d5f55c158bc9a7a5cecd6c",
+    "scripts/diagnostics/scene_reference_support.py": "aa6cec5c7ea7b10ce69c078fb2a8e2c7c794f6fa610ca3592c113d91a69751a5"
+  },
+  "qualification_created": false,
+  "production_changed": false
+}

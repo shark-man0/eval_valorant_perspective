@@ -13,7 +13,7 @@ from pathlib import Path
 
 from valorant_ai_coach.video import FrameSample
 
-_FORMAT_VERSION = 1
+_FORMAT_VERSION = 2
 _SHA256_LENGTH = 64
 
 
@@ -69,7 +69,7 @@ class DecodedFrameCache:
         self.stats = FrameCacheStats()
 
     def _key(self, pts: float) -> str:
-        data = (f"{self.source_sha256}\0{pts.hex()}\0"
+        data = (f"{_FORMAT_VERSION}\0{self.source_sha256}\0{pts.hex()}\0"
                 f"{self.preprocessing_fingerprint}").encode("ascii")
         return hashlib.sha256(data).hexdigest()
 
@@ -89,16 +89,26 @@ class DecodedFrameCache:
                 return None
             raw = metadata_path.read_bytes()
             metadata = json.loads(raw)
+            identity = metadata.get('decoder_identity') if isinstance(metadata, dict) else None
+            if not isinstance(identity, dict):
+                return None
+            frame = FrameSample(time_sec=pts, path=image_path, **identity)
+            if (frame.source_video_sha256 is not None and (
+                frame.source_video_sha256 != self.source_sha256
+                or frame.source_image_sha256 != hashlib.sha256(image_path.read_bytes()).hexdigest()
+            )):
+                return None
             expected = {
                 "format_version": _FORMAT_VERSION,
                 "source_sha256": self.source_sha256,
                 "pts_hex": pts.hex(),
                 "preprocessing_fingerprint": self.preprocessing_fingerprint,
                 "asset_sha256": hashlib.sha256(image_path.read_bytes()).hexdigest(),
+                "decoder_identity": identity,
             }
             if not isinstance(metadata, dict) or metadata != expected:
                 return None
-            return FrameSample(time_sec=pts, path=image_path)
+            return frame
         except (OSError, ValueError, TypeError, json.JSONDecodeError):
             return None
 
@@ -119,6 +129,11 @@ class DecodedFrameCache:
         if source.is_symlink() or not source.is_file():
             raise ValueError("frame path must be a regular file, not a symlink")
         payload = source.read_bytes()
+        if frame.source_video_sha256 is not None and (
+            frame.source_video_sha256 != self.source_sha256
+            or frame.source_image_sha256 != hashlib.sha256(payload).hexdigest()
+        ):
+            raise ValueError('decoder source identity/cache binding mismatch')
         key = self._key(pts)
         directory, image_path, metadata_path = self._paths(key)
         existing = self._read(pts)
@@ -132,6 +147,10 @@ class DecodedFrameCache:
             "pts_hex": pts.hex(),
             "preprocessing_fingerprint": self.preprocessing_fingerprint,
             "asset_sha256": hashlib.sha256(payload).hexdigest(),
+            "decoder_identity": {key: getattr(frame, key) for key in (
+                'source_pts_ticks', 'source_time_base',
+                'source_video_sha256', 'source_image_sha256',
+            )},
         }
         temporary: Path | None = Path(tempfile.mkdtemp(prefix=f".{key}.", dir=self.cache_dir))
         try:

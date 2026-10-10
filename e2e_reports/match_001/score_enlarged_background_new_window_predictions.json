@@ -1,0 +1,1276 @@
+{
+  "scope": "Frozen score-only nominal ROI diagnostic; no geometry/lifecycle claim",
+  "plan_sha256": "86f99fd35b0619856f721ad36d2dbff0d703cdbe66ee52d54a85193e51961cdb",
+  "rows": [
+    {
+      "source_pts_ticks": 1921577,
+      "pts_sec": 125.10266927083333,
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "source_pixel_sha256": "ec1bfd15dfec560775558bd963420678ee5820372aa4e5765e5eccd92c5528b3",
+      "readings": {
+        "ally_score": {
+          "baseline": {
+            "value": "0",
+            "confidence": 0.9556739330291748,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "0",
+            "confidence": 0.9556739330291748,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        },
+        "enemy_score": {
+          "baseline": {
+            "value": "2",
+            "confidence": 0.9587844610214233,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "2",
+            "confidence": 0.9587844610214233,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1921833,
+      "pts_sec": 125.1193359375,
+      "frame_sha256": "45cdb05bf6a2be3f98311267c13772bdf0eb7488bd3ded4b9a76d7a63b3d8c89",
+      "source_pixel_sha256": "010cecb13f956794d6bdb963d3dbd30fe4abda7155ced190a2e6502cad71dc31",
+      "readings": {
+        "ally_score": {
+          "baseline": {
+            "value": "0",
+            "confidence": 0.9556739330291748,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "0",
+            "confidence": 0.9556739330291748,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        },
+        "enemy_score": {
+          "baseline": {
+            "value": "2",
+            "confidence": 0.9587844610214233,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "2",
+            "confidence": 0.9587844610214233,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1922089,
+      "pts_sec": 125.13600260416666,
+      "frame_sha256": "0fefdd645db025f6844242beb2aff44ff778f073707acb461c0477ed2cef5a34",
+      "source_pixel_sha256": "ae4466bdd5d066d96d3e4bff4345ffbbd7b6ee22b05e25cfa2ed58aac56791a2",
+      "readings": {
+        "ally_score": {
+          "baseline": {
+            "value": "0",
+            "confidence": 0.9369543790817261,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "0",
+            "confidence": 0.9369543790817261,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        },
+        "enemy_score": {
+          "baseline": {
+            "value": "2",
+            "confidence": 0.9587844610214233,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "2",
+            "confidence": 0.9587844610214233,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1922345,
+      "pts_sec": 125.15266927083333,
+      "frame_sha256": "8820b040af52a066c03cff4c9b5df0d922711090706d1603034b29727660666a",
+      "source_pixel_sha256": "a19d1a4ad33dccaa93a6159181485419c4bbdfbabb49ffbfab3ee56edaef4797",
+      "readings": {
+        "ally_score": {
+          "baseline": {
+            "value": "0",
+            "confidence": 0.9556739330291748,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "0",
+            "confidence": 0.9556739330291748,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        },
+        "enemy_score": {
+          "baseline": {
+            "value": "2",
+            "confidence": 0.9587844610214233,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "2",
+            "confidence": 0.9587844610214233,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1922601,
+      "pts_sec": 125.1693359375,
+      "frame_sha256": "e4c91e4fadd79d4572ef0c6f50b04bab2740e8cecbacd776755246a93afdfb79",
+      "source_pixel_sha256": "f96520fc4cf5719e0a62e41da595ed497ebbe1f78437192fe9b0788a30ce325f",
+      "readings": {
+        "ally_score": {
+          "baseline": {
+            "value": "0",
+            "confidence": 0.9556739330291748,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "0",
+            "confidence": 0.9556739330291748,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        },
+        "enemy_score": {
+          "baseline": {
+            "value": "2",
+            "confidence": 0.9587844610214233,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "2",
+            "confidence": 0.9587844610214233,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1922857,
+      "pts_sec": 125.18600260416666,
+      "frame_sha256": "bf4f3b18a177e46c096c9eb45aee4634a6d055a884928b3d468851490bf9f49f",
+      "source_pixel_sha256": "69f2809ae57eb936df55d66cd17333dde125df28133c08eeaa633c36824deb23",
+      "readings": {
+        "ally_score": {
+          "baseline": {
+            "value": "0",
+            "confidence": 0.9556739330291748,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "0",
+            "confidence": 0.9556739330291748,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        },
+        "enemy_score": {
+          "baseline": {
+            "value": "2",
+            "confidence": 0.9590045809745789,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "2",
+            "confidence": 0.9590045809745789,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1923113,
+      "pts_sec": 125.20266927083334,
+      "frame_sha256": "d27f421198c2408fff7c0aa8a049c471df8ddc46f07192b01c2ffc29780d02c0",
+      "source_pixel_sha256": "415dcc8706a738b423426bcebf9a11b9f1eabf81d446e0962ba00aa598a7c642",
+      "readings": {
+        "ally_score": {
+          "baseline": {
+            "value": "0",
+            "confidence": 0.9556739330291748,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "0",
+            "confidence": 0.9556739330291748,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        },
+        "enemy_score": {
+          "baseline": {
+            "value": "2",
+            "confidence": 0.9590045809745789,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "2",
+            "confidence": 0.9590045809745789,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1923369,
+      "pts_sec": 125.2193359375,
+      "frame_sha256": "192fa21d238b2eed290af00b18da64ac04932df910fff2658c473b0f94d14b1e",
+      "source_pixel_sha256": "bae88412144a518c3800aa31966c506628a6989fdd4b9a139e92976a00d1f635",
+      "readings": {
+        "ally_score": {
+          "baseline": {
+            "value": "0",
+            "confidence": 0.9355859756469727,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "0",
+            "confidence": 0.9355859756469727,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        },
+        "enemy_score": {
+          "baseline": {
+            "value": "2",
+            "confidence": 0.9560108184814453,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "2",
+            "confidence": 0.9560108184814453,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1923625,
+      "pts_sec": 125.23600260416667,
+      "frame_sha256": "891da263e4648effd1e7363c4a5e4e3201fb3301cd9022154950cd556b4bd5e0",
+      "source_pixel_sha256": "7e942eb67471bdae3878a3a26160493c397484da199912c85c7fd5725ba903da",
+      "readings": {
+        "ally_score": {
+          "baseline": {
+            "value": "0",
+            "confidence": 0.9355859756469727,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "0",
+            "confidence": 0.9355859756469727,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        },
+        "enemy_score": {
+          "baseline": {
+            "value": "2",
+            "confidence": 0.9560108184814453,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "2",
+            "confidence": 0.9560108184814453,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1923881,
+      "pts_sec": 125.25266927083334,
+      "frame_sha256": "c4d810b83ea51ccb2c0c350ff55143356e7d44664090d5a25570b020bc0fd20f",
+      "source_pixel_sha256": "944ff213519d80e128b9daa55c63adf0957bc1b7439cfc5a18297ac741506187",
+      "readings": {
+        "ally_score": {
+          "baseline": {
+            "value": "0",
+            "confidence": 0.9369543790817261,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "0",
+            "confidence": 0.9369543790817261,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        },
+        "enemy_score": {
+          "baseline": {
+            "value": "2",
+            "confidence": 0.941910445690155,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "2",
+            "confidence": 0.941910445690155,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1924137,
+      "pts_sec": 125.2693359375,
+      "frame_sha256": "4b2c38d1db15e9fb6ddbb7e08da3f239e36c95897646bab4954cfe049abc2ee2",
+      "source_pixel_sha256": "da00161f138a1552e4d9882bef72545f807d3880f20c39e2efb27948bd43f8b8",
+      "readings": {
+        "ally_score": {
+          "baseline": {
+            "value": "0",
+            "confidence": 0.9556739330291748,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "0",
+            "confidence": 0.9556739330291748,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        },
+        "enemy_score": {
+          "baseline": {
+            "value": "2",
+            "confidence": 0.941910445690155,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "2",
+            "confidence": 0.941910445690155,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1924393,
+      "pts_sec": 125.28600260416667,
+      "frame_sha256": "55116f066075132c402f7fa3c9e8ff3e5aefec9c60194b8a2383fd5be8f3e515",
+      "source_pixel_sha256": "361236e4b4f592cbbe028efc21c20b2adcd18494cc24a4341c125d1521380443",
+      "readings": {
+        "ally_score": {
+          "baseline": {
+            "value": "0",
+            "confidence": 0.9556739330291748,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "0",
+            "confidence": 0.9556739330291748,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        },
+        "enemy_score": {
+          "baseline": {
+            "value": "2",
+            "confidence": 0.941910445690155,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "2",
+            "confidence": 0.941910445690155,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1924649,
+      "pts_sec": 125.30266927083333,
+      "frame_sha256": "278d795958d4089f6b290989ee44502fe948cf0fe71a296f08f143ee16d2aabd",
+      "source_pixel_sha256": "3aaf2ca0bd62b0ebe6e39a75717f3057fba320fefc1aa4cd307f70ac7ba1e412",
+      "readings": {
+        "ally_score": {
+          "baseline": {
+            "value": "0",
+            "confidence": 0.9556739330291748,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "0",
+            "confidence": 0.9556739330291748,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        },
+        "enemy_score": {
+          "baseline": {
+            "value": "2",
+            "confidence": 0.9409082531929016,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "2",
+            "confidence": 0.9409082531929016,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1924905,
+      "pts_sec": 125.3193359375,
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "source_pixel_sha256": "67e1b57e641a2c0a639a455498a7be19030c6784008d4b75f4421bd275a9877d",
+      "readings": {
+        "ally_score": {
+          "baseline": {
+            "value": "0",
+            "confidence": 0.9539650678634644,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "0",
+            "confidence": 0.9539650678634644,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        },
+        "enemy_score": {
+          "baseline": {
+            "value": "2",
+            "confidence": 0.9429383873939514,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "2",
+            "confidence": 0.9429383873939514,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1925161,
+      "pts_sec": 125.33600260416667,
+      "frame_sha256": "607fb705fea6d977b4bdebc5918e2d871d65dd2020975cfad15cc85f77ebfa09",
+      "source_pixel_sha256": "76bc7c18617b8856accfcb8ed9972d8c64d380b0360e2db003d53ec767c50fff",
+      "readings": {
+        "ally_score": {
+          "baseline": {
+            "value": "0",
+            "confidence": 0.9539650678634644,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "0",
+            "confidence": 0.9539650678634644,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        },
+        "enemy_score": {
+          "baseline": {
+            "value": "2",
+            "confidence": 0.9385143518447876,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "2",
+            "confidence": 0.9385143518447876,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1925417,
+      "pts_sec": 125.35266927083333,
+      "frame_sha256": "5e5ef68847af821b20b2267ada3cbfc20f73cdc9122b9effe31159c34dd0108b",
+      "source_pixel_sha256": "e80cd5f4cded383463c22150e75e26867ac0429d73b338e273715427bec2222a",
+      "readings": {
+        "ally_score": {
+          "baseline": {
+            "value": "0",
+            "confidence": 0.9535365104675293,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "0",
+            "confidence": 0.9535365104675293,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        },
+        "enemy_score": {
+          "baseline": {
+            "value": "2",
+            "confidence": 0.9499348402023315,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "2",
+            "confidence": 0.9499348402023315,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1925673,
+      "pts_sec": 125.3693359375,
+      "frame_sha256": "6d87983b02adb3d6cfa0f31e82b064adebdfa73c575ed0b38c1678458138a3fb",
+      "source_pixel_sha256": "3244b867c622135c60368d16195c6babfd8747fb91e9550d30446c5a4688848d",
+      "readings": {
+        "ally_score": {
+          "baseline": {
+            "value": "0",
+            "confidence": 0.9528209567070007,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "0",
+            "confidence": 0.9528209567070007,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        },
+        "enemy_score": {
+          "baseline": {
+            "value": "2",
+            "confidence": 0.9527247548103333,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "2",
+            "confidence": 0.9527247548103333,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1925929,
+      "pts_sec": 125.38600260416666,
+      "frame_sha256": "8b304d824ea2f26af9b2cc6deab9f89709d49cf6eabf0e4349eaf1e4cc84d68f",
+      "source_pixel_sha256": "25773766074bdf433ea34c8398a99425cc1deb90b4d6026a45b511758942cc94",
+      "readings": {
+        "ally_score": {
+          "baseline": {
+            "value": "0",
+            "confidence": 0.9487742781639099,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "0",
+            "confidence": 0.9487742781639099,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        },
+        "enemy_score": {
+          "baseline": {
+            "value": "2",
+            "confidence": 0.9528870582580566,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "2",
+            "confidence": 0.9528870582580566,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1926185,
+      "pts_sec": 125.40266927083333,
+      "frame_sha256": "67e1a1f7f6df80f6ba0001152eca5a60658c0eb689f0c1f69af00c07490d4e63",
+      "source_pixel_sha256": "2178cd16f7ef8c3af27691639a4515a6e13d4038f68f66a8db5e4905491083ff",
+      "readings": {
+        "ally_score": {
+          "baseline": {
+            "value": "0",
+            "confidence": 0.9440318942070007,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "0",
+            "confidence": 0.9440318942070007,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        },
+        "enemy_score": {
+          "baseline": {
+            "value": "2",
+            "confidence": 0.9541573524475098,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "2",
+            "confidence": 0.9541573524475098,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1926441,
+      "pts_sec": 125.4193359375,
+      "frame_sha256": "72f4dc1f245308226d77385225be43c9cb51ef46ca988e7d6ef4e0322e44f299",
+      "source_pixel_sha256": "d6822221aa33a887352111d4879efbd35efe45e2b3c190df858668d184bb79ea",
+      "readings": {
+        "ally_score": {
+          "baseline": {
+            "value": null,
+            "confidence": 0.0,
+            "sources": [
+              "strict_score_foreground_touches_roi_border"
+            ]
+          },
+          "prototype": {
+            "value": "0",
+            "confidence": 0.9245315194129944,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        },
+        "enemy_score": {
+          "baseline": {
+            "value": "2",
+            "confidence": 0.9585628509521484,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "2",
+            "confidence": 0.9585628509521484,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1926697,
+      "pts_sec": 125.43600260416666,
+      "frame_sha256": "84fe34c6581d940cc2335e1769b1acb960b29259f3da5c54a11ddd450256583c",
+      "source_pixel_sha256": "25843d27a0196561a6d9fe9978819b58284529e47474bc0d8d1714f06c7ffd42",
+      "readings": {
+        "ally_score": {
+          "baseline": {
+            "value": null,
+            "confidence": 0.0,
+            "sources": [
+              "strict_score_foreground_touches_roi_border"
+            ]
+          },
+          "prototype": {
+            "value": null,
+            "confidence": 0.0,
+            "sources": [
+              "strict_score_expected_one_or_two_digits"
+            ]
+          }
+        },
+        "enemy_score": {
+          "baseline": {
+            "value": "2",
+            "confidence": 0.9590483903884888,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "2",
+            "confidence": 0.9590483903884888,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1926953,
+      "pts_sec": 125.45266927083334,
+      "frame_sha256": "2d335bcbc8d907116aa1da6613e5bef6698ba40ee67aaa022c769505bc7aa097",
+      "source_pixel_sha256": "f0453c2d294bdc7daa240052d11a173f1d8171b5d49a41e53f6f1023246020cb",
+      "readings": {
+        "ally_score": {
+          "baseline": {
+            "value": null,
+            "confidence": 0.0,
+            "sources": [
+              "strict_score_foreground_touches_roi_border"
+            ]
+          },
+          "prototype": {
+            "value": null,
+            "confidence": 0.0,
+            "sources": [
+              "strict_score_foreground_touches_roi_border"
+            ]
+          }
+        },
+        "enemy_score": {
+          "baseline": {
+            "value": "2",
+            "confidence": 0.9743753671646118,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "2",
+            "confidence": 0.9743753671646118,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1927209,
+      "pts_sec": 125.4693359375,
+      "frame_sha256": "54b26675744f9aa918f0e857eccda5a1c9666867d5858425a71de4ecf0aaea79",
+      "source_pixel_sha256": "c5842cbabc9f1558eb484b57137d2bf664d09ca4cee886757086a0f7e56103aa",
+      "readings": {
+        "ally_score": {
+          "baseline": {
+            "value": null,
+            "confidence": 0.0,
+            "sources": [
+              "strict_score_foreground_touches_roi_border"
+            ]
+          },
+          "prototype": {
+            "value": null,
+            "confidence": 0.0,
+            "sources": [
+              "strict_score_foreground_touches_roi_border"
+            ]
+          }
+        },
+        "enemy_score": {
+          "baseline": {
+            "value": "2",
+            "confidence": 0.9735138416290283,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "2",
+            "confidence": 0.9735138416290283,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1927465,
+      "pts_sec": 125.48600260416667,
+      "frame_sha256": "8a49792b2143f0d62cc98ac4ed59f325a0f97f1d975f5c0457be2b73a11edd3a",
+      "source_pixel_sha256": "4156e6036000e9e11b4b64bced4f9cb1e79ec465d50c9f3203258b8a92b90ffd",
+      "readings": {
+        "ally_score": {
+          "baseline": {
+            "value": null,
+            "confidence": 0.0,
+            "sources": [
+              "strict_score_foreground_touches_roi_border"
+            ]
+          },
+          "prototype": {
+            "value": null,
+            "confidence": 0.0,
+            "sources": [
+              "strict_score_foreground_touches_roi_border"
+            ]
+          }
+        },
+        "enemy_score": {
+          "baseline": {
+            "value": "2",
+            "confidence": 0.9611345529556274,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "2",
+            "confidence": 0.9611345529556274,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1927721,
+      "pts_sec": 125.50266927083334,
+      "frame_sha256": "6c146fec11a855b9090fbdb6fd58b8ff158b85261ede12c9a9bf47684830c95c",
+      "source_pixel_sha256": "e28f80f8e9e27d1a18ea06d5797ee4da832e18244fe4df34a62c5be49e04bca5",
+      "readings": {
+        "ally_score": {
+          "baseline": {
+            "value": null,
+            "confidence": 0.0,
+            "sources": [
+              "strict_score_foreground_touches_roi_border"
+            ]
+          },
+          "prototype": {
+            "value": null,
+            "confidence": 0.0,
+            "sources": [
+              "strict_score_foreground_touches_roi_border"
+            ]
+          }
+        },
+        "enemy_score": {
+          "baseline": {
+            "value": "2",
+            "confidence": 0.9611345529556274,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "2",
+            "confidence": 0.9611345529556274,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1927977,
+      "pts_sec": 125.5193359375,
+      "frame_sha256": "8dfdb08058727fe8a69d103d625793e9756fd9562753ec038b88a4cb87126d7f",
+      "source_pixel_sha256": "da0485d0f38e23542e66d5b896f5e56388cb225e5078b22590ace28ed469ac68",
+      "readings": {
+        "ally_score": {
+          "baseline": {
+            "value": null,
+            "confidence": 0.0,
+            "sources": [
+              "strict_score_foreground_touches_roi_border"
+            ]
+          },
+          "prototype": {
+            "value": null,
+            "confidence": 0.0,
+            "sources": [
+              "strict_score_expected_one_or_two_digits"
+            ]
+          }
+        },
+        "enemy_score": {
+          "baseline": {
+            "value": "2",
+            "confidence": 0.9611345529556274,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "2",
+            "confidence": 0.9611345529556274,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1928233,
+      "pts_sec": 125.53600260416667,
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "source_pixel_sha256": "e6f2a1c27f5ec9560cf827c7889b647feb1fcd03abe72c4cb8bdb7c312923fcc",
+      "readings": {
+        "ally_score": {
+          "baseline": {
+            "value": null,
+            "confidence": 0.0,
+            "sources": [
+              "strict_score_foreground_touches_roi_border"
+            ]
+          },
+          "prototype": {
+            "value": null,
+            "confidence": 0.0,
+            "sources": [
+              "strict_score_expected_one_or_two_digits"
+            ]
+          }
+        },
+        "enemy_score": {
+          "baseline": {
+            "value": "2",
+            "confidence": 0.9611345529556274,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          },
+          "prototype": {
+            "value": "2",
+            "confidence": 0.9611345529556274,
+            "sources": [
+              "strict_score_glyphs",
+              "comparison_gaussian3x3_v1",
+              "foreground_white200_v1"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "wall_clock_sec": 29.589515068975743,
+  "qualification_created": false,
+  "canonical_current": null,
+  "canonical_delta": null
+}

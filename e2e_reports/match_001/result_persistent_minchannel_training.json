@@ -1,0 +1,146 @@
+{
+  "scope": "Training-only representation feasibility, not supported production profile or qualification",
+  "method": "min_B_G_R>=200; retain only original mask pixels whose binary value agrees across all distinct training frames",
+  "training_frame_sha256": [
+    "8f48694886e7a490b27ff0548f0fb7b54c834729b52a2d7dbfa375c248cbb62b",
+    "9f51380e00db3f4633ad18d2e80519744e0146466b28f1d3987ae7a1080ac6cf",
+    "734d31fe819a8e40d242917a2e454a1b068107073ec6108d0ef976d6fcbd9269"
+  ],
+  "input_sha256": {
+    "outputs/recognition-investigation/result-support-inventory-20261008/reference-freeze.json": "3d64ad094aea38847b73d86092b2a53fb93e4e494e277690d20cb849da2fceb1",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/result-late-diagnostic/regions.png": "5de56e92ed0b63b2b6d8186d41f87c360fe7448fe54631eec425c7fe7f69c038"
+  },
+  "generator_sha256": "b504ce843cacea3389802496b715cfebc5ef26cb907d43ab8f86186e53b9e500",
+  "asset_directory": "outputs/recognition-investigation/result-persistent-minchannel-diagnostic",
+  "asset_sha256": {
+    "reference.png": "0230f70d26c22e9082bb4acf795be402f9dc9dc236e5c3c3ee895dd2cf2bdfc7",
+    "mask.png": "575dc341a36d33b51fa68640c97edd4b2371b2075fe386c504a444ec2f9dd33d",
+    "regions.png": "a96d60a63cf8ec78520b6562ec2b97fb558ff999f13d9c2f92ae632accebec21",
+    "training-0.png": "0230f70d26c22e9082bb4acf795be402f9dc9dc236e5c3c3ee895dd2cf2bdfc7",
+    "training-1.png": "83d49c50c73ec85c902a94e62a07a6340d237bb1bd8afa31577347eee2a8ab88",
+    "training-2.png": "3e362721bc255fc0f579006d6b595844ceb847f8443c0faf251360a54ceb5324"
+  },
+  "groups": [
+    {
+      "group": 1,
+      "population": 2734,
+      "negative_pixels": 445,
+      "reference_std": 94.13357920831683
+    },
+    {
+      "group": 2,
+      "population": 3010,
+      "negative_pixels": 469,
+      "reference_std": 92.48311277887372
+    },
+    {
+      "group": 3,
+      "population": 3009,
+      "negative_pixels": 487,
+      "reference_std": 93.91933619948387
+    }
+  ],
+  "training_support": 3,
+  "training_measurements": [
+    {
+      "matcher": "semantic_text_ncc_v1",
+      "threshold": 0.9,
+      "score": 0.9999999999999999,
+      "groups": [
+        {
+          "group": 1,
+          "mask_population": 2734,
+          "current_std": 94.13357920831683,
+          "score": 1.0,
+          "reason": "matched"
+        },
+        {
+          "group": 2,
+          "mask_population": 3010,
+          "current_std": 92.48311277887372,
+          "score": 0.9999999999999999,
+          "reason": "matched"
+        },
+        {
+          "group": 3,
+          "mask_population": 3009,
+          "current_std": 93.91933619948387,
+          "score": 1.0,
+          "reason": "matched"
+        }
+      ],
+      "presence": true,
+      "absence_checked": false,
+      "runtime_transition_authorized": false
+    },
+    {
+      "matcher": "semantic_text_ncc_v1",
+      "threshold": 0.9,
+      "score": 0.9999999999999999,
+      "groups": [
+        {
+          "group": 1,
+          "mask_population": 2734,
+          "current_std": 94.13357920831683,
+          "score": 1.0,
+          "reason": "matched"
+        },
+        {
+          "group": 2,
+          "mask_population": 3010,
+          "current_std": 92.48311277887372,
+          "score": 0.9999999999999999,
+          "reason": "matched"
+        },
+        {
+          "group": 3,
+          "mask_population": 3009,
+          "current_std": 93.91933619948387,
+          "score": 1.0,
+          "reason": "matched"
+        }
+      ],
+      "presence": true,
+      "absence_checked": false,
+      "runtime_transition_authorized": false
+    },
+    {
+      "matcher": "semantic_text_ncc_v1",
+      "threshold": 0.9,
+      "score": 0.9999999999999999,
+      "groups": [
+        {
+          "group": 1,
+          "mask_population": 2734,
+          "current_std": 94.13357920831683,
+          "score": 1.0,
+          "reason": "matched"
+        },
+        {
+          "group": 2,
+          "mask_population": 3010,
+          "current_std": 92.48311277887372,
+          "score": 0.9999999999999999,
+          "reason": "matched"
+        },
+        {
+          "group": 3,
+          "mask_population": 3009,
+          "current_std": 93.91933619948387,
+          "score": 1.0,
+          "reason": "matched"
+        }
+      ],
+      "presence": true,
+      "absence_checked": false,
+      "runtime_transition_authorized": false
+    }
+  ],
+  "ncc_threshold": 0.9,
+  "training_scores_are_one_by_construction": true,
+  "independent_validation_complete": false,
+  "production_preprocessing_supported": false,
+  "qualification_created": false,
+  "canonical_current": null,
+  "canonical_delta": null
+}

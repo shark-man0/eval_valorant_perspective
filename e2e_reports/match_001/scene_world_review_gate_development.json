@@ -1,0 +1,440 @@
+{
+  "scope": "Offline frame-bound world-review gate development; not a runtime semantic classifier or qualification",
+  "input_hash_semantics": "input_pixel_sha256 binds640x360grayscale preprocessing; native PNG/pixel hashes are separately verified against source cohort before preprocessing",
+  "frames_reviewed_for_gate": 4,
+  "seed_images_examined": 3,
+  "seed_eligible_count": 1,
+  "contaminated_or_unknown_seed_rejections": 2,
+  "entries": [
+    {
+      "window_sec": [
+        2.5,
+        2.7
+      ],
+      "frame_reviews": [
+        {
+          "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+          "input_pixel_sha256": "e66700448905c974c490a2aff157221ab5008db46d2865f32c630c2ce224f1fa",
+          "source_pts_ticks": 38441,
+          "source_epoch": "offline-window-0",
+          "regions": [
+            [
+              [
+                167,
+                53,
+                213,
+                117
+              ],
+              "world_only"
+            ],
+            [
+              [
+                173,
+                120,
+                283,
+                173
+              ],
+              "world_only"
+            ],
+            [
+              [
+                10,
+                173,
+                167,
+                247
+              ],
+              "world_only"
+            ],
+            [
+              [
+                440,
+                53,
+                567,
+                117
+              ],
+              "world_only"
+            ],
+            [
+              [
+                440,
+                123,
+                567,
+                177
+              ],
+              "world_only"
+            ],
+            [
+              [
+                173,
+                183,
+                267,
+                253
+              ],
+              "world_only"
+            ]
+          ],
+          "provenance": "Native1920x1080seed/current pair visually reviewed; all six source footprints show wall outside timer/phase/arms"
+        },
+        {
+          "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+          "input_pixel_sha256": "3cb3bdb6af3e9e612f0b42714a18be9c43bb1b5cfb21bbb37d7a8036c86af2cb",
+          "source_pts_ticks": 38697,
+          "source_epoch": "offline-window-0",
+          "regions": [
+            [
+              [
+                167,
+                53,
+                213,
+                117
+              ],
+              "world_only"
+            ],
+            [
+              [
+                173,
+                120,
+                283,
+                173
+              ],
+              "world_only"
+            ],
+            [
+              [
+                10,
+                173,
+                167,
+                247
+              ],
+              "world_only"
+            ],
+            [
+              [
+                440,
+                53,
+                567,
+                117
+              ],
+              "world_only"
+            ],
+            [
+              [
+                440,
+                123,
+                567,
+                177
+              ],
+              "world_only"
+            ],
+            [
+              [
+                173,
+                183,
+                267,
+                253
+              ],
+              "world_only"
+            ]
+          ],
+          "provenance": "Native1920x1080seed/current pair visually reviewed; all six source footprints show wall outside timer/phase/arms"
+        }
+      ],
+      "seed_eligible": true,
+      "tracker_initialized": true,
+      "first_link_result": {
+        "reason": "original_world_support_insufficient",
+        "seed_features": 144,
+        "retained_features": 94,
+        "retained_regions": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "previous_witness_cells": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "current_witness_cells": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "descriptive_supported": false,
+        "runtime_proof_authorized": false,
+        "dense_world_regions": [
+          {
+            "region": 0,
+            "ncc": null,
+            "valid_fraction": 0.7289402173913043,
+            "center_xy": [
+              190.0,
+              85.0
+            ],
+            "supported": false
+          },
+          {
+            "region": 1,
+            "ncc": null,
+            "valid_fraction": 0.8488850771869639,
+            "center_xy": [
+              228.0,
+              146.5
+            ],
+            "supported": false
+          },
+          {
+            "region": 2,
+            "ncc": null,
+            "valid_fraction": 0.8314684110862455,
+            "center_xy": [
+              88.5,
+              210.0
+            ],
+            "supported": false
+          },
+          {
+            "region": 3,
+            "ncc": null,
+            "valid_fraction": 0.8134842519685039,
+            "center_xy": [
+              503.5,
+              85.0
+            ],
+            "supported": false
+          },
+          {
+            "region": 4,
+            "ncc": null,
+            "valid_fraction": 0.8311461067366579,
+            "center_xy": [
+              503.5,
+              150.0
+            ],
+            "supported": false
+          },
+          {
+            "region": 5,
+            "ncc": null,
+            "valid_fraction": 0.8484802431610943,
+            "center_xy": [
+              220.0,
+              218.0
+            ],
+            "supported": false
+          }
+        ],
+        "previous_dense_regions": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "first_link_equals_ungated_result": true
+    },
+    {
+      "window_sec": [
+        3.0,
+        3.2
+      ],
+      "frame_reviews": [
+        {
+          "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+          "input_pixel_sha256": "9e10f6e43a0f4d5fca64ff2b17579eec8c419afcc74dc77728677971e0f2915f",
+          "source_pts_ticks": 46121,
+          "source_epoch": "offline-window-1",
+          "regions": [
+            [
+              [
+                167,
+                53,
+                213,
+                117
+              ],
+              "unknown"
+            ],
+            [
+              [
+                173,
+                120,
+                283,
+                173
+              ],
+              "contaminated"
+            ],
+            [
+              [
+                10,
+                173,
+                167,
+                247
+              ],
+              "contaminated"
+            ],
+            [
+              [
+                440,
+                53,
+                567,
+                117
+              ],
+              "contaminated"
+            ],
+            [
+              [
+                440,
+                123,
+                567,
+                177
+              ],
+              "contaminated"
+            ],
+            [
+              [
+                173,
+                183,
+                267,
+                253
+              ],
+              "contaminated"
+            ]
+          ],
+          "provenance": "Conservative seed overlay/contact review: arms, knife, players/nameplates/barrier occupy listed contaminated footprints; remaining regions not attested world-only"
+        }
+      ],
+      "seed_eligible": false,
+      "reason": "at least three reviewed world-only seed regions required",
+      "tracker_initialized": false
+    },
+    {
+      "window_sec": [
+        5.2,
+        5.4
+      ],
+      "frame_reviews": [
+        {
+          "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+          "input_pixel_sha256": "e623f14334a10cdddbf01099225c6ca36d4823647114b7f0f7438869e0ac6f71",
+          "source_pts_ticks": 79913,
+          "source_epoch": "offline-window-2",
+          "regions": [
+            [
+              [
+                167,
+                53,
+                213,
+                117
+              ],
+              "unknown"
+            ],
+            [
+              [
+                173,
+                120,
+                283,
+                173
+              ],
+              "contaminated"
+            ],
+            [
+              [
+                10,
+                173,
+                167,
+                247
+              ],
+              "contaminated"
+            ],
+            [
+              [
+                440,
+                53,
+                567,
+                117
+              ],
+              "unknown"
+            ],
+            [
+              [
+                440,
+                123,
+                567,
+                177
+              ],
+              "contaminated"
+            ],
+            [
+              [
+                173,
+                183,
+                267,
+                253
+              ],
+              "contaminated"
+            ]
+          ],
+          "provenance": "Conservative seed overlay/contact review: arms, knife, players/nameplates/barrier occupy listed contaminated footprints; remaining regions not attested world-only"
+        }
+      ],
+      "seed_eligible": false,
+      "reason": "at least three reviewed world-only seed regions required",
+      "tracker_initialized": false
+    }
+  ],
+  "file_sha256": {
+    "e2e_reports/match_001/scene_final_membership_cohort_diagnostics.json": "ccdd085713955f4a3694a4b6505ca2f699d81ea151eb06d677bdd4793a530b23",
+    "scripts/diagnostics/scene_world_review_gate.py": "1dce1b9bcf86c000dc232337c7537e346c0363cc168b89e2e9aa168cd429c2cb",
+    "scripts/diagnostics/scene_world_chain.py": "90687fee878a7305226f133ab1112e74ac224ff08f7be8a08d5618cf88c55f42",
+    "scripts/diagnostics/scene_correspondence.py": "667fb4f7b0626fbbf4770716eefc18976a9409a4f0646084b95d479dab7273a3",
+    "scripts/diagnostics/scene_patch_search.py": "53e66f692c42cbaab695cdea9910e3326c50089a18468f6b0d01bd463e9c2dd9",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000001.png": "0dc39ee196158fbc91f35b420e7a8f8cffa5a1d26a6a6acb5282dae80e6a10b4",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000002.png": "81efcd3c5540a1056149bfc808905ce801b5d0b4f3a05bc9e1118afc8353a398",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-001/frame_000001.png": "05da6f1e0f4f5cd36b2ce29f55637d95ee6a30737f0390237859499ccccfe69c",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-002/frame_000001.png": "083d9868034db4501914b79bbda88150912e6e6bfd01fd3aadb83a4b213227bd"
+  },
+  "production_changed": false,
+  "qualification_created": false,
+  "new_runtime_events": 0,
+  "canonical_current": null,
+  "wall_clock_seconds": 0.88534084596904
+}

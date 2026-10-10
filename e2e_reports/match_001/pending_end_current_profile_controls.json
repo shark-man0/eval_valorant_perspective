@@ -1,0 +1,56 @@
+{
+  "scope": "Fixed contract, current-profile native controls; one reused menu cohort and one new same-video active cohort, not complete independent qualification",
+  "hypothesis_sha256": "d14953c7ef03a66076170bec6983224261cdc0db31b0c51df37ee711d378f553",
+  "results": {
+    "pending_end_menu_current_inputs": {
+      "input_sha256": "1519ef4c31a15f7008b1039f441a4d6e508f5ed2e68d82b3cf8b2b07dee7c403",
+      "patterns": 0,
+      "rejections": [
+        "conflicting_or_unavailable_context"
+      ],
+      "frames": 27,
+      "profile_fingerprint": "10bfac00544e510ebf3f3e2c0072c9beba24938b2ff996c9012f7e4046d82c99",
+      "code_fingerprint": "44030c081c6d359c6fd618cfae128c5f339191f31942e0b623a06ae460f1073f",
+      "accepted_timer": 26,
+      "score_pairs": 27,
+      "result_matches": 0,
+      "state_counts": {
+        "unknown": 13,
+        "buy_menu_open": 14
+      },
+      "producer_wall_clock_sec": 66.9434251789935,
+      "released_events": 0
+    },
+    "pending_end_new_active_inputs": {
+      "input_sha256": "e9a26931d8161bdaa40e8fc30982139b789a5d92fe24967d122dcfb9965c35cb",
+      "patterns": 0,
+      "rejections": [],
+      "frames": 72,
+      "profile_fingerprint": "10bfac00544e510ebf3f3e2c0072c9beba24938b2ff996c9012f7e4046d82c99",
+      "code_fingerprint": "44030c081c6d359c6fd618cfae128c5f339191f31942e0b623a06ae460f1073f",
+      "accepted_timer": 64,
+      "score_pairs": 27,
+      "result_matches": 0,
+      "state_counts": {
+        "unknown": 72
+      },
+      "producer_wall_clock_sec": 156.6450297110132,
+      "released_events": 0
+    }
+  },
+  "menu_reader_values_preserved": 81,
+  "active_result_source_review": {
+    "frames": 72,
+    "result_visible": 0,
+    "false_positive": 0,
+    "provenance": "All72result-ROI contact sheet crops manually reviewed after predictions",
+    "review_image_sha256": "9e983c27ab8b2af45ff4c66cde4e7e52d4f48aab192f5d53af7a05a5c194cc15"
+  },
+  "offline_replay_wall_clock_sec": 0.06423472799360752,
+  "previous_comparable_active_run": null,
+  "active_runtime_delta": null,
+  "menu_runtime_comparability": "Old fresh decode versus new archived input; no speedup claim",
+  "qualification_created": false,
+  "canonical_current": null,
+  "canonical_delta": null
+}

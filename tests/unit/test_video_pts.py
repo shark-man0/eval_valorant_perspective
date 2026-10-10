@@ -104,3 +104,23 @@ def test_full_decode_has_separate_bounded_timeout_and_remains_cancellable(tmp_pa
     assert calls == [(1800.0, cancellation)]
     VideoService(pts_timeout_sec=600.0).presentation_times(path, cancel_event=cancellation)
     assert calls[-1] == (600.0, cancellation)
+
+
+def test_probe_keeps_integer_ticks_without_changing_public_pts(tmp_path, monkeypatch):
+    import hashlib
+
+    path = tmp_path / 'sample.mp4'
+    path.write_bytes(b'unedited-source')
+    monkeypatch.setattr(
+        'valorant_ai_coach.video.service._run_cancellable_process',
+        lambda *_: SimpleNamespace(returncode=0, stdout=json.dumps({
+            'streams': [{'time_base': '1/15360'}],
+            'frames': [{'best_effort_timestamp_time': '.036003',
+                        'best_effort_timestamp': 553}],
+        })),
+    )
+    service = VideoService()
+    assert service.presentation_times(path) == (.036003,)
+    assert service._tick_cache[1:] == (
+        (553,), '1/15360', hashlib.sha256(path.read_bytes()).hexdigest(),
+    )

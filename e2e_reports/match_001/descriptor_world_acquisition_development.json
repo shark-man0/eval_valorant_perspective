@@ -1,0 +1,384 @@
+{
+  "scope": "Frozen exposed descriptor proposal audit; all acceptance gates retained, no qualification",
+  "rows": [
+    {
+      "reference_id": "reviewed-arch-context",
+      "image": "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/arch_context.png",
+      "result": {
+        "scope": "descriptor geometry proposal plus fixed-domain appearance; diagnostic only",
+        "source_descriptors": 8,
+        "current_descriptors": 277,
+        "tracks": [
+          {
+            "region": 0,
+            "reference_xy": [
+              188.53448295593262,
+              102.3768196105957
+            ],
+            "current_xy": [
+              188.53448295593262,
+              102.37681579589844
+            ],
+            "descriptor_distance": 0.0
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              192.27862548828125,
+              71.21892356872559
+            ],
+            "current_xy": [
+              192.2785930633545,
+              71.2189826965332
+            ],
+            "descriptor_distance": 83.43260955810547
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              200.42990493774414,
+              83.37556457519531
+            ],
+            "current_xy": [
+              200.42990493774414,
+              83.37556457519531
+            ],
+            "descriptor_distance": 5.099019527435303
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              549.5006484985352,
+              90.40813064575195
+            ],
+            "current_xy": [
+              549.5006561279297,
+              90.40813064575195
+            ],
+            "descriptor_distance": 56.035701751708984
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              553.3069305419922,
+              91.38949966430664
+            ],
+            "current_xy": [
+              553.3069152832031,
+              91.3895149230957
+            ],
+            "descriptor_distance": 72.89718627929688
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              558.2827072143555,
+              89.20771789550781
+            ],
+            "current_xy": [
+              558.2826995849609,
+              89.20771789550781
+            ],
+            "descriptor_distance": 17.029386520385742
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              563.0261764526367,
+              85.8973617553711
+            ],
+            "current_xy": [
+              563.0261840820312,
+              85.8973617553711
+            ],
+            "descriptor_distance": 0.0
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              566.5737457275391,
+              84.46604537963867
+            ],
+            "current_xy": [
+              566.5737457275391,
+              84.46604537963867
+            ],
+            "descriptor_distance": 0.0
+          }
+        ],
+        "model": null,
+        "model_inliers": 0,
+        "domains": null,
+        "joint": null,
+        "diagnostic_initialization_proposed": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "reason": "three_region_descriptor_support_unavailable"
+      }
+    },
+    {
+      "reference_id": "reviewed-arch-context",
+      "image": "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000001.png",
+      "result": {
+        "scope": "descriptor geometry proposal plus fixed-domain appearance; diagnostic only",
+        "source_descriptors": 8,
+        "current_descriptors": 265,
+        "tracks": [
+          {
+            "region": 0,
+            "reference_xy": [
+              200.42990493774414,
+              83.37556457519531
+            ],
+            "current_xy": [
+              332.00559997558594,
+              200.3900604248047
+            ],
+            "descriptor_distance": 221.4791259765625
+          }
+        ],
+        "model": null,
+        "model_inliers": 0,
+        "domains": null,
+        "joint": null,
+        "diagnostic_initialization_proposed": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "reason": "three_region_descriptor_support_unavailable"
+      }
+    },
+    {
+      "reference_id": "reviewed-arch-context",
+      "image": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000001.png",
+      "result": {
+        "scope": "descriptor geometry proposal plus fixed-domain appearance; diagnostic only",
+        "source_descriptors": 8,
+        "current_descriptors": 338,
+        "tracks": [
+          {
+            "region": 0,
+            "reference_xy": [
+              200.42990493774414,
+              83.37556457519531
+            ],
+            "current_xy": [
+              573.1530609130859,
+              69.727783203125
+            ],
+            "descriptor_distance": 124.77178955078125
+          }
+        ],
+        "model": null,
+        "model_inliers": 0,
+        "domains": null,
+        "joint": null,
+        "diagnostic_initialization_proposed": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "reason": "three_region_descriptor_support_unavailable"
+      }
+    },
+    {
+      "reference_id": "reviewed-wall",
+      "image": "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/wall_close.png",
+      "result": {
+        "scope": "descriptor geometry proposal plus fixed-domain appearance; diagnostic only",
+        "source_descriptors": 8,
+        "current_descriptors": 107,
+        "tracks": [
+          {
+            "region": 2,
+            "reference_xy": [
+              40.69892120361328,
+              208.1109275817871
+            ],
+            "current_xy": [
+              40.69892120361328,
+              208.1109275817871
+            ],
+            "descriptor_distance": 0.0
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              55.230125427246094,
+              216.91404342651367
+            ],
+            "current_xy": [
+              55.230125427246094,
+              216.91404342651367
+            ],
+            "descriptor_distance": 0.0
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              56.518672943115234,
+              210.8835563659668
+            ],
+            "current_xy": [
+              56.518672943115234,
+              210.8835563659668
+            ],
+            "descriptor_distance": 0.0
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              66.67175674438477,
+              211.7291374206543
+            ],
+            "current_xy": [
+              66.67175674438477,
+              211.7291374206543
+            ],
+            "descriptor_distance": 0.0
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              87.15364074707031,
+              219.7163848876953
+            ],
+            "current_xy": [
+              87.15364074707031,
+              219.7163848876953
+            ],
+            "descriptor_distance": 0.0
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              95.59644317626953,
+              223.57966232299805
+            ],
+            "current_xy": [
+              95.59644317626953,
+              223.57966232299805
+            ],
+            "descriptor_distance": 0.0
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              97.16090393066406,
+              219.5321159362793
+            ],
+            "current_xy": [
+              97.16090393066406,
+              219.5321159362793
+            ],
+            "descriptor_distance": 0.0
+          }
+        ],
+        "model": null,
+        "model_inliers": 0,
+        "domains": null,
+        "joint": null,
+        "diagnostic_initialization_proposed": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "reason": "three_region_descriptor_support_unavailable"
+      }
+    },
+    {
+      "reference_id": "reviewed-wall",
+      "image": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000013.png",
+      "result": {
+        "scope": "descriptor geometry proposal plus fixed-domain appearance; diagnostic only",
+        "source_descriptors": 8,
+        "current_descriptors": 64,
+        "tracks": [
+          {
+            "region": 2,
+            "reference_xy": [
+              40.69892120361328,
+              208.1109275817871
+            ],
+            "current_xy": [
+              47.814788818359375,
+              211.89613342285156
+            ],
+            "descriptor_distance": 60.85227966308594
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              56.518672943115234,
+              210.8835563659668
+            ],
+            "current_xy": [
+              62.265140533447266,
+              214.60627365112305
+            ],
+            "descriptor_distance": 45.585086822509766
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              77.50322723388672,
+              206.40349578857422
+            ],
+            "current_xy": [
+              82.05859375,
+              209.73453521728516
+            ],
+            "descriptor_distance": 35.15679168701172
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              97.16090393066406,
+              219.5321159362793
+            ],
+            "current_xy": [
+              101.89119720458984,
+              223.38265228271484
+            ],
+            "descriptor_distance": 44.519657135009766
+          }
+        ],
+        "model": null,
+        "model_inliers": 0,
+        "domains": null,
+        "joint": null,
+        "diagnostic_initialization_proposed": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "reason": "three_region_descriptor_support_unavailable"
+      }
+    }
+  ],
+  "wall_clock_sec": 3.2829556859796867,
+  "terminal_bindings": {
+    "outputs/recognition-investigation/world-domain-bootstrap-20261009/profile.json": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+    "outputs/recognition-investigation/world-domain-bootstrap-20261009/assets/wall_close.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "ValorantData/videos/Valorant_09-25-2026_0-37-29-379.mp4": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "scripts/diagnostics/observed_scene_chain.py": "c60081a951a72b6d5aa68b05231cb3037b9883b0d7a4704b56810f64b88153d5",
+    "scripts/diagnostics/scene_domain_bootstrap.py": "1904b5736301a4cd632a6de1f9eb23cfb62f95c83840379197c20b50d1973b41",
+    "scripts/diagnostics/scene_world_bootstrap.py": "9947a6b0adc00f1e4b4eb63d5a95b1555d48091633712546e8078ee3a2436cfa",
+    "scripts/diagnostics/scene_reference_support.py": "aa6cec5c7ea7b10ce69c078fb2a8e2c7c794f6fa610ca3592c113d91a69751a5",
+    "scripts/diagnostics/scene_domain_ambiguity.py": "74ff5b505f2fd703936acee89dd6e5633a549f5ba2b7cc9a53ba9cd52cd9af10",
+    "scripts/diagnostics/scene_joint_domains.py": "2046cede2304b9493abc5f9ba06cbcfbe820a67f245a6e42cbd0aff5a5f45d34",
+    "scripts/diagnostics/scene_world_chain.py": "8a6d11a151f4afb77d88780b51f0705beca527edce7521831b9c8a590e788e33",
+    "scripts/diagnostics/scene_correspondence.py": "667fb4f7b0626fbbf4770716eefc18976a9409a4f0646084b95d479dab7273a3",
+    "scripts/diagnostics/scene_patch_search.py": "544b61f8dca800968521e9edce918166bb97353f5c2a5fed35f6011a0a04e4c1",
+    "scripts/diagnostics/validate_scene_chain_cohort.py": "ac57a87045c2e77eac6e162b14ba9d82459c6d7fc8d83904f9b10b3d911e68da",
+    "scripts/diagnostics/diagnose_native_global_lifecycle.py": "761dcd3e4019014e1691a29aad62f95d1ea4d401a61039c19a933d40d381a396",
+    "outputs/recognition-investigation/two-scene-domain-reference-20261009/profile.json": "7c88be66b6d322f037be309ca02464c7ffd5da3236b646b7ec24d21d1f4e7ce2",
+    "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/wall_close.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/arch_context.png": "929aab0a3f014eddff37a663241bd7fe3fcd15e0f800f7afe496b66c3d880579",
+    "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000001.png": "7178c40b9997f559b443c6e1145cffbdef9823d862d5f55c158bc9a7a5cecd6c",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000001.png": "ce2dbc370171a4cd637a6e96aa60ec6c9a50d8a1b62914622dd547f1727baa99",
+    "scripts/diagnostics/scene_descriptor_acquisition.py": "0b62c825893822d6ae141fa23e5fa8532f71b217c5f3f45ef0defa5dfe8dced3",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000013.png": "3f7f964b6993d20bba3396e160e6b6edf41cc5352b0b0ad57de9254ddb7fe0a5"
+  },
+  "production_changed": false,
+  "qualification_created": false,
+  "canonical_current": null
+}

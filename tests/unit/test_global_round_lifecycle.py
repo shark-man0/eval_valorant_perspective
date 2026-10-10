@@ -145,7 +145,7 @@ def test_active_round_phase_jitter_cannot_rearm_or_hide_a_valid_end(tmp_path):
     ]
     for row in rows[-2:]:
         row['values'].update(score_ally=0, score_enemy=1)
-        row['quality']['roi_confidence'].update(ally_score_value=.97, enemy_score_value=.98)
+        row['quality']['roi_confidence'].update(score_ally_value=.97, score_enemy_value=.98)
     rows[-1]['values']['score_enemy'] = 2
     evidence = proofs(rows, qualified)
     evidence[10].update(global_round_result_present=True, global_round_result_confidence=.95)
@@ -231,7 +231,7 @@ def test_two_rounds_end_once_and_no_inferred_second_end(tmp_path):
     rows += [observation(5, .6, timer=99), observation(6, .8, timer=6)]
     for row in rows[-2:]:
         row['values'].update(score_ally=0, score_enemy=1)
-        row['quality']['roi_confidence'].update(ally_score_value=.97, enemy_score_value=.98)
+        row['quality']['roi_confidence'].update(score_ally_value=.97, score_enemy_value=.98)
     rows[-1]['values']['score_enemy'] = 2
     evidence = proofs(rows, qualified)
     evidence[6].update(global_round_result_present=True, global_round_result_confidence=.95)
@@ -273,7 +273,7 @@ def test_end_requires_independent_current_evidence_in_same_segment(tmp_path, mis
     rows = starts() + [observation(5, .6), observation(6, .8)]
     for row in rows[-2:]:
         row['values'].update(score_ally=0, score_enemy=1)
-        row['quality']['roi_confidence'].update(ally_score_value=.97, enemy_score_value=.98)
+        row['quality']['roi_confidence'].update(score_ally_value=.97, score_enemy_value=.98)
     rows[-1]['values']['score_enemy'] = 2
     evidence = proofs(rows, qualified)
     evidence[6].update(global_round_result_present=True, global_round_result_confidence=.95)
@@ -282,7 +282,7 @@ def test_end_requires_independent_current_evidence_in_same_segment(tmp_path, mis
     elif missing == 'score':
         rows[-1]['values']['score_enemy'] = None
     elif missing == 'score_confidence':
-        rows[-1]['quality']['roi_confidence']['enemy_score_value'] = .89
+        rows[-1]['quality']['roi_confidence']['score_enemy_value'] = .89
     else:
         evidence[6]['global_continuity']['segment'] = 'after-cut'
     assert [e['type'] for e in build(rows, qualified, evidence)] == ['round_start']
@@ -295,7 +295,7 @@ def test_separated_end_evidence_cannot_be_backfilled_into_prior_round(tmp_path, 
     rows = starts() + [observation(i, .6 + (i-5)*.1) for i in range(5, 9)]
     for row in rows[5:]:
         row['values'].update(score_ally=0, score_enemy=1)
-        row['quality']['roi_confidence'].update(ally_score_value=.97, enemy_score_value=.98)
+        row['quality']['roi_confidence'].update(score_ally_value=.97, score_enemy_value=.98)
     for row in rows[7:]:
         row['values']['score_enemy'] = 2
     evidence = proofs(rows, qualified)
@@ -367,6 +367,26 @@ def test_analyzer_loads_profile_bound_report_and_invalidates_injected_readers(tm
     assert any('Injected readers' in note for note in overridden.profile_diagnostics)
     path.write_text(json.dumps({**data, 'profile_fingerprint': digest('another-profile')}))
     assert RealHudAnalyzer(layout).global_qualification is None
+
+
+@pytest.mark.parametrize('paired', [False, True])
+def test_analyzer_reports_missing_paired_runtime_producer_without_changing_qualification(
+    tmp_path, paired
+):
+    layout = tmp_path / 'hud_layout.json'
+    layout.write_bytes(resource_path('config/hud_layout_1080p_v3.json').read_bytes())
+    baseline = RealHudAnalyzer(layout)
+    data = report()
+    data['profile_fingerprint'] = baseline.fingerprint()
+    if paired:
+        for name in ('scene_continuity', 'ui_transition'):
+            data['components'][name] = deepcopy(data['components']['continuity'])
+    layout.with_name('hud_layout.global_qualification.json').write_text(json.dumps(data))
+    analyzer = RealHudAnalyzer(layout)
+    assert analyzer.global_qualification is not None
+    assert analyzer.global_qualification.components == frozenset(data['components'])
+    assert any('runtime scene/UI evidence producer is not installed' in note
+               for note in analyzer.profile_diagnostics) is paired
 
 
 @pytest.mark.parametrize('source_phase', [False, True])

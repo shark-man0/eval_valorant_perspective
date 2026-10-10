@@ -1,0 +1,168 @@
+{
+  "scope": "conditional archived-reader replay; not runtime qualification",
+  "input_sha256": {
+    "datasets/input_contracts/match_001.unedited.json": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+    "e2e_reports/match_001/native_system_prefix_validation.json": "f8c12c896f41d4f51eb5caf0dfe46f0ff2b44ce6077f6d00124fd447ad6ee22a",
+    "e2e_reports/match_001/r1_continuous_source.json": "86da563d797d54f246d7dc253114bc0a312f847903d393f2532838eca505338c"
+  },
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "processed_frames": 256,
+  "verified_saved_image_overlap_frames": 78,
+  "phase_scan_valid_assumption": "conditional: fresh producer scan guard still required",
+  "candidates": [
+    {
+      "kind": "round_start",
+      "time_sec": 4.102669270833333,
+      "confidence": 0.911719242550644,
+      "attributes": {
+        "evidence_provenance": {
+          "scope": "global_system",
+          "producer": "unedited_ui_start_tracker",
+          "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+          "preparation_pts_sec": [
+            3.602669270833333,
+            4.086002604166667
+          ],
+          "reader_qualification_required": true,
+          "confirmation_pts_sec": 4.202669270833334,
+          "pts_sec": [
+            4.102669270833333,
+            4.1193359375,
+            4.136002604166666,
+            4.152669270833333,
+            4.1693359375,
+            4.186002604166666,
+            4.202669270833334
+          ],
+          "clock_display_samples": [
+            {
+              "pts_sec": 4.102669270833333,
+              "observed_seconds": 0.0,
+              "observed_display": "0:00",
+              "reader_confidence": 0.9541926383972168,
+              "display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9541926383972168,
+                "cross_checked": false
+              },
+              "source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b",
+              "previous_source_pixel_sha256": "6ab7cd27a8756b687f70857d6bf0d2a8732625d15161e2de41a139f31fd193e1"
+            },
+            {
+              "pts_sec": 4.1193359375,
+              "observed_seconds": 145.0,
+              "observed_display": "2:25",
+              "reader_confidence": 0.9596534371376038,
+              "display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9596534371376038,
+                "cross_checked": false
+              },
+              "source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a",
+              "previous_source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b"
+            },
+            {
+              "pts_sec": 4.136002604166666,
+              "observed_seconds": 145.0,
+              "observed_display": "2:25",
+              "reader_confidence": 0.9596534371376038,
+              "display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9596534371376038,
+                "cross_checked": false
+              },
+              "source_pixel_sha256": "7b784dd56e27c48a760671568acbd458bc496400335ee4b3181798d0584a4044",
+              "previous_source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a"
+            },
+            {
+              "pts_sec": 4.152669270833333,
+              "observed_seconds": 99.0,
+              "observed_display": "1:39",
+              "reader_confidence": 0.9597947001457214,
+              "display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9597947001457214,
+                "cross_checked": false
+              },
+              "source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0",
+              "previous_source_pixel_sha256": "7b784dd56e27c48a760671568acbd458bc496400335ee4b3181798d0584a4044"
+            },
+            {
+              "pts_sec": 4.1693359375,
+              "observed_seconds": 99.0,
+              "observed_display": "1:39",
+              "reader_confidence": 0.9597947001457214,
+              "display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9597947001457214,
+                "cross_checked": false
+              },
+              "source_pixel_sha256": "d18c9060f352e53b37967c62e12f3ee51b06e330664ee49da476b3751cda8f83",
+              "previous_source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0"
+            },
+            {
+              "pts_sec": 4.186002604166666,
+              "observed_seconds": 99.0,
+              "observed_display": "1:39",
+              "reader_confidence": 0.9629917144775391,
+              "display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9629917144775391,
+                "cross_checked": false
+              },
+              "source_pixel_sha256": "0e795ed52d0eac85bf325988a8d629c2be975f8fbce0d9bfa33a8a0c773eee86",
+              "previous_source_pixel_sha256": "d18c9060f352e53b37967c62e12f3ee51b06e330664ee49da476b3751cda8f83"
+            },
+            {
+              "pts_sec": 4.202669270833334,
+              "observed_seconds": 99.0,
+              "observed_display": "1:39",
+              "reader_confidence": 0.9629917144775391,
+              "display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9629917144775391,
+                "cross_checked": false
+              },
+              "source_pixel_sha256": "bcb5a25b6b58a0efb563575d4be9ba3507bf290b327fa64996a1d903970695a2",
+              "previous_source_pixel_sha256": "0e795ed52d0eac85bf325988a8d629c2be975f8fbce0d9bfa33a8a0c773eee86"
+            }
+          ],
+          "coherent_clock_begin_pts_sec": 4.152669270833333,
+          "coherent_clock_observation_count": 4
+        }
+      }
+    }
+  ],
+  "released_events": 0,
+  "qualification_created": false,
+  "canonical_current": null,
+  "canonical_delta": null
+}

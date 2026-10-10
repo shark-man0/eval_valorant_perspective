@@ -1,0 +1,251 @@
+{
+  "scope": "Post-prediction source-pixel review of fixed new window; same-video limited generalization, not qualification",
+  "predictions_sha256": "cea11bd494720c8598cdd5b259664f2866abfccb44cb5c9f0bd84da4b6049197",
+  "review_provenance": "Pi-local all27 topbar contact sheet reviewed after predictions; source displays0/2 each frame; no Validation Pack loaded",
+  "review_image_sha256": "4dff590eba2acf6e1da51cbac89f60c026f0ca53a1b1fcc7e6cca3f2affffcfa",
+  "counts": {
+    "baseline": {
+      "correct": 46,
+      "unknown": 8,
+      "wrong": 0
+    },
+    "prototype": {
+      "correct": 47,
+      "unknown": 7,
+      "wrong": 0
+    }
+  },
+  "transitions": {
+    "correct_to_correct": 46,
+    "unknown_to_correct": 1,
+    "unknown_to_unknown": 7
+  },
+  "labels": [
+    {
+      "source_pts_ticks": 1921577,
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "score_displays": {
+        "ally_score": "0",
+        "enemy_score": "2"
+      }
+    },
+    {
+      "source_pts_ticks": 1921833,
+      "frame_sha256": "45cdb05bf6a2be3f98311267c13772bdf0eb7488bd3ded4b9a76d7a63b3d8c89",
+      "score_displays": {
+        "ally_score": "0",
+        "enemy_score": "2"
+      }
+    },
+    {
+      "source_pts_ticks": 1922089,
+      "frame_sha256": "0fefdd645db025f6844242beb2aff44ff778f073707acb461c0477ed2cef5a34",
+      "score_displays": {
+        "ally_score": "0",
+        "enemy_score": "2"
+      }
+    },
+    {
+      "source_pts_ticks": 1922345,
+      "frame_sha256": "8820b040af52a066c03cff4c9b5df0d922711090706d1603034b29727660666a",
+      "score_displays": {
+        "ally_score": "0",
+        "enemy_score": "2"
+      }
+    },
+    {
+      "source_pts_ticks": 1922601,
+      "frame_sha256": "e4c91e4fadd79d4572ef0c6f50b04bab2740e8cecbacd776755246a93afdfb79",
+      "score_displays": {
+        "ally_score": "0",
+        "enemy_score": "2"
+      }
+    },
+    {
+      "source_pts_ticks": 1922857,
+      "frame_sha256": "bf4f3b18a177e46c096c9eb45aee4634a6d055a884928b3d468851490bf9f49f",
+      "score_displays": {
+        "ally_score": "0",
+        "enemy_score": "2"
+      }
+    },
+    {
+      "source_pts_ticks": 1923113,
+      "frame_sha256": "d27f421198c2408fff7c0aa8a049c471df8ddc46f07192b01c2ffc29780d02c0",
+      "score_displays": {
+        "ally_score": "0",
+        "enemy_score": "2"
+      }
+    },
+    {
+      "source_pts_ticks": 1923369,
+      "frame_sha256": "192fa21d238b2eed290af00b18da64ac04932df910fff2658c473b0f94d14b1e",
+      "score_displays": {
+        "ally_score": "0",
+        "enemy_score": "2"
+      }
+    },
+    {
+      "source_pts_ticks": 1923625,
+      "frame_sha256": "891da263e4648effd1e7363c4a5e4e3201fb3301cd9022154950cd556b4bd5e0",
+      "score_displays": {
+        "ally_score": "0",
+        "enemy_score": "2"
+      }
+    },
+    {
+      "source_pts_ticks": 1923881,
+      "frame_sha256": "c4d810b83ea51ccb2c0c350ff55143356e7d44664090d5a25570b020bc0fd20f",
+      "score_displays": {
+        "ally_score": "0",
+        "enemy_score": "2"
+      }
+    },
+    {
+      "source_pts_ticks": 1924137,
+      "frame_sha256": "4b2c38d1db15e9fb6ddbb7e08da3f239e36c95897646bab4954cfe049abc2ee2",
+      "score_displays": {
+        "ally_score": "0",
+        "enemy_score": "2"
+      }
+    },
+    {
+      "source_pts_ticks": 1924393,
+      "frame_sha256": "55116f066075132c402f7fa3c9e8ff3e5aefec9c60194b8a2383fd5be8f3e515",
+      "score_displays": {
+        "ally_score": "0",
+        "enemy_score": "2"
+      }
+    },
+    {
+      "source_pts_ticks": 1924649,
+      "frame_sha256": "278d795958d4089f6b290989ee44502fe948cf0fe71a296f08f143ee16d2aabd",
+      "score_displays": {
+        "ally_score": "0",
+        "enemy_score": "2"
+      }
+    },
+    {
+      "source_pts_ticks": 1924905,
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "score_displays": {
+        "ally_score": "0",
+        "enemy_score": "2"
+      }
+    },
+    {
+      "source_pts_ticks": 1925161,
+      "frame_sha256": "607fb705fea6d977b4bdebc5918e2d871d65dd2020975cfad15cc85f77ebfa09",
+      "score_displays": {
+        "ally_score": "0",
+        "enemy_score": "2"
+      }
+    },
+    {
+      "source_pts_ticks": 1925417,
+      "frame_sha256": "5e5ef68847af821b20b2267ada3cbfc20f73cdc9122b9effe31159c34dd0108b",
+      "score_displays": {
+        "ally_score": "0",
+        "enemy_score": "2"
+      }
+    },
+    {
+      "source_pts_ticks": 1925673,
+      "frame_sha256": "6d87983b02adb3d6cfa0f31e82b064adebdfa73c575ed0b38c1678458138a3fb",
+      "score_displays": {
+        "ally_score": "0",
+        "enemy_score": "2"
+      }
+    },
+    {
+      "source_pts_ticks": 1925929,
+      "frame_sha256": "8b304d824ea2f26af9b2cc6deab9f89709d49cf6eabf0e4349eaf1e4cc84d68f",
+      "score_displays": {
+        "ally_score": "0",
+        "enemy_score": "2"
+      }
+    },
+    {
+      "source_pts_ticks": 1926185,
+      "frame_sha256": "67e1a1f7f6df80f6ba0001152eca5a60658c0eb689f0c1f69af00c07490d4e63",
+      "score_displays": {
+        "ally_score": "0",
+        "enemy_score": "2"
+      }
+    },
+    {
+      "source_pts_ticks": 1926441,
+      "frame_sha256": "72f4dc1f245308226d77385225be43c9cb51ef46ca988e7d6ef4e0322e44f299",
+      "score_displays": {
+        "ally_score": "0",
+        "enemy_score": "2"
+      }
+    },
+    {
+      "source_pts_ticks": 1926697,
+      "frame_sha256": "84fe34c6581d940cc2335e1769b1acb960b29259f3da5c54a11ddd450256583c",
+      "score_displays": {
+        "ally_score": "0",
+        "enemy_score": "2"
+      }
+    },
+    {
+      "source_pts_ticks": 1926953,
+      "frame_sha256": "2d335bcbc8d907116aa1da6613e5bef6698ba40ee67aaa022c769505bc7aa097",
+      "score_displays": {
+        "ally_score": "0",
+        "enemy_score": "2"
+      }
+    },
+    {
+      "source_pts_ticks": 1927209,
+      "frame_sha256": "54b26675744f9aa918f0e857eccda5a1c9666867d5858425a71de4ecf0aaea79",
+      "score_displays": {
+        "ally_score": "0",
+        "enemy_score": "2"
+      }
+    },
+    {
+      "source_pts_ticks": 1927465,
+      "frame_sha256": "8a49792b2143f0d62cc98ac4ed59f325a0f97f1d975f5c0457be2b73a11edd3a",
+      "score_displays": {
+        "ally_score": "0",
+        "enemy_score": "2"
+      }
+    },
+    {
+      "source_pts_ticks": 1927721,
+      "frame_sha256": "6c146fec11a855b9090fbdb6fd58b8ff158b85261ede12c9a9bf47684830c95c",
+      "score_displays": {
+        "ally_score": "0",
+        "enemy_score": "2"
+      }
+    },
+    {
+      "source_pts_ticks": 1927977,
+      "frame_sha256": "8dfdb08058727fe8a69d103d625793e9756fd9562753ec038b88a4cb87126d7f",
+      "score_displays": {
+        "ally_score": "0",
+        "enemy_score": "2"
+      }
+    },
+    {
+      "source_pts_ticks": 1928233,
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "score_displays": {
+        "ally_score": "0",
+        "enemy_score": "2"
+      }
+    }
+  ],
+  "qualification_created": false,
+  "canonical_current": null,
+  "canonical_delta": null,
+  "limitations": [
+    "Known native inventory separated; historical full JPEG exposure not exhaustively excluded",
+    "Single-video correlated27 frames, same score classes as development",
+    "No natural score-absent negative control",
+    "No event or temporal qualification",
+    "Nominal ROI diagnostic only; not actual integrated analyzer"
+  ]
+}

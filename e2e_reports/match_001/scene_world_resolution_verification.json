@@ -1,0 +1,49 @@
+{
+  "start_commit": "03bfcbf945fbf3d7b04c54d80b3c5ff103475db0",
+  "target_assertion_ids": [
+    "GT-R1-ROUND-START"
+  ],
+  "hypothesis": "Native resolution alone repairs reviewed-world support",
+  "decision": "Rejected: prefix0/35 and stable0/29; spatial support remains missing",
+  "document": "docs/scene_world_resolution_investigation.md",
+  "reports": {
+    "prefix": {
+      "native_frames": 36,
+      "adjacent_links": 35,
+      "supported_links": 0,
+      "wall_clock_seconds": 8.787262784026098
+    },
+    "stable": {
+      "native_frames": 30,
+      "adjacent_links": 29,
+      "supported_links": 0,
+      "wall_clock_seconds": 7.776653674023692
+    }
+  },
+  "production_changed": false,
+  "new_runtime_events": 0,
+  "qualification_created": false,
+  "new_full_e2e_runs": 0,
+  "canonical_current": null,
+  "canonical_delta": null,
+  "assertion_matrix_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776",
+  "unit_tests": {
+    "passed": 10,
+    "seconds": 2.33
+  },
+  "ruff": "PASS",
+  "mypy": "PASS: 102 production files",
+  "default_behavior_replay": "29/29 dictionaries exactly equal preserved prior implementation",
+  "assertion_matrix_rows": 82,
+  "terminal_input_bindings": "All report input hashes rechecked after termination",
+  "file_sha256": {
+    "docs/scene_world_resolution_investigation.md": "9d98b603f4d9f129ae9ecd8af08c5f3b3ff50b976e1c5ce7ceed684a2af482da",
+    "e2e_reports/match_001/failure_analysis.json": "46875edd75d795c574c01a7780f8c94201b6836e4b79de0a155ed8f03e6d5d23",
+    "e2e_reports/match_001/scene_world_resolution_declaration.json": "1900f66ffcc195504bc83e30873ad7ac12afd53bf0b95a0e7d6641aa43177f0b",
+    "e2e_reports/match_001/scene_world_resolution_prefix.json": "3e4112828a0152141a43a1aed2d5f88d8119895e0bc4c11437a6ca9aa93b3364",
+    "e2e_reports/match_001/scene_world_resolution_stable.json": "00e5aadf93d6768779f8d3b36ece8e4f5253a022cf2e208dc96481ef6b967a0b",
+    "scripts/diagnostics/scene_world_chain.py": "1b819ee2753d45040a01fa2ed7cfafcf2d9daf96882d0cfde3229fe5569cf67b",
+    "scripts/diagnostics/probe_scene_world_chain.py": "8c8a7b7bdfb4f83dbb02a0ce903e72163c6b51578a199c40caeb9afe776ffe5a",
+    "tests/unit/test_scene_world_chain.py": "a069002cb97fcad5b1a94364c83617216f7eccacd40814f4734984916cee9b16"
+  }
+}

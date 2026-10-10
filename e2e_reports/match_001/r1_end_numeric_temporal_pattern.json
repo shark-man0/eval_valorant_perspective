@@ -1,0 +1,59 @@
+{
+  "clock_changes": [
+    {
+      "before": {
+        "tick": 1143081,
+        "seconds": 29.0,
+        "display": "0:29"
+      },
+      "after": {
+        "tick": 1143593,
+        "seconds": 6.0,
+        "display": "0:06"
+      },
+      "elapsed_sec": 0.03333333333333333,
+      "observed_decrease": 23.0
+    }
+  ],
+  "score_plateaus": [
+    {
+      "values": [
+        0,
+        1
+      ],
+      "first_tick": 1142825,
+      "last_tick": 1143849,
+      "count": 5,
+      "confidence": 0.9318736791610718,
+      "minimum_duration_tick": 1143593
+    },
+    {
+      "values": [
+        0,
+        2
+      ],
+      "first_tick": 1144105,
+      "last_tick": 1146153,
+      "count": 9,
+      "confidence": 0.926630437374115,
+      "minimum_duration_tick": 1144873
+    }
+  ],
+  "conditional_patterns": [
+    {
+      "clock_change_tick": 1143593,
+      "score_change_tick": 1144105,
+      "score_stability_tick": 1144873,
+      "scope": "Conditional numeric pattern; active round and safe end semantics are unproved."
+    }
+  ],
+  "released_events": 0,
+  "qualification_created": false,
+  "scope": "Describe global numeric transitions; never classify or emit round events.",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "input_report": "e2e_reports/match_001/r1_end_fresh_extended_inputs.json",
+  "input_sha256": "76ff93d81422d5fc9251977e87a7b3acf8a6480bb96bb5c6e2654dbc5f5243b2",
+  "time_base": "1/15360",
+  "canonical_current": null,
+  "canonical_delta": null
+}

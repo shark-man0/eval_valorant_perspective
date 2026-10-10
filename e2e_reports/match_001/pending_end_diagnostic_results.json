@@ -1,0 +1,53 @@
+{
+  "scope": "Frozen pending-end training diagnostic on saved actual producer evidence; not independently qualified lifecycle/event",
+  "freeze_sha256": "e972961ff6bc28182868096619a810a39517d9aba7541b539e459f2bdfe24f82",
+  "results": {
+    "e2e_reports/match_001/r1_end_continuous_result_inputs.json": {
+      "patterns": [
+        {
+          "clock_change_tick": 1143593,
+          "score_change_tick": 1144105,
+          "score_stability_tick": 1144873,
+          "result_first_tick": 1156905,
+          "result_stability_tick": 1157673,
+          "result_min_confidence": 0.9248682987478553,
+          "score_min_confidence": 0.926630437374115,
+          "current_score_values": [
+            null,
+            null
+          ],
+          "historical_score_evidence": [
+            0,
+            2
+          ],
+          "scope": "Conditional pending-end pattern; no active-round or event proof"
+        }
+      ],
+      "rejections": [],
+      "released_events": 0,
+      "qualification_created": false,
+      "active_round_proven": false
+    },
+    "e2e_reports/match_001/numeric_end_menu_entry_control.json": {
+      "patterns": [],
+      "rejections": [
+        "conflicting_or_unavailable_context"
+      ],
+      "released_events": 0,
+      "qualification_created": false,
+      "active_round_proven": false
+    },
+    "e2e_reports/match_001/score_rowcontrast_actual_analyzer.json": {
+      "patterns": [],
+      "rejections": [],
+      "released_events": 0,
+      "qualification_created": false,
+      "active_round_proven": false
+    }
+  },
+  "wall_clock_sec": 0.04285906202858314,
+  "released_events": 0,
+  "qualification_created": false,
+  "canonical_current": null,
+  "canonical_delta": null
+}

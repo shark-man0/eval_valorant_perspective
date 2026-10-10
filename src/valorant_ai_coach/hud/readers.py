@@ -9,6 +9,8 @@ from typing import Any, Protocol
 import cv2
 import numpy as np
 
+from valorant_ai_coach.video.native import NativeSourceFrame
+
 from .layout import CalibrationResult, HudLayout, NormalizedRoi
 
 FrameInput = np.ndarray | str | Path | Any
@@ -221,7 +223,9 @@ class OpenCvHudFeatureReader:
 
 def load_frame(frame: FrameInput) -> np.ndarray:
     image: Any
-    if isinstance(frame, np.ndarray):
+    if isinstance(frame, NativeSourceFrame):
+        image = frame.read_image()
+    elif isinstance(frame, np.ndarray):
         image = frame
     else:
         path_value = getattr(frame, "path", frame)

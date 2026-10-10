@@ -1,0 +1,245 @@
+{
+  "scope": "Declared projected appearance development on already exposed wall pair; not holdout or qualification",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "source_frame_rows": [
+    {
+      "source_pts_ticks": 38441,
+      "time_base": "1/15360",
+      "pts_sec": 2.502669270833333,
+      "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000001.png",
+      "frame_sha256": "0dc39ee196158fbc91f35b420e7a8f8cffa5a1d26a6a6acb5282dae80e6a10b4",
+      "source_pixel_sha256": "22b9129dadeb8173b441f31b92f20bb61423461cd5ae33961ddc104c6b8a71f7",
+      "known_png_overlap": false,
+      "image_result": {
+        "reason": "hypothetical_unreviewed_seed",
+        "descriptive_supported": false
+      }
+    },
+    {
+      "source_pts_ticks": 38697,
+      "time_base": "1/15360",
+      "pts_sec": 2.5193359375,
+      "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000002.png",
+      "frame_sha256": "81efcd3c5540a1056149bfc808905ce801b5d0b4f3a05bc9e1118afc8353a398",
+      "source_pixel_sha256": "e41efc76b4acdc1ae73b0f41f9686732fa3e17baf42e3d06d73e7868e1000bea",
+      "known_png_overlap": false,
+      "image_result": {
+        "reason": "original_world_support_insufficient",
+        "seed_features": 144,
+        "retained_features": 94,
+        "retained_regions": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "previous_witness_cells": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "current_witness_cells": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "descriptive_supported": false,
+        "runtime_proof_authorized": false,
+        "dense_world_regions": [
+          {
+            "region": 0,
+            "ncc": null,
+            "valid_fraction": 0.7289402173913043,
+            "center_xy": [
+              190.0,
+              85.0
+            ],
+            "supported": false
+          },
+          {
+            "region": 1,
+            "ncc": null,
+            "valid_fraction": 0.8488850771869639,
+            "center_xy": [
+              228.0,
+              146.5
+            ],
+            "supported": false
+          },
+          {
+            "region": 2,
+            "ncc": null,
+            "valid_fraction": 0.8314684110862455,
+            "center_xy": [
+              88.5,
+              210.0
+            ],
+            "supported": false
+          },
+          {
+            "region": 3,
+            "ncc": null,
+            "valid_fraction": 0.8134842519685039,
+            "center_xy": [
+              503.5,
+              85.0
+            ],
+            "supported": false
+          },
+          {
+            "region": 4,
+            "ncc": null,
+            "valid_fraction": 0.8311461067366579,
+            "center_xy": [
+              503.5,
+              150.0
+            ],
+            "supported": false
+          },
+          {
+            "region": 5,
+            "ncc": null,
+            "valid_fraction": 0.8484802431610943,
+            "center_xy": [
+              220.0,
+              218.0
+            ],
+            "supported": false
+          }
+        ],
+        "previous_dense_regions": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      }
+    }
+  ],
+  "source_boxes_640x360": [
+    [
+      167,
+      53,
+      213,
+      117
+    ],
+    [
+      173,
+      120,
+      283,
+      173
+    ],
+    [
+      10,
+      173,
+      167,
+      247
+    ],
+    [
+      440,
+      53,
+      567,
+      117
+    ],
+    [
+      440,
+      123,
+      567,
+      177
+    ],
+    [
+      173,
+      183,
+      267,
+      253
+    ]
+  ],
+  "current_reviewed_world_boxes_640x360": [
+    [
+      160,
+      45,
+      220,
+      173
+    ],
+    [
+      160,
+      120,
+      290,
+      175
+    ],
+    [
+      425,
+      45,
+      575,
+      183
+    ],
+    [
+      6,
+      173,
+      170,
+      250
+    ],
+    [
+      160,
+      178,
+      267,
+      253
+    ]
+  ],
+  "review_provenance": "Original1920x1080pair reviewed at prior checkpoint: upper/left/right wall outside phase, minimap, FPS panel, arms/knife; broadened domains remain within visible wall. Lower-left starts below minimap circle; lower-middle right edge not extended toward arms. No score/timer value used. This is development annotation, not automatic semantic inference.",
+  "coverage_floor": 0.9,
+  "ncc_floor": 0.9,
+  "minimum_population": 32,
+  "source_review_required": "Complete original source crop; current projected bilinear taps all in approved world mask",
+  "hypothesis": "Camera motion takes valid projected world pixels beyond fixed same-coordinate crop even while current world domain contains them",
+  "transform_policy": "Use exact existing adjacent partial-affine transform from original reviewed source identities; do not fit a new model to appearance scores",
+  "file_sha256": {
+    "e2e_reports/match_001/scene_final_membership_cohort_diagnostics.json": "ccdd085713955f4a3694a4b6505ca2f699d81ea151eb06d677bdd4793a530b23",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000001.png": "0dc39ee196158fbc91f35b420e7a8f8cffa5a1d26a6a6acb5282dae80e6a10b4",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000002.png": "81efcd3c5540a1056149bfc808905ce801b5d0b4f3a05bc9e1118afc8353a398",
+    "scripts/diagnostics/scene_projected_world.py": "714d0663b1e6f6d849be9e2fa28ad231bb9175cbe51181b64e36769708a4f2c3",
+    "scripts/diagnostics/scene_world_chain.py": "293586bc39f1b590640129bd90f05f960b5337559f757f9a98340e62a78e5ac7",
+    "scripts/diagnostics/scene_correspondence.py": "667fb4f7b0626fbbf4770716eefc18976a9409a4f0646084b95d479dab7273a3",
+    "scripts/diagnostics/scene_patch_search.py": "53e66f692c42cbaab695cdea9910e3326c50089a18468f6b0d01bd463e9c2dd9"
+  },
+  "qualification_created": false,
+  "production_changed": false
+}

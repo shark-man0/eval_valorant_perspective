@@ -1,0 +1,43 @@
+{
+  "scope": "Already exposed control images; hypothetical seed stress only, not holdout or world-label qualification",
+  "method": "adjacent_dense_world",
+  "known_cut": {
+    "source_images": [
+      "outputs/recognition-investigation/phase-evidence/dense-r1-end/frame_04.png",
+      "outputs/recognition-investigation/phase-evidence/dense-r1-end/frame_06.png"
+    ],
+    "result": {
+      "reason": "seed_model_incoherent",
+      "seed_features": 134,
+      "retained_features": 32,
+      "retained_regions": [],
+      "previous_witness_cells": [],
+      "current_witness_cells": [],
+      "descriptive_supported": false,
+      "runtime_proof_authorized": false
+    },
+    "discontinuity_flag_injected": false
+  },
+  "duplicate": {
+    "reason": "duplicate_image",
+    "seed_features": 141,
+    "retained_features": 0,
+    "retained_regions": [],
+    "previous_witness_cells": [],
+    "current_witness_cells": [],
+    "descriptive_supported": false,
+    "runtime_proof_authorized": false
+  },
+  "qualification_created": false,
+  "runtime_events_generated": 0,
+  "file_sha256": {
+    "e2e_reports/match_001/scene_world_feature_bank_verified_controls.json": "4eb7e8487eea028f5786539d98fed75289919b2a4b1e1fdae86a53fe32941267",
+    "outputs/recognition-investigation/phase-evidence/dense-r1-end/frame_04.png": "9f941a254c40b4fab11dd375653ba7622b37ac630f553c7f5de879a71edd3314",
+    "outputs/recognition-investigation/phase-evidence/dense-r1-end/frame_06.png": "7ed7df9c55a483ae454b00bbaa7ace857879444d9d5502ce6340da109fa8fd8b",
+    "scripts/diagnostics/scene_world_chain.py": "85b3e63b0920f3ff69b630cf504f5280a5f276ec9473c7e9056e2738eb0faace",
+    "scripts/diagnostics/scene_correspondence.py": "667fb4f7b0626fbbf4770716eefc18976a9409a4f0646084b95d479dab7273a3",
+    "scripts/diagnostics/scene_patch_search.py": "53e66f692c42cbaab695cdea9910e3326c50089a18468f6b0d01bd463e9c2dd9",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000001.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c"
+  },
+  "wall_clock_seconds": 0.43191147199831903
+}

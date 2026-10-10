@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.0",
+  "purpose": "source profile qualification binding and native-vs-sampled contract audit",
+  "git_head": "e9ecaf8f2f0f0dfa1f9433d40a598ec8909e9ce3",
+  "source_binding": {
+    "profile": "outputs/recognition-investigation/world-domain-bootstrap-20261009/profile.json",
+    "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+    "fingerprint": "191ee196b3638b99f9f4dbd7ccafbb12a87579008c2ffa4f37217004d711c4ff",
+    "asset_count": 1,
+    "assets": [
+      {
+        "path": "assets/wall_close.png",
+        "sha256": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c"
+      }
+    ],
+    "runtime_qualified": false,
+    "installed_scene_ui_producer": false
+  },
+  "code_sha256": {
+    "src/valorant_ai_coach/hud/scene_source_binding.py": "c0f760fcace2196b2560cb1649d816c404fcafc294eafa3d905e4dde3e310f96",
+    "src/valorant_ai_coach/hud/analyzers.py": "8fe072d7bdbc16ff17efdd9440ab62bb24f9ffadeaa3ceeda093635ea5293344"
+  },
+  "global_recognizer_fingerprint": "96fd5a44e1ee89aec504a6108e67b847d77f15893114687ea58a6bd6eee13371",
+  "archived_native_cadence_audit": {
+    "source": "outputs/recognition-investigation/e2e-tiered-final-verification/full-profile13/raw_processing.json",
+    "sha256": "32b758e5766ca746b4ec42ceda10dfc08afaa8fa53fbf99e8cb495cd008db6f9",
+    "fps": 60.0,
+    "timebase_denominator": 15360,
+    "native_step_ticks": 256,
+    "pts_conversion": "round archived six-decimal seconds * 15360; max rounding error < 0.008 ticks",
+    "observation_count": 4634,
+    "adjacent_observation_pairs": 4633,
+    "native_adjacent_pairs": 2380,
+    "non_native_adjacent_pairs": 2253,
+    "non_native_adjacent_percent": 48.62939779840276,
+    "delta_ticks_counts": {
+      "256": 2380,
+      "512": 1015,
+      "768": 550,
+      "1024": 244,
+      "1280": 238,
+      "1536": 70,
+      "2304": 6,
+      "2560": 1,
+      "3072": 129
+    },
+    "r1_sampled_pts_sec": [
+      3.902669,
+      3.919336,
+      3.986003,
+      4.002669,
+      4.069336,
+      4.086003,
+      4.152669,
+      4.169336,
+      4.202669,
+      4.252669
+    ],
+    "missing_known_native_transition_pts_sec": [
+      4.102669,
+      4.119336,
+      4.136003
+    ],
+    "decision": "native proofs cannot be attached to sampled observations by changing previous PTS or pixel ownership; deliver a separately source-owned native system lifecycle stream, preserving the full sampler"
+  },
+  "tests": {
+    "related_unit": "69 passed in 31.04s",
+    "ruff": "ruff check src tests scripts/e2e: PASS",
+    "mypy": "110 source files: PASS"
+  },
+  "canonical_comparison": {
+    "previous": {
+      "PASS": 23,
+      "FAIL": 55,
+      "NOT_EVALUATED": 4
+    },
+    "current": null,
+    "delta": null,
+    "new_full_run": false
+  },
+  "assertions_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776",
+  "remaining_blockers": [
+    "independent source/world continuity qualification",
+    "independent current-frame phase-absence qualification",
+    "native decoder-to-system-lifecycle delivery; sampled previous PTS/pixel identities cannot replace native identities"
+  ]
+}

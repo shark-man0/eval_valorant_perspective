@@ -363,7 +363,8 @@ class HudTemplateProfile:
             self.reader_diagnostics.append("report_gated_spectator_panel_references must be a list")
 
     def detect_signals(
-        self, frame: ImageU8, layout: HudLayout, *, context: Mapping[str, Any] | None = None
+        self, frame: ImageU8, layout: HudLayout, *, context: Mapping[str, Any] | None = None,
+        semantic_diagnostics: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """UI matches and checked spectator absence; unreadable regions stay unknown."""
         signals: dict[str, Any] = {}
@@ -380,6 +381,11 @@ class HudTemplateProfile:
             if icon_active and name == "spectated_player_panel":
                 continue
             if roi_name not in layout.regions:
+                if name in self._semantic_text and semantic_diagnostics is not None:
+                    semantic_diagnostics[name] = {
+                        "reason": "roi_unavailable", "presence": None,
+                        "absence_checked": False, "runtime_transition_authorized": False,
+                    }
                 continue
             if name in {"hp_hud_structure", "ability_bar_structure", "weapon_ammo_structure"}:
                 stage_name = "hud_identity"
@@ -390,6 +396,7 @@ class HudTemplateProfile:
             with timing_stage(stage_name):
                 x1, y1, x2, y2 = layout.normalized_roi(roi_name).pixel_bounds(width, height)
                 crop = frame[y1:y2, x1:x2]
+                crop_bounds = [x1, y1, x2, y2]
                 if name in self._signal_bounds:
                     left, top, right, bottom = self._signal_bounds[name]
                     ch, cw = crop.shape[:2]
@@ -397,8 +404,24 @@ class HudTemplateProfile:
                         round(top * ch) : round(bottom * ch),
                         round(left * cw) : round(right * cw),
                     ]
+                    crop_bounds = [
+                        x1 + round(left * cw), y1 + round(top * ch),
+                        x1 + round(right * cw), y1 + round(bottom * ch),
+                    ]
                 if name in self._semantic_text:
-                    confidence = self._semantic_text[name].score(crop)
+                    signals[f"{name}_scan_valid"] = (
+                        crop.shape[:2] == self._semantic_text[name].reference.shape
+                    )
+                    if semantic_diagnostics is None:
+                        confidence = self._semantic_text[name].score(crop)
+                    else:
+                        measurement = self._semantic_text[name].measure(crop)
+                        confidence = measurement["score"]
+                        semantic_diagnostics[name] = {
+                            **measurement, "roi": roi_name,
+                            "pixel_bounds": crop_bounds,
+                            "crop_pixel_sha256": hashlib.sha256(crop.tobytes()).hexdigest(),
+                        }
                     result: ReaderResult[Any] = ReaderResult(
                         True if confidence >= template.threshold else None, confidence
                     )

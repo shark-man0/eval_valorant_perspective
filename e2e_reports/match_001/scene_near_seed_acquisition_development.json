@@ -1,0 +1,4372 @@
+{
+  "scope": "Frozen stateless near-seed acquisition coverage; all exposed, not holdout",
+  "rows": [
+    {
+      "path": "outputs/recognition-investigation/scene-world-feature-holdout-20261009/window-000/frame_000001.png",
+      "source_pts_ticks": 58409,
+      "exposure": "previously exposed prefix; development only",
+      "file_sha256": "4f625647a6f386a9a64cfdeb57b6942c90c320a69231fb6b223b8dd068ff79ba",
+      "native_pixel_sha256": "84a1bb5181d5ccfb108b443855a7fdb505aa8ade5f529aadeb59a8e9919dae29",
+      "prediction": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": false,
+            "reference_tracks": 0,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "path": "outputs/recognition-investigation/scene-world-feature-holdout-20261009/window-000/frame_000002.png",
+      "source_pts_ticks": 58665,
+      "exposure": "previously exposed prefix; development only",
+      "file_sha256": "5fde5ca22a18fbe6e91401208504ed9b82543b6cd9489683478285004d1493a5",
+      "native_pixel_sha256": "776601ca37c63cc79671653b0ef5596e8c0c4f605593bfe7454035c4702516f3",
+      "prediction": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": false,
+            "reference_tracks": 0,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "path": "outputs/recognition-investigation/scene-world-feature-holdout-20261009/window-000/frame_000003.png",
+      "source_pts_ticks": 58921,
+      "exposure": "previously exposed prefix; development only",
+      "file_sha256": "cb2081c52d7d15979fe7c7c337b9eb9299ddf68de2f1a422fd6b9f43dda91112",
+      "native_pixel_sha256": "b4f33e523cae8802f6c02c7558c9a4792f264588937834e609a9e2bacb69065b",
+      "prediction": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": false,
+            "reference_tracks": 0,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "path": "outputs/recognition-investigation/scene-world-feature-holdout-20261009/window-000/frame_000004.png",
+      "source_pts_ticks": 59177,
+      "exposure": "previously exposed prefix; development only",
+      "file_sha256": "346211e1ea63c280745303f5b06dfcfabcbc5f34e7b1bb8ddc2eccc542fd127a",
+      "native_pixel_sha256": "796a16ce78db1e325a00e66082e2bcc02d3b05720ca8edd8ad39da0770a4f4cd",
+      "prediction": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": false,
+            "reference_tracks": 0,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "path": "outputs/recognition-investigation/scene-world-feature-holdout-20261009/window-000/frame_000005.png",
+      "source_pts_ticks": 59433,
+      "exposure": "previously exposed prefix; development only",
+      "file_sha256": "e5c7fe3f921d537b317f7df9e172093d833790e465ebac0a8e4f73584df1c0ea",
+      "native_pixel_sha256": "9e31b11d65c1aeb05b1ab1706f477957ce2d52eafbd8c39f95203ae9526d0029",
+      "prediction": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": false,
+            "reference_tracks": 51,
+            "reference_model_inliers": 31,
+            "reference_to_current_affine": [
+              [
+                0.8746070879581631,
+                -0.0010411379977979002,
+                45.95297255357796
+              ],
+              [
+                0.0010411379977979002,
+                0.8746070879581631,
+                19.265703148920654
+              ]
+            ],
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "path": "outputs/recognition-investigation/scene-world-feature-holdout-20261009/window-000/frame_000006.png",
+      "source_pts_ticks": 59689,
+      "exposure": "previously exposed prefix; development only",
+      "file_sha256": "4e5468fc6df69255d5e695afcef7d90c896a8045f2ac02adbdd9e1b2ae51987c",
+      "native_pixel_sha256": "44fa119d8597b243ed77bab82d3fa89ca800055fa823574481759d26214d1ba3",
+      "prediction": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": true,
+            "reference_tracks": 151,
+            "reference_model_inliers": 147,
+            "reference_to_current_affine": [
+              [
+                0.9933758883215412,
+                0.0014317113715301218,
+                3.6678771011133637
+              ],
+              [
+                -0.0014317113715301218,
+                0.9933758883215412,
+                2.155647702230845
+              ]
+            ],
+            "domains": [
+              {
+                "region": 0,
+                "predicted_ncc": 0.8769835829734802,
+                "competing_offsets": [],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 1,
+                "predicted_ncc": 0.9761739373207092,
+                "competing_offsets": [
+                  {
+                    "offset_xy": [
+                      3,
+                      1
+                    ],
+                    "ncc": 0.9279836416244507
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      2
+                    ],
+                    "ncc": 0.9532310366630554
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      2
+                    ],
+                    "ncc": 0.9293970465660095
+                  },
+                  {
+                    "offset_xy": [
+                      1,
+                      3
+                    ],
+                    "ncc": 0.9046639204025269
+                  },
+                  {
+                    "offset_xy": [
+                      2,
+                      3
+                    ],
+                    "ncc": 0.9387011528015137
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      3
+                    ],
+                    "ncc": 0.9562045931816101
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      3
+                    ],
+                    "ncc": 0.9544422626495361
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      3
+                    ],
+                    "ncc": 0.9327024817466736
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      4
+                    ],
+                    "ncc": 0.9368053674697876
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      4
+                    ],
+                    "ncc": 0.9578904509544373
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      4
+                    ],
+                    "ncc": 0.9576941132545471
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      4
+                    ],
+                    "ncc": 0.9371974468231201
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      5
+                    ],
+                    "ncc": 0.9332569241523743
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      5
+                    ],
+                    "ncc": 0.9548954367637634
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      5
+                    ],
+                    "ncc": 0.9547078013420105
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      5
+                    ],
+                    "ncc": 0.9317458271980286
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      6
+                    ],
+                    "ncc": 0.9114177227020264
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      6
+                    ],
+                    "ncc": 0.9312542676925659
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      6
+                    ],
+                    "ncc": 0.9288431406021118
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      6
+                    ],
+                    "ncc": 0.9057611227035522
+                  }
+                ],
+                "invalid_offsets": 136,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 2,
+                "predicted_ncc": 0.9985440969467163,
+                "competing_offsets": [
+                  {
+                    "offset_xy": [
+                      -4,
+                      -1
+                    ],
+                    "ncc": 0.907336413860321
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      -1
+                    ],
+                    "ncc": 0.919633686542511
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      -1
+                    ],
+                    "ncc": 0.9526811838150024
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      -1
+                    ],
+                    "ncc": 0.9509415626525879
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      -1
+                    ],
+                    "ncc": 0.9482494592666626
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      -1
+                    ],
+                    "ncc": 0.9448375105857849
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      -1
+                    ],
+                    "ncc": 0.9408386945724487
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      -1
+                    ],
+                    "ncc": 0.9362732172012329
+                  },
+                  {
+                    "offset_xy": [
+                      -8,
+                      0
+                    ],
+                    "ncc": 0.9306070804595947
+                  },
+                  {
+                    "offset_xy": [
+                      -7,
+                      0
+                    ],
+                    "ncc": 0.9416338205337524
+                  },
+                  {
+                    "offset_xy": [
+                      -6,
+                      0
+                    ],
+                    "ncc": 0.9524313807487488
+                  },
+                  {
+                    "offset_xy": [
+                      -5,
+                      0
+                    ],
+                    "ncc": 0.96291583776474
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      0
+                    ],
+                    "ncc": 0.9728995561599731
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      0
+                    ],
+                    "ncc": 0.9820356369018555
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      0
+                    ],
+                    "ncc": 0.9880240559577942
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      0
+                    ],
+                    "ncc": 0.980061948299408
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      0
+                    ],
+                    "ncc": 0.9709532260894775
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      0
+                    ],
+                    "ncc": 0.9611125588417053
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      0
+                    ],
+                    "ncc": 0.950738787651062
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      0
+                    ],
+                    "ncc": 0.9398573637008667
+                  },
+                  {
+                    "offset_xy": [
+                      -8,
+                      1
+                    ],
+                    "ncc": 0.9382405281066895
+                  },
+                  {
+                    "offset_xy": [
+                      -7,
+                      1
+                    ],
+                    "ncc": 0.943856418132782
+                  },
+                  {
+                    "offset_xy": [
+                      -6,
+                      1
+                    ],
+                    "ncc": 0.9490367770195007
+                  },
+                  {
+                    "offset_xy": [
+                      -5,
+                      1
+                    ],
+                    "ncc": 0.9535811543464661
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      1
+                    ],
+                    "ncc": 0.9573214650154114
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      1
+                    ],
+                    "ncc": 0.960045337677002
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      1
+                    ],
+                    "ncc": 0.9327537417411804
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      1
+                    ],
+                    "ncc": 0.9202527403831482
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      1
+                    ],
+                    "ncc": 0.9068931341171265
+                  }
+                ],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 3,
+                "predicted_ncc": 0.9438944458961487,
+                "competing_offsets": [],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": true,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 4,
+                "predicted_ncc": 0.9658342003822327,
+                "competing_offsets": [],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": true,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 5,
+                "predicted_ncc": 0.9951683282852173,
+                "competing_offsets": [
+                  {
+                    "offset_xy": [
+                      3,
+                      -1
+                    ],
+                    "ncc": 0.9211912751197815
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      -1
+                    ],
+                    "ncc": 0.9226703643798828
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      -1
+                    ],
+                    "ncc": 0.9234273433685303
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      -1
+                    ],
+                    "ncc": 0.9237629771232605
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      -1
+                    ],
+                    "ncc": 0.9236759543418884
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      -1
+                    ],
+                    "ncc": 0.9231886863708496
+                  },
+                  {
+                    "offset_xy": [
+                      -8,
+                      0
+                    ],
+                    "ncc": 0.9608405232429504
+                  },
+                  {
+                    "offset_xy": [
+                      -7,
+                      0
+                    ],
+                    "ncc": 0.9672009348869324
+                  },
+                  {
+                    "offset_xy": [
+                      -6,
+                      0
+                    ],
+                    "ncc": 0.972955584526062
+                  },
+                  {
+                    "offset_xy": [
+                      -5,
+                      0
+                    ],
+                    "ncc": 0.9782644510269165
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      0
+                    ],
+                    "ncc": 0.9831339716911316
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      0
+                    ],
+                    "ncc": 0.9874029755592346
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      0
+                    ],
+                    "ncc": 0.992345929145813
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      0
+                    ],
+                    "ncc": 0.9897709488868713
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      0
+                    ],
+                    "ncc": 0.9867069125175476
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      0
+                    ],
+                    "ncc": 0.9832720756530762
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      0
+                    ],
+                    "ncc": 0.979576587677002
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      0
+                    ],
+                    "ncc": 0.975642740726471
+                  },
+                  {
+                    "offset_xy": [
+                      -8,
+                      1
+                    ],
+                    "ncc": 0.9579386711120605
+                  },
+                  {
+                    "offset_xy": [
+                      -7,
+                      1
+                    ],
+                    "ncc": 0.9598048329353333
+                  },
+                  {
+                    "offset_xy": [
+                      -6,
+                      1
+                    ],
+                    "ncc": 0.9612414836883545
+                  },
+                  {
+                    "offset_xy": [
+                      -5,
+                      1
+                    ],
+                    "ncc": 0.9622777104377747
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      1
+                    ],
+                    "ncc": 0.96265709400177
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      1
+                    ],
+                    "ncc": 0.9624521136283875
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      1
+                    ],
+                    "ncc": 0.944659411907196
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      1
+                    ],
+                    "ncc": 0.9394412636756897
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      1
+                    ],
+                    "ncc": 0.9342254400253296
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      1
+                    ],
+                    "ncc": 0.9289136528968811
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      1
+                    ],
+                    "ncc": 0.9234127402305603
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      1
+                    ],
+                    "ncc": 0.9179495573043823
+                  }
+                ],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              }
+            ],
+            "joint": {
+              "fixed_projection_witness_regions": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            },
+            "diagnostic_initialization_proposed": true,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": true,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000001.png",
+      "source_pts_ticks": 59945,
+      "exposure": "previously exposed training; development only",
+      "file_sha256": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+      "native_pixel_sha256": "439c3817810a8d8bcc8c82ed218d5fe0f851c7c5f35308b0b85fcbd328759edd",
+      "prediction": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": true,
+            "reference_tracks": 180,
+            "reference_model_inliers": 180,
+            "reference_to_current_affine": [
+              [
+                1.0,
+                -0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ]
+            ],
+            "domains": [
+              {
+                "region": 0,
+                "predicted_ncc": 1.0,
+                "competing_offsets": [],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": true,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 1,
+                "predicted_ncc": 1.0,
+                "competing_offsets": [
+                  {
+                    "offset_xy": [
+                      3,
+                      1
+                    ],
+                    "ncc": 0.9247257709503174
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      2
+                    ],
+                    "ncc": 0.9509556889533997
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      2
+                    ],
+                    "ncc": 0.9212491512298584
+                  },
+                  {
+                    "offset_xy": [
+                      1,
+                      3
+                    ],
+                    "ncc": 0.9133089184761047
+                  },
+                  {
+                    "offset_xy": [
+                      2,
+                      3
+                    ],
+                    "ncc": 0.9438430070877075
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      3
+                    ],
+                    "ncc": 0.9560741186141968
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      3
+                    ],
+                    "ncc": 0.9492281675338745
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      3
+                    ],
+                    "ncc": 0.9234527945518494
+                  },
+                  {
+                    "offset_xy": [
+                      2,
+                      4
+                    ],
+                    "ncc": 0.9048149585723877
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      4
+                    ],
+                    "ncc": 0.9389105439186096
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      4
+                    ],
+                    "ncc": 0.9559090733528137
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      4
+                    ],
+                    "ncc": 0.9519268870353699
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      4
+                    ],
+                    "ncc": 0.9285948872566223
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      5
+                    ],
+                    "ncc": 0.9365347027778625
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      5
+                    ],
+                    "ncc": 0.9553194046020508
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      5
+                    ],
+                    "ncc": 0.9530894756317139
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      5
+                    ],
+                    "ncc": 0.9270884990692139
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      6
+                    ],
+                    "ncc": 0.9174522757530212
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      6
+                    ],
+                    "ncc": 0.9354872703552246
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      6
+                    ],
+                    "ncc": 0.929688036441803
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      6
+                    ],
+                    "ncc": 0.9026005268096924
+                  }
+                ],
+                "invalid_offsets": 136,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 2,
+                "predicted_ncc": 0.9999998807907104,
+                "competing_offsets": [
+                  {
+                    "offset_xy": [
+                      -4,
+                      -1
+                    ],
+                    "ncc": 0.9122400283813477
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      -1
+                    ],
+                    "ncc": 0.9241949915885925
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      -1
+                    ],
+                    "ncc": 0.9533575773239136
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      -1
+                    ],
+                    "ncc": 0.9511611461639404
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      -1
+                    ],
+                    "ncc": 0.9480348825454712
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      -1
+                    ],
+                    "ncc": 0.9442304968833923
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      -1
+                    ],
+                    "ncc": 0.9398140907287598
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      -1
+                    ],
+                    "ncc": 0.9347946643829346
+                  },
+                  {
+                    "offset_xy": [
+                      -8,
+                      0
+                    ],
+                    "ncc": 0.9357456564903259
+                  },
+                  {
+                    "offset_xy": [
+                      -7,
+                      0
+                    ],
+                    "ncc": 0.9465920329093933
+                  },
+                  {
+                    "offset_xy": [
+                      -6,
+                      0
+                    ],
+                    "ncc": 0.9572125673294067
+                  },
+                  {
+                    "offset_xy": [
+                      -5,
+                      0
+                    ],
+                    "ncc": 0.9674817323684692
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      0
+                    ],
+                    "ncc": 0.9771614670753479
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      0
+                    ],
+                    "ncc": 0.9858527779579163
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      0
+                    ],
+                    "ncc": 0.9854905605316162
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      0
+                    ],
+                    "ncc": 0.9764625430107117
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      0
+                    ],
+                    "ncc": 0.9664050936698914
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      0
+                    ],
+                    "ncc": 0.9556978344917297
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      0
+                    ],
+                    "ncc": 0.9444356560707092
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      0
+                    ],
+                    "ncc": 0.9326583743095398
+                  },
+                  {
+                    "offset_xy": [
+                      -8,
+                      1
+                    ],
+                    "ncc": 0.9381879568099976
+                  },
+                  {
+                    "offset_xy": [
+                      -7,
+                      1
+                    ],
+                    "ncc": 0.9430320858955383
+                  },
+                  {
+                    "offset_xy": [
+                      -6,
+                      1
+                    ],
+                    "ncc": 0.9473560452461243
+                  },
+                  {
+                    "offset_xy": [
+                      -5,
+                      1
+                    ],
+                    "ncc": 0.9510484337806702
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      1
+                    ],
+                    "ncc": 0.9538751840591431
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      1
+                    ],
+                    "ncc": 0.9555714726448059
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      1
+                    ],
+                    "ncc": 0.9213981628417969
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      1
+                    ],
+                    "ncc": 0.9081642031669617
+                  }
+                ],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 3,
+                "predicted_ncc": 0.9972761273384094,
+                "competing_offsets": [],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": true,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 4,
+                "predicted_ncc": 1.0,
+                "competing_offsets": [],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": true,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 5,
+                "predicted_ncc": 0.9999896883964539,
+                "competing_offsets": [
+                  {
+                    "offset_xy": [
+                      -5,
+                      -1
+                    ],
+                    "ncc": 0.9014325737953186
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      -1
+                    ],
+                    "ncc": 0.9083453416824341
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      -1
+                    ],
+                    "ncc": 0.914915919303894
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      -1
+                    ],
+                    "ncc": 0.9406613111495972
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      -1
+                    ],
+                    "ncc": 0.9418311715126038
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      -1
+                    ],
+                    "ncc": 0.9422164559364319
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      -1
+                    ],
+                    "ncc": 0.9421947598457336
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      -1
+                    ],
+                    "ncc": 0.9417347311973572
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      -1
+                    ],
+                    "ncc": 0.9408710598945618
+                  },
+                  {
+                    "offset_xy": [
+                      -8,
+                      0
+                    ],
+                    "ncc": 0.9687255620956421
+                  },
+                  {
+                    "offset_xy": [
+                      -7,
+                      0
+                    ],
+                    "ncc": 0.9746994972229004
+                  },
+                  {
+                    "offset_xy": [
+                      -6,
+                      0
+                    ],
+                    "ncc": 0.9801455140113831
+                  },
+                  {
+                    "offset_xy": [
+                      -5,
+                      0
+                    ],
+                    "ncc": 0.9851400256156921
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      0
+                    ],
+                    "ncc": 0.9895117282867432
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      0
+                    ],
+                    "ncc": 0.9932420253753662
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      0
+                    ],
+                    "ncc": 0.9932816624641418
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      0
+                    ],
+                    "ncc": 0.9896069765090942
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      0
+                    ],
+                    "ncc": 0.9855180382728577
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      0
+                    ],
+                    "ncc": 0.9810468554496765
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      0
+                    ],
+                    "ncc": 0.9763782620429993
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      0
+                    ],
+                    "ncc": 0.9716325998306274
+                  },
+                  {
+                    "offset_xy": [
+                      -8,
+                      1
+                    ],
+                    "ncc": 0.9391862750053406
+                  },
+                  {
+                    "offset_xy": [
+                      -7,
+                      1
+                    ],
+                    "ncc": 0.9401689767837524
+                  },
+                  {
+                    "offset_xy": [
+                      -6,
+                      1
+                    ],
+                    "ncc": 0.9406675100326538
+                  },
+                  {
+                    "offset_xy": [
+                      -5,
+                      1
+                    ],
+                    "ncc": 0.9407768845558167
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      1
+                    ],
+                    "ncc": 0.9402500987052917
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      1
+                    ],
+                    "ncc": 0.9391599297523499
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      1
+                    ],
+                    "ncc": 0.9174296259880066
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      1
+                    ],
+                    "ncc": 0.9120304584503174
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      1
+                    ],
+                    "ncc": 0.9066387414932251
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      1
+                    ],
+                    "ncc": 0.9009827375411987
+                  }
+                ],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              }
+            ],
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            },
+            "diagnostic_initialization_proposed": true,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": true,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000002.png",
+      "source_pts_ticks": 60201,
+      "exposure": "previously exposed training; development only",
+      "file_sha256": "e790bd155383fac3eb439d4311a89840467fce57938a80dae2448e628dfd9211",
+      "native_pixel_sha256": "eb69ac61ab1bd4da4517429efa0f2896e520476b6bef244f4e4746bb98c8d850",
+      "prediction": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": true,
+            "reference_tracks": 169,
+            "reference_model_inliers": 168,
+            "reference_to_current_affine": [
+              [
+                0.9995162919105326,
+                -0.00011404193039629347,
+                0.38680600310437985
+              ],
+              [
+                0.00011404193039629347,
+                0.9995162919105326,
+                0.1615949659958774
+              ]
+            ],
+            "domains": [
+              {
+                "region": 0,
+                "predicted_ncc": 0.9916632771492004,
+                "competing_offsets": [],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": true,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 1,
+                "predicted_ncc": 0.9954754710197449,
+                "competing_offsets": [
+                  {
+                    "offset_xy": [
+                      3,
+                      1
+                    ],
+                    "ncc": 0.9250089526176453
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      2
+                    ],
+                    "ncc": 0.9513265490531921
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      2
+                    ],
+                    "ncc": 0.9216036796569824
+                  },
+                  {
+                    "offset_xy": [
+                      1,
+                      3
+                    ],
+                    "ncc": 0.9152790904045105
+                  },
+                  {
+                    "offset_xy": [
+                      2,
+                      3
+                    ],
+                    "ncc": 0.9457093477249146
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      3
+                    ],
+                    "ncc": 0.9577803611755371
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      3
+                    ],
+                    "ncc": 0.9506689310073853
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      3
+                    ],
+                    "ncc": 0.9245989322662354
+                  },
+                  {
+                    "offset_xy": [
+                      2,
+                      4
+                    ],
+                    "ncc": 0.9082132577896118
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      4
+                    ],
+                    "ncc": 0.9423304796218872
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      4
+                    ],
+                    "ncc": 0.9579587578773499
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      4
+                    ],
+                    "ncc": 0.9536520838737488
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      4
+                    ],
+                    "ncc": 0.9296066164970398
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      5
+                    ],
+                    "ncc": 0.9027820825576782
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      5
+                    ],
+                    "ncc": 0.939666748046875
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      5
+                    ],
+                    "ncc": 0.9574571847915649
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      5
+                    ],
+                    "ncc": 0.9529590010643005
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      5
+                    ],
+                    "ncc": 0.9268165826797485
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      6
+                    ],
+                    "ncc": 0.9199686646461487
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      6
+                    ],
+                    "ncc": 0.9359037280082703
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      6
+                    ],
+                    "ncc": 0.9288471341133118
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      6
+                    ],
+                    "ncc": 0.9013550877571106
+                  }
+                ],
+                "invalid_offsets": 136,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 2,
+                "predicted_ncc": 0.999580442905426,
+                "competing_offsets": [
+                  {
+                    "offset_xy": [
+                      -4,
+                      -1
+                    ],
+                    "ncc": 0.9111707210540771
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      -1
+                    ],
+                    "ncc": 0.9231364130973816
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      -1
+                    ],
+                    "ncc": 0.9540687799453735
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      -1
+                    ],
+                    "ncc": 0.9520251750946045
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      -1
+                    ],
+                    "ncc": 0.9489652514457703
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      -1
+                    ],
+                    "ncc": 0.9451586008071899
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      -1
+                    ],
+                    "ncc": 0.9407153129577637
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      -1
+                    ],
+                    "ncc": 0.9357324242591858
+                  },
+                  {
+                    "offset_xy": [
+                      -8,
+                      0
+                    ],
+                    "ncc": 0.9343463778495789
+                  },
+                  {
+                    "offset_xy": [
+                      -7,
+                      0
+                    ],
+                    "ncc": 0.9451510310173035
+                  },
+                  {
+                    "offset_xy": [
+                      -6,
+                      0
+                    ],
+                    "ncc": 0.9557301998138428
+                  },
+                  {
+                    "offset_xy": [
+                      -5,
+                      0
+                    ],
+                    "ncc": 0.9659688472747803
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      0
+                    ],
+                    "ncc": 0.9756755828857422
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      0
+                    ],
+                    "ncc": 0.9844834804534912
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      0
+                    ],
+                    "ncc": 0.9872674345970154
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      0
+                    ],
+                    "ncc": 0.9786481261253357
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      0
+                    ],
+                    "ncc": 0.9688331484794617
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      0
+                    ],
+                    "ncc": 0.9582903385162354
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      0
+                    ],
+                    "ncc": 0.94713294506073
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      0
+                    ],
+                    "ncc": 0.9354951977729797
+                  },
+                  {
+                    "offset_xy": [
+                      -8,
+                      1
+                    ],
+                    "ncc": 0.9378142356872559
+                  },
+                  {
+                    "offset_xy": [
+                      -7,
+                      1
+                    ],
+                    "ncc": 0.9428351521492004
+                  },
+                  {
+                    "offset_xy": [
+                      -6,
+                      1
+                    ],
+                    "ncc": 0.9473296403884888
+                  },
+                  {
+                    "offset_xy": [
+                      -5,
+                      1
+                    ],
+                    "ncc": 0.9512098431587219
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      1
+                    ],
+                    "ncc": 0.954285740852356
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      1
+                    ],
+                    "ncc": 0.9562720060348511
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      1
+                    ],
+                    "ncc": 0.9249006509780884
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      1
+                    ],
+                    "ncc": 0.9120444059371948
+                  }
+                ],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 3,
+                "predicted_ncc": 0.9908474087715149,
+                "competing_offsets": [],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": true,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 4,
+                "predicted_ncc": 0.9862203598022461,
+                "competing_offsets": [
+                  {
+                    "offset_xy": [
+                      3,
+                      0
+                    ],
+                    "ncc": 0.901751697063446
+                  }
+                ],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 5,
+                "predicted_ncc": 0.9992086291313171,
+                "competing_offsets": [
+                  {
+                    "offset_xy": [
+                      -4,
+                      -1
+                    ],
+                    "ncc": 0.9069973826408386
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      -1
+                    ],
+                    "ncc": 0.9137173295021057
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      -1
+                    ],
+                    "ncc": 0.9387096166610718
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      -1
+                    ],
+                    "ncc": 0.9398779273033142
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      -1
+                    ],
+                    "ncc": 0.940377950668335
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      -1
+                    ],
+                    "ncc": 0.9403548240661621
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      -1
+                    ],
+                    "ncc": 0.9399335980415344
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      -1
+                    ],
+                    "ncc": 0.9390960931777954
+                  },
+                  {
+                    "offset_xy": [
+                      -8,
+                      0
+                    ],
+                    "ncc": 0.9677916169166565
+                  },
+                  {
+                    "offset_xy": [
+                      -7,
+                      0
+                    ],
+                    "ncc": 0.9737734198570251
+                  },
+                  {
+                    "offset_xy": [
+                      -6,
+                      0
+                    ],
+                    "ncc": 0.9793533682823181
+                  },
+                  {
+                    "offset_xy": [
+                      -5,
+                      0
+                    ],
+                    "ncc": 0.9843543171882629
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      0
+                    ],
+                    "ncc": 0.9888215065002441
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      0
+                    ],
+                    "ncc": 0.9926961064338684
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      0
+                    ],
+                    "ncc": 0.9938004612922668
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      0
+                    ],
+                    "ncc": 0.9904698729515076
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      0
+                    ],
+                    "ncc": 0.986661434173584
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      0
+                    ],
+                    "ncc": 0.9825037121772766
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      0
+                    ],
+                    "ncc": 0.9780682325363159
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      0
+                    ],
+                    "ncc": 0.9734817743301392
+                  },
+                  {
+                    "offset_xy": [
+                      -8,
+                      1
+                    ],
+                    "ncc": 0.9425361752510071
+                  },
+                  {
+                    "offset_xy": [
+                      -7,
+                      1
+                    ],
+                    "ncc": 0.9436762928962708
+                  },
+                  {
+                    "offset_xy": [
+                      -6,
+                      1
+                    ],
+                    "ncc": 0.9443594217300415
+                  },
+                  {
+                    "offset_xy": [
+                      -5,
+                      1
+                    ],
+                    "ncc": 0.9445204734802246
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      1
+                    ],
+                    "ncc": 0.9440960884094238
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      1
+                    ],
+                    "ncc": 0.9430969953536987
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      1
+                    ],
+                    "ncc": 0.9228461384773254
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      1
+                    ],
+                    "ncc": 0.9176594614982605
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      1
+                    ],
+                    "ncc": 0.9122828841209412
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      1
+                    ],
+                    "ncc": 0.9068319797515869
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      1
+                    ],
+                    "ncc": 0.9013547897338867
+                  }
+                ],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              }
+            ],
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            },
+            "diagnostic_initialization_proposed": true,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": true,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000003.png",
+      "source_pts_ticks": 60457,
+      "exposure": "previously exposed training; development only",
+      "file_sha256": "1dc0d9b8c59355b43eb723b1961110bb53d1ce8a62176490f5c632dd6ee5f2ad",
+      "native_pixel_sha256": "21d34bc8deaedf9aea2c0f26343d51ec079be4dd71cccb6a7d3b204daeb1735b",
+      "prediction": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": true,
+            "reference_tracks": 171,
+            "reference_model_inliers": 171,
+            "reference_to_current_affine": [
+              [
+                0.9994465388023344,
+                -8.51243013327372e-05,
+                0.42200554787253935
+              ],
+              [
+                8.51243013327372e-05,
+                0.9994465388023344,
+                0.22486933653635538
+              ]
+            ],
+            "domains": [
+              {
+                "region": 0,
+                "predicted_ncc": 0.9875323176383972,
+                "competing_offsets": [],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": true,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 1,
+                "predicted_ncc": 0.9950845241546631,
+                "competing_offsets": [
+                  {
+                    "offset_xy": [
+                      3,
+                      1
+                    ],
+                    "ncc": 0.9245532155036926
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      2
+                    ],
+                    "ncc": 0.9511165022850037
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      2
+                    ],
+                    "ncc": 0.9213504195213318
+                  },
+                  {
+                    "offset_xy": [
+                      1,
+                      3
+                    ],
+                    "ncc": 0.9156665205955505
+                  },
+                  {
+                    "offset_xy": [
+                      2,
+                      3
+                    ],
+                    "ncc": 0.9456008672714233
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      3
+                    ],
+                    "ncc": 0.9573976993560791
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      3
+                    ],
+                    "ncc": 0.9497712254524231
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      3
+                    ],
+                    "ncc": 0.9240744113922119
+                  },
+                  {
+                    "offset_xy": [
+                      2,
+                      4
+                    ],
+                    "ncc": 0.9086208939552307
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      4
+                    ],
+                    "ncc": 0.9421865344047546
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      4
+                    ],
+                    "ncc": 0.957471489906311
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      4
+                    ],
+                    "ncc": 0.9533880949020386
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      4
+                    ],
+                    "ncc": 0.9290890693664551
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      5
+                    ],
+                    "ncc": 0.9025376439094543
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      5
+                    ],
+                    "ncc": 0.9392786026000977
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      5
+                    ],
+                    "ncc": 0.9571129679679871
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      5
+                    ],
+                    "ncc": 0.9525933861732483
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      5
+                    ],
+                    "ncc": 0.9260547757148743
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      6
+                    ],
+                    "ncc": 0.9198941588401794
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      6
+                    ],
+                    "ncc": 0.935664713382721
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      6
+                    ],
+                    "ncc": 0.9284395575523376
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      6
+                    ],
+                    "ncc": 0.9012386202812195
+                  }
+                ],
+                "invalid_offsets": 136,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 2,
+                "predicted_ncc": 0.9993844032287598,
+                "competing_offsets": [
+                  {
+                    "offset_xy": [
+                      -4,
+                      -1
+                    ],
+                    "ncc": 0.9098080992698669
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      -1
+                    ],
+                    "ncc": 0.9218056797981262
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      -1
+                    ],
+                    "ncc": 0.9547520279884338
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      -1
+                    ],
+                    "ncc": 0.9529498815536499
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      -1
+                    ],
+                    "ncc": 0.9500555396080017
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      -1
+                    ],
+                    "ncc": 0.9463833570480347
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      -1
+                    ],
+                    "ncc": 0.9421149492263794
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      -1
+                    ],
+                    "ncc": 0.9373033046722412
+                  },
+                  {
+                    "offset_xy": [
+                      -8,
+                      0
+                    ],
+                    "ncc": 0.9326601028442383
+                  },
+                  {
+                    "offset_xy": [
+                      -7,
+                      0
+                    ],
+                    "ncc": 0.9434565901756287
+                  },
+                  {
+                    "offset_xy": [
+                      -6,
+                      0
+                    ],
+                    "ncc": 0.9540631175041199
+                  },
+                  {
+                    "offset_xy": [
+                      -5,
+                      0
+                    ],
+                    "ncc": 0.9643514752388
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      0
+                    ],
+                    "ncc": 0.9741364121437073
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      0
+                    ],
+                    "ncc": 0.9830935597419739
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      0
+                    ],
+                    "ncc": 0.9886049032211304
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      0
+                    ],
+                    "ncc": 0.9803500175476074
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      0
+                    ],
+                    "ncc": 0.9708370566368103
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      0
+                    ],
+                    "ncc": 0.9605322480201721
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      0
+                    ],
+                    "ncc": 0.9496486783027649
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      0
+                    ],
+                    "ncc": 0.9382719993591309
+                  },
+                  {
+                    "offset_xy": [
+                      -8,
+                      1
+                    ],
+                    "ncc": 0.9371172189712524
+                  },
+                  {
+                    "offset_xy": [
+                      -7,
+                      1
+                    ],
+                    "ncc": 0.9422712922096252
+                  },
+                  {
+                    "offset_xy": [
+                      -6,
+                      1
+                    ],
+                    "ncc": 0.9469257593154907
+                  },
+                  {
+                    "offset_xy": [
+                      -5,
+                      1
+                    ],
+                    "ncc": 0.9509838223457336
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      1
+                    ],
+                    "ncc": 0.9542595148086548
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      1
+                    ],
+                    "ncc": 0.9565180540084839
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      1
+                    ],
+                    "ncc": 0.9277462959289551
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      1
+                    ],
+                    "ncc": 0.9151342511177063
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      1
+                    ],
+                    "ncc": 0.9015424251556396
+                  }
+                ],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 3,
+                "predicted_ncc": 0.9853551387786865,
+                "competing_offsets": [],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": true,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 4,
+                "predicted_ncc": 0.9818019270896912,
+                "competing_offsets": [
+                  {
+                    "offset_xy": [
+                      3,
+                      0
+                    ],
+                    "ncc": 0.9071046710014343
+                  }
+                ],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 5,
+                "predicted_ncc": 0.9989132881164551,
+                "competing_offsets": [
+                  {
+                    "offset_xy": [
+                      -4,
+                      -1
+                    ],
+                    "ncc": 0.904660701751709
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      -1
+                    ],
+                    "ncc": 0.9111524224281311
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      -1
+                    ],
+                    "ncc": 0.9358910322189331
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      -1
+                    ],
+                    "ncc": 0.9369920492172241
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      -1
+                    ],
+                    "ncc": 0.9374526739120483
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      -1
+                    ],
+                    "ncc": 0.9373871684074402
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      -1
+                    ],
+                    "ncc": 0.9368999600410461
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      -1
+                    ],
+                    "ncc": 0.9361147880554199
+                  },
+                  {
+                    "offset_xy": [
+                      -8,
+                      0
+                    ],
+                    "ncc": 0.967432975769043
+                  },
+                  {
+                    "offset_xy": [
+                      -7,
+                      0
+                    ],
+                    "ncc": 0.9733486771583557
+                  },
+                  {
+                    "offset_xy": [
+                      -6,
+                      0
+                    ],
+                    "ncc": 0.9788994193077087
+                  },
+                  {
+                    "offset_xy": [
+                      -5,
+                      0
+                    ],
+                    "ncc": 0.9838911294937134
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      0
+                    ],
+                    "ncc": 0.9883614778518677
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      0
+                    ],
+                    "ncc": 0.9922373294830322
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      0
+                    ],
+                    "ncc": 0.9937300682067871
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      0
+                    ],
+                    "ncc": 0.9905227422714233
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      0
+                    ],
+                    "ncc": 0.9868543744087219
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      0
+                    ],
+                    "ncc": 0.9828653335571289
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      0
+                    ],
+                    "ncc": 0.9786092042922974
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      0
+                    ],
+                    "ncc": 0.9741710424423218
+                  },
+                  {
+                    "offset_xy": [
+                      -8,
+                      1
+                    ],
+                    "ncc": 0.9456386566162109
+                  },
+                  {
+                    "offset_xy": [
+                      -7,
+                      1
+                    ],
+                    "ncc": 0.946870744228363
+                  },
+                  {
+                    "offset_xy": [
+                      -6,
+                      1
+                    ],
+                    "ncc": 0.9477003812789917
+                  },
+                  {
+                    "offset_xy": [
+                      -5,
+                      1
+                    ],
+                    "ncc": 0.9480023980140686
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      1
+                    ],
+                    "ncc": 0.9477388858795166
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      1
+                    ],
+                    "ncc": 0.9469031691551208
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      1
+                    ],
+                    "ncc": 0.9267248511314392
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      1
+                    ],
+                    "ncc": 0.921514630317688
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      1
+                    ],
+                    "ncc": 0.9161897897720337
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      1
+                    ],
+                    "ncc": 0.9107565879821777
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      1
+                    ],
+                    "ncc": 0.9052879810333252
+                  }
+                ],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              }
+            ],
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            },
+            "diagnostic_initialization_proposed": true,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": true,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000004.png",
+      "source_pts_ticks": 60713,
+      "exposure": "previously exposed training; development only",
+      "file_sha256": "00e2240728fa5e6c6cd1d8a29adebecb993d61abb4c9a97aea47902d53f041e1",
+      "native_pixel_sha256": "03ad8c60cca1e1a5b02aae0d2395c56886b1654731a31ce39f51e53cda6217c7",
+      "prediction": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": true,
+            "reference_tracks": 164,
+            "reference_model_inliers": 164,
+            "reference_to_current_affine": [
+              [
+                0.9988866671825429,
+                0.0003328412920374481,
+                0.6915415519854282
+              ],
+              [
+                -0.0003328412920374481,
+                0.9988866671825429,
+                0.4459881397884587
+              ]
+            ],
+            "domains": [
+              {
+                "region": 0,
+                "predicted_ncc": 0.9613865613937378,
+                "competing_offsets": [],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": true,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 1,
+                "predicted_ncc": 0.9913297295570374,
+                "competing_offsets": [
+                  {
+                    "offset_xy": [
+                      3,
+                      1
+                    ],
+                    "ncc": 0.9198502898216248
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      2
+                    ],
+                    "ncc": 0.9497770667076111
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      2
+                    ],
+                    "ncc": 0.917631983757019
+                  },
+                  {
+                    "offset_xy": [
+                      1,
+                      3
+                    ],
+                    "ncc": 0.9217890501022339
+                  },
+                  {
+                    "offset_xy": [
+                      2,
+                      3
+                    ],
+                    "ncc": 0.9495596885681152
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      3
+                    ],
+                    "ncc": 0.9594199061393738
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      3
+                    ],
+                    "ncc": 0.9500807523727417
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      3
+                    ],
+                    "ncc": 0.9223625063896179
+                  },
+                  {
+                    "offset_xy": [
+                      2,
+                      4
+                    ],
+                    "ncc": 0.915709376335144
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      4
+                    ],
+                    "ncc": 0.9468482732772827
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      4
+                    ],
+                    "ncc": 0.9603506922721863
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      4
+                    ],
+                    "ncc": 0.9533258676528931
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      4
+                    ],
+                    "ncc": 0.9262417554855347
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      5
+                    ],
+                    "ncc": 0.9101868867874146
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      5
+                    ],
+                    "ncc": 0.9439144730567932
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      5
+                    ],
+                    "ncc": 0.958562970161438
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      5
+                    ],
+                    "ncc": 0.9509563446044922
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      5
+                    ],
+                    "ncc": 0.9222989678382874
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      6
+                    ],
+                    "ncc": 0.9219546914100647
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      6
+                    ],
+                    "ncc": 0.9338064789772034
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      6
+                    ],
+                    "ncc": 0.9244346022605896
+                  }
+                ],
+                "invalid_offsets": 136,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 2,
+                "predicted_ncc": 0.9991620182991028,
+                "competing_offsets": [
+                  {
+                    "offset_xy": [
+                      -5,
+                      -1
+                    ],
+                    "ncc": 0.9006665349006653
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      -1
+                    ],
+                    "ncc": 0.9130879044532776
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      -1
+                    ],
+                    "ncc": 0.924956202507019
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      -1
+                    ],
+                    "ncc": 0.9568662047386169
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      -1
+                    ],
+                    "ncc": 0.9547632336616516
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      -1
+                    ],
+                    "ncc": 0.9515752792358398
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      -1
+                    ],
+                    "ncc": 0.9476034641265869
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      -1
+                    ],
+                    "ncc": 0.9430699944496155
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      -1
+                    ],
+                    "ncc": 0.9380125999450684
+                  },
+                  {
+                    "offset_xy": [
+                      -8,
+                      0
+                    ],
+                    "ncc": 0.933954119682312
+                  },
+                  {
+                    "offset_xy": [
+                      -7,
+                      0
+                    ],
+                    "ncc": 0.9446073174476624
+                  },
+                  {
+                    "offset_xy": [
+                      -6,
+                      0
+                    ],
+                    "ncc": 0.9550561904907227
+                  },
+                  {
+                    "offset_xy": [
+                      -5,
+                      0
+                    ],
+                    "ncc": 0.9651839733123779
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      0
+                    ],
+                    "ncc": 0.9747743010520935
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      0
+                    ],
+                    "ncc": 0.9835465550422668
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      0
+                    ],
+                    "ncc": 0.9878293871879578
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      0
+                    ],
+                    "ncc": 0.9793197512626648
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      0
+                    ],
+                    "ncc": 0.969546377658844
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      0
+                    ],
+                    "ncc": 0.9590222835540771
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      0
+                    ],
+                    "ncc": 0.9479549527168274
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      0
+                    ],
+                    "ncc": 0.9364449977874756
+                  },
+                  {
+                    "offset_xy": [
+                      -8,
+                      1
+                    ],
+                    "ncc": 0.9362335801124573
+                  },
+                  {
+                    "offset_xy": [
+                      -7,
+                      1
+                    ],
+                    "ncc": 0.9412906765937805
+                  },
+                  {
+                    "offset_xy": [
+                      -6,
+                      1
+                    ],
+                    "ncc": 0.9458738565444946
+                  },
+                  {
+                    "offset_xy": [
+                      -5,
+                      1
+                    ],
+                    "ncc": 0.9498345255851746
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      1
+                    ],
+                    "ncc": 0.9530060291290283
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      1
+                    ],
+                    "ncc": 0.9551683664321899
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      1
+                    ],
+                    "ncc": 0.9256119728088379
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      1
+                    ],
+                    "ncc": 0.9128085970878601
+                  }
+                ],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 3,
+                "predicted_ncc": 0.9859002828598022,
+                "competing_offsets": [],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": true,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 4,
+                "predicted_ncc": 0.9706330299377441,
+                "competing_offsets": [
+                  {
+                    "offset_xy": [
+                      3,
+                      0
+                    ],
+                    "ncc": 0.9023654460906982
+                  }
+                ],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 5,
+                "predicted_ncc": 0.9982470273971558,
+                "competing_offsets": [
+                  {
+                    "offset_xy": [
+                      -3,
+                      -1
+                    ],
+                    "ncc": 0.9062727689743042
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      -1
+                    ],
+                    "ncc": 0.931082010269165
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      -1
+                    ],
+                    "ncc": 0.9323105812072754
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      -1
+                    ],
+                    "ncc": 0.9329453706741333
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      -1
+                    ],
+                    "ncc": 0.9330439567565918
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      -1
+                    ],
+                    "ncc": 0.9327157139778137
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      -1
+                    ],
+                    "ncc": 0.9321369528770447
+                  },
+                  {
+                    "offset_xy": [
+                      -8,
+                      0
+                    ],
+                    "ncc": 0.9660999774932861
+                  },
+                  {
+                    "offset_xy": [
+                      -7,
+                      0
+                    ],
+                    "ncc": 0.9722267389297485
+                  },
+                  {
+                    "offset_xy": [
+                      -6,
+                      0
+                    ],
+                    "ncc": 0.9778338074684143
+                  },
+                  {
+                    "offset_xy": [
+                      -5,
+                      0
+                    ],
+                    "ncc": 0.9828912019729614
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      0
+                    ],
+                    "ncc": 0.9874655604362488
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      0
+                    ],
+                    "ncc": 0.991426944732666
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      0
+                    ],
+                    "ncc": 0.9938087463378906
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      0
+                    ],
+                    "ncc": 0.9907572865486145
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      0
+                    ],
+                    "ncc": 0.9872220158576965
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      0
+                    ],
+                    "ncc": 0.9832942485809326
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      0
+                    ],
+                    "ncc": 0.9791194796562195
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      0
+                    ],
+                    "ncc": 0.9748607277870178
+                  },
+                  {
+                    "offset_xy": [
+                      -8,
+                      1
+                    ],
+                    "ncc": 0.9490617513656616
+                  },
+                  {
+                    "offset_xy": [
+                      -7,
+                      1
+                    ],
+                    "ncc": 0.9504032731056213
+                  },
+                  {
+                    "offset_xy": [
+                      -6,
+                      1
+                    ],
+                    "ncc": 0.9513365030288696
+                  },
+                  {
+                    "offset_xy": [
+                      -5,
+                      1
+                    ],
+                    "ncc": 0.9518021941184998
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      1
+                    ],
+                    "ncc": 0.9517695307731628
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      1
+                    ],
+                    "ncc": 0.9510936737060547
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      1
+                    ],
+                    "ncc": 0.931429386138916
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      1
+                    ],
+                    "ncc": 0.9262248277664185
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      1
+                    ],
+                    "ncc": 0.9208846092224121
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      1
+                    ],
+                    "ncc": 0.9154180288314819
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      1
+                    ],
+                    "ncc": 0.9099090695381165
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      1
+                    ],
+                    "ncc": 0.9044532775878906
+                  }
+                ],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              }
+            ],
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            },
+            "diagnostic_initialization_proposed": true,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": true,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000005.png",
+      "source_pts_ticks": 60969,
+      "exposure": "previously exposed training; development only",
+      "file_sha256": "77d745206022589fc826823873bc1305e922fdda01854eac4a7eed10876d6c80",
+      "native_pixel_sha256": "e7fd447968482a2c92eb2e2f8f0752106aed9b418055b37784edd4a6a866ae34",
+      "prediction": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": true,
+            "reference_tracks": 156,
+            "reference_model_inliers": 156,
+            "reference_to_current_affine": [
+              [
+                0.9982242973186146,
+                0.0011426448899468419,
+                1.0708654427530928
+              ],
+              [
+                -0.0011426448899468419,
+                0.9982242973186146,
+                1.0839238640106652
+              ]
+            ],
+            "domains": [
+              {
+                "region": 0,
+                "predicted_ncc": 0.916321873664856,
+                "competing_offsets": [],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": true,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 1,
+                "predicted_ncc": 0.9838994145393372,
+                "competing_offsets": [
+                  {
+                    "offset_xy": [
+                      3,
+                      1
+                    ],
+                    "ncc": 0.9180518388748169
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      2
+                    ],
+                    "ncc": 0.9484723806381226
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      2
+                    ],
+                    "ncc": 0.9181591272354126
+                  },
+                  {
+                    "offset_xy": [
+                      1,
+                      3
+                    ],
+                    "ncc": 0.9186122417449951
+                  },
+                  {
+                    "offset_xy": [
+                      2,
+                      3
+                    ],
+                    "ncc": 0.9476063251495361
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      3
+                    ],
+                    "ncc": 0.9584399461746216
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      3
+                    ],
+                    "ncc": 0.9496446847915649
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      3
+                    ],
+                    "ncc": 0.9228812456130981
+                  },
+                  {
+                    "offset_xy": [
+                      2,
+                      4
+                    ],
+                    "ncc": 0.9139379262924194
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      4
+                    ],
+                    "ncc": 0.9456465840339661
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      4
+                    ],
+                    "ncc": 0.960042417049408
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      4
+                    ],
+                    "ncc": 0.9536694288253784
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      4
+                    ],
+                    "ncc": 0.9267600178718567
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      5
+                    ],
+                    "ncc": 0.9097685813903809
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      5
+                    ],
+                    "ncc": 0.943566620349884
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      5
+                    ],
+                    "ncc": 0.9586428999900818
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      5
+                    ],
+                    "ncc": 0.950827419757843
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      5
+                    ],
+                    "ncc": 0.9224805235862732
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      6
+                    ],
+                    "ncc": 0.9264306426048279
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      6
+                    ],
+                    "ncc": 0.9389946460723877
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      6
+                    ],
+                    "ncc": 0.9298035502433777
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      6
+                    ],
+                    "ncc": 0.9001498818397522
+                  }
+                ],
+                "invalid_offsets": 136,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 2,
+                "predicted_ncc": 0.9977214932441711,
+                "competing_offsets": [
+                  {
+                    "offset_xy": [
+                      -4,
+                      -1
+                    ],
+                    "ncc": 0.910624086856842
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      -1
+                    ],
+                    "ncc": 0.9227501153945923
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      -1
+                    ],
+                    "ncc": 0.9590365290641785
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      -1
+                    ],
+                    "ncc": 0.9572361707687378
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      -1
+                    ],
+                    "ncc": 0.9542102813720703
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      -1
+                    ],
+                    "ncc": 0.9502271413803101
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      -1
+                    ],
+                    "ncc": 0.9456262588500977
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      -1
+                    ],
+                    "ncc": 0.9405391216278076
+                  },
+                  {
+                    "offset_xy": [
+                      -8,
+                      0
+                    ],
+                    "ncc": 0.930645763874054
+                  },
+                  {
+                    "offset_xy": [
+                      -7,
+                      0
+                    ],
+                    "ncc": 0.9412158131599426
+                  },
+                  {
+                    "offset_xy": [
+                      -6,
+                      0
+                    ],
+                    "ncc": 0.9516044855117798
+                  },
+                  {
+                    "offset_xy": [
+                      -5,
+                      0
+                    ],
+                    "ncc": 0.9616789817810059
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      0
+                    ],
+                    "ncc": 0.9712880253791809
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      0
+                    ],
+                    "ncc": 0.9801797270774841
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      0
+                    ],
+                    "ncc": 0.9898581504821777
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      0
+                    ],
+                    "ncc": 0.9820864200592041
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      0
+                    ],
+                    "ncc": 0.9728831052780151
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      0
+                    ],
+                    "ncc": 0.962725818157196
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      0
+                    ],
+                    "ncc": 0.9519617557525635
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      0
+                    ],
+                    "ncc": 0.9408054947853088
+                  },
+                  {
+                    "offset_xy": [
+                      -8,
+                      1
+                    ],
+                    "ncc": 0.9340353012084961
+                  },
+                  {
+                    "offset_xy": [
+                      -7,
+                      1
+                    ],
+                    "ncc": 0.9392759203910828
+                  },
+                  {
+                    "offset_xy": [
+                      -6,
+                      1
+                    ],
+                    "ncc": 0.9440670013427734
+                  },
+                  {
+                    "offset_xy": [
+                      -5,
+                      1
+                    ],
+                    "ncc": 0.9482844471931458
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      1
+                    ],
+                    "ncc": 0.9518007040023804
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      1
+                    ],
+                    "ncc": 0.9544085264205933
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      1
+                    ],
+                    "ncc": 0.931212842464447
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      1
+                    ],
+                    "ncc": 0.9191986918449402
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      1
+                    ],
+                    "ncc": 0.9059241414070129
+                  }
+                ],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 3,
+                "predicted_ncc": 0.970256507396698,
+                "competing_offsets": [],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": true,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 4,
+                "predicted_ncc": 0.9547591209411621,
+                "competing_offsets": [
+                  {
+                    "offset_xy": [
+                      3,
+                      0
+                    ],
+                    "ncc": 0.9053835272789001
+                  }
+                ],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 5,
+                "predicted_ncc": 0.9921196699142456,
+                "competing_offsets": [
+                  {
+                    "offset_xy": [
+                      3,
+                      -1
+                    ],
+                    "ncc": 0.9099019169807434
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      -1
+                    ],
+                    "ncc": 0.9116135239601135
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      -1
+                    ],
+                    "ncc": 0.9126164317131042
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      -1
+                    ],
+                    "ncc": 0.9131618142127991
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      -1
+                    ],
+                    "ncc": 0.9132522344589233
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      -1
+                    ],
+                    "ncc": 0.9131724238395691
+                  },
+                  {
+                    "offset_xy": [
+                      -8,
+                      0
+                    ],
+                    "ncc": 0.9569610357284546
+                  },
+                  {
+                    "offset_xy": [
+                      -7,
+                      0
+                    ],
+                    "ncc": 0.9632293581962585
+                  },
+                  {
+                    "offset_xy": [
+                      -6,
+                      0
+                    ],
+                    "ncc": 0.9689244031906128
+                  },
+                  {
+                    "offset_xy": [
+                      -5,
+                      0
+                    ],
+                    "ncc": 0.9742825627326965
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      0
+                    ],
+                    "ncc": 0.9792638421058655
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      0
+                    ],
+                    "ncc": 0.9837169051170349
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      0
+                    ],
+                    "ncc": 0.9903914332389832
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      0
+                    ],
+                    "ncc": 0.9882497191429138
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      0
+                    ],
+                    "ncc": 0.9855618476867676
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      0
+                    ],
+                    "ncc": 0.9824058413505554
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      0
+                    ],
+                    "ncc": 0.9789984226226807
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      0
+                    ],
+                    "ncc": 0.9754364490509033
+                  },
+                  {
+                    "offset_xy": [
+                      -8,
+                      1
+                    ],
+                    "ncc": 0.9635736346244812
+                  },
+                  {
+                    "offset_xy": [
+                      -7,
+                      1
+                    ],
+                    "ncc": 0.9658633470535278
+                  },
+                  {
+                    "offset_xy": [
+                      -6,
+                      1
+                    ],
+                    "ncc": 0.9676463603973389
+                  },
+                  {
+                    "offset_xy": [
+                      -5,
+                      1
+                    ],
+                    "ncc": 0.9689372181892395
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      1
+                    ],
+                    "ncc": 0.9697362780570984
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      1
+                    ],
+                    "ncc": 0.9700819849967957
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      1
+                    ],
+                    "ncc": 0.9545892477035522
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      1
+                    ],
+                    "ncc": 0.9497665166854858
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      1
+                    ],
+                    "ncc": 0.9445673823356628
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      1
+                    ],
+                    "ncc": 0.9393006563186646
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      1
+                    ],
+                    "ncc": 0.9340469241142273
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      1
+                    ],
+                    "ncc": 0.9287095069885254
+                  }
+                ],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              }
+            ],
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            },
+            "diagnostic_initialization_proposed": true,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": true,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000006.png",
+      "source_pts_ticks": 61225,
+      "exposure": "previously exposed training; development only",
+      "file_sha256": "d4dafbd08a45d736ff634bb6537d9d0991d3023a611db6a229874a4755c9f8d3",
+      "native_pixel_sha256": "02563af62baa6c85a8cee7598d67f37170ce3b2905c076fd2bcfea79e40f2333",
+      "prediction": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": false,
+            "reference_tracks": 154,
+            "reference_model_inliers": 133,
+            "reference_to_current_affine": [
+              [
+                0.995572839400693,
+                0.002826871060319308,
+                1.3861290462963223
+              ],
+              [
+                -0.002826871060319308,
+                0.995572839400693,
+                2.15741894461618
+              ]
+            ],
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    }
+  ],
+  "proposals": 6,
+  "observations": 12,
+  "wall_clock_sec": 14.979626915999688,
+  "terminal_bindings": {
+    "outputs/recognition-investigation/world-domain-bootstrap-20261009/profile.json": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+    "outputs/recognition-investigation/world-domain-bootstrap-20261009/assets/wall_close.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "ValorantData/videos/Valorant_09-25-2026_0-37-29-379.mp4": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "scripts/diagnostics/observed_scene_chain.py": "c60081a951a72b6d5aa68b05231cb3037b9883b0d7a4704b56810f64b88153d5",
+    "scripts/diagnostics/scene_domain_bootstrap.py": "1563c223d00085bc6059f720a54a4b6dd9e9acde819babd39d34d3dea4ff0e8d",
+    "scripts/diagnostics/scene_world_bootstrap.py": "9947a6b0adc00f1e4b4eb63d5a95b1555d48091633712546e8078ee3a2436cfa",
+    "scripts/diagnostics/scene_reference_support.py": "ba12d60e89544f37b0f9ac0a24a464c26732e0b1c2b658534c893c819e5af89f",
+    "scripts/diagnostics/scene_domain_ambiguity.py": "eea017aa98bd16051f4e0f3f5b4cebd84a5ae33eb8b538be2d25a6106479ad23",
+    "scripts/diagnostics/scene_joint_domains.py": "2046cede2304b9493abc5f9ba06cbcfbe820a67f245a6e42cbd0aff5a5f45d34",
+    "scripts/diagnostics/scene_world_chain.py": "8a6d11a151f4afb77d88780b51f0705beca527edce7521831b9c8a590e788e33",
+    "scripts/diagnostics/scene_correspondence.py": "667fb4f7b0626fbbf4770716eefc18976a9409a4f0646084b95d479dab7273a3",
+    "scripts/diagnostics/scene_patch_search.py": "53e66f692c42cbaab695cdea9910e3326c50089a18468f6b0d01bd463e9c2dd9"
+  },
+  "qualification_created": false,
+  "runtime_events_created": false,
+  "canonical_current": null
+}

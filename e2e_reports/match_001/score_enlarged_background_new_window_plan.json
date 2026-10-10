@@ -1,0 +1,37 @@
+{
+  "scope": "One fixed new native-window score check; no labels or assertion windows loaded",
+  "video": "ValorantData/videos/Valorant_09-25-2026_0-37-29-379.mp4",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "templates": "outputs/hud_profiles/round-global-timer-glyph-20261008/score-reader-white-development.templates.json",
+  "window_sec": [
+    125.1,
+    125.55
+  ],
+  "outer_roi_px": {
+    "ally_score": [
+      785,
+      5,
+      900,
+      80
+    ],
+    "enemy_score": [
+      1020,
+      5,
+      1138,
+      80
+    ]
+  },
+  "recognizer_fingerprint": "5be7f6c6a6f2d67e27da307c48c65a4728197f4aafee710417fd0206223f2842",
+  "input_sha256": {
+    "scripts/diagnostics/probe_score_enlarged_background.py": "aad411da3d2f7966299a81ce3d191948606d3223511a0535a786b1f6b41149f1",
+    "scripts/diagnostics/score_enlarged_background.py": "d29f2f1dd6202c120770b7cef55297b358579c6720a69beeb90548284bf38156",
+    "src/valorant_ai_coach/hud/score_glyphs.py": "181f10850e05624a64375bca5bc84628e6cd360d52cdb754d048919ff57a760b",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/score-reader-white-development.templates.json": "eb56187bd75a02a8ae69c5fb694ead83648d5bc8a236e8371611137875c66d4c",
+    "e2e_reports/match_001/native_exposure_before_numeric_holdout.json": "d4914f6262ab493f22ba4c2913482c22a9de0efb91a5854cb192322fc82ff867"
+  },
+  "known_native_inventory_overlap": false,
+  "exhaustive_training_separation_proven": false,
+  "exposed_active27_is_development": true,
+  "selection": "Fixed late context, outside saved known native ranges; no image review or expected value used",
+  "qualification_created": false
+}

@@ -813,3 +813,798 @@ The [four-pose constellation investigation](scene_constellation_investigation.md
 ## Continuous reviewed-world chain checkpoint
 
 The [continuous tracking investigation](scene_world_chain_investigation.md) preserves reviewed source feature identities without reseeding. Prefix support is0/35; separate stable-input feature support4/29 stops despite86tracks because spatial witnesses occupy one row. Dense source-world crops support3/29; adding a manually reviewed seventh background region leaves3/29 unchanged. Upper and added lower crop NCC values are below0.90 despite full valid warp coverage. These methods remain diagnostic-only and unqualified; missing support is not a cut label. Seven focused tests and Ruff pass. Production fingerprints and all82assertion rows are unchanged; no fresh canonical run, qualification or real boundary is claimed. Work pauses at the requested checkpoint with trusted scene/UI producer qualification still unfinished.
+
+
+## Native-resolution world-chain hypothesis (2026-10-09)
+
+The [latest-main R1 diagnostic](scene_world_resolution_investigation.md) tests original1920×1080grayscale while preserving normalized spatial limits, NCC0.90and the existing reviewed source footprints. Prefix support remains0/35; separate stable support changes4→0/29despite more initial features141→162. Removing downscaling alone is rejected as a remedy. Failure remains unknown rather than a cut label; production/qualification/events/82assertion rows are unchanged. Ten unit tests, Ruff and fresh mypy102files pass. Canonical Current/Delta remain unmeasured; no full E2E was run.
+
+
+## Passive R1 world-chain rejection-stage follow-up
+
+[Per-region evidence](scene_world_stage_investigation.md) identifies the missing source-world row: native upper regions lose all35tracks below unchanged OpenCV conditioning, while95original-world-supported points remain in one row. Canonical support loses its final upper witness as an affine outlier after earlier conditioning losses. A proposed lower ROI is rejected before matching because hands/charm and faint ability UI enter it. Instrumented results exactly match preserved behavior on128links;12tests/Ruff/mypy102files pass. Production, qualification, events and82assertion rows are unchanged. Canonical Current/Delta remain unmeasured; no full E2E was run. Next source work needs distinctive, reviewed world-only structure and pose coverage, rather than looser acceptance.
+
+
+## Adjacent source-world photometry follow-up
+
+[The declared alternative diagnostic](scene_adjacent_world_investigation.md) retains original world-feature identities and their seed NCC while measuring adjacent whole-crop appearance. Stable support3→5/29 confirms cumulative seed comparison explains two early abstentions, but the chain still stops at4.002669 before the timer transition: upper warped NCC0.833926, independent raw NCC0.896447, and the other upper crop's interior texture below1. Prefix remains0/35; no unknown is relabelled as a cut. Existing-mode dictionaries are unchanged on116links;15tests/Ruff/mypy102files pass. Production, qualification, events and82assertion rows are unchanged; canonical Current/Delta remain unmeasured. Strict full-footprint signal assessment is the next untested hypothesis, not a margin/threshold fallback.
+
+
+## Complete source-footprint diagnostic follow-up
+
+[The explicitly declared full-valid footprint](scene_full_footprint_investigation.md) excludes every sampled padding contribution while using complete reviewed crop support. Stable links5→11/29 reach the last purchase-phase image; all six photometric regions are strong there. At phase disappearance4.102669, all five remaining seed-region1tracks are original-seed partial-affine outliers, leaving only two seed regions, so no chain/event is bridged. Existing defaults are exact on174links;18tests/Ruff/mypy102files pass. Production, qualification and82assertion rows are unchanged; canonical Current/Delta are unmeasured. Next diagnose the source-camera projection residual, preserving the third-region requirement and HUD geometry policy.
+
+
+## R1 camera-model membership follow-up
+
+[The source-camera audit](scene_camera_model_investigation.md) finds that the original similarity RANSAC mask contains63/68points at phase disappearance, whereas the final same-matrix2pixel forward error includes66. An explicitly declared diagnostic keeps original consensus>=0.90and adds bidirectional final-model membership, original-seed/adjacent NCC>=0.90and distributed world-only crop photometry. Training support11→22/29now spans both2:25frames and the1:39transition; it stops at4.286003without reacquisition. Visible scene continuity is supported on these development frames; uninterrupted game time and independent qualification remain unproven. Existing defaults are exact on203links; exposed cut/duplicate controls reject,26unit tests/Ruff/mypy102files pass. Production and all82assertion rows are unchanged; canonical Current/Delta are unmeasured. No full E2E was run. Next freeze the method and qualify independent world-only scene/UI evidence before activation, preserving the separate R2/result gates.
+
+
+## Frozen final-membership cohort result
+
+[The pre-reserved camera cohort](scene_final_membership_cohort_investigation.md) yields0/33supported links on36native images, with0PNG-byte overlaps against2098previously stored images. The first wall seed retains94identities in6regions but fails unchanged0.90valid crop coverage; two other poses contain players/knife/UI in the fixed footprints and lack world-only seed attestation. Reviewed panels show continuous-looking motion rather than proving a cut. No qualification or runtime event follows; no code is tuned to this result.28tests/Ruff pass, production and82assertion rows remain unchanged, canonical Current/Delta are unmeasured. The next source contract must separate reviewed seed eligibility, current occlusion and motion-dependent appearance footprint; changing camera models or OCR thresholds does not resolve this blocker.
+
+
+## Frame-bound world review eligibility contract
+
+[The offline review gate](scene_world_review_contract.md) separates reviewed world-only seed/current footprints from matching scores. It pins canonical pixels/native PTS/video/epoch/provenance, rejects unreviewed or occluded footprints and terminates on missing review, gap, duplicate or cut without reacquisition. Three real seed examples change3hypothetical initializations→1reviewed; two unsafe/unattested seeds are rejected before extraction. The valid wall seed still abstains at the original coverage predicate, so no real support or boundary is invented.38related tests/Ruff/fresh mypy102files pass; production and82assertion statuses remain unchanged, canonical Current/Delta unmeasured. This wrapper is diagnostic only: offline annotations are not runtime truth or producer qualification. Next address projected-world appearance coverage and current occlusion without lowering0.90floors.
+
+
+## Reviewed projected-world appearance development
+
+[The declared projected-footprint diagnostic](scene_projected_world_investigation.md) reuses the exact existing adjacent source-camera transform on the exposed wall pair. Current bilinear taps must all lie in explicitly reviewed world; complete-source coverage>=0.90/NCC>=0.90are unchanged. Appearance support0→6regions, minimum NCC0.974528, explains fixed-crop coverage loss while94original identities remain. This is one-link development evidence; the original tracker still abstains and is not revived. Default decisions are exact on203links, exposed cut/duplicate controls reject,44tests/Ruff/fresh mypy102files pass. Production and82assertion rows remain unchanged; canonical Current/Delta unmeasured. Next integrate continuous source/current world eligibility and projected appearance before independent qualification, never copy offline per-frame annotations into runtime truth.
+
+
+## Continuous reviewed projected-world checkpoint
+
+[The integrated diagnostic](scene_projected_chain_implementation.md) preserves original world identities/current flow-footprint review while using projected appearance at unchanged0.90coverage/NCC floors. The exposed12native-frame wall episode changes0→4/11supported links; at2.586003hand/unknown lower-footprint review terminates tracking and no later image rejoins. An initially overlapping unknown annotation was correctly rejected; consistent positive-mask encoding leaves all first5rows unchanged. Existing defaults are exact on203links, exposed cut/duplicate controls reject,53tests/Ruff/fresh mypy102files pass. Production and82assertion rows are unchanged, canonical Current/Delta unmeasured. No qualification/event/full E2E is claimed. Next verify the actual R1transient episode, then independently qualify source/current semantic evidence before runtime activation.
+
+
+## Actual R1 projected-world transient replay
+
+[The frozen30-native-frame replay](r1_projected_chain_investigation.md) supports22/29links, unchanged count versus the previous final-membership diagnostic. Phase disappearance/both2:25frames/first1:39all have six distributed projected world regions with minimum NCC0.995367/0.995436/0.943096/0.952934. At4.286003the unchanged original model-consensus gate fails and tracking never rejoins. This directly reinforces visible scene continuity with transient UI, not uninterrupted hidden game time or runtime qualification. Shared replay CLI verifies code/source/PNG/pixels/coverage terminal bindings in9.819518seconds. Core bytes remain those with53tests/mypy102files passing; fresh Ruff passes. Production and82assertions remain unchanged, canonical Current/Delta unmeasured, no full E2E. Next implement image-derived world reference bootstrap/current occlusion with independent qualification; offline per-frame masks are not runtime truth.
+
+
+## Image-only reviewed-landmark bootstrap result
+
+[The strict diagnostic reference entrance](scene_world_bootstrap_contract.md) consumes current pixels without PTS/GT/per-frame world annotations. The unchanged unique reciprocal matcher supports only its own reference image, 1/7 exposed frames; all four actual R1 start-transition queries lack distributed quorum. This is rejected as a qualification remedy, not interpreted as a content cut. Matched patches do not authorize whole-ROI background masks. 62 related tests pass in14.84seconds, Ruff passes, and fresh mypy passes104source files on main80d0d46. Production and82assertion rows are unchanged; canonical Current/Delta remain unmeasured, with no full E2E. Next retain image-qualified source-world identities and reject current footprint occlusion without manual runtime masks before independent qualification; do not repeat reference-bank/threshold tuning.
+
+
+## R1 tracked footprint scope audit
+
+[The passive 15/21/31-pixel audit](scene_track_footprint_audit.md) finds complete projected original-source appearance support across the timer transient, but every critical all-size witness remains in one spatial row (0/6 distributed queries). Synthetic controls demonstrate both surrounding occlusion hidden by a matching central patch and small foreground hidden by mean NCC. These scores cannot authorize whole-ROI semantic masks or replace the missing distributed runtime producer. The unchanged diagnostic still supports22/29links; no production/qualification/event/canonical gain is claimed. All82assertions remain unchanged; canonical Current/Delta are unmeasured and no full E2E is run. Next source work must provide image-derived distributed background-domain evidence with explicit footprint/ambiguity/occlusion handling, preserving all floors.
+
+
+## Distributed scene-domain ambiguity follow-up
+
+[The frozen five-link domain audit](scene_domain_ambiguity_investigation.md) identifies distinctive upper-wall structure: domain0supports every transient link with NCC>=0.943096and no competing displacement in the declared17×17local lattice. Other high-NCC domains have5–39competing positions, so independently localized domain quorum remains0/5. Source-only tracking decisions stay22/29; no semantic mask, runtime proof, qualification, event or canonical improvement is claimed. Four focused tests pass; source/PNG/pixel/code bindings match terminal hashes. All82assertions are unchanged. Next test joint distributed camera hypotheses, preserving explicit competitors and complete footprints, rather than counting each repeated domain as independent evidence.
+
+
+## Joint background-domain camera hypothesis checkpoint
+
+[The complete local-lattice audit](scene_joint_domains_investigation.md) supports the fixed camera projection jointly on5/5critical native R1links with three-cell/two-row/two-column source/current witnesses and no surviving/unresolved local translation competitor. Per-domain independence remains0/5; it is not relabelled. Optional offset instrumentation preserves all five old domain dictionaries exactly; the tracker remains22/29. Eight new joint tests plus four domain tests pass, Ruff passes, and production/all82assertions are unchanged. This is exposed local appearance, not foreground-free semantic masks, hidden-time proof, qualification or canonical gain. Next freeze continuous source/limited witness scope and verify unexposed holdout/negative controls before runtime activation. No full E2E was run.
+
+
+## Frozen joint source cohort: qualification withheld
+
+[The36-frame native cohort](scene_joint_cohort_investigation.md) finds15previously exposed decoded images and no evaluated joint links. All three first-link original camera consensuses are below0.90(74.36%,84.21%,83.64%); the chain terminates without rejoining. Joint accuracy is not evaluated, rather than0/33wrong. Full-context review finds moving players/arms/knife/barrier/UI in fixed source footprints, so hypothetical seeds are not world-attested. No qualification/runtime event follows.15focused tests/Ruff pass; production and82assertions are unchanged, canonical Current/Delta unmeasured, no full E2E. Next complete image-only source-world seed eligibility before arbitrary-pose positive qualification; do not tune joint/consensus floors to this cohort.
+
+
+## Stateless reference-domain initialization contract
+
+[The image-only source initializer diagnostic](scene_domain_bootstrap_contract.md) explicitly distinguishes reviewed reference assets from previously observed native frames and rejects landmark-scope promotion/competing reference selection. Eight exposed images yield only the self-reference proposal; all actual R1transition queries fail unchanged global model consensus before joint appearance. The static route is rejected as a sufficient reacquisition/qualification remedy; no threshold/bank tuning follows.22related tests/Ruff pass; production and82assertions are unchanged, canonical Current/Delta unmeasured and no full E2E. Next preserve the measured continuous source-world chain from an actual image-supported seed, with explicit current/temporal scope and independent qualification; a reference asset cannot supply a prior native observation.
+
+
+## Observed source seed to continuous image-derived scene links
+
+[The complete observed-source diagnostic](observed_scene_chain_contract.md) binds the first actually observed native PTS/pixels without counting reference assets as a previous source frame. No manual current-frame masks are supplied. Original identities plus fixed joint appearance reproduce22/29native R1links including all5critical transient links; at4.286003original model consensus fails and the episode never rejoins. Four protocol and two image-only synthetic controls reject all links/rejoin.13related tests/Ruff pass; production and82assertions are unchanged, canonical Current/Delta unmeasured, no full E2E. This is exposed limited-scope appearance, not semantic foreground absence/hidden-time proof/runtime qualification. Next freeze independent continuous acquisition/holdout/negative assessment and source-confidence provenance before production integration.
+
+
+## Observed-source decoder boundary safety
+
+[The observer input contract](observed_scene_chain_contract.md) now terminates and clears observed state for non-array decoder outputs and non-boolean discontinuity metadata. Nine new regression cases verify that neither stale state nor reference reacquisition survives; 22 related tests, Ruff and 104-file mypy pass. Production/82 assertion statuses are unchanged; canonical Current/Delta unmeasured. No E2E was run. Independent qualification and source-confidence provenance remain the next blocker.
+
+
+## Observed-source measured witness provenance
+
+[The frozen native replay](observed_scene_chain_contract.md) now retains profile/reference, source-domain boxes, fixed camera transform and measured NCC on all22successful links. Same30native frames produce22/29links and5/5critical links, unchanged from the previous observer. Frozen source/profile/code/input terminal hashes match; minimum accepted witness NCC is0.909788072.30related tests/Ruff pass. This adds traceable appearance evidence, not hidden-time confidence or runtime qualification. Canonical Current/Delta remain unmeasured; production and82assertions unchanged. Next independently assess the complete acquisition/continuous source route and paired UI-transition evidence before activation.
+
+
+## Non-self native acquisition through R1 transient
+
+[Near-seed acquisition evidence](scene_near_seed_acquisition.md) contradicts an exact-self-reference-only assumption:6/12exposed images support unchanged image-only initialization, including3.886003with151tracks/147inliers. A frozen continuous replay from that different observed image preserves5/5critical transient links;19/30total links end safely at4.219336without rejoining. Shared later endpoints retain18/29versus22/29with the original seed, a measured shorter lifetime rather than hidden reseeding. No thresholds/code/production/assertions change; qualifications remain0and canonical Current/Delta unmeasured. Next reserve disjoint acquisition-plus-continuous holdout/negative episodes; these exposed observations cannot qualify runtime.
+
+
+## Complete observed acquisition path in native cohort orchestration
+
+[The native runner integration](observed_scene_cohort_runner.md) freezes reviewed profile/assets/code before decode and evaluates the actual image-supported observer, with one non-restarting source episode per explicit window. It reproduces19/30R1links and5/5critical links. A preselected, known-exposure-disjoint12frame context never initializes;0joint links are evaluated, so this is coverage failure rather than wrong continuity.37related tests/Ruff pass; production/82assertions unchanged. Canonical Current/Delta remain unmeasured; no full E2E. The source route now has reproducible independent-cohort orchestration, but no qualified positives or runtime activation.
+
+
+## Fixed-crop reference acquisition failure isolated
+
+[The new source-pose experiment](scene_acquisition_flow_failure.md) rejects adding static references as a sufficient remedy. A reviewed13-second source context self-matches78tracks, but the pre-reserved12-frame near-context interval cannot initialize. Passive stage counts show136source features:107invalid flow/status,29forward/backward rejection,0features reaching NCC. Default two-image bootstrap outputs remain exact after instrumentation;45related tests/Ruff pass. This is current-view acquisition under displacement, not NCC failure or a proven content cut. New profile stays private/unadopted, qualifications remain0, production/82assertions unchanged and canonical Current/Delta unmeasured. Next redesign current search/projection with explicit ambiguity/UI/source eligibility safeguards before fresh independent acquisition qualification; do not enlarge a reference bank or tune thresholds.
+
+
+## Displaced source/current support hypothesis rejected on development
+
+[The optional displaced matcher](displaced_reference_acquisition.md) separates reviewed source crops from permitted current candidate domains, retaining NCC0.90/unique reciprocal/90%model and complete projected tap/joint requirements. Synthetic motion works; actual13.202669acquisition remains0correspondences/proposals.78patches partition into40no qualified peak,33forward ambiguity,5reverse ambiguity. Merely widening destination search is rejected as sufficient; no runtime/profile deployment or new holdout/full E2E.55related tests plus six final bootstrap tests/Ruff pass; default two-image outputs, production and82assertions unchanged. Next investigate motion/appearance-normalized correspondence with unchanged final photometric/current-eligibility safeguards; do not accept competing peaks or lower thresholds.
+
+
+## Descriptor geometry proposal lacks distributed real source support
+
+[The descriptor-proposed camera audit](descriptor_reference_acquisition.md) keeps descriptor scores separate from NCC and requires90%model/photometric support plus3source regions and complete current/joint appearance. Synthetic translation/rotation/scale works, but all5exposed real pairs fail3-region descriptor support before model formation: original R1self/phasegone matches are confined toregion2; arch self supports onlyregions0/2and displaced context onlyregion0.0/5proposals; no independent holdout or full E2E.19related tests/Ruff pass; orientations cannot inflate physical-witness count. Method is diagnostic/unadopted; production/82assertions and canonical Current/Delta remain unchanged/unmeasured. Next reassess independently observable source-world structure/eligibility rather than lowering regional support or launching another matcher from synthetic success.
+
+
+## Source eligibility separates descriptor loss from absent background structure
+
+[The frozen source audit](source_structure_eligibility.md) finds eligible existing corners in all6R1regions(180)and3arch regions(78), while canonical/native SIFT remains confined to1/2regions. Native resolution does not recover distributed descriptor support; this is method-specific detector/representation eligibility, not proof that reviewed source images have no usable background structures. No code/profile/threshold changes or new qualification/canonical result. Next describe the existing eligible reviewed corners without losing their regional support, then test actual displaced correspondence at all unchanged final safety gates; do not rebuild references or lower support based solely on SIFT absence.
+
+
+## Existing corner descriptors recover source support but not actual acquisition
+
+[The explicit corner-to-descriptor integration](corner_descriptor_acquisition.md) preserves GFTT100/0.01/5and all final reciprocal/3-region/model/NCC/current-domain/joint gates. Arch self-query now produces16verified correspondences across3regions and a diagnostic proposal; actual displaced arch and R1phasegone still fail3-region support.0/5→1/5is self calibration only, not a runtime/canonical gain. R1source candidates span6regions but current matching staysregion2/5, implicating current spatial candidate eligibility/correspondence.24tests/Ruff pass; five default outputs and terminal inputs match, production/82assertions unchanged, canonical Current/Delta unmeasured. Next assess source/current spatial candidate eligibility at unchanged conditions before fresh qualification, not another matcher or weaker support.
+
+
+## Same-image current-candidate loss quantified
+
+[Crop-context calibration](corner_crop_context_analysis.md) isolates a source-route failure without camera/clock/phase changes: 249/264 context-eligible R1 source candidates fall below the existing current crop-relative corner quality, and only15/295 have a current candidate within1pixel. Forced same-point descriptors also differ with crop context. This supports spatial candidate/context redesign, not threshold relaxation or a content-cut verdict. Read-only diagnostic/Ruff pass; production and all82assertions unchanged, qualification0, canonical Current/Delta unmeasured. No full E2E.
+
+
+## Spatial candidate/context recovery: real camera consensus still fails
+
+[The explicit diagnostic representation](spatial_descriptor_acquisition.md) preserves final gates while describing local GFTT proposals from identical19pxcontexts. R1phasegone16/2regions→52/4regions, but only26/52support one camera; arch displaced7/21also fails original90%consensus. Actual acquisition remains0, self proposals1unchanged. R1self286camera matches reaches only170available photometric witnesses, safely rejected. Old five corner outputs remain exact; production/all82assertions unchanged, no qualification or canonical gain. Next partition source texture/current availability before matching, without pruning failed camera/photometric evidence afterward.
+
+
+## Actual camera mismatch separated from self-source texture defect
+
+[Passive photometry partition](descriptor_photometry_partition.md) attributes all116R1self unavailable points to source std<1. Actual R1phasegone has only1such point among26camera outliers, so source eligibility alone cannot repair actual consensus(26/51at best without refitting).17camera-outlier endpoints nevertheless show NCC>=0.90at the saved camera projection, reinforcing that appearance is not localization proof. Old decisions/production/all82assertions unchanged;3diagnostic tests/RuffPASS, qualification0, canonical Current/Delta unmeasured. Next investigate endpoint ambiguity with frozen competing locations, not source-only self calibration or another full run.
+
+
+## R1endpoint appearance ambiguity confirmed
+
+[The frozen competitor audit](descriptor_endpoint_ambiguity.md) finds53–1441qualified integer positions outside2pxof the fixed camera projection for each of17appearance-supported camera-outlier tracks.16/17descriptor endpoints also showNCC>=0.90, proving local appearance is not unique localization. Counts are positions, not independent peaks/camera hypotheses. Original26/52consensus rejection, production andall82assertions remain unchanged;3tests/RuffPASS, qualification0andcanonicalCurrent/Deltaunmeasured. No E2E. Next require coupled distributed-domain evidence and explicit competitors, not a favorable point subset or threshold relaxation.
+
+
+## Full-domain evidence also rejects displaced descriptor camera
+
+[The frozen five-pair full-domain audit](fixed_camera_domain_audit.md) finds actual R1witnesses1/2/5only, inadequate source/current spatial distribution and5joint competing offsets. Upper/right NCC0.749/0.732and current texture<1prevent independent support; whole-domain appearance cannot override26/52camera rejection. Original decisions/production/all82assertions unchanged;13tests/RuffPASS, qualification0, canonicalCurrent/Deltaunmeasured. Stop isolated descriptor tuning; next inspect delayed image-supported initialization of the existing observed native source route, preserving no prior history/no silent rejoin and independent qualification.
+
+
+## Explicit pending acquisition preserves no-history/no-rejoin distinction
+
+[The deferred observer diagnostic](deferred_observed_initialization.md) starts only after image-supported acquisition; five unknown prefix images retain metadata but no scene history. Exposed36native frames0default→19opt-in links, including5/5critical links; acquisition at3.886003and permanent stop4.219336match the earlier non-self replay. Original30default outputs remain exact22links.30tests/Ruff/mypy104filesPASS; production/all82assertions unchanged, qualification0, canonicalCurrent/Deltaunmeasured. Next freeze this opt-in in native cohort orchestration and independently assess the complete path, not another isolated matcher or threshold change.
+
+
+## Frozen delayed-acquisition cohort: exposure gate correctly withholds qualification
+
+[Native runner integration](deferred_observer_cohort.md) forwards strictly frozen observer options and retains default schema.54native frames reproduce19exposed R1links and permanent stop, but the reserved18frame acquisition context is18/18known PNG/native overlap. It cannot qualify holdout; no new correct/wrong continuity claim follows.45tests/RuffPASS, production/all82assertions unchanged, qualification0, canonicalCurrent/Deltaunmeasured. Next select disjoint contexts from provenance PTS ranges before decode rather than repeatedly treating nearby frames as new holdout.
+
+
+## PTS-gap-reserved frames are known-disjoint but cannot initialize
+
+[Source qualification assessment](pts_gap_source_qualification.md) inventories304known native ticks before decode and reserves two genuine gaps.9/9frames have0known PNG/native-pixel overlap, but all9initializers have0accepted reference tracks, so0scene links are evaluated and qualification stays withheld. Do not report0wrong or recycle this now-exposed cohort as fresh holdout.2inventorytests/RuffPASS; production/all82assertions unchanged, canonicalCurrent/Deltaunmeasured. Reassess observable source acquisition scope before more arbitrary holdouts; no full E2E or new recognizer profile follows.
+
+
+## Runtime source producer readiness is a separate blocker
+
+[Current-main contract audit](lifecycle_runtime_readiness.md) confirms analyzer emits only legacy composite proof while paired lifecycle requires source-owned scene/UI proofs; external tokens are correctly filtered. Valid paired qualification now gets an explicit startup missing-producer diagnostic, without recognition/qualification/threshold changes. Existing timer-display transport is already implemented; anonymous killfeed cannot establish nonself facts.102relatedtests/Ruff/mypy104filesPASS, all82assertions unchanged andcanonicalCurrent/Deltaunmeasured. Next build the qualified native producer-to-analyzer path with independent source/world/UI gates, rather than further isolated appearance variants or unnecessary full E2E.
+
+## Phase disappearance also requires an independent source contract
+
+[Optional group measurements](r1_phase_rejection_evidence.md) preserve actual crop/frame/PTS bindings and distinguish contrast-unavailable input from mismatching text. All30saved native R1outputs remain identical;12presence matches followed by18unknowns with54low-contrast groups. The current semantic matcher proves presence only: neither missing flags nor flat masks authorize disappearance or scene continuity.134relatedtests/Ruff/mypy104filesPASS; no qualification/boundary/canonical result added, all82assertions unchanged. The paired runtime producer needs independent phase-absence qualification as well as source-world continuity; do not convert diagnostic dictionaries into trusted proofs.
+
+## Shared scene measurement layer extracted for native producer integration
+
+[The common image engine](shared_scene_domain_engine.md) removes production's future dependency on diagnostic-only domain implementations. Old diagnostic imports re-export shared code; all six native R1 domain outputs,1,734offset measurements and joint result are exact before/after. Frozen cohort bindings now require the common engine before decode.64initial relatedtests/Ruff/mypy105filesPASS; real qualification/installed sceneUIproducer remain0. All82assertions and canonical baseline remain historical/unmodified. Next extract observed source ownership/acquisition into the same production package, retaining termination/qualification gates; no appearance result becomes an attestation.
+
+## Original-identity and projected-appearance tracking is now shared
+
+[Common tracking extraction](shared_scene_tracking_engine.md) preserves the normalized algorithm AST for six functions/classes and all30actual native observed-source outputs exactly. Descriptive links remain22and terminated frames never rejoin.155relatedtests/Ruff/mypy106filesPASS; native replay49.030276→48.654446seconds is a one-run fluctuation, not a claimed speed or recognition gain. Frozen cohort/projected replay bindings require both common engines. All82assertions stay unchanged; no qualification, installed paired producer or canonical result is added. Next extract image-derived acquisition and actual native episode ownership into the shared package before qualified analyzer integration; do not promote descriptive output to trusted world/UI evidence.
+
+## Observed native ownership is common; source acquisition qualification is still absent
+
+[The common episode owner](shared_native_scene_episode.md) separates a typed image-only initializer factory from actual observed PTS/pixel/epoch history. It validates cadence before asset loading and preserves metadata-only pending acquisition, original identities and permanent termination. All30R1results/bindings remain exact and22links unchanged; three method bodies match after typing/import normalization.160relatedtests/Ruff/mypy107filesPASS. Native runtime48.654446→49.293477seconds is a fluctuation, not a gain. All82assertions remain unchanged and canonical Current/Delta unmeasured. The analyzer still has no qualified scene/UI source entrance; next extract validated reference loading/acquisition, then independently qualify source/world/current phase absence before releasing any proof.
+
+## Common reference/acquisition path no longer imports diagnostics
+
+[Common source acquisition](shared_scene_acquisition.md) preserves seven normalized calculation/validation definitions, profile-relative reviewed assets, hashes/provenance and reference-ambiguity rejection. A direct common-package-only30native R1replay matches every preceding frame output/source binding exactly, retains22links and verifies reference assets at completion.197relatedtests/Ruff/mypy109filesPASS; runtime49.293477→48.918016seconds is a fluctuation. All82assertion entries remain unchanged; qualified analyzer entrance and independently qualified source/world/current phase-absence inputs are still absent. Next bind the source profile/assets to qualification and deliver actual native lifecycle input without altering full sampler; common appearance output alone cannot become an attestation.
+
+## Configured source assets now invalidate stale qualification; native delivery is distinct
+
+[Source binding](scene_source_binding.md) joins explicitly configured reviewed source JSON and validated image assets to the analyzer base fingerprint. Mutated, missing or escaped assets fail before observation; HUD-only reports cannot authorize a different source configuration.69 related tests/Ruff/mypy110filesPASS. The archived full cadence audit finds2,253/4,633observation pairs beyond one native step and omission of the phase-disappearance/transient frames around R1. These are sampling gaps, not content-cut evidence. Preserve the full sampler and deliver separately owned native system lifecycle inputs; do not relabel native previousPTS/pixels to fit sampled observations. All82assertions remain unchanged; qualified scene/UI producer0 and canonical Current/Delta unmeasured. No E2E launched without an independently qualified candidate.
+
+## Native decoder input reaches the common scene episode through production APIs
+
+[The verified native entrance](native_source_entrance.md) joins explicit interior source-window decode, integer-PTS coverage and video/pixel integrity to the analyzer's common observed episode. One real R1decode preserves all30native ticks/pixels and all preceding scene outputs except the newly owned decoder epoch; links remain22.178unit/integrationtests/Ruff/mypy112filesPASS. Verification70.662816seconds includes decode/integrity work and is not comparable to the48.918016second saved-image replay as a speed change. Source/world/currentphaseabsence qualification remains unavailable; no proof, boundary or player-owned fact is released. Native whole-video streaming and qualified lifecycle/event merge remain incomplete. All82assertions remain unchanged, canonical Current/Delta unmeasured, no full E2E.
+
+## R1 first transient also changes foreground; timer-only interpretation is unsupported
+
+[Native UI localization](native_ui_localization.md) measures all29saved R1pairs with explicit timer/panel exclusion and six independent background regions. At the first transient, background minimum NCC0.995074 contrasts with whole non-UI NCC0.345489 and389,399changed non-UI pixels, concentrated in lower hand/knife presentation. Native full-image review confirms foreground pose changes. This is compatible with a normal view-model transition or a background-preserving content jump; neither is proved. Preserve fail-closed qualification rather than using matching backgrounds to authorize a pure timer transient.6diagnostic unit tests/RuffPASS; production andall82assertions unchanged, canonical Current/Delta unmeasured. Next investigate independent foreground temporal/animation controls in the current video before paired scene/UI authorization; no R2/banner threshold adjustment or full E2E.
+
+## Exposed foreground comparison does not qualify normal animation
+
+[The native control comparison](native_foreground_control_analysis.md) covers 126 development frames and a separately decoded five-frame pair. An inspect-like pose switch also lowers whole non-UI NCC to 0.524857, but the best three-crop post-pose minimum is 0.842172 and control background minimum is 0.833593. Neither meets all-region 0.90 support. Static pre-pose crops include background, and the control has no independent no-edit label. Thus whole-screen NCC alone cannot classify a cut, and this comparison cannot authorize an animation whitelist or R1 continuity. Eleven diagnostic tests and Ruff pass; production and all 82 assertion entries are unchanged. Canonical Current/Delta remain unmeasured. Next separate distributed camera evidence from view-model presentation and independently qualify phase disappearance; no full E2E candidate exists.
+
+## Separate non-text phase structures establish image-change ordering
+
+[Native phase-panel structure measurements](native_phase_structure_analysis.md) verify all30saved frames and show upper/lower panel edges plus purchase-button contrast weakening together at4.102669seconds, one native frame before the transient timer/view-model change. This corroborates panel removal in exposed imagery without converting a nonmatch into absence. Opaque obstruction or source replacement remain unexcluded; all phase-absence outputs remain unknown. Production and82assertions are unchanged, qualification0 andcanonicalCurrent/Deltaunmeasured. Next independently test background reveal versus obscuration and source continuity before scene/UI producer authorization. No full E2E.
+
+## Background color agreement is corroboration, not phase-absence proof
+
+[Current-image reveal assessment](phase_background_reveal_analysis.md) measures all30native source images and four explicitly synthetic sensitivity controls. Panel-target residuals fall25.725/24.688/58.985 to1.945/1.167/0.871 at disappearance, while independently excluded context regions remain supported. Black/white/text-only covers differ, but a surrounding-color full cover also has low residuals. Reject color-fit-only absence authorization; this does not prove an edit in the actual video. Qualification0, production/all82assertions unchanged, canonicalCurrent/Deltaunmeasured. Next use qualified temporal source structure rather than more residual-threshold variants. No full E2E.
+
+## Production native API cohort exposes acquisition coverage limitation
+
+[The frozen independent-context source cohort](native_scene_entrance_cohort.md) uses updated433known ticks/1961pixel exclusions and complete production native decode/scene APIs. All12frames have0known overlap but remain acquisition-pending, so0continuity pairs can be evaluated and no zero-wrong or holdout qualification follows. Native first/last image review shows a different background from the close-wall reference.15relatedtests/RuffPASS; production/all82assertions unchanged, qualification0andcanonicalCurrent/Deltaunmeasured. Next reassess source acquisition coverage and independent controls separately from tracking/UI absence, rather than arbitrary reference banks or another full E2E.
+
+## A matching source reference alone does not repair independent acquisition
+
+[One fixed doorway development proposal](doorway_source_coverage_assessment.md) yields1self initialization and0observed links on12now-exposed frames, failing the predeclared minimum3development support. At the next frame,15/15reference correspondences are coherent and two domains exceed0.90, but the upper-left projected footprint crosses phase exclusion and three-region joint support fails. The observed chain separately stops at insufficient reviewed-world tracks and never rejoins. Reject this proposal; no favorable reference bank/crop retuning or new holdout follows. Production/all82assertions unchanged, qualification0, canonicalCurrent/Deltaunmeasured. Next require source-profile multi-frame eligibility and projected exclusion diagnostics before native producer qualification.
+
+## Bound development screen rejects reference-self-only coverage
+
+[The standalone source training screen](scene_training_support_screen.md) validates existing profile/code/native bindings, distinct native cadence, episode no-rejoin and non-reference temporal support. It rejects the doorway case with exit2:1self match/0non-reference matches/0scene links;124of3720upper-left projected pixels touch exclusion at the next frame.10relatedtests/RuffPASS. It is not integrated into a generator or production and provides no qualification. All82assertions unchanged, canonicalCurrent/Deltaunmeasured. Next actual source acquisition must retain distributed eligible footprints under motion before independent scene/UI qualification and native lifecycle integration; diagnostic completion is not producer completion.
+
+## Explicit production native scene transport remains qualification-gated
+
+[The production entrance](qualified_native_scene_transport.md) now joins configured source assets, matching paired qualification and decoder-owned native measurements to the lifecycle scene-only proof schema. Spatial-cell collisions retain the lowest domain NCC; terminal report/reference/native/code changes withhold buffered proofs.65contract/relatedtests/Ruff/113-filemypyPASS. Positive transport tests use synthetic qualification and mocked scene calculations; actual saved-frame guard has no qualification and releases0proofs/events. No complete paired UI producer, native lifecycle merge or canonical activation exists yet. All82assertions unchanged, canonicalCurrent/Deltaunmeasured. Next independently qualify source/current-world and UI disappearance, then integrate native system observations; the new code fingerprint invalidates old qualification rather than grandfathering it.
+
+
+## Continuous R1 context exposes long-term model limitation
+
+[The full 3–6 s native development window](r1_continuous_source_analysis.md) covers 180 frames without skipping. Initialization at3.886003s yields19links and stops at4.219336s: original seed partial-affine support52/58(89.6552%) fails the unchanged90%floor, while the same candidates from the preceding native image fit58/58withmaximumresidual0.322081px. An observational sink replay preserves all21productionoutputs exactly. The earlier short window stops4.286003s, so source-history dependence must be distinguished from a content cut. No threshold/policy/GT/sampler is changed; no continuity qualification or canonical result follows. Next separate original identity/acquisition from adjacent source motion under independently reviewed controls; foreground/UI qualification and native lifecycle integration remain blockers.
+
+
+## Independent background appearance corroborates adjacent tracking at the stop
+
+[The R1 stop-link follow-up](r1_continuous_source_analysis.md#follow-up-independent-appearance-at-the-stop) evaluates the frozen adjacent motion model on six background domains with the unchanged complete displacement lattice. All sixNCCs≥0.973564 and nojointalternative corroborate58/58adjacentpoints at4.219336s; long-termseedfailure is not itselfcontent-cut evidence. A separate180-frame client-graphcolorprobe is rejected after nativeimage review shows transparent world/weapon contamination. No productionpolicy/threshold/profile/GT/assertionchange or qualification; all82assertions unchanged, canonicalCurrent/Deltaunmeasured. Initialforeground/UI qualification and native lifecycle/package/trace delivery remain incomplete.
+
+
+## Near-flat revealed background cannot supply a supported UI absence reference
+
+[The fixed panel-background feasibility probe](r1_phase_background_reference_feasibility.md) measures180existingnativeframes with three fixed groups. The reviewed first panel-gone image has groupcontrast0.850787/1.650267/0.530326, below the existingmaskedNCCfloor5, so the specific proposal has0supportingframes and is rejected before any asset/profile/qualification generation. Highwhole-cropNCCdoesnotoverride unavailablegroupstructure.29semanticunit tests/RuffPASS; production thresholds/policies/source unchanged, all82assertion records unchanged andcanonicalCurrent/Deltaunmeasured. Next examine otherpositiveglobal image/temporalstructures for qualifiedUItransitions; native lifecycle/package/trace work remains incomplete.
+
+
+## Foreground pose correspondence does not qualify a normal-animation whitelist
+
+[The fixed three-region correspondence investigation](r1_foreground_correspondence_analysis.md) compares four consecutive earlier/R1post-pose pairs plus two visibly different-pose controls. NativeBGRconversion, reciprocalLK≤1px, patchNCC≥0.90/contrast5 andpartial-affine2px/consensus0.90 produce first-pair74/85inliers(87.06%)and0/4geometricquorums. All6results remain unqualified; no ROI/threshold retuning or animation whitelist follows.3diagnostic tests/RuffPASS; production/all82assertions unchanged, canonicalCurrent/Deltaunmeasured. Existing-video provenance question is pending; source/world/UI qualification and native lifecycle/event/package/trace integration remain incomplete.
+
+
+## Native global observation entrance separates measurement from authorization
+
+[Native system observation transport](native_system_observation_transport.md) now passes decoder-owned frames through verified image reads and the existing analyzer, preserving actual PTS/hash, accepted original timer display/provenance, phase/score confidence and incompatible-state guards. The global projection excludes player-owned facts and does not build events or issue proofs. Terminal native/profile/code mutation or stale cached profile rejects buffered output. 81 related tests, Ruff and 114-file mypy pass. A four-frame exposed R1 transport check takes 3.545511 seconds but all four frames require calibration and release no timer display, proof or event. This early-window blocker does not reclassify canonical geometry failures. No qualification or default sampler/threshold/GT/assertion change; all 82 assertion records unchanged, canonical Current/Delta unmeasured. Independent source/foreground/UI qualification and native lifecycle/package/trace delivery remain incomplete; no full E2E candidate exists.
+
+
+## Continuous native prefix resolves acquisition-context rejection
+
+[Native prefix validation](native_system_prefix_validation.md) now processes all256source frames from the first probed video PTS through R1 in one decoder epoch, with the existing production analyzer and no supplied anchors. Geometry acquires once and remains effective on256frames under the unchanged retention policy. Of256timer displays234are accepted and22unknown; accuracy for all234is not claimed. The same four formerly calibration-required images now preserve4/4displays, and24same-pixel prior reviewed predictions agree exactly. Runtime500.588115seconds,0proofs/events, no qualification. This resolves the isolated-window acquisition-context blocker without changing geometry/recognition policy; foreground/source/UI qualification is still missing.18native-input tests/RuffPASS, production fingerprint unchanged since114-filemypyPASS. All82assertion records unchanged, canonicalCurrent/Deltaunmeasured. Next independently qualify continuity/UI and integrate lifecycle/package/trace; no fullE2E candidate exists.
+
+
+## Qualified native join now reaches system events, package and trace contracts
+
+[The explicit native lifecycle entrance](native_qualified_lifecycle_pipeline.md) joins analyzer-owned global observations, native scene witnesses and positively matched opt-in phase-absence/result references under matching paired qualification. Native source bindings and terminal hashes are checked; missing presence matches never become absence, and player-owned facts are excluded. Synthetic start/end/next-start yield two schema-valid packages with upcoming-round preparation and actor/time/provenance preserved through trace. Testing fixed leaked private candidate event fields.150relatedtests/Ruff/115-filemypyPASS. An actual four-frame source guard rejects missing qualification with0proofs/events; no positive R1 absence reference or paired real-image qualification was generated/adopted. All82assertionrecords unchanged, canonicalCurrent/Deltaunmeasured. Standard full orchestration/native streaming merge remains incomplete; next qualify real source/UI inputs before activation or another fullE2E. Historical code-bound reports were not resigned.
+
+
+## Standard processor can receive qualified native boundaries without changing sampled facts
+
+[Native event merge](native_event_merge.md) adds an explicit in-memory native result argument to the shared processor. Current qualification/code/profile and terminal video hashes are checked, source-bound lifecycle replay must reproduce events, conflicts are rejected and sampled observations/frame count remain unchanged. Native preparation provenance now prevents an extra leading partial package and assigns upcoming-round context without inventing sampled state.227relatedunit/integrationtests/Ruff/116-filemypyPASS. An actual saved-image negative receiver guard rejects an unqualified fixture with0events/packages; no real source/UI reference or qualification was adopted. All82assertionrecords unchanged, canonicalCurrent/Deltaunmeasured. Automatic native streaming/provider/EOF continuity and standard CLI activation remain incomplete; real qualification is still the principal blocker, so no fullE2E was run.
+
+
+## R1 complete adjacent appearance sweep remains unqualified
+
+[The fixed-region native sweep](r1_adjacent_region_analysis.md) evaluates all179adjacent pairs across180existing frames. At the first transient image, six candidate background regions have sceneNCC≥0.995074 while three mixed foreground regions change by69.43%/78.02%/100%. Scene contrast floor1 and masked-reference floor5 are reported separately: six versus two usable background regions at that link. This is neither a timer-only change nor independent source-cut/normal-animation qualification.5diagnostic tests/RuffPASS; production safety/thresholds/GT/all82assertions unchanged, canonicalCurrent/Deltaunmeasured. No fullE2E or qualification was produced; positive UI absence and source/foreground continuity remain blockers.
+
+
+## Explicit native source origin and EOF are supported
+
+[The endpoint contract](native_source_endpoint_contract.md) separates physical source edges from interior-window coverage. start0preserves a nonzero firstPTS; explicitendNoneverifies probe/decodeEOF; numericinterior endpoints remain guarded, and negative source origins are rejected rather than skipped.22decoder tests/64related tests/Ruff/116-filemypyPASS, with verification scope detailed in the document. An actual7-frame prefix preserves allarchivedpixels and firsttick553; actualEOF/fullE2Ewasnotrun. No qualification/defaultsampler/GT/assertionchange or canonicalgain. Automatic incremental processing and independently qualified R1source/UI remain unfinished; all82assertions unchanged.
+
+
+## Whole native PNG buffering lacks a storage guarantee
+
+[The fixed lossless codec assessment](native_full_source_storage_assessment.md) verifies48outputs across8exposed source frames and6serialencoder runs. Level9saves9.43%bytes but increases encodewall63.72%; cohort extrapolation to10259frames remains19.70GB versus17.26GBobservedfree. Extrapolation is not measured all-source storage. Reject compression changes and unbounded all-native PNG decoding; preserve oneepoch/state/terminal verification while designing bounded storage. No provider/qualification/defaultsampler/GT/assertionchange or canonicalgain; all82assertions unchanged. RuffPASS, no unnecessary fullE2E.
+
+
+## Raw XOR/zlib native cache rejected after exact reconstruction
+
+[The native pixel-cache experiment](native_pixel_archive_rejection.md) preserves180actual frames/pixels/PTS/epoch across two reading passes, but increases storage from377191642to475393177bytes(+26.03%). Construction86.34s/tworeadpasses125.25s do not establish a speed comparison. The production prototype was removed and retained only as diagnostics;54finaltests/Ruff/116-filemypyPASS. No adopted cache/qualification/defaultsampler/GT/assertionchange or canonicalgain; all82assertions unchanged. Next separately test existing PNG spatial prediction rather than repeat rawdelta variants, and retain singleepoch/state/terminal/budget requirements. R1source/UI qualification remains missing.
+
+
+## Optional lossless PNG up prediction preserves native input
+
+[PNG spatial prediction](native_png_prediction.md) supports explicitupencoding while retainingnonedefault. The fixed8-frame cohort reduces bytes18.34%/encodewall8.25%;96encoded outputs matchsource pixels. Two actual7-frame source-prefix decodes matchpixels/PTS/timebase exactly, with19.32%fewerbytes.91relatedtests/Ruff/116-filemypyPASS. Extrapolated17.76GBstilllacks capacity assurance, so total-byte enforcement/automaticprovider remain unfinished. No actualqualification/defaultsampler/GT/assertionchange or canonicalgain; all82assertions unchanged. R1source/UI qualification remains the primaryacceptanceblocker; no fullE2Ewasrun.
+
+
+## Native PNG writes can enforce an explicit aggregate limit
+
+[The native PNG budget](native_png_budget.md) streams oneencoder into bounded chunk writes and withholds all frames until exit/nativePTS/pixel/sourcehash verification. Overflow/timeout/truncation reject and clean up, withno frame skip or epoch concatenation. Actual7-frame prefix fits20MBwith14926335bytes and unchangedpixels/PTS;50byteattempt neverentersconsumer.101relatedtests/Ruff/116-filemypyPASS. DefaultbudgetNone/predictionnone preserve priorroute. Automaticqualifiedprovider and actualR1source/UI remain incomplete; no fullE2E or canonicalgain, all82assertions unchanged.
+
+
+## Explicit processor collection of qualified native lifecycle
+
+[Whole-source provider](native_lifecycle_provider.md) adds opt-in automatic source-origin-to-EOF collection with a mandatory PNG budget and unchanged default sampling. Paired current qualification/assets are checked before decode; one producer call must cover every actual decoded pixel/PTS in one epoch. Decoder terminal verification and lifecycle replay precede publication; errors do not fall back to sampled boundaries. Actual R1 source/UI qualification remains unavailable, so no full E2E or canonical gain is claimed. CLI activation and incremental streaming remain incomplete; all82assertion records are unchanged.
+
+
+## Shared full runner exposes native provider explicitly
+
+The [provider's shared runner interface](native_lifecycle_provider.md) now requires paired scene-profile/positive-byte-budget options for full-source input, propagates scene binding through production settings and uses configured FFmpeg. Dataset settings hash scene assets and budget at start/end; raw mode records source scope. Default commands and bounded modes retain previous semantics. Actual R1 source/UI qualification is still absent, no new full E2E or canonical assertion gain is claimed. Incremental buffering remains unfinished; this closes CLI reachability, not real-image qualification.
+
+
+## User-assured unedited source removes the edit-exclusion blocker
+
+The user explicitly guarantees no editing/reordering/intentional deletion or speed change for the SHA-bound current video. [Contracted UI-start analysis](unedited_input_lifecycle.md) therefore excludes scene-preserving edit without repeating image proofs. Default video assumptions stay unchanged. A contracted qualification-loader branch retains timer/phase/UI holdout and negative controls while removing mandatory edit/paired-scene components. Fresh current-reader analysis over256nativeframes finds one start candidate at4.102669s, corroborated at4.202669s; both2:25frames remain in the evidence.112relatedtests/Ruff/118-filemypyPASS; native diagnostic499.209010s,0releasedevents. Production provider/receiver activation and actual reader/UI qualification remain unfinished. All82canonical assertion records remain unchanged; no full E2E or PASSgain is claimed. Foreground edit-exclusion is no longer a blocker for this source; do not re-prove the user input guarantee.
+
+
+## Assured native start reaches qualified event/package/trace and shared CLI
+
+[The assured production connection](unedited_input_lifecycle.md) collects producer-owned phase scans and global observations under an explicit source-hash-bound no-edit contract and current timer/phase/UI qualification. It verifies before decode and after collection, then receiver replay rejects source/contract/scan/event/owned-field tampering. Native system actor/PTS/provenance and preparation context reach package/trace without replacing sampled facts. Shared full CLI now accepts contract+byte-budget instead of scene assets for this source; defaults remain unchanged.161relatedtestsPASS/1Windows-hostskip/Ruff/119-filemypyPASS. This is start-only, no real qualification adopted or new full/canonicalgain. The previous fresh256-frame candidate report remains historical; it was not resigned after source changes. Next actual holdout/negative UI+reader qualification, then continuous/sampled/canonical acceptance.
+
+## R1 start candidate remains stable through six seconds
+
+Fresh actual native analysis under the explicit no-edit contract extends the
+development interval from4.3to6seconds: frames256→358(+102), candidates1→1(0),
+released events0→0(0), wall499.209→723.760seconds(+224.551; different input
+duration). Candidate4.102669s/confirmation4.202669s are unchanged; both2:25
+observations remain in the recorded evidence. No duplicate candidate appears
+through5.986003s. This supports temporal stability and does not qualify an
+actual production event or establish canonical improvement. Current unit85PASS,
+Ruff/mypy120filesPASS; all82assertion records remain unchanged. No full E2E was
+run. Reader and joint temporal holdout qualification, plus actual R1 end inputs,
+remain the upstream release gates. Intentional-edit exclusion is already given
+by the source-specific contract. See [continuous evidence](unedited_input_lifecycle.md)
+and `e2e_reports/match_001/r1_unedited_native_start_through6.json`.
+
+## R1 end producer input shortage confirmed
+
+Current analyzer diagnostics on ten source-bound native end frames confirm
+timer4correct/6unknown/0wrong, no score pairs and no semantic result input. The
+profile configures neither score reader nor result signal. Eight combat-report
+flags also exposed an unnecessary player-context veto in the assured global end
+wrapper: it now permits combat-report context only when independent qualified
+result/score evidence satisfies every existing end predicate. Player facts,
+source discontinuity, occlusion and conflicting-state guards remain unchanged.
+139relatedtests/Ruff/120-filemypyPASS. No real end or qualification, package split,
+full E2E or canonical gain is claimed. All82assertions remain unchanged. See
+[evidence and remaining blockers](unedited_input_lifecycle.md) and
+`e2e_reports/match_001/r1_end_actual_global_inputs.json`.
+
+## Accepted score confidence was lost at both end consumers
+
+Actual analyzer replay with the existing frozen score sidecar yields18correct/
+2unknown/0wrong and8complete pairs on the ten end frames, vs0pairs under the
+default profile. Both boundary consumers incorrectly read reversed confidence
+key names and therefore rejected producer-accepted values. They now use exact
+`score_ally_value`/`score_enemy_value`, with no generic/legacy fallback. An actual
+analyzer-to-consumer regression test closes the fixture-only blind spot;
+187relatedtests/Ruff/mypyPASS. This fixes an upstream contract defect, not the
+remaining result recognition/qualification or temporal simultaneity problem.
+No profile adoption, real end, full E2E, package gain or canonical PASS gain is
+claimed; all82assertion records remain unchanged. See
+[evidence](unedited_input_lifecycle.md) and
+`e2e_reports/match_001/r1_end_existing_score_analyzer.json`.
+
+## R1 end numeric temporal evidence, without event qualification
+
+Fresh explicit native end input extends10→23frames and score pairs8→14; the
+original overlapping observations are identical. Accepted0:06clocks span only
+0.016667sec and subsequent clocks remain unknown. Updated0/2scores span nine
+accepted frames/0.133333sec. A generic descriptive rule finds one conditional
+clock-change/score-step pattern; three previously exposed archived analyzer
+controls (27frames) find0. This does not establish active round state, end
+semantics or independent qualification and emits0events.7diagnostic tests and
+RuffPASS; production behavior and82assertions are unchanged. No full E2E or
+canonical gain is claimed. See [actual sequence and limits](unedited_input_lifecycle.md)
+and `e2e_reports/match_001/r1_end_numeric_temporal_pattern_validated.json`.
+
+## Fresh menu-transition negative numeric evidence
+
+The known83.419336buy-menu entry is checked on27fresh native frames with the
+unchanged opt-in score/timer profile. All27score pairs remain0/2; the descriptive
+end hypothesis finds0patterns. Post-prediction image review reports score54
+correct/0wrong, timer26correct/1unknown/0wrong. A composited0:15display occurs at
+83.302669between0:28frames and is rejected by the reader, not repaired or used
+as accepted evidence. This exposed development control is not independent end
+qualification or canonical negative-assertion validation.11diagnostic tests and
+RuffPASS, including source epoch/timebase, repeated pixels and PTS guards.
+No production/GT/threshold change or full E2E; all82assertions remain unchanged.
+See [limits and source review](unedited_input_lifecycle.md) and
+`e2e_reports/match_001/numeric_end_menu_entry_review.json`.
+
+## Assured lifecycle source-break contract repair
+
+Explicit source break markers were lost between analyzer measurements and native
+assured replay. They are now preserved; timer anomalies alone do not create
+markers. Native segment provenance now uses the integer type expected by the
+package builder. Because break-time fragment transport remains incomplete, the
+receiver rejects a source reset after the first emitted start before publishing
+packages.100relatedtests, Ruff and mypyPASS. No new canonical run or changed
+assertion status is claimed;23PASS/55FAIL/4NE remains the archived baseline.
+Reader/joint temporal qualification and actual end evidence remain blockers.
+See [source contract and limits](unedited_input_lifecycle.md).
+
+## Source-break fragment builder contract
+
+The optional builder source-break entrance now splits package/context and
+derived state by source segment without generating round events.11new cases;
+105relatedtests/Ruff/mypyPASS. Native automatic transport and HUD/Visual temporal
+resets remain incomplete, so the receiver's fail-closed publication guard stays.
+No actual-video qualification or new canonical gain is claimed. Archived82
+assertions remain23PASS/55FAIL/4NE. Details:
+[fragment contract and limits](unedited_input_lifecycle.md).
+
+## Visual continuity consumer integration
+
+The optional Visual source-break entrance resets pixel/map tracking, event and
+trigger history and bounds semantic input to one source segment. Break markers
+survive unreadable frames; stale pre-cut HUD state is excluded. Visual modules
+now participate in native pipeline qualification fingerprints.14newcases and
+72Visual regression tests/Ruff/mypyPASS. Automatic application/HUD/builder
+transport remains pending and the receiver guard stays active. No new canonical
+run or assertion relabeling; archived23PASS/55FAIL/4NE remains the reference.
+See [consumer contract and blockers](unedited_input_lifecycle.md).
+
+## Native source cuts connected to common processing
+
+The assured-input common pipeline now sends replay-verified native cuts to HUD
+Pass A/final state resets, Visual trigger/final state resets and package fragments.
+Terminal checks compare both events and cuts against preflight. Unsupported
+consumers and mismatched cut lists fail closed.7new cases;108relatedtests,
+Ruff/mypyPASS. This completes automatic cut transport for the assured route,
+without qualifying real reader/temporal evidence. No new canonical run;
+82assertion statuses remain23PASS/55FAIL/4NE. Return next to actual qualification
+and R1 end evidence. See [integration](unedited_input_lifecycle.md).
+
+## Fresh frozen numeric input coverage
+
+A fixed122.10–122.55second native window, outside the saved585-tick inventory,
+is processed once with the frozen existing profile/current code. Post-prediction
+image review: timer15correct/12unknown/0wrong; score10correct/44unknown/0wrong,
+only2complete pairs among27frames. Source/profile/code/input hashes verify.
+The actual active-context system replay produces0start candidates and0owned
+facts. This same-video check does not prove exhaustive training separation,
+natural field-absence safety or independent positive temporal qualification.
+Runtime77.194884seconds; no comparable context or canonical delta. No source
+code/threshold/GT change or new canonical run. See
+[actual evidence and limits](unedited_input_lifecycle.md) and
+`e2e_reports/match_001/frozen_numeric_reader_holdout_review.json`.
+
+## Score unknowns localized to foreground segmentation
+
+Frozen production score replay exactly reproduces all54fields on the saved27
+active-context frames. Of44unknowns,40fail border-foreground validation,3fail
+component count and1fails digit layout;0fail NCC/margin. Source/mask comparison
+shows bright background merged into the enemy2mask. Removing border components
+would remove connected digit pixels, so that shortcut is not justified. No
+profile/ROI/threshold/code change, candidate adoption or canonical improvement.
+The next score task is structurally separate text/background with new training
+and independent holdout; this exposed cohort is excluded as untouched holdout
+for that future change. R1 result/UI qualification blockers remain separate.
+See [evidence and comparison](unedited_input_lifecycle.md) and
+`e2e_reports/match_001/frozen_score_rejection_stages.json`.
+
+## Local-opening score hypothesis rejected before holdout
+
+A single frozen training-only foreground hypothesis uses9x9elliptical opening
+and minimum local contrast12before the unchanged strict score reader. On60known
+source frames, accepted fields fall114→53;61becomeunknown,0previousunknowns are
+recovered. Reject before holdout/full E2E.5diagnostic unit controls, Ruff and
+120-filemypyPASS; production/profile/threshold/GT remain unchanged. Stored
+baseline agreement is not independent correctness proof: the older development
+report's manual review flag is false. Next seek independent background support
+that preserves digit strokes; do not sweep thresholds on the exposed27frames.
+See [fixed hypothesis, result and limits](unedited_input_lifecycle.md).
+
+## Border-supported background hypothesis rejected at training
+
+The fixed four-column row-background hypothesis also regresses: on the same
+60development frames/120fields, accepted114→86(-28), unknown6→34(+28),
+unknown→accepted0 and accepted value changes0. It is rejected without a new
+holdout or canonical run. Six diagnostic controls, Ruff and120-filemypyPASS.
+Production/profile/threshold/GT are unchanged; all82assertion statuses retain
+their archived baseline. All28accepted→unknown fields lose zero native pixels
+above200, yet their enlarged foreground changes. Setting low-intensity native
+background to zero changes cubic interpolation, so preserving native bright
+stroke pixels alone is insufficient. Next investigate reference-compatible
+segmentation in the existing enlarged comparison domain, rather than tuning
+NCC or treating the exposed27active frames as fresh holdout. See
+`e2e_reports/match_001/score_border_background_training_results.json` and
+`score_border_background_mask_effect.json` in the same directory.
+
+
+## Score foreground preserves interpolation: bounded progress
+
+Moving background separation after unchanged cubic enlargement preserves all114
+accepted training reads. On exposed27frame development, correct10→50, unknown
+44→4, wrong0→0. A frozen new125.10–125.55native window yields correct46→47,
+unknown8→7, wrong0→0, with all46previous correct preserved. Source pixels are
+reviewed after predictions, no GT selection. This same-video/same-score-class
+check is limited; no natural field-absence negatives or full qualification yet.
+Default score mask extraction is behavior-preserving, verified120stored outputs
+and96unit cases; Ruff/mypyPASS. Code fingerprint changes; old qualification is
+not reusable. No production profile adoption or canonical run;82assertion states
+remain their archived baseline. Next test frozen foreground on natural negatives;
+R1 result/UI qualification remains separate. Details and comparison are in
+[implementation evidence](unedited_input_lifecycle.md).
+
+
+## Score foreground reaches opt-in production producer
+
+54source-reviewed non-HUD background crops yield0false numeric for bothreaders.
+They do not prove absence safety at the actual score field; existing64frame
+review has0naturally absent fields. Explicit production
+`white200_rowcontrast_v1` reproduces frozen diagnostic output on108fields, with
+preprocessing provenance. ActualHUD analyzer on27native frames produces
+47correct/7unknown/0wrong score fields, matching nominal replay54/54; unknown
+identity retains0owned numeric facts. Opt-in profile changes onlyscore
+preprocessing and is not adopted/qualified.82relatedtests, Ruff/mypyPASS.
+No canonical run/status changes. Next evaluate boundary/control intervals using
+this fixed profile and complete real qualification; result/UI gates remain.
+See [producer evidence and limitations](unedited_input_lifecycle.md).
+
+
+## R1 end replay: score gain, result configuration unavailable
+
+Same10native frames with the frozen rowcontrast profile yield score19correct/
+1unknown/0wrong versus18/2/0; pairs8→9, timer4→4. Result0→0is NOT a measured
+NCCfailure: the two score pipeline sidecars omit`round_end_template`, required
+by actualproducer result measurements. The separate historical early-banner
+NCC≈0.388diagnostic is a different blocker. Diagnostic setup now distinguishes
+missing/configured-unavailable/loaded reference.3unitcontrols, Ruff/mypyPASS;
+no production change or canonical relabeling. Next configure the existing
+late reference in an explicit diagnostic profile and measure actualproducer
+result/score temporal alignment. Details are in
+[updated evidence](unedited_input_lifecycle.md).
+
+
+## Existing result reference now reaches producer; temporal input still missing
+
+A diagnostic-only sidecar loads original frozen late-result assets and3verified
+training crops without modifyingNCC/reference/defaultprofile. Actual producer
+accepts3/3training,3/11reusedsame-episodeholdout,0/3negative and0/10earlynative
+frames, equal to direct reference measurements. Early TEAM ACE staysNCC0.388.
+Configuration transport is proven, while same-frame result/score-step input
+conjunction remains0: score step74.486003, accepted result samples75.402669and
+later. Archived gaps cannot validate delayed corroboration. No realqualification
+or canonical status change. Next collect continuous native evidence through both
+changes and assess a bounded temporal contract with independent controls.
+See [producer and alignment evidence](unedited_input_lifecycle.md).
+
+
+## Result/score time mismatch verified on108continuous native frames
+
+Fixed74.20–76.00input yields47score pairs,17timer reads and29result matches.
+Exact cadence/epoch with0adjacent repeated pixels or explicit break markers.
+Score step74.486003, stable75.369336result after0.883333seconds; same-frame
+conjunction0. First result run27frames hasminimumNCC0.924868.17accepted timer
+fields reviewedcorrect/0wrong; no blanket score/result correctness claim.
+200MBtemporaryPNGbudget failed before analyzer; explicit500MBretry succeeds
+without skipping/changinginput. Wall297.784433sec, no comparable previousrun.
+14relatedtests/Ruff/mypyPASS. No production predicate/defaultprofile/GT change,
+qualification or canonical status update. Next specify a bounded pending-end
+corroboration contract with negative/reset controls, then validate complete
+active lifecycle context. See [continuous evidence](unedited_input_lifecycle.md).
+
+
+## Pending-end training prototype; no production event gain yet
+
+Frozen1second clock-origin hypothesis combines stable prior/new accepted score
+with later stable qualified-format result evidence, preserving current unknowns.
+Native R1training replay gives1conditional pattern; reused menu-entry/active
+reports0each. Current-profile independent negatives, complete active lifecycle
+and realqualification remain unproved. Batch source/context rejection, timeout,
+contradiction and jitter controls are tested:26relatedcases/Ruff/mypyPASS.
+No production behavior or82assertion status change; released events stay0.
+Same-frame conjunction0vsconditional pattern1are different metrics, notPASSgain.
+Next validate the fixed hypothesis on current-profile controls before streaming
+production integration. See [contract and limits](unedited_input_lifecycle.md).
+
+
+## Frozen pending-end hypothesis survives current-profile native controls
+
+Current result/score profile on reused27menu-entry native frames yields0patterns/
+0result false positives; all81timer-display/score values preserved. New fixed
+130.00–131.20window processes72native frames,0patterns/0result false positives;
+all72result ROI crops reviewedabsent after predictions. No current unknowns
+or player ownership filled. Same-video/history-exposure limits prevent a full
+independent qualification claim. Actual run times66.943425sec and156.645030sec;
+no comparable runtime deltas. No production change/canonicalstatus update.
+Next implement a streaming collector with explicit independent qualification
+gate, then verify complete active lifecycle and tiered canonical behavior.
+See [controls and gates](unedited_input_lifecycle.md).
+
+## Separately qualified streaming end; assertion results unchanged
+
+The bounded production collector now supports delayed result corroboration only
+with a NEW `ui_end_transition` qualification and explicit source assurance.
+Existing qualifications retain their same-frame predicate. Unit/native package/
+trace tests cover source reset, jitter, duplicate suppression, partial-score
+contradictions, timeouts, rearm, system actor, provenance and pre-round context:
+191related tests PASS; RuffPASS; mypy121filesPASS.
+
+Historical producer replay preserves1R1end pattern and0menu/active patterns;
+released events0→0. Timestamp uses the first observed score change,
+74.48600260416667sec, outside the fixed R1end window. This is no PASS improvement
+and cannot be backdated to satisfy GT. Actual phase scans on358native R1 rows
+preserve one start candidate at4.102669270833333sec without edit-only proof.
+Qualification and complete active lifecycle remain unproved. Original82assertion
+digest unchanged; canonical Previous23PASS/55FAIL/4NE, Current/Delta unavailable.
+No unnecessary canonical run was started. Next qualify assured start/UI evidence
+and independently resolve end timestamp semantics, then run the tiered gates.
+See [implementation and source contract audit](unedited_input_lifecycle.md).
+
+## Raw phase presence is separate from the debounced flag
+
+Actual-analyzer holdouts preserve timer25correct/7unknown/0wrong and raw phase
+8correct/0unknown/0negative false accepts. Four isolated positive images lack
+temporal flags after source gaps; this is not a reader regression. The assured
+producer now carries current raw phase presence/confidence separately, preventing
+unconfirmed positive text from authorizing disappearance or a qualified end.
+All21source markers agree with raw matches. Current30native R1development frames
+preserve one start candidate at4.102669270833333sec.168relatedtests/Ruff/mypyPASS.
+No real qualification, canonical result or82assertion status change. See
+[contract, runtime comparison and qualification limits](current_frame_phase_contract.md).
+
+## Early result text is not recovered by shared translation
+
+All108existing native R1end images are tested with unchanged reference/masks/NCC
+and one common translation per three-group match. Accepted frames29→29; early
+NCC0.387553→0.387553; first result75.319336unchanged. Hypothesis rejected, no
+production promotion. First32source ROI images show only1complete early word
+with red display overlapping the glyph masks; this does not supply3distinct
+supported early training frames.33relatedtests/RuffPASS; unchanged production
+source retains prior mypyPASS. No canonical run or82assertion status update.
+Next investigate independently accepted timer-reset/score-transition semantics,
+without inventing a word or choosing time from GT. See
+[source evidence and qualification limits](result_translation_feasibility.md).
+
+## Numeric end correlation remains diagnostic
+
+A separate frozen timer-reset/one-point-score-step/coherent-clock hypothesis finds
+one correlation in the saved 108 native R1 end frames and zero in the exposed R1
+start, R2 start, menu and active controls. Missing timer readings do not count as
+support. Historical end measurements lack current raw phase presence, so this is
+not current-producer or independent temporal qualification. No event timestamp
+or round association is generated; clock reset and score transition times remain
+distinct observed facts. 19 related tests and Ruff pass; production is unchanged.
+Released events 0→0; canonical Current/Delta unavailable; all82 assertion statuses
+remain unchanged. Next obtain current-producer raw phase measurements on the
+existing source archive and independently resolve end timing semantics. See
+[numeric feasibility and limitations](numeric_end_feasibility.md).
+
+## Current end producer measurements and accepted score review
+
+Current actual analyzer replays all108unchanged native end images; all108original
+observations remain identical. Raw phase presence/confidence now exists on every
+frame, with0positive matches. Timer17/score-pairs47/result29remain unchanged;
+numeric and delayed-result conditional patterns remain1each. Source review finds
+114correct accepted individual score fields,0wrong,102unknown; it is explicitly
+post-prediction development review, not independent holdout. Producer229.458303sec
+versus297.784433previous includes archive-versus-fresh-decode workload difference.
+No production/event/assertion changes or canonical run. The former missing
+raw-phase measurement blocker is resolved for this interval; independent end-time
+semantics and temporal qualification remain. See the current-producer section of
+[numeric feasibility](numeric_end_feasibility.md).
+
+## Native timer snapshot transport and source-time binding
+
+Qualified native clocks now have an exact-PTS processor/package/trace join,
+preserving identity and player facts. 28relevant tests/Ruff/mypyPASS. However,
+actual archived sampled timestamps have six-decimal ffprobe precision and the
+108native end rows have exact rational tick-derived times: exact overlaps0,
+formatted overlaps31. No nearest/rounded fallback is adopted, so actual full
+benefit remains unproven. Next preserve decoder frame/tick identity through
+sampled extraction and cache, then validate the actual source join without
+changing sampler behavior. New production code invalidates historical code-bound
+qualification; previous reports are not re-signed. All82assertion statuses remain
+unchanged; canonical Current/Delta unavailable. See
+[transport implementation and actual-source blocker](native_timer_snapshot_transport.md).
+
+## Actual decoder ticks now resolve sampled/native precision differences
+
+Common sampled extraction preserves ffprobe integer ticks and timebase, binds
+them to video/JPEG hashes, and keeps existing decimal timestamps and selection.
+Cache format2 preserves this optional identity with versioned keys. Processor
+native timer joins require verified frame identity, abstain for legacy frames and
+recheck image hashes before publication. Actual fixed31frame extraction yields
+31native source joins versus0with timestamp equality, while all31sample times
+remain unchanged; all31cache hits retain identity. Three matched native rows have
+original accepted clock displays. This is actual source binding, not qualification
+or canonical improvement.62relatedtests/Ruff/mypyPASS. Canonical Current/Delta
+unavailable; all82assertion states remain unchanged. Next resolve independent
+lifecycle/reader qualification and end timing, then evaluate source-backed timer
+snapshots through the unchanged tiered gates. See
+[decoder identity and actual-video verification](native_timer_snapshot_transport.md).
+
+## Spectator primary state is preserved as a nullable snapshot field
+
+The established source primary state now reaches native package snapshots and
+trace as `spectator_primary_state`: qualified spectator=true, identity-valid
+live=false, unknown/unsupported views=null. No flag-absence exclusion or owned
+fact is inferred. Native/source disagreement fails closed.61relatedtests with
+the real validation-pack path/Ruff/mypyPASS. Archived full raw/trace replay through
+the unchanged canonical evaluator preserves23PASS/55FAIL/4NE, all82statuses,
+919snapshots and20negative PASS. New field455false/163true/301null; no new detection
+or full acceptance claim. `GT-R1-SNAP-7425` still has snapshot-admission and muzzle/
+owned-field blockers. Original assertion matrix/digest is unchanged. See
+[native/trace contract and archived replay](spectator_primary_snapshot_contract.md).
+
+## Fixed result reference fails newly reserved late source frames
+
+Current unchanged profile on12native frames at76.35–76.55sec yields0result accepts.
+Known native/training/reviewed/full-decoded exposures exclude8frames;4were fixed
+before predictions for review. Source text is visiblyTEAMACE in all4but their
+NCC0.814–0.856falls below0.90: correct0/unknown4/wrong0. No reference, threshold,
+production or qualification changes. This exposes a real result-reference
+generalization blocker beyond missing qualification paperwork. The cohort is now
+exposed development data; investigate representation/background dependence from
+original training only and reserve different validation before adoption. No
+canonical run or82assertion status change. See
+[protocol, source evidence and rejected qualification](result_late_fixed_cohort_failure.md).
+
+## Training-derived result representation rejected on fixed new source frames
+
+Grayscale stable trimming loses required contrast; fixed Canny fails training.
+A frozen persistent min-channel white/contrast mask passes training by
+construction but improves no acceptances on12new native source frames. Eight
+were reserved before prediction with known exposure exclusion: correct2/unknown6/
+wrong0for both representations; three existing negatives remain rejected. All12
+show readable TEAM ACE. No threshold, production or qualification changes;
+all82assertion states remain unchanged. Stop tuning this representation and
+return to source-assured start qualification/upstream contracts. See
+[training hypotheses, new source comparison and rejection](result_persistent_feature_rejection.md).
+
+## Combined production contract regression verified; Visual fixture repaired
+
+The complete repository pytest run yields2459PASS/1FAIL/9SKIP. The sole failure
+is an integration mock missing the new source-break keyword; it is repaired
+with an explicit empty-break assertion. Related Visual and supplied-pack
+integration modules then yield13PASS/0FAIL/0SKIP. Ruff onsrc/tests/scripts/e2e
+and mypy121source filesPASS. The full suite was not repeated after the test-only
+repair; overlapping runs are not summed. No production/qualification/canonical
+status change. See
+[execution scope, fixture fix and remaining qualification gates](production_contract_regression_check.md).
+
+## Shared team scores now have a native/source/trace contract
+
+Accepted score values and their reserved value-reader confidence now survive
+as nullable native fields with source-checked trace aliases independently of
+player identity.113relatedtests/Ruff/mypyPASS. Archived canonical replay preserves
+all82results23PASS/55FAIL/4NE. In the108row R1end development window,53ally/61enemy
+scores have accepted reader confidence and67identity-unknown rows have global
+score evidence, but existing admission still yields0snapshots. No PASS increase
+or new qualification is claimed. Next define a separately qualified global
+snapshot admission contract; retain existing player admission and ownership.
+See [implementation, actual source coverage and remaining admission blocker](shared_score_snapshot_transport.md).
+
+## Fixed new shared-score source check: correct accepts, incomplete qualification
+
+The unchanged production profile processes18native frames with16reserved before
+prediction. Reviewed source showsally0/enemy2: reserved ally16correct/0unknown/
+0wrong, enemy4correct/12unknown/0wrong. All14enemy unknowns across18frames reject
+foreground touching the ROI border before glyph matching; nominal reader
+acceptance parity is18/18with the actual analyzer. No neighbor filling, cutoff
+change, qualification or admission promotion. Training provenance and genuine
+negative controls remain gates. No canonical assertion status change. See
+[fixed selection, source review and rejection-stage evidence](shared_score_fixed_source_validation.md).
+
+## Shared score training provenance and current background controls
+
+All ten current score glyph assets have exact frozen training ancestry and meet
+the prior three-physical-frame/80% support rule under unchanged Gaussian/NCC0.90.
+Current ally/enemy core readers each reject all54 fixed background crops from
+three physical frames, false accepts0; previous/current changes0. This is neither
+natural nominal score absence nor independent new holdout or temporal lifecycle
+qualification. No production/admission/profile change or canonical rerun; all82
+statuses remain unchanged. See
+[scope, provenance, controls and admission blocker](shared_score_training_background_audit.md).
+
+## Assured start qualification support clarified
+
+The current loader permits shared physical frames across components within one
+split; it rejects cross-component training/holdout/control leakage. Its minimum
+is three physical hashes per split, not three round episodes or videos. Four
+focused regression testsPASS; no production or canonical result change. Source
+assurance removes edit-only checks, while independently reviewed joint temporal
+UI qualification remains required. The previously exposed R1/R2 development
+sequences are not fresh holdout. See
+[qualification support and exact start acceptance targets](unedited_input_lifecycle.md).

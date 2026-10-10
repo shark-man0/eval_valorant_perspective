@@ -1,0 +1,135 @@
+{
+  "scope": "Post-prediction image review of all17accepted timer fields; not unknown frames or full score/banner ground truth",
+  "input_report_sha256": "8584618c1609b6fabe2a95bc8029df920f992e1663a19d44cd9d68b992725a41",
+  "review_image_sha256": "d060ff8ad29e865ed19e09155406ae504b63b15c72ee3fdb73909772a7dd1d78",
+  "review_provenance": "Pi-local topbar contact sheet reviewed after prediction; source digits manually confirmed",
+  "timer": {
+    "correct": 17,
+    "wrong": 0,
+    "unknown": 91
+  },
+  "labels": [
+    {
+      "frame_index_in_archive": 1,
+      "source_pts_ticks": 1139753,
+      "frame_sha256": "213e43e580c81c89fd946f682500f3f4143ca0a69039f0574accfb89431c0e6c",
+      "source_display": "0:29",
+      "reader_display": "0:29"
+    },
+    {
+      "frame_index_in_archive": 2,
+      "source_pts_ticks": 1140009,
+      "frame_sha256": "d643c8465f1a4729e08ff4d7f243ac00801d1a116f9f78c9c8b1b06d4c77b0f9",
+      "source_display": "0:29",
+      "reader_display": "0:29"
+    },
+    {
+      "frame_index_in_archive": 3,
+      "source_pts_ticks": 1140265,
+      "frame_sha256": "7332a80535c8bf0ec76f1c56dfd97e9a3f49753c58ef7d8abf1407115ce98c0d",
+      "source_display": "0:29",
+      "reader_display": "0:29"
+    },
+    {
+      "frame_index_in_archive": 4,
+      "source_pts_ticks": 1140521,
+      "frame_sha256": "7d3488012d59826438ce6d324c521fd03ff60d0dcfa222fffcafc7826fd7f51b",
+      "source_display": "0:29",
+      "reader_display": "0:29"
+    },
+    {
+      "frame_index_in_archive": 5,
+      "source_pts_ticks": 1140777,
+      "frame_sha256": "0ee694c4aca510d9599ac32d5c45f28879f4dd3ade387e38c0becbc0a1a20157",
+      "source_display": "0:29",
+      "reader_display": "0:29"
+    },
+    {
+      "frame_index_in_archive": 6,
+      "source_pts_ticks": 1141033,
+      "frame_sha256": "8d9b3578858a9eaa49a471b486f8baac7ca1688400bdd627c8bf4da391b6db7d",
+      "source_display": "0:29",
+      "reader_display": "0:29"
+    },
+    {
+      "frame_index_in_archive": 7,
+      "source_pts_ticks": 1141289,
+      "frame_sha256": "28d1958760ada5717d3fa55d20def643a351ee372a01986a56c0fb9b9041127f",
+      "source_display": "0:29",
+      "reader_display": "0:29"
+    },
+    {
+      "frame_index_in_archive": 8,
+      "source_pts_ticks": 1141545,
+      "frame_sha256": "7bfde4c8d3dbde96c089545b00602566ca3c8ef537ddd28cfbacf2c53e46281c",
+      "source_display": "0:29",
+      "reader_display": "0:29"
+    },
+    {
+      "frame_index_in_archive": 12,
+      "source_pts_ticks": 1142569,
+      "frame_sha256": "ca40b1a0992f19f4d21b38cdb7cd0f1306ce3f117c83a19f8159ed7e9bad4462",
+      "source_display": "0:29",
+      "reader_display": "0:29"
+    },
+    {
+      "frame_index_in_archive": 14,
+      "source_pts_ticks": 1143081,
+      "frame_sha256": "d89e27938fc55bdcdafd802d429c7506bb76aeef2812aa14c62456154ca13988",
+      "source_display": "0:29",
+      "reader_display": "0:29"
+    },
+    {
+      "frame_index_in_archive": 16,
+      "source_pts_ticks": 1143593,
+      "frame_sha256": "9651831d02373f475e09868e67b06026441f8213aea55e8734102210b6358e44",
+      "source_display": "0:06",
+      "reader_display": "0:06"
+    },
+    {
+      "frame_index_in_archive": 17,
+      "source_pts_ticks": 1143849,
+      "frame_sha256": "c4ac848ab3b0f2ba5b027b3e70c3aa5ff80289047983ddfda8ad86c08e54381a",
+      "source_display": "0:06",
+      "reader_display": "0:06"
+    },
+    {
+      "frame_index_in_archive": 39,
+      "source_pts_ticks": 1149481,
+      "frame_sha256": "cc99630dfee51cfe8fdebe7d3b7baa5d3587f8ce792763e711dc2661e9b8f2cc",
+      "source_display": "0:06",
+      "reader_display": "0:06"
+    },
+    {
+      "frame_index_in_archive": 46,
+      "source_pts_ticks": 1151273,
+      "frame_sha256": "c67a0204e345234a0ebf1681d95d543321b2d0a350b7004616226d673f94d19c",
+      "source_display": "0:06",
+      "reader_display": "0:06"
+    },
+    {
+      "frame_index_in_archive": 55,
+      "source_pts_ticks": 1153577,
+      "frame_sha256": "907cf7cbdbbdc34e724e7acb7eaa35848e59bb53200cc1189d8d07b9e6a42e4b",
+      "source_display": "0:06",
+      "reader_display": "0:06"
+    },
+    {
+      "frame_index_in_archive": 56,
+      "source_pts_ticks": 1153833,
+      "frame_sha256": "ad0f9d3d1bd7d0caf887e741ed2dc8ea9eedb1cabe4e16fe26ca924c67517f6b",
+      "source_display": "0:06",
+      "reader_display": "0:06"
+    },
+    {
+      "frame_index_in_archive": 57,
+      "source_pts_ticks": 1154089,
+      "frame_sha256": "65e60a51e0a0be40f3921ea8cbf6fa33ef9962dcffeb95405697f063429ce8e0",
+      "source_display": "0:06",
+      "reader_display": "0:06"
+    }
+  ],
+  "qualification_created": false,
+  "canonical_current": null,
+  "canonical_delta": null
+}

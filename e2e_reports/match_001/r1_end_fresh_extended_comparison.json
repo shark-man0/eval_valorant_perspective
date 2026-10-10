@@ -1,0 +1,36 @@
+{
+  "comparison": {
+    "previous_report": "e2e_reports/match_001/r1_end_existing_score_analyzer.json",
+    "scope": "Same sidecar; explicit native interval extended. Runtime difference is not a speed-regression measure.",
+    "common_10_observations_equal": true,
+    "metrics": {
+      "processed_end_frames": {
+        "previous": 10,
+        "current": 23,
+        "delta": 13
+      },
+      "score_pair_available": {
+        "previous": 8,
+        "current": 14,
+        "delta": 6
+      },
+      "timer_display_available": {
+        "previous": 4,
+        "current": 4,
+        "delta": 0
+      },
+      "round_result_matched_frames": {
+        "previous": 0,
+        "current": 0,
+        "delta": 0
+      },
+      "wall_clock_sec": {
+        "previous": 33.46169869101141,
+        "current": 84.42687109200051,
+        "delta": 50.965172400989104
+      }
+    }
+  },
+  "additional_score_readings_reviewed": false,
+  "source_report_sha256": "76ff93d81422d5fc9251977e87a7b3acf8a6480bb96bb5c6e2654dbc5f5243b2"
+}

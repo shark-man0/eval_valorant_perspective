@@ -1,0 +1,61 @@
+{
+  "scope": "Manual development image review; not semantic GT or qualification",
+  "proposed_source_roi": [
+    560,
+    735,
+    1000,
+    885
+  ],
+  "reviewed_panels": 36,
+  "population_order": "Six prior prefix images then thirty original native R1 images",
+  "decision": "Rejected before matcher execution",
+  "reasons": [
+    "Player hand/forearm/charm enters proposed ROI in multiple frames",
+    "Faint fixed ability HUD glyphs visible at lower-centre edge"
+  ],
+  "matcher_attempts": 0,
+  "qualification_created": false,
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "image_hashes": [
+    "4f625647a6f386a9a64cfdeb57b6942c90c320a69231fb6b223b8dd068ff79ba",
+    "5fde5ca22a18fbe6e91401208504ed9b82543b6cd9489683478285004d1493a5",
+    "cb2081c52d7d15979fe7c7c337b9eb9299ddf68de2f1a422fd6b9f43dda91112",
+    "346211e1ea63c280745303f5b06dfcfabcbc5f34e7b1bb8ddc2eccc542fd127a",
+    "e5c7fe3f921d537b317f7df9e172093d833790e465ebac0a8e4f73584df1c0ea",
+    "4e5468fc6df69255d5e695afcef7d90c896a8045f2ac02adbdd9e1b2ae51987c",
+    "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "e790bd155383fac3eb439d4311a89840467fce57938a80dae2448e628dfd9211",
+    "1dc0d9b8c59355b43eb723b1961110bb53d1ce8a62176490f5c632dd6ee5f2ad",
+    "00e2240728fa5e6c6cd1d8a29adebecb993d61abb4c9a97aea47902d53f041e1",
+    "77d745206022589fc826823873bc1305e922fdda01854eac4a7eed10876d6c80",
+    "d4dafbd08a45d736ff634bb6537d9d0991d3023a611db6a229874a4755c9f8d3",
+    "3d4c25843ec375524762f21a11a17b7bf7854f65680ceaf0396b5a597a1d94dc",
+    "eddab3d93b6a8d910aaa923a260a7be4779514c79670dc8d2fefb3a1e0863473",
+    "995c70d5658ba86dd220d7d02f947982e00c9d4cdf9456dde224924df8211951",
+    "a3a788841be688ba3d97be42478708e5cd8571ff74c6a1a1fce8172f88ad0104",
+    "2ca7c16fac54a93af47a678cd1491bffc7a8ec0edf9634d4c2be4e4a134741e2",
+    "0971d607cd0a91eb2c2af8e4949dd601201575ad6050945d1583ecad529797e9",
+    "3f7f964b6993d20bba3396e160e6b6edf41cc5352b0b0ad57de9254ddb7fe0a5",
+    "ffc878007fe550701c8e5be11f78b1a6d91bc88f77972cc48b370ac4cf7e7bb6",
+    "d72a67e8f64bc6ffe0b90a1f6118c522380a2bd83eabd4e84b6a5f36f7b605fc",
+    "40a1ca141705ef466d3cdcd339bfa1e519a8bd998cabb9ea204da72dcaa6d382",
+    "87a43e4a4c0e1f7eb1ea8e6fedccbefa5bc6eddd8d29c61dc25e92dbeef418f8",
+    "e2e07cdce5e63bde4205fa7401ca54f9b6917872957efe3b303f0286e370b43b",
+    "d81a979afdc6bee35155fc029a0621d43a7b0dbbe29fc364cd0010cbfa697707",
+    "2c747572f073d4c8769933863cf6e99c8498bccb4469b8476cc12784854b7a7e",
+    "ee5be2e35aabe7ac9b9fc01fd438dc28c4e5c76f73f66e7cd6df752bc72edd2d",
+    "aa5727f8ff3428eaf3705c3fb9b42acc78c278fb3ce21276969cd8505aa2aae2",
+    "01510fbbc2c0e101c72555f846ca75adf24b073891d8e9160c94ec54be0e5413",
+    "1a3208bb41afe765aa7f691964df102279ec81e9366d13ae326cc537c3a66b76",
+    "0252b863b5f5d2108ebd46178ea6a4a2cba005b51af5205dee7723c2d26a9ac8",
+    "fa80efcbffa9e29d82948fbb605bcbb10baab44ac31c17434085e97c671c887e",
+    "ec2d668e223d2f20a8b53d813a1681e4c1c79b120857244b11f42d341dadfc74",
+    "6e6edeefc2aa5d1a45960e741815a8c08090793d8be0b74a8a7b344051a6f67d",
+    "91eab8a0e9d080f64d9cc83c31c77f733dcaeaccd50b1ae6c30877f41a987f55",
+    "91d79bfba35b3afa2e8fe7bb5274926fbe6a254207dd9a9ab55d5cb3ebab625c"
+  ],
+  "review_images_sha256": {
+    "outputs/recognition-investigation/scene-world-stage-20261009/lower-world-candidate-review.png": "ebca1c95020efba78a721dd84b95c3fec057851efeebc58d012d9c2ba1c074e6",
+    "outputs/recognition-investigation/scene-world-stage-20261009/lower-world-first-context.png": "6742b843e3eeeef61659772ba80cc390e0d6d76b10e363299777d6f0083a8bf8"
+  }
+}

@@ -83,7 +83,7 @@ def build_services(
     repository = SQLiteRepository(data_dir / "app.db", clips_dir=data_dir / "clips")
     ffmpeg_path = executable_path(selected.ffmpeg_path, "ffmpeg")
     ffprobe_path = executable_path(selected.ffprobe_path, "ffprobe")
-    video = VideoService(ffprobe_path)
+    video = VideoService(ffprobe_path, ffmpeg_path=ffmpeg_path)
     clips = ClipService(
         ffmpeg_path,
         ffprobe_path,
@@ -116,7 +116,13 @@ def build_services(
             raise RuntimeError(
                 "実HUDモードには校正済みhud_layout.jsonが必要です。設定画面で選択してください"
             )
-        real_hud = RealHudAnalyzer(layout_path, role_resolver=role_resolver)
+        real_hud = RealHudAnalyzer(
+            layout_path, role_resolver=role_resolver,
+            scene_reference_profile_path=(
+                Path(selected.scene_reference_profile_path).expanduser()
+                if selected.scene_reference_profile_path else None
+            ),
+        )
         hud = real_hud
         event_contract = EventSourceContract.load(
             resource_path("config/event_source_contract_v1.json")

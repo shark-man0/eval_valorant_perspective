@@ -1,0 +1,988 @@
+{
+  "scope": "Frozen corner-seeded correspondence; exposed, not qualification",
+  "rows": [
+    {
+      "reference_id": "reviewed-arch-context",
+      "image": "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/arch_context.png",
+      "result": {
+        "scope": "descriptor geometry proposal plus fixed-domain appearance; diagnostic only",
+        "source_descriptors": 74,
+        "current_descriptors": 286,
+        "tracks": [
+          {
+            "region": 0,
+            "reference_xy": [
+              199.0,
+              86.0
+            ],
+            "current_xy": [
+              199.0,
+              86.0
+            ],
+            "descriptor_distance": 1.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              200.0,
+              100.0
+            ],
+            "current_xy": [
+              200.0,
+              100.0
+            ],
+            "descriptor_distance": 4.123105525970459,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              202.0,
+              64.0
+            ],
+            "current_xy": [
+              202.0,
+              64.0
+            ],
+            "descriptor_distance": 11.532562255859375,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              195.0,
+              105.0
+            ],
+            "current_xy": [
+              195.0,
+              105.0
+            ],
+            "descriptor_distance": 1.7320507764816284,
+            "projected_patch_ncc": 0.9999974370002747,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              202.0,
+              90.0
+            ],
+            "current_xy": [
+              202.0,
+              90.0
+            ],
+            "descriptor_distance": 43.72642135620117,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              82.0,
+              223.0
+            ],
+            "current_xy": [
+              82.0,
+              223.0
+            ],
+            "descriptor_distance": 11.789826393127441,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              84.0,
+              193.0
+            ],
+            "current_xy": [
+              84.0,
+              193.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9999985694885254,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              102.0,
+              179.0
+            ],
+            "current_xy": [
+              102.0,
+              179.0
+            ],
+            "descriptor_distance": 15.033296585083008,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              91.0,
+              180.0
+            ],
+            "current_xy": [
+              91.0,
+              180.0
+            ],
+            "descriptor_distance": 5.74456262588501,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              146.0,
+              212.0
+            ],
+            "current_xy": [
+              146.0,
+              212.0
+            ],
+            "descriptor_distance": 1.4142135381698608,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              124.0,
+              181.0
+            ],
+            "current_xy": [
+              124.0,
+              181.0
+            ],
+            "descriptor_distance": 19.974985122680664,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              101.0,
+              186.0
+            ],
+            "current_xy": [
+              101.0,
+              186.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              144.0,
+              195.0
+            ],
+            "current_xy": [
+              144.0,
+              195.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9999144077301025,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              84.0,
+              216.0
+            ],
+            "current_xy": [
+              84.0,
+              216.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              106.0,
+              223.0
+            ],
+            "current_xy": [
+              106.0,
+              223.0
+            ],
+            "descriptor_distance": 30.74085235595703,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              555.0,
+              90.0
+            ],
+            "current_xy": [
+              555.0,
+              90.0
+            ],
+            "descriptor_distance": 57.91373062133789,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          }
+        ],
+        "model": [
+          [
+            1.0,
+            -0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ]
+        ],
+        "model_inliers": 16,
+        "domains": [
+          {
+            "region": 0,
+            "predicted_ncc": 1.0,
+            "competing_offsets": [
+              {
+                "offset_xy": [
+                  1,
+                  -3
+                ],
+                "ncc": 0.9023590683937073
+              }
+            ],
+            "invalid_offsets": 102,
+            "locally_unambiguous_appearance": false,
+            "search_scope": "17x17 integer translations of fixed affine projection",
+            "world_mask_authorized": false,
+            "runtime_proof_authorized": false
+          },
+          {
+            "region": 1,
+            "predicted_ncc": 1.0,
+            "competing_offsets": [
+              {
+                "offset_xy": [
+                  -1,
+                  3
+                ],
+                "ncc": 0.9390249848365784
+              },
+              {
+                "offset_xy": [
+                  0,
+                  3
+                ],
+                "ncc": 0.9862874746322632
+              },
+              {
+                "offset_xy": [
+                  1,
+                  3
+                ],
+                "ncc": 0.9444289803504944
+              },
+              {
+                "offset_xy": [
+                  -1,
+                  4
+                ],
+                "ncc": 0.9371384382247925
+              },
+              {
+                "offset_xy": [
+                  0,
+                  4
+                ],
+                "ncc": 0.98380446434021
+              },
+              {
+                "offset_xy": [
+                  1,
+                  4
+                ],
+                "ncc": 0.943171501159668
+              },
+              {
+                "offset_xy": [
+                  -1,
+                  5
+                ],
+                "ncc": 0.9324326515197754
+              },
+              {
+                "offset_xy": [
+                  0,
+                  5
+                ],
+                "ncc": 0.9784110188484192
+              },
+              {
+                "offset_xy": [
+                  1,
+                  5
+                ],
+                "ncc": 0.939155638217926
+              },
+              {
+                "offset_xy": [
+                  -1,
+                  6
+                ],
+                "ncc": 0.9267434477806091
+              },
+              {
+                "offset_xy": [
+                  0,
+                  6
+                ],
+                "ncc": 0.9720852375030518
+              },
+              {
+                "offset_xy": [
+                  1,
+                  6
+                ],
+                "ncc": 0.9344354271888733
+              },
+              {
+                "offset_xy": [
+                  -1,
+                  7
+                ],
+                "ncc": 0.9206705689430237
+              },
+              {
+                "offset_xy": [
+                  0,
+                  7
+                ],
+                "ncc": 0.9650946259498596
+              },
+              {
+                "offset_xy": [
+                  1,
+                  7
+                ],
+                "ncc": 0.9295300841331482
+              },
+              {
+                "offset_xy": [
+                  -1,
+                  8
+                ],
+                "ncc": 0.9109708070755005
+              },
+              {
+                "offset_xy": [
+                  0,
+                  8
+                ],
+                "ncc": 0.9545539617538452
+              },
+              {
+                "offset_xy": [
+                  1,
+                  8
+                ],
+                "ncc": 0.9201421141624451
+              }
+            ],
+            "invalid_offsets": 102,
+            "locally_unambiguous_appearance": false,
+            "search_scope": "17x17 integer translations of fixed affine projection",
+            "world_mask_authorized": false,
+            "runtime_proof_authorized": false
+          },
+          {
+            "region": 2,
+            "predicted_ncc": 0.9999993443489075,
+            "competing_offsets": [],
+            "invalid_offsets": 68,
+            "locally_unambiguous_appearance": true,
+            "search_scope": "17x17 integer translations of fixed affine projection",
+            "world_mask_authorized": false,
+            "runtime_proof_authorized": false
+          }
+        ],
+        "joint": {
+          "fixed_projection_witness_regions": [
+            0,
+            1,
+            2
+          ],
+          "distributed_source_and_current_support": true,
+          "joint_competing_offsets": [],
+          "unresolved_offsets": [],
+          "locally_unique_joint_appearance": true,
+          "scope": "fixed affine plus complete local integer-translation lattice only",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        },
+        "diagnostic_initialization_proposed": true,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "feature_source": "reviewed_corners",
+        "descriptor_context": "fixed size3/orientation0, inside declared crop",
+        "descriptor_matches": 16,
+        "photometric_inliers": 16,
+        "reason": "diagnostic_descriptor_domain_proposal"
+      },
+      "physical_region_counts": {
+        "0": 5,
+        "1": 10,
+        "2": 1
+      }
+    },
+    {
+      "reference_id": "reviewed-arch-context",
+      "image": "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000001.png",
+      "result": {
+        "scope": "descriptor geometry proposal plus fixed-domain appearance; diagnostic only",
+        "source_descriptors": 74,
+        "current_descriptors": 261,
+        "tracks": [
+          {
+            "region": 1,
+            "reference_xy": [
+              82.0,
+              223.0
+            ],
+            "current_xy": [
+              126.0,
+              214.0
+            ],
+            "descriptor_distance": 127.4950942993164
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              516.0,
+              90.0
+            ],
+            "current_xy": [
+              152.0,
+              237.0
+            ],
+            "descriptor_distance": 227.8135223388672
+          }
+        ],
+        "model": null,
+        "model_inliers": 0,
+        "domains": null,
+        "joint": null,
+        "diagnostic_initialization_proposed": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "feature_source": "reviewed_corners",
+        "descriptor_context": "fixed size3/orientation0, inside declared crop",
+        "descriptor_matches": 2,
+        "reason": "three_region_descriptor_support_unavailable"
+      },
+      "physical_region_counts": {
+        "1": 1,
+        "2": 1
+      }
+    },
+    {
+      "reference_id": "reviewed-arch-context",
+      "image": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000001.png",
+      "result": {
+        "scope": "descriptor geometry proposal plus fixed-domain appearance; diagnostic only",
+        "source_descriptors": 74,
+        "current_descriptors": 246,
+        "tracks": [],
+        "model": null,
+        "model_inliers": 0,
+        "domains": null,
+        "joint": null,
+        "diagnostic_initialization_proposed": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "feature_source": "reviewed_corners",
+        "descriptor_context": "fixed size3/orientation0, inside declared crop",
+        "descriptor_matches": 0,
+        "reason": "three_region_descriptor_support_unavailable"
+      },
+      "physical_region_counts": {}
+    },
+    {
+      "reference_id": "reviewed-wall",
+      "image": "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/wall_close.png",
+      "result": {
+        "scope": "descriptor geometry proposal plus fixed-domain appearance; diagnostic only",
+        "source_descriptors": 295,
+        "current_descriptors": 119,
+        "tracks": [
+          {
+            "region": 2,
+            "reference_xy": [
+              20.0,
+              219.0
+            ],
+            "current_xy": [
+              20.0,
+              219.0
+            ],
+            "descriptor_distance": 8.185352325439453
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              149.0,
+              214.0
+            ],
+            "current_xy": [
+              149.0,
+              214.0
+            ],
+            "descriptor_distance": 0.0
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              92.0,
+              219.0
+            ],
+            "current_xy": [
+              92.0,
+              219.0
+            ],
+            "descriptor_distance": 0.0
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              75.0,
+              220.0
+            ],
+            "current_xy": [
+              75.0,
+              220.0
+            ],
+            "descriptor_distance": 0.0
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              93.0,
+              224.0
+            ],
+            "current_xy": [
+              93.0,
+              224.0
+            ],
+            "descriptor_distance": 0.0
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              134.0,
+              222.0
+            ],
+            "current_xy": [
+              134.0,
+              222.0
+            ],
+            "descriptor_distance": 0.0
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              27.0,
+              216.0
+            ],
+            "current_xy": [
+              27.0,
+              216.0
+            ],
+            "descriptor_distance": 0.0
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              39.0,
+              204.0
+            ],
+            "current_xy": [
+              39.0,
+              204.0
+            ],
+            "descriptor_distance": 0.0
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              41.0,
+              219.0
+            ],
+            "current_xy": [
+              41.0,
+              219.0
+            ],
+            "descriptor_distance": 0.0
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              114.0,
+              221.0
+            ],
+            "current_xy": [
+              114.0,
+              221.0
+            ],
+            "descriptor_distance": 0.0
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              47.0,
+              208.0
+            ],
+            "current_xy": [
+              47.0,
+              208.0
+            ],
+            "descriptor_distance": 0.0
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              34.0,
+              228.0
+            ],
+            "current_xy": [
+              34.0,
+              228.0
+            ],
+            "descriptor_distance": 0.0
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              20.0,
+              209.0
+            ],
+            "current_xy": [
+              20.0,
+              209.0
+            ],
+            "descriptor_distance": 17.40689468383789
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              98.0,
+              219.0
+            ],
+            "current_xy": [
+              98.0,
+              219.0
+            ],
+            "descriptor_distance": 0.0
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              21.0,
+              187.0
+            ],
+            "current_xy": [
+              21.0,
+              187.0
+            ],
+            "descriptor_distance": 14.899664878845215
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              242.0,
+              195.0
+            ],
+            "current_xy": [
+              536.0,
+              249.0
+            ],
+            "descriptor_distance": 240.995849609375
+          }
+        ],
+        "model": null,
+        "model_inliers": 0,
+        "domains": null,
+        "joint": null,
+        "diagnostic_initialization_proposed": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "feature_source": "reviewed_corners",
+        "descriptor_context": "fixed size3/orientation0, inside declared crop",
+        "descriptor_matches": 16,
+        "reason": "three_region_descriptor_support_unavailable"
+      },
+      "physical_region_counts": {
+        "2": 15,
+        "5": 1
+      }
+    },
+    {
+      "reference_id": "reviewed-wall",
+      "image": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000013.png",
+      "result": {
+        "scope": "descriptor geometry proposal plus fixed-domain appearance; diagnostic only",
+        "source_descriptors": 295,
+        "current_descriptors": 94,
+        "tracks": [
+          {
+            "region": 2,
+            "reference_xy": [
+              20.0,
+              219.0
+            ],
+            "current_xy": [
+              26.0,
+              222.0
+            ],
+            "descriptor_distance": 79.55501556396484
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              149.0,
+              214.0
+            ],
+            "current_xy": [
+              152.0,
+              218.0
+            ],
+            "descriptor_distance": 50.32891845703125
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              92.0,
+              219.0
+            ],
+            "current_xy": [
+              95.0,
+              223.0
+            ],
+            "descriptor_distance": 67.12674713134766
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              75.0,
+              220.0
+            ],
+            "current_xy": [
+              81.0,
+              224.0
+            ],
+            "descriptor_distance": 54.60769271850586
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              93.0,
+              224.0
+            ],
+            "current_xy": [
+              98.0,
+              228.0
+            ],
+            "descriptor_distance": 38.97434997558594
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              134.0,
+              222.0
+            ],
+            "current_xy": [
+              140.0,
+              226.0
+            ],
+            "descriptor_distance": 46.79743576049805
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              27.0,
+              216.0
+            ],
+            "current_xy": [
+              35.0,
+              220.0
+            ],
+            "descriptor_distance": 84.30302429199219
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              39.0,
+              204.0
+            ],
+            "current_xy": [
+              46.0,
+              208.0
+            ],
+            "descriptor_distance": 26.51414680480957
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              114.0,
+              221.0
+            ],
+            "current_xy": [
+              119.0,
+              225.0
+            ],
+            "descriptor_distance": 30.870698928833008
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              34.0,
+              228.0
+            ],
+            "current_xy": [
+              42.0,
+              232.0
+            ],
+            "descriptor_distance": 115.42530059814453
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              20.0,
+              209.0
+            ],
+            "current_xy": [
+              28.0,
+              213.0
+            ],
+            "descriptor_distance": 58.446556091308594
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              98.0,
+              219.0
+            ],
+            "current_xy": [
+              102.0,
+              223.0
+            ],
+            "descriptor_distance": 24.979991912841797
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              50.0,
+              218.0
+            ],
+            "current_xy": [
+              57.0,
+              221.0
+            ],
+            "descriptor_distance": 118.38919067382812
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              35.0,
+              219.0
+            ],
+            "current_xy": [
+              43.0,
+              222.0
+            ],
+            "descriptor_distance": 68.49087524414062
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              62.0,
+              217.0
+            ],
+            "current_xy": [
+              66.0,
+              220.0
+            ],
+            "descriptor_distance": 88.86506652832031
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              187.0,
+              214.0
+            ],
+            "current_xy": [
+              180.0,
+              219.0
+            ],
+            "descriptor_distance": 119.78313446044922
+          }
+        ],
+        "model": null,
+        "model_inliers": 0,
+        "domains": null,
+        "joint": null,
+        "diagnostic_initialization_proposed": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "feature_source": "reviewed_corners",
+        "descriptor_context": "fixed size3/orientation0, inside declared crop",
+        "descriptor_matches": 16,
+        "reason": "three_region_descriptor_support_unavailable"
+      },
+      "physical_region_counts": {
+        "2": 15,
+        "5": 1
+      }
+    }
+  ],
+  "wall_clock_sec": 4.143847742001526,
+  "terminal_bindings": {
+    "outputs/recognition-investigation/world-domain-bootstrap-20261009/profile.json": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+    "outputs/recognition-investigation/world-domain-bootstrap-20261009/assets/wall_close.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "ValorantData/videos/Valorant_09-25-2026_0-37-29-379.mp4": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "scripts/diagnostics/observed_scene_chain.py": "c60081a951a72b6d5aa68b05231cb3037b9883b0d7a4704b56810f64b88153d5",
+    "scripts/diagnostics/scene_domain_bootstrap.py": "1904b5736301a4cd632a6de1f9eb23cfb62f95c83840379197c20b50d1973b41",
+    "scripts/diagnostics/scene_world_bootstrap.py": "9947a6b0adc00f1e4b4eb63d5a95b1555d48091633712546e8078ee3a2436cfa",
+    "scripts/diagnostics/scene_reference_support.py": "aa6cec5c7ea7b10ce69c078fb2a8e2c7c794f6fa610ca3592c113d91a69751a5",
+    "scripts/diagnostics/scene_domain_ambiguity.py": "74ff5b505f2fd703936acee89dd6e5633a549f5ba2b7cc9a53ba9cd52cd9af10",
+    "scripts/diagnostics/scene_joint_domains.py": "2046cede2304b9493abc5f9ba06cbcfbe820a67f245a6e42cbd0aff5a5f45d34",
+    "scripts/diagnostics/scene_world_chain.py": "8a6d11a151f4afb77d88780b51f0705beca527edce7521831b9c8a590e788e33",
+    "scripts/diagnostics/scene_correspondence.py": "667fb4f7b0626fbbf4770716eefc18976a9409a4f0646084b95d479dab7273a3",
+    "scripts/diagnostics/scene_patch_search.py": "544b61f8dca800968521e9edce918166bb97353f5c2a5fed35f6011a0a04e4c1",
+    "scripts/diagnostics/validate_scene_chain_cohort.py": "ac57a87045c2e77eac6e162b14ba9d82459c6d7fc8d83904f9b10b3d911e68da",
+    "scripts/diagnostics/diagnose_native_global_lifecycle.py": "761dcd3e4019014e1691a29aad62f95d1ea4d401a61039c19a933d40d381a396",
+    "outputs/recognition-investigation/two-scene-domain-reference-20261009/profile.json": "7c88be66b6d322f037be309ca02464c7ffd5da3236b646b7ec24d21d1f4e7ce2",
+    "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/wall_close.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/arch_context.png": "929aab0a3f014eddff37a663241bd7fe3fcd15e0f800f7afe496b66c3d880579",
+    "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000001.png": "7178c40b9997f559b443c6e1145cffbdef9823d862d5f55c158bc9a7a5cecd6c",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000001.png": "ce2dbc370171a4cd637a6e96aa60ec6c9a50d8a1b62914622dd547f1727baa99",
+    "scripts/diagnostics/scene_descriptor_acquisition.py": "7e935bd5f6b0f0f25944a844321f0b9f6516b0020d70c1bad6acb7641eb03694",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000013.png": "3f7f964b6993d20bba3396e160e6b6edf41cc5352b0b0ad57de9254ddb7fe0a5"
+  },
+  "default_five_outputs_unchanged": true,
+  "qualification_created": false,
+  "production_changed": false,
+  "canonical_current": null
+}

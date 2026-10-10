@@ -1,0 +1,47 @@
+{
+  "scope": "Post-score contact-sheet and seed-footprint review; no pixel-level world qualification or uninterrupted-game-time claim",
+  "source_report_sha256": "ccdd085713955f4a3694a4b6505ca2f699d81ea151eb06d677bdd4793a530b23",
+  "review_resolution": "36 full-context source images viewed as 576x324 panels; 3 seed-footprint overlays at640x360",
+  "review_panels_sha256": {
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/review-2.png": "677b4762bdf3793c11687aa8d8a8611f3269620e5f9fc6ab2e81452f5f446f84",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/seed-footprints-review.png": "6d57550fa1d3b816fff8032fc432f3919b4c761e39fe8f9d70d9c23ffc52cfea",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/review-0.png": "296c212b291127a745acd42e90a736396f04a23f4ae5b8b9a3fceda9bc23247b",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/review-1.png": "456ee4acfab33721284ed62d3c717edf9433a7916ad737e0345155eb6e7983ad"
+  },
+  "windows": [
+    {
+      "window_sec": [
+        2.5,
+        2.7
+      ],
+      "visual_scene": "Same wall, coherent camera retreat and knife/arm animation; no visible hard cut in reviewed panels",
+      "seed_crop_review": "All six seed footprints appear wall-only in the seed overlay; later arm/knife occlusion needs patch-level review",
+      "first_rejection": "All six warped crop valid fractions0.728940\u20130.848885are below unchanged0.90 despite94retained original identities spanning six regions",
+      "qualification_decision": "No heldout positive established: whole-crop coverage gate rejects first link; not a cut label"
+    },
+    {
+      "window_sec": [
+        3.0,
+        3.2
+      ],
+      "visual_scene": "Continuous-looking doorway/teammate scene and knife animation; no visible hard cut in reviewed panels",
+      "seed_crop_review": "Fixed footprints include knife/arm in regions1/2/5, player/nameplate/phase barrier in3/4; world-only bootstrap not attested",
+      "first_rejection": "seed_model_incoherent",
+      "qualification_decision": "Ineligible as world-only positive; useful occlusion/unsafe-seed stress abstention, not blindly labelled content-cut control"
+    },
+    {
+      "window_sec": [
+        5.2,
+        5.4
+      ],
+      "visual_scene": "Continuous-looking corridor with moving teammates and knife animation; no visible hard cut in reviewed panels",
+      "seed_crop_review": "Fixed footprints include knife/arms/teammates/nameplate in1/2/4/5; world-only bootstrap not attested",
+      "first_rejection": "seed_model_incoherent",
+      "qualification_decision": "Ineligible as world-only positive; useful unsafe-seed stress abstention, not blind cut qualification"
+    }
+  ],
+  "qualified_positive_links": 0,
+  "qualification_created": false,
+  "new_runtime_events": 0,
+  "next_scope": "Separate reviewed seed eligibility/current occlusion from motion-dependent valid-footprint coverage before any generic producer is activated"
+}

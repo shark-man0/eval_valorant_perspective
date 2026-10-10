@@ -1,0 +1,2683 @@
+{
+  "scope": "Frozen native cohort; image-derived observed acquisition, unreviewed, not qualification",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "windows": [
+    {
+      "window_sec": [
+        3.88,
+        4.39
+      ],
+      "native_frames": 31,
+      "adjacent_links": 30,
+      "supported_links_descriptive": 19,
+      "known_png_overlaps": 31,
+      "review_status": "unreviewed",
+      "runtime_proof_authorized": false,
+      "rows": [
+        {
+          "source_pts_ticks": 59689,
+          "time_base": "1/15360",
+          "pts_sec": 3.886002604166667,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000001.png",
+          "frame_sha256": "4e5468fc6df69255d5e695afcef7d90c896a8045f2ac02adbdd9e1b2ae51987c",
+          "source_pixel_sha256": "44fa119d8597b243ed77bab82d3fa89ca800055fa823574481759d26214d1ba3",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "image_supported_observed_seed",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 59689,
+            "source_pixel_sha256": "44fa119d8597b243ed77bab82d3fa89ca800055fa823574481759d26214d1ba3",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "reference_is_observed_previous_frame": false
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 59945,
+          "time_base": "1/15360",
+          "pts_sec": 3.9026692708333335,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000002.png",
+          "frame_sha256": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+          "source_pixel_sha256": "439c3817810a8d8bcc8c82ed218d5fe0f851c7c5f35308b0b85fcbd328759edd",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 59945,
+            "previous_source_pts_ticks": 59689,
+            "source_pixel_sha256": "439c3817810a8d8bcc8c82ed218d5fe0f851c7c5f35308b0b85fcbd328759edd",
+            "previous_source_pixel_sha256": "44fa119d8597b243ed77bab82d3fa89ca800055fa823574481759d26214d1ba3",
+            "source_epoch": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06:window-000",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                1.006411263025174,
+                -0.001694266124089789,
+                -3.686377507044103
+              ],
+              [
+                0.001694266124089789,
+                1.006411263025174,
+                -2.1810822173024733
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9989277720451355
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9465648531913757
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.964984118938446
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9950729012489319
+              }
+            ],
+            "minimum_witness_ncc": 0.9465648531913757,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 60201,
+          "time_base": "1/15360",
+          "pts_sec": 3.9193359375,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000003.png",
+          "frame_sha256": "e790bd155383fac3eb439d4311a89840467fce57938a80dae2448e628dfd9211",
+          "source_pixel_sha256": "eb69ac61ab1bd4da4517429efa0f2896e520476b6bef244f4e4746bb98c8d850",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 60201,
+            "previous_source_pts_ticks": 59945,
+            "source_pixel_sha256": "eb69ac61ab1bd4da4517429efa0f2896e520476b6bef244f4e4746bb98c8d850",
+            "previous_source_pixel_sha256": "439c3817810a8d8bcc8c82ed218d5fe0f851c7c5f35308b0b85fcbd328759edd",
+            "source_epoch": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06:window-000",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.999161500900998,
+                -0.00012209769482902607,
+                0.498642887580685
+              ],
+              [
+                0.00012209769482902607,
+                0.999161500900998,
+                0.23774260500714017
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9900054335594177
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9953672289848328
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9996266961097717
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.989239513874054
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9858344197273254
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9992090463638306
+              }
+            ],
+            "minimum_witness_ncc": 0.9858344197273254,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 60457,
+          "time_base": "1/15360",
+          "pts_sec": 3.9360026041666667,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000004.png",
+          "frame_sha256": "1dc0d9b8c59355b43eb723b1961110bb53d1ce8a62176490f5c632dd6ee5f2ad",
+          "source_pixel_sha256": "21d34bc8deaedf9aea2c0f26343d51ec079be4dd71cccb6a7d3b204daeb1735b",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 60457,
+            "previous_source_pts_ticks": 60201,
+            "source_pixel_sha256": "21d34bc8deaedf9aea2c0f26343d51ec079be4dd71cccb6a7d3b204daeb1735b",
+            "previous_source_pixel_sha256": "eb69ac61ab1bd4da4517429efa0f2896e520476b6bef244f4e4746bb98c8d850",
+            "source_epoch": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06:window-000",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9998504811011921,
+                6.455462219488245e-05,
+                0.03066713479326043
+              ],
+              [
+                -6.455462219488245e-05,
+                0.9998504811011921,
+                0.0852181382902346
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9955711364746094
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9975654482841492
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9996724128723145
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9970439672470093
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9906466603279114
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9994572401046753
+              }
+            ],
+            "minimum_witness_ncc": 0.9906466603279114,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 60713,
+          "time_base": "1/15360",
+          "pts_sec": 3.9526692708333333,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000005.png",
+          "frame_sha256": "00e2240728fa5e6c6cd1d8a29adebecb993d61abb4c9a97aea47902d53f041e1",
+          "source_pixel_sha256": "03ad8c60cca1e1a5b02aae0d2395c56886b1654731a31ce39f51e53cda6217c7",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 60713,
+            "previous_source_pts_ticks": 60457,
+            "source_pixel_sha256": "03ad8c60cca1e1a5b02aae0d2395c56886b1654731a31ce39f51e53cda6217c7",
+            "previous_source_pixel_sha256": "21d34bc8deaedf9aea2c0f26343d51ec079be4dd71cccb6a7d3b204daeb1735b",
+            "source_epoch": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06:window-000",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9994748848398125,
+                0.0003730078720631382,
+                0.26514735314612625
+              ],
+              [
+                -0.0003730078720631382,
+                0.9994748848398125,
+                0.208880687463161
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9897996783256531
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9960407614707947
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9996863007545471
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9857656359672546
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9810084700584412
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9991658926010132
+              }
+            ],
+            "minimum_witness_ncc": 0.9810084700584412,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 60969,
+          "time_base": "1/15360",
+          "pts_sec": 3.9693359375,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000006.png",
+          "frame_sha256": "77d745206022589fc826823873bc1305e922fdda01854eac4a7eed10876d6c80",
+          "source_pixel_sha256": "e7fd447968482a2c92eb2e2f8f0752106aed9b418055b37784edd4a6a866ae34",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 60969,
+            "previous_source_pts_ticks": 60713,
+            "source_pixel_sha256": "e7fd447968482a2c92eb2e2f8f0752106aed9b418055b37784edd4a6a866ae34",
+            "previous_source_pixel_sha256": "03ad8c60cca1e1a5b02aae0d2395c56886b1654731a31ce39f51e53cda6217c7",
+            "source_epoch": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06:window-000",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9986297342321893,
+                0.0009015626192647227,
+                0.5072318080028084
+              ],
+              [
+                -0.0009015626192647227,
+                0.9986297342321893,
+                0.8277183694388716
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9531863927841187
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9949085712432861
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9985734224319458
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9863288402557373
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.973200798034668
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9955275058746338
+              }
+            ],
+            "minimum_witness_ncc": 0.9531863927841187,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 61225,
+          "time_base": "1/15360",
+          "pts_sec": 3.9860026041666665,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000007.png",
+          "frame_sha256": "d4dafbd08a45d736ff634bb6537d9d0991d3023a611db6a229874a4755c9f8d3",
+          "source_pixel_sha256": "02563af62baa6c85a8cee7598d67f37170ce3b2905c076fd2bcfea79e40f2333",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 61225,
+            "previous_source_pts_ticks": 60969,
+            "source_pixel_sha256": "02563af62baa6c85a8cee7598d67f37170ce3b2905c076fd2bcfea79e40f2333",
+            "previous_source_pixel_sha256": "e7fd447968482a2c92eb2e2f8f0752106aed9b418055b37784edd4a6a866ae34",
+            "source_epoch": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06:window-000",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9972257833372199,
+                0.0009606501816207811,
+                0.5762445038654452
+              ],
+              [
+                -0.0009606501816207811,
+                0.9972257833372199,
+                1.079240824492474
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9404407739639282
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9942227602005005
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9989544749259949
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9462217092514038
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9600741267204285
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9958603978157043
+              }
+            ],
+            "minimum_witness_ncc": 0.9404407739639282,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 61481,
+          "time_base": "1/15360",
+          "pts_sec": 4.002669270833334,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000008.png",
+          "frame_sha256": "3d4c25843ec375524762f21a11a17b7bf7854f65680ceaf0396b5a597a1d94dc",
+          "source_pixel_sha256": "18d2ed2bf656cf0c9432ca7f181a1e736f8f650e6ce32e436f43bcc236ffb75d",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 61481,
+            "previous_source_pts_ticks": 61225,
+            "source_pixel_sha256": "18d2ed2bf656cf0c9432ca7f181a1e736f8f650e6ce32e436f43bcc236ffb75d",
+            "previous_source_pixel_sha256": "02563af62baa6c85a8cee7598d67f37170ce3b2905c076fd2bcfea79e40f2333",
+            "source_epoch": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06:window-000",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9990104706802427,
+                -0.0020694233830406655,
+                1.4112193642841284
+              ],
+              [
+                0.0020694233830406655,
+                0.9990104706802427,
+                0.759577791270802
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9757595062255859
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9988831877708435
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9133545756340027
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9230507612228394
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9952767491340637
+              }
+            ],
+            "minimum_witness_ncc": 0.9133545756340027,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 61737,
+          "time_base": "1/15360",
+          "pts_sec": 4.0193359375,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000009.png",
+          "frame_sha256": "eddab3d93b6a8d910aaa923a260a7be4779514c79670dc8d2fefb3a1e0863473",
+          "source_pixel_sha256": "59aa489593988887056ed2128bb7f7214b8bcbe8bb67078064cb42007cf89426",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 61737,
+            "previous_source_pts_ticks": 61481,
+            "source_pixel_sha256": "59aa489593988887056ed2128bb7f7214b8bcbe8bb67078064cb42007cf89426",
+            "previous_source_pixel_sha256": "18d2ed2bf656cf0c9432ca7f181a1e736f8f650e6ce32e436f43bcc236ffb75d",
+            "source_epoch": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06:window-000",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9969523892252348,
+                0.0008688841323434776,
+                0.7629324458837361
+              ],
+              [
+                -0.0008688841323434776,
+                0.9969523892252348,
+                1.3934590856034639
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9182623028755188
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9843710660934448
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9990624785423279
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9311407208442688
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9521572589874268
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9966417551040649
+              }
+            ],
+            "minimum_witness_ncc": 0.9182623028755188,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 61993,
+          "time_base": "1/15360",
+          "pts_sec": 4.036002604166667,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000010.png",
+          "frame_sha256": "995c70d5658ba86dd220d7d02f947982e00c9d4cdf9456dde224924df8211951",
+          "source_pixel_sha256": "ae178f026f79c7b5363e4f20b1f7ede5905aa98cbc58b9d8576ae869447b5009",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 61993,
+            "previous_source_pts_ticks": 61737,
+            "source_pixel_sha256": "ae178f026f79c7b5363e4f20b1f7ede5905aa98cbc58b9d8576ae869447b5009",
+            "previous_source_pixel_sha256": "59aa489593988887056ed2128bb7f7214b8bcbe8bb67078064cb42007cf89426",
+            "source_epoch": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06:window-000",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                1.0003704450254949,
+                -0.00043645710688409393,
+                0.7258442201411294
+              ],
+              [
+                0.00043645710688409393,
+                1.0003704450254949,
+                0.37802557245067664
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9745322465896606
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9988489747047424
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9097880721092224
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9154670834541321
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9974287152290344
+              }
+            ],
+            "minimum_witness_ncc": 0.9097880721092224,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 62249,
+          "time_base": "1/15360",
+          "pts_sec": 4.052669270833333,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000011.png",
+          "frame_sha256": "a3a788841be688ba3d97be42478708e5cd8571ff74c6a1a1fce8172f88ad0104",
+          "source_pixel_sha256": "de6a2b93b021a578ea5f0ab661db58638a3a5eb7889492d8f5e9fd6892d2c530",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 62249,
+            "previous_source_pts_ticks": 61993,
+            "source_pixel_sha256": "de6a2b93b021a578ea5f0ab661db58638a3a5eb7889492d8f5e9fd6892d2c530",
+            "previous_source_pixel_sha256": "ae178f026f79c7b5363e4f20b1f7ede5905aa98cbc58b9d8576ae869447b5009",
+            "source_epoch": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06:window-000",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9977733154312461,
+                -0.00019352556190247014,
+                0.8013488213945488
+              ],
+              [
+                0.00019352556190247014,
+                0.9977733154312461,
+                0.9677748347159006
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.956963300704956
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9930974245071411
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9991432428359985
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9667822122573853
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9686960577964783
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.998350203037262
+              }
+            ],
+            "minimum_witness_ncc": 0.956963300704956,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 62505,
+          "time_base": "1/15360",
+          "pts_sec": 4.0693359375,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000012.png",
+          "frame_sha256": "2ca7c16fac54a93af47a678cd1491bffc7a8ec0edf9634d4c2be4e4a134741e2",
+          "source_pixel_sha256": "57307d89cff2d12fef8474be2176bfe84a495c0975a33218c64dbcf2411347c9",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 62505,
+            "previous_source_pts_ticks": 62249,
+            "source_pixel_sha256": "57307d89cff2d12fef8474be2176bfe84a495c0975a33218c64dbcf2411347c9",
+            "previous_source_pixel_sha256": "de6a2b93b021a578ea5f0ab661db58638a3a5eb7889492d8f5e9fd6892d2c530",
+            "source_epoch": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06:window-000",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.998096034205442,
+                -0.00017885363848945838,
+                0.539649073267164
+              ],
+              [
+                0.00017885363848945838,
+                0.998096034205442,
+                0.6033417925004061
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9775106906890869
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9972598552703857
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9994811415672302
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9769065380096436
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9760441184043884
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9989664554595947
+              }
+            ],
+            "minimum_witness_ncc": 0.9760441184043884,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 62761,
+          "time_base": "1/15360",
+          "pts_sec": 4.086002604166667,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000013.png",
+          "frame_sha256": "0971d607cd0a91eb2c2af8e4949dd601201575ad6050945d1583ecad529797e9",
+          "source_pixel_sha256": "6ab7cd27a8756b687f70857d6bf0d2a8732625d15161e2de41a139f31fd193e1",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 62761,
+            "previous_source_pts_ticks": 62505,
+            "source_pixel_sha256": "6ab7cd27a8756b687f70857d6bf0d2a8732625d15161e2de41a139f31fd193e1",
+            "previous_source_pixel_sha256": "57307d89cff2d12fef8474be2176bfe84a495c0975a33218c64dbcf2411347c9",
+            "source_epoch": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06:window-000",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9993066843204559,
+                0.0002588290523439035,
+                0.21512357897687379
+              ],
+              [
+                -0.0002588290523439035,
+                0.9993066843204559,
+                0.3246756680942381
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9981522560119629
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9993845820426941
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9996333122253418
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9988192319869995
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9934019446372986
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9991430044174194
+              }
+            ],
+            "minimum_witness_ncc": 0.9934019446372986,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 63017,
+          "time_base": "1/15360",
+          "pts_sec": 4.102669270833333,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000014.png",
+          "frame_sha256": "3f7f964b6993d20bba3396e160e6b6edf41cc5352b0b0ad57de9254ddb7fe0a5",
+          "source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 63017,
+            "previous_source_pts_ticks": 62761,
+            "source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b",
+            "previous_source_pixel_sha256": "6ab7cd27a8756b687f70857d6bf0d2a8732625d15161e2de41a139f31fd193e1",
+            "source_epoch": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06:window-000",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                1.0003646786405387,
+                5.144823182870017e-06,
+                -0.02038468983623503
+              ],
+              [
+                -5.144823182870017e-06,
+                1.0003646786405387,
+                -0.06825444038566791
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9967154264450073
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9999353289604187
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9981988668441772
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9939509034156799
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9997625350952148
+              }
+            ],
+            "minimum_witness_ncc": 0.9939509034156799,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 63273,
+          "time_base": "1/15360",
+          "pts_sec": 4.1193359375,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000015.png",
+          "frame_sha256": "ffc878007fe550701c8e5be11f78b1a6d91bc88f77972cc48b370ac4cf7e7bb6",
+          "source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 63273,
+            "previous_source_pts_ticks": 63017,
+            "source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a",
+            "previous_source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b",
+            "source_epoch": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06:window-000",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9998466402068474,
+                4.418790424022357e-06,
+                0.05178104863866685
+              ],
+              [
+                -4.418790424022357e-06,
+                0.9998466402068474,
+                0.029933324814798337
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.99870765209198
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9996821284294128
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9999522566795349
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9979313611984253
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9954364895820618
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.999787449836731
+              }
+            ],
+            "minimum_witness_ncc": 0.9954364895820618,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 63529,
+          "time_base": "1/15360",
+          "pts_sec": 4.136002604166666,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000016.png",
+          "frame_sha256": "d72a67e8f64bc6ffe0b90a1f6118c522380a2bd83eabd4e84b6a5f36f7b605fc",
+          "source_pixel_sha256": "7b784dd56e27c48a760671568acbd458bc496400335ee4b3181798d0584a4044",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 63529,
+            "previous_source_pts_ticks": 63273,
+            "source_pixel_sha256": "7b784dd56e27c48a760671568acbd458bc496400335ee4b3181798d0584a4044",
+            "previous_source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a",
+            "source_epoch": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06:window-000",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9940329985130895,
+                -0.00019179167438573074,
+                2.323624852540267
+              ],
+              [
+                0.00019179167438573074,
+                0.9940329985130895,
+                0.9203290828667463
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9441217184066772
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9915294051170349
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9991617798805237
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9738530516624451
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9746719002723694
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9985811710357666
+              }
+            ],
+            "minimum_witness_ncc": 0.9441217184066772,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 63785,
+          "time_base": "1/15360",
+          "pts_sec": 4.152669270833333,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000017.png",
+          "frame_sha256": "40a1ca141705ef466d3cdcd339bfa1e519a8bd998cabb9ea204da72dcaa6d382",
+          "source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 63785,
+            "previous_source_pts_ticks": 63529,
+            "source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0",
+            "previous_source_pixel_sha256": "7b784dd56e27c48a760671568acbd458bc496400335ee4b3181798d0584a4044",
+            "source_epoch": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06:window-000",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9948535646740431,
+                -0.00015723850662819448,
+                2.0701302395502603
+              ],
+              [
+                0.00015723850662819448,
+                0.9948535646740431,
+                0.7437883742614648
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9514697790145874
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9922557473182678
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.999326229095459
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9742431044578552
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9676326513290405
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9985077381134033
+              }
+            ],
+            "minimum_witness_ncc": 0.9514697790145874,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 64041,
+          "time_base": "1/15360",
+          "pts_sec": 4.1693359375,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000018.png",
+          "frame_sha256": "87a43e4a4c0e1f7eb1ea8e6fedccbefa5bc6eddd8d29c61dc25e92dbeef418f8",
+          "source_pixel_sha256": "d18c9060f352e53b37967c62e12f3ee51b06e330664ee49da476b3751cda8f83",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 64041,
+            "previous_source_pts_ticks": 63785,
+            "source_pixel_sha256": "d18c9060f352e53b37967c62e12f3ee51b06e330664ee49da476b3751cda8f83",
+            "previous_source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0",
+            "source_epoch": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06:window-000",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9935263306922264,
+                -0.00041010392544650956,
+                2.214215912867266
+              ],
+              [
+                0.00041010392544650956,
+                0.9935263306922264,
+                0.9819513924821548
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9586800932884216
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9943234920501709
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9992221593856812
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9747629165649414
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.967412531375885
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9983766078948975
+              }
+            ],
+            "minimum_witness_ncc": 0.9586800932884216,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 64297,
+          "time_base": "1/15360",
+          "pts_sec": 4.186002604166666,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000019.png",
+          "frame_sha256": "e2e07cdce5e63bde4205fa7401ca54f9b6917872957efe3b303f0286e370b43b",
+          "source_pixel_sha256": "0e795ed52d0eac85bf325988a8d629c2be975f8fbce0d9bfa33a8a0c773eee86",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 64297,
+            "previous_source_pts_ticks": 64041,
+            "source_pixel_sha256": "0e795ed52d0eac85bf325988a8d629c2be975f8fbce0d9bfa33a8a0c773eee86",
+            "previous_source_pixel_sha256": "d18c9060f352e53b37967c62e12f3ee51b06e330664ee49da476b3751cda8f83",
+            "source_epoch": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06:window-000",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9973291692023336,
+                9.053707559572738e-05,
+                0.7543332762676788
+              ],
+              [
+                -9.053707559572738e-05,
+                0.9973291692023336,
+                0.45852302755296853
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9690305590629578
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9952521324157715
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.9996991753578186
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9792369604110718
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9741641283035278
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9991592764854431
+              }
+            ],
+            "minimum_witness_ncc": 0.9690305590629578,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 64553,
+          "time_base": "1/15360",
+          "pts_sec": 4.202669270833334,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000020.png",
+          "frame_sha256": "d81a979afdc6bee35155fc029a0621d43a7b0dbbe29fc364cd0010cbfa697707",
+          "source_pixel_sha256": "bcb5a25b6b58a0efb563575d4be9ba3507bf290b327fa64996a1d903970695a2",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "descriptive_observed_scene_link",
+            "descriptive_scene_link": true,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false,
+            "source_pts_ticks": 64553,
+            "previous_source_pts_ticks": 64297,
+            "source_pixel_sha256": "bcb5a25b6b58a0efb563575d4be9ba3507bf290b327fa64996a1d903970695a2",
+            "previous_source_pixel_sha256": "0e795ed52d0eac85bf325988a8d629c2be975f8fbce0d9bfa33a8a0c773eee86",
+            "source_epoch": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06:window-000",
+            "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+            "reference_id": "reviewed-wall",
+            "previous_to_current_affine_640x360": [
+              [
+                0.9946694099783177,
+                -0.0002501338723971831,
+                2.1490705568384665
+              ],
+              [
+                0.0002501338723971831,
+                0.9946694099783177,
+                0.7533096759701211
+              ]
+            ],
+            "witnesses": [
+              {
+                "region": 0,
+                "previous_box_640x360": [
+                  167,
+                  53,
+                  213,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9554470181465149
+              },
+              {
+                "region": 1,
+                "previous_box_640x360": [
+                  173,
+                  120,
+                  283,
+                  173
+                ],
+                "fixed_projection_ncc": 0.9938935041427612
+              },
+              {
+                "region": 2,
+                "previous_box_640x360": [
+                  10,
+                  173,
+                  167,
+                  247
+                ],
+                "fixed_projection_ncc": 0.999299168586731
+              },
+              {
+                "region": 3,
+                "previous_box_640x360": [
+                  440,
+                  53,
+                  567,
+                  117
+                ],
+                "fixed_projection_ncc": 0.9730512499809265
+              },
+              {
+                "region": 4,
+                "previous_box_640x360": [
+                  440,
+                  123,
+                  567,
+                  177
+                ],
+                "fixed_projection_ncc": 0.9635090827941895
+              },
+              {
+                "region": 5,
+                "previous_box_640x360": [
+                  173,
+                  183,
+                  267,
+                  253
+                ],
+                "fixed_projection_ncc": 0.9984960556030273
+              }
+            ],
+            "minimum_witness_ncc": 0.9554470181465149,
+            "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            }
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 64809,
+          "time_base": "1/15360",
+          "pts_sec": 4.2193359375,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000021.png",
+          "frame_sha256": "2c747572f073d4c8769933863cf6e99c8498bccb4469b8476cc12784854b7a7e",
+          "source_pixel_sha256": "8e43e3263c8c969fd28631dab3f78166a163ec834e66fae70ad0b70e0c9160b2",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "seed_model_incoherent",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 65065,
+          "time_base": "1/15360",
+          "pts_sec": 4.236002604166667,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000022.png",
+          "frame_sha256": "ee5be2e35aabe7ac9b9fc01fd438dc28c4e5c76f73f66e7cd6df752bc72edd2d",
+          "source_pixel_sha256": "4e3154780ca05eed8cf4a465acf13586ee4c64b3476bbf2ed763a88825f9ab16",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 65321,
+          "time_base": "1/15360",
+          "pts_sec": 4.252669270833334,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000023.png",
+          "frame_sha256": "aa5727f8ff3428eaf3705c3fb9b42acc78c278fb3ce21276969cd8505aa2aae2",
+          "source_pixel_sha256": "323946527efaa7632b1c64f6e43c277ae196535573ee4dec664173841b5d7627",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 65577,
+          "time_base": "1/15360",
+          "pts_sec": 4.2693359375,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000024.png",
+          "frame_sha256": "01510fbbc2c0e101c72555f846ca75adf24b073891d8e9160c94ec54be0e5413",
+          "source_pixel_sha256": "63d13ea7884ce80b76096daaf2b983bb04a1d1753df6dda8c669342d17dc24ad",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 65833,
+          "time_base": "1/15360",
+          "pts_sec": 4.286002604166667,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000025.png",
+          "frame_sha256": "1a3208bb41afe765aa7f691964df102279ec81e9366d13ae326cc537c3a66b76",
+          "source_pixel_sha256": "dca252095f9f06d5c58a3d9f257fec5f76c9f91a2015b4358005022566e72d68",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 66089,
+          "time_base": "1/15360",
+          "pts_sec": 4.302669270833333,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000026.png",
+          "frame_sha256": "0252b863b5f5d2108ebd46178ea6a4a2cba005b51af5205dee7723c2d26a9ac8",
+          "source_pixel_sha256": "92d10d715d1581d9473098c00796b12b86225679f308e29dc4e0359a7a1bf92c",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 66345,
+          "time_base": "1/15360",
+          "pts_sec": 4.3193359375,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000027.png",
+          "frame_sha256": "fa80efcbffa9e29d82948fbb605bcbb10baab44ac31c17434085e97c671c887e",
+          "source_pixel_sha256": "cca778cb6cf53435687546ba6bbc22174ae6bac7849c523cc06193dd27cfcf3a",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 66601,
+          "time_base": "1/15360",
+          "pts_sec": 4.336002604166667,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000028.png",
+          "frame_sha256": "ec2d668e223d2f20a8b53d813a1681e4c1c79b120857244b11f42d341dadfc74",
+          "source_pixel_sha256": "ee3c79b9655fc91c96078b501b6cad1fa6735d4aae8a9820d19a1f45b97dfb05",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 66857,
+          "time_base": "1/15360",
+          "pts_sec": 4.352669270833333,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000029.png",
+          "frame_sha256": "6e6edeefc2aa5d1a45960e741815a8c08090793d8be0b74a8a7b344051a6f67d",
+          "source_pixel_sha256": "9a5e1d7b59c0c0b1f4424feae58ee2d799440c41c9b4fedbe08b494761675080",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 67113,
+          "time_base": "1/15360",
+          "pts_sec": 4.3693359375,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000030.png",
+          "frame_sha256": "91eab8a0e9d080f64d9cc83c31c77f733dcaeaccd50b1ae6c30877f41a987f55",
+          "source_pixel_sha256": "de180561c1a8eb58bc303e43b116488813cba17ab44fc917b2105e5fa93a1f88",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": true
+        },
+        {
+          "source_pts_ticks": 67369,
+          "time_base": "1/15360",
+          "pts_sec": 4.386002604166666,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000031.png",
+          "frame_sha256": "91d79bfba35b3afa2e8fe7bb5274926fbe6a254207dd9a9ab55d5cb3ebab625c",
+          "source_pixel_sha256": "c07c387de2159c861ee5043a5449984d45924424c4895d2ce6767470c9a97aa9",
+          "known_png_overlap": true,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": true
+        }
+      ],
+      "initialization_reason": "image_supported_observed_seed",
+      "known_native_pixel_overlaps": 31
+    },
+    {
+      "window_sec": [
+        13.0,
+        13.2
+      ],
+      "native_frames": 12,
+      "adjacent_links": 11,
+      "supported_links_descriptive": 0,
+      "known_png_overlaps": 0,
+      "review_status": "unreviewed",
+      "runtime_proof_authorized": false,
+      "rows": [
+        {
+          "source_pts_ticks": 199721,
+          "time_base": "1/15360",
+          "pts_sec": 13.002669270833334,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-001/frame_000001.png",
+          "frame_sha256": "929aab0a3f014eddff37a663241bd7fe3fcd15e0f800f7afe496b66c3d880579",
+          "source_pixel_sha256": "b142baf309e7dd7be9b556853f85763ad8a169ceafe62323a9d7476d758882bf",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "image_supported_initialization_unavailable",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 199977,
+          "time_base": "1/15360",
+          "pts_sec": 13.0193359375,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-001/frame_000002.png",
+          "frame_sha256": "1b55f9b7b2940032f9d6d3391a934eaf542aa54f87edfff9e3679fcadd04a76a",
+          "source_pixel_sha256": "d27f89af089403b18d2a2a6d6a8be321d479f73dc30832bfebd703914010c68c",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 200233,
+          "time_base": "1/15360",
+          "pts_sec": 13.036002604166667,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-001/frame_000003.png",
+          "frame_sha256": "3c9c66f692a254fb810582e57191325e44cfb5bee1fb6a0c03b0550195c237ba",
+          "source_pixel_sha256": "bdb0ea81175f2823bc785a488c530c0632a67510365be4544edc0fd515eb7fea",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 200489,
+          "time_base": "1/15360",
+          "pts_sec": 13.052669270833333,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-001/frame_000004.png",
+          "frame_sha256": "6ee53251e24ffccac5855e120a4e661ec06b2ca15ff16771d7b0e1eb17f5982a",
+          "source_pixel_sha256": "279a25326b48c3d90073f64b1ef88f3fa508af43a258abade1452f44c489138d",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 200745,
+          "time_base": "1/15360",
+          "pts_sec": 13.0693359375,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-001/frame_000005.png",
+          "frame_sha256": "4462b71a80d1acb51ec8dcf2535c94b1bd41910980cae384d6941bdcb28a031f",
+          "source_pixel_sha256": "471abe440f23498c5b03da49048a1939bca499c6df74ffce29721e1c0babfb52",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 201001,
+          "time_base": "1/15360",
+          "pts_sec": 13.086002604166667,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-001/frame_000006.png",
+          "frame_sha256": "a8b6ca1eef805a64bce2d3c2ca4f118c7cc5ce4c8375a8ea53624b75d0b3601b",
+          "source_pixel_sha256": "cb63dd46e35d0437f907522245b3ee1a1a614d8a4e6cd1660d4c2fa0556a85d1",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 201257,
+          "time_base": "1/15360",
+          "pts_sec": 13.102669270833333,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-001/frame_000007.png",
+          "frame_sha256": "ace0863095cf05c2207f5144e9cda7181000b007ab42faec50f8498d38b4ae31",
+          "source_pixel_sha256": "9c520bfbfc111b89acd3e80665e03b3428437fd294aafac67467707d68d2b95b",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 201513,
+          "time_base": "1/15360",
+          "pts_sec": 13.1193359375,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-001/frame_000008.png",
+          "frame_sha256": "dd1a59003561e892ea4c249b1d0adf8639be5342458ff22b214c7ea986f638b3",
+          "source_pixel_sha256": "8091eff1856a48dcf21c5ff8f326121dca05fe9b78d735b476d1f5291e93ccd6",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 201769,
+          "time_base": "1/15360",
+          "pts_sec": 13.136002604166666,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-001/frame_000009.png",
+          "frame_sha256": "054e2a2df0240c0d1b743ef5bbc3e3c257a99afb628e55cbca51d5ea9ea66799",
+          "source_pixel_sha256": "f28ae4a424d04be41d81dbae26ce147648f66bb34093cb5d498f8e5dd8d1e0ed",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 202025,
+          "time_base": "1/15360",
+          "pts_sec": 13.152669270833334,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-001/frame_000010.png",
+          "frame_sha256": "aed4fe9de07b423b12c55fda913cddc4b9349a6293d5248db56dd93ae98d060e",
+          "source_pixel_sha256": "6c3dc627e624a79e8a410560f2dcffd0be15b8e4de52f678321d9aa43a71cee0",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 202281,
+          "time_base": "1/15360",
+          "pts_sec": 13.1693359375,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-001/frame_000011.png",
+          "frame_sha256": "9733c951893d29a3f1634278c456e49cc2f74c055918ffa273058b6fe429c93d",
+          "source_pixel_sha256": "a9168335333cbfa219c308eda742feca619b8a9df273cef093264d766246cbbf",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        },
+        {
+          "source_pts_ticks": 202537,
+          "time_base": "1/15360",
+          "pts_sec": 13.186002604166667,
+          "local_path": "outputs/recognition-investigation/observed-cohort-runner-20261009/window-001/frame_000012.png",
+          "frame_sha256": "6ba92a73e6b802b244f65a1c75a284e50d2457571a9cf6be84aadde806d44de0",
+          "source_pixel_sha256": "fa7a7f149ad1c7eb310f6fc0075c98c40eddae0b086afa7b166fe543c51f960a",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "episode_terminated",
+            "descriptive_scene_link": false,
+            "runtime_proof_authorized": false,
+            "world_mask_authorized": false,
+            "qualification_created": false
+          },
+          "known_native_pixel_overlap": false
+        }
+      ],
+      "initialization_reason": "image_supported_initialization_unavailable",
+      "known_native_pixel_overlaps": 0
+    }
+  ],
+  "file_sha256": {
+    "outputs/recognition-investigation/world-domain-bootstrap-20261009/profile.json": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+    "outputs/recognition-investigation/world-domain-bootstrap-20261009/assets/wall_close.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "ValorantData/videos/Valorant_09-25-2026_0-37-29-379.mp4": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "scripts/diagnostics/observed_scene_chain.py": "c60081a951a72b6d5aa68b05231cb3037b9883b0d7a4704b56810f64b88153d5",
+    "scripts/diagnostics/scene_domain_bootstrap.py": "1563c223d00085bc6059f720a54a4b6dd9e9acde819babd39d34d3dea4ff0e8d",
+    "scripts/diagnostics/scene_world_bootstrap.py": "9947a6b0adc00f1e4b4eb63d5a95b1555d48091633712546e8078ee3a2436cfa",
+    "scripts/diagnostics/scene_reference_support.py": "ba12d60e89544f37b0f9ac0a24a464c26732e0b1c2b658534c893c819e5af89f",
+    "scripts/diagnostics/scene_domain_ambiguity.py": "eea017aa98bd16051f4e0f3f5b4cebd84a5ae33eb8b538be2d25a6106479ad23",
+    "scripts/diagnostics/scene_joint_domains.py": "2046cede2304b9493abc5f9ba06cbcfbe820a67f245a6e42cbd0aff5a5f45d34",
+    "scripts/diagnostics/scene_world_chain.py": "8a6d11a151f4afb77d88780b51f0705beca527edce7521831b9c8a590e788e33",
+    "scripts/diagnostics/scene_correspondence.py": "667fb4f7b0626fbbf4770716eefc18976a9409a4f0646084b95d479dab7273a3",
+    "scripts/diagnostics/scene_patch_search.py": "53e66f692c42cbaab695cdea9910e3326c50089a18468f6b0d01bd463e9c2dd9",
+    "scripts/diagnostics/validate_scene_chain_cohort.py": "ac57a87045c2e77eac6e162b14ba9d82459c6d7fc8d83904f9b10b3d911e68da",
+    "scripts/diagnostics/diagnose_native_global_lifecycle.py": "761dcd3e4019014e1691a29aad62f95d1ea4d401a61039c19a933d40d381a396",
+    "e2e_reports/match_001/observed_cohort_runner_reservation.json": "d0962265a88b74bd6e2a4c3d20325f17d7955949a86156a7a0fc4e764455ce14",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000001.png": "4e5468fc6df69255d5e695afcef7d90c896a8045f2ac02adbdd9e1b2ae51987c",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000002.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000003.png": "e790bd155383fac3eb439d4311a89840467fce57938a80dae2448e628dfd9211",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000004.png": "1dc0d9b8c59355b43eb723b1961110bb53d1ce8a62176490f5c632dd6ee5f2ad",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000005.png": "00e2240728fa5e6c6cd1d8a29adebecb993d61abb4c9a97aea47902d53f041e1",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000006.png": "77d745206022589fc826823873bc1305e922fdda01854eac4a7eed10876d6c80",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000007.png": "d4dafbd08a45d736ff634bb6537d9d0991d3023a611db6a229874a4755c9f8d3",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000008.png": "3d4c25843ec375524762f21a11a17b7bf7854f65680ceaf0396b5a597a1d94dc",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000009.png": "eddab3d93b6a8d910aaa923a260a7be4779514c79670dc8d2fefb3a1e0863473",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000010.png": "995c70d5658ba86dd220d7d02f947982e00c9d4cdf9456dde224924df8211951",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000011.png": "a3a788841be688ba3d97be42478708e5cd8571ff74c6a1a1fce8172f88ad0104",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000012.png": "2ca7c16fac54a93af47a678cd1491bffc7a8ec0edf9634d4c2be4e4a134741e2",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000013.png": "0971d607cd0a91eb2c2af8e4949dd601201575ad6050945d1583ecad529797e9",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000014.png": "3f7f964b6993d20bba3396e160e6b6edf41cc5352b0b0ad57de9254ddb7fe0a5",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000015.png": "ffc878007fe550701c8e5be11f78b1a6d91bc88f77972cc48b370ac4cf7e7bb6",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000016.png": "d72a67e8f64bc6ffe0b90a1f6118c522380a2bd83eabd4e84b6a5f36f7b605fc",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000017.png": "40a1ca141705ef466d3cdcd339bfa1e519a8bd998cabb9ea204da72dcaa6d382",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000018.png": "87a43e4a4c0e1f7eb1ea8e6fedccbefa5bc6eddd8d29c61dc25e92dbeef418f8",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000019.png": "e2e07cdce5e63bde4205fa7401ca54f9b6917872957efe3b303f0286e370b43b",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000020.png": "d81a979afdc6bee35155fc029a0621d43a7b0dbbe29fc364cd0010cbfa697707",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000021.png": "2c747572f073d4c8769933863cf6e99c8498bccb4469b8476cc12784854b7a7e",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000022.png": "ee5be2e35aabe7ac9b9fc01fd438dc28c4e5c76f73f66e7cd6df752bc72edd2d",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000023.png": "aa5727f8ff3428eaf3705c3fb9b42acc78c278fb3ce21276969cd8505aa2aae2",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000024.png": "01510fbbc2c0e101c72555f846ca75adf24b073891d8e9160c94ec54be0e5413",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000025.png": "1a3208bb41afe765aa7f691964df102279ec81e9366d13ae326cc537c3a66b76",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000026.png": "0252b863b5f5d2108ebd46178ea6a4a2cba005b51af5205dee7723c2d26a9ac8",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000027.png": "fa80efcbffa9e29d82948fbb605bcbb10baab44ac31c17434085e97c671c887e",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000028.png": "ec2d668e223d2f20a8b53d813a1681e4c1c79b120857244b11f42d341dadfc74",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000029.png": "6e6edeefc2aa5d1a45960e741815a8c08090793d8be0b74a8a7b344051a6f67d",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000030.png": "91eab8a0e9d080f64d9cc83c31c77f733dcaeaccd50b1ae6c30877f41a987f55",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-000/frame_000031.png": "91d79bfba35b3afa2e8fe7bb5274926fbe6a254207dd9a9ab55d5cb3ebab625c",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-001/frame_000001.png": "929aab0a3f014eddff37a663241bd7fe3fcd15e0f800f7afe496b66c3d880579",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-001/frame_000002.png": "1b55f9b7b2940032f9d6d3391a934eaf542aa54f87edfff9e3679fcadd04a76a",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-001/frame_000003.png": "3c9c66f692a254fb810582e57191325e44cfb5bee1fb6a0c03b0550195c237ba",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-001/frame_000004.png": "6ee53251e24ffccac5855e120a4e661ec06b2ca15ff16771d7b0e1eb17f5982a",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-001/frame_000005.png": "4462b71a80d1acb51ec8dcf2535c94b1bd41910980cae384d6941bdcb28a031f",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-001/frame_000006.png": "a8b6ca1eef805a64bce2d3c2ca4f118c7cc5ce4c8375a8ea53624b75d0b3601b",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-001/frame_000007.png": "ace0863095cf05c2207f5144e9cda7181000b007ab42faec50f8498d38b4ae31",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-001/frame_000008.png": "dd1a59003561e892ea4c249b1d0adf8639be5342458ff22b214c7ea986f638b3",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-001/frame_000009.png": "054e2a2df0240c0d1b743ef5bbc3e3c257a99afb628e55cbca51d5ea9ea66799",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-001/frame_000010.png": "aed4fe9de07b423b12c55fda913cddc4b9349a6293d5248db56dd93ae98d060e",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-001/frame_000011.png": "9733c951893d29a3f1634278c456e49cc2f74c055918ffa273058b6fe429c93d",
+    "outputs/recognition-investigation/observed-cohort-runner-20261009/window-001/frame_000012.png": "6ba92a73e6b802b244f65a1c75a284e50d2457571a9cf6be84aadde806d44de0"
+  },
+  "qualification_created": false,
+  "new_runtime_events": 0,
+  "canonical_current": null,
+  "wall_clock_seconds": 70.16514443198685
+}

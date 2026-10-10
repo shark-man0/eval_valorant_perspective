@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 from copy import deepcopy
 
 import numpy as np
@@ -95,6 +96,12 @@ def test_optional_trace_is_deepcopied_and_keeps_runtime_outputs_identical(live_i
 
     assert len(traces) == len(frames)
     assert [trace["frame_index"] for trace in traces] == list(range(len(frames)))
+    assert [trace["source_pts_sec"] for trace in traces] == list(range(len(frames)))
+    assert all(
+        trace["source_pixel_sha256"] == hashlib.sha256(frame.tobytes()).hexdigest()
+        for trace, frame in zip(traces, frames, strict=True)
+    )
+    assert all(trace["semantic_text_measurements"] == {} for trace in traces)
     assert all(trace["geometry_calibrated"] is True for trace in traces)
     assert traces[0]["raw_accepted_reader_values"]["player_hp_armor"] == {
         "hp": 100,

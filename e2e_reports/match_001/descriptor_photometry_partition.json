@@ -1,0 +1,3932 @@
+{
+  "scope": "passive saved-proposal audit; no filtering/refit/qualification",
+  "bindings": {
+    "outputs/recognition-investigation/world-domain-bootstrap-20261009/profile.json": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+    "outputs/recognition-investigation/world-domain-bootstrap-20261009/assets/wall_close.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "ValorantData/videos/Valorant_09-25-2026_0-37-29-379.mp4": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "scripts/diagnostics/observed_scene_chain.py": "c60081a951a72b6d5aa68b05231cb3037b9883b0d7a4704b56810f64b88153d5",
+    "scripts/diagnostics/scene_domain_bootstrap.py": "1904b5736301a4cd632a6de1f9eb23cfb62f95c83840379197c20b50d1973b41",
+    "scripts/diagnostics/scene_world_bootstrap.py": "9947a6b0adc00f1e4b4eb63d5a95b1555d48091633712546e8078ee3a2436cfa",
+    "scripts/diagnostics/scene_reference_support.py": "aa6cec5c7ea7b10ce69c078fb2a8e2c7c794f6fa610ca3592c113d91a69751a5",
+    "scripts/diagnostics/scene_domain_ambiguity.py": "74ff5b505f2fd703936acee89dd6e5633a549f5ba2b7cc9a53ba9cd52cd9af10",
+    "scripts/diagnostics/scene_joint_domains.py": "2046cede2304b9493abc5f9ba06cbcfbe820a67f245a6e42cbd0aff5a5f45d34",
+    "scripts/diagnostics/scene_world_chain.py": "8a6d11a151f4afb77d88780b51f0705beca527edce7521831b9c8a590e788e33",
+    "scripts/diagnostics/scene_correspondence.py": "667fb4f7b0626fbbf4770716eefc18976a9409a4f0646084b95d479dab7273a3",
+    "scripts/diagnostics/scene_patch_search.py": "544b61f8dca800968521e9edce918166bb97353f5c2a5fed35f6011a0a04e4c1",
+    "scripts/diagnostics/validate_scene_chain_cohort.py": "ac57a87045c2e77eac6e162b14ba9d82459c6d7fc8d83904f9b10b3d911e68da",
+    "scripts/diagnostics/diagnose_native_global_lifecycle.py": "761dcd3e4019014e1691a29aad62f95d1ea4d401a61039c19a933d40d381a396",
+    "outputs/recognition-investigation/two-scene-domain-reference-20261009/profile.json": "7c88be66b6d322f037be309ca02464c7ffd5da3236b646b7ec24d21d1f4e7ce2",
+    "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/wall_close.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/arch_context.png": "929aab0a3f014eddff37a663241bd7fe3fcd15e0f800f7afe496b66c3d880579",
+    "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000001.png": "7178c40b9997f559b443c6e1145cffbdef9823d862d5f55c158bc9a7a5cecd6c",
+    "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000001.png": "ce2dbc370171a4cd637a6e96aa60ec6c9a50d8a1b62914622dd547f1727baa99",
+    "scripts/diagnostics/scene_descriptor_acquisition.py": "e733ca2557d3e7ea1692cb2d1e4542ce2c384faa72c2146e0b35b498e9e2b278",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000013.png": "3f7f964b6993d20bba3396e160e6b6edf41cc5352b0b0ad57de9254ddb7fe0a5",
+    "e2e_reports/match_001/spatial_descriptor_declaration.json": "09569bd6eb7da93fd742834da59e912016706d68285495d90308ad65875011ab",
+    "e2e_reports/match_001/spatial_descriptor_development.json": "9023280efeb06d3808a7125663f0efa87cde2566714554f2226f6c47a0f7a637",
+    "/home/admin/eval_valorant_perspective/scripts/diagnostics/audit_descriptor_photometry.py": "134d8d2c345fdda26403c176aa68cb4f5776ccb63386a0de2cc823095ccacd3f"
+  },
+  "terminal_bindings_match": true,
+  "rows": [
+    {
+      "reference_id": "reviewed-arch-context",
+      "image": "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/arch_context.png",
+      "original_track_count": 151,
+      "partition": {
+        "ncc_supported": 145,
+        "source_texture_unavailable": 6
+      },
+      "source_texture_unavailable_camera_outliers": 0,
+      "measurements": [
+        {
+          "region": 0,
+          "source_patch_std": 32.8750980095239,
+          "current_patch_std": 32.8750980095239,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0028871092492227103
+        },
+        {
+          "region": 0,
+          "source_patch_std": 26.259051349539988,
+          "current_patch_std": 26.259051349539988,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.002802289260002584
+        },
+        {
+          "region": 0,
+          "source_patch_std": 32.97425857233278,
+          "current_patch_std": 32.97425857233278,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0033263689190967094
+        },
+        {
+          "region": 0,
+          "source_patch_std": 29.42220342396177,
+          "current_patch_std": 29.42220342396177,
+          "ncc": 0.9999974370002747,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.00259996096712691
+        },
+        {
+          "region": 0,
+          "source_patch_std": 28.157070554697665,
+          "current_patch_std": 28.157070554697665,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.002948914659371677
+        },
+        {
+          "region": 0,
+          "source_patch_std": 30.162068894556953,
+          "current_patch_std": 30.162068894556953,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0026225949895744183
+        },
+        {
+          "region": 0,
+          "source_patch_std": 33.669019059729735,
+          "current_patch_std": 33.669019059729735,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.00325030369311398
+        },
+        {
+          "region": 0,
+          "source_patch_std": 30.982991431181905,
+          "current_patch_std": 30.982991431181905,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.003059104183746638
+        },
+        {
+          "region": 0,
+          "source_patch_std": 25.088346023060975,
+          "current_patch_std": 25.088346023060975,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.002781118057177396
+        },
+        {
+          "region": 0,
+          "source_patch_std": 32.16367094090881,
+          "current_patch_std": 32.16367094090881,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0027545575029785845
+        },
+        {
+          "region": 0,
+          "source_patch_std": 30.50877679829847,
+          "current_patch_std": 30.50877679829847,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.002908796491792737
+        },
+        {
+          "region": 0,
+          "source_patch_std": 29.944359925669218,
+          "current_patch_std": 29.944359925669218,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 4.000402564519387
+        },
+        {
+          "region": 0,
+          "source_patch_std": 28.784992660571167,
+          "current_patch_std": 28.784992660571167,
+          "ncc": 0.9999946355819702,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.002413938387311093
+        },
+        {
+          "region": 0,
+          "source_patch_std": 34.06341334034306,
+          "current_patch_std": 34.06341334034306,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.003107550610646506
+        },
+        {
+          "region": 0,
+          "source_patch_std": 29.33925866080178,
+          "current_patch_std": 29.33925866080178,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0024991841679009317
+        },
+        {
+          "region": 0,
+          "source_patch_std": 6.835775173469519,
+          "current_patch_std": 6.835775173469519,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0020616759759141713
+        },
+        {
+          "region": 0,
+          "source_patch_std": 15.01378855964011,
+          "current_patch_std": 15.01378855964011,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.002752578526244757
+        },
+        {
+          "region": 0,
+          "source_patch_std": 7.633907466682874,
+          "current_patch_std": 7.633907466682874,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0021722784065235693
+        },
+        {
+          "region": 0,
+          "source_patch_std": 30.812088697077048,
+          "current_patch_std": 30.812088697077048,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0026929578738634765
+        },
+        {
+          "region": 0,
+          "source_patch_std": 7.212814385385547,
+          "current_patch_std": 7.212814385385547,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.002231521689515189
+        },
+        {
+          "region": 1,
+          "source_patch_std": 25.140452474394408,
+          "current_patch_std": 25.140452474394408,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.004332993220527857
+        },
+        {
+          "region": 1,
+          "source_patch_std": 28.134064936950423,
+          "current_patch_std": 28.134064936950423,
+          "ncc": 0.9999985694885254,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0033007940376987874
+        },
+        {
+          "region": 1,
+          "source_patch_std": 9.193079522723119,
+          "current_patch_std": 9.193079522723119,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0025820263074511312
+        },
+        {
+          "region": 1,
+          "source_patch_std": 15.904955978919212,
+          "current_patch_std": 15.904955978919212,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0027643162301691114
+        },
+        {
+          "region": 1,
+          "source_patch_std": 2.8420962529638425,
+          "current_patch_std": 2.8420962529638425,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0025299976817374724
+        },
+        {
+          "region": 1,
+          "source_patch_std": 8.856715106016214,
+          "current_patch_std": 8.856715106016214,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0028358139430942637
+        },
+        {
+          "region": 1,
+          "source_patch_std": 27.921335706844705,
+          "current_patch_std": 27.921335706844705,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.004069125830324413
+        },
+        {
+          "region": 1,
+          "source_patch_std": 7.862366684182519,
+          "current_patch_std": 7.862366684182519,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.004108843493223885
+        },
+        {
+          "region": 1,
+          "source_patch_std": 4.7942352213908626,
+          "current_patch_std": 4.7942352213908626,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0034903092752070794
+        },
+        {
+          "region": 1,
+          "source_patch_std": 28.67003459974573,
+          "current_patch_std": 28.67003459974573,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.003731467972393631
+        },
+        {
+          "region": 1,
+          "source_patch_std": 4.069213531560134,
+          "current_patch_std": 4.069213531560134,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.004070117993342798
+        },
+        {
+          "region": 1,
+          "source_patch_std": 18.02760352595122,
+          "current_patch_std": 18.02760352595122,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.003432985203299791
+        },
+        {
+          "region": 1,
+          "source_patch_std": 3.291440451673641,
+          "current_patch_std": 3.291440451673641,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0039513474725968835
+        },
+        {
+          "region": 1,
+          "source_patch_std": 9.627487397044305,
+          "current_patch_std": 9.627487397044305,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0036003722777596292
+        },
+        {
+          "region": 1,
+          "source_patch_std": 8.642135081415477,
+          "current_patch_std": 8.642135081415477,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0029733911225669515
+        },
+        {
+          "region": 1,
+          "source_patch_std": 3.1699016614415467,
+          "current_patch_std": 3.1699016614415467,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.003039472319389007
+        },
+        {
+          "region": 1,
+          "source_patch_std": 3.4239649242463237,
+          "current_patch_std": 3.4239649242463237,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.004057512791625701
+        },
+        {
+          "region": 1,
+          "source_patch_std": 2.9576433728540787,
+          "current_patch_std": 2.9576433728540787,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.002714326632264407
+        },
+        {
+          "region": 1,
+          "source_patch_std": 17.012683140948724,
+          "current_patch_std": 17.012683140948724,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0038585356667737805
+        },
+        {
+          "region": 1,
+          "source_patch_std": 14.862480061559273,
+          "current_patch_std": 14.862480061559273,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.004058388476646439
+        },
+        {
+          "region": 1,
+          "source_patch_std": 3.335951564322566,
+          "current_patch_std": 3.335951564322566,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0033403877761396757
+        },
+        {
+          "region": 1,
+          "source_patch_std": 8.291360965888932,
+          "current_patch_std": 8.291360965888932,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.003385725535146517
+        },
+        {
+          "region": 1,
+          "source_patch_std": 3.4006419147123923,
+          "current_patch_std": 3.4006419147123923,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0036213341886300048
+        },
+        {
+          "region": 1,
+          "source_patch_std": 16.519913310985295,
+          "current_patch_std": 16.519913310985295,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.003332751394291846
+        },
+        {
+          "region": 1,
+          "source_patch_std": 28.622722562914596,
+          "current_patch_std": 28.622722562914596,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0029705588895225124
+        },
+        {
+          "region": 1,
+          "source_patch_std": 5.089333313926974,
+          "current_patch_std": 5.089333313926974,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.003321602002453374
+        },
+        {
+          "region": 1,
+          "source_patch_std": 8.856213275449441,
+          "current_patch_std": 8.856213275449441,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0031152119313287633
+        },
+        {
+          "region": 1,
+          "source_patch_std": 3.244675790838635,
+          "current_patch_std": 3.244675790838635,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0031228885911437332
+        },
+        {
+          "region": 1,
+          "source_patch_std": 3.3811211523566533,
+          "current_patch_std": 3.3811211523566533,
+          "ncc": 0.9999027848243713,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.003366767489726795
+        },
+        {
+          "region": 1,
+          "source_patch_std": 4.667695124767445,
+          "current_patch_std": 4.667695124767445,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.00280730565546901
+        },
+        {
+          "region": 1,
+          "source_patch_std": 4.2842554130729,
+          "current_patch_std": 4.2842554130729,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.003671428009297991
+        },
+        {
+          "region": 1,
+          "source_patch_std": 16.303815504353576,
+          "current_patch_std": 16.303815504353576,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.003202964332017265
+        },
+        {
+          "region": 1,
+          "source_patch_std": 3.6580396828065784,
+          "current_patch_std": 3.6580396828065784,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.003551028104528987
+        },
+        {
+          "region": 1,
+          "source_patch_std": 4.625076042084252,
+          "current_patch_std": 4.625076042084252,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0025302967172158696
+        },
+        {
+          "region": 1,
+          "source_patch_std": 3.8693324144267227,
+          "current_patch_std": 3.8693324144267227,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0037454783124216758
+        },
+        {
+          "region": 1,
+          "source_patch_std": 3.6030165688019986,
+          "current_patch_std": 3.6030165688019986,
+          "ncc": 0.9999144077301025,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0031266707186472114
+        },
+        {
+          "region": 1,
+          "source_patch_std": 3.96700963347693,
+          "current_patch_std": 3.96700963347693,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.004065722285680144
+        },
+        {
+          "region": 1,
+          "source_patch_std": 3.47251358777528,
+          "current_patch_std": 3.47251358777528,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0033595790851796464
+        },
+        {
+          "region": 1,
+          "source_patch_std": 3.9923383413857554,
+          "current_patch_std": 3.9923383413857554,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.003895914013699752
+        },
+        {
+          "region": 1,
+          "source_patch_std": 4.07267315981367,
+          "current_patch_std": 4.07267315981367,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0027014734781472564
+        },
+        {
+          "region": 1,
+          "source_patch_std": 2.7108342299414443,
+          "current_patch_std": 2.7108342299414443,
+          "ncc": 0.9998487830162048,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.003680043329329171
+        },
+        {
+          "region": 1,
+          "source_patch_std": 2.4952062682246643,
+          "current_patch_std": 2.4952062682246643,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.002927486955467936
+        },
+        {
+          "region": 1,
+          "source_patch_std": 3.9966652766191633,
+          "current_patch_std": 3.9966652766191633,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0034092858360101025
+        },
+        {
+          "region": 1,
+          "source_patch_std": 3.373312838467971,
+          "current_patch_std": 3.373312838467971,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.00279142464388505
+        },
+        {
+          "region": 1,
+          "source_patch_std": 2.8986297316124485,
+          "current_patch_std": 2.8986297316124485,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0032466489804166138
+        },
+        {
+          "region": 1,
+          "source_patch_std": 2.8641194540231,
+          "current_patch_std": 2.8641194540231,
+          "ncc": 0.9998645782470703,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.003149919029692423
+        },
+        {
+          "region": 1,
+          "source_patch_std": 5.989693205111429,
+          "current_patch_std": 5.989693205111429,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0030506724761744323
+        },
+        {
+          "region": 1,
+          "source_patch_std": 3.2327215916142373,
+          "current_patch_std": 3.2327215916142373,
+          "ncc": 0.9998936653137207,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.00401356984829065
+        },
+        {
+          "region": 1,
+          "source_patch_std": 3.0195870864804526,
+          "current_patch_std": 3.0195870864804526,
+          "ncc": 0.9998781681060791,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.002642717902402377
+        },
+        {
+          "region": 1,
+          "source_patch_std": 3.1578895906390816,
+          "current_patch_std": 3.1578895906390816,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0037705988836263704
+        },
+        {
+          "region": 1,
+          "source_patch_std": 3.0170347637095762,
+          "current_patch_std": 3.0170347637095762,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.002824332205683716
+        },
+        {
+          "region": 1,
+          "source_patch_std": 4.269906177591271,
+          "current_patch_std": 4.269906177591271,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0030161714693224687
+        },
+        {
+          "region": 1,
+          "source_patch_std": 3.5008288260261744,
+          "current_patch_std": 3.5008288260261744,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0038757689915023394
+        },
+        {
+          "region": 1,
+          "source_patch_std": 9.07219439337094,
+          "current_patch_std": 9.07219439337094,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.002708927714743972
+        },
+        {
+          "region": 1,
+          "source_patch_std": 4.029888335921977,
+          "current_patch_std": 4.029888335921977,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.003935509792358459
+        },
+        {
+          "region": 1,
+          "source_patch_std": 3.461894150766472,
+          "current_patch_std": 3.461894150766472,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.003811917490089301
+        },
+        {
+          "region": 1,
+          "source_patch_std": 3.629873310036258,
+          "current_patch_std": 3.629873310036258,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.003089010164363573
+        },
+        {
+          "region": 1,
+          "source_patch_std": 2.5474693324945052,
+          "current_patch_std": 2.5474693324945052,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0034677153735081503
+        },
+        {
+          "region": 1,
+          "source_patch_std": 18.446396683831885,
+          "current_patch_std": 18.446396683831885,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 3.0034376654888026
+        },
+        {
+          "region": 2,
+          "source_patch_std": 8.273096662983077,
+          "current_patch_std": 8.273096662983077,
+          "ncc": 0.9999959468841553,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.013568194982861036
+        },
+        {
+          "region": 2,
+          "source_patch_std": 8.749378531722012,
+          "current_patch_std": 8.749378531722012,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.012429799761922457
+        },
+        {
+          "region": 2,
+          "source_patch_std": 3.3627032041954243,
+          "current_patch_std": 3.3627032041954243,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0129125904111655
+        },
+        {
+          "region": 2,
+          "source_patch_std": 6.906151846964655,
+          "current_patch_std": 6.906151846964655,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.012029768742063638
+        },
+        {
+          "region": 2,
+          "source_patch_std": 7.383031596543222,
+          "current_patch_std": 7.383031596543222,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.013355731640886876
+        },
+        {
+          "region": 2,
+          "source_patch_std": 2.818191347147281,
+          "current_patch_std": 2.818191347147281,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.012054064619457652
+        },
+        {
+          "region": 2,
+          "source_patch_std": 6.590114557163875,
+          "current_patch_std": 6.590114557163875,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.013105120553403739
+        },
+        {
+          "region": 2,
+          "source_patch_std": 6.493702932670833,
+          "current_patch_std": 6.493702932670833,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.013548578075896397
+        },
+        {
+          "region": 2,
+          "source_patch_std": 6.515643473713338,
+          "current_patch_std": 6.515643473713338,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.013286934927695823
+        },
+        {
+          "region": 2,
+          "source_patch_std": 3.9561947049165664,
+          "current_patch_std": 3.9561947049165664,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.012692405489693933
+        },
+        {
+          "region": 2,
+          "source_patch_std": 5.982030705205774,
+          "current_patch_std": 5.982030705205774,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.012954490101818433
+        },
+        {
+          "region": 2,
+          "source_patch_std": 6.152520711961164,
+          "current_patch_std": 6.152520711961164,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.012816995834668603
+        },
+        {
+          "region": 2,
+          "source_patch_std": 5.966931092837143,
+          "current_patch_std": 5.966931092837143,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.01316343044957328
+        },
+        {
+          "region": 2,
+          "source_patch_std": 6.897147737549215,
+          "current_patch_std": 6.897147737549215,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.012177174015307421
+        },
+        {
+          "region": 2,
+          "source_patch_std": 5.261035902313545,
+          "current_patch_std": 5.261035902313545,
+          "ncc": 0.9999899864196777,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.013781530182274074
+        },
+        {
+          "region": 2,
+          "source_patch_std": 3.0652170486860397,
+          "current_patch_std": 3.0652170486860397,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.01259423612789351
+        },
+        {
+          "region": 2,
+          "source_patch_std": 5.9199332662238024,
+          "current_patch_std": 5.9199332662238024,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.013434401243380922
+        },
+        {
+          "region": 2,
+          "source_patch_std": 4.987557852630216,
+          "current_patch_std": 4.987557852630216,
+          "ncc": 0.9999776482582092,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.013614699467753694
+        },
+        {
+          "region": 2,
+          "source_patch_std": 6.105502072356995,
+          "current_patch_std": 6.105502072356995,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.013420359369479953
+        },
+        {
+          "region": 2,
+          "source_patch_std": 4.167490881443363,
+          "current_patch_std": 4.167490881443363,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.012962624583116734
+        },
+        {
+          "region": 2,
+          "source_patch_std": 2.7721222426861085,
+          "current_patch_std": 2.7721222426861085,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0119779985303286
+        },
+        {
+          "region": 2,
+          "source_patch_std": 6.451545512989337,
+          "current_patch_std": 6.451545512989337,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.013233082424397543
+        },
+        {
+          "region": 2,
+          "source_patch_std": 1.1174574314537047,
+          "current_patch_std": 1.1174574314537047,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.013752613453927096
+        },
+        {
+          "region": 2,
+          "source_patch_std": 2.7980592921646847,
+          "current_patch_std": 2.7980592921646847,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.012316867990063247
+        },
+        {
+          "region": 2,
+          "source_patch_std": 6.712882768358791,
+          "current_patch_std": 6.712882768358791,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.013082437239660462
+        },
+        {
+          "region": 2,
+          "source_patch_std": 3.387424820358416,
+          "current_patch_std": 3.387424820358416,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.012371065212519064
+        },
+        {
+          "region": 2,
+          "source_patch_std": 2.1404972307998267,
+          "current_patch_std": 2.1404972307998267,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.012036792422606349
+        },
+        {
+          "region": 2,
+          "source_patch_std": 6.426033471188856,
+          "current_patch_std": 6.426033471188856,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.013219353833465659
+        },
+        {
+          "region": 2,
+          "source_patch_std": 6.363143877046943,
+          "current_patch_std": 6.363143877046943,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.012689730740087298
+        },
+        {
+          "region": 2,
+          "source_patch_std": 7.490654589075611,
+          "current_patch_std": 7.490654589075611,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.01295614604985081
+        },
+        {
+          "region": 2,
+          "source_patch_std": 1.2952029251371966,
+          "current_patch_std": 1.2952029251371966,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.013367214385598406
+        },
+        {
+          "region": 2,
+          "source_patch_std": 6.516380120630104,
+          "current_patch_std": 6.516380120630104,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.012523565104498537
+        },
+        {
+          "region": 2,
+          "source_patch_std": 8.23805802358784,
+          "current_patch_std": 8.23805802358784,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.012637945478819992
+        },
+        {
+          "region": 2,
+          "source_patch_std": 7.059991256595851,
+          "current_patch_std": 7.059991256595851,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.013616273738982077
+        },
+        {
+          "region": 2,
+          "source_patch_std": 7.804821555049984,
+          "current_patch_std": 7.804821555049984,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.012826762100604227
+        },
+        {
+          "region": 2,
+          "source_patch_std": 6.542795868570085,
+          "current_patch_std": 6.542795868570085,
+          "ncc": 0.9999967813491821,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.012328182025413515
+        },
+        {
+          "region": 2,
+          "source_patch_std": 3.1048635683034087,
+          "current_patch_std": 3.1048635683034087,
+          "ncc": 0.9999712109565735,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.012685803675887572
+        },
+        {
+          "region": 2,
+          "source_patch_std": 8.412395322482675,
+          "current_patch_std": 8.412395322482675,
+          "ncc": 0.9999960660934448,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.012667706531650133
+        },
+        {
+          "region": 2,
+          "source_patch_std": 3.8311936057114684,
+          "current_patch_std": 3.8311936057114684,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 1.4062866860800523
+        },
+        {
+          "region": 2,
+          "source_patch_std": 4.514391801044004,
+          "current_patch_std": 4.514391801044004,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.013331878742451835
+        },
+        {
+          "region": 2,
+          "source_patch_std": 2.6999259249097927,
+          "current_patch_std": 2.6999259249097927,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.012184683677166193
+        },
+        {
+          "region": 2,
+          "source_patch_std": 1.0321833505418514,
+          "current_patch_std": 1.0321833505418514,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0135587468491929
+        },
+        {
+          "region": 2,
+          "source_patch_std": 10.410627049104946,
+          "current_patch_std": 10.410627049104946,
+          "ncc": 0.9999974370002747,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.014285300500329366
+        },
+        {
+          "region": 2,
+          "source_patch_std": 6.111031918678802,
+          "current_patch_std": 6.111031918678802,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.013874763488523503
+        },
+        {
+          "region": 2,
+          "source_patch_std": 5.737800154875033,
+          "current_patch_std": 5.737800154875033,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.014296378174112744
+        },
+        {
+          "region": 2,
+          "source_patch_std": 6.918753901936068,
+          "current_patch_std": 6.918753901936068,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.014750656826327558
+        },
+        {
+          "region": 2,
+          "source_patch_std": 6.32590753748737,
+          "current_patch_std": 6.32590753748737,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.014056000510481854
+        },
+        {
+          "region": 2,
+          "source_patch_std": 6.169084210804712,
+          "current_patch_std": 6.169084210804712,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.014480279913565751
+        },
+        {
+          "region": 2,
+          "source_patch_std": 6.212001128838545,
+          "current_patch_std": 6.212001128838545,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.014177234296263882
+        },
+        {
+          "region": 2,
+          "source_patch_std": 6.2924607053516874,
+          "current_patch_std": 6.2924607053516874,
+          "ncc": 0.9999929666519165,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.013829414979900156
+        },
+        {
+          "region": 2,
+          "source_patch_std": 6.7582801523230716,
+          "current_patch_std": 6.7582801523230716,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.01456644550361831
+        },
+        {
+          "region": 2,
+          "source_patch_std": 5.999055069625137,
+          "current_patch_std": 5.999055069625137,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.014731853267618012
+        },
+        {
+          "region": 2,
+          "source_patch_std": 8.436386798992933,
+          "current_patch_std": 8.436386798992933,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.01389240257198523
+        },
+        {
+          "region": 2,
+          "source_patch_std": 5.431238405491325,
+          "current_patch_std": 5.431238405491325,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0140140644982306
+        },
+        {
+          "region": 2,
+          "source_patch_std": 7.433325029060302,
+          "current_patch_std": 7.433325029060302,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 2.2238309659770206
+        },
+        {
+          "region": 2,
+          "source_patch_std": 0.854952168180503,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.014367965858225333
+        },
+        {
+          "region": 2,
+          "source_patch_std": 5.038271308472558,
+          "current_patch_std": 5.038271308472558,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.014734050946199046
+        },
+        {
+          "region": 2,
+          "source_patch_std": 4.978424561154975,
+          "current_patch_std": 4.978424561154975,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.014556707282808586
+        },
+        {
+          "region": 2,
+          "source_patch_std": 0.7401568068763754,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.014710767030106164
+        },
+        {
+          "region": 2,
+          "source_patch_std": 0.6790843508398317,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.014580370036019622
+        },
+        {
+          "region": 2,
+          "source_patch_std": 1.1640202789799423,
+          "current_patch_std": 1.1640202789799423,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.014364730337470887
+        },
+        {
+          "region": 2,
+          "source_patch_std": 0.6796367947952098,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.014493422732312421
+        },
+        {
+          "region": 2,
+          "source_patch_std": 0.701096143527502,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.9972563557567484
+        },
+        {
+          "region": 2,
+          "source_patch_std": 3.172517791250739,
+          "current_patch_std": 3.172517791250739,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.013939337702382428
+        },
+        {
+          "region": 2,
+          "source_patch_std": 1.457886174831709,
+          "current_patch_std": 1.457886174831709,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.014138632884560725
+        },
+        {
+          "region": 2,
+          "source_patch_std": 0.5817979794472381,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.014539958028570764
+        },
+        {
+          "region": 2,
+          "source_patch_std": 26.2154477124735,
+          "current_patch_std": 26.174292920278535,
+          "ncc": 0.9999538064002991,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.015701787776840996
+        },
+        {
+          "region": 2,
+          "source_patch_std": 28.49181264248242,
+          "current_patch_std": 28.45407961810714,
+          "ncc": 0.9999685287475586,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.01592346727670242
+        },
+        {
+          "region": 2,
+          "source_patch_std": 21.80058397677445,
+          "current_patch_std": 21.792704181802577,
+          "ncc": 0.9999777674674988,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.015897943570397016
+        },
+        {
+          "region": 2,
+          "source_patch_std": 5.009908207433902,
+          "current_patch_std": 5.009908207433902,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.016073865151557933
+        },
+        {
+          "region": 2,
+          "source_patch_std": 34.97767894945801,
+          "current_patch_std": 34.96884708803918,
+          "ncc": 0.9999969005584717,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.016220115420796388
+        },
+        {
+          "region": 2,
+          "source_patch_std": 7.4362024026272655,
+          "current_patch_std": 7.4362024026272655,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.016276221363455894
+        }
+      ]
+    },
+    {
+      "reference_id": "reviewed-arch-context",
+      "image": "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000001.png",
+      "original_track_count": 21,
+      "partition": {
+        "ncc_rejected": 11,
+        "ncc_supported": 10
+      },
+      "source_texture_unavailable_camera_outliers": 0,
+      "measurements": [
+        {
+          "region": 0,
+          "source_patch_std": 7.633907466682874,
+          "current_patch_std": 4.245237854872732,
+          "ncc": -0.5528901219367981,
+          "reason": "ncc_rejected",
+          "camera_residual_px": 27.79665498344404
+        },
+        {
+          "region": 1,
+          "source_patch_std": 25.140452474394408,
+          "current_patch_std": 23.478490287342574,
+          "ncc": 0.02781064249575138,
+          "reason": "ncc_rejected",
+          "camera_residual_px": 56.95930887472522
+        },
+        {
+          "region": 1,
+          "source_patch_std": 3.4239649242463237,
+          "current_patch_std": 32.94445576166191,
+          "ncc": -0.5701472163200378,
+          "reason": "ncc_rejected",
+          "camera_residual_px": 71.54509654086162
+        },
+        {
+          "region": 1,
+          "source_patch_std": 14.862480061559273,
+          "current_patch_std": 26.32073622746058,
+          "ncc": -0.014655664563179016,
+          "reason": "ncc_rejected",
+          "camera_residual_px": 56.42054499281489
+        },
+        {
+          "region": 1,
+          "source_patch_std": 4.667695124767445,
+          "current_patch_std": 5.2022711089828855,
+          "ncc": -0.5559154748916626,
+          "reason": "ncc_rejected",
+          "camera_residual_px": 45.6073575200286
+        },
+        {
+          "region": 1,
+          "source_patch_std": 3.96700963347693,
+          "current_patch_std": 30.184115191215117,
+          "ncc": -0.8100966811180115,
+          "reason": "ncc_rejected",
+          "camera_residual_px": 40.85524906490496
+        },
+        {
+          "region": 1,
+          "source_patch_std": 5.989693205111429,
+          "current_patch_std": 7.900509750705182,
+          "ncc": -0.22941343486309052,
+          "reason": "ncc_rejected",
+          "camera_residual_px": 53.85155828454699
+        },
+        {
+          "region": 2,
+          "source_patch_std": 7.383031596543222,
+          "current_patch_std": 7.434286934348325,
+          "ncc": 0.9818844199180603,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.8123906242037718
+        },
+        {
+          "region": 2,
+          "source_patch_std": 3.9561947049165664,
+          "current_patch_std": 3.629710052019086,
+          "ncc": 0.9216361045837402,
+          "reason": "ncc_supported",
+          "camera_residual_px": 6.118608230454943
+        },
+        {
+          "region": 2,
+          "source_patch_std": 3.0652170486860397,
+          "current_patch_std": 2.6691321935540517,
+          "ncc": 0.8777559399604797,
+          "reason": "ncc_rejected",
+          "camera_residual_px": 0.37144007526020206
+        },
+        {
+          "region": 2,
+          "source_patch_std": 5.9199332662238024,
+          "current_patch_std": 5.034741524867212,
+          "ncc": 0.962515652179718,
+          "reason": "ncc_supported",
+          "camera_residual_px": 1.4033496306181095
+        },
+        {
+          "region": 2,
+          "source_patch_std": 6.105502072356995,
+          "current_patch_std": 5.608818453510904,
+          "ncc": 0.970287561416626,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.13549879960604738
+        },
+        {
+          "region": 2,
+          "source_patch_std": 2.7721222426861085,
+          "current_patch_std": 2.8460967423238914,
+          "ncc": 0.8284714818000793,
+          "reason": "ncc_rejected",
+          "camera_residual_px": 2.659559802747051
+        },
+        {
+          "region": 2,
+          "source_patch_std": 3.387424820358416,
+          "current_patch_std": 3.429907676114135,
+          "ncc": 0.8925375938415527,
+          "reason": "ncc_rejected",
+          "camera_residual_px": 0.36328178027317204
+        },
+        {
+          "region": 2,
+          "source_patch_std": 3.1048635683034087,
+          "current_patch_std": 3.568742213673372,
+          "ncc": 0.9312003254890442,
+          "reason": "ncc_supported",
+          "camera_residual_px": 1.8910543190263944
+        },
+        {
+          "region": 2,
+          "source_patch_std": 3.8311936057114684,
+          "current_patch_std": 3.830868772948971,
+          "ncc": 0.9475460648536682,
+          "reason": "ncc_supported",
+          "camera_residual_px": 24.710371134953807
+        },
+        {
+          "region": 2,
+          "source_patch_std": 10.410627049104946,
+          "current_patch_std": 10.510875261624605,
+          "ncc": 0.9530447721481323,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.6683819916752046
+        },
+        {
+          "region": 2,
+          "source_patch_std": 6.32590753748737,
+          "current_patch_std": 6.01532856773242,
+          "ncc": 0.9375430345535278,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.7290144266256406
+        },
+        {
+          "region": 2,
+          "source_patch_std": 6.169084210804712,
+          "current_patch_std": 5.814508885559202,
+          "ncc": 0.8800163865089417,
+          "reason": "ncc_rejected",
+          "camera_residual_px": 3.078882989560019
+        },
+        {
+          "region": 2,
+          "source_patch_std": 5.488998649374903,
+          "current_patch_std": 5.868477834904502,
+          "ncc": 0.968278169631958,
+          "reason": "ncc_supported",
+          "camera_residual_px": 43.508759341043444
+        },
+        {
+          "region": 2,
+          "source_patch_std": 3.172517791250739,
+          "current_patch_std": 2.907278223126687,
+          "ncc": 0.9412055015563965,
+          "reason": "ncc_supported",
+          "camera_residual_px": 4.508758196071157
+        }
+      ]
+    },
+    {
+      "reference_id": "reviewed-arch-context",
+      "image": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000001.png",
+      "original_track_count": 1,
+      "partition": {
+        "model_unavailable": 1
+      },
+      "source_texture_unavailable_camera_outliers": 0,
+      "measurements": [
+        {
+          "region": 2,
+          "source_patch_std": 6.2924607053516874,
+          "reason": "model_unavailable"
+        }
+      ]
+    },
+    {
+      "reference_id": "reviewed-wall",
+      "image": "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/wall_close.png",
+      "original_track_count": 286,
+      "partition": {
+        "ncc_supported": 170,
+        "source_texture_unavailable": 116
+      },
+      "source_texture_unavailable_camera_outliers": 0,
+      "measurements": [
+        {
+          "region": 0,
+          "source_patch_std": 2.8539563182828616,
+          "current_patch_std": 2.8539563182828616,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.017611762879351248
+        },
+        {
+          "region": 0,
+          "source_patch_std": 2.8467213109509366,
+          "current_patch_std": 2.8467213109509366,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.017808644545745975
+        },
+        {
+          "region": 0,
+          "source_patch_std": 0.8960158728752768,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.016286039498476235
+        },
+        {
+          "region": 0,
+          "source_patch_std": 1.3658696863171098,
+          "current_patch_std": 1.3658696863171098,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.017920916577551703
+        },
+        {
+          "region": 0,
+          "source_patch_std": 0.7520703933430766,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.017059850052066037
+        },
+        {
+          "region": 0,
+          "source_patch_std": 1.1495227136232684,
+          "current_patch_std": 1.1495227136232684,
+          "ncc": 0.9983183145523071,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.016913521851197388
+        },
+        {
+          "region": 0,
+          "source_patch_std": 0.6951543038583876,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.01675106727776665
+        },
+        {
+          "region": 0,
+          "source_patch_std": 1.127032594531233,
+          "current_patch_std": 1.127032594531233,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.016713680977563972
+        },
+        {
+          "region": 0,
+          "source_patch_std": 2.120964141349139,
+          "current_patch_std": 2.120964141349139,
+          "ncc": 0.9995059967041016,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.01777468308433132
+        },
+        {
+          "region": 0,
+          "source_patch_std": 0.7659416862050705,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.01648935482663011
+        },
+        {
+          "region": 0,
+          "source_patch_std": 1.2526396819674466,
+          "current_patch_std": 1.2526396819674466,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.017016994189698025
+        },
+        {
+          "region": 0,
+          "source_patch_std": 0.6960062437636783,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.017063106480238063
+        },
+        {
+          "region": 0,
+          "source_patch_std": 0.6136553100122029,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.01648082395541496
+        },
+        {
+          "region": 0,
+          "source_patch_std": 0.8533564811675232,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.017267585990233637
+        },
+        {
+          "region": 0,
+          "source_patch_std": 0.5708300216178603,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.01748924260533706
+        },
+        {
+          "region": 0,
+          "source_patch_std": 0.6666666666666666,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.016705739159292337
+        },
+        {
+          "region": 0,
+          "source_patch_std": 0.48000000000000004,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.016655322925070305
+        },
+        {
+          "region": 0,
+          "source_patch_std": 0.29601468098394157,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.017222917040166773
+        },
+        {
+          "region": 0,
+          "source_patch_std": 2.033302974879622,
+          "current_patch_std": 2.033302974879622,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.017455070487135273
+        },
+        {
+          "region": 0,
+          "source_patch_std": 0.6031030868212608,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.01676492301604715
+        },
+        {
+          "region": 0,
+          "source_patch_std": 0.414168809145662,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.01702474471620871
+        },
+        {
+          "region": 0,
+          "source_patch_std": 1.220127497891557,
+          "current_patch_std": 1.220127497891557,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.017290171950643664
+        },
+        {
+          "region": 1,
+          "source_patch_std": 3.892622969187603,
+          "current_patch_std": 3.892622969187603,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.015819785169771946
+        },
+        {
+          "region": 1,
+          "source_patch_std": 3.442382178336449,
+          "current_patch_std": 3.442382178336449,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0163475132148478
+        },
+        {
+          "region": 1,
+          "source_patch_std": 4.928626383150924,
+          "current_patch_std": 4.928626383150924,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.015699236191943435
+        },
+        {
+          "region": 1,
+          "source_patch_std": 2.931635872493187,
+          "current_patch_std": 2.931635872493187,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.016611698007531175
+        },
+        {
+          "region": 1,
+          "source_patch_std": 0.7808320981056676,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.016519406900620582
+        },
+        {
+          "region": 1,
+          "source_patch_std": 0.9159869533816692,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.016993618916063574
+        },
+        {
+          "region": 1,
+          "source_patch_std": 0.6690918850332023,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.016079542129623953
+        },
+        {
+          "region": 1,
+          "source_patch_std": 0.7159005379568544,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.017115828449554008
+        },
+        {
+          "region": 1,
+          "source_patch_std": 0.5577025181630724,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.017148453229961676
+        },
+        {
+          "region": 1,
+          "source_patch_std": 0.6312675862358995,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.015947584532136516
+        },
+        {
+          "region": 1,
+          "source_patch_std": 1.1737877907772674,
+          "current_patch_std": 1.1737877907772674,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.014436305572045907
+        },
+        {
+          "region": 1,
+          "source_patch_std": 2.4174019315714608,
+          "current_patch_std": 2.4174019315714608,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.01634456976028044
+        },
+        {
+          "region": 1,
+          "source_patch_std": 0.3946306289852998,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.01744627492712578
+        },
+        {
+          "region": 1,
+          "source_patch_std": 3.189600385202502,
+          "current_patch_std": 3.189600385202502,
+          "ncc": 0.9997815489768982,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.015744482366544712
+        },
+        {
+          "region": 1,
+          "source_patch_std": 0.8789893186053074,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.016458060105884062
+        },
+        {
+          "region": 1,
+          "source_patch_std": 0.9278782380740256,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.017577350626318128
+        },
+        {
+          "region": 1,
+          "source_patch_std": 0.5027136238996522,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.01716158114614018
+        },
+        {
+          "region": 1,
+          "source_patch_std": 0.5956882107650314,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.016852900921230967
+        },
+        {
+          "region": 1,
+          "source_patch_std": 0.7425548157011627,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.01673209775807284
+        },
+        {
+          "region": 1,
+          "source_patch_std": 1.046985089568031,
+          "current_patch_std": 1.046985089568031,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.017031814198190984
+        },
+        {
+          "region": 1,
+          "source_patch_std": 4.585968939178624,
+          "current_patch_std": 4.585968939178624,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.014309315565408551
+        },
+        {
+          "region": 1,
+          "source_patch_std": 4.160731179806896,
+          "current_patch_std": 4.160731179806896,
+          "ncc": 0.9998716115951538,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.014539955244275368
+        },
+        {
+          "region": 1,
+          "source_patch_std": 2.2984009470891382,
+          "current_patch_std": 2.2984009470891382,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.013801063021918147
+        },
+        {
+          "region": 1,
+          "source_patch_std": 4.610133765232125,
+          "current_patch_std": 4.610133765232125,
+          "ncc": 0.999895453453064,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.014654822496309915
+        },
+        {
+          "region": 1,
+          "source_patch_std": 1.6296632993154758,
+          "current_patch_std": 1.6296632993154758,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.01431202416465711
+        },
+        {
+          "region": 1,
+          "source_patch_std": 1.8549579876111666,
+          "current_patch_std": 1.8549579876111666,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.01329924676564965
+        },
+        {
+          "region": 1,
+          "source_patch_std": 2.6977814387674224,
+          "current_patch_std": 2.6977814387674224,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.014352741198514651
+        },
+        {
+          "region": 1,
+          "source_patch_std": 0.6205374015050718,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.01405418862017693
+        },
+        {
+          "region": 1,
+          "source_patch_std": 1.9962136999335691,
+          "current_patch_std": 1.9962136999335691,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.013923258002863871
+        },
+        {
+          "region": 1,
+          "source_patch_std": 0.7704415921493208,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.013413428032915705
+        },
+        {
+          "region": 1,
+          "source_patch_std": 1.3455440865645723,
+          "current_patch_std": 1.3455440865645723,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.013762065335517843
+        },
+        {
+          "region": 1,
+          "source_patch_std": 3.182625672748761,
+          "current_patch_std": 3.182625672748761,
+          "ncc": 0.9997805953025818,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.014170508843639245
+        },
+        {
+          "region": 1,
+          "source_patch_std": 1.159003403312039,
+          "current_patch_std": 1.159003403312039,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.014144759025398313
+        },
+        {
+          "region": 1,
+          "source_patch_std": 0.5105504170942001,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.013039327747301531
+        },
+        {
+          "region": 1,
+          "source_patch_std": 0.8630236824926706,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.01345320039845932
+        },
+        {
+          "region": 1,
+          "source_patch_std": 0.7680534960792159,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.01222388808297016
+        },
+        {
+          "region": 1,
+          "source_patch_std": 0.572557614762237,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.012186970800368508
+        },
+        {
+          "region": 1,
+          "source_patch_std": 0.8157220538491052,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.016596882150822223
+        },
+        {
+          "region": 2,
+          "source_patch_std": 41.398713882331066,
+          "current_patch_std": 41.398713882331066,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.028089841668374818
+        },
+        {
+          "region": 2,
+          "source_patch_std": 29.198009741068073,
+          "current_patch_std": 29.198009741068073,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.027634868354960467
+        },
+        {
+          "region": 2,
+          "source_patch_std": 37.95858848147771,
+          "current_patch_std": 37.95858848147771,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.02676912694759116
+        },
+        {
+          "region": 2,
+          "source_patch_std": 35.45031201868641,
+          "current_patch_std": 35.45031201868641,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.026847965271717872
+        },
+        {
+          "region": 2,
+          "source_patch_std": 36.41726628881714,
+          "current_patch_std": 36.41726628881714,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.026343754146158718
+        },
+        {
+          "region": 2,
+          "source_patch_std": 66.41339296732323,
+          "current_patch_std": 66.41339296732323,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.027392358619272125
+        },
+        {
+          "region": 2,
+          "source_patch_std": 27.542919683493217,
+          "current_patch_std": 27.542919683493217,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.02796065707481598
+        },
+        {
+          "region": 2,
+          "source_patch_std": 21.40310350173948,
+          "current_patch_std": 21.40310350173948,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.02766121788148061
+        },
+        {
+          "region": 2,
+          "source_patch_std": 30.8541291231922,
+          "current_patch_std": 30.8541291231922,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.02630232541574307
+        },
+        {
+          "region": 2,
+          "source_patch_std": 33.0154394110721,
+          "current_patch_std": 33.0154394110721,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.027202469531191414
+        },
+        {
+          "region": 2,
+          "source_patch_std": 28.436978186774024,
+          "current_patch_std": 28.436978186774024,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.02557995127345223
+        },
+        {
+          "region": 2,
+          "source_patch_std": 37.3012279942168,
+          "current_patch_std": 37.3012279942168,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.025408413864306995
+        },
+        {
+          "region": 2,
+          "source_patch_std": 55.87017650072552,
+          "current_patch_std": 55.87017650072552,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.026596328443476494
+        },
+        {
+          "region": 2,
+          "source_patch_std": 36.42733039902869,
+          "current_patch_std": 36.42733039902869,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.02570457210277303
+        },
+        {
+          "region": 2,
+          "source_patch_std": 25.76652091377491,
+          "current_patch_std": 25.76389051212933,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.027615409541460956
+        },
+        {
+          "region": 2,
+          "source_patch_std": 37.14194328003428,
+          "current_patch_std": 37.14194328003428,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.025126187624547897
+        },
+        {
+          "region": 2,
+          "source_patch_std": 18.957181641859876,
+          "current_patch_std": 18.957181641859876,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.027141181140635736
+        },
+        {
+          "region": 2,
+          "source_patch_std": 63.65545590651808,
+          "current_patch_std": 63.65545590651808,
+          "ncc": 0.9999997019767761,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.026037850633976584
+        },
+        {
+          "region": 2,
+          "source_patch_std": 36.87741347615581,
+          "current_patch_std": 36.87741347615581,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.025987756945705938
+        },
+        {
+          "region": 2,
+          "source_patch_std": 63.24947274459397,
+          "current_patch_std": 63.24947274459397,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.027981968141440324
+        },
+        {
+          "region": 2,
+          "source_patch_std": 65.25502245463989,
+          "current_patch_std": 65.25502245463989,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.02770132423171878
+        },
+        {
+          "region": 2,
+          "source_patch_std": 28.051058913574717,
+          "current_patch_std": 28.051058913574717,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.027079394764423503
+        },
+        {
+          "region": 2,
+          "source_patch_std": 60.427808168094266,
+          "current_patch_std": 60.427808168094266,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.026979351892948054
+        },
+        {
+          "region": 2,
+          "source_patch_std": 27.10582680741505,
+          "current_patch_std": 27.10582680741505,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.027591478428611066
+        },
+        {
+          "region": 2,
+          "source_patch_std": 15.307329963690073,
+          "current_patch_std": 15.307329963690073,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.02779549919899542
+        },
+        {
+          "region": 2,
+          "source_patch_std": 19.414935831295793,
+          "current_patch_std": 19.414935831295793,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.027072786894275468
+        },
+        {
+          "region": 2,
+          "source_patch_std": 10.92858433446691,
+          "current_patch_std": 10.92858433446691,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.02786091726420964
+        },
+        {
+          "region": 2,
+          "source_patch_std": 46.10028874337147,
+          "current_patch_std": 46.10028874337147,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.023846764458632697
+        },
+        {
+          "region": 2,
+          "source_patch_std": 51.383386083753756,
+          "current_patch_std": 51.383386083753756,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.024859918207589284
+        },
+        {
+          "region": 2,
+          "source_patch_std": 45.81855659440901,
+          "current_patch_std": 45.81855659440901,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.02386993697891211
+        },
+        {
+          "region": 2,
+          "source_patch_std": 45.330950699913906,
+          "current_patch_std": 45.330950699913906,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.023495328171811842
+        },
+        {
+          "region": 2,
+          "source_patch_std": 36.865407787762564,
+          "current_patch_std": 36.865407787762564,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.02483055955631607
+        },
+        {
+          "region": 2,
+          "source_patch_std": 36.09638509995081,
+          "current_patch_std": 36.09638509995081,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.02422617125138072
+        },
+        {
+          "region": 2,
+          "source_patch_std": 39.21820791544108,
+          "current_patch_std": 39.21820791544108,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.02440138303525843
+        },
+        {
+          "region": 2,
+          "source_patch_std": 50.67389344172412,
+          "current_patch_std": 50.67389344172412,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.024363520566484106
+        },
+        {
+          "region": 2,
+          "source_patch_std": 59.01292664417781,
+          "current_patch_std": 59.01292664417781,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.025141497841119877
+        },
+        {
+          "region": 2,
+          "source_patch_std": 25.51874605069771,
+          "current_patch_std": 25.51874605069771,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.02407932886712228
+        },
+        {
+          "region": 2,
+          "source_patch_std": 3.309843157673043,
+          "current_patch_std": 3.309843157673043,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.02342828953607169
+        },
+        {
+          "region": 2,
+          "source_patch_std": 35.62942326882567,
+          "current_patch_std": 35.62942326882567,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.021449899855247055
+        },
+        {
+          "region": 2,
+          "source_patch_std": 37.81706610630826,
+          "current_patch_std": 37.81706610630826,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.022594213005353466
+        },
+        {
+          "region": 2,
+          "source_patch_std": 38.60011027937935,
+          "current_patch_std": 38.60011027937935,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.022101208515882275
+        },
+        {
+          "region": 2,
+          "source_patch_std": 36.679524748863216,
+          "current_patch_std": 36.679524748863216,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 1.975284067915199
+        },
+        {
+          "region": 2,
+          "source_patch_std": 34.42728002437229,
+          "current_patch_std": 34.42728002437229,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.021859938677811802
+        },
+        {
+          "region": 2,
+          "source_patch_std": 45.536591391490376,
+          "current_patch_std": 45.536591391490376,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.02153517298165912
+        },
+        {
+          "region": 2,
+          "source_patch_std": 42.463759653975735,
+          "current_patch_std": 42.463759653975735,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.022985572743548514
+        },
+        {
+          "region": 2,
+          "source_patch_std": 38.37486677501304,
+          "current_patch_std": 38.37486677501304,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.02201226262010751
+        },
+        {
+          "region": 2,
+          "source_patch_std": 39.20219041499254,
+          "current_patch_std": 39.20219041499254,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.02334487758288632
+        },
+        {
+          "region": 2,
+          "source_patch_std": 0.9938079899999066,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.022349775813803464
+        },
+        {
+          "region": 2,
+          "source_patch_std": 33.13531822059729,
+          "current_patch_std": 33.13531822059729,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.02043578854792379
+        },
+        {
+          "region": 2,
+          "source_patch_std": 44.110948782237,
+          "current_patch_std": 44.110948782237,
+          "ncc": 0.9999988675117493,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.020877903052337655
+        },
+        {
+          "region": 2,
+          "source_patch_std": 33.913324523657565,
+          "current_patch_std": 33.913324523657565,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.021066791183801024
+        },
+        {
+          "region": 2,
+          "source_patch_std": 22.807931910295842,
+          "current_patch_std": 22.807931910295842,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.021121235971231465
+        },
+        {
+          "region": 2,
+          "source_patch_std": 25.887572307962756,
+          "current_patch_std": 25.887572307962756,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.020237433371492343
+        },
+        {
+          "region": 2,
+          "source_patch_std": 14.77894130757814,
+          "current_patch_std": 14.77894130757814,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.02806051812709608
+        },
+        {
+          "region": 2,
+          "source_patch_std": 12.354767360950586,
+          "current_patch_std": 12.354767360950586,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.02761837386866107
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.9119670775950652,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0008975965638029034
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.2712931993250107,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.002243237585837541
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.38273866918419536,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0025391686039027716
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.9304293446748649,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0006794469158936293
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.492431608336517,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.003152014209045229
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.4557235462616387,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0029134971161920357
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.4611097724210822,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0018519746584257726
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.49078420492357855,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.000732324612782744
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.49738079408134334,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0013639601450426907
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.584169770689698,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.001239006318648613
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.49319317328288265,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.001666718080224373
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.31426968052735443,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0030152289737085374
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.48483164953936503,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.003614267486852694
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.4851574772976068,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0031989719995054416
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.4511494236604274,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0012483818536515884
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.4999555535800714,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0028617026396709723
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.4165466493816883,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.002527762213853103
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.44453332444622173,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0026517932442321635
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.4898979485566356,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0038062172161749323
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.39362826356416947,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0035141629698259504
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.2712931993250107,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.004034056129551098
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.28458329944145994,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.004161725119054933
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.36795061397011913,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.003915100175219641
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.4744535518251562,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0033230335929679915
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.4698095227369502,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0028881779592923435
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.432369298027211,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.003541419607873496
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.4323692980272111,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0031369846195951423
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.6790843508398315,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.004864932132817801
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.5708300216178602,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.004964069963118517
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.675146074729182,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.005325033876391328
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.30228757463345685,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.005452705072663559
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.4576698901993245,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0056569560116310775
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.5286834334831253,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.005260101931589083
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.4946329228782307,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.004547735194149642
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.5276362383309168,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0048669288166000085
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.44221663871405337,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.00442876128118889
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.46294814791110356,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.004545357367244731
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.4013311184877976,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.005409891094691976
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.48127402938245556,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.004707374446015535
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.6253887679764573,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.005631674833437114
+        },
+        {
+          "region": 3,
+          "source_patch_std": 0.5119027685453992,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0046735248955676705
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.0535864674740487,
+          "current_patch_std": 1.0535864674740487,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0018090465013788208
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.238509657951647,
+          "current_patch_std": 1.238509657951647,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0017849342389449963
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.9529577089576056,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.002419973399530217
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.1689311356961967,
+          "current_patch_std": 1.1689311356961967,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0033097751161077255
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.9579195564050302,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.003046087952658788
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.8365006475390999,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0031335358591968016
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.9029553671481934,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0031129211851250046
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.9496562080986187,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0023375674230438504
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.9521904571390466,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0027595168555126347
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.6102388443341158,
+          "current_patch_std": 1.6102388443341158,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0018372490698614807
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.1929836027972933,
+          "current_patch_std": 1.1929836027972933,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0015990663716918452
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.85820369391358,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0021586196978892456
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.138124947034256,
+          "current_patch_std": 1.138124947034256,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0027478116257073524
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.9943445014954932,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.000995057993131125
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.9991996797437438,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0030697269434721117
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.9171507139498748,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.002121684129436513
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.5376492040974921,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.002614879339398628
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.0781786196185068,
+          "current_patch_std": 1.0781786196185068,
+          "ncc": 0.9980883598327637,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0015324947276206093
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.6617000178179285,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.003305696706817108
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.6471208790471572,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0031337460237938083
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.6574774088969723,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.002978676680938936
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.7273968468721226,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0020351991854593307
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.7584780081774876,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.002647094354741618
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.8860398787112613,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0023570245860902667
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.936333801405418,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0012952586009384573
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.8084003408652862,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0022331695025153368
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.7657353441522408,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0013122091063105447
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.5896891836665595,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.001779065869384996
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.9473445668789482,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0009989324237032924
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.530659966456864,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0014111711631674675
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.730891557712772,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0021353685666179152
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.8609612772869952,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0012520099051657309
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.7197530440675083,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0012083435772024859
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.9480740711803294,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0023853874266274175
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.6474087396743882,
+          "current_patch_std": 1.6474087396743882,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0048512480015315594
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.8788175950729105,
+          "current_patch_std": 1.8788175950729105,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0038173146922079043
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.6275164750450948,
+          "current_patch_std": 1.6275164750450948,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.004480888626829102
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.903675457349172,
+          "current_patch_std": 1.903675457349172,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.004181429823830627
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.932919495938146,
+          "current_patch_std": 1.932919495938146,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0040990425889268975
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.667762063043047,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.004061372184644035
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.9757554844488955,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.002868833323544341
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.8043830547478187,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.003626013764361047
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.0657403385139375,
+          "current_patch_std": 1.0657403385139375,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.002868449390303021
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.337593195091675,
+          "current_patch_std": 1.337593195091675,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.003864594655152288
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.0595503355576112,
+          "current_patch_std": 1.0595503355576112,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0036374797311291723
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.8158431221748456,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.002811158407406646
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.6655397883496847,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0023789991204541147
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.0825119393177296,
+          "current_patch_std": 1.0825119393177296,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0030655095597290198
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.9038081299714388,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0033171107064850678
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.8340411808526152,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0034520354116316467
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.5268849916669487,
+          "current_patch_std": 1.5268849916669487,
+          "ncc": 0.999046802520752,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.003750173879136706
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.1883051526449213,
+          "current_patch_std": 1.1883051526449213,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.004265166790521286
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.9977753031397179,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0035545884622315907
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.0999438818457405,
+          "current_patch_std": 1.0999438818457405,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.003428001899957348
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.9848231024960151,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.004029386711601522
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.7570703768841809,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.004192024958106147
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.8160609998986325,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0030460873574715305
+        },
+        {
+          "region": 4,
+          "source_patch_std": 2.6102778812386913,
+          "current_patch_std": 2.6102778812386913,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.005429592536023718
+        },
+        {
+          "region": 4,
+          "source_patch_std": 2.044376810475475,
+          "current_patch_std": 2.044376810475475,
+          "ncc": 0.9994683265686035,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0051035810340391355
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.6365214539185862,
+          "current_patch_std": 1.6365214539185862,
+          "ncc": 0.9991702437400818,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.004798701683895778
+        },
+        {
+          "region": 4,
+          "source_patch_std": 2.1799716840385512,
+          "current_patch_std": 2.1799716840385512,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.005150432078669219
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.5888500383750646,
+          "current_patch_std": 1.5888500383750646,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.004715324062078746
+        },
+        {
+          "region": 4,
+          "source_patch_std": 0.9300896014184153,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.004387162961637541
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.9891061333866884,
+          "current_patch_std": 1.9891061333866884,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.004623919851337937
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.3607840876984614,
+          "current_patch_std": 1.3607840876984614,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.004934776938647594
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.215813500967892,
+          "current_patch_std": 1.215813500967892,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.005026890077133209
+        },
+        {
+          "region": 4,
+          "source_patch_std": 2.0559387030301473,
+          "current_patch_std": 2.0559387030301473,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.005153619862675334
+        },
+        {
+          "region": 4,
+          "source_patch_std": 2.355446538357797,
+          "current_patch_std": 2.355446538357797,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.005563863800094537
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.1982209033952518,
+          "current_patch_std": 1.1982209033952518,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.005294806006763696
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.3130606974019625,
+          "current_patch_std": 1.3130606974019625,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0045460619498274525
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.1108799759594439,
+          "current_patch_std": 1.1108799759594439,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.005867612536782499
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.340248733133767,
+          "current_patch_std": 1.340248733133767,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.004876487413325215
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.9934510060646706,
+          "current_patch_std": 1.9934510060646706,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.005418896765725712
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.2507775359529145,
+          "current_patch_std": 1.2507775359529145,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.004646322730728358
+        },
+        {
+          "region": 5,
+          "source_patch_std": 28.22625902888004,
+          "current_patch_std": 28.22625902888004,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.017091531426221183
+        },
+        {
+          "region": 5,
+          "source_patch_std": 30.410104233727527,
+          "current_patch_std": 30.410104233727527,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.016671089087439108
+        },
+        {
+          "region": 5,
+          "source_patch_std": 23.36507893374741,
+          "current_patch_std": 23.36507893374741,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.017375395917779413
+        },
+        {
+          "region": 5,
+          "source_patch_std": 22.88217549874914,
+          "current_patch_std": 22.88217549874914,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.01785524734405028
+        },
+        {
+          "region": 5,
+          "source_patch_std": 22.022033411008064,
+          "current_patch_std": 22.022033411008064,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.01814354935615889
+        },
+        {
+          "region": 5,
+          "source_patch_std": 15.810848596243446,
+          "current_patch_std": 15.810848596243446,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.017029362910765206
+        },
+        {
+          "region": 5,
+          "source_patch_std": 10.729698947602063,
+          "current_patch_std": 10.729698947602063,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.017337804153026045
+        },
+        {
+          "region": 5,
+          "source_patch_std": 1.777088755364921,
+          "current_patch_std": 1.777088755364921,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.016689160210794456
+        },
+        {
+          "region": 5,
+          "source_patch_std": 1.7154979840656572,
+          "current_patch_std": 1.7154979840656572,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.01736384280573125
+        },
+        {
+          "region": 5,
+          "source_patch_std": 15.769383682579196,
+          "current_patch_std": 15.769383682579196,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.017353315416889333
+        },
+        {
+          "region": 5,
+          "source_patch_std": 1.8172615403878551,
+          "current_patch_std": 1.8172615403878551,
+          "ncc": 0.9993271231651306,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.018236004601783946
+        },
+        {
+          "region": 5,
+          "source_patch_std": 21.915782238175098,
+          "current_patch_std": 21.915782238175098,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.018240520411533862
+        },
+        {
+          "region": 5,
+          "source_patch_std": 14.901120017561693,
+          "current_patch_std": 14.901120017561693,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.01792187680125565
+        },
+        {
+          "region": 5,
+          "source_patch_std": 15.528952489852584,
+          "current_patch_std": 15.528952489852584,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.0186073893604272
+        },
+        {
+          "region": 5,
+          "source_patch_std": 14.786384127147365,
+          "current_patch_std": 14.786384127147365,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.01696814381345182
+        },
+        {
+          "region": 5,
+          "source_patch_std": 0.9333333333333335,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.0185481723061815
+        },
+        {
+          "region": 5,
+          "source_patch_std": 21.602246796726185,
+          "current_patch_std": 21.602246796726185,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.01848908197949801
+        },
+        {
+          "region": 5,
+          "source_patch_std": 15.292095271014295,
+          "current_patch_std": 15.292095271014295,
+          "ncc": 0.9999905228614807,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.017658727917780143
+        },
+        {
+          "region": 5,
+          "source_patch_std": 8.713095012184706,
+          "current_patch_std": 8.713095012184706,
+          "ncc": 0.9999707341194153,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.018256038200985012
+        },
+        {
+          "region": 5,
+          "source_patch_std": 1.9543632729022349,
+          "current_patch_std": 1.9543632729022349,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.017738866220200416
+        },
+        {
+          "region": 5,
+          "source_patch_std": 1.2126901021904226,
+          "current_patch_std": 1.2126901021904226,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.019031525049425894
+        },
+        {
+          "region": 5,
+          "source_patch_std": 1.5445707382415668,
+          "current_patch_std": 1.5445707382415668,
+          "ncc": 0.9990684986114502,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.01836919919377708
+        },
+        {
+          "region": 5,
+          "source_patch_std": 6.913427264621353,
+          "current_patch_std": 6.913427264621353,
+          "ncc": 0.9999535083770752,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.018248134688826485
+        },
+        {
+          "region": 5,
+          "source_patch_std": 9.610539482037545,
+          "current_patch_std": 9.610539482037545,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.017975193005917416
+        },
+        {
+          "region": 5,
+          "source_patch_std": 0.8235304907140977,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.016962568857633836
+        },
+        {
+          "region": 5,
+          "source_patch_std": 10.342945111536023,
+          "current_patch_std": 10.342945111536023,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.01764557597836564
+        },
+        {
+          "region": 5,
+          "source_patch_std": 5.754009230286498,
+          "current_patch_std": 5.754009230286498,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.017938166699673606
+        },
+        {
+          "region": 5,
+          "source_patch_std": 2.2261032775837553,
+          "current_patch_std": 2.2261032775837553,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.016973042581859613
+        },
+        {
+          "region": 5,
+          "source_patch_std": 1.0616176801303905,
+          "current_patch_std": 1.0616176801303905,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.017388094040399798
+        },
+        {
+          "region": 5,
+          "source_patch_std": 1.2156672709176006,
+          "current_patch_std": 1.2156672709176006,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.018310087027399682
+        },
+        {
+          "region": 5,
+          "source_patch_std": 35.03353286055172,
+          "current_patch_std": 35.03353286055172,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.014926540480890694
+        },
+        {
+          "region": 5,
+          "source_patch_std": 33.633139448106874,
+          "current_patch_std": 33.633139448106874,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.015264999675966303
+        },
+        {
+          "region": 5,
+          "source_patch_std": 12.854671822116696,
+          "current_patch_std": 12.854671822116696,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.014706193287192953
+        },
+        {
+          "region": 5,
+          "source_patch_std": 12.404717541481975,
+          "current_patch_std": 12.404717541481975,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.01460980517469469
+        },
+        {
+          "region": 5,
+          "source_patch_std": 15.173365879025177,
+          "current_patch_std": 15.173365879025177,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.015405803734143813
+        },
+        {
+          "region": 5,
+          "source_patch_std": 14.393912293435413,
+          "current_patch_std": 14.393912293435413,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.015104418849518101
+        },
+        {
+          "region": 5,
+          "source_patch_std": 1.6990919869880245,
+          "current_patch_std": 1.6990919869880245,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.014979645205683382
+        },
+        {
+          "region": 5,
+          "source_patch_std": 36.88223661571757,
+          "current_patch_std": 36.88223661571757,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.014668759861195962
+        },
+        {
+          "region": 5,
+          "source_patch_std": 1.794014740432444,
+          "current_patch_std": 1.794014740432444,
+          "ncc": 0.9993095397949219,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.015161968952627187
+        },
+        {
+          "region": 5,
+          "source_patch_std": 12.088656860518377,
+          "current_patch_std": 12.088656860518377,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.013827393437729263
+        },
+        {
+          "region": 5,
+          "source_patch_std": 15.8613212284195,
+          "current_patch_std": 15.8613212284195,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.01712663725413051
+        },
+        {
+          "region": 5,
+          "source_patch_std": 12.2232193532647,
+          "current_patch_std": 12.2232193532647,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.014227482722533609
+        },
+        {
+          "region": 5,
+          "source_patch_std": 25.005364757720827,
+          "current_patch_std": 25.005364757720827,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.014591477718480399
+        },
+        {
+          "region": 5,
+          "source_patch_std": 9.689302743454814,
+          "current_patch_std": 9.689302743454814,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.014736968682999806
+        },
+        {
+          "region": 5,
+          "source_patch_std": 1.5211691410081774,
+          "current_patch_std": 1.5211691410081774,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.015439573750789061
+        },
+        {
+          "region": 5,
+          "source_patch_std": 1.24599902899116,
+          "current_patch_std": 1.24599902899116,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.015180117288329912
+        },
+        {
+          "region": 5,
+          "source_patch_std": 7.739034935209627,
+          "current_patch_std": 7.739034935209627,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.015698795914495554
+        },
+        {
+          "region": 5,
+          "source_patch_std": 10.561056812064516,
+          "current_patch_std": 10.561056812064516,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.014261619624861737
+        },
+        {
+          "region": 5,
+          "source_patch_std": 13.073509923826693,
+          "current_patch_std": 13.073509923826693,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.015052938839221215
+        },
+        {
+          "region": 5,
+          "source_patch_std": 1.5209094095634905,
+          "current_patch_std": 1.5209094095634905,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.014829118865061814
+        },
+        {
+          "region": 5,
+          "source_patch_std": 20.19599960388195,
+          "current_patch_std": 20.19599960388195,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.9820639547138496
+        },
+        {
+          "region": 5,
+          "source_patch_std": 2.194736689400911,
+          "current_patch_std": 2.194736689400911,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.017391378875484177
+        },
+        {
+          "region": 5,
+          "source_patch_std": 1.990019542059268,
+          "current_patch_std": 1.990019542059268,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.01761947756215118
+        },
+        {
+          "region": 5,
+          "source_patch_std": 1.5337133184561829,
+          "current_patch_std": 1.5337133184561829,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.015763969899116725
+        },
+        {
+          "region": 5,
+          "source_patch_std": 0.959073627112237,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 0.016102878365524896
+        },
+        {
+          "region": 5,
+          "source_patch_std": 6.264339993611103,
+          "current_patch_std": 6.264339993611103,
+          "ncc": 1.0,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.015341858655846419
+        }
+      ]
+    },
+    {
+      "reference_id": "reviewed-wall",
+      "image": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000013.png",
+      "original_track_count": 52,
+      "partition": {
+        "ncc_rejected": 7,
+        "ncc_supported": 43,
+        "current_texture_unavailable": 1,
+        "source_texture_unavailable": 1
+      },
+      "source_texture_unavailable_camera_outliers": 1,
+      "measurements": [
+        {
+          "region": 1,
+          "source_patch_std": 2.9994238129808437,
+          "current_patch_std": 3.704385122500422,
+          "ncc": 0.6703609824180603,
+          "reason": "ncc_rejected",
+          "camera_residual_px": 21.950715003508623
+        },
+        {
+          "region": 1,
+          "source_patch_std": 1.8549579876111666,
+          "current_patch_std": 2.1543135024101447,
+          "ncc": 0.651484489440918,
+          "reason": "ncc_rejected",
+          "camera_residual_px": 5.320538845888233
+        },
+        {
+          "region": 2,
+          "source_patch_std": 41.398713882331066,
+          "current_patch_std": 41.276954141625765,
+          "ncc": 0.9803034663200378,
+          "reason": "ncc_supported",
+          "camera_residual_px": 1.024034299612107
+        },
+        {
+          "region": 2,
+          "source_patch_std": 29.198009741068073,
+          "current_patch_std": 27.94395943913107,
+          "ncc": 0.976419985294342,
+          "reason": "ncc_supported",
+          "camera_residual_px": 1.314822506517344
+        },
+        {
+          "region": 2,
+          "source_patch_std": 37.95858848147771,
+          "current_patch_std": 37.606671328303726,
+          "ncc": 0.9979521632194519,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.48476143417718615
+        },
+        {
+          "region": 2,
+          "source_patch_std": 27.542919683493217,
+          "current_patch_std": 27.265203619174784,
+          "ncc": 0.9892016649246216,
+          "reason": "ncc_supported",
+          "camera_residual_px": 1.1032348597452946
+        },
+        {
+          "region": 2,
+          "source_patch_std": 33.0154394110721,
+          "current_patch_std": 29.53187020872013,
+          "ncc": 0.9609984755516052,
+          "reason": "ncc_supported",
+          "camera_residual_px": 1.357577066649046
+        },
+        {
+          "region": 2,
+          "source_patch_std": 28.436978186774024,
+          "current_patch_std": 25.24753736921438,
+          "ncc": 0.9767343401908875,
+          "reason": "ncc_supported",
+          "camera_residual_px": 2.179235658040526
+        },
+        {
+          "region": 2,
+          "source_patch_std": 37.14194328003428,
+          "current_patch_std": 37.1000845894347,
+          "ncc": 0.997800350189209,
+          "reason": "ncc_supported",
+          "camera_residual_px": 1.223354853527542
+        },
+        {
+          "region": 2,
+          "source_patch_std": 18.957181641859876,
+          "current_patch_std": 19.075768871127877,
+          "ncc": 0.9935071468353271,
+          "reason": "ncc_supported",
+          "camera_residual_px": 1.353676146550069
+        },
+        {
+          "region": 2,
+          "source_patch_std": 28.051058913574717,
+          "current_patch_std": 27.050487410318553,
+          "ncc": 0.9981352090835571,
+          "reason": "ncc_supported",
+          "camera_residual_px": 1.073385344551254
+        },
+        {
+          "region": 2,
+          "source_patch_std": 60.427808168094266,
+          "current_patch_std": 59.00982065159437,
+          "ncc": 0.987348735332489,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.5058163135787697
+        },
+        {
+          "region": 2,
+          "source_patch_std": 10.92858433446691,
+          "current_patch_std": 10.961661584420403,
+          "ncc": 0.9903727769851685,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.7555694856492038
+        },
+        {
+          "region": 2,
+          "source_patch_std": 46.10028874337147,
+          "current_patch_std": 44.33160208259878,
+          "ncc": 0.9928991794586182,
+          "reason": "ncc_supported",
+          "camera_residual_px": 2.524024592936177
+        },
+        {
+          "region": 2,
+          "source_patch_std": 45.81855659440901,
+          "current_patch_std": 44.869006818064356,
+          "ncc": 0.9921256899833679,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.6844890668013923
+        },
+        {
+          "region": 2,
+          "source_patch_std": 45.330950699913906,
+          "current_patch_std": 43.94096241296699,
+          "ncc": 0.9909816980361938,
+          "reason": "ncc_supported",
+          "camera_residual_px": 1.418816056940358
+        },
+        {
+          "region": 2,
+          "source_patch_std": 36.865407787762564,
+          "current_patch_std": 36.49265104438034,
+          "ncc": 0.9979575276374817,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.9808579042355218
+        },
+        {
+          "region": 2,
+          "source_patch_std": 36.09638509995081,
+          "current_patch_std": 33.510581781849524,
+          "ncc": 0.9879271388053894,
+          "reason": "ncc_supported",
+          "camera_residual_px": 284.89920521670706
+        },
+        {
+          "region": 2,
+          "source_patch_std": 39.21820791544108,
+          "current_patch_std": 38.100466022230115,
+          "ncc": 0.998226523399353,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.8224163804470168
+        },
+        {
+          "region": 2,
+          "source_patch_std": 59.01292664417781,
+          "current_patch_std": 57.663243058294945,
+          "ncc": 0.9928736686706543,
+          "reason": "ncc_supported",
+          "camera_residual_px": 2.001479541482751
+        },
+        {
+          "region": 2,
+          "source_patch_std": 25.51874605069771,
+          "current_patch_std": 24.45652469178726,
+          "ncc": 0.998115062713623,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.7191984345810972
+        },
+        {
+          "region": 2,
+          "source_patch_std": 35.62942326882567,
+          "current_patch_std": 35.74445653299971,
+          "ncc": 0.9958734512329102,
+          "reason": "ncc_supported",
+          "camera_residual_px": 1.432376975547184
+        },
+        {
+          "region": 2,
+          "source_patch_std": 37.81706610630826,
+          "current_patch_std": 37.276129720151744,
+          "ncc": 0.9926416873931885,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.36138127072715626
+        },
+        {
+          "region": 2,
+          "source_patch_std": 38.60011027937935,
+          "current_patch_std": 37.85119297824764,
+          "ncc": 0.9966465830802917,
+          "reason": "ncc_supported",
+          "camera_residual_px": 2.2420081069121043
+        },
+        {
+          "region": 2,
+          "source_patch_std": 38.37486677501304,
+          "current_patch_std": 38.27657995223066,
+          "ncc": 0.9968924522399902,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.36727753147980424
+        },
+        {
+          "region": 2,
+          "source_patch_std": 39.20219041499254,
+          "current_patch_std": 38.24833836461816,
+          "ncc": 0.9869649410247803,
+          "reason": "ncc_supported",
+          "camera_residual_px": 6.7633406482234655
+        },
+        {
+          "region": 2,
+          "source_patch_std": 33.13531822059729,
+          "current_patch_std": 32.847765280923106,
+          "ncc": 0.9969810843467712,
+          "reason": "ncc_supported",
+          "camera_residual_px": 1.3216441692572458
+        },
+        {
+          "region": 2,
+          "source_patch_std": 14.77894130757814,
+          "current_patch_std": 14.496675480950795,
+          "ncc": 0.9910698533058167,
+          "reason": "ncc_supported",
+          "camera_residual_px": 3.963281269571417
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.6474087396743882,
+          "current_patch_std": 1.4318010759137088,
+          "ncc": 0.09736433625221252,
+          "reason": "ncc_rejected",
+          "camera_residual_px": 9.865301203016712
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.8788175950729105,
+          "current_patch_std": 0.44519935886724105,
+          "reason": "current_texture_unavailable",
+          "camera_residual_px": 9.593666988351364
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.6275164750450948,
+          "current_patch_std": 1.5016435440321159,
+          "ncc": 0.2668297588825226,
+          "reason": "ncc_rejected",
+          "camera_residual_px": 8.714496474892007
+        },
+        {
+          "region": 4,
+          "source_patch_std": 1.932919495938146,
+          "current_patch_std": 1.1546663245230868,
+          "ncc": 0.026046834886074066,
+          "reason": "ncc_rejected",
+          "camera_residual_px": 7.1274841536594975
+        },
+        {
+          "region": 4,
+          "source_patch_std": 2.6102778812386913,
+          "current_patch_std": 1.7995664772863602,
+          "ncc": 0.5446558594703674,
+          "reason": "ncc_rejected",
+          "camera_residual_px": 10.397374777267
+        },
+        {
+          "region": 4,
+          "source_patch_std": 2.0559387030301473,
+          "current_patch_std": 1.4868908650080692,
+          "ncc": 0.8344973921775818,
+          "reason": "ncc_rejected",
+          "camera_residual_px": 9.817219906883691
+        },
+        {
+          "region": 5,
+          "source_patch_std": 28.22625902888004,
+          "current_patch_std": 28.137845521952887,
+          "ncc": 0.996216893196106,
+          "reason": "ncc_supported",
+          "camera_residual_px": 8.147671795899946
+        },
+        {
+          "region": 5,
+          "source_patch_std": 30.410104233727527,
+          "current_patch_std": 30.300322615729424,
+          "ncc": 0.9964058995246887,
+          "reason": "ncc_supported",
+          "camera_residual_px": 2.027638652715153
+        },
+        {
+          "region": 5,
+          "source_patch_std": 23.36507893374741,
+          "current_patch_std": 23.47949985796646,
+          "ncc": 0.9963086843490601,
+          "reason": "ncc_supported",
+          "camera_residual_px": 1.7448339589575486
+        },
+        {
+          "region": 5,
+          "source_patch_std": 31.92495088310848,
+          "current_patch_std": 31.41037023062115,
+          "ncc": 0.9964158535003662,
+          "reason": "ncc_supported",
+          "camera_residual_px": 1.3950208281235796
+        },
+        {
+          "region": 5,
+          "source_patch_std": 10.729698947602063,
+          "current_patch_std": 10.558475385638582,
+          "ncc": 0.9917998909950256,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.5213620009038074
+        },
+        {
+          "region": 5,
+          "source_patch_std": 15.769383682579196,
+          "current_patch_std": 15.260091742843487,
+          "ncc": 0.994395911693573,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.19189087966565602
+        },
+        {
+          "region": 5,
+          "source_patch_std": 0.9333333333333335,
+          "reason": "source_texture_unavailable",
+          "camera_residual_px": 3.4946264977656387
+        },
+        {
+          "region": 5,
+          "source_patch_std": 15.823314569034434,
+          "current_patch_std": 15.49271497459211,
+          "ncc": 0.9973334074020386,
+          "reason": "ncc_supported",
+          "camera_residual_px": 8.313990791480643
+        },
+        {
+          "region": 5,
+          "source_patch_std": 6.913427264621353,
+          "current_patch_std": 7.0064294987523885,
+          "ncc": 0.9893205761909485,
+          "reason": "ncc_supported",
+          "camera_residual_px": 6.344629790870066
+        },
+        {
+          "region": 5,
+          "source_patch_std": 9.610539482037545,
+          "current_patch_std": 9.04638908933037,
+          "ncc": 0.9902486205101013,
+          "reason": "ncc_supported",
+          "camera_residual_px": 10.575774887193079
+        },
+        {
+          "region": 5,
+          "source_patch_std": 12.854671822116696,
+          "current_patch_std": 12.611967665477966,
+          "ncc": 0.9917493462562561,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.5821457217075889
+        },
+        {
+          "region": 5,
+          "source_patch_std": 14.393912293435413,
+          "current_patch_std": 14.318863324774778,
+          "ncc": 0.9975852966308594,
+          "reason": "ncc_supported",
+          "camera_residual_px": 0.3891231903586335
+        },
+        {
+          "region": 5,
+          "source_patch_std": 13.266525962402936,
+          "current_patch_std": 12.853955724903434,
+          "ncc": 0.9925491213798523,
+          "reason": "ncc_supported",
+          "camera_residual_px": 2.431325962732663
+        },
+        {
+          "region": 5,
+          "source_patch_std": 12.088656860518377,
+          "current_patch_std": 12.423518914632128,
+          "ncc": 0.983607828617096,
+          "reason": "ncc_supported",
+          "camera_residual_px": 24.777884472538858
+        },
+        {
+          "region": 5,
+          "source_patch_std": 12.2232193532647,
+          "current_patch_std": 12.373979868166012,
+          "ncc": 0.9909781813621521,
+          "reason": "ncc_supported",
+          "camera_residual_px": 74.46778221418562
+        },
+        {
+          "region": 5,
+          "source_patch_std": 9.689302743454814,
+          "current_patch_std": 8.55428677460735,
+          "ncc": 0.9151382446289062,
+          "reason": "ncc_supported",
+          "camera_residual_px": 1.4375974525503166
+        },
+        {
+          "region": 5,
+          "source_patch_std": 20.19599960388195,
+          "current_patch_std": 19.70509190320056,
+          "ncc": 0.9979562759399414,
+          "reason": "ncc_supported",
+          "camera_residual_px": 5.588238751417619
+        },
+        {
+          "region": 5,
+          "source_patch_std": 14.618747307464693,
+          "current_patch_std": 14.451426688508416,
+          "ncc": 0.9959241151809692,
+          "reason": "ncc_supported",
+          "camera_residual_px": 7.482521405717063
+        }
+      ]
+    }
+  ],
+  "wall_clock_sec": 3.593151363020297
+}

@@ -1,0 +1,72 @@
+{
+  "scope": "Four exposed actual training images, including former early regression image; diagnostic training eligibility only; no independent qualification",
+  "target_assertion": "GT-R1-ROUND-END",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "recognizer_fingerprint": "ef5ac2cf31c306746d21a4c2ed13397fd2601a7c08c7eb003b0b18b19a55481e",
+  "training_count": 4,
+  "training_scores": [
+    {
+      "frame_sha256": "8f48694886e7a490b27ff0548f0fb7b54c834729b52a2d7dbfa375c248cbb62b",
+      "pts_sec": 75.402669,
+      "group_ncc": [
+        0.9583307825389347,
+        0.9469390589154711,
+        0.9438860001752305
+      ]
+    },
+    {
+      "frame_sha256": "9f51380e00db3f4633ad18d2e80519744e0146466b28f1d3987ae7a1080ac6cf",
+      "pts_sec": 75.802669,
+      "group_ncc": [
+        0.954971741343892,
+        0.9669339904500049,
+        0.9881564196813304
+      ]
+    },
+    {
+      "frame_sha256": "734d31fe819a8e40d242917a2e454a1b068107073ec6108d0ef976d6fcbd9269",
+      "pts_sec": 76.269336,
+      "group_ncc": [
+        0.9117645547546738,
+        0.9617896649957506,
+        0.9850301229277254
+      ]
+    },
+    {
+      "frame_sha256": "8dba92b8ce2af487a45d04d182d2f35a1406518b60d1fa4c09e0ef4f1130d942",
+      "pts_sec": 74.43600260416666,
+      "group_ncc": [
+        0.6921343124410407,
+        0.8112482663000944,
+        0.8014714501845696
+      ]
+    }
+  ],
+  "group_mask_pixels": [
+    2763,
+    2529,
+    2987
+  ],
+  "constructor_supported": true,
+  "rejection_reason": null,
+  "mask_pixels": 8279,
+  "freeze_sha256": "bec54fa3b85ba3c91eccc0153cbbd54621b6f919710c12f04d2be9ede4fa3cd4",
+  "asset_sha256": {
+    "reference": "11e2b90ae3dc264a7f7b3384558024f67bb5c985e7aa5277eb5a136f8ea5746f",
+    "mask": "03ea014654bf5507d78a43ffa3cbd1778880e791efc4fc33e31da8b6f187b810",
+    "regions": "adc35ef7dd238587109a71743d3f858d7b0dc8b5b5f5247f7f4d3e9591731d05"
+  },
+  "holdout_predictions_made": false,
+  "qualification_created": false,
+  "profile_adopted": false,
+  "production_changed": false,
+  "canonical_current": null,
+  "canonical_delta": null,
+  "wall_clock_sec": 0.39756718097487465,
+  "accepted_training_images": 3,
+  "early_training_accepted": false,
+  "target_hypothesis_decision": "Reject for target coverage: constructor supported only by three later training images; exposed early training example remains below 0.90",
+  "early_training_previous_min_group_ncc": 0.3875529175837342,
+  "early_training_current_min_group_ncc": 0.6921343124410407,
+  "early_training_ncc_delta": 0.3045813948573065
+}

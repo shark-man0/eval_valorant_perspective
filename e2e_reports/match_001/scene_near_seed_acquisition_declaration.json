@@ -1,0 +1,108 @@
+{
+  "scope": "Frozen stateless near-seed acquisition coverage; all exposed, not holdout",
+  "inputs": [
+    {
+      "path": "outputs/recognition-investigation/scene-world-feature-holdout-20261009/window-000/frame_000001.png",
+      "source_pts_ticks": 58409,
+      "exposure": "previously exposed prefix; development only",
+      "file_sha256": "4f625647a6f386a9a64cfdeb57b6942c90c320a69231fb6b223b8dd068ff79ba",
+      "native_pixel_sha256": "84a1bb5181d5ccfb108b443855a7fdb505aa8ade5f529aadeb59a8e9919dae29"
+    },
+    {
+      "path": "outputs/recognition-investigation/scene-world-feature-holdout-20261009/window-000/frame_000002.png",
+      "source_pts_ticks": 58665,
+      "exposure": "previously exposed prefix; development only",
+      "file_sha256": "5fde5ca22a18fbe6e91401208504ed9b82543b6cd9489683478285004d1493a5",
+      "native_pixel_sha256": "776601ca37c63cc79671653b0ef5596e8c0c4f605593bfe7454035c4702516f3"
+    },
+    {
+      "path": "outputs/recognition-investigation/scene-world-feature-holdout-20261009/window-000/frame_000003.png",
+      "source_pts_ticks": 58921,
+      "exposure": "previously exposed prefix; development only",
+      "file_sha256": "cb2081c52d7d15979fe7c7c337b9eb9299ddf68de2f1a422fd6b9f43dda91112",
+      "native_pixel_sha256": "b4f33e523cae8802f6c02c7558c9a4792f264588937834e609a9e2bacb69065b"
+    },
+    {
+      "path": "outputs/recognition-investigation/scene-world-feature-holdout-20261009/window-000/frame_000004.png",
+      "source_pts_ticks": 59177,
+      "exposure": "previously exposed prefix; development only",
+      "file_sha256": "346211e1ea63c280745303f5b06dfcfabcbc5f34e7b1bb8ddc2eccc542fd127a",
+      "native_pixel_sha256": "796a16ce78db1e325a00e66082e2bcc02d3b05720ca8edd8ad39da0770a4f4cd"
+    },
+    {
+      "path": "outputs/recognition-investigation/scene-world-feature-holdout-20261009/window-000/frame_000005.png",
+      "source_pts_ticks": 59433,
+      "exposure": "previously exposed prefix; development only",
+      "file_sha256": "e5c7fe3f921d537b317f7df9e172093d833790e465ebac0a8e4f73584df1c0ea",
+      "native_pixel_sha256": "9e31b11d65c1aeb05b1ab1706f477957ce2d52eafbd8c39f95203ae9526d0029"
+    },
+    {
+      "path": "outputs/recognition-investigation/scene-world-feature-holdout-20261009/window-000/frame_000006.png",
+      "source_pts_ticks": 59689,
+      "exposure": "previously exposed prefix; development only",
+      "file_sha256": "4e5468fc6df69255d5e695afcef7d90c896a8045f2ac02adbdd9e1b2ae51987c",
+      "native_pixel_sha256": "44fa119d8597b243ed77bab82d3fa89ca800055fa823574481759d26214d1ba3"
+    },
+    {
+      "path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000001.png",
+      "source_pts_ticks": 59945,
+      "exposure": "previously exposed training; development only",
+      "file_sha256": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+      "native_pixel_sha256": "439c3817810a8d8bcc8c82ed218d5fe0f851c7c5f35308b0b85fcbd328759edd"
+    },
+    {
+      "path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000002.png",
+      "source_pts_ticks": 60201,
+      "exposure": "previously exposed training; development only",
+      "file_sha256": "e790bd155383fac3eb439d4311a89840467fce57938a80dae2448e628dfd9211",
+      "native_pixel_sha256": "eb69ac61ab1bd4da4517429efa0f2896e520476b6bef244f4e4746bb98c8d850"
+    },
+    {
+      "path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000003.png",
+      "source_pts_ticks": 60457,
+      "exposure": "previously exposed training; development only",
+      "file_sha256": "1dc0d9b8c59355b43eb723b1961110bb53d1ce8a62176490f5c632dd6ee5f2ad",
+      "native_pixel_sha256": "21d34bc8deaedf9aea2c0f26343d51ec079be4dd71cccb6a7d3b204daeb1735b"
+    },
+    {
+      "path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000004.png",
+      "source_pts_ticks": 60713,
+      "exposure": "previously exposed training; development only",
+      "file_sha256": "00e2240728fa5e6c6cd1d8a29adebecb993d61abb4c9a97aea47902d53f041e1",
+      "native_pixel_sha256": "03ad8c60cca1e1a5b02aae0d2395c56886b1654731a31ce39f51e53cda6217c7"
+    },
+    {
+      "path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000005.png",
+      "source_pts_ticks": 60969,
+      "exposure": "previously exposed training; development only",
+      "file_sha256": "77d745206022589fc826823873bc1305e922fdda01854eac4a7eed10876d6c80",
+      "native_pixel_sha256": "e7fd447968482a2c92eb2e2f8f0752106aed9b418055b37784edd4a6a866ae34"
+    },
+    {
+      "path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000006.png",
+      "source_pts_ticks": 61225,
+      "exposure": "previously exposed training; development only",
+      "file_sha256": "d4dafbd08a45d736ff634bb6537d9d0991d3023a611db6a229874a4755c9f8d3",
+      "native_pixel_sha256": "02563af62baa6c85a8cee7598d67f37170ce3b2905c076fd2bcfea79e40f2333"
+    }
+  ],
+  "bindings": {
+    "outputs/recognition-investigation/world-domain-bootstrap-20261009/profile.json": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+    "outputs/recognition-investigation/world-domain-bootstrap-20261009/assets/wall_close.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "ValorantData/videos/Valorant_09-25-2026_0-37-29-379.mp4": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "scripts/diagnostics/observed_scene_chain.py": "c60081a951a72b6d5aa68b05231cb3037b9883b0d7a4704b56810f64b88153d5",
+    "scripts/diagnostics/scene_domain_bootstrap.py": "1563c223d00085bc6059f720a54a4b6dd9e9acde819babd39d34d3dea4ff0e8d",
+    "scripts/diagnostics/scene_world_bootstrap.py": "9947a6b0adc00f1e4b4eb63d5a95b1555d48091633712546e8078ee3a2436cfa",
+    "scripts/diagnostics/scene_reference_support.py": "ba12d60e89544f37b0f9ac0a24a464c26732e0b1c2b658534c893c819e5af89f",
+    "scripts/diagnostics/scene_domain_ambiguity.py": "eea017aa98bd16051f4e0f3f5b4cebd84a5ae33eb8b538be2d25a6106479ad23",
+    "scripts/diagnostics/scene_joint_domains.py": "2046cede2304b9493abc5f9ba06cbcfbe820a67f245a6e42cbd0aff5a5f45d34",
+    "scripts/diagnostics/scene_world_chain.py": "8a6d11a151f4afb77d88780b51f0705beca527edce7521831b9c8a590e788e33",
+    "scripts/diagnostics/scene_correspondence.py": "667fb4f7b0626fbbf4770716eefc18976a9409a4f0646084b95d479dab7273a3",
+    "scripts/diagnostics/scene_patch_search.py": "53e66f692c42cbaab695cdea9910e3326c50089a18468f6b0d01bd463e9c2dd9"
+  },
+  "source_time_base": [
+    1,
+    15360
+  ],
+  "policy": "All preselected observations reported, no bootstrap tuning, no qualification from exposed hashes"
+}

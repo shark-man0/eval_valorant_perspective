@@ -1,0 +1,31 @@
+{
+  "scope": "Same frozen hypothesis, type-only cast correction; exposed active27 explicitly diagnostic development, not independent holdout",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "input_sha256": {
+    "outputs/recognition-investigation/score-white-development-20261008/results.json": "d3b98a163707ea1e5d3d9c9e214568936395405f64ca947b26d9c3c8f4f2eabb",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/score-reader-white-development.templates.json": "eb56187bd75a02a8ae69c5fb694ead83648d5bc8a236e8371611137875c66d4c",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/hud_layout.json": "baa99f1c1f0b4b7b959ec80242a58996a85c6f018bbc0895b3ca728dcaa5f3f8",
+    "scripts/diagnostics/score_enlarged_background.py": "d29f2f1dd6202c120770b7cef55297b358579c6720a69beeb90548284bf38156",
+    "src/valorant_ai_coach/hud/score_glyphs.py": "181f10850e05624a64375bca5bc84628e6cd360d52cdb754d048919ff57a760b",
+    "e2e_reports/match_001/frozen_numeric_reader_holdout_review.json": "d09e35f25405f71bb73da18f66322474eb5743516616925e4808105e2e301d6f",
+    "e2e_reports/match_001/frozen_score_rejection_stages.json": "0babba364db048f25b620a2fe5c8de6de8b5985e2c2bae0828623a808f3c8461"
+  },
+  "profile_fingerprint": "287c6453d04b8f334cb32ba3631b91e935b563c070bb0a717548d8daa138d1b5",
+  "recognizer_fingerprint": "5be7f6c6a6f2d67e27da307c48c65a4728197f4aafee710417fd0206223f2842",
+  "hypothesis": {
+    "background": "maximum of left/right per-row medians, eight columns per side AFTER unchanged cubic enlargement",
+    "minimum_local_contrast": 12,
+    "retained_pixel_intensity": "original enlarged white200 mask; no new resampling",
+    "downstream_white_threshold": 200,
+    "ncc": 0.9,
+    "class_margin": 0.04,
+    "grammar": "unchanged strict one/two digit all10competitors",
+    "retries": 0
+  },
+  "training_frames": 60,
+  "previously_exposed_active27_used": true,
+  "qualification_created": false,
+  "production_changed": "mask helper extraction only; default numerical behavior unchanged, code fingerprint changes",
+  "target": "round lifecycle score evidence, including GT-R1-ROUND-END; no standalone PASS guarantee",
+  "selection": "Training baseline preservation required before any new holdout; exposed active27 excluded"
+}

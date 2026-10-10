@@ -1,0 +1,66 @@
+{
+  "scope": "Source eligibility only; no match/continuity/qualification",
+  "rows": [
+    {
+      "reference_id": "reviewed-wall",
+      "scale": 1,
+      "source_pixel_sha256": "439c3817810a8d8bcc8c82ed218d5fe0f851c7c5f35308b0b85fcbd328759edd",
+      "source_domains": 6,
+      "descriptors": 8,
+      "region_counts": {
+        "2": 8
+      },
+      "regions_with_descriptors": 1,
+      "normalization": "Native locations divided by3; descriptor support context is native source image, not extra temporal evidence"
+    },
+    {
+      "reference_id": "reviewed-wall",
+      "scale": 3,
+      "source_pixel_sha256": "439c3817810a8d8bcc8c82ed218d5fe0f851c7c5f35308b0b85fcbd328759edd",
+      "source_domains": 6,
+      "descriptors": 7,
+      "region_counts": {
+        "2": 7
+      },
+      "regions_with_descriptors": 1,
+      "normalization": "Native locations divided by3; descriptor support context is native source image, not extra temporal evidence"
+    },
+    {
+      "reference_id": "reviewed-arch-context",
+      "scale": 1,
+      "source_pixel_sha256": "b142baf309e7dd7be9b556853f85763ad8a169ceafe62323a9d7476d758882bf",
+      "source_domains": 3,
+      "descriptors": 8,
+      "region_counts": {
+        "0": 3,
+        "2": 5
+      },
+      "regions_with_descriptors": 2,
+      "normalization": "Native locations divided by3; descriptor support context is native source image, not extra temporal evidence"
+    },
+    {
+      "reference_id": "reviewed-arch-context",
+      "scale": 3,
+      "source_pixel_sha256": "b142baf309e7dd7be9b556853f85763ad8a169ceafe62323a9d7476d758882bf",
+      "source_domains": 3,
+      "descriptors": 35,
+      "region_counts": {
+        "0": 13,
+        "2": 22
+      },
+      "regions_with_descriptors": 2,
+      "normalization": "Native locations divided by3; descriptor support context is native source image, not extra temporal evidence"
+    }
+  ],
+  "wall_clock_sec": 0.8261369609972462,
+  "terminal_bindings": {
+    "outputs/recognition-investigation/two-scene-domain-reference-20261009/profile.json": "7c88be66b6d322f037be309ca02464c7ffd5da3236b646b7ec24d21d1f4e7ce2",
+    "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/wall_close.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/arch_context.png": "929aab0a3f014eddff37a663241bd7fe3fcd15e0f800f7afe496b66c3d880579",
+    "scripts/diagnostics/scene_descriptor_acquisition.py": "4c55134d452ce035da5e9bfa38e647450bee0301027b40800b00d8220a7f9642",
+    "scripts/diagnostics/scene_correspondence.py": "667fb4f7b0626fbbf4770716eefc18976a9409a4f0646084b95d479dab7273a3"
+  },
+  "qualification_created": false,
+  "production_changed": false,
+  "canonical_current": null
+}

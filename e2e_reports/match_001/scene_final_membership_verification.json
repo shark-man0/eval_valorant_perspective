@@ -1,0 +1,51 @@
+{
+  "scope": "Development-only source-camera investigation; no qualification or canonical replay",
+  "start_commit": "03bfcbf945fbf3d7b04c54d80b3c5ff103475db0",
+  "unit_tests": {
+    "passed": 26,
+    "wall_clock_seconds": 5.1,
+    "command": "python3 -m pytest -q tests/unit/test_scene_world_chain.py tests/unit/test_scene_camera_model_audit.py"
+  },
+  "ruff": {
+    "status": "PASS",
+    "command": "python3 -m ruff check src tests scripts/e2e scripts/diagnostics"
+  },
+  "mypy": {
+    "status": "PASS",
+    "production_source_files": 102
+  },
+  "existing_default_equivalence_links": 203,
+  "production_changed": false,
+  "qualification_created": false,
+  "new_runtime_events": 0,
+  "new_full_e2e_runs": 0,
+  "canonical_current": null,
+  "canonical_delta": null,
+  "assertion_matrix_rows": 82,
+  "assertion_matrix_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776",
+  "terminal_input_bindings_checked": 38,
+  "historical_camera_audit_bindings_checked": 38,
+  "known_cut_rejection": "seed_model_incoherent",
+  "duplicate_rejection": "duplicate_image",
+  "comparison": {
+    "supported_links": {
+      "previous": 11,
+      "current": 22,
+      "delta": 11,
+      "delta_percent": 100
+    },
+    "wall_clock_seconds": {
+      "previous": 8.895032945962157,
+      "current": 9.854874040989671,
+      "delta": 0.9598410950275138
+    }
+  },
+  "file_sha256": {
+    "e2e_reports/match_001/scene_camera_model_declaration.json": "2a61821d4e39ca1da91922a10139929ed513c7aa6d5f6ab27745c51630d3ab3b",
+    "e2e_reports/match_001/scene_camera_model_stable_development.json": "ff8f70f5b1537a9609a42efbe01286cdf24b5dd0c4375f9a4003189bda2de3bd",
+    "e2e_reports/match_001/scene_final_membership_declaration.json": "0a061357b4d13808e1038d1c1da7c480831cec4918d1dd5811dcf12867ddb659",
+    "e2e_reports/match_001/scene_final_membership_stable_development.json": "1b87ceb4553be366fe37a335e04cf181ec0083a41ba7b37249b57233ddf2c669",
+    "e2e_reports/match_001/scene_final_membership_controls.json": "7d62b57b8f81b73fe62d669da3855071b8a4b234c4dd3aebe85ed67b73f401cd",
+    "docs/scene_camera_model_investigation.md": "cc78874943a78652f3de43f61301ebe8fe5399a37751d8e4a265dc9178dca910"
+  }
+}

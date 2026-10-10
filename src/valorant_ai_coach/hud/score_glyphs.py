@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
+from typing import cast
 
 import cv2
 import numpy as np
@@ -24,9 +25,12 @@ class StrictScoreGlyphReader(StrictTimerGlyphReader):
         foreground_preprocessing: str = "otsu_v1",
     ) -> None:
         if not isinstance(foreground_preprocessing, str) or foreground_preprocessing not in {
-            "otsu_v1", "white200_v1",
+            "otsu_v1", "white200_v1", "white200_rowcontrast_v1",
         }:
             raise ValueError("unsupported strict score foreground preprocessing")
+        if (foreground_preprocessing == "white200_rowcontrast_v1"
+                and comparison_preprocessing != "gaussian3x3_v1"):
+            raise ValueError("rowcontrast score preprocessing requires gaussian3x3_v1")
         super().__init__(templates, comparison_preprocessing=comparison_preprocessing)
         self.foreground_preprocessing = foreground_preprocessing
 
@@ -43,12 +47,7 @@ class StrictScoreGlyphReader(StrictTimerGlyphReader):
         if float(gray.std()) < 1:
             return self._reject("strict_score_low_contrast_roi")
         enlarged = cv2.resize(gray, None, fx=2, fy=2, interpolation=cv2.INTER_CUBIC)
-        if self.foreground_preprocessing == "white200_v1":
-            # Fixed bright-text extraction, independent of the displayed value.
-            # This never retries a rejected read or changes NCC/margin policy.
-            _, mask = cv2.threshold(enlarged, 200, 255, cv2.THRESH_BINARY)
-        else:
-            _, mask = cv2.threshold(enlarged, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        mask = self._foreground_mask(cast(ImageU8, enlarged))
         if np.any(mask[0]) or np.any(mask[-1]) or np.any(mask[:, 0]) or np.any(mask[:, -1]):
             return self._reject("strict_score_foreground_touches_roi_border")
         count, _, stats, _ = cv2.connectedComponentsWithStats(mask, connectivity=8)
@@ -95,8 +94,23 @@ class StrictScoreGlyphReader(StrictTimerGlyphReader):
         if self.comparison_preprocessing != "binary_v1":
             sources += ("comparison_gaussian3x3_v1",)
         if self.foreground_preprocessing != "otsu_v1":
-            sources += ("foreground_white200_v1",)
+            sources += (f"foreground_{self.foreground_preprocessing}",)
         return ReaderResult(display, min(scores), sources)
+
+    def _foreground_mask(self, enlarged: ImageU8) -> ImageU8:
+        """Single foreground stage; default production preprocessing is unchanged."""
+        if self.foreground_preprocessing in {"white200_v1", "white200_rowcontrast_v1"}:
+            _, mask = cv2.threshold(enlarged, 200, 255, cv2.THRESH_BINARY)
+        else:
+            _, mask = cv2.threshold(enlarged, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        if self.foreground_preprocessing == "white200_rowcontrast_v1":
+            # Opt-in value-invariant background support in the already enlarged
+            # domain. No resampling, retry or preferred digit class follows.
+            left = np.median(enlarged[:, :8], axis=1)
+            right = np.median(enlarged[:, -8:], axis=1)
+            background = np.maximum(left, right)[:, None]
+            mask = np.where(enlarged.astype(np.float32) - background >= 12, mask, 0)
+        return np.asarray(mask, dtype=np.uint8)
 
 
 class UnavailableStrictScoreGlyphReader:

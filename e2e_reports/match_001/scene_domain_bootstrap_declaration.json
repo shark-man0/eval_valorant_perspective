@@ -1,0 +1,68 @@
+{
+  "scope": "Stateless source-domain initialization development; exposed data, no qualification",
+  "git_head": "80d0d460b8e3a76d3c181e035c72cd10026f4252",
+  "inputs": [
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000001.png",
+      "source_pts_ticks": 59945,
+      "frame_sha256": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+      "source_pixel_sha256": "439c3817810a8d8bcc8c82ed218d5fe0f851c7c5f35308b0b85fcbd328759edd"
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000012.png",
+      "source_pts_ticks": 62761,
+      "frame_sha256": "0971d607cd0a91eb2c2af8e4949dd601201575ad6050945d1583ecad529797e9",
+      "source_pixel_sha256": "6ab7cd27a8756b687f70857d6bf0d2a8732625d15161e2de41a139f31fd193e1"
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000013.png",
+      "source_pts_ticks": 63017,
+      "frame_sha256": "3f7f964b6993d20bba3396e160e6b6edf41cc5352b0b0ad57de9254ddb7fe0a5",
+      "source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b"
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000014.png",
+      "source_pts_ticks": 63273,
+      "frame_sha256": "ffc878007fe550701c8e5be11f78b1a6d91bc88f77972cc48b370ac4cf7e7bb6",
+      "source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a"
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000016.png",
+      "source_pts_ticks": 63785,
+      "frame_sha256": "40a1ca141705ef466d3cdcd339bfa1e519a8bd998cabb9ea204da72dcaa6d382",
+      "source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0"
+    },
+    {
+      "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-001/frame_000001.png",
+      "source_pts_ticks": 46121,
+      "frame_sha256": "05da6f1e0f4f5cd36b2ce29f55637d95ee6a30737f0390237859499ccccfe69c",
+      "source_pixel_sha256": "82cbaa157217b723e163e95ac84d66640af8cdc341a5b8fe2067ccc26443c559"
+    },
+    {
+      "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-002/frame_000001.png",
+      "source_pts_ticks": 79913,
+      "frame_sha256": "083d9868034db4501914b79bbda88150912e6e6bfd01fd3aadb83a4b213227bd",
+      "source_pixel_sha256": "913399de2086aca9a87dedd7db09942631e15017f8f7ad1f2e6cfa775a001a76"
+    },
+    {
+      "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000001.png",
+      "source_pts_ticks": 92201,
+      "frame_sha256": "ce2dbc370171a4cd637a6e96aa60ec6c9a50d8a1b62914622dd547f1727baa99",
+      "source_pixel_sha256": "c77e1b1f39bcc6bf23cbdc36ebe8f9dcdd00f835c46b2980bc2c68b632747db6"
+    }
+  ],
+  "bindings": {
+    "outputs/recognition-investigation/world-domain-bootstrap-20261009/profile.json": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+    "outputs/recognition-investigation/world-domain-bootstrap-20261009/assets/wall_close.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "ValorantData/videos/Valorant_09-25-2026_0-37-29-379.mp4": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "scripts/diagnostics/scene_domain_bootstrap.py": "1563c223d00085bc6059f720a54a4b6dd9e9acde819babd39d34d3dea4ff0e8d",
+    "scripts/diagnostics/scene_world_bootstrap.py": "9947a6b0adc00f1e4b4eb63d5a95b1555d48091633712546e8078ee3a2436cfa",
+    "scripts/diagnostics/scene_reference_support.py": "ba12d60e89544f37b0f9ac0a24a464c26732e0b1c2b658534c893c819e5af89f",
+    "scripts/diagnostics/scene_domain_ambiguity.py": "eea017aa98bd16051f4e0f3f5b4cebd84a5ae33eb8b538be2d25a6106479ad23",
+    "scripts/diagnostics/scene_joint_domains.py": "2046cede2304b9493abc5f9ba06cbcfbe820a67f245a6e42cbd0aff5a5f45d34",
+    "scripts/diagnostics/scene_world_chain.py": "8a6d11a151f4afb77d88780b51f0705beca527edce7521831b9c8a590e788e33",
+    "scripts/diagnostics/scene_correspondence.py": "667fb4f7b0626fbbf4770716eefc18976a9409a4f0646084b95d479dab7273a3",
+    "scripts/diagnostics/scene_patch_search.py": "53e66f692c42cbaab695cdea9910e3326c50089a18468f6b0d01bd463e9c2dd9"
+  },
+  "policy": "One existing reviewed reference, unchanged matcher/model/NCC floors. No GT/PTS input to recognition; reference asset never previous native frame; no best-reference selection or output world mask"
+}

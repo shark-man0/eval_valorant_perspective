@@ -1,0 +1,958 @@
+{
+  "scope": "Stateless exposed reference-domain proposal, not a native continuity link",
+  "processed_frames": 8,
+  "rows": [
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000001.png",
+      "source_pts_ticks": 59945,
+      "frame_sha256": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+      "source_pixel_sha256": "439c3817810a8d8bcc8c82ed218d5fe0f851c7c5f35308b0b85fcbd328759edd",
+      "pts_sec": 3.9026692708333335,
+      "result": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": true,
+            "reference_tracks": 180,
+            "reference_model_inliers": 180,
+            "reference_to_current_affine": [
+              [
+                1.0,
+                -0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ]
+            ],
+            "domains": [
+              {
+                "region": 0,
+                "predicted_ncc": 1.0,
+                "competing_offsets": [],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": true,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 1,
+                "predicted_ncc": 1.0,
+                "competing_offsets": [
+                  {
+                    "offset_xy": [
+                      3,
+                      1
+                    ],
+                    "ncc": 0.9247257709503174
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      2
+                    ],
+                    "ncc": 0.9509556889533997
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      2
+                    ],
+                    "ncc": 0.9212491512298584
+                  },
+                  {
+                    "offset_xy": [
+                      1,
+                      3
+                    ],
+                    "ncc": 0.9133089184761047
+                  },
+                  {
+                    "offset_xy": [
+                      2,
+                      3
+                    ],
+                    "ncc": 0.9438430070877075
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      3
+                    ],
+                    "ncc": 0.9560741186141968
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      3
+                    ],
+                    "ncc": 0.9492281675338745
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      3
+                    ],
+                    "ncc": 0.9234527945518494
+                  },
+                  {
+                    "offset_xy": [
+                      2,
+                      4
+                    ],
+                    "ncc": 0.9048149585723877
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      4
+                    ],
+                    "ncc": 0.9389105439186096
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      4
+                    ],
+                    "ncc": 0.9559090733528137
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      4
+                    ],
+                    "ncc": 0.9519268870353699
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      4
+                    ],
+                    "ncc": 0.9285948872566223
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      5
+                    ],
+                    "ncc": 0.9365347027778625
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      5
+                    ],
+                    "ncc": 0.9553194046020508
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      5
+                    ],
+                    "ncc": 0.9530894756317139
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      5
+                    ],
+                    "ncc": 0.9270884990692139
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      6
+                    ],
+                    "ncc": 0.9174522757530212
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      6
+                    ],
+                    "ncc": 0.9354872703552246
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      6
+                    ],
+                    "ncc": 0.929688036441803
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      6
+                    ],
+                    "ncc": 0.9026005268096924
+                  }
+                ],
+                "invalid_offsets": 136,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 2,
+                "predicted_ncc": 0.9999998807907104,
+                "competing_offsets": [
+                  {
+                    "offset_xy": [
+                      -4,
+                      -1
+                    ],
+                    "ncc": 0.9122400283813477
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      -1
+                    ],
+                    "ncc": 0.9241949915885925
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      -1
+                    ],
+                    "ncc": 0.9533575773239136
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      -1
+                    ],
+                    "ncc": 0.9511611461639404
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      -1
+                    ],
+                    "ncc": 0.9480348825454712
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      -1
+                    ],
+                    "ncc": 0.9442304968833923
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      -1
+                    ],
+                    "ncc": 0.9398140907287598
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      -1
+                    ],
+                    "ncc": 0.9347946643829346
+                  },
+                  {
+                    "offset_xy": [
+                      -8,
+                      0
+                    ],
+                    "ncc": 0.9357456564903259
+                  },
+                  {
+                    "offset_xy": [
+                      -7,
+                      0
+                    ],
+                    "ncc": 0.9465920329093933
+                  },
+                  {
+                    "offset_xy": [
+                      -6,
+                      0
+                    ],
+                    "ncc": 0.9572125673294067
+                  },
+                  {
+                    "offset_xy": [
+                      -5,
+                      0
+                    ],
+                    "ncc": 0.9674817323684692
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      0
+                    ],
+                    "ncc": 0.9771614670753479
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      0
+                    ],
+                    "ncc": 0.9858527779579163
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      0
+                    ],
+                    "ncc": 0.9854905605316162
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      0
+                    ],
+                    "ncc": 0.9764625430107117
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      0
+                    ],
+                    "ncc": 0.9664050936698914
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      0
+                    ],
+                    "ncc": 0.9556978344917297
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      0
+                    ],
+                    "ncc": 0.9444356560707092
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      0
+                    ],
+                    "ncc": 0.9326583743095398
+                  },
+                  {
+                    "offset_xy": [
+                      -8,
+                      1
+                    ],
+                    "ncc": 0.9381879568099976
+                  },
+                  {
+                    "offset_xy": [
+                      -7,
+                      1
+                    ],
+                    "ncc": 0.9430320858955383
+                  },
+                  {
+                    "offset_xy": [
+                      -6,
+                      1
+                    ],
+                    "ncc": 0.9473560452461243
+                  },
+                  {
+                    "offset_xy": [
+                      -5,
+                      1
+                    ],
+                    "ncc": 0.9510484337806702
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      1
+                    ],
+                    "ncc": 0.9538751840591431
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      1
+                    ],
+                    "ncc": 0.9555714726448059
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      1
+                    ],
+                    "ncc": 0.9213981628417969
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      1
+                    ],
+                    "ncc": 0.9081642031669617
+                  }
+                ],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 3,
+                "predicted_ncc": 0.9972761273384094,
+                "competing_offsets": [],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": true,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 4,
+                "predicted_ncc": 1.0,
+                "competing_offsets": [],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": true,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              },
+              {
+                "region": 5,
+                "predicted_ncc": 0.9999896883964539,
+                "competing_offsets": [
+                  {
+                    "offset_xy": [
+                      -5,
+                      -1
+                    ],
+                    "ncc": 0.9014325737953186
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      -1
+                    ],
+                    "ncc": 0.9083453416824341
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      -1
+                    ],
+                    "ncc": 0.914915919303894
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      -1
+                    ],
+                    "ncc": 0.9406613111495972
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      -1
+                    ],
+                    "ncc": 0.9418311715126038
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      -1
+                    ],
+                    "ncc": 0.9422164559364319
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      -1
+                    ],
+                    "ncc": 0.9421947598457336
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      -1
+                    ],
+                    "ncc": 0.9417347311973572
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      -1
+                    ],
+                    "ncc": 0.9408710598945618
+                  },
+                  {
+                    "offset_xy": [
+                      -8,
+                      0
+                    ],
+                    "ncc": 0.9687255620956421
+                  },
+                  {
+                    "offset_xy": [
+                      -7,
+                      0
+                    ],
+                    "ncc": 0.9746994972229004
+                  },
+                  {
+                    "offset_xy": [
+                      -6,
+                      0
+                    ],
+                    "ncc": 0.9801455140113831
+                  },
+                  {
+                    "offset_xy": [
+                      -5,
+                      0
+                    ],
+                    "ncc": 0.9851400256156921
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      0
+                    ],
+                    "ncc": 0.9895117282867432
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      0
+                    ],
+                    "ncc": 0.9932420253753662
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      0
+                    ],
+                    "ncc": 0.9932816624641418
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      0
+                    ],
+                    "ncc": 0.9896069765090942
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      0
+                    ],
+                    "ncc": 0.9855180382728577
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      0
+                    ],
+                    "ncc": 0.9810468554496765
+                  },
+                  {
+                    "offset_xy": [
+                      7,
+                      0
+                    ],
+                    "ncc": 0.9763782620429993
+                  },
+                  {
+                    "offset_xy": [
+                      8,
+                      0
+                    ],
+                    "ncc": 0.9716325998306274
+                  },
+                  {
+                    "offset_xy": [
+                      -8,
+                      1
+                    ],
+                    "ncc": 0.9391862750053406
+                  },
+                  {
+                    "offset_xy": [
+                      -7,
+                      1
+                    ],
+                    "ncc": 0.9401689767837524
+                  },
+                  {
+                    "offset_xy": [
+                      -6,
+                      1
+                    ],
+                    "ncc": 0.9406675100326538
+                  },
+                  {
+                    "offset_xy": [
+                      -5,
+                      1
+                    ],
+                    "ncc": 0.9407768845558167
+                  },
+                  {
+                    "offset_xy": [
+                      -4,
+                      1
+                    ],
+                    "ncc": 0.9402500987052917
+                  },
+                  {
+                    "offset_xy": [
+                      -3,
+                      1
+                    ],
+                    "ncc": 0.9391599297523499
+                  },
+                  {
+                    "offset_xy": [
+                      3,
+                      1
+                    ],
+                    "ncc": 0.9174296259880066
+                  },
+                  {
+                    "offset_xy": [
+                      4,
+                      1
+                    ],
+                    "ncc": 0.9120304584503174
+                  },
+                  {
+                    "offset_xy": [
+                      5,
+                      1
+                    ],
+                    "ncc": 0.9066387414932251
+                  },
+                  {
+                    "offset_xy": [
+                      6,
+                      1
+                    ],
+                    "ncc": 0.9009827375411987
+                  }
+                ],
+                "invalid_offsets": 0,
+                "locally_unambiguous_appearance": false,
+                "search_scope": "17x17 integer translations of fixed affine projection",
+                "world_mask_authorized": false,
+                "runtime_proof_authorized": false
+              }
+            ],
+            "joint": {
+              "fixed_projection_witness_regions": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "distributed_source_and_current_support": true,
+              "joint_competing_offsets": [],
+              "unresolved_offsets": [],
+              "locally_unique_joint_appearance": true,
+              "scope": "fixed affine plus complete local integer-translation lattice only",
+              "world_mask_authorized": false,
+              "runtime_proof_authorized": false
+            },
+            "diagnostic_initialization_proposed": true,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": true,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000012.png",
+      "source_pts_ticks": 62761,
+      "frame_sha256": "0971d607cd0a91eb2c2af8e4949dd601201575ad6050945d1583ecad529797e9",
+      "source_pixel_sha256": "6ab7cd27a8756b687f70857d6bf0d2a8732625d15161e2de41a139f31fd193e1",
+      "pts_sec": 4.086002604166667,
+      "result": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": false,
+            "reference_tracks": 112,
+            "reference_model_inliers": 93,
+            "reference_to_current_affine": [
+              [
+                0.9839316250437272,
+                -0.002389672227501493,
+                7.363387174242764
+              ],
+              [
+                0.002389672227501493,
+                0.9839316250437272,
+                7.009227379382198
+              ]
+            ],
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000013.png",
+      "source_pts_ticks": 63017,
+      "frame_sha256": "3f7f964b6993d20bba3396e160e6b6edf41cc5352b0b0ad57de9254ddb7fe0a5",
+      "source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b",
+      "pts_sec": 4.102669270833333,
+      "result": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": false,
+            "reference_tracks": 110,
+            "reference_model_inliers": 92,
+            "reference_to_current_affine": [
+              [
+                0.9843924904008674,
+                -0.0023289544939269864,
+                7.336908873867871
+              ],
+              [
+                0.0023289544939269864,
+                0.9843924904008674,
+                6.927063043066116
+              ]
+            ],
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000014.png",
+      "source_pts_ticks": 63273,
+      "frame_sha256": "ffc878007fe550701c8e5be11f78b1a6d91bc88f77972cc48b370ac4cf7e7bb6",
+      "source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a",
+      "pts_sec": 4.1193359375,
+      "result": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": false,
+            "reference_tracks": 112,
+            "reference_model_inliers": 93,
+            "reference_to_current_affine": [
+              [
+                0.9842244142094536,
+                -0.002383049719655167,
+                7.392923031764065
+              ],
+              [
+                0.002383049719655167,
+                0.9842244142094536,
+                6.953816776003118
+              ]
+            ],
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000016.png",
+      "source_pts_ticks": 63785,
+      "frame_sha256": "40a1ca141705ef466d3cdcd339bfa1e519a8bd998cabb9ea204da72dcaa6d382",
+      "source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0",
+      "pts_sec": 4.152669270833333,
+      "result": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": false,
+            "reference_tracks": 113,
+            "reference_model_inliers": 87,
+            "reference_to_current_affine": [
+              [
+                0.9727979042717133,
+                -0.003034102766723044,
+                11.883519238065752
+              ],
+              [
+                0.003034102766723044,
+                0.9727979042717133,
+                8.628993068988205
+              ]
+            ],
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-001/frame_000001.png",
+      "source_pts_ticks": 46121,
+      "frame_sha256": "05da6f1e0f4f5cd36b2ce29f55637d95ee6a30737f0390237859499ccccfe69c",
+      "source_pixel_sha256": "82cbaa157217b723e163e95ac84d66640af8cdc341a5b8fe2067ccc26443c559",
+      "pts_sec": 3.002669270833333,
+      "result": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": false,
+            "reference_tracks": 0,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-002/frame_000001.png",
+      "source_pts_ticks": 79913,
+      "frame_sha256": "083d9868034db4501914b79bbda88150912e6e6bfd01fd3aadb83a4b213227bd",
+      "source_pixel_sha256": "913399de2086aca9a87dedd7db09942631e15017f8f7ad1f2e6cfa775a001a76",
+      "pts_sec": 5.202669270833334,
+      "result": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": false,
+            "reference_tracks": 0,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000001.png",
+      "source_pts_ticks": 92201,
+      "frame_sha256": "ce2dbc370171a4cd637a6e96aa60ec6c9a50d8a1b62914622dd547f1727baa99",
+      "source_pixel_sha256": "c77e1b1f39bcc6bf23cbdc36ebe8f9dcdd00f835c46b2980bc2c68b632747db6",
+      "pts_sec": 6.002669270833334,
+      "result": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": false,
+            "reference_tracks": 0,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    }
+  ],
+  "wall_clock_sec": 5.024158706015442,
+  "initialization_proposals": 1,
+  "terminal_bindings": {
+    "outputs/recognition-investigation/world-domain-bootstrap-20261009/profile.json": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+    "outputs/recognition-investigation/world-domain-bootstrap-20261009/assets/wall_close.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "ValorantData/videos/Valorant_09-25-2026_0-37-29-379.mp4": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "scripts/diagnostics/scene_domain_bootstrap.py": "1563c223d00085bc6059f720a54a4b6dd9e9acde819babd39d34d3dea4ff0e8d",
+    "scripts/diagnostics/scene_world_bootstrap.py": "9947a6b0adc00f1e4b4eb63d5a95b1555d48091633712546e8078ee3a2436cfa",
+    "scripts/diagnostics/scene_reference_support.py": "ba12d60e89544f37b0f9ac0a24a464c26732e0b1c2b658534c893c819e5af89f",
+    "scripts/diagnostics/scene_domain_ambiguity.py": "eea017aa98bd16051f4e0f3f5b4cebd84a5ae33eb8b538be2d25a6106479ad23",
+    "scripts/diagnostics/scene_joint_domains.py": "2046cede2304b9493abc5f9ba06cbcfbe820a67f245a6e42cbd0aff5a5f45d34",
+    "scripts/diagnostics/scene_world_chain.py": "8a6d11a151f4afb77d88780b51f0705beca527edce7521831b9c8a590e788e33",
+    "scripts/diagnostics/scene_correspondence.py": "667fb4f7b0626fbbf4770716eefc18976a9409a4f0646084b95d479dab7273a3",
+    "scripts/diagnostics/scene_patch_search.py": "53e66f692c42cbaab695cdea9910e3326c50089a18468f6b0d01bd463e9c2dd9"
+  },
+  "qualification_created": false,
+  "canonical_current": null
+}

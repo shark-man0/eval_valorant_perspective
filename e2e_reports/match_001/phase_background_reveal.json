@@ -1,0 +1,4738 @@
+{
+  "scope": "exposed background reveal/synthetic sensitivity, not qualification",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "source_report_sha256": "b6c41f52eed4d9d41e5cda9ebd4d5cdfda97a2d736ff7de541584c2df61a58e6",
+  "code_sha256": "eae73fcd41aca6be0c28010f7242332d8687339f5e50dddd5e479dc12dc36f7f",
+  "context_boxes": [
+    [
+      708,
+      143,
+      730,
+      273
+    ],
+    [
+      1190,
+      143,
+      1212,
+      273
+    ],
+    [
+      750,
+      295,
+      1170,
+      320
+    ],
+    [
+      750,
+      115,
+      900,
+      130
+    ],
+    [
+      1020,
+      115,
+      1170,
+      130
+    ]
+  ],
+  "target_boxes": [
+    [
+      745,
+      133,
+      1178,
+      143
+    ],
+    [
+      745,
+      276,
+      1178,
+      286
+    ],
+    [
+      928,
+      248,
+      1005,
+      275
+    ]
+  ],
+  "panel_box": [
+    738,
+    135,
+    1183,
+    281
+  ],
+  "text_box": [
+    765,
+    170,
+    1155,
+    240
+  ],
+  "native_png_sha256": {
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000001.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000002.png": "e790bd155383fac3eb439d4311a89840467fce57938a80dae2448e628dfd9211",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000003.png": "1dc0d9b8c59355b43eb723b1961110bb53d1ce8a62176490f5c632dd6ee5f2ad",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000004.png": "00e2240728fa5e6c6cd1d8a29adebecb993d61abb4c9a97aea47902d53f041e1",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000005.png": "77d745206022589fc826823873bc1305e922fdda01854eac4a7eed10876d6c80",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000006.png": "d4dafbd08a45d736ff634bb6537d9d0991d3023a611db6a229874a4755c9f8d3",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000007.png": "3d4c25843ec375524762f21a11a17b7bf7854f65680ceaf0396b5a597a1d94dc",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000008.png": "eddab3d93b6a8d910aaa923a260a7be4779514c79670dc8d2fefb3a1e0863473",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000009.png": "995c70d5658ba86dd220d7d02f947982e00c9d4cdf9456dde224924df8211951",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000010.png": "a3a788841be688ba3d97be42478708e5cd8571ff74c6a1a1fce8172f88ad0104",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000011.png": "2ca7c16fac54a93af47a678cd1491bffc7a8ec0edf9634d4c2be4e4a134741e2",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000012.png": "0971d607cd0a91eb2c2af8e4949dd601201575ad6050945d1583ecad529797e9",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000013.png": "3f7f964b6993d20bba3396e160e6b6edf41cc5352b0b0ad57de9254ddb7fe0a5",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000014.png": "ffc878007fe550701c8e5be11f78b1a6d91bc88f77972cc48b370ac4cf7e7bb6",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000015.png": "d72a67e8f64bc6ffe0b90a1f6118c522380a2bd83eabd4e84b6a5f36f7b605fc",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000016.png": "40a1ca141705ef466d3cdcd339bfa1e519a8bd998cabb9ea204da72dcaa6d382",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000017.png": "87a43e4a4c0e1f7eb1ea8e6fedccbefa5bc6eddd8d29c61dc25e92dbeef418f8",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000018.png": "e2e07cdce5e63bde4205fa7401ca54f9b6917872957efe3b303f0286e370b43b",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000019.png": "d81a979afdc6bee35155fc029a0621d43a7b0dbbe29fc364cd0010cbfa697707",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000020.png": "2c747572f073d4c8769933863cf6e99c8498bccb4469b8476cc12784854b7a7e",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000021.png": "ee5be2e35aabe7ac9b9fc01fd438dc28c4e5c76f73f66e7cd6df752bc72edd2d",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000022.png": "aa5727f8ff3428eaf3705c3fb9b42acc78c278fb3ce21276969cd8505aa2aae2",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000023.png": "01510fbbc2c0e101c72555f846ca75adf24b073891d8e9160c94ec54be0e5413",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000024.png": "1a3208bb41afe765aa7f691964df102279ec81e9366d13ae326cc537c3a66b76",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000025.png": "0252b863b5f5d2108ebd46178ea6a4a2cba005b51af5205dee7723c2d26a9ac8",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000026.png": "fa80efcbffa9e29d82948fbb605bcbb10baab44ac31c17434085e97c671c887e",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000027.png": "ec2d668e223d2f20a8b53d813a1681e4c1c79b120857244b11f42d341dadfc74",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000028.png": "6e6edeefc2aa5d1a45960e741815a8c08090793d8be0b74a8a7b344051a6f67d",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000029.png": "91eab8a0e9d080f64d9cc83c31c77f733dcaeaccd50b1ae6c30877f41a987f55",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000030.png": "91d79bfba35b3afa2e8fe7bb5274926fbe6a254207dd9a9ab55d5cb3ebab625c"
+  },
+  "rows": [
+    {
+      "source_pts_ticks": 59945,
+      "pts_sec": 3.9026692708333335,
+      "source_pixel_sha256": "439c3817810a8d8bcc8c82ed218d5fe0f851c7c5f35308b0b85fcbd328759edd",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            122.07906539772702,
+            147.21668072025105,
+            190.5555610387801
+          ],
+          [
+            -7.986494640211385,
+            -5.139615797113586,
+            -9.059628172984283
+          ],
+          [
+            -0.28794287844517946,
+            -5.4679300652767715,
+            -0.35830745305204137
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.081935924862934,
+              "p90_max_channel_residual": 2.86543897250899,
+              "maximum_channel_residual": 4.797996208191705
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4881111459317207,
+              "p90_max_channel_residual": 2.4666462751554534,
+              "maximum_channel_residual": 2.5065706065553712
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.222460033197618,
+              "p90_max_channel_residual": 3.053753230111596,
+              "maximum_channel_residual": 5.304866069884383
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.667582612403077,
+              "p90_max_channel_residual": 1.8900584160451175,
+              "maximum_channel_residual": 6.16558973616398
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4323136304028201,
+              "p90_max_channel_residual": 2.1183518470838423,
+              "maximum_channel_residual": 6.236118215093811
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 24.80558254953867,
+            "p90_max_channel_residual": 64.25399678081472,
+            "maximum_channel_residual": 136.06081324173977
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 26.004296063065123,
+            "p90_max_channel_residual": 55.165681422274204,
+            "maximum_channel_residual": 132.86209001725013
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 59.98651164144849,
+            "p90_max_channel_residual": 79.63872859140977,
+            "maximum_channel_residual": 137.11767620333546
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 60201,
+      "pts_sec": 3.9193359375,
+      "source_pixel_sha256": "eb69ac61ab1bd4da4517429efa0f2896e520476b6bef244f4e4746bb98c8d850",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            122.06130836417977,
+            147.21664550762802,
+            190.59198489173977
+          ],
+          [
+            -7.997487407152249,
+            -5.144307263912422,
+            -9.125919047875527
+          ],
+          [
+            -0.18913019862411784,
+            -5.449570481821198,
+            -0.3672983352310337
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.085803699780836,
+              "p90_max_channel_residual": 2.853439562209921,
+              "maximum_channel_residual": 4.7845001776958895
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4879530473860878,
+              "p90_max_channel_residual": 2.4600850801474037,
+              "maximum_channel_residual": 2.5001607634712
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.2045191556339714,
+              "p90_max_channel_residual": 3.0420001764450078,
+              "maximum_channel_residual": 5.275765784110206
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.676861385287883,
+              "p90_max_channel_residual": 1.9101701612896123,
+              "maximum_channel_residual": 6.180511812051947
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.479966801180527,
+              "p90_max_channel_residual": 2.1562758332766463,
+              "maximum_channel_residual": 6.238299121690687
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 24.68119819210374,
+            "p90_max_channel_residual": 64.26101379940317,
+            "maximum_channel_residual": 136.0702153586317
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 26.005852317875497,
+            "p90_max_channel_residual": 55.0391830952413,
+            "maximum_channel_residual": 132.86101915919818
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 59.98717789162818,
+            "p90_max_channel_residual": 79.638159554099,
+            "maximum_channel_residual": 137.11695862251258
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 60457,
+      "pts_sec": 3.9360026041666667,
+      "source_pixel_sha256": "21d34bc8deaedf9aea2c0f26343d51ec079be4dd71cccb6a7d3b204daeb1735b",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            121.95838039622804,
+            147.16900086736194,
+            190.57850857693813
+          ],
+          [
+            -7.777337708311759,
+            -5.090662228630608,
+            -9.120582317298641
+          ],
+          [
+            -0.2770858247841734,
+            -5.39105095371347,
+            -0.34269715951961494
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.1737587336384308,
+              "p90_max_channel_residual": 2.892326840486544,
+              "maximum_channel_residual": 4.785395955104434
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.5027508515183958,
+              "p90_max_channel_residual": 2.4937941475850707,
+              "maximum_channel_residual": 2.5316797142126717
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.3357521772081244,
+              "p90_max_channel_residual": 3.186276071088352,
+              "maximum_channel_residual": 5.46657923262849
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.6921675082223175,
+              "p90_max_channel_residual": 1.9558585675965248,
+              "maximum_channel_residual": 6.1634523554054965
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4338164661453816,
+              "p90_max_channel_residual": 2.123079370478746,
+              "maximum_channel_residual": 6.227355358387598
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 24.68505537725288,
+            "p90_max_channel_residual": 64.26907930086905,
+            "maximum_channel_residual": 136.09884477013358
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 25.989706713378848,
+            "p90_max_channel_residual": 55.034669021460985,
+            "maximum_channel_residual": 132.85251527451035
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 60.022563916739266,
+            "p90_max_channel_residual": 79.65077137451857,
+            "maximum_channel_residual": 137.12764284356916
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 60713,
+      "pts_sec": 3.9526692708333333,
+      "source_pixel_sha256": "03ad8c60cca1e1a5b02aae0d2395c56886b1654731a31ce39f51e53cda6217c7",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            121.9730295637877,
+            147.3245774377134,
+            190.77639752825024
+          ],
+          [
+            -7.839637260864409,
+            -5.4239343178020105,
+            -9.454488028891271
+          ],
+          [
+            -0.22078043078965096,
+            -5.3310875816271865,
+            -0.45371490492349725
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.1656240497895625,
+              "p90_max_channel_residual": 2.882093517829715,
+              "maximum_channel_residual": 4.713220938530895
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.5537061684321865,
+              "p90_max_channel_residual": 2.5035391982383386,
+              "maximum_channel_residual": 2.5314914920543714
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.3905719522357347,
+              "p90_max_channel_residual": 3.225118606615243,
+              "maximum_channel_residual": 5.510746502696946
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.6033930281439495,
+              "p90_max_channel_residual": 1.910306229736355,
+              "maximum_channel_residual": 6.220676294578823
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4835795650528494,
+              "p90_max_channel_residual": 2.1590081442358895,
+              "maximum_channel_residual": 6.275436200518655
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 24.656092656918872,
+            "p90_max_channel_residual": 64.28028910931832,
+            "maximum_channel_residual": 136.10120699643377
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 25.98988091419562,
+            "p90_max_channel_residual": 55.04076892661526,
+            "maximum_channel_residual": 132.8612843366722
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 60.023187622306914,
+            "p90_max_channel_residual": 79.65408272885219,
+            "maximum_channel_residual": 137.1314182374075
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 60969,
+      "pts_sec": 3.9693359375,
+      "source_pixel_sha256": "e7fd447968482a2c92eb2e2f8f0752106aed9b418055b37784edd4a6a866ae34",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            121.94881775916015,
+            147.2172902751846,
+            190.66891700127104
+          ],
+          [
+            -7.914163564181025,
+            -5.238512449409296,
+            -9.329034115585046
+          ],
+          [
+            0.016229626828143048,
+            -5.1895338547509455,
+            -0.21069184205072874
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.1459037275794137,
+              "p90_max_channel_residual": 2.8606832431208473,
+              "maximum_channel_residual": 4.726423647123482
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.536499862958048,
+              "p90_max_channel_residual": 2.4784937029302556,
+              "maximum_channel_residual": 2.5049354537853503
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.371472617168227,
+              "p90_max_channel_residual": 3.1853526291315877,
+              "maximum_channel_residual": 5.467216886744993
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.6668946083709286,
+              "p90_max_channel_residual": 1.9795756276692502,
+              "maximum_channel_residual": 6.190627583850613
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4769866073521858,
+              "p90_max_channel_residual": 2.1868720235425827,
+              "maximum_channel_residual": 6.276196737228631
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 24.654137540555315,
+            "p90_max_channel_residual": 64.30738697683311,
+            "maximum_channel_residual": 136.1240907566891
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 25.943256789624424,
+            "p90_max_channel_residual": 55.24190590282946,
+            "maximum_channel_residual": 132.86968300916539
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 60.03609480180795,
+            "p90_max_channel_residual": 79.65874272115809,
+            "maximum_channel_residual": 137.1361995068865
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 61225,
+      "pts_sec": 3.9860026041666665,
+      "source_pixel_sha256": "02563af62baa6c85a8cee7598d67f37170ce3b2905c076fd2bcfea79e40f2333",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            121.96206160897425,
+            147.1696838204562,
+            190.64575152816866
+          ],
+          [
+            -7.845750636246383,
+            -5.20052337600065,
+            -9.323733972129624
+          ],
+          [
+            -0.17492766343647684,
+            -5.100674831865543,
+            -0.1488221940309656
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.1776793778223347,
+              "p90_max_channel_residual": 2.8857627732301054,
+              "maximum_channel_residual": 4.726947852308257
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.552009029601955,
+              "p90_max_channel_residual": 2.5091731349415527,
+              "maximum_channel_residual": 2.536564460857477
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.419298118477453,
+              "p90_max_channel_residual": 3.2428130929611885,
+              "maximum_channel_residual": 5.536314838537848
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.651967290249564,
+              "p90_max_channel_residual": 1.9480806576786804,
+              "maximum_channel_residual": 6.164038617127346
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4668572388398702,
+              "p90_max_channel_residual": 2.1679716393630075,
+              "maximum_channel_residual": 6.272296232268928
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 24.59835189139245,
+            "p90_max_channel_residual": 64.27994621976269,
+            "maximum_channel_residual": 136.10869128758975
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 25.983940744661016,
+            "p90_max_channel_residual": 55.05275887155422,
+            "maximum_channel_residual": 132.86413233137614
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 60.03354595213546,
+            "p90_max_channel_residual": 79.65705982411549,
+            "maximum_channel_residual": 137.13433631525976
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 61481,
+      "pts_sec": 4.002669270833334,
+      "source_pixel_sha256": "18d2ed2bf656cf0c9432ca7f181a1e736f8f650e6ce32e436f43bcc236ffb75d",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            122.86061840787747,
+            147.13836339352753,
+            190.40753278819085
+          ],
+          [
+            -8.542475863672978,
+            -4.9186362358368125,
+            -8.74331587764997
+          ],
+          [
+            -3.9827765090152973,
+            -5.4847898762076746,
+            -0.25729416913731884
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.9594599063172158,
+              "p90_max_channel_residual": 2.7136368239512807,
+              "maximum_channel_residual": 4.758715926265353
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.2257893062706036,
+              "p90_max_channel_residual": 1.9502308706151652,
+              "maximum_channel_residual": 2.255997569452205
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.8808183259607565,
+              "p90_max_channel_residual": 3.124411506013644,
+              "maximum_channel_residual": 5.406721145130504
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.5314443283524466,
+              "p90_max_channel_residual": 1.859198567335929,
+              "maximum_channel_residual": 6.113547643435709
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.409920970933847,
+              "p90_max_channel_residual": 2.0839258019506475,
+              "maximum_channel_residual": 6.215161139756688
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 24.445345069412852,
+            "p90_max_channel_residual": 64.18369090102742,
+            "maximum_channel_residual": 135.96739973336133
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 25.959835048299848,
+            "p90_max_channel_residual": 55.07004639780541,
+            "maximum_channel_residual": 133.37383675304386
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 60.09694664253148,
+            "p90_max_channel_residual": 80.0325909197393,
+            "maximum_channel_residual": 137.52656171277954
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 61737,
+      "pts_sec": 4.0193359375,
+      "source_pixel_sha256": "59aa489593988887056ed2128bb7f7214b8bcbe8bb67078064cb42007cf89426",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            122.93448585390165,
+            147.01994578049099,
+            190.2381449992332
+          ],
+          [
+            -8.638986037820379,
+            -4.7803901344354225,
+            -8.421621949362443
+          ],
+          [
+            -4.202985715106637,
+            -5.226924080490078,
+            -0.2532215327858511
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.9651590845429656,
+              "p90_max_channel_residual": 2.7295932808269923,
+              "maximum_channel_residual": 4.825808637608645
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.1933285173321861,
+              "p90_max_channel_residual": 1.9656271612960097,
+              "maximum_channel_residual": 2.2028715094400013
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.858552289662285,
+              "p90_max_channel_residual": 3.1354201578974754,
+              "maximum_channel_residual": 5.434870172092602
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.5116330735615358,
+              "p90_max_channel_residual": 1.8606897681456347,
+              "maximum_channel_residual": 6.033347965567259
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.375169433970947,
+              "p90_max_channel_residual": 2.077278125449645,
+              "maximum_channel_residual": 6.216191564917509
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 24.425478342993436,
+            "p90_max_channel_residual": 64.17741640775054,
+            "maximum_channel_residual": 135.95916835425123
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 25.968257210234146,
+            "p90_max_channel_residual": 55.058854839561974,
+            "maximum_channel_residual": 133.41566757263104
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 60.10617862532687,
+            "p90_max_channel_residual": 80.0609000725241,
+            "maximum_channel_residual": 137.55638677377607
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 61993,
+      "pts_sec": 4.036002604166667,
+      "source_pixel_sha256": "ae178f026f79c7b5363e4f20b1f7ede5905aa98cbc58b9d8576ae869447b5009",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            123.54524734764634,
+            146.30157101281526,
+            191.96537395387713
+          ],
+          [
+            -8.391113279236368,
+            -4.372385523626472,
+            -8.119691718855162
+          ],
+          [
+            -8.760571440226087,
+            -2.843450503329665,
+            -7.745006047058889
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.8037862534464477,
+              "p90_max_channel_residual": 2.331726631060846,
+              "maximum_channel_residual": 2.5254370639377726
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.1468260499428857,
+              "p90_max_channel_residual": 2.2497146945867,
+              "maximum_channel_residual": 2.7405139109361585
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.390739115350506,
+              "p90_max_channel_residual": 2.320350604955661,
+              "maximum_channel_residual": 3.5555166019563558
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.649919779489291,
+              "p90_max_channel_residual": 2.4772683352939175,
+              "maximum_channel_residual": 3.77467225635111
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.6561521003296773,
+              "p90_max_channel_residual": 2.6444628075532157,
+              "maximum_channel_residual": 5.629770838650586
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 25.73295629575075,
+            "p90_max_channel_residual": 67.35248432418587,
+            "maximum_channel_residual": 133.83945561602889
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 24.680173620394612,
+            "p90_max_channel_residual": 55.74710360051338,
+            "maximum_channel_residual": 126.83123492894674
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 58.98226796164212,
+            "p90_max_channel_residual": 78.95081996956536,
+            "maximum_channel_residual": 134.80678073352288
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 62249,
+      "pts_sec": 4.052669270833333,
+      "source_pixel_sha256": "de6a2b93b021a578ea5f0ab661db58638a3a5eb7889492d8f5e9fd6892d2c530",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            123.53248968804479,
+            146.37247085655804,
+            191.99014934628366
+          ],
+          [
+            -8.449507988101104,
+            -4.399837506061185,
+            -8.135179712579868
+          ],
+          [
+            -8.60639306645563,
+            -3.0472359569539735,
+            -7.807282131507163
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.8037737650337622,
+              "p90_max_channel_residual": 2.334067797518742,
+              "maximum_channel_residual": 2.543018413631387
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.1489747666958892,
+              "p90_max_channel_residual": 2.2491804405611164,
+              "maximum_channel_residual": 2.7715417288105186
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.393644197616762,
+              "p90_max_channel_residual": 2.295631941415408,
+              "maximum_channel_residual": 3.566226270464057
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.6105026948607162,
+              "p90_max_channel_residual": 1.952361013287353,
+              "maximum_channel_residual": 3.2472862124712947
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.5754711467238736,
+              "p90_max_channel_residual": 2.510256390537673,
+              "maximum_channel_residual": 5.624198904084224
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 25.703156883284457,
+            "p90_max_channel_residual": 67.37243283091152,
+            "maximum_channel_residual": 133.85543548264155
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 24.660544509358665,
+            "p90_max_channel_residual": 55.71024532381294,
+            "maximum_channel_residual": 126.83974745103869
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 58.970759046030494,
+            "p90_max_channel_residual": 78.95456282600735,
+            "maximum_channel_residual": 134.8117496990934
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 62505,
+      "pts_sec": 4.0693359375,
+      "source_pixel_sha256": "57307d89cff2d12fef8474be2176bfe84a495c0975a33218c64dbcf2411347c9",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            123.56516190208974,
+            146.34073403312198,
+            191.9902900420585
+          ],
+          [
+            -8.470251222905015,
+            -4.349031298792726,
+            -8.12183705461213
+          ],
+          [
+            -8.696370626773106,
+            -3.0364545073006854,
+            -7.839527768257742
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.806612893619748,
+              "p90_max_channel_residual": 2.341839978386676,
+              "maximum_channel_residual": 2.542948053004608
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.1487894368617515,
+              "p90_max_channel_residual": 2.251184538327607,
+              "maximum_channel_residual": 2.770476856926308
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.3886056439477223,
+              "p90_max_channel_residual": 2.2988012020564725,
+              "maximum_channel_residual": 3.5703510211866103
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.5674173817092527,
+              "p90_max_channel_residual": 1.9058836018269092,
+              "maximum_channel_residual": 3.807244488502434
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.5831090776388026,
+              "p90_max_channel_residual": 2.497189552873012,
+              "maximum_channel_residual": 5.611519221830093
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 25.695255485882633,
+            "p90_max_channel_residual": 67.3604081705536,
+            "maximum_channel_residual": 133.84226911107515
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 24.660910485897755,
+            "p90_max_channel_residual": 55.71277560702942,
+            "maximum_channel_residual": 126.84295984878439
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 58.9669512652333,
+            "p90_max_channel_residual": 78.95423139546538,
+            "maximum_channel_residual": 134.8112909134403
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 62761,
+      "pts_sec": 4.086002604166667,
+      "source_pixel_sha256": "6ab7cd27a8756b687f70857d6bf0d2a8732625d15161e2de41a139f31fd193e1",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            123.53295160177612,
+            146.3276419945149,
+            191.98493027256043
+          ],
+          [
+            -8.491428514013249,
+            -4.35282804416731,
+            -8.120569809769622
+          ],
+          [
+            -8.540736017669563,
+            -2.9851524743432316,
+            -7.825169738315814
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.7997474070013242,
+              "p90_max_channel_residual": 2.328276361291972,
+              "maximum_channel_residual": 2.5379238071103885
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.158568453153367,
+              "p90_max_channel_residual": 2.2513145025445995,
+              "maximum_channel_residual": 2.7892311400025136
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.3953964228929734,
+              "p90_max_channel_residual": 2.305903652276953,
+              "maximum_channel_residual": 3.56691816327816
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.646348986513841,
+              "p90_max_channel_residual": 2.424054589577651,
+              "maximum_channel_residual": 3.8248632621253336
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.5752146664470763,
+              "p90_max_channel_residual": 2.534056072348318,
+              "maximum_channel_residual": 5.631908902805463
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 25.72454994032425,
+            "p90_max_channel_residual": 67.3827612077466,
+            "maximum_channel_residual": 133.86299822251178
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 24.687972098088732,
+            "p90_max_channel_residual": 55.716647771569974,
+            "maximum_channel_residual": 126.84786945351534
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 58.98530087257469,
+            "p90_max_channel_residual": 78.01877396324593,
+            "maximum_channel_residual": 134.8165774306601
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 63017,
+      "pts_sec": 4.102669270833333,
+      "source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            123.25280046829529,
+            146.26033663616462,
+            192.00994413011705
+          ],
+          [
+            -8.645097750151418,
+            -4.036226377963405,
+            -8.576448668978962
+          ],
+          [
+            -7.112194491192617,
+            -3.3988507724451247,
+            -6.78463849522177
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.8146443971503852,
+              "p90_max_channel_residual": 2.371609456278631,
+              "maximum_channel_residual": 2.5790702362492652
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.1594190090694299,
+              "p90_max_channel_residual": 2.2372491211953305,
+              "maximum_channel_residual": 2.9709462344262505
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.5106281378211652,
+              "p90_max_channel_residual": 2.3802722627697137,
+              "maximum_channel_residual": 3.6700131316687816
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4633909534599838,
+              "p90_max_channel_residual": 1.8662689064022118,
+              "maximum_channel_residual": 2.8506407564265146
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.3551684091304408,
+              "p90_max_channel_residual": 2.366823563956547,
+              "maximum_channel_residual": 2.6510289002311396
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 1.9452013791816765,
+            "p90_max_channel_residual": 2.366439960716795,
+            "maximum_channel_residual": 109.95218735290987
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 1.1669232562341771,
+            "p90_max_channel_residual": 2.2065766195283643,
+            "maximum_channel_residual": 4.191143159570757
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 0.8708240341177765,
+            "p90_max_channel_residual": 1.3515175489260145,
+            "maximum_channel_residual": 3.1433726922487324
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 63273,
+      "pts_sec": 4.1193359375,
+      "source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            123.29128885617713,
+            146.24532955983986,
+            191.99479171974954
+          ],
+          [
+            -8.803756139212824,
+            -4.053103019251819,
+            -8.589503619128111
+          ],
+          [
+            -6.854495041036992,
+            -3.2774019345646135,
+            -6.67594233706889
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.8052069658363488,
+              "p90_max_channel_residual": 2.3676103738840566,
+              "maximum_channel_residual": 2.573859094373802
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.165378520036268,
+              "p90_max_channel_residual": 2.238143685939761,
+              "maximum_channel_residual": 2.98125779812554
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.5271474499675721,
+              "p90_max_channel_residual": 2.389415484061121,
+              "maximum_channel_residual": 3.6634697520726434
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4750523539227884,
+              "p90_max_channel_residual": 1.8644037382822318,
+              "maximum_channel_residual": 2.8489194626273218
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.3712753520360648,
+              "p90_max_channel_residual": 2.347561047714163,
+              "maximum_channel_residual": 2.689814134305138
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 1.9490900718757578,
+            "p90_max_channel_residual": 2.3561897212110265,
+            "maximum_channel_residual": 109.96105433889127
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 1.163052668589227,
+            "p90_max_channel_residual": 2.1731107648585537,
+            "maximum_channel_residual": 4.1522727104186
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 0.8770851295389714,
+            "p90_max_channel_residual": 1.3729942486119797,
+            "maximum_channel_residual": 3.149487007210894
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 63529,
+      "pts_sec": 4.136002604166666,
+      "source_pixel_sha256": "7b784dd56e27c48a760671568acbd458bc496400335ee4b3181798d0584a4044",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            123.33786723888399,
+            146.38959820048163,
+            191.74834056580931
+          ],
+          [
+            -8.649215464364035,
+            -4.5563222874989,
+            -8.135341028524383
+          ],
+          [
+            -7.299463491621949,
+            -2.8511444628064604,
+            -6.71823423101264
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.7929871732338716,
+              "p90_max_channel_residual": 2.2841299195385902,
+              "maximum_channel_residual": 2.8985393837803883
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.2378018144499188,
+              "p90_max_channel_residual": 2.289000552657015,
+              "maximum_channel_residual": 2.9258844670345923
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4682790219287678,
+              "p90_max_channel_residual": 2.3056650688666567,
+              "maximum_channel_residual": 3.658065350236882
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.491451463109406,
+              "p90_max_channel_residual": 1.9654423388948132,
+              "maximum_channel_residual": 2.8967376970520604
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4148325485921749,
+              "p90_max_channel_residual": 2.130951801266056,
+              "maximum_channel_residual": 2.5313059290283064
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 1.903349127783408,
+            "p90_max_channel_residual": 2.2476336894918174,
+            "maximum_channel_residual": 106.89917342975077
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 1.242466795817486,
+            "p90_max_channel_residual": 2.2282523069309788,
+            "maximum_channel_residual": 4.156172072991055
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 0.8694230279434182,
+            "p90_max_channel_residual": 1.3893370840754273,
+            "maximum_channel_residual": 3.111818161932291
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 63785,
+      "pts_sec": 4.152669270833333,
+      "source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            123.36206109692718,
+            146.4518845167289,
+            191.6368842150144
+          ],
+          [
+            -8.621457480550054,
+            -4.629687781235319,
+            -7.984954655009748
+          ],
+          [
+            -7.380847781535109,
+            -2.882917252166261,
+            -6.557916661111948
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.7882402988885593,
+              "p90_max_channel_residual": 2.2556019541444683,
+              "maximum_channel_residual": 2.849856759447249
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.264944776119094,
+              "p90_max_channel_residual": 2.3184363376925434,
+              "maximum_channel_residual": 2.8848119810113673
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4655917666777833,
+              "p90_max_channel_residual": 2.244955754763322,
+              "maximum_channel_residual": 3.67155109506524
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4719340745121379,
+              "p90_max_channel_residual": 1.9670258424974834,
+              "maximum_channel_residual": 2.893599005777645
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.447076698843562,
+              "p90_max_channel_residual": 2.3732590196974996,
+              "maximum_channel_residual": 2.507141827000183
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 1.9185313647004938,
+            "p90_max_channel_residual": 2.2739898548854116,
+            "maximum_channel_residual": 106.87127361603973
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 1.207911020338487,
+            "p90_max_channel_residual": 2.199816378592837,
+            "maximum_channel_residual": 4.141422205969704
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 0.8587319816791276,
+            "p90_max_channel_residual": 1.4068675335497063,
+            "maximum_channel_residual": 3.1137217195887104
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 64041,
+      "pts_sec": 4.1693359375,
+      "source_pixel_sha256": "d18c9060f352e53b37967c62e12f3ee51b06e330664ee49da476b3751cda8f83",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            123.3696568381144,
+            146.3646675927164,
+            191.75258500087202
+          ],
+          [
+            -8.762537420811835,
+            -4.665963912140285,
+            -8.127439873344924
+          ],
+          [
+            -7.213287464912944,
+            -2.5632857618463145,
+            -6.757597595764479
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.7980673284882722,
+              "p90_max_channel_residual": 2.2939691986459083,
+              "maximum_channel_residual": 2.901353133490403
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.287114718468066,
+              "p90_max_channel_residual": 2.2592680819959554,
+              "maximum_channel_residual": 3.210445810171592
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4590372792154613,
+              "p90_max_channel_residual": 2.276280627251768,
+              "maximum_channel_residual": 3.739871282538928
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4874230140792488,
+              "p90_max_channel_residual": 2.004824745923264,
+              "maximum_channel_residual": 2.872813020224214
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4227615607041855,
+              "p90_max_channel_residual": 2.0945984319637803,
+              "maximum_channel_residual": 2.5580620588978746
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 1.91418615881371,
+            "p90_max_channel_residual": 2.2500771625649687,
+            "maximum_channel_residual": 107.91327280540564
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 1.252996804351829,
+            "p90_max_channel_residual": 2.3983252279621667,
+            "maximum_channel_residual": 4.149396837233056
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 0.8768661941097264,
+            "p90_max_channel_residual": 1.384273490850316,
+            "maximum_channel_residual": 3.1098948572372933
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 64297,
+      "pts_sec": 4.186002604166666,
+      "source_pixel_sha256": "0e795ed52d0eac85bf325988a8d629c2be975f8fbce0d9bfa33a8a0c773eee86",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            123.08162771067623,
+            146.55053138648853,
+            191.45712488553602
+          ],
+          [
+            -8.451952673033494,
+            -4.692205193465723,
+            -7.6924888475977
+          ],
+          [
+            -6.735507913184169,
+            -3.0028248399746538,
+            -6.649979150554094
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.8076484483028425,
+              "p90_max_channel_residual": 2.183521177931709,
+              "maximum_channel_residual": 3.8597893543366837
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.1930555213493172,
+              "p90_max_channel_residual": 2.327528217948992,
+              "maximum_channel_residual": 3.1844989549603895
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4228128485796174,
+              "p90_max_channel_residual": 2.2908949111324204,
+              "maximum_channel_residual": 3.6504906846909932
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.5673457128313921,
+              "p90_max_channel_residual": 2.135475610817747,
+              "maximum_channel_residual": 3.0315376548645077
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4784300449507313,
+              "p90_max_channel_residual": 2.431014191368621,
+              "maximum_channel_residual": 2.5688026565874083
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 1.8786096308023856,
+            "p90_max_channel_residual": 2.352981886326444,
+            "maximum_channel_residual": 107.98628711498854
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 1.2918534655123037,
+            "p90_max_channel_residual": 2.4097756630844995,
+            "maximum_channel_residual": 4.1844275060108345
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 0.8165377293892664,
+            "p90_max_channel_residual": 1.3615082980818471,
+            "maximum_channel_residual": 3.0519642691491526
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 64553,
+      "pts_sec": 4.202669270833334,
+      "source_pixel_sha256": "bcb5a25b6b58a0efb563575d4be9ba3507bf290b327fa64996a1d903970695a2",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            123.07940389583686,
+            146.54887175110585,
+            191.6068560461548
+          ],
+          [
+            -8.526537183134188,
+            -4.734918994692657,
+            -8.207695387268467
+          ],
+          [
+            -6.56251921206465,
+            -2.843707623935994,
+            -6.31410857243975
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.8109240784932108,
+              "p90_max_channel_residual": 2.2053535369424564,
+              "maximum_channel_residual": 3.870635095387172
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.240490132904726,
+              "p90_max_channel_residual": 2.27720201985199,
+              "maximum_channel_residual": 2.927950521248192
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.408495937695469,
+              "p90_max_channel_residual": 2.214394108832363,
+              "maximum_channel_residual": 3.6721262731716138
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.5641570740035633,
+              "p90_max_channel_residual": 2.141358807041955,
+              "maximum_channel_residual": 3.1098752134400343
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.504245083315657,
+              "p90_max_channel_residual": 2.4500087876620666,
+              "maximum_channel_residual": 2.6573373603667676
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 1.9365100339147032,
+            "p90_max_channel_residual": 2.354605782895118,
+            "maximum_channel_residual": 108.00417959723832
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 1.3441562092555999,
+            "p90_max_channel_residual": 2.5106336219578806,
+            "maximum_channel_residual": 4.1730782983686225
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 0.8028618382878885,
+            "p90_max_channel_residual": 1.363465685183209,
+            "maximum_channel_residual": 3.0378905452264178
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 64809,
+      "pts_sec": 4.2193359375,
+      "source_pixel_sha256": "8e43e3263c8c969fd28631dab3f78166a163ec834e66fae70ad0b70e0c9160b2",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            123.04697159142405,
+            146.4534558134837,
+            191.56590173406366
+          ],
+          [
+            -8.451014712283895,
+            -4.594587427369303,
+            -8.120935680984049
+          ],
+          [
+            -6.6178340847154145,
+            -2.836316482371577,
+            -6.295552334838768
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.8056720987693329,
+              "p90_max_channel_residual": 2.192843042730357,
+              "maximum_channel_residual": 3.8382090626500514
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.2176805714010797,
+              "p90_max_channel_residual": 2.2503600013674228,
+              "maximum_channel_residual": 2.9206454846792553
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4368682106197042,
+              "p90_max_channel_residual": 2.31308677268581,
+              "maximum_channel_residual": 3.621755812925784
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.5640873807922757,
+              "p90_max_channel_residual": 2.1414525152667125,
+              "maximum_channel_residual": 3.1052240101628854
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4438639966829923,
+              "p90_max_channel_residual": 2.318666953036547,
+              "maximum_channel_residual": 2.6058017686551693
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 1.8754790915841326,
+            "p90_max_channel_residual": 2.2357837348397362,
+            "maximum_channel_residual": 108.00576502530733
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 1.348949878124379,
+            "p90_max_channel_residual": 2.4998725538110476,
+            "maximum_channel_residual": 4.188293247408353
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 0.8237849719207794,
+            "p90_max_channel_residual": 1.3542876065663165,
+            "maximum_channel_residual": 3.0435778773789366
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 65065,
+      "pts_sec": 4.236002604166667,
+      "source_pixel_sha256": "4e3154780ca05eed8cf4a465acf13586ee4c64b3476bbf2ed763a88825f9ab16",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            122.98893006668088,
+            146.6023018539204,
+            191.2501326418274
+          ],
+          [
+            -8.410457888170825,
+            -5.015904761228317,
+            -7.719450229995042
+          ],
+          [
+            -6.435416014917402,
+            -2.270884574512219,
+            -6.154762384263596
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.7720276556335353,
+              "p90_max_channel_residual": 2.0630489657397204,
+              "maximum_channel_residual": 3.8374891736742427
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.2463436822601712,
+              "p90_max_channel_residual": 2.280831108405803,
+              "maximum_channel_residual": 2.901539320309695
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.3786648755177897,
+              "p90_max_channel_residual": 2.1999140277841365,
+              "maximum_channel_residual": 3.73299617269069
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4514471484452773,
+              "p90_max_channel_residual": 2.200405017220196,
+              "maximum_channel_residual": 4.190707034192911
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.5834282456238729,
+              "p90_max_channel_residual": 2.5053462591136237,
+              "maximum_channel_residual": 2.7583674904533098
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 1.9350152125524693,
+            "p90_max_channel_residual": 2.3586942720432145,
+            "maximum_channel_residual": 108.02072587926922
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 1.3125656063717932,
+            "p90_max_channel_residual": 2.4674606689853715,
+            "maximum_channel_residual": 4.194207741125368
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 0.7573352697684906,
+            "p90_max_channel_residual": 1.3541560012408411,
+            "maximum_channel_residual": 1.8446073084464416
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 65321,
+      "pts_sec": 4.252669270833334,
+      "source_pixel_sha256": "323946527efaa7632b1c64f6e43c277ae196535573ee4dec664173841b5d7627",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            122.95137647687415,
+            146.47435213890364,
+            191.40349111669047
+          ],
+          [
+            -8.428076250193788,
+            -4.87144882748843,
+            -7.993604183127759
+          ],
+          [
+            -6.2724074112048935,
+            -2.095072821419978,
+            -6.178898063671599
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.7642191943503307,
+              "p90_max_channel_residual": 2.048887449825821,
+              "maximum_channel_residual": 3.813840281922282
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.2434026237246885,
+              "p90_max_channel_residual": 2.2194683750938764,
+              "maximum_channel_residual": 2.8354843590119287
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.3604184854706787,
+              "p90_max_channel_residual": 2.155733644175102,
+              "maximum_channel_residual": 3.5658259984461154
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4452123170982463,
+              "p90_max_channel_residual": 2.161653336063901,
+              "maximum_channel_residual": 4.157918528454175
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.536253002547907,
+              "p90_max_channel_residual": 2.496056137090774,
+              "maximum_channel_residual": 2.7166936130713566
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 1.9119053156317611,
+            "p90_max_channel_residual": 2.142007936223112,
+            "maximum_channel_residual": 108.04671257462336
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 1.2781104827809817,
+            "p90_max_channel_residual": 2.3872831129029235,
+            "maximum_channel_residual": 4.1966990675948495
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 0.7579383658293501,
+            "p90_max_channel_residual": 1.3413364339831362,
+            "maximum_channel_residual": 1.8496050165370121
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 65577,
+      "pts_sec": 4.2693359375,
+      "source_pixel_sha256": "63d13ea7884ce80b76096daaf2b983bb04a1d1753df6dda8c669342d17dc24ad",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            123.21772786335929,
+            146.50716000001825,
+            191.50787535260187
+          ],
+          [
+            -9.320278152204361,
+            -4.866882089512729,
+            -8.17105504820014
+          ],
+          [
+            -5.736567481288809,
+            -2.278665775823107,
+            -6.167880709420187
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.7538666763627837,
+              "p90_max_channel_residual": 2.0455376775616045,
+              "maximum_channel_residual": 3.882019405912885
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.1982642739315752,
+              "p90_max_channel_residual": 2.2513404098650343,
+              "maximum_channel_residual": 3.1619510290658326
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.205592299372075,
+              "p90_max_channel_residual": 2.22108728875709,
+              "maximum_channel_residual": 3.35309839963665
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4032338521145975,
+              "p90_max_channel_residual": 2.0580857291460846,
+              "maximum_channel_residual": 2.274476050793055
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4736615395409762,
+              "p90_max_channel_residual": 2.0000464707477987,
+              "maximum_channel_residual": 2.731318650831014
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 1.9194688615577344,
+            "p90_max_channel_residual": 2.2069235752282297,
+            "maximum_channel_residual": 108.159482147904
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 1.2652165931463693,
+            "p90_max_channel_residual": 2.3607827223270585,
+            "maximum_channel_residual": 4.163145550709913
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 0.7603826195106337,
+            "p90_max_channel_residual": 1.303007858422356,
+            "maximum_channel_residual": 1.8929453177544815
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 65833,
+      "pts_sec": 4.286002604166667,
+      "source_pixel_sha256": "dca252095f9f06d5c58a3d9f257fec5f76c9f91a2015b4358005022566e72d68",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            123.23364867533435,
+            146.52986101190152,
+            191.5732253501466
+          ],
+          [
+            -9.371899254450323,
+            -4.869853961604008,
+            -8.35188024369952
+          ],
+          [
+            -5.699408186860915,
+            -2.422086310494138,
+            -5.966810603454675
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.7668319828468513,
+              "p90_max_channel_residual": 2.0765081687556246,
+              "maximum_channel_residual": 3.8905967046492407
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.2294684120600354,
+              "p90_max_channel_residual": 2.2768345865166113,
+              "maximum_channel_residual": 3.169653181224973
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.2506533674245328,
+              "p90_max_channel_residual": 2.265918471428745,
+              "maximum_channel_residual": 3.921166133241968
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4005399869617663,
+              "p90_max_channel_residual": 2.0531285568941757,
+              "maximum_channel_residual": 2.262442872750256
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.521441472510131,
+              "p90_max_channel_residual": 2.0069842289791993,
+              "maximum_channel_residual": 2.7746403873673557
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 1.9238793200181334,
+            "p90_max_channel_residual": 2.2042542388579207,
+            "maximum_channel_residual": 108.16472697524841
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 1.326879134343268,
+            "p90_max_channel_residual": 2.542075883234318,
+            "maximum_channel_residual": 4.15909211942602
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 0.7557300310243286,
+            "p90_max_channel_residual": 1.2989165409071717,
+            "maximum_channel_residual": 1.8933807202882775
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 66089,
+      "pts_sec": 4.302669270833333,
+      "source_pixel_sha256": "92d10d715d1581d9473098c00796b12b86225679f308e29dc4e0359a7a1bf92c",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            124.81912126909715,
+            149.24117131513654,
+            194.16767061012393
+          ],
+          [
+            -8.580852427958535,
+            -5.498545436718029,
+            -9.192038628516675
+          ],
+          [
+            -19.855210586564155,
+            -19.683161836666354,
+            -21.360501400048864
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.1114617527890753,
+              "p90_max_channel_residual": 3.6025626649288114,
+              "maximum_channel_residual": 3.877789510308716
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.8877415354373444,
+              "p90_max_channel_residual": 3.0037327666156286,
+              "maximum_channel_residual": 3.939830534619972
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 3.962461639408898,
+              "p90_max_channel_residual": 7.127070557623232,
+              "maximum_channel_residual": 14.38747513759887
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.7764965159666193,
+              "p90_max_channel_residual": 2.420286792580126,
+              "maximum_channel_residual": 2.76362116889905
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.2017257262932532,
+              "p90_max_channel_residual": 1.7248858936203453,
+              "maximum_channel_residual": 2.7613157517154434
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 1.8893269658863796,
+            "p90_max_channel_residual": 2.0347505004344684,
+            "maximum_channel_residual": 107.95320626820263
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 3.1410561962742083,
+            "p90_max_channel_residual": 4.35663010033862,
+            "maximum_channel_residual": 9.371144807688864
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 2.4635420364068223,
+            "p90_max_channel_residual": 3.660523825227358,
+            "maximum_channel_residual": 3.936665419873293
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 66345,
+      "pts_sec": 4.3193359375,
+      "source_pixel_sha256": "cca778cb6cf53435687546ba6bbc22174ae6bac7849c523cc06193dd27cfcf3a",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            124.48326867245785,
+            149.0500648200729,
+            193.8711310316382
+          ],
+          [
+            -8.005569834887869,
+            -4.943382434335886,
+            -8.715877199623248
+          ],
+          [
+            -19.72105612261309,
+            -20.02348281999455,
+            -21.403219489607977
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.0142681716184914,
+              "p90_max_channel_residual": 3.6303262595124552,
+              "maximum_channel_residual": 3.900156936321082
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.6585331003162074,
+              "p90_max_channel_residual": 3.0977793745207705,
+              "maximum_channel_residual": 4.036478103400924
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 3.8763893921285524,
+              "p90_max_channel_residual": 6.870036945582147,
+              "maximum_channel_residual": 14.084483626734112
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.5625321310128364,
+              "p90_max_channel_residual": 2.27207257369173,
+              "maximum_channel_residual": 3.1329027231183204
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.2552074287909827,
+              "p90_max_channel_residual": 1.930389466792265,
+              "maximum_channel_residual": 2.993932335065722
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 1.879383795115074,
+            "p90_max_channel_residual": 2.1173764544976277,
+            "maximum_channel_residual": 107.98464826031271
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 3.05846932739652,
+            "p90_max_channel_residual": 4.326449257177179,
+            "maximum_channel_residual": 9.302574200374607
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 2.5785679199459244,
+            "p90_max_channel_residual": 3.8428247151435473,
+            "maximum_channel_residual": 4.057608724489171
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 66601,
+      "pts_sec": 4.336002604166667,
+      "source_pixel_sha256": "ee3c79b9655fc91c96078b501b6cad1fa6735d4aae8a9820d19a1f45b97dfb05",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            123.45370758281884,
+            148.3474057549,
+            193.20438105982535
+          ],
+          [
+            -5.690491454082914,
+            -3.3192119286489907,
+            -6.965850322294205
+          ],
+          [
+            -20.94670269848433,
+            -21.139228798052923,
+            -22.62114872987937
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.099326161109326,
+              "p90_max_channel_residual": 4.086207855088312,
+              "maximum_channel_residual": 4.439418789142337
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.602972660078448,
+              "p90_max_channel_residual": 2.8271531584194887,
+              "maximum_channel_residual": 4.499706527264351
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 3.934533096439208,
+              "p90_max_channel_residual": 7.076049517606984,
+              "maximum_channel_residual": 13.959365742626119
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4836214905303882,
+              "p90_max_channel_residual": 2.0004644759518215,
+              "maximum_channel_residual": 2.8369428093662634
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4486612563042192,
+              "p90_max_channel_residual": 2.2730441676971767,
+              "maximum_channel_residual": 3.261759265872783
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 1.850025109945049,
+            "p90_max_channel_residual": 2.0649717970458936,
+            "maximum_channel_residual": 108.00987598153316
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 3.3055949891962038,
+            "p90_max_channel_residual": 4.5378217362303985,
+            "maximum_channel_residual": 9.15387654254377
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 3.07647915385053,
+            "p90_max_channel_residual": 3.9269419147488973,
+            "maximum_channel_residual": 4.177247386010379
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 66857,
+      "pts_sec": 4.352669270833333,
+      "source_pixel_sha256": "9a5e1d7b59c0c0b1f4424feae58ee2d799440c41c9b4fedbe08b494761675080",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            119.31104772521782,
+            145.011269902555,
+            188.09486492447743
+          ],
+          [
+            0.6783451880576616,
+            -0.14466215206097435,
+            0.40313852365746417
+          ],
+          [
+            -14.952602564718662,
+            -12.328644695542998,
+            -13.797567519801072
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.0373594273825177,
+              "p90_max_channel_residual": 2.556988965267615,
+              "maximum_channel_residual": 4.768196303506642
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 3.077485089573013,
+              "p90_max_channel_residual": 4.659657298413731,
+              "maximum_channel_residual": 7.254865237461104
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 3.6768204373180136,
+              "p90_max_channel_residual": 7.4401937128382345,
+              "maximum_channel_residual": 15.260847707534026
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.2117604559301682,
+              "p90_max_channel_residual": 2.985764689631236,
+              "maximum_channel_residual": 3.073943976204191
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.4772114825074643,
+              "p90_max_channel_residual": 3.021132894199911,
+              "maximum_channel_residual": 3.798538943564111
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 2.1396253086065573,
+            "p90_max_channel_residual": 2.492385122556996,
+            "maximum_channel_residual": 108.21885500134319
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 2.7481135242612127,
+            "p90_max_channel_residual": 4.330809302056269,
+            "maximum_channel_residual": 6.641099080059519
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 2.5995916134305896,
+            "p90_max_channel_residual": 3.1692766577123677,
+            "maximum_channel_residual": 4.204899667493578
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 67113,
+      "pts_sec": 4.3693359375,
+      "source_pixel_sha256": "de180561c1a8eb58bc303e43b116488813cba17ab44fc917b2105e5fa93a1f88",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            119.68286389889455,
+            142.11099910666923,
+            188.19204795552056
+          ],
+          [
+            -6.221190976631373,
+            -1.6989080164774528,
+            -7.60617816507651
+          ],
+          [
+            -0.24541831170257952,
+            6.118116711480295,
+            5.095065717787002
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.635158393040512,
+              "p90_max_channel_residual": 2.049099530436038,
+              "maximum_channel_residual": 3.981429904571627
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.7429484149570813,
+              "p90_max_channel_residual": 4.6889325292057125,
+              "maximum_channel_residual": 9.117804487854016
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.651918931783847,
+              "p90_max_channel_residual": 4.598863045556945,
+              "maximum_channel_residual": 9.88786443321905
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.1755687528141765,
+              "p90_max_channel_residual": 2.9642390511575174,
+              "maximum_channel_residual": 4.017323813381026
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.7965454692081007,
+              "p90_max_channel_residual": 2.805425922121637,
+              "maximum_channel_residual": 3.555929148781985
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 2.515761810717801,
+            "p90_max_channel_residual": 2.9322051697817897,
+            "maximum_channel_residual": 107.45840887838395
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 1.7605604241844297,
+            "p90_max_channel_residual": 3.308973581653913,
+            "maximum_channel_residual": 8.065625042296574
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 1.536475624137069,
+            "p90_max_channel_residual": 2.4024775854255354,
+            "maximum_channel_residual": 5.431957552976996
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 67369,
+      "pts_sec": 4.386002604166666,
+      "source_pixel_sha256": "c07c387de2159c861ee5043a5449984d45924424c4895d2ce6767470c9a97aa9",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            117.92392938047243,
+            141.32854712522797,
+            187.18078779651427
+          ],
+          [
+            -5.518003133118154,
+            -3.3664093153031676,
+            -10.01502767507398
+          ],
+          [
+            6.041963783528114,
+            11.366489221952639,
+            13.519647957797073
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.5229283545153407,
+              "p90_max_channel_residual": 1.81543308421258,
+              "maximum_channel_residual": 2.689430739658974
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 3.7383877306240496,
+              "p90_max_channel_residual": 5.912804990437121,
+              "maximum_channel_residual": 9.49753706807138
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.9489413709799375,
+              "p90_max_channel_residual": 4.175437695401482,
+              "maximum_channel_residual": 8.94277048914526
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.7167183643183526,
+              "p90_max_channel_residual": 3.7499773349610623,
+              "maximum_channel_residual": 5.278307485686923
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.270958138432752,
+              "p90_max_channel_residual": 3.5778372860500722,
+              "maximum_channel_residual": 3.8810486445007086
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 2.315691910867691,
+            "p90_max_channel_residual": 3.061716241230491,
+            "maximum_channel_residual": 108.07982671314564
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 1.7027223921026275,
+            "p90_max_channel_residual": 3.7654758938545343,
+            "maximum_channel_residual": 8.100928835166314
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 1.1425909917475314,
+            "p90_max_channel_residual": 1.464361417164079,
+            "maximum_channel_residual": 3.488347055428619
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    }
+  ],
+  "synthetic_controls": [
+    {
+      "kind": "black_panel",
+      "role": "synthetic sensitivity only",
+      "parent_source_pixel_sha256": "439c3817810a8d8bcc8c82ed218d5fe0f851c7c5f35308b0b85fcbd328759edd",
+      "modified_pixel_sha256": "6ae0643d87b93b120616ef886add9b65985f1cf7f5bd012d00c611727c2d1b78",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            122.07906539772702,
+            147.21668072025105,
+            190.5555610387801
+          ],
+          [
+            -7.986494640211385,
+            -5.139615797113586,
+            -9.059628172984283
+          ],
+          [
+            -0.28794287844517946,
+            -5.4679300652767715,
+            -0.35830745305204137
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.081935924862934,
+              "p90_max_channel_residual": 2.86543897250899,
+              "maximum_channel_residual": 4.797996208191705
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4881111459317207,
+              "p90_max_channel_residual": 2.4666462751554534,
+              "maximum_channel_residual": 2.5065706065553712
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.222460033197618,
+              "p90_max_channel_residual": 3.053753230111596,
+              "maximum_channel_residual": 5.304866069884383
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.667582612403077,
+              "p90_max_channel_residual": 1.8900584160451175,
+              "maximum_channel_residual": 6.16558973616398
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4323136304028201,
+              "p90_max_channel_residual": 2.1183518470838423,
+              "maximum_channel_residual": 6.236118215093811
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 149.90606475911102,
+            "p90_max_channel_residual": 186.74034750186772,
+            "maximum_channel_residual": 186.9954481337771
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 97.02183370506742,
+            "p90_max_channel_residual": 186.54191113807127,
+            "maximum_channel_residual": 186.9486691051842
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 185.91084464642648,
+            "p90_max_channel_residual": 186.05606553041127,
+            "maximum_channel_residual": 186.09446274743317
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "kind": "white_panel",
+      "role": "synthetic sensitivity only",
+      "parent_source_pixel_sha256": "439c3817810a8d8bcc8c82ed218d5fe0f851c7c5f35308b0b85fcbd328759edd",
+      "modified_pixel_sha256": "4af16d4aecd051067e6a5f5d784cd0e867cae3f4c029511328a1bbeca8cd5831",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            122.07906539772702,
+            147.21668072025105,
+            190.5555610387801
+          ],
+          [
+            -7.986494640211385,
+            -5.139615797113586,
+            -9.059628172984283
+          ],
+          [
+            -0.28794287844517946,
+            -5.4679300652767715,
+            -0.35830745305204137
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.081935924862934,
+              "p90_max_channel_residual": 2.86543897250899,
+              "maximum_channel_residual": 4.797996208191705
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4881111459317207,
+              "p90_max_channel_residual": 2.4666462751554534,
+              "maximum_channel_residual": 2.5065706065553712
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.222460033197618,
+              "p90_max_channel_residual": 3.053753230111596,
+              "maximum_channel_residual": 5.304866069884383
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.667582612403077,
+              "p90_max_channel_residual": 1.8900584160451175,
+              "maximum_channel_residual": 6.16558973616398
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4323136304028201,
+              "p90_max_channel_residual": 2.1183518470838423,
+              "maximum_channel_residual": 6.236118215093811
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 110.6902157833279,
+            "p90_max_channel_residual": 137.62982124411292,
+            "maximum_channel_residual": 137.85468135826758
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 72.55366509577883,
+            "p90_max_channel_residual": 137.5329724736914,
+            "maximum_channel_residual": 137.89147405940224
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 137.00872591375358,
+            "p90_max_channel_residual": 137.13662930758588,
+            "maximum_channel_residual": 137.17025793260018
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "kind": "context_color_panel",
+      "role": "synthetic sensitivity only",
+      "parent_source_pixel_sha256": "439c3817810a8d8bcc8c82ed218d5fe0f851c7c5f35308b0b85fcbd328759edd",
+      "modified_pixel_sha256": "bd66209c83356c86eef80b8ae135aec40a66ca6c773dd903601ad168ed37fda0",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            122.07906539772702,
+            147.21668072025105,
+            190.5555610387801
+          ],
+          [
+            -7.986494640211385,
+            -5.139615797113586,
+            -9.059628172984283
+          ],
+          [
+            -0.28794287844517946,
+            -5.4679300652767715,
+            -0.35830745305204137
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.081935924862934,
+              "p90_max_channel_residual": 2.86543897250899,
+              "maximum_channel_residual": 4.797996208191705
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4881111459317207,
+              "p90_max_channel_residual": 2.4666462751554534,
+              "maximum_channel_residual": 2.5065706065553712
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.222460033197618,
+              "p90_max_channel_residual": 3.053753230111596,
+              "maximum_channel_residual": 5.304866069884383
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.667582612403077,
+              "p90_max_channel_residual": 1.8900584160451175,
+              "maximum_channel_residual": 6.16558973616398
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4323136304028201,
+              "p90_max_channel_residual": 2.1183518470838423,
+              "maximum_channel_residual": 6.236118215093811
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 1.9386869187477827,
+            "p90_max_channel_residual": 5.349026653561306,
+            "maximum_channel_residual": 105.95380118725674
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 4.341793674300248,
+            "p90_max_channel_residual": 11.98107440343344,
+            "maximum_channel_residual": 29.90859393546154
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 0.31459159781493407,
+            "p90_max_channel_residual": 0.40557744669050066,
+            "maximum_channel_residual": 0.4769343292492465
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "kind": "context_color_text_only",
+      "role": "synthetic sensitivity only",
+      "parent_source_pixel_sha256": "439c3817810a8d8bcc8c82ed218d5fe0f851c7c5f35308b0b85fcbd328759edd",
+      "modified_pixel_sha256": "1eef194bf78e426ddaff4cfcc9b88b7acf1c210f923ee51048f19008d8bc2751",
+      "measurement": {
+        "model": "descriptive current-image BGR affine plane",
+        "coefficients": [
+          [
+            122.07906539772702,
+            147.21668072025105,
+            190.5555610387801
+          ],
+          [
+            -7.986494640211385,
+            -5.139615797113586,
+            -9.059628172984283
+          ],
+          [
+            -0.28794287844517946,
+            -5.4679300652767715,
+            -0.35830745305204137
+          ]
+        ],
+        "context_leave_one_region_out": [
+          {
+            "bounds": [
+              708,
+              143,
+              730,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.081935924862934,
+              "p90_max_channel_residual": 2.86543897250899,
+              "maximum_channel_residual": 4.797996208191705
+            }
+          },
+          {
+            "bounds": [
+              1190,
+              143,
+              1212,
+              273
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4881111459317207,
+              "p90_max_channel_residual": 2.4666462751554534,
+              "maximum_channel_residual": 2.5065706065553712
+            }
+          },
+          {
+            "bounds": [
+              750,
+              295,
+              1170,
+              320
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 2.222460033197618,
+              "p90_max_channel_residual": 3.053753230111596,
+              "maximum_channel_residual": 5.304866069884383
+            }
+          },
+          {
+            "bounds": [
+              750,
+              115,
+              900,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.667582612403077,
+              "p90_max_channel_residual": 1.8900584160451175,
+              "maximum_channel_residual": 6.16558973616398
+            }
+          },
+          {
+            "bounds": [
+              1020,
+              115,
+              1170,
+              130
+            ],
+            "rank": 3,
+            "residual": {
+              "mean_max_channel_residual": 1.4323136304028201,
+              "p90_max_channel_residual": 2.1183518470838423,
+              "maximum_channel_residual": 6.236118215093811
+            }
+          }
+        ],
+        "targets": [
+          {
+            "bounds": [
+              745,
+              133,
+              1178,
+              143
+            ],
+            "mean_max_channel_residual": 24.80558254953867,
+            "p90_max_channel_residual": 64.25399678081472,
+            "maximum_channel_residual": 136.06081324173977
+          },
+          {
+            "bounds": [
+              745,
+              276,
+              1178,
+              286
+            ],
+            "mean_max_channel_residual": 26.004296063065123,
+            "p90_max_channel_residual": 55.165681422274204,
+            "maximum_channel_residual": 132.86209001725013
+          },
+          {
+            "bounds": [
+              928,
+              248,
+              1005,
+              275
+            ],
+            "mean_max_channel_residual": 59.98651164144849,
+            "p90_max_channel_residual": 79.63872859140977,
+            "maximum_channel_residual": 137.11767620333546
+          }
+        ],
+        "phase_absent": null,
+        "runtime_authorized": false,
+        "scene_continuity_proven": false,
+        "qualification_created": false
+      }
+    }
+  ],
+  "wall_clock_sec": 5.377792717015836,
+  "qualification_created": false,
+  "canonical_current": null,
+  "canonical_delta": null
+}

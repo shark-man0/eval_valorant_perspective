@@ -1,0 +1,33 @@
+{
+  "scope": "Frozen cohort verification; production inactive",
+  "start_commit": "03bfcbf945fbf3d7b04c54d80b3c5ff103475db0",
+  "unit_tests": {
+    "passed": 28,
+    "wall_clock_seconds": 5.59
+  },
+  "ruff": "PASS: src tests scripts/e2e scripts/diagnostics",
+  "mypy": "Previous fresh PASS102files; production bytes unchanged since that check",
+  "production_changed": false,
+  "terminal_bindings_verified": 45,
+  "assertion_matrix_rows": 82,
+  "assertion_matrix_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776",
+  "qualification_created": false,
+  "new_runtime_events": 0,
+  "new_full_e2e_runs": 0,
+  "canonical_current": null,
+  "canonical_delta": null,
+  "native_frames": 36,
+  "adjacent_links": 33,
+  "supported_links": 0,
+  "known_png_overlaps": 0,
+  "wall_clock_seconds": 35.23459978098981,
+  "exposure_inventory_png_count": 2098,
+  "exposure_limit": "PNG byte disjointness is not decoded-pixel or independent-recording disjointness; no final qualification claimed",
+  "failure_stage_image_results_match": true,
+  "file_sha256": {
+    "e2e_reports/match_001/scene_final_membership_cohort_diagnostics.json": "ccdd085713955f4a3694a4b6505ca2f699d81ea151eb06d677bdd4793a530b23",
+    "e2e_reports/match_001/scene_final_membership_cohort_reservation.json": "f07198521c37d47b6959ee84880b0637cc1aa116601e9dafa5cd350d4a4c033f",
+    "e2e_reports/match_001/scene_final_membership_cohort_review.json": "91f14b940d5da7b736e610a106811d77a0203e2079754731d51de5692c33f464",
+    "e2e_reports/match_001/scene_final_membership_cohort_failure_stages.json": "3762ec3f857302f742197a5df94f6c6d5bb40462cd7e1ca705675ce34fa52684"
+  }
+}

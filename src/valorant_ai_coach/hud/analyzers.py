@@ -13,14 +13,19 @@ from typing import Any, Protocol
 from valorant_ai_coach.diagnostics.runtime_timing import timing_stage
 from valorant_ai_coach.models import RoleResolver
 from valorant_ai_coach.video import FrameSample, VideoMetadata
+from valorant_ai_coach.video.native import NativeSourceFrame
 from valorant_ai_coach.video.sampling import HudFrameSampler
 
 from .classifier import HudStateClassifier
 from .diagnostics import CalibrationTelemetry
-from .global_lifecycle import GlobalLifecycleQualification
+from .global_lifecycle import GlobalLifecycleQualification, global_recognizer_fingerprint
 from .identity import live_identity
 from .layout import CalibrationResult, HudLayout, NormalizedRoi
 from .models import HudObservationV2, accept_hud_value, empty_hud_values
+from .native_lifecycle import NativeLifecycleAnalysis, collect_qualified_native_lifecycle
+from .native_scene_evidence import collect_native_scene_evidence
+from .native_scene_input import observe_native_scene_window
+from .native_system_input import collect_native_system_observations
 from .readers import (
     FrameFeatureObservation,
     HudReader,
@@ -29,7 +34,9 @@ from .readers import (
     crop_roi,
     load_frame,
 )
+from .scene_source_binding import SceneSourceBinding
 from .semantic_text import CONFIDENCE_KEY as PHASE_TEXT_CONFIDENCE_KEY
+from .semantic_text import MATCHER as SEMANTIC_TEXT_MATCHER
 from .semantic_text import SemanticPhaseContext
 from .source_continuity import CompositeSourceContinuity
 from .templates import (
@@ -67,6 +74,7 @@ class HudFrameAnalysis:
     feature_observations: tuple[FrameFeatureObservation, ...] = ()
     diagnostics: tuple[str, ...] = ()
     calibration_diagnostics: dict[str, Any] = field(default_factory=dict)
+    native_ui_measurements: tuple[dict[str, Any], ...] = ()
 
 
 class HudAnalyzer(Protocol):
@@ -158,6 +166,8 @@ class RealHudAnalyzer:
     coordinates are embedded in source code.
     """
 
+    supports_native_source_breaks = True
+
     def __init__(
         self,
         layout_path: Path,
@@ -169,10 +179,12 @@ class RealHudAnalyzer:
         diagnostic_sink: Callable[[dict[str, Any]], None] | None = None,
         lifecycle_diagnostic_sink: Callable[[dict[str, Any]], None] | None = None,
         global_qualification_path: Path | None = None,
+        scene_reference_profile_path: Path | None = None,
     ) -> None:
         self.layout_path = Path(layout_path)
         self.layout = HudLayout.load(self.layout_path)
         self.ocr_reader = ocr_reader
+        self._native_profile_readers = not readers and ocr_reader is None
         self.role_resolver = role_resolver or RoleResolver()
         auto_profile = self.layout_path.with_name(f"{self.layout_path.stem}.templates.json")
         self.template_profile_path = (
@@ -200,6 +212,10 @@ class RealHudAnalyzer:
         self.state_classifier = HudStateClassifier()
         self.diagnostic_sink = diagnostic_sink
         self.lifecycle_diagnostic_sink = lifecycle_diagnostic_sink
+        self.scene_source_binding = (
+            SceneSourceBinding.load(Path(scene_reference_profile_path))
+            if scene_reference_profile_path is not None else None
+        )
         self.global_qualification_path = global_qualification_path or self.layout_path.with_name(
             f"{self.layout_path.stem}.global_qualification.json"
         )
@@ -211,8 +227,16 @@ class RealHudAnalyzer:
                 self.global_qualification = GlobalLifecycleQualification.load(
                     self.global_qualification_path, self._base_fingerprint()
                 )
+                if {"scene_continuity", "ui_transition"} <= self.global_qualification.components:
+                    self.profile_diagnostics.append(
+                        "global lifecycle: paired scene/UI qualification loaded, but the "
+                        "sampled runtime scene/UI evidence producer is not installed; "
+                        "use the explicit qualified native lifecycle entrance"
+                    )
             except (OSError, ValueError) as exc:
                 self.profile_diagnostics.append(f"global lifecycle qualification: {exc}")
+        # Native input must not label cached readers/layout with a later profile.
+        self._native_loaded_base_fingerprint = self._base_fingerprint()
 
     def fingerprint(self) -> str:
         """Hash the layout, selected profile, and all referenced template bytes."""
@@ -234,6 +258,12 @@ class RealHudAnalyzer:
             if self.template_profile_path.exists():
                 base_digest.update(self.template_profile_path.read_bytes())
             base = base_digest.hexdigest()
+        binding = getattr(self, "scene_source_binding", None)
+        if binding is not None:
+            digest = hashlib.sha256(base.encode("ascii"))
+            digest.update(b"\nscene-source-binding-v1\n")
+            digest.update(binding.fingerprint().encode("ascii"))
+            base = digest.hexdigest()
         return base
 
     def analyze(
@@ -255,6 +285,96 @@ class RealHudAnalyzer:
             "実動画解析にはHudVideoProcessor経由でobserve_framesを使用してください"
         )
 
+    def inspect_native_source_window(
+        self,
+        frames: Sequence[NativeSourceFrame],
+        *,
+        native_step_ticks: int,
+        deferred_initialization: bool = False,
+    ) -> tuple[dict[str, Any], ...]:
+        """Inspect decoder-owned source frames without releasing lifecycle facts."""
+        if self.scene_source_binding is None:
+            raise HudAnalysisError('explicit scene reference profile required')
+        return observe_native_scene_window(
+            frames, self.scene_source_binding, native_step_ticks=native_step_ticks,
+            deferred_initialization=deferred_initialization,
+        )
+
+    def collect_qualified_native_scene_window(
+        self,
+        frames: Sequence[NativeSourceFrame],
+        *,
+        native_step_ticks: int,
+        deferred_initialization: bool = False,
+    ) -> tuple[dict[str, Any], ...]:
+        """Collect qualified system scene inputs; no UI or player facts/events."""
+        if self.scene_source_binding is None or self.global_qualification is None:
+            raise HudAnalysisError('bound scene assets and global qualification required')
+        return collect_native_scene_evidence(
+            frames, self.scene_source_binding,
+            qualification_path=self.global_qualification_path,
+            profile_fingerprint=self._base_fingerprint(),
+            native_step_ticks=native_step_ticks,
+            deferred_initialization=deferred_initialization,
+        )
+
+    def observe_native_system_frames(
+        self,
+        frames: Sequence[NativeSourceFrame],
+        *,
+        native_step_ticks: int,
+        video_metadata: VideoMetadata | None = None,
+    ) -> tuple[dict[str, Any], ...]:
+        """Measure native global inputs without events or player-owned output.
+
+        No scene/UI qualification is implied. A qualified continuity/UI producer
+        must separately bind proofs to these exact native PTS/pixel identities.
+        This explicit entrance leaves the default full sampler unchanged.
+        """
+        def native_fingerprint() -> str:
+            if self._base_fingerprint() != self._native_loaded_base_fingerprint:
+                raise HudAnalysisError('native analyzer profile changed; reload analyzer')
+            return hashlib.sha256(
+                (self.fingerprint() + global_recognizer_fingerprint()).encode()
+            ).hexdigest()
+
+        return collect_native_system_observations(
+            frames, native_step_ticks=native_step_ticks,
+            observe=lambda source: self.observe_frames(
+                source, video_metadata, _build_events=False,
+            ).observations,
+            fingerprint=native_fingerprint,
+        )
+
+    def observe_qualified_unedited_native_start_frames(
+        self, frames: Sequence[NativeSourceFrame], *, native_step_ticks: int,
+        input_contract_path: Path, video_metadata: VideoMetadata | None = None,
+    ) -> NativeLifecycleAnalysis:
+        from .native_assured_start import collect_qualified_assured_start
+
+        return collect_qualified_assured_start(
+            self, frames, native_step_ticks=native_step_ticks,
+            input_contract_path=input_contract_path, video_metadata=video_metadata,
+        )
+
+    def observe_qualified_native_lifecycle_frames(
+        self,
+        frames: Sequence[NativeSourceFrame],
+        *,
+        native_step_ticks: int,
+        deferred_initialization: bool = False,
+        video_metadata: VideoMetadata | None = None,
+    ) -> NativeLifecycleAnalysis:
+        """Join source-owned system readers, scene and positive UI measurements.
+
+        The explicit native path requires paired qualification and configured
+        scene assets. Default full HUD sampling/event behavior is unchanged.
+        """
+        return collect_qualified_native_lifecycle(
+            self, frames, native_step_ticks=native_step_ticks,
+            deferred_initialization=deferred_initialization, video_metadata=video_metadata,
+        )
+
     def observe_frames(
         self,
         frames: Sequence[Any],
@@ -267,6 +387,7 @@ class RealHudAnalyzer:
         crop_applied: bool | None = None,
         additional_signals: Sequence[Mapping[str, Any]] | None = None,
         cancel_event: Event | None = None,
+        _build_events: bool = True,
     ) -> HudFrameAnalysis:
         """Observe sampled frames and return HUD facts before package building.
 
@@ -277,6 +398,8 @@ class RealHudAnalyzer:
 
         if additional_signals is not None and len(additional_signals) != len(frames):
             raise ValueError("additional_signalsの件数はframesと一致する必要があります")
+        if self.scene_source_binding is not None:
+            self.scene_source_binding.verify()
         telemetry = CalibrationTelemetry(self.template_profile, self.layout)
         global_continuity = (
             CompositeSourceContinuity(self.global_qualification)
@@ -365,6 +488,7 @@ class RealHudAnalyzer:
             calibration = CalibrationResult(False, ("frame_resolution_changed",), 0, None, None)
 
         observations: list[dict[str, Any]] = []
+        native_ui_measurements: list[dict[str, Any]] = []
         semantic_phase = SemanticPhaseContext()
         evidence_by_frame: dict[int, Mapping[str, Any]] = {}
         diagnostics: list[str] = [*self.profile_diagnostics, *anchor_diagnostics]
@@ -415,10 +539,19 @@ class RealHudAnalyzer:
                 if current_calibration.calibrated or geometry_invalid:
                     calibration = current_calibration
             signals = dict(feature.signals)
+            semantic_measurements: dict[str, Any] | None = (
+                {} if self.diagnostic_sink is not None else None
+            )
             if calibration.calibrated and self.template_profile is not None:
-                signals.update(
-                    self.template_profile.detect_signals(image, self.layout, context=signals)
-                )
+                if semantic_measurements is None:
+                    signals.update(
+                        self.template_profile.detect_signals(image, self.layout, context=signals)
+                    )
+                else:
+                    signals.update(self.template_profile.detect_signals(
+                        image, self.layout, context=signals,
+                        semantic_diagnostics=semantic_measurements,
+                    ))
             signals["template_anchor_scores"] = dict(anchor_scores)
             supplemental = {} if additional_signals is None else dict(additional_signals[index])
             if self.global_qualification is not None:
@@ -478,6 +611,9 @@ class RealHudAnalyzer:
                     deepcopy(
                         {
                             "frame_index": index,
+                            "source_pts_sec": time_sec,
+                            "source_pixel_sha256": hashlib.sha256(image.tobytes()).hexdigest(),
+                            "semantic_text_measurements": semantic_measurements,
                             "signals": signals,
                             "raw_accepted_reader_values": raw_accepted_reader_values or {},
                             "reader_confidence": reader_confidence,
@@ -630,6 +766,34 @@ class RealHudAnalyzer:
                 ),
             )
             observations.append(observation.to_dict())
+            native_ui_measurements.append({
+                # Source assurance excludes user edits, not recording breaks.
+                "content_jump": signals.get("content_jump") is True,
+                "discontinuity": signals.get("discontinuity") is True,
+                "phase_scan_valid": (
+                    calibration.calibrated
+                    and signals.get("buy_phase_template_scan_valid") is True
+                ),
+                # Preserve current-frame text independently of the debounced
+                # state flag. Missing temporal support is not phase disappearance.
+                "phase_present": (
+                    calibration.calibrated
+                    and signals.get("buy_phase_template") is True
+                    and signals.get("buy_phase_template_matcher") == SEMANTIC_TEXT_MATCHER
+                ),
+                "phase_confidence": signals.get("buy_phase_template_confidence", 0.0),
+                "phase_absence_matched": (
+                    calibration.calibrated
+                    and signals.get("phase_absence_template") is True
+                    and signals.get("phase_absence_template_matcher") == SEMANTIC_TEXT_MATCHER
+                ),
+                "confidence": signals.get("phase_absence_template_confidence", 0.0),
+                "round_result_matched": (
+                    calibration.calibrated and signals.get("round_end_template") is True
+                    and signals.get("round_end_template_matcher") == SEMANTIC_TEXT_MATCHER
+                ),
+                "round_result_confidence": signals.get("round_end_template_confidence", 0.0),
+            })
             row_evidence = {
                 **signals,
                 "reader_confidence": reader_confidence,
@@ -676,12 +840,14 @@ class RealHudAnalyzer:
                 else {**row_evidence, **supplemental}
             )
 
-        with timing_stage("hud_event_detection"):
-            hud_events = HudDirectEventBuilder().build(
-                observations, evidence_by_frame=evidence_by_frame,
-                lifecycle_sink=self.lifecycle_diagnostic_sink,
-                global_qualification=self.global_qualification,
-            )
+        hud_events: tuple[dict[str, Any], ...] = ()
+        if _build_events:
+            with timing_stage("hud_event_detection"):
+                hud_events = HudDirectEventBuilder().build(
+                    observations, evidence_by_frame=evidence_by_frame,
+                    lifecycle_sink=self.lifecycle_diagnostic_sink,
+                    global_qualification=self.global_qualification,
+                )
         change_times = set(_observation_change_times(observations, evidence_by_frame))
         change_times.update(float(event["time_sec"]) for event in hud_events)
         self.last_calibration_diagnostics = telemetry.snapshot()
@@ -693,6 +859,7 @@ class RealHudAnalyzer:
             feature_observations=features,
             diagnostics=tuple(dict.fromkeys(diagnostics)),
             calibration_diagnostics=self.last_calibration_diagnostics,
+            native_ui_measurements=tuple(native_ui_measurements),
         )
 
     def _read_values(

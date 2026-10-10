@@ -1,0 +1,71 @@
+{
+  "scope": "Exposed hypothetical-seed stress controls; not holdout or world qualification",
+  "seed_membership": "symmetric_final",
+  "known_cut": {
+    "source_images": [
+      "outputs/recognition-investigation/phase-evidence/dense-r1-end/frame_04.png",
+      "outputs/recognition-investigation/phase-evidence/dense-r1-end/frame_06.png"
+    ],
+    "discontinuity_flag_injected": false,
+    "result": {
+      "reason": "seed_model_incoherent",
+      "seed_features": 134,
+      "retained_features": 32,
+      "retained_regions": [],
+      "previous_witness_cells": [],
+      "current_witness_cells": [],
+      "descriptive_supported": false,
+      "runtime_proof_authorized": false
+    }
+  },
+  "duplicate": {
+    "reason": "duplicate_image",
+    "seed_features": 141,
+    "retained_features": 0,
+    "retained_regions": [],
+    "previous_witness_cells": [],
+    "current_witness_cells": [],
+    "descriptive_supported": false,
+    "runtime_proof_authorized": false
+  },
+  "existing_default_equivalence_links": 203,
+  "file_sha256": {
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000001.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000002.png": "e790bd155383fac3eb439d4311a89840467fce57938a80dae2448e628dfd9211",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000003.png": "1dc0d9b8c59355b43eb723b1961110bb53d1ce8a62176490f5c632dd6ee5f2ad",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000004.png": "00e2240728fa5e6c6cd1d8a29adebecb993d61abb4c9a97aea47902d53f041e1",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000005.png": "77d745206022589fc826823873bc1305e922fdda01854eac4a7eed10876d6c80",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000006.png": "d4dafbd08a45d736ff634bb6537d9d0991d3023a611db6a229874a4755c9f8d3",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000007.png": "3d4c25843ec375524762f21a11a17b7bf7854f65680ceaf0396b5a597a1d94dc",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000008.png": "eddab3d93b6a8d910aaa923a260a7be4779514c79670dc8d2fefb3a1e0863473",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000009.png": "995c70d5658ba86dd220d7d02f947982e00c9d4cdf9456dde224924df8211951",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000010.png": "a3a788841be688ba3d97be42478708e5cd8571ff74c6a1a1fce8172f88ad0104",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000011.png": "2ca7c16fac54a93af47a678cd1491bffc7a8ec0edf9634d4c2be4e4a134741e2",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000012.png": "0971d607cd0a91eb2c2af8e4949dd601201575ad6050945d1583ecad529797e9",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000013.png": "3f7f964b6993d20bba3396e160e6b6edf41cc5352b0b0ad57de9254ddb7fe0a5",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000014.png": "ffc878007fe550701c8e5be11f78b1a6d91bc88f77972cc48b370ac4cf7e7bb6",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000015.png": "d72a67e8f64bc6ffe0b90a1f6118c522380a2bd83eabd4e84b6a5f36f7b605fc",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000016.png": "40a1ca141705ef466d3cdcd339bfa1e519a8bd998cabb9ea204da72dcaa6d382",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000017.png": "87a43e4a4c0e1f7eb1ea8e6fedccbefa5bc6eddd8d29c61dc25e92dbeef418f8",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000018.png": "e2e07cdce5e63bde4205fa7401ca54f9b6917872957efe3b303f0286e370b43b",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000019.png": "d81a979afdc6bee35155fc029a0621d43a7b0dbbe29fc364cd0010cbfa697707",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000020.png": "2c747572f073d4c8769933863cf6e99c8498bccb4469b8476cc12784854b7a7e",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000021.png": "ee5be2e35aabe7ac9b9fc01fd438dc28c4e5c76f73f66e7cd6df752bc72edd2d",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000022.png": "aa5727f8ff3428eaf3705c3fb9b42acc78c278fb3ce21276969cd8505aa2aae2",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000023.png": "01510fbbc2c0e101c72555f846ca75adf24b073891d8e9160c94ec54be0e5413",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000024.png": "1a3208bb41afe765aa7f691964df102279ec81e9366d13ae326cc537c3a66b76",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000025.png": "0252b863b5f5d2108ebd46178ea6a4a2cba005b51af5205dee7723c2d26a9ac8",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000026.png": "fa80efcbffa9e29d82948fbb605bcbb10baab44ac31c17434085e97c671c887e",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000027.png": "ec2d668e223d2f20a8b53d813a1681e4c1c79b120857244b11f42d341dadfc74",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000028.png": "6e6edeefc2aa5d1a45960e741815a8c08090793d8be0b74a8a7b344051a6f67d",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000029.png": "91eab8a0e9d080f64d9cc83c31c77f733dcaeaccd50b1ae6c30877f41a987f55",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000030.png": "91d79bfba35b3afa2e8fe7bb5274926fbe6a254207dd9a9ab55d5cb3ebab625c",
+    "outputs/recognition-investigation/scene-camera-model-20261009/scene_world_chain_camera_audit_v1.py": "82bad84b2c02824a20af910ea7157a5faead3bf462ead0e39d189f6c2b582c13",
+    "scripts/diagnostics/scene_world_chain.py": "8a6d11a151f4afb77d88780b51f0705beca527edce7521831b9c8a590e788e33",
+    "outputs/recognition-investigation/phase-evidence/dense-r1-end/frame_04.png": "9f941a254c40b4fab11dd375653ba7622b37ac630f553c7f5de879a71edd3314",
+    "outputs/recognition-investigation/phase-evidence/dense-r1-end/frame_06.png": "7ed7df9c55a483ae454b00bbaa7ace857879444d9d5502ce6340da109fa8fd8b"
+  },
+  "qualification_created": false,
+  "new_runtime_events": 0,
+  "wall_clock_seconds": 20.859770005976316
+}

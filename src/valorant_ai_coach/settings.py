@@ -36,6 +36,7 @@ class AppSettings:
     mock_ai: bool = True
     hud_mode: str = "mock"
     hud_layout_path: str = ""
+    scene_reference_profile_path: str = ""
     visual_profile_path: str = ""
     manual_map_id: str = ""
     map_client_build: str = ""

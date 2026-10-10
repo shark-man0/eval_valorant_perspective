@@ -1,0 +1,250 @@
+{
+  "scope": "post-holdout passive detail; cohort now exposed, no policy change",
+  "cohort_report_sha256": "3287f5136b4507d82f03fe8003be90db3ac1ad7a73fd53eae247b131cb69a373",
+  "terminal_bindings_match": true,
+  "rows": [
+    {
+      "source_pts_ticks": 49193,
+      "source_pixel_sha256": "52f8a01178f8f8621d2363e1d5c7224d348483be58cbe0cc7e015c74f3ce45aa",
+      "result": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": false,
+            "reference_tracks": 0,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 49449,
+      "source_pixel_sha256": "d2021936c41fc4745db1a3f444f428a92a3ad98dd1eaf513f4b8afb065857edd",
+      "result": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": false,
+            "reference_tracks": 0,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 49705,
+      "source_pixel_sha256": "8dbcca050fe2e4f5363b5903e16affa9ec2bb5aec73fdd3403002dda1eb2df63",
+      "result": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": false,
+            "reference_tracks": 0,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 49961,
+      "source_pixel_sha256": "71402520c6d770c7f6fdd50352ce569bdce502429d845b77a6d4fe14d4452af5",
+      "result": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": false,
+            "reference_tracks": 0,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 50217,
+      "source_pixel_sha256": "aff7987b76aad2e642d721b7459f02f2bb5c7bb5a772edb90aad509fa869baea",
+      "result": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": false,
+            "reference_tracks": 0,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 50473,
+      "source_pixel_sha256": "f1fedf6ae3a5607a2677e14ce59ba4b2ebf4d84175730491e7b1a82b339dc0b8",
+      "result": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": false,
+            "reference_tracks": 0,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 79145,
+      "source_pixel_sha256": "6fd0b727f5b695af3f469254f1bf05e8c109b195bac923b7d480a464ab822b35",
+      "result": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": false,
+            "reference_tracks": 0,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 79401,
+      "source_pixel_sha256": "ec31f90affd109798bb091fe7a4bbf0be797e167c076d664805af0e62cf89a0c",
+      "result": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": false,
+            "reference_tracks": 0,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "source_pts_ticks": 79657,
+      "source_pixel_sha256": "d29ee4c530d22657c083396b6a9b35e012f5b2acafeb79144a27f2c7d18f602b",
+      "result": {
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "proposals": [
+          {
+            "reference_id": "reviewed-wall",
+            "source_model_coherent": false,
+            "reference_tracks": 0,
+            "reference_model_inliers": 0,
+            "reference_to_current_affine": null,
+            "domains": null,
+            "joint": null,
+            "diagnostic_initialization_proposed": false,
+            "reference_is_observed_previous_frame": false
+          }
+        ],
+        "diagnostic_initialization_proposed": false,
+        "reference_ambiguity": false,
+        "scope": "matched reviewed reference-domain appearance; local hypothesis scope only",
+        "reference_is_observed_previous_frame": false,
+        "whole_roi_world_attested": false,
+        "runtime_proof_authorized": false,
+        "qualification_created": false
+      }
+    }
+  ]
+}

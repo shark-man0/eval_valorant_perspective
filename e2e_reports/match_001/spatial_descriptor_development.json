@@ -1,0 +1,7360 @@
+{
+  "scope": "exposed development only, not independent qualification",
+  "rows": [
+    {
+      "reference_id": "reviewed-arch-context",
+      "image": "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/arch_context.png",
+      "result": {
+        "scope": "descriptor geometry proposal plus fixed-domain appearance; diagnostic only",
+        "source_descriptors": 176,
+        "current_descriptors": 1331,
+        "tracks": [
+          {
+            "region": 0,
+            "reference_xy": [
+              199.0,
+              86.0
+            ],
+            "current_xy": [
+              199.0,
+              86.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              200.0,
+              100.0
+            ],
+            "current_xy": [
+              200.0,
+              100.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              202.0,
+              64.0
+            ],
+            "current_xy": [
+              202.0,
+              64.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              195.0,
+              105.0
+            ],
+            "current_xy": [
+              195.0,
+              105.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9999974370002747,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              202.0,
+              90.0
+            ],
+            "current_xy": [
+              202.0,
+              90.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              195.0,
+              100.0
+            ],
+            "current_xy": [
+              195.0,
+              100.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              204.0,
+              72.0
+            ],
+            "current_xy": [
+              204.0,
+              72.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              197.0,
+              70.0
+            ],
+            "current_xy": [
+              197.0,
+              70.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              200.0,
+              105.0
+            ],
+            "current_xy": [
+              200.0,
+              105.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              194.0,
+              83.0
+            ],
+            "current_xy": [
+              194.0,
+              83.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              195.0,
+              75.0
+            ],
+            "current_xy": [
+              195.0,
+              75.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              189.0,
+              105.0
+            ],
+            "current_xy": [
+              189.0,
+              109.0
+            ],
+            "descriptor_distance": 54.845237731933594,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": false
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              189.0,
+              99.0
+            ],
+            "current_xy": [
+              189.0,
+              99.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9999946355819702,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              202.0,
+              77.0
+            ],
+            "current_xy": [
+              202.0,
+              77.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              190.0,
+              93.0
+            ],
+            "current_xy": [
+              190.0,
+              93.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              180.0,
+              104.0
+            ],
+            "current_xy": [
+              180.0,
+              104.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              189.0,
+              73.0
+            ],
+            "current_xy": [
+              189.0,
+              73.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              182.0,
+              98.0
+            ],
+            "current_xy": [
+              182.0,
+              98.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              196.0,
+              95.0
+            ],
+            "current_xy": [
+              196.0,
+              95.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              182.0,
+              92.0
+            ],
+            "current_xy": [
+              182.0,
+              92.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              82.0,
+              223.0
+            ],
+            "current_xy": [
+              82.0,
+              223.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              84.0,
+              193.0
+            ],
+            "current_xy": [
+              84.0,
+              193.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9999985694885254,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              102.0,
+              179.0
+            ],
+            "current_xy": [
+              102.0,
+              179.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              91.0,
+              180.0
+            ],
+            "current_xy": [
+              91.0,
+              180.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              124.0,
+              181.0
+            ],
+            "current_xy": [
+              124.0,
+              181.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              101.0,
+              186.0
+            ],
+            "current_xy": [
+              101.0,
+              186.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              84.0,
+              216.0
+            ],
+            "current_xy": [
+              84.0,
+              216.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              106.0,
+              223.0
+            ],
+            "current_xy": [
+              106.0,
+              223.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              115.0,
+              207.0
+            ],
+            "current_xy": [
+              115.0,
+              207.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              84.0,
+              206.0
+            ],
+            "current_xy": [
+              84.0,
+              206.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              115.0,
+              223.0
+            ],
+            "current_xy": [
+              115.0,
+              223.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              94.0,
+              201.0
+            ],
+            "current_xy": [
+              94.0,
+              201.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              128.0,
+              220.0
+            ],
+            "current_xy": [
+              128.0,
+              220.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              102.0,
+              208.0
+            ],
+            "current_xy": [
+              102.0,
+              208.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              105.0,
+              191.0
+            ],
+            "current_xy": [
+              105.0,
+              191.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              125.0,
+              195.0
+            ],
+            "current_xy": [
+              125.0,
+              195.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              124.0,
+              223.0
+            ],
+            "current_xy": [
+              124.0,
+              223.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              127.0,
+              186.0
+            ],
+            "current_xy": [
+              127.0,
+              186.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              90.0,
+              212.0
+            ],
+            "current_xy": [
+              90.0,
+              212.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              98.0,
+              220.0
+            ],
+            "current_xy": [
+              98.0,
+              220.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              131.0,
+              203.0
+            ],
+            "current_xy": [
+              131.0,
+              203.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              107.0,
+              203.0
+            ],
+            "current_xy": [
+              107.0,
+              203.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              125.0,
+              211.0
+            ],
+            "current_xy": [
+              125.0,
+              211.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              91.0,
+              197.0
+            ],
+            "current_xy": [
+              91.0,
+              197.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              81.0,
+              181.0
+            ],
+            "current_xy": [
+              81.0,
+              181.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              112.0,
+              202.0
+            ],
+            "current_xy": [
+              112.0,
+              202.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              101.0,
+              194.0
+            ],
+            "current_xy": [
+              101.0,
+              194.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              131.0,
+              197.0
+            ],
+            "current_xy": [
+              131.0,
+              197.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              125.0,
+              204.0
+            ],
+            "current_xy": [
+              125.0,
+              204.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9999027848243713,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              114.0,
+              188.0
+            ],
+            "current_xy": [
+              114.0,
+              188.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              115.0,
+              212.0
+            ],
+            "current_xy": [
+              115.0,
+              212.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              96.0,
+              195.0
+            ],
+            "current_xy": [
+              96.0,
+              195.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              120.0,
+              209.0
+            ],
+            "current_xy": [
+              120.0,
+              209.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              112.0,
+              180.0
+            ],
+            "current_xy": [
+              112.0,
+              180.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              146.0,
+              212.0
+            ],
+            "current_xy": [
+              146.0,
+              212.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              144.0,
+              195.0
+            ],
+            "current_xy": [
+              144.0,
+              195.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9999144077301025,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              146.0,
+              221.0
+            ],
+            "current_xy": [
+              146.0,
+              221.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              142.0,
+              202.0
+            ],
+            "current_xy": [
+              142.0,
+              202.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              142.0,
+              217.0
+            ],
+            "current_xy": [
+              142.0,
+              217.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              147.0,
+              182.0
+            ],
+            "current_xy": [
+              147.0,
+              182.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              135.0,
+              212.0
+            ],
+            "current_xy": [
+              135.0,
+              212.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9998487830162048,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              136.0,
+              191.0
+            ],
+            "current_xy": [
+              136.0,
+              191.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              148.0,
+              202.0
+            ],
+            "current_xy": [
+              148.0,
+              202.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              142.0,
+              186.0
+            ],
+            "current_xy": [
+              142.0,
+              186.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              135.0,
+              200.0
+            ],
+            "current_xy": [
+              135.0,
+              200.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              121.0,
+              198.0
+            ],
+            "current_xy": [
+              121.0,
+              198.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9998645782470703,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              109.0,
+              194.0
+            ],
+            "current_xy": [
+              109.0,
+              194.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              137.0,
+              221.0
+            ],
+            "current_xy": [
+              137.0,
+              221.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9998936653137207,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              120.0,
+              184.0
+            ],
+            "current_xy": [
+              120.0,
+              184.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9998781681060791,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              119.0,
+              215.0
+            ],
+            "current_xy": [
+              119.0,
+              215.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              120.0,
+              189.0
+            ],
+            "current_xy": [
+              120.0,
+              189.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              116.0,
+              194.0
+            ],
+            "current_xy": [
+              116.0,
+              194.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              123.0,
+              218.0
+            ],
+            "current_xy": [
+              123.0,
+              218.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              107.0,
+              184.0
+            ],
+            "current_xy": [
+              107.0,
+              184.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              112.0,
+              219.0
+            ],
+            "current_xy": [
+              112.0,
+              219.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              131.0,
+              216.0
+            ],
+            "current_xy": [
+              131.0,
+              216.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              139.0,
+              195.0
+            ],
+            "current_xy": [
+              139.0,
+              195.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              136.0,
+              206.0
+            ],
+            "current_xy": [
+              136.0,
+              206.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              93.0,
+              204.0
+            ],
+            "current_xy": [
+              93.0,
+              201.0
+            ],
+            "descriptor_distance": 26.70206069946289,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": false
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              496.0,
+              86.0
+            ],
+            "current_xy": [
+              496.0,
+              86.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9999959468841553,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              460.0,
+              50.0
+            ],
+            "current_xy": [
+              460.0,
+              50.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              478.0,
+              87.0
+            ],
+            "current_xy": [
+              478.0,
+              87.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              449.0,
+              51.0
+            ],
+            "current_xy": [
+              449.0,
+              51.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              490.0,
+              84.0
+            ],
+            "current_xy": [
+              490.0,
+              84.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              453.0,
+              73.0
+            ],
+            "current_xy": [
+              453.0,
+              73.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              480.0,
+              57.0
+            ],
+            "current_xy": [
+              480.0,
+              57.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              495.0,
+              80.0
+            ],
+            "current_xy": [
+              495.0,
+              80.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              487.0,
+              72.0
+            ],
+            "current_xy": [
+              487.0,
+              72.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              472.0,
+              88.0
+            ],
+            "current_xy": [
+              472.0,
+              88.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              475.0,
+              52.0
+            ],
+            "current_xy": [
+              475.0,
+              52.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              474.0,
+              72.0
+            ],
+            "current_xy": [
+              474.0,
+              72.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              484.0,
+              76.0
+            ],
+            "current_xy": [
+              484.0,
+              76.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              454.0,
+              56.0
+            ],
+            "current_xy": [
+              454.0,
+              56.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              500.0,
+              66.0
+            ],
+            "current_xy": [
+              500.0,
+              66.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9999899864196777,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              469.0,
+              84.0
+            ],
+            "current_xy": [
+              469.0,
+              84.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              490.0,
+              63.0
+            ],
+            "current_xy": [
+              490.0,
+              63.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              495.0,
+              63.0
+            ],
+            "current_xy": [
+              495.0,
+              63.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9999776482582092,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              491.0,
+              75.0
+            ],
+            "current_xy": [
+              491.0,
+              75.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              479.0,
+              82.0
+            ],
+            "current_xy": [
+              479.0,
+              82.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              452.0,
+              84.0
+            ],
+            "current_xy": [
+              452.0,
+              84.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              484.0,
+              60.0
+            ],
+            "current_xy": [
+              484.0,
+              60.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              498.0,
+              57.0
+            ],
+            "current_xy": [
+              498.0,
+              57.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              461.0,
+              80.0
+            ],
+            "current_xy": [
+              461.0,
+              80.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              481.0,
+              69.0
+            ],
+            "current_xy": [
+              481.0,
+              69.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              463.0,
+              86.0
+            ],
+            "current_xy": [
+              463.0,
+              86.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              454.0,
+              89.0
+            ],
+            "current_xy": [
+              454.0,
+              89.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              486.0,
+              81.0
+            ],
+            "current_xy": [
+              486.0,
+              81.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              470.0,
+              68.0
+            ],
+            "current_xy": [
+              470.0,
+              68.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              477.0,
+              65.0
+            ],
+            "current_xy": [
+              477.0,
+              65.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              486.0,
+              49.0
+            ],
+            "current_xy": [
+              486.0,
+              49.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              465.0,
+              65.0
+            ],
+            "current_xy": [
+              465.0,
+              65.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              467.0,
+              57.0
+            ],
+            "current_xy": [
+              467.0,
+              57.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              496.0,
+              71.0
+            ],
+            "current_xy": [
+              496.0,
+              71.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              473.0,
+              62.0
+            ],
+            "current_xy": [
+              473.0,
+              62.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              459.0,
+              61.0
+            ],
+            "current_xy": [
+              459.0,
+              61.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9999967813491821,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              471.0,
+              78.0
+            ],
+            "current_xy": [
+              471.0,
+              78.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9999712109565735,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              467.0,
+              52.0
+            ],
+            "current_xy": [
+              467.0,
+              52.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9999960660934448,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              484.0,
+              89.0
+            ],
+            "current_xy": [
+              485.0,
+              90.0
+            ],
+            "descriptor_distance": 119.37336730957031,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              486.0,
+              55.0
+            ],
+            "current_xy": [
+              486.0,
+              55.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              456.0,
+              68.0
+            ],
+            "current_xy": [
+              456.0,
+              68.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              492.0,
+              53.0
+            ],
+            "current_xy": [
+              492.0,
+              53.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              516.0,
+              90.0
+            ],
+            "current_xy": [
+              516.0,
+              90.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9999974370002747,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              504.0,
+              80.0
+            ],
+            "current_xy": [
+              504.0,
+              80.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              516.0,
+              85.0
+            ],
+            "current_xy": [
+              516.0,
+              85.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              528.0,
+              78.0
+            ],
+            "current_xy": [
+              528.0,
+              78.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              509.0,
+              80.0
+            ],
+            "current_xy": [
+              509.0,
+              80.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              521.0,
+              84.0
+            ],
+            "current_xy": [
+              521.0,
+              84.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              512.0,
+              76.0
+            ],
+            "current_xy": [
+              512.0,
+              76.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              502.0,
+              72.0
+            ],
+            "current_xy": [
+              502.0,
+              72.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9999929666519165,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              523.0,
+              79.0
+            ],
+            "current_xy": [
+              523.0,
+              79.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              528.0,
+              85.0
+            ],
+            "current_xy": [
+              528.0,
+              85.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              505.0,
+              87.0
+            ],
+            "current_xy": [
+              505.0,
+              87.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              507.0,
+              71.0
+            ],
+            "current_xy": [
+              507.0,
+              71.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              534.0,
+              80.0
+            ],
+            "current_xy": [
+              536.0,
+              81.0
+            ],
+            "descriptor_distance": 186.77793884277344,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": false
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              516.0,
+              64.0
+            ],
+            "current_xy": [
+              516.0,
+              64.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              527.0,
+              72.0
+            ],
+            "current_xy": [
+              527.0,
+              72.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              522.0,
+              71.0
+            ],
+            "current_xy": [
+              522.0,
+              71.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              525.0,
+              60.0
+            ],
+            "current_xy": [
+              525.0,
+              60.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              522.0,
+              65.0
+            ],
+            "current_xy": [
+              522.0,
+              65.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              515.0,
+              57.0
+            ],
+            "current_xy": [
+              515.0,
+              57.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              518.0,
+              53.0
+            ],
+            "current_xy": [
+              518.0,
+              53.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              534.0,
+              62.0
+            ],
+            "current_xy": [
+              534.0,
+              61.0
+            ],
+            "descriptor_distance": 85.4166259765625,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              504.0,
+              63.0
+            ],
+            "current_xy": [
+              504.0,
+              63.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              509.0,
+              59.0
+            ],
+            "current_xy": [
+              509.0,
+              59.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              520.0,
+              58.0
+            ],
+            "current_xy": [
+              520.0,
+              58.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              555.0,
+              90.0
+            ],
+            "current_xy": [
+              555.0,
+              90.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9999538064002991,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              561.0,
+              88.0
+            ],
+            "current_xy": [
+              561.0,
+              88.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9999685287475586,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              560.0,
+              83.0
+            ],
+            "current_xy": [
+              560.0,
+              83.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9999777674674988,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              564.0,
+              72.0
+            ],
+            "current_xy": [
+              564.0,
+              72.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              569.0,
+              85.0
+            ],
+            "current_xy": [
+              569.0,
+              85.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9999969005584717,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              570.0,
+              77.0
+            ],
+            "current_xy": [
+              570.0,
+              77.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          }
+        ],
+        "model": [
+          [
+            1.0000362776939835,
+            2.582504605331212e-06,
+            -0.004779071077681482
+          ],
+          [
+            -2.582504605331212e-06,
+            1.0000362776939835,
+            -0.0037229396103839515
+          ]
+        ],
+        "model_inliers": 148,
+        "domains": [
+          {
+            "region": 0,
+            "predicted_ncc": 1.0,
+            "competing_offsets": [
+              {
+                "offset_xy": [
+                  1,
+                  -3
+                ],
+                "ncc": 0.9023590683937073
+              }
+            ],
+            "invalid_offsets": 102,
+            "locally_unambiguous_appearance": false,
+            "search_scope": "17x17 integer translations of fixed affine projection",
+            "world_mask_authorized": false,
+            "runtime_proof_authorized": false
+          },
+          {
+            "region": 1,
+            "predicted_ncc": 1.0,
+            "competing_offsets": [
+              {
+                "offset_xy": [
+                  -1,
+                  3
+                ],
+                "ncc": 0.9390249848365784
+              },
+              {
+                "offset_xy": [
+                  0,
+                  3
+                ],
+                "ncc": 0.9862874746322632
+              },
+              {
+                "offset_xy": [
+                  1,
+                  3
+                ],
+                "ncc": 0.9444289803504944
+              },
+              {
+                "offset_xy": [
+                  -1,
+                  4
+                ],
+                "ncc": 0.9371384382247925
+              },
+              {
+                "offset_xy": [
+                  0,
+                  4
+                ],
+                "ncc": 0.98380446434021
+              },
+              {
+                "offset_xy": [
+                  1,
+                  4
+                ],
+                "ncc": 0.943171501159668
+              },
+              {
+                "offset_xy": [
+                  -1,
+                  5
+                ],
+                "ncc": 0.9324326515197754
+              },
+              {
+                "offset_xy": [
+                  0,
+                  5
+                ],
+                "ncc": 0.9784110188484192
+              },
+              {
+                "offset_xy": [
+                  1,
+                  5
+                ],
+                "ncc": 0.939155638217926
+              },
+              {
+                "offset_xy": [
+                  -1,
+                  6
+                ],
+                "ncc": 0.9267434477806091
+              },
+              {
+                "offset_xy": [
+                  0,
+                  6
+                ],
+                "ncc": 0.9720852375030518
+              },
+              {
+                "offset_xy": [
+                  1,
+                  6
+                ],
+                "ncc": 0.9344354271888733
+              },
+              {
+                "offset_xy": [
+                  -1,
+                  7
+                ],
+                "ncc": 0.9206705689430237
+              },
+              {
+                "offset_xy": [
+                  0,
+                  7
+                ],
+                "ncc": 0.9650946259498596
+              },
+              {
+                "offset_xy": [
+                  1,
+                  7
+                ],
+                "ncc": 0.9295300841331482
+              },
+              {
+                "offset_xy": [
+                  -1,
+                  8
+                ],
+                "ncc": 0.9109708070755005
+              },
+              {
+                "offset_xy": [
+                  0,
+                  8
+                ],
+                "ncc": 0.9545539617538452
+              },
+              {
+                "offset_xy": [
+                  1,
+                  8
+                ],
+                "ncc": 0.9201421141624451
+              }
+            ],
+            "invalid_offsets": 102,
+            "locally_unambiguous_appearance": false,
+            "search_scope": "17x17 integer translations of fixed affine projection",
+            "world_mask_authorized": false,
+            "runtime_proof_authorized": false
+          },
+          {
+            "region": 2,
+            "predicted_ncc": 0.999990701675415,
+            "competing_offsets": [],
+            "invalid_offsets": 85,
+            "locally_unambiguous_appearance": true,
+            "search_scope": "17x17 integer translations of fixed affine projection",
+            "world_mask_authorized": false,
+            "runtime_proof_authorized": false
+          }
+        ],
+        "joint": {
+          "fixed_projection_witness_regions": [
+            0,
+            1,
+            2
+          ],
+          "distributed_source_and_current_support": true,
+          "joint_competing_offsets": [],
+          "unresolved_offsets": [],
+          "locally_unique_joint_appearance": true,
+          "scope": "fixed affine plus complete local integer-translation lattice only",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        },
+        "diagnostic_initialization_proposed": true,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "feature_source": "spatial_corners",
+        "descriptor_context": "fixed size3/orientation0, exact19px context; per64px tile GFTT100/0.01/5 stride32",
+        "descriptor_matches": 151,
+        "photometric_inliers": 142,
+        "reason": "diagnostic_descriptor_domain_proposal"
+      },
+      "previous_corner_result_unchanged": true
+    },
+    {
+      "reference_id": "reviewed-arch-context",
+      "image": "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000001.png",
+      "result": {
+        "scope": "descriptor geometry proposal plus fixed-domain appearance; diagnostic only",
+        "source_descriptors": 176,
+        "current_descriptors": 1248,
+        "tracks": [
+          {
+            "region": 0,
+            "reference_xy": [
+              182.0,
+              98.0
+            ],
+            "current_xy": [
+              213.0,
+              97.0
+            ],
+            "descriptor_distance": 111.99553680419922
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              82.0,
+              223.0
+            ],
+            "current_xy": [
+              126.0,
+              214.0
+            ],
+            "descriptor_distance": 97.77525329589844
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              124.0,
+              223.0
+            ],
+            "current_xy": [
+              187.0,
+              207.0
+            ],
+            "descriptor_distance": 167.05088806152344
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              98.0,
+              220.0
+            ],
+            "current_xy": [
+              141.0,
+              207.0
+            ],
+            "descriptor_distance": 153.0914764404297
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              114.0,
+              188.0
+            ],
+            "current_xy": [
+              154.0,
+              185.0
+            ],
+            "descriptor_distance": 93.92549896240234
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              146.0,
+              221.0
+            ],
+            "current_xy": [
+              182.0,
+              215.0
+            ],
+            "descriptor_distance": 129.75746154785156
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              109.0,
+              194.0
+            ],
+            "current_xy": [
+              151.0,
+              180.0
+            ],
+            "descriptor_distance": 99.42333984375
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              490.0,
+              84.0
+            ],
+            "current_xy": [
+              531.0,
+              73.0
+            ],
+            "descriptor_distance": 94.48809814453125
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              472.0,
+              88.0
+            ],
+            "current_xy": [
+              515.0,
+              82.0
+            ],
+            "descriptor_distance": 231.52969360351562
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              469.0,
+              84.0
+            ],
+            "current_xy": [
+              507.0,
+              74.0
+            ],
+            "descriptor_distance": 183.92117309570312
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              490.0,
+              63.0
+            ],
+            "current_xy": [
+              528.0,
+              49.0
+            ],
+            "descriptor_distance": 92.64448547363281
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              491.0,
+              75.0
+            ],
+            "current_xy": [
+              531.0,
+              63.0
+            ],
+            "descriptor_distance": 120.23726654052734
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              452.0,
+              84.0
+            ],
+            "current_xy": [
+              485.0,
+              74.0
+            ],
+            "descriptor_distance": 171.62750244140625
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              463.0,
+              86.0
+            ],
+            "current_xy": [
+              500.0,
+              76.0
+            ],
+            "descriptor_distance": 152.23666381835938
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              471.0,
+              78.0
+            ],
+            "current_xy": [
+              507.0,
+              68.0
+            ],
+            "descriptor_distance": 200.26731872558594
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              484.0,
+              89.0
+            ],
+            "current_xy": [
+              547.0,
+              87.0
+            ],
+            "descriptor_distance": 228.79466247558594
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              516.0,
+              90.0
+            ],
+            "current_xy": [
+              559.0,
+              79.0
+            ],
+            "descriptor_distance": 129.13946533203125
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              509.0,
+              80.0
+            ],
+            "current_xy": [
+              552.0,
+              68.0
+            ],
+            "descriptor_distance": 134.04476928710938
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              521.0,
+              84.0
+            ],
+            "current_xy": [
+              568.0,
+              72.0
+            ],
+            "descriptor_distance": 150.80783081054688
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              476.0,
+              76.0
+            ],
+            "current_xy": [
+              479.0,
+              39.0
+            ],
+            "descriptor_distance": 154.22386169433594
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              504.0,
+              63.0
+            ],
+            "current_xy": [
+              549.0,
+              51.0
+            ],
+            "descriptor_distance": 202.8792724609375
+          }
+        ],
+        "model": [
+          [
+            1.1208160663053865,
+            0.04122834980342183,
+            -22.47540112634117
+          ],
+          [
+            -0.04122834980342183,
+            1.1208160663053865,
+            -0.9382637339281767
+          ]
+        ],
+        "model_inliers": 7,
+        "domains": null,
+        "joint": null,
+        "diagnostic_initialization_proposed": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "feature_source": "spatial_corners",
+        "descriptor_context": "fixed size3/orientation0, exact19px context; per64px tile GFTT100/0.01/5 stride32",
+        "descriptor_matches": 21,
+        "reason": "source_camera_model_incoherent"
+      },
+      "previous_corner_result_unchanged": true
+    },
+    {
+      "reference_id": "reviewed-arch-context",
+      "image": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000001.png",
+      "result": {
+        "scope": "descriptor geometry proposal plus fixed-domain appearance; diagnostic only",
+        "source_descriptors": 176,
+        "current_descriptors": 1100,
+        "tracks": [
+          {
+            "region": 2,
+            "reference_xy": [
+              502.0,
+              72.0
+            ],
+            "current_xy": [
+              454.0,
+              98.0
+            ],
+            "descriptor_distance": 134.39866638183594
+          }
+        ],
+        "model": null,
+        "model_inliers": 0,
+        "domains": null,
+        "joint": null,
+        "diagnostic_initialization_proposed": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "feature_source": "spatial_corners",
+        "descriptor_context": "fixed size3/orientation0, exact19px context; per64px tile GFTT100/0.01/5 stride32",
+        "descriptor_matches": 1,
+        "reason": "three_region_descriptor_support_unavailable"
+      },
+      "previous_corner_result_unchanged": true
+    },
+    {
+      "reference_id": "reviewed-wall",
+      "image": "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/wall_close.png",
+      "result": {
+        "scope": "descriptor geometry proposal plus fixed-domain appearance; diagnostic only",
+        "source_descriptors": 366,
+        "current_descriptors": 1222,
+        "tracks": [
+          {
+            "region": 0,
+            "reference_xy": [
+              181.0,
+              107.0
+            ],
+            "current_xy": [
+              181.0,
+              107.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              178.0,
+              101.0
+            ],
+            "current_xy": [
+              178.0,
+              101.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              203.0,
+              103.0
+            ],
+            "current_xy": [
+              203.0,
+              103.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              177.0,
+              89.0
+            ],
+            "current_xy": [
+              177.0,
+              89.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              192.0,
+              82.0
+            ],
+            "current_xy": [
+              192.0,
+              82.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              193.0,
+              97.0
+            ],
+            "current_xy": [
+              193.0,
+              97.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9983183145523071,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              197.0,
+              83.0
+            ],
+            "current_xy": [
+              197.0,
+              83.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              196.0,
+              102.0
+            ],
+            "current_xy": [
+              196.0,
+              102.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              179.0,
+              94.0
+            ],
+            "current_xy": [
+              179.0,
+              94.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9995059967041016,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              200.0,
+              97.0
+            ],
+            "current_xy": [
+              200.0,
+              97.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              191.0,
+              102.0
+            ],
+            "current_xy": [
+              191.0,
+              102.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              191.0,
+              91.0
+            ],
+            "current_xy": [
+              191.0,
+              91.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              202.0,
+              79.0
+            ],
+            "current_xy": [
+              202.0,
+              79.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              188.0,
+              87.0
+            ],
+            "current_xy": [
+              188.0,
+              87.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              185.0,
+              81.0
+            ],
+            "current_xy": [
+              185.0,
+              81.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              197.0,
+              90.0
+            ],
+            "current_xy": [
+              197.0,
+              90.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              201.0,
+              67.0
+            ],
+            "current_xy": [
+              201.0,
+              67.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              191.0,
+              70.0
+            ],
+            "current_xy": [
+              191.0,
+              70.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              184.0,
+              98.0
+            ],
+            "current_xy": [
+              184.0,
+              98.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              198.0,
+              74.0
+            ],
+            "current_xy": [
+              198.0,
+              74.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              195.0,
+              66.0
+            ],
+            "current_xy": [
+              195.0,
+              66.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 0,
+            "reference_xy": [
+              187.0,
+              94.0
+            ],
+            "current_xy": [
+              187.0,
+              94.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              211.0,
+              134.0
+            ],
+            "current_xy": [
+              211.0,
+              134.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              202.0,
+              129.0
+            ],
+            "current_xy": [
+              202.0,
+              129.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              214.0,
+              145.0
+            ],
+            "current_xy": [
+              214.0,
+              145.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              198.0,
+              135.0
+            ],
+            "current_xy": [
+              198.0,
+              135.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              201.0,
+              150.0
+            ],
+            "current_xy": [
+              201.0,
+              150.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              192.0,
+              139.0
+            ],
+            "current_xy": [
+              192.0,
+              139.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              209.0,
+              155.0
+            ],
+            "current_xy": [
+              209.0,
+              155.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              193.0,
+              163.0
+            ],
+            "current_xy": [
+              193.0,
+              163.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              190.0,
+              145.0
+            ],
+            "current_xy": [
+              190.0,
+              145.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              212.0,
+              160.0
+            ],
+            "current_xy": [
+              212.0,
+              160.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              234.0,
+              136.0
+            ],
+            "current_xy": [
+              234.0,
+              136.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              203.0,
+              142.0
+            ],
+            "current_xy": [
+              203.0,
+              142.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              186.0,
+              153.0
+            ],
+            "current_xy": [
+              186.0,
+              153.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              214.0,
+              151.0
+            ],
+            "current_xy": [
+              214.0,
+              151.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9997815489768982,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              203.0,
+              157.0
+            ],
+            "current_xy": [
+              203.0,
+              157.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              182.0,
+              134.0
+            ],
+            "current_xy": [
+              182.0,
+              134.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              191.0,
+              155.0
+            ],
+            "current_xy": [
+              191.0,
+              155.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              195.0,
+              146.0
+            ],
+            "current_xy": [
+              195.0,
+              146.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              198.0,
+              154.0
+            ],
+            "current_xy": [
+              198.0,
+              154.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              191.0,
+              134.0
+            ],
+            "current_xy": [
+              191.0,
+              134.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              240.0,
+              163.0
+            ],
+            "current_xy": [
+              240.0,
+              163.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              235.0,
+              157.0
+            ],
+            "current_xy": [
+              235.0,
+              157.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9998716115951538,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              247.0,
+              155.0
+            ],
+            "current_xy": [
+              247.0,
+              155.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              234.0,
+              162.0
+            ],
+            "current_xy": [
+              234.0,
+              162.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.999895453453064,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              237.0,
+              145.0
+            ],
+            "current_xy": [
+              237.0,
+              145.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              257.0,
+              163.0
+            ],
+            "current_xy": [
+              257.0,
+              163.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              237.0,
+              150.0
+            ],
+            "current_xy": [
+              237.0,
+              150.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              240.0,
+              132.0
+            ],
+            "current_xy": [
+              240.0,
+              132.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              244.0,
+              149.0
+            ],
+            "current_xy": [
+              244.0,
+              149.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              251.0,
+              137.0
+            ],
+            "current_xy": [
+              251.0,
+              137.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              246.0,
+              144.0
+            ],
+            "current_xy": [
+              246.0,
+              144.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              241.0,
+              156.0
+            ],
+            "current_xy": [
+              241.0,
+              156.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9997805953025818,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              239.0,
+              138.0
+            ],
+            "current_xy": [
+              239.0,
+              138.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              257.0,
+              135.0
+            ],
+            "current_xy": [
+              257.0,
+              135.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              251.0,
+              143.0
+            ],
+            "current_xy": [
+              251.0,
+              143.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              270.0,
+              129.0
+            ],
+            "current_xy": [
+              270.0,
+              129.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              271.0,
+              134.0
+            ],
+            "current_xy": [
+              271.0,
+              134.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              201.0,
+              159.0
+            ],
+            "current_xy": [
+              201.0,
+              159.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              20.0,
+              219.0
+            ],
+            "current_xy": [
+              20.0,
+              219.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              27.0,
+              216.0
+            ],
+            "current_xy": [
+              27.0,
+              216.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              39.0,
+              204.0
+            ],
+            "current_xy": [
+              39.0,
+              204.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              41.0,
+              219.0
+            ],
+            "current_xy": [
+              41.0,
+              219.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              47.0,
+              208.0
+            ],
+            "current_xy": [
+              47.0,
+              208.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              34.0,
+              228.0
+            ],
+            "current_xy": [
+              34.0,
+              228.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              20.0,
+              209.0
+            ],
+            "current_xy": [
+              20.0,
+              209.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              21.0,
+              187.0
+            ],
+            "current_xy": [
+              21.0,
+              187.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              50.0,
+              218.0
+            ],
+            "current_xy": [
+              50.0,
+              218.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              35.0,
+              219.0
+            ],
+            "current_xy": [
+              35.0,
+              219.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              62.0,
+              217.0
+            ],
+            "current_xy": [
+              62.0,
+              217.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              63.0,
+              209.0
+            ],
+            "current_xy": [
+              63.0,
+              209.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              46.0,
+              222.0
+            ],
+            "current_xy": [
+              46.0,
+              222.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              58.0,
+              209.0
+            ],
+            "current_xy": [
+              58.0,
+              209.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              21.0,
+              182.0
+            ],
+            "current_xy": [
+              21.0,
+              182.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              68.0,
+              210.0
+            ],
+            "current_xy": [
+              68.0,
+              210.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              34.0,
+              210.0
+            ],
+            "current_xy": [
+              34.0,
+              210.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              56.0,
+              224.0
+            ],
+            "current_xy": [
+              56.0,
+              224.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9999997019767761,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              53.0,
+              208.0
+            ],
+            "current_xy": [
+              53.0,
+              208.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              23.0,
+              224.0
+            ],
+            "current_xy": [
+              23.0,
+              224.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              28.0,
+              225.0
+            ],
+            "current_xy": [
+              28.0,
+              225.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              33.0,
+              200.0
+            ],
+            "current_xy": [
+              33.0,
+              200.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              40.0,
+              224.0
+            ],
+            "current_xy": [
+              40.0,
+              224.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              26.0,
+              208.0
+            ],
+            "current_xy": [
+              26.0,
+              208.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              21.0,
+              200.0
+            ],
+            "current_xy": [
+              21.0,
+              200.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              32.0,
+              194.0
+            ],
+            "current_xy": [
+              32.0,
+              194.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              19.0,
+              195.0
+            ],
+            "current_xy": [
+              19.0,
+              195.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              92.0,
+              219.0
+            ],
+            "current_xy": [
+              92.0,
+              219.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              75.0,
+              220.0
+            ],
+            "current_xy": [
+              75.0,
+              220.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              93.0,
+              224.0
+            ],
+            "current_xy": [
+              93.0,
+              224.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              98.0,
+              219.0
+            ],
+            "current_xy": [
+              98.0,
+              219.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              73.0,
+              210.0
+            ],
+            "current_xy": [
+              73.0,
+              210.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              85.0,
+              217.0
+            ],
+            "current_xy": [
+              85.0,
+              217.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              81.0,
+              213.0
+            ],
+            "current_xy": [
+              81.0,
+              213.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              84.0,
+              222.0
+            ],
+            "current_xy": [
+              84.0,
+              222.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              71.0,
+              223.0
+            ],
+            "current_xy": [
+              71.0,
+              223.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              85.0,
+              207.0
+            ],
+            "current_xy": [
+              85.0,
+              207.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              103.0,
+              232.0
+            ],
+            "current_xy": [
+              103.0,
+              232.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              134.0,
+              222.0
+            ],
+            "current_xy": [
+              134.0,
+              222.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              114.0,
+              221.0
+            ],
+            "current_xy": [
+              114.0,
+              221.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              121.0,
+              216.0
+            ],
+            "current_xy": [
+              121.0,
+              216.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              75.0,
+              211.0
+            ],
+            "current_xy": [
+              77.0,
+              211.0
+            ],
+            "descriptor_distance": 52.52618408203125,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              124.0,
+              212.0
+            ],
+            "current_xy": [
+              124.0,
+              212.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              131.0,
+              217.0
+            ],
+            "current_xy": [
+              131.0,
+              217.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              107.0,
+              220.0
+            ],
+            "current_xy": [
+              107.0,
+              220.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              124.0,
+              221.0
+            ],
+            "current_xy": [
+              124.0,
+              221.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              102.0,
+              224.0
+            ],
+            "current_xy": [
+              102.0,
+              224.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              122.0,
+              233.0
+            ],
+            "current_xy": [
+              122.0,
+              233.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              149.0,
+              214.0
+            ],
+            "current_xy": [
+              149.0,
+              214.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              142.0,
+              216.0
+            ],
+            "current_xy": [
+              142.0,
+              216.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9999988675117493,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              137.0,
+              210.0
+            ],
+            "current_xy": [
+              137.0,
+              210.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              140.0,
+              223.0
+            ],
+            "current_xy": [
+              140.0,
+              223.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              154.0,
+              219.0
+            ],
+            "current_xy": [
+              154.0,
+              219.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              25.0,
+              237.0
+            ],
+            "current_xy": [
+              25.0,
+              237.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              32.0,
+              235.0
+            ],
+            "current_xy": [
+              32.0,
+              235.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              459.0,
+              107.0
+            ],
+            "current_xy": [
+              459.0,
+              107.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              462.0,
+              80.0
+            ],
+            "current_xy": [
+              462.0,
+              80.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              462.0,
+              75.0
+            ],
+            "current_xy": [
+              462.0,
+              75.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              464.0,
+              107.0
+            ],
+            "current_xy": [
+              464.0,
+              107.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              469.0,
+              64.0
+            ],
+            "current_xy": [
+              469.0,
+              64.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              474.0,
+              68.0
+            ],
+            "current_xy": [
+              474.0,
+              68.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              500.0,
+              107.0
+            ],
+            "current_xy": [
+              500.0,
+              107.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              479.0,
+              107.0
+            ],
+            "current_xy": [
+              479.0,
+              107.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              491.0,
+              106.0
+            ],
+            "current_xy": [
+              491.0,
+              106.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              458.0,
+              100.0
+            ],
+            "current_xy": [
+              458.0,
+              100.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              453.0,
+              95.0
+            ],
+            "current_xy": [
+              453.0,
+              95.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              484.0,
+              68.0
+            ],
+            "current_xy": [
+              484.0,
+              68.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              500.0,
+              64.0
+            ],
+            "current_xy": [
+              500.0,
+              64.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              480.0,
+              64.0
+            ],
+            "current_xy": [
+              480.0,
+              64.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              486.0,
+              102.0
+            ],
+            "current_xy": [
+              486.0,
+              102.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              514.0,
+              97.0
+            ],
+            "current_xy": [
+              514.0,
+              97.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              511.0,
+              105.0
+            ],
+            "current_xy": [
+              511.0,
+              105.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              506.0,
+              90.0
+            ],
+            "current_xy": [
+              506.0,
+              90.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              506.0,
+              64.0
+            ],
+            "current_xy": [
+              506.0,
+              64.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              528.0,
+              107.0
+            ],
+            "current_xy": [
+              528.0,
+              107.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              532.0,
+              90.0
+            ],
+            "current_xy": [
+              532.0,
+              90.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              532.0,
+              85.0
+            ],
+            "current_xy": [
+              532.0,
+              85.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              514.0,
+              68.0
+            ],
+            "current_xy": [
+              514.0,
+              68.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              516.0,
+              85.0
+            ],
+            "current_xy": [
+              516.0,
+              85.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              507.0,
+              85.0
+            ],
+            "current_xy": [
+              507.0,
+              85.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              516.0,
+              79.0
+            ],
+            "current_xy": [
+              516.0,
+              79.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              507.0,
+              79.0
+            ],
+            "current_xy": [
+              507.0,
+              79.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              531.0,
+              63.0
+            ],
+            "current_xy": [
+              531.0,
+              63.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              551.0,
+              100.0
+            ],
+            "current_xy": [
+              551.0,
+              100.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              540.0,
+              62.0
+            ],
+            "current_xy": [
+              540.0,
+              62.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              548.0,
+              70.0
+            ],
+            "current_xy": [
+              548.0,
+              70.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              555.0,
+              76.0
+            ],
+            "current_xy": [
+              555.0,
+              76.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              543.0,
+              68.0
+            ],
+            "current_xy": [
+              543.0,
+              68.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              544.0,
+              100.0
+            ],
+            "current_xy": [
+              544.0,
+              100.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              547.0,
+              91.0
+            ],
+            "current_xy": [
+              547.0,
+              91.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              539.0,
+              90.0
+            ],
+            "current_xy": [
+              539.0,
+              90.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              539.0,
+              85.0
+            ],
+            "current_xy": [
+              539.0,
+              85.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              554.0,
+              84.0
+            ],
+            "current_xy": [
+              554.0,
+              84.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              539.0,
+              79.0
+            ],
+            "current_xy": [
+              539.0,
+              79.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              547.0,
+              63.0
+            ],
+            "current_xy": [
+              547.0,
+              63.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 3,
+            "reference_xy": [
+              547.0,
+              105.0
+            ],
+            "current_xy": [
+              547.0,
+              105.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              477.0,
+              145.0
+            ],
+            "current_xy": [
+              477.0,
+              145.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              467.0,
+              145.0
+            ],
+            "current_xy": [
+              467.0,
+              145.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              498.0,
+              145.0
+            ],
+            "current_xy": [
+              498.0,
+              145.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              452.0,
+              167.0
+            ],
+            "current_xy": [
+              452.0,
+              167.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              472.0,
+              166.0
+            ],
+            "current_xy": [
+              472.0,
+              166.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              464.0,
+              167.0
+            ],
+            "current_xy": [
+              464.0,
+              167.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              500.0,
+              158.0
+            ],
+            "current_xy": [
+              500.0,
+              158.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              492.0,
+              148.0
+            ],
+            "current_xy": [
+              492.0,
+              148.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              476.0,
+              161.0
+            ],
+            "current_xy": [
+              476.0,
+              161.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              454.0,
+              141.0
+            ],
+            "current_xy": [
+              454.0,
+              141.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              463.0,
+              141.0
+            ],
+            "current_xy": [
+              463.0,
+              141.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              486.0,
+              148.0
+            ],
+            "current_xy": [
+              486.0,
+              148.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              452.0,
+              157.0
+            ],
+            "current_xy": [
+              452.0,
+              157.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              468.0,
+              132.0
+            ],
+            "current_xy": [
+              468.0,
+              132.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              459.0,
+              165.0
+            ],
+            "current_xy": [
+              459.0,
+              165.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              494.0,
+              142.0
+            ],
+            "current_xy": [
+              494.0,
+              142.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              462.0,
+              158.0
+            ],
+            "current_xy": [
+              462.0,
+              158.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              473.0,
+              141.0
+            ],
+            "current_xy": [
+              473.0,
+              141.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9980883598327637,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              492.0,
+              166.0
+            ],
+            "current_xy": [
+              492.0,
+              166.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              483.0,
+              166.0
+            ],
+            "current_xy": [
+              483.0,
+              166.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              490.0,
+              161.0
+            ],
+            "current_xy": [
+              490.0,
+              161.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              499.0,
+              134.0
+            ],
+            "current_xy": [
+              499.0,
+              134.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              490.0,
+              155.0
+            ],
+            "current_xy": [
+              490.0,
+              155.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              478.0,
+              154.0
+            ],
+            "current_xy": [
+              478.0,
+              154.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              468.0,
+              137.0
+            ],
+            "current_xy": [
+              468.0,
+              137.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              460.0,
+              151.0
+            ],
+            "current_xy": [
+              460.0,
+              151.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              463.0,
+              136.0
+            ],
+            "current_xy": [
+              463.0,
+              136.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              493.0,
+              135.0
+            ],
+            "current_xy": [
+              493.0,
+              135.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              474.0,
+              132.0
+            ],
+            "current_xy": [
+              474.0,
+              132.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              484.0,
+              135.0
+            ],
+            "current_xy": [
+              484.0,
+              135.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              472.0,
+              151.0
+            ],
+            "current_xy": [
+              472.0,
+              151.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              458.0,
+              132.0
+            ],
+            "current_xy": [
+              458.0,
+              132.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              479.0,
+              134.0
+            ],
+            "current_xy": [
+              479.0,
+              134.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              501.0,
+              141.0
+            ],
+            "current_xy": [
+              501.0,
+              141.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              533.0,
+              166.0
+            ],
+            "current_xy": [
+              533.0,
+              166.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              531.0,
+              134.0
+            ],
+            "current_xy": [
+              531.0,
+              134.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              524.0,
+              167.0
+            ],
+            "current_xy": [
+              524.0,
+              167.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              521.0,
+              163.0
+            ],
+            "current_xy": [
+              521.0,
+              163.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              516.0,
+              166.0
+            ],
+            "current_xy": [
+              516.0,
+              166.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              530.0,
+              147.0
+            ],
+            "current_xy": [
+              530.0,
+              147.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              508.0,
+              145.0
+            ],
+            "current_xy": [
+              508.0,
+              145.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              524.0,
+              143.0
+            ],
+            "current_xy": [
+              524.0,
+              143.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              500.0,
+              153.0
+            ],
+            "current_xy": [
+              500.0,
+              153.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              510.0,
+              166.0
+            ],
+            "current_xy": [
+              510.0,
+              166.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              517.0,
+              154.0
+            ],
+            "current_xy": [
+              517.0,
+              154.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              512.0,
+              137.0
+            ],
+            "current_xy": [
+              512.0,
+              137.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              505.0,
+              135.0
+            ],
+            "current_xy": [
+              505.0,
+              135.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              508.0,
+              150.0
+            ],
+            "current_xy": [
+              508.0,
+              150.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              523.0,
+              132.0
+            ],
+            "current_xy": [
+              523.0,
+              132.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              517.0,
+              149.0
+            ],
+            "current_xy": [
+              517.0,
+              149.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              515.0,
+              159.0
+            ],
+            "current_xy": [
+              515.0,
+              159.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.999046802520752,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              527.0,
+              158.0
+            ],
+            "current_xy": [
+              527.0,
+              158.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              525.0,
+              138.0
+            ],
+            "current_xy": [
+              525.0,
+              138.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              506.0,
+              160.0
+            ],
+            "current_xy": [
+              506.0,
+              160.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              533.0,
+              139.0
+            ],
+            "current_xy": [
+              533.0,
+              139.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              529.0,
+              153.0
+            ],
+            "current_xy": [
+              529.0,
+              153.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              513.0,
+              143.0
+            ],
+            "current_xy": [
+              513.0,
+              143.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              556.0,
+              143.0
+            ],
+            "current_xy": [
+              556.0,
+              143.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              550.0,
+              144.0
+            ],
+            "current_xy": [
+              550.0,
+              144.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9994683265686035,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              543.0,
+              148.0
+            ],
+            "current_xy": [
+              543.0,
+              148.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9991702437400818,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              548.0,
+              151.0
+            ],
+            "current_xy": [
+              548.0,
+              151.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              539.0,
+              153.0
+            ],
+            "current_xy": [
+              539.0,
+              153.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              536.0,
+              147.0
+            ],
+            "current_xy": [
+              536.0,
+              147.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              545.0,
+              133.0
+            ],
+            "current_xy": [
+              545.0,
+              133.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              537.0,
+              163.0
+            ],
+            "current_xy": [
+              537.0,
+              163.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              552.0,
+              132.0
+            ],
+            "current_xy": [
+              552.0,
+              132.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              553.0,
+              137.0
+            ],
+            "current_xy": [
+              553.0,
+              137.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              555.0,
+              152.0
+            ],
+            "current_xy": [
+              555.0,
+              152.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              546.0,
+              160.0
+            ],
+            "current_xy": [
+              546.0,
+              160.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              534.0,
+              156.0
+            ],
+            "current_xy": [
+              534.0,
+              156.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              554.0,
+              165.0
+            ],
+            "current_xy": [
+              554.0,
+              165.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              548.0,
+              138.0
+            ],
+            "current_xy": [
+              548.0,
+              138.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              551.0,
+              155.0
+            ],
+            "current_xy": [
+              551.0,
+              155.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              534.0,
+              159.0
+            ],
+            "current_xy": [
+              534.0,
+              159.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              206.0,
+              211.0
+            ],
+            "current_xy": [
+              206.0,
+              211.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              213.0,
+              210.0
+            ],
+            "current_xy": [
+              213.0,
+              210.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              200.0,
+              208.0
+            ],
+            "current_xy": [
+              200.0,
+              208.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              192.0,
+              209.0
+            ],
+            "current_xy": [
+              192.0,
+              209.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              187.0,
+              209.0
+            ],
+            "current_xy": [
+              187.0,
+              209.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              205.0,
+              205.0
+            ],
+            "current_xy": [
+              205.0,
+              205.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              199.0,
+              203.0
+            ],
+            "current_xy": [
+              199.0,
+              203.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              208.0,
+              196.0
+            ],
+            "current_xy": [
+              208.0,
+              196.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              197.0,
+              198.0
+            ],
+            "current_xy": [
+              197.0,
+              198.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              204.0,
+              218.0
+            ],
+            "current_xy": [
+              204.0,
+              218.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              197.0,
+              239.0
+            ],
+            "current_xy": [
+              197.0,
+              239.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9993271231651306,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              187.0,
+              214.0
+            ],
+            "current_xy": [
+              187.0,
+              214.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              194.0,
+              218.0
+            ],
+            "current_xy": [
+              194.0,
+              218.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              182.0,
+              218.0
+            ],
+            "current_xy": [
+              182.0,
+              218.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              212.0,
+              221.0
+            ],
+            "current_xy": [
+              212.0,
+              221.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              186.0,
+              226.0
+            ],
+            "current_xy": [
+              186.0,
+              226.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              182.0,
+              212.0
+            ],
+            "current_xy": [
+              182.0,
+              212.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              199.0,
+              219.0
+            ],
+            "current_xy": [
+              199.0,
+              219.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9999905228614807,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              190.0,
+              223.0
+            ],
+            "current_xy": [
+              190.0,
+              223.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9999707341194153,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              206.0,
+              239.0
+            ],
+            "current_xy": [
+              206.0,
+              239.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              184.0,
+              242.0
+            ],
+            "current_xy": [
+              184.0,
+              242.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              192.0,
+              233.0
+            ],
+            "current_xy": [
+              192.0,
+              233.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9990684986114502,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              183.0,
+              202.0
+            ],
+            "current_xy": [
+              183.0,
+              202.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9999535083770752,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              188.0,
+              203.0
+            ],
+            "current_xy": [
+              188.0,
+              203.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              203.0,
+              195.0
+            ],
+            "current_xy": [
+              203.0,
+              195.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              194.0,
+              204.0
+            ],
+            "current_xy": [
+              194.0,
+              204.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              196.0,
+              224.0
+            ],
+            "current_xy": [
+              196.0,
+              224.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              214.0,
+              226.0
+            ],
+            "current_xy": [
+              214.0,
+              226.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              207.0,
+              227.0
+            ],
+            "current_xy": [
+              207.0,
+              227.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              191.0,
+              228.0
+            ],
+            "current_xy": [
+              191.0,
+              228.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              243.0,
+              208.0
+            ],
+            "current_xy": [
+              243.0,
+              208.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              237.0,
+              208.0
+            ],
+            "current_xy": [
+              237.0,
+              208.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              242.0,
+              195.0
+            ],
+            "current_xy": [
+              242.0,
+              195.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              254.0,
+              220.0
+            ],
+            "current_xy": [
+              254.0,
+              220.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              240.0,
+              221.0
+            ],
+            "current_xy": [
+              240.0,
+              221.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              245.0,
+              220.0
+            ],
+            "current_xy": [
+              245.0,
+              220.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              256.0,
+              237.0
+            ],
+            "current_xy": [
+              256.0,
+              237.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              248.0,
+              209.0
+            ],
+            "current_xy": [
+              248.0,
+              209.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              256.0,
+              243.0
+            ],
+            "current_xy": [
+              256.0,
+              243.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 0.9993095397949219,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              257.0,
+              194.0
+            ],
+            "current_xy": [
+              257.0,
+              194.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              208.0,
+              218.0
+            ],
+            "current_xy": [
+              208.0,
+              218.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              250.0,
+              194.0
+            ],
+            "current_xy": [
+              250.0,
+              194.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              252.0,
+              215.0
+            ],
+            "current_xy": [
+              252.0,
+              215.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              244.0,
+              202.0
+            ],
+            "current_xy": [
+              244.0,
+              202.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              249.0,
+              240.0
+            ],
+            "current_xy": [
+              249.0,
+              240.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              249.0,
+              231.0
+            ],
+            "current_xy": [
+              249.0,
+              231.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              237.0,
+              226.0
+            ],
+            "current_xy": [
+              237.0,
+              226.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              252.0,
+              201.0
+            ],
+            "current_xy": [
+              252.0,
+              201.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              237.0,
+              198.0
+            ],
+            "current_xy": [
+              237.0,
+              198.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              255.0,
+              230.0
+            ],
+            "current_xy": [
+              255.0,
+              230.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              192.0,
+              216.0
+            ],
+            "current_xy": [
+              193.0,
+              216.0
+            ],
+            "descriptor_distance": 7.549834251403809,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              210.0,
+              234.0
+            ],
+            "current_xy": [
+              210.0,
+              234.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              205.0,
+              232.0
+            ],
+            "current_xy": [
+              205.0,
+              232.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              244.0,
+              242.0
+            ],
+            "current_xy": [
+              244.0,
+              242.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              235.0,
+              237.0
+            ],
+            "current_xy": [
+              235.0,
+              237.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": null,
+            "model_inlier": true
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              244.0,
+              227.0
+            ],
+            "current_xy": [
+              244.0,
+              227.0
+            ],
+            "descriptor_distance": 0.0,
+            "projected_patch_ncc": 1.0,
+            "model_inlier": true
+          }
+        ],
+        "model": [
+          [
+            0.9999413804904733,
+            1.590299732857492e-05,
+            0.025756993326112802
+          ],
+          [
+            -1.590299732857492e-05,
+            0.9999413804904733,
+            0.014279357388128704
+          ]
+        ],
+        "model_inliers": 286,
+        "domains": null,
+        "joint": null,
+        "diagnostic_initialization_proposed": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "feature_source": "spatial_corners",
+        "descriptor_context": "fixed size3/orientation0, exact19px context; per64px tile GFTT100/0.01/5 stride32",
+        "descriptor_matches": 286,
+        "photometric_inliers": 170,
+        "reason": "projected_patch_support_unavailable"
+      },
+      "previous_corner_result_unchanged": true
+    },
+    {
+      "reference_id": "reviewed-wall",
+      "image": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000013.png",
+      "result": {
+        "scope": "descriptor geometry proposal plus fixed-domain appearance; diagnostic only",
+        "source_descriptors": 366,
+        "current_descriptors": 1062,
+        "tracks": [
+          {
+            "region": 1,
+            "reference_xy": [
+              220.0,
+              137.0
+            ],
+            "current_xy": [
+              240.0,
+              157.0
+            ],
+            "descriptor_distance": 144.1006622314453
+          },
+          {
+            "region": 1,
+            "reference_xy": [
+              257.0,
+              163.0
+            ],
+            "current_xy": [
+              264.0,
+              171.0
+            ],
+            "descriptor_distance": 155.3319091796875
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              20.0,
+              219.0
+            ],
+            "current_xy": [
+              26.0,
+              222.0
+            ],
+            "descriptor_distance": 128.21466064453125
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              27.0,
+              216.0
+            ],
+            "current_xy": [
+              35.0,
+              220.0
+            ],
+            "descriptor_distance": 93.09135437011719
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              39.0,
+              204.0
+            ],
+            "current_xy": [
+              46.0,
+              208.0
+            ],
+            "descriptor_distance": 29.18903923034668
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              20.0,
+              209.0
+            ],
+            "current_xy": [
+              28.0,
+              213.0
+            ],
+            "descriptor_distance": 68.62944030761719
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              35.0,
+              219.0
+            ],
+            "current_xy": [
+              43.0,
+              222.0
+            ],
+            "descriptor_distance": 69.13754272460938
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              62.0,
+              217.0
+            ],
+            "current_xy": [
+              66.0,
+              220.0
+            ],
+            "descriptor_distance": 134.70709228515625
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              68.0,
+              210.0
+            ],
+            "current_xy": [
+              73.0,
+              213.0
+            ],
+            "descriptor_distance": 68.28616333007812
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              34.0,
+              210.0
+            ],
+            "current_xy": [
+              42.0,
+              213.0
+            ],
+            "descriptor_distance": 137.96376037597656
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              33.0,
+              200.0
+            ],
+            "current_xy": [
+              39.0,
+              203.0
+            ],
+            "descriptor_distance": 48.80573654174805
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              40.0,
+              224.0
+            ],
+            "current_xy": [
+              47.0,
+              227.0
+            ],
+            "descriptor_distance": 95.2732925415039
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              19.0,
+              195.0
+            ],
+            "current_xy": [
+              26.0,
+              198.0
+            ],
+            "descriptor_distance": 94.69424438476562
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              92.0,
+              219.0
+            ],
+            "current_xy": [
+              95.0,
+              223.0
+            ],
+            "descriptor_distance": 68.60028839111328
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              93.0,
+              224.0
+            ],
+            "current_xy": [
+              98.0,
+              228.0
+            ],
+            "descriptor_distance": 39.54743957519531
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              98.0,
+              219.0
+            ],
+            "current_xy": [
+              102.0,
+              223.0
+            ],
+            "descriptor_distance": 27.312999725341797
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              73.0,
+              210.0
+            ],
+            "current_xy": [
+              78.0,
+              214.0
+            ],
+            "descriptor_distance": 44.0113639831543
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              85.0,
+              217.0
+            ],
+            "current_xy": [
+              375.0,
+              203.0
+            ],
+            "descriptor_distance": 133.6525421142578
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              81.0,
+              213.0
+            ],
+            "current_xy": [
+              86.0,
+              217.0
+            ],
+            "descriptor_distance": 54.267852783203125
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              71.0,
+              223.0
+            ],
+            "current_xy": [
+              75.0,
+              227.0
+            ],
+            "descriptor_distance": 23.74868392944336
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              85.0,
+              207.0
+            ],
+            "current_xy": [
+              90.0,
+              211.0
+            ],
+            "descriptor_distance": 31.064449310302734
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              134.0,
+              222.0
+            ],
+            "current_xy": [
+              140.0,
+              226.0
+            ],
+            "descriptor_distance": 46.86149978637695
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              114.0,
+              221.0
+            ],
+            "current_xy": [
+              119.0,
+              225.0
+            ],
+            "descriptor_distance": 35.2845573425293
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              121.0,
+              216.0
+            ],
+            "current_xy": [
+              128.0,
+              219.0
+            ],
+            "descriptor_distance": 127.7027816772461
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              124.0,
+              221.0
+            ],
+            "current_xy": [
+              129.0,
+              225.0
+            ],
+            "descriptor_distance": 23.494680404663086
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              102.0,
+              224.0
+            ],
+            "current_xy": [
+              114.0,
+              227.0
+            ],
+            "descriptor_distance": 73.5051040649414
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              149.0,
+              214.0
+            ],
+            "current_xy": [
+              152.0,
+              218.0
+            ],
+            "descriptor_distance": 52.9150276184082
+          },
+          {
+            "region": 2,
+            "reference_xy": [
+              25.0,
+              237.0
+            ],
+            "current_xy": [
+              28.0,
+              241.0
+            ],
+            "descriptor_distance": 91.61331939697266
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              533.0,
+              166.0
+            ],
+            "current_xy": [
+              539.0,
+              170.0
+            ],
+            "descriptor_distance": 236.0
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              531.0,
+              134.0
+            ],
+            "current_xy": [
+              537.0,
+              139.0
+            ],
+            "descriptor_distance": 229.24659729003906
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              524.0,
+              167.0
+            ],
+            "current_xy": [
+              529.0,
+              171.0
+            ],
+            "descriptor_distance": 235.0765838623047
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              516.0,
+              166.0
+            ],
+            "current_xy": [
+              519.0,
+              169.0
+            ],
+            "descriptor_distance": 240.9481201171875
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              556.0,
+              143.0
+            ],
+            "current_xy": [
+              562.0,
+              147.0
+            ],
+            "descriptor_distance": 158.44873046875
+          },
+          {
+            "region": 4,
+            "reference_xy": [
+              553.0,
+              137.0
+            ],
+            "current_xy": [
+              558.0,
+              140.0
+            ],
+            "descriptor_distance": 220.41098022460938
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              206.0,
+              211.0
+            ],
+            "current_xy": [
+              201.0,
+              215.0
+            ],
+            "descriptor_distance": 73.80379486083984
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              213.0,
+              210.0
+            ],
+            "current_xy": [
+              214.0,
+              214.0
+            ],
+            "descriptor_distance": 50.754310607910156
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              200.0,
+              208.0
+            ],
+            "current_xy": [
+              205.0,
+              212.0
+            ],
+            "descriptor_distance": 31.432466506958008
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              229.0,
+              208.0
+            ],
+            "current_xy": [
+              233.0,
+              212.0
+            ],
+            "descriptor_distance": 65.57438659667969
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              199.0,
+              203.0
+            ],
+            "current_xy": [
+              202.0,
+              207.0
+            ],
+            "descriptor_distance": 52.29722595214844
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              204.0,
+              218.0
+            ],
+            "current_xy": [
+              207.0,
+              222.0
+            ],
+            "descriptor_distance": 23.151674270629883
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              186.0,
+              226.0
+            ],
+            "current_xy": [
+              186.0,
+              230.0
+            ],
+            "descriptor_distance": 203.5264129638672
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              226.0,
+              219.0
+            ],
+            "current_xy": [
+              237.0,
+              223.0
+            ],
+            "descriptor_distance": 113.59136962890625
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              183.0,
+              202.0
+            ],
+            "current_xy": [
+              193.0,
+              206.0
+            ],
+            "descriptor_distance": 92.55809020996094
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              188.0,
+              203.0
+            ],
+            "current_xy": [
+              181.0,
+              208.0
+            ],
+            "descriptor_distance": 93.81897735595703
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              242.0,
+              195.0
+            ],
+            "current_xy": [
+              245.0,
+              200.0
+            ],
+            "descriptor_distance": 71.26008605957031
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              245.0,
+              220.0
+            ],
+            "current_xy": [
+              247.0,
+              224.0
+            ],
+            "descriptor_distance": 56.30275344848633
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              232.0,
+              199.0
+            ],
+            "current_xy": [
+              237.0,
+              203.0
+            ],
+            "descriptor_distance": 58.36951446533203
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              257.0,
+              194.0
+            ],
+            "current_xy": [
+              241.0,
+              182.0
+            ],
+            "descriptor_distance": 102.6352767944336
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              250.0,
+              194.0
+            ],
+            "current_xy": [
+              180.0,
+              181.0
+            ],
+            "descriptor_distance": 89.10667419433594
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              244.0,
+              202.0
+            ],
+            "current_xy": [
+              245.0,
+              207.0
+            ],
+            "descriptor_distance": 142.5973358154297
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              192.0,
+              216.0
+            ],
+            "current_xy": [
+              201.0,
+              220.0
+            ],
+            "descriptor_distance": 38.742740631103516
+          },
+          {
+            "region": 5,
+            "reference_xy": [
+              188.0,
+              219.0
+            ],
+            "current_xy": [
+              184.0,
+              223.0
+            ],
+            "descriptor_distance": 59.17770004272461
+          }
+        ],
+        "model": [
+          [
+            0.9791011412625844,
+            -0.004603736392168277,
+            8.419693838466792
+          ],
+          [
+            0.004603736392168277,
+            0.9791011412625844,
+            7.7329832892542205
+          ]
+        ],
+        "model_inliers": 26,
+        "domains": null,
+        "joint": null,
+        "diagnostic_initialization_proposed": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "feature_source": "spatial_corners",
+        "descriptor_context": "fixed size3/orientation0, exact19px context; per64px tile GFTT100/0.01/5 stride32",
+        "descriptor_matches": 52,
+        "reason": "source_camera_model_incoherent"
+      },
+      "previous_corner_result_unchanged": true
+    }
+  ],
+  "terminal_bindings_match": true,
+  "wall_clock_sec": 6.801370997971389,
+  "production_changed": false,
+  "qualification_created": false
+}

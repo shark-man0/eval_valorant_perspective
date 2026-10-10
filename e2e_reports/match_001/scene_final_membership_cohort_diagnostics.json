@@ -1,0 +1,884 @@
+{
+  "scope": "Frozen native cohort; hypothetical seed, unreviewed, not qualification",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "windows": [
+    {
+      "window_sec": [
+        2.5,
+        2.7
+      ],
+      "native_frames": 12,
+      "adjacent_links": 11,
+      "supported_links_descriptive": 0,
+      "known_png_overlaps": 0,
+      "review_status": "unreviewed",
+      "runtime_proof_authorized": false,
+      "rows": [
+        {
+          "source_pts_ticks": 38441,
+          "time_base": "1/15360",
+          "pts_sec": 2.502669270833333,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000001.png",
+          "frame_sha256": "0dc39ee196158fbc91f35b420e7a8f8cffa5a1d26a6a6acb5282dae80e6a10b4",
+          "source_pixel_sha256": "22b9129dadeb8173b441f31b92f20bb61423461cd5ae33961ddc104c6b8a71f7",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "hypothetical_unreviewed_seed",
+            "descriptive_supported": false
+          }
+        },
+        {
+          "source_pts_ticks": 38697,
+          "time_base": "1/15360",
+          "pts_sec": 2.5193359375,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000002.png",
+          "frame_sha256": "81efcd3c5540a1056149bfc808905ce801b5d0b4f3a05bc9e1118afc8353a398",
+          "source_pixel_sha256": "e41efc76b4acdc1ae73b0f41f9686732fa3e17baf42e3d06d73e7868e1000bea",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "original_world_support_insufficient",
+            "seed_features": 144,
+            "retained_features": 94,
+            "retained_regions": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "previous_witness_cells": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                2
+              ],
+              [
+                1,
+                0
+              ],
+              [
+                1,
+                1
+              ],
+              [
+                1,
+                2
+              ]
+            ],
+            "current_witness_cells": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                2
+              ],
+              [
+                1,
+                0
+              ],
+              [
+                1,
+                1
+              ],
+              [
+                1,
+                2
+              ]
+            ],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false,
+            "dense_world_regions": [
+              {
+                "region": 0,
+                "ncc": null,
+                "valid_fraction": 0.7289402173913043,
+                "center_xy": [
+                  190.0,
+                  85.0
+                ],
+                "supported": false
+              },
+              {
+                "region": 1,
+                "ncc": null,
+                "valid_fraction": 0.8488850771869639,
+                "center_xy": [
+                  228.0,
+                  146.5
+                ],
+                "supported": false
+              },
+              {
+                "region": 2,
+                "ncc": null,
+                "valid_fraction": 0.8314684110862455,
+                "center_xy": [
+                  88.5,
+                  210.0
+                ],
+                "supported": false
+              },
+              {
+                "region": 3,
+                "ncc": null,
+                "valid_fraction": 0.8134842519685039,
+                "center_xy": [
+                  503.5,
+                  85.0
+                ],
+                "supported": false
+              },
+              {
+                "region": 4,
+                "ncc": null,
+                "valid_fraction": 0.8311461067366579,
+                "center_xy": [
+                  503.5,
+                  150.0
+                ],
+                "supported": false
+              },
+              {
+                "region": 5,
+                "ncc": null,
+                "valid_fraction": 0.8484802431610943,
+                "center_xy": [
+                  220.0,
+                  218.0
+                ],
+                "supported": false
+              }
+            ],
+            "previous_dense_regions": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          }
+        },
+        {
+          "source_pts_ticks": 38953,
+          "time_base": "1/15360",
+          "pts_sec": 2.536002604166667,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000003.png",
+          "frame_sha256": "79038d07b20b8fc5708953ce2669746b1184b1fb2119128ab18abea721827f08",
+          "source_pixel_sha256": "455295dbee096176af5aee62aa6dc3189dd6cf332472bb0a303c19424987d23e",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 144,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 39209,
+          "time_base": "1/15360",
+          "pts_sec": 2.5526692708333334,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000004.png",
+          "frame_sha256": "98591802fe2fdd2904b42bffe18e1d894856c4212a30c6c6dee5b0ed32e455aa",
+          "source_pixel_sha256": "a58b60533489aa82d08ba8e149cf83acfb2024426ce2491613b017ac0d60c2df",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 144,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 39465,
+          "time_base": "1/15360",
+          "pts_sec": 2.5693359375,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000005.png",
+          "frame_sha256": "d09d2abf893a6b28f34cc824219d71fe1315c68744c001aa1ab408ab64488c07",
+          "source_pixel_sha256": "d6064930467736e1572c04bcb073a71596610f6b391e097e371869fe81864a2d",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 144,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 39721,
+          "time_base": "1/15360",
+          "pts_sec": 2.5860026041666666,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000006.png",
+          "frame_sha256": "65592b7a2c6f828370f84d22a7aec3f57f308b93a6f02e30968a4b24fbe31b8e",
+          "source_pixel_sha256": "68d6c27f2a3039a9089f41eee5d96a4110c029201d253e3ae998ec8ed1e62a0f",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 144,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 39977,
+          "time_base": "1/15360",
+          "pts_sec": 2.602669270833333,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000007.png",
+          "frame_sha256": "29593ec3fd1a4873a7e8496a4e0a58e492331c578a63de4966ad24f99d1dc46a",
+          "source_pixel_sha256": "4bfca6eee66f269fdac6ee4a21a540f923aeb7bdb33b5d200e9420e6bc18b71c",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 144,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 40233,
+          "time_base": "1/15360",
+          "pts_sec": 2.6193359375,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000008.png",
+          "frame_sha256": "68107fab2e1563fcceb464d82a908b6ccbed47fc45e6d52813600d7d2b224612",
+          "source_pixel_sha256": "12f8645db3b593356a5a21965808e795ca2c9d3e1ce49847f1bf4532099bd721",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 144,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 40489,
+          "time_base": "1/15360",
+          "pts_sec": 2.636002604166667,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000009.png",
+          "frame_sha256": "830035565570ef688dd2f51a8de0ad0518c55bc20edb67d15b2630b6182512c3",
+          "source_pixel_sha256": "96e1b1d4b526518422a7c7525d0ce3f77b2d82d219a011accb6a76c5cd31776d",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 144,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 40745,
+          "time_base": "1/15360",
+          "pts_sec": 2.6526692708333335,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000010.png",
+          "frame_sha256": "4f6f55ad9ffba61842d36638a308221cb7f72ee9d21231639db00acc54ecb60b",
+          "source_pixel_sha256": "50730d405caba2ebc0aa6170ab7533457e62bb4f6ed847733bedf166c033cdb4",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 144,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 41001,
+          "time_base": "1/15360",
+          "pts_sec": 2.6693359375,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000011.png",
+          "frame_sha256": "a27989945dfb09dcf604a2579371705d8bf45360c22cdd0644f1cee117e002c6",
+          "source_pixel_sha256": "844d44822018b03225557c00027db2ec776ebded6960ef65ed388fd1ee1f7949",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 144,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 41257,
+          "time_base": "1/15360",
+          "pts_sec": 2.6860026041666667,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000012.png",
+          "frame_sha256": "5a6acd346b20360cb257fb0efd58e11ae6d9f932c2e0a0686944a6bcce1097fc",
+          "source_pixel_sha256": "5b79be6081d5f98c34d92f7f3f1c7356de9efef15023af4d36c1acf81e9bd99e",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 144,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        }
+      ]
+    },
+    {
+      "window_sec": [
+        3.0,
+        3.2
+      ],
+      "native_frames": 12,
+      "adjacent_links": 11,
+      "supported_links_descriptive": 0,
+      "known_png_overlaps": 0,
+      "review_status": "unreviewed",
+      "runtime_proof_authorized": false,
+      "rows": [
+        {
+          "source_pts_ticks": 46121,
+          "time_base": "1/15360",
+          "pts_sec": 3.002669270833333,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-001/frame_000001.png",
+          "frame_sha256": "05da6f1e0f4f5cd36b2ce29f55637d95ee6a30737f0390237859499ccccfe69c",
+          "source_pixel_sha256": "82cbaa157217b723e163e95ac84d66640af8cdc341a5b8fe2067ccc26443c559",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "hypothetical_unreviewed_seed",
+            "descriptive_supported": false
+          }
+        },
+        {
+          "source_pts_ticks": 46377,
+          "time_base": "1/15360",
+          "pts_sec": 3.0193359375,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-001/frame_000002.png",
+          "frame_sha256": "5e039fb09209f80d4957be392071186f8af388b1c33b15224e4ad92769798fa2",
+          "source_pixel_sha256": "3123bdf4d14f539f22629735667a0fa2d96b278fcd8ff10acf2a42abbcbc3985",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "seed_model_incoherent",
+            "seed_features": 91,
+            "retained_features": 16,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 46633,
+          "time_base": "1/15360",
+          "pts_sec": 3.036002604166667,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-001/frame_000003.png",
+          "frame_sha256": "c96d4a1be38102137863f51d104116d1e135f910e0e2f7a81ecf592ee6a6dd9b",
+          "source_pixel_sha256": "52875c60842881ae574aa554a2cc588ba747dec038356c95a6a7f2d79c72b225",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 91,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 46889,
+          "time_base": "1/15360",
+          "pts_sec": 3.0526692708333334,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-001/frame_000004.png",
+          "frame_sha256": "d1987ddadbaa6c1f1e86c0d5e17044a65585ff6431f284dd7fd3a239fb041bd3",
+          "source_pixel_sha256": "c18e42390a2295dad0dbbe7fef70d414500945483ba0e7639364326a9c597b11",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 91,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 47145,
+          "time_base": "1/15360",
+          "pts_sec": 3.0693359375,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-001/frame_000005.png",
+          "frame_sha256": "0352cb1841d88f145967e4f88c36de4d0f44fb07472163f91c2bda06bacdc9fb",
+          "source_pixel_sha256": "f84a2a89854104aa35015f309e697f9ba6e4f093f32f4e068318f847bcecc1a1",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 91,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 47401,
+          "time_base": "1/15360",
+          "pts_sec": 3.0860026041666666,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-001/frame_000006.png",
+          "frame_sha256": "31a1fb67a13a12d0adb0d537cffb4d4d6ab5af5d61e60f1ea2c338c4d43829ac",
+          "source_pixel_sha256": "03d1721c19d73974a6997664fce9504962c170f5531f74f3f6d338fc828de84c",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 91,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 47657,
+          "time_base": "1/15360",
+          "pts_sec": 3.102669270833333,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-001/frame_000007.png",
+          "frame_sha256": "054a76cd7301b9f98942cae4ed3fcba318cc9de4b5dcdc33b0e9c9efc4e0b74b",
+          "source_pixel_sha256": "9f9cf5c190bce529c871bb23ff57ffbc3c4c50ec8b997d5ac3aeed38375645f2",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 91,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 47913,
+          "time_base": "1/15360",
+          "pts_sec": 3.1193359375,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-001/frame_000008.png",
+          "frame_sha256": "506244e2f283a0658bf43e66a173b2de47956b20ca57661736f26bed416c04b1",
+          "source_pixel_sha256": "ba8786c92577c4d2e5700153eab895342b9ddaedb8422910e7156bad2902bf47",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 91,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 48169,
+          "time_base": "1/15360",
+          "pts_sec": 3.136002604166667,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-001/frame_000009.png",
+          "frame_sha256": "ea6a8e7f3c54c5a387b9830c524ea336a472ba2e3c0a3c10245cb50ba544c887",
+          "source_pixel_sha256": "4a9d17df4d042cd5169fd887a150ef2669253bcddc6021f09c7298c4c43160c6",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 91,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 48425,
+          "time_base": "1/15360",
+          "pts_sec": 3.1526692708333335,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-001/frame_000010.png",
+          "frame_sha256": "bf7df9d4a9dc0cbf6f6da6a81c2fa3829806f5514780d5deb077da542667127c",
+          "source_pixel_sha256": "d2ef29319c85ef456c68bd85bfeef9f86e6f1efc7c79269632601aaadd7bbe6c",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 91,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 48681,
+          "time_base": "1/15360",
+          "pts_sec": 3.1693359375,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-001/frame_000011.png",
+          "frame_sha256": "3d0b18b6cc030742556c00623d9ee8112ebdb55af473a497f5858ce05a4bcc79",
+          "source_pixel_sha256": "d8800265efbab999866dd5eaed68cb6809ae861bafc159f42b0b0ddcee4cb016",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 91,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 48937,
+          "time_base": "1/15360",
+          "pts_sec": 3.1860026041666667,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-001/frame_000012.png",
+          "frame_sha256": "bbe72d882aabebe3004ec566e7955f967510eac2023d15dbbcf17235ef22af43",
+          "source_pixel_sha256": "2a258babc0bb722dc4fb13edcd8c509772315fb76295875f87d799a3a8ff8c28",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 91,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        }
+      ]
+    },
+    {
+      "window_sec": [
+        5.2,
+        5.4
+      ],
+      "native_frames": 12,
+      "adjacent_links": 11,
+      "supported_links_descriptive": 0,
+      "known_png_overlaps": 0,
+      "review_status": "unreviewed",
+      "runtime_proof_authorized": false,
+      "rows": [
+        {
+          "source_pts_ticks": 79913,
+          "time_base": "1/15360",
+          "pts_sec": 5.202669270833334,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-002/frame_000001.png",
+          "frame_sha256": "083d9868034db4501914b79bbda88150912e6e6bfd01fd3aadb83a4b213227bd",
+          "source_pixel_sha256": "913399de2086aca9a87dedd7db09942631e15017f8f7ad1f2e6cfa775a001a76",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "hypothetical_unreviewed_seed",
+            "descriptive_supported": false
+          }
+        },
+        {
+          "source_pts_ticks": 80169,
+          "time_base": "1/15360",
+          "pts_sec": 5.2193359375,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-002/frame_000002.png",
+          "frame_sha256": "67cc5b588178046dcb8e9c29760bd42fa4ca522e4f0895a413aa2fadb05db972",
+          "source_pixel_sha256": "fca2658ccba4bf383f4fd49075ce63550fa8cbbf19bff24fd9e34883e68ffd0b",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "seed_model_incoherent",
+            "seed_features": 70,
+            "retained_features": 23,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 80425,
+          "time_base": "1/15360",
+          "pts_sec": 5.236002604166667,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-002/frame_000003.png",
+          "frame_sha256": "2203e4b93edf6d9b3f0cd3313a3f29bfa3b5b9c74c587ef34764e34809b27dab",
+          "source_pixel_sha256": "a101f9db93eedc3f09ddd764bf14a99d8fd49d6538c7d55132fa5da0d23614e2",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 70,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 80681,
+          "time_base": "1/15360",
+          "pts_sec": 5.252669270833334,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-002/frame_000004.png",
+          "frame_sha256": "3ea7dccc6c6f669c19140c8fb7bf21fd5da120486b46a6c4ad15e33b63574f3b",
+          "source_pixel_sha256": "67e7fa4ac87a558e33278ce5d54ff926e883d56dcc8db11971e044a0eec6f67b",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 70,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 80937,
+          "time_base": "1/15360",
+          "pts_sec": 5.2693359375,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-002/frame_000005.png",
+          "frame_sha256": "46c05009464a6605f928ab3a182e7c401bb17602846d00f9c7bc474fc187875d",
+          "source_pixel_sha256": "b3feffc2aaf44f68d15ee6485b3999937a9ac71a7e924ac5762f5f4460f8781e",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 70,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 81193,
+          "time_base": "1/15360",
+          "pts_sec": 5.286002604166667,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-002/frame_000006.png",
+          "frame_sha256": "084bc0112cc040e93400464c3c3456bcf2e5d847f39771e86a77d757700ca276",
+          "source_pixel_sha256": "1f13ed4bcfd58da2cedccf35548c77cbc58a8beb23c977bef026d08ddde907c7",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 70,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 81449,
+          "time_base": "1/15360",
+          "pts_sec": 5.302669270833333,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-002/frame_000007.png",
+          "frame_sha256": "a7355654b5794d719b09ac4f2ac5f569cf1db9ce11737a01161f2f9392ac4709",
+          "source_pixel_sha256": "e35374c77cf0eb56c1ec35ac9ce54c8fec074f17882ce311d2d00c82e63d218c",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 70,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 81705,
+          "time_base": "1/15360",
+          "pts_sec": 5.3193359375,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-002/frame_000008.png",
+          "frame_sha256": "092ab179984da0afee7466293a973d7dac8ff55a6745f94ef4a3538720ff6fd9",
+          "source_pixel_sha256": "e4d7072983e35483e811ae2d15bc4853cc69fc2bea99fb8560834b866d78c569",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 70,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 81961,
+          "time_base": "1/15360",
+          "pts_sec": 5.336002604166667,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-002/frame_000009.png",
+          "frame_sha256": "eefd62fe962a96b6e459a127e969389e42e8cfda77bd83f90d93c9fb3fa55a40",
+          "source_pixel_sha256": "b51ec0cba0878bc28f750c5f63c759306134f5b634996aeead371abea5296147",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 70,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 82217,
+          "time_base": "1/15360",
+          "pts_sec": 5.352669270833333,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-002/frame_000010.png",
+          "frame_sha256": "698c9c5ea58a2f2fdf0b01626a6f65c881992475751cf35db8422af54573832b",
+          "source_pixel_sha256": "2d6c476b7fc65d8884098e780814c3dbb663b13866ceb7da43243830fcd7a600",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 70,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 82473,
+          "time_base": "1/15360",
+          "pts_sec": 5.3693359375,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-002/frame_000011.png",
+          "frame_sha256": "51d91474bae690bc0d517a88c0a83fb07fdd6eaacbb02d8ebe86037f59879140",
+          "source_pixel_sha256": "2639d6ae40799d28f08e337b81a17e2e6f2aef027a02d5943d7f2f6ac209304a",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 70,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        },
+        {
+          "source_pts_ticks": 82729,
+          "time_base": "1/15360",
+          "pts_sec": 5.386002604166666,
+          "local_path": "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-002/frame_000012.png",
+          "frame_sha256": "02752b8bae24ae8ef1f4e21496a0b17db9972dd56d100ae78b85f7b16ebe9648",
+          "source_pixel_sha256": "a25ef8133942c5040344879a0858d88bdabad5419cb59b5d9698f6e90aa1cf09",
+          "known_png_overlap": false,
+          "image_result": {
+            "reason": "chain_terminated",
+            "seed_features": 70,
+            "retained_features": 0,
+            "retained_regions": [],
+            "previous_witness_cells": [],
+            "current_witness_cells": [],
+            "descriptive_supported": false,
+            "runtime_proof_authorized": false
+          }
+        }
+      ]
+    }
+  ],
+  "file_sha256": {
+    "ValorantData/videos/Valorant_09-25-2026_0-37-29-379.mp4": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "e2e_reports/match_001/scene_final_membership_exposure_inventory.json": "8975adee94dba6a66fa493acfceff2fd46bd9cbbbe0451519ff0b2c37b7be61c",
+    "e2e_reports/match_001/scene_final_membership_stable_development.json": "1b87ceb4553be366fe37a335e04cf181ec0083a41ba7b37249b57233ddf2c669",
+    "scripts/diagnostics/validate_scene_chain_cohort.py": "9f8f2fc974c4822f87e4cc58f0ecedb229ae4393f37e293373eac1d07cf3e8e0",
+    "scripts/diagnostics/scene_world_chain.py": "90687fee878a7305226f133ab1112e74ac224ff08f7be8a08d5618cf88c55f42",
+    "scripts/diagnostics/scene_correspondence.py": "667fb4f7b0626fbbf4770716eefc18976a9409a4f0646084b95d479dab7273a3",
+    "scripts/diagnostics/scene_patch_search.py": "53e66f692c42cbaab695cdea9910e3326c50089a18468f6b0d01bd463e9c2dd9",
+    "scripts/diagnostics/diagnose_native_global_lifecycle.py": "761dcd3e4019014e1691a29aad62f95d1ea4d401a61039c19a933d40d381a396",
+    "e2e_reports/match_001/scene_final_membership_cohort_reservation.json": "f07198521c37d47b6959ee84880b0637cc1aa116601e9dafa5cd350d4a4c033f",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000001.png": "0dc39ee196158fbc91f35b420e7a8f8cffa5a1d26a6a6acb5282dae80e6a10b4",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000002.png": "81efcd3c5540a1056149bfc808905ce801b5d0b4f3a05bc9e1118afc8353a398",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000003.png": "79038d07b20b8fc5708953ce2669746b1184b1fb2119128ab18abea721827f08",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000004.png": "98591802fe2fdd2904b42bffe18e1d894856c4212a30c6c6dee5b0ed32e455aa",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000005.png": "d09d2abf893a6b28f34cc824219d71fe1315c68744c001aa1ab408ab64488c07",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000006.png": "65592b7a2c6f828370f84d22a7aec3f57f308b93a6f02e30968a4b24fbe31b8e",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000007.png": "29593ec3fd1a4873a7e8496a4e0a58e492331c578a63de4966ad24f99d1dc46a",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000008.png": "68107fab2e1563fcceb464d82a908b6ccbed47fc45e6d52813600d7d2b224612",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000009.png": "830035565570ef688dd2f51a8de0ad0518c55bc20edb67d15b2630b6182512c3",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000010.png": "4f6f55ad9ffba61842d36638a308221cb7f72ee9d21231639db00acc54ecb60b",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000011.png": "a27989945dfb09dcf604a2579371705d8bf45360c22cdd0644f1cee117e002c6",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000012.png": "5a6acd346b20360cb257fb0efd58e11ae6d9f932c2e0a0686944a6bcce1097fc",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-001/frame_000001.png": "05da6f1e0f4f5cd36b2ce29f55637d95ee6a30737f0390237859499ccccfe69c",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-001/frame_000002.png": "5e039fb09209f80d4957be392071186f8af388b1c33b15224e4ad92769798fa2",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-001/frame_000003.png": "c96d4a1be38102137863f51d104116d1e135f910e0e2f7a81ecf592ee6a6dd9b",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-001/frame_000004.png": "d1987ddadbaa6c1f1e86c0d5e17044a65585ff6431f284dd7fd3a239fb041bd3",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-001/frame_000005.png": "0352cb1841d88f145967e4f88c36de4d0f44fb07472163f91c2bda06bacdc9fb",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-001/frame_000006.png": "31a1fb67a13a12d0adb0d537cffb4d4d6ab5af5d61e60f1ea2c338c4d43829ac",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-001/frame_000007.png": "054a76cd7301b9f98942cae4ed3fcba318cc9de4b5dcdc33b0e9c9efc4e0b74b",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-001/frame_000008.png": "506244e2f283a0658bf43e66a173b2de47956b20ca57661736f26bed416c04b1",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-001/frame_000009.png": "ea6a8e7f3c54c5a387b9830c524ea336a472ba2e3c0a3c10245cb50ba544c887",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-001/frame_000010.png": "bf7df9d4a9dc0cbf6f6da6a81c2fa3829806f5514780d5deb077da542667127c",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-001/frame_000011.png": "3d0b18b6cc030742556c00623d9ee8112ebdb55af473a497f5858ce05a4bcc79",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-001/frame_000012.png": "bbe72d882aabebe3004ec566e7955f967510eac2023d15dbbcf17235ef22af43",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-002/frame_000001.png": "083d9868034db4501914b79bbda88150912e6e6bfd01fd3aadb83a4b213227bd",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-002/frame_000002.png": "67cc5b588178046dcb8e9c29760bd42fa4ca522e4f0895a413aa2fadb05db972",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-002/frame_000003.png": "2203e4b93edf6d9b3f0cd3313a3f29bfa3b5b9c74c587ef34764e34809b27dab",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-002/frame_000004.png": "3ea7dccc6c6f669c19140c8fb7bf21fd5da120486b46a6c4ad15e33b63574f3b",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-002/frame_000005.png": "46c05009464a6605f928ab3a182e7c401bb17602846d00f9c7bc474fc187875d",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-002/frame_000006.png": "084bc0112cc040e93400464c3c3456bcf2e5d847f39771e86a77d757700ca276",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-002/frame_000007.png": "a7355654b5794d719b09ac4f2ac5f569cf1db9ce11737a01161f2f9392ac4709",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-002/frame_000008.png": "092ab179984da0afee7466293a973d7dac8ff55a6745f94ef4a3538720ff6fd9",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-002/frame_000009.png": "eefd62fe962a96b6e459a127e969389e42e8cfda77bd83f90d93c9fb3fa55a40",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-002/frame_000010.png": "698c9c5ea58a2f2fdf0b01626a6f65c881992475751cf35db8422af54573832b",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-002/frame_000011.png": "51d91474bae690bc0d517a88c0a83fb07fdd6eaacbb02d8ebe86037f59879140",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-002/frame_000012.png": "02752b8bae24ae8ef1f4e21496a0b17db9972dd56d100ae78b85f7b16ebe9648"
+  },
+  "qualification_created": false,
+  "new_runtime_events": 0,
+  "canonical_current": null,
+  "wall_clock_seconds": 35.23459978098981
+}

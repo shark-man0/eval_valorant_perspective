@@ -1,0 +1,35 @@
+{
+  "scope": "current-main runtime contract readiness audit; no recognition/full result",
+  "head": "e9ecaf8f2f0f0dfa1f9433d40a598ec8909e9ce3",
+  "code_sha256": {
+    "src/valorant_ai_coach/hud/analyzers.py": "d912ad498dcae7adea10ac65d04f363e33feea46ecd7a01796f6e21862973adf",
+    "src/valorant_ai_coach/hud/global_lifecycle.py": "f4a9ea0220bfd2c5ce1eb5c940d61b8dc955abfe6642c95073b9b88bb94d638d",
+    "src/valorant_ai_coach/hud/ui_transition.py": "1a94ff2f93b08d7a489353a47f29832ff992e660099add832f826ff9bf4d4388",
+    "src/valorant_ai_coach/hud/source_continuity.py": "f0e4179b4c43ca44c54b13dcbeffc9af0ed1701d4c08f750a5eced0f90c07448",
+    "src/valorant_ai_coach/hud/models.py": "0b81d856d75d304e138a215d46f9279295c52e0533c1f88a843b702067adec88",
+    "src/valorant_ai_coach/rounds/builder.py": "804d22b3252cc46d7ec4a5cd1f5dd238243e49091e275036655f5865f034fc05",
+    "tests/e2e/trace_adapter.py": "f9b0eeeffc9cc3522d3a7494d3c7b4413dbab50db5ce9baa1980732fef8e77fe"
+  },
+  "global_recognizer_fingerprint": "5357c925c231ed45ee4c8e22fd19a8cd99518394e31587288bc2610ab64aa0be",
+  "timer_display_transport_implemented": true,
+  "paired_scene_ui_runtime_producer_installed": false,
+  "external_scene_ui_tokens_accepted": false,
+  "known_disjoint_acquisition_frames": 9,
+  "known_disjoint_acquisition_seeds": 0,
+  "qualified_source_profiles_added": 0,
+  "diagnostic_only_change": true,
+  "recognition_behavior_changed": false,
+  "related_unit_pass": 102,
+  "unit_runtime_sec": 12.94,
+  "ruff_pass": true,
+  "mypy_source_files_pass": 104,
+  "canonical_previous": {
+    "pass": 23,
+    "fail": 55,
+    "not_evaluated": 4
+  },
+  "canonical_current": null,
+  "canonical_delta": null,
+  "full_e2e_run": false,
+  "next_required_contract": "qualified native scene/UI runtime producer; camera-only measurements cannot authorize world/time proof"
+}

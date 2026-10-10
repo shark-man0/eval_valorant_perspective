@@ -1,0 +1,399 @@
+{
+  "scope": "Current-frame phase transport and qualified-route safety guard; no global qualification or canonical adoption.",
+  "recognizer_fingerprint": "4506882908c892519c96b2acd33c2e78f868d1f3e0d3d50471c7a1e867aa5724",
+  "r1_reader_report": "e2e_reports/match_001/r1_current_phase_presence_inputs.json",
+  "r1_reader_report_sha256": "059bebc9d971ca2077e404f54ad3b5037e45aa61235bb3ded93419c6fc7cdf27",
+  "phase_holdout_report": "e2e_reports/match_001/current_phase_presence_transport_holdout.json",
+  "phase_holdout_report_sha256": "b997f6e4bc23864d8d57818dca3c10022dc208500409c14d67633627a8fd03d5",
+  "r1_candidates": [
+    {
+      "kind": "round_start",
+      "time_sec": 4.102669270833333,
+      "confidence": 0.9541926383972168,
+      "attributes": {
+        "evidence_provenance": {
+          "scope": "global_system",
+          "producer": "unedited_ui_start_tracker",
+          "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+          "preparation_pts_sec": [
+            3.9693359375,
+            4.086002604166667
+          ],
+          "reader_qualification_required": true,
+          "confirmation_pts_sec": 4.202669270833334,
+          "pts_sec": [
+            4.102669270833333,
+            4.1193359375,
+            4.136002604166666,
+            4.152669270833333,
+            4.1693359375,
+            4.186002604166666,
+            4.202669270833334
+          ],
+          "clock_display_samples": [
+            {
+              "pts_sec": 4.102669270833333,
+              "observed_seconds": 0.0,
+              "observed_display": "0:00",
+              "reader_confidence": 0.9541926383972168,
+              "display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9541926383972168,
+                "cross_checked": false
+              },
+              "source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b",
+              "previous_source_pixel_sha256": "6ab7cd27a8756b687f70857d6bf0d2a8732625d15161e2de41a139f31fd193e1"
+            },
+            {
+              "pts_sec": 4.1193359375,
+              "observed_seconds": 145.0,
+              "observed_display": "2:25",
+              "reader_confidence": 0.9596534371376038,
+              "display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9596534371376038,
+                "cross_checked": false
+              },
+              "source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a",
+              "previous_source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b"
+            },
+            {
+              "pts_sec": 4.136002604166666,
+              "observed_seconds": 145.0,
+              "observed_display": "2:25",
+              "reader_confidence": 0.9596534371376038,
+              "display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9596534371376038,
+                "cross_checked": false
+              },
+              "source_pixel_sha256": "7b784dd56e27c48a760671568acbd458bc496400335ee4b3181798d0584a4044",
+              "previous_source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a"
+            },
+            {
+              "pts_sec": 4.152669270833333,
+              "observed_seconds": 99.0,
+              "observed_display": "1:39",
+              "reader_confidence": 0.9597947001457214,
+              "display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9597947001457214,
+                "cross_checked": false
+              },
+              "source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0",
+              "previous_source_pixel_sha256": "7b784dd56e27c48a760671568acbd458bc496400335ee4b3181798d0584a4044"
+            },
+            {
+              "pts_sec": 4.1693359375,
+              "observed_seconds": 99.0,
+              "observed_display": "1:39",
+              "reader_confidence": 0.9597947001457214,
+              "display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9597947001457214,
+                "cross_checked": false
+              },
+              "source_pixel_sha256": "d18c9060f352e53b37967c62e12f3ee51b06e330664ee49da476b3751cda8f83",
+              "previous_source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0"
+            },
+            {
+              "pts_sec": 4.186002604166666,
+              "observed_seconds": 99.0,
+              "observed_display": "1:39",
+              "reader_confidence": 0.9629917144775391,
+              "display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9629917144775391,
+                "cross_checked": false
+              },
+              "source_pixel_sha256": "0e795ed52d0eac85bf325988a8d629c2be975f8fbce0d9bfa33a8a0c773eee86",
+              "previous_source_pixel_sha256": "d18c9060f352e53b37967c62e12f3ee51b06e330664ee49da476b3751cda8f83"
+            },
+            {
+              "pts_sec": 4.202669270833334,
+              "observed_seconds": 99.0,
+              "observed_display": "1:39",
+              "reader_confidence": 0.9629917144775391,
+              "display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9629917144775391,
+                "cross_checked": false
+              },
+              "source_pixel_sha256": "bcb5a25b6b58a0efb563575d4be9ba3507bf290b327fa64996a1d903970695a2",
+              "previous_source_pixel_sha256": "0e795ed52d0eac85bf325988a8d629c2be975f8fbce0d9bfa33a8a0c773eee86"
+            }
+          ],
+          "coherent_clock_begin_pts_sec": 4.152669270833333,
+          "coherent_clock_observation_count": 4
+        }
+      }
+    }
+  ],
+  "r1_states": [
+    {
+      "pts_sec": 3.9026692708333335,
+      "state": "unobserved",
+      "raw_phase_present": true,
+      "confirmed_phase_flag": true
+    },
+    {
+      "pts_sec": 3.9193359375,
+      "state": "unobserved",
+      "raw_phase_present": true,
+      "confirmed_phase_flag": true
+    },
+    {
+      "pts_sec": 3.9360026041666667,
+      "state": "unobserved",
+      "raw_phase_present": true,
+      "confirmed_phase_flag": true
+    },
+    {
+      "pts_sec": 3.9526692708333333,
+      "state": "unobserved",
+      "raw_phase_present": true,
+      "confirmed_phase_flag": true
+    },
+    {
+      "pts_sec": 3.9693359375,
+      "state": "pre_round",
+      "raw_phase_present": true,
+      "confirmed_phase_flag": true
+    },
+    {
+      "pts_sec": 3.9860026041666665,
+      "state": "pre_round",
+      "raw_phase_present": true,
+      "confirmed_phase_flag": true
+    },
+    {
+      "pts_sec": 4.002669270833334,
+      "state": "pre_round",
+      "raw_phase_present": true,
+      "confirmed_phase_flag": true
+    },
+    {
+      "pts_sec": 4.0193359375,
+      "state": "pre_round",
+      "raw_phase_present": true,
+      "confirmed_phase_flag": true
+    },
+    {
+      "pts_sec": 4.036002604166667,
+      "state": "pre_round",
+      "raw_phase_present": true,
+      "confirmed_phase_flag": true
+    },
+    {
+      "pts_sec": 4.052669270833333,
+      "state": "pre_round",
+      "raw_phase_present": true,
+      "confirmed_phase_flag": true
+    },
+    {
+      "pts_sec": 4.0693359375,
+      "state": "pre_round",
+      "raw_phase_present": true,
+      "confirmed_phase_flag": true
+    },
+    {
+      "pts_sec": 4.086002604166667,
+      "state": "pre_round",
+      "raw_phase_present": true,
+      "confirmed_phase_flag": true
+    },
+    {
+      "pts_sec": 4.102669270833333,
+      "state": "transient_ui_transition",
+      "raw_phase_present": false,
+      "confirmed_phase_flag": false
+    },
+    {
+      "pts_sec": 4.1193359375,
+      "state": "transient_ui_transition",
+      "raw_phase_present": false,
+      "confirmed_phase_flag": false
+    },
+    {
+      "pts_sec": 4.136002604166666,
+      "state": "transient_ui_transition",
+      "raw_phase_present": false,
+      "confirmed_phase_flag": false
+    },
+    {
+      "pts_sec": 4.152669270833333,
+      "state": "transient_ui_transition",
+      "raw_phase_present": false,
+      "confirmed_phase_flag": false
+    },
+    {
+      "pts_sec": 4.1693359375,
+      "state": "transient_ui_transition",
+      "raw_phase_present": false,
+      "confirmed_phase_flag": false
+    },
+    {
+      "pts_sec": 4.186002604166666,
+      "state": "transient_ui_transition",
+      "raw_phase_present": false,
+      "confirmed_phase_flag": false
+    },
+    {
+      "pts_sec": 4.202669270833334,
+      "state": "round_active_candidate",
+      "raw_phase_present": false,
+      "confirmed_phase_flag": false
+    },
+    {
+      "pts_sec": 4.2193359375,
+      "state": "round_active_candidate",
+      "raw_phase_present": false,
+      "confirmed_phase_flag": false
+    },
+    {
+      "pts_sec": 4.236002604166667,
+      "state": "round_active_candidate",
+      "raw_phase_present": false,
+      "confirmed_phase_flag": false
+    },
+    {
+      "pts_sec": 4.252669270833334,
+      "state": "round_active_candidate",
+      "raw_phase_present": false,
+      "confirmed_phase_flag": false
+    },
+    {
+      "pts_sec": 4.2693359375,
+      "state": "round_active_candidate",
+      "raw_phase_present": false,
+      "confirmed_phase_flag": false
+    },
+    {
+      "pts_sec": 4.286002604166667,
+      "state": "round_active_candidate",
+      "raw_phase_present": false,
+      "confirmed_phase_flag": false
+    },
+    {
+      "pts_sec": 4.302669270833333,
+      "state": "round_active_candidate",
+      "raw_phase_present": false,
+      "confirmed_phase_flag": false
+    },
+    {
+      "pts_sec": 4.3193359375,
+      "state": "round_active_candidate",
+      "raw_phase_present": false,
+      "confirmed_phase_flag": false
+    },
+    {
+      "pts_sec": 4.336002604166667,
+      "state": "round_active_candidate",
+      "raw_phase_present": false,
+      "confirmed_phase_flag": false
+    },
+    {
+      "pts_sec": 4.352669270833333,
+      "state": "round_active_candidate",
+      "raw_phase_present": false,
+      "confirmed_phase_flag": false
+    },
+    {
+      "pts_sec": 4.3693359375,
+      "state": "round_active_candidate",
+      "raw_phase_present": false,
+      "confirmed_phase_flag": false
+    },
+    {
+      "pts_sec": 4.386002604166666,
+      "state": "round_active_candidate",
+      "raw_phase_present": false,
+      "confirmed_phase_flag": false
+    }
+  ],
+  "r1_processed_frames": 30,
+  "r1_actual_analyzer_wall_clock_sec": 58.19315392401768,
+  "offline_tracker_wall_clock_sec": 0.030558847007341683,
+  "source_positive_transport_cases": 4,
+  "source_marker_raw_match_parity": {
+    "matched": 21,
+    "total": 21
+  },
+  "comparison": {
+    "raw_phase_correct": {
+      "previous": 8,
+      "current": 8,
+      "delta": 0
+    },
+    "raw_phase_unknown": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "raw_phase_false_accepts": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "r1_candidate_count": {
+      "previous": 1,
+      "current": 1,
+      "delta": 0
+    },
+    "diagnostic_released_events": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    }
+  },
+  "qualification_created": false,
+  "released_events": 0,
+  "canonical_previous": {
+    "PASS": 23,
+    "FAIL": 55,
+    "NE": 4
+  },
+  "canonical_current": null,
+  "canonical_delta": null,
+  "previous_comparable_runtime": null,
+  "runtime_delta": null,
+  "remaining": [
+    "Independent positive temporal qualification is not inferred from isolated component holdouts",
+    "JPEG cases are not native cadence/source proof",
+    "Complete qualified lifecycle and gated tiered canonical verification"
+  ],
+  "tests": {
+    "related_unit_passed": 168,
+    "ruff": "PASS",
+    "mypy_source_files": 121,
+    "mypy": "PASS"
+  }
+}

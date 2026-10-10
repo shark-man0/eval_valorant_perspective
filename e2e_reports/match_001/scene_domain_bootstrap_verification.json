@@ -1,0 +1,20 @@
+{
+  "git_head": "80d0d460b8e3a76d3c181e035c72cd10026f4252",
+  "tests": "22 passed in12.97seconds",
+  "ruff": "PASS src tests scripts/e2e and both initializer modules",
+  "mypy_previous_same_source": "PASS104files",
+  "assertions": 82,
+  "assertion_rows_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776",
+  "production_changed": false,
+  "artifact_sha256": {
+    "scripts/diagnostics/scene_domain_bootstrap.py": "1563c223d00085bc6059f720a54a4b6dd9e9acde819babd39d34d3dea4ff0e8d",
+    "scripts/diagnostics/scene_world_bootstrap.py": "9947a6b0adc00f1e4b4eb63d5a95b1555d48091633712546e8078ee3a2436cfa",
+    "tests/unit/test_scene_domain_bootstrap.py": "b3ec0b06ac2d951be1261c15271cf15fae6dcc0618a6a755b68b9204aa6a8a45",
+    "docs/scene_domain_bootstrap_contract.md": "5c7e036841d84816e6d3b7231229bfc5b103bc86e11e8d8ad475e99c52d017a0",
+    "e2e_reports/match_001/scene_domain_bootstrap_declaration.json": "9c06cb3cb4615501b447ca28c2817c9a99e6b6b11d0069cacf44307d3c3a9e00",
+    "e2e_reports/match_001/scene_domain_bootstrap_development.json": "28a3b845203ac80815a0844d1a9d058e79068a6c4a9696aaf2d6801571926750"
+  },
+  "qualification_created": false,
+  "full_e2e_run": false,
+  "canonical_current": null
+}

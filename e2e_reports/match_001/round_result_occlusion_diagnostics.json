@@ -1,0 +1,145 @@
+{
+  "scope": "Descriptive existing-reference transfer/occlusion diagnostic; target already exposed; no new reference, mask, threshold, selection or qualification",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "source_pts_ticks": 1143337,
+  "source_time_base": "1/15360",
+  "source_pts_sec": 74.43600260416666,
+  "source_frame_sha256": "8dba92b8ce2af487a45d04d182d2f35a1406518b60d1fa4c09e0ef4f1130d942",
+  "source_pixel_sha256": "4e7b1fc26cdc154ac8d14c23b54b52eaada901e735647b44c1a217e0a8061cb9",
+  "source_crop_xyxy": [
+    842,
+    178,
+    1078,
+    247
+  ],
+  "recognizer_fingerprint": "2e0656f216276bcf4319f79d50082dd041889e36ba93dd98eb7210b2f7290543",
+  "reference_freeze_sha256": "3d64ad094aea38847b73d86092b2a53fb93e4e494e277690d20cb849da2fceb1",
+  "reference_asset_sha256": {
+    "reference": "2d23443d293f7065263ab3a55ff5d26f23fa67db271c10643a5a8de1b6beecd3",
+    "mask": "304459289001a2ebda8a5864abaa3061e7a08ec291851beaf048bfb3336ce7af",
+    "regions": "5de56e92ed0b63b2b6d8186d41f87c360fe7448fe54631eec425c7fe7f69c038"
+  },
+  "review_report_sha256": "d2570bfbb914fa74beb44cce1b6d5362a6cff0506d10a6b2e7c602df5353927b",
+  "red_definition": "HSV hue <10 or >170; saturation >127; value >80; descriptive only",
+  "group_measurements": [
+    {
+      "group": 1,
+      "mask_pixels": 2975,
+      "red_pixels": 207,
+      "red_fraction": 0.0695798319327731,
+      "full_group_ncc": 0.3875529175837342,
+      "reference_std": 25.74447881707618,
+      "source_std": 31.99714579460929
+    },
+    {
+      "group": 2,
+      "mask_pixels": 3199,
+      "red_pixels": 697,
+      "red_fraction": 0.21788058768365115,
+      "full_group_ncc": 0.4198377768487616,
+      "reference_std": 39.40450900371407,
+      "source_std": 48.222334125403364
+    },
+    {
+      "group": 3,
+      "mask_pixels": 3151,
+      "red_pixels": 171,
+      "red_fraction": 0.05426848619485877,
+      "full_group_ncc": 0.526164204608813,
+      "reference_std": 43.00429098180988,
+      "source_std": 31.407931271561175
+    }
+  ],
+  "upper_band_descriptive_measurements": [
+    {
+      "upper_height_fraction": 0.25,
+      "groups": [
+        {
+          "group": 1,
+          "mask_pixels": 643,
+          "ncc": 0.8713910519411285
+        },
+        {
+          "group": 2,
+          "mask_pixels": 476,
+          "ncc": 0.9132008076032624
+        },
+        {
+          "group": 3,
+          "mask_pixels": 564,
+          "ncc": 0.9046239389912895
+        }
+      ]
+    },
+    {
+      "upper_height_fraction": 0.5,
+      "groups": [
+        {
+          "group": 1,
+          "mask_pixels": 1446,
+          "ncc": 0.7618901696644393
+        },
+        {
+          "group": 2,
+          "mask_pixels": 1391,
+          "ncc": 0.8760812652628742
+        },
+        {
+          "group": 3,
+          "mask_pixels": 1434,
+          "ncc": 0.9140524636387048
+        }
+      ]
+    },
+    {
+      "upper_height_fraction": 0.75,
+      "groups": [
+        {
+          "group": 1,
+          "mask_pixels": 2300,
+          "ncc": 0.696268813878608
+        },
+        {
+          "group": 2,
+          "mask_pixels": 2447,
+          "ncc": 0.6767841852368219
+        },
+        {
+          "group": 3,
+          "mask_pixels": 2359,
+          "ncc": 0.9241081823452949
+        }
+      ]
+    },
+    {
+      "upper_height_fraction": 1.0,
+      "groups": [
+        {
+          "group": 1,
+          "mask_pixels": 2975,
+          "ncc": 0.3875529175837342
+        },
+        {
+          "group": 2,
+          "mask_pixels": 3199,
+          "ncc": 0.4198377768487616
+        },
+        {
+          "group": 3,
+          "mask_pixels": 3151,
+          "ncc": 0.526164204608813
+        }
+      ]
+    }
+  ],
+  "full_acceptance": false,
+  "acceptance_threshold": 0.9,
+  "qualification_created": false,
+  "production_changed": false,
+  "events_released": 0,
+  "canonical_current": null,
+  "canonical_delta": null,
+  "wall_clock_sec": 0.07276988198282197,
+  "terminal_asset_bindings_match": true,
+  "conclusion": "Damage overlay overlaps existing support; it does not fully explain rejection. No inspected fixed upper band satisfies NCC 0.90 in all three groups. Existing reference remains rejected."
+}

@@ -1,0 +1,53 @@
+{
+  "scope": "post-prediction same-pixel comparison; exposed development, not blind holdout",
+  "prefix_report_sha256": "f8c12c896f41d4f51eb5caf0dfe46f0ff2b44ce6077f6d00124fd447ad6ee22a",
+  "short_report_sha256": "804001236a219b0f1d189a7fcfa816d3ca46101757b04c975febdcf00990839d",
+  "existing_reference_geometry_report_sha256": "b6c41f52eed4d9d41e5cda9ebd4d5cdfda97a2d736ff7de541584c2df61a58e6",
+  "same_four_frame_comparison": [
+    {
+      "source_pts_ticks": 63017,
+      "source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b",
+      "previous_display": null,
+      "current_display": "0:00",
+      "previous_notes": [
+        "calibration_required"
+      ],
+      "current_notes": []
+    },
+    {
+      "source_pts_ticks": 63273,
+      "source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a",
+      "previous_display": null,
+      "current_display": "2:25",
+      "previous_notes": [
+        "calibration_required"
+      ],
+      "current_notes": []
+    },
+    {
+      "source_pts_ticks": 63529,
+      "source_pixel_sha256": "7b784dd56e27c48a760671568acbd458bc496400335ee4b3181798d0584a4044",
+      "previous_display": null,
+      "current_display": "2:25",
+      "previous_notes": [
+        "calibration_required"
+      ],
+      "current_notes": []
+    },
+    {
+      "source_pts_ticks": 63785,
+      "source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0",
+      "previous_display": null,
+      "current_display": "1:39",
+      "previous_notes": [
+        "calibration_required"
+      ],
+      "current_notes": []
+    }
+  ],
+  "same_pixel_existing_review_overlap": 24,
+  "same_pixel_display_agreement": 24,
+  "all_234_accepted_displays_accuracy_claimed": false,
+  "canonical_current": null,
+  "canonical_delta": null
+}

@@ -1,0 +1,697 @@
+{
+  "scope": "Declared continuous projected-world development on already exposed12native images; not qualification",
+  "declaration_sha256": "9ee61fa35583197cdf493efff18486c36ec4e9c9d2d14f96e471dc9475c26d86",
+  "native_frames": 12,
+  "adjacent_links": 11,
+  "previous_supported_links": 0,
+  "supported_links": 4,
+  "rows": [
+    {
+      "pts_sec": 2.502669270833333,
+      "source_pts_ticks": 38441,
+      "frame_sha256": "0dc39ee196158fbc91f35b420e7a8f8cffa5a1d26a6a6acb5282dae80e6a10b4",
+      "image_result": {
+        "reason": "reviewed_seed_only",
+        "descriptive_supported": false,
+        "runtime_proof_authorized": false
+      }
+    },
+    {
+      "pts_sec": 2.5193359375,
+      "source_pts_ticks": 38697,
+      "frame_sha256": "81efcd3c5540a1056149bfc808905ce801b5d0b4f3a05bc9e1118afc8353a398",
+      "image_result": {
+        "reason": "descriptive_reviewed_world_chain",
+        "support_mode": "projected_world",
+        "feature_spread_supported": true,
+        "dense_world_regions": [
+          {
+            "region": 0,
+            "valid_fraction": 1.0,
+            "ncc": 0.9934991002082825,
+            "supported": true,
+            "runtime_proof_authorized": false,
+            "source_center_xy": [
+              190.0,
+              85.0
+            ],
+            "projected_center_xy": [
+              197.16265394101586,
+              88.9407622221604
+            ],
+            "reason": "descriptive_projected_world",
+            "center_xy": [
+              197.16265394101586,
+              88.9407622221604
+            ]
+          },
+          {
+            "region": 1,
+            "valid_fraction": 1.0,
+            "ncc": 0.996148943901062,
+            "supported": true,
+            "runtime_proof_authorized": false,
+            "source_center_xy": [
+              228.0,
+              146.5
+            ],
+            "projected_center_xy": [
+              233.17709407432878,
+              147.26374631644148
+            ],
+            "reason": "descriptive_projected_world",
+            "center_xy": [
+              233.17709407432878,
+              147.26374631644148
+            ]
+          },
+          {
+            "region": 2,
+            "valid_fraction": 0.9857978998106387,
+            "ncc": 0.9958544969558716,
+            "supported": true,
+            "runtime_proof_authorized": false,
+            "source_center_xy": [
+              88.5,
+              210.0
+            ],
+            "projected_center_xy": [
+              100.88951182578865,
+              207.43603514797772
+            ],
+            "reason": "descriptive_projected_world",
+            "center_xy": [
+              100.88951182578865,
+              207.43603514797772
+            ]
+          },
+          {
+            "region": 3,
+            "valid_fraction": 1.0,
+            "ncc": 0.9830458164215088,
+            "supported": true,
+            "runtime_proof_authorized": false,
+            "source_center_xy": [
+              503.5,
+              85.0
+            ],
+            "projected_center_xy": [
+              494.4162754462863,
+              89.02386198487056
+            ],
+            "reason": "descriptive_projected_world",
+            "center_xy": [
+              494.4162754462863,
+              89.02386198487056
+            ]
+          },
+          {
+            "region": 4,
+            "valid_fraction": 1.0,
+            "ncc": 0.974528431892395,
+            "supported": true,
+            "runtime_proof_authorized": false,
+            "source_center_xy": [
+              503.5,
+              150.0
+            ],
+            "projected_center_xy": [
+              494.3990458304134,
+              150.6553943543844
+            ],
+            "reason": "descriptive_projected_world",
+            "center_xy": [
+              494.3990458304134,
+              150.6553943543844
+            ]
+          },
+          {
+            "region": 5,
+            "valid_fraction": 0.9574468085106383,
+            "ncc": 0.9857299327850342,
+            "supported": true,
+            "runtime_proof_authorized": false,
+            "source_center_xy": [
+              220.0,
+              218.0
+            ],
+            "projected_center_xy": [
+              225.57272212831302,
+              215.05631135479925
+            ],
+            "reason": "descriptive_projected_world",
+            "center_xy": [
+              225.57272212831302,
+              215.05631135479925
+            ]
+          }
+        ],
+        "seed_features": 144,
+        "retained_features": 94,
+        "regions": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "minimum_adjacent_ncc": 0.9040420055389404,
+        "minimum_seed_ncc": 0.9111045598983765,
+        "descriptive_supported": true,
+        "runtime_proof_authorized": false
+      }
+    },
+    {
+      "pts_sec": 2.536002604166667,
+      "source_pts_ticks": 38953,
+      "frame_sha256": "79038d07b20b8fc5708953ce2669746b1184b1fb2119128ab18abea721827f08",
+      "image_result": {
+        "reason": "descriptive_reviewed_world_chain",
+        "support_mode": "projected_world",
+        "feature_spread_supported": true,
+        "dense_world_regions": [
+          {
+            "region": 0,
+            "valid_fraction": 1.0,
+            "ncc": 0.9954859614372253,
+            "supported": true,
+            "runtime_proof_authorized": false,
+            "source_center_xy": [
+              190.0,
+              85.0
+            ],
+            "projected_center_xy": [
+              194.7672871660847,
+              87.60539501553856
+            ],
+            "reason": "descriptive_projected_world",
+            "center_xy": [
+              194.7672871660847,
+              87.60539501553856
+            ]
+          },
+          {
+            "region": 1,
+            "valid_fraction": 1.0,
+            "ncc": 0.9976939558982849,
+            "supported": true,
+            "runtime_proof_authorized": false,
+            "source_center_xy": [
+              228.0,
+              146.5
+            ],
+            "projected_center_xy": [
+              231.43942882227327,
+              146.94339452469686
+            ],
+            "reason": "descriptive_projected_world",
+            "center_xy": [
+              231.43942882227327,
+              146.94339452469686
+            ]
+          },
+          {
+            "region": 2,
+            "valid_fraction": 0.9865725598209675,
+            "ncc": 0.9962396621704102,
+            "supported": true,
+            "runtime_proof_authorized": false,
+            "source_center_xy": [
+              88.5,
+              210.0
+            ],
+            "projected_center_xy": [
+              96.8413390215231,
+              208.2279362717106
+            ],
+            "reason": "descriptive_projected_world",
+            "center_xy": [
+              96.8413390215231,
+              208.2279362717106
+            ]
+          },
+          {
+            "region": 3,
+            "valid_fraction": 1.0,
+            "ncc": 0.9964734315872192,
+            "supported": true,
+            "runtime_proof_authorized": false,
+            "source_center_xy": [
+              503.5,
+              85.0
+            ],
+            "projected_center_xy": [
+              497.264620547883,
+              87.5758382560789
+            ],
+            "reason": "descriptive_projected_world",
+            "center_xy": [
+              497.264620547883,
+              87.5758382560789
+            ]
+          },
+          {
+            "region": 4,
+            "valid_fraction": 1.0,
+            "ncc": 0.993876576423645,
+            "supported": true,
+            "runtime_proof_authorized": false,
+            "source_center_xy": [
+              503.5,
+              150.0
+            ],
+            "projected_center_xy": [
+              497.27074874362427,
+              150.29458361434646
+            ],
+            "reason": "descriptive_projected_world",
+            "center_xy": [
+              497.27074874362427,
+              150.29458361434646
+            ]
+          },
+          {
+            "region": 5,
+            "valid_fraction": 0.9680851063829787,
+            "ncc": 0.9907099008560181,
+            "supported": true,
+            "runtime_proof_authorized": false,
+            "source_center_xy": [
+              220.0,
+              218.0
+            ],
+            "projected_center_xy": [
+              223.72693963964798,
+              215.93476865826705
+            ],
+            "reason": "descriptive_projected_world",
+            "center_xy": [
+              223.72693963964798,
+              215.93476865826705
+            ]
+          }
+        ],
+        "seed_features": 144,
+        "retained_features": 71,
+        "regions": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "minimum_adjacent_ncc": 0.9026645421981812,
+        "minimum_seed_ncc": 0.9041022658348083,
+        "descriptive_supported": true,
+        "runtime_proof_authorized": false
+      }
+    },
+    {
+      "pts_sec": 2.5526692708333334,
+      "source_pts_ticks": 39209,
+      "frame_sha256": "98591802fe2fdd2904b42bffe18e1d894856c4212a30c6c6dee5b0ed32e455aa",
+      "image_result": {
+        "reason": "descriptive_reviewed_world_chain",
+        "support_mode": "projected_world",
+        "feature_spread_supported": true,
+        "dense_world_regions": [
+          {
+            "region": 0,
+            "valid_fraction": 1.0,
+            "ncc": 0.990388035774231,
+            "supported": true,
+            "runtime_proof_authorized": false,
+            "source_center_xy": [
+              190.0,
+              85.0
+            ],
+            "projected_center_xy": [
+              197.70798397220221,
+              89.21522105217777
+            ],
+            "reason": "descriptive_projected_world",
+            "center_xy": [
+              197.70798397220221,
+              89.21522105217777
+            ]
+          },
+          {
+            "region": 1,
+            "valid_fraction": 1.0,
+            "ncc": 0.9959186911582947,
+            "supported": true,
+            "runtime_proof_authorized": false,
+            "source_center_xy": [
+              228.0,
+              146.5
+            ],
+            "projected_center_xy": [
+              233.5258169322456,
+              147.1701754769708
+            ],
+            "reason": "descriptive_projected_world",
+            "center_xy": [
+              233.5258169322456,
+              147.1701754769708
+            ]
+          },
+          {
+            "region": 2,
+            "valid_fraction": 0.9849371664658289,
+            "ncc": 0.9912822246551514,
+            "supported": true,
+            "runtime_proof_authorized": false,
+            "source_center_xy": [
+              88.5,
+              210.0
+            ],
+            "projected_center_xy": [
+              102.06480987557748,
+              207.02723296879222
+            ],
+            "reason": "descriptive_projected_world",
+            "center_xy": [
+              102.06480987557748,
+              207.02723296879222
+            ]
+          },
+          {
+            "region": 3,
+            "valid_fraction": 1.0,
+            "ncc": 0.9973570704460144,
+            "supported": true,
+            "runtime_proof_authorized": false,
+            "source_center_xy": [
+              503.5,
+              85.0
+            ],
+            "projected_center_xy": [
+              493.15574366636383,
+              89.18472081485342
+            ],
+            "reason": "descriptive_projected_world",
+            "center_xy": [
+              493.15574366636383,
+              89.18472081485342
+            ]
+          },
+          {
+            "region": 4,
+            "valid_fraction": 1.0,
+            "ncc": 0.9934573769569397,
+            "supported": true,
+            "runtime_proof_authorized": false,
+            "source_center_xy": [
+              503.5,
+              150.0
+            ],
+            "projected_center_xy": [
+              493.1620674795252,
+              150.44183207520592
+            ],
+            "reason": "descriptive_projected_world",
+            "center_xy": [
+              493.1620674795252,
+              150.44183207520592
+            ]
+          },
+          {
+            "region": 5,
+            "valid_fraction": 0.9574468085106383,
+            "ncc": 0.9765323996543884,
+            "supported": true,
+            "runtime_proof_authorized": false,
+            "source_center_xy": [
+              220.0,
+              218.0
+            ],
+            "projected_center_xy": [
+              225.99343635621813,
+              214.55377617882456
+            ],
+            "reason": "descriptive_projected_world",
+            "center_xy": [
+              225.99343635621813,
+              214.55377617882456
+            ]
+          }
+        ],
+        "seed_features": 144,
+        "retained_features": 37,
+        "regions": [
+          0,
+          1,
+          2,
+          3,
+          5
+        ],
+        "minimum_adjacent_ncc": 0.9051792025566101,
+        "minimum_seed_ncc": 0.9005618691444397,
+        "descriptive_supported": true,
+        "runtime_proof_authorized": false
+      }
+    },
+    {
+      "pts_sec": 2.5693359375,
+      "source_pts_ticks": 39465,
+      "frame_sha256": "d09d2abf893a6b28f34cc824219d71fe1315c68744c001aa1ab408ab64488c07",
+      "image_result": {
+        "reason": "descriptive_reviewed_world_chain",
+        "support_mode": "projected_world",
+        "feature_spread_supported": true,
+        "dense_world_regions": [
+          {
+            "region": 0,
+            "valid_fraction": 1.0,
+            "ncc": 0.9955431818962097,
+            "supported": true,
+            "runtime_proof_authorized": false,
+            "source_center_xy": [
+              190.0,
+              85.0
+            ],
+            "projected_center_xy": [
+              192.54837538824393,
+              86.58097588620312
+            ],
+            "reason": "descriptive_projected_world",
+            "center_xy": [
+              192.54837538824393,
+              86.58097588620312
+            ]
+          },
+          {
+            "region": 1,
+            "valid_fraction": 1.0,
+            "ncc": 0.9974542856216431,
+            "supported": true,
+            "runtime_proof_authorized": false,
+            "source_center_xy": [
+              228.0,
+              146.5
+            ],
+            "projected_center_xy": [
+              229.8078494859382,
+              146.92040048535466
+            ],
+            "reason": "descriptive_projected_world",
+            "center_xy": [
+              229.8078494859382,
+              146.92040048535466
+            ]
+          },
+          {
+            "region": 2,
+            "valid_fraction": 0.9873472198312963,
+            "ncc": 0.9878935813903809,
+            "supported": true,
+            "runtime_proof_authorized": false,
+            "source_center_xy": [
+              88.5,
+              210.0
+            ],
+            "projected_center_xy": [
+              92.94662948653512,
+              209.1728190007556
+            ],
+            "reason": "descriptive_projected_world",
+            "center_xy": [
+              92.94662948653512,
+              209.1728190007556
+            ]
+          },
+          {
+            "region": 3,
+            "valid_fraction": 1.0,
+            "ncc": 0.9995908141136169,
+            "supported": true,
+            "runtime_proof_authorized": false,
+            "source_center_xy": [
+              503.5,
+              85.0
+            ],
+            "projected_center_xy": [
+              500.078881210511,
+              86.66738388000788
+            ],
+            "reason": "descriptive_projected_world",
+            "center_xy": [
+              500.078881210511,
+              86.66738388000788
+            ]
+          },
+          {
+            "region": 4,
+            "valid_fraction": 1.0,
+            "ncc": 0.9970648884773254,
+            "supported": true,
+            "runtime_proof_authorized": false,
+            "source_center_xy": [
+              503.5,
+              150.0
+            ],
+            "projected_center_xy": [
+              500.0609656775052,
+              150.42968971237585
+            ],
+            "reason": "descriptive_projected_world",
+            "center_xy": [
+              500.0609656775052,
+              150.42968971237585
+            ]
+          },
+          {
+            "region": 5,
+            "valid_fraction": 0.9787234042553191,
+            "ncc": 0.9542796611785889,
+            "supported": true,
+            "runtime_proof_authorized": false,
+            "source_center_xy": [
+              220.0,
+              218.0
+            ],
+            "projected_center_xy": [
+              221.94047398949428,
+              217.0567319122818
+            ],
+            "reason": "descriptive_projected_world",
+            "center_xy": [
+              221.94047398949428,
+              217.0567319122818
+            ]
+          }
+        ],
+        "seed_features": 144,
+        "retained_features": 26,
+        "regions": [
+          1,
+          2,
+          3,
+          5
+        ],
+        "minimum_adjacent_ncc": 0.9128671884536743,
+        "minimum_seed_ncc": 0.9008464217185974,
+        "descriptive_supported": true,
+        "runtime_proof_authorized": false
+      }
+    },
+    {
+      "pts_sec": 2.5860026041666666,
+      "source_pts_ticks": 39721,
+      "frame_sha256": "65592b7a2c6f828370f84d22a7aec3f57f308b93a6f02e30968a4b24fbe31b8e",
+      "image_result": {
+        "reason": "current_world_review_missing_or_invalid",
+        "descriptive_supported": false,
+        "runtime_proof_authorized": false
+      }
+    },
+    {
+      "pts_sec": 2.602669270833333,
+      "source_pts_ticks": 39977,
+      "frame_sha256": "29593ec3fd1a4873a7e8496a4e0a58e492331c578a63de4966ad24f99d1dc46a",
+      "image_result": {
+        "reason": "reviewed_chain_terminated",
+        "descriptive_supported": false,
+        "runtime_proof_authorized": false
+      }
+    },
+    {
+      "pts_sec": 2.6193359375,
+      "source_pts_ticks": 40233,
+      "frame_sha256": "68107fab2e1563fcceb464d82a908b6ccbed47fc45e6d52813600d7d2b224612",
+      "image_result": {
+        "reason": "reviewed_chain_terminated",
+        "descriptive_supported": false,
+        "runtime_proof_authorized": false
+      }
+    },
+    {
+      "pts_sec": 2.636002604166667,
+      "source_pts_ticks": 40489,
+      "frame_sha256": "830035565570ef688dd2f51a8de0ad0518c55bc20edb67d15b2630b6182512c3",
+      "image_result": {
+        "reason": "reviewed_chain_terminated",
+        "descriptive_supported": false,
+        "runtime_proof_authorized": false
+      }
+    },
+    {
+      "pts_sec": 2.6526692708333335,
+      "source_pts_ticks": 40745,
+      "frame_sha256": "4f6f55ad9ffba61842d36638a308221cb7f72ee9d21231639db00acc54ecb60b",
+      "image_result": {
+        "reason": "reviewed_chain_terminated",
+        "descriptive_supported": false,
+        "runtime_proof_authorized": false
+      }
+    },
+    {
+      "pts_sec": 2.6693359375,
+      "source_pts_ticks": 41001,
+      "frame_sha256": "a27989945dfb09dcf604a2579371705d8bf45360c22cdd0644f1cee117e002c6",
+      "image_result": {
+        "reason": "reviewed_chain_terminated",
+        "descriptive_supported": false,
+        "runtime_proof_authorized": false
+      }
+    },
+    {
+      "pts_sec": 2.6860026041666667,
+      "source_pts_ticks": 41257,
+      "frame_sha256": "5a6acd346b20360cb257fb0efd58e11ae6d9f932c2e0a0686944a6bcce1097fc",
+      "image_result": {
+        "reason": "reviewed_chain_terminated",
+        "descriptive_supported": false,
+        "runtime_proof_authorized": false
+      }
+    }
+  ],
+  "qualification_created": false,
+  "new_runtime_events": 0,
+  "canonical_current": null,
+  "production_changed": false,
+  "wall_clock_seconds": 2.288963896979112,
+  "file_sha256": {
+    "e2e_reports/match_001/scene_final_membership_cohort_diagnostics.json": "ccdd085713955f4a3694a4b6505ca2f699d81ea151eb06d677bdd4793a530b23",
+    "e2e_reports/match_001/scene_projected_world_declaration.json": "7aa3761636bcc4b3e41d64b5fc6aa6453b81df053f59afe5647091bc546ea08c",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000001.png": "0dc39ee196158fbc91f35b420e7a8f8cffa5a1d26a6a6acb5282dae80e6a10b4",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000002.png": "81efcd3c5540a1056149bfc808905ce801b5d0b4f3a05bc9e1118afc8353a398",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000003.png": "79038d07b20b8fc5708953ce2669746b1184b1fb2119128ab18abea721827f08",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000004.png": "98591802fe2fdd2904b42bffe18e1d894856c4212a30c6c6dee5b0ed32e455aa",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000005.png": "d09d2abf893a6b28f34cc824219d71fe1315c68744c001aa1ab408ab64488c07",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000006.png": "65592b7a2c6f828370f84d22a7aec3f57f308b93a6f02e30968a4b24fbe31b8e",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000007.png": "29593ec3fd1a4873a7e8496a4e0a58e492331c578a63de4966ad24f99d1dc46a",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000008.png": "68107fab2e1563fcceb464d82a908b6ccbed47fc45e6d52813600d7d2b224612",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000009.png": "830035565570ef688dd2f51a8de0ad0518c55bc20edb67d15b2630b6182512c3",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000010.png": "4f6f55ad9ffba61842d36638a308221cb7f72ee9d21231639db00acc54ecb60b",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000011.png": "a27989945dfb09dcf604a2579371705d8bf45360c22cdd0644f1cee117e002c6",
+    "outputs/recognition-investigation/scene-final-membership-cohort-20261009/window-000/frame_000012.png": "5a6acd346b20360cb257fb0efd58e11ae6d9f932c2e0a0686944a6bcce1097fc",
+    "scripts/diagnostics/scene_world_chain.py": "8a6d11a151f4afb77d88780b51f0705beca527edce7521831b9c8a590e788e33",
+    "scripts/diagnostics/scene_projected_world.py": "432a6c8cfebc7744e5b1e0b68f8e9af5e1de6a93dd7bddc9571b78bb658ae213",
+    "scripts/diagnostics/scene_world_review_gate.py": "57813631ede6e7835d3e21260270924eca3058fa3bb499321cf8698cb79430fd",
+    "scripts/diagnostics/scene_correspondence.py": "667fb4f7b0626fbbf4770716eefc18976a9409a4f0646084b95d479dab7273a3",
+    "scripts/diagnostics/scene_patch_search.py": "53e66f692c42cbaab695cdea9910e3326c50089a18468f6b0d01bd463e9c2dd9"
+  }
+}

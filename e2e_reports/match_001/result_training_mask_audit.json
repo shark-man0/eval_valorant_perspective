@@ -1,0 +1,111 @@
+{
+  "groups": [
+    {
+      "group": 1,
+      "mask_population": 2975,
+      "persistent_bright_population": 2499,
+      "other_contrast_neighborhood_population": 476,
+      "training_pixel_std_percentiles": [
+        3.0912061651652345,
+        4.109609335312651,
+        6.79869268479038,
+        34.5947881337989,
+        54.38142198214038
+      ],
+      "original_training_scores": [
+        0.9591155228197161,
+        0.9494311365285366,
+        0.9462018019189586
+      ],
+      "stable_trim_population": 2383,
+      "stable_trim_dark_support": 0,
+      "stable_trim_reference_std": 3.5524388217193574,
+      "stable_trim_training_scores": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "fixed_canny_training_scores": [
+        0.695427913897469,
+        0.6417823949979923,
+        0.7191456358045314
+      ]
+    },
+    {
+      "group": 2,
+      "mask_population": 3199,
+      "persistent_bright_population": 2652,
+      "other_contrast_neighborhood_population": 547,
+      "training_pixel_std_percentiles": [
+        3.39934634239519,
+        4.784233364802441,
+        7.118052168020874,
+        35.93135424140251,
+        49.46787791268291
+      ],
+      "original_training_scores": [
+        0.9279830774428082,
+        0.9430911403723599,
+        0.9921974095609237
+      ],
+      "stable_trim_population": 2532,
+      "stable_trim_dark_support": 0,
+      "stable_trim_reference_std": 4.398252296245883,
+      "stable_trim_training_scores": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "fixed_canny_training_scores": [
+        0.6038154108263234,
+        0.7306107277453553,
+        0.7510579668637927
+      ]
+    },
+    {
+      "group": 3,
+      "mask_population": 3151,
+      "persistent_bright_population": 2611,
+      "other_contrast_neighborhood_population": 540,
+      "training_pixel_std_percentiles": [
+        3.2998316455372216,
+        4.496912521077347,
+        7.318166133366716,
+        37.72119946248911,
+        51.62200894915291
+      ],
+      "original_training_scores": [
+        0.9319909972925207,
+        0.9799460820780656,
+        0.9939512498510178
+      ],
+      "stable_trim_population": 2515,
+      "stable_trim_dark_support": 0,
+      "stable_trim_reference_std": 4.765228749286076,
+      "stable_trim_training_scores": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "fixed_canny_training_scores": [
+        0.5222230101762017,
+        0.7349646878393996,
+        0.7404181209532953
+      ]
+    }
+  ],
+  "minimum_training_support": 3,
+  "ncc_threshold": 0.9,
+  "stable_trim_hypothesis": "range<=20, all bright>=200 or all dark<=180",
+  "edge_hypothesis": "Canny12/24 with unchanged original groups and NCC0.90",
+  "production_changed": false,
+  "qualification_created": false,
+  "input_sha256": {
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/result-late-diagnostic/reference.png": "2d23443d293f7065263ab3a55ff5d26f23fa67db271c10643a5a8de1b6beecd3",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/result-late-diagnostic/regions.png": "5de56e92ed0b63b2b6d8186d41f87c360fe7448fe54631eec425c7fe7f69c038",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/result-late-diagnostic/training-0.png": "b35498a7e55d6e28c9f1f90b2091cbbff67e75ca62d86f9b74c317956b9fb5a9",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/result-late-diagnostic/training-1.png": "1fc666c76860e02728d23c2079babcda2dc59acda95686449d3d342c56e7b359",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/result-late-diagnostic/training-2.png": "48257edf4f9f1ccd242f0e0981903a1bb1533a5a39d44501e3d163c958fe7624"
+  },
+  "diagnostic_sha256": "37dee50823edd2b8285e94e7176eedea84293e14a58873a4857f576021c3a30a"
+}

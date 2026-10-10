@@ -11,7 +11,11 @@ import math
 from collections.abc import Mapping
 from typing import Any
 
-from valorant_ai_coach.hud.models import timer_display_evidence
+from valorant_ai_coach.hud.models import (
+    shared_score_evidence,
+    spectator_primary_state_evidence,
+    timer_display_evidence,
+)
 
 # Match the HUD temporal detector's own >1s discontinuity cutoff.
 MAX_SAMPLE_GAP_SEC = 1.0
@@ -91,6 +95,31 @@ def to_e2e_trace(result: Any) -> dict[str, list[dict[str, Any]]]:
                     "vision_obscured_smoke": "vision_obscured_smoke" in flags,
                     "view_owner": view_owner,
                 })
+                spectator = spectator_primary_state_evidence(source)
+                if ('spectator_primary_state' in snapshot
+                        and snapshot['spectator_primary_state'] is not spectator):
+                    raise ValueError(f'Snapshot spectator state source mismatch at {timestamp}')
+                row['spectator_primary_state'] = spectator
+                shared_scores = shared_score_evidence(source)
+                for native_key, trace_key in (('score_ally', 'score_player'),
+                                               ('score_enemy', 'score_enemy')):
+                    if native_key in snapshot:
+                        if snapshot[native_key] != shared_scores[native_key]:
+                            raise ValueError(
+                                f'Snapshot shared score source mismatch at {timestamp}'
+                            )
+                        if snapshot[native_key] is not None and (
+                            (snapshot.get('source_confidence') or {}).get(native_key)
+                            != (source['quality'].get('roi_confidence') or {}).get(
+                                f'{native_key}_value'
+                            )
+                        ):
+                            raise ValueError(
+                                f'Snapshot shared score confidence mismatch at {timestamp}'
+                            )
+                        row[trace_key] = shared_scores[native_key]
+                    elif shared_scores[native_key] is not None:
+                        row[trace_key] = shared_scores[native_key]
                 if view_owner == "self" and player_hud_valid:
                     for key, value in {
                         "location_label_raw": values.get("location_text"),

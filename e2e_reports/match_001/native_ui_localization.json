@@ -1,0 +1,4143 @@
+{
+  "scope": "previously exposed source images; localization only, not qualification",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "source_report_sha256": "b6c41f52eed4d9d41e5cda9ebd4d5cdfda97a2d736ff7de541584c2df61a58e6",
+  "source_profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+  "code_sha256": {
+    "/home/admin/eval_valorant_perspective/scripts/diagnostics/audit_native_ui_localization.py": "c8f126b7151fc823dbba30146482932e22e2c6efe3cccc1bdab7b34cfd9809dc",
+    "src/valorant_ai_coach/hud/scene_domains.py": "92989f763253138980d726f8a34914f52c6097581e7ca17646b83ba57ff9e091",
+    "src/valorant_ai_coach/hud/scene_source_binding.py": "c0f760fcace2196b2560cb1649d816c404fcafc294eafa3d905e4dde3e310f96"
+  },
+  "native_png_sha256": {
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000001.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000002.png": "e790bd155383fac3eb439d4311a89840467fce57938a80dae2448e628dfd9211",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000003.png": "1dc0d9b8c59355b43eb723b1961110bb53d1ce8a62176490f5c632dd6ee5f2ad",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000004.png": "00e2240728fa5e6c6cd1d8a29adebecb993d61abb4c9a97aea47902d53f041e1",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000005.png": "77d745206022589fc826823873bc1305e922fdda01854eac4a7eed10876d6c80",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000006.png": "d4dafbd08a45d736ff634bb6537d9d0991d3023a611db6a229874a4755c9f8d3",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000007.png": "3d4c25843ec375524762f21a11a17b7bf7854f65680ceaf0396b5a597a1d94dc",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000008.png": "eddab3d93b6a8d910aaa923a260a7be4779514c79670dc8d2fefb3a1e0863473",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000009.png": "995c70d5658ba86dd220d7d02f947982e00c9d4cdf9456dde224924df8211951",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000010.png": "a3a788841be688ba3d97be42478708e5cd8571ff74c6a1a1fce8172f88ad0104",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000011.png": "2ca7c16fac54a93af47a678cd1491bffc7a8ec0edf9634d4c2be4e4a134741e2",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000012.png": "0971d607cd0a91eb2c2af8e4949dd601201575ad6050945d1583ecad529797e9",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000013.png": "3f7f964b6993d20bba3396e160e6b6edf41cc5352b0b0ad57de9254ddb7fe0a5",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000014.png": "ffc878007fe550701c8e5be11f78b1a6d91bc88f77972cc48b370ac4cf7e7bb6",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000015.png": "d72a67e8f64bc6ffe0b90a1f6118c522380a2bd83eabd4e84b6a5f36f7b605fc",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000016.png": "40a1ca141705ef466d3cdcd339bfa1e519a8bd998cabb9ea204da72dcaa6d382",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000017.png": "87a43e4a4c0e1f7eb1ea8e6fedccbefa5bc6eddd8d29c61dc25e92dbeef418f8",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000018.png": "e2e07cdce5e63bde4205fa7401ca54f9b6917872957efe3b303f0286e370b43b",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000019.png": "d81a979afdc6bee35155fc029a0621d43a7b0dbbe29fc364cd0010cbfa697707",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000020.png": "2c747572f073d4c8769933863cf6e99c8498bccb4469b8476cc12784854b7a7e",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000021.png": "ee5be2e35aabe7ac9b9fc01fd438dc28c4e5c76f73f66e7cd6df752bc72edd2d",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000022.png": "aa5727f8ff3428eaf3705c3fb9b42acc78c278fb3ce21276969cd8505aa2aae2",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000023.png": "01510fbbc2c0e101c72555f846ca75adf24b073891d8e9160c94ec54be0e5413",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000024.png": "1a3208bb41afe765aa7f691964df102279ec81e9366d13ae326cc537c3a66b76",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000025.png": "0252b863b5f5d2108ebd46178ea6a4a2cba005b51af5205dee7723c2d26a9ac8",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000026.png": "fa80efcbffa9e29d82948fbb605bcbb10baab44ac31c17434085e97c671c887e",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000027.png": "ec2d668e223d2f20a8b53d813a1681e4c1c79b120857244b11f42d341dadfc74",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000028.png": "6e6edeefc2aa5d1a45960e741815a8c08090793d8be0b74a8a7b344051a6f67d",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000029.png": "91eab8a0e9d080f64d9cc83c31c77f733dcaeaccd50b1ae6c30877f41a987f55",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000030.png": "91d79bfba35b3afa2e8fe7bb5274926fbe6a254207dd9a9ab55d5cb3ebab625c"
+  },
+  "rows": [
+    {
+      "previous_source_pts_ticks": 59945,
+      "source_pts_ticks": 60201,
+      "source_pts_sec": 3.9193359375,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 30,
+        "changed_pixels_outside_phase_and_timer": 201746,
+        "outside_mean_max_channel_absdiff": 6.088922256258053,
+        "outside_gray_ncc": 0.8179484605789185,
+        "phase_current_std": 31.969989303322215,
+        "phase_gray_ncc": 0.9999325275421143,
+        "largest_change_components_xywh_area": [
+          [
+            886,
+            516,
+            1034,
+            562,
+            115280
+          ],
+          [
+            0,
+            790,
+            588,
+            290,
+            78646
+          ],
+          [
+            224,
+            16,
+            60,
+            31,
+            850
+          ],
+          [
+            264,
+            657,
+            72,
+            13,
+            293
+          ],
+          [
+            316,
+            328,
+            20,
+            28,
+            266
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.5284722713534042,
+            "current_std": 1.5255507641971404,
+            "unwarped_ncc": 0.9939408302307129,
+            "mean_max_channel_absdiff": 0.06023550724637681
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 3.549757233001111,
+            "current_std": 3.5366509223314284,
+            "unwarped_ncc": 0.9954292178153992,
+            "mean_max_channel_absdiff": 0.12923575376405566
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 35.753273130823445,
+            "current_std": 35.96883387897199,
+            "unwarped_ncc": 0.9985038638114929,
+            "mean_max_channel_absdiff": 1.2147912243453645
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 1.1743741529651726,
+            "current_std": 1.1688002709566052,
+            "unwarped_ncc": 0.9894825220108032,
+            "mean_max_channel_absdiff": 0.024428587051618548
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 2.2667073589585702,
+            "current_std": 2.2369213984225733,
+            "unwarped_ncc": 0.9831175208091736,
+            "mean_max_channel_absdiff": 0.2017270989274489
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 17.68828946983617,
+            "current_std": 17.677383522024858,
+            "unwarped_ncc": 0.9980008602142334,
+            "mean_max_channel_absdiff": 0.7504221546774739
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_source_pts_ticks": 60201,
+      "source_pts_ticks": 60457,
+      "source_pts_sec": 3.9360026041666667,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 58,
+        "changed_pixels_outside_phase_and_timer": 139541,
+        "outside_mean_max_channel_absdiff": 3.538554017537087,
+        "outside_gray_ncc": 0.9053122997283936,
+        "phase_current_std": 31.96970055277401,
+        "phase_gray_ncc": 0.9998628497123718,
+        "largest_change_components_xywh_area": [
+          [
+            22,
+            809,
+            574,
+            271,
+            63925
+          ],
+          [
+            1125,
+            574,
+            795,
+            503,
+            53264
+          ],
+          [
+            960,
+            518,
+            448,
+            114,
+            16209
+          ],
+          [
+            1248,
+            664,
+            24,
+            48,
+            738
+          ],
+          [
+            312,
+            338,
+            20,
+            23,
+            252
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.5255507641971404,
+            "current_std": 1.5216353821093123,
+            "unwarped_ncc": 0.9949076771736145,
+            "mean_max_channel_absdiff": 0.03332578502415459
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 3.5366509223314284,
+            "current_std": 3.5303431786744204,
+            "unwarped_ncc": 0.9972143769264221,
+            "mean_max_channel_absdiff": 0.12702496664760815
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 35.96883387897199,
+            "current_std": 36.097759678313295,
+            "unwarped_ncc": 0.9993835091590881,
+            "mean_max_channel_absdiff": 0.6664467014785486
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 1.1688002709566052,
+            "current_std": 1.1719163852290617,
+            "unwarped_ncc": 0.9954615235328674,
+            "mean_max_channel_absdiff": 0.026984908136482938
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 2.2369213984225733,
+            "current_std": 2.247215597582763,
+            "unwarped_ncc": 0.9893106818199158,
+            "mean_max_channel_absdiff": 0.15877644924014128
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 17.677383522024858,
+            "current_std": 17.66988936556636,
+            "unwarped_ncc": 0.9990403652191162,
+            "mean_max_channel_absdiff": 0.4773893954745019
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_source_pts_ticks": 60457,
+      "source_pts_ticks": 60713,
+      "source_pts_sec": 3.9526692708333333,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 57,
+        "changed_pixels_outside_phase_and_timer": 109527,
+        "outside_mean_max_channel_absdiff": 2.6456204910183843,
+        "outside_gray_ncc": 0.9412415623664856,
+        "phase_current_std": 31.982915329120033,
+        "phase_gray_ncc": 0.9998893141746521,
+        "largest_change_components_xywh_area": [
+          [
+            28,
+            816,
+            571,
+            264,
+            38996
+          ],
+          [
+            960,
+            520,
+            835,
+            481,
+            34649
+          ],
+          [
+            1754,
+            823,
+            166,
+            253,
+            18849
+          ],
+          [
+            76,
+            64,
+            172,
+            34,
+            3887
+          ],
+          [
+            291,
+            1020,
+            110,
+            60,
+            1191
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.5216353821093123,
+            "current_std": 1.526919669494462,
+            "unwarped_ncc": 0.9899861812591553,
+            "mean_max_channel_absdiff": 0.08397493961352658
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 3.5303431786744204,
+            "current_std": 3.553060897555696,
+            "unwarped_ncc": 0.9966056942939758,
+            "mean_max_channel_absdiff": 0.1488088431484658
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 36.097759678313295,
+            "current_std": 36.19871593292753,
+            "unwarped_ncc": 0.9991900324821472,
+            "mean_max_channel_absdiff": 0.8757961783439491
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 1.1719163852290617,
+            "current_std": 1.179389965320768,
+            "unwarped_ncc": 0.9906166195869446,
+            "mean_max_channel_absdiff": 0.04286964129483815
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 2.247215597582763,
+            "current_std": 2.153729826743105,
+            "unwarped_ncc": 0.9816176891326904,
+            "mean_max_channel_absdiff": 0.27071384595444087
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 17.66988936556636,
+            "current_std": 17.59152241535531,
+            "unwarped_ncc": 0.9987889528274536,
+            "mean_max_channel_absdiff": 0.7070077676460655
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_source_pts_ticks": 60713,
+      "source_pts_ticks": 60969,
+      "source_pts_sec": 3.9693359375,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 28,
+        "changed_pixels_outside_phase_and_timer": 152675,
+        "outside_mean_max_channel_absdiff": 3.6041471350576297,
+        "outside_gray_ncc": 0.9095911383628845,
+        "phase_current_std": 31.97889763297223,
+        "phase_gray_ncc": 0.9999570846557617,
+        "largest_change_components_xywh_area": [
+          [
+            0,
+            518,
+            1920,
+            558,
+            82578
+          ],
+          [
+            29,
+            812,
+            576,
+            268,
+            49090
+          ],
+          [
+            103,
+            0,
+            361,
+            32,
+            3819
+          ],
+          [
+            0,
+            654,
+            245,
+            23,
+            2122
+          ],
+          [
+            159,
+            622,
+            267,
+            21,
+            1956
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.526919669494462,
+            "current_std": 1.5423917883444365,
+            "unwarped_ncc": 0.9865871071815491,
+            "mean_max_channel_absdiff": 0.05283816425120773
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 3.553060897555696,
+            "current_std": 3.548500948210545,
+            "unwarped_ncc": 0.9968491196632385,
+            "mean_max_channel_absdiff": 0.09125214408233276
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 36.19871593292753,
+            "current_std": 36.531346564739565,
+            "unwarped_ncc": 0.9842098951339722,
+            "mean_max_channel_absdiff": 3.1263939098334004
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 1.179389965320768,
+            "current_std": 1.1646449438133708,
+            "unwarped_ncc": 0.9846224188804626,
+            "mean_max_channel_absdiff": 0.05190562117235346
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 2.153729826743105,
+            "current_std": 2.083681227748201,
+            "unwarped_ncc": 0.9713720083236694,
+            "mean_max_channel_absdiff": 0.3859887884384822
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 17.59152241535531,
+            "current_std": 17.575856223118816,
+            "unwarped_ncc": 0.9759230613708496,
+            "mean_max_channel_absdiff": 1.9066531577169874
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_source_pts_ticks": 60969,
+      "source_pts_ticks": 61225,
+      "source_pts_sec": 3.9860026041666665,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 25,
+        "changed_pixels_outside_phase_and_timer": 105438,
+        "outside_mean_max_channel_absdiff": 2.3998425773201046,
+        "outside_gray_ncc": 0.9458038806915283,
+        "phase_current_std": 31.985702217502965,
+        "phase_gray_ncc": 0.9999411106109619,
+        "largest_change_components_xywh_area": [
+          [
+            0,
+            583,
+            1920,
+            486,
+            63705
+          ],
+          [
+            32,
+            811,
+            574,
+            269,
+            22634
+          ],
+          [
+            325,
+            957,
+            109,
+            123,
+            2013
+          ],
+          [
+            0,
+            658,
+            252,
+            19,
+            1806
+          ],
+          [
+            1039,
+            560,
+            115,
+            32,
+            1103
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.5423917883444365,
+            "current_std": 1.5374531031793948,
+            "unwarped_ncc": 0.9927363991737366,
+            "mean_max_channel_absdiff": 0.05276268115942029
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 3.548500948210545,
+            "current_std": 3.5430720211293356,
+            "unwarped_ncc": 0.9980496168136597,
+            "mean_max_channel_absdiff": 0.08496283590623213
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 36.531346564739565,
+            "current_std": 36.84306648489425,
+            "unwarped_ncc": 0.9885463714599609,
+            "mean_max_channel_absdiff": 2.6571316539469407
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 1.1646449438133708,
+            "current_std": 1.1713950860725466,
+            "unwarped_ncc": 0.994665265083313,
+            "mean_max_channel_absdiff": 0.02079232283464567
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 2.083681227748201,
+            "current_std": 2.1079766322839903,
+            "unwarped_ncc": 0.9868212938308716,
+            "mean_max_channel_absdiff": 0.17784582482745212
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 17.575856223118816,
+            "current_std": 17.540285691852436,
+            "unwarped_ncc": 0.9813953638076782,
+            "mean_max_channel_absdiff": 1.7128503883823032
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_source_pts_ticks": 61225,
+      "source_pts_ticks": 61481,
+      "source_pts_sec": 4.002669270833334,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 13,
+        "changed_pixels_outside_phase_and_timer": 140850,
+        "outside_mean_max_channel_absdiff": 3.6278928924161375,
+        "outside_gray_ncc": 0.9141254425048828,
+        "phase_current_std": 31.97604388735225,
+        "phase_gray_ncc": 0.9999179840087891,
+        "largest_change_components_xywh_area": [
+          [
+            0,
+            554,
+            1920,
+            518,
+            89761
+          ],
+          [
+            179,
+            810,
+            428,
+            270,
+            23694
+          ],
+          [
+            0,
+            0,
+            464,
+            42,
+            5971
+          ],
+          [
+            31,
+            978,
+            152,
+            102,
+            4430
+          ],
+          [
+            0,
+            640,
+            131,
+            25,
+            1382
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.5374531031793948,
+            "current_std": 1.5563064137944833,
+            "unwarped_ncc": 0.878280758857727,
+            "mean_max_channel_absdiff": 0.4902249396135266
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 3.5430720211293356,
+            "current_std": 3.614841161007376,
+            "unwarped_ncc": 0.9737824201583862,
+            "mean_max_channel_absdiff": 0.6970268724985706
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 36.84306648489425,
+            "current_std": 37.2567317369118,
+            "unwarped_ncc": 0.965811550617218,
+            "mean_max_channel_absdiff": 4.727501386737056
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 1.1713950860725466,
+            "current_std": 1.1919355530589266,
+            "unwarped_ncc": 0.9625654220581055,
+            "mean_max_channel_absdiff": 0.19164206036745407
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 2.1079766322839903,
+            "current_std": 1.9319279477119842,
+            "unwarped_ncc": 0.9045414328575134,
+            "mean_max_channel_absdiff": 0.899355173195943
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 17.540285691852436,
+            "current_std": 17.437995397928148,
+            "unwarped_ncc": 0.9476168751716614,
+            "mean_max_channel_absdiff": 2.913238770685579
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_source_pts_ticks": 61481,
+      "source_pts_ticks": 61737,
+      "source_pts_sec": 4.0193359375,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 0,
+        "changed_pixels_outside_phase_and_timer": 119404,
+        "outside_mean_max_channel_absdiff": 2.8414924071130985,
+        "outside_gray_ncc": 0.9350631237030029,
+        "phase_current_std": 31.97442198807641,
+        "phase_gray_ncc": 0.9999710917472839,
+        "largest_change_components_xywh_area": [
+          [
+            0,
+            558,
+            1920,
+            514,
+            82037
+          ],
+          [
+            80,
+            846,
+            363,
+            234,
+            10455
+          ],
+          [
+            0,
+            0,
+            418,
+            41,
+            4455
+          ],
+          [
+            356,
+            807,
+            219,
+            57,
+            2545
+          ],
+          [
+            336,
+            892,
+            187,
+            188,
+            2095
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.5563064137944833,
+            "current_std": 1.5988277314359411,
+            "unwarped_ncc": 0.9729134440422058,
+            "mean_max_channel_absdiff": 0.14232336956521738
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 3.614841161007376,
+            "current_std": 3.5891947030042783,
+            "unwarped_ncc": 0.9937381744384766,
+            "mean_max_channel_absdiff": 0.1948160853821231
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 37.2567317369118,
+            "current_std": 37.64358620224562,
+            "unwarped_ncc": 0.9725075960159302,
+            "mean_max_channel_absdiff": 4.223235974828332
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 1.1919355530589266,
+            "current_std": 1.199089513112354,
+            "unwarped_ncc": 0.9921794533729553,
+            "mean_max_channel_absdiff": 0.026301399825021873
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 1.9319279477119842,
+            "current_std": 1.986816075230323,
+            "unwarped_ncc": 0.9801493287086487,
+            "mean_max_channel_absdiff": 0.2432357992288001
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 17.437995397928148,
+            "current_std": 17.4361760849248,
+            "unwarped_ncc": 0.9580751657485962,
+            "mean_max_channel_absdiff": 2.4689463019250253
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_source_pts_ticks": 61737,
+      "source_pts_ticks": 61993,
+      "source_pts_sec": 4.036002604166667,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 7460,
+        "changed_pixels_outside_phase_and_timer": 189359,
+        "outside_mean_max_channel_absdiff": 3.9682427317347075,
+        "outside_gray_ncc": 0.967992901802063,
+        "phase_current_std": 31.775352062501355,
+        "phase_gray_ncc": 0.9964324235916138,
+        "largest_change_components_xywh_area": [
+          [
+            0,
+            589,
+            1920,
+            479,
+            70858
+          ],
+          [
+            0,
+            807,
+            608,
+            273,
+            25378
+          ],
+          [
+            0,
+            0,
+            558,
+            88,
+            8770
+          ],
+          [
+            628,
+            22,
+            150,
+            66,
+            3638
+          ],
+          [
+            30,
+            98,
+            108,
+            104,
+            3292
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.5988277314359411,
+            "current_std": 1.5774283073658193,
+            "unwarped_ncc": 0.8491016626358032,
+            "mean_max_channel_absdiff": 2.0282306763285023
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 3.5891947030042783,
+            "current_std": 3.7811862398549483,
+            "unwarped_ncc": 0.9685680866241455,
+            "mean_max_channel_absdiff": 1.5988374309129025
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 37.64358620224562,
+            "current_std": 37.9606780215399,
+            "unwarped_ncc": 0.9845699667930603,
+            "mean_max_channel_absdiff": 4.500870297048641
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 1.199089513112354,
+            "current_std": 1.3123441042598576,
+            "unwarped_ncc": 0.904914379119873,
+            "mean_max_channel_absdiff": 0.817188867016623
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 1.986816075230323,
+            "current_std": 1.8392084444371664,
+            "unwarped_ncc": 0.88145911693573,
+            "mean_max_channel_absdiff": 1.6060723890995108
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 17.4361760849248,
+            "current_std": 17.36260247171786,
+            "unwarped_ncc": 0.9742634296417236,
+            "mean_max_channel_absdiff": 3.036980749746707
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_source_pts_ticks": 61993,
+      "source_pts_ticks": 62249,
+      "source_pts_sec": 4.052669270833333,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 27,
+        "changed_pixels_outside_phase_and_timer": 81281,
+        "outside_mean_max_channel_absdiff": 1.5999027388538225,
+        "outside_gray_ncc": 0.974486768245697,
+        "phase_current_std": 31.785479575250402,
+        "phase_gray_ncc": 0.9999293088912964,
+        "largest_change_components_xywh_area": [
+          [
+            1691,
+            786,
+            229,
+            286,
+            21240
+          ],
+          [
+            0,
+            591,
+            1348,
+            115,
+            18266
+          ],
+          [
+            1395,
+            744,
+            240,
+            91,
+            5319
+          ],
+          [
+            0,
+            661,
+            260,
+            23,
+            2301
+          ],
+          [
+            1564,
+            818,
+            105,
+            152,
+            2244
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.5774283073658193,
+            "current_std": 1.5843558353212477,
+            "unwarped_ncc": 0.9630189538002014,
+            "mean_max_channel_absdiff": 0.1293780193236715
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 3.7811862398549483,
+            "current_std": 3.7863354198520303,
+            "unwarped_ncc": 0.9962175488471985,
+            "mean_max_channel_absdiff": 0.0815323041738136
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 37.9606780215399,
+            "current_std": 38.23278175559628,
+            "unwarped_ncc": 0.9838075041770935,
+            "mean_max_channel_absdiff": 3.158212352479868
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 1.3123441042598576,
+            "current_std": 1.3240626049947397,
+            "unwarped_ncc": 0.9922235012054443,
+            "mean_max_channel_absdiff": 0.0192749343832021
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 1.8392084444371664,
+            "current_std": 1.8340123601928147,
+            "unwarped_ncc": 0.9770069718360901,
+            "mean_max_channel_absdiff": 0.1527170214834257
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 17.36260247171786,
+            "current_std": 17.330307507769756,
+            "unwarped_ncc": 0.9726637601852417,
+            "mean_max_channel_absdiff": 1.8736575481256332
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_source_pts_ticks": 62249,
+      "source_pts_ticks": 62505,
+      "source_pts_sec": 4.0693359375,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 1,
+        "changed_pixels_outside_phase_and_timer": 38950,
+        "outside_mean_max_channel_absdiff": 0.7440567924878299,
+        "outside_gray_ncc": 0.992074191570282,
+        "phase_current_std": 31.784407132483658,
+        "phase_gray_ncc": 0.9999889731407166,
+        "largest_change_components_xywh_area": [
+          [
+            1174,
+            625,
+            401,
+            210,
+            7073
+          ],
+          [
+            536,
+            594,
+            817,
+            58,
+            5912
+          ],
+          [
+            0,
+            646,
+            533,
+            60,
+            4342
+          ],
+          [
+            1778,
+            827,
+            142,
+            169,
+            2959
+          ],
+          [
+            1742,
+            847,
+            124,
+            49,
+            1781
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.5843558353212477,
+            "current_std": 1.586891025593028,
+            "unwarped_ncc": 0.9909383654594421,
+            "mean_max_channel_absdiff": 0.03321256038647343
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 3.7863354198520303,
+            "current_std": 3.7944397302138215,
+            "unwarped_ncc": 0.9979641437530518,
+            "mean_max_channel_absdiff": 0.04288164665523156
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 38.23278175559628,
+            "current_std": 38.391808736881096,
+            "unwarped_ncc": 0.9964619278907776,
+            "mean_max_channel_absdiff": 1.6666666666666667
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 1.3240626049947397,
+            "current_std": 1.3283694718453287,
+            "unwarped_ncc": 0.9983304142951965,
+            "mean_max_channel_absdiff": 0.00699912510936133
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 1.8340123601928147,
+            "current_std": 1.8213533097240604,
+            "unwarped_ncc": 0.9842296242713928,
+            "mean_max_channel_absdiff": 0.09554129807848093
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 17.330307507769756,
+            "current_std": 17.29703489253239,
+            "unwarped_ncc": 0.9934943914413452,
+            "mean_max_channel_absdiff": 1.0217325227963525
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_source_pts_ticks": 62505,
+      "source_pts_ticks": 62761,
+      "source_pts_sec": 4.086002604166667,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 19,
+        "changed_pixels_outside_phase_and_timer": 53399,
+        "outside_mean_max_channel_absdiff": 1.2559507277038848,
+        "outside_gray_ncc": 0.9725292921066284,
+        "phase_current_std": 31.79393589129282,
+        "phase_gray_ncc": 0.9999487400054932,
+        "largest_change_components_xywh_area": [
+          [
+            1365,
+            722,
+            555,
+            350,
+            30773
+          ],
+          [
+            272,
+            807,
+            267,
+            138,
+            4856
+          ],
+          [
+            1127,
+            606,
+            248,
+            134,
+            2934
+          ],
+          [
+            0,
+            676,
+            242,
+            29,
+            1484
+          ],
+          [
+            174,
+            965,
+            101,
+            83,
+            809
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.586891025593028,
+            "current_std": 1.5856442625468326,
+            "unwarped_ncc": 0.998509407043457,
+            "mean_max_channel_absdiff": 0.009548611111111112
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 3.7944397302138215,
+            "current_std": 3.7948298997948853,
+            "unwarped_ncc": 0.999334454536438,
+            "mean_max_channel_absdiff": 0.019039451114922813
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 38.391808736881096,
+            "current_std": 38.52151754064158,
+            "unwarped_ncc": 0.9982031583786011,
+            "mean_max_channel_absdiff": 1.1562900480097933
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 1.3283694718453287,
+            "current_std": 1.328229192183969,
+            "unwarped_ncc": 0.9978857040405273,
+            "mean_max_channel_absdiff": 0.00395067804024497
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 1.8213533097240604,
+            "current_std": 1.832281215382526,
+            "unwarped_ncc": 0.9933888912200928,
+            "mean_max_channel_absdiff": 0.04630439713554324
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 17.29703489253239,
+            "current_std": 17.320568376184877,
+            "unwarped_ncc": 0.9970827698707581,
+            "mean_max_channel_absdiff": 0.6174096588990206
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_source_pts_ticks": 62761,
+      "source_pts_ticks": 63017,
+      "source_pts_sec": 4.102669270833333,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 64970,
+        "changed_pixels_outside_phase_and_timer": 45484,
+        "outside_mean_max_channel_absdiff": 1.2913613051042048,
+        "outside_gray_ncc": 0.9644861221313477,
+        "phase_current_std": 1.2005094508692704,
+        "phase_gray_ncc": -0.03000185638666153,
+        "largest_change_components_xywh_area": [
+          [
+            736,
+            128,
+            448,
+            156,
+            66002
+          ],
+          [
+            1180,
+            616,
+            740,
+            454,
+            38055
+          ],
+          [
+            1618,
+            812,
+            112,
+            54,
+            841
+          ],
+          [
+            1594,
+            770,
+            51,
+            33,
+            515
+          ],
+          [
+            1893,
+            1020,
+            27,
+            32,
+            232
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.5856442625468326,
+            "current_std": 1.5921025256388306,
+            "unwarped_ncc": 0.9955244064331055,
+            "mean_max_channel_absdiff": 0.020795591787439612
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 3.7948298997948853,
+            "current_std": 3.7897883750644525,
+            "unwarped_ncc": 0.9994096755981445,
+            "mean_max_channel_absdiff": 0.01726700971983991
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 38.52151754064158,
+            "current_std": 38.51877973626905,
+            "unwarped_ncc": 0.9999012351036072,
+            "mean_max_channel_absdiff": 0.2587460071536505
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 1.328229192183969,
+            "current_std": 1.3270012137705194,
+            "unwarped_ncc": 0.9976039528846741,
+            "mean_max_channel_absdiff": 0.009979221347331584
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 1.832281215382526,
+            "current_std": 1.8221697185154788,
+            "unwarped_ncc": 0.9925273060798645,
+            "mean_max_channel_absdiff": 0.06164738666925894
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 17.320568376184877,
+            "current_std": 17.307926233971923,
+            "unwarped_ncc": 0.9996909499168396,
+            "mean_max_channel_absdiff": 0.1829111786558595
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_source_pts_ticks": 63017,
+      "source_pts_ticks": 63273,
+      "source_pts_sec": 4.1193359375,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 0,
+        "changed_pixels_outside_phase_and_timer": 389399,
+        "outside_mean_max_channel_absdiff": 20.286974025257816,
+        "outside_gray_ncc": 0.34548869729042053,
+        "phase_current_std": 1.2021797135426306,
+        "phase_gray_ncc": 0.9983415007591248,
+        "largest_change_components_xywh_area": [
+          [
+            850,
+            562,
+            1070,
+            518,
+            315717
+          ],
+          [
+            30,
+            806,
+            580,
+            274,
+            70592
+          ],
+          [
+            1760,
+            232,
+            120,
+            18,
+            843
+          ],
+          [
+            943,
+            942,
+            41,
+            42,
+            414
+          ],
+          [
+            88,
+            0,
+            17,
+            16,
+            206
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.5921025256388306,
+            "current_std": 1.5879053327836812,
+            "unwarped_ncc": 0.9971832633018494,
+            "mean_max_channel_absdiff": 0.0118131038647343
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 3.7897883750644525,
+            "current_std": 3.794164580548988,
+            "unwarped_ncc": 0.9996214509010315,
+            "mean_max_channel_absdiff": 0.012064036592338479
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 38.51877973626905,
+            "current_std": 38.55750109225126,
+            "unwarped_ncc": 0.9999331831932068,
+            "mean_max_channel_absdiff": 0.19240259367647902
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 1.3270012137705194,
+            "current_std": 1.3308896776973422,
+            "unwarped_ncc": 0.9994799494743347,
+            "mean_max_channel_absdiff": 0.0037592957130358705
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 1.8221697185154788,
+            "current_std": 1.8330937875712654,
+            "unwarped_ncc": 0.9950735569000244,
+            "mean_max_channel_absdiff": 0.0324681637017595
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 17.307926233971923,
+            "current_std": 17.303315754613457,
+            "unwarped_ncc": 0.9997349977493286,
+            "mean_max_channel_absdiff": 0.1798885511651469
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_source_pts_ticks": 63273,
+      "source_pts_ticks": 63529,
+      "source_pts_sec": 4.136002604166666,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 6,
+        "changed_pixels_outside_phase_and_timer": 235984,
+        "outside_mean_max_channel_absdiff": 5.862344394699769,
+        "outside_gray_ncc": 0.8885513544082642,
+        "phase_current_std": 1.2039839988430532,
+        "phase_gray_ncc": 0.9769625067710876,
+        "largest_change_components_xywh_area": [
+          [
+            511,
+            562,
+            1409,
+            518,
+            209914
+          ],
+          [
+            0,
+            514,
+            546,
+            198,
+            15223
+          ],
+          [
+            6,
+            19,
+            402,
+            37,
+            4828
+          ],
+          [
+            18,
+            706,
+            36,
+            34,
+            550
+          ],
+          [
+            46,
+            528,
+            37,
+            34,
+            483
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.5879053327836812,
+            "current_std": 1.6311771156303614,
+            "unwarped_ncc": 0.9219919443130493,
+            "mean_max_channel_absdiff": 0.4379151570048309
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 3.794164580548988,
+            "current_std": 3.7518838129122054,
+            "unwarped_ncc": 0.9869053363800049,
+            "mean_max_channel_absdiff": 0.4265103868877454
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 38.55750109225126,
+            "current_std": 39.36585321990926,
+            "unwarped_ncc": 0.9881225824356079,
+            "mean_max_channel_absdiff": 3.4407911095809185
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 1.3308896776973422,
+            "current_std": 1.4223090375291843,
+            "unwarped_ncc": 0.9377695322036743,
+            "mean_max_channel_absdiff": 0.25727252843394577
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 1.8330937875712654,
+            "current_std": 1.852977754523327,
+            "unwarped_ncc": 0.96531081199646,
+            "mean_max_channel_absdiff": 0.2617543177473186
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 17.303315754613457,
+            "current_std": 17.103231975526644,
+            "unwarped_ncc": 0.9906913042068481,
+            "mean_max_channel_absdiff": 1.2777608915906788
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_source_pts_ticks": 63529,
+      "source_pts_ticks": 63785,
+      "source_pts_sec": 4.152669270833333,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 1,
+        "changed_pixels_outside_phase_and_timer": 207451,
+        "outside_mean_max_channel_absdiff": 5.552993286975529,
+        "outside_gray_ncc": 0.8911128640174866,
+        "phase_current_std": 1.201984985042977,
+        "phase_gray_ncc": 0.985811710357666,
+        "largest_change_components_xywh_area": [
+          [
+            604,
+            576,
+            1316,
+            504,
+            171162
+          ],
+          [
+            887,
+            789,
+            163,
+            133,
+            7825
+          ],
+          [
+            85,
+            518,
+            436,
+            158,
+            5339
+          ],
+          [
+            0,
+            639,
+            294,
+            72,
+            5315
+          ],
+          [
+            1270,
+            935,
+            100,
+            119,
+            2715
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.6311771156303614,
+            "current_std": 1.6597010958849794,
+            "unwarped_ncc": 0.9421579241752625,
+            "mean_max_channel_absdiff": 0.29589371980676327
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 3.7518838129122054,
+            "current_std": 3.7525752372827252,
+            "unwarped_ncc": 0.9885462522506714,
+            "mean_max_channel_absdiff": 0.2845435486944921
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 39.36585321990926,
+            "current_std": 40.069032558684896,
+            "unwarped_ncc": 0.9902298450469971,
+            "mean_max_channel_absdiff": 3.2325988408790955
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 1.4223090375291843,
+            "current_std": 1.4871229694993862,
+            "unwarped_ncc": 0.947300136089325,
+            "mean_max_channel_absdiff": 0.2269520997375328
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 1.852977754523327,
+            "current_std": 1.871978935859278,
+            "unwarped_ncc": 0.9506771564483643,
+            "mean_max_channel_absdiff": 0.41837594374777226
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 17.103231975526644,
+            "current_std": 16.972554050678518,
+            "unwarped_ncc": 0.9909833073616028,
+            "mean_max_channel_absdiff": 1.287352245862884
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_source_pts_ticks": 63785,
+      "source_pts_ticks": 64041,
+      "source_pts_sec": 4.1693359375,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 5,
+        "changed_pixels_outside_phase_and_timer": 202445,
+        "outside_mean_max_channel_absdiff": 5.054419616670761,
+        "outside_gray_ncc": 0.9086900949478149,
+        "phase_current_std": 1.2070242158798352,
+        "phase_gray_ncc": 0.9883290529251099,
+        "largest_change_components_xywh_area": [
+          [
+            0,
+            520,
+            1920,
+            560,
+            187107
+          ],
+          [
+            956,
+            998,
+            100,
+            62,
+            2298
+          ],
+          [
+            202,
+            30,
+            202,
+            30,
+            2117
+          ],
+          [
+            20,
+            29,
+            190,
+            19,
+            1710
+          ],
+          [
+            0,
+            689,
+            71,
+            15,
+            704
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.6597010958849794,
+            "current_std": 1.6894832133946345,
+            "unwarped_ncc": 0.9489492774009705,
+            "mean_max_channel_absdiff": 0.2604166666666667
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 3.7525752372827252,
+            "current_std": 3.7369805212662035,
+            "unwarped_ncc": 0.9921989440917969,
+            "mean_max_channel_absdiff": 0.229178578235182
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 40.069032558684896,
+            "current_std": 40.89697047793931,
+            "unwarped_ncc": 0.9891718626022339,
+            "mean_max_channel_absdiff": 3.417484363344236
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 1.4871229694993862,
+            "current_std": 1.574763688788705,
+            "unwarped_ncc": 0.9378215670585632,
+            "mean_max_channel_absdiff": 0.2493028215223097
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 1.871978935859278,
+            "current_std": 1.9656640919733122,
+            "unwarped_ncc": 0.9527891874313354,
+            "mean_max_channel_absdiff": 0.38905090567382783
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 16.972554050678518,
+            "current_std": 16.87804598969681,
+            "unwarped_ncc": 0.98979252576828,
+            "mean_max_channel_absdiff": 1.3033603512326917
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_source_pts_ticks": 64041,
+      "source_pts_ticks": 64297,
+      "source_pts_sec": 4.186002604166666,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 0,
+        "changed_pixels_outside_phase_and_timer": 104130,
+        "outside_mean_max_channel_absdiff": 2.4636343582519062,
+        "outside_gray_ncc": 0.962909460067749,
+        "phase_current_std": 1.219207025508954,
+        "phase_gray_ncc": 0.9623278975486755,
+        "largest_change_components_xywh_area": [
+          [
+            1080,
+            580,
+            840,
+            500,
+            80349
+          ],
+          [
+            948,
+            864,
+            172,
+            216,
+            6739
+          ],
+          [
+            1307,
+            896,
+            140,
+            148,
+            2717
+          ],
+          [
+            910,
+            806,
+            106,
+            94,
+            1637
+          ],
+          [
+            100,
+            529,
+            86,
+            105,
+            873
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.6894832133946345,
+            "current_std": 1.6856118647045464,
+            "unwarped_ncc": 0.9678842425346375,
+            "mean_max_channel_absdiff": 0.33816425120772947
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 3.7369805212662035,
+            "current_std": 3.7420154089714117,
+            "unwarped_ncc": 0.9940151572227478,
+            "mean_max_channel_absdiff": 0.22348008385744234
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 40.89697047793931,
+            "current_std": 41.138670471450325,
+            "unwarped_ncc": 0.998362123966217,
+            "mean_max_channel_absdiff": 1.5049061800654158
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 1.574763688788705,
+            "current_std": 1.5875106923951683,
+            "unwarped_ncc": 0.9759846925735474,
+            "mean_max_channel_absdiff": 0.19914698162729658
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 1.9656640919733122,
+            "current_std": 1.985627657536208,
+            "unwarped_ncc": 0.9782260060310364,
+            "mean_max_channel_absdiff": 0.29276433038462785
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 16.87804598969681,
+            "current_std": 16.827286607119206,
+            "unwarped_ncc": 0.9981184601783752,
+            "mean_max_channel_absdiff": 0.7045086119554205
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_source_pts_ticks": 64297,
+      "source_pts_ticks": 64553,
+      "source_pts_sec": 4.202669270833334,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 0,
+        "changed_pixels_outside_phase_and_timer": 239660,
+        "outside_mean_max_channel_absdiff": 6.36400635706873,
+        "outside_gray_ncc": 0.8849881887435913,
+        "phase_current_std": 1.2213169337252026,
+        "phase_gray_ncc": 0.9796390533447266,
+        "largest_change_components_xywh_area": [
+          [
+            0,
+            520,
+            1920,
+            560,
+            221648
+          ],
+          [
+            0,
+            504,
+            185,
+            173,
+            5475
+          ],
+          [
+            28,
+            33,
+            374,
+            30,
+            3530
+          ],
+          [
+            0,
+            598,
+            56,
+            84,
+            1118
+          ],
+          [
+            1798,
+            232,
+            82,
+            16,
+            617
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.6856118647045464,
+            "current_std": 1.7229251407846313,
+            "unwarped_ncc": 0.9338095784187317,
+            "mean_max_channel_absdiff": 0.42293176328502413
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 3.7420154089714117,
+            "current_std": 3.742687657250457,
+            "unwarped_ncc": 0.9869612455368042,
+            "mean_max_channel_absdiff": 0.29251000571755287
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 41.138670471450325,
+            "current_std": 41.91010420116724,
+            "unwarped_ncc": 0.9895846843719482,
+            "mean_max_channel_absdiff": 3.51419253648553
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 1.5875106923951683,
+            "current_std": 1.7034305323608068,
+            "unwarped_ncc": 0.9375311136245728,
+            "mean_max_channel_absdiff": 0.30354604111986
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 1.985627657536208,
+            "current_std": 2.0608449778899973,
+            "unwarped_ncc": 0.942110002040863,
+            "mean_max_channel_absdiff": 0.6930754026117105
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 16.827286607119206,
+            "current_std": 16.701461603746836,
+            "unwarped_ncc": 0.9898799657821655,
+            "mean_max_channel_absdiff": 1.3204154002026343
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_source_pts_ticks": 64553,
+      "source_pts_ticks": 64809,
+      "source_pts_sec": 4.2193359375,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 0,
+        "changed_pixels_outside_phase_and_timer": 186251,
+        "outside_mean_max_channel_absdiff": 4.6613883276597665,
+        "outside_gray_ncc": 0.9201176166534424,
+        "phase_current_std": 1.2143013102821787,
+        "phase_gray_ncc": 0.9868149161338806,
+        "largest_change_components_xywh_area": [
+          [
+            928,
+            606,
+            992,
+            474,
+            167960
+          ],
+          [
+            108,
+            523,
+            167,
+            122,
+            1872
+          ],
+          [
+            1528,
+            1046,
+            91,
+            34,
+            1503
+          ],
+          [
+            143,
+            669,
+            162,
+            19,
+            1114
+          ],
+          [
+            790,
+            622,
+            266,
+            18,
+            1089
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.7229251407846313,
+            "current_std": 1.7387009926394157,
+            "unwarped_ncc": 0.9777255058288574,
+            "mean_max_channel_absdiff": 0.1471165458937198
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 3.742687657250457,
+            "current_std": 3.745308884536126,
+            "unwarped_ncc": 0.9960712790489197,
+            "mean_max_channel_absdiff": 0.13634457785401183
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 41.91010420116724,
+            "current_std": 42.446256902422434,
+            "unwarped_ncc": 0.9962118268013,
+            "mean_max_channel_absdiff": 2.144010252290507
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 1.7034305323608068,
+            "current_std": 1.7670623571059638,
+            "unwarped_ncc": 0.9732311367988586,
+            "mean_max_channel_absdiff": 0.18248304899387577
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 2.0608449778899973,
+            "current_std": 2.1011423922423744,
+            "unwarped_ncc": 0.9695938229560852,
+            "mean_max_channel_absdiff": 0.405819642915006
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 16.701461603746836,
+            "current_std": 16.666944442121114,
+            "unwarped_ncc": 0.9955987334251404,
+            "mean_max_channel_absdiff": 0.7923674434312732
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_source_pts_ticks": 64809,
+      "source_pts_ticks": 65065,
+      "source_pts_sec": 4.236002604166667,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 0,
+        "changed_pixels_outside_phase_and_timer": 284174,
+        "outside_mean_max_channel_absdiff": 10.575956443049588,
+        "outside_gray_ncc": 0.7734050154685974,
+        "phase_current_std": 1.2163950151565843,
+        "phase_gray_ncc": 0.963524580001831,
+        "largest_change_components_xywh_area": [
+          [
+            932,
+            608,
+            988,
+            472,
+            271966
+          ],
+          [
+            113,
+            525,
+            170,
+            119,
+            1581
+          ],
+          [
+            124,
+            668,
+            185,
+            19,
+            1049
+          ],
+          [
+            0,
+            490,
+            71,
+            72,
+            947
+          ],
+          [
+            0,
+            682,
+            145,
+            18,
+            892
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.7387009926394157,
+            "current_std": 1.7368781632923098,
+            "unwarped_ncc": 0.9594713449478149,
+            "mean_max_channel_absdiff": 0.37318840579710144
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 3.745308884536126,
+            "current_std": 3.736404162708871,
+            "unwarped_ncc": 0.9934356808662415,
+            "mean_max_channel_absdiff": 0.27287974080426913
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 42.446256902422434,
+            "current_std": 42.83943579596015,
+            "unwarped_ncc": 0.9970716238021851,
+            "mean_max_channel_absdiff": 2.084858744094413
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 1.7670623571059638,
+            "current_std": 1.8271927273477409,
+            "unwarped_ncc": 0.9687696695327759,
+            "mean_max_channel_absdiff": 0.29017661854768156
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 2.1011423922423744,
+            "current_std": 2.1448996726777536,
+            "unwarped_ncc": 0.9664302468299866,
+            "mean_max_channel_absdiff": 0.5203169048313405
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 16.666944442121114,
+            "current_std": 16.549934987627275,
+            "unwarped_ncc": 0.996392548084259,
+            "mean_max_channel_absdiff": 0.8957953394123607
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_source_pts_ticks": 65065,
+      "source_pts_ticks": 65321,
+      "source_pts_sec": 4.252669270833334,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 0,
+        "changed_pixels_outside_phase_and_timer": 284136,
+        "outside_mean_max_channel_absdiff": 11.759225019176489,
+        "outside_gray_ncc": 0.6979262232780457,
+        "phase_current_std": 1.2155001071996419,
+        "phase_gray_ncc": 0.9926795363426208,
+        "largest_change_components_xywh_area": [
+          [
+            996,
+            615,
+            924,
+            465,
+            278615
+          ],
+          [
+            116,
+            528,
+            85,
+            106,
+            807
+          ],
+          [
+            0,
+            489,
+            59,
+            66,
+            643
+          ],
+          [
+            0,
+            686,
+            88,
+            10,
+            430
+          ],
+          [
+            317,
+            340,
+            22,
+            20,
+            208
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.7368781632923098,
+            "current_std": 1.7390142167513003,
+            "unwarped_ncc": 0.986326277256012,
+            "mean_max_channel_absdiff": 0.14371980676328502
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 3.736404162708871,
+            "current_std": 3.748516162970931,
+            "unwarped_ncc": 0.9973801970481873,
+            "mean_max_channel_absdiff": 0.12004955212502383
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 42.83943579596015,
+            "current_std": 43.11139110586857,
+            "unwarped_ncc": 0.998728334903717,
+            "mean_max_channel_absdiff": 1.4135728084772672
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 1.8271927273477409,
+            "current_std": 1.8560874166293464,
+            "unwarped_ncc": 0.9869944453239441,
+            "mean_max_channel_absdiff": 0.17913385826771652
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 2.1448996726777536,
+            "current_std": 2.1266707833670093,
+            "unwarped_ncc": 0.9861384630203247,
+            "mean_max_channel_absdiff": 0.2781828197401251
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 16.549934987627275,
+            "current_std": 16.54789604697205,
+            "unwarped_ncc": 0.9982206225395203,
+            "mean_max_channel_absdiff": 0.6389733198243837
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_source_pts_ticks": 65321,
+      "source_pts_ticks": 65577,
+      "source_pts_sec": 4.2693359375,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 0,
+        "changed_pixels_outside_phase_and_timer": 296058,
+        "outside_mean_max_channel_absdiff": 12.260844367125733,
+        "outside_gray_ncc": 0.6008608341217041,
+        "phase_current_std": 1.2319470387208353,
+        "phase_gray_ncc": 0.9749500751495361,
+        "largest_change_components_xywh_area": [
+          [
+            1126,
+            572,
+            794,
+            508,
+            286102
+          ],
+          [
+            117,
+            661,
+            194,
+            27,
+            995
+          ],
+          [
+            118,
+            528,
+            99,
+            106,
+            948
+          ],
+          [
+            0,
+            684,
+            107,
+            11,
+            586
+          ],
+          [
+            0,
+            487,
+            35,
+            58,
+            584
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.7390142167513003,
+            "current_std": 1.7436933514066852,
+            "unwarped_ncc": 0.9759851098060608,
+            "mean_max_channel_absdiff": 0.2576237922705314
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 3.748516162970931,
+            "current_std": 3.7388399250236604,
+            "unwarped_ncc": 0.9973296523094177,
+            "mean_max_channel_absdiff": 0.12517629121402707
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 43.11139110586857,
+            "current_std": 43.37476461878642,
+            "unwarped_ncc": 0.9983769059181213,
+            "mean_max_channel_absdiff": 1.6400317514967198
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 1.8560874166293464,
+            "current_std": 1.8710612997839682,
+            "unwarped_ncc": 0.9723702669143677,
+            "mean_max_channel_absdiff": 0.32694936570428695
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 2.1266707833670093,
+            "current_std": 2.132235421293661,
+            "unwarped_ncc": 0.9803100824356079,
+            "mean_max_channel_absdiff": 0.3363144421762095
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 16.54789604697205,
+            "current_std": 16.503209062619216,
+            "unwarped_ncc": 0.9978083372116089,
+            "mean_max_channel_absdiff": 0.6638973319824384
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_source_pts_ticks": 65577,
+      "source_pts_ticks": 65833,
+      "source_pts_sec": 4.286002604166667,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 0,
+        "changed_pixels_outside_phase_and_timer": 214832,
+        "outside_mean_max_channel_absdiff": 6.12607801948231,
+        "outside_gray_ncc": 0.8151160478591919,
+        "phase_current_std": 1.2315565243171387,
+        "phase_gray_ncc": 0.9860261678695679,
+        "largest_change_components_xywh_area": [
+          [
+            1132,
+            555,
+            788,
+            525,
+            204745
+          ],
+          [
+            1090,
+            555,
+            236,
+            53,
+            4083
+          ],
+          [
+            1045,
+            603,
+            91,
+            56,
+            1785
+          ],
+          [
+            1026,
+            553,
+            56,
+            55,
+            1219
+          ],
+          [
+            1212,
+            798,
+            46,
+            41,
+            536
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.7436933514066852,
+            "current_std": 1.7363015806040552,
+            "unwarped_ncc": 0.9781041145324707,
+            "mean_max_channel_absdiff": 0.2160703502415459
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 3.7388399250236604,
+            "current_std": 3.736920368333545,
+            "unwarped_ncc": 0.9967898726463318,
+            "mean_max_channel_absdiff": 0.1252715837621498
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 43.37476461878642,
+            "current_std": 43.210605033532794,
+            "unwarped_ncc": 0.9995412230491638,
+            "mean_max_channel_absdiff": 1.0125571431303915
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 1.8710612997839682,
+            "current_std": 1.8822236933822805,
+            "unwarped_ncc": 0.9861272573471069,
+            "mean_max_channel_absdiff": 0.18111603237095364
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 2.132235421293661,
+            "current_std": 2.312095911597387,
+            "unwarped_ncc": 0.9525362253189087,
+            "mean_max_channel_absdiff": 0.702002527461845
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 16.503209062619216,
+            "current_std": 16.541954324206134,
+            "unwarped_ncc": 0.9989931583404541,
+            "mean_max_channel_absdiff": 0.5586457277946639
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_source_pts_ticks": 65833,
+      "source_pts_ticks": 66089,
+      "source_pts_sec": 4.302669270833333,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 133,
+        "changed_pixels_outside_phase_and_timer": 576629,
+        "outside_mean_max_channel_absdiff": 20.46808280232424,
+        "outside_gray_ncc": 0.5569150447845459,
+        "phase_current_std": 1.336449399560858,
+        "phase_gray_ncc": 0.7824290990829468,
+        "largest_change_components_xywh_area": [
+          [
+            0,
+            272,
+            1920,
+            808,
+            561175
+          ],
+          [
+            34,
+            35,
+            395,
+            33,
+            4078
+          ],
+          [
+            0,
+            485,
+            71,
+            103,
+            1555
+          ],
+          [
+            1797,
+            234,
+            89,
+            14,
+            625
+          ],
+          [
+            10,
+            0,
+            26,
+            42,
+            539
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.7363015806040552,
+            "current_std": 1.7195845651262527,
+            "unwarped_ncc": 0.90914386510849,
+            "mean_max_channel_absdiff": 0.40141908212560384
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 3.736920368333545,
+            "current_std": 4.574134748922988,
+            "unwarped_ncc": 0.7909895181655884,
+            "mean_max_channel_absdiff": 1.7862016390318276
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 43.210605033532794,
+            "current_std": 42.08220572640544,
+            "unwarped_ncc": 0.9763009548187256,
+            "mean_max_channel_absdiff": 5.0879000019127405
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 1.8822236933822805,
+            "current_std": 2.0029274679909315,
+            "unwarped_ncc": 0.8639819025993347,
+            "mean_max_channel_absdiff": 0.49587160979877515
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 2.312095911597387,
+            "current_std": 11.121082776309105,
+            "unwarped_ncc": 0.12258259207010269,
+            "mean_max_channel_absdiff": 3.1061047924564984
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 16.541954324206134,
+            "current_std": 20.513696967456927,
+            "unwarped_ncc": 0.8825076222419739,
+            "mean_max_channel_absdiff": 7.579162445119892
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_source_pts_ticks": 66089,
+      "source_pts_ticks": 66345,
+      "source_pts_sec": 4.3193359375,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 0,
+        "changed_pixels_outside_phase_and_timer": 620063,
+        "outside_mean_max_channel_absdiff": 25.56079172578373,
+        "outside_gray_ncc": 0.4640893042087555,
+        "phase_current_std": 1.3323972294941697,
+        "phase_gray_ncc": 0.9083020687103271,
+        "largest_change_components_xywh_area": [
+          [
+            166,
+            331,
+            1754,
+            749,
+            579186
+          ],
+          [
+            0,
+            457,
+            206,
+            217,
+            13012
+          ],
+          [
+            0,
+            633,
+            608,
+            96,
+            7434
+          ],
+          [
+            27,
+            32,
+            243,
+            24,
+            1992
+          ],
+          [
+            75,
+            682,
+            88,
+            46,
+            835
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.7195845651262527,
+            "current_std": 1.6624216538928562,
+            "unwarped_ncc": 0.8270288705825806,
+            "mean_max_channel_absdiff": 0.759020229468599
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 4.574134748922988,
+            "current_std": 6.951938347212478,
+            "unwarped_ncc": 0.8691681027412415,
+            "mean_max_channel_absdiff": 1.68084619782733
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 42.08220572640544,
+            "current_std": 40.57930730341824,
+            "unwarped_ncc": 0.9813973307609558,
+            "mean_max_channel_absdiff": 4.742172108414147
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 2.0029274679909315,
+            "current_std": 2.0635045428481815,
+            "unwarped_ncc": 0.724021852016449,
+            "mean_max_channel_absdiff": 0.9644712379702537
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 11.121082776309105,
+            "current_std": 4.025742606597244,
+            "unwarped_ncc": -0.16429990530014038,
+            "mean_max_channel_absdiff": 4.415330028190921
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 20.513696967456927,
+            "current_std": 25.195898608811515,
+            "unwarped_ncc": 0.9113667607307434,
+            "mean_max_channel_absdiff": 5.989479905437352
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_source_pts_ticks": 66345,
+      "source_pts_ticks": 66601,
+      "source_pts_sec": 4.336002604166667,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 80,
+        "changed_pixels_outside_phase_and_timer": 515245,
+        "outside_mean_max_channel_absdiff": 13.86279861427934,
+        "outside_gray_ncc": 0.8181983828544617,
+        "phase_current_std": 1.3390452232612107,
+        "phase_gray_ncc": 0.8308451175689697,
+        "largest_change_components_xywh_area": [
+          [
+            0,
+            276,
+            1920,
+            804,
+            482549
+          ],
+          [
+            10,
+            16,
+            443,
+            56,
+            8776
+          ],
+          [
+            1776,
+            968,
+            50,
+            112,
+            1815
+          ],
+          [
+            442,
+            0,
+            38,
+            32,
+            987
+          ],
+          [
+            415,
+            1026,
+            33,
+            54,
+            822
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.6624216538928562,
+            "current_std": 1.4054597033377487,
+            "unwarped_ncc": 0.24158646166324615,
+            "mean_max_channel_absdiff": 1.7233544685990339
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 6.951938347212478,
+            "current_std": 11.2675272797934,
+            "unwarped_ncc": 0.7677828073501587,
+            "mean_max_channel_absdiff": 3.9413569658852676
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 40.57930730341824,
+            "current_std": 36.73622372998715,
+            "unwarped_ncc": 0.8985154032707214,
+            "mean_max_channel_absdiff": 10.96182169430577
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 2.0635045428481815,
+            "current_std": 2.1306250588140814,
+            "unwarped_ncc": 0.7269922494888306,
+            "mean_max_channel_absdiff": 0.9891048775153106
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 4.025742606597244,
+            "current_std": 3.5634163198201647,
+            "unwarped_ncc": 0.9461121559143066,
+            "mean_max_channel_absdiff": 1.808042513204368
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 25.195898608811515,
+            "current_std": 29.928540914402046,
+            "unwarped_ncc": 0.5252116918563843,
+            "mean_max_channel_absdiff": 18.962698412698412
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_source_pts_ticks": 66601,
+      "source_pts_ticks": 66857,
+      "source_pts_sec": 4.352669270833333,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 137,
+        "changed_pixels_outside_phase_and_timer": 601459,
+        "outside_mean_max_channel_absdiff": 15.968847856494689,
+        "outside_gray_ncc": 0.7780207395553589,
+        "phase_current_std": 1.2748238381174992,
+        "phase_gray_ncc": 0.5882998704910278,
+        "largest_change_components_xywh_area": [
+          [
+            0,
+            270,
+            1920,
+            810,
+            539556
+          ],
+          [
+            0,
+            16,
+            447,
+            62,
+            13291
+          ],
+          [
+            1461,
+            864,
+            141,
+            134,
+            5350
+          ],
+          [
+            1497,
+            134,
+            108,
+            135,
+            2251
+          ],
+          [
+            0,
+            679,
+            125,
+            60,
+            2007
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.4054597033377487,
+            "current_std": 1.2083072949697715,
+            "unwarped_ncc": -0.0726311057806015,
+            "mean_max_channel_absdiff": 1.6508907004830917
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 11.2675272797934,
+            "current_std": 15.895086075804656,
+            "unwarped_ncc": 0.7003743052482605,
+            "mean_max_channel_absdiff": 5.988355250619402
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 36.73622372998715,
+            "current_std": 34.26173899008423,
+            "unwarped_ncc": 0.9577394723892212,
+            "mean_max_channel_absdiff": 5.867925250090855
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 2.1306250588140814,
+            "current_std": 2.4854733890964726,
+            "unwarped_ncc": 0.4576430916786194,
+            "mean_max_channel_absdiff": 2.1852307524059493
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 3.5634163198201647,
+            "current_std": 2.552912153734608,
+            "unwarped_ncc": 0.7607114315032959,
+            "mean_max_channel_absdiff": 3.521580635753864
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 29.928540914402046,
+            "current_std": 30.28497099687517,
+            "unwarped_ncc": 0.3746877908706665,
+            "mean_max_channel_absdiff": 26.570871327254306
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_source_pts_ticks": 66857,
+      "source_pts_ticks": 67113,
+      "source_pts_sec": 4.3693359375,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 884,
+        "changed_pixels_outside_phase_and_timer": 628897,
+        "outside_mean_max_channel_absdiff": 15.074387229711776,
+        "outside_gray_ncc": 0.8169718980789185,
+        "phase_current_std": 1.720889474906541,
+        "phase_gray_ncc": 0.3019092381000519,
+        "largest_change_components_xywh_area": [
+          [
+            0,
+            0,
+            1920,
+            1080,
+            543687
+          ],
+          [
+            35,
+            0,
+            450,
+            135,
+            28473
+          ],
+          [
+            1576,
+            10,
+            132,
+            68,
+            4039
+          ],
+          [
+            569,
+            666,
+            168,
+            58,
+            3388
+          ],
+          [
+            771,
+            643,
+            155,
+            44,
+            2112
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.2083072949697715,
+            "current_std": 1.3199032655943672,
+            "unwarped_ncc": 0.5926514863967896,
+            "mean_max_channel_absdiff": 1.8268417874396135
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 15.895086075804656,
+            "current_std": 22.850670736855268,
+            "unwarped_ncc": 0.8766206502914429,
+            "mean_max_channel_absdiff": 5.498094149037545
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 34.26173899008423,
+            "current_std": 42.625847699437976,
+            "unwarped_ncc": 0.3859642744064331,
+            "mean_max_channel_absdiff": 29.51043400087986
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 2.4854733890964726,
+            "current_std": 2.523564644118682,
+            "unwarped_ncc": 0.3889118731021881,
+            "mean_max_channel_absdiff": 3.9686543088363955
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 2.552912153734608,
+            "current_std": 2.7460311979551184,
+            "unwarped_ncc": 0.5370000004768372,
+            "mean_max_channel_absdiff": 3.6950196040309775
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 30.28497099687517,
+            "current_std": 30.02523752158386,
+            "unwarped_ncc": 0.5242955684661865,
+            "mean_max_channel_absdiff": 23.349476528199933
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "previous_source_pts_ticks": 67113,
+      "source_pts_ticks": 67369,
+      "source_pts_sec": 4.386002604166666,
+      "measurements": {
+        "phase_bounds": [
+          738,
+          135,
+          1183,
+          281
+        ],
+        "timer_excluded_bounds": [
+          860,
+          20,
+          1060,
+          90
+        ],
+        "changed_bin_lower_bound": 8,
+        "changed_pixels_inside_phase": 267,
+        "changed_pixels_outside_phase_and_timer": 417444,
+        "outside_mean_max_channel_absdiff": 7.257001047813379,
+        "outside_gray_ncc": 0.9411695003509521,
+        "phase_current_std": 1.7470407203588016,
+        "phase_gray_ncc": 0.6225458979606628,
+        "largest_change_components_xywh_area": [
+          [
+            0,
+            0,
+            1920,
+            1080,
+            364250
+          ],
+          [
+            281,
+            101,
+            211,
+            51,
+            5742
+          ],
+          [
+            280,
+            960,
+            151,
+            120,
+            5553
+          ],
+          [
+            17,
+            0,
+            59,
+            103,
+            2979
+          ],
+          [
+            72,
+            95,
+            157,
+            28,
+            2940
+          ]
+        ],
+        "reviewed_background_measurements": [
+          {
+            "bounds": [
+              501,
+              159,
+              639,
+              351
+            ],
+            "previous_std": 1.3199032655943672,
+            "current_std": 1.493143022079078,
+            "unwarped_ncc": 0.7280092239379883,
+            "mean_max_channel_absdiff": 1.3427309782608696
+          },
+          {
+            "bounds": [
+              519,
+              360,
+              849,
+              519
+            ],
+            "previous_std": 22.850670736855268,
+            "current_std": 25.02136993432492,
+            "unwarped_ncc": 0.9249414205551147,
+            "mean_max_channel_absdiff": 4.0157613874595
+          },
+          {
+            "bounds": [
+              30,
+              519,
+              501,
+              741
+            ],
+            "previous_std": 42.625847699437976,
+            "current_std": 44.188501302120955,
+            "unwarped_ncc": 0.8394004702568054,
+            "mean_max_channel_absdiff": 13.720500755532603
+          },
+          {
+            "bounds": [
+              1320,
+              159,
+              1701,
+              351
+            ],
+            "previous_std": 2.523564644118682,
+            "current_std": 2.4031540830841216,
+            "unwarped_ncc": 0.48314857482910156,
+            "mean_max_channel_absdiff": 2.955038823272091
+          },
+          {
+            "bounds": [
+              1320,
+              369,
+              1701,
+              531
+            ],
+            "previous_std": 2.7460311979551184,
+            "current_std": 2.7670400499675023,
+            "unwarped_ncc": 0.4339071810245514,
+            "mean_max_channel_absdiff": 3.215174492077379
+          },
+          {
+            "bounds": [
+              519,
+              549,
+              801,
+              759
+            ],
+            "previous_std": 30.02523752158386,
+            "current_std": 29.838670068804202,
+            "unwarped_ncc": 0.8315209150314331,
+            "mean_max_channel_absdiff": 10.171344140493076
+          }
+        ],
+        "phase_absence_authorized": false,
+        "runtime_continuity_authorized": false,
+        "qualification_created": false
+      }
+    }
+  ],
+  "qualification_created": false,
+  "runtime_behavior_changed": false,
+  "interpretation": {
+    "scope": "post-measurement review of already-exposed native R1 frames, not blind holdout",
+    "reviewed_native_frames": [
+      12,
+      13,
+      14,
+      15
+    ],
+    "observed_phase_panel_removal_pts_ticks": 63017,
+    "observed_foreground_pose_change_pts_ticks": 63273,
+    "pure_timer_only_transition_supported": false,
+    "full_camera_scene_cut_proven": false,
+    "scene_preserving_content_jump_ruled_out": false,
+    "competing_hypotheses": [
+      "phase removal plus a normal view-model animation transition",
+      "phase removal followed by a scene-preserving content jump"
+    ],
+    "continuity_decision": "withhold runtime authorization; background appearance alone does not settle foreground temporal continuity",
+    "contract_change": "none; preserve fail-closed qualification gates and every observed clock display",
+    "next_required_evidence": "independent native view-model correspondence/animation controls in the current recording, without timer/phase pixels or GT expected values"
+  },
+  "tests": {
+    "unit": "6 relevant tests PASS",
+    "ruff": "src tests scripts/e2e and this diagnostic PASS",
+    "production_mypy": "prior 112-source-file PASS remains applicable; production unchanged in this checkpoint"
+  },
+  "canonical_comparison": {
+    "previous": {
+      "PASS": 23,
+      "FAIL": 55,
+      "NOT_EVALUATED": 4
+    },
+    "current": null,
+    "delta": null,
+    "new_full_run": false
+  }
+}

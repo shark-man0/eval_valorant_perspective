@@ -1,0 +1,2595 @@
+{
+  "scope": "Frozen exposed native replay of measured witness provenance; not qualification",
+  "processed_frames": 30,
+  "rows": [
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000001.png",
+      "source_pts_ticks": 59945,
+      "frame_sha256": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+      "source_pixel_sha256": "439c3817810a8d8bcc8c82ed218d5fe0f851c7c5f35308b0b85fcbd328759edd",
+      "result": {
+        "reason": "image_supported_observed_seed",
+        "descriptive_scene_link": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "source_pts_ticks": 59945,
+        "source_pixel_sha256": "439c3817810a8d8bcc8c82ed218d5fe0f851c7c5f35308b0b85fcbd328759edd",
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "reference_id": "reviewed-wall",
+        "reference_is_observed_previous_frame": false
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000002.png",
+      "source_pts_ticks": 60201,
+      "frame_sha256": "e790bd155383fac3eb439d4311a89840467fce57938a80dae2448e628dfd9211",
+      "source_pixel_sha256": "eb69ac61ab1bd4da4517429efa0f2896e520476b6bef244f4e4746bb98c8d850",
+      "result": {
+        "reason": "descriptive_observed_scene_link",
+        "descriptive_scene_link": true,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "source_pts_ticks": 60201,
+        "previous_source_pts_ticks": 59945,
+        "source_pixel_sha256": "eb69ac61ab1bd4da4517429efa0f2896e520476b6bef244f4e4746bb98c8d850",
+        "previous_source_pixel_sha256": "439c3817810a8d8bcc8c82ed218d5fe0f851c7c5f35308b0b85fcbd328759edd",
+        "source_epoch": "offline-observed-R1",
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "reference_id": "reviewed-wall",
+        "previous_to_current_affine_640x360": [
+          [
+            0.9992672289384303,
+            -6.69991549028388e-05,
+            0.46149395897649514
+          ],
+          [
+            6.69991549028388e-05,
+            0.9992672289384303,
+            0.2193143925581848
+          ]
+        ],
+        "witnesses": [
+          {
+            "region": 0,
+            "previous_box_640x360": [
+              167,
+              53,
+              213,
+              117
+            ],
+            "fixed_projection_ncc": 0.9887022376060486
+          },
+          {
+            "region": 1,
+            "previous_box_640x360": [
+              173,
+              120,
+              283,
+              173
+            ],
+            "fixed_projection_ncc": 0.9951148629188538
+          },
+          {
+            "region": 2,
+            "previous_box_640x360": [
+              10,
+              173,
+              167,
+              247
+            ],
+            "fixed_projection_ncc": 0.9996223449707031
+          },
+          {
+            "region": 3,
+            "previous_box_640x360": [
+              440,
+              53,
+              567,
+              117
+            ],
+            "fixed_projection_ncc": 0.9906264543533325
+          },
+          {
+            "region": 4,
+            "previous_box_640x360": [
+              440,
+              123,
+              567,
+              177
+            ],
+            "fixed_projection_ncc": 0.9856879115104675
+          },
+          {
+            "region": 5,
+            "previous_box_640x360": [
+              173,
+              183,
+              267,
+              253
+            ],
+            "fixed_projection_ncc": 0.9991869330406189
+          }
+        ],
+        "minimum_witness_ncc": 0.9856879115104675,
+        "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+        "joint": {
+          "fixed_projection_witness_regions": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "distributed_source_and_current_support": true,
+          "joint_competing_offsets": [],
+          "unresolved_offsets": [],
+          "locally_unique_joint_appearance": true,
+          "scope": "fixed affine plus complete local integer-translation lattice only",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        }
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000003.png",
+      "source_pts_ticks": 60457,
+      "frame_sha256": "1dc0d9b8c59355b43eb723b1961110bb53d1ce8a62176490f5c632dd6ee5f2ad",
+      "source_pixel_sha256": "21d34bc8deaedf9aea2c0f26343d51ec079be4dd71cccb6a7d3b204daeb1735b",
+      "result": {
+        "reason": "descriptive_observed_scene_link",
+        "descriptive_scene_link": true,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "source_pts_ticks": 60457,
+        "previous_source_pts_ticks": 60201,
+        "source_pixel_sha256": "21d34bc8deaedf9aea2c0f26343d51ec079be4dd71cccb6a7d3b204daeb1735b",
+        "previous_source_pixel_sha256": "eb69ac61ab1bd4da4517429efa0f2896e520476b6bef244f4e4746bb98c8d850",
+        "source_epoch": "offline-observed-R1",
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "reference_id": "reviewed-wall",
+        "previous_to_current_affine_640x360": [
+          [
+            0.9999708890882013,
+            6.245900447693317e-05,
+            0.013573537542512417
+          ],
+          [
+            -6.245900447693317e-05,
+            0.9999708890882013,
+            0.05948169940424022
+          ]
+        ],
+        "witnesses": [
+          {
+            "region": 0,
+            "previous_box_640x360": [
+              167,
+              53,
+              213,
+              117
+            ],
+            "fixed_projection_ncc": 0.9955711364746094
+          },
+          {
+            "region": 1,
+            "previous_box_640x360": [
+              173,
+              120,
+              283,
+              173
+            ],
+            "fixed_projection_ncc": 0.9975654482841492
+          },
+          {
+            "region": 2,
+            "previous_box_640x360": [
+              10,
+              173,
+              167,
+              247
+            ],
+            "fixed_projection_ncc": 0.9996640682220459
+          },
+          {
+            "region": 3,
+            "previous_box_640x360": [
+              440,
+              53,
+              567,
+              117
+            ],
+            "fixed_projection_ncc": 0.9970439672470093
+          },
+          {
+            "region": 4,
+            "previous_box_640x360": [
+              440,
+              123,
+              567,
+              177
+            ],
+            "fixed_projection_ncc": 0.9906466603279114
+          },
+          {
+            "region": 5,
+            "previous_box_640x360": [
+              173,
+              183,
+              267,
+              253
+            ],
+            "fixed_projection_ncc": 0.9994598031044006
+          }
+        ],
+        "minimum_witness_ncc": 0.9906466603279114,
+        "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+        "joint": {
+          "fixed_projection_witness_regions": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "distributed_source_and_current_support": true,
+          "joint_competing_offsets": [],
+          "unresolved_offsets": [],
+          "locally_unique_joint_appearance": true,
+          "scope": "fixed affine plus complete local integer-translation lattice only",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        }
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000004.png",
+      "source_pts_ticks": 60713,
+      "frame_sha256": "00e2240728fa5e6c6cd1d8a29adebecb993d61abb4c9a97aea47902d53f041e1",
+      "source_pixel_sha256": "03ad8c60cca1e1a5b02aae0d2395c56886b1654731a31ce39f51e53cda6217c7",
+      "result": {
+        "reason": "descriptive_observed_scene_link",
+        "descriptive_scene_link": true,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "source_pts_ticks": 60713,
+        "previous_source_pts_ticks": 60457,
+        "source_pixel_sha256": "03ad8c60cca1e1a5b02aae0d2395c56886b1654731a31ce39f51e53cda6217c7",
+        "previous_source_pixel_sha256": "21d34bc8deaedf9aea2c0f26343d51ec079be4dd71cccb6a7d3b204daeb1735b",
+        "source_epoch": "offline-observed-R1",
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "reference_id": "reviewed-wall",
+        "previous_to_current_affine_640x360": [
+          [
+            0.9994163799400911,
+            0.00040006732417747343,
+            0.25974800430030087
+          ],
+          [
+            -0.00040006732417747343,
+            0.9994163799400911,
+            0.22378602658322444
+          ]
+        ],
+        "witnesses": [
+          {
+            "region": 0,
+            "previous_box_640x360": [
+              167,
+              53,
+              213,
+              117
+            ],
+            "fixed_projection_ncc": 0.9893568754196167
+          },
+          {
+            "region": 1,
+            "previous_box_640x360": [
+              173,
+              120,
+              283,
+              173
+            ],
+            "fixed_projection_ncc": 0.9965158700942993
+          },
+          {
+            "region": 2,
+            "previous_box_640x360": [
+              10,
+              173,
+              167,
+              247
+            ],
+            "fixed_projection_ncc": 0.9996877908706665
+          },
+          {
+            "region": 3,
+            "previous_box_640x360": [
+              440,
+              53,
+              567,
+              117
+            ],
+            "fixed_projection_ncc": 0.9857656359672546
+          },
+          {
+            "region": 4,
+            "previous_box_640x360": [
+              440,
+              123,
+              567,
+              177
+            ],
+            "fixed_projection_ncc": 0.9810084700584412
+          },
+          {
+            "region": 5,
+            "previous_box_640x360": [
+              173,
+              183,
+              267,
+              253
+            ],
+            "fixed_projection_ncc": 0.9991405010223389
+          }
+        ],
+        "minimum_witness_ncc": 0.9810084700584412,
+        "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+        "joint": {
+          "fixed_projection_witness_regions": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "distributed_source_and_current_support": true,
+          "joint_competing_offsets": [],
+          "unresolved_offsets": [],
+          "locally_unique_joint_appearance": true,
+          "scope": "fixed affine plus complete local integer-translation lattice only",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        }
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000005.png",
+      "source_pts_ticks": 60969,
+      "frame_sha256": "77d745206022589fc826823873bc1305e922fdda01854eac4a7eed10876d6c80",
+      "source_pixel_sha256": "e7fd447968482a2c92eb2e2f8f0752106aed9b418055b37784edd4a6a866ae34",
+      "result": {
+        "reason": "descriptive_observed_scene_link",
+        "descriptive_scene_link": true,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "source_pts_ticks": 60969,
+        "previous_source_pts_ticks": 60713,
+        "source_pixel_sha256": "e7fd447968482a2c92eb2e2f8f0752106aed9b418055b37784edd4a6a866ae34",
+        "previous_source_pixel_sha256": "03ad8c60cca1e1a5b02aae0d2395c56886b1654731a31ce39f51e53cda6217c7",
+        "source_epoch": "offline-observed-R1",
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "reference_id": "reviewed-wall",
+        "previous_to_current_affine_640x360": [
+          [
+            0.9988707815333129,
+            0.0009893312413204616,
+            0.44664391880096516
+          ],
+          [
+            -0.0009893312413204616,
+            0.9988707815333129,
+            0.7806685507471308
+          ]
+        ],
+        "witnesses": [
+          {
+            "region": 0,
+            "previous_box_640x360": [
+              167,
+              53,
+              213,
+              117
+            ],
+            "fixed_projection_ncc": 0.9669959545135498
+          },
+          {
+            "region": 1,
+            "previous_box_640x360": [
+              173,
+              120,
+              283,
+              173
+            ],
+            "fixed_projection_ncc": 0.9948984384536743
+          },
+          {
+            "region": 2,
+            "previous_box_640x360": [
+              10,
+              173,
+              167,
+              247
+            ],
+            "fixed_projection_ncc": 0.998522162437439
+          },
+          {
+            "region": 3,
+            "previous_box_640x360": [
+              440,
+              53,
+              567,
+              117
+            ],
+            "fixed_projection_ncc": 0.9844526648521423
+          },
+          {
+            "region": 4,
+            "previous_box_640x360": [
+              440,
+              123,
+              567,
+              177
+            ],
+            "fixed_projection_ncc": 0.9723440408706665
+          },
+          {
+            "region": 5,
+            "previous_box_640x360": [
+              173,
+              183,
+              267,
+              253
+            ],
+            "fixed_projection_ncc": 0.9950947165489197
+          }
+        ],
+        "minimum_witness_ncc": 0.9669959545135498,
+        "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+        "joint": {
+          "fixed_projection_witness_regions": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "distributed_source_and_current_support": true,
+          "joint_competing_offsets": [],
+          "unresolved_offsets": [],
+          "locally_unique_joint_appearance": true,
+          "scope": "fixed affine plus complete local integer-translation lattice only",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        }
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000006.png",
+      "source_pts_ticks": 61225,
+      "frame_sha256": "d4dafbd08a45d736ff634bb6537d9d0991d3023a611db6a229874a4755c9f8d3",
+      "source_pixel_sha256": "02563af62baa6c85a8cee7598d67f37170ce3b2905c076fd2bcfea79e40f2333",
+      "result": {
+        "reason": "descriptive_observed_scene_link",
+        "descriptive_scene_link": true,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "source_pts_ticks": 61225,
+        "previous_source_pts_ticks": 60969,
+        "source_pixel_sha256": "02563af62baa6c85a8cee7598d67f37170ce3b2905c076fd2bcfea79e40f2333",
+        "previous_source_pixel_sha256": "e7fd447968482a2c92eb2e2f8f0752106aed9b418055b37784edd4a6a866ae34",
+        "source_epoch": "offline-observed-R1",
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "reference_id": "reviewed-wall",
+        "previous_to_current_affine_640x360": [
+          [
+            0.9981612228232385,
+            0.0009907323386550678,
+            0.4412571205305696
+          ],
+          [
+            -0.0009907323386550678,
+            0.9981612228232385,
+            0.881886659898652
+          ]
+        ],
+        "witnesses": [
+          {
+            "region": 0,
+            "previous_box_640x360": [
+              167,
+              53,
+              213,
+              117
+            ],
+            "fixed_projection_ncc": 0.95701664686203
+          },
+          {
+            "region": 1,
+            "previous_box_640x360": [
+              173,
+              120,
+              283,
+              173
+            ],
+            "fixed_projection_ncc": 0.9957403540611267
+          },
+          {
+            "region": 2,
+            "previous_box_640x360": [
+              10,
+              173,
+              167,
+              247
+            ],
+            "fixed_projection_ncc": 0.9989297389984131
+          },
+          {
+            "region": 3,
+            "previous_box_640x360": [
+              440,
+              53,
+              567,
+              117
+            ],
+            "fixed_projection_ncc": 0.9823469519615173
+          },
+          {
+            "region": 4,
+            "previous_box_640x360": [
+              440,
+              123,
+              567,
+              177
+            ],
+            "fixed_projection_ncc": 0.9836934208869934
+          },
+          {
+            "region": 5,
+            "previous_box_640x360": [
+              173,
+              183,
+              267,
+              253
+            ],
+            "fixed_projection_ncc": 0.9958227872848511
+          }
+        ],
+        "minimum_witness_ncc": 0.95701664686203,
+        "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+        "joint": {
+          "fixed_projection_witness_regions": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "distributed_source_and_current_support": true,
+          "joint_competing_offsets": [],
+          "unresolved_offsets": [],
+          "locally_unique_joint_appearance": true,
+          "scope": "fixed affine plus complete local integer-translation lattice only",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        }
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000007.png",
+      "source_pts_ticks": 61481,
+      "frame_sha256": "3d4c25843ec375524762f21a11a17b7bf7854f65680ceaf0396b5a597a1d94dc",
+      "source_pixel_sha256": "18d2ed2bf656cf0c9432ca7f181a1e736f8f650e6ce32e436f43bcc236ffb75d",
+      "result": {
+        "reason": "descriptive_observed_scene_link",
+        "descriptive_scene_link": true,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "source_pts_ticks": 61481,
+        "previous_source_pts_ticks": 61225,
+        "source_pixel_sha256": "18d2ed2bf656cf0c9432ca7f181a1e736f8f650e6ce32e436f43bcc236ffb75d",
+        "previous_source_pixel_sha256": "02563af62baa6c85a8cee7598d67f37170ce3b2905c076fd2bcfea79e40f2333",
+        "source_epoch": "offline-observed-R1",
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "reference_id": "reviewed-wall",
+        "previous_to_current_affine_640x360": [
+          [
+            0.9988917387471938,
+            -0.001986996973963618,
+            1.4031868441668058
+          ],
+          [
+            0.001986996973963618,
+            0.9988917387471938,
+            0.7958172289250688
+          ]
+        ],
+        "witnesses": [
+          {
+            "region": 1,
+            "previous_box_640x360": [
+              173,
+              120,
+              283,
+              173
+            ],
+            "fixed_projection_ncc": 0.9762078523635864
+          },
+          {
+            "region": 2,
+            "previous_box_640x360": [
+              10,
+              173,
+              167,
+              247
+            ],
+            "fixed_projection_ncc": 0.9989275336265564
+          },
+          {
+            "region": 3,
+            "previous_box_640x360": [
+              440,
+              53,
+              567,
+              117
+            ],
+            "fixed_projection_ncc": 0.9115911722183228
+          },
+          {
+            "region": 4,
+            "previous_box_640x360": [
+              440,
+              123,
+              567,
+              177
+            ],
+            "fixed_projection_ncc": 0.9213390350341797
+          },
+          {
+            "region": 5,
+            "previous_box_640x360": [
+              173,
+              183,
+              267,
+              253
+            ],
+            "fixed_projection_ncc": 0.9955141544342041
+          }
+        ],
+        "minimum_witness_ncc": 0.9115911722183228,
+        "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+        "joint": {
+          "fixed_projection_witness_regions": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "distributed_source_and_current_support": true,
+          "joint_competing_offsets": [],
+          "unresolved_offsets": [],
+          "locally_unique_joint_appearance": true,
+          "scope": "fixed affine plus complete local integer-translation lattice only",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        }
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000008.png",
+      "source_pts_ticks": 61737,
+      "frame_sha256": "eddab3d93b6a8d910aaa923a260a7be4779514c79670dc8d2fefb3a1e0863473",
+      "source_pixel_sha256": "59aa489593988887056ed2128bb7f7214b8bcbe8bb67078064cb42007cf89426",
+      "result": {
+        "reason": "descriptive_observed_scene_link",
+        "descriptive_scene_link": true,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "source_pts_ticks": 61737,
+        "previous_source_pts_ticks": 61481,
+        "source_pixel_sha256": "59aa489593988887056ed2128bb7f7214b8bcbe8bb67078064cb42007cf89426",
+        "previous_source_pixel_sha256": "18d2ed2bf656cf0c9432ca7f181a1e736f8f650e6ce32e436f43bcc236ffb75d",
+        "source_epoch": "offline-observed-R1",
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "reference_id": "reviewed-wall",
+        "previous_to_current_affine_640x360": [
+          [
+            0.9969577142265492,
+            0.0008719146439735044,
+            0.7623819879880043
+          ],
+          [
+            -0.0008719146439735044,
+            0.9969577142265492,
+            1.3927969693111104
+          ]
+        ],
+        "witnesses": [
+          {
+            "region": 0,
+            "previous_box_640x360": [
+              167,
+              53,
+              213,
+              117
+            ],
+            "fixed_projection_ncc": 0.9188662171363831
+          },
+          {
+            "region": 1,
+            "previous_box_640x360": [
+              173,
+              120,
+              283,
+              173
+            ],
+            "fixed_projection_ncc": 0.984491229057312
+          },
+          {
+            "region": 2,
+            "previous_box_640x360": [
+              10,
+              173,
+              167,
+              247
+            ],
+            "fixed_projection_ncc": 0.999064564704895
+          },
+          {
+            "region": 3,
+            "previous_box_640x360": [
+              440,
+              53,
+              567,
+              117
+            ],
+            "fixed_projection_ncc": 0.9311407208442688
+          },
+          {
+            "region": 4,
+            "previous_box_640x360": [
+              440,
+              123,
+              567,
+              177
+            ],
+            "fixed_projection_ncc": 0.9521732926368713
+          },
+          {
+            "region": 5,
+            "previous_box_640x360": [
+              173,
+              183,
+              267,
+              253
+            ],
+            "fixed_projection_ncc": 0.996631383895874
+          }
+        ],
+        "minimum_witness_ncc": 0.9188662171363831,
+        "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+        "joint": {
+          "fixed_projection_witness_regions": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "distributed_source_and_current_support": true,
+          "joint_competing_offsets": [],
+          "unresolved_offsets": [],
+          "locally_unique_joint_appearance": true,
+          "scope": "fixed affine plus complete local integer-translation lattice only",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        }
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000009.png",
+      "source_pts_ticks": 61993,
+      "frame_sha256": "995c70d5658ba86dd220d7d02f947982e00c9d4cdf9456dde224924df8211951",
+      "source_pixel_sha256": "ae178f026f79c7b5363e4f20b1f7ede5905aa98cbc58b9d8576ae869447b5009",
+      "result": {
+        "reason": "descriptive_observed_scene_link",
+        "descriptive_scene_link": true,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "source_pts_ticks": 61993,
+        "previous_source_pts_ticks": 61737,
+        "source_pixel_sha256": "ae178f026f79c7b5363e4f20b1f7ede5905aa98cbc58b9d8576ae869447b5009",
+        "previous_source_pixel_sha256": "59aa489593988887056ed2128bb7f7214b8bcbe8bb67078064cb42007cf89426",
+        "source_epoch": "offline-observed-R1",
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "reference_id": "reviewed-wall",
+        "previous_to_current_affine_640x360": [
+          [
+            1.0003762890222208,
+            -0.00044567582865042327,
+            0.7271838307434386
+          ],
+          [
+            0.00044567582865042327,
+            1.0003762890222208,
+            0.3758206685550789
+          ]
+        ],
+        "witnesses": [
+          {
+            "region": 1,
+            "previous_box_640x360": [
+              173,
+              120,
+              283,
+              173
+            ],
+            "fixed_projection_ncc": 0.9745734930038452
+          },
+          {
+            "region": 2,
+            "previous_box_640x360": [
+              10,
+              173,
+              167,
+              247
+            ],
+            "fixed_projection_ncc": 0.9988486766815186
+          },
+          {
+            "region": 3,
+            "previous_box_640x360": [
+              440,
+              53,
+              567,
+              117
+            ],
+            "fixed_projection_ncc": 0.9097880721092224
+          },
+          {
+            "region": 4,
+            "previous_box_640x360": [
+              440,
+              123,
+              567,
+              177
+            ],
+            "fixed_projection_ncc": 0.9171323776245117
+          },
+          {
+            "region": 5,
+            "previous_box_640x360": [
+              173,
+              183,
+              267,
+              253
+            ],
+            "fixed_projection_ncc": 0.9974551796913147
+          }
+        ],
+        "minimum_witness_ncc": 0.9097880721092224,
+        "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+        "joint": {
+          "fixed_projection_witness_regions": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "distributed_source_and_current_support": true,
+          "joint_competing_offsets": [],
+          "unresolved_offsets": [],
+          "locally_unique_joint_appearance": true,
+          "scope": "fixed affine plus complete local integer-translation lattice only",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        }
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000010.png",
+      "source_pts_ticks": 62249,
+      "frame_sha256": "a3a788841be688ba3d97be42478708e5cd8571ff74c6a1a1fce8172f88ad0104",
+      "source_pixel_sha256": "de6a2b93b021a578ea5f0ab661db58638a3a5eb7889492d8f5e9fd6892d2c530",
+      "result": {
+        "reason": "descriptive_observed_scene_link",
+        "descriptive_scene_link": true,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "source_pts_ticks": 62249,
+        "previous_source_pts_ticks": 61993,
+        "source_pixel_sha256": "de6a2b93b021a578ea5f0ab661db58638a3a5eb7889492d8f5e9fd6892d2c530",
+        "previous_source_pixel_sha256": "ae178f026f79c7b5363e4f20b1f7ede5905aa98cbc58b9d8576ae869447b5009",
+        "source_epoch": "offline-observed-R1",
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "reference_id": "reviewed-wall",
+        "previous_to_current_affine_640x360": [
+          [
+            0.9977251900762995,
+            -0.00021839886460701973,
+            0.8121527795789663
+          ],
+          [
+            0.00021839886460701973,
+            0.9977251900762995,
+            0.9766652491698967
+          ]
+        ],
+        "witnesses": [
+          {
+            "region": 0,
+            "previous_box_640x360": [
+              167,
+              53,
+              213,
+              117
+            ],
+            "fixed_projection_ncc": 0.9558305740356445
+          },
+          {
+            "region": 1,
+            "previous_box_640x360": [
+              173,
+              120,
+              283,
+              173
+            ],
+            "fixed_projection_ncc": 0.9933258295059204
+          },
+          {
+            "region": 2,
+            "previous_box_640x360": [
+              10,
+              173,
+              167,
+              247
+            ],
+            "fixed_projection_ncc": 0.9991484880447388
+          },
+          {
+            "region": 3,
+            "previous_box_640x360": [
+              440,
+              53,
+              567,
+              117
+            ],
+            "fixed_projection_ncc": 0.9695467948913574
+          },
+          {
+            "region": 4,
+            "previous_box_640x360": [
+              440,
+              123,
+              567,
+              177
+            ],
+            "fixed_projection_ncc": 0.9682856798171997
+          },
+          {
+            "region": 5,
+            "previous_box_640x360": [
+              173,
+              183,
+              267,
+              253
+            ],
+            "fixed_projection_ncc": 0.9983415603637695
+          }
+        ],
+        "minimum_witness_ncc": 0.9558305740356445,
+        "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+        "joint": {
+          "fixed_projection_witness_regions": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "distributed_source_and_current_support": true,
+          "joint_competing_offsets": [],
+          "unresolved_offsets": [],
+          "locally_unique_joint_appearance": true,
+          "scope": "fixed affine plus complete local integer-translation lattice only",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        }
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000011.png",
+      "source_pts_ticks": 62505,
+      "frame_sha256": "2ca7c16fac54a93af47a678cd1491bffc7a8ec0edf9634d4c2be4e4a134741e2",
+      "source_pixel_sha256": "57307d89cff2d12fef8474be2176bfe84a495c0975a33218c64dbcf2411347c9",
+      "result": {
+        "reason": "descriptive_observed_scene_link",
+        "descriptive_scene_link": true,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "source_pts_ticks": 62505,
+        "previous_source_pts_ticks": 62249,
+        "source_pixel_sha256": "57307d89cff2d12fef8474be2176bfe84a495c0975a33218c64dbcf2411347c9",
+        "previous_source_pixel_sha256": "de6a2b93b021a578ea5f0ab661db58638a3a5eb7889492d8f5e9fd6892d2c530",
+        "source_epoch": "offline-observed-R1",
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "reference_id": "reviewed-wall",
+        "previous_to_current_affine_640x360": [
+          [
+            0.9980233984352067,
+            -0.00027100720568228043,
+            0.5689156141025292
+          ],
+          [
+            0.00027100720568228043,
+            0.9980233984352067,
+            0.6120818130850372
+          ]
+        ],
+        "witnesses": [
+          {
+            "region": 0,
+            "previous_box_640x360": [
+              167,
+              53,
+              213,
+              117
+            ],
+            "fixed_projection_ncc": 0.9765285849571228
+          },
+          {
+            "region": 1,
+            "previous_box_640x360": [
+              173,
+              120,
+              283,
+              173
+            ],
+            "fixed_projection_ncc": 0.9970846176147461
+          },
+          {
+            "region": 2,
+            "previous_box_640x360": [
+              10,
+              173,
+              167,
+              247
+            ],
+            "fixed_projection_ncc": 0.9994803071022034
+          },
+          {
+            "region": 3,
+            "previous_box_640x360": [
+              440,
+              53,
+              567,
+              117
+            ],
+            "fixed_projection_ncc": 0.9715425968170166
+          },
+          {
+            "region": 4,
+            "previous_box_640x360": [
+              440,
+              123,
+              567,
+              177
+            ],
+            "fixed_projection_ncc": 0.974530041217804
+          },
+          {
+            "region": 5,
+            "previous_box_640x360": [
+              173,
+              183,
+              267,
+              253
+            ],
+            "fixed_projection_ncc": 0.998984158039093
+          }
+        ],
+        "minimum_witness_ncc": 0.9715425968170166,
+        "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+        "joint": {
+          "fixed_projection_witness_regions": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "distributed_source_and_current_support": true,
+          "joint_competing_offsets": [],
+          "unresolved_offsets": [],
+          "locally_unique_joint_appearance": true,
+          "scope": "fixed affine plus complete local integer-translation lattice only",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        }
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000012.png",
+      "source_pts_ticks": 62761,
+      "frame_sha256": "0971d607cd0a91eb2c2af8e4949dd601201575ad6050945d1583ecad529797e9",
+      "source_pixel_sha256": "6ab7cd27a8756b687f70857d6bf0d2a8732625d15161e2de41a139f31fd193e1",
+      "result": {
+        "reason": "descriptive_observed_scene_link",
+        "descriptive_scene_link": true,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "source_pts_ticks": 62761,
+        "previous_source_pts_ticks": 62505,
+        "source_pixel_sha256": "6ab7cd27a8756b687f70857d6bf0d2a8732625d15161e2de41a139f31fd193e1",
+        "previous_source_pixel_sha256": "57307d89cff2d12fef8474be2176bfe84a495c0975a33218c64dbcf2411347c9",
+        "source_epoch": "offline-observed-R1",
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "reference_id": "reviewed-wall",
+        "previous_to_current_affine_640x360": [
+          [
+            0.9993152975236625,
+            0.00021229323565493486,
+            0.22502270484181902
+          ],
+          [
+            -0.00021229323565493486,
+            0.9993152975236625,
+            0.31792441999776255
+          ]
+        ],
+        "witnesses": [
+          {
+            "region": 0,
+            "previous_box_640x360": [
+              167,
+              53,
+              213,
+              117
+            ],
+            "fixed_projection_ncc": 0.9981522560119629
+          },
+          {
+            "region": 1,
+            "previous_box_640x360": [
+              173,
+              120,
+              283,
+              173
+            ],
+            "fixed_projection_ncc": 0.999234139919281
+          },
+          {
+            "region": 2,
+            "previous_box_640x360": [
+              10,
+              173,
+              167,
+              247
+            ],
+            "fixed_projection_ncc": 0.9996366500854492
+          },
+          {
+            "region": 3,
+            "previous_box_640x360": [
+              440,
+              53,
+              567,
+              117
+            ],
+            "fixed_projection_ncc": 0.9988192319869995
+          },
+          {
+            "region": 4,
+            "previous_box_640x360": [
+              440,
+              123,
+              567,
+              177
+            ],
+            "fixed_projection_ncc": 0.9934019446372986
+          },
+          {
+            "region": 5,
+            "previous_box_640x360": [
+              173,
+              183,
+              267,
+              253
+            ],
+            "fixed_projection_ncc": 0.9991723299026489
+          }
+        ],
+        "minimum_witness_ncc": 0.9934019446372986,
+        "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+        "joint": {
+          "fixed_projection_witness_regions": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "distributed_source_and_current_support": true,
+          "joint_competing_offsets": [],
+          "unresolved_offsets": [],
+          "locally_unique_joint_appearance": true,
+          "scope": "fixed affine plus complete local integer-translation lattice only",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        }
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000013.png",
+      "source_pts_ticks": 63017,
+      "frame_sha256": "3f7f964b6993d20bba3396e160e6b6edf41cc5352b0b0ad57de9254ddb7fe0a5",
+      "source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b",
+      "result": {
+        "reason": "descriptive_observed_scene_link",
+        "descriptive_scene_link": true,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "source_pts_ticks": 63017,
+        "previous_source_pts_ticks": 62761,
+        "source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b",
+        "previous_source_pixel_sha256": "6ab7cd27a8756b687f70857d6bf0d2a8732625d15161e2de41a139f31fd193e1",
+        "source_epoch": "offline-observed-R1",
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "reference_id": "reviewed-wall",
+        "previous_to_current_affine_640x360": [
+          [
+            1.000371710894513,
+            2.6810115829218473e-06,
+            -0.020378635657427955
+          ],
+          [
+            -2.6810115829218473e-06,
+            1.000371710894513,
+            -0.07044028919756365
+          ]
+        ],
+        "witnesses": [
+          {
+            "region": 0,
+            "previous_box_640x360": [
+              167,
+              53,
+              213,
+              117
+            ],
+            "fixed_projection_ncc": 0.9967154264450073
+          },
+          {
+            "region": 2,
+            "previous_box_640x360": [
+              10,
+              173,
+              167,
+              247
+            ],
+            "fixed_projection_ncc": 0.9999352097511292
+          },
+          {
+            "region": 3,
+            "previous_box_640x360": [
+              440,
+              53,
+              567,
+              117
+            ],
+            "fixed_projection_ncc": 0.9981988668441772
+          },
+          {
+            "region": 4,
+            "previous_box_640x360": [
+              440,
+              123,
+              567,
+              177
+            ],
+            "fixed_projection_ncc": 0.9939509034156799
+          },
+          {
+            "region": 5,
+            "previous_box_640x360": [
+              173,
+              183,
+              267,
+              253
+            ],
+            "fixed_projection_ncc": 0.9997571110725403
+          }
+        ],
+        "minimum_witness_ncc": 0.9939509034156799,
+        "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+        "joint": {
+          "fixed_projection_witness_regions": [
+            0,
+            2,
+            3,
+            4,
+            5
+          ],
+          "distributed_source_and_current_support": true,
+          "joint_competing_offsets": [],
+          "unresolved_offsets": [],
+          "locally_unique_joint_appearance": true,
+          "scope": "fixed affine plus complete local integer-translation lattice only",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        }
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000014.png",
+      "source_pts_ticks": 63273,
+      "frame_sha256": "ffc878007fe550701c8e5be11f78b1a6d91bc88f77972cc48b370ac4cf7e7bb6",
+      "source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a",
+      "result": {
+        "reason": "descriptive_observed_scene_link",
+        "descriptive_scene_link": true,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "source_pts_ticks": 63273,
+        "previous_source_pts_ticks": 63017,
+        "source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a",
+        "previous_source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b",
+        "source_epoch": "offline-observed-R1",
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "reference_id": "reviewed-wall",
+        "previous_to_current_affine_640x360": [
+          [
+            0.999850348228196,
+            -4.140925554387402e-06,
+            0.05349598524434748
+          ],
+          [
+            4.140925554387402e-06,
+            0.999850348228196,
+            0.028187445490356004
+          ]
+        ],
+        "witnesses": [
+          {
+            "region": 0,
+            "previous_box_640x360": [
+              167,
+              53,
+              213,
+              117
+            ],
+            "fixed_projection_ncc": 0.99870765209198
+          },
+          {
+            "region": 1,
+            "previous_box_640x360": [
+              173,
+              120,
+              283,
+              173
+            ],
+            "fixed_projection_ncc": 0.9996821284294128
+          },
+          {
+            "region": 2,
+            "previous_box_640x360": [
+              10,
+              173,
+              167,
+              247
+            ],
+            "fixed_projection_ncc": 0.9999531507492065
+          },
+          {
+            "region": 3,
+            "previous_box_640x360": [
+              440,
+              53,
+              567,
+              117
+            ],
+            "fixed_projection_ncc": 0.9979313611984253
+          },
+          {
+            "region": 4,
+            "previous_box_640x360": [
+              440,
+              123,
+              567,
+              177
+            ],
+            "fixed_projection_ncc": 0.9954364895820618
+          },
+          {
+            "region": 5,
+            "previous_box_640x360": [
+              173,
+              183,
+              267,
+              253
+            ],
+            "fixed_projection_ncc": 0.999787449836731
+          }
+        ],
+        "minimum_witness_ncc": 0.9954364895820618,
+        "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+        "joint": {
+          "fixed_projection_witness_regions": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "distributed_source_and_current_support": true,
+          "joint_competing_offsets": [],
+          "unresolved_offsets": [],
+          "locally_unique_joint_appearance": true,
+          "scope": "fixed affine plus complete local integer-translation lattice only",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        }
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000015.png",
+      "source_pts_ticks": 63529,
+      "frame_sha256": "d72a67e8f64bc6ffe0b90a1f6118c522380a2bd83eabd4e84b6a5f36f7b605fc",
+      "source_pixel_sha256": "7b784dd56e27c48a760671568acbd458bc496400335ee4b3181798d0584a4044",
+      "result": {
+        "reason": "descriptive_observed_scene_link",
+        "descriptive_scene_link": true,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "source_pts_ticks": 63529,
+        "previous_source_pts_ticks": 63273,
+        "source_pixel_sha256": "7b784dd56e27c48a760671568acbd458bc496400335ee4b3181798d0584a4044",
+        "previous_source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a",
+        "source_epoch": "offline-observed-R1",
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "reference_id": "reviewed-wall",
+        "previous_to_current_affine_640x360": [
+          [
+            0.9941675376392474,
+            -5.911629275851256e-05,
+            2.2768559763895473
+          ],
+          [
+            5.911629275851256e-05,
+            0.9941675376392474,
+            0.8996724744257092
+          ]
+        ],
+        "witnesses": [
+          {
+            "region": 0,
+            "previous_box_640x360": [
+              167,
+              53,
+              213,
+              117
+            ],
+            "fixed_projection_ncc": 0.943096399307251
+          },
+          {
+            "region": 1,
+            "previous_box_640x360": [
+              173,
+              120,
+              283,
+              173
+            ],
+            "fixed_projection_ncc": 0.9913720488548279
+          },
+          {
+            "region": 2,
+            "previous_box_640x360": [
+              10,
+              173,
+              167,
+              247
+            ],
+            "fixed_projection_ncc": 0.9991496205329895
+          },
+          {
+            "region": 3,
+            "previous_box_640x360": [
+              440,
+              53,
+              567,
+              117
+            ],
+            "fixed_projection_ncc": 0.9732360243797302
+          },
+          {
+            "region": 4,
+            "previous_box_640x360": [
+              440,
+              123,
+              567,
+              177
+            ],
+            "fixed_projection_ncc": 0.9734658002853394
+          },
+          {
+            "region": 5,
+            "previous_box_640x360": [
+              173,
+              183,
+              267,
+              253
+            ],
+            "fixed_projection_ncc": 0.9985713362693787
+          }
+        ],
+        "minimum_witness_ncc": 0.943096399307251,
+        "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+        "joint": {
+          "fixed_projection_witness_regions": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "distributed_source_and_current_support": true,
+          "joint_competing_offsets": [],
+          "unresolved_offsets": [],
+          "locally_unique_joint_appearance": true,
+          "scope": "fixed affine plus complete local integer-translation lattice only",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        }
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000016.png",
+      "source_pts_ticks": 63785,
+      "frame_sha256": "40a1ca141705ef466d3cdcd339bfa1e519a8bd998cabb9ea204da72dcaa6d382",
+      "source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0",
+      "result": {
+        "reason": "descriptive_observed_scene_link",
+        "descriptive_scene_link": true,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "source_pts_ticks": 63785,
+        "previous_source_pts_ticks": 63529,
+        "source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0",
+        "previous_source_pixel_sha256": "7b784dd56e27c48a760671568acbd458bc496400335ee4b3181798d0584a4044",
+        "source_epoch": "offline-observed-R1",
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "reference_id": "reviewed-wall",
+        "previous_to_current_affine_640x360": [
+          [
+            0.9949682939591988,
+            -0.00020993149541429428,
+            2.071685541855656
+          ],
+          [
+            0.00020993149541429428,
+            0.9949682939591988,
+            0.7094818283904211
+          ]
+        ],
+        "witnesses": [
+          {
+            "region": 0,
+            "previous_box_640x360": [
+              167,
+              53,
+              213,
+              117
+            ],
+            "fixed_projection_ncc": 0.9518660306930542
+          },
+          {
+            "region": 1,
+            "previous_box_640x360": [
+              173,
+              120,
+              283,
+              173
+            ],
+            "fixed_projection_ncc": 0.9923921823501587
+          },
+          {
+            "region": 2,
+            "previous_box_640x360": [
+              10,
+              173,
+              167,
+              247
+            ],
+            "fixed_projection_ncc": 0.9993191957473755
+          },
+          {
+            "region": 3,
+            "previous_box_640x360": [
+              440,
+              53,
+              567,
+              117
+            ],
+            "fixed_projection_ncc": 0.9734211564064026
+          },
+          {
+            "region": 4,
+            "previous_box_640x360": [
+              440,
+              123,
+              567,
+              177
+            ],
+            "fixed_projection_ncc": 0.9686607122421265
+          },
+          {
+            "region": 5,
+            "previous_box_640x360": [
+              173,
+              183,
+              267,
+              253
+            ],
+            "fixed_projection_ncc": 0.99851393699646
+          }
+        ],
+        "minimum_witness_ncc": 0.9518660306930542,
+        "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+        "joint": {
+          "fixed_projection_witness_regions": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "distributed_source_and_current_support": true,
+          "joint_competing_offsets": [],
+          "unresolved_offsets": [],
+          "locally_unique_joint_appearance": true,
+          "scope": "fixed affine plus complete local integer-translation lattice only",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        }
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000017.png",
+      "source_pts_ticks": 64041,
+      "frame_sha256": "87a43e4a4c0e1f7eb1ea8e6fedccbefa5bc6eddd8d29c61dc25e92dbeef418f8",
+      "source_pixel_sha256": "d18c9060f352e53b37967c62e12f3ee51b06e330664ee49da476b3751cda8f83",
+      "result": {
+        "reason": "descriptive_observed_scene_link",
+        "descriptive_scene_link": true,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "source_pts_ticks": 64041,
+        "previous_source_pts_ticks": 63785,
+        "source_pixel_sha256": "d18c9060f352e53b37967c62e12f3ee51b06e330664ee49da476b3751cda8f83",
+        "previous_source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0",
+        "source_epoch": "offline-observed-R1",
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "reference_id": "reviewed-wall",
+        "previous_to_current_affine_640x360": [
+          [
+            0.9936127235605946,
+            -0.000369366479907551,
+            2.1948676381947405
+          ],
+          [
+            0.000369366479907551,
+            0.9936127235605946,
+            0.9640307019707289
+          ]
+        ],
+        "witnesses": [
+          {
+            "region": 0,
+            "previous_box_640x360": [
+              167,
+              53,
+              213,
+              117
+            ],
+            "fixed_projection_ncc": 0.9595354199409485
+          },
+          {
+            "region": 1,
+            "previous_box_640x360": [
+              173,
+              120,
+              283,
+              173
+            ],
+            "fixed_projection_ncc": 0.9943629503250122
+          },
+          {
+            "region": 2,
+            "previous_box_640x360": [
+              10,
+              173,
+              167,
+              247
+            ],
+            "fixed_projection_ncc": 0.9992177486419678
+          },
+          {
+            "region": 3,
+            "previous_box_640x360": [
+              440,
+              53,
+              567,
+              117
+            ],
+            "fixed_projection_ncc": 0.9757891893386841
+          },
+          {
+            "region": 4,
+            "previous_box_640x360": [
+              440,
+              123,
+              567,
+              177
+            ],
+            "fixed_projection_ncc": 0.9683620929718018
+          },
+          {
+            "region": 5,
+            "previous_box_640x360": [
+              173,
+              183,
+              267,
+              253
+            ],
+            "fixed_projection_ncc": 0.9984337687492371
+          }
+        ],
+        "minimum_witness_ncc": 0.9595354199409485,
+        "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+        "joint": {
+          "fixed_projection_witness_regions": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "distributed_source_and_current_support": true,
+          "joint_competing_offsets": [],
+          "unresolved_offsets": [],
+          "locally_unique_joint_appearance": true,
+          "scope": "fixed affine plus complete local integer-translation lattice only",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        }
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000018.png",
+      "source_pts_ticks": 64297,
+      "frame_sha256": "e2e07cdce5e63bde4205fa7401ca54f9b6917872957efe3b303f0286e370b43b",
+      "source_pixel_sha256": "0e795ed52d0eac85bf325988a8d629c2be975f8fbce0d9bfa33a8a0c773eee86",
+      "result": {
+        "reason": "descriptive_observed_scene_link",
+        "descriptive_scene_link": true,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "source_pts_ticks": 64297,
+        "previous_source_pts_ticks": 64041,
+        "source_pixel_sha256": "0e795ed52d0eac85bf325988a8d629c2be975f8fbce0d9bfa33a8a0c773eee86",
+        "previous_source_pixel_sha256": "d18c9060f352e53b37967c62e12f3ee51b06e330664ee49da476b3751cda8f83",
+        "source_epoch": "offline-observed-R1",
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "reference_id": "reviewed-wall",
+        "previous_to_current_affine_640x360": [
+          [
+            0.9973126269931959,
+            3.470814847077836e-05,
+            0.7709855097489718
+          ],
+          [
+            -3.470814847077836e-05,
+            0.9973126269931959,
+            0.4569872272547675
+          ]
+        ],
+        "witnesses": [
+          {
+            "region": 0,
+            "previous_box_640x360": [
+              167,
+              53,
+              213,
+              117
+            ],
+            "fixed_projection_ncc": 0.9677121639251709
+          },
+          {
+            "region": 1,
+            "previous_box_640x360": [
+              173,
+              120,
+              283,
+              173
+            ],
+            "fixed_projection_ncc": 0.9951579570770264
+          },
+          {
+            "region": 2,
+            "previous_box_640x360": [
+              10,
+              173,
+              167,
+              247
+            ],
+            "fixed_projection_ncc": 0.9996978640556335
+          },
+          {
+            "region": 3,
+            "previous_box_640x360": [
+              440,
+              53,
+              567,
+              117
+            ],
+            "fixed_projection_ncc": 0.9791299700737
+          },
+          {
+            "region": 4,
+            "previous_box_640x360": [
+              440,
+              123,
+              567,
+              177
+            ],
+            "fixed_projection_ncc": 0.9734113216400146
+          },
+          {
+            "region": 5,
+            "previous_box_640x360": [
+              173,
+              183,
+              267,
+              253
+            ],
+            "fixed_projection_ncc": 0.9991817474365234
+          }
+        ],
+        "minimum_witness_ncc": 0.9677121639251709,
+        "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+        "joint": {
+          "fixed_projection_witness_regions": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "distributed_source_and_current_support": true,
+          "joint_competing_offsets": [],
+          "unresolved_offsets": [],
+          "locally_unique_joint_appearance": true,
+          "scope": "fixed affine plus complete local integer-translation lattice only",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        }
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000019.png",
+      "source_pts_ticks": 64553,
+      "frame_sha256": "d81a979afdc6bee35155fc029a0621d43a7b0dbbe29fc364cd0010cbfa697707",
+      "source_pixel_sha256": "bcb5a25b6b58a0efb563575d4be9ba3507bf290b327fa64996a1d903970695a2",
+      "result": {
+        "reason": "descriptive_observed_scene_link",
+        "descriptive_scene_link": true,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "source_pts_ticks": 64553,
+        "previous_source_pts_ticks": 64297,
+        "source_pixel_sha256": "bcb5a25b6b58a0efb563575d4be9ba3507bf290b327fa64996a1d903970695a2",
+        "previous_source_pixel_sha256": "0e795ed52d0eac85bf325988a8d629c2be975f8fbce0d9bfa33a8a0c773eee86",
+        "source_epoch": "offline-observed-R1",
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "reference_id": "reviewed-wall",
+        "previous_to_current_affine_640x360": [
+          [
+            0.9947429532630453,
+            -0.00021189294996331866,
+            2.1313136736822207
+          ],
+          [
+            0.00021189294996331866,
+            0.9947429532630453,
+            0.7381912906413928
+          ]
+        ],
+        "witnesses": [
+          {
+            "region": 0,
+            "previous_box_640x360": [
+              167,
+              53,
+              213,
+              117
+            ],
+            "fixed_projection_ncc": 0.9561864137649536
+          },
+          {
+            "region": 1,
+            "previous_box_640x360": [
+              173,
+              120,
+              283,
+              173
+            ],
+            "fixed_projection_ncc": 0.9937868714332581
+          },
+          {
+            "region": 2,
+            "previous_box_640x360": [
+              10,
+              173,
+              167,
+              247
+            ],
+            "fixed_projection_ncc": 0.9992949962615967
+          },
+          {
+            "region": 3,
+            "previous_box_640x360": [
+              440,
+              53,
+              567,
+              117
+            ],
+            "fixed_projection_ncc": 0.972802460193634
+          },
+          {
+            "region": 4,
+            "previous_box_640x360": [
+              440,
+              123,
+              567,
+              177
+            ],
+            "fixed_projection_ncc": 0.9634804129600525
+          },
+          {
+            "region": 5,
+            "previous_box_640x360": [
+              173,
+              183,
+              267,
+              253
+            ],
+            "fixed_projection_ncc": 0.9985043406486511
+          }
+        ],
+        "minimum_witness_ncc": 0.9561864137649536,
+        "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+        "joint": {
+          "fixed_projection_witness_regions": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "distributed_source_and_current_support": true,
+          "joint_competing_offsets": [],
+          "unresolved_offsets": [],
+          "locally_unique_joint_appearance": true,
+          "scope": "fixed affine plus complete local integer-translation lattice only",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        }
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000020.png",
+      "source_pts_ticks": 64809,
+      "frame_sha256": "2c747572f073d4c8769933863cf6e99c8498bccb4469b8476cc12784854b7a7e",
+      "source_pixel_sha256": "8e43e3263c8c969fd28631dab3f78166a163ec834e66fae70ad0b70e0c9160b2",
+      "result": {
+        "reason": "descriptive_observed_scene_link",
+        "descriptive_scene_link": true,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "source_pts_ticks": 64809,
+        "previous_source_pts_ticks": 64553,
+        "source_pixel_sha256": "8e43e3263c8c969fd28631dab3f78166a163ec834e66fae70ad0b70e0c9160b2",
+        "previous_source_pixel_sha256": "bcb5a25b6b58a0efb563575d4be9ba3507bf290b327fa64996a1d903970695a2",
+        "source_epoch": "offline-observed-R1",
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "reference_id": "reviewed-wall",
+        "previous_to_current_affine_640x360": [
+          [
+            0.9969906091132562,
+            -4.954419358406119e-05,
+            1.1675051123971283
+          ],
+          [
+            4.954419358406119e-05,
+            0.9969906091132562,
+            0.42137906112760154
+          ]
+        ],
+        "witnesses": [
+          {
+            "region": 0,
+            "previous_box_640x360": [
+              167,
+              53,
+              213,
+              117
+            ],
+            "fixed_projection_ncc": 0.9702686667442322
+          },
+          {
+            "region": 1,
+            "previous_box_640x360": [
+              173,
+              120,
+              283,
+              173
+            ],
+            "fixed_projection_ncc": 0.9957726001739502
+          },
+          {
+            "region": 2,
+            "previous_box_640x360": [
+              10,
+              173,
+              167,
+              247
+            ],
+            "fixed_projection_ncc": 0.9995742440223694
+          },
+          {
+            "region": 3,
+            "previous_box_640x360": [
+              440,
+              53,
+              567,
+              117
+            ],
+            "fixed_projection_ncc": 0.9880130887031555
+          },
+          {
+            "region": 4,
+            "previous_box_640x360": [
+              440,
+              123,
+              567,
+              177
+            ],
+            "fixed_projection_ncc": 0.9762584567070007
+          },
+          {
+            "region": 5,
+            "previous_box_640x360": [
+              173,
+              183,
+              267,
+              253
+            ],
+            "fixed_projection_ncc": 0.9988679885864258
+          }
+        ],
+        "minimum_witness_ncc": 0.9702686667442322,
+        "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+        "joint": {
+          "fixed_projection_witness_regions": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "distributed_source_and_current_support": true,
+          "joint_competing_offsets": [],
+          "unresolved_offsets": [],
+          "locally_unique_joint_appearance": true,
+          "scope": "fixed affine plus complete local integer-translation lattice only",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        }
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000021.png",
+      "source_pts_ticks": 65065,
+      "frame_sha256": "ee5be2e35aabe7ac9b9fc01fd438dc28c4e5c76f73f66e7cd6df752bc72edd2d",
+      "source_pixel_sha256": "4e3154780ca05eed8cf4a465acf13586ee4c64b3476bbf2ed763a88825f9ab16",
+      "result": {
+        "reason": "descriptive_observed_scene_link",
+        "descriptive_scene_link": true,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "source_pts_ticks": 65065,
+        "previous_source_pts_ticks": 64809,
+        "source_pixel_sha256": "4e3154780ca05eed8cf4a465acf13586ee4c64b3476bbf2ed763a88825f9ab16",
+        "previous_source_pixel_sha256": "8e43e3263c8c969fd28631dab3f78166a163ec834e66fae70ad0b70e0c9160b2",
+        "source_epoch": "offline-observed-R1",
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "reference_id": "reviewed-wall",
+        "previous_to_current_affine_640x360": [
+          [
+            0.9966157235951146,
+            -0.00015090920389351792,
+            1.1172468815799168
+          ],
+          [
+            0.00015090920389351792,
+            0.9966157235951146,
+            0.518795080784767
+          ]
+        ],
+        "witnesses": [
+          {
+            "region": 0,
+            "previous_box_640x360": [
+              167,
+              53,
+              213,
+              117
+            ],
+            "fixed_projection_ncc": 0.9703441858291626
+          },
+          {
+            "region": 1,
+            "previous_box_640x360": [
+              173,
+              120,
+              283,
+              173
+            ],
+            "fixed_projection_ncc": 0.9963257312774658
+          },
+          {
+            "region": 2,
+            "previous_box_640x360": [
+              10,
+              173,
+              167,
+              247
+            ],
+            "fixed_projection_ncc": 0.9996289014816284
+          },
+          {
+            "region": 3,
+            "previous_box_640x360": [
+              440,
+              53,
+              567,
+              117
+            ],
+            "fixed_projection_ncc": 0.9839177131652832
+          },
+          {
+            "region": 4,
+            "previous_box_640x360": [
+              440,
+              123,
+              567,
+              177
+            ],
+            "fixed_projection_ncc": 0.9749103784561157
+          },
+          {
+            "region": 5,
+            "previous_box_640x360": [
+              173,
+              183,
+              267,
+              253
+            ],
+            "fixed_projection_ncc": 0.9989885091781616
+          }
+        ],
+        "minimum_witness_ncc": 0.9703441858291626,
+        "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+        "joint": {
+          "fixed_projection_witness_regions": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "distributed_source_and_current_support": true,
+          "joint_competing_offsets": [],
+          "unresolved_offsets": [],
+          "locally_unique_joint_appearance": true,
+          "scope": "fixed affine plus complete local integer-translation lattice only",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        }
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000022.png",
+      "source_pts_ticks": 65321,
+      "frame_sha256": "aa5727f8ff3428eaf3705c3fb9b42acc78c278fb3ce21276969cd8505aa2aae2",
+      "source_pixel_sha256": "323946527efaa7632b1c64f6e43c277ae196535573ee4dec664173841b5d7627",
+      "result": {
+        "reason": "descriptive_observed_scene_link",
+        "descriptive_scene_link": true,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "source_pts_ticks": 65321,
+        "previous_source_pts_ticks": 65065,
+        "source_pixel_sha256": "323946527efaa7632b1c64f6e43c277ae196535573ee4dec664173841b5d7627",
+        "previous_source_pixel_sha256": "4e3154780ca05eed8cf4a465acf13586ee4c64b3476bbf2ed763a88825f9ab16",
+        "source_epoch": "offline-observed-R1",
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "reference_id": "reviewed-wall",
+        "previous_to_current_affine_640x360": [
+          [
+            0.9973335205811092,
+            -3.6009099774372704e-05,
+            0.7626591161673147
+          ],
+          [
+            3.6009099774372704e-05,
+            0.9973335205811092,
+            0.4495478771511205
+          ]
+        ],
+        "witnesses": [
+          {
+            "region": 0,
+            "previous_box_640x360": [
+              167,
+              53,
+              213,
+              117
+            ],
+            "fixed_projection_ncc": 0.985815167427063
+          },
+          {
+            "region": 1,
+            "previous_box_640x360": [
+              173,
+              120,
+              283,
+              173
+            ],
+            "fixed_projection_ncc": 0.997963011264801
+          },
+          {
+            "region": 2,
+            "previous_box_640x360": [
+              10,
+              173,
+              167,
+              247
+            ],
+            "fixed_projection_ncc": 0.9997599124908447
+          },
+          {
+            "region": 3,
+            "previous_box_640x360": [
+              440,
+              53,
+              567,
+              117
+            ],
+            "fixed_projection_ncc": 0.9856881499290466
+          },
+          {
+            "region": 4,
+            "previous_box_640x360": [
+              440,
+              123,
+              567,
+              177
+            ],
+            "fixed_projection_ncc": 0.9814825654029846
+          },
+          {
+            "region": 5,
+            "previous_box_640x360": [
+              173,
+              183,
+              267,
+              253
+            ],
+            "fixed_projection_ncc": 0.9992624521255493
+          }
+        ],
+        "minimum_witness_ncc": 0.9814825654029846,
+        "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+        "joint": {
+          "fixed_projection_witness_regions": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "distributed_source_and_current_support": true,
+          "joint_competing_offsets": [],
+          "unresolved_offsets": [],
+          "locally_unique_joint_appearance": true,
+          "scope": "fixed affine plus complete local integer-translation lattice only",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        }
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000023.png",
+      "source_pts_ticks": 65577,
+      "frame_sha256": "01510fbbc2c0e101c72555f846ca75adf24b073891d8e9160c94ec54be0e5413",
+      "source_pixel_sha256": "63d13ea7884ce80b76096daaf2b983bb04a1d1753df6dda8c669342d17dc24ad",
+      "result": {
+        "reason": "descriptive_observed_scene_link",
+        "descriptive_scene_link": true,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false,
+        "source_pts_ticks": 65577,
+        "previous_source_pts_ticks": 65321,
+        "source_pixel_sha256": "63d13ea7884ce80b76096daaf2b983bb04a1d1753df6dda8c669342d17dc24ad",
+        "previous_source_pixel_sha256": "323946527efaa7632b1c64f6e43c277ae196535573ee4dec664173841b5d7627",
+        "source_epoch": "offline-observed-R1",
+        "profile_sha256": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+        "reference_id": "reviewed-wall",
+        "previous_to_current_affine_640x360": [
+          [
+            0.997355349302865,
+            -9.042020750457496e-05,
+            0.7207445988037351
+          ],
+          [
+            9.042020750457496e-05,
+            0.997355349302865,
+            0.4172759299355414
+          ]
+        ],
+        "witnesses": [
+          {
+            "region": 0,
+            "previous_box_640x360": [
+              167,
+              53,
+              213,
+              117
+            ],
+            "fixed_projection_ncc": 0.9786969423294067
+          },
+          {
+            "region": 1,
+            "previous_box_640x360": [
+              173,
+              120,
+              283,
+              173
+            ],
+            "fixed_projection_ncc": 0.9978004097938538
+          },
+          {
+            "region": 2,
+            "previous_box_640x360": [
+              10,
+              173,
+              167,
+              247
+            ],
+            "fixed_projection_ncc": 0.9997262954711914
+          },
+          {
+            "region": 3,
+            "previous_box_640x360": [
+              440,
+              53,
+              567,
+              117
+            ],
+            "fixed_projection_ncc": 0.9831064343452454
+          },
+          {
+            "region": 4,
+            "previous_box_640x360": [
+              440,
+              123,
+              567,
+              177
+            ],
+            "fixed_projection_ncc": 0.9786968231201172
+          },
+          {
+            "region": 5,
+            "previous_box_640x360": [
+              173,
+              183,
+              267,
+              253
+            ],
+            "fixed_projection_ncc": 0.9992431402206421
+          }
+        ],
+        "minimum_witness_ncc": 0.9786968231201172,
+        "score_semantics": "minimum fixed-projection appearance NCC; not probability",
+        "joint": {
+          "fixed_projection_witness_regions": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "distributed_source_and_current_support": true,
+          "joint_competing_offsets": [],
+          "unresolved_offsets": [],
+          "locally_unique_joint_appearance": true,
+          "scope": "fixed affine plus complete local integer-translation lattice only",
+          "world_mask_authorized": false,
+          "runtime_proof_authorized": false
+        }
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000024.png",
+      "source_pts_ticks": 65833,
+      "frame_sha256": "1a3208bb41afe765aa7f691964df102279ec81e9366d13ae326cc537c3a66b76",
+      "source_pixel_sha256": "dca252095f9f06d5c58a3d9f257fec5f76c9f91a2015b4358005022566e72d68",
+      "result": {
+        "reason": "seed_model_incoherent",
+        "descriptive_scene_link": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000025.png",
+      "source_pts_ticks": 66089,
+      "frame_sha256": "0252b863b5f5d2108ebd46178ea6a4a2cba005b51af5205dee7723c2d26a9ac8",
+      "source_pixel_sha256": "92d10d715d1581d9473098c00796b12b86225679f308e29dc4e0359a7a1bf92c",
+      "result": {
+        "reason": "episode_terminated",
+        "descriptive_scene_link": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000026.png",
+      "source_pts_ticks": 66345,
+      "frame_sha256": "fa80efcbffa9e29d82948fbb605bcbb10baab44ac31c17434085e97c671c887e",
+      "source_pixel_sha256": "cca778cb6cf53435687546ba6bbc22174ae6bac7849c523cc06193dd27cfcf3a",
+      "result": {
+        "reason": "episode_terminated",
+        "descriptive_scene_link": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000027.png",
+      "source_pts_ticks": 66601,
+      "frame_sha256": "ec2d668e223d2f20a8b53d813a1681e4c1c79b120857244b11f42d341dadfc74",
+      "source_pixel_sha256": "ee3c79b9655fc91c96078b501b6cad1fa6735d4aae8a9820d19a1f45b97dfb05",
+      "result": {
+        "reason": "episode_terminated",
+        "descriptive_scene_link": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000028.png",
+      "source_pts_ticks": 66857,
+      "frame_sha256": "6e6edeefc2aa5d1a45960e741815a8c08090793d8be0b74a8a7b344051a6f67d",
+      "source_pixel_sha256": "9a5e1d7b59c0c0b1f4424feae58ee2d799440c41c9b4fedbe08b494761675080",
+      "result": {
+        "reason": "episode_terminated",
+        "descriptive_scene_link": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000029.png",
+      "source_pts_ticks": 67113,
+      "frame_sha256": "91eab8a0e9d080f64d9cc83c31c77f733dcaeaccd50b1ae6c30877f41a987f55",
+      "source_pixel_sha256": "de180561c1a8eb58bc303e43b116488813cba17ab44fc917b2105e5fa93a1f88",
+      "result": {
+        "reason": "episode_terminated",
+        "descriptive_scene_link": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false
+      }
+    },
+    {
+      "local_path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000030.png",
+      "source_pts_ticks": 67369,
+      "frame_sha256": "91d79bfba35b3afa2e8fe7bb5274926fbe6a254207dd9a9ab55d5cb3ebab625c",
+      "source_pixel_sha256": "c07c387de2159c861ee5043a5449984d45924424c4895d2ce6767470c9a97aa9",
+      "result": {
+        "reason": "episode_terminated",
+        "descriptive_scene_link": false,
+        "runtime_proof_authorized": false,
+        "world_mask_authorized": false,
+        "qualification_created": false
+      }
+    }
+  ],
+  "native_scene_link_proposals": 22,
+  "minimum_accepted_appearance_ncc": 0.9097880721092224,
+  "wall_clock_sec": 47.621045391017105,
+  "terminal_bindings": {
+    "outputs/recognition-investigation/world-domain-bootstrap-20261009/profile.json": "32606afdf1d6b49dd136a37cfa2576af7d3a0bfc297982e78e20bca25da0b6ff",
+    "outputs/recognition-investigation/world-domain-bootstrap-20261009/assets/wall_close.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "ValorantData/videos/Valorant_09-25-2026_0-37-29-379.mp4": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "scripts/diagnostics/observed_scene_chain.py": "c60081a951a72b6d5aa68b05231cb3037b9883b0d7a4704b56810f64b88153d5",
+    "scripts/diagnostics/scene_domain_bootstrap.py": "1563c223d00085bc6059f720a54a4b6dd9e9acde819babd39d34d3dea4ff0e8d",
+    "scripts/diagnostics/scene_world_bootstrap.py": "9947a6b0adc00f1e4b4eb63d5a95b1555d48091633712546e8078ee3a2436cfa",
+    "scripts/diagnostics/scene_reference_support.py": "ba12d60e89544f37b0f9ac0a24a464c26732e0b1c2b658534c893c819e5af89f",
+    "scripts/diagnostics/scene_domain_ambiguity.py": "eea017aa98bd16051f4e0f3f5b4cebd84a5ae33eb8b538be2d25a6106479ad23",
+    "scripts/diagnostics/scene_joint_domains.py": "2046cede2304b9493abc5f9ba06cbcfbe820a67f245a6e42cbd0aff5a5f45d34",
+    "scripts/diagnostics/scene_world_chain.py": "8a6d11a151f4afb77d88780b51f0705beca527edce7521831b9c8a590e788e33",
+    "scripts/diagnostics/scene_correspondence.py": "667fb4f7b0626fbbf4770716eefc18976a9409a4f0646084b95d479dab7273a3",
+    "scripts/diagnostics/scene_patch_search.py": "53e66f692c42cbaab695cdea9910e3326c50089a18468f6b0d01bd463e9c2dd9"
+  },
+  "qualification_created": false,
+  "canonical_current": null,
+  "comparison": {
+    "previous_links": 22,
+    "current_links": 22,
+    "delta": 0,
+    "previous_witness_provenance_links": 0,
+    "current_witness_provenance_links": 22,
+    "provenance_delta": 22
+  }
+}

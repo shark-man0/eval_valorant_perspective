@@ -1,0 +1,110 @@
+{
+  "scope": "Exposed candidate selection distributions; no qualification",
+  "rows": [
+    {
+      "reference_id": "reviewed-arch-context",
+      "image": "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/arch_context.png",
+      "source_candidate_counts_by_reviewed_region": {
+        "0": 22,
+        "1": 44,
+        "2": 8
+      },
+      "current_candidate_counts_by_search_region": {
+        "0": 27,
+        "1": 89,
+        "2": 92,
+        "3": 78
+      },
+      "matched_counts_by_reviewed_region": {
+        "0": 5,
+        "1": 10,
+        "2": 1
+      },
+      "source_candidate_counts_are_not_accepted_evidence": true
+    },
+    {
+      "reference_id": "reviewed-arch-context",
+      "image": "outputs/recognition-investigation/two-scene-acquisition-20261009/window-000/frame_000001.png",
+      "source_candidate_counts_by_reviewed_region": {
+        "0": 22,
+        "1": 44,
+        "2": 8
+      },
+      "current_candidate_counts_by_search_region": {
+        "0": 2,
+        "1": 86,
+        "2": 88,
+        "3": 85
+      },
+      "matched_counts_by_reviewed_region": {
+        "1": 1,
+        "2": 1
+      },
+      "source_candidate_counts_are_not_accepted_evidence": true
+    },
+    {
+      "reference_id": "reviewed-arch-context",
+      "image": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000001.png",
+      "source_candidate_counts_by_reviewed_region": {
+        "0": 22,
+        "1": 44,
+        "2": 8
+      },
+      "current_candidate_counts_by_search_region": {
+        "0": 31,
+        "1": 83,
+        "2": 91,
+        "3": 41
+      },
+      "matched_counts_by_reviewed_region": {},
+      "source_candidate_counts_are_not_accepted_evidence": true
+    },
+    {
+      "reference_id": "reviewed-wall",
+      "image": "outputs/recognition-investigation/two-scene-domain-reference-20261009/assets/wall_close.png",
+      "source_candidate_counts_by_reviewed_region": {
+        "0": 23,
+        "1": 54,
+        "2": 51,
+        "3": 40,
+        "4": 62,
+        "5": 65
+      },
+      "current_candidate_counts_by_search_region": {
+        "0": 3,
+        "1": 43,
+        "2": 46,
+        "3": 27
+      },
+      "matched_counts_by_reviewed_region": {
+        "2": 15,
+        "5": 1
+      },
+      "source_candidate_counts_are_not_accepted_evidence": true
+    },
+    {
+      "reference_id": "reviewed-wall",
+      "image": "outputs/recognition-investigation/native-global-preparation-complete-20261008/window-000/frame_000013.png",
+      "source_candidate_counts_by_reviewed_region": {
+        "0": 23,
+        "1": 54,
+        "2": 51,
+        "3": 40,
+        "4": 62,
+        "5": 65
+      },
+      "current_candidate_counts_by_search_region": {
+        "0": 3,
+        "1": 34,
+        "2": 34,
+        "3": 23
+      },
+      "matched_counts_by_reviewed_region": {
+        "2": 15,
+        "5": 1
+      },
+      "source_candidate_counts_are_not_accepted_evidence": true
+    }
+  ],
+  "frozen_bindings_verified": true
+}

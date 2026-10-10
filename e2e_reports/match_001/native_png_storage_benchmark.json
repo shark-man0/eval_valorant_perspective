@@ -1,0 +1,167 @@
+{
+  "scope": "exposed fixed codec cohort; not native PTS or recognition evaluation",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "cases": [
+    {
+      "source_index": 0,
+      "path": "outputs/recognition-investigation/r1-continuous-source-20261010/window-000/frame_46121.png",
+      "source_pts_ticks": 46121,
+      "source_pixel_sha256": "82cbaa157217b723e163e95ac84d66640af8cdc341a5b8fe2067ccc26443c559",
+      "source_png_sha256": "05da6f1e0f4f5cd36b2ce29f55637d95ee6a30737f0390237859499ccccfe69c"
+    },
+    {
+      "source_index": 25,
+      "path": "outputs/recognition-investigation/r1-continuous-source-20261010/window-000/frame_52521.png",
+      "source_pts_ticks": 52521,
+      "source_pixel_sha256": "c69e8959788fc19cbca7b6213c5671fd0c4abca411196a2bd0a23960caf3d0bc",
+      "source_png_sha256": "f994288f44dbfa8453d897de15469711fc7abc3ab45fb66fb9465b5c272d822c"
+    },
+    {
+      "source_index": 50,
+      "path": "outputs/recognition-investigation/r1-continuous-source-20261010/window-000/frame_58921.png",
+      "source_pts_ticks": 58921,
+      "source_pixel_sha256": "b4f33e523cae8802f6c02c7558c9a4792f264588937834e609a9e2bacb69065b",
+      "source_png_sha256": "cb2081c52d7d15979fe7c7c337b9eb9299ddf68de2f1a422fd6b9f43dda91112"
+    },
+    {
+      "source_index": 75,
+      "path": "outputs/recognition-investigation/r1-continuous-source-20261010/window-000/frame_65321.png",
+      "source_pts_ticks": 65321,
+      "source_pixel_sha256": "323946527efaa7632b1c64f6e43c277ae196535573ee4dec664173841b5d7627",
+      "source_png_sha256": "aa5727f8ff3428eaf3705c3fb9b42acc78c278fb3ce21276969cd8505aa2aae2"
+    },
+    {
+      "source_index": 100,
+      "path": "outputs/recognition-investigation/r1-continuous-source-20261010/window-000/frame_71721.png",
+      "source_pts_ticks": 71721,
+      "source_pixel_sha256": "ec603cf09271a5bf7cb385f46f1a195d1b8594bce43d2697fd419e2b00b62420",
+      "source_png_sha256": "cd5d0be9e871341b7bd4e9ea30d140a004f95b21a98eb34c0ef9c81935d1e122"
+    },
+    {
+      "source_index": 125,
+      "path": "outputs/recognition-investigation/r1-continuous-source-20261010/window-000/frame_78121.png",
+      "source_pts_ticks": 78121,
+      "source_pixel_sha256": "d9d6a5d117d10618c1613d2ddf3423c94f96750279924346c73101fcc5f1d604",
+      "source_png_sha256": "1883c923325382a6fa77283b01a242e7669e8ae6579f9ce9c7449954fbb46d41"
+    },
+    {
+      "source_index": 150,
+      "path": "outputs/recognition-investigation/r1-continuous-source-20261010/window-000/frame_84521.png",
+      "source_pts_ticks": 84521,
+      "source_pixel_sha256": "b18a4b5f6980d8374930937db072339d2c85e3812781e5d97e079dbeb95f319a",
+      "source_png_sha256": "52f82231c076b1ac51f4c1b145f9dd98deb8c006113b76690ed09691a2264e59"
+    },
+    {
+      "source_index": 179,
+      "path": "outputs/recognition-investigation/r1-continuous-source-20261010/window-000/frame_91945.png",
+      "source_pts_ticks": 91945,
+      "source_pixel_sha256": "ff682b6fa43e8d6d403292e9e6855f689b30199d6a23f17de0467933fccc82ee",
+      "source_png_sha256": "765a06d388f391b5db9f8074a03dd420785805b89c2489c1115dca6fc0771812"
+    }
+  ],
+  "runs": [
+    {
+      "compression_level": 1,
+      "encode_wall_sec": 2.303139882045798,
+      "png_bytes": [
+        2428187,
+        2119780,
+        1405334,
+        1172959,
+        2475890,
+        2612853,
+        2401443,
+        2346969
+      ],
+      "total_bytes": 16963415,
+      "all_source_pixels_equal": true
+    },
+    {
+      "compression_level": 6,
+      "encode_wall_sec": 3.306898777023889,
+      "png_bytes": [
+        2237125,
+        1901679,
+        1190125,
+        961628,
+        2276285,
+        2450936,
+        2226459,
+        2143156
+      ],
+      "total_bytes": 15387393,
+      "all_source_pixels_equal": true
+    },
+    {
+      "compression_level": 9,
+      "encode_wall_sec": 3.750013760989532,
+      "png_bytes": [
+        2235724,
+        1900220,
+        1185439,
+        951557,
+        2274441,
+        2449775,
+        2225395,
+        2141893
+      ],
+      "total_bytes": 15364444,
+      "all_source_pixels_equal": true
+    },
+    {
+      "compression_level": 9,
+      "encode_wall_sec": 3.7612798219779506,
+      "png_bytes": [
+        2235724,
+        1900220,
+        1185439,
+        951557,
+        2274441,
+        2449775,
+        2225395,
+        2141893
+      ],
+      "total_bytes": 15364444,
+      "all_source_pixels_equal": true
+    },
+    {
+      "compression_level": 6,
+      "encode_wall_sec": 3.3003000750322826,
+      "png_bytes": [
+        2237125,
+        1901679,
+        1190125,
+        961628,
+        2276285,
+        2450936,
+        2226459,
+        2143156
+      ],
+      "total_bytes": 15387393,
+      "all_source_pixels_equal": true
+    },
+    {
+      "compression_level": 1,
+      "encode_wall_sec": 2.28470316901803,
+      "png_bytes": [
+        2428187,
+        2119780,
+        1405334,
+        1172959,
+        2475890,
+        2612853,
+        2401443,
+        2346969
+      ],
+      "total_bytes": 16963415,
+      "all_source_pixels_equal": true
+    }
+  ],
+  "source_report_sha256": "86da563d797d54f246d7dc253114bc0a312f847903d393f2532838eca505338c",
+  "script_sha256": "9431d6c302e7a9ff7a8ebbcdb31f838cf1149ec4402c9a0c2a765934020357c7",
+  "ffmpeg_version": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers",
+  "qualification_created": false,
+  "production_behavior_changed": false,
+  "canonical_current": null,
+  "canonical_delta": null
+}

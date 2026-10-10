@@ -165,7 +165,7 @@ class VisualEventEngine:
                 and obs["analysis_eligibility"]["player_mechanics"]
             )
             gap = previous is not None and t - previous["time_sec"] > 0.5
-            if not safe or gap:
+            if not safe or gap or proof.get("source_discontinuity") is True:
                 previous = None
                 last_fire = enemy_last = -math.inf
                 enemy_present = engagement = False

@@ -1,0 +1,26 @@
+{
+  "scope": "Shadow geometric residual audit; no image/event/runtime qualification",
+  "target_assertion_ids": [
+    "GT-R1-ROUND-START"
+  ],
+  "hypothesis": "Similarity-only seed projection rejects consistent higher-order camera motion",
+  "models": [
+    "similarity",
+    "affine",
+    "homography"
+  ],
+  "fixed_population": "All original NCC-qualified adjacent candidates from unchanged native chain; no reseeding or model-driven point selection",
+  "residual_floor_canonical_px": 2,
+  "minimum_final_residual_fraction": 0.9,
+  "minimum_seed_regions": 3,
+  "rank": "Non-collinear source and target required for descriptive quorum",
+  "execution": "Shadow fits only after complete unchanged chain replay; none selected for production",
+  "population": "30 existing development native R1 frames",
+  "file_sha256": {
+    "scripts/diagnostics/scene_camera_model_audit.py": "3317161149f0739577b92003b612e80d9a4cc0a9cc337290ccd47bfaec657195",
+    "scripts/diagnostics/scene_world_chain.py": "82bad84b2c02824a20af910ea7157a5faead3bf462ead0e39d189f6c2b582c13",
+    "scripts/diagnostics/probe_scene_world_chain.py": "16ec70283ef1d766b2a07b0cda5c500eba91e174e25b66c0efcbfc14c6805149"
+  },
+  "qualification_created": false,
+  "new_runtime_events": 0
+}

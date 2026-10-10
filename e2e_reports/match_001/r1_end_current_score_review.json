@@ -1,0 +1,1538 @@
+{
+  "scope": "Post-prediction source review of accepted score fields; development, not independent holdout",
+  "input": "e2e_reports/match_001/r1_end_current_phase_inputs.json",
+  "input_sha256": "a601e6b9d6c89009a4a980e5c2c506a3956ef812877ba127c231f5ade02c45a6",
+  "contact_sheet_sha256": "265145a3834abf9ed56a30f59670f3954cb1661018ccfb0e55db0921fae5a375",
+  "crop_ally": [
+    800,
+    25,
+    844,
+    70
+  ],
+  "crop_enemy": [
+    1076,
+    25,
+    1120,
+    70
+  ],
+  "review_provenance": "Viewed all108 paired source crops; readable accepted fields show ally0 and enemy1 before image18, enemy2 from18. Obscured/unknown fields are not promoted. No Validation Pack expected values used.",
+  "review_before_prediction": false,
+  "correct": 114,
+  "wrong": 0,
+  "unknown": 102,
+  "rows": [
+    {
+      "source_pts_ticks": 1139753,
+      "source_pixel_sha256": "424ca4484b053bff8a509b9dd9bad5c895cd8fa0bc0d518967926c55b7b5f026",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 1,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1140009,
+      "source_pixel_sha256": "a5e784ffd0aeb456bf24c8ac398d2b9055dfc827985ab089d72b0d8b503b41e2",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 1,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1140265,
+      "source_pixel_sha256": "c63d6f81fb209b6099e324bd34d4c5f9a1dcdd4cb63bb1b6aa93e2100e9ca0bc",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 1,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1140521,
+      "source_pixel_sha256": "45530006dae1e7361f3cb1c413904d34b765f7d86928bf9eca9667d888ef18ce",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 1,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1140777,
+      "source_pixel_sha256": "4ea9b2c4d60daa48a201f05ccae5e88859db5ee2a8f4e0ff68d5e8888c05f959",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 1,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1141033,
+      "source_pixel_sha256": "bcea90828cf0284aec1fa1dd4e7771957627424f808efbf2d08472e739e5082b",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": 1,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1141289,
+      "source_pixel_sha256": "2e7d49e6793742acbe6c0fe22796f51ccf2a73a8897af4f0bc7163e01f7f60f7",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 1,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1141545,
+      "source_pixel_sha256": "5ff41cce8fb02bc7fd973732dd824395c28084c87eaa01287d26a8aa27f35b62",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": 1,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1141801,
+      "source_pixel_sha256": "3a733804dbf9aacf8ab25b0f7a88f81169bc74e3b3c4ada0102d0c8d7d720385",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 1,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1142057,
+      "source_pixel_sha256": "c0eea5f4fb2ab8e0f556200adedb69d4e34306354814a54dffd086b0975d62af",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 1,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1142313,
+      "source_pixel_sha256": "a626681929852df25dec2a455139f484abd6fe25b6cc6d0704fe085537c40fea",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": 1,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1142569,
+      "source_pixel_sha256": "58811513cf01e7366559a3a2fc1b612de669f4c7aea91a4079bf618c65fb1484",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 1,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1142825,
+      "source_pixel_sha256": "f7f7b7f9753cc2c56773813df3bb0884898e5fc333435b664d0615c13cae9138",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 1,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1143081,
+      "source_pixel_sha256": "68578730b4e08ac6fd89b3688111c23291bf8096b38bcad362e086baf865eec7",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 1,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1143337,
+      "source_pixel_sha256": "4e7b1fc26cdc154ac8d14c23b54b52eaada901e735647b44c1a217e0a8061cb9",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 1,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1143593,
+      "source_pixel_sha256": "af7f8635c45a202f1099c8520d361e9cdaf828dc9a70a8fb30fcadfc1a55b4cb",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 1,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1143849,
+      "source_pixel_sha256": "a82ed1b8f98628a89021df35b9a665a9454c9c572b21f5543d2ee3571ec36947",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 1,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1144105,
+      "source_pixel_sha256": "dcefd8d92f370ab8b978619017a4e7f7b5f0ce71de50034c0fdfc8893a03a610",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1144361,
+      "source_pixel_sha256": "de8aa4bdb07302e40b776b148183da9665c06b3ded9e4eb27f562a086cc6f794",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1144617,
+      "source_pixel_sha256": "e724db138324d14202877643eb6a63a5005bff52fa45f1790753a32161d43845",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1144873,
+      "source_pixel_sha256": "d28735ae8138f10f7ba901fad711d2d3ef0316bb4739a0838335c4c50e40c22b",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1145129,
+      "source_pixel_sha256": "935ec6fb1763dc1325a30070ae4402830ca63f1fe3eea8f76a69a2c592d72873",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1145385,
+      "source_pixel_sha256": "c8d6ee3c671a8812e7ecd54a6aafb9f6cbbe588d37ba4132f686b42626e7141d",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1145641,
+      "source_pixel_sha256": "87b3e06babb7ca0a64760c00db1f3892ed487d15d50bc69643e2332181c79862",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1145897,
+      "source_pixel_sha256": "08baba02ac12ec860d9995ccb5d3333c240ad3d403e00181331bb18e89f7fd97",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1146153,
+      "source_pixel_sha256": "6b8debd7d89a32acd768e1b470df717acdea5741542d83f5918bfbec443167e6",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1146409,
+      "source_pixel_sha256": "4f781fc93e20a5fd1e0ae80a7d6d04088604c0fd7e3fcdf4c8c8850c38ea95d8",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1146665,
+      "source_pixel_sha256": "50722b11106e5451731ddd4e77dccd6bb7de1a1b4646d968b978478531accab4",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1146921,
+      "source_pixel_sha256": "346a859c4956e3a1fc0960c97d1c4eb91ea9a163e9598fc872cde4ca3200ecf5",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1147177,
+      "source_pixel_sha256": "7aba8da3a332386ae7eede6d6a2f7e4b844aaa4ad624a29dddc9ab65daaeb117",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1147433,
+      "source_pixel_sha256": "c862ba08fbc1864e47f9f731c76c0252a9de24b649348b2fa78f07c5afcf54aa",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1147689,
+      "source_pixel_sha256": "14d908f83f0529d81b943f06dddd5d1ff3c0ce3b06615a79ff0ce33ec8b1306e",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1147945,
+      "source_pixel_sha256": "289ca0f295e00efc99a11fe862be8b17dbfe200850c5222f4a667baf1c867b0a",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1148201,
+      "source_pixel_sha256": "1d98ef9580aed418e822554f4fc79717c650092307a0e30cc6fbb7fb9f288b08",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1148457,
+      "source_pixel_sha256": "f847b444ace5372b530c4e654065e3251824765a2fc6a75cac2ff801eae669e1",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1148713,
+      "source_pixel_sha256": "af96e3e2b34915f7e23b89b641d0ea0b435f1f8cf5060e39f87e64005941501d",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1148969,
+      "source_pixel_sha256": "1445c232e3e154838a65ac7247e6a678fe6b64ae87f390d8a53c63d8dcf3a75b",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1149225,
+      "source_pixel_sha256": "b535d210131e2bbda47db87470aacac75fa5700c4cd96b25b050a53ba5001696",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1149481,
+      "source_pixel_sha256": "b48f50ea4440068bfc28d48e4caa60ed5f8fcd2ffb01c4728bb47f7ae0b4ef19",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1149737,
+      "source_pixel_sha256": "c26f5ec0e3e4451352d88c2988672075f4aba5579bf1f4d3a8bda08d827ae18a",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1149993,
+      "source_pixel_sha256": "47bf06d28e228e1f4b2cef23eab07510e959cdff663e721564922ef97b142948",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1150249,
+      "source_pixel_sha256": "b17d55846c41d321749e0ac8c7225e62abb941f29011a2af3884212738046a5e",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1150505,
+      "source_pixel_sha256": "45a07d1433ac8f99bc9a1966c809ba8ecbf4a7a7a819e738473f818d1cde802e",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1150761,
+      "source_pixel_sha256": "2c0f2c5fe76e3d3dbc003dc803fe385662a18c7de6f5da8ee4f4b43dcbeadb26",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1151017,
+      "source_pixel_sha256": "764567877715ccc37801cbfd66e87c25cc854a86d50a9db3af51b2546c15aed9",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1151273,
+      "source_pixel_sha256": "2cdd892a607b3a99ec6a72b18091a7b32a0b86c3c1587648be3aff6a3f894b80",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1151529,
+      "source_pixel_sha256": "00f8919048cf8296b84762bdd53ddf830a2008b43c6bf20daf31fdddf44e2f5f",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1151785,
+      "source_pixel_sha256": "e84eb8432b508c3d8fcae317d54e1f0b5a9c5036b686de7beaf1d60588122f95",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1152041,
+      "source_pixel_sha256": "17cdde7c6ac2d88ae92f3975ec9328e1300d6f4d5ebf70b4e0e0c806452d6166",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1152297,
+      "source_pixel_sha256": "e2ff66ee0167d04fba815695a1147533255ba4b70052a1dd04a1ef360ccdbd52",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1152553,
+      "source_pixel_sha256": "41851f00fbe4658f2a3d70d76929fd646b63d64c964f11a90f562c72f6a22a3e",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1152809,
+      "source_pixel_sha256": "a8bd66276cd8b6820379cc0d30785585416758f3befc03c91b9656cda5b23312",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1153065,
+      "source_pixel_sha256": "1e42216d7d6b0962cc6255db45f083d07ec43d3bf8573032b56bb48ff406d1e2",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1153321,
+      "source_pixel_sha256": "1e4457a56b6f0a05e06f874737bd0da46cdba7de1010b3cb314c65fe4cbcb07e",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1153577,
+      "source_pixel_sha256": "2a4960bf879da5333dca93b31388f943370d9d3db29dcf295922ced4aaf001e6",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1153833,
+      "source_pixel_sha256": "7a3effa39f2b17a0b3ff36dd0da28cb536ef7741f94b36d88ed739f47f37aa95",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1154089,
+      "source_pixel_sha256": "583fadfe1cfe0b76a3ee16e539617a0ccdab4db4b8d0044996472f7991f76a5d",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1154345,
+      "source_pixel_sha256": "f6a07db0999372a2d3b755107e895e091b426310f7324930e443d66ecad0d42c",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1154601,
+      "source_pixel_sha256": "bb5985c1cc1e737772f8339d1d424598d71969400c99d21727fa17b7d2d153dc",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1154857,
+      "source_pixel_sha256": "2eab1f6848a67eaa5ec7f0f5487c95534b3bd099af4af4e74df3fc45116fd983",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1155113,
+      "source_pixel_sha256": "0d601f30dbbe2b60013c25181038feca258e673e18aa31c83b89746926774e70",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1155369,
+      "source_pixel_sha256": "f6855e69f399dfc5a0b2d154aa9b4210c681bedcd741f63973a839db4d4e495e",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1155625,
+      "source_pixel_sha256": "464db5dd2642949b622c806254bf886856c3d53252245bcbfc49f36226ea72d9",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1155881,
+      "source_pixel_sha256": "2731b4a1b67d077a62d371b1eaf5f49c1935e5fc64f077b0815047265786eeb8",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1156137,
+      "source_pixel_sha256": "7de13ab49c6ac195df4c002829198bc6b1ed85b0ade79354da0dfe1f4e7a523b",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1156393,
+      "source_pixel_sha256": "d92bbc4335dd804e7b4e85b6bfcf1671cfe90d96d0bf21745b8d93fc65dadc11",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1156649,
+      "source_pixel_sha256": "71ddbfb69f9d000a433b53eb7ea49c4584158aba1d3da9a8fffe1c928b7faa0f",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1156905,
+      "source_pixel_sha256": "402f90b137916b45d1da4bb53b38ddaccfaf2ea149a665fdaa1f0532fef95bec",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1157161,
+      "source_pixel_sha256": "86e7786d19d039f7d70636176105163036bead233a56872be621667184c06436",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1157417,
+      "source_pixel_sha256": "91ad5da1a3ccd52ec0490907d1b7dcea3574d9407792bb75dc39c6d04082f5c4",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1157673,
+      "source_pixel_sha256": "17d297d12b348cdb2282f6b3ee3f1d27143c615117d407116e3b8c51378b1511",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1157929,
+      "source_pixel_sha256": "1cdb5a96461d140d46f3dcd34451af8190ba17496719b4fb2859d50428d2cd9a",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1158185,
+      "source_pixel_sha256": "2a0c10e18d01b7e93dedba7272dfa04abfbbe7b151ef50e1de0ffbbb0a413ab6",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1158441,
+      "source_pixel_sha256": "fb82d9c5f660603c94f7f31abf3010cd6d25512d1da05172bd5051f410049e06",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1158697,
+      "source_pixel_sha256": "1b8bdae73aff6d339945c1db4510955e56df7a496ba0f8ba1a9be4950be8b8aa",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1158953,
+      "source_pixel_sha256": "1ea199516cbd5830a2f574d877dc2222841baee735af59af8b25e88fa406c9a4",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1159209,
+      "source_pixel_sha256": "2f426f44b9b41af8bbbd43b79ee72f7465e0444b0cccc734825e899750617439",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1159465,
+      "source_pixel_sha256": "9890c6b58dd47246389779931c497a7e700df972c063b214d69b4402fd5659b2",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1159721,
+      "source_pixel_sha256": "5498e0f6d61713eecc6bceae43d331878557142e6a36d3214253afe04d163b79",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1159977,
+      "source_pixel_sha256": "a628aad723cb88900d700fac25e30dde3db7fd5b06e5686ebc765c0a0dcaf6d2",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1160233,
+      "source_pixel_sha256": "4484bf87cf62b0fb96f8a99e21b938f17eb31f1951d9e2c43c9c52f357be89b7",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1160489,
+      "source_pixel_sha256": "05471cd13105cd7297be6801a439c55610a38eb3a985050cc732a5747c54bcec",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1160745,
+      "source_pixel_sha256": "150ab97fd3ac230bc789762eaa076662761b3565f0e934dc59da9f326b504646",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1161001,
+      "source_pixel_sha256": "b2a7cc028a2847ce7ccff07acf799e2c500b5f0d94399a0ae5f3642e9a5f26c7",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1161257,
+      "source_pixel_sha256": "778421bc1f912fe545c7394b0dff4494e87cfaed98516955bcc7d0a647da22e4",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1161513,
+      "source_pixel_sha256": "18a8fba15861259e3831f0a49466b6b3464b99ef38ba6407ea23c679172ac0a8",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1161769,
+      "source_pixel_sha256": "23da24d63eaf055277167a2f75fe9116f2846e90b29f0e7db241379660fac3e8",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1162025,
+      "source_pixel_sha256": "b632aa7eac1d09bce6aaf6eff389ed0145c47e3029bf402f363700d87d2ae4fa",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1162281,
+      "source_pixel_sha256": "39cf35d963e01b332ac713d4194f363a838d52fd14efb26e97c7f44e6575d5db",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1162537,
+      "source_pixel_sha256": "f31ab852b54a4f04dbe92d4c1d8278ed3b63a5d60f5e0ef0800dab662ff2b305",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1162793,
+      "source_pixel_sha256": "cb4a1e87f5c7a8ef2c2d29439bb0342824ba8186f6f89c47458b51eab4872d06",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1163049,
+      "source_pixel_sha256": "b6675fd2f9caf1d5715d68e0857a201acbc43e1eaa4c3cd642c4e45992e349f3",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1163305,
+      "source_pixel_sha256": "e4ccf9990b0825880564610995223ba3440d3de7cab91e836c217c4322dafcc3",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1163561,
+      "source_pixel_sha256": "ef4ad032ba560d44751dd7b8e2c286e46b5cd11307321c90e0a207b52831278c",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1163817,
+      "source_pixel_sha256": "166b0b867d0801330a7c5b71e8414d99f37d14990e015eadeda6e5aead567dc4",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1164073,
+      "source_pixel_sha256": "f11f0a9f6607f67f0752487e59348f2bb5128e0b40f685d3331986cd265caa6d",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1164329,
+      "source_pixel_sha256": "7a99af9d24125a83705a7e1e335735ac988ba9533fe7f95d9ead7287786a8337",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1164585,
+      "source_pixel_sha256": "8e7084b6133888dc0178024daed8950b7e410255bcfbc7cb6f9121625393fb27",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1164841,
+      "source_pixel_sha256": "125675221b4f331eb79cc6f5ea6ab84fed096684c32869e94c9c46939ca866cd",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1165097,
+      "source_pixel_sha256": "087e7fc87cfbc83214a3ed9a556b1fff5d7739f208b4dd692abd5e832999f228",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1165353,
+      "source_pixel_sha256": "50f95f6f1168dc1b8aca7a0619a1c8ff5067e08e7022936107be2dec11a29c1a",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1165609,
+      "source_pixel_sha256": "fdd0722f2651b8abde6b74d5e5ce07403d813da9e92d6e147941bb434dd17338",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1165865,
+      "source_pixel_sha256": "d08273f2d93e36fa08721e35ed0ef0ba10b86229d05c976b70413db734757f17",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1166121,
+      "source_pixel_sha256": "4c7c26f42c9fbb6cbfcb049d8229cd084b9bee9d9ae35cf080d09dd3ec460f05",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1166377,
+      "source_pixel_sha256": "d6404d32e6ef65a968bd3dddc25169b425afdf86cf82c56f8d274ec952bf026c",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1166633,
+      "source_pixel_sha256": "116e705e80261d41790d22551100e2cdf476519a3305370bb8ff3523caa01f73",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1166889,
+      "source_pixel_sha256": "16da7e60bfcd35eea565ffd983f0cb14e2518cd59151844b274d8e61e62e669d",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": 0,
+          "review_status": "correct"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    },
+    {
+      "source_pts_ticks": 1167145,
+      "source_pixel_sha256": "4f13b45188188e9471fb503155c1009663450f15a4ab49f3bc4b5d88fcfe9b0b",
+      "fields": {
+        "score_ally": {
+          "accepted_prediction": null,
+          "review_status": "unknown"
+        },
+        "score_enemy": {
+          "accepted_prediction": 2,
+          "review_status": "correct"
+        }
+      }
+    }
+  ],
+  "qualification_created": false
+}

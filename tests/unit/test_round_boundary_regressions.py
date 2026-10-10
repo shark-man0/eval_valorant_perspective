@@ -34,7 +34,7 @@ def make_builder():
     )
 
 
-def build(samples, boundaries, *, continuity_segments=None):
+def build(samples, boundaries, *, continuity_segments=None, continuity_breaks=()):
     builder = make_builder()
     events = [
         {
@@ -60,6 +60,7 @@ def build(samples, boundaries, *, continuity_segments=None):
         video_metadata=VideoMetadata(Path("video.mp4"), 90, 1920, 1080, 60, "h264", None, False, 0),
         hud_observations=samples,
         hud_events=events,
+        continuity_breaks=continuity_breaks,
     )
 
 
@@ -431,3 +432,61 @@ def test_partial_fragment_keeps_unknown_observations_before_gap_without_crossing
     assert all(
         window.start_event_sec is None and window.end_event_sec is None for window in windows
     )
+
+
+def test_source_break_splits_packages_without_manufacturing_round_boundary():
+    samples = [observation(time / 2) for time in range(20, 41)]
+    result = build(samples, [(10, 'round_start'), (20, 'round_end')],
+                   continuity_breaks=(15,))
+    assert len(result) == 2
+    assert result[0]['round_window'] == {'start_sec': 10, 'end_sec': 15}
+    assert result[1]['round_window'] == {'start_sec': 15, 'end_sec': 20}
+    assert all(p['observation_quality']['timeline_completeness'] == 0 for p in result)
+    boundaries = [[(e['type'], e['time_sec']) for e in p['events']
+                   if e['type'] in {'round_start', 'round_end'}] for p in result]
+    assert boundaries == [[('round_start', 10)], [('round_end', 20)]]
+    assert all(s['time_sec'] < 15 for s in result[0]['state_snapshots'])
+    assert all(s['time_sec'] >= 15 for s in result[1]['state_snapshots'])
+    assert [p['round_no'] for p in result] == [1, 2]
+    assert all(p['source_video']['duration_sec'] == 90 for p in result)
+
+
+def test_source_break_stops_post_end_context_extension():
+    samples = [observation(time / 2) for time in range(20, 51)]
+    result = build(samples, [(10, 'round_start'), (12, 'round_end')],
+                   continuity_breaks=(15,))
+    assert result[0]['round_window']['end_sec'] < 15
+    assert all(s['time_sec'] < 15 for s in result[0]['state_snapshots'])
+    assert all(p['round_window']['end_sec'] <= 15 for p in result
+               if p['round_window']['start_sec'] < 15)
+    assert any(p['round_window']['start_sec'] >= 15 for p in result)
+
+
+def test_source_break_prevents_preparation_from_previous_segment():
+    samples = [observation(13, menu=True), observation(14, menu=True),
+               observation(15), observation(16), observation(17)]
+    result = build(samples, [(16, 'round_start'), (17, 'round_end')],
+                   continuity_breaks=(15,))
+    assert len(result) == 2  # Post-break fragment and actual start/end package.
+    active = next(p for p in result if any(e['type'] == 'round_start' for e in p['events']))
+    assert active['round_window']['start_sec'] >= 15
+    assert all(s['time_sec'] >= 15 for s in active['state_snapshots'])
+
+
+def test_derived_current_state_does_not_retain_pre_break_deduplication():
+    samples = [observation(10), observation(15), observation(20)]
+    for sample in samples:
+        sample['values']['hp'] = 50
+    result = build(samples, [(10, 'round_start'), (20, 'round_end')],
+                   continuity_breaks=(15,))
+    state_times = [e['time_sec'] for p in result for e in p['events']
+                   if e['type'] == 'state_snapshot']
+    assert state_times == [10, 15]
+
+
+@pytest.mark.parametrize('cuts', [(False,), (float('nan'),), (-1,), (90,),
+                                  (15, 15), (20, 15), ('15',)])
+def test_source_break_contract_rejects_invalid_order_or_times(cuts):
+    with pytest.raises(RoundPackageBuildError, match='continuity breaks'):
+        build([observation(10), observation(20)], [(10, 'round_start')],
+              continuity_breaks=cuts)

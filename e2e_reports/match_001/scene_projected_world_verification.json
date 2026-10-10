@@ -1,0 +1,34 @@
+{
+  "scope": "Projected world appearance development; no integrated-chain qualification",
+  "start_commit": "03bfcbf945fbf3d7b04c54d80b3c5ff103475db0",
+  "unit_tests": {
+    "passed": 44,
+    "wall_clock_seconds": 7.84
+  },
+  "ruff": "PASS: src tests scripts/e2e scripts/diagnostics",
+  "mypy": "PASS102source files",
+  "terminal_bindings_checked": 7,
+  "existing_default_equivalence_links": 203,
+  "original_image_result_unchanged": true,
+  "production_changed": false,
+  "qualification_created": false,
+  "new_runtime_events": 0,
+  "new_full_e2e_runs": 0,
+  "canonical_current": null,
+  "canonical_delta": null,
+  "assertion_matrix_rows": 82,
+  "assertion_matrix_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776",
+  "projected_appearance_regions_supported": 6,
+  "projected_appearance_minimum_ncc": 0.974528431892395,
+  "known_cut_rejection": "seed_model_incoherent",
+  "duplicate_rejection": "duplicate_image",
+  "file_sha256": {
+    "e2e_reports/match_001/scene_projected_world_development.json": "581788a3d5f947b1dcadb968389d65c394e32b96c6a91f1a98af42df6f693558",
+    "e2e_reports/match_001/scene_projected_world_declaration.json": "7aa3761636bcc4b3e41d64b5fc6aa6453b81df053f59afe5647091bc546ea08c",
+    "e2e_reports/match_001/scene_projected_observability_controls.json": "af29142af31c328fd53724c3072f66d31ccbdbbc580c847dd4a38194ce83963f",
+    "scripts/diagnostics/scene_projected_world.py": "714d0663b1e6f6d849be9e2fa28ad231bb9175cbe51181b64e36769708a4f2c3",
+    "scripts/diagnostics/scene_world_chain.py": "293586bc39f1b590640129bd90f05f960b5337559f757f9a98340e62a78e5ac7",
+    "tests/unit/test_scene_projected_world.py": "c966f1cf4e8abea5781e4b70ea13bad01b0189cb87fe14360546e20c758be285",
+    "docs/scene_projected_world_investigation.md": "a39e9015fd47a706b98541d0cf97513de90b5325630d2a286c0dc57f952e445b"
+  }
+}

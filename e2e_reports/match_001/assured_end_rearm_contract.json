@@ -1,0 +1,167 @@
+{
+  "scope": "Synthetic qualified unit fixture only; no actual-image qualification, canonical E2E or adopted profile",
+  "recognizer_fingerprint": "70706b1a6e324b1ec0c5e64867a1769ad3c6c39f5d0089363aadb7c5899608ad",
+  "previous_start_only": {
+    "round_start": 1,
+    "round_end": 0,
+    "packages": 1
+  },
+  "current_synthetic": {
+    "round_start": 2,
+    "round_end": 1,
+    "packages": 2
+  },
+  "trace_boundaries": [
+    {
+      "type": "round_start",
+      "actor": "system",
+      "time_sec": 0.12
+    },
+    {
+      "type": "round_end",
+      "actor": "system",
+      "time_sec": 0.3
+    },
+    {
+      "type": "round_start",
+      "actor": "system",
+      "time_sec": 0.46
+    }
+  ],
+  "diagnostic_states": [
+    {
+      "tick": 0,
+      "state": "pre_round"
+    },
+    {
+      "tick": 20,
+      "state": "pre_round"
+    },
+    {
+      "tick": 40,
+      "state": "pre_round"
+    },
+    {
+      "tick": 60,
+      "state": "pre_round"
+    },
+    {
+      "tick": 80,
+      "state": "pre_round"
+    },
+    {
+      "tick": 100,
+      "state": "pre_round"
+    },
+    {
+      "tick": 120,
+      "state": "transient_ui_transition"
+    },
+    {
+      "tick": 140,
+      "state": "transient_ui_transition"
+    },
+    {
+      "tick": 160,
+      "state": "transient_ui_transition"
+    },
+    {
+      "tick": 180,
+      "state": "transient_ui_transition"
+    },
+    {
+      "tick": 200,
+      "state": "transient_ui_transition"
+    },
+    {
+      "tick": 220,
+      "state": "transient_ui_transition"
+    },
+    {
+      "tick": 240,
+      "state": "round_active"
+    },
+    {
+      "tick": 260,
+      "state": "round_active"
+    },
+    {
+      "tick": 280,
+      "state": "round_active"
+    },
+    {
+      "tick": 300,
+      "state": "round_ended"
+    },
+    {
+      "tick": 320,
+      "state": "round_ended"
+    },
+    {
+      "tick": 340,
+      "state": "next_round_preparation"
+    },
+    {
+      "tick": 360,
+      "state": "next_round_preparation"
+    },
+    {
+      "tick": 380,
+      "state": "next_round_preparation"
+    },
+    {
+      "tick": 400,
+      "state": "next_round_preparation"
+    },
+    {
+      "tick": 420,
+      "state": "next_round_preparation"
+    },
+    {
+      "tick": 440,
+      "state": "next_round_preparation"
+    },
+    {
+      "tick": 460,
+      "state": "transient_ui_transition"
+    },
+    {
+      "tick": 480,
+      "state": "transient_ui_transition"
+    },
+    {
+      "tick": 500,
+      "state": "transient_ui_transition"
+    },
+    {
+      "tick": 520,
+      "state": "transient_ui_transition"
+    },
+    {
+      "tick": 540,
+      "state": "round_active"
+    },
+    {
+      "tick": 560,
+      "state": "round_active"
+    },
+    {
+      "tick": 580,
+      "state": "round_active"
+    }
+  ],
+  "actual_qualification_created": false,
+  "canonical_current": null,
+  "canonical_delta": null,
+  "tests": {
+    "related_pass": 184,
+    "wall_clock_sec": 79.73,
+    "ruff": "PASS",
+    "mypy": "PASS (120 source files)"
+  },
+  "synthetic_delta": {
+    "round_start": 1,
+    "round_end": 1,
+    "packages": 1
+  }
+}

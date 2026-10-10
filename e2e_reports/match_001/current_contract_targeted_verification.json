@@ -1,0 +1,147 @@
+{
+  "scope": "Actual standard targeted E2E; isolated points, not canonical full or temporal qualification",
+  "run_path": "outputs/recognition-investigation/current-contract-targeted-20261010",
+  "counts": {
+    "passed": 12,
+    "failed": 13,
+    "not_evaluated": 12
+  },
+  "previous_counts": {
+    "passed": 12,
+    "failed": 13,
+    "not_evaluated": 12
+  },
+  "failure_records_identical": true,
+  "runtime_comparison": {
+    "comparable": true,
+    "reason": null,
+    "deltas": {
+      "wall_sec": {
+        "current": 550.0471270009875,
+        "previous": 710.9029106310045,
+        "delta": -160.85578363001696,
+        "percent_change": -22.626969340614988
+      },
+      "evaluation_pass": {
+        "current": 0.0,
+        "previous": 0.0,
+        "delta": 0.0,
+        "percent_change": null
+      },
+      "failed": {
+        "current": 13.0,
+        "previous": 13.0,
+        "delta": 0.0,
+        "percent_change": 0.0
+      },
+      "not_evaluated": {
+        "current": 12.0,
+        "previous": 12.0,
+        "delta": 0.0,
+        "percent_change": 0.0
+      },
+      "passed": {
+        "current": 12.0,
+        "previous": 12.0,
+        "delta": 0.0,
+        "percent_change": 0.0
+      },
+      "schema_valid": {
+        "current": 0.0,
+        "previous": 0.0,
+        "delta": 0.0,
+        "percent_change": null
+      },
+      "state_buy_menu_open": {
+        "current": 3.0,
+        "previous": 3.0,
+        "delta": 0.0,
+        "percent_change": 0.0
+      },
+      "state_live_first_person": {
+        "current": 6.0,
+        "previous": 6.0,
+        "delta": 0.0,
+        "percent_change": 0.0
+      },
+      "state_spectator_first_person": {
+        "current": 6.0,
+        "previous": 6.0,
+        "delta": 0.0,
+        "percent_change": 0.0
+      },
+      "state_unknown": {
+        "current": 22.0,
+        "previous": 22.0,
+        "delta": 0.0,
+        "percent_change": 0.0
+      }
+    }
+  },
+  "state_counts": {
+    "buy_menu_open": 3,
+    "live_first_person": 6,
+    "spectator_first_person": 6,
+    "unknown": 22
+  },
+  "input_fingerprint": {
+    "video_id": "match_001",
+    "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
+    "assertions_sha256": "c5e242b611ce227d1d2633e5e24c00dfe65168d8124ab58fbdea84b1d7f0d820",
+    "input_scope": "isolated_points",
+    "profile_fingerprint": "2611cfecc2b148e381d760290c14d70a060efcea2bd837657fe55627ef75554b",
+    "code_fingerprint": "88c7c906c226ba3ea69bb916f329dc88ea37e519ea61ac4f047162da85063c93",
+    "suite_sha256": "7e31b647825dd19141be161dee315e007f46c098fdc4d7882b52c7572378a898",
+    "selected_categories": [],
+    "pts_sec": [
+      0.036003,
+      4.102669,
+      4.152669,
+      7.369336,
+      15.186003,
+      42.969336,
+      44.502669,
+      59.502669,
+      63.902669,
+      74.386003,
+      74.402669,
+      74.419336,
+      74.436003,
+      74.452669,
+      82.002669,
+      83.419336,
+      88.786003,
+      104.219336,
+      110.019336,
+      111.402669,
+      111.452669,
+      124.536003,
+      141.936003,
+      145.852669,
+      146.919336,
+      147.019336,
+      147.502669,
+      147.602669,
+      147.702669,
+      151.002669,
+      157.302669,
+      161.636003,
+      170.002669,
+      170.802669,
+      170.919336,
+      170.936003,
+      171.002669
+    ],
+    "calibration_prefix": [
+      0.036003,
+      0.102669,
+      0.169336
+    ]
+  },
+  "terminal_artifact_hashes_verified": true,
+  "negative_full_assertions_evaluated": false,
+  "new_qualification": false,
+  "ruff": "PASS",
+  "mypy": "PASS 121 source files"
+}

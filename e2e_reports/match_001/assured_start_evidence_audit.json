@@ -1,0 +1,150 @@
+{
+  "scope": "Evidence inventory only; matching fingerprints are not qualification.",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "profile_fingerprint": "8b5955f1d7de7139949815a7853260b9a66b6fd48140b64351030a6e78e9a5db",
+  "recognizer_fingerprint": "ef5ac2cf31c306746d21a4c2ed13397fd2601a7c08c7eb003b0b18b19a55481e",
+  "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+  "reports": [
+    {
+      "report": "e2e_reports/match_001/r1_unedited_native_start_through6.json",
+      "report_sha256": "dead03eefaf9dd11ec15fbac1fd7c91f783c6e47d3f814d31d56d42964b42311",
+      "scope": "fresh native development diagnostic; no reader/UI qualification",
+      "source_matches": true,
+      "profile_matches": true,
+      "code_matches": true,
+      "contract_matches": true,
+      "dependency_checks": [],
+      "qualification_created": false,
+      "released_events": 0
+    },
+    {
+      "report": "e2e_reports/match_001/unedited_component_holdout_replay.json",
+      "report_sha256": "29e1550cfe4d6e419e3ae8f53ea66ce2e1918e0b95d97986566de3d4d2b23799",
+      "scope": "Current configured production readers on existing reviewed cached JPEG crops; diagnostic only; no temporal qualification",
+      "source_matches": true,
+      "profile_matches": true,
+      "code_matches": false,
+      "contract_matches": null,
+      "dependency_checks": [
+        {
+          "path": "outputs/recognition-investigation/timer-gaussian-fresh-holdout/selection.json",
+          "expected_sha256": "4311f0a51b5de242ff19364e6545b0d97a11869df533c0c71c3818653b0cfd00",
+          "actual_sha256": "4311f0a51b5de242ff19364e6545b0d97a11869df533c0c71c3818653b0cfd00",
+          "matches": true
+        },
+        {
+          "path": "outputs/recognition-investigation/timer-gaussian-fresh-holdout/blind-labels.json",
+          "expected_sha256": "f4f2f8fad63d5aa1528bc023f4d235b167cede20fbad7b25d85f1d168d9826d0",
+          "actual_sha256": "f4f2f8fad63d5aa1528bc023f4d235b167cede20fbad7b25d85f1d168d9826d0",
+          "matches": true
+        },
+        {
+          "path": "outputs/recognition-investigation/timer-gaussian-fresh-holdout/negative-selection.json",
+          "expected_sha256": "3cde9ce4809eaa80c383765dddba718b0cd2de33d207e36b8bd71809f225bcdb",
+          "actual_sha256": "3cde9ce4809eaa80c383765dddba718b0cd2de33d207e36b8bd71809f225bcdb",
+          "matches": true
+        },
+        {
+          "path": "outputs/recognition-investigation/timer-gaussian-fresh-holdout/reader-results.json",
+          "expected_sha256": "4fabaca01fdc5414f55e116776e911e2f76339903a33e6806938fed3e8dd0c5b",
+          "actual_sha256": "4fabaca01fdc5414f55e116776e911e2f76339903a33e6806938fed3e8dd0c5b",
+          "matches": true
+        },
+        {
+          "path": "outputs/recognition-investigation/phase-evidence/structural-text/fresh-holdout-selection.json",
+          "expected_sha256": "1d3b8fb5a8dada31e5f4f5f1ade76d11731758fdf235ec70338f60fb672b7b72",
+          "actual_sha256": "1d3b8fb5a8dada31e5f4f5f1ade76d11731758fdf235ec70338f60fb672b7b72",
+          "matches": true
+        },
+        {
+          "path": "outputs/recognition-investigation/phase-evidence/structural-text/production-profile-holdout-results.json",
+          "expected_sha256": "100fa0241711af7255d3c7e0da78ba975a00acaa45d6764c45096a77e2a69bb8",
+          "actual_sha256": "100fa0241711af7255d3c7e0da78ba975a00acaa45d6764c45096a77e2a69bb8",
+          "matches": true
+        },
+        {
+          "path": "outputs/recognition-investigation/phase-evidence/structural-text/frozen-manifest.json",
+          "expected_sha256": "0ba568d22c53c126552f5a72f4f58194b8d011f0bbcd1970be598b9f191329e5",
+          "actual_sha256": "0ba568d22c53c126552f5a72f4f58194b8d011f0bbcd1970be598b9f191329e5",
+          "matches": true
+        }
+      ],
+      "qualification_created": false,
+      "released_events": 0
+    },
+    {
+      "report": "e2e_reports/match_001/r2_unedited_actual_analyzer_temporal_replay.json",
+      "report_sha256": "3db4de2e9a0f076889bffcd2fff6c116767d0e3c5aa7082aa698ad01ec8472d9",
+      "scope": "Actual configured analyzer on archived R2 with real source prefix in same call; prefix gap not temporal evidence; projected indices rebased only; previously exposed development case, not independent holdout",
+      "source_matches": true,
+      "profile_matches": true,
+      "code_matches": false,
+      "contract_matches": true,
+      "dependency_checks": [
+        {
+          "path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/results.json",
+          "expected_sha256": "b6c41f52eed4d9d41e5cda9ebd4d5cdfda97a2d736ff7de541584c2df61a58e6",
+          "actual_sha256": "b6c41f52eed4d9d41e5cda9ebd4d5cdfda97a2d736ff7de541584c2df61a58e6",
+          "matches": true
+        },
+        {
+          "path": "outputs/recognition-investigation/native-global-preparation-complete-20261008/source-review.json",
+          "expected_sha256": "a017d932de37e5f933591773379b889b5f1c8c31545ac319e4251a07bc05536f",
+          "actual_sha256": "a017d932de37e5f933591773379b889b5f1c8c31545ac319e4251a07bc05536f",
+          "matches": true
+        }
+      ],
+      "qualification_created": false,
+      "released_events": 0
+    },
+    {
+      "report": "e2e_reports/match_001/unedited_ui_actual_analyzer_combined_controls.json",
+      "report_sha256": "48afd7f13af8ec0c0f48b2118f63840fb492d62dcff63f50dfd9cb287dee8f12",
+      "scope": "Actual analyzer single call per prefix+control batch; real retained calibration within call, prefix gap excluded from candidate corroboration; control indices rebased only for projection; no qualification",
+      "source_matches": true,
+      "profile_matches": null,
+      "code_matches": false,
+      "contract_matches": true,
+      "dependency_checks": [
+        {
+          "path": "outputs/recognition-investigation/unedited-ui-fixed-controls/manifest.json",
+          "expected_sha256": "38aa033594530eadc7e58558df5fb5bede9d42eb5dfc84aef6275ed5c3f9d051",
+          "actual_sha256": "38aa033594530eadc7e58558df5fb5bede9d42eb5dfc84aef6275ed5c3f9d051",
+          "matches": true
+        },
+        {
+          "path": "outputs/recognition-investigation/unedited-ui-fixed-controls/blind-labels.json",
+          "expected_sha256": "e3c20ccb95c1c4b8c13dbbcea2bbb6173c8cdd1a98c2785199205b97cb077571",
+          "actual_sha256": "e3c20ccb95c1c4b8c13dbbcea2bbb6173c8cdd1a98c2785199205b97cb077571",
+          "matches": true
+        }
+      ],
+      "qualification_created": false,
+      "released_events": 0
+    }
+  ],
+  "qualification_created": false,
+  "released_events": 0,
+  "qualification_rules": {
+    "required_components": [
+      "timer",
+      "purchase_phase",
+      "ui_transition"
+    ],
+    "minimum_distinct_hashes_per_split": 3,
+    "minimum_correct_holdout_cases_per_component": 3,
+    "holdout_wrong": 0,
+    "negative_false_positive": 0,
+    "aggregate_splits_must_be_disjoint": true,
+    "no_independent_episode_count_requirement_in_current_loader": true
+  },
+  "limitations": [
+    "Does not verify image labels or classify reports as independent holdout.",
+    "Distinct hashes do not prove independent temporal episodes.",
+    "A bootstrap negative with no prior phase does not test stale preparation.",
+    "Historical code mismatch cannot be repaired by resigning the report.",
+    "No edit-exclusion image proof is required for the explicit assured source."
+  ],
+  "canonical_current": null,
+  "canonical_delta": null
+}

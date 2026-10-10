@@ -1,0 +1,41 @@
+{
+  "scope": "Exposed post-measurement first-link diagnosis, not qualification",
+  "rows": [
+    {
+      "window_sec": [
+        3.35,
+        3.55
+      ],
+      "reason": "seed_model_incoherent",
+      "model_candidates": 39,
+      "original_inliers": 29,
+      "original_inlier_fraction": 0.7435897435897436,
+      "seed_world_eligibility": "withheld",
+      "review_provenance": "All12full-context panels per interval inspected after predictions; moving players/arms/knife/barrier/UI appear in fixed source footprints. No current per-frame world mask is inferred."
+    },
+    {
+      "window_sec": [
+        4.5,
+        4.7
+      ],
+      "reason": "seed_model_incoherent",
+      "model_candidates": 19,
+      "original_inliers": 16,
+      "original_inlier_fraction": 0.8421052631578947,
+      "seed_world_eligibility": "withheld",
+      "review_provenance": "All12full-context panels per interval inspected after predictions; moving players/arms/knife/barrier/UI appear in fixed source footprints. No current per-frame world mask is inferred."
+    },
+    {
+      "window_sec": [
+        6.0,
+        6.2
+      ],
+      "reason": "seed_model_incoherent",
+      "model_candidates": 55,
+      "original_inliers": 46,
+      "original_inlier_fraction": 0.8363636363636363,
+      "seed_world_eligibility": "withheld",
+      "review_provenance": "All12full-context panels per interval inspected after predictions; moving players/arms/knife/barrier/UI appear in fixed source footprints. No current per-frame world mask is inferred."
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "scope": "Observed same-frame input conjunction only; no lifecycle/event validation across archived gaps",
+  "producer_report_sha256": "7b6684b327b8b9d0d6c03a2ca0de0e1e9bdee1f8cc43dcdd05bbbd024406f950",
+  "result_present_pts": [
+    75.402669,
+    75.536003,
+    75.602669,
+    75.619336,
+    75.802669,
+    76.269336
+  ],
+  "score_transition_frames": [
+    {
+      "previous_pts": 74.4693359375,
+      "current_pts": 74.48600260416667,
+      "previous_score": [
+        0,
+        1
+      ],
+      "current_score": [
+        0,
+        2
+      ],
+      "current_result_matched": false,
+      "cohort": "early_native"
+    }
+  ],
+  "same_frame_result_score_transition_count": 0,
+  "same_frame_result_score_transition_pts": [],
+  "qualification_created": false,
+  "conclusion": "Producer now loads and accepts late result evidence. The observed score step occurs without accepted result; no accepted result coincides with score step. Full lifecycle remains unqualified.",
+  "next_action": "Gather contiguous native result/score/timer evidence before redesigning a bounded temporal corroboration contract; no combining gaps or backdating from GT"
+}

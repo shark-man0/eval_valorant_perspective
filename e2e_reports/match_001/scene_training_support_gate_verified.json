@@ -1,0 +1,103 @@
+{
+  "scope": "diagnostic appearance training screen, never qualification",
+  "training_report_sha256": "1b46dbf53f9e68034778b6301025c1fbb98bd178f4530b67291240b87339a1fc",
+  "source_cohort_sha256": "275707bf869fa156f78703141f168e7f318933c3bafe3e00a3398bf362887eb2",
+  "source_profile_sha256": "933af05903029b998699491a5b4acd48ecb9a2a2bf749714ed5b670fec3a8fb8",
+  "summary": {
+    "source_frames": 12,
+    "reference_self_matches": 1,
+    "distinct_nonself_initialization_matches": 0,
+    "observed_scene_links": 0,
+    "first_episode_stop": {
+      "source_pts_ticks": 83241,
+      "reason": "insufficient_reviewed_world_tracks"
+    },
+    "appearance_training_minimum_met": false,
+    "minimum_nonself_training_matches": 3,
+    "minimum_observed_scene_links": 3,
+    "qualification_created": false,
+    "runtime_authorized": false,
+    "current_world_semantics_qualified": false
+  },
+  "code_sha256": {
+    "/home/admin/eval_valorant_perspective/scripts/diagnostics/check_scene_training_support.py": "049b98ca9c763ac5342b7681beaa8b54f2f159e1a078080c33c3c32b180d8dc7",
+    "scripts/diagnostics/validate_native_scene_entrance.py": "e557ddd4f3354fb65ac3dc70370c0aebacbaffdf6c36f52a130ea47c20763bda"
+  },
+  "projected_exclusion_diagnostics": [
+    {
+      "source_pts_ticks": 82985,
+      "reference_id": "reviewed-doorway-development",
+      "regions": [
+        {
+          "source_box_640x360": [
+            160,
+            55,
+            220,
+            117
+          ],
+          "source_pixels": 3720,
+          "projected_pixels_touching_exclusion_or_image_boundary": 0
+        },
+        {
+          "source_box_640x360": [
+            425,
+            78,
+            565,
+            117
+          ],
+          "source_pixels": 5460,
+          "projected_pixels_touching_exclusion_or_image_boundary": 0
+        },
+        {
+          "source_box_640x360": [
+            470,
+            125,
+            550,
+            170
+          ],
+          "source_pixels": 3600,
+          "projected_pixels_touching_exclusion_or_image_boundary": 0
+        }
+      ]
+    },
+    {
+      "source_pts_ticks": 83241,
+      "reference_id": "reviewed-doorway-development",
+      "regions": [
+        {
+          "source_box_640x360": [
+            160,
+            55,
+            220,
+            117
+          ],
+          "source_pixels": 3720,
+          "projected_pixels_touching_exclusion_or_image_boundary": 124
+        },
+        {
+          "source_box_640x360": [
+            425,
+            78,
+            565,
+            117
+          ],
+          "source_pixels": 5460,
+          "projected_pixels_touching_exclusion_or_image_boundary": 0
+        },
+        {
+          "source_box_640x360": [
+            470,
+            125,
+            550,
+            170
+          ],
+          "source_pixels": 3600,
+          "projected_pixels_touching_exclusion_or_image_boundary": 0
+        }
+      ]
+    }
+  ],
+  "wall_clock_sec": 0.6805340349674225,
+  "canonical_current": null,
+  "canonical_delta": null
+}

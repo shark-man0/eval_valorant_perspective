@@ -1,0 +1,1424 @@
+{
+  "scope": "Natural off-HUD background challenge, not true field absence or lifecycle negative qualification",
+  "plan_sha256": "2e9cc6d95a04c78a1fa436eaefbd657202d8616eb8d1b2299e6e65edb5ec0473",
+  "pre_prediction_review_sha256": "93d954935700f6ef0aebda8ef19ca1d73ef340cb5a35bb1fd1531f810c68d212",
+  "counts": {
+    "baseline": {
+      "unknown": 54
+    },
+    "prototype": {
+      "unknown": 54
+    }
+  },
+  "rows": [
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "bounds_px": [
+        1500,
+        300,
+        1544,
+        345
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "bounds_px": [
+        1580,
+        300,
+        1624,
+        345
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "bounds_px": [
+        1660,
+        300,
+        1704,
+        345
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "bounds_px": [
+        1500,
+        400,
+        1544,
+        445
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "bounds_px": [
+        1580,
+        400,
+        1624,
+        445
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "bounds_px": [
+        1660,
+        400,
+        1704,
+        445
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "bounds_px": [
+        1500,
+        500,
+        1544,
+        545
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "bounds_px": [
+        1580,
+        500,
+        1624,
+        545
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "bounds_px": [
+        1660,
+        500,
+        1704,
+        545
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "bounds_px": [
+        1500,
+        300,
+        1544,
+        345
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "bounds_px": [
+        1580,
+        300,
+        1624,
+        345
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_digit_layout_inconsistent"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "bounds_px": [
+        1660,
+        300,
+        1704,
+        345
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "bounds_px": [
+        1500,
+        400,
+        1544,
+        445
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "bounds_px": [
+        1580,
+        400,
+        1624,
+        445
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "bounds_px": [
+        1660,
+        400,
+        1704,
+        445
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "bounds_px": [
+        1500,
+        500,
+        1544,
+        545
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "bounds_px": [
+        1580,
+        500,
+        1624,
+        545
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "bounds_px": [
+        1660,
+        500,
+        1704,
+        545
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "bounds_px": [
+        1500,
+        300,
+        1544,
+        345
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "bounds_px": [
+        1580,
+        300,
+        1624,
+        345
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "bounds_px": [
+        1660,
+        300,
+        1704,
+        345
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_glyph_below_0_90"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "bounds_px": [
+        1500,
+        400,
+        1544,
+        445
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "bounds_px": [
+        1580,
+        400,
+        1624,
+        445
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "bounds_px": [
+        1660,
+        400,
+        1704,
+        445
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "bounds_px": [
+        1500,
+        500,
+        1544,
+        545
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "bounds_px": [
+        1580,
+        500,
+        1624,
+        545
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "bounds_px": [
+        1660,
+        500,
+        1704,
+        545
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "bounds_px": [
+        500,
+        150,
+        544,
+        195
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "bounds_px": [
+        700,
+        150,
+        744,
+        195
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "bounds_px": [
+        900,
+        150,
+        944,
+        195
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "bounds_px": [
+        500,
+        250,
+        544,
+        295
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "bounds_px": [
+        700,
+        250,
+        744,
+        295
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "bounds_px": [
+        900,
+        250,
+        944,
+        295
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "bounds_px": [
+        500,
+        350,
+        544,
+        395
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "bounds_px": [
+        700,
+        350,
+        744,
+        395
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_01.png",
+      "frame_sha256": "30390c6dd4080806221044b93c05d308e9a0c246ec5e79968841d7d08f3aa063",
+      "bounds_px": [
+        900,
+        350,
+        944,
+        395
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "bounds_px": [
+        500,
+        150,
+        544,
+        195
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "bounds_px": [
+        700,
+        150,
+        744,
+        195
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "bounds_px": [
+        900,
+        150,
+        944,
+        195
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "bounds_px": [
+        500,
+        250,
+        544,
+        295
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "bounds_px": [
+        700,
+        250,
+        744,
+        295
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "bounds_px": [
+        900,
+        250,
+        944,
+        295
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_glyph_below_0_90"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_glyph_below_0_90"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "bounds_px": [
+        500,
+        350,
+        544,
+        395
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "bounds_px": [
+        700,
+        350,
+        744,
+        395
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_14.png",
+      "frame_sha256": "5151fe1d3af2b1c527fbaa8357f68fa3e018c30f1903b73e143562267479b797",
+      "bounds_px": [
+        900,
+        350,
+        944,
+        395
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "bounds_px": [
+        500,
+        150,
+        544,
+        195
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "bounds_px": [
+        700,
+        150,
+        744,
+        195
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "bounds_px": [
+        900,
+        150,
+        944,
+        195
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "bounds_px": [
+        500,
+        250,
+        544,
+        295
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "bounds_px": [
+        700,
+        250,
+        744,
+        295
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "bounds_px": [
+        900,
+        250,
+        944,
+        295
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "bounds_px": [
+        500,
+        350,
+        544,
+        395
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "bounds_px": [
+        700,
+        350,
+        744,
+        395
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    },
+    {
+      "source_frame": "outputs/recognition-investigation/score-enlarged-background-new-window/frame_27.png",
+      "frame_sha256": "a4f928a54e6f56b5816ef3211acea32c0b0038e994892451f10a711fad00d1af",
+      "bounds_px": [
+        900,
+        350,
+        944,
+        395
+      ],
+      "readings": {
+        "baseline": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        },
+        "prototype": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ]
+        }
+      }
+    }
+  ],
+  "wall_clock_sec": 6.750110856024548,
+  "recognizer_fingerprint": "5be7f6c6a6f2d67e27da307c48c65a4728197f4aafee710417fd0206223f2842",
+  "qualification_created": false,
+  "canonical_current": null,
+  "canonical_delta": null
+}

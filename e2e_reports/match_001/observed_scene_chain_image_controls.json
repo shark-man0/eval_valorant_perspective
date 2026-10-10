@@ -1,0 +1,25 @@
+{
+  "scope": "Exposed image-only synthetic scene/occlusion controls; not independent qualification",
+  "scene_cut_image_native_provenance": {
+    "local_path": "outputs/recognition-investigation/scene-joint-cohort-20261009/window-002/frame_000001.png",
+    "source_pts_ticks": 92201,
+    "frame_sha256": "ce2dbc370171a4cd637a6e96aa60ec6c9a50d8a1b62914622dd547f1727baa99",
+    "source_pixel_sha256": "c77e1b1f39bcc6bf23cbdc36ebe8f9dcdd00f835c46b2980bc2c68b632747db6"
+  },
+  "rows": [
+    {
+      "case": "synthetic_contiguous_scene_cut",
+      "scene_link_proposed": false,
+      "reason": "insufficient_reviewed_world_tracks",
+      "after_reason": "episode_terminated",
+      "scope": "Synthetic negative timeline only; original video/GT/production timestamps unchanged; no explicit cut flag supplied"
+    },
+    {
+      "case": "synthetic_distributed_occlusion",
+      "scene_link_proposed": false,
+      "reason": "insufficient_reviewed_world_tracks",
+      "after_reason": "episode_terminated",
+      "scope": "Synthetic negative timeline only; original video/GT/production timestamps unchanged; no explicit cut flag supplied"
+    }
+  ]
+}

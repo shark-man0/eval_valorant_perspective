@@ -1,0 +1,49 @@
+{
+  "scope": "Continuous projected-world development; no producer qualification",
+  "start_commit": "03bfcbf945fbf3d7b04c54d80b3c5ff103475db0",
+  "unit_tests": {
+    "passed": 53,
+    "wall_clock_seconds": 10.41
+  },
+  "ruff": "PASS: src tests scripts/e2e scripts/diagnostics",
+  "mypy": "PASS102production files",
+  "terminal_bindings_checked": 20,
+  "existing_default_equivalence_links": 203,
+  "annotation_revision_first_five_rows_exact": true,
+  "production_changed": false,
+  "qualification_created": false,
+  "new_runtime_events": 0,
+  "new_full_e2e_runs": 0,
+  "canonical_current": null,
+  "canonical_delta": null,
+  "assertion_matrix_rows": 82,
+  "assertion_matrix_sha256": "6b192db1d045ae6c7022fc096dfdb22250d124221639b283472b45fa25f1e776",
+  "comparison": {
+    "processed_frames": {
+      "previous": 12,
+      "current": 12,
+      "delta": 0
+    },
+    "supported_links": {
+      "previous": 0,
+      "current": 4,
+      "delta": 4
+    }
+  },
+  "occlusion_review_stop_pts_sec": 2.5860026041666666,
+  "occlusion_review_stop_reason": "current_seed_footprint_occluded_or_unreviewed",
+  "later_chain_rejoins": 0,
+  "wall_clock_seconds": 7.17963106604293,
+  "known_cut_rejection": "seed_model_incoherent",
+  "duplicate_rejection": "duplicate_image",
+  "file_sha256": {
+    "e2e_reports/match_001/scene_projected_chain_consistent_review_development.json": "fcee529bcdbfa0d90e667bc8745403fb6afbaffe37a624bfc5470abb766ce8fd",
+    "e2e_reports/match_001/scene_projected_chain_consistent_review_declaration.json": "8361f2e660e602263ea65120e84a3c8291913d43f1815466e4c59cf56d662bca",
+    "e2e_reports/match_001/scene_projected_chain_default_controls.json": "fb222ca568245cc1690f672003f8874550ccf6f688786180f1933fe14404b67f",
+    "scripts/diagnostics/scene_world_chain.py": "8a6d11a151f4afb77d88780b51f0705beca527edce7521831b9c8a590e788e33",
+    "scripts/diagnostics/scene_world_review_gate.py": "57813631ede6e7835d3e21260270924eca3058fa3bb499321cf8698cb79430fd",
+    "scripts/diagnostics/scene_projected_world.py": "432a6c8cfebc7744e5b1e0b68f8e9af5e1de6a93dd7bddc9571b78bb658ae213",
+    "tests/unit/test_scene_projected_chain.py": "4a105d3f45672864e05266c5a561b2b9e4e1abd085088225a7dd46a52933a6c0",
+    "docs/scene_projected_chain_implementation.md": "55066e275a669d4cfe43abf740397a24316865715703c153f8e463854d51c30b"
+  }
+}
