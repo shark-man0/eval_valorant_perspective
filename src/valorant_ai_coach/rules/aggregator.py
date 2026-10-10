@@ -15,6 +15,11 @@ class EvaluationAggregator:
             key=lambda item: (self._time(item), -float(item.get("confidence", 0))),
         )
         kept: list[dict[str, Any]] = []
+        # A merged item cites the union of its members' facts, so it may not claim more than
+        # its weakest member (D-1). Which member *represents* the group is still decided by the
+        # strongest original confidence, so both are tracked apart from the stored value.
+        strongest: dict[int, float] = {}
+        weakest: dict[int, float] = {}
         for item in ordered:
             policy = self.rules.get(item["primary_rule_id"], {}).get("aggregation_policy", {})
             window = float(policy.get("deduplicate_same_rule_within_seconds", 0))
@@ -30,13 +35,20 @@ class EvaluationAggregator:
                 None,
             )
             if duplicate:
+                confidence = float(item["confidence"])
+                floor = min(weakest[id(duplicate)], confidence)
+                ceiling = max(strongest[id(duplicate)], confidence)
                 self._merge_same_label(duplicate, item)
-                if float(item["confidence"]) > float(duplicate["confidence"]):
-                    replacement = item
-                    self._merge_same_label(replacement, duplicate)
-                    kept[kept.index(duplicate)] = replacement
+                survivor = duplicate
+                if confidence > strongest[id(duplicate)]:
+                    survivor = item
+                    self._merge_same_label(survivor, duplicate)
+                    kept[kept.index(duplicate)] = survivor
+                survivor["confidence"] = floor
+                weakest[id(survivor)], strongest[id(survivor)] = floor, ceiling
                 continue
             kept.append(item)
+            weakest[id(item)] = strongest[id(item)] = float(item["confidence"])
         for group in self.groups.values():
             members = set(group["members"])
             order = {rule_id: index for index, rule_id in enumerate(group["primary_order"])}
@@ -75,6 +87,8 @@ class EvaluationAggregator:
                         cluster,
                         key=lambda item: order.get(item["primary_rule_id"], len(order)),
                     )
+                    # same rule as above: the union of facts is capped by the weakest member
+                    primary["confidence"] = min(float(item["confidence"]) for item in cluster)
                     for item in cluster:
                         if item is primary:
                             continue

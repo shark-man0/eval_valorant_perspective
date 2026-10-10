@@ -52,6 +52,19 @@ class AnalysisScope:
         }
 
 
+PREVIOUS_ROUND_CONTEXT = "previous_round_context"
+
+
+def previous_round_context_missing(package: Mapping[str, Any]) -> bool:
+    """True when the package carries no usable previous-round context.
+
+    Absent, ``None`` and an empty object all count as missing. This is the single
+    definition shared by the resolver and by downstream consumers, so a rule that
+    needs the context can never be reported as satisfied by an empty placeholder.
+    """
+    return not package.get(PREVIOUS_ROUND_CONTEXT)
+
+
 class TemporalScopeResolver:
     def __init__(self, rules_by_id: Mapping[str, Mapping[str, Any]] | None = None) -> None:
         if rules_by_id is None:
@@ -65,10 +78,10 @@ class TemporalScopeResolver:
         context = (rule or {}).get("temporal_context") or {}
         level = str(context.get("level_code") or candidate.temporal_level)
         missing: list[str] = []
-        if context.get("requires_previous_round_context") and not package.get(
-            "previous_round_context"
+        if context.get("requires_previous_round_context") and previous_round_context_missing(
+            package
         ):
-            missing.append("previous_round_context")
+            missing.append(PREVIOUS_ROUND_CONTEXT)
         windows = self._event_windows(context, candidate, package)
         return AnalysisScope(
             candidate.rule_id,
