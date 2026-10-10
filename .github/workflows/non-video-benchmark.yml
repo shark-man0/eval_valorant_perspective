@@ -1,0 +1,37 @@
+name: Non-video synthetic benchmark
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'src/valorant_ai_coach/non_video/**'
+      - 'scripts/non_video_benchmark.py'
+      - '.github/workflows/non-video-benchmark.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install application
+        run: python -m pip install -e .
+      - name: Install lint checker
+        run: python -m pip install ruff==0.16.9
+      - name: Lint full repository
+        run: python -m ruff check src tests scripts/e2e scripts/non_video_benchmark.py
+      - name: Run synthetic before/after benchmark
+        run: |
+          set -o pipefail
+          python scripts/non_video_benchmark.py | tee non-video-benchmark-results.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: non-video-benchmark-results
+          path: non-video-benchmark-results.json
+          if-no-files-found: error

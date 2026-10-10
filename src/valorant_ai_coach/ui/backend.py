@@ -8,6 +8,8 @@ from typing import Any
 
 from valorant_ai_coach.bootstrap import build_services
 from valorant_ai_coach.logging_setup import configure_logging
+from valorant_ai_coach.non_video.features import NonVideoFeatures
+from valorant_ai_coach.non_video.profiles import ProfileStore
 from valorant_ai_coach.settings import AppSettings, SettingsStore, default_data_dir
 
 from .contracts import EvaluationView, MatchResultView, UiSettings, VideoMetadataView
@@ -31,6 +33,8 @@ class BackendFacade:
             self.startup_warning = str(exc)
             safe = AppSettings.defaults(selected.data_dir)
             self.services = build_services(self.settings_store, settings=safe)
+        self.non_video = NonVideoFeatures(self.services.repository)
+        self.profiles = ProfileStore(self.settings_store)
         self._refresh_rule_metadata()
 
     def _refresh_rule_metadata(self) -> None:
@@ -79,6 +83,7 @@ class BackendFacade:
                     self.settings_store.delete_api_key()
             raise
         self.services = rebuilt
+        self.non_video = NonVideoFeatures(self.services.repository)
         self.startup_warning = None
         self._refresh_rule_metadata()
         configure_logging(
@@ -120,6 +125,7 @@ class BackendFacade:
         # Rebuild for every run so the worker sees the latest persisted settings/key.
         selected = self.settings_store.load()
         self.services = build_services(self.settings_store, settings=selected)
+        self.non_video = NonVideoFeatures(self.services.repository)
         self._refresh_rule_metadata()
 
         def forwarded_progress(value: float, message: str) -> None:
@@ -183,6 +189,32 @@ class BackendFacade:
             player_agent=round_meta.get("player_agent"),
             diagnostics=tuple(str(item) for item in diagnostics),
         )
+
+    def search_evaluations(self, **filters: Any) -> list[dict[str, Any]]:
+        return self.non_video.search(**filters)
+
+    def get_statistics(self, **filters: Any) -> dict[str, Any]:
+        return self.non_video.statistics(**filters)
+
+    def compare_matches(self, first: str, second: str) -> dict[str, Any]:
+        return self.non_video.compare(first, second)
+
+    def export_report(self, match_id: str, destination: Path, fmt: str) -> None:
+        self.non_video.export_report(
+            match_id, destination, fmt, rule_categories=self._rule_category
+        )
+
+    def get_feedback(self, evaluation_id: str) -> dict[str, Any] | None:
+        return self.non_video.feedback(evaluation_id)
+
+    def save_feedback(self, evaluation_id: str, verdict: str, memo: str) -> None:
+        self.non_video.save_feedback(evaluation_id, verdict, memo)
+
+    def delete_feedback(self, evaluation_id: str) -> None:
+        self.non_video.delete_feedback(evaluation_id)
+
+    def get_api_usage(self, prices: dict[str, Any] | None = None) -> list[dict[str, Any]]:
+        return self.non_video.usage(prices)
 
     def _evaluation_view(self, item: dict[str, Any]) -> EvaluationView:
         confidence = float(item.get("confidence", 0.0))
