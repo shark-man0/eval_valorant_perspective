@@ -111,3 +111,91 @@ producer integration and complete practical multi-event evaluation remain open.
 This is a tested branch checkpoint, not completion of the Practical Mode goal.
 Remote main still equals the recorded start SHA at checkpoint fetch; no merge
 conflict was present. A final PR and Linux/Windows CI review remain outstanding.
+
+## Source-assured candidate producer checkpoint
+
+`hud/practical_lifecycle.py` now collects provisional boundaries directly from
+configured production readers on `NativeSourceFrame` pixels. It uses the existing
+`UneditedUiStartTracker`, `UneditedUiEndTracker` and lifecycle state machine, with
+explicit `boundary_mode="practical"`. Strict construction still requires its
+qualification and preserves formal release semantics. No reader acceptance
+threshold changes; no expected value or GT enters production. Practical transport
+requires current-frame phase-presence measurements: older archives missing that
+measurement cannot silently stand for phase absence.
+
+The same source/owned-field admission checks are shared with the strict native
+replay. Practical source gaps, epoch changes, repeated pixels and explicit breaks
+reset pending transitions; they are not game boundaries. An independent end-only
+sequence may produce a provisional end without inventing a start. Its candidate
+timestamp is the first observed score change, confirmed by stable clock/score/
+result observations, preserving the strict delayed-result tracker's timing rule.
+Provisional provenance explicitly says qualification is unverified.
+
+`HudVideoProcessor.process` and `process_frames` now accept explicit practical
+mode and `PracticalLifecycleAnalysis`. Source SHA-256, input-contract file, current
+profile and recognizer fingerprint are rechecked. Transport is replayed before
+processing and before publication. Source breaks reach HUD, visual analysis and
+Package association. Provisional global numbers are not merged into player-owned
+facts or formal events. Existing strict entry-point defaults and builder arguments
+remain compatible.
+
+### Archived actual video evidence
+
+The archive replay command below verifies the source video SHA-256 against the
+explicit unedited contract and uses saved actual reader measurements. It does not
+rerun recognition or create qualification. It normalizes only the collection-local
+frame index; PTS, pixel hashes, displayed values and reader confidences are retained.
+
+```bash
+PYTHONPATH=.:src python3 scripts/diagnostics/replay_practical_lifecycle.py \
+  --video ValorantData/videos/Valorant_09-25-2026_0-37-29-379.mp4 \
+  --input-contract datasets/input_contracts/match_001.unedited.json \
+  --output e2e_reports/match_001/practical_lifecycle_archive_replay.json \
+  e2e_reports/match_001/r1_current_phase_presence_inputs.json \
+  e2e_reports/match_001/r1_end_current_phase_inputs.json
+```
+
+| Boundary | Observed candidate time | Later confirmation | Status |
+| --- | ---: | ---: | --- |
+| R1 start | 4.102669270833333 | 4.202669270833334 | provisional |
+| R1 end | 74.48600260416667 | 75.3693359375 | provisional |
+
+R1 start preserves the original `0:00 → 2:25 → 1:39` observations and original
+phase-disappearance timestamp. End evidence includes the accepted clock change,
+old/new stable score and later stable result pixels. The timestamp is not selected
+by distance to GT. These are two independently replayed local native windows; no
+state is bridged across their unobserved middle. Full R1→R2 source continuity and
+practical video-level Package association are not yet verified. Existing R2 reader
+archives lack current-frame raw phase-presence fields and require a fresh current
+producer scan before admission. The next task is the whole-video collection and
+application/settings/GUI/resume integration, then separate accuracy evaluation.
+
+| Metric | Previous | Current | Delta |
+| --- | ---: | ---: | ---: |
+| Saved observed R1 boundary candidates | 2 | 2 | 0 |
+| Typed provisional archive records | 0 | 2 | +2 |
+| Formal events released by archive replay | 0 | 0 | 0 |
+
+Canonical full metrics are historical 23/55/4; no new canonical run was performed.
+Neither this transport comparison nor the archived measurements prove ±0.1-second
+precision or qualification. No assertion/expected value/window was modified.
+
+### Producer checkpoint verification
+
+New producer/transport tests: 14 PASS, including an opt-in processor integration
+that produces two provisional starts, retains an unknown last end and emits no
+formal boundary events. Full source mypy: 127 files PASS. Ruff across
+src/tests/scripts/e2e and the new diagnostic script: PASS. The selected 142-test
+native/start/end/processor regression run returned 141 PASS and one qualification
+fingerprint failure because recognition code was updated while that run was
+executing. With code frozen, that exact case was rerun and PASS (2.73 seconds);
+the 14 producer tests were also rerun and PASS. This is not a claim of a full
+pytest run or Windows CI execution. Production code should remain frozen during
+fingerprint-sensitive test runs.
+
+No new full E2E was needed for this transport checkpoint. Current strict E2E
+results and ±0.1-second actual precision are unmeasured, not assumed unchanged
+PASS results. Remaining application work: automatic verified native collection
+for practical mode, settings/GUI opt-in and boundary labels, fingerprinted
+checkpoint/resume, practical multi-event evaluation, real R2 current-phase scans,
+continuous Match-level Package validation, full regression, CI and final PR.

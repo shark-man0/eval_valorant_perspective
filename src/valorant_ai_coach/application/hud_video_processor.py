@@ -21,6 +21,10 @@ from valorant_ai_coach.hud.native_event_merge import (
     validated_native_boundaries,
 )
 from valorant_ai_coach.hud.native_lifecycle import NativeLifecycleAnalysis
+from valorant_ai_coach.hud.practical_lifecycle import (
+    PracticalLifecycleAnalysis,
+    validated_practical_boundaries,
+)
 from valorant_ai_coach.hud.unedited_input import UneditedInputContract
 from valorant_ai_coach.resources import resource_path
 from valorant_ai_coach.rounds import RoundPackageBuilder
@@ -131,7 +135,12 @@ class HudVideoProcessor:
         require_detected_rounds: bool = True,
         native_lifecycle: NativeLifecycleAnalysis | None = None,
         native_lifecycle_options: NativeLifecycleOptions | None = None,
+        boundary_mode: str = "strict",
+        practical_lifecycle: PracticalLifecycleAnalysis | None = None,
     ) -> HudVideoProcessingResult:
+        practical_state = self._practical_boundaries(
+            metadata, boundary_mode, practical_lifecycle,
+        )
         if native_lifecycle_options is not None:
             if native_lifecycle is not None:
                 raise HudVideoProcessingError("choose native result or native collection")
@@ -141,7 +150,10 @@ class HudVideoProcessor:
         initial_native_events = (
             self._native_boundaries(metadata, native_lifecycle) if native_lifecycle else ()
         )
-        source_breaks = native_source_breaks(native_lifecycle) if native_lifecycle else ()
+        source_breaks = tuple(sorted(set(
+            (native_source_breaks(native_lifecycle) if native_lifecycle else ())
+            + practical_state[1]
+        )))
         progress = progress_cb or (lambda _value, _message: None)
         visual_cancel = getattr(self.visual_analyzer, "set_cancel_event", None)
         if callable(visual_cancel):
@@ -215,12 +227,20 @@ class HudVideoProcessor:
             progress=progress,
             require_detected_rounds=require_detected_rounds,
             native_lifecycle=native_lifecycle,
+            boundary_mode=boundary_mode,
+            practical_lifecycle=practical_lifecycle,
         )
         if native_lifecycle is not None and (
             self._native_boundaries(metadata, native_lifecycle) != initial_native_events
-            or native_source_breaks(native_lifecycle) != source_breaks
+            or tuple(sorted(set(native_source_breaks(native_lifecycle) + practical_state[1])))
+                 != source_breaks
         ):
             raise HudVideoProcessingError('native inputs changed after Pass A preflight')
+        if (
+            self._practical_boundaries(metadata, boundary_mode, practical_lifecycle)
+            != practical_state
+        ):
+            raise HudVideoProcessingError('practical inputs changed after Pass A preflight')
         return result
 
     def process_frames(
@@ -232,6 +252,8 @@ class HudVideoProcessor:
         progress_cb: Callable[[float, str], None] | None = None,
         require_detected_rounds: bool = True,
         native_lifecycle: NativeLifecycleAnalysis | None = None,
+        boundary_mode: str = "strict",
+        practical_lifecycle: PracticalLifecycleAnalysis | None = None,
     ) -> HudVideoProcessingResult:
         """Run the production final-processing stages over an exact ordered frame set."""
         self._validate_fixed_frames(frames)
@@ -247,6 +269,8 @@ class HudVideoProcessor:
             progress=progress,
             require_detected_rounds=require_detected_rounds,
             native_lifecycle=native_lifecycle,
+            boundary_mode=boundary_mode,
+            practical_lifecycle=practical_lifecycle,
         )
 
     def _process_frames(
@@ -259,13 +283,19 @@ class HudVideoProcessor:
         progress: Callable[[float, str], None],
         require_detected_rounds: bool = True,
         native_lifecycle: NativeLifecycleAnalysis | None = None,
+        boundary_mode: str = "strict",
+        practical_lifecycle: PracticalLifecycleAnalysis | None = None,
     ) -> HudVideoProcessingResult:
+        practical_state = self._practical_boundaries(metadata, boundary_mode, practical_lifecycle)
         combined = list(frames)
         native_events = (
             self._native_boundaries(metadata, native_lifecycle)
             if native_lifecycle is not None else ()
         )
-        source_breaks = native_source_breaks(native_lifecycle) if native_lifecycle else ()
+        source_breaks = tuple(sorted(set(
+            (native_source_breaks(native_lifecycle) if native_lifecycle else ())
+            + practical_state[1]
+        )))
         self._check_cancel(cancel_event)
         progress(0.72, "HUD時系列とイベントを確定しています")
         final = self.analyzer.observe_frames(
@@ -311,6 +341,10 @@ class HudVideoProcessor:
                 confidence = visual_confidences.get(float(observation["time_sec"]), 0.0)
                 observation["quality"]["visual_confidence"] = confidence
         self._validate_observations(observations)
+        practical_arguments: dict[str, Any] = (
+            {"boundary_mode": "practical", "provisional_boundaries": practical_state[0]}
+            if boundary_mode == "practical" else {}
+        )
         with timing_stage("round_package_build"):
             packages = self.package_builder.build(
                 match_id=match_id,
@@ -323,6 +357,7 @@ class HudVideoProcessor:
                 map_name=getattr(self.visual_analyzer, "map_name", "unknown"),
                 require_detected_rounds=require_detected_rounds,
                 continuity_breaks=source_breaks,
+                **practical_arguments,
             )
         diagnostics = (
             tuple(getattr(final, "diagnostics", ())) + tuple(visual.diagnostics) + fusion_notes
@@ -353,9 +388,17 @@ class HudVideoProcessor:
         if (
             native_lifecycle is not None
             and (self._native_boundaries(metadata, native_lifecycle) != native_events
-                 or native_source_breaks(native_lifecycle) != source_breaks)
+                 or tuple(sorted(set(native_source_breaks(native_lifecycle) + practical_state[1])))
+                 != source_breaks)
         ):
             raise HudVideoProcessingError('native boundary inputs changed during processing')
+        if (
+            self._practical_boundaries(metadata, boundary_mode, practical_lifecycle)
+            != practical_state
+        ):
+            raise HudVideoProcessingError('practical boundary inputs changed during processing')
+        if practical_lifecycle is not None:
+            validate_sampled_source_images(combined)
         return HudVideoProcessingResult(
             packages,
             tuple(observations),
@@ -476,6 +519,34 @@ class HudVideoProcessor:
         if qualification != loaded:
             raise HudVideoProcessingError('native qualification changed; reload analyzer')
         return qualification
+
+    def _practical_boundaries(
+        self, metadata: VideoMetadata, mode: str, analysis: PracticalLifecycleAnalysis | None,
+    ) -> tuple[tuple[Any, ...], tuple[float, ...]]:
+        if mode not in {"strict", "practical"}:
+            raise HudVideoProcessingError("unsupported boundary mode")
+        if mode == "strict" and analysis is not None:
+            raise HudVideoProcessingError("provisional lifecycle requires practical opt-in")
+        if analysis is None:
+            return (), ()
+        base = getattr(self.analyzer, '_base_fingerprint', None)
+        if (not callable(base)
+                or getattr(self.analyzer, '_native_profile_readers', False) is not True
+                or base() != getattr(self.analyzer, '_native_loaded_base_fingerprint', None)):
+            raise HudVideoProcessingError("current production profile readers required")
+        digest = hashlib.sha256()
+        with metadata.path.open('rb') as stream:
+            for block in iter(lambda: stream.read(1024 * 1024), b''):
+                digest.update(block)
+        boundaries, cuts = validated_practical_boundaries(
+            analysis, source_video_sha256=digest.hexdigest(), profile_fingerprint=base(),
+        )
+        if cuts and not all(
+            getattr(consumer, 'supports_native_source_breaks', False) is True
+            for consumer in (self.analyzer, self.visual_analyzer, self.package_builder)
+        ):
+            raise HudVideoProcessingError('practical source breaks require compatible consumers')
+        return boundaries, cuts
 
     def _native_boundaries(
         self, metadata: VideoMetadata, analysis: NativeLifecycleAnalysis,
