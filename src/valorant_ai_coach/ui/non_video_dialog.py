@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 from collections.abc import Callable
 from datetime import UTC, datetime
 from pathlib import Path
@@ -466,7 +467,9 @@ class NonVideoDialog(QDialog):
                 raise ValueError("モデル別単価の形式が不正です")
             for key in ("input_per_million", "output_per_million"):
                 value = price.get(key)
-                if type(value) not in (int, float) or not (0 <= value < 1e9):
+                if isinstance(value, bool) or not isinstance(value, (int, float)):
+                    raise ValueError("単価は0以上の有限な数値で指定してください")
+                if not math.isfinite(float(value)) or not 0 <= float(value) < 1e9:
                     raise ValueError("単価は0以上の有限な数値で指定してください")
             if not isinstance(price.get("currency"), str) or not price["currency"].strip():
                 raise ValueError("通貨を指定してください")
