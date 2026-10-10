@@ -1608,3 +1608,13 @@ assurance removes edit-only checks, while independently reviewed joint temporal
 UI qualification remains required. The previously exposed R1/R2 development
 sequences are not fresh holdout. See
 [qualification support and exact start acceptance targets](unedited_input_lifecycle.md).
+
+## Standard targeted production verification and latest-main integration
+
+The unchanged37-point/profile13 targeted E2E finishes12PASS/13FAIL/12NE,
+exactly matching prior failure records and state counts. Runtime550.047s versus
+710.903s is descriptive because cache conditions differ. Terminal hashes verify.
+Updated main merges without conflicts; post-merge120related unit tests,
+Ruff and mypy125source filesPASS. No canonical full result or qualification is
+created. The lifecycle blockers remain. See
+[run scope, exact comparison and integration checks](current_contract_targeted_verification.md).
