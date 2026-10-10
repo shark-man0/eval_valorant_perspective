@@ -13,9 +13,9 @@ Layout
   4. match view  - the Task A aggregator keeps the same guarantees
   5. snapshot    - audit of the known snapshot-fact issues (reproduction, not redefinition)
 
-Tests named ``test_known_limitation_*`` pin *current* behaviour so a later, approved change
-has to flip them knowingly; ``xfail(strict=True)`` marks a reproduced defect whose fix
-changes confidence semantics and therefore needs approval.
+Tests named ``test_known_limitation_*`` / ``test_known_consequence_*`` pin *current* behaviour
+so a later, approved change has to flip them knowingly. D-1 (a merged evaluation exceeding the
+weakest fact it cites) was approved and fixed; its regression tests are ordinary passing tests.
 """
 
 from __future__ import annotations
@@ -427,11 +427,20 @@ def test_aggregation_never_invents_labels_ids_rules_or_confidence(seed: int) -> 
     by_id = {item["evaluation_id"]: item for item in items}
     rule_ids = {item["primary_rule_id"] for item in items}
     result = display_aggregator().aggregate([copy.deepcopy(item) for item in items])
+    fact_caps: dict[str, float] = {}
+    for item in items:
+        for ref in item["fact_refs"]:
+            fact_caps[ref] = max(fact_caps.get(ref, 0.0), float(item["confidence"]))
     assert len(result) <= len(items)
     for kept in result:
         origin = by_id[kept["evaluation_id"]]
         assert kept["label"] == origin["label"]  # no GOOD/IMPROVE/UNSCORED crossing
-        assert kept["confidence"] == origin["confidence"]  # never raised, never recomputed
+        # a merged item takes the weakest member's confidence: never raised above the id it keeps
+        assert kept["confidence"] <= origin["confidence"]
+        # the contract in miniature: no cited fact may be weaker than the evaluation citing it.
+        # A fact's cap is the strongest confidence any input evaluation placed on it (so every
+        # input is valid), and a merged item that cites the union must still sit under all caps.
+        assert kept["confidence"] <= min(fact_caps[ref] for ref in kept["fact_refs"])
         assert kept["primary_rule_id"] == origin["primary_rule_id"]
         assert set(kept["related_rule_ids"]) <= rule_ids - {kept["primary_rule_id"]}
         assert kept["_aggregation_scope"] == origin["_aggregation_scope"]
@@ -530,50 +539,180 @@ def test_known_limitation_an_exact_time_and_confidence_tie_keeps_the_first_suppl
     assert {forward[0]["evaluation_id"], backward[0]["evaluation_id"]} == {"a", "b"}
 
 
+# D-1 (approved): a merged evaluation cites the union of its members' facts, so it may not claim
+# more confidence than its weakest member (each member is already capped by its own facts).
+MERGE_PATHS: dict[str, tuple[str, list[tuple[str, str, float, list[str]]]]] = {
+    # case, then (evaluation_id, rule, confidence, fact_refs) per member
+    "same_rule": ("TC-006", [("a", "AIM-02", 0.98, ["F008"]), ("b", "AIM-02", 0.90, ["F007"])]),
+    "dedup_group": ("TC-017", [("a", "AIM-03", 0.98, ["F010"]), ("b", "MOV-02", 0.90, ["F007"])]),
+}
+
+
+def schema_valid_member(
+    template: dict[str, Any], evaluation_id: str, rule: str, confidence: float, facts: list[str]
+) -> dict[str, Any]:
+    """A real, schema-complete evaluation (copied from a case) with only identity/basis changed."""
+    item = copy.deepcopy(template)
+    item.update(
+        evaluation_id=evaluation_id,
+        clip_id=f"clip-{evaluation_id}",
+        primary_rule_id=rule,
+        related_rule_ids=[],
+        confidence=confidence,
+        fact_refs=list(facts),
+        _aggregation_scope=1,
+    )
+    return item
+
+
 def merge_inputs(path: str) -> list[dict[str, Any]]:
-    if path == "same_rule":
-        return [
-            ev("a", "AIM-02", "good", 10.0, 0.98, ["F008"]),
-            ev("b", "AIM-02", "good", 13.0, 0.90, ["F007"]),
-        ]
-    return [  # dedup group: AIM-03 is primary, MOV-02 is merged in
-        ev("a", "AIM-03", "improve", 10.0, 0.98, ["F008"]),
-        ev("b", "MOV-02", "improve", 10.2, 0.90, ["F007"]),
+    """The same members as minimal dictionaries, for order / identity checks."""
+    gap = 3.0 if path == "same_rule" else 0.2  # same-rule dedup window vs same-scene overlap
+    return [
+        ev(eid, rule, "good" if path == "same_rule" else "improve", 10.0 + gap * index, conf, facts)
+        for index, (eid, rule, conf, facts) in enumerate(MERGE_PATHS[path][1])
     ]
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason=(
-        "KNOWN DEFECT (needs approval, see docs/non_vision_safety_regression_report.md D-1): "
-        "merging two same-label evaluations unions their fact_refs but keeps the higher "
-        "confidence, so the merged evaluation exceeds the weakest cited fact and the pipeline's "
-        "post-aggregation validate_ai_output rejects the whole payload. Fixing it changes the "
-        "confidence of merged results."
-    ),
-)
+@pytest.mark.parametrize("flip", [False, True], ids=["as_listed", "reversed"])
 @pytest.mark.parametrize("path", ["same_rule", "dedup_group"])
-def test_merged_evaluation_keeps_the_confidence_cap_of_every_fact_it_cites(path: str) -> None:
-    package, output = case_pair("TC-006", 1)
-    merged = display_aggregator().aggregate(merge_inputs(path))
+def test_merged_evaluation_keeps_the_confidence_cap_of_every_fact_it_cites(
+    path: str, flip: bool
+) -> None:
+    """Regression for D-1, through the real contract validator (the one the pipeline re-runs)."""
+    case, members = MERGE_PATHS[path]
+    package, output = case_pair(case, 1)
+    template = output["evaluations"][0]
+    items = [schema_valid_member(template, *member) for member in members]
+    merged = display_aggregator().aggregate(items[::-1] if flip else items)
     assert len(merged) == 1
+    cited = {fact_id for member in members for fact_id in member[3]}
+    assert set(merged[0]["fact_refs"]) == cited  # references are kept (union) ...
+    assert merged[0]["confidence"] <= min(fact_confidence(package, f) for f in cited)  # ... capped
     for item in merged:
         item.pop("_aggregation_scope")
-        item["evaluation_id"] = output["evaluations"][0]["evaluation_id"]
-        item["evidence"] = output["evaluations"][0]["evidence"]
-        item["evidence_range"] = output["evaluations"][0]["evidence_range"]
-        item["display_clip"] = output["evaluations"][0]["display_clip"]
-        item["clip_id"] = output["evaluations"][0].get("clip_id")
-        item["primary_rule_id"] = output["evaluations"][0]["primary_rule_id"]
-        item["related_rule_ids"] = []
     validate({**output, "evaluations": merged}, package)
 
 
-def test_merging_never_lowers_the_cap_below_what_the_representative_already_had() -> None:
-    """Companion to the defect above: today the merged item is *at most* its own confidence."""
-    merged = display_aggregator().aggregate(merge_inputs("same_rule"))
-    assert merged[0]["confidence"] == 0.98
-    assert merged[0]["fact_refs"] == ["F008", "F007"]
+def test_the_unfixed_merge_really_fails_the_validator_for_the_cap_reason() -> None:
+    """Guard for the test above: its inputs are schema-complete, so only the cap can reject it."""
+    package, output = case_pair("TC-006", 1)
+    template = output["evaluations"][0]
+    item = schema_valid_member(template, "a", "AIM-02", 0.98, ["F008", "F007"])
+    item.pop("_aggregation_scope")
+    with pytest.raises(ContractValidationError, match="最小confidence"):
+        validate({**output, "evaluations": [item]}, package)  # the pre-fix merge result
+
+
+@pytest.mark.parametrize("path", ["same_rule", "dedup_group"])
+@pytest.mark.parametrize("low_first", [False, True], ids=["high_first", "low_first"])
+@pytest.mark.parametrize("flip", [False, True], ids=["as_listed", "reversed"])
+def test_merged_confidence_is_the_weakest_member_in_every_time_and_input_order(
+    path: str, low_first: bool, flip: bool
+) -> None:
+    items = merge_inputs(path)
+    cited = sorted({fact_id for item in items for fact_id in item["fact_refs"]})
+    if low_first:  # the weaker member also comes first in time
+        items = [{**items[0], "confidence": 0.90}, {**items[1], "confidence": 0.98}]
+    expected_rules = {item["primary_rule_id"] for item in items}
+    merged = display_aggregator().aggregate(items[::-1] if flip else items)
+    assert len(merged) == 1
+    result = merged[0]
+    assert result["confidence"] == 0.90  # the weakest member, whichever one was the representative
+    assert sorted(result["fact_refs"]) == cited  # references kept
+    assert {result["primary_rule_id"], *result["related_rule_ids"]} == expected_rules  # identity
+    assert result["label"] == items[0]["label"]  # meaning unchanged
+
+
+@pytest.mark.parametrize("order", list(itertools.permutations(range(3))))
+def test_a_three_member_group_takes_the_weakest_of_all_three(order: tuple[int, ...]) -> None:
+    members = [
+        ev("a", "AIM-03", "improve", 10.0, 0.98, ["F1"]),
+        ev("b", "MOV-02", "improve", 10.2, 0.90, ["F2"]),
+        ev("c", "MOV-01", "improve", 10.4, 0.70, ["F3"]),
+    ]
+    merged = display_aggregator().aggregate([copy.deepcopy(members[i]) for i in order])
+    assert len(merged) == 1
+    assert merged[0]["confidence"] == 0.70
+    assert sorted(merged[0]["fact_refs"]) == ["F1", "F2", "F3"]
+    assert {merged[0]["primary_rule_id"], *merged[0]["related_rule_ids"]} == {
+        "AIM-03",
+        "MOV-02",
+        "MOV-01",
+    }
+
+
+@pytest.mark.parametrize("order", list(itertools.permutations(range(3))))
+@pytest.mark.parametrize(
+    "confidences",
+    [(0.98, 0.90, 0.95), (0.90, 0.98, 0.95), (0.95, 0.90, 0.98), (0.90, 0.95, 0.98)],
+    ids=lambda values: "-".join(f"{value:.2f}" for value in values),
+)
+def test_same_rule_merge_keeps_the_strongest_member_as_representative_and_the_weakest_confidence(
+    confidences: tuple[float, float, float], order: tuple[int, ...]
+) -> None:
+    """D-1 lowers the *confidence*; it must not change *which* evaluation represents the group.
+
+    The representative (its id, clip and evidence window) is still the strongest member, as before
+    the fix. The lowered confidence of an already merged item must not be used when comparing it
+    with the next member, otherwise a middle member would replace the strongest one.
+    """
+    members = [
+        ev(name, "AIM-02", "improve", 10.0 + index, confidence, [f"F{index + 1}"])
+        for index, (name, confidence) in enumerate(zip("abc", confidences, strict=True))
+    ]
+    merged = display_aggregator().aggregate([copy.deepcopy(members[i]) for i in order])
+    assert len(merged) == 1
+    strongest = max(members, key=lambda member: member["confidence"])
+    assert merged[0]["evaluation_id"] == strongest["evaluation_id"]
+    assert merged[0]["confidence"] == min(confidences)
+    assert sorted(merged[0]["fact_refs"]) == ["F1", "F2", "F3"]
+    assert merged[0]["primary_rule_id"] == "AIM-02" and merged[0]["related_rule_ids"] == []
+
+
+def test_merging_members_of_equal_confidence_changes_nothing_about_confidence() -> None:
+    merged = display_aggregator().aggregate(
+        [
+            ev("a", "AIM-03", "improve", 10.0, 0.9, ["F1"]),
+            ev("b", "MOV-02", "improve", 10.2, 0.9, ["F2"]),
+        ]
+    )
+    assert len(merged) == 1 and merged[0]["confidence"] == 0.9
+
+
+def test_a_merged_unscored_item_is_still_unscored_and_not_more_confident_than_its_members() -> None:
+    merged = display_aggregator().aggregate(
+        [
+            ev("a", "AIM-03", "unscored", 10.0, 0.5, ["F1"], "low_confidence"),
+            ev("b", "MOV-02", "unscored", 60.0, 0.3, ["F1"], "low_confidence"),
+        ]
+    )
+    assert len(merged) == 1
+    assert merged[0]["label"] == "unscored"
+    assert merged[0]["unscored_reason_code"] == "low_confidence"
+    assert merged[0]["confidence"] == 0.3 and merged[0]["fact_refs"] == ["F1"]
+
+
+def test_known_consequence_a_weak_member_can_demote_a_merged_good_to_unscored() -> None:
+    """Characterisation of the approved D-1 behaviour together with the pipeline's 0.55 floor.
+
+    Before, the merged item kept the *higher* confidence, so a 0.50 good merged with a 0.90 good
+    stayed a good. Now the merged item is 0.50 and the pipeline's existing floor demotes it to
+    ``unscored`` (``low_confidence``). No new label logic exists: only the existing floor acts on
+    the now-honest confidence.
+    """
+    from valorant_ai_coach.application.pipeline import MatchAnalysisPipeline
+
+    merged = display_aggregator().aggregate(
+        [
+            ev("a", "AIM-02", "good", 10.0, 0.50, ["F1"]),
+            ev("b", "AIM-02", "good", 13.0, 0.90, ["F2"]),
+        ]
+    )
+    assert len(merged) == 1 and merged[0]["confidence"] == 0.50
+    enforced = MatchAnalysisPipeline._enforce_confidence_policy(merged[0])
+    assert enforced["label"] == "unscored" and enforced["unscored_reason_code"] == "low_confidence"
+    assert sorted(enforced["fact_refs"]) == ["F1", "F2"]  # the basis is not lost
 
 
 # ================================================================================ 4. match view
