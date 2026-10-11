@@ -788,3 +788,101 @@ These are regression-test metrics, not canonical assertion counts. Canonical
 23 PASS / 55 FAIL / 4 NE remains historical, with no new full E2E or precision
 claim. Whole-source Practical recognition/Packages, independent exact-point
 accuracy and final reader qualification remain the next development work.
+
+## Whole-source production Practical collection
+
+Problem: separate short windows and the decoder-only benchmark could not prove
+that the real collector preserves one temporal lifecycle over the complete
+source or that all observations remain assigned after recording anomalies.
+
+The new diagnostic CLI invokes `HudVideoProcessor.collect_native_lifecycle`
+once from physical origin to EOF, using the common source-replay entrance and
+the existing development profile. The verified analysis is archived before
+Package diagnostics. It then uses the same Practical boundary validation,
+confirmed overlay and `RoundPackageBuilder`, and exports package boundaries.
+No GT, assertion windows or expected numeric values enter this command.
+It does not run the sampled player/visual pipeline or canonical evaluator.
+
+```bash
+PYTHONPATH=.:src python3 -m scripts.diagnostics.collect_practical_source \
+  --video ValorantData/videos/Valorant_09-25-2026_0-37-29-379.mp4 \
+  --layout outputs/hud_profiles/round-global-timer-glyph-20261008/hud_layout.json \
+  --templates outputs/hud_profiles/round-global-timer-glyph-20261008/score-rowcontrast-late-result-diagnostic.templates.json \
+  --input-contract datasets/input_contracts/match_001.unedited.json \
+  --output-directory outputs/recognition-investigation/practical-whole-source-replay-20261011 \
+  --match-id match_001
+```
+
+The command completed once with exit 0 in **19460.390 seconds (5h24m20s)**:
+10259 native frames, PTS 0.036003–171.002669, 0.527 frames/second. Source,
+profile, code, input-contract and terminal decoder checks passed. No frames were
+skipped. Raw observations and all output hashes remain local; the compact
+tracked result is `e2e_reports/match_001/practical_whole_source_collection.json`.
+
+| Boundary | Previous continuous local window | Whole-source boundary | Delta | Whole-source confirmation |
+| --- | ---: | ---: | ---: | ---: |
+| R1 start candidate | 4.102669 | 4.102669 | 0 | 4.202669 |
+| R1 end candidate | 74.486003 | 74.486003 | 0 | 75.369336 |
+| R2 start candidate | 111.419336 | 111.419336 | 0 | 111.486003 |
+
+All three remain **provisional**. There are two starts, one end, no additional
+end and zero formal boundaries. The end timestamp remains the first observed
+score change, corroborated by clock decrease and delayed stable result; it is
+not selected by proximity to GT. Confirmation delay remains separate from
+boundary time. Independent exact-point truth is still missing, so ±0.1-second
+precision remains unverified. These are not canonical PASS results.
+
+Source-break diagnostics identify identical consecutive full-pixel hashes at
+81.786003 and 81.836003. PTS increments remain 256 ticks, source epoch remains
+unchanged, and explicit content-jump/discontinuity flags are false. The existing
+duplicate-pixel fail-closed guard resets lifecycle context at both points.
+This is not evidence of user editing; the unedited contract remains in effect.
+No boundary evidence spans either reset. R2 independently prepares and starts
+in continuity segment 2. The reset policy was not relaxed.
+
+| Storage interval | Observed range/context (sec) | Start/end status | Native observations |
+| --- | --- | --- | ---: |
+| 1 | 0.036003–2.486003 | unknown / unknown | 147 |
+| 2 | 2.486003–81.769336 | provisional / provisional | 4758 |
+| 3 | 81.786003–81.836003 | unknown / unknown | 3 |
+| 4 | 81.836003–110.986003 | unknown / unknown | 1749 |
+| 5 | 110.986003–171.019336 | provisional / unknown | 3602 |
+
+Interval numbers are storage identifiers, not observed in-game round numbers.
+Intervals 2 and 5 contain the two independently observed starts; intervals
+1/3/4 preserve unknown context. Context edges differ from boundary event times:
+initial preparation belongs with the first candidate and later preparation with
+the second. The final storage extent uses existing source-duration convention.
+Recomputing the builder's exact membership predicates verifies **10259/10259
+observations assigned exactly once**, zero omitted and zero multiply assigned.
+
+All five packages have HUD/visual confidence and timeline completeness zero
+under the existing uncertain-boundary rule. The global projection produces
+7637 accepted shared timer facts and 178 derived system `state_snapshot` events;
+it produces no owned facts and no formal round events. Accepted is not independently
+verified correct. Native rows retain all observations; Package snapshots still
+use existing confidence/deduplication semantics (0/56/0/12/133 snapshots). The
+global collection is not full player/visual analysis or end-to-end AI coaching.
+
+Native primary states: unknown 8676, live 680, menu 579, spectator 324. These
+counts have a different frame input and diagnostic profile from historical
+canonical sampling and cannot establish classification accuracy improvement.
+Canonical 23/55/4, negative assertion outcomes and discontinuity assertion
+outcomes were not re-evaluated. Unknown-to-correct/wrong remains unmeasured.
+
+Largest measured exclusive stages: geometry 7152.525s (36.75%), native lifecycle
+and remaining collection work 5210.328s (26.77%), spectator 4061.488s (20.87%),
+initial native decode 892.111s (4.58%), identity 860.173s (4.42%). Native lifecycle
+exclusive time includes transport/replay checks outside nested recognition
+stages; it must not be reported as detector time alone. Package build took
+25.691s. Replay trades retained PNG storage for decode passes; this run does not
+demonstrate a speed improvement.
+
+Tests/evidence: real complete collector/Package command exit 0, exact membership
+audit and source hashes verified; diagnostic Ruff and CLI argument checks pass.
+Production source was frozen during execution. The earlier 2573-test regression
+and Windows/Linux CI remain evidence for that unchanged production code, not
+independent reader qualification. Next: use this archived full source evidence
+to audit independent holdout accuracy/negative controls and qualify only supported
+components, then validate full player/visual Package and persistence integration.
+Do not rerun the five-hour collector merely to inspect its saved results.
