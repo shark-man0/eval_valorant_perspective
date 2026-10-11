@@ -154,26 +154,35 @@ def test_real_multitrack_video_runs_coach_sqlite_and_shared_clip(tmp_path: Path)
     # Use Qt's actual media backend to verify the ordinal audio-track API against
     # the clip's stream metadata (ffprobe indices are not Qt ordinals).
     os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
-    from PySide6.QtCore import QUrl
+    from PySide6.QtCore import QCoreApplication, QEvent, QUrl
     from PySide6.QtMultimedia import QMediaPlayer, QVideoSink
     from PySide6.QtWidgets import QApplication
 
     app = QApplication.instance() or QApplication([])
     player = QMediaPlayer()
-    sink = QVideoSink()
-    player.setVideoSink(sink)
-    player.setSource(QUrl.fromLocalFile(str(Path(clips[0]["file_path"]))))
-    deadline = time.monotonic() + 10
-    while len(player.audioTracks()) < 3 and time.monotonic() < deadline:
+    sink = QVideoSink(player)
+    try:
+        player.setVideoSink(sink)
+        player.setSource(QUrl.fromLocalFile(str(Path(clips[0]["file_path"]))))
+        deadline = time.monotonic() + 10
+        while len(player.audioTracks()) < 3 and time.monotonic() < deadline:
+            app.processEvents()
+            time.sleep(0.01)
+        assert player.error() == QMediaPlayer.Error.NoError, player.errorString()
+        assert len(player.audioTracks()) == 3
+        player.setActiveAudioTrack(2)
+        assert player.activeAudioTrack() == 2
+        player.play()
+        while sink.videoFrame().isValid() is False and time.monotonic() < deadline:
+            app.processEvents()
+            time.sleep(0.01)
+        assert sink.videoFrame().isValid()
+    finally:
+        # Stop/detach the backend before Qt destroys its shared sink; do not
+        # leave destruction to Python GC after QApplication has disappeared.
+        player.stop()
+        player.setVideoSink(None)
+        player.setSource(QUrl())
+        player.deleteLater()
+        QCoreApplication.sendPostedEvents(None, QEvent.Type.DeferredDelete)
         app.processEvents()
-        time.sleep(0.01)
-    assert player.error() == QMediaPlayer.Error.NoError, player.errorString()
-    assert len(player.audioTracks()) == 3
-    player.setActiveAudioTrack(2)
-    assert player.activeAudioTrack() == 2
-    player.play()
-    while sink.videoFrame().isValid() is False and time.monotonic() < deadline:
-        app.processEvents()
-        time.sleep(0.01)
-    assert sink.videoFrame().isValid()
-    player.stop()

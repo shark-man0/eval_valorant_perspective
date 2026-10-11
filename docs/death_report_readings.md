@@ -166,3 +166,23 @@ the 46 native tests validate the final follow-up locally. Final common full
 regression/Windows packaging evidence is the latest PR CI result. Actual Windows
 match_001 accuracy and the original intermittent probe root remain unverified.
 Source evidence: `e2e_reports/match_001/native_probe_decoder_alignment.json`.
+
+
+## Qt media-test teardown follow-up
+
+The `01ce952` Windows checks both passed. One Linux check also passed; the
+other passed all 2630 tests and then exited 134 during finalization. Its stderr
+contains `QObject: shared QObject was deleted directly` followed by an allocator
+corruption diagnostic. This is an unsuccessful CI process despite passing test
+assertions, and is not reported as a green check.
+
+The real multitrack media test previously left its unparented video sink bound
+to the player and relied on Python GC for both objects. Its teardown now runs
+in `finally`: the sink is parented to the player, playback stops, the sink and
+source are detached, and deferred deletion is processed while QApplication
+is alive. All actual track-selection/playback assertions are preserved. This
+corrects an observed lifecycle gap; it does not establish the exclusive cause
+of the previous intermittent shutdown abort. Production UI/recognition behavior
+is unchanged by this test-only follow-up. Relevant real FFmpeg/Qt/widget tests
+passed with normal process exit; latest cross-platform checks remain the final
+authoritative CI evidence.
