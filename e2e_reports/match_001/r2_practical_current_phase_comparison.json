@@ -1,0 +1,195 @@
+{
+  "scope": "Same native R2 development window; existing post-prediction manual labels reused with exact decoded-pixel/PTS binding. Not independent holdout or qualification.",
+  "input_sha256": {
+    "e2e_reports/match_001/r2_current_phase_presence_inputs.json": "8c4a7d81488f8055cfed37152a7aab9b009c34d023be1e13c149c5b16d8b0d89",
+    "e2e_reports/match_001/r2_practical_current_phase_replay.json": "5c439207e8aa8486ed36db4a3fdaa3bdd94c14260ba82391c6edcc63ef15ea4f",
+    "e2e_reports/match_001/r2_unedited_actual_analyzer_temporal_replay.json": "3db4de2e9a0f076889bffcd2fff6c116767d0e3c5aa7082aa698ad01ec8472d9",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/source-review.json": "a017d932de37e5f933591773379b889b5f1c8c31545ac319e4251a07bc05536f",
+    "outputs/recognition-investigation/native-global-preparation-complete-20261008/results.json": "b6c41f52eed4d9d41e5cda9ebd4d5cdfda97a2d736ff7de541584c2df61a58e6"
+  },
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "comparison": {
+    "native_frames": {
+      "previous": 30,
+      "current": 30,
+      "delta": 0
+    },
+    "provisional_start_candidates": {
+      "previous": 1,
+      "current": 1,
+      "delta": 0
+    },
+    "confirmed_events": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "timer_correct": {
+      "previous": 24,
+      "current": 24,
+      "delta": 0
+    },
+    "timer_unknown": {
+      "previous": 6,
+      "current": 6,
+      "delta": 0
+    },
+    "timer_wrong": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "phase_scan_valid_frames": {
+      "previous": 30,
+      "current": 30,
+      "delta": 0
+    },
+    "wall_clock_sec": {
+      "previous": 62.40518894797424,
+      "current": 80.36854833201505,
+      "delta": 17.963359384040814
+    }
+  },
+  "png_encoding_changes_with_identical_pixels": 30,
+  "runtime_comparison_note": "Instrumentation/code versions differ; runtime delta is descriptive only.",
+  "boundaries": [
+    {
+      "kind": "round_start",
+      "boundary_status": "provisional",
+      "boundary_time_sec": 111.4193359375,
+      "confirmation_time_sec": 111.48600260416667,
+      "evidence_times_sec": [
+        111.4193359375,
+        111.43600260416666,
+        111.45266927083334,
+        111.4693359375,
+        111.48600260416667
+      ],
+      "confidence": 0.931477963924408,
+      "provenance": {
+        "scope": "global_system",
+        "producer": "unedited_ui_start_tracker",
+        "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+        "preparation_pts_sec": [
+          111.2693359375,
+          111.40266927083333
+        ],
+        "reader_qualification_required": true,
+        "confirmation_pts_sec": 111.48600260416667,
+        "pts_sec": [
+          111.4193359375,
+          111.43600260416666,
+          111.45266927083334,
+          111.4693359375,
+          111.48600260416667
+        ],
+        "clock_display_samples": [
+          {
+            "pts_sec": 111.4193359375,
+            "observed_seconds": 0.0,
+            "observed_display": "0:00",
+            "reader_confidence": 0.9631862044334412,
+            "display_provenance": {
+              "reader": "round_timer",
+              "sources": [
+                "strict_timer_glyphs",
+                "comparison_gaussian3x3_v1"
+              ],
+              "confidence": 0.9631862044334412,
+              "cross_checked": false
+            },
+            "source_pixel_sha256": "44dda08d003391b16c90a664bbea96af9f86e9cb332f5a03f59ecb1b4d7f2ae3",
+            "previous_source_pixel_sha256": "16d1c869ae826a352c311370b10c3be8f7a5995a121b38f3612006f77042369b"
+          },
+          {
+            "pts_sec": 111.43600260416666,
+            "observed_seconds": 100.0,
+            "observed_display": "1:40",
+            "reader_confidence": 0.931477963924408,
+            "display_provenance": {
+              "reader": "round_timer",
+              "sources": [
+                "strict_timer_glyphs",
+                "comparison_gaussian3x3_v1"
+              ],
+              "confidence": 0.931477963924408,
+              "cross_checked": false
+            },
+            "source_pixel_sha256": "cf8733010ac3f5cd79025316ffb9a20a59d85807c86a23c8cfc60bf46fe4005a",
+            "previous_source_pixel_sha256": "44dda08d003391b16c90a664bbea96af9f86e9cb332f5a03f59ecb1b4d7f2ae3"
+          },
+          {
+            "pts_sec": 111.45266927083334,
+            "observed_seconds": 100.0,
+            "observed_display": "1:40",
+            "reader_confidence": 0.931477963924408,
+            "display_provenance": {
+              "reader": "round_timer",
+              "sources": [
+                "strict_timer_glyphs",
+                "comparison_gaussian3x3_v1"
+              ],
+              "confidence": 0.931477963924408,
+              "cross_checked": false
+            },
+            "source_pixel_sha256": "cecdb6d7f617319fc343d599491ca74730a482c3c1825304af4bf27cfe3b40fe",
+            "previous_source_pixel_sha256": "cf8733010ac3f5cd79025316ffb9a20a59d85807c86a23c8cfc60bf46fe4005a"
+          },
+          {
+            "pts_sec": 111.4693359375,
+            "observed_seconds": 99.0,
+            "observed_display": "1:39",
+            "reader_confidence": 0.9703618884086609,
+            "display_provenance": {
+              "reader": "round_timer",
+              "sources": [
+                "strict_timer_glyphs",
+                "comparison_gaussian3x3_v1"
+              ],
+              "confidence": 0.9703618884086609,
+              "cross_checked": false
+            },
+            "source_pixel_sha256": "930801434d9fdcbca13d3f8a77123b0b6076262acb722e7329afc4ee67170cd3",
+            "previous_source_pixel_sha256": "cecdb6d7f617319fc343d599491ca74730a482c3c1825304af4bf27cfe3b40fe"
+          },
+          {
+            "pts_sec": 111.48600260416667,
+            "observed_seconds": 99.0,
+            "observed_display": "1:39",
+            "reader_confidence": 0.971046507358551,
+            "display_provenance": {
+              "reader": "round_timer",
+              "sources": [
+                "strict_timer_glyphs",
+                "comparison_gaussian3x3_v1"
+              ],
+              "confidence": 0.971046507358551,
+              "cross_checked": false
+            },
+            "source_pixel_sha256": "041c2f3bc3b7f994f57baaa3ffe69c4933961c0f7eca0e53312422237b3e12ab",
+            "previous_source_pixel_sha256": "930801434d9fdcbca13d3f8a77123b0b6076262acb722e7329afc4ee67170cd3"
+          }
+        ],
+        "coherent_clock_begin_pts_sec": 111.43600260416666,
+        "coherent_clock_observation_count": 4,
+        "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+        "source_epoch": "2e44ca08c7914d5c92e990b9bf0c7bcf",
+        "source_pts_ticks": 1711401,
+        "source_time_base": "1/15360",
+        "source_pts_sec": 111.4193359375,
+        "source_pixel_sha256": "44dda08d003391b16c90a664bbea96af9f86e9cb332f5a03f59ecb1b4d7f2ae3",
+        "profile_fingerprint": "10bfac00544e510ebf3f3e2c0072c9beba24938b2ff996c9012f7e4046d82c99",
+        "recognizer_fingerprint": "9f95885a4452e998fbfa401a266d04de9aaa303a8a9d2a1da7165e02743f4991",
+        "continuity_segment": 0,
+        "boundary_mode": "practical",
+        "qualification_status": "unverified",
+        "actor": "system",
+        "signals": []
+      }
+    }
+  ],
+  "local_source_break_count": 0,
+  "whole_match_continuity_verified": false,
+  "practical_timing_precision_verified": false,
+  "canonical_e2e_reexecuted": false
+}

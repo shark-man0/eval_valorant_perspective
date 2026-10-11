@@ -389,3 +389,63 @@ Remaining practical acceptance work is actual current-reader R2 evidence,
 continuous real-video Package collection, independently reviewed point-time
 accuracy where available, full regression/CI and PR. Existing local-window
 archive candidates are evidence to reuse, not evidence of whole-match validation.
+
+## R2 current-phase native diagnostic
+
+### Problem and evidence
+
+The older R2 archive lacked explicit current-frame phase presence/confidence;
+absence could not safely be inferred from a missing field. A new actual common
+analyzer run decoded the explicit development window 111.186003–111.686003 seconds
+at native cadence (30 frames, 256 ticks at timebase 1/15360). Its separate short
+geometry prefix is calibration context, not temporal corroboration. Existing
+profile/readers and thresholds were reused without GT inputs or new references.
+
+All 30 current-frame phase scans were valid. Phase was present in 13 frames and
+first absent at 111.4193359375 seconds, while the timer still displayed `0:00`.
+Following observations preserved `1:40`, then `1:39`; the same R1 unedited-input
+contract produced one provisional start at the original phase disappearance,
+confirmed as a candidate at 111.48600260416667 seconds. Candidate confidence
+was 0.931477963924408. Confirmation delay is approximately 0.066667 seconds;
+it is not the boundary timestamp. No formal event or end candidate was released.
+The local replay had zero source breaks and ended in `round_active`.
+
+Artifacts:
+
+- `e2e_reports/match_001/r2_current_phase_presence_inputs.json`: fresh current
+  analyzer observations with native PTS/pixel hashes and explicit UI measurements.
+- `e2e_reports/match_001/r2_practical_current_phase_replay.json`: source-contract
+  validated practical replay, one provisional start and zero formal events.
+- `e2e_reports/match_001/r2_practical_current_phase_comparison.json`: fixed-window
+  comparison and binding to existing manual development review.
+
+### Previous / Current / Delta
+
+| Metric | Previous same R2 diagnostic | Current | Delta |
+| --- | ---: | ---: | ---: |
+| Native frames | 30 | 30 | 0 |
+| Start candidates | 1 | 1 provisional | 0 |
+| Formal events | 0 | 0 | 0 |
+| Timer correct | 24 | 24 | 0 |
+| Timer unknown | 6 | 6 | 0 |
+| Timer wrong | 0 | 0 | 0 |
+| Valid phase scans | 30 | 30 | 0 |
+| Wall time (seconds) | 62.405189 | 80.368548 | +17.963359 |
+
+Runtime reflects different instrumentation/code and is descriptive, not a speed
+improvement. Timer labels were reused only after verifying the original reviewed
+result hash, encoded-frame review binding, and exact decoded pixels/PTS/timebase
+against the fresh run. PNG encoding hashes differed, while all decoded pixels
+matched; encoded-byte equality was not falsely asserted. This remains an existing
+post-prediction development review, not independent holdout qualification.
+
+### Decision and remaining blocker
+
+The R1 practical phase-disappearance/clock-stabilization contract applies to the
+observed R2 sequence without timestamp special cases. No production change was
+needed. R2 timing precision against an independent exact truth remains unverified;
+no acceptance-window midpoint was used. Zero end candidates in this local start
+window does not prove no false R2 end across the whole video. R1-to-R2 continuity,
+the wider 109–114-second negative/context interval and whole-match Package
+validation remain open. The canonical 23 PASS / 55 FAIL / 4 NE run was not
+reexecuted, so no canonical delta is claimed.
