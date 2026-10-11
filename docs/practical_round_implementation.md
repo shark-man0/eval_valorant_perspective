@@ -449,3 +449,75 @@ window does not prove no false R2 end across the whole video. R1-to-R2 continuit
 the wider 109–114-second negative/context interval and whole-match Package
 validation remain open. The canonical 23 PASS / 55 FAIL / 4 NE run was not
 reexecuted, so no canonical delta is claimed.
+
+## Wider R2 continuity and unknown-context preservation
+
+### Problem and evidence
+
+A fresh current analyzer run processed every native frame in 109–114 seconds:
+300 frames, 300 valid phase scans, 228 accepted timer displays, 198 available
+score pairs, zero result matches. Observed states were buy menu 43, unknown 228,
+and live 29. The practical replay produced exactly one start candidate at
+111.4193359375 seconds, confirmation 111.48600260416667, no end candidate, zero
+local source breaks, and final state `round_active`. Runtime was 581.167058
+seconds. This wider context did not create menu-triggered or duplicate starts.
+The calibration prefix remains separate from temporal evidence.
+
+Passing these actual observations to the common Package builder exposed a
+preservation bug: context outside the existing trusted round windows was dropped.
+Only 181 of the 300 observed timestamps fell inside the initial output Package.
+The discarded prefix included purchase-menu observations; safely assigning those
+observations to the detected round had not been established.
+
+### Contract change
+
+Practical mode now retains previously unassigned observed context as partial
+windows with both boundary statuses unknown. Existing windows retain priority.
+Explicit source cuts and observation gaps greater than one second split these
+storage fragments; their endpoints are never converted to round events.
+Unknown-only input can therefore be stored without inventing gameplay identity,
+round start, round end, or round number. Strict mode does not call this retention
+path. Uncertain fragments keep zero timeline completeness and remain unscored.
+This is context preservation, not an assertion that the earlier menu belongs to
+R2. No safety threshold or formal boundary qualification changed.
+
+Actual archived-current-reader replay through the updated builder retains all
+300 timestamps in nonoverlapping storage windows:
+
+| Interval | Storage window | Start | End |
+| --- | --- | --- | --- |
+| Unknown prefix | 109.002669–110.986003 | unknown | unknown |
+| Observed provisional start context | 110.986003–171.019336 | provisional | unknown |
+
+The second window uses the existing open-ended source-duration convention.
+Actual observations in this diagnostic end at 113.986003 seconds: no observations,
+facts or end evidence are generated for the unprocessed remainder. The prefix
+and provisional interval are storage keys, not proven in-game R1/R2 numbering.
+
+### Tests and comparison
+
+51 Package/export/Strict boundary tests PASS in 50.61 seconds; 44 practical
+producer/application/accuracy/export tests PASS in 26.45 seconds (these sets
+share export tests). Full source mypy: 127 files PASS. Ruff and whitespace
+checks PASS. Tests cover menu-prefix retention, unknown-only input, cuts/gaps,
+no formal events, zero completeness, and prior practical/Strict contracts.
+
+| Metric | Before retention change, same actual inputs | Current | Delta |
+| --- | ---: | ---: | ---: |
+| Storage Packages | 1 | 2 | +1 unknown fragment |
+| Observed timestamps inside Package extents | 181 | 300 | +119 |
+| Formal boundary events | 0 | 0 | 0 |
+| Canonical PASS / FAIL / NE | 23 / 55 / 4 historical run | Not rerun | Not measured |
+
+New artifacts: `r2_wide_current_phase_inputs.json`,
+`r2_wide_practical_replay.json`, `r2_wide_practical_packages.json` under
+`e2e_reports/match_001`. The Package diagnostic binds archived reader fingerprints
+separately from current builder/replay fingerprints and includes original input
+hashes, actual observed coverage and previous/current metrics. No new manual GT
+was created. Wrong-reader counts for the entire wider window have not been
+independently reviewed and are not inferred from confidence.
+
+Remaining blockers: wider R1 start/end intervals, R1-to-R2 whole-source continuity,
+no-false-end verification after 114 seconds, independent holdout qualification,
+exact truth-time precision, sampled/canonical E2E, full regression and CI/PR.
+Local zero extra candidates does not certify whole-video negative assertions.

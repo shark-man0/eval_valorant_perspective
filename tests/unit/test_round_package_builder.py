@@ -330,3 +330,48 @@ def test_practical_consumer_pipeline_resume_preserves_uncertainty_without_scorin
     assert restored.rounds[retained_number - 1].output['analysis_id'] == (
         f'RESTORED-P-RESUME-R{retained_number}'
     )
+
+
+def test_practical_preserves_menu_prefix_as_unknown_without_round_attribution(practical_build):
+    packages = practical_build(boundary_mode='practical', provisional_boundaries=[
+        practical_candidate('round_start', 3, 3.2),
+    ])
+    # Force a valid observed menu into a prefix that strict round context excludes.
+    # Build the same production input with the existing helper's fixed samples.
+    from tests.unit.test_round_boundary_regressions import make_builder, observation
+    from valorant_ai_coach.video import VideoMetadata
+
+    samples = [observation(1, menu=True), observation(1.5, menu=True), observation(3.5)]
+    built = make_builder().build(
+        match_id='prefix',
+        video_metadata=VideoMetadata(Path('video.mp4'), 8, 1920, 1080, 60,
+                                     'h264', None, False, 0),
+        hud_observations=samples, hud_events=[], boundary_mode='practical',
+        provisional_boundaries=[practical_candidate('round_start', 3, 3.2)],
+    )
+    assert built[0]['round_lifecycle']['start']['status'] == 'unknown'
+    assert built[0]['round_lifecycle']['end']['status'] == 'unknown'
+    assert built[0]['round_window']['start_sec'] == 1
+    assert all(p['observation_quality']['timeline_completeness'] == 0 for p in built)
+    assert not any(e['type'] in {'round_start', 'round_end'} for p in built for e in p['events'])
+    assert packages  # Existing provisional fixture remains supported.
+
+
+def test_practical_unknown_only_observations_survive_cut_and_gap(practical_build):
+    from tests.unit.test_round_boundary_regressions import make_builder, observation
+    from valorant_ai_coach.video import VideoMetadata
+
+    samples = [observation(t, menu=True) for t in (1, 1.5, 3, 3.5, 7)]
+    built = make_builder().build(
+        match_id='unknown',
+        video_metadata=VideoMetadata(Path('video.mp4'), 8, 1920, 1080, 60,
+                                     'h264', None, False, 0),
+        hud_observations=samples, hud_events=[], boundary_mode='practical',
+        continuity_breaks=(2,), require_detected_rounds=False,
+    )
+    assert len(built) == 3
+    assert all(p['round_lifecycle'][edge]['status'] == 'unknown'
+               for p in built for edge in ('start', 'end'))
+    assert all(not (p['round_window']['start_sec'] < 2 < p['round_window']['end_sec'])
+               for p in built)
+    assert sum(len(p['state_snapshots']) for p in built) > 0

@@ -383,6 +383,10 @@ class RoundPackageBuilder:
         windows = self._round_windows(
             observations, partition_signals, video_metadata.duration_sec, continuity_breaks=cuts,
         )
+        if boundary_mode == "practical":
+            windows = self._retain_unassigned_observations(
+                observations, windows, video_metadata.duration_sec, cuts,
+            )
         # Diagnostics may retain observations without inventing round boundaries.
         # Interactive coaching keeps the strict default. All other validation stays active.
         if not windows and require_detected_rounds:
@@ -611,6 +615,45 @@ class RoundPackageBuilder:
             ):
                 result[index] = event
         return result
+
+    def _retain_unassigned_observations(
+        self, observations: Sequence[dict[str, Any]], windows: list[_RoundWindow],
+        duration: float, cuts: Sequence[float],
+    ) -> list[_RoundWindow]:
+        """Keep observed unknown context without assigning it to a detected round.
+
+        Fragment edges are storage extents, never boundary evidence. Existing
+        windows keep priority; cuts and observed gaps split the additional data.
+        """
+        ordered = sorted(windows, key=lambda window: window.start_sec)
+        edges = sorted({0.0, duration, *cuts,
+                        *(w.start_sec for w in ordered), *(w.end_sec for w in ordered)})
+        uncovered = sorted({self._time(o) for o in observations
+                            if 0 <= self._time(o) <= duration
+                            and not any(w.contains(self._time(o)) for w in ordered)})
+        retained = list(ordered)
+        for lower, upper in zip(edges, edges[1:], strict=False):
+            times = [t for t in uncovered if lower <= t < upper
+                     or t == upper == duration]
+            if not times:
+                continue
+            groups: list[list[float]] = []
+            for timestamp in times:
+                if not groups or timestamp - groups[-1][-1] > 1.0:
+                    groups.append([])
+                groups[-1].append(timestamp)
+            for group in groups:
+                # A single observation still needs a positive storage interval.
+                # This matches existing partial-fragment extent convention and
+                # never supplies a start/end event timestamp.
+                start = group[0]
+                end = min(upper, group[-1] + 0.1)
+                if end <= start:
+                    start = max(lower, start - 0.1)
+                if end > start:
+                    retained.append(_RoundWindow(start, end, False,
+                                                 end < upper or upper == duration))
+        return sorted(retained, key=lambda window: window.start_sec)
 
     def _round_windows(
         self,
