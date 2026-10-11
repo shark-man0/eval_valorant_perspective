@@ -1197,3 +1197,150 @@ Remaining blocker: independent exact point-time labels and component/temporal
 qualification. The null-time reference documents missing evidence; it must not
 be substituted with prediction times, acceptance-window midpoints or GT-derived
 production inputs.
+
+## Whole Practical application processing and completed-job restoration
+
+### Problem and target
+
+The bounded HUD/Visual verification left whole-source acquisition, fact
+processing and durable resume unverified. Inspection also found that public
+`resume_analysis` reran complete HUD/Visual acquisition even when all uncertain
+intervals were already stored. This is a Practical application integration task
+under the P1 lifecycle/package contract, not qualification of the three canonical
+round-point assertions or a rewrite of their acceptance conditions.
+
+### Change
+
+`MatchAnalysisPipeline` can now restore a **completed uncertain Practical job**
+without repeating recognition. Admission follows the existing source/config/
+profile fingerprint gate, requires every expected interval to be complete and
+stored, validates Package schemas and restore eligibility, and compares newly
+recorded **full durable Package hashes**. These hashes include prepared evidence
+and are separate from the existing raw producer-input hashes: preparing evidence
+can change Package contents legitimately, so the two must not be conflated.
+
+The assured video's full SHA-256 is checked against the explicit input contract;
+the previous bounded source fingerprint alone is insufficient. A terminal check
+repeats full source/config and stored-Package hashes before reporting success.
+Strict jobs retain their previous path. Missing hashes in older checkpoints,
+incomplete/failed jobs, missing evidence or incompatible saved inputs do not
+enter the new fast path. The existing fresh-processing and resume-input gates
+remain available. Checkpoint metadata is additive; no schema migration or new
+recognition-result cache is introduced. Source, recognizer/profile or rule
+changes cannot authorize reuse through this path.
+
+### Actual source evidence
+
+`scripts/diagnostics/verify_practical_full_application.py` used the common
+application factory and public `analyze_video` with **real HUD and Visual
+recognizers and the unchanged production sampler** over the entire video. The
+native lifecycle stage was injected explicitly from the already verified,
+current-code/current-profile whole-native archive. This avoided repeating its
+5h24m collection. No fixture HUD/Visual output or GT was fed to fresh processing.
+This offline native transport injection is not a runtime archive cache or proof
+that the GUI worker acquired the whole video in one execution.
+
+Results: **6614 processed frames**, unknown 5588, live 511, buy menu 306,
+spectator 209. Five distinct storage intervals were generated and persisted.
+Original native evidence remains two provisional starts, one provisional end,
+zero confirmed boundaries and no R2 end. The native original boundary and later
+confirmation times remain separate; interval numbers are not game round IDs.
+
+| Storage interval | Observed context extent | Start / end status | Saved snapshots |
+| --- | --- | --- | ---: |
+| 1 | [0.036003, 2.502669] | unknown / unknown | 0 |
+| 2, R1 context | [2.502669, 81.752669] | provisional / provisional | 307 |
+| 3 | [81.802669, 81.836003] | unknown / unknown | 0 |
+| 4 | [81.836003, 111.019336] | unknown / unknown | 306 |
+| 5, R2 context | [111.019336, 171.019336] | provisional / unknown | 413 |
+
+The two native duplicate-pixel continuity resets remain guarded; they are not
+an edit claim or a new measurement of canonical discontinuity assertions.
+The unknown intervals preserve observed material without creating round events.
+All five Package context confidence/completeness values remain zero. Accepted
+current-frame observations are stored, but there were **zero scored evaluations,
+zero coach invocations and zero clips**.
+
+HUD domain events were zero. Visual accepted one player `movement_state` event
+at 140.052669 (stationary, confidence 0.86), under the existing view/ownership
+and event policies. This event has **not** been independently reviewed and is
+not counted as an accuracy or assertion improvement. All **6614 map resolution
+records remained unresolved**. The diagnostic's first summary incorrectly
+counted resolution records as resolved maps; that reporting-only count was
+corrected from the retained raw data to **0 resolved**, without recognition
+reexecution. The original summary is retained locally for audit.
+
+### Runtime and UI verification
+
+Initial processing took **10993.216 sec (3h03m13s), 0.602 frames/sec**. This
+excludes the previously measured native collection (19460.390 sec); summing the
+two separate measurements gives about 8h27m34s, not a measured single GUI run.
+The first durable resume took **23.449 sec**, with no recognition invocation.
+After adding the terminal stored-Package race guard, the same real saved job
+was restored again in **23.249 sec**, five intervals, with identical Package
+contents and recognition explicitly forbidden. Resume does not imply faster
+fresh recognition or independent correctness qualification.
+
+Actual Pi Qt rendering then displayed five interval roots and **1026 snapshot
+rows** (0/307/0/306/413); filtering interval 5 displayed its 413 rows. Labels
+were `すべての区間` and `区間 1` through `区間 5`, so storage numbers are not shown as
+confirmed game rounds. GUI video-worker acquisition and media playback were
+not exercised by this rendering check.
+
+Top exclusive timings from the fresh application run:
+
+| Stage | Total sec | Wall share |
+| --- | ---: | ---: |
+| HUD geometry | 4597.626 | 41.82% |
+| Spectator detection | 2983.253 | 27.14% |
+| Visual analysis | 818.972 | 7.45% |
+| Decode | 668.976 | 6.09% |
+| Identity | 626.815 | 5.70% |
+
+Full call counts/averages are in the machine report. Geometry time is a runtime
+finding, not proof that geometry is the principal cause of the 55 assertions.
+No geometry acceptance, retained policy, identity evidence, NCC/OCR threshold,
+ownership, sampler or validation semantics changed.
+
+### Previous / Current / Delta and tests
+
+| Metric | Previous | Current | Delta / interpretation |
+| --- | --- | --- | --- |
+| Whole fresh Practical application verification | missing | complete, 6614 frames | New evidence |
+| Completed Practical resume | code reran recognition; runtime unmeasured | 23.249 sec, zero recognition calls | Reacquisition avoided; no invented speedup percentage |
+| Provisional native starts / ends | 2 / 1 in archive | 2 / 1 transported | 0 / 0 |
+| Confirmed round boundaries | 0 | 0 | 0 |
+| Historical canonical PASS / FAIL / NE | 23 / 55 / 4 | not rerun | unavailable |
+| Canonical negative / discontinuity failures | historical 0 / 0 | not reevaluated | unavailable |
+
+The historical canonical profile13 run (4634 frames, 12995.97 sec) and this
+Practical diagnostic use different modes, profiles and input sets. Their counts
+and times are not an accuracy or speed comparison. No fresh assertion PASS IDs
+are claimed and the 29 package-scope failures are not marked solved in Strict.
+
+Local full regression: **2603 passed / 6 skipped, 1804.85 sec**. After the final
+terminal stored-Package guard: related resume/application/wiring tests **28
+passed / 64.77 sec**, actual real saved-job resume verified, Ruff and mypy (128
+files) passed. New tests cover complete restoration, source changes including
+same-size/restored-mtime middle tampering, missing/changed/incomplete Packages,
+Strict rejection, old-checkpoint fallback, and source/Package changes during
+restoration. Latest Linux/Windows CI must be confirmed after push.
+
+A further current-source investigation selected the middle frames of the five
+longest triple-unknown numeric runs (139 frames in 29 runs). Every inspected
+timer remains visibly present (`0:06`, `0:05`, `1:36`, `1:36`, `1:32`); no absent
+value controls were fabricated. The first ally score is unreadable/ambiguous
+against bright weapon pixels, not proven absent. This post-prediction review is
+not an independent holdout or formal qualification.
+
+Artifacts: `e2e_reports/match_001/practical_full_application_verification.json`
+and `practical_triple_unknown_numeric_review.json`. Raw observations, initial
+outputs, SQLite and Qt/resume checks remain Pi-local under
+`outputs/recognition-investigation/practical-full-application-20261012`.
+
+Remaining blockers: independent component/temporal qualification for confirmed
+boundaries, exact-point precision, adopted-profile canonical targeted/sampled
+and full evaluation, source-backed ownership/state/death/map coverage, Windows
+real-video behavior and a single GUI video-worker acquisition. P1's canonical
+conditional 30/49/3 target remains unproven. Practical storage and restoration
+must not disguise these remaining Strict or recognition failures.

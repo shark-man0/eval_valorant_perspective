@@ -1,0 +1,219 @@
+{
+  "scope": "Whole Practical HUD/Visual application validation using verified native archive.\n\nOnly native lifecycle collection is replayed from its hash-bound current-code\narchive. The unchanged production sampler and real HUD/Visual recognizers run\nfresh. Production FactBuilder, RoundAnalyzer, persistence and resume follow.\nThis is not a canonical E2E or qualification; no GT is supplied to processing.\n",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "archive_sha256": "7e57454f8d5fcdb8ada1ee2feb8479030421868700ab4d22f5e7377aaa43cfb2",
+  "profile_fingerprint": "10bfac00544e510ebf3f3e2c0072c9beba24938b2ff996c9012f7e4046d82c99",
+  "recognizer_fingerprint": "c729f02c87be094fec3a8d92cd986065f83ae56d2b7408dbe93d6321d87d60e9",
+  "processed_frames": 6614,
+  "primary_states": {
+    "unknown": 5588,
+    "live_first_person": 511,
+    "buy_menu_open": 306,
+    "spectator_first_person": 209
+  },
+  "hud_event_count": 0,
+  "visual_event_count": 1,
+  "map_resolved_count": 0,
+  "package_count": 5,
+  "restored_package_count": 5,
+  "scored_evaluations": 0,
+  "coach_invocations": 0,
+  "clips": 0,
+  "initial_status": "completed",
+  "resume_status": "completed",
+  "initial_wall_sec": 10993.215522127924,
+  "resume_wall_sec": 23.449268730008043,
+  "frames_per_sec": 0.6016438035520063,
+  "runtime": {
+    "wall_sec": 10993.215493554017,
+    "stages": {
+      "decode": {
+        "calls": 16,
+        "total_sec": 668.9756814599968,
+        "average_sec": 41.8109800912498,
+        "wall_share": 0.06085350385901719
+      },
+      "evaluator": {
+        "calls": 0,
+        "total_sec": 0.0,
+        "average_sec": 0.0,
+        "wall_share": 0.0
+      },
+      "event_fusion": {
+        "calls": 1,
+        "total_sec": 0.0001016850583255291,
+        "average_sec": 0.0001016850583255291,
+        "wall_share": 9.249801241970846e-09
+      },
+      "hud_event_detection": {
+        "calls": 2,
+        "total_sec": 0.5291603929363191,
+        "average_sec": 0.26458019646815956,
+        "wall_share": 4.81351787606272e-05
+      },
+      "hud_geometry": {
+        "calls": 15286,
+        "total_sec": 4597.625984800747,
+        "average_sec": 0.3007736480963461,
+        "wall_share": 0.41822394798833984
+      },
+      "hud_identity": {
+        "calls": 30568,
+        "total_sec": 626.8149930706713,
+        "average_sec": 0.020505593858632272,
+        "wall_share": 0.05701834858401626
+      },
+      "hud_menu": {
+        "calls": 15284,
+        "total_sec": 22.906464763334952,
+        "average_sec": 0.0014987218505191672,
+        "wall_share": 0.002083691052610257
+      },
+      "hud_numeric_ocr": {
+        "calls": 7642,
+        "total_sec": 63.94284556270577,
+        "average_sec": 0.008367292012916222,
+        "wall_share": 0.005816573467535437
+      },
+      "hud_signal_templates": {
+        "calls": 15284,
+        "total_sec": 23.822907206369564,
+        "average_sec": 0.0015586827536227142,
+        "wall_share": 0.002167055418893441
+      },
+      "hud_spectator": {
+        "calls": 7642,
+        "total_sec": 2983.2527643952053,
+        "average_sec": 0.39037591787427445,
+        "wall_share": 0.27137217187677853
+      },
+      "metadata_open": {
+        "calls": 1,
+        "total_sec": 0.2902537079062313,
+        "average_sec": 0.2902537079062313,
+        "wall_share": 2.640298537551861e-05
+      },
+      "report_generation": {
+        "calls": 0,
+        "total_sec": 0.0,
+        "average_sec": 0.0,
+        "wall_share": 0.0
+      },
+      "round_package_build": {
+        "calls": 1,
+        "total_sec": 46.67955165100284,
+        "average_sec": 46.67955165100284,
+        "wall_share": 0.0042462145564574685
+      },
+      "trace_serialization": {
+        "calls": 0,
+        "total_sec": 0.0,
+        "average_sec": 0.0,
+        "wall_share": 0.0
+      },
+      "visual_analysis": {
+        "calls": 1,
+        "total_sec": 818.9715701169334,
+        "average_sec": 818.9715701169334,
+        "wall_share": 0.07449790924203621
+      },
+      "visual_trigger_scan": {
+        "calls": 1,
+        "total_sec": 121.76113886409439,
+        "average_sec": 121.76113886409439,
+        "wall_share": 0.01107602583934521
+      }
+    }
+  },
+  "canonical_e2e_reexecuted": false,
+  "independent_precision_verified": false,
+  "limitations": [
+    "Native collection reuses a verified archive; no GUI acquisition",
+    "Source-wide HUD/Visual analysis uses the unchanged production sampler",
+    "No canonical evaluator, independent point labels or qualification"
+  ],
+  "map_resolution_record_count": 6614,
+  "report_corrections": [
+    "map_resolved_count originally counted resolution rows, including unknown; corrected from exact fresh_processing.json without rerunning or changing recognition"
+  ],
+  "gui_verification": {
+    "scope": "Actual Pi Qt rendering of fresh whole-source application data; no GUI video worker or media playback",
+    "package_roots": 5,
+    "snapshot_child_counts": [
+      0,
+      307,
+      0,
+      306,
+      413
+    ],
+    "snapshot_count": 1026,
+    "filter_labels": [
+      "すべての区間",
+      "区間 1",
+      "区間 2",
+      "区間 3",
+      "区間 4",
+      "区間 5"
+    ],
+    "storage_interval_5_filtered_snapshots": 413,
+    "startup_warning": null
+  },
+  "artifact_hashes": {
+    "summary.json": "18b2db3520f5aaeadb53b56201b585b336112941fbae3710941752f1198386c4",
+    "fresh_processing.json": "7feb0fdfeec30dbb98b1f1c6343a1fa3b5c9088289a7e2d548fce2f90b821c63",
+    "initial_analysis.json": "fed40cd77b8ce23d8f5cbb1f553e2d0184ce39a43b91fef14a1afa27bf39a7ef",
+    "gui-verification.json": "e44d975a49bc068bcfcc1c2d30c5ea6057fafa9f56ed791b6cc69e35d4a484b1",
+    "summary.before-map-count-correction.json": "5dff8a3b6038a8c5dd3a2a947ac62147c53472c36ff4804dd89f45f83ce96af0",
+    "resume-terminal-guard-verification.json": "b407df27d66a2a23fa3b9f55c6dee3b10e087af8591f59aea099bc18f950a931"
+  },
+  "validation": {
+    "full_regression": {
+      "passed": 2603,
+      "skipped": 6,
+      "wall_sec": 1804.85
+    },
+    "ruff": "PASS",
+    "mypy": "PASS: 128 files",
+    "final_terminal_guard_related_tests": {
+      "passed": 28,
+      "wall_sec": 64.77
+    },
+    "scope": "Full local regression preceded the final stored-Package race guard; final related tests and actual resume verified the added guard"
+  },
+  "production_code_start_commit": "9c2b4d291e7c11894a7ec95841cbfa5230981963",
+  "canonical_results": {
+    "historical": {
+      "PASS": 23,
+      "FAIL": 55,
+      "NE": 4
+    },
+    "current": null,
+    "delta": null,
+    "reason": "Canonical assertions not reevaluated; Practical is separately opt-in"
+  },
+  "previous_comparable_application_run": null,
+  "runtime_delta_sec": null,
+  "native_collection_wall_sec_excluded": 19460.390166,
+  "one_process_full_gui_acquisition_verified": false,
+  "resume_recognition_invocations": 0,
+  "independent_visual_event_review_verified": false,
+  "native_provisional_boundary_counts": {
+    "round_start": 2,
+    "round_end": 1,
+    "confirmed": 0,
+    "R2_end": 0
+  },
+  "negative_assertion_failures": null,
+  "discontinuity_assertion_violations": null,
+  "source_continuity_guard_resets": 2,
+  "fresh_run_pipeline_source_sha256": "94517379101eff7f05dfb458373ea31252ecbd7c43d5554cbe83e210fcee1460",
+  "terminal_guard_resume_verification": {
+    "scope": "Actual stored whole-source Packages resume after added terminal Package hash guard",
+    "wall_sec": 23.248852903954685,
+    "restored_package_count": 5,
+    "recognition_invocations": 0,
+    "status": "completed",
+    "package_contents_unchanged": true,
+    "pipeline_source_sha256": "0a8a704e500d3ae1cdabd4d93bd14a2346d016abd0601087852b6b1a66c79936"
+  }
+}

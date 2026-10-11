@@ -17290,5 +17290,45 @@
     "new_qualification": false,
     "ruff": "PASS",
     "mypy": "PASS 121 source files"
+  },
+  "practical_full_application_followup": {
+    "report": "e2e_reports/match_001/practical_full_application_verification.json",
+    "report_sha256": "1c3fc31fbf74f138b276c131836f3f0e773faa270aa50f3190d5e10a4d8bef5b",
+    "scope": "Real whole-video Practical HUD/Visual and storage/resume, with verified current-code native lifecycle archive; not canonical E2E or qualification",
+    "processed_frames": 6614,
+    "primary_states": {
+      "unknown": 5588,
+      "live_first_person": 511,
+      "buy_menu_open": 306,
+      "spectator_first_person": 209
+    },
+    "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "recognizer_fingerprint": "c729f02c87be094fec3a8d92cd986065f83ae56d2b7408dbe93d6321d87d60e9",
+    "provisional_starts": 2,
+    "provisional_ends": 1,
+    "confirmed_boundaries": 0,
+    "R2_end": 0,
+    "stored_intervals": 5,
+    "stored_snapshots": 1026,
+    "restored_intervals": 5,
+    "initial_wall_sec": 10993.215522127924,
+    "resume_wall_sec": 23.248852903954685,
+    "resume_recognition_invocations": 0,
+    "scored_evaluations": 0,
+    "hud_event_count": 0,
+    "visual_event_count": 1,
+    "visual_event_accuracy_reviewed": false,
+    "resolved_maps": 0,
+    "canonical_status_changes": null,
+    "negative_assertion_failures": null,
+    "discontinuity_assertion_violations": null,
+    "root_cause_priority_unchanged": "round lifecycle qualification and canonical source/package/trace evaluation",
+    "not_solved_in_strict": [
+      "GT-R1-ROUND-START",
+      "GT-R1-ROUND-END",
+      "GT-R2-ROUND-START",
+      "round_package_scope"
+    ],
+    "independent_time_precision_verified": false
   }
 }

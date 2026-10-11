@@ -1501,3 +1501,14 @@ early word appears in the reviewed32frame prefix and red display overlaps its
 glyph masks. No thresholds/masks/reference or production path is changed.
 Qualification and actual end remain missing; no canonical gain is claimed.
 See [diagnostic, tests and next composite-evidence task](result_translation_feasibility.md).
+
+### Practical whole-application follow-up
+
+The explicitly selected Practical mode now has real whole-source HUD/Visual,
+Package storage and completed uncertain-job resume evidence. It preserves
+provisional/unknown endpoints and unscored context, while Strict qualification
+and canonical assertions remain unchanged. Source/config/profile and full
+saved-Package hashes guard the new completed-job restoration path; old or
+incomplete checkpoints retain fresh processing. See
+[Practical implementation and full-source verification](practical_round_implementation.md#whole-practical-application-processing-and-completed-job-restoration)
+for scope, runtime, controls and remaining qualification/accuracy blockers.

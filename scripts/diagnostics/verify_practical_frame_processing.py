@@ -25,6 +25,34 @@ from valorant_ai_coach.settings import AppSettings, SettingsStore
 from valorant_ai_coach.video import FrameSample
 
 
+def load_verified_archive(
+    video: Path, archive_path: Path, verification_report: Path, input_contract: Path,
+) -> tuple[PracticalLifecycleAnalysis, dict[str, object]]:
+    """Offline replay binding shared by bounded and whole-application diagnostics."""
+    report = json.loads(verification_report.read_bytes())
+    archive = json.loads(archive_path.read_bytes())
+    if (digest(archive_path) != report['artifact_hashes']['native_analysis.json']
+            or digest(video) != report['source_video_sha256']
+            or global_recognizer_fingerprint() != report['recognizer_fingerprint']
+            or archive['qualification_file_sha256'] is not None):
+        raise ValueError('archive binding changed or qualified archive unsupported')
+    contract = UneditedInputContract.load(
+        input_contract, source_video_sha256=report['source_video_sha256'],
+    )
+    analysis = PracticalLifecycleAnalysis(
+        source_rows=tuple(archive['source_rows']),
+        boundaries=tuple(BoundaryObservation.from_dict(b) for b in archive['boundaries']),
+        diagnostics=tuple(archive['diagnostics']),
+        native_step_ticks=archive['native_step_ticks'], input_contract=contract,
+        input_contract_path=input_contract,
+        profile_fingerprint=archive['profile_fingerprint'],
+        recognizer_fingerprint=archive['recognizer_fingerprint'],
+    )
+    if contract.fingerprint != report['input_contract_sha256']:
+        raise ValueError('input contract hash changed')
+    return analysis, report
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ('video', 'archive', 'verification-report', 'input-contract',
@@ -33,24 +61,8 @@ def main() -> None:
     parser.add_argument('--start-sec', type=float, required=True)
     parser.add_argument('--end-sec', type=float, required=True)
     args = parser.parse_args()
-    report = json.loads(args.verification_report.read_bytes())
-    archive = json.loads(args.archive.read_bytes())
-    if (digest(args.archive) != report['artifact_hashes']['native_analysis.json']
-            or digest(args.video) != report['source_video_sha256']
-            or global_recognizer_fingerprint() != report['recognizer_fingerprint']
-            or archive['qualification_file_sha256'] is not None):
-        raise ValueError('archive binding changed or qualified archive unsupported')
-    contract = UneditedInputContract.load(
-        args.input_contract, source_video_sha256=report['source_video_sha256'],
-    )
-    analysis = PracticalLifecycleAnalysis(
-        source_rows=tuple(archive['source_rows']),
-        boundaries=tuple(BoundaryObservation.from_dict(b) for b in archive['boundaries']),
-        diagnostics=tuple(archive['diagnostics']),
-        native_step_ticks=archive['native_step_ticks'], input_contract=contract,
-        input_contract_path=args.input_contract,
-        profile_fingerprint=archive['profile_fingerprint'],
-        recognizer_fingerprint=archive['recognizer_fingerprint'],
+    analysis, report = load_verified_archive(
+        args.video, args.archive, args.verification_report, args.input_contract,
     )
     args.output_directory.mkdir(parents=True, exist_ok=False)
     settings = AppSettings(
