@@ -65,5 +65,33 @@
   "canonical_e2e_reexecuted": false,
   "timestamp_repair_or_dropping": false,
   "diagnostic_png_budget_bytes": 268435456,
-  "prior_attempt": "Explicit 40MiB PNG budget was exceeded; inputs and acceptance were unchanged when rerun with 256MiB disk budget."
+  "prior_attempt": "Explicit 40MiB PNG budget was exceeded; inputs and acceptance were unchanged when rerun with 256MiB disk budget.",
+  "no_zero_seek_real_source_verification": {
+    "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "requested_window_sec": [
+      0,
+      0.1
+    ],
+    "native_frame_count": 4,
+    "source_pts_ticks": [
+      553,
+      809,
+      1065,
+      1321
+    ],
+    "all_pts_and_pixels_match_physical_archive": true,
+    "recognizer_fingerprint": "0861cdc9ddef5e0a346462c2bc6c61d00387e1f0b5c86d9c67aa27da86b07684",
+    "wall_sec": 9.191748369019479
+  },
+  "windows_empty_probe_observation": {
+    "run": "https://github.com/shark-man0/eval_valorant_perspective/actions/runs/38183724952",
+    "count": 0,
+    "time_base": "1/15360",
+    "requested_window_sec": [
+      0.2,
+      null
+    ],
+    "non_monotonic_pair": null,
+    "threading_alone_sufficient": false
+  }
 }

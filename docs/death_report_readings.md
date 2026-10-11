@@ -186,3 +186,33 @@ of the previous intermittent shutdown abort. Production UI/recognition behavior
 is unchanged by this test-only follow-up. Relevant real FFmpeg/Qt/widget tests
 passed with normal process exit; latest cross-platform checks remain the final
 authoritative CI evidence.
+
+
+## Physical-origin probe correction
+
+At `c062eba`, Linux checks both passed and one Windows check passed, but the
+other Windows check rejected a probe with **zero frames** for window `(0.2, EOF)`
+and time base `1/15360`. There was no non-monotonic pair. This rules out treating
+single-thread probe configuration alone as a sufficient correction. The new
+reason output made the empty-probe failure observable.
+
+The prior interval `0.0%` explicitly asks ffprobe to seek to timestamp zero,
+including for a video whose physical first PTS is positive. The origin-covering
+probe now leaves the interval start empty; positive interior probe offsets are
+retained. This reads from the physical origin without a needless pre-origin
+seek. The distinction follows the [official ffprobe interval contract](https://ffmpeg.org/ffprobe.html#Main-options).
+No empty result is accepted, no retry substitutes a different timestamp, and
+all existing decoded-versus-probed coverage and monotonicity checks still run.
+
+Three new regression cases model the observed empty result when a zero seek
+is requested on a nonzero-origin file. Origin/EOF, interior/EOF and bounded
+windows now preserve every real fixture PTS using one probe. Related native
+PNG/replay tests pass 49 cases; Ruff/mypy pass. A fresh actual match_001 prefix
+probe/decode preserves all four native PTS/pixel hashes exactly. See the source
+artifact for the recorded final decoder-code fingerprint and timing.
+
+This is a common source-transport correction, with no OS-specific branch,
+recognition change, source edit, sampler change or acceptance relaxation. The
+previous CI failure's complete causal mechanism remains unproven until stronger
+runtime evidence exists; current CI establishes the tested contract rather than
+a guarantee that all external demuxer behaviors are now explained.

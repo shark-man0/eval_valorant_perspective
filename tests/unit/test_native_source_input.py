@@ -436,3 +436,31 @@ def test_native_probe_duplicate_pts_still_fail_closed_with_reason(video, monkeyp
     )
     with pytest.raises(VideoProbeError, match='non_monotonic_pair=\\([0-9]+, [0-9]+\\)'), context:
         pytest.fail('duplicate source PTS must never be repaired or dropped')
+
+
+@pytest.mark.parametrize('start,end', [(0, None), (.2, None), (.5, .9)])
+def test_nonzero_source_origin_never_requires_zero_seek(video, monkeypatch, start, end):
+    path, digest, document = video
+    original = subprocess.run
+    intervals = []
+
+    def empty_before_source_origin(command, **kwargs):
+        if '-read_intervals' in command:
+            interval = command[command.index('-read_intervals') + 1]
+            intervals.append(interval)
+            if interval.split('%')[0] in {'0', '0.0'}:
+                return subprocess.CompletedProcess(command, 0, json.dumps({'frames': []}), '')
+        return original(command, **kwargs)
+
+    monkeypatch.setattr(subprocess, 'run', empty_before_source_origin)
+    timebase = Fraction(document['streams'][0]['time_base'])
+    expected = [int(f['best_effort_timestamp']) for f in document['frames']
+                if start <= float(int(f['best_effort_timestamp']) * timebase)
+                and (end is None or float(int(f['best_effort_timestamp']) * timebase) <= end)]
+    with VideoService().native_window(
+        path, start_sec=start, end_sec=end, source_video_sha256=digest,
+    ) as frames:
+        assert [f.pts_ticks for f in frames] == expected
+        assert frames[0].pts_ticks > 0
+    assert len(intervals) == 1
+    assert intervals[0].startswith('%')

@@ -234,8 +234,11 @@ def decode_native_window(
     if time_base <= 0 or width <= 0 or height <= 0:
         raise VideoProbeError('native source geometry/timebase unavailable')
     probe_end = '' if end_sec is None else str(end_sec + 1.0)
+    probe_start = '' if start_sec <= 1.0 else str(start_sec - 1.0)
     frames = probe([
-        '-read_intervals', f'{max(0.0, start_sec - 1.0)}%{probe_end}',
+        # An omitted start reads the physical origin without seeking. Seeking
+        # to zero before a stream's nonzero first PTS can yield no frames.
+        '-read_intervals', f'{probe_start}%{probe_end}',
         '-show_frames', '-show_entries', 'frame=best_effort_timestamp',
     ])['frames']
     probed = tuple(int(frame['best_effort_timestamp']) for frame in frames)
