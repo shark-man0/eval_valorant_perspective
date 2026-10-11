@@ -133,16 +133,24 @@ def main(argv: list[str] | None = None) -> int:
     from pathlib import Path
 
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--predictions', type=Path, required=True,
+    inputs = parser.add_mutually_exclusive_group(required=True)
+    inputs.add_argument('--packages', type=Path,
+                        help='Saved JSON object with round_packages for evidence export')
+    inputs.add_argument('--predictions', type=Path,
                         help='JSON object with boundaries (BoundaryObservation records)')
     parser.add_argument('--truth', type=Path, required=True,
                         help='Independent reviewed JSON object with boundaries: id/kind/time_sec')
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--association-radius-sec', type=float, default=1.0)
     args = parser.parse_args(argv)
-    prediction_bytes = args.predictions.read_bytes()
+    prediction_path = args.packages if args.packages is not None else args.predictions
+    prediction_bytes = prediction_path.read_bytes()
     truth_bytes = args.truth.read_bytes()
     prediction_doc, truth_doc = json.loads(prediction_bytes), json.loads(truth_bytes)
+    if args.packages is not None:
+        from .practical_export import export_package_boundaries
+
+        prediction_doc = export_package_boundaries(prediction_doc['round_packages'])
     predictions = [BoundaryObservation.from_dict(row) for row in prediction_doc['boundaries']]
     report = evaluate_boundary_set(
         predictions, truth_doc['boundaries'],
@@ -153,6 +161,11 @@ def main(argv: list[str] | None = None) -> int:
         'predictions_sha256': hashlib.sha256(prediction_bytes).hexdigest(),
         'truth_sha256': hashlib.sha256(truth_bytes).hexdigest(),
     }
+    if args.packages is not None:
+        report['package_export'] = {k: v for k, v in prediction_doc.items() if k != 'boundaries'}
+        report['inputs']['input_kind'] = 'round_packages'
+    else:
+        report['inputs']['input_kind'] = 'boundary_observations'
     report['canonical_evaluation_modified'] = False
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(

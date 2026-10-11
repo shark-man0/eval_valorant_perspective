@@ -336,3 +336,56 @@ must not be reported as Strict acceptance or verified timing precision.
 The subsequent frozen-code Strict/native/boundary regression selection completed
 with 188 PASS in 115.68 seconds. `git diff --check` and Ruff also passed. This
 selection does not establish new canonical E2E results or Windows CI status.
+
+## Saved Package to practical accuracy report
+
+The separate accuracy command also accepts saved common-processing output:
+
+```bash
+PYTHONPATH=.:src python3 -m scripts.e2e.practical_accuracy \
+  --packages raw_processing.json \
+  --truth independently_reviewed_boundaries.json \
+  --output practical_accuracy.json
+```
+
+The input object must contain `round_packages`. The exporter validates canonical
+Package Schema, rejects mixed sources/matches and overlapping intervals, retains
+formal event actor/provenance, and preserves original provisional boundary and
+confirmation times. Identical formal event IDs shared between Packages are
+exported once; conflicting content for one ID is rejected. Distinct formal IDs
+remain distinct so duplicate events can still fail evaluation. Exact matching
+formal evidence takes precedence over provisional candidates. Unknown endpoint
+records contain no timestamp or confidence; neither fragment edge becomes an
+invented Round boundary. The export never modifies Package events or observations.
+
+Report metadata includes partition windows/statuses, Package count, provisional
+Package count and uncertain Package count. Interval numbers remain storage keys.
+Confirmed in this transport means the existing formal event contract, not new
+reader qualification or a practical PASS. These records stay outside the
+canonical trace adapter and original 82 assertion results.
+
+Verification: 32 saved-Package/export/accuracy/builder tests PASS in 21.61 seconds;
+Ruff and diff whitespace checks PASS. No production source changed in this
+checkpoint, so the preceding full-source mypy result still covers production.
+The synthetic CLI test exercises saved provisional Packages through the separate
+accuracy report while checking zero confirmed boundaries and original candidate
+confidence/time preservation.
+
+The latest normal canonical full run's saved Package was also exported without
+fresh recognition. `e2e_reports/match_001/practical_legacy_package_export.json`
+binds the raw input hash and records its one legacy partial Package as two
+unknown endpoints, zero invented boundaries. This verifies compatibility with
+actual saved data; it does not establish current real-video segmentation or
+±0.1-second precision.
+
+| Metric | Previous saved canonical run | Current export | Delta |
+| --- | ---: | ---: | ---: |
+| Packages | 1 partial | 1 partial | 0 |
+| Detected formal start/end | 0 / 0 | 0 / 0 | 0 / 0 |
+| Unknown endpoint records | Not represented separately | 2 | Newly exposed |
+| Canonical PASS / FAIL / NE | 23 / 55 / 4 | Not rerun | Not measured |
+
+Remaining practical acceptance work is actual current-reader R2 evidence,
+continuous real-video Package collection, independently reviewed point-time
+accuracy where available, full regression/CI and PR. Existing local-window
+archive candidates are evidence to reuse, not evidence of whole-match validation.

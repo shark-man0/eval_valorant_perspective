@@ -1,0 +1,52 @@
+{
+  "source_run": "outputs/recognition-investigation/e2e-tiered-final-verification/full-profile13",
+  "raw_sha256": "32b758e5766ca746b4ec42ceda10dfc08afaa8fa53fbf99e8cb495cd008db6f9",
+  "scope": "Legacy saved canonical Package export only; no fresh recognition or precision evaluation",
+  "export": {
+    "scope": "Existing Package evidence export; not reader qualification or GT",
+    "boundaries": [
+      {
+        "kind": "round_start",
+        "boundary_status": "unknown",
+        "boundary_time_sec": null,
+        "confirmation_time_sec": null,
+        "evidence_times_sec": [],
+        "confidence": null,
+        "provenance": {
+          "reason": "package_endpoint_unknown",
+          "match_id": "e2e-runtime",
+          "interval_no": 1,
+          "endpoint": "start"
+        }
+      },
+      {
+        "kind": "round_end",
+        "boundary_status": "unknown",
+        "boundary_time_sec": null,
+        "confirmation_time_sec": null,
+        "evidence_times_sec": [],
+        "confidence": null,
+        "provenance": {
+          "reason": "package_endpoint_unknown",
+          "match_id": "e2e-runtime",
+          "interval_no": 1,
+          "endpoint": "end"
+        }
+      }
+    ],
+    "package_count": 1,
+    "provisional_package_count": 0,
+    "uncertain_package_count": 1,
+    "partitions": [
+      {
+        "interval_no": 1,
+        "window": {
+          "start_sec": 7.369336,
+          "end_sec": 171.002669
+        },
+        "start": "unknown",
+        "end": "unknown"
+      }
+    ]
+  }
+}
