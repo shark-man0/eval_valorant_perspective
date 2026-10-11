@@ -1,0 +1,184 @@
+{
+  "scope": "Post-prediction fixed-time real source inspection; development controls only; no profile or qualification change",
+  "review_provenance": "Viewed lossless native topbar crops at2x nearest-neighbor magnification; timer and both scores visible on all5; readability affected by background contrast",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "input_sha256": {
+    "outputs/recognition-investigation/practical-natural-numeric-controls-20261011/manifest.json": "60bf506dd83367abd089ff338771d7653ea0f4dfd54f069f917b64fb51ae3c4d",
+    "outputs/recognition-investigation/practical-natural-numeric-controls-20261011/topbar-review.png": "ef5e1285d09c4ad6adad5360a77022339694361e70cd6b1037757fe00f64c0d1",
+    "outputs/recognition-investigation/practical-whole-source-replay-20261011/native_analysis.json": "7e57454f8d5fcdb8ada1ee2feb8479030421868700ab4d22f5e7377aaa43cfb2"
+  },
+  "review_before_predictions": false,
+  "profile_fingerprint": "10bfac00544e510ebf3f3e2c0072c9beba24938b2ff996c9012f7e4046d82c99",
+  "recognizer_fingerprint": "c729f02c87be094fec3a8d92cd986065f83ae56d2b7408dbe93d6321d87d60e9",
+  "qualification_created": false,
+  "natural_absence_controls_found": 0,
+  "comparison": {
+    "round_time_remaining_display": {
+      "previous_verified_source_labels": null,
+      "current": {
+        "unknown": 3,
+        "correct": 2
+      },
+      "delta": null
+    },
+    "score_ally": {
+      "previous_verified_source_labels": null,
+      "current": {
+        "correct": 5
+      },
+      "delta": null
+    },
+    "score_enemy": {
+      "previous_verified_source_labels": null,
+      "current": {
+        "correct": 4,
+        "unknown": 1
+      },
+      "delta": null
+    }
+  },
+  "rows": [
+    {
+      "source_pts_ticks": 307241,
+      "pts_sec": 20.002669270833334,
+      "source_pixel_sha256": "48eb9e6113856ede8a92ceed496df08d2e04a1b72655cd296e61ee52f237a740",
+      "encoded_sha256": "604b65a55bb5f66392adee631f26e56c82028bbd3245c27103c5c1312f9b8c26",
+      "path": "outputs/recognition-investigation/practical-natural-numeric-controls-20261011/307241.png",
+      "fields": {
+        "round_time_remaining_display": {
+          "expected_display_or_value": "1:24",
+          "actual": null,
+          "outcome": "unknown",
+          "visually_present": true
+        },
+        "score_ally": {
+          "expected_display_or_value": 0,
+          "actual": 0,
+          "outcome": "correct",
+          "visually_present": true
+        },
+        "score_enemy": {
+          "expected_display_or_value": 1,
+          "actual": 1,
+          "outcome": "correct",
+          "visually_present": true
+        }
+      },
+      "natural_absence_control_eligible": false
+    },
+    {
+      "source_pts_ticks": 1228841,
+      "pts_sec": 80.00266927083334,
+      "source_pixel_sha256": "74adbd5f2631b3ff246ff519a52c498ce4f83855af5e8086e9b72b6d1afece4f",
+      "encoded_sha256": "e1fa0082e2d0cfed1b2f738398b5fa8cdf7bd34cc4266cb32145bb8f3bd51429",
+      "path": "outputs/recognition-investigation/practical-natural-numeric-controls-20261011/1228841.png",
+      "fields": {
+        "round_time_remaining_display": {
+          "expected_display_or_value": "0:01",
+          "actual": "0:01",
+          "outcome": "correct",
+          "visually_present": true
+        },
+        "score_ally": {
+          "expected_display_or_value": 0,
+          "actual": 0,
+          "outcome": "correct",
+          "visually_present": true
+        },
+        "score_enemy": {
+          "expected_display_or_value": 2,
+          "actual": null,
+          "outcome": "unknown",
+          "visually_present": true
+        }
+      },
+      "natural_absence_control_eligible": false
+    },
+    {
+      "source_pts_ticks": 1259561,
+      "pts_sec": 82.00266927083334,
+      "source_pixel_sha256": "f24fe274d8e0e13c3f058ee67359f4a20dfd345c66fe147157a343736fd6c7a7",
+      "encoded_sha256": "ca0e91ec7b1f4140b5ffe3fb970e650ecab0a46d9fc672567dab6c46d0e21a15",
+      "path": "outputs/recognition-investigation/practical-natural-numeric-controls-20261011/1259561.png",
+      "fields": {
+        "round_time_remaining_display": {
+          "expected_display_or_value": "0:29",
+          "actual": "0:29",
+          "outcome": "correct",
+          "visually_present": true
+        },
+        "score_ally": {
+          "expected_display_or_value": 0,
+          "actual": 0,
+          "outcome": "correct",
+          "visually_present": true
+        },
+        "score_enemy": {
+          "expected_display_or_value": 2,
+          "actual": 2,
+          "outcome": "correct",
+          "visually_present": true
+        }
+      },
+      "natural_absence_control_eligible": false
+    },
+    {
+      "source_pts_ticks": 2150441,
+      "pts_sec": 140.00266927083334,
+      "source_pixel_sha256": "f37a10e47bd0d424144de9f7ff4e2bb33a144d0dc13587645a3d2c34d9f55211",
+      "encoded_sha256": "b053aa1e473d0e0159a05b0f55b1d5921ad3d6450957e25233b8be08bca83697",
+      "path": "outputs/recognition-investigation/practical-natural-numeric-controls-20261011/2150441.png",
+      "fields": {
+        "round_time_remaining_display": {
+          "expected_display_or_value": "1:11",
+          "actual": null,
+          "outcome": "unknown",
+          "visually_present": true
+        },
+        "score_ally": {
+          "expected_display_or_value": 0,
+          "actual": 0,
+          "outcome": "correct",
+          "visually_present": true
+        },
+        "score_enemy": {
+          "expected_display_or_value": 2,
+          "actual": 2,
+          "outcome": "correct",
+          "visually_present": true
+        }
+      },
+      "natural_absence_control_eligible": false
+    },
+    {
+      "source_pts_ticks": 2457641,
+      "pts_sec": 160.00266927083334,
+      "source_pixel_sha256": "5705062fda3345288452d9b4ef5f0054dfc24bd57ba4552f97665ffcf6c2ac6b",
+      "encoded_sha256": "3cb90a0d7bb9727c73b1a36df823b4dea9ccf4d0cb481b4951f470d6437d1588",
+      "path": "outputs/recognition-investigation/practical-natural-numeric-controls-20261011/2457641.png",
+      "fields": {
+        "round_time_remaining_display": {
+          "expected_display_or_value": "0:51",
+          "actual": null,
+          "outcome": "unknown",
+          "visually_present": true
+        },
+        "score_ally": {
+          "expected_display_or_value": 0,
+          "actual": 0,
+          "outcome": "correct",
+          "visually_present": true
+        },
+        "score_enemy": {
+          "expected_display_or_value": 2,
+          "actual": 2,
+          "outcome": "correct",
+          "visually_present": true
+        }
+      },
+      "natural_absence_control_eligible": false
+    }
+  ],
+  "conclusion": "Unknown predictions are not absence evidence. All selected cases have actual values; cannot serve as absent-field negatives. This5-frame check does not prove every source frame contains the timer/score.",
+  "next_action": "Keep qualification closed; proceed with Practical downstream integration using verified native archive and existing production APIs."
+}

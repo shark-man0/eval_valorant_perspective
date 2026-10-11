@@ -934,3 +934,34 @@ evidence sets cannot silently substitute for one another. No qualification was
 created, no new recognizer candidate was introduced, and canonical 23/55/4
 remains historical. Next inspect and review suitable real absent-value controls
 from the frozen source before admitting any formal event.
+
+## Natural absent-field control investigation
+
+Five fixed coarse-time native source frames (20.002669, 80.002669, 82.002669,
+140.002669 and 160.002669 seconds) were decoded losslessly in explicit short
+diagnostic windows. Their PTS/pixel hashes match the verified whole-source
+archive; source and copied PNG bytes were checked. Local topbar crops were
+visually reviewed after predictions, with no profile changes.
+
+Every inspected frame contains the timer and both scores. Reviewed timer
+displays are respectively `1:24`, `0:01`, `0:29`, `1:11`, `0:51`; scores are
+0/1 on the first and 0/2 on the other four. Current timer results: 2 correct,
+3 unknown, 0 wrong. Ally score: 5 correct, 0 unknown/wrong; enemy score:
+4 correct, 1 unknown, 0 wrong. No previous manual labels existed for these
+five frames, so label/outcome deltas are unmeasured. The crops show actual
+numerals even where low-contrast backgrounds yield unknown predictions.
+
+**Zero natural absent-value controls were found in this five-frame check.**
+Unknown numeric predictions cannot be promoted into absence labels. Existing
+alternate-ROI controls also remain spatial type-rejection evidence, not natural
+absence at the production ROI. This inspection does not prove that every
+frame in match_001 contains those fields, and creates no qualification.
+Machine-readable evidence: `practical_natural_numeric_control_review.json`;
+images stay Pi-local. No canonical E2E or new candidate was run.
+
+Strict qualification remains closed. Practical segmentation is already opt-in
+and retains uncertain status, so this qualification gap need not stop its
+downstream analysis/save integration. The next implementation verification uses
+the archived verified full-source Practical observations through existing
+production APIs rather than repeating full native recognition or assuming that
+missing reader values mean absent UI.
