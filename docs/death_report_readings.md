@@ -137,3 +137,32 @@ separate blocker. No canonical PASS gain is claimed.
 Artifacts: `e2e_reports/match_001/death_existing_ocr_feasibility.json` and
 `e2e_reports/match_001/death_report_candidate_source_verification.json`.
 The diagnostic-only profile, runtime and PNGs remain Pi-local under `outputs`.
+
+
+## Windows CI probe follow-up
+
+At `4a4a909`, both Linux checks and one Windows check passed, but the other
+Windows check failed two pre-existing native-source tests. Its generic probe
+coverage error did not include the probed timestamps, so its precise root cause
+is unproven. Decoder auto-thread behavior is a hypothesis, not a confirmed
+explanation. The report-reading tests were not the failing tests.
+
+Both native PNG and raw replay paths now pass `-threads 1` to ffprobe, matching
+their already single-threaded FFmpeg decode. Native failures additionally retain
+probe count, first/last ticks, time base, requested window and first non-monotonic
+pair. All original coverage, strict ordering, source SHA and pixel checks remain;
+no timestamp sorting, dropping, repair or retry-to-accept was introduced.
+
+The final related native tests pass 46 cases in 30.62s, including normal/budgeted
+complete coverage, probe option checks for PNG/replay and duplicate-PTS rejection.
+Ruff/mypy pass. Source verification decodes 31 real native frames across the
+initial 0–0.1s and R2 147.60–148.04s windows; every PTS and pixel hash matches the
+previous physical archive. This verification takes 34.786s and does not reuse
+old recognizer predictions. The initial explicit 40MiB PNG disk budget was too
+small; the diagnostic was rerun with 256MiB without changing inputs or acceptance.
+
+The earlier full regression (2626 PASS) predates this probe-only follow-up;
+the 46 native tests validate the final follow-up locally. Final common full
+regression/Windows packaging evidence is the latest PR CI result. Actual Windows
+match_001 accuracy and the original intermittent probe root remain unverified.
+Source evidence: `e2e_reports/match_001/native_probe_decoder_alignment.json`.

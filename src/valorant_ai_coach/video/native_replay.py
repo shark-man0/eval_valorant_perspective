@@ -198,7 +198,8 @@ def decode_native_replay(
     if _sha256(video) != source_video_sha256:
         raise VideoProbeError('native replay source SHA256 mismatch')
     result = subprocess.run(
-        [ffprobe, '-v', 'error', '-select_streams', 'v:0', '-show_streams', '-show_frames',
+        [ffprobe, '-v', 'error', '-threads', '1', '-select_streams', 'v:0',
+         '-show_streams', '-show_frames',
          '-show_entries', 'stream=time_base,width,height:frame=best_effort_timestamp',
          '-of', 'json', str(video)], capture_output=True, text=True, check=True,
         timeout=timeout_sec, env=_subprocess_environment(),

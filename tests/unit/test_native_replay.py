@@ -93,3 +93,19 @@ def test_replay_rejects_invalid_budget_and_timeout(source):
         decode_native_replay(path, **options, timeout_sec=float('nan')),
     ):
         pytest.fail('invalid timeout accepted')
+
+
+def test_replay_probe_uses_single_decoder_thread(source, monkeypatch):
+    path, options = source
+    original = subprocess.run
+    commands = []
+
+    def tracked(command, **kwargs):
+        commands.append(command)
+        return original(command, **kwargs)
+
+    monkeypatch.setattr(subprocess, 'run', tracked)
+    with decode_native_replay(path, **options) as frames:
+        assert len(frames) == 6
+    probe = next(c for c in commands if '-show_frames' in c)
+    assert probe[probe.index('-threads') + 1] == '1'

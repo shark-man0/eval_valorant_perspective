@@ -394,3 +394,45 @@ def test_budgeted_pipe_coverage_still_rejects_truncated_probe(video, monkeypatch
     )
     with pytest.raises(VideoProbeError, match='all native source PTS'), context:
         pytest.fail('a matching truncated budgeted prefix is never accepted')
+
+
+@pytest.mark.parametrize('budget', [None, 1000000])
+def test_native_probe_uses_same_single_decoder_thread_as_png(video, monkeypatch, budget):
+    path, digest, probed = video
+    original = subprocess.run
+    commands = []
+
+    def tracked(command, **kwargs):
+        commands.append(command)
+        return original(command, **kwargs)
+
+    monkeypatch.setattr(subprocess, 'run', tracked)
+    with VideoService().native_window(
+        path, start_sec=0, end_sec=None, source_video_sha256=digest, max_png_bytes=budget,
+    ) as frames:
+        assert [f.pts_ticks for f in frames] == [
+            int(f['best_effort_timestamp']) for f in probed['frames']
+        ]
+    probes = [c for c in commands if '-show_frames' in c or '-show_streams' in c]
+    assert len(probes) == 2
+    assert all(c[c.index('-threads') + 1] == '1' for c in probes)
+
+
+def test_native_probe_duplicate_pts_still_fail_closed_with_reason(video, monkeypatch):
+    path, digest, _ = video
+    original = subprocess.run
+
+    def duplicate(command, **kwargs):
+        result = original(command, **kwargs)
+        if '-show_frames' in command:
+            data = json.loads(result.stdout)
+            data['frames'][1] = dict(data['frames'][0])
+            return subprocess.CompletedProcess(command, 0, json.dumps(data), result.stderr)
+        return result
+
+    monkeypatch.setattr(subprocess, 'run', duplicate)
+    context = VideoService().native_window(
+        path, start_sec=0, end_sec=None, source_video_sha256=digest,
+    )
+    with pytest.raises(VideoProbeError, match='non_monotonic_pair=\\([0-9]+, [0-9]+\\)'), context:
+        pytest.fail('duplicate source PTS must never be repaired or dropped')
