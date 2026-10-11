@@ -638,12 +638,16 @@ class MainWindow(QMainWindow):
         for category in sorted({item.category for item in result.evaluations}):
             self.category_filter.addItem(category, category)
         self.round_filter.clear()
-        self.round_filter.addItem("すべてのラウンド", -1)
+        partitions = {item.round_no: item for item in self.current_round_partitions}
+        has_practical = any(item.is_practical for item in partitions.values())
+        self.round_filter.addItem("すべての区間" if has_practical else "すべてのラウンド", -1)
         for round_no in sorted(
             {item.round_no for item in result.evaluations if item.round_no is not None}
             | {item.round_no for item in self.current_round_partitions}
         ):
-            self.round_filter.addItem(f"ラウンド {round_no}", round_no)
+            partition = partitions.get(round_no)
+            label = "区間" if partition is not None and partition.is_practical else "ラウンド"
+            self.round_filter.addItem(f"{label} {round_no}", round_no)
         self.category_filter.blockSignals(False)
         self.round_filter.blockSignals(False)
         self.label_filter.setCurrentIndex(0)

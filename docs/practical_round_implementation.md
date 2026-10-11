@@ -965,3 +965,60 @@ downstream analysis/save integration. The next implementation verification uses
 the archived verified full-source Practical observations through existing
 production APIs rather than repeating full native recognition or assuming that
 missing reader values mean absent UI.
+
+## Real archived Practical Packages through analysis, persistence and GUI
+
+The new `verify_practical_saved_pipeline` diagnostic checks the full-source
+global Package file against its recorded artifact SHA256, source SHA256,
+input contract, current code fingerprint and reader profile. It injects those
+existing Packages through the existing fixture HUD boundary into
+`MatchAnalysisPipeline` configured explicitly as Practical. This is an offline
+downstream integration test; it does not introduce a runtime recognition cache.
+The production FactBuilder, RoundAnalyzer, aggregation, SQLite, checkpoint and
+public resume entry point run unchanged. A diagnostic coach raises immediately
+if any uncertain Package attempts either real or mock AI evaluation.
+
+All five source-derived Packages processed successfully in **22.236s** and
+restored through public resume in **7.948s**. Saved lifecycle metadata,
+snapshots and events match the original Packages. Resume restores five results
+without changing saved Packages. Initial and resumed processing each produce
+zero evaluations and zero clips; the coach is never called. Processing status
+`completed` means the archive job completed, not that boundaries became confirmed
+or coaching became scoreable. These timing scopes differ from native recognition
+and from each other; no recognition speedup is claimed.
+
+| Metric | Initial processing | Resume | Delta |
+| --- | ---: | ---: | ---: |
+| Package results | 5 | 5 | 0 |
+| Scored evaluations | 0 | 0 | 0 |
+| Coaching clips | 0 | 0 | 0 |
+| Restored results | 0 | 5 | +5 |
+
+The actual Pi Qt result screen was opened on that SQLite data. Five partition
+roots and **201 snapshot rows** (0/56/0/12/133) render, and selecting storage
+interval 5 leaves exactly its 133 observations. The diagnostic records these
+checks in `practical_saved_pipeline_verification.json`; images are not published.
+The full native observation archive still retains all 10259 observations: GUI
+snapshot counts use existing accepted-snapshot/deduplication semantics.
+
+This uncovered a display-contract gap: the filter called every storage key
+`ラウンド n`, despite Practical not establishing an in-game round number.
+`RoundPartitionView` now carries additive `is_practical` metadata from the
+Package lifecycle mode, defaulting false for compatibility. Practical filters
+say `すべての区間` / `区間 n`, even when both endpoint statuses are confirmed.
+Strict/legacy filter labels remain unchanged. Storage identifiers and filtering
+behavior are unchanged; no round ID, GT or acceptance condition was altered.
+
+Tests: 33 GUI/Practical application tests PASS in 31.21s, including Practical
+and legacy labels with confirmed endpoints; Ruff PASS; mypy PASS (128 files).
+Actual archive pipeline and Qt checks both exit 0. No new canonical full E2E
+was run; historical 23/55/4 has no measured delta. Windows rendering of this
+new label change awaits CI; previous Windows CI passed earlier production code.
+
+Remaining scope: GUI video acquisition, fresh player/visual processing and
+the existing diagnostic sidecar selection through application settings are not
+verified by fixture-boundary archive injection. Strict qualification and exact
+±0.1-second precision remain unverified. Next connect explicit existing sidecar
+selection to settings/GUI without automatically adopting the development profile,
+then validate the real common processor on bounded fixed inputs with the verified
+native lifecycle archive; do not repeat the whole native collector unnecessarily.

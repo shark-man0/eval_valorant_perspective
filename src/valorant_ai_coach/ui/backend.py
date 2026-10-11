@@ -214,6 +214,7 @@ class BackendFacade:
             start_sec=float(package["round_window"]["start_sec"]),
             end_sec=float(package["round_window"]["end_sec"]),
             start_status=statuses["start"], end_status=statuses["end"],
+            is_practical=lifecycle.get("mode") == "practical",
             observations=tuple(RoundObservationView(
                 time_sec=float(row["time_sec"]),
                 timer_display=row.get("round_time_remaining_display"), hp=row.get("hp"),

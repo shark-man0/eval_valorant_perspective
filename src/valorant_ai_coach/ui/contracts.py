@@ -81,6 +81,7 @@ class RoundPartitionView:
     start_status: str
     end_status: str
     observations: tuple[RoundObservationView, ...]
+    is_practical: bool = False
 
 
 @dataclass(frozen=True, slots=True)
