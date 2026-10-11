@@ -616,3 +616,71 @@ reset geometry/classifier state and are not an acceptable substitute. Existing
 Strict collection behavior must remain unchanged. Whole-match Practical
 completion remains unproven until that collection path or an explicitly adequate
 budget is validated on the entire actual source.
+
+## Bounded native source-replay decoder foundation
+
+`video/native_replay.py` adds an alternative verified storage entrance; it is
+not yet selected by the application Practical collector. Strict PNG decoding is
+unchanged. A full initial FFmpeg BGR decode verifies physical-origin-to-EOF probe
+PTS and records each pixel SHA-256 before exposing any frame descriptor. On-demand
+sequential replay reads the original SHA-bound video, checks measured pixel
+hashes, and verifies full decoder PTS coverage and source hash at each completed
+pass. Backward requests restart a verified storage pass, not an analyzer call.
+Partial passes are drained/verified at normal context exit; errors abort and clear
+cache. Handles cannot be read after context exit. Returned images are copies,
+protecting immutable cached pixels against reader mutation.
+
+The decoder retains at most four raw frames and reserves additional buffer space
+for transient read/copy allocations. The configured 64 MiB bound describes this
+source buffer, not total application RAM. Frame hashes/probe metadata and analyzer
+observations still occupy memory. Decode logs are temporary; PNGs are not retained.
+`ReplayNativeSourceFrame` explicitly identifies original video path/hash rather
+than pretending that a PNG file exists. The common `NativeSourceFrame.read_image`
+reader entrance supports this descriptor without changing recognition logic.
+Blocking byte transport with read/wait timeout guards is used; there is one
+FFmpeg decoder per storage pass, with no parallel recognition or frame skipping.
+
+Actual whole-source decoder validation:
+
+| Metric | Existing whole-PNG design | Source replay validation |
+| --- | --- | --- |
+| Retained PNG capacity | Sample estimate 11.260 GiB | 0 PNG files |
+| Verified source native frames | Not measured in storage benchmark | 10259 |
+| Verified PTS span | Not measured in storage benchmark | 0.036003–171.002669 seconds |
+| Actual reference pixel comparisons | Local codec comparisons | 780, zero mismatches |
+| Maximum observed frame cache | All retained PNG assets | 4 raw frames |
+| Initial full verification wall seconds | Not measured | 889.374779 |
+| Initial/replay/terminal wall seconds | Not measured | 1596.657132 |
+
+The 780 reference comparisons use hashes from the current R1 start/end and R2
+wider diagnostic archives, with exact PTS/timebase binding. All remaining initial
+frames have measured hashes and full PTS verification; this is not a claim that
+they were all independently compared to PNGs or semantically reviewed. The
+Linux diagnostic peak RSS was 320664 KiB; it includes its temporary whole-video
+hashing allocation and interpreter/imports, and is not the native cache size.
+Artifact: `e2e_reports/match_001/practical_native_replay_actual_source.json`.
+No recognition, boundary qualification, Package build or canonical E2E ran in
+this whole-source decoder benchmark. No speed improvement over whole PNG decode
+is claimed; repeat decoding adds CPU cost while removing full-PNG disk retention.
+
+Five new synthetic-video decoder tests PASS: PNG/PTS equivalence, repeated and
+backward reads, bounded cache/copy isolation, invalid budget/timeout, source
+mutation, pixel mutation, incomplete PTS rejection before publication and closed
+handle rejection. Full source mypy: 128 files PASS. Ruff and diff checks PASS.
+Existing full-suite result still predates this new decoder; it is not reused as
+proof of this module's full integration.
+
+Remote CI at prior HEAD `de195ce`: Linux validation succeeded; Windows verification
+failed. Most Windows failures originate in the shared fixture decoding Japanese
+input-contract JSON through cp1252. This fixture now explicitly reads UTF-8.
+Two path-key tests used native backslashes but indexed POSIX manifest keys; their
+relative fixture keys now use `as_posix`. The selected start/scene/replay tests
+PASS locally (46 tests, 22.29 seconds). A separate existing Windows native-budget
+cleanup failure reports a locked `decode.log`; its cause remains unresolved.
+Do not report Windows CI green or this draft PR ready to merge.
+
+Next step: connect verified source replay to common Practical collection with
+configuration/fingerprints, preserve one whole analyzer invocation, test provider
+selection/terminal behavior, and investigate the Windows decoder cleanup failure.
+Whole-source lifecycle, false-end coverage, precise timing and canonical metrics
+remain unverified. The broad goal stays active.
