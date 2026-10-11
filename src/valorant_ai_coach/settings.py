@@ -49,8 +49,11 @@ class AppSettings:
     round_boundary_mode: str = "strict"
     unedited_input_contract_path: str = ""
     native_png_budget_mb: int = 8192
+    hud_template_profile_path: str = ""
 
     def __post_init__(self) -> None:
+        if not isinstance(self.hud_template_profile_path, str):
+            raise ValueError("hud_template_profile_path must be a path string")
         if self.round_boundary_mode not in {"strict", "practical"}:
             raise ValueError("round_boundary_mode must be strict or practical")
         if (type(self.native_png_budget_mb) is not int

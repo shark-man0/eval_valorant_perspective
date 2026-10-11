@@ -64,6 +64,7 @@ class BackendFacade:
             mock_ai=value.mock_ai,
             hud_mode=value.hud_mode,
             hud_layout_path=value.hud_layout_path,
+            hud_template_profile_path=value.hud_template_profile_path,
             mock_case_id=value.mock_case_id,
             delete_temp_frames=value.delete_temp_frames,
             debug_logging=value.debug_logging,

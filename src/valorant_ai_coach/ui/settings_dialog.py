@@ -63,6 +63,12 @@ class SettingsDialog(QDialog):
         self.mock_case_id.setPlaceholderText("例: TC-029")
         self.hud_layout_path = QLineEdit(settings.hud_layout_path)
         self.hud_layout_path.setPlaceholderText("空欄なら保存先/hud_layout.json")
+        self.hud_template_profile_path = QLineEdit(
+            getattr(settings, "hud_template_profile_path", "")
+        )
+        self.hud_template_profile_path.setPlaceholderText(
+            "空欄ならHUDレイアウトに対応する設定を自動選択"
+        )
         self.round_boundary_mode = QComboBox()
         self.round_boundary_mode.addItem("Strict：正式境界のみ", "strict")
         self.round_boundary_mode.addItem("Practical：暫定区間を利用", "practical")
@@ -160,6 +166,11 @@ class SettingsDialog(QDialog):
             ),
         )
         form.addRow(
+            "HUD参照画像設定",
+            self._file_field(self.hud_template_profile_path,
+                             "HUD参照画像設定を選択", "JSON (*.json)"),
+        )
+        form.addRow(
             "FFmpeg",
             self._file_field(self.ffmpeg_path, "FFmpegを選択", "実行ファイル (*.exe);;すべて (*)"),
         )
@@ -242,6 +253,7 @@ class SettingsDialog(QDialog):
             "mock_ai": self.mock_ai.isChecked(),
             "hud_mode": str(self.hud_mode.currentData()),
             "hud_layout_path": self.hud_layout_path.text().strip(),
+            "hud_template_profile_path": self.hud_template_profile_path.text().strip(),
             "round_boundary_mode": self.round_boundary_mode.currentData(),
             "unedited_input_contract_path": self.unedited_input_contract.text().strip(),
             "native_png_budget_mb": self.native_png_budget.value(),

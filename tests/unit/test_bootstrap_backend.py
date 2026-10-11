@@ -34,6 +34,36 @@ def make_store(tmp_path: Path) -> SettingsStore:
     return store
 
 
+def test_explicit_hud_sidecar_persists_and_binds_production_resume(tmp_path: Path) -> None:
+    profile = tmp_path / 'selected.templates.json'
+    profile.write_text(json.dumps({'schema_version': '1.0'}), encoding='utf-8')
+    settings = AppSettings(data_dir=tmp_path, hud_mode='real',
+                           hud_layout_path=str(resource_path('config/hud_layout_1080p_v3.json')),
+                           hud_template_profile_path=str(profile))
+    store = make_store(tmp_path)
+    store.save(settings)
+    assert store.load() == settings
+    services = build_services(store)
+    analyzer = services.pipeline.hud_video_processor.analyzer
+    assert analyzer.template_profile_path == profile
+    before = services.pipeline._config_fingerprint()
+    profile.write_text(json.dumps({'schema_version': '1.0', 'notes': ['changed']}),
+                       encoding='utf-8')
+    assert services.pipeline._config_fingerprint() != before
+
+
+@pytest.mark.parametrize('content', [None, '{"schema_version":"invalid"}'])
+def test_invalid_explicit_sidecar_does_not_fall_back(tmp_path: Path, content: str | None) -> None:
+    path = tmp_path / 'explicit.json'
+    if content is not None:
+        path.write_text(content, encoding='utf-8')
+    settings = AppSettings(data_dir=tmp_path, hud_mode='real',
+                           hud_layout_path=str(resource_path('config/hud_layout_1080p_v3.json')),
+                           hud_template_profile_path=str(path))
+    with pytest.raises(ValueError, match='HUD参照画像設定'):
+        build_services(make_store(tmp_path), settings=settings)
+
+
 def test_composition_root_uses_canonical_rules_and_mock_boundaries(tmp_path: Path) -> None:
     store = make_store(tmp_path)
 

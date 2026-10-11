@@ -1022,3 +1022,48 @@ verified by fixture-boundary archive injection. Strict qualification and exact
 selection to settings/GUI without automatically adopting the development profile,
 then validate the real common processor on bounded fixed inputs with the verified
 native lifecycle archive; do not repeat the whole native collector unnecessarily.
+
+## Explicit sidecar selection through application settings
+
+`AppSettings.hud_template_profile_path` is an additive optional string, default
+empty. The settings dialog exposes `HUD参照画像設定` with a JSON file selector;
+the backend retains and returns the value, and the common production factory
+passes the explicitly selected sidecar to `RealHudAnalyzer`. Relative assets
+remain resolved by the existing profile loader. Empty selection preserves
+existing layout-adjacent automatic selection. An unreadable/invalid explicitly
+selected profile raises a configuration error instead of falling back to another
+sidecar. No development profile is selected automatically, copied or rewritten.
+
+Existing analyzer/profile and pipeline configuration fingerprints bind the
+chosen file and its assets: changing sidecar contents changes resume identity.
+Strict and Practical use the same reader construction; profile selection does not
+provide qualification, relax thresholds, alter actor/ownership or change default
+boundary mode. Old settings files and GUI settings models retain empty defaults.
+
+Tests: **55 PASS in 44.00s** across settings, bootstrap/backend, GUI and Practical
+application tests; Ruff PASS; mypy PASS for 128 source files. New cases cover
+persistence/production selection, content fingerprint changes, invalid explicit
+files failing closed, and dialog/backend roundtrip. This is scoped regression,
+not a new complete pytest or canonical full E2E result.
+
+Actual Pi Qt verification selected the existing diagnostic layout, sidecar and
+match_001 input contract through `SettingsDialog._save`. The backend rebuilt
+the production factory with profile fingerprint `10bfac00…`, matching the
+verified whole-native archive, and unchanged recognizer fingerprint `c729f02c…`.
+The pipeline selected Practical/source replay and loaded **no qualification**.
+Evidence: `practical_explicit_profile_setting_verification.json`. This checks
+configuration/UI wiring, not the video worker or fresh recognition; Windows
+verification of the new setting remains pending CI.
+
+| Capability | Previous | Current |
+| --- | --- | --- |
+| Explicit sidecar choice in GUI | Unavailable | Available, persisted |
+| Default sidecar selection | Layout-adjacent automatic | Same |
+| Selected sidecar's qualification | No promotion | No promotion |
+| Canonical PASS / FAIL / NE | Historical 23 / 55 / 4 | Not rerun; delta unmeasured |
+
+Next: bounded real common-processor player/visual verification using the current
+explicit configuration and verified native Practical archive, followed by full
+application acquisition only when it supplies information not already archived.
+Strict qualification, natural absent-field controls and independent exact-point
+boundary precision remain separate unresolved work.

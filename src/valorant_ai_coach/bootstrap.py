@@ -120,11 +120,17 @@ def build_services(
             )
         real_hud = RealHudAnalyzer(
             layout_path, role_resolver=role_resolver,
+            template_profile_path=(
+                Path(selected.hud_template_profile_path).expanduser()
+                if selected.hud_template_profile_path.strip() else None
+            ),
             scene_reference_profile_path=(
                 Path(selected.scene_reference_profile_path).expanduser()
                 if selected.scene_reference_profile_path else None
             ),
         )
+        if selected.hud_template_profile_path.strip() and real_hud.template_profile is None:
+            raise ValueError("選択したHUD参照画像設定を読み込めませんでした")
         hud = real_hud
         event_contract = EventSourceContract.load(
             resource_path("config/event_source_contract_v1.json")

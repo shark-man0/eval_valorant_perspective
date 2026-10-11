@@ -60,6 +60,22 @@ def test_main_window_starts_with_scored_results_filter(tmp_path: Path) -> None:
     _destroy_widget(window, app)
 
 
+def test_settings_dialog_persists_explicit_hud_sidecar(tmp_path: Path) -> None:
+    app = QApplication.instance() or QApplication([])
+    store = SettingsStore(tmp_path / 'settings.json', credential_backend=MemoryCredentials())
+    store.save(AppSettings.defaults(tmp_path))
+    backend = BackendFacade(store)
+    dialog = SettingsDialog(backend)
+    selected = str(tmp_path / 'explicit.templates.json')
+    try:
+        dialog.hud_template_profile_path.setText(selected)
+        dialog._save()
+        assert store.load().hud_template_profile_path == selected
+        assert backend.get_settings().hud_template_profile_path == selected
+    finally:
+        _destroy_widget(dialog, app)
+
+
 @pytest.mark.parametrize('practical', [False, True])
 def test_practical_storage_numbers_are_not_displayed_as_game_round_numbers(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, practical: bool,

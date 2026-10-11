@@ -26,6 +26,7 @@ class UiSettings:
     round_boundary_mode: str = "strict"
     unedited_input_contract_path: str = ""
     native_png_budget_mb: int = 8192
+    hud_template_profile_path: str = ""
 
 
 @dataclass(frozen=True, slots=True)
