@@ -1,0 +1,581 @@
+{
+  "schema_version": "1.0",
+  "scope": "Frozen existing OCR feasibility on eight source-reviewed development images; not qualified production reader or independent holdout",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "input_sha256": {
+    "outputs/recognition-investigation/death-current-source-20261012/ocr-frozen-selection.json": "4112bbc2645f5e7c626921dbf79e4c70bcdcdaa1d95bec08a7934f5c64cc176d",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-ocr-runtime-20261012/usr/bin/tesseract": "a068bbb0a958445c44c39c34e2bed340819b557a900b2311bd3ad32691676553",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-ocr-runtime-20261012/usr/share/tesseract-ocr/5/tessdata/eng.traineddata": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-ocr-runtime-20261012/usr/share/tesseract-ocr/5/tessdata/jpn.traineddata": "1f5de9236d2e85f5fdf4b3c500f2d4926f8d9449f28f5394472d9e8d83b91b4d",
+    "src/valorant_ai_coach/hud/templates.py": "a4d2a1c29ca3f5b630fa4642f710af7520f2bf201a71ebc9e1a4e33b144a894f",
+    "outputs/recognition-investigation/death-current-source-20261012/frame_001.png": "9fe71422efd9e3b0c6646e3e1ea2d17e38447497d593cbff946e70540a9dba49",
+    "outputs/recognition-investigation/death-current-source-20261012/frame_005.png": "8c7bf98a72ef3a55558d31ff802a95a1d1456ffc3b04dd93bc13cff37b6527c1",
+    "outputs/recognition-investigation/death-current-source-20261012/frame_006.png": "1d534647564dbbc14d34f7e9cbe20fa46bd925ed307f018fd05a4e2a0b1db3f6",
+    "outputs/recognition-investigation/death-current-source-20261012/frame_007.png": "9a3d1effa2afe6ed57be7e112a40bcd7c59f8457a7f7af12e4ada62c70a7ee7b",
+    "outputs/recognition-investigation/death-current-source-20261012/frame_008.png": "94774335f79a7347e8fef08b5ff2c58848cfae31b7d77b570a42af311e1e436d",
+    "outputs/recognition-investigation/death-current-source-20261012/frame_009.png": "1572bd0093dcdc7021146430462a152df98cb2536c016501b14a6cca114919b8",
+    "outputs/recognition-investigation/death-current-source-20261012/frame_010.png": "a9e6d4a0de7487d02a7aa6a411aeb05c59db5cf8e0a58a407b49d3165d6442ec",
+    "outputs/recognition-investigation/death-current-source-20261012/frame_027.png": "649af0dd5982ad39506c48bc75ecaa38ddd290138cf6321abda3ca158316feab"
+  },
+  "runtime_sec": 10.641997085069306,
+  "rows": [
+    {
+      "source_pts_ticks": 2267177,
+      "time_sec": 147.60266927083333,
+      "field": "victim_name",
+      "roi_bounds": [
+        1752,
+        98,
+        1844,
+        128
+      ],
+      "roi_pixel_sha256": "61e91cdd03cb6e1ddd7a537914c62ebf11f29a9972045b1dea1b3ae407452643",
+      "raw_value": "|",
+      "confidence": 0.43918556000000003,
+      "sources": [
+        "tesseract_text"
+      ],
+      "cross_checked": false,
+      "diagnostic_accepted": false,
+      "source_review_value": null,
+      "label_applicable": true,
+      "outcome": "rejected"
+    },
+    {
+      "source_pts_ticks": 2267177,
+      "time_sec": 147.60266927083333,
+      "field": "killer_agent_text",
+      "roi_bounds": [
+        1513,
+        456,
+        1580,
+        482
+      ],
+      "roi_pixel_sha256": "ce51a5819f2612a469994a356e604c2323e2a3458b92088f0d396f4a32d6d41a",
+      "raw_value": "胃 | |",
+      "confidence": 0.0,
+      "sources": [
+        "tesseract_text"
+      ],
+      "cross_checked": false,
+      "diagnostic_accepted": false,
+      "source_review_value": null,
+      "label_applicable": true,
+      "outcome": "rejected"
+    },
+    {
+      "source_pts_ticks": 2267177,
+      "time_sec": 147.60266927083333,
+      "field": "damage_received_display",
+      "roi_bounds": [
+        1832,
+        526,
+        1897,
+        559
+      ],
+      "roi_pixel_sha256": "1536e7bc91da1a07d55dd276e8db458c443623bf93bbbf3ca1f0d877de4ce391",
+      "raw_value": null,
+      "confidence": 0.0,
+      "sources": [
+        "tesseract_no_digits"
+      ],
+      "cross_checked": false,
+      "diagnostic_accepted": false,
+      "source_review_value": null,
+      "label_applicable": true,
+      "outcome": "rejected"
+    },
+    {
+      "source_pts_ticks": 2268201,
+      "time_sec": 147.6693359375,
+      "field": "victim_name",
+      "roi_bounds": [
+        1752,
+        98,
+        1844,
+        128
+      ],
+      "roi_pixel_sha256": "7f91ef325af89d099077b5a67553ff4dc2eb536f6eec24b50e54abd2dc6a2d3e",
+      "raw_value": "i £",
+      "confidence": 0.06504736,
+      "sources": [
+        "tesseract_text"
+      ],
+      "cross_checked": false,
+      "diagnostic_accepted": false,
+      "source_review_value": null,
+      "label_applicable": true,
+      "outcome": "rejected"
+    },
+    {
+      "source_pts_ticks": 2268201,
+      "time_sec": 147.6693359375,
+      "field": "killer_agent_text",
+      "roi_bounds": [
+        1513,
+        456,
+        1580,
+        482
+      ],
+      "roi_pixel_sha256": "1d9c84be81e10ddfb982e5862f7f15007bd9956151b7923e6df89c5fcf604531",
+      "raw_value": "| |",
+      "confidence": 0.8317800099999999,
+      "sources": [
+        "tesseract_text"
+      ],
+      "cross_checked": false,
+      "diagnostic_accepted": false,
+      "source_review_value": null,
+      "label_applicable": true,
+      "outcome": "rejected"
+    },
+    {
+      "source_pts_ticks": 2268201,
+      "time_sec": 147.6693359375,
+      "field": "damage_received_display",
+      "roi_bounds": [
+        1832,
+        526,
+        1897,
+        559
+      ],
+      "roi_pixel_sha256": "29d9702b67900f9448ff0ee393c6ad22d8fe659001228c11bd64d83d9ca8ea3a",
+      "raw_value": null,
+      "confidence": 0.0,
+      "sources": [
+        "tesseract_no_digits"
+      ],
+      "cross_checked": false,
+      "diagnostic_accepted": false,
+      "source_review_value": null,
+      "label_applicable": true,
+      "outcome": "rejected"
+    },
+    {
+      "source_pts_ticks": 2268457,
+      "time_sec": 147.68600260416667,
+      "field": "victim_name",
+      "roi_bounds": [
+        1752,
+        98,
+        1844,
+        128
+      ],
+      "roi_pixel_sha256": "938750bffa326d9181d1c3539e6578f5f47e0699573e860d16fec91280b133aa",
+      "raw_value": "ee SS",
+      "confidence": 0.18254146999999998,
+      "sources": [
+        "tesseract_text"
+      ],
+      "cross_checked": false,
+      "diagnostic_accepted": false,
+      "source_review_value": null,
+      "label_applicable": false,
+      "outcome": "unscored_entrance_animation"
+    },
+    {
+      "source_pts_ticks": 2268457,
+      "time_sec": 147.68600260416667,
+      "field": "killer_agent_text",
+      "roi_bounds": [
+        1513,
+        456,
+        1580,
+        482
+      ],
+      "roi_pixel_sha256": "66a998aa327de94074779ec070675a04ad5f14562646d71ac5b6974fd39b3876",
+      "raw_value": "フェ イド",
+      "confidence": 0.96781166,
+      "sources": [
+        "tesseract_text"
+      ],
+      "cross_checked": false,
+      "diagnostic_accepted": true,
+      "source_review_value": "フェイド",
+      "label_applicable": true,
+      "outcome": "display_mismatch"
+    },
+    {
+      "source_pts_ticks": 2268457,
+      "time_sec": 147.68600260416667,
+      "field": "damage_received_display",
+      "roi_bounds": [
+        1832,
+        526,
+        1897,
+        559
+      ],
+      "roi_pixel_sha256": "c7a26df531558964ece3863117b034574009d74a066f4a4a6111e6e6e302dd36",
+      "raw_value": "194",
+      "confidence": 0.9589628600000001,
+      "sources": [
+        "tesseract_digits"
+      ],
+      "cross_checked": false,
+      "diagnostic_accepted": true,
+      "source_review_value": "194",
+      "label_applicable": true,
+      "outcome": "correct"
+    },
+    {
+      "source_pts_ticks": 2268713,
+      "time_sec": 147.70266927083333,
+      "field": "victim_name",
+      "roi_bounds": [
+        1752,
+        98,
+        1844,
+        128
+      ],
+      "roi_pixel_sha256": "aeac62a54588dc7082a0a564610e7706c710b53cef2a4bea64461ff7ef1e3421",
+      "raw_value": "NS eee",
+      "confidence": 0.02995167,
+      "sources": [
+        "tesseract_text"
+      ],
+      "cross_checked": false,
+      "diagnostic_accepted": false,
+      "source_review_value": null,
+      "label_applicable": false,
+      "outcome": "unscored_entrance_animation"
+    },
+    {
+      "source_pts_ticks": 2268713,
+      "time_sec": 147.70266927083333,
+      "field": "killer_agent_text",
+      "roi_bounds": [
+        1513,
+        456,
+        1580,
+        482
+      ],
+      "roi_pixel_sha256": "ff545fb95dae4393c189ca474494ae5211575b0151f5b224bee6c4b1f9f18db7",
+      "raw_value": "フェ イド",
+      "confidence": 0.9683522000000001,
+      "sources": [
+        "tesseract_text"
+      ],
+      "cross_checked": false,
+      "diagnostic_accepted": true,
+      "source_review_value": "フェイド",
+      "label_applicable": true,
+      "outcome": "display_mismatch"
+    },
+    {
+      "source_pts_ticks": 2268713,
+      "time_sec": 147.70266927083333,
+      "field": "damage_received_display",
+      "roi_bounds": [
+        1832,
+        526,
+        1897,
+        559
+      ],
+      "roi_pixel_sha256": "804014715ebb997b7e6da9d81a48c05168dbfb2aa01a6bde0f7f172d5155674b",
+      "raw_value": "194",
+      "confidence": 0.9620663500000001,
+      "sources": [
+        "tesseract_digits"
+      ],
+      "cross_checked": false,
+      "diagnostic_accepted": true,
+      "source_review_value": "194",
+      "label_applicable": true,
+      "outcome": "correct"
+    },
+    {
+      "source_pts_ticks": 2268969,
+      "time_sec": 147.7193359375,
+      "field": "victim_name",
+      "roi_bounds": [
+        1752,
+        98,
+        1844,
+        128
+      ],
+      "roi_pixel_sha256": "4b7fb5d531f8372caf6444919e18c6b68efff93979890ef28f968a9e192da8ee",
+      "raw_value": "~~",
+      "confidence": 0.21910886999999998,
+      "sources": [
+        "tesseract_text"
+      ],
+      "cross_checked": false,
+      "diagnostic_accepted": false,
+      "source_review_value": null,
+      "label_applicable": false,
+      "outcome": "unscored_entrance_animation"
+    },
+    {
+      "source_pts_ticks": 2268969,
+      "time_sec": 147.7193359375,
+      "field": "killer_agent_text",
+      "roi_bounds": [
+        1513,
+        456,
+        1580,
+        482
+      ],
+      "roi_pixel_sha256": "e2d3bb0200a6b707f7afb91f07fc9afe215d886eeea91d6328568c1f52dce797",
+      "raw_value": "フェ イド",
+      "confidence": 0.9685119600000001,
+      "sources": [
+        "tesseract_text"
+      ],
+      "cross_checked": false,
+      "diagnostic_accepted": true,
+      "source_review_value": "フェイド",
+      "label_applicable": true,
+      "outcome": "display_mismatch"
+    },
+    {
+      "source_pts_ticks": 2268969,
+      "time_sec": 147.7193359375,
+      "field": "damage_received_display",
+      "roi_bounds": [
+        1832,
+        526,
+        1897,
+        559
+      ],
+      "roi_pixel_sha256": "2033f3986647438fa7ac118045f2c08e6e3e46069d53cbdecc72ccb4287f558b",
+      "raw_value": "194",
+      "confidence": 0.96199936,
+      "sources": [
+        "tesseract_digits"
+      ],
+      "cross_checked": false,
+      "diagnostic_accepted": true,
+      "source_review_value": "194",
+      "label_applicable": true,
+      "outcome": "correct"
+    },
+    {
+      "source_pts_ticks": 2269225,
+      "time_sec": 147.73600260416666,
+      "field": "victim_name",
+      "roi_bounds": [
+        1752,
+        98,
+        1844,
+        128
+      ],
+      "roi_pixel_sha256": "d01f5f405f801b9fe09c3f6ed190acc5838db6c329825d25ae793398d0587ed8",
+      "raw_value": "sharkman |",
+      "confidence": 0.53393677,
+      "sources": [
+        "tesseract_text"
+      ],
+      "cross_checked": false,
+      "diagnostic_accepted": false,
+      "source_review_value": "sharkman",
+      "label_applicable": true,
+      "outcome": "unknown"
+    },
+    {
+      "source_pts_ticks": 2269225,
+      "time_sec": 147.73600260416666,
+      "field": "killer_agent_text",
+      "roi_bounds": [
+        1513,
+        456,
+        1580,
+        482
+      ],
+      "roi_pixel_sha256": "d10dfdb925d992faf2b87434377be69d2b12c267695d1a3736535ac24df08c16",
+      "raw_value": "フェ イド",
+      "confidence": 0.96812439,
+      "sources": [
+        "tesseract_text"
+      ],
+      "cross_checked": false,
+      "diagnostic_accepted": true,
+      "source_review_value": "フェイド",
+      "label_applicable": true,
+      "outcome": "display_mismatch"
+    },
+    {
+      "source_pts_ticks": 2269225,
+      "time_sec": 147.73600260416666,
+      "field": "damage_received_display",
+      "roi_bounds": [
+        1832,
+        526,
+        1897,
+        559
+      ],
+      "roi_pixel_sha256": "ea53fbe4202d335448a259747d87704180b2e07b23bf97a070b8fc238415eee2",
+      "raw_value": "194",
+      "confidence": 0.96096039,
+      "sources": [
+        "tesseract_digits"
+      ],
+      "cross_checked": false,
+      "diagnostic_accepted": true,
+      "source_review_value": "194",
+      "label_applicable": true,
+      "outcome": "correct"
+    },
+    {
+      "source_pts_ticks": 2269481,
+      "time_sec": 147.75266927083334,
+      "field": "victim_name",
+      "roi_bounds": [
+        1752,
+        98,
+        1844,
+        128
+      ],
+      "roi_pixel_sha256": "fa424e29c8bc74a769872a30af20392d3e466d437133f67759d36aaaa13f08d1",
+      "raw_value": "sharkman |",
+      "confidence": 0.66890411,
+      "sources": [
+        "tesseract_text"
+      ],
+      "cross_checked": false,
+      "diagnostic_accepted": false,
+      "source_review_value": "sharkman",
+      "label_applicable": true,
+      "outcome": "unknown"
+    },
+    {
+      "source_pts_ticks": 2269481,
+      "time_sec": 147.75266927083334,
+      "field": "killer_agent_text",
+      "roi_bounds": [
+        1513,
+        456,
+        1580,
+        482
+      ],
+      "roi_pixel_sha256": "642391ea3c400c7377077a1e88ad8bcc9ba58f41efb6f2b8c5856eb0708281e1",
+      "raw_value": "フェ イド",
+      "confidence": 0.96824478,
+      "sources": [
+        "tesseract_text"
+      ],
+      "cross_checked": false,
+      "diagnostic_accepted": true,
+      "source_review_value": "フェイド",
+      "label_applicable": true,
+      "outcome": "display_mismatch"
+    },
+    {
+      "source_pts_ticks": 2269481,
+      "time_sec": 147.75266927083334,
+      "field": "damage_received_display",
+      "roi_bounds": [
+        1832,
+        526,
+        1897,
+        559
+      ],
+      "roi_pixel_sha256": "1b1aa090cddaef555385e3c412389bb3dc4f5b24dd5ba0699cc3c0ab605468da",
+      "raw_value": "194",
+      "confidence": 0.96314445,
+      "sources": [
+        "tesseract_digits"
+      ],
+      "cross_checked": false,
+      "diagnostic_accepted": true,
+      "source_review_value": "194",
+      "label_applicable": true,
+      "outcome": "correct"
+    },
+    {
+      "source_pts_ticks": 2273833,
+      "time_sec": 148.03600260416667,
+      "field": "victim_name",
+      "roi_bounds": [
+        1752,
+        98,
+        1844,
+        128
+      ],
+      "roi_pixel_sha256": "c746540b66677398fec8ae54d1db6bd9155215f577b2682acd429ab352fcd39d",
+      "raw_value": "sharkman ,",
+      "confidence": 0.00096331,
+      "sources": [
+        "tesseract_text"
+      ],
+      "cross_checked": false,
+      "diagnostic_accepted": false,
+      "source_review_value": "sharkman",
+      "label_applicable": true,
+      "outcome": "unknown"
+    },
+    {
+      "source_pts_ticks": 2273833,
+      "time_sec": 148.03600260416667,
+      "field": "killer_agent_text",
+      "roi_bounds": [
+        1513,
+        456,
+        1580,
+        482
+      ],
+      "roi_pixel_sha256": "36b82bd925d20d931bac8cbcf06e262ac397fea37e65f2b1f89dba5c34de8336",
+      "raw_value": "フェ イド",
+      "confidence": 0.95807121,
+      "sources": [
+        "tesseract_text"
+      ],
+      "cross_checked": false,
+      "diagnostic_accepted": true,
+      "source_review_value": "フェイド",
+      "label_applicable": true,
+      "outcome": "display_mismatch"
+    },
+    {
+      "source_pts_ticks": 2273833,
+      "time_sec": 148.03600260416667,
+      "field": "damage_received_display",
+      "roi_bounds": [
+        1832,
+        526,
+        1897,
+        559
+      ],
+      "roi_pixel_sha256": "98ecc9830a526729063052f9fe99b9404195a803e85c02d24837bf28a12bfdf5",
+      "raw_value": "194",
+      "confidence": 0.9034998299999999,
+      "sources": [
+        "tesseract_digits"
+      ],
+      "cross_checked": false,
+      "diagnostic_accepted": true,
+      "source_review_value": "194",
+      "label_applicable": true,
+      "outcome": "correct"
+    }
+  ],
+  "counts": {
+    "victim_name": {
+      "correct": 0,
+      "unknown": 3,
+      "wrong": 0,
+      "false_positive": 0,
+      "rejected": 2,
+      "unscored_entrance_animation": 3
+    },
+    "killer_agent_text": {
+      "correct": 0,
+      "unknown": 0,
+      "false_positive": 0,
+      "rejected": 2,
+      "unscored_entrance_animation": 0,
+      "display_mismatch": 6
+    },
+    "damage_received_display": {
+      "correct": 6,
+      "unknown": 0,
+      "wrong": 0,
+      "false_positive": 0,
+      "rejected": 2,
+      "unscored_entrance_animation": 0
+    }
+  },
+  "qualification_created": false,
+  "production_changed": false,
+  "formal_death_events_created": 0,
+  "interpretation": "Japanese counts compare exact source display strings; OCR-added word separators are display mismatches, not proven wrong semantic-agent classifications. No alias normalization or agent adoption was performed."
+}

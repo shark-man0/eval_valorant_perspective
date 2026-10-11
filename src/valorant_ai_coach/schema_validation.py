@@ -260,6 +260,15 @@ class SchemaValidator:
         self._validate_finite_numbers(value, "HUD Observation")
         self._raise_errors(self._hud_observation, value, "HUD Observation")
         self._validate_timer_display(value["values"])
+        if value["values"].get("combat_report_readings") is not None:
+            from .hud.models import _validate_report_readings
+
+            try:
+                _validate_report_readings(value["values"])
+                if value["values"]["combat_report_readings"]["source_pts_sec"] != value["time_sec"]:
+                    raise ValueError("combat report reading must belong to the current frame")
+            except ValueError as exc:
+                raise ContractValidationError(str(exc)) from exc
         if value["primary_state"] != "remote_control_view":
             remote_type = value["view_context"]["remote_view_type"]
             if remote_type != "none":

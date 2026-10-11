@@ -42,6 +42,7 @@ from .source_continuity import CompositeSourceContinuity
 from .templates import (
     DEFAULT_DIGIT_OCR_ROIS,
     HudTemplateProfile,
+    NumericFieldsReader,
     TesseractDigitsReader,
     load_profile_readers,
 )
@@ -191,6 +192,7 @@ class RealHudAnalyzer:
             Path(template_profile_path) if template_profile_path else auto_profile
         )
         self.template_profile: HudTemplateProfile | None = None
+        self._report_profile_fingerprint: str | None = None
         self.profile_diagnostics: list[str] = []
         try:
             self.template_profile, profile_readers = load_profile_readers(
@@ -670,6 +672,37 @@ class RealHudAnalyzer:
             )
             values["combat_report_visible"] = "combat_report_visible" in classified.state_flags
             values["buy_phase_visible"] = "buy_phase_banner" in classified.state_flags
+            # Explicit report field configuration records source observations,
+            # never player-owned damage or a qualified death event.
+            report_reader = self.readers.get("combat_report")
+            if (
+                calibration.calibrated and values["combat_report_visible"]
+                and isinstance(report_reader, NumericFieldsReader)
+            ):
+                with timing_stage("hud_numeric_ocr"):
+                    try:
+                        crop = crop_roi(
+                            image, self.layout, "combat_report", calibration=calibration,
+                        )
+                        candidates = report_reader.read_candidates(crop)
+                        if candidates:
+                            if (
+                                self._report_profile_fingerprint is None
+                                and self.template_profile is not None
+                            ):
+                                self._report_profile_fingerprint = (
+                                    self.template_profile.fingerprint(self.layout_path)
+                                )
+                            values["combat_report_readings"] = {
+                                "status": "candidate",
+                                "reader": "combat_report",
+                                "source_pts_sec": time_sec,
+                                "source_pixel_sha256": hashlib.sha256(image.tobytes()).hexdigest(),
+                                "profile_fingerprint": self._report_profile_fingerprint,
+                                "fields": candidates,
+                            }
+                    except (AttributeError, TypeError, ValueError, KeyError) as exc:
+                        diagnostics.append(f"reader combat_report: {exc}")
             # Readers describe HUD inputs only. Player values are cleared when
             # their identity is not attributable to the recording player.
             if not values["player_specific_hud_valid"]:

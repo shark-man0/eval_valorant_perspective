@@ -1384,6 +1384,48 @@ class NumericFieldsReader:
         self.fields = dict(fields)
         self.reader = reader
 
+    def read_candidates(self, roi: ImageU8) -> dict[str, dict[str, Any]]:
+        """Retain original displays for unqualified report observations.
+
+        This does not replace ``read`` or certify damage/ownership. A field
+        missing reliable source text remains absent independently of its peers.
+        """
+        candidates: dict[str, dict[str, Any]] = {}
+        if roi.size == 0 or roi.ndim not in (2, 3):
+            return candidates
+        height, width = roi.shape[:2]
+        for name, bounds in self.fields.items():
+            if name not in {"damage_received", "damage_given"}:
+                continue
+            x1, y1, x2, y2 = bounds
+            if not (0 <= x1 < x2 <= 1 and 0 <= y1 < y2 <= 1):
+                continue
+            left, top = round(x1 * width), round(y1 * height)
+            right, bottom = round(x2 * width), round(y2 * height)
+            if right <= left or bottom <= top:
+                continue
+            result = self.reader.read(roi, roi[top:bottom, left:right])
+            if (
+                not isinstance(result.value, str)
+                or re.fullmatch(r"[0-9]{1,6}", result.value) is None
+                or type(result.confidence) not in (int, float)
+                or not math.isfinite(result.confidence)
+                or not .90 <= result.confidence <= 1
+                or not result.sources
+                or not all(isinstance(s, str) and s.strip() for s in result.sources)
+                or type(result.cross_checked) is not bool
+            ):
+                continue
+            candidates[name] = {
+                "display": result.value,
+                "value": int(result.value),
+                "confidence": result.confidence,
+                "sources": list(result.sources),
+                "cross_checked": result.cross_checked,
+                "roi_bounds_norm": list(bounds),
+            }
+        return candidates
+
     def read(self, image: ImageU8, roi: ImageU8) -> ReaderResult[dict[str, int]]:
         del image
         values: dict[str, int] = {}

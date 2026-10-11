@@ -97,3 +97,12 @@ round-package failures as solved.
 Machine-readable evidence: `e2e_reports/match_001/death_current_source_gap.json`.
 Raw PNG images remain Pi-local under
 `outputs/recognition-investigation/death-current-source-20261012`.
+
+
+## Source-preserving producer follow-up
+
+The common analyzer now supports optional, unqualified report numeric readings
+using the existing fields reader. Real source verification retains six correct
+displays and rejects two absent fields without any player ownership or death
+event. Victim/agent semantics and qualification remain incomplete. See
+[source-preserved readings and regression evidence](death_report_readings.md).

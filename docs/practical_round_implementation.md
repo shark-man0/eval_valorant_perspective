@@ -1394,3 +1394,14 @@ report presence but has no qualified death semantic/ownership output; its
 formal player-death event count remains zero. See
 [death source evidence and next producer contract](death_current_source_gap.md).
 No production, qualification, ground truth or canonical status changed.
+
+
+### Optional report numeric observation producer
+
+The common HUD analyzer now records explicitly configured report numeric
+fields as source-preserved, unqualified candidates. Actual isolated R2 source
+verification yields six correct damage displays, two absent rejections, zero
+owned readings and zero death events. This does not resolve Strict lifecycle
+or death-ownership qualification. The changed HUD code invalidates the earlier
+whole-native recognition archive; its reuse guard was checked and rejects it.
+See [candidate contract, safety and tests](death_report_readings.md).

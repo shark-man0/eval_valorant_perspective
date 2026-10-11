@@ -17343,5 +17343,36 @@
     "formal_death_events": 0,
     "canonical_status_re_evaluated": false,
     "next_target": "qualified death semantic producer plus independently evidenced self ownership; no unknown-identity bypass"
+  },
+  "death_report_readings_followup": {
+    "scope": "Optional unqualified current-frame report numeric observations; no death/ownership promotion",
+    "source_report": "e2e_reports/match_001/death_report_candidate_source_verification.json",
+    "raw_ocr_report": "e2e_reports/match_001/death_existing_ocr_feasibility.json",
+    "recognizer_fingerprint": "6195d8d228be94ff85e470e9289409812c567b1f7790db0ae03e34ddab360e76",
+    "source_verified_correct_damage_displays": 6,
+    "source_verified_wrong_damage_displays": 0,
+    "absent_field_rejections": 2,
+    "owned_readings": 0,
+    "formal_death_events": 0,
+    "independent_holdout_qualified": false,
+    "canonical_re_evaluated": false,
+    "local_full_regression": {
+      "passed": 2626,
+      "skipped": 7,
+      "wall_sec": 1838.23
+    },
+    "initial_pack_env_skip_rechecked": {
+      "passed": 9,
+      "skipped": 0
+    },
+    "related_tests_passed": 59,
+    "ruff": "PASS",
+    "mypy_source_files": 128,
+    "next_blockers": [
+      "victim-name and agent-name semantics",
+      "independent reader qualification",
+      "current source self-dead identity / ownership",
+      "Strict round association"
+    ]
   }
 }
