@@ -73,8 +73,9 @@ def test_ui_partition_view_keeps_unknown_and_preserves_only_observed_values():
     assert legacy.start_status == legacy.end_status == 'unknown'
 
 
+@pytest.mark.parametrize('qualification_case', ['absent', 'valid', 'stale'])
 def test_practical_native_collection_uses_shared_decoder_and_terminal_verification(
-    tmp_path, monkeypatch,
+    tmp_path, monkeypatch, qualification_case,
 ):
     import hashlib
     from contextlib import contextmanager
@@ -129,6 +130,14 @@ def test_practical_native_collection_uses_shared_decoder_and_terminal_verificati
         _base_fingerprint=lambda: 'a' * 64, fingerprint=lambda: 'a' * 64,
         observe_frames=observe,
     )
+    if qualification_case != 'absent':
+        import json
+
+        path = prefix / 'qualification.json'
+        content = json.loads(path.read_text())
+        content['profile_fingerprint'] = 'a' * 64 if qualification_case == 'valid' else 'b' * 64
+        path.write_text(json.dumps(content))
+        processor.analyzer.global_qualification_path = path
     analysis = processor.collect_native_lifecycle(
         metadata, NativeLifecycleOptions(1234, unedited_input_contract_path=contract_path),
         boundary_mode='practical',
@@ -137,3 +146,18 @@ def test_practical_native_collection_uses_shared_decoder_and_terminal_verificati
     assert all(b.boundary_status == 'provisional' for b in analysis.boundaries)
     assert calls[0]['start_sec'] == 0 and calls[0]['end_sec'] is None
     assert calls[0]['source_video_sha256'] == source_hash and calls[-1] == 'terminal'
+
+    if qualification_case == 'valid':
+        assert [e['type'] for e in analysis.confirmed_lifecycle.hud_events] == ['round_start']
+        assert analysis.confirmed_lifecycle.hud_events[0]['actor'] == 'system'
+    else:
+        assert analysis.confirmed_lifecycle is None
+    if qualification_case != 'absent':
+        from valorant_ai_coach.hud.practical_lifecycle import validated_practical_boundaries
+
+        validated_practical_boundaries(analysis, source_video_sha256=source_hash,
+                                       profile_fingerprint='a' * 64)
+        path.write_bytes(path.read_bytes() + b'\n')
+        with pytest.raises(ValueError, match='qualification file changed'):
+            validated_practical_boundaries(analysis, source_video_sha256=source_hash,
+                                           profile_fingerprint='a' * 64)

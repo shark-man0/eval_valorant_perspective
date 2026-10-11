@@ -254,3 +254,85 @@ Remaining work includes automatic confirmed-boundary priority when valid
 qualification is available, complete one-to-one practical precision metrics, fresh
 current-reader R2 evidence and continuous real-video Package validation, Linux/
 Windows CI, full regression and the final PR. The broad goal remains active.
+
+## Confirmed priority and separate multi-boundary accuracy checkpoint
+
+### Problem and change
+
+Practical collection previously retained all candidates as provisional even when
+valid formal qualification was available. It now snapshots the configured
+qualification and replays the unchanged Strict producer on the same native rows.
+Only events actually released by that replay are admitted as confirmed. A
+start-only qualification cannot confirm an end or re-arm the next formal round
+through an unqualified end. Result evidence is removed from this formal overlay
+unless both score and result components qualify. Practical candidates remain
+available independently; existing builder priority gives a matching formal event
+precedence without inserting provisional events into the formal event stream.
+
+Missing or stale qualification yields no formal overlay, rather than promoting
+candidates or stopping provisional segmentation. Changed qualification file bytes
+invalidate the transport; validation replays and compares the complete formal
+payload, including actor, to reject mutation. A whole-epoch Strict replay failure
+also prevents formal release while source-safe practical observations remain
+provisional. This does not relax Strict thresholds or discontinuity policy.
+
+### Separate practical accuracy evaluation
+
+`python3 -m scripts.e2e.practical_accuracy` writes a separate report:
+
+```bash
+PYTHONPATH=.:src python3 -m scripts.e2e.practical_accuracy \
+  --predictions exported_boundaries.json \
+  --truth independently_reviewed_boundaries.json \
+  --output practical_accuracy.json
+```
+
+The prediction object contains `boundaries`, each a serialized
+`BoundaryObservation`. The independent evaluator-only truth object contains
+`boundaries` with unique `id`, `kind`, and `time_sec` (nullable), plus an optional
+`complete_review` boolean. This is an explicit interchange format, not an
+implicit conversion of Validation Pack acceptance windows to exact timestamps.
+Do not supply GT to the production collection process. No midpoint, rounded
+prediction or synthetic exact truth is generated.
+
+Association preserves chronological order and uses each observation once. It
+maximizes same-kind correspondences within an evaluator association radius
+(default 1 second), then minimizes time error. That radius does not change the
+±0.1-second accuracy criterion or production confirmation policy. Confirmation
+latency is excluded from boundary-time error. Duplicates and wrong kinds cannot
+receive extra PASS results. Unmatched predictions count as false positives only
+when the caller declares exhaustive boundary review and all reviewed truth times
+are known. Otherwise they remain unverified/NE; missing truth times remain NE.
+The report records input hashes, per-boundary errors, separate PASS/FAIL/NE,
+detection and time-accuracy rates, and confirmed/provisional/unknown counts.
+These counts describe this separate evaluation, not the canonical 82 assertions.
+An order-preserving iterative matcher avoids recursion limits on long recordings.
+
+### Evidence and tests
+
+40 focused producer/application/accuracy tests PASS (18.69 seconds), including
+valid/missing/stale qualification, mixed confirmed/provisional boundaries,
+formal actor tamper rejection, delayed confirmation, duplicate predictions,
+wrong-kind matching, crossing-order rejection, incomplete point truth and CLI
+input immutability/hash reporting. Full source mypy previously completed with
+127 files PASS; Ruff across src/tests/scripts/e2e PASS. All new qualification
+fixtures are synthetic and are not qualification of real-video readers.
+
+| Metric | Previous | Current | Delta |
+| --- | --- | --- | --- |
+| Canonical full PASS / FAIL / NE | 23 / 55 / 4 | Not rerun | Not measured |
+| Actual-video ±0.1-second accuracy | Unverified | Unverified | Not measured |
+| Formal release in archived practical replay | 0 | No new replay | Not measured |
+| Automatic valid qualification overlay | Absent | Implemented and tested | Added |
+| Separate one-to-one accuracy report CLI | Absent | Implemented and tested | Added |
+
+No full E2E was run for this transport/evaluator checkpoint. Remaining work:
+fresh R2 current-phase observations, continuous real-video Package validation,
+practical report export from application outputs, independent reviewed point
+truth where available, full regression, Linux/Windows CI and final PR. Formal
+qualification on the actual source is still unproven; provisional segmentation
+must not be reported as Strict acceptance or verified timing precision.
+
+The subsequent frozen-code Strict/native/boundary regression selection completed
+with 188 PASS in 115.68 seconds. `git diff --check` and Ruff also passed. This
+selection does not establish new canonical E2E results or Windows CI status.

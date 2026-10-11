@@ -166,3 +166,94 @@ def test_opt_in_processor_partitions_without_releasing_formal_events(tmp_path):
     assert starts[-1]['round_lifecycle']['end']['status'] == 'unknown'
     assert all(p['observation_quality']['timeline_completeness'] == 0
                for p in result.round_packages)
+
+
+def test_start_only_qualification_never_promotes_practical_end(tmp_path):
+    from dataclasses import replace
+
+    from valorant_ai_coach.hud.practical_lifecycle import qualified_overlay
+
+    rows, tracker = fixture(tmp_path, next_round=True)
+    practical(rows, tracker)
+    qualification = replace(tracker.qualification,
+                            components=frozenset({'timer', 'purchase_phase', 'ui_transition'}))
+    overlay = qualified_overlay(
+        rows, qualification, tracker.start.contract, tmp_path / 'input.json',
+    )
+    assert [e['type'] for e in overlay.hud_events] == ['round_start']
+    assert all(e['actor'] == 'system' for e in overlay.hud_events)
+    assert not any(e['type'] == 'round_end' for e in overlay.hud_events)
+
+
+def test_qualified_overlay_keeps_strict_delayed_end_times(tmp_path):
+    from valorant_ai_coach.hud.practical_lifecycle import qualified_overlay
+
+    rows, tracker = fixture(tmp_path, next_round=True)
+    boundaries, _ = practical(rows, tracker)
+    overlay = qualified_overlay(rows, tracker.qualification,
+                                tracker.start.contract, tmp_path / 'input.json')
+    assert [(e['type'], e['time_sec']) for e in overlay.hud_events] == [
+        (b.kind, b.boundary_time_sec) for b in boundaries
+    ]
+    assert overlay.hud_events[1]['time_sec'] == .44
+    assert overlay.hud_events[1]['attributes']['evidence_provenance'][
+        'confirmation_pts_sec'] == .82
+    assert all(e['actor'] == 'system' for e in overlay.hud_events)
+
+
+def test_processor_prefers_formal_overlay_and_keeps_unqualified_end_provisional(tmp_path):
+    import hashlib
+    import json
+    from dataclasses import replace
+
+    from tests.unit.test_native_event_merge import qualified_processor
+    from tests.unit.test_unedited_ui_start import make_contract
+    from valorant_ai_coach.hud.global_lifecycle import (
+        GlobalLifecycleQualification,
+        global_recognizer_fingerprint,
+    )
+    from valorant_ai_coach.hud.practical_lifecycle import (
+        PracticalLifecycleAnalysis,
+        qualified_overlay,
+    )
+
+    producer_root = tmp_path / 'producer'
+    producer_root.mkdir()
+    rows, tracker = fixture(producer_root, next_round=True)
+    processor, metadata, frames, _ = qualified_processor(tmp_path)
+    path, contract = make_contract(producer_root,
+                                   hashlib.sha256(metadata.path.read_bytes()).hexdigest())
+    for row in rows:
+        row['source_video_sha256'] = contract.source_video_sha256
+    tracker.start.contract = contract
+    boundaries, diagnostics = practical(rows, tracker)
+    qualification_path = producer_root / 'qualification.json'
+    document = json.loads(qualification_path.read_text())
+    document['profile_fingerprint'] = 'a' * 64
+    qualification_path.write_text(json.dumps(document))
+    qualification = GlobalLifecycleQualification.load(qualification_path, 'a' * 64,
+                                                       unedited_input_contract=contract)
+    overlay = qualified_overlay(rows, qualification, contract, path)
+    analysis = PracticalLifecycleAnalysis(
+        tuple(rows), boundaries, diagnostics, 20, contract, path, 'a' * 64,
+        global_recognizer_fingerprint(), qualification_path,
+        hashlib.sha256(qualification_path.read_bytes()).hexdigest(), overlay,
+    )
+    processor.analyzer._native_profile_readers = True
+    processor.analyzer._base_fingerprint = lambda: 'a' * 64
+    processor.analyzer._native_loaded_base_fingerprint = 'a' * 64
+    processor.analyzer.global_qualification_path = qualification_path
+    result = processor.process_frames(replace(metadata, duration_sec=2.), 'P', frames,
+                                      boundary_mode='practical', practical_lifecycle=analysis)
+    assert [e['type'] for e in result.hud_events] == ['round_start']
+    starts = [p for p in result.round_packages
+              if p['round_lifecycle']['start']['status'] != 'unknown']
+    assert [p['round_lifecycle']['start']['status'] for p in starts] == [
+        'confirmed', 'provisional',
+    ]
+    assert starts[0]['round_lifecycle']['end']['status'] == 'provisional'
+    assert starts[-1]['round_lifecycle']['end']['status'] == 'unknown'
+    overlay.hud_events[0]['actor'] = 'player'
+    with pytest.raises(ValueError, match='confirmed overlay'):
+        processor.process_frames(replace(metadata, duration_sec=2.), 'P', frames,
+                                 boundary_mode='practical', practical_lifecycle=analysis)

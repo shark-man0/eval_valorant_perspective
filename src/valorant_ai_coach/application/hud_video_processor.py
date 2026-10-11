@@ -162,6 +162,7 @@ class HudVideoProcessor:
             practical_state = self._practical_boundaries(
                 metadata, boundary_mode, practical_lifecycle,
             )
+        native_lifecycle = self._confirmed_overlay(native_lifecycle, practical_lifecycle)
         initial_native_events = (
             self._native_boundaries(metadata, native_lifecycle) if native_lifecycle else ()
         )
@@ -302,6 +303,7 @@ class HudVideoProcessor:
         practical_lifecycle: PracticalLifecycleAnalysis | None = None,
     ) -> HudVideoProcessingResult:
         practical_state = self._practical_boundaries(metadata, boundary_mode, practical_lifecycle)
+        native_lifecycle = self._confirmed_overlay(native_lifecycle, practical_lifecycle)
         combined = list(frames)
         native_events = (
             self._native_boundaries(metadata, native_lifecycle)
@@ -571,6 +573,15 @@ class HudVideoProcessor:
         if qualification != loaded:
             raise HudVideoProcessingError('native qualification changed; reload analyzer')
         return qualification
+
+    @staticmethod
+    def _confirmed_overlay(
+        native: NativeLifecycleAnalysis | None, practical: PracticalLifecycleAnalysis | None,
+    ) -> NativeLifecycleAnalysis | None:
+        overlay = practical.confirmed_lifecycle if practical is not None else None
+        if native is not None and overlay is not None and native != overlay:
+            raise HudVideoProcessingError('competing confirmed lifecycle transports')
+        return native if native is not None else overlay
 
     def _practical_boundaries(
         self, metadata: VideoMetadata, mode: str, analysis: PracticalLifecycleAnalysis | None,

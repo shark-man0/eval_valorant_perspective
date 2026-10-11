@@ -47,3 +47,120 @@ def evaluate_matched_boundary(
         result.update(status="PASS" if within else "FAIL", absolute_error_sec=error,
                       reason="within_practical_tolerance" if within else "time_error")
     return result
+
+
+def evaluate_boundary_set(
+    predictions: list[BoundaryObservation], truths: list[dict[str, Any]], *,
+    complete_review: bool = False, association_radius_sec: float = 1.0,
+) -> dict[str, Any]:
+    """Order-preserving, one-to-one evaluator association; never detector policy.
+
+    Truth entries have independent id/kind/time_sec fields. Missing point truth
+    stays NE: a window midpoint must not be substituted. The association radius
+    only links candidate events; acceptance remains the separate ±0.1 criterion.
+    Unmatched predictions are verified false positives only for complete reviews.
+    """
+    if (type(association_radius_sec) not in (int, float)
+            or not math.isfinite(association_radius_sec)
+            or association_radius_sec < PRACTICAL_TIME_TOLERANCE_SEC):
+        raise ValueError('association radius must be finite and at least the time tolerance')
+    if type(complete_review) is not bool:
+        raise ValueError('complete review must be boolean')
+    if any(not isinstance(t, dict) or not {'id', 'kind', 'time_sec'} <= t.keys()
+           for t in truths):
+        raise ValueError('truth entries require id, kind and independent time_sec')
+    ids = [t.get('id') for t in truths]
+    if any(not isinstance(t, str) or not t for t in ids) or len(set(ids)) != len(ids):
+        raise ValueError('unique independent truth IDs required')
+    for truth in truths:
+        evaluate_matched_boundary(None, truth_kind=truth['kind'], truth_time_sec=truth['time_sec'])
+    known = sorted((i for i, t in enumerate(truths) if t['time_sec'] is not None),
+                   key=lambda i: truths[i]['time_sec'])
+    observed = sorted((i for i, p in enumerate(predictions) if p.boundary_time_sec is not None),
+                      key=lambda i: predictions[i].boundary_time_sec)
+
+    # Bottom-up alignment avoids recursion limits on long recordings.
+    empty: tuple[int, float, tuple[tuple[int, int], ...]] = (0, 0., ())
+    following = [empty] * (len(observed) + 1)
+    for i in range(len(known) - 1, -1, -1):
+        current = [empty] * (len(observed) + 1)
+        for j in range(len(observed) - 1, -1, -1):
+            options = [following[j], current[j + 1]]
+            truth, prediction = truths[known[i]], predictions[observed[j]]
+            assert prediction.boundary_time_sec is not None
+            error = abs(truth['time_sec'] - prediction.boundary_time_sec)
+            if truth['kind'] == prediction.kind and error <= association_radius_sec:
+                count, cost, matched = following[j + 1]
+                options.append((count + 1, cost + error, ((known[i], observed[j]), *matched)))
+            current[j] = min(options, key=lambda option: (-option[0], option[1], option[2]))
+        following = current
+    pairs = dict(following[0][2])
+    rows = []
+    for index, truth in enumerate(truths):
+        prediction_index = pairs.get(index)
+        prediction = predictions[prediction_index] if prediction_index is not None else None
+        rows.append({'truth_id': truth['id'], 'prediction_index': prediction_index,
+                     **evaluate_matched_boundary(prediction, truth_kind=truth['kind'],
+                                                 truth_time_sec=truth['time_sec'])})
+    unused = sorted(set(observed) - set(pairs.values()))
+    # Missing point truth cannot certify exhaustive temporal review.
+    exhaustive = complete_review and len(known) == len(truths)
+    false_positives = len(unused) if exhaustive else None
+    counts = {status: sum(r['status'] == status for r in rows) for status in ('PASS', 'FAIL', 'NE')}
+    counts['FAIL' if exhaustive else 'NE'] += len(unused)
+    return {
+        'evaluation_kind': 'practical_boundary_accuracy',
+        'time_tolerance_sec': PRACTICAL_TIME_TOLERANCE_SEC,
+        'association_radius_sec': association_radius_sec,
+        'complete_boundary_review_requested': complete_review,
+        'complete_boundary_review': exhaustive, 'counts': counts, 'boundaries': rows,
+        'unmatched_prediction_status': 'FAIL' if exhaustive else 'NE',
+        'unmatched_prediction_indices': unused, 'false_positive_count': false_positives,
+        'known_truth_count': len(known), 'matched_boundary_count': len(pairs),
+        'boundary_detection_rate': len(pairs) / len(known) if known else None,
+        'time_accuracy_rate': counts['PASS'] / len(known) if known else None,
+        'confirmed_boundary_count': sum(p.boundary_status == 'confirmed' for p in predictions),
+        'provisional_boundary_count': sum(p.boundary_status == 'provisional' for p in predictions),
+        'unknown_boundary_count': sum(p.boundary_status == 'unknown' for p in predictions),
+    }
+
+
+def main(argv: list[str] | None = None) -> int:
+    """Evaluate exported boundaries without changing the canonical evaluator."""
+    import argparse
+    import hashlib
+    import json
+    from pathlib import Path
+
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--predictions', type=Path, required=True,
+                        help='JSON object with boundaries (BoundaryObservation records)')
+    parser.add_argument('--truth', type=Path, required=True,
+                        help='Independent reviewed JSON object with boundaries: id/kind/time_sec')
+    parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--association-radius-sec', type=float, default=1.0)
+    args = parser.parse_args(argv)
+    prediction_bytes = args.predictions.read_bytes()
+    truth_bytes = args.truth.read_bytes()
+    prediction_doc, truth_doc = json.loads(prediction_bytes), json.loads(truth_bytes)
+    predictions = [BoundaryObservation.from_dict(row) for row in prediction_doc['boundaries']]
+    report = evaluate_boundary_set(
+        predictions, truth_doc['boundaries'],
+        complete_review=truth_doc.get('complete_review', False),
+        association_radius_sec=args.association_radius_sec,
+    )
+    report['inputs'] = {
+        'predictions_sha256': hashlib.sha256(prediction_bytes).hexdigest(),
+        'truth_sha256': hashlib.sha256(truth_bytes).hexdigest(),
+    }
+    report['canonical_evaluation_modified'] = False
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(
+        json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8',
+    )
+    print(json.dumps({'evaluation_kind': report['evaluation_kind'], 'counts': report['counts']}))
+    return 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())
