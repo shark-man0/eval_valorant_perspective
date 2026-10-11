@@ -1344,3 +1344,41 @@ and full evaluation, source-backed ownership/state/death/map coverage, Windows
 real-video behavior and a single GUI video-worker acquisition. P1's canonical
 conditional 30/49/3 target remains unproven. Practical storage and restoration
 must not disguise these remaining Strict or recognition failures.
+
+
+### Existing numeric split audit (2026-10-12)
+
+A read-only audit verifies the physical evidence behind the existing timer
+training, support, frozen holdout and spatial negative-control manifests.
+All 116 referenced images remain readable and match their declared encoded
+hashes or decoded-pixel hashes, as applicable. No recognizer, profile,
+qualification, ground truth or assertion was changed.
+
+| Comparison | Counts | Encoded / decoded hash overlap | Exact PTS overlap | Closest PTS distance |
+| --- | ---: | ---: | ---: | ---: |
+| Combined training / holdout | 76 / 32 | 0 / 0 | 0 | 0.133 s |
+| Combined training / spatial negatives | 76 / 8 | 0 / 0 | 0 | 0.050 s |
+| Holdout / spatial negatives | 32 / 8 | 0 / 0 | 0 | 0.333 s |
+
+The combined training set contains 64 original training images and 12 later
+training-support images. This confirms physical split separation for these
+particular manifests. It does not establish semantic independence of nearby
+frames or restore missing source provenance: the original training manifest
+has no source-video SHA declaration. The support and holdout manifests declare
+the same source SHA. Their saved timestamps are used without converting or
+inventing native PTS.
+
+The eight controls contain alternate score-adjacent and HP-adjacent fields.
+They support spatial type rejection, not nominal timer-field absence. Therefore
+this audit creates no global qualification. Phase, score, result-banner and
+whole-transition training/holdout/control independence still require their
+own evidence. Previously used R1/R2 development transitions cannot become
+independent temporal holdout by being replayed again.
+
+Machine-readable evidence, individual image hashes and limitations:
+`e2e_reports/match_001/global_numeric_split_audit.json`.
+The audit exited successfully; JSON serialization and cross-input terminal
+hash checks passed. Since only documentation and diagnostic data changed,
+no additional full E2E or production regression run was necessary. The previous
+Linux/Windows CI results apply to the unchanged production code, not to newly
+qualified recognition accuracy.
