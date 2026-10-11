@@ -886,3 +886,51 @@ independent reader qualification. Next: use this archived full source evidence
 to audit independent holdout accuracy/negative controls and qualify only supported
 components, then validate full player/visual Package and persistence integration.
 Do not rerun the five-hour collector merely to inspect its saved results.
+
+## Current numeric review and component regression
+
+The full-source archive was joined to the existing 27-frame manual numeric
+review at 122.102669–122.536003 using exact native PTS, source video hash and
+decoded-pixel hash. Previous predictions were additionally checked against the
+review's recorded input-file SHA256. Labels were never supplied to a recognizer.
+
+| Field/outcome | Previous reviewed predictions | Whole-source predictions | Delta |
+| --- | ---: | ---: | ---: |
+| Timer correct / unknown / wrong | 15 / 12 / 0 | 15 / 12 / 0 | 0 / 0 / 0 |
+| Ally score correct / unknown / wrong | 2 / 25 / 0 | 26 / 1 / 0 | +24 / -24 / 0 |
+| Enemy score correct / unknown / wrong | 8 / 19 / 0 | 24 / 3 / 0 | +16 / -16 / 0 |
+
+The 40 changed score fields are `unknown -> correct` against those existing
+labels. There are zero `unknown -> wrong` or `correct -> wrong` changes in this
+cohort. This is a development comparison of different reader profiles and
+temporal input scopes; it is not proof of independently qualified score accuracy.
+The original review explicitly followed prediction and did not exhaustively
+exclude training overlap. Its provenance is retained and it is not relabeled as
+blind holdout. See `practical_whole_source_existing_numeric_review.json`.
+
+The reusable diagnostic comparator rejects changed pixels/time/source, missing
+or duplicate reviewed PTS, and invalid numeric types (including boolean scores).
+Seven associated unit tests passed in 0.28s; Ruff passed. It creates no profile,
+qualification or production events and makes no candidate-selection decision.
+
+Existing fixed component images were then rerun through the actual analyzer at
+current recognizer fingerprint `c729f02c…` and profile `10bfac00…`:
+`practical_current_component_holdout.json`, exit 0, 53 images, 104.360s.
+Timer: 25 correct / 7 unknown / 0 wrong, all deltas zero. Raw phase reader:
+8 positive correct / 0 positive unknown, 13 negative rejected / 0 false accepts,
+unchanged from the corresponding previous raw-reader result. Temporal phase
+flags remain 4 positive correct / 4 unknown: isolated image classification is
+not equivalent to raw current-frame phase matching or continuous validation.
+Against the last same-profile component run, all outcome counts are unchanged;
+runtime rose from 100.395s to 104.360s (+3.964s, +3.95%), without a speed claim.
+
+Remaining qualification gaps are explicit: natural timer/score-absent image
+controls; exhaustive disjoint training/holdout/control provenance for all
+components; independently reviewed temporal UI transition cases and negative
+contexts; and result-banner qualification. Existing JPEG component evidence has
+no verified native PTS continuity, while the complete native run supplies source
+continuity but not independent numeric truth for every accepted field. These
+evidence sets cannot silently substitute for one another. No qualification was
+created, no new recognizer candidate was introduced, and canonical 23/55/4
+remains historical. Next inspect and review suitable real absent-value controls
+from the frozen source before admitting any formal event.
