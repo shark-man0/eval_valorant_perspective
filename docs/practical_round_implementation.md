@@ -1382,3 +1382,15 @@ hash checks passed. Since only documentation and diagnostic data changed,
 no additional full E2E or production regression run was necessary. The previous
 Linux/Windows CI results apply to the unchanged production code, not to newly
 qualified recognition accuracy.
+
+
+### Next source-backed death producer investigation
+
+After the Practical storage/resume work, a read-only P2 investigation confirms
+27 consecutive R2 source frames match the whole-native archive. Reviewed
+frames expose the report's killer-agent/damage fields and, after its entrance
+animation, the killfeed victim name. The common image producer preserves
+report presence but has no qualified death semantic/ownership output; its
+formal player-death event count remains zero. See
+[death source evidence and next producer contract](death_current_source_gap.md).
+No production, qualification, ground truth or canonical status changed.

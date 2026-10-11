@@ -1,0 +1,473 @@
+{
+  "schema_version": "1.0",
+  "scope": "Source-backed P2 feasibility diagnostic after predictions; not ground truth, independent holdout, new reader or canonical evaluation",
+  "head_commit": "6f7cce4aba02a7d74249594e7a71c71ee69b47b0",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "target_assertions": [
+    "GT-R2-DEATH",
+    "OWN-R2-SELF-DEAD",
+    "event_count_constraints-005"
+  ],
+  "input_sha256": {
+    "outputs/recognition-investigation/practical-full-application-20261012/fresh_processing.json": "7feb0fdfeec30dbb98b1f1c6343a1fa3b5c9088289a7e2d548fce2f90b821c63",
+    "outputs/recognition-investigation/practical-whole-source-replay-20261011/native_analysis.json": "7e57454f8d5fcdb8ada1ee2feb8479030421868700ab4d22f5e7377aaa43cfb2",
+    "outputs/recognition-investigation/death-current-source-20261012/decode.log": "56e73ec4e50946fed5016a56e86425d7e28738999eaba49c03c85612b536ec97",
+    "src/valorant_ai_coach/hud/analyzers.py": "eef34f661257b71461b2dee058ce2581f4ad2aba1838e82dd01cb2612e25c2d2",
+    "src/valorant_ai_coach/hud/temporal.py": "6c954431a8748419d21f5d16103690e3fdcc56a2d0eddc0f3be763706fcbd366",
+    "src/valorant_ai_coach/hud/models.py": "d16e3b139086e79d5bd88fa36cd2849b7b95a3324a20aee8a3bcf61703330105",
+    "tests/e2e/trace_adapter.py": "5275113faccd8f7dfd43bd12008736d0740edd2f18b7007fb31f0a86b1b9e7a6"
+  },
+  "decode_method": "FFmpeg -ss 146 -copyts, select between(t,147.60,148.04), showinfo, passthrough PNG; integer PTS retained",
+  "native_frames": [
+    {
+      "source_pts_ticks": 2267177,
+      "time_base": "1/15360",
+      "time_sec": 147.60266927083333,
+      "image_sha256": "9fe71422efd9e3b0c6646e3e1ea2d17e38447497d593cbff946e70540a9dba49",
+      "decoded_pixel_sha256": "8802e924059080cfb6d3d8286f3a674117ec92287095be93a52d58e473fe0610",
+      "native_archive_pixel_match": true,
+      "manual_review": {
+        "combat_report_visible": false,
+        "killfeed_row_visible": false,
+        "hp_display": "22"
+      },
+      "image_path": "outputs/recognition-investigation/death-current-source-20261012/frame_001.png"
+    },
+    {
+      "source_pts_ticks": 2267433,
+      "time_base": "1/15360",
+      "time_sec": 147.6193359375,
+      "image_sha256": "44c34f4e3c802f8cb46b824238ebbae11fe01dca7841fd66984c35d8fd0b8de9",
+      "decoded_pixel_sha256": "e0b6dc7cf651e8016ba5e335533b366e80bc08d9304c9968ba546b5aa71889e6",
+      "native_archive_pixel_match": true,
+      "manual_review": null,
+      "image_path": "outputs/recognition-investigation/death-current-source-20261012/frame_002.png"
+    },
+    {
+      "source_pts_ticks": 2267689,
+      "time_base": "1/15360",
+      "time_sec": 147.63600260416666,
+      "image_sha256": "8f3bbd92ea4a7eae2ca69cf4a5946b673bea1c39e9a13bb16b8daf0f34973d5e",
+      "decoded_pixel_sha256": "f83cbc5f5eb7f358d6fce5f26bc3a3ad119422166b41aee3cf0df8f88c3b8f16",
+      "native_archive_pixel_match": true,
+      "manual_review": null,
+      "image_path": "outputs/recognition-investigation/death-current-source-20261012/frame_003.png"
+    },
+    {
+      "source_pts_ticks": 2267945,
+      "time_base": "1/15360",
+      "time_sec": 147.65266927083334,
+      "image_sha256": "c5aa637dfe64621cd7cf57e19e966b648023f03a9d07ba5f69efe518d4380091",
+      "decoded_pixel_sha256": "2a66a1020040875c40e858821a9afa30d19085249ddab46ef4af4c0c7f9a8cf1",
+      "native_archive_pixel_match": true,
+      "manual_review": null,
+      "image_path": "outputs/recognition-investigation/death-current-source-20261012/frame_004.png"
+    },
+    {
+      "source_pts_ticks": 2268201,
+      "time_base": "1/15360",
+      "time_sec": 147.6693359375,
+      "image_sha256": "8c7bf98a72ef3a55558d31ff802a95a1d1456ffc3b04dd93bc13cff37b6527c1",
+      "decoded_pixel_sha256": "509bfff1e8a3890b1300e1e3b798931a1b075b8a767c5a4a88d3cb859b9833ac",
+      "native_archive_pixel_match": true,
+      "manual_review": {
+        "combat_report_visible": false,
+        "killfeed_row_visible": false,
+        "hp_display": "22"
+      },
+      "image_path": "outputs/recognition-investigation/death-current-source-20261012/frame_005.png"
+    },
+    {
+      "source_pts_ticks": 2268457,
+      "time_base": "1/15360",
+      "time_sec": 147.68600260416667,
+      "image_sha256": "1d534647564dbbc14d34f7e9cbe20fa46bd925ed307f018fd05a4e2a0b1db3f6",
+      "decoded_pixel_sha256": "01b4632f3c887ee23dcfcaabe446d4a1f6d170fdef8fcda557b721fe5a96efab",
+      "native_archive_pixel_match": true,
+      "manual_review": {
+        "combat_report_visible": true,
+        "killfeed_row_visible": true,
+        "killfeed_text_complete": false,
+        "killer_agent_text": "フェイド",
+        "damage_received_display": "194"
+      },
+      "image_path": "outputs/recognition-investigation/death-current-source-20261012/frame_006.png"
+    },
+    {
+      "source_pts_ticks": 2268713,
+      "time_base": "1/15360",
+      "time_sec": 147.70266927083333,
+      "image_sha256": "9a3d1effa2afe6ed57be7e112a40bcd7c59f8457a7f7af12e4ada62c70a7ee7b",
+      "decoded_pixel_sha256": "bb66d51092f545278461774ca96d61f60a21adf8ba3caaad6d58483c94271d0b",
+      "native_archive_pixel_match": true,
+      "manual_review": {
+        "combat_report_visible": true,
+        "killfeed_row_visible": true,
+        "killfeed_text_complete": false,
+        "killer_agent_text": "フェイド",
+        "damage_received_display": "194"
+      },
+      "image_path": "outputs/recognition-investigation/death-current-source-20261012/frame_007.png"
+    },
+    {
+      "source_pts_ticks": 2268969,
+      "time_base": "1/15360",
+      "time_sec": 147.7193359375,
+      "image_sha256": "94774335f79a7347e8fef08b5ff2c58848cfae31b7d77b570a42af311e1e436d",
+      "decoded_pixel_sha256": "98ac64fc60efbdc2577ecc5ec0bfed9dc26a7a0ea487eb071970e0c75c90a99e",
+      "native_archive_pixel_match": true,
+      "manual_review": {
+        "combat_report_visible": true,
+        "killfeed_row_visible": true,
+        "killfeed_text_complete": false,
+        "killer_agent_text": "フェイド",
+        "damage_received_display": "194"
+      },
+      "image_path": "outputs/recognition-investigation/death-current-source-20261012/frame_008.png"
+    },
+    {
+      "source_pts_ticks": 2269225,
+      "time_base": "1/15360",
+      "time_sec": 147.73600260416666,
+      "image_sha256": "1572bd0093dcdc7021146430462a152df98cb2536c016501b14a6cca114919b8",
+      "decoded_pixel_sha256": "6376244a49e2ff3a4cfb257b6dc12ee6df605b16538cc5d7bcf85fbe71b3dd24",
+      "native_archive_pixel_match": true,
+      "manual_review": {
+        "combat_report_visible": true,
+        "killfeed_row_visible": true,
+        "killfeed_text_complete": true,
+        "victim_name_text": "sharkman",
+        "killer_agent_text": "フェイド",
+        "damage_received_display": "194"
+      },
+      "image_path": "outputs/recognition-investigation/death-current-source-20261012/frame_009.png"
+    },
+    {
+      "source_pts_ticks": 2269481,
+      "time_base": "1/15360",
+      "time_sec": 147.75266927083334,
+      "image_sha256": "a9e6d4a0de7487d02a7aa6a411aeb05c59db5cf8e0a58a407b49d3165d6442ec",
+      "decoded_pixel_sha256": "978c1be02e01f080d08b04be9d7d61dd26d8d80c0c3da3fb21130fbb95a50f86",
+      "native_archive_pixel_match": true,
+      "manual_review": {
+        "combat_report_visible": true,
+        "killfeed_row_visible": true,
+        "killfeed_text_complete": true,
+        "victim_name_text": "sharkman",
+        "killer_agent_text": "フェイド",
+        "damage_received_display": "194"
+      },
+      "image_path": "outputs/recognition-investigation/death-current-source-20261012/frame_010.png"
+    },
+    {
+      "source_pts_ticks": 2269737,
+      "time_base": "1/15360",
+      "time_sec": 147.7693359375,
+      "image_sha256": "9c732f15498959571a1c4104a61b23cb39a0138125ed960cb1b046057f40b1cc",
+      "decoded_pixel_sha256": "398d7094d9a417f6cf7b4378365e839c13daae5d2d3bb69fa02282dbc6ec9143",
+      "native_archive_pixel_match": true,
+      "manual_review": null,
+      "image_path": "outputs/recognition-investigation/death-current-source-20261012/frame_011.png"
+    },
+    {
+      "source_pts_ticks": 2269993,
+      "time_base": "1/15360",
+      "time_sec": 147.78600260416667,
+      "image_sha256": "98b7474869cc03c8a256aae65a137ea0a10f7c03c2cfac53b392ae9adb8dcadc",
+      "decoded_pixel_sha256": "b64e4e8833d3fa8209af462b9993d09b4d5620f74f60cc5cb399f8872cfcb5d2",
+      "native_archive_pixel_match": true,
+      "manual_review": null,
+      "image_path": "outputs/recognition-investigation/death-current-source-20261012/frame_012.png"
+    },
+    {
+      "source_pts_ticks": 2270249,
+      "time_base": "1/15360",
+      "time_sec": 147.80266927083332,
+      "image_sha256": "55dbfd7bc97b5843c5c2faa707c8bbdfef42cb2588daf7f2d7c9f9e57c260e16",
+      "decoded_pixel_sha256": "d74e2e17f78e7b422933d381c50dc1694f43ba4eb55305b8a3e054cf0a5386b9",
+      "native_archive_pixel_match": true,
+      "manual_review": null,
+      "image_path": "outputs/recognition-investigation/death-current-source-20261012/frame_013.png"
+    },
+    {
+      "source_pts_ticks": 2270505,
+      "time_base": "1/15360",
+      "time_sec": 147.8193359375,
+      "image_sha256": "90c83260df95cac89c9bdca73ebd25fc08b24a64fe98dcdfe35398f14fe21fdb",
+      "decoded_pixel_sha256": "dfa635551cb241ca512f634a69039b8d932b03e09a755227f146d4c32f434720",
+      "native_archive_pixel_match": true,
+      "manual_review": null,
+      "image_path": "outputs/recognition-investigation/death-current-source-20261012/frame_014.png"
+    },
+    {
+      "source_pts_ticks": 2270761,
+      "time_base": "1/15360",
+      "time_sec": 147.83600260416668,
+      "image_sha256": "a950201e5abc4b35c2797cdf07d0f312e2bada311c2081d064495bf55b8c23ec",
+      "decoded_pixel_sha256": "530ab672b8b37616dd405e73e74acc12fe2a7a6d2c5f63f92fe684e2aaeea5f8",
+      "native_archive_pixel_match": true,
+      "manual_review": null,
+      "image_path": "outputs/recognition-investigation/death-current-source-20261012/frame_015.png"
+    },
+    {
+      "source_pts_ticks": 2271017,
+      "time_base": "1/15360",
+      "time_sec": 147.85266927083333,
+      "image_sha256": "955e968916134f27bf7acdb65e361f966ff853ce63189d4b5769e1a64fa23520",
+      "decoded_pixel_sha256": "1c6ab26f037d40b0a3378bc823456b70d39dd47955752a66bc734cbe0f2a7758",
+      "native_archive_pixel_match": true,
+      "manual_review": null,
+      "image_path": "outputs/recognition-investigation/death-current-source-20261012/frame_016.png"
+    },
+    {
+      "source_pts_ticks": 2271273,
+      "time_base": "1/15360",
+      "time_sec": 147.8693359375,
+      "image_sha256": "b373b6370f9cd32fe192c301781c462eb5b20bfc2e89526a7e5adefb4bec5492",
+      "decoded_pixel_sha256": "ae6df48a71ac0a8ec67f84bb394bcaa8e3033b967ab5f2d2de4dd555e8c7eec5",
+      "native_archive_pixel_match": true,
+      "manual_review": null,
+      "image_path": "outputs/recognition-investigation/death-current-source-20261012/frame_017.png"
+    },
+    {
+      "source_pts_ticks": 2271529,
+      "time_base": "1/15360",
+      "time_sec": 147.88600260416666,
+      "image_sha256": "03082b1da0417ab96213e5bd82d3146c13e9237ea1b0ebbd6c315ee8738ffc45",
+      "decoded_pixel_sha256": "e263003e97b66f507a5587f838c89d80867775c3217e447fc1a25022eab758ef",
+      "native_archive_pixel_match": true,
+      "manual_review": null,
+      "image_path": "outputs/recognition-investigation/death-current-source-20261012/frame_018.png"
+    },
+    {
+      "source_pts_ticks": 2271785,
+      "time_base": "1/15360",
+      "time_sec": 147.90266927083334,
+      "image_sha256": "aae121d33f63124157cf39ec6a4c138564daebae4240f1e7276faac5bfdb5bf4",
+      "decoded_pixel_sha256": "3d0c52e09260dbc1f119aa979eb5591d88b8795fb26c0276dcffa5f0a46732cd",
+      "native_archive_pixel_match": true,
+      "manual_review": null,
+      "image_path": "outputs/recognition-investigation/death-current-source-20261012/frame_019.png"
+    },
+    {
+      "source_pts_ticks": 2272041,
+      "time_base": "1/15360",
+      "time_sec": 147.9193359375,
+      "image_sha256": "2533f22db810c11fccb13f0d27560b8a501f50e705e9c8846c0dfe40f2e930ed",
+      "decoded_pixel_sha256": "42a22798984c04974c028a56ecf377e353615af5354f726c492cdb064149c8ad",
+      "native_archive_pixel_match": true,
+      "manual_review": null,
+      "image_path": "outputs/recognition-investigation/death-current-source-20261012/frame_020.png"
+    },
+    {
+      "source_pts_ticks": 2272297,
+      "time_base": "1/15360",
+      "time_sec": 147.93600260416667,
+      "image_sha256": "21712f13bcf2af6925ab6af4d02616350561fd21dc7c5e21d98a20f7a077fba5",
+      "decoded_pixel_sha256": "7b836b6cd7086e00366aebbbc1fdb7493d917796746c1de112fcec504712ccdf",
+      "native_archive_pixel_match": true,
+      "manual_review": null,
+      "image_path": "outputs/recognition-investigation/death-current-source-20261012/frame_021.png"
+    },
+    {
+      "source_pts_ticks": 2272553,
+      "time_base": "1/15360",
+      "time_sec": 147.95266927083333,
+      "image_sha256": "84b11480623443e4b16cea3ab44a69c8065c2757890a37d5ce0dc74d32aa0163",
+      "decoded_pixel_sha256": "924b1091c3b54c1bb5c0a4f3755e82e68a2b59404b6c820987faa02659f435f9",
+      "native_archive_pixel_match": true,
+      "manual_review": null,
+      "image_path": "outputs/recognition-investigation/death-current-source-20261012/frame_022.png"
+    },
+    {
+      "source_pts_ticks": 2272809,
+      "time_base": "1/15360",
+      "time_sec": 147.9693359375,
+      "image_sha256": "044df577ec3397be946a2f06c8516d16dca6e4afa63dcfa687dab280f77baeaa",
+      "decoded_pixel_sha256": "ca44b64637fc223714a0faac5e40c491474ab43017d22ae9a3e6c58070070158",
+      "native_archive_pixel_match": true,
+      "manual_review": null,
+      "image_path": "outputs/recognition-investigation/death-current-source-20261012/frame_023.png"
+    },
+    {
+      "source_pts_ticks": 2273065,
+      "time_base": "1/15360",
+      "time_sec": 147.98600260416666,
+      "image_sha256": "63627e3c1d585f692620c712c5fc4962cdfbdd3c5c99fedac100dc69914ccac9",
+      "decoded_pixel_sha256": "8aa2f6a62f114d57cd651d4e172e5189cd15f347a424d6c5285532c809d3da16",
+      "native_archive_pixel_match": true,
+      "manual_review": null,
+      "image_path": "outputs/recognition-investigation/death-current-source-20261012/frame_024.png"
+    },
+    {
+      "source_pts_ticks": 2273321,
+      "time_base": "1/15360",
+      "time_sec": 148.00266927083334,
+      "image_sha256": "59845e5dbe5003fd62f585eabdec351ebb572e9441ca93c83b8541930d696572",
+      "decoded_pixel_sha256": "c1f9e2c7ee5b815b586c6d97ecc4fa75c62499a2eeebb34831edd07821c50e73",
+      "native_archive_pixel_match": true,
+      "manual_review": null,
+      "image_path": "outputs/recognition-investigation/death-current-source-20261012/frame_025.png"
+    },
+    {
+      "source_pts_ticks": 2273577,
+      "time_base": "1/15360",
+      "time_sec": 148.0193359375,
+      "image_sha256": "ddf95b3a392443b879190834e0873c8099b45bcc46867e54c78f076820bb9d4f",
+      "decoded_pixel_sha256": "7937f4295485074b7f5802b58da6d54baefd5ef67036c7c2b6e40df3181a40e8",
+      "native_archive_pixel_match": true,
+      "manual_review": null,
+      "image_path": "outputs/recognition-investigation/death-current-source-20261012/frame_026.png"
+    },
+    {
+      "source_pts_ticks": 2273833,
+      "time_base": "1/15360",
+      "time_sec": 148.03600260416667,
+      "image_sha256": "649af0dd5982ad39506c48bc75ecaa38ddd290138cf6321abda3ca158316feab",
+      "decoded_pixel_sha256": "a86ce87d01a437107aeaa99fad33477b89c5a1455eb6dfed43fb7eee2f3b58df",
+      "native_archive_pixel_match": true,
+      "manual_review": {
+        "combat_report_visible": true,
+        "killfeed_row_visible": true,
+        "killfeed_text_complete": true,
+        "victim_name_text": "sharkman",
+        "killer_agent_text": "フェイド",
+        "damage_received_display": "194"
+      },
+      "image_path": "outputs/recognition-investigation/death-current-source-20261012/frame_027.png"
+    }
+  ],
+  "continuous_native_frame_count": 27,
+  "reviewed_frame_count": 8,
+  "archived_application_observations": [
+    {
+      "time_sec": 147.602669,
+      "primary_state": "unknown",
+      "combat_report_visible": false,
+      "kill_feed_rows": [],
+      "player_specific_hud_valid": false,
+      "hud_confidence": 0.0
+    },
+    {
+      "time_sec": 147.636003,
+      "primary_state": "unknown",
+      "combat_report_visible": false,
+      "kill_feed_rows": [],
+      "player_specific_hud_valid": false,
+      "hud_confidence": 0.0
+    },
+    {
+      "time_sec": 147.669336,
+      "primary_state": "unknown",
+      "combat_report_visible": false,
+      "kill_feed_rows": [],
+      "player_specific_hud_valid": false,
+      "hud_confidence": 0.0
+    },
+    {
+      "time_sec": 147.719336,
+      "primary_state": "unknown",
+      "combat_report_visible": true,
+      "kill_feed_rows": [],
+      "player_specific_hud_valid": false,
+      "hud_confidence": 0.0
+    },
+    {
+      "time_sec": 147.752669,
+      "primary_state": "unknown",
+      "combat_report_visible": true,
+      "kill_feed_rows": [],
+      "player_specific_hud_valid": false,
+      "hud_confidence": 0.0
+    },
+    {
+      "time_sec": 147.802669,
+      "primary_state": "unknown",
+      "combat_report_visible": true,
+      "kill_feed_rows": [],
+      "player_specific_hud_valid": false,
+      "hud_confidence": 0.0
+    },
+    {
+      "time_sec": 147.836003,
+      "primary_state": "unknown",
+      "combat_report_visible": true,
+      "kill_feed_rows": [],
+      "player_specific_hud_valid": false,
+      "hud_confidence": 0.0
+    },
+    {
+      "time_sec": 147.886003,
+      "primary_state": "unknown",
+      "combat_report_visible": true,
+      "kill_feed_rows": [],
+      "player_specific_hud_valid": false,
+      "hud_confidence": 0.0
+    },
+    {
+      "time_sec": 147.919336,
+      "primary_state": "unknown",
+      "combat_report_visible": true,
+      "kill_feed_rows": [],
+      "player_specific_hud_valid": false,
+      "hud_confidence": 0.0
+    },
+    {
+      "time_sec": 147.969336,
+      "primary_state": "unknown",
+      "combat_report_visible": true,
+      "kill_feed_rows": [],
+      "player_specific_hud_valid": false,
+      "hud_confidence": 0.0
+    },
+    {
+      "time_sec": 148.002669,
+      "primary_state": "unknown",
+      "combat_report_visible": true,
+      "kill_feed_rows": [],
+      "player_specific_hud_valid": false,
+      "hud_confidence": 0.0
+    }
+  ],
+  "first_reviewed_report_presence_sec": 147.68600260416667,
+  "first_reviewed_complete_killfeed_text_sec": 147.73600260416666,
+  "findings": [
+    "Actual nominal combat report exposes killer-agent text and damage received.",
+    "Complete killfeed row exposes victim name after its entrance animation.",
+    "A left-side teammate voice notification marked dead/team is not evidence that camera ownership is teammate spectated.",
+    "Default image producer does not produce death_source_confidence or semantic victim_name/killer_agent/combat_report_damage_received.",
+    "Report presence reaches raw observations, but HUD confidence and owned-player validity remain zero around this death.",
+    "Existing death events export cause_known only; a qualified semantic producer and ownership proof remain prerequisites."
+  ],
+  "production_changed": false,
+  "qualification_created": false,
+  "canonical_status_changed": false,
+  "comparison": {
+    "formal_player_death_events": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "canonical_pass": {
+      "previous": 23,
+      "current": null,
+      "delta": null
+    },
+    "canonical_fail": {
+      "previous": 55,
+      "current": null,
+      "delta": null
+    },
+    "canonical_ne": {
+      "previous": 4,
+      "current": null,
+      "delta": null
+    }
+  },
+  "remaining_blockers": [
+    "Reader qualification and source-bound semantic field provenance",
+    "Self ownership during death transition without identity-unknown bypass",
+    "Round association and Strict qualification",
+    "Independent temporal and negative-control acceptance"
+  ]
+}

@@ -17330,5 +17330,18 @@
       "round_package_scope"
     ],
     "independent_time_precision_verified": false
+  },
+  "death_current_source_followup": {
+    "report": "e2e_reports/match_001/death_current_source_gap.json",
+    "scope": "Source-backed post-prediction P2 diagnostic; production unchanged",
+    "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "native_frames": 27,
+    "native_archive_pixel_matches": 27,
+    "manually_reviewed_frames": 8,
+    "sampled_observations": 11,
+    "sampled_report_presence_count": 8,
+    "formal_death_events": 0,
+    "canonical_status_re_evaluated": false,
+    "next_target": "qualified death semantic producer plus independently evidenced self ownership; no unknown-identity bypass"
   }
 }
