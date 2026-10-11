@@ -2,11 +2,68 @@
 from __future__ import annotations
 
 import math
+import re
 from typing import Any
 
 from valorant_ai_coach.rounds.boundaries import BoundaryObservation
 
 PRACTICAL_TIME_TOLERANCE_SEC = 0.1
+
+
+def evaluation_source_binding(
+    prediction_doc: dict[str, Any], truth_doc: dict[str, Any],
+) -> dict[str, Any]:
+    """Reject cross-source scoring; legacy numeric comparisons stay unverified.
+
+    A matching source does not attest independent label review or qualification.
+    Package exports carry decoder hashes in actual boundary provenance; unknown
+    endpoints have no source timestamp and cannot contribute source attestation.
+    """
+    hashes: set[str] = set()
+
+    def include(value: Any) -> None:
+        if value is None:
+            return
+        if not isinstance(value, str) or re.fullmatch(r'[0-9a-f]{64}', value) is None:
+            raise ValueError('invalid practical evaluation source SHA256')
+        hashes.add(value)
+
+    include(prediction_doc.get('source_video_sha256'))
+    observed = [b for b in prediction_doc['boundaries']
+                if b.get('boundary_status') != 'unknown']
+    bound_observations = 0
+    for boundary in observed:
+        proof = boundary.get('provenance', {})
+        event_proof = proof.get('event', {}).get('attributes', {}).get('evidence_provenance', {})
+        direct = proof.get('source_video_sha256')
+        transported = event_proof.get('source_video_sha256')
+        include(direct)
+        include(transported)
+        if direct is not None or transported is not None:
+            bound_observations += 1
+    if len(hashes) > 1:
+        raise ValueError('practical predictions contain multiple source videos')
+    source = next(iter(hashes), None)
+    truth_source = truth_doc.get('source_video_sha256')
+    # Reuse the same syntax check without including truth in prediction support.
+    if truth_source is not None and (
+        not isinstance(truth_source, str)
+        or re.fullmatch(r'[0-9a-f]{64}', truth_source) is None
+    ):
+        raise ValueError('invalid practical truth source SHA256')
+    if source is not None and truth_source is not None and source != truth_source:
+        raise ValueError('practical prediction and truth source videos differ')
+    covered = (prediction_doc.get('source_video_sha256') is not None
+               or bound_observations == len(observed))
+    verified = source is not None and truth_source is not None and covered
+    return {
+        'source_binding_verified': verified,
+        'prediction_source_video_sha256': source,
+        'truth_source_video_sha256': truth_source,
+        'reason': ('same_source_hash' if verified else 'source_binding_incomplete'),
+        'independent_label_review_verified': False,
+        'scope': 'Source hash agreement only; numeric PASS is not independent precision proof',
+    }
 
 
 def evaluate_matched_boundary(
@@ -152,6 +209,7 @@ def main(argv: list[str] | None = None) -> int:
 
         prediction_doc = export_package_boundaries(prediction_doc['round_packages'])
     predictions = [BoundaryObservation.from_dict(row) for row in prediction_doc['boundaries']]
+    source_binding = evaluation_source_binding(prediction_doc, truth_doc)
     report = evaluate_boundary_set(
         predictions, truth_doc['boundaries'],
         complete_review=truth_doc.get('complete_review', False),
@@ -167,11 +225,14 @@ def main(argv: list[str] | None = None) -> int:
     else:
         report['inputs']['input_kind'] = 'boundary_observations'
     report['canonical_evaluation_modified'] = False
+    report['source_binding'] = source_binding
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(
         json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8',
     )
-    print(json.dumps({'evaluation_kind': report['evaluation_kind'], 'counts': report['counts']}))
+    print(json.dumps({'evaluation_kind': report['evaluation_kind'], 'counts': report['counts'],
+                      **{k: source_binding[k] for k in ('source_binding_verified',
+                                                       'independent_label_review_verified')}}))
     return 0
 
 

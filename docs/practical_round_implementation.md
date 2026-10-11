@@ -1135,3 +1135,65 @@ Remaining blockers are independent qualification of global readers/lifecycle,
 whole-match fresh player/Visual processing, owned HUD evidence and map resolution,
 and independent boundary time precision. Do not promote stored provisional
 boundaries to confirmed to bypass those blockers. No extra full E2E was started.
+
+## Source-bound practical timing evaluation
+
+Problem: the separate ±0.1-second CLI recorded JSON file hashes but did not
+compare the source-video identity of predictions and reviewed truth. A boundary
+from another video at the same time could therefore produce a numeric PASS.
+Target contracts are `GT-R1-ROUND-START`, `GT-R1-ROUND-END`, and
+`GT-R2-ROUND-START`; their original canonical predicates remain unchanged.
+
+Change: `scripts/e2e/practical_accuracy.py` now checks optional document source
+SHA-256 and decoder source SHA-256 inside provisional or transported formal
+boundary provenance. Contradictory/multiple source hashes and malformed hashes
+are rejected before writing an accuracy report. All observed candidates must
+be covered by either their document source or individual source provenance to
+report complete source binding. Unknown endpoints do not invent source times.
+Legacy unbound inputs remain usable for synthetic/numeric comparisons but are
+explicitly **source unverified**, including in stdout. Source hash agreement
+alone is never reported as verification of independent label review.
+
+Evidence: the archived whole-source Packages were evaluated with the exact
+match_001 SHA and an explicit evaluator-only list of unavailable/null exact
+point times. No new ground truth was created. Result: **0 PASS / 0 FAIL / 6 NE**
+(three missing reference points plus three unmatched timed candidates), three
+provisional, zero confirmed and seven untimed unknown Package endpoints.
+False-positive count remains unverified because no exhaustive exact review was
+supplied. Source binding is verified; independent point precision is not.
+
+An additional offline arithmetic comparison uses the **unchanged** existing
+canonical acceptance windows. Candidates are associated once by chronological
+order and event kind; the windows never choose prediction times.
+
+| Candidate | Actual candidate time | Existing window | Distance outside window | Maximum distance to window endpoints |
+| --- | ---: | --- | ---: | ---: |
+| R1 start | 4.102669 | [4.08, 4.20] | 0 | 0.097331 |
+| R1 end | 74.486003 | [74.387, 74.483] | 0.003003 | 0.099003 |
+| R2 start | 111.419336 | [111.38, 111.50] | 0 | 0.080664 |
+
+These distances are **window arithmetic**, not measured error against an
+independently reviewed exact point. An acceptance window must not be silently
+converted into an exact time or an uncertainty guarantee. In particular, R1 end
+still lies outside its existing window, and none of these unqualified candidates
+is a confirmed canonical event. No time rounding or detector adjustment occurred.
+
+| Metric | Previous | Current | Delta |
+| --- | --- | --- | --- |
+| Cross-video same-time input | Numeric PASS possible | Rejected before output | Unsafe comparison removed |
+| Source provenance in CLI report | Not checked | Explicit verified/unverified | Added |
+| Canonical PASS / FAIL / NE | Historical 23 / 55 / 4 | Not rerun | Unavailable |
+| Real-source exact-point precision | Unverified | Unverified | No precision claim |
+
+Tests cover a cross-video CLI comparison, mixed Package/document sources,
+malformed hashes, partially bound observations, formal-event provenance and
+legacy unbound comparisons. Related accuracy/export tests passed (26 tests).
+Production detector, Strict Mode, qualification loader, Validation Pack and
+canonical evaluator are unchanged. No full E2E was started for this evaluator
+contract correction. Machine evidence:
+`e2e_reports/match_001/practical_source_bound_accuracy.json`.
+
+Remaining blocker: independent exact point-time labels and component/temporal
+qualification. The null-time reference documents missing evidence; it must not
+be substituted with prediction times, acceptance-window midpoints or GT-derived
+production inputs.

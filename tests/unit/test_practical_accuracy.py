@@ -128,6 +128,81 @@ def test_accuracy_cli_keeps_input_hashes_and_canonical_scope(tmp_path):
     report = json.loads(report_file.read_text())
     assert report['counts'] == {'PASS': 1, 'FAIL': 0, 'NE': 0}
     assert report['canonical_evaluation_modified'] is False
+    assert report['source_binding']['source_binding_verified'] is False
+    assert report['source_binding']['independent_label_review_verified'] is False
     assert report['inputs']['truth_sha256'] == hashlib.sha256(original_truth).hexdigest()
     assert prediction_file.read_bytes() == original_prediction
     assert truth_file.read_bytes() == original_truth
+
+
+def test_cross_video_cli_cannot_publish_matching_time_pass(tmp_path):
+    import json
+
+    from scripts.e2e.practical_accuracy import main
+
+    predictions = tmp_path / 'predictions.json'
+    truth = tmp_path / 'truth.json'
+    output = tmp_path / 'result.json'
+    predictions.write_text(json.dumps({
+        'source_video_sha256': 'a' * 64, 'boundaries': [predicted(4).to_dict()],
+    }))
+    truth.write_text(json.dumps({
+        'source_video_sha256': 'b' * 64,
+        'boundaries': [{'id': 'different-video-start', 'kind': 'round_start', 'time_sec': 4}],
+    }))
+    with pytest.raises(ValueError, match='source videos differ'):
+        main(['--predictions', str(predictions), '--truth', str(truth), '--output', str(output)])
+    assert not output.exists()
+
+
+def test_source_agreement_does_not_certify_independent_label_review():
+    from scripts.e2e.practical_accuracy import evaluation_source_binding
+
+    result = evaluation_source_binding(
+        {'source_video_sha256': 'a' * 64, 'boundaries': [predicted(4).to_dict()]},
+        {'source_video_sha256': 'a' * 64},
+    )
+    assert result['source_binding_verified'] is True
+    assert result['independent_label_review_verified'] is False
+
+
+def test_partial_decoder_provenance_does_not_bind_unattested_boundary():
+    from scripts.e2e.practical_accuracy import evaluation_source_binding
+
+    first, second = predicted(4).to_dict(), predicted(8).to_dict()
+    first['provenance']['source_video_sha256'] = 'a' * 64
+    result = evaluation_source_binding({'boundaries': [first, second]},
+                                       {'source_video_sha256': 'a' * 64})
+    assert result['source_binding_verified'] is False
+
+
+def test_package_formal_event_provenance_keeps_source_attestation():
+    from scripts.e2e.practical_accuracy import evaluation_source_binding
+
+    boundary = predicted(4).to_dict()
+    boundary['provenance'] = {'event': {'attributes': {'evidence_provenance': {
+        'source_video_sha256': 'a' * 64,
+    }}}}
+    result = evaluation_source_binding({'boundaries': [boundary]},
+                                       {'source_video_sha256': 'a' * 64})
+    assert result['source_binding_verified'] is True
+
+
+def test_mixed_package_or_document_source_is_rejected():
+    from scripts.e2e.practical_accuracy import evaluation_source_binding
+
+    boundary = predicted(4).to_dict()
+    boundary['provenance']['source_video_sha256'] = 'b' * 64
+    with pytest.raises(ValueError, match='multiple source videos'):
+        evaluation_source_binding({'source_video_sha256': 'a' * 64, 'boundaries': [boundary]},
+                                  {'source_video_sha256': 'a' * 64})
+
+
+@pytest.mark.parametrize('invalid', [True, '', 'A' * 64, 'not-a-hash'])
+def test_malformed_source_hashes_are_rejected(invalid):
+    from scripts.e2e.practical_accuracy import evaluation_source_binding
+
+    with pytest.raises(ValueError, match='source SHA256'):
+        evaluation_source_binding({'source_video_sha256': invalid, 'boundaries': []}, {})
+    with pytest.raises(ValueError, match='source SHA256'):
+        evaluation_source_binding({'boundaries': []}, {'source_video_sha256': invalid})

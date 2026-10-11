@@ -1,0 +1,198 @@
+{
+  "evaluation_kind": "practical_boundary_accuracy",
+  "time_tolerance_sec": 0.1,
+  "association_radius_sec": 1.0,
+  "complete_boundary_review_requested": false,
+  "complete_boundary_review": false,
+  "counts": {
+    "PASS": 0,
+    "FAIL": 0,
+    "NE": 6
+  },
+  "boundaries": [
+    {
+      "truth_id": "GT-R1-ROUND-START",
+      "prediction_index": null,
+      "status": "NE",
+      "absolute_error_sec": null,
+      "tolerance_sec": 0.1,
+      "boundary_status": "unknown",
+      "reason": "no_independent_truth_time"
+    },
+    {
+      "truth_id": "GT-R1-ROUND-END",
+      "prediction_index": null,
+      "status": "NE",
+      "absolute_error_sec": null,
+      "tolerance_sec": 0.1,
+      "boundary_status": "unknown",
+      "reason": "no_independent_truth_time"
+    },
+    {
+      "truth_id": "GT-R2-ROUND-START",
+      "prediction_index": null,
+      "status": "NE",
+      "absolute_error_sec": null,
+      "tolerance_sec": 0.1,
+      "boundary_status": "unknown",
+      "reason": "no_independent_truth_time"
+    }
+  ],
+  "unmatched_prediction_status": "NE",
+  "unmatched_prediction_indices": [
+    0,
+    1,
+    2
+  ],
+  "false_positive_count": null,
+  "known_truth_count": 0,
+  "matched_boundary_count": 0,
+  "boundary_detection_rate": null,
+  "time_accuracy_rate": null,
+  "confirmed_boundary_count": 0,
+  "provisional_boundary_count": 3,
+  "unknown_boundary_count": 7,
+  "inputs": {
+    "predictions_sha256": "a30829938e615acd2f39e81632adc552aa4f4e447d3549cdff2036e00f2a284b",
+    "truth_sha256": "0018dddb5d7e8749fbac74f25e55467b681049ea0c1a1a928306f6b313775ac1",
+    "input_kind": "round_packages"
+  },
+  "package_export": {
+    "scope": "Existing Package evidence export; not reader qualification or GT",
+    "package_count": 5,
+    "provisional_package_count": 2,
+    "uncertain_package_count": 5,
+    "partitions": [
+      {
+        "interval_no": 1,
+        "window": {
+          "start_sec": 0.03600260416666667,
+          "end_sec": 2.4860026041666665
+        },
+        "start": "unknown",
+        "end": "unknown"
+      },
+      {
+        "interval_no": 2,
+        "window": {
+          "start_sec": 2.4860026041666665,
+          "end_sec": 81.7693359375
+        },
+        "start": "provisional",
+        "end": "provisional"
+      },
+      {
+        "interval_no": 3,
+        "window": {
+          "start_sec": 81.78600260416667,
+          "end_sec": 81.83600260416667
+        },
+        "start": "unknown",
+        "end": "unknown"
+      },
+      {
+        "interval_no": 4,
+        "window": {
+          "start_sec": 81.83600260416667,
+          "end_sec": 110.98600260416667
+        },
+        "start": "unknown",
+        "end": "unknown"
+      },
+      {
+        "interval_no": 5,
+        "window": {
+          "start_sec": 110.98600260416667,
+          "end_sec": 171.019336
+        },
+        "start": "provisional",
+        "end": "unknown"
+      }
+    ]
+  },
+  "canonical_evaluation_modified": false,
+  "source_binding": {
+    "source_binding_verified": true,
+    "prediction_source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "truth_source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "reason": "same_source_hash",
+    "independent_label_review_verified": false,
+    "scope": "Source hash agreement only; numeric PASS is not independent precision proof"
+  },
+  "existing_window_diagnostics": [
+    {
+      "assertion_id": "GT-R1-ROUND-START",
+      "kind": "round_start",
+      "boundary_status": "provisional",
+      "candidate_time_sec": 4.102669270833333,
+      "confirmation_time_sec": 4.202669270833334,
+      "existing_acceptance_window_sec": [
+        4.08,
+        4.2
+      ],
+      "candidate_inside_window": true,
+      "distance_to_window_sec": 0,
+      "maximum_distance_to_window_endpoints_sec": 0.09733072916666696,
+      "point_precision_status": "NE",
+      "scope": "Window-distance arithmetic only, not independent point-time error or canonical assertion PASS"
+    },
+    {
+      "assertion_id": "GT-R1-ROUND-END",
+      "kind": "round_end",
+      "boundary_status": "provisional",
+      "candidate_time_sec": 74.48600260416667,
+      "confirmation_time_sec": 75.3693359375,
+      "existing_acceptance_window_sec": [
+        74.387,
+        74.483
+      ],
+      "candidate_inside_window": false,
+      "distance_to_window_sec": 0.003002604166667311,
+      "maximum_distance_to_window_endpoints_sec": 0.09900260416667095,
+      "point_precision_status": "NE",
+      "scope": "Window-distance arithmetic only, not independent point-time error or canonical assertion PASS"
+    },
+    {
+      "assertion_id": "GT-R2-ROUND-START",
+      "kind": "round_start",
+      "boundary_status": "provisional",
+      "candidate_time_sec": 111.4193359375,
+      "confirmation_time_sec": 111.48600260416667,
+      "existing_acceptance_window_sec": [
+        111.38000000000001,
+        111.5
+      ],
+      "candidate_inside_window": true,
+      "distance_to_window_sec": 0,
+      "maximum_distance_to_window_endpoints_sec": 0.08066406250000568,
+      "point_precision_status": "NE",
+      "scope": "Window-distance arithmetic only, not independent point-time error or canonical assertion PASS"
+    }
+  ],
+  "independent_precision_verified": false,
+  "canonical_result": {
+    "historical": {
+      "PASS": 23,
+      "FAIL": 55,
+      "NE": 4
+    },
+    "current": null,
+    "delta": null
+  },
+  "artifact_hashes": {
+    "accuracy.json": "048e28132a4258e815c4fbc6cc22913b0273a910fb50b13e556afecb0166bb47",
+    "unverified_point_reference.json": "0018dddb5d7e8749fbac74f25e55467b681049ea0c1a1a928306f6b313775ac1"
+  },
+  "target_assertion_ids": [
+    "GT-R1-ROUND-START",
+    "GT-R1-ROUND-END",
+    "GT-R2-ROUND-START"
+  ],
+  "review_limitations": [
+    "Null point reference explicitly records unavailable exact labels; it is not new ground truth",
+    "Six NE comprise three unavailable reference points and three unmatched observed candidates",
+    "Seven unknown package endpoints are counted separately; they are not fabricated timed events",
+    "False-positive count is unverified because review is not exhaustive",
+    "Window comparisons are not used to choose candidate times or change canonical outcomes"
+  ]
+}
