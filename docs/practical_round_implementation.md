@@ -1067,3 +1067,71 @@ explicit configuration and verified native Practical archive, followed by full
 application acquisition only when it supplies information not already archived.
 Strict qualification, natural absent-field controls and independent exact-point
 boundary precision remain separate unresolved work.
+
+## Continuous real HUD / Visual integration checkpoint
+
+The new offline diagnostic `scripts/diagnostics/verify_practical_frame_processing.py`
+uses the application service factory and `HudVideoProcessor.process_frames` with
+**RealHudAnalyzer and RealVisualAnalyzer**. Its explicit archive input is bound to
+stored SHA-256, current code/profile fingerprints and the same source contract;
+every freshly decoded PNG is checked against the archived native pixel hash and
+PTS. This is not a production recognition-result cache. Strict processing,
+qualification, thresholds, sampling and canonical evaluation are unchanged.
+
+Real input `[0, 6)` seconds was decoded without frame skipping: 358 consecutive
+frames, 655.067 seconds (10m55s), 0.547 frames/sec. Actual observations and Visual
+observations both numbered 358. All player HUD states stayed unknown. HUD and
+Visual accepted events were both zero; the Visual diagnostic reported unresolved
+map geometry on 358/358 frames. No independent player identity, map facts or
+scored evaluation is established by provisional partitioning.
+
+The verified **whole-source** boundary evidence was transported into the builder,
+producing three storage partitions, including an initial unknown fragment and
+separate R1/R2 provisional contexts. Their snapshots and events are empty in this
+bounded run. The R1 end and R2 start evidence were acquired by the earlier whole
+native collector; they were not freshly recognized in `[0, 6)`. Package extents
+therefore exceed fresh observation coverage. These packages must not be reported
+as a whole-match HUD/Visual verification. The previous archived-global save/resume
+and actual Qt checks remain separate evidence scopes.
+
+| Metric | Previous comparable run | Current | Delta |
+| --- | --- | ---: | --- |
+| Continuous fresh HUD / Visual frames | none | 358 | not comparable |
+| Runtime | none | 655.067 sec | not comparable |
+| Player HUD unknown | none | 358 | not comparable |
+| Accepted HUD / Visual events | none | 0 / 0 | not comparable |
+| Canonical PASS / FAIL / NE | 23 / 55 / 4 | not rerun | unavailable |
+
+The ±0.1 second criterion remains **unverified**: this diagnostic has no independent
+point-time labels and runs no canonical evaluator. Historical negative assertion
+and discontinuity totals are not new regression measurements.
+
+Validation: related Practical lifecycle/application/precision/export and boundary
+regression tests **81 passed in 57.06 seconds**; Ruff passed; mypy passed for 128
+production files. Before this diagnostic-only checkpoint, commit
+`1caf2cff9859eea4cd119f4a5d987634ed5b6455` passed both
+[Linux CI](https://github.com/shark-man0/eval_valorant_perspective/actions/runs/38145916629)
+and [Windows verification](https://github.com/shark-man0/eval_valorant_perspective/actions/runs/38145916634).
+CI for the new checkpoint must be checked independently after push.
+
+Compact machine evidence: `e2e_reports/match_001/practical_continuous_player_visual.json`.
+Large local artifacts: `outputs/recognition-investigation/practical-continuous-player-visual-20261011`.
+
+Reproduction (explicit bounded diagnostic; does not replace full E2E):
+
+```bash
+PYTHONPATH=.:src python3 scripts/diagnostics/verify_practical_frame_processing.py \
+  --video ValorantData/videos/Valorant_09-25-2026_0-37-29-379.mp4 \
+  --archive outputs/recognition-investigation/practical-whole-source-replay-20261011/native_analysis.json \
+  --verification-report e2e_reports/match_001/practical_whole_source_collection.json \
+  --input-contract datasets/input_contracts/match_001.unedited.json \
+  --layout outputs/hud_profiles/round-global-timer-glyph-20261008/hud_layout.json \
+  --templates outputs/hud_profiles/round-global-timer-glyph-20261008/score-rowcontrast-late-result-diagnostic.templates.json \
+  --output-directory outputs/recognition-investigation/practical-continuous-player-visual-new-run \
+  --start-sec 0 --end-sec 6
+```
+
+Remaining blockers are independent qualification of global readers/lifecycle,
+whole-match fresh player/Visual processing, owned HUD evidence and map resolution,
+and independent boundary time precision. Do not promote stored provisional
+boundaries to confirmed to bypass those blockers. No extra full E2E was started.
