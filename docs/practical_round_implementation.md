@@ -736,3 +736,30 @@ Package safety, reader qualification/exact-time accuracy, Windows file-lock CI
 failure diagnosis, full regression/CI after integration, sampled/canonical
 acceptance where qualified. Replay reduces retained source storage, but adds
 verified decode passes; no recognition speedup is asserted.
+
+## Source replay integration regression and Windows cleanup
+
+The complete local regression after application source-replay integration passed:
+**2573 PASS, 6 SKIP, 1819.47 seconds**. Ruff passed; mypy passed for 128 source
+files. The six skips retain the previously documented optional real-source HUD,
+Tesseract, host-native Windows path and PowerShell limitations. This is not a new
+canonical real-video E2E run and provides no new boundary-accuracy result.
+
+Linux Basic CI passed at `322ea97`. Windows verification at that commit completed
+with four failures: two decoder temporary-log cleanup failures and two scene
+cohort test path-key inconsistencies. Its 2565 passes and 10 skips do not establish
+Windows certification. The earlier UTF-8 fixture failure is absent in this run.
+
+The Windows installation log confirms Chocolatey created an FFmpeg executable
+shim. On early decoder rejection, terminating that launcher can leave the encoder
+child holding `decode.log` or `replay.log`. The Windows workflow now resolves the
+installed package's actual encoder directory, requires its paired ffprobe, and
+places that directory ahead of the shim for this step and subsequent steps.
+Missing or ambiguous binaries fail setup explicitly. Existing preinstalled direct
+binaries retain their existing path. Runtime decoder cleanup and its assertions
+remain unchanged; the final Windows rerun is needed to verify the launcher fix.
+
+The scene cohort tests now use native `Path` string keys consistently with the
+existing frozen-file verifier, including the deliberately omitted key. This
+corrects the earlier incomplete POSIX-key fixture adjustment; no qualification
+requirement or production recognizer was changed.
