@@ -81,8 +81,14 @@ class NativeLifecycleOptions:
     max_png_bytes: int
     png_prediction: str = "up"
     unedited_input_contract_path: Path | None = None
+    storage_mode: str = "png"
+    max_replay_buffer_bytes: int = 64 * 1024 * 1024
 
     def __post_init__(self) -> None:
+        if self.storage_mode not in {"png", "replay"}:
+            raise ValueError("unsupported native storage mode")
+        if type(self.max_replay_buffer_bytes) is not int or self.max_replay_buffer_bytes <= 0:
+            raise ValueError("native replay buffer must be a positive integer")
         if type(self.max_png_bytes) is not int or self.max_png_bytes <= 0:
             raise ValueError("native PNG budget must be a positive integer")
         if self.png_prediction not in {"none", "up"}:
@@ -437,6 +443,8 @@ class HudVideoProcessor:
         """Share decoder/source verification; strict alone releases formal events."""
         self._check_cancel(cancel_event)
         contract = None
+        if options.storage_mode == "replay" and boundary_mode != "practical":
+            raise HudVideoProcessingError("source replay is explicit practical storage only")
         if boundary_mode not in {"strict", "practical"}:
             raise HudVideoProcessingError("unsupported boundary mode")
         if boundary_mode == "practical" and options.unedited_input_contract_path is None:
@@ -498,16 +506,22 @@ class HudVideoProcessor:
 
         if not callable(verify) or not callable(observe):
             raise HudVideoProcessingError("qualified native provider required")
-        decode = getattr(self.video, "native_window", None)
+        decode_arguments: dict[str, Any]
+        if options.storage_mode == "replay":
+            decode = getattr(self.video, "native_replay", None)
+            decode_arguments = {"max_buffer_bytes": options.max_replay_buffer_bytes}
+        else:
+            decode = getattr(self.video, "native_window", None)
+            decode_arguments = {
+                "start_sec": 0, "end_sec": None, "max_png_bytes": options.max_png_bytes,
+                "png_prediction": options.png_prediction,
+            }
         if not callable(decode):
             raise HudVideoProcessingError("verified native decoder required")
         with ExitStack() as stack:
             with timing_stage("native_frame_decode"):
                 frames = stack.enter_context(decode(
-                    metadata.path, start_sec=0, end_sec=None,
-                    source_video_sha256=digest.hexdigest(),
-                    max_png_bytes=options.max_png_bytes,
-                    png_prediction=options.png_prediction,
+                    metadata.path, source_video_sha256=digest.hexdigest(), **decode_arguments,
                 ))
             self._check_cancel(cancel_event)
             if len(frames) < 2:

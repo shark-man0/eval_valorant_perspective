@@ -283,6 +283,22 @@ class VideoService:
             png_prediction=png_prediction, max_png_bytes=max_png_bytes,
         )
 
+    def native_replay(
+        self, path: Path, *, source_video_sha256: str,
+        max_buffer_bytes: int = 64 * 1024 * 1024,
+    ) -> AbstractContextManager[tuple[NativeSourceFrame, ...]]:
+        """Whole-source bounded replay; recognition retains one continuous call."""
+        from .native_replay import decode_native_replay
+
+        executable = self.ffmpeg_path or shutil.which('ffmpeg')
+        if executable is None:
+            raise VideoProbeError('ffmpeg is required for verified native replay')
+        return decode_native_replay(
+            self._require_video(path), source_video_sha256=source_video_sha256,
+            ffmpeg=executable, ffprobe=self.ffprobe_path,
+            max_buffer_bytes=max_buffer_bytes, timeout_sec=self.pts_timeout_sec,
+        )
+
     @staticmethod
     def _require_video(path: Path) -> Path:
         value = Path(path).expanduser().resolve()

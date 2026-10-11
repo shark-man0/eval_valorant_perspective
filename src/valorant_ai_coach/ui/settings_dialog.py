@@ -136,10 +136,11 @@ class SettingsDialog(QDialog):
         form.addRow("未編集動画の入力契約", self._file_field(
             self.unedited_input_contract, "対象動画の入力契約を選択", "JSON (*.json)"
         ))
-        form.addRow("連続フレームの一時保存上限（MiB）", self.native_png_budget)
+        form.addRow("PNG保存入口の上限（MiB）", self.native_png_budget)
         boundary_notice = QLabel(
             "Practicalは実HUD解析で利用できます。暫定区間の観測を保存し、"
             "境界が未確定の区間は採点を保留します。入力契約は対象動画と照合します。"
+            "Practicalでは全フレームのPNG一時保存を行いません。"
         )
         boundary_notice.setWordWrap(True)
         form.addRow(boundary_notice)

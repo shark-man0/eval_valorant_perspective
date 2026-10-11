@@ -684,3 +684,55 @@ configuration/fingerprints, preserve one whole analyzer invocation, test provide
 selection/terminal behavior, and investigate the Windows decoder cleanup failure.
 Whole-source lifecycle, false-end coverage, precise timing and canonical metrics
 remain unverified. The broad goal stays active.
+
+## Practical source-replay application integration
+
+`VideoService.native_replay` now exposes the validated physical-origin-to-EOF
+source entrance. The common collector accepts `NativeLifecycleOptions` storage
+mode `png` (legacy/default API) or `replay` (explicit Practical only). Replay has
+a separate positive memory-buffer allowance, default 64 MiB. Strict rejects an
+explicit replay request before qualification and otherwise retains exactly its
+existing PNG decoder arguments. Unsupported/missing verified providers fail
+closed; there is no silent switch between storage entrances.
+
+Application bootstrap selects replay only when the user opts into Practical.
+The existing PNG allowance remains persisted for compatibility and explicit PNG
+API consumers; it is not presented as the replay cache limit. The settings
+notice explains that Practical does not retain all source PNGs. The configured
+HUD profile remains unchanged: development diagnostic sidecars are not adopted
+by changing the storage entrance.
+
+Both storage entrances supply the entire native frame sequence to the same
+single analyzer call and retain source metadata/cadence, profile/input-contract,
+qualification overlay and terminal checks. No per-chunk calibration or temporal
+classifier reset occurs. Source replay verifies every frame but does not change
+formal boundary admission, owner facts, thresholds or canonical sampling.
+The qualification code fingerprint now includes `video/native_replay.py`.
+Existing resume fingerprint serialization already includes all native option
+fields, so different storage mode/buffer and decoder code cannot reuse an old
+practical checkpoint or qualification inadvertently.
+
+Tests: 44 practical/provider/decoder/bootstrap/pipeline wiring tests PASS in
+42.93 seconds. A final 17-test practical application selection PASS in 18.54
+seconds after adding an explicit one-analyzer-call assertion. Cases include
+both entrances with valid/missing/stale qualification, unchanged PNG arguments,
+replay memory arguments, terminal qualification-file mutation, start-only formal
+qualification, unsupported options and Strict replay rejection. Full source
+mypy: 128 files PASS; Ruff and diff checks PASS. These selections are not a new
+full pytest/canonical E2E run.
+
+| Capability | Previous | Current |
+| --- | --- | --- |
+| Application Practical storage entrance | Whole retained PNG collection | Verified source replay |
+| Continuous analyzer invocation | One | One, explicitly tested |
+| Strict default native entrance | PNG | PNG |
+| Actual whole-source replay decoder evidence | 10259 frames verified | Same decoder; application wiring tested synthetically |
+| Actual whole-source Practical recognizer/Packages | Unverified | Still unverified |
+| Canonical PASS / FAIL / NE | Historical 23 / 55 / 4 | Not rerun; delta unmeasured |
+
+Latest fetched main remains `27c8465`, an ancestor of this branch. No main merge
+was performed. Remaining work: actual whole-source Practical recognition and
+Package safety, reader qualification/exact-time accuracy, Windows file-lock CI
+failure diagnosis, full regression/CI after integration, sampled/canonical
+acceptance where qualified. Replay reduces retained source storage, but adds
+verified decode passes; no recognition speedup is asserted.

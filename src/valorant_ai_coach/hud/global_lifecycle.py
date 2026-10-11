@@ -40,7 +40,7 @@ def global_recognizer_fingerprint() -> str:
         digest.update(source.read_bytes().replace(b"\r\n", b"\n"))
     # Native decoder ownership is part of the scene entrance's trust boundary.
     # A decoder change must not inherit a qualification for old source pixels/PTS.
-    for name in ("native.py", "service.py"):
+    for name in ("native.py", "native_replay.py", "service.py"):
         source = Path(__file__).parent.parent / "video" / name
         digest.update(f"video/{name}".encode())
         digest.update(source.read_bytes().replace(b"\r\n", b"\n"))

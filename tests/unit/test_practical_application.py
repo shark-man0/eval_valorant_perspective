@@ -21,6 +21,7 @@ def test_practical_opt_in_persists_and_reaches_composition_root(tmp_path):
     pipeline = services.pipeline
     assert pipeline.round_boundary_mode == 'practical'
     assert pipeline.native_lifecycle_options.unedited_input_contract_path == path
+    assert pipeline.native_lifecycle_options.storage_mode == "replay"
     assert pipeline.native_lifecycle_options.max_png_bytes == 128 * 1024 * 1024
     before = pipeline._config_fingerprint()
     match = {'source_video_path': str(tmp_path / 'source.mp4')}
@@ -73,9 +74,10 @@ def test_ui_partition_view_keeps_unknown_and_preserves_only_observed_values():
     assert legacy.start_status == legacy.end_status == 'unknown'
 
 
+@pytest.mark.parametrize('storage_mode', ['png', 'replay'])
 @pytest.mark.parametrize('qualification_case', ['absent', 'valid', 'stale'])
 def test_practical_native_collection_uses_shared_decoder_and_terminal_verification(
-    tmp_path, monkeypatch, qualification_case,
+    tmp_path, monkeypatch, qualification_case, storage_mode,
 ):
     import hashlib
     from contextlib import contextmanager
@@ -111,6 +113,7 @@ def test_practical_native_collection_uses_shared_decoder_and_terminal_verificati
         calls.append('terminal')
 
     def observe(source, _metadata, *, _build_events):
+        calls.append('observe')
         assert tuple(source) == frames and _build_events is False
         scans = []
         for row in rows:
@@ -125,6 +128,7 @@ def test_practical_native_collection_uses_shared_decoder_and_terminal_verificati
                                native_ui_measurements=scans)
 
     processor.video.native_window = decode
+    processor.video.native_replay = decode
     processor.analyzer = SimpleNamespace(
         _native_profile_readers=True, _native_loaded_base_fingerprint='a' * 64,
         _base_fingerprint=lambda: 'a' * 64, fingerprint=lambda: 'a' * 64,
@@ -139,13 +143,19 @@ def test_practical_native_collection_uses_shared_decoder_and_terminal_verificati
         path.write_text(json.dumps(content))
         processor.analyzer.global_qualification_path = path
     analysis = processor.collect_native_lifecycle(
-        metadata, NativeLifecycleOptions(1234, unedited_input_contract_path=contract_path),
+        metadata, NativeLifecycleOptions(1234, unedited_input_contract_path=contract_path,
+                                         storage_mode=storage_mode),
         boundary_mode='practical',
     )
     assert [b.kind for b in analysis.boundaries] == ['round_start', 'round_end', 'round_start']
     assert all(b.boundary_status == 'provisional' for b in analysis.boundaries)
-    assert calls[0]['start_sec'] == 0 and calls[0]['end_sec'] is None
+    if storage_mode == 'png':
+        assert calls[0]['start_sec'] == 0 and calls[0]['end_sec'] is None
+    else:
+        assert calls[0]['max_buffer_bytes'] == 64 * 1024 * 1024
+        assert 'start_sec' not in calls[0] and 'max_png_bytes' not in calls[0]
     assert calls[0]['source_video_sha256'] == source_hash and calls[-1] == 'terminal'
+    assert calls.count('observe') == 1
 
     if qualification_case == 'valid':
         assert [e['type'] for e in analysis.confirmed_lifecycle.hud_events] == ['round_start']
@@ -161,3 +171,27 @@ def test_practical_native_collection_uses_shared_decoder_and_terminal_verificati
         with pytest.raises(ValueError, match='qualification file changed'):
             validated_practical_boundaries(analysis, source_video_sha256=source_hash,
                                            profile_fingerprint='a' * 64)
+
+
+def test_strict_rejects_explicit_replay_before_qualification(tmp_path):
+    from tests.unit.test_native_event_merge import qualified_processor
+    from valorant_ai_coach.application.hud_video_processor import (
+        HudVideoProcessingError,
+        NativeLifecycleOptions,
+    )
+
+    processor, metadata, _, _ = qualified_processor(tmp_path)
+    with pytest.raises(HudVideoProcessingError, match='explicit practical storage'):
+        processor.collect_native_lifecycle(metadata, NativeLifecycleOptions(1024,
+                                                                         storage_mode='replay'))
+
+
+@pytest.mark.parametrize('changes', [
+    {'storage_mode': 'unknown'}, {'max_replay_buffer_bytes': True},
+    {'max_replay_buffer_bytes': 0},
+])
+def test_native_replay_option_validation(changes):
+    from valorant_ai_coach.application.hud_video_processor import NativeLifecycleOptions
+
+    with pytest.raises(ValueError):
+        NativeLifecycleOptions(1024, **changes)

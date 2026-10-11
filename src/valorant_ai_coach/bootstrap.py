@@ -201,6 +201,7 @@ def build_services(
         native_lifecycle_options=(
             NativeLifecycleOptions(
                 max_png_bytes=selected.native_png_budget_mb * 1024 * 1024,
+                storage_mode="replay",
                 unedited_input_contract_path=Path(selected.unedited_input_contract_path),
             ) if selected.round_boundary_mode == "practical" else None
         ),
