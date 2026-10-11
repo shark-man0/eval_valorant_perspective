@@ -763,3 +763,28 @@ The scene cohort tests now use native `Path` string keys consistently with the
 existing frozen-file verifier, including the deliberately omitted key. This
 corrects the earlier incomplete POSIX-key fixture adjustment; no qualification
 requirement or production recognizer was changed.
+
+Final Windows verification of code commit
+`f60571d81206fced4dc1aeb50c78a8675383dbd5` succeeded:
+[Windows test-and-build run](https://github.com/shark-man0/eval_valorant_perspective/actions/runs/38121689001).
+The log confirms direct `lib/ffmpeg/tools/ffmpeg/bin` encoder/probe executables.
+All four previous failures disappeared: **2569 PASS, 10 SKIP in 769.70 seconds**,
+coverage 85%, Ruff PASS, mypy PASS (128 files), PyInstaller build PASS, packaged
+application smoke test PASS. The ten skips remain explicit platform/optional
+dependency limitations; packaged startup is not real-video GUI accuracy evidence.
+[Linux Basic CI](https://github.com/shark-man0/eval_valorant_perspective/actions/runs/38121689014)
+also succeeded at the same code commit. The local 57-test cleanup/cohort selection
+passed in 42.26 seconds.
+
+| Metric | Previous Windows run (`322ea97`) | Current Windows run (`f60571d`) | Delta |
+| --- | ---: | ---: | ---: |
+| Test PASS | 2565 | 2569 | +4 |
+| Test FAIL | 4 | 0 | -4 |
+| Test SKIP | 10 | 10 | 0 |
+| Test runtime (seconds) | 754.77 | 769.70 | +14.93 (+1.98%) |
+
+Runtime variation does not establish a performance improvement or regression.
+These are regression-test metrics, not canonical assertion counts. Canonical
+23 PASS / 55 FAIL / 4 NE remains historical, with no new full E2E or precision
+claim. Whole-source Practical recognition/Packages, independent exact-point
+accuracy and final reader qualification remain the next development work.
