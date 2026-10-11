@@ -571,3 +571,48 @@ full Match Package/observation association and source-negative coverage, separat
 precision report with independently reviewed exact times where available,
 sampled evaluation and remote Linux/Windows CI. The three provisional candidates
 are not a claim of 30 canonical PASS or resolution of the 29 package FAILs.
+
+## Native storage feasibility measurement
+
+Before starting whole-source practical collection, measured existing source PNG
+storage in the two already-used 30-frame native development windows. All
+prediction/encoder comparisons retained exactly identical native PTS, timebase
+and decoded pixels; original source SHA checks and existing native decode
+coverage/terminal checks remained active. No recognition ran in this benchmark.
+
+| PNG prediction / compression level | R1 window MiB | R2 window MiB | R1 wall seconds | R2 wall seconds | Sample-based full estimate GiB |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| none / 1 | 37.33 | 45.16 | 20.34 | 20.10 | Not production choice |
+| up / 1, current production | 30.82 | 36.60 | 19.91 | 19.37 | 11.260 |
+| up / 6, diagnostic only | 26.28 | 31.44 | 27.72 | 29.46 | 9.640 |
+| up / 9, diagnostic only | 25.59 | 30.68 | 86.73 | 92.64 | 9.397 |
+
+The estimate uses source metadata duration×FPS and these window averages. It is
+not measured whole-video storage or a guarantee that any budget suffices.
+Nevertheless the current samples do not support claiming the default 8 GiB
+budget will complete this video. The collector currently buffers the entire
+source before recognition. Raising the budget alone still requires actual disk
+headroom; observed filesystem free space was approximately 16 GiB before this
+benchmark. No full decode was launched merely to test an expected capacity limit.
+
+Higher compression was measured through a diagnostic-only encoder-command wrapper
+around the existing budgeted native decoder. No production default was changed.
+Level 9 costs approximately 4.4–4.8 times the decode wall time of current `up/1`
+for these windows and still has an estimate above 8 GiB; it is rejected as the
+solution. Level 6 also does not resolve the estimated default-budget problem.
+No lossy format, resize, frame skipping, parallel decode or weakened integrity
+check was introduced.
+
+Artifacts: `practical_native_storage_measurement.json` and
+`practical_native_compression_measurement.json` under `e2e_reports/match_001`.
+They bind source/contract or baseline-report hashes, frame counts, storage,
+runtime and exact PTS/pixel equivalence. Production code and qualification files
+are unchanged, so this checkpoint adds evidence rather than new qualification.
+
+Next required implementation: bound retained native-frame storage while
+preserving one continuous analyzer/geometry/temporal sequence, source coverage
+and terminal verification. Repeated independent analyzer calls per chunk would
+reset geometry/classifier state and are not an acceptable substitute. Existing
+Strict collection behavior must remain unchanged. Whole-match Practical
+completion remains unproven until that collection path or an explicitly adequate
+budget is validated on the entire actual source.

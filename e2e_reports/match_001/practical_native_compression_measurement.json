@@ -1,0 +1,54 @@
+{
+  "scope": "Diagnostic-only lossless PNG encoder benchmark; production decoder unchanged",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "baseline_report_sha256": "be2bfbaac09df9bba3b55781a67eb6dd8b1cc06dd19e15602307ef15b0e692a3",
+  "measurements": [
+    {
+      "window_sec": [
+        3.902669,
+        4.402669
+      ],
+      "compression_level": 6,
+      "frame_count": 30,
+      "total_png_bytes": 27560951,
+      "wall_clock_sec": 27.715310337021947,
+      "identical_native_pts_and_pixels": true
+    },
+    {
+      "window_sec": [
+        111.186003,
+        111.686003
+      ],
+      "compression_level": 6,
+      "frame_count": 30,
+      "total_png_bytes": 32962336,
+      "wall_clock_sec": 29.463220925012138,
+      "identical_native_pts_and_pixels": true
+    },
+    {
+      "window_sec": [
+        3.902669,
+        4.402669
+      ],
+      "compression_level": 9,
+      "frame_count": 30,
+      "total_png_bytes": 26831125,
+      "wall_clock_sec": 86.73266959300963,
+      "identical_native_pts_and_pixels": true
+    },
+    {
+      "window_sec": [
+        111.186003,
+        111.686003
+      ],
+      "compression_level": 9,
+      "frame_count": 30,
+      "total_png_bytes": 32167481,
+      "wall_clock_sec": 92.63562317797914,
+      "identical_native_pts_and_pixels": true
+    }
+  ],
+  "whole_video_capacity_verified": false,
+  "estimated_full_png_bytes_level_6": 10350652355.277433,
+  "estimated_full_png_bytes_level_9": 10089902423.045616
+}
