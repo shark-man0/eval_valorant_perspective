@@ -521,3 +521,53 @@ Remaining blockers: wider R1 start/end intervals, R1-to-R2 whole-source continui
 no-false-end verification after 114 seconds, independent holdout qualification,
 exact truth-time precision, sampled/canonical E2E, full regression and CI/PR.
 Local zero extra candidates does not certify whole-video negative assertions.
+
+## Wider R1 temporal evidence and full regression checkpoint
+
+The actual common analyzer processed every native frame in the requested wider
+R1 windows, with the unchanged profile and a separate calibration prefix:
+
+| Window | Native frames | Timer available | Score pair available | Result matches | Wall seconds |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Start, 3–6 seconds | 180 | 146 | 143 | 0 | 361.039288 |
+| End, 72–77 seconds | 300 | 101 | 181 | 52 | 647.200831 |
+
+Practical replay of each independently observed continuous window yielded:
+
+| Boundary | Previous short-window candidate | Wider-window candidate | Delta | Confirmation time |
+| --- | ---: | ---: | ---: | ---: |
+| R1 start | 4.102669271 | 4.102669271 | 0 | 4.202669271 |
+| R1 end | 74.486002604 | 74.486002604 | 0 | 75.369335938 |
+
+Each wider window produced exactly one provisional boundary, no additional
+start/end candidate and zero local source breaks. Formal events remain zero.
+The start retained the actual transient timer displays rather than replacing
+values. The end uses the observed score-change candidate with delayed result
+corroboration; no GT-nearest selection or conversion of confirmation time into
+boundary time occurred. The windows are separate temporal validations, not a
+proof of uninterrupted lifecycle between R1 start, R1 end and R2 start.
+
+Artifacts under `e2e_reports/match_001`:
+`r1_start_wide_current_phase_inputs.json`,
+`r1_end_wide_current_phase_inputs.json`, `r1_wide_practical_replay.json`.
+No new reader qualification or exact point-time truth was generated. ±0.1-second
+precision remains unverified and canonical assertions were not reevaluated.
+
+Full pytest with both external Validation Pack environment paths configured
+completed: **2561 PASS, 6 SKIP, 1800.33 seconds**. Skips: optional full-source HUD
+anchor test (its distinct source environment was not enabled), local Tesseract
+unavailable, host-native Windows path test, and three PowerShell tests. The
+optional HUD anchor test runs a different whole-video/default-layout acceptance
+path; it was not silently substituted for the current-profile temporal checks.
+This is a complete local test-suite run with explicit skipped scope, not Windows
+CI or canonical full-video accuracy certification. Ruff and diff checks PASS;
+full production mypy remains 127 files PASS from the preceding unchanged-source
+checkpoint. Production source was frozen throughout these fingerprint-sensitive
+validations. No full canonical E2E was started because formal actual-source
+qualification and whole-match continuity gates remain open.
+
+Next integration work: efficient continuous whole-source practical collection,
+full Match Package/observation association and source-negative coverage, separate
+precision report with independently reviewed exact times where available,
+sampled evaluation and remote Linux/Windows CI. The three provisional candidates
+are not a claim of 30 canonical PASS or resolution of the 29 package FAILs.
