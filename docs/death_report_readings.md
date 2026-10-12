@@ -216,3 +216,18 @@ recognition change, source edit, sampler change or acceptance relaxation. The
 previous CI failure's complete causal mechanism remains unproven until stronger
 runtime evidence exists; current CI establishes the tested contract rather than
 a guarantee that all external demuxer behaviors are now explained.
+
+### Remaining Windows empty-probe diagnosis
+
+Commit `b890ac4` passed both Linux runs and one Windows run; Windows job
+`38186147433` failed three native-source tests (2627 passed, 10 skipped).
+An empty frame list occurred even in the fixture's standalone probe without
+`read_intervals`. Neither single-thread decoding nor the no-zero-seek change
+is sufficient to explain or eliminate this failure. The cause remains unknown.
+
+The follow-up retains the last 2000 characters of successful ffprobe stderr
+in rejected coverage errors. The synthetic fixture captures encoder/probe
+stderr and asserts it contains frames before a consumer can use it. Pytest
+prints these captured setup diagnostics only on failure. There is no retry,
+frame repair, coverage relaxation or source-policy change. Local native-source
+tests: 44 passed; Ruff and mypy (128 files): passed.

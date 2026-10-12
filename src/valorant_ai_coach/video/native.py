@@ -216,13 +216,17 @@ def decode_native_window(
     if _sha256(video) != source_video_sha256:
         raise VideoProbeError('native source video SHA256 mismatch')
 
+    probe_stderr = ''
+
     def probe(arguments: list[str]) -> dict[str, Any]:
+        nonlocal probe_stderr
         result = subprocess.run(
             [ffprobe, '-v', 'error', '-threads', '1', '-select_streams', 'v:0', *arguments,
              '-of', 'json', str(video)],
             capture_output=True, text=True, check=True, timeout=timeout_sec,
             env=_subprocess_environment(),
         )
+        probe_stderr = result.stderr[-2000:]
         data: dict[str, Any] = json.loads(result.stdout)
         return data
 
@@ -253,7 +257,8 @@ def decode_native_window(
             'native probe must cover both sides of interior window: '
             f'count={len(probed)}, first={probed[0] if probed else None}, '
             f'last={probed[-1] if probed else None}, time_base={time_base}, '
-            f'window=({start_sec},{end_sec}), non_monotonic_pair={bad_pair}'
+            f'window=({start_sec},{end_sec}), non_monotonic_pair={bad_pair}, '
+            f'ffprobe_stderr={probe_stderr!r}'
         )
     if start_sec == 0 and probed[0] < 0:
         raise VideoProbeError('negative native source origin requires explicit support')

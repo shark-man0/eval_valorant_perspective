@@ -16,13 +16,13 @@ def make_video(tmp_path):
     if ffmpeg is None or ffprobe is None:
         pytest.skip('verified native decoder needs FFmpeg and ffprobe')
     path = tmp_path / 'native.mp4'
-    subprocess.run([
-        ffmpeg, '-hide_banner', '-loglevel', 'error', '-f', 'lavfi', '-i',
+    encoded = subprocess.run([
+        ffmpeg, '-hide_banner', '-loglevel', 'info', '-f', 'lavfi', '-i',
         'testsrc2=size=64x64:rate=60', '-t', '1', '-vf',
         'select=not(eq(mod(n\\,3)\\,1)),setpts=PTS+0.137/TB',
         '-fps_mode', 'passthrough', '-c:v', 'mpeg4', '-g', '12', '-threads', '1',
         str(path),
-    ], check=True)
+    ], check=True, capture_output=True, text=True)
     source_hash = hashlib.sha256(path.read_bytes()).hexdigest()
     result = subprocess.run([
         ffprobe, '-v', 'error', '-select_streams', 'v:0', '-show_frames',
@@ -30,6 +30,15 @@ def make_video(tmp_path):
         '-of', 'json', str(path),
     ], check=True, capture_output=True, text=True)
     probed = json.loads(result.stdout)
+    # Pytest retains this only on failure. A successful process may still
+    # produce an empty fixture or report decoder errors on stderr; retain both
+    # sides before diagnosing the production PTS checks.
+    print(f'native fixture encoder={ffmpeg}, probe={ffprobe}, '
+          f'bytes={path.stat().st_size}, sha256={source_hash}, '
+          f'frames={len(probed.get("frames", []))}')
+    print(f'fixture encoder stderr: {encoded.stderr[-4000:]}')
+    print(f'fixture probe stderr: {result.stderr[-4000:]}')
+    assert probed.get('frames'), f'empty native fixture: {result.stdout}'
     return path, source_hash, probed
 
 
@@ -464,3 +473,26 @@ def test_nonzero_source_origin_never_requires_zero_seek(video, monkeypatch, star
         assert frames[0].pts_ticks > 0
     assert len(intervals) == 1
     assert intervals[0].startswith('%')
+
+
+def test_empty_probe_retains_decoder_error_without_retrying(video, monkeypatch):
+    path, digest, _ = video
+    original = subprocess.run
+    frame_calls = []
+
+    def empty(command, **kwargs):
+        if '-show_frames' in command:
+            frame_calls.append(command)
+            return subprocess.CompletedProcess(
+                command, 0, json.dumps({'frames': []}), 'decoder initialization failed',
+            )
+        return original(command, **kwargs)
+
+    monkeypatch.setattr(subprocess, 'run', empty)
+    with pytest.raises(VideoProbeError, match='decoder initialization failed'), (
+        VideoService().native_window(
+            path, start_sec=0, end_sec=None, source_video_sha256=digest,
+        )
+    ):
+        pytest.fail('an empty probe must not reach consumers')
+    assert len(frame_calls) == 1
