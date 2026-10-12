@@ -89,8 +89,9 @@ def test_export_merges_stages_writes_local_summary_and_provenance(tmp_path: Path
         "evaluation_report.json",
     }.issubset(summary["terminal_context"]["input_hashes"])
     assert summary["terminal_context"]["result_artifact"]["path"] == "evaluation_report.json"
-    assert json.loads((output / "runtime_summary.json").read_text())["mode"] == "sampled"
-    markdown = (output / "runtime_summary.md").read_text()
+    runtime = json.loads((output / "runtime_summary.json").read_text(encoding="utf-8"))
+    assert runtime["mode"] == "sampled"
+    markdown = (output / "runtime_summary.md").read_text(encoding="utf-8")
     assert "| Stage | Total s | Calls | Average s | Wall % |" in markdown
     assert "| wall_sec |" in markdown
     assert "Observed runtime deltas describe run-to-run variation" in markdown

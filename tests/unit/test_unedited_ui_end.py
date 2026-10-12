@@ -233,7 +233,7 @@ def test_temporal_component_requires_source_assurance_and_qualified_readers(tmp_
     data['components']['ui_transition'] = deepcopy(data['components']['continuity'])
     data['components']['ui_end_transition'] = deepcopy(data['components']['round_result'])
     path = tmp_path / 'qualification.json'
-    path.write_text(json.dumps(data))
+    path.write_text(json.dumps(data), encoding="utf-8")
     _, contract = make_contract(tmp_path, 'a' * 64)
     with pytest.raises(ValueError, match='source assurance'):
         GlobalLifecycleQualification.load(path, data['profile_fingerprint'])
@@ -242,7 +242,7 @@ def test_temporal_component_requires_source_assurance_and_qualified_readers(tmp_
     )
     assert 'ui_end_transition' in q.components
     data['components'].pop('score')
-    path.write_text(json.dumps(data))
+    path.write_text(json.dumps(data), encoding="utf-8")
     with pytest.raises(ValueError, match='qualified inputs'):
         GlobalLifecycleQualification.load(
             path, data['profile_fingerprint'], unedited_input_contract=contract,
