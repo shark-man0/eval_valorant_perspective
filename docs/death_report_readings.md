@@ -221,8 +221,9 @@ a guarantee that all external demuxer behaviors are now explained.
 
 Commit `b890ac4` passed both Linux runs and one Windows run; Windows job
 `38186147433` failed three native-source tests (2627 passed, 10 skipped).
-An empty frame list occurred even in the fixture's standalone probe without
-`read_intervals`. Neither single-thread decoding nor the no-zero-seek change
+An empty frame list occurred in the production frame probe; the earlier
+negative-origin test traceback was initially misattributed to the fixture.
+The subsequent captured fixture diagnostics show its standalone probe succeeded. Neither single-thread decoding nor the no-zero-seek change
 is sufficient to explain or eliminate this failure. The cause remains unknown.
 
 The follow-up retains the last 2000 characters of successful ffprobe stderr
@@ -231,3 +232,27 @@ stderr and asserts it contains frames before a consumer can use it. Pytest
 prints these captured setup diagnostics only on failure. There is no retry,
 frame repair, coverage relaxation or source-policy change. Local native-source
 tests: 44 passed; Ruff and mypy (128 files): passed.
+
+### EOF interval root-cause evidence and workaround
+
+The failed Windows job uses FFmpeg/ffprobe **9.0.2**. Captured fixture output
+shows 35 encoded frames and a successful standalone frame probe; the subsequent
+`-read_intervals %` probe returned no frames and empty stderr.
+[FFmpeg 9.0.2 source](https://github.com/FFmpeg/FFmpeg/blob/n9.0.2/fftools/ffprobe.c)
+allocates ReadInterval with `av_malloc_array`. `parse_read_interval` sets
+`has_end=0` for an omitted end but does not initialize `end_is_offset`,
+`duration_frames` or `end`. `read_interval_packets` still reads `end_is_offset`
+when `has_end` is false. This uninitialized-data path explains intermittent
+early EOF without a decoder error; a debugger capture of the specific CI process
+is unavailable, so the attribution is source-supported rather than a memory trace.
+
+Native EOF windows now omit `read_intervals` entirely and probe all source PTS
+from the physical origin, including when the requested start is positive.
+FFprobe's default ReadInterval is explicitly zero-initialized. Bounded windows
+continue to specify an explicit absolute end. No PTS, image or integrity checks
+are changed, and truncated/duplicate/negative probes remain rejected.
+Local native source/replay tests: **50 passed**; Ruff and mypy: passed.
+
+Linux job `38188766402` passed all tests but aborted during Qt finalization
+(shared QObject deletion/allocator error). The prior explicit media cleanup
+was insufficient; that separate regression remains open.

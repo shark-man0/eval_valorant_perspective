@@ -471,8 +471,11 @@ def test_nonzero_source_origin_never_requires_zero_seek(video, monkeypatch, star
     ) as frames:
         assert [f.pts_ticks for f in frames] == expected
         assert frames[0].pts_ticks > 0
-    assert len(intervals) == 1
-    assert intervals[0].startswith('%')
+    if end is None:
+        assert intervals == []
+    else:
+        assert len(intervals) == 1
+        assert intervals[0].startswith('%')
 
 
 def test_empty_probe_retains_decoder_error_without_retrying(video, monkeypatch):
