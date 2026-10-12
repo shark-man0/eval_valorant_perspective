@@ -11,9 +11,10 @@
 |---|---|
 | 既存の安全条件（confidence上限・scope修復・UNSCORED重複集約・spectator安全性）の維持 | 維持。既存テストはすべて通過 |
 | 新規コード（Task Aのmatch集計）にも同じ安全条件を適用 | 適用済み（§3 の4章） |
-| production codeの変更 | **1箇所**（§2）。fail-closed方向への厳格化のみ |
+| production codeの変更 | **2箇所**: §2（ルールエンジン、fail-closed方向のみ）と、D-1b（`application/pipeline.py`の集約呼び出し。§5 D-1b）。D-1のaggregator修正を含む |
 | 再現した既知の欠陥 | **D-1**（§5）。**承認を受けて修正済み**（PR #11追加修正）。strict xfail 2件は通常のPASSテストへ変更 |
-| 未解決として残す事項 | L-1 / L-2 / L-3 / L-5、およびMatch全体の総合評価。**今回は変更しない**（§5, §8、`match_aggregation_design.md` §9） |
+| D-1b（0.55下限を統合の前に適用） | **承認を受けて実装済み（案B）**（§5 D-1b）。強いGOOD/IMPROVEが弱い同ruleの評価に巻き込まれて失われない |
+| 未解決として残す事項 | L-1 / L-2 / L-3 / L-5、およびMatch全体の総合評価。**今回は変更しない**（§5, §8、`match_aggregation_design.md` §9）。L-5はD-1bと相互作用する（§5 D-1b） |
 | 既知のsnapshot/fact課題4件（依頼§C-3） | 現状を再現するテストで固定。変更は未実施（§5, L-1〜L-4） |
 | negative control | 12件中11件を検出。1件（N7）は等価変異体と確認（§4）。D-1用の4件（N9〜N12）はすべて検出 |
 
@@ -134,14 +135,14 @@
   3メンバー全順列、代表の安定性（24通り）、等しいconfidence、UNSCORED統合、修正前の統合結果が実際に上限理由で拒否されること
   （`test_the_unfixed_merge_really_fails_the_validator_for_the_cap_reason`）を追加。`test_rule_engine`の期待値は0.9→0.8
   （0.8 / 0.9 / 0.8を統合した結果は最弱メンバーの0.8）に更新。
-- **留意すべき副作用（`test_known_consequence_a_weak_member_can_demote_a_merged_good_to_unscored`）**:
+- **留意すべき副作用（D-1b実装前の挙動。現在は解消）**:
   パイプラインには既存の下限`_enforce_confidence_policy`（confidence < 0.55 のgood/improveを`unscored`/`low_confidence`に降格）がある。
   旧挙動では、0.50のgoodと0.90のgoodを統合すると強い方の0.90が残り、goodのままだった。
   修正後は統合結果が0.50となり、既存の下限によって`unscored`に降格される（`fact_refs`は保持）。新しいlabelロジックは無く、
   既存の下限が「正直になったconfidence」に作用した結果である。0.55以上のメンバー同士の統合ではlabelは変わらない。
-  この副作用をどう扱うかは、**D-1b（直後）で代替案を比較した。仕様変更はユーザー承認まで保留しており、現在の実装（案A）のまま**である。
+  この副作用は、**D-1b（直後。承認を受けて案Bを実装済み）で解消した**。aggregator単体の挙動（最小値）は変えていない。
 
-### D-1b. 0.55下限を「統合の後」から「統合の前」に移す案の比較【**仕様判断待ち・未実装**】
+### D-1b. 0.55下限を「統合の後」から「統合の前」に移す【**承認を受けて案Bを実装済み**】
 
 **背景**: D-1の修正（案A）後、0.50のGOODと0.90のGOODを統合すると、統合結果（0.50）が既存の下限`_enforce_confidence_policy`
 （confidence < 0.55 のgood/improveを`unscored`/`low_confidence`へ降格）に掛かり、**0.90のGOODまで一緒にUNSCOREDとして失われる**。
@@ -187,12 +188,51 @@ OLDに対しては14集合で減る。L-5を先に直すか、同時に扱えば
 - 保存形式（`ai_coach_output_schema_v3`）は**変更なし**。降格後の項目は、既存の下限が今も作る形（`label=unscored`、`unscored_reason_code=low_confidence`、clip・improvement無し、`missing_information`あり）と同一。
 - 変更箇所は`application/pipeline.py`の集約呼び出しの直前1箇所（各evaluationへ既存の下限を先に適用）のみ。aggregatorの中身は変えない。
 - 既存テストは落ちないが、**A/Bの差を固定するテストが既存には存在しない**。案Bを採るなら、パイプライン経由で「0.50のGOODと0.90のGOODを統合してもGOODが残る」ことなどを固定する新規テストが必要。
-  `test_known_consequence_a_weak_member_can_demote_a_merged_good_to_unscored`はaggregatorと下限を手動で連結して案Aの結果を固定しているため、案B採用時は更新が必要。
+  
 - 既存の「評価0件ではなくunscoredを明示する」方針とは矛盾しない（Bは弱い評価を消さずUNSCOREDとして残す）。
 
-**推奨**: 案B。**理由**: GOOD/IMPROVEの保持がAより常に悪くならず（増加187・減少0）、強いgoodが弱いメンバーのFactや低いconfidenceに引きずられない。
+**推奨（実装前の判断。承認済み）**: 案B。**理由**: GOOD/IMPROVEの保持がAより常に悪くならず（増加187・減少0）、強いgoodが弱いメンバーのFactや低いconfidenceに引きずられない。
 上限違反は案Aと同じく0件。**留意点**: L-5との相互作用で、OLDに対して14/4000集合ではGOOD/IMPROVEが減る。
-**この仕様変更はユーザー承認まで実装しない**（現在のブランチは案Aのまま）。
+この比較の後、ユーザーが案Bを承認し、実装した（上記）。
+
+#### D-1b 実装内容（承認済み・案B）
+
+- **変更箇所**: `application/pipeline.py`のみ。集約呼び出しを`_aggregate_round_evaluations()`に切り出し、
+  `EvaluationAggregator.aggregate()`へ渡す前に**各evaluationへ既存の`_enforce_confidence_policy`（0.55下限）を適用**する。
+  統合後にも同じ下限を再度適用する（冪等。aggregatorが0.55未満のscored項目を返さない限り何も変えない安全網）。
+  **aggregator・下限の判定式・0.55の値・schema・保存形式は変更していない**。
+- **満たした要件**:
+
+  | 要件 | 結果 |
+  |---|---|
+  | 高信頼のGOOD/IMPROVEが低信頼の別評価に巻き込まれて失われない | 弱い方だけが単独`unscored`になり、強い方は自分のFactだけを引いたままGOOD/IMPROVEで残る |
+  | 弱い評価のUNSCORED降格を保持 | 0.55未満は従来どおり`unscored`/`low_confidence`（clip・improvement除去、`fact_refs`・`primary_rule_id`保持） |
+  | confidence上限違反が発生しない | 4000通りの乱数集合で、引用Factの最弱値を超えた出力は**0件**（OLDは207件）。実validatorを通すテストも追加 |
+  | `fact_refs`・Rule identity・provenance保持 | 降格項目も統合項目も保持（テストで固定） |
+  | 既存Schemaとの互換性 | 保存形式`ai_coach_output_schema_v3`は変更なし |
+  | 既存38 fixtureの結果 | 出力に**差なし**（OLD・案Aとも同一） |
+  | D-1の回帰テスト | すべて維持（aggregator単体のテストは無変更で成功） |
+  | 0.55前後・複数件統合時の順序のテスト | 追加（下記） |
+
+- **実装後の検証**: 実装した本物の`_aggregate_round_evaluations()`を、乱数4000集合（Round 1/2混在）に適用し、前回比較した案Bの結果と照合 →
+  **不一致0 / 4000**。この数値（GOOD+IMPROVEの保持: Aより増えた187集合・減った0集合、上限違反0、38 fixture差なし）は上の比較表のとおり。
+- **追加テスト**（`tests/unit/test_non_vision_safety_regressions.py`、実validatorを含む）:
+  - 弱い同ruleの近傍にいるgood/improveが失われない（2）
+  - 0.55境界: 0.0 / 0.549999 / 0.55−1e-12 は単独UNSCORED、0.55 / 0.55+1e-12 / 0.56 は従来のD-1統合（6）
+  - 3メンバー（0.50 / 0.70 / 0.90）の全6入力順で結果が同一（代表は最強、統合confidenceは下限を通った側の最弱0.70）（6）
+  - 0.30 / 0.40 / 0.95の全6入力順で、弱い2件は個別に降格し強い1件に混ざらない（6）
+  - 同一根拠・同一理由のUNSCOREDは既存規則どおり統合される（1）、Round間は混ざらない（1）、dedup groupでのidentity/上限（1）
+  - パイプライン出力を実validatorに通す（2経路 × 弱い側0.40 / 0.55 / 0.70）（6）
+  - 下限の冪等性・入力非破壊（1）、aggregator単体のD-1挙動は無変更（1）
+  - 特性化: L-5との相互作用（下記）（1）
+  - 旧`test_known_consequence_a_weak_member_can_demote_a_merged_good_to_unscored`は、案Aの副作用を固定するテストだったため、上記に置き換えた。
+- **負の確認（negative control）**: `**self._enforce_confidence_policy(evaluation)`を元の`**deepcopy(evaluation)`に戻すと、新規テストのうち**19件が失敗**する（戻して全件成功を確認）。
+- **L-5との相互作用（L-5は別タスクのまま未変更）**: 表示上限`max_display_exemplars_per_match`はrule単位でlabelを区別しないため、
+  降格したUNSCOREDが単独で残ると、その分の表示枠を消費する。例: AIM-02（上限3）で、弱い0.50・強い0.90×3 → 以前は弱い項目が強い項目に統合されて枠を1つしか使わなかったが、
+  今は弱い項目がUNSCOREDとして1枠を使い、時刻の最も遅い強いGOODが表示から外れる
+  （`test_known_limitation_a_demoted_weak_item_still_uses_up_the_per_rule_display_budget`で固定）。
+  乱数4000集合ではOLDに対して14集合でGOOD/IMPROVEが減り、7集合でOLDより引用Factが減り、1集合でOLDで見えていたruleが見えなくなった
+  （いずれもAに対しては悪化なし）。**原因はL-5の数え方であり、D-1bの欠陥ではない**。L-5（表示用の件数制限と保存の分離）は承認の指示どおり別タスクとして残す。
 
 ### L-1. zone factのconfidenceにpackage aggregateが上限として使われる【特性化】
 
@@ -253,18 +293,18 @@ OLDに対しては14集合で減る。L-5を先に直すか、同時に扱えば
 | `python tests/validate_dataset.py` | `OK: 38 cases; schemas + candidate selection contract valid`（既存38 fixtureの契約を維持） |
 | `python -m ruff check src tests scripts/e2e` | All checks passed |
 | `python -m mypy src/valorant_ai_coach` | Success: no issues found in 127 source files |
-| `python -m pytest --cov=valorant_ai_coach --cov-fail-under=75`（`tests/unit/test_ui_smoke.py`を除く） | **2905 passed / 9 skipped / 0 xfailed / 0 failed**、coverage **82.91%**（ゲート75%を達成） |
+| `python -m pytest --cov=valorant_ai_coach --cov-fail-under=75`（`tests/unit/test_ui_smoke.py`を除く） | **2943 passed / 9 skipped / 0 xfailed / 0 failed**、coverage **82.92%**（ゲート75%を達成。`Required test coverage of 75.0% reached`） |
 
-- 上記は**最新main（`27c8465`）を取り込んだ統合状態**での結果（pytestはmainの新規テストを含む全体）。
+- 上記は**最新main（`27c8465`）・D-1b・Windows修正（PR #13）を取り込んだ統合状態**での結果（pytestはmainの新規テストを含む全体）。
 - 初回提出時（`e9ecaf8`起点）は2243 passed / 2 xfailed だった。xfail 2件はD-1の修正で通常のPASSになり、0件になった。
-- 収集数: 最新main 2496件 → 本ブランチ 2928件（**+432件**: match集計55 / temporal契約77 / 安全性300）。
-  2928件 = 実行2905 + skip 9 + 除外した`test_ui_smoke.py` 14件。
+- 収集数: 最新main 2496件 → 本ブランチ 2966件（Task A/B/C・D-1・D-1bの追加分: match集計55 / temporal契約77 / 安全性331、ほかPR #13のテスト追加分）。
+  2966件 = 実行2943 + skip 9 + 除外した`test_ui_smoke.py` 14件。
 - **9 skipped**はすべて既存の環境依存で、今回の変更とは無関係:
   外部Validation Pack未配置（4）、実録画が未供給（1）、Windows固有パス（1）、PowerShell Core無し（3）。
 - **`tests/unit/test_ui_smoke.py`を除外した理由**: この開発サンドボックスではQtがセグメンテーションフォールトで落ちる。
   **変更を入れていないmain（`e9ecaf8`）でも同じ箇所で落ちる**ことを確認しており、今回の変更が原因ではない。
   このファイルの検証は**未実施**であり、GitHub ActionsのLinux / Windowsの結果を正とする（PR本文に記載）。
-- カバレッジゲート（`--cov-fail-under=75`）はローカルでは実行していない。CIの結果を正とする。
+- カバレッジは`pyproject.toml`の`fail_under = 75`（`--cov=src`で実行）でローカルでも確認した。CIの結果も正とする。
 
 ## 7. 互換性
 
@@ -277,7 +317,7 @@ OLDに対しては14集合で減る。L-5を先に直すか、同時に扱えば
 
 ## 8. 未解決事項（承認が必要で、今回は変更しない）
 
-D-1は承認を受けて修正済み（§5）。次の項目は**今回の更新でも変更していない**未解決事項で、いずれも承認が必要。
+D-1とD-1bは承認を受けて実装済み（§5）。D-1bはL-5と相互作用する（§5 D-1b）。次の項目は**今回の更新でも変更していない**未解決事項で、いずれも承認が必要。
 
 | ID | 内容 | 推奨 | 影響 |
 |---|---|---|---|
@@ -286,7 +326,6 @@ D-1は承認を受けて修正済み（§5）。次の項目は**今回の更新
 | L-3 | HP/Armorのprovenance統一（schema変更を伴う） | 承認して修正 | schema・保存形式 |
 | L-5 | 表示上限の数え方・保存と表示の分離 | 将来検討 | 保存形式・表示結果 |
 | M-1 | Match全体の総合評価（GOOD/IMPROVE・総合スコア） | 作らない（`match_aggregation_design.md` §9-1） | 新しいlabel/confidenceの意味 |
-| D-1b | 0.55下限を統合の前に各evaluationへ適用する（案B）。現在は統合後に適用（案A） | **案B**（§5 D-1b） | GOOD/IMPROVEの保持が改善、UNSCOREDが単独で残る。L-5と相互作用 |
 
 ## 9. CI上の既知の不安定性（Linux Qt終了処理）
 
@@ -328,3 +367,32 @@ D-1は承認を受けて修正済み（§5）。次の項目は**今回の更新
   すべて、上記の再現環境で全テストが通る＝**現時点では非ASCIIの内容を読んでおらず、失敗していない**。他のブランチと並行して編集されている
   ファイルが多く、競合を避けるため今回は**失敗経路のファイルだけ**を修正した。`src/.../visual`はVision側のため変更禁止。
   再発防止には、残り全体への`encoding="utf-8"`の追加（機械的で安全）を別途行うのがよい。
+
+## 11. Windows CI: 残っていた4失敗の修正（PR #12と同一のhunkを取り込み）
+
+**混同しないこと**: §9（Linux Qt abort）、§10（エンコーディング）とは別の原因。本PRのD-1/D-1bとも無関係。
+
+- **症状**（ユーザーがGitHub Actionsの実ログで確認、HEAD `a28b39a`）: 2914 passed / 10 skipped / **4 failed**。
+  1. `test_native_source_input.py::test_explicit_eof_preserves_every_remaining_native_pts[0]` — `VideoProbeError: native probe must cover both sides of interior window`
+     （push側では`test_budgeted_pipe_preserves_complete_native_source_data`が同じエラー）
+  2. `test_native_source_input.py::test_budget_overflow_never_yields_partial_frames_and_removes_files` — `PermissionError: WinError 32`（`decode.log`が別プロセスに使用中）
+  3. `test_scene_chain_cohort.py::test_optional_joint_audit_requires_frozen_code_and_strict_options` — `KeyError: src/valorant_ai_coach/hud/scene_domains.py`
+  4. `test_scene_chain_cohort.py::test_observer_reservation_requires_profile_assets_code_and_decoded_exposure` — `KeyError: scripts/diagnostics/observed_scene_chain.py`
+- **原因と修正**は、PR #12で別の作業者（Codex）が既に整理したものと同一で、そのhunkをそのまま取り込んだ（**独自の別実装はしていない**）:
+
+  | 失敗 | 原因 | 修正 |
+  |---|---|---|
+  | 1 | `-read_intervals`の終端省略（`start%`）がffprobeの一部のバージョンで内部状態を初期化せず、先頭フレーム前にprobeが終わる | EOF読み取りでは区間指定を付けない（ffprobe既定の全体読み取り）。`-threads 1`を付与。エラー文にprobeの診断情報（件数・先頭/末尾PTS・stderr）を追加 |
+  | 2 | Chocolateyのshimをkillすると、子のFFmpegが`decode.log`を握ったまま残る | `windows.yml`で、shimではなくパッケージ内の実`ffmpeg.exe`（`ffprobe.exe`と同じディレクトリ）をPATHへ置く。見つからない・複数ある場合は`throw` |
+  | 3, 4 | 辞書キーが`/`区切り固定のリテラルで、Windowsの`str(Path(...))`（`\`区切り）と一致しない | テスト側のキーを`str(Path(...))`にしてOS標準の表記に合わせる |
+
+  - 対象: `src/valorant_ai_coach/video/native.py`、`tests/unit/test_native_source_input.py`、`tests/unit/test_scene_chain_cohort.py`、`tests/unit/test_unedited_ui_start.py`（§10と同じ1箇所）、`.github/workflows/windows.yml`。
+    **`hud/` `visual/` `maps/` `hud_video_processor.py`は変更していない**。
+  - **skipの追加・安全性チェックの削除はしていない**（`native.py`の検証条件は同じ。エラー文の情報を増やしたのみ）。
+- **PRの関係**:
+  - PR #12（`codex/practical-round-boundaries-20261011`、最新HEAD `3f88b1a`、Windows CI成功）は別の作業者が継続中の可能性があるため、**PR #12のブランチ・内容には触れていない**。
+  - Windows修正だけを、PR #12の該当hunkと**逐行で同一**の小さな独立PR **#13**（`fix/windows-ci-native-probe-20261012`、mainを起点）として切り出した。
+    同一hunkなので、**PR #11・#12・#13のどれを先にmainへ入れても競合しない**。`git merge-tree`で、本ブランチとPR #12の合成が衝突なしであることを確認した。
+  - 本ブランチにはPR #13のコミットをマージして取り込んだ（`f93b26f`）。mainへ先にPR #12または#13が入った場合、同一hunkは重複せず自動的に解消される。
+- **エンコーディング修正との関係**: §10で直した`make_contract()`は、PR #12・#13にも同じ修正（`read_text(encoding='utf-8')`）が入っている。
+  書き方だけが違う（本ブランチは変数を介し、PR #12/#13は1式）ため、マージではPR #12/#13の形に揃えた（挙動は同一）。

@@ -693,16 +693,12 @@ def test_a_merged_unscored_item_is_still_unscored_and_not_more_confident_than_it
     assert merged[0]["confidence"] == 0.3 and merged[0]["fact_refs"] == ["F1"]
 
 
-def test_known_consequence_a_weak_member_can_demote_a_merged_good_to_unscored() -> None:
-    """Characterisation of the approved D-1 behaviour together with the pipeline's 0.55 floor.
+def test_the_aggregator_alone_still_lowers_a_merged_good_to_its_weakest_member() -> None:
+    """Aggregator-level D-1 behaviour is unchanged: the merged confidence is the weakest member.
 
-    Before, the merged item kept the *higher* confidence, so a 0.50 good merged with a 0.90 good
-    stayed a good. Now the merged item is 0.50 and the pipeline's existing floor demotes it to
-    ``unscored`` (``low_confidence``). No new label logic exists: only the existing floor acts on
-    the now-honest confidence.
+    The floor-before-merge order (D-1b, below) is applied by the pipeline, not by the aggregator,
+    so a caller that feeds *unfloored* evaluations still gets the honest, capped confidence.
     """
-    from valorant_ai_coach.application.pipeline import MatchAnalysisPipeline
-
     merged = display_aggregator().aggregate(
         [
             ev("a", "AIM-02", "good", 10.0, 0.50, ["F1"]),
@@ -710,9 +706,235 @@ def test_known_consequence_a_weak_member_can_demote_a_merged_good_to_unscored() 
         ]
     )
     assert len(merged) == 1 and merged[0]["confidence"] == 0.50
-    enforced = MatchAnalysisPipeline._enforce_confidence_policy(merged[0])
-    assert enforced["label"] == "unscored" and enforced["unscored_reason_code"] == "low_confidence"
-    assert sorted(enforced["fact_refs"]) == ["F1", "F2"]  # the basis is not lost
+    assert sorted(merged[0]["fact_refs"]) == ["F1", "F2"]
+
+
+# D-1b (approved plan B): the pipeline applies the existing 0.55 floor to every evaluation
+# *before* the display aggregator merges, so a weak good/improve is demoted on its own and cannot
+# drag a confident neighbour below the floor through the D-1 weakest-member cap.
+
+
+def pipeline_aggregate(
+    *rounds: tuple[int, list[dict[str, Any]]],
+) -> dict[int, list[dict[str, Any]]]:
+    from types import SimpleNamespace
+
+    from valorant_ai_coach.application.pipeline import MatchAnalysisPipeline
+
+    pipeline = MatchAnalysisPipeline.__new__(MatchAnalysisPipeline)
+    pipeline.aggregator = display_aggregator()
+    results = []
+    for round_no, evaluations in rounds:
+        cleaned = [
+            {k: v for k, v in copy.deepcopy(item).items() if k != "_aggregation_scope"}
+            for item in evaluations
+        ]
+        results.append(SimpleNamespace(output={"round_no": round_no, "evaluations": cleaned}))
+    return pipeline._aggregate_round_evaluations(results)
+
+
+def by_id(items: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
+    return {item["evaluation_id"]: item for item in items}
+
+
+@pytest.mark.parametrize("label", ["good", "improve"])
+def test_a_confident_evaluation_is_not_lost_to_a_weak_same_rule_neighbour(label: str) -> None:
+    out = pipeline_aggregate(
+        (
+            1,
+            [
+                ev("weak", "AIM-02", label, 10.0, 0.50, ["F1"]),
+                ev("strong", "AIM-02", label, 11.0, 0.90, ["F2"]),
+            ],
+        )
+    )[1]
+    assert len(out) == 2
+    weak, strong = out
+    assert (weak["evaluation_id"], weak["label"]) == ("weak", "unscored")
+    assert weak["unscored_reason_code"] == "low_confidence" and weak["confidence"] == 0.50
+    assert weak["clip_id"] is None and weak["display_clip"] is None and weak["improvement"] is None
+    assert (strong["evaluation_id"], strong["label"]) == ("strong", label)
+    assert strong["confidence"] == 0.90
+    assert strong["fact_refs"] == ["F2"] and strong["display_clip"] is not None  # untouched
+    assert weak["fact_refs"] == ["F1"]  # basis and identity are kept
+    assert weak["primary_rule_id"] == "AIM-02"
+
+
+@pytest.mark.parametrize(
+    ("confidence", "weak_label"),
+    [
+        (0.0, "unscored"),
+        (0.549999, "unscored"),
+        (0.55 - 1e-12, "unscored"),
+        (0.55, "good"),
+        (0.55 + 1e-12, "good"),
+        (0.56, "good"),
+    ],
+)
+def test_the_floor_boundary_is_exactly_055_before_merging(
+    confidence: float, weak_label: str
+) -> None:
+    out = pipeline_aggregate(
+        (
+            1,
+            [
+                ev("weak", "AIM-02", "good", 10.0, confidence, ["F1"]),
+                ev("strong", "AIM-02", "good", 11.0, 0.90, ["F2"]),
+            ],
+        )
+    )[1]
+    if weak_label == "good":
+        # not demoted, so the usual D-1 merge applies: one good at the weakest confidence
+        assert len(out) == 1
+        assert out[0]["label"] == "good" and out[0]["confidence"] == confidence
+        assert sorted(out[0]["fact_refs"]) == ["F1", "F2"]
+    else:
+        assert sorted((item["label"], item["confidence"]) for item in out) == [
+            ("good", 0.90),
+            ("unscored", confidence),
+        ]
+
+
+@pytest.mark.parametrize("order", list(itertools.permutations(range(3))))
+def test_three_member_floor_then_merge_is_independent_of_input_order(
+    order: tuple[int, ...]
+) -> None:
+    members = [
+        ev("w", "AIM-02", "good", 10.0, 0.50, ["F1"]),
+        ev("m", "AIM-02", "good", 11.0, 0.70, ["F2"]),
+        ev("s", "AIM-02", "good", 12.0, 0.90, ["F3"]),
+    ]
+    out = pipeline_aggregate((1, [copy.deepcopy(members[i]) for i in order]))[1]
+    scored = [item for item in out if item["label"] == "good"]
+    weak = [item for item in out if item["label"] == "unscored"]
+    assert len(scored) == 1 and len(weak) == 1
+    assert scored[0]["confidence"] == 0.70  # weakest of the two that passed the floor
+    assert sorted(scored[0]["fact_refs"]) == ["F2", "F3"]
+    assert scored[0]["evaluation_id"] == "s"  # strongest member still represents the group
+    assert (weak[0]["evaluation_id"], weak[0]["confidence"], weak[0]["fact_refs"]) == (
+        "w",
+        0.50,
+        ["F1"],
+    )
+
+
+@pytest.mark.parametrize("order", list(itertools.permutations(range(3))))
+def test_unscored_members_below_the_floor_never_merge_with_scored_ones(
+    order: tuple[int, ...]
+) -> None:
+    members = [
+        ev("a", "AIM-02", "improve", 10.0, 0.30, ["F1"]),
+        ev("b", "AIM-02", "improve", 100.0, 0.40, ["F2"]),
+        ev("c", "AIM-02", "improve", 12.0, 0.95, ["F3"]),
+    ]
+    out = pipeline_aggregate((1, [copy.deepcopy(members[i]) for i in order]))[1]
+    index = by_id(out)
+    assert index["c"]["label"] == "improve" and index["c"]["confidence"] == 0.95
+    # the weak ones are demoted individually; far apart in time, so they stay separate
+    assert {index[k]["label"] for k in ("a", "b")} == {"unscored"}
+    assert {index[k]["unscored_reason_code"] for k in ("a", "b")} == {"low_confidence"}
+    assert len(out) == 3
+
+
+def test_weak_evaluations_on_the_same_basis_still_merge_as_unscored() -> None:
+    out = pipeline_aggregate(
+        (
+            1,
+            [
+                ev("a", "MOV-02", "good", 10.0, 0.30, ["F1"]),
+                ev("b", "MOV-01", "good", 60.0, 0.40, ["F1"]),
+            ],
+        )
+    )[1]
+    assert len(out) == 1
+    assert out[0]["label"] == "unscored" and out[0]["confidence"] == 0.30
+    assert out[0]["fact_refs"] == ["F1"]
+    assert {out[0]["primary_rule_id"], *out[0]["related_rule_ids"]} == {"MOV-01", "MOV-02"}
+
+
+def test_floor_before_merge_keeps_rounds_apart() -> None:
+    out = pipeline_aggregate(
+        (1, [ev("r1-weak", "AIM-02", "good", 10.0, 0.50, ["F1"])]),
+        (2, [ev("r2-strong", "AIM-02", "good", 10.0, 0.90, ["F2"])]),
+    )
+    assert [(i["evaluation_id"], i["label"]) for i in out[1]] == [("r1-weak", "unscored")]
+    assert [(i["evaluation_id"], i["label"]) for i in out[2]] == [("r2-strong", "good")]
+
+
+def test_a_dedup_group_merge_after_the_floor_keeps_identity_and_cap() -> None:
+    out = pipeline_aggregate(
+        (
+            1,
+            [
+                ev("a", "AIM-03", "improve", 10.0, 0.98, ["F1"]),
+                ev("b", "MOV-02", "improve", 10.2, 0.60, ["F2"]),
+                ev("c", "MOV-01", "improve", 10.4, 0.50, ["F3"]),
+            ],
+        )
+    )[1]
+    index = by_id(out)
+    assert set(index) == {"a", "c"}  # AIM-03 represents its merged group; c is demoted alone
+    scored = [item for item in out if item["label"] == "improve"]
+    assert len(scored) == 1 and scored[0]["confidence"] == 0.60  # weakest of the two that passed
+    assert sorted(scored[0]["fact_refs"]) == ["F1", "F2"]
+    assert {scored[0]["primary_rule_id"], *scored[0]["related_rule_ids"]} == {"AIM-03", "MOV-02"}
+    weak = [item for item in out if item["label"] == "unscored"][0]
+    assert weak["primary_rule_id"] == "MOV-01" and weak["fact_refs"] == ["F3"]
+
+
+@pytest.mark.parametrize("path", ["same_rule", "dedup_group"])
+@pytest.mark.parametrize("weak", [0.40, 0.55, 0.70])
+def test_floor_then_merge_output_still_passes_the_real_contract_validator(
+    path: str, weak: float
+) -> None:
+    """The cap invariant holds on the pipeline's own output, validated by the real validator."""
+    case, members = MERGE_PATHS[path]
+    package, output = case_pair(case, 1)
+    template = output["evaluations"][0]
+    # the weak member is as confident as `weak`, but never above the cap of its own fact
+    items = [
+        schema_valid_member(template, eid, rule, min(conf, weak) if i else conf, facts)
+        for i, (eid, rule, conf, facts) in enumerate(members)
+    ]
+    for item in items:  # never above the cap of the member's own fact
+        item["confidence"] = min(item["confidence"], fact_confidence(package, item["fact_refs"][0]))
+    out = pipeline_aggregate((1, items))[1]
+    assert out  # nothing disappeared
+    for item in out:
+        item.setdefault("missing_information", [])
+    validate({**output, "evaluations": out}, package)
+
+
+def test_the_floor_is_idempotent_and_does_not_mutate_its_input() -> None:
+    from valorant_ai_coach.application.pipeline import MatchAnalysisPipeline
+
+    original = ev("a", "AIM-02", "good", 10.0, 0.50, ["F1"])
+    snapshot = copy.deepcopy(original)
+    once = MatchAnalysisPipeline._enforce_confidence_policy(original)
+    assert original == snapshot
+    assert MatchAnalysisPipeline._enforce_confidence_policy(once) == once
+
+
+def test_known_limitation_a_demoted_weak_item_still_uses_up_the_per_rule_display_budget() -> None:
+    """L-5 interaction of D-1b (unchanged limitation, recorded).
+
+    The per-rule display limit (``max_display_exemplars_per_match``) counts every kept item of a
+    rule, whatever its label. Before D-1b a weak good merged into a confident neighbour and used
+    one slot; now it is a separate ``unscored`` item and uses its own, so a later scored item of
+    the same rule can be cut sooner. Separating display limits from storage stays a separate task.
+    """
+    rounds = (
+        1,
+        [
+            ev("w", "AIM-02", "good", 100.0, 0.50, ["F1"]),
+            ev("s1", "AIM-02", "good", 300.0, 0.90, ["F2"]),
+            ev("s2", "AIM-02", "good", 500.0, 0.90, ["F3"]),
+            ev("s3", "AIM-02", "good", 700.0, 0.90, ["F4"]),
+        ],
+    )
+    out = pipeline_aggregate(rounds)[1]
+    assert [item["evaluation_id"] for item in out] == ["w", "s1", "s2"]  # s3 is cut
+    assert out[0]["label"] == "unscored"
 
 
 # ================================================================================ 4. match view
