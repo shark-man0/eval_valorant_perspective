@@ -13,8 +13,9 @@ from valorant_ai_coach.hud.unedited_ui_start import UneditedUiStartTracker
 
 
 def make_contract(tmp_path, source_hash):
-    contract_path = Path('datasets/input_contracts/match_001.unedited.json')
-    value = json.loads(contract_path.read_text(encoding='utf-8'))
+    value = json.loads(
+        Path('datasets/input_contracts/match_001.unedited.json').read_text(encoding='utf-8'),
+    )
     value['source_video_sha256'] = source_hash
     p = tmp_path / 'input.json'
     p.write_text(json.dumps(value), encoding="utf-8")

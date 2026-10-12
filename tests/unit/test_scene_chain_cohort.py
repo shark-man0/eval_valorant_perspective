@@ -46,7 +46,7 @@ def test_optional_joint_audit_requires_frozen_code_and_strict_options():
     paths.append(Path("src/valorant_ai_coach/hud/scene_domains.py"))
     bindings = {str(path): sha256(path) for path in paths}
     assert verify_joint_options({"audit_options": {"joint_domains": True}}, bindings)
-    shared = "src/valorant_ai_coach/hud/scene_domains.py"
+    shared = str(Path("src/valorant_ai_coach/hud/scene_domains.py"))
     for invalid in (None, "0" * 64):
         stale = dict(bindings)
         if invalid is None:
@@ -93,7 +93,7 @@ def test_observer_reservation_requires_profile_assets_code_and_decoded_exposure(
         "src/valorant_ai_coach/hud/scene_reference_matching.py",
     ):
         changed = dict(bindings)
-        changed.pop(omitted)
+        changed.pop(str(Path(omitted)))
         with pytest.raises(ValueError, match="frozen"):
             verify_observer_profile(freeze, changed)
     del freeze["excluded_native_pixel_sha256"]
