@@ -35,7 +35,7 @@ def case(tmp_path, monkeypatch):
     for name in ("tests/validate_pack.py", "tests/reference_evaluator.py"):
         path = pack / name
         path.parent.mkdir(exist_ok=True)
-        path.write_text("# test boundary\n")
+        path.write_text("# test boundary\n", encoding="utf-8")
     assertions = {
         k: []
         for k in (
@@ -174,7 +174,8 @@ def test_analyzer_failure_still_exports_calibration_diagnostics(case):
 
     case.command = failing
     assert execute(case) == 2
-    data = json.loads((case.root / "e2e_reports/match_001/summary.json").read_text())
+    summary_path = case.root / "e2e_reports/match_001/summary.json"
+    data = json.loads(summary_path.read_text(encoding="utf-8"))
     assert data["result"]["status"] == "fail"
     assert data["hud_calibration"]["counts"]["frames"] == 12
     assert data["hud_calibration"]["reasons"] == {"insufficient_anchors": 12}
@@ -194,7 +195,7 @@ def test_register_match_run_and_never_overwrite_manifest(case):
     assert manifest_path.read_bytes() == before
     c.args.register = False
     assert execute(c) == 0
-    report = json.loads((c.root / "e2e_reports/match_001/summary.json").read_text())
+    report = json.loads((c.root / "e2e_reports/match_001/summary.json").read_text(encoding="utf-8"))
     assert report["metadata"]["analyzer_commit"] == "a" * 40
     assert report["metadata"]["git_is_dirty"] is False
     assert report["result"]["status"] == "pass"
@@ -221,7 +222,7 @@ def test_preflight_rejects_without_starting_analyzer(case, fault, code):
         c.state["probe_error"] = True
     assert execute(c) == 2
     assert not any("run_real_video.py" in " ".join(cmd) for cmd in c.calls)
-    report = json.loads((c.root / "e2e_reports/match_001/summary.json").read_text())
+    report = json.loads((c.root / "e2e_reports/match_001/summary.json").read_text(encoding="utf-8"))
     assert report["result"]["status"] == "fail"
     assert report["result"]["error_code"] == code
     assert "Private" not in json.dumps(report)
@@ -231,7 +232,7 @@ def test_manifest_hash_mismatch_rejected(case):
     c = case
     assert execute(c) == 0
     manifest_path = c.root / "datasets/manifests/match_001.json"
-    value = json.loads(manifest_path.read_text())
+    value = json.loads(manifest_path.read_text(encoding="utf-8"))
     value["sha256"] = "f" * 64
     write_json(manifest_path, value)
     c.args.register = False
@@ -243,14 +244,17 @@ def test_manifest_hash_mismatch_rejected(case):
 def test_evaluator_fail_propagates_and_exports_detail(case):
     case.state["evaluation_code"] = 1
     assert execute(case) == 1
-    report = json.loads((case.root / "e2e_reports/match_001/summary.json").read_text())
+    summary_path = case.root / "e2e_reports/match_001/summary.json"
+    report = json.loads(summary_path.read_text(encoding="utf-8"))
     assert report["result"]["status"] == "fail"
     assert report["failures"][0]["category"] == "count"
     assert not list((case.root / "e2e_reports").rglob("raw_processing.json"))
 
 
 def test_path_precedence_and_no_env_execution(tmp_path):
-    (tmp_path / ".env.local").write_text('OTHER=secret\nVALORANT_E2E_VIDEO="file video.mp4"\n')
+    (tmp_path / ".env.local").write_text(
+        'OTHER=secret\nVALORANT_E2E_VIDEO="file video.mp4"\n', encoding="utf-8"
+    )
     args = SimpleNamespace(video=None, validation_pack=None)
     assert runner.resolve_inputs(args, tmp_path, {})[0].name == "file video.mp4"
     env = {"VALORANT_E2E_VIDEO": "env.mp4", "VALORANT_E2E_PACK": "env-pack"}
@@ -262,7 +266,8 @@ def test_path_precedence_and_no_env_execution(tmp_path):
 
 def test_manifest_schema_rejects_absolute_path_and_extra_secrets(case):
     assert execute(case) == 0
-    value = json.loads((case.root / "datasets/manifests/match_001.json").read_text())
+    manifest = case.root / "datasets/manifests/match_001.json"
+    value = json.loads(manifest.read_text(encoding="utf-8"))
     import jsonschema
 
     for changes in (
@@ -314,7 +319,7 @@ def test_bounded_modes_keep_expectations_outside_native_runner_and_shared_histor
     assert not (case.root / "e2e_reports").exists()
     assert not any("evaluate_saved_trace.py" in str(arg) for cmd in case.calls for arg in cmd)
     cmd = next(cmd for cmd in case.calls if "run_real_video.py" in str(cmd))
-    native_input = json.loads(Path(cmd[cmd.index("--frame-input") + 1]).read_text())
+    native_input = json.loads(Path(cmd[cmd.index("--frame-input") + 1]).read_text(encoding="utf-8"))
     assert set(native_input) == {
         "schema_version",
         "mode",
@@ -325,11 +330,11 @@ def test_bounded_modes_keep_expectations_outside_native_runner_and_shared_histor
     }
     assert native_input["pts_sec"] == [1.0]
     output = Path(cmd[cmd.index("--output") + 1])
-    report = json.loads((output / "evaluation_report.json").read_text())
+    report = json.loads((output / "evaluation_report.json").read_text(encoding="utf-8"))
     assert report["counts"] == {"passed": 0, "failed": 1, "not_evaluated": 0}
     assert report["full_validation_pack_evaluated"] is False
     assert report["temporal_assertions_evaluated"] is False
-    runtime = json.loads((output / "runtime_summary.json").read_text())
+    runtime = json.loads((output / "runtime_summary.json").read_text(encoding="utf-8"))
     assert runtime["mode"] == mode
     assert runtime["terminal_context"]["exit_code"] == 1
 
@@ -345,10 +350,10 @@ def test_analyzer_exit_is_durable_even_when_no_terminal_artifacts_exist(case):
     case.command = killed
     assert execute(case) == 2
     output = next((case.root / "outputs/e2e/match_001").iterdir())
-    results = json.loads((output / "command_results.json").read_text())
+    results = json.loads((output / "command_results.json").read_text(encoding="utf-8"))
     assert results[-1]["command"] == "analyzer"
     assert results[-1]["exit_code"] == -9
-    assert json.loads((output / "run_metadata.json").read_text())["exit_code"] == 2
+    assert json.loads((output / "run_metadata.json").read_text(encoding="utf-8"))["exit_code"] == 2
 
 
 def test_full_mode_rejects_bounded_options_before_starting_any_process(case):
@@ -376,7 +381,7 @@ def test_adapting_point_raw_never_creates_temporal_intervals(tmp_path):
     )
     output = tmp_path / "adapted"
     assert module["main"](["--from-raw", str(raw_path), "--output", str(output)]) == 0
-    trace = json.loads((output / "e2e_trace.json").read_text())
+    trace = json.loads((output / "e2e_trace.json").read_text(encoding="utf-8"))
     assert set(trace) == {
         "events",
         "state_intervals",

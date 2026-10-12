@@ -41,7 +41,7 @@ def test_immutable_original_validator():
 
 
 CASES = json.loads(
-    resource_path("config/map_zone_v3/tests/map_zone_runtime_cases_v3.json").read_text()
+    resource_path("config/map_zone_v3/tests/map_zone_runtime_cases_v3.json").read_text(encoding="utf-8")
 )["cases"]
 ROUTES = [case for case in CASES if "sequence" in case]
 
@@ -266,7 +266,7 @@ def test_reference_pixels_calibration_marker_resolver_visual_without_vlm(tmp_pat
 
 def test_deprecated_map_profile_requires_migration(tmp_path):
     path = tmp_path / "old.json"
-    path.write_text(json.dumps({"map_registry": {}}))
+    path.write_text(json.dumps({"map_registry": {}}), encoding="utf-8")
     with pytest.raises(ValueError, match="旧Map/Zone"):
         load_visual_profile(str(path))
 

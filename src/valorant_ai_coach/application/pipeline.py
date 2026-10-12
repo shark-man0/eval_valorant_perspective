@@ -294,22 +294,7 @@ class MatchAnalysisPipeline:
                     if self.delete_temp_frames:
                         self._safe_remove_tree(round_temp, temp_root)
 
-            aggregated = self.aggregator.aggregate(
-                [
-                    {
-                        **deepcopy(evaluation),
-                        "_aggregation_scope": int(result.output["round_no"]),
-                    }
-                    for result in round_results
-                    for evaluation in result.output["evaluations"]
-                ]
-            )
-            by_round: dict[int, list[dict[str, Any]]] = {
-                int(result.output["round_no"]): [] for result in round_results
-            }
-            for evaluation in aggregated:
-                aggregation_scope = int(evaluation.pop("_aggregation_scope"))
-                by_round[aggregation_scope].append(self._enforce_confidence_policy(evaluation))
+            by_round = self._aggregate_round_evaluations(round_results)
 
             for result in round_results:
                 round_no = int(result.output["round_no"])
@@ -801,6 +786,35 @@ class MatchAnalysisPipeline:
                 }
             )
         return item
+
+    def _aggregate_round_evaluations(
+        self, round_results: list[Any]
+    ) -> dict[int, list[dict[str, Any]]]:
+        """Display-aggregate every Round's evaluations after the 0.55 confidence floor (D-1b).
+
+        The floor is applied to each evaluation *before* merging, so a weak good/improve becomes
+        ``unscored`` on its own and can no longer pull a confident same-rule neighbour below the
+        floor when the merge caps the union of cited facts at the weakest member (D-1). The floor
+        is applied once more afterwards as an idempotent safety net: it cannot change anything
+        unless the aggregator ever returned a scored item below the floor.
+        """
+        aggregated = self.aggregator.aggregate(
+            [
+                {
+                    **self._enforce_confidence_policy(evaluation),
+                    "_aggregation_scope": int(result.output["round_no"]),
+                }
+                for result in round_results
+                for evaluation in result.output["evaluations"]
+            ]
+        )
+        by_round: dict[int, list[dict[str, Any]]] = {
+            int(result.output["round_no"]): [] for result in round_results
+        }
+        for evaluation in aggregated:
+            aggregation_scope = int(evaluation.pop("_aggregation_scope"))
+            by_round[aggregation_scope].append(self._enforce_confidence_policy(evaluation))
+        return by_round
 
     def _write_analysis_json(
         self, match_id: str, errors: list[str], clip_errors: list[str]

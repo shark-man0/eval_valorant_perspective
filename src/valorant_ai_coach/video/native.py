@@ -216,13 +216,17 @@ def decode_native_window(
     if _sha256(video) != source_video_sha256:
         raise VideoProbeError('native source video SHA256 mismatch')
 
+    probe_stderr = ''
+
     def probe(arguments: list[str]) -> dict[str, Any]:
+        nonlocal probe_stderr
         result = subprocess.run(
-            [ffprobe, '-v', 'error', '-select_streams', 'v:0', *arguments,
+            [ffprobe, '-v', 'error', '-threads', '1', '-select_streams', 'v:0', *arguments,
              '-of', 'json', str(video)],
             capture_output=True, text=True, check=True, timeout=timeout_sec,
             env=_subprocess_environment(),
         )
+        probe_stderr = result.stderr[-2000:]
         data: dict[str, Any] = json.loads(result.stdout)
         return data
 
@@ -233,9 +237,16 @@ def decode_native_window(
     width, height = int(stream['width']), int(stream['height'])
     if time_base <= 0 or width <= 0 or height <= 0:
         raise VideoProbeError('native source geometry/timebase unavailable')
-    probe_end = '' if end_sec is None else str(end_sec + 1.0)
+    probe_start = '' if start_sec <= 1.0 else str(start_sec - 1.0)
+    # EOF needs no interval: ffprobe's default reads the entire physical source.
+    # Some FFmpeg versions leave read-interval offset fields uninitialized when
+    # the end is omitted, which can terminate '%' probes before the first frame.
+    interval_args = ([] if end_sec is None else
+                     ['-read_intervals', f'{probe_start}%{end_sec + 1.0}'])
     frames = probe([
-        '-read_intervals', f'{max(0.0, start_sec - 1.0)}%{probe_end}',
+        # An omitted start reads the physical origin without seeking. Seeking
+        # to zero before a stream's nonzero first PTS can yield no frames.
+        *interval_args,
         '-show_frames', '-show_entries', 'frame=best_effort_timestamp',
     ])['frames']
     probed = tuple(int(frame['best_effort_timestamp']) for frame in frames)
@@ -244,7 +255,15 @@ def decode_native_window(
         or (end_sec is not None and float(probed[-1] * time_base) <= end_sec)
         or any(b <= a for a, b in zip(probed, probed[1:], strict=False))
     ):
-        raise VideoProbeError('native probe must cover both sides of interior window')
+        bad_pair = next(((a, b) for a, b in zip(probed, probed[1:], strict=False)
+                         if b <= a), None)
+        raise VideoProbeError(
+            'native probe must cover both sides of interior window: '
+            f'count={len(probed)}, first={probed[0] if probed else None}, '
+            f'last={probed[-1] if probed else None}, time_base={time_base}, '
+            f'window=({start_sec},{end_sec}), non_monotonic_pair={bad_pair}, '
+            f'ffprobe_stderr={probe_stderr!r}'
+        )
     if start_sec == 0 and probed[0] < 0:
         raise VideoProbeError('negative native source origin requires explicit support')
     expected = tuple(t for t in probed if float(t * time_base) >= start_sec
