@@ -34,6 +34,26 @@ jobs:
             }
             if (-not $Installed) { throw "FFmpeg installation failed after 3 attempts." }
           }
+          # Killing a Chocolatey shim can leave its FFmpeg child holding the
+          # decoder log open. Run the encoder itself for deterministic cleanup.
+          $ResolvedFFmpeg = (Get-Command ffmpeg -ErrorAction Stop).Source
+          if ($env:ChocolateyInstall -and
+              $ResolvedFFmpeg.StartsWith((Join-Path $env:ChocolateyInstall "bin"),
+                  [System.StringComparison]::OrdinalIgnoreCase)) {
+            $PackageTools = Join-Path $env:ChocolateyInstall "lib\ffmpeg\tools"
+            $Encoders = @(Get-ChildItem -Path $PackageTools -Filter ffmpeg.exe -Recurse -File)
+            if ($Encoders.Count -ne 1) {
+              throw "Expected one FFmpeg binary in $PackageTools; found $($Encoders.Count)."
+            }
+            $BinaryDirectory = $Encoders[0].DirectoryName
+            if (-not (Test-Path (Join-Path $BinaryDirectory "ffprobe.exe"))) {
+              throw "The FFmpeg binary directory does not contain ffprobe.exe."
+            }
+            $BinaryDirectory | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+            $env:PATH = "$BinaryDirectory;$env:PATH"
+          }
+          (Get-Command ffmpeg -ErrorAction Stop).Source
+          (Get-Command ffprobe -ErrorAction Stop).Source
           ffmpeg -version
           ffprobe -version
       - run: python -m pip install -c constraints-windows.txt -e ".[gui,dev,build]"

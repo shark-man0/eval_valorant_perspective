@@ -16,13 +16,13 @@ def make_video(tmp_path):
     if ffmpeg is None or ffprobe is None:
         pytest.skip('verified native decoder needs FFmpeg and ffprobe')
     path = tmp_path / 'native.mp4'
-    subprocess.run([
-        ffmpeg, '-hide_banner', '-loglevel', 'error', '-f', 'lavfi', '-i',
+    encoded = subprocess.run([
+        ffmpeg, '-hide_banner', '-loglevel', 'info', '-f', 'lavfi', '-i',
         'testsrc2=size=64x64:rate=60', '-t', '1', '-vf',
         'select=not(eq(mod(n\\,3)\\,1)),setpts=PTS+0.137/TB',
         '-fps_mode', 'passthrough', '-c:v', 'mpeg4', '-g', '12', '-threads', '1',
         str(path),
-    ], check=True)
+    ], check=True, capture_output=True, text=True)
     source_hash = hashlib.sha256(path.read_bytes()).hexdigest()
     result = subprocess.run([
         ffprobe, '-v', 'error', '-select_streams', 'v:0', '-show_frames',
@@ -30,6 +30,15 @@ def make_video(tmp_path):
         '-of', 'json', str(path),
     ], check=True, capture_output=True, text=True)
     probed = json.loads(result.stdout)
+    # Pytest retains this only on failure. A successful process may still
+    # produce an empty fixture or report decoder errors on stderr; retain both
+    # sides before diagnosing the production PTS checks.
+    print(f'native fixture encoder={ffmpeg}, probe={ffprobe}, '
+          f'bytes={path.stat().st_size}, sha256={source_hash}, '
+          f'frames={len(probed.get("frames", []))}')
+    print(f'fixture encoder stderr: {encoded.stderr[-4000:]}')
+    print(f'fixture probe stderr: {result.stderr[-4000:]}')
+    assert probed.get('frames'), f'empty native fixture: {result.stdout}'
     return path, source_hash, probed
 
 
@@ -394,3 +403,99 @@ def test_budgeted_pipe_coverage_still_rejects_truncated_probe(video, monkeypatch
     )
     with pytest.raises(VideoProbeError, match='all native source PTS'), context:
         pytest.fail('a matching truncated budgeted prefix is never accepted')
+
+
+@pytest.mark.parametrize('budget', [None, 1000000])
+def test_native_probe_uses_same_single_decoder_thread_as_png(video, monkeypatch, budget):
+    path, digest, probed = video
+    original = subprocess.run
+    commands = []
+
+    def tracked(command, **kwargs):
+        commands.append(command)
+        return original(command, **kwargs)
+
+    monkeypatch.setattr(subprocess, 'run', tracked)
+    with VideoService().native_window(
+        path, start_sec=0, end_sec=None, source_video_sha256=digest, max_png_bytes=budget,
+    ) as frames:
+        assert [f.pts_ticks for f in frames] == [
+            int(f['best_effort_timestamp']) for f in probed['frames']
+        ]
+    probes = [c for c in commands if '-show_frames' in c or '-show_streams' in c]
+    assert len(probes) == 2
+    assert all(c[c.index('-threads') + 1] == '1' for c in probes)
+
+
+def test_native_probe_duplicate_pts_still_fail_closed_with_reason(video, monkeypatch):
+    path, digest, _ = video
+    original = subprocess.run
+
+    def duplicate(command, **kwargs):
+        result = original(command, **kwargs)
+        if '-show_frames' in command:
+            data = json.loads(result.stdout)
+            data['frames'][1] = dict(data['frames'][0])
+            return subprocess.CompletedProcess(command, 0, json.dumps(data), result.stderr)
+        return result
+
+    monkeypatch.setattr(subprocess, 'run', duplicate)
+    context = VideoService().native_window(
+        path, start_sec=0, end_sec=None, source_video_sha256=digest,
+    )
+    with pytest.raises(VideoProbeError, match='non_monotonic_pair=\\([0-9]+, [0-9]+\\)'), context:
+        pytest.fail('duplicate source PTS must never be repaired or dropped')
+
+
+@pytest.mark.parametrize('start,end', [(0, None), (.2, None), (.5, .9)])
+def test_nonzero_source_origin_never_requires_zero_seek(video, monkeypatch, start, end):
+    path, digest, document = video
+    original = subprocess.run
+    intervals = []
+
+    def empty_before_source_origin(command, **kwargs):
+        if '-read_intervals' in command:
+            interval = command[command.index('-read_intervals') + 1]
+            intervals.append(interval)
+            if interval.split('%')[0] in {'0', '0.0'}:
+                return subprocess.CompletedProcess(command, 0, json.dumps({'frames': []}), '')
+        return original(command, **kwargs)
+
+    monkeypatch.setattr(subprocess, 'run', empty_before_source_origin)
+    timebase = Fraction(document['streams'][0]['time_base'])
+    expected = [int(f['best_effort_timestamp']) for f in document['frames']
+                if start <= float(int(f['best_effort_timestamp']) * timebase)
+                and (end is None or float(int(f['best_effort_timestamp']) * timebase) <= end)]
+    with VideoService().native_window(
+        path, start_sec=start, end_sec=end, source_video_sha256=digest,
+    ) as frames:
+        assert [f.pts_ticks for f in frames] == expected
+        assert frames[0].pts_ticks > 0
+    if end is None:
+        assert intervals == []
+    else:
+        assert len(intervals) == 1
+        assert intervals[0].startswith('%')
+
+
+def test_empty_probe_retains_decoder_error_without_retrying(video, monkeypatch):
+    path, digest, _ = video
+    original = subprocess.run
+    frame_calls = []
+
+    def empty(command, **kwargs):
+        if '-show_frames' in command:
+            frame_calls.append(command)
+            return subprocess.CompletedProcess(
+                command, 0, json.dumps({'frames': []}), 'decoder initialization failed',
+            )
+        return original(command, **kwargs)
+
+    monkeypatch.setattr(subprocess, 'run', empty)
+    with pytest.raises(VideoProbeError, match='decoder initialization failed'), (
+        VideoService().native_window(
+            path, start_sec=0, end_sec=None, source_video_sha256=digest,
+        )
+    ):
+        pytest.fail('an empty probe must not reach consumers')
+    assert len(frame_calls) == 1
