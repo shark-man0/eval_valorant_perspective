@@ -1405,3 +1405,32 @@ owned readings and zero death events. This does not resolve Strict lifecycle
 or death-ownership qualification. The changed HUD code invalidates the earlier
 whole-native recognition archive; its reuse guard was checked and rejects it.
 See [candidate contract, safety and tests](death_report_readings.md).
+
+## Integration with the PR #11 evaluation policy (D-1 / D-1b) and the Match view
+
+PR #11 (merged into `main` as `115b19a`) changed how evaluations are merged and floored; this branch
+merges it with an ordinary merge commit (no conflict; `pipeline.py` hunks are disjoint). Nothing in
+Practical Mode relaxes that policy, and nothing here is a new evaluation rule.
+
+- **D-1** (`EvaluationAggregator`): a merged evaluation takes the *weakest* member's confidence,
+  keeps the union of `fact_refs`, the Rule identity and the strongest original member as representative.
+- **D-1b** (`MatchAnalysisPipeline._aggregate_round_evaluations`): the existing 0.55 floor is applied to
+  every evaluation *before* merging (and again after), so a weak good/improve becomes `unscored` alone
+  and cannot drag a confident neighbour down.
+- **Practical Rounds are not scored.** `RoundAnalyzer.analyze` returns `evaluations == []` whenever either
+  endpoint is `provisional` or `unknown`, and the Package contract requires such a Round to carry
+  `hud_confidence == visual_confidence == timeline_completeness == 0`. D-1 and D-1b therefore have nothing
+  to raise or merge for them; a provisional boundary is never promoted to a confirmed one by evaluation.
+  Restored Practical jobs keep this (`RESTORED-...` outputs with no evaluations; stored scores of an
+  uncertain Round are not reused).
+- **A Practical Round does not change how a confirmed Round is merged.** Aggregation is scoped per Round.
+- **Match view** (`MatchAggregator`): an uncertain Round has `timeline_completeness == 0`, so the Match is
+  reported as `incomplete` (`round_timeline_unavailable`) instead of `verified_complete`, and the Round adds
+  no evaluation to any count.
+- Regression tests: `tests/unit/test_practical_evaluation_integration.py` (13 tests; reverting either the
+  uncertain-boundary guard in `RoundAnalyzer` or the floor-before-merge order makes them fail).
+- Known interaction, unchanged: the per-rule display limit (L-5) counts `unscored` items too, so a demoted
+  weak evaluation can use a display slot. L-5 is a separate task.
+- **Not re-measured here:** the real-footage numbers recorded above (match_001 provisional starts/ends,
+  Practical intervals, canonical E2E, ±0.1 s accuracy) describe the earlier source/config/commit and have
+  not been re-run on the merged code. The ±0.1 s accuracy against an independent ground truth remains unproven.
