@@ -190,3 +190,30 @@ Expanded diagnostic/geometry regressions: 62 passed; Ruff, mypy (130 source
 files), and diff checks passed. An initial synthetic case exposed missing
 runtime score handling; the implementation now reports unavailable explicitly
 instead of assuming every anchor has a score. No existing test was weakened.
+
+## Latest-main integration and baseline in progress
+
+Upstream main `c11ec6d` was inspected and merged without discarding the local
+geometry work. Its native calibration-prefix/UI-measurement extensions remain
+opt-in and unqualified; they do not convert geometry into player identity.
+The private v2 evaluation fixture still verifies against the integrated code.
+Related native/UI/report/confidence regressions: 183 passed. Ruff and mypy
+(131 source files) passed. Actual Basic CI for this main SHA succeeded;
+Windows verification was still running at the last observation.
+
+The complete Mac suite on exact main recorded 3628 passed, 5 failed, 5 skipped
+in 276.77 seconds. Four failures are the previously reproduced spectator
+fixtures. The fifth settings-only runner test collided with the simultaneously
+running real E2E repository lock, before its injected services were called.
+Its lock directory now uses the test's temporary repository root; settings
+assertions and production lock behavior remain unchanged. Map-runner and actual
+cross-process lock exclusion/release regressions: 14 passed while the real
+baseline still held its own lock. The full suite has not been rerun after this
+test-isolation correction, so no new full-suite PASS is claimed.
+
+A fresh full baseline was started from exact main `c11ec6d` with the original
+local profile and the unchanged production sampler. It does not use the local
+geometry candidates, expected labels or external AI. This is not an all-native-
+frame lifecycle qualification run. Analyzer code/source/profile/fixture
+fingerprints must remain stable throughout; no positive result or completed
+Analyzer/Evaluator is asserted while the process is still running.
