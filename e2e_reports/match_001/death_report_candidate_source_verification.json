@@ -1,0 +1,314 @@
+{
+  "schema_version": "1.0",
+  "scope": "Actual shared analyzer on fixed eight source-reviewed development images plus exact-source calibration prefix; isolated inputs, not temporal holdout, whole E2E or qualified death",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "profile_fingerprint": "81828e0d02de191c172deaeea4091d74b3bd59b8af40c0527b1c2f54ac63ff7c",
+  "recognizer_fingerprint": "6195d8d228be94ff85e470e9289409812c567b1f7790db0ae03e34ddab360e76",
+  "input_sha256": {
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/death-report-fields-diagnostic.templates.json": "0bcc637fdff25c579d892208e961b7c8dbc9d0bb1b98b2b6c533c243079b169e",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/hud_layout.json": "baa99f1c1f0b4b7b959ec80242a58996a85c6f018bbc0895b3ca728dcaa5f3f8",
+    "outputs/recognition-investigation/death-current-source-20261012/frame_001.png": "9fe71422efd9e3b0c6646e3e1ea2d17e38447497d593cbff946e70540a9dba49",
+    "outputs/recognition-investigation/death-current-source-20261012/frame_005.png": "8c7bf98a72ef3a55558d31ff802a95a1d1456ffc3b04dd93bc13cff37b6527c1",
+    "outputs/recognition-investigation/death-current-source-20261012/frame_006.png": "1d534647564dbbc14d34f7e9cbe20fa46bd925ed307f018fd05a4e2a0b1db3f6",
+    "outputs/recognition-investigation/death-current-source-20261012/frame_007.png": "9a3d1effa2afe6ed57be7e112a40bcd7c59f8457a7f7af12e4ada62c70a7ee7b",
+    "outputs/recognition-investigation/death-current-source-20261012/frame_008.png": "94774335f79a7347e8fef08b5ff2c58848cfae31b7d77b570a42af311e1e436d",
+    "outputs/recognition-investigation/death-current-source-20261012/frame_009.png": "1572bd0093dcdc7021146430462a152df98cb2536c016501b14a6cca114919b8",
+    "outputs/recognition-investigation/death-current-source-20261012/frame_010.png": "a9e6d4a0de7487d02a7aa6a411aeb05c59db5cf8e0a58a407b49d3165d6442ec",
+    "outputs/recognition-investigation/death-current-source-20261012/frame_027.png": "649af0dd5982ad39506c48bc75ecaa38ddd290138cf6321abda3ca158316feab"
+  },
+  "runtime_sec": 14.37081621796824,
+  "rows": [
+    {
+      "source_pts_ticks": 2267177,
+      "source_pixel_sha256": "8802e924059080cfb6d3d8286f3a674117ec92287095be93a52d58e473fe0610",
+      "time_sec": 147.60266927083333,
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false,
+      "combat_report_visible": false,
+      "reading": null,
+      "source_review_display": null,
+      "outcome": "rejected"
+    },
+    {
+      "source_pts_ticks": 2268201,
+      "source_pixel_sha256": "509bfff1e8a3890b1300e1e3b798931a1b075b8a767c5a4a88d3cb859b9833ac",
+      "time_sec": 147.6693359375,
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false,
+      "combat_report_visible": false,
+      "reading": null,
+      "source_review_display": null,
+      "outcome": "rejected"
+    },
+    {
+      "source_pts_ticks": 2268457,
+      "source_pixel_sha256": "01b4632f3c887ee23dcfcaabe446d4a1f6d170fdef8fcda557b721fe5a96efab",
+      "time_sec": 147.68600260416667,
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false,
+      "combat_report_visible": true,
+      "reading": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 147.68600260416667,
+        "source_pixel_sha256": "01b4632f3c887ee23dcfcaabe446d4a1f6d170fdef8fcda557b721fe5a96efab",
+        "profile_fingerprint": "81828e0d02de191c172deaeea4091d74b3bd59b8af40c0527b1c2f54ac63ff7c",
+        "fields": {
+          "damage_received": {
+            "display": "194",
+            "value": 194,
+            "confidence": 0.9589628600000001,
+            "sources": [
+              "tesseract_digits"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.512,
+              0.952054794520548,
+              0.578
+            ]
+          }
+        }
+      },
+      "source_review_display": "194",
+      "outcome": "correct"
+    },
+    {
+      "source_pts_ticks": 2268713,
+      "source_pixel_sha256": "bb66d51092f545278461774ca96d61f60a21adf8ba3caaad6d58483c94271d0b",
+      "time_sec": 147.70266927083333,
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false,
+      "combat_report_visible": true,
+      "reading": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 147.70266927083333,
+        "source_pixel_sha256": "bb66d51092f545278461774ca96d61f60a21adf8ba3caaad6d58483c94271d0b",
+        "profile_fingerprint": "81828e0d02de191c172deaeea4091d74b3bd59b8af40c0527b1c2f54ac63ff7c",
+        "fields": {
+          "damage_received": {
+            "display": "194",
+            "value": 194,
+            "confidence": 0.9620663500000001,
+            "sources": [
+              "tesseract_digits"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.512,
+              0.952054794520548,
+              0.578
+            ]
+          }
+        }
+      },
+      "source_review_display": "194",
+      "outcome": "correct"
+    },
+    {
+      "source_pts_ticks": 2268969,
+      "source_pixel_sha256": "98ac64fc60efbdc2577ecc5ec0bfed9dc26a7a0ea487eb071970e0c75c90a99e",
+      "time_sec": 147.7193359375,
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false,
+      "combat_report_visible": true,
+      "reading": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 147.7193359375,
+        "source_pixel_sha256": "98ac64fc60efbdc2577ecc5ec0bfed9dc26a7a0ea487eb071970e0c75c90a99e",
+        "profile_fingerprint": "81828e0d02de191c172deaeea4091d74b3bd59b8af40c0527b1c2f54ac63ff7c",
+        "fields": {
+          "damage_received": {
+            "display": "194",
+            "value": 194,
+            "confidence": 0.96199936,
+            "sources": [
+              "tesseract_digits"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.512,
+              0.952054794520548,
+              0.578
+            ]
+          }
+        }
+      },
+      "source_review_display": "194",
+      "outcome": "correct"
+    },
+    {
+      "source_pts_ticks": 2269225,
+      "source_pixel_sha256": "6376244a49e2ff3a4cfb257b6dc12ee6df605b16538cc5d7bcf85fbe71b3dd24",
+      "time_sec": 147.73600260416666,
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false,
+      "combat_report_visible": true,
+      "reading": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 147.73600260416666,
+        "source_pixel_sha256": "6376244a49e2ff3a4cfb257b6dc12ee6df605b16538cc5d7bcf85fbe71b3dd24",
+        "profile_fingerprint": "81828e0d02de191c172deaeea4091d74b3bd59b8af40c0527b1c2f54ac63ff7c",
+        "fields": {
+          "damage_received": {
+            "display": "194",
+            "value": 194,
+            "confidence": 0.96096039,
+            "sources": [
+              "tesseract_digits"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.512,
+              0.952054794520548,
+              0.578
+            ]
+          }
+        }
+      },
+      "source_review_display": "194",
+      "outcome": "correct"
+    },
+    {
+      "source_pts_ticks": 2269481,
+      "source_pixel_sha256": "978c1be02e01f080d08b04be9d7d61dd26d8d80c0c3da3fb21130fbb95a50f86",
+      "time_sec": 147.75266927083334,
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false,
+      "combat_report_visible": true,
+      "reading": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 147.75266927083334,
+        "source_pixel_sha256": "978c1be02e01f080d08b04be9d7d61dd26d8d80c0c3da3fb21130fbb95a50f86",
+        "profile_fingerprint": "81828e0d02de191c172deaeea4091d74b3bd59b8af40c0527b1c2f54ac63ff7c",
+        "fields": {
+          "damage_received": {
+            "display": "194",
+            "value": 194,
+            "confidence": 0.96314445,
+            "sources": [
+              "tesseract_digits"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.512,
+              0.952054794520548,
+              0.578
+            ]
+          }
+        }
+      },
+      "source_review_display": "194",
+      "outcome": "correct"
+    },
+    {
+      "source_pts_ticks": 2273833,
+      "source_pixel_sha256": "a86ce87d01a437107aeaa99fad33477b89c5a1455eb6dfed43fb7eee2f3b58df",
+      "time_sec": 148.03600260416667,
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false,
+      "combat_report_visible": true,
+      "reading": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 148.03600260416667,
+        "source_pixel_sha256": "a86ce87d01a437107aeaa99fad33477b89c5a1455eb6dfed43fb7eee2f3b58df",
+        "profile_fingerprint": "81828e0d02de191c172deaeea4091d74b3bd59b8af40c0527b1c2f54ac63ff7c",
+        "fields": {
+          "damage_received": {
+            "display": "194",
+            "value": 194,
+            "confidence": 0.9034998299999999,
+            "sources": [
+              "tesseract_digits"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.512,
+              0.952054794520548,
+              0.578
+            ]
+          }
+        }
+      },
+      "source_review_display": "194",
+      "outcome": "correct"
+    }
+  ],
+  "counts": {
+    "correct": 6,
+    "unknown": 0,
+    "wrong": 0,
+    "false_positive": 0,
+    "rejected": 2
+  },
+  "hud_events": [],
+  "owned_values_count": 0,
+  "qualification_created": false,
+  "diagnostics": [
+    "anchor round_timer: template score 0.541 below threshold",
+    "anchor player_hp_armor: template score 0.455 below threshold",
+    "anchor abilities: template score 0.591 below threshold",
+    "anchor round_timer: template score 0.690 below threshold",
+    "anchor player_hp_armor: template score 0.468 below threshold",
+    "anchor abilities: template score 0.599 below threshold",
+    "anchor round_timer: template score 0.756 below threshold",
+    "anchor player_hp_armor: template score 0.473 below threshold",
+    "anchor abilities: template score 0.347 below threshold",
+    "anchor round_timer: template score 0.768 below threshold",
+    "anchor player_hp_armor: template score 0.471 below threshold",
+    "anchor abilities: template score 0.507 below threshold",
+    "anchor round_timer: template score 0.780 below threshold",
+    "anchor player_hp_armor: template score 0.487 below threshold",
+    "anchor abilities: template score 0.527 below threshold",
+    "anchor round_timer: template score 0.807 below threshold",
+    "anchor player_hp_armor: template score 0.474 below threshold",
+    "anchor abilities: template score 0.419 below threshold",
+    "anchor round_timer: template score 0.814 below threshold",
+    "anchor player_hp_armor: template score 0.444 below threshold",
+    "anchor abilities: template score 0.429 below threshold",
+    "anchor round_timer: template score 0.617 below threshold",
+    "anchor player_hp_armor: template score 0.351 below threshold",
+    "anchor abilities: template score 0.297 below threshold"
+  ],
+  "runtime_input_sha256": {
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-ocr-runtime-20261012/usr/bin/tesseract": "a068bbb0a958445c44c39c34e2bed340819b557a900b2311bd3ad32691676553",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-ocr-runtime-20261012/usr/share/tesseract-ocr/5/tessdata/eng.traineddata": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-ocr-runtime-20261012/usr/share/tesseract-ocr/5/tessdata/jpn.traineddata": "1f5de9236d2e85f5fdf4b3c500f2d4926f8d9449f28f5394472d9e8d83b91b4d"
+  },
+  "terminal_source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "source_integrity_scope": "Reused previously SHA-bound source images, each encoded/pixel hash verified; current source SHA verified at terminal. No claim of decoding all native frames in this analyzer run.",
+  "comparison": {
+    "unqualified_damage_candidates": {
+      "previous": 0,
+      "current": 6,
+      "delta": 6
+    },
+    "formal_player_death_events": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "canonical_e2e": {
+      "previous": {
+        "PASS": 23,
+        "FAIL": 55,
+        "NE": 4
+      },
+      "current": null,
+      "delta": null
+    }
+  },
+  "old_recognition_archive_reuse_rejected": true,
+  "old_recognition_archive_rejection_reason": "archive binding changed or qualified archive unsupported"
+}

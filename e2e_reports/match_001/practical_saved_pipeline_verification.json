@@ -1,0 +1,1498 @@
+{
+  "scope": "Verify production downstream processing of archived real Practical Packages.\n\nArchive injection uses the existing fixture HUD boundary, not new recognition.\nNo collector, player/visual recognition or canonical evaluator is rerun here.\n",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "recognizer_fingerprint": "c729f02c87be094fec3a8d92cd986065f83ae56d2b7408dbe93d6321d87d60e9",
+  "input_sha256": {
+    "outputs/recognition-investigation/practical-whole-source-replay-20261011/global_packages.json": "a30829938e615acd2f39e81632adc552aa4f4e447d3549cdff2036e00f2a284b",
+    "e2e_reports/match_001/practical_whole_source_collection.json": "80dbbfbac46b44e0d80521086fb58849bfb6dc33b7d991fdb9800cd18dbd1eb1",
+    "datasets/input_contracts/match_001.unedited.json": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87"
+  },
+  "package_count": 5,
+  "initial_status": "completed",
+  "resume_status": "completed",
+  "restored_round_count": 5,
+  "scored_evaluations": 0,
+  "coach_invocations": 0,
+  "clips": 0,
+  "source_recognition_reexecuted": false,
+  "canonical_e2e_reexecuted": false,
+  "gui_data_views": [
+    {
+      "round_no": 1,
+      "start_sec": 0.03600260416666667,
+      "end_sec": 2.4860026041666665,
+      "start_status": "unknown",
+      "end_status": "unknown",
+      "observations": [],
+      "is_practical": true
+    },
+    {
+      "round_no": 2,
+      "start_sec": 2.4860026041666665,
+      "end_sec": 81.7693359375,
+      "start_status": "provisional",
+      "end_status": "provisional",
+      "observations": [
+        {
+          "time_sec": 7.3693359375,
+          "timer_display": "1:36",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 8.402669270833334,
+          "timer_display": "1:35",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 12.402669270833334,
+          "timer_display": "1:31",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 12.736002604166666,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 12.802669270833333,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 13.0693359375,
+          "timer_display": "1:31",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 14.852669270833333,
+          "timer_display": "1:29",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 28.686002604166667,
+          "timer_display": "1:15",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 29.186002604166667,
+          "timer_display": "1:14",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 29.452669270833333,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 34.7693359375,
+          "timer_display": "1:09",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 35.3193359375,
+          "timer_display": "1:08",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 38.00266927083333,
+          "timer_display": "1:06",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 38.10266927083333,
+          "timer_display": "1:05",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 38.1693359375,
+          "timer_display": "1:05",
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 38.20266927083333,
+          "timer_display": "1:05",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 39.70266927083333,
+          "timer_display": "1:04",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 40.13600260416667,
+          "timer_display": "1:03",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 40.28600260416667,
+          "timer_display": "1:03",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 40.302669270833334,
+          "timer_display": "1:03",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 40.402669270833336,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 40.4193359375,
+          "timer_display": "1:03",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 41.13600260416667,
+          "timer_display": "1:02",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 41.35266927083333,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 41.5193359375,
+          "timer_display": "1:02",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 41.7193359375,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 42.6193359375,
+          "timer_display": "1:01",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 43.00266927083333,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 45.38600260416667,
+          "timer_display": "0:58",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 46.2193359375,
+          "timer_display": "0:57",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 47.0193359375,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 47.53600260416667,
+          "timer_display": "0:56",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 47.586002604166666,
+          "timer_display": "0:56",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 47.9193359375,
+          "timer_display": "0:56",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 47.93600260416667,
+          "timer_display": "0:56",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 48.1193359375,
+          "timer_display": "0:55",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 49.6193359375,
+          "timer_display": "0:54",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 56.086002604166666,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 56.13600260416667,
+          "timer_display": "0:47",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 57.18600260416667,
+          "timer_display": "0:46",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 57.302669270833334,
+          "timer_display": "0:46",
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 57.3193359375,
+          "timer_display": "0:46",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 59.68600260416667,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 59.9193359375,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 59.95266927083333,
+          "timer_display": "0:44",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 60.152669270833336,
+          "timer_display": "0:43",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 61.10266927083333,
+          "timer_display": "0:42",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 62.10266927083333,
+          "timer_display": "0:41",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 63.902669270833336,
+          "timer_display": "0:40",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 64.60266927083333,
+          "timer_display": "0:39",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 65.45266927083334,
+          "timer_display": "0:38",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 66.28600260416667,
+          "timer_display": "0:37",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 67.10266927083333,
+          "timer_display": "0:36",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 69.15266927083333,
+          "timer_display": "0:34",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 70.10266927083333,
+          "timer_display": "0:33",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        },
+        {
+          "time_sec": 72.85266927083333,
+          "timer_display": "0:31",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 1
+        }
+      ],
+      "is_practical": true
+    },
+    {
+      "round_no": 3,
+      "start_sec": 81.78600260416667,
+      "end_sec": 81.83600260416667,
+      "start_status": "unknown",
+      "end_status": "unknown",
+      "observations": [],
+      "is_practical": true
+    },
+    {
+      "round_no": 4,
+      "start_sec": 81.83600260416667,
+      "end_sec": 110.98600260416667,
+      "start_status": "unknown",
+      "end_status": "unknown",
+      "observations": [
+        {
+          "time_sec": 83.4193359375,
+          "timer_display": "0:27",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 84.38600260416666,
+          "timer_display": "0:26",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 85.40266927083333,
+          "timer_display": "0:25",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 86.38600260416666,
+          "timer_display": "0:24",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 87.38600260416666,
+          "timer_display": "0:23",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 88.38600260416666,
+          "timer_display": "0:22",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 89.38600260416666,
+          "timer_display": "0:21",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 90.38600260416666,
+          "timer_display": "0:20",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 91.38600260416666,
+          "timer_display": "0:19",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 108.13600260416666,
+          "timer_display": "0:03",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 108.40266927083333,
+          "timer_display": "0:02",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 109.55266927083333,
+          "timer_display": "0:01",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        }
+      ],
+      "is_practical": true
+    },
+    {
+      "round_no": 5,
+      "start_sec": 110.98600260416667,
+      "end_sec": 171.019336,
+      "start_status": "provisional",
+      "end_status": "unknown",
+      "observations": [
+        {
+          "time_sec": 112.68600260416666,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 113.03600260416667,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 113.1193359375,
+          "timer_display": "1:38",
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 113.6693359375,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 114.48600260416667,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 114.58600260416667,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 114.8193359375,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 115.38600260416666,
+          "timer_display": "1:35",
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 120.28600260416667,
+          "timer_display": "1:31",
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 120.3193359375,
+          "timer_display": "1:31",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 120.48600260416667,
+          "timer_display": "1:30",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 120.5193359375,
+          "timer_display": "1:30",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 120.7193359375,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 120.80266927083333,
+          "timer_display": "1:30",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 121.0193359375,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 121.08600260416667,
+          "timer_display": "1:30",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 121.35266927083333,
+          "timer_display": "1:30",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 121.3693359375,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 122.13600260416666,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 122.1693359375,
+          "timer_display": "1:29",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 122.33600260416667,
+          "timer_display": "1:29",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 122.35266927083333,
+          "timer_display": "1:29",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 122.40266927083333,
+          "timer_display": "1:28",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 122.4193359375,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 123.65266927083333,
+          "timer_display": "1:27",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 123.8693359375,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 124.1193359375,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 124.15266927083333,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 127.13600260416666,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 127.3193359375,
+          "timer_display": "1:24",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 127.6693359375,
+          "timer_display": "1:23",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 134.70266927083333,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 135.00266927083334,
+          "timer_display": "1:16",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 135.43600260416667,
+          "timer_display": "1:15",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 136.08600260416668,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 136.3693359375,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 136.85266927083333,
+          "timer_display": "1:14",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 136.90266927083334,
+          "timer_display": "1:14",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 137.4193359375,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 140.03600260416667,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 140.10266927083333,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 141.2193359375,
+          "timer_display": "1:10",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 141.2693359375,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 141.30266927083332,
+          "timer_display": "1:10",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 141.3193359375,
+          "timer_display": "1:10",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 141.38600260416666,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 141.4693359375,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 141.5693359375,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 141.60266927083333,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 141.6193359375,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 141.9193359375,
+          "timer_display": "1:09",
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 143.3193359375,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 145.53600260416667,
+          "timer_display": "1:05",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 145.55266927083332,
+          "timer_display": "1:05",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 145.73600260416666,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 146.33600260416668,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 146.45266927083333,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 146.53600260416667,
+          "timer_display": "1:04",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 146.6693359375,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 146.70266927083333,
+          "timer_display": "1:04",
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 146.98600260416666,
+          "timer_display": "1:04",
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 157.23600260416666,
+          "timer_display": "0:54",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 157.6693359375,
+          "timer_display": "0:53",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 157.93600260416667,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 158.38600260416666,
+          "timer_display": "0:53",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 158.40266927083334,
+          "timer_display": "0:52",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 158.78600260416667,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 159.18600260416667,
+          "timer_display": "0:52",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 159.2193359375,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 159.63600260416666,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 159.75266927083334,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 159.78600260416667,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 159.80266927083332,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 159.98600260416666,
+          "timer_display": "0:51",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 160.00266927083334,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 160.0193359375,
+          "timer_display": "0:51",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 160.03600260416667,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 160.05266927083332,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 160.0693359375,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 160.10266927083333,
+          "timer_display": "0:51",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 160.15266927083334,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 160.1693359375,
+          "timer_display": "0:51",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 160.18600260416667,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 160.20266927083333,
+          "timer_display": "0:51",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 160.2193359375,
+          "timer_display": "0:51",
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 160.23600260416666,
+          "timer_display": "0:51",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 160.25266927083334,
+          "timer_display": "0:51",
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 160.30266927083332,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 160.5693359375,
+          "timer_display": "0:50",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 160.63600260416666,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 160.6693359375,
+          "timer_display": "0:50",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 160.73600260416666,
+          "timer_display": "0:50",
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 160.75266927083334,
+          "timer_display": "0:50",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 161.00266927083334,
+          "timer_display": "0:50",
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 161.03600260416667,
+          "timer_display": "0:50",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 161.05266927083332,
+          "timer_display": "0:50",
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 161.13600260416666,
+          "timer_display": "0:50",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 161.1693359375,
+          "timer_display": "0:50",
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 161.18600260416667,
+          "timer_display": "0:50",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 161.20266927083333,
+          "timer_display": "0:50",
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 161.35266927083333,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 161.43600260416667,
+          "timer_display": "0:49",
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 161.48600260416666,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 161.55266927083332,
+          "timer_display": "0:49",
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 161.85266927083333,
+          "timer_display": "0:49",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 161.88600260416666,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 162.03600260416667,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 162.0693359375,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 162.13600260416666,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 162.2193359375,
+          "timer_display": "0:49",
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 162.25266927083334,
+          "timer_display": "0:49",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 162.4193359375,
+          "timer_display": "0:48",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 162.60266927083333,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 162.63600260416666,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 163.18600260416667,
+          "timer_display": "0:48",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 165.90266927083334,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 165.9693359375,
+          "timer_display": "0:45",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 166.05266927083332,
+          "timer_display": "0:45",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 166.18600260416667,
+          "timer_display": "0:45",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 168.0193359375,
+          "timer_display": "0:43",
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 168.03600260416667,
+          "timer_display": "0:43",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 169.83600260416668,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 170.2693359375,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 170.28600260416667,
+          "timer_display": "0:41",
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 170.40266927083334,
+          "timer_display": "0:40",
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 170.45266927083333,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": null,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 170.48600260416666,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 170.65266927083334,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 170.6693359375,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 170.68600260416667,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 170.7693359375,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        },
+        {
+          "time_sec": 170.78600260416667,
+          "timer_display": null,
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": null
+        },
+        {
+          "time_sec": 170.8193359375,
+          "timer_display": "0:40",
+          "hp": null,
+          "score_ally": 0,
+          "score_enemy": 2
+        }
+      ],
+      "is_practical": true
+    }
+  ],
+  "initial_wall_sec": 22.236103695002384,
+  "resume_wall_sec": 7.947623936925083,
+  "limitations": [
+    "Archived global Packages only; not fresh player/visual analysis",
+    "Fixture-boundary injection does not validate GUI video acquisition"
+  ],
+  "actual_qt_render_verified": true,
+  "gui_filter_labels": [
+    "すべての区間",
+    "区間 1",
+    "区間 2",
+    "区間 3",
+    "区間 4",
+    "区間 5"
+  ],
+  "gui_snapshot_child_counts": [
+    0,
+    56,
+    0,
+    12,
+    133
+  ]
+}

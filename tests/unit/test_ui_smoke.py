@@ -23,6 +23,7 @@ from valorant_ai_coach.ui.backend import BackendFacade  # noqa: E402
 from valorant_ai_coach.ui.contracts import (  # noqa: E402
     EvaluationView,
     MatchResultView,
+    RoundPartitionView,
     VideoMetadataView,
 )
 from valorant_ai_coach.ui.main_window import MainWindow, _AudioProbeWorker  # noqa: E402
@@ -57,6 +58,48 @@ def test_main_window_starts_with_scored_results_filter(tmp_path: Path) -> None:
     assert window.start_button.isEnabled() is False
 
     _destroy_widget(window, app)
+
+
+def test_settings_dialog_persists_explicit_hud_sidecar(tmp_path: Path) -> None:
+    app = QApplication.instance() or QApplication([])
+    store = SettingsStore(tmp_path / 'settings.json', credential_backend=MemoryCredentials())
+    store.save(AppSettings.defaults(tmp_path))
+    backend = BackendFacade(store)
+    dialog = SettingsDialog(backend)
+    selected = str(tmp_path / 'explicit.templates.json')
+    try:
+        dialog.hud_template_profile_path.setText(selected)
+        dialog._save()
+        assert store.load().hud_template_profile_path == selected
+        assert backend.get_settings().hud_template_profile_path == selected
+    finally:
+        _destroy_widget(dialog, app)
+
+
+@pytest.mark.parametrize('practical', [False, True])
+def test_practical_storage_numbers_are_not_displayed_as_game_round_numbers(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, practical: bool,
+) -> None:
+    app = QApplication.instance() or QApplication([])
+    store = SettingsStore(tmp_path / 'settings.json', credential_backend=MemoryCredentials())
+    store.save(AppSettings.defaults(tmp_path))
+    backend = BackendFacade(store)
+    # Confirmed endpoints still do not establish an in-game round number.
+    partition = RoundPartitionView(5, 10., 20., 'confirmed', 'confirmed', (),
+                                   is_practical=practical)
+    result = MatchResultView('M-test', str(tmp_path / 'source.mp4'), 'completed', (), 0, 0, 0,
+                             round_partitions=(partition,))
+    monkeypatch.setattr(backend, 'get_match_result', lambda _id: result)
+    window = MainWindow(backend)
+    try:
+        window._show_results('M-test')
+        assert window.round_filter.itemText(0) == (
+            'すべての区間' if practical else 'すべてのラウンド'
+        )
+        assert window.round_filter.itemText(1) == ('区間 5' if practical else 'ラウンド 5')
+        assert window.round_filter.itemData(1) == 5
+    finally:
+        _destroy_widget(window, app)
 
 
 def test_audio_track_selector_prefers_saved_track_then_container_default(

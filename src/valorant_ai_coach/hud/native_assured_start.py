@@ -45,6 +45,68 @@ def current_assured_qualification(
     )
 
 
+def validate_assured_row(
+    row: dict[str, Any], *, first: dict[str, Any], prior: dict[str, Any] | None,
+    index: int, step: int, qualification: GlobalLifecycleQualification | None,
+    contract: UneditedInputContract,
+    practical: bool = False,
+) -> None:
+    """Shared source/owned-field admission; practical gaps reset the tracker."""
+    obs = row['system_observation']
+    if (
+        row['source_video_sha256'] != contract.source_video_sha256
+        or not row['source_epoch']
+        or not practical and row['source_epoch'] != first['source_epoch']
+        or row['source_time_base'] != first['source_time_base']
+        or type(row['source_pts_ticks']) is not int
+        or float(row['source_pts_ticks'] * Fraction(row['source_time_base']))
+        != row['source_pts_sec']
+        or obs['time_sec'] != row['source_pts_sec'] or obs['frame_index'] != index
+        or (not practical and prior is not None
+            and row['source_pts_ticks'] - prior['source_pts_ticks'] != step)
+    ):
+        raise ValueError('native source identity/cadence mismatch')
+    values = obs['values']
+    if (
+        values.get('player_specific_hud_valid') is not False
+        or obs['view_context']['is_player_world_view_trustworthy'] is not False
+        or any(k not in empty_hud_values()
+               or type(v) is not type(empty_hud_values()[k])
+               or v != empty_hud_values()[k]
+               for k, v in values.items() if k not in GLOBAL_VALUES)
+    ):
+        raise ValueError('assured start cannot transport player-owned facts')
+    evidence = row['system_evidence']
+    end_keys = {'assured_round_result_present', 'assured_round_result_confidence'}
+    phase_keys = {'assured_phase_present', 'assured_phase_confidence'}
+    break_keys = {'content_jump', 'discontinuity'}
+    if practical and not phase_keys <= set(evidence):
+        raise ValueError('practical lifecycle requires current-frame phase presence measurement')
+    if (set(evidence) - break_keys - phase_keys not in ({'assured_phase_scan_valid'},
+                                          {'assured_phase_scan_valid'} | end_keys)
+            or any(type(evidence[k]) is not bool for k in break_keys & set(evidence))
+            or type(evidence['assured_phase_scan_valid']) is not bool):
+        raise ValueError('producer-owned phase scan evidence required')
+    if set(evidence) & phase_keys and (
+        not phase_keys <= set(evidence)
+        or type(evidence['assured_phase_present']) is not bool
+        or type(evidence['assured_phase_confidence']) not in (int, float)
+        or not 0 <= evidence['assured_phase_confidence'] <= 1
+        or evidence['assured_phase_present'] is True
+        and (evidence['assured_phase_scan_valid'] is not True
+             or evidence['assured_phase_confidence'] < .90)
+    ):
+        raise ValueError('producer-owned current phase presence evidence required')
+    if set(evidence) & end_keys and (
+        (not practical and (qualification is None
+                            or not {'score', 'round_result'} <= qualification.components))
+        or type(evidence['assured_round_result_present']) is not bool
+        or type(evidence['assured_round_result_confidence']) not in (int, float)
+        or not 0 <= evidence['assured_round_result_confidence'] <= 1
+    ):
+        raise ValueError('qualified producer-owned result evidence required')
+
+
 def replay_assured_starts(
     rows: Sequence[dict[str, Any]], qualification: GlobalLifecycleQualification,
     contract: UneditedInputContract,
@@ -63,54 +125,10 @@ def replay_assured_starts(
     continuity_segment = 0
     by_time = {r['source_pts_sec']: r for r in rows}
     for index, row in enumerate(rows):
-        obs = row['system_observation']
-        if (
-            row['source_video_sha256'] != contract.source_video_sha256
-            or row['source_epoch'] != first['source_epoch']
-            or row['source_time_base'] != first['source_time_base']
-            or type(row['source_pts_ticks']) is not int
-            or float(row['source_pts_ticks'] * Fraction(row['source_time_base']))
-            != row['source_pts_sec']
-            or obs['time_sec'] != row['source_pts_sec'] or obs['frame_index'] != index
-            or (index and row['source_pts_ticks'] - rows[index-1]['source_pts_ticks'] != step)
-        ):
-            raise ValueError('native source identity/cadence mismatch')
-        values = obs['values']
-        if (
-            values.get('player_specific_hud_valid') is not False
-            or obs['view_context']['is_player_world_view_trustworthy'] is not False
-            or any(k not in empty_hud_values()
-                   or type(v) is not type(empty_hud_values()[k])
-                   or v != empty_hud_values()[k]
-                   for k, v in values.items() if k not in GLOBAL_VALUES)
-        ):
-            raise ValueError('assured start cannot transport player-owned facts')
+        validate_assured_row(row, first=first, prior=rows[index - 1] if index else None,
+                             index=index, step=step, qualification=qualification, contract=contract)
         evidence = row['system_evidence']
-        end_keys = {'assured_round_result_present', 'assured_round_result_confidence'}
-        phase_keys = {'assured_phase_present', 'assured_phase_confidence'}
         break_keys = {'content_jump', 'discontinuity'}
-        if (set(evidence) - break_keys - phase_keys not in ({'assured_phase_scan_valid'},
-                                              {'assured_phase_scan_valid'} | end_keys)
-                or any(type(evidence[k]) is not bool for k in break_keys & set(evidence))
-                or type(evidence['assured_phase_scan_valid']) is not bool):
-            raise ValueError('producer-owned phase scan evidence required')
-        if set(evidence) & phase_keys and (
-            not phase_keys <= set(evidence)
-            or type(evidence['assured_phase_present']) is not bool
-            or type(evidence['assured_phase_confidence']) not in (int, float)
-            or not 0 <= evidence['assured_phase_confidence'] <= 1
-            or evidence['assured_phase_present'] is True
-            and (evidence['assured_phase_scan_valid'] is not True
-                 or evidence['assured_phase_confidence'] < .90)
-        ):
-            raise ValueError('producer-owned current phase presence evidence required')
-        if set(evidence) & end_keys and (
-            not {'score', 'round_result'} <= qualification.components
-            or type(evidence['assured_round_result_present']) is not bool
-            or type(evidence['assured_round_result_confidence']) not in (int, float)
-            or not 0 <= evidence['assured_round_result_confidence'] <= 1
-        ):
-            raise ValueError('qualified producer-owned result evidence required')
         if (any(evidence.get(k) is True for k in break_keys)
                 or index and row['source_pixel_sha256'] == rows[index-1]['source_pixel_sha256']):
             continuity_segment += 1

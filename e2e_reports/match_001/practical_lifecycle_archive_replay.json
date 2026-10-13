@@ -1,0 +1,329 @@
+{
+  "scope": "Archived actual reader replay only; no fresh recognition or qualification",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+  "current_recognizer_fingerprint": "27edbc854b1c5d9ee3029332378ced6c790b10a717b9079c23ec46c053b2c01e",
+  "strict_e2e_reexecuted": false,
+  "precision_verified": false,
+  "qualification_created": false,
+  "formal_events_released": 0,
+  "results": [
+    {
+      "archive": "e2e_reports/match_001/r1_current_phase_presence_inputs.json",
+      "archive_sha256": "059bebc9d971ca2077e404f54ad3b5037e45aa61235bb3ded93419c6fc7cdf27",
+      "archive_recognizer_fingerprint": "4506882908c892519c96b2acd33c2e78f868d1f3e0d3d50471c7a1e867aa5724",
+      "processed_observations": 30,
+      "boundaries": [
+        {
+          "kind": "round_start",
+          "boundary_status": "provisional",
+          "boundary_time_sec": 4.102669270833333,
+          "confirmation_time_sec": 4.202669270833334,
+          "evidence_times_sec": [
+            4.102669270833333,
+            4.1193359375,
+            4.136002604166666,
+            4.152669270833333,
+            4.1693359375,
+            4.186002604166666,
+            4.202669270833334
+          ],
+          "confidence": 0.9541926383972168,
+          "provenance": {
+            "scope": "global_system",
+            "producer": "unedited_ui_start_tracker",
+            "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+            "preparation_pts_sec": [
+              3.9693359375,
+              4.086002604166667
+            ],
+            "reader_qualification_required": true,
+            "confirmation_pts_sec": 4.202669270833334,
+            "pts_sec": [
+              4.102669270833333,
+              4.1193359375,
+              4.136002604166666,
+              4.152669270833333,
+              4.1693359375,
+              4.186002604166666,
+              4.202669270833334
+            ],
+            "clock_display_samples": [
+              {
+                "pts_sec": 4.102669270833333,
+                "observed_seconds": 0.0,
+                "observed_display": "0:00",
+                "reader_confidence": 0.9541926383972168,
+                "display_provenance": {
+                  "reader": "round_timer",
+                  "sources": [
+                    "strict_timer_glyphs",
+                    "comparison_gaussian3x3_v1"
+                  ],
+                  "confidence": 0.9541926383972168,
+                  "cross_checked": false
+                },
+                "source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b",
+                "previous_source_pixel_sha256": "6ab7cd27a8756b687f70857d6bf0d2a8732625d15161e2de41a139f31fd193e1"
+              },
+              {
+                "pts_sec": 4.1193359375,
+                "observed_seconds": 145.0,
+                "observed_display": "2:25",
+                "reader_confidence": 0.9596534371376038,
+                "display_provenance": {
+                  "reader": "round_timer",
+                  "sources": [
+                    "strict_timer_glyphs",
+                    "comparison_gaussian3x3_v1"
+                  ],
+                  "confidence": 0.9596534371376038,
+                  "cross_checked": false
+                },
+                "source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a",
+                "previous_source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b"
+              },
+              {
+                "pts_sec": 4.136002604166666,
+                "observed_seconds": 145.0,
+                "observed_display": "2:25",
+                "reader_confidence": 0.9596534371376038,
+                "display_provenance": {
+                  "reader": "round_timer",
+                  "sources": [
+                    "strict_timer_glyphs",
+                    "comparison_gaussian3x3_v1"
+                  ],
+                  "confidence": 0.9596534371376038,
+                  "cross_checked": false
+                },
+                "source_pixel_sha256": "7b784dd56e27c48a760671568acbd458bc496400335ee4b3181798d0584a4044",
+                "previous_source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a"
+              },
+              {
+                "pts_sec": 4.152669270833333,
+                "observed_seconds": 99.0,
+                "observed_display": "1:39",
+                "reader_confidence": 0.9597947001457214,
+                "display_provenance": {
+                  "reader": "round_timer",
+                  "sources": [
+                    "strict_timer_glyphs",
+                    "comparison_gaussian3x3_v1"
+                  ],
+                  "confidence": 0.9597947001457214,
+                  "cross_checked": false
+                },
+                "source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0",
+                "previous_source_pixel_sha256": "7b784dd56e27c48a760671568acbd458bc496400335ee4b3181798d0584a4044"
+              },
+              {
+                "pts_sec": 4.1693359375,
+                "observed_seconds": 99.0,
+                "observed_display": "1:39",
+                "reader_confidence": 0.9597947001457214,
+                "display_provenance": {
+                  "reader": "round_timer",
+                  "sources": [
+                    "strict_timer_glyphs",
+                    "comparison_gaussian3x3_v1"
+                  ],
+                  "confidence": 0.9597947001457214,
+                  "cross_checked": false
+                },
+                "source_pixel_sha256": "d18c9060f352e53b37967c62e12f3ee51b06e330664ee49da476b3751cda8f83",
+                "previous_source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0"
+              },
+              {
+                "pts_sec": 4.186002604166666,
+                "observed_seconds": 99.0,
+                "observed_display": "1:39",
+                "reader_confidence": 0.9629917144775391,
+                "display_provenance": {
+                  "reader": "round_timer",
+                  "sources": [
+                    "strict_timer_glyphs",
+                    "comparison_gaussian3x3_v1"
+                  ],
+                  "confidence": 0.9629917144775391,
+                  "cross_checked": false
+                },
+                "source_pixel_sha256": "0e795ed52d0eac85bf325988a8d629c2be975f8fbce0d9bfa33a8a0c773eee86",
+                "previous_source_pixel_sha256": "d18c9060f352e53b37967c62e12f3ee51b06e330664ee49da476b3751cda8f83"
+              },
+              {
+                "pts_sec": 4.202669270833334,
+                "observed_seconds": 99.0,
+                "observed_display": "1:39",
+                "reader_confidence": 0.9629917144775391,
+                "display_provenance": {
+                  "reader": "round_timer",
+                  "sources": [
+                    "strict_timer_glyphs",
+                    "comparison_gaussian3x3_v1"
+                  ],
+                  "confidence": 0.9629917144775391,
+                  "cross_checked": false
+                },
+                "source_pixel_sha256": "bcb5a25b6b58a0efb563575d4be9ba3507bf290b327fa64996a1d903970695a2",
+                "previous_source_pixel_sha256": "0e795ed52d0eac85bf325988a8d629c2be975f8fbce0d9bfa33a8a0c773eee86"
+              }
+            ],
+            "coherent_clock_begin_pts_sec": 4.152669270833333,
+            "coherent_clock_observation_count": 4,
+            "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+            "source_epoch": "archived-end-diagnostic",
+            "source_pts_ticks": 63017,
+            "source_time_base": "1/15360",
+            "source_pts_sec": 4.102669270833333,
+            "source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b",
+            "profile_fingerprint": "10bfac00544e510ebf3f3e2c0072c9beba24938b2ff996c9012f7e4046d82c99",
+            "recognizer_fingerprint": "27edbc854b1c5d9ee3029332378ced6c790b10a717b9079c23ec46c053b2c01e",
+            "continuity_segment": 0,
+            "boundary_mode": "practical",
+            "qualification_status": "unverified",
+            "actor": "system",
+            "signals": []
+          }
+        }
+      ],
+      "source_break_count": 0,
+      "terminal_state": "round_active"
+    },
+    {
+      "archive": "e2e_reports/match_001/r1_end_current_phase_inputs.json",
+      "archive_sha256": "a601e6b9d6c89009a4a980e5c2c506a3956ef812877ba127c231f5ade02c45a6",
+      "archive_recognizer_fingerprint": "4506882908c892519c96b2acd33c2e78f868d1f3e0d3d50471c7a1e867aa5724",
+      "processed_observations": 108,
+      "boundaries": [
+        {
+          "kind": "round_end",
+          "boundary_status": "provisional",
+          "boundary_time_sec": 74.48600260416667,
+          "confirmation_time_sec": 75.3693359375,
+          "evidence_times_sec": [
+            74.45266927083334,
+            74.48600260416667,
+            75.3193359375,
+            75.3693359375
+          ],
+          "confidence": 0.9248682987478553,
+          "provenance": {
+            "scope": "global_system",
+            "producer": "unedited_ui_end_tracker",
+            "temporal_contract": "ui_end_transition_v1",
+            "signals": [
+              "accepted_clock_decrease",
+              "accepted_score_transition",
+              "observed_stable_round_result"
+            ],
+            "clock_change": {
+              "before": {
+                "tick": 1143081,
+                "pts_sec": 74.4193359375,
+                "source_pixel_sha256": "68578730b4e08ac6fd89b3688111c23291bf8096b38bcad362e086baf865eec7",
+                "seconds": 29.0,
+                "observed_display": "0:29",
+                "confidence": 0.9602194428443909
+              },
+              "after": {
+                "tick": 1143593,
+                "pts_sec": 74.45266927083334,
+                "source_pixel_sha256": "af7f8635c45a202f1099c8520d361e9cdaf828dc9a70a8fb30fcadfc1a55b4cb",
+                "seconds": 6.0,
+                "observed_display": "0:06",
+                "confidence": 0.9442667961120605
+              }
+            },
+            "score_before": {
+              "first": {
+                "tick": 1142569,
+                "pts_sec": 74.38600260416666,
+                "source_pixel_sha256": "58811513cf01e7366559a3a2fc1b612de669f4c7aea91a4079bf618c65fb1484",
+                "values": [
+                  0,
+                  1
+                ],
+                "confidence": 0.9545881152153015
+              },
+              "last": {
+                "tick": 1143849,
+                "pts_sec": 74.4693359375,
+                "source_pixel_sha256": "a82ed1b8f98628a89021df35b9a665a9454c9c572b21f5543d2ee3571ec36947",
+                "values": [
+                  0,
+                  1
+                ],
+                "confidence": 0.9612316489219666
+              },
+              "confidence": 0.9318736791610718
+            },
+            "score_after": {
+              "first": {
+                "tick": 1144105,
+                "pts_sec": 74.48600260416667,
+                "source_pixel_sha256": "dcefd8d92f370ab8b978619017a4e7f7b5f0ce71de50034c0fdfc8893a03a610",
+                "values": [
+                  0,
+                  2
+                ],
+                "confidence": 0.9506886601448059
+              },
+              "last": {
+                "tick": 1146153,
+                "pts_sec": 74.6193359375,
+                "source_pixel_sha256": "6b8debd7d89a32acd768e1b470df717acdea5741542d83f5918bfbec443167e6",
+                "values": [
+                  0,
+                  2
+                ],
+                "confidence": 0.9461916089057922
+              },
+              "confidence": 0.926630437374115
+            },
+            "score_stability": {
+              "tick": 1144873,
+              "pts_sec": 74.53600260416667,
+              "source_pixel_sha256": "d28735ae8138f10f7ba901fad711d2d3ef0316bb4739a0838335c4c50e40c22b"
+            },
+            "result_first": {
+              "tick": 1156905,
+              "pts_sec": 75.3193359375,
+              "source_pixel_sha256": "402f90b137916b45d1da4bb53b38ddaccfaf2ea149a665fdaa1f0532fef95bec",
+              "confidence": 0.9248682987478553
+            },
+            "result_confirmation": {
+              "tick": 1157673,
+              "pts_sec": 75.3693359375,
+              "source_pixel_sha256": "17d297d12b348cdb2282f6b3ee3f1d27143c615117d407116e3b8c51378b1511",
+              "confidence": 0.9265685082167603
+            },
+            "confirmation_pts_sec": 75.3693359375,
+            "pts_sec": [
+              74.45266927083334,
+              74.48600260416667,
+              75.3193359375,
+              75.3693359375
+            ],
+            "timestamp_rule": "first_observed_score_change",
+            "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+            "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+            "source_epoch": "archived-end-diagnostic",
+            "source_pts_ticks": 1144105,
+            "source_time_base": "1/15360",
+            "source_pts_sec": 74.48600260416667,
+            "source_pixel_sha256": "dcefd8d92f370ab8b978619017a4e7f7b5f0ce71de50034c0fdfc8893a03a610",
+            "profile_fingerprint": "10bfac00544e510ebf3f3e2c0072c9beba24938b2ff996c9012f7e4046d82c99",
+            "recognizer_fingerprint": "27edbc854b1c5d9ee3029332378ced6c790b10a717b9079c23ec46c053b2c01e",
+            "continuity_segment": 0,
+            "boundary_mode": "practical",
+            "qualification_status": "unverified",
+            "actor": "system"
+          }
+        }
+      ],
+      "source_break_count": 0,
+      "terminal_state": "unobserved"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "scope": "Actual Pi Qt settings selection through BackendFacade and common production factory; no video recognition rerun",
+  "explicit_profile_selection": true,
+  "profile_fingerprint": "10bfac00544e510ebf3f3e2c0072c9beba24938b2ff996c9012f7e4046d82c99",
+  "recognizer_fingerprint": "c729f02c87be094fec3a8d92cd986065f83ae56d2b7408dbe93d6321d87d60e9",
+  "boundary_mode": "practical",
+  "native_storage": "replay",
+  "qualification_loaded": false,
+  "templates_path": "/home/admin/eval_valorant_perspective/outputs/hud_profiles/round-global-timer-glyph-20261008/score-rowcontrast-late-result-diagnostic.templates.json",
+  "settings_profile_path": "/home/admin/eval_valorant_perspective/outputs/hud_profiles/round-global-timer-glyph-20261008/score-rowcontrast-late-result-diagnostic.templates.json",
+  "config_fingerprint": "ce5491246b6e389652203891bd570d17fa48d9227b86b8302c4138872d8dddbd",
+  "previous_explicit_gui_sidecar_available": false,
+  "current_explicit_gui_sidecar_available": true,
+  "production_threshold_changed": false,
+  "canonical_e2e_reexecuted": false,
+  "limitations": [
+    "Actual video worker/recognition not run by this configuration check",
+    "Windows GUI not verified by Pi Qt check"
+  ]
+}

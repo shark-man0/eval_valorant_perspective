@@ -1,0 +1,85 @@
+{
+  "scope": "Bounded continuous real HUD/visual processing with verified archived lifecycle.\n\nOffline archive replay is explicit; it is not a production recognition cache.\nPackage extents come from whole-source lifecycle, but observations cover only the\nrequested interval. This does not evaluate canonical assertions or precision.\n",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "archive_sha256": "7e57454f8d5fcdb8ada1ee2feb8479030421868700ab4d22f5e7377aaa43cfb2",
+  "recognizer_fingerprint": "c729f02c87be094fec3a8d92cd986065f83ae56d2b7408dbe93d6321d87d60e9",
+  "requested_interval_sec": [
+    0.0,
+    6.0
+  ],
+  "processed_frames": 358,
+  "wall_sec": 655.067491244059,
+  "observation_count": 358,
+  "primary_states": {
+    "unknown": 358
+  },
+  "hud_event_count": 0,
+  "visual_event_count": 0,
+  "visual_observation_count": 358,
+  "package_count": 3,
+  "canonical_e2e_reexecuted": false,
+  "precision_verified": false,
+  "limitations": [
+    "Only requested native interval receives fresh HUD/visual recognition",
+    "Whole-source boundary provenance; package extents may exceed interval",
+    "No canonical assertion or independent point-time evaluation"
+  ],
+  "diagnostic_count": 648,
+  "map_diagnostics": [
+    "map_calibration_required:358/358 frames; verify Map selection and minimap profile",
+    "feature_unavailable(map_geometry_missing):rotation,ally_entry,PEEK-04"
+  ],
+  "artifact_hashes": {
+    "summary.json": "416f93da03dc78e0090d38fd0bf138b23b8581813c9763348fc497066f3ef153",
+    "packages.json": "02b309d19119ab5846a6a8631313c4b796f48e68bc0b1d6de383ad6a81f220dc"
+  },
+  "code_commit": "1caf2cff9859eea4cd119f4a5d987634ed5b6455",
+  "validation": {
+    "related_unit_tests": 81,
+    "unit_wall_sec": 57.06,
+    "ruff": "PASS",
+    "mypy": "PASS: 128 source files"
+  },
+  "previous_comparable_run": null,
+  "runtime_delta_sec": null,
+  "fps": 0.5465085732160377,
+  "canonical_result": {
+    "historical": {
+      "PASS": 23,
+      "FAIL": 55,
+      "NE": 4
+    },
+    "current": null,
+    "delta": null,
+    "reason": "canonical evaluator not executed"
+  },
+  "ci_before_diagnostic": {
+    "commit": "1caf2cff9859eea4cd119f4a5d987634ed5b6455",
+    "linux": "https://github.com/shark-man0/eval_valorant_perspective/actions/runs/38145916629",
+    "windows": "https://github.com/shark-man0/eval_valorant_perspective/actions/runs/38145916634",
+    "conclusion": "success"
+  },
+  "package_summary": [
+    {
+      "storage_key": 1,
+      "snapshot_count": 0,
+      "event_count": 0,
+      "start_status": "unknown",
+      "end_status": "unknown"
+    },
+    {
+      "storage_key": 2,
+      "snapshot_count": 0,
+      "event_count": 0,
+      "start_status": "provisional",
+      "end_status": "provisional"
+    },
+    {
+      "storage_key": 3,
+      "snapshot_count": 0,
+      "event_count": 0,
+      "start_status": "provisional",
+      "end_status": "unknown"
+    }
+  ]
+}

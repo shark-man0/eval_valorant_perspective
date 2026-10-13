@@ -17,6 +17,7 @@ from valorant_ai_coach.hud.round_lifecycle import MAX_SAMPLE_GAP_SEC, MIN_START_
 from valorant_ai_coach.hud.temporal import aggregate_observation_quality as aggregate_confidences
 from valorant_ai_coach.maps.registry import MapRegistry
 from valorant_ai_coach.models import DeterministicFact, RoleResolver
+from valorant_ai_coach.rounds.boundaries import BoundaryObservation
 from valorant_ai_coach.schema_validation import SchemaValidator
 from valorant_ai_coach.video import VideoMetadata
 
@@ -298,7 +299,13 @@ class RoundPackageBuilder:
         side: str = "unknown",
         require_detected_rounds: bool = True,
         continuity_breaks: Sequence[float] = (),
+        boundary_mode: str = "strict",
+        provisional_boundaries: Sequence[BoundaryObservation] = (),
     ) -> tuple[dict[str, Any], ...]:
+        if boundary_mode not in {"strict", "practical"}:
+            raise RoundPackageBuildError("unsupported boundary mode")
+        if boundary_mode == "strict" and provisional_boundaries:
+            raise RoundPackageBuildError("provisional boundaries require practical opt-in")
         cuts = tuple(continuity_breaks)
         if (any(type(value) not in (int, float) or not math.isfinite(value)
                 or not 0 < value < video_metadata.duration_sec for value in cuts)
@@ -325,9 +332,61 @@ class RoundPackageBuilder:
             ])
         ] if cuts else self.derived.build(observations)
         all_events = sorted(direct_hud + direct_visual + derived, key=self._event_sort_key)
-        windows = self._round_windows(
-            observations, direct_hud, video_metadata.duration_sec, continuity_breaks=cuts,
+        partition_signals = list(direct_hud)
+        provisional_by_key: dict[tuple[str, float], BoundaryObservation] = {}
+        for boundary in provisional_boundaries:
+            if boundary.boundary_status == "unknown":
+                continue
+            if boundary.boundary_status != "provisional":
+                raise RoundPackageBuildError(
+                    "confirmed boundaries must come from formal HUD events"
+                )
+            if (any(t > video_metadata.duration_sec for t in boundary.evidence_times_sec)
+                    or any(boundary.evidence_times_sec[0] < cut <= boundary.evidence_times_sec[-1]
+                           for cut in cuts)):
+                raise RoundPackageBuildError(
+                    "boundary evidence crosses source discontinuity or duration"
+                )
+            assert boundary.boundary_time_sec is not None
+            key: tuple[str, float] = (boundary.kind, boundary.boundary_time_sec)
+            if any((event["type"], event["time_sec"]) == key for event in direct_hud):
+                continue  # The existing formal event takes precedence at this exact observation.
+            if key in provisional_by_key:
+                if provisional_by_key[key] != boundary:
+                    raise RoundPackageBuildError("conflicting provisional evidence at one boundary")
+                continue
+            provisional_by_key[key] = boundary
+            # Partition-only descriptors: never included in all_events or released
+            # through the formal EventSourceContract. Reuse context/gap association.
+            partition_signals.append({
+                "type": boundary.kind, "time_sec": boundary.boundary_time_sec,
+                "confidence": boundary.confidence,
+                "attributes": {"evidence_provenance": boundary.provenance},
+            })
+        # Competing starts (or ends) without an intervening opposite boundary
+        # cannot establish additional rounds. Keep formal events unchanged and
+        # withhold every provisional member of the ambiguous run.
+        boundary_signals = sorted(
+            [item for item in partition_signals if item["type"] in {"round_start", "round_end"}],
+            key=lambda item: (item["time_sec"], item["type"]),
         )
+        ambiguous: set[tuple[str, float]] = set()
+        for left, right in zip(boundary_signals, boundary_signals[1:], strict=False):
+            if ((left["type"] == right["type"] or left["time_sec"] == right["time_sec"])
+                    and not any(left["time_sec"] < cut <= right["time_sec"] for cut in cuts)):
+                ambiguous.update((item["type"], item["time_sec"]) for item in (left, right)
+                                 if (item["type"], item["time_sec"]) in provisional_by_key)
+        partition_signals = [item for item in partition_signals
+                             if (item["type"], item["time_sec"]) not in ambiguous]
+        for key in ambiguous:
+            provisional_by_key.pop(key)
+        windows = self._round_windows(
+            observations, partition_signals, video_metadata.duration_sec, continuity_breaks=cuts,
+        )
+        if boundary_mode == "practical":
+            windows = self._retain_unassigned_observations(
+                observations, windows, video_metadata.duration_sec, cuts,
+            )
         # Diagnostics may retain observations without inventing round boundaries.
         # Interactive coaching keeps the strict default. All other validation stays active.
         if not windows and require_detected_rounds:
@@ -339,6 +398,27 @@ class RoundPackageBuilder:
         role = self._resolve_role(player_agent)
         packages: list[dict[str, Any]] = []
         for number, window in enumerate(windows, start=1):
+            lifecycle: dict[str, Any] | None = None
+            if boundary_mode == "practical":
+                lifecycle = {"mode": "practical", "observed_round_no": None}
+                for name, kind, timestamp in (
+                    ("start", "round_start", window.start_event_sec),
+                    ("end", "round_end", window.end_event_sec),
+                ):
+                    candidate = (
+                        provisional_by_key.get((kind, timestamp)) if timestamp is not None else None
+                    )
+                    formal = next((item for item in direct_hud
+                                   if item["type"] == kind and item["time_sec"] == timestamp), None)
+                    lifecycle[name] = {
+                        "status": (
+                            "confirmed" if formal else "provisional" if candidate else "unknown"
+                        ),
+                        "candidate": candidate.to_dict() if candidate else None,
+                        "formal_event_id": formal["event_id"] if formal else None,
+                    }
+                if any(lifecycle[name]["status"] != "confirmed" for name in ("start", "end")):
+                    window.complete = False
             round_observations = [
                 item for item in observations if window.contains(self._time(item))
             ]
@@ -411,6 +491,8 @@ class RoundPackageBuilder:
                 "frames": [],
                 "previous_round_context": None,
             }
+            if lifecycle is not None:
+                package["round_lifecycle"] = lifecycle
             # v3 snapshots have no per-location confidence field. Preserve the
             # resolver's bound in the existing fact schema before enrichment;
             # FactBuilder deduplicates these exact key/value/time identities.
@@ -533,6 +615,45 @@ class RoundPackageBuilder:
             ):
                 result[index] = event
         return result
+
+    def _retain_unassigned_observations(
+        self, observations: Sequence[dict[str, Any]], windows: list[_RoundWindow],
+        duration: float, cuts: Sequence[float],
+    ) -> list[_RoundWindow]:
+        """Keep observed unknown context without assigning it to a detected round.
+
+        Fragment edges are storage extents, never boundary evidence. Existing
+        windows keep priority; cuts and observed gaps split the additional data.
+        """
+        ordered = sorted(windows, key=lambda window: window.start_sec)
+        edges = sorted({0.0, duration, *cuts,
+                        *(w.start_sec for w in ordered), *(w.end_sec for w in ordered)})
+        uncovered = sorted({self._time(o) for o in observations
+                            if 0 <= self._time(o) <= duration
+                            and not any(w.contains(self._time(o)) for w in ordered)})
+        retained = list(ordered)
+        for lower, upper in zip(edges, edges[1:], strict=False):
+            times = [t for t in uncovered if lower <= t < upper
+                     or t == upper == duration]
+            if not times:
+                continue
+            groups: list[list[float]] = []
+            for timestamp in times:
+                if not groups or timestamp - groups[-1][-1] > 1.0:
+                    groups.append([])
+                groups[-1].append(timestamp)
+            for group in groups:
+                # A single observation still needs a positive storage interval.
+                # This matches existing partial-fragment extent convention and
+                # never supplies a start/end event timestamp.
+                start = group[0]
+                end = min(upper, group[-1] + 0.1)
+                if end <= start:
+                    start = max(lower, start - 0.1)
+                if end > start:
+                    retained.append(_RoundWindow(start, end, False,
+                                                 end < upper or upper == duration))
+        return sorted(retained, key=lambda window: window.start_sec)
 
     def _round_windows(
         self,

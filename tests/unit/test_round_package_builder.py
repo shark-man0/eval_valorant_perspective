@@ -136,3 +136,242 @@ def test_builder_produces_schema_valid_round_package_without_visual_fabrication(
         {"shot", "peek", "movement_state", "utility_used"}
     )
     assert "objective_state" in {item["type"] for item in package["events"]}
+
+
+def practical_candidate(kind: str, timestamp: float, confirmation: float | None = None):
+    from valorant_ai_coach.rounds.boundaries import BoundaryObservation
+
+    return BoundaryObservation(
+        kind, "provisional", timestamp, confirmation,
+        (timestamp,) if confirmation is None else (timestamp, confirmation),
+        0.9, {"scope": "global_system", "test_evidence": "synthetic composite"},
+    )
+
+
+@pytest.fixture
+def practical_build(tmp_path: Path):
+    contract = EventSourceContract.load(ROOT / "config" / "event_source_contract_v1.json")
+    builder = RoundPackageBuilder(contract=contract, validator=SchemaValidator())
+    metadata = VideoMetadata(tmp_path / "match.mp4", 8.0, 1920, 1080, 60, "h264", None, False, 0)
+
+    def build(**kwargs):
+        return builder.build(
+            match_id="PRACTICAL", video_metadata=metadata,
+            hud_observations=[observation(n / 2) for n in range(1, 17)],
+            hud_events=kwargs.pop("hud_events", []), **kwargs,
+        )
+    return build
+
+
+def test_practical_partition_keeps_candidates_out_of_formal_events(practical_build) -> None:
+    packages = practical_build(boundary_mode="practical", provisional_boundaries=[
+        practical_candidate("round_start", 1.0, 1.5),
+        practical_candidate("round_end", 3.0, 4.0),
+        practical_candidate("round_start", 5.0, 5.5),
+    ])
+    starts = [p for p in packages if p["round_lifecycle"]["start"]["status"] == "provisional"]
+    assert len(starts) == 2
+    assert starts[0]["round_lifecycle"]["start"]["candidate"]["boundary_time_sec"] == 1.0
+    assert starts[0]["round_lifecycle"]["start"]["candidate"]["confirmation_time_sec"] == 1.5
+    assert starts[1]["round_lifecycle"]["end"]["status"] == "unknown"
+    for package in packages:
+        assert package["round_lifecycle"]["observed_round_no"] is None
+        assert package["observation_quality"]["timeline_completeness"] == 0
+        assert not any(e["type"] in {"round_start", "round_end"} for e in package["events"])
+    for left, right in zip(packages, packages[1:], strict=False):
+        assert left["round_window"]["end_sec"] <= right["round_window"]["start_sec"]
+    times = [s["time_sec"] for p in packages for s in p["state_snapshots"]]
+    assert len(times) == len(set(times))
+
+
+def test_strict_rejects_provisional_opt_in_and_keeps_legacy_schema(practical_build) -> None:
+    with pytest.raises(ValueError, match="opt-in"):
+        practical_build(provisional_boundaries=[practical_candidate("round_start", 1.0)])
+    packages = practical_build(hud_events=[event("S", 1.0, "round_start"),
+                                         event("E", 3.0, "round_end")])
+    assert all("round_lifecycle" not in p for p in packages)
+
+
+def test_practical_cannot_self_attest_confirmed_or_cross_source_cut(practical_build) -> None:
+    from dataclasses import replace
+
+    candidate = practical_candidate("round_start", 1.0, 2.0)
+    with pytest.raises(ValueError, match="formal HUD"):
+        practical_build(boundary_mode="practical",
+                        provisional_boundaries=[replace(candidate, boundary_status="confirmed")])
+    with pytest.raises(ValueError, match="discontinuity"):
+        practical_build(boundary_mode="practical", provisional_boundaries=[candidate],
+                        continuity_breaks=[1.5])
+
+
+def test_practical_duplicate_is_suppressed_and_competing_starts_withheld(practical_build) -> None:
+    candidate = practical_candidate("round_start", 1.0)
+    packages = practical_build(
+        boundary_mode="practical", provisional_boundaries=[candidate, candidate]
+    )
+    assert sum(p["round_lifecycle"]["start"]["status"] == "provisional" for p in packages) == 1
+    packages = practical_build(boundary_mode="practical", provisional_boundaries=[
+        candidate, practical_candidate("round_start", 2.0),
+    ])
+    assert all(p["round_lifecycle"]["start"]["status"] == "unknown" for p in packages)
+
+
+def test_practical_formal_boundary_has_priority_and_is_schema_bound(practical_build) -> None:
+    packages = practical_build(boundary_mode="practical", provisional_boundaries=[
+        practical_candidate("round_start", 1.0)],
+        hud_events=[event("S", 1.0, "round_start"), event("E", 3.0, "round_end")])
+    package = next(p for p in packages
+                   if p["round_lifecycle"]["start"]["status"] == "confirmed")
+    assert package["round_lifecycle"]["start"]["status"] == "confirmed"
+    assert package["round_lifecycle"]["start"]["candidate"] is None
+    package["round_lifecycle"]["start"]["formal_event_id"] = "NOT-PRESENT"
+    with pytest.raises(ValueError, match="formal event"):
+        SchemaValidator().validate_round_package(package)
+
+
+def test_practical_package_sqlite_roundtrip(practical_build, tmp_path: Path) -> None:
+    from valorant_ai_coach.storage.repository import SQLiteRepository
+
+    package = practical_build(boundary_mode="practical", provisional_boundaries=[
+        practical_candidate("round_start", 1.0, 2.0)])[0]
+    repository = SQLiteRepository(tmp_path / "practical.sqlite")
+    repository.save_round_package(package)
+    restored = repository.get_round_package(package["match_id"], package["round_no"])
+    assert restored == package
+    SchemaValidator().validate_round_package(restored)
+
+
+def test_uncertain_practical_package_preserves_facts_without_scoring(practical_build) -> None:
+    from unittest.mock import Mock
+
+    from valorant_ai_coach.application.round_analyzer import RoundAnalyzer
+
+    package = practical_build(boundary_mode="practical", provisional_boundaries=[
+        practical_candidate("round_start", 1.0)])[0]
+    fact_builder = Mock()
+    fact_builder.enrich.side_effect = lambda item: item
+    selector, engine, coach = Mock(), Mock(), Mock()
+    analyzer = RoundAnalyzer(fact_builder=fact_builder, selector=selector, rule_engine=engine,
+                             coach=coach, validator=SchemaValidator())
+    analysis = analyzer.analyze(package)
+    assert analysis.round_package == package
+    assert analysis.output["evaluations"] == []
+    selector.select.assert_not_called()
+    engine.evaluate.assert_not_called()
+    coach.evaluate.assert_not_called()
+
+
+@pytest.mark.parametrize("candidates", [[], [practical_candidate("round_end", 3.0)]])
+def test_practical_missing_start_stays_unknown(practical_build, candidates) -> None:
+    packages = practical_build(boundary_mode="practical", provisional_boundaries=candidates)
+    assert packages
+    assert all(p["round_lifecycle"]["start"]["status"] == "unknown" for p in packages)
+    assert all(p["observation_quality"]["timeline_completeness"] == 0 for p in packages)
+
+
+def test_practical_simultaneous_opposite_candidates_are_not_a_round(practical_build) -> None:
+    packages = practical_build(boundary_mode="practical", provisional_boundaries=[
+        practical_candidate("round_start", 1.0), practical_candidate("round_end", 1.0)])
+    assert all(p["round_lifecycle"][name]["status"] == "unknown"
+               for p in packages for name in ("start", "end"))
+
+
+def test_practical_separate_source_segments_never_pair_boundaries(practical_build) -> None:
+    packages = practical_build(boundary_mode="practical", continuity_breaks=[2.0],
+                              provisional_boundaries=[
+                                  practical_candidate("round_start", 1.0),
+                                  practical_candidate("round_end", 3.0)])
+    assert all(not (p["round_window"]["start_sec"] < 2.0 < p["round_window"]["end_sec"])
+               for p in packages)
+    assert all(not (p["round_lifecycle"]["start"]["status"] == "provisional"
+                    and p["round_lifecycle"]["end"]["status"] == "provisional") for p in packages)
+
+
+def test_practical_consumer_pipeline_resume_preserves_uncertainty_without_scoring(
+    practical_build, tmp_path: Path,
+) -> None:
+    from threading import Event
+
+    from tests.integration.test_mock_e2e import build_pipeline
+    from valorant_ai_coach.application import AnalysisCancelled
+
+    source = tmp_path / 'match.mp4'
+    source.write_bytes(b'video')
+    packages = practical_build(boundary_mode='practical', provisional_boundaries=[
+        practical_candidate('round_start', 1., 1.5),
+        practical_candidate('round_end', 3., 4.),
+        practical_candidate('round_start', 5., 5.5),
+    ])
+    # Consumer integration uses already produced synthetic Packages; no pixel or
+    # qualification claim. Native source collection has separate integration tests.
+    pipeline, repository, video, clips = build_pipeline(tmp_path, source, list(packages))
+    cancel = Event()
+    retained_number = next(p['round_no'] for p in packages
+                           if p['round_lifecycle']['start']['status'] == 'provisional')
+
+    def cancel_after_first(_progress, message):
+        if message == f'区間 {retained_number} の観測を保存しました（境界未確定・採点保留）':
+            cancel.set()
+
+    with pytest.raises(AnalysisCancelled):
+        pipeline.analyze_video(source, match_id='P-RESUME', cancel_event=cancel,
+                               progress_cb=cancel_after_first)
+    stored = repository.get_round_package('P-RESUME', retained_number)
+    assert stored['round_lifecycle'] == packages[retained_number - 1]['round_lifecycle']
+    assert stored['frames'] == []
+    first_facts = stored['deterministic_facts']
+    restored = pipeline.resume_analysis('P-RESUME')
+    assert restored.status == 'completed'
+    stored = repository.get_round_package('P-RESUME', retained_number)
+    assert stored['deterministic_facts'] == first_facts
+    assert stored['round_lifecycle'] == packages[retained_number - 1]['round_lifecycle']
+    assert repository.get_match_result('P-RESUME')['evaluations'] == []
+    assert video.requested_timestamps == [] and clips.calls == 0
+    assert restored.rounds[retained_number - 1].output['analysis_id'] == (
+        f'RESTORED-P-RESUME-R{retained_number}'
+    )
+
+
+def test_practical_preserves_menu_prefix_as_unknown_without_round_attribution(practical_build):
+    packages = practical_build(boundary_mode='practical', provisional_boundaries=[
+        practical_candidate('round_start', 3, 3.2),
+    ])
+    # Force a valid observed menu into a prefix that strict round context excludes.
+    # Build the same production input with the existing helper's fixed samples.
+    from tests.unit.test_round_boundary_regressions import make_builder, observation
+    from valorant_ai_coach.video import VideoMetadata
+
+    samples = [observation(1, menu=True), observation(1.5, menu=True), observation(3.5)]
+    built = make_builder().build(
+        match_id='prefix',
+        video_metadata=VideoMetadata(Path('video.mp4'), 8, 1920, 1080, 60,
+                                     'h264', None, False, 0),
+        hud_observations=samples, hud_events=[], boundary_mode='practical',
+        provisional_boundaries=[practical_candidate('round_start', 3, 3.2)],
+    )
+    assert built[0]['round_lifecycle']['start']['status'] == 'unknown'
+    assert built[0]['round_lifecycle']['end']['status'] == 'unknown'
+    assert built[0]['round_window']['start_sec'] == 1
+    assert all(p['observation_quality']['timeline_completeness'] == 0 for p in built)
+    assert not any(e['type'] in {'round_start', 'round_end'} for p in built for e in p['events'])
+    assert packages  # Existing provisional fixture remains supported.
+
+
+def test_practical_unknown_only_observations_survive_cut_and_gap(practical_build):
+    from tests.unit.test_round_boundary_regressions import make_builder, observation
+    from valorant_ai_coach.video import VideoMetadata
+
+    samples = [observation(t, menu=True) for t in (1, 1.5, 3, 3.5, 7)]
+    built = make_builder().build(
+        match_id='unknown',
+        video_metadata=VideoMetadata(Path('video.mp4'), 8, 1920, 1080, 60,
+                                     'h264', None, False, 0),
+        hud_observations=samples, hud_events=[], boundary_mode='practical',
+        continuity_breaks=(2,), require_detected_rounds=False,
+    )
+    assert len(built) == 3
+    assert all(p['round_lifecycle'][edge]['status'] == 'unknown'
+               for p in built for edge in ('start', 'end'))
+    assert all(not (p['round_window']['start_sec'] < 2 < p['round_window']['end_sec'])
+               for p in built)
+    assert sum(len(p['state_snapshots']) for p in built) > 0

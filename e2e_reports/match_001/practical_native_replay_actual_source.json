@@ -1,0 +1,29 @@
+{
+  "scope": "Whole physical source native replay decoder validation only; no recognizer/lifecycle/E2E evaluation",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+  "reference_archive_sha256": {
+    "e2e_reports/match_001/r1_start_wide_current_phase_inputs.json": "7a5309115d0ec0bf10804e6f5b5a9c341d4260ae6829dcbb1041063fa8c327da",
+    "e2e_reports/match_001/r1_end_wide_current_phase_inputs.json": "4f763947445604ec6e0d7a88f95a3954134fb5476e28e9c5dab2c7f10c50ab65",
+    "e2e_reports/match_001/r2_wide_current_phase_inputs.json": "3addc0eb3e510206602b51544a29eb105fd271770f8ab30d8c4920b8635e17c8"
+  },
+  "processed_native_frames": 10259,
+  "source_time_range_sec": [
+    0.03600260416666667,
+    171.00266927083334
+  ],
+  "all_probe_pts_and_initial_pixel_hashes_verified": true,
+  "replay_terminal_verification_passed": true,
+  "archived_png_pixel_comparisons": 780,
+  "pixel_mismatches": 0,
+  "retained_png_files": 0,
+  "configured_buffer_bytes": 67108864,
+  "max_observed_cached_frames": 4,
+  "cache_frame_limit": 4,
+  "raw_frame_bytes": 6220800,
+  "initial_verification_wall_sec": 889.3747786559979,
+  "wall_clock_sec": 1596.6571321599768,
+  "linux_peak_rss_kib": 320664,
+  "canonical_e2e_reexecuted": false,
+  "reader_qualification_created": false
+}

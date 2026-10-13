@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.0",
+  "scope": "Single-thread native probe/decode alignment diagnostic; not recognizer qualification or canonical E2E",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "recognizer_fingerprint": "c1d6c1f88088ec6ef1653e333741de9bffd8d7135bf72089b760e95662b7792d",
+  "windows": [
+    {
+      "window_sec": [
+        0,
+        0.1
+      ],
+      "native_frame_count": 4,
+      "source_pts_ticks": [
+        553,
+        809,
+        1065,
+        1321
+      ],
+      "all_pts_and_pixels_match_prior_physical_archive": true
+    },
+    {
+      "window_sec": [
+        147.6,
+        148.04
+      ],
+      "native_frame_count": 27,
+      "source_pts_ticks": [
+        2267177,
+        2267433,
+        2267689,
+        2267945,
+        2268201,
+        2268457,
+        2268713,
+        2268969,
+        2269225,
+        2269481,
+        2269737,
+        2269993,
+        2270249,
+        2270505,
+        2270761,
+        2271017,
+        2271273,
+        2271529,
+        2271785,
+        2272041,
+        2272297,
+        2272553,
+        2272809,
+        2273065,
+        2273321,
+        2273577,
+        2273833
+      ],
+      "all_pts_and_pixels_match_prior_physical_archive": true
+    }
+  ],
+  "verified_native_frames": 31,
+  "wall_sec": 34.78561172296759,
+  "windows_failure_run": "https://github.com/shark-man0/eval_valorant_perspective/actions/runs/38179592848",
+  "original_windows_failure_root_confirmed": false,
+  "original_windows_failure_limitation": "Prior generic coverage error omitted raw probe ticks; auto-thread probe instability remains a hypothesis, not established root cause.",
+  "changed": "Both native PNG and replay probes explicitly use one decoder thread, matching their FFmpeg decoders. Coverage/strict monotonicity/pixel checks remain unchanged.",
+  "canonical_e2e_reexecuted": false,
+  "timestamp_repair_or_dropping": false,
+  "diagnostic_png_budget_bytes": 268435456,
+  "prior_attempt": "Explicit 40MiB PNG budget was exceeded; inputs and acceptance were unchanged when rerun with 256MiB disk budget.",
+  "no_zero_seek_real_source_verification": {
+    "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "requested_window_sec": [
+      0,
+      0.1
+    ],
+    "native_frame_count": 4,
+    "source_pts_ticks": [
+      553,
+      809,
+      1065,
+      1321
+    ],
+    "all_pts_and_pixels_match_physical_archive": true,
+    "recognizer_fingerprint": "0861cdc9ddef5e0a346462c2bc6c61d00387e1f0b5c86d9c67aa27da86b07684",
+    "wall_sec": 9.191748369019479
+  },
+  "windows_empty_probe_observation": {
+    "run": "https://github.com/shark-man0/eval_valorant_perspective/actions/runs/38183724952",
+    "count": 0,
+    "time_base": "1/15360",
+    "requested_window_sec": [
+      0.2,
+      null
+    ],
+    "non_monotonic_pair": null,
+    "threading_alone_sufficient": false
+  }
+}

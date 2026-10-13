@@ -131,6 +131,9 @@ class HudObservationV2:
         if len(set(self.state_flags)) != len(self.state_flags):
             raise ValueError("state_flagsは重複できません")
         _validate_values(self.values)
+        report = self.values.get("combat_report_readings")
+        if report is not None and report["source_pts_sec"] != self.time_sec:
+            raise ValueError("combat report reading must belong to the current frame")
         _validate_quality(self.quality)
         player_valid = bool(self.values.get("player_specific_hud_valid", False))
         if self.primary_state != "live_first_person" and player_valid:
@@ -227,6 +230,65 @@ def accept_hud_value(value: Any, confidence: float, *, cross_checked: bool = Fal
     if confidence < 0.65 or (confidence < 0.85 and not cross_checked):
         return None
     return value
+
+
+def _validate_report_readings(values: dict[str, Any]) -> None:
+    """Report text observations cannot attest self ownership or death facts."""
+    report = values.get("combat_report_readings")
+    if report is None:
+        return
+    if (
+        not isinstance(report, dict)
+        or set(report) != {
+            "status", "reader", "source_pts_sec", "source_pixel_sha256",
+            "profile_fingerprint", "fields",
+        }
+        or report["status"] != "candidate"
+        or report["reader"] != "combat_report"
+        or values.get("combat_report_visible") is not True
+        or type(report["source_pts_sec"]) not in (int, float)
+        or not math.isfinite(report["source_pts_sec"])
+        or report["source_pts_sec"] < 0
+        or not isinstance(report["source_pixel_sha256"], str)
+        or re.fullmatch(r"[0-9a-f]{64}", report["source_pixel_sha256"]) is None
+        or (
+            report["profile_fingerprint"] is not None
+            and (
+                not isinstance(report["profile_fingerprint"], str)
+                or re.fullmatch(r"[0-9a-f]{64}", report["profile_fingerprint"]) is None
+            )
+        )
+        or not isinstance(report["fields"], dict)
+        or not report["fields"]
+        or set(report["fields"]) - {"damage_received", "damage_given"}
+    ):
+        raise ValueError("Invalid source combat report reading")
+    for reading in report["fields"].values():
+        if (
+            not isinstance(reading, dict)
+            or set(reading) != {
+                "display", "value", "confidence", "sources", "cross_checked", "roi_bounds_norm",
+            }
+            or not isinstance(reading["display"], str)
+            or re.fullmatch(r"[0-9]{1,6}", reading["display"]) is None
+            or type(reading["value"]) is not int
+            or reading["value"] != int(reading["display"])
+            or type(reading["confidence"]) not in (int, float)
+            or not math.isfinite(reading["confidence"])
+            or not .90 <= reading["confidence"] <= 1
+            or not isinstance(reading["sources"], list)
+            or not reading["sources"]
+            or not all(isinstance(s, str) and s.strip() for s in reading["sources"])
+            or type(reading["cross_checked"]) is not bool
+            or not isinstance(reading["roi_bounds_norm"], list)
+            or len(reading["roi_bounds_norm"]) != 4
+            or any(type(v) not in (int, float) or not math.isfinite(v)
+                   for v in reading["roi_bounds_norm"])
+        ):
+            raise ValueError("Invalid combat report numeric field")
+        x1, y1, x2, y2 = reading["roi_bounds_norm"]
+        if not (0 <= x1 < x2 <= 1 and 0 <= y1 < y2 <= 1):
+            raise ValueError("Invalid combat report field bounds")
 
 
 def shared_score_evidence(observation: dict[str, Any]) -> dict[str, int | None]:
@@ -331,6 +393,7 @@ def _validate_values(values: dict[str, Any]) -> None:
         "player_specific_hud_valid",
         "round_time_remaining_display",
         "round_time_remaining_display_provenance",
+        "combat_report_readings",
     }
     if required - set(values) or set(values) - allowed:
         raise ValueError("valuesがHUD Observation v2スキーマと一致しません")
@@ -353,6 +416,7 @@ def _validate_values(values: dict[str, Any]) -> None:
         raise ValueError("ability_slotsは最大4件です")
     _optional_number(values["round_time_remaining_sec"], minimum=0)
     timer_display_evidence(values)
+    _validate_report_readings(values)
     for key in ("score_ally", "score_enemy"):
         _optional_int(values[key], minimum=0)
     for key in ("ally_alive", "enemy_alive"):

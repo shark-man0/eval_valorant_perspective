@@ -21,7 +21,7 @@ from valorant_ai_coach.storage import SQLiteRepository
 from valorant_ai_coach.video import FrameSample, VideoMetadata
 
 from .frame_planner import FramePlanner, PlannedFrame
-from .hud_video_processor import HudVideoProcessingResult, HudVideoProcessor
+from .hud_video_processor import HudVideoProcessingResult, HudVideoProcessor, NativeLifecycleOptions
 from .round_analyzer import RoundAnalysis, RoundAnalyzer
 
 LOGGER = logging.getLogger(__name__)
@@ -89,7 +89,18 @@ class MatchAnalysisPipeline:
         validator: SchemaValidator,
         delete_temp_frames: bool = True,
         hud_video_processor: HudVideoProcessor | None = None,
+        round_boundary_mode: str = "strict",
+        native_lifecycle_options: NativeLifecycleOptions | None = None,
     ) -> None:
+        if round_boundary_mode not in {"strict", "practical"}:
+            raise ValueError("unsupported boundary mode")
+        if round_boundary_mode == "practical" and (
+            hud_video_processor is None or native_lifecycle_options is None
+            or native_lifecycle_options.unedited_input_contract_path is None
+        ):
+            raise ValueError(
+                "Practical Mode requires a video processor and explicit input contract"
+            )
         self.data_dir = Path(data_dir).expanduser().resolve()
         self.data_dir.mkdir(parents=True, exist_ok=True)
         self.repository = repository
@@ -102,6 +113,8 @@ class MatchAnalysisPipeline:
         self.validator = validator
         self.delete_temp_frames = delete_temp_frames
         self.hud_video_processor = hud_video_processor
+        self.round_boundary_mode = round_boundary_mode
+        self.native_lifecycle_options = native_lifecycle_options
 
     def analyze_video(
         self,
@@ -132,6 +145,7 @@ class MatchAnalysisPipeline:
         failed_rounds: list[int] = []
         round_diagnostics: dict[str, str] = {}
         expected_package_fingerprints: dict[str, str] = {}
+        saved_package_fingerprints: dict[str, str] = {}
         if resume:
             checkpoint_row = self.repository.get_job_checkpoint(identifier)
             match = self.repository.get_match(identifier)
@@ -155,6 +169,10 @@ class MatchAnalysisPipeline:
                 str(key): str(value)
                 for key, value in checkpoint.get("round_package_fingerprints", {}).items()
             }
+            saved_package_fingerprints = {
+                str(key): str(value)
+                for key, value in checkpoint.get("saved_round_package_fingerprints", {}).items()
+            }
             self.repository.update_match_status(identifier, "analyzing")
         else:
             self.repository.create_match(
@@ -177,6 +195,7 @@ class MatchAnalysisPipeline:
             "failed_rounds": failed_rounds,
             "round_diagnostics": round_diagnostics,
             "round_package_fingerprints": expected_package_fingerprints,
+            "saved_round_package_fingerprints": saved_package_fingerprints,
         }
         self.repository.save_job_checkpoint(identifier, "analyzing", checkpoint_state)
         progress(0.03, "動画メタデータを取得しました")
@@ -185,16 +204,37 @@ class MatchAnalysisPipeline:
         round_results: list[RoundAnalysis] = []
         clip_artifacts: list[ClipArtifact] = []
         temp_root = (self.data_dir / "temp" / identifier).resolve()
+        saved_practical_source_hash: str | None = None
         try:
             self._check_cancel(cancel)
             observations: HudVideoProcessingResult | HudObservations
-            if self.hud_video_processor is not None:
+            cache_eligible = (resume and not failed_rounds
+                              and set(saved_package_fingerprints)
+                              == set(expected_package_fingerprints))
+            saved_practical = self._completed_practical_packages(
+                identifier, metadata.path, completed, saved_package_fingerprints,
+            ) if cache_eligible else None
+            if saved_practical is not None:
+                saved_packages, saved_practical_source_hash = saved_practical
+                observations = HudObservations(
+                    tuple(saved_packages), "saved_practical_packages",
+                    tuple(checkpoint.get("hud_diagnostics", ())),
+                )
+                progress(0.25, "保存済み暫定区間を検証しました（採点保留）")
+            elif self.hud_video_processor is not None:
+                lifecycle_arguments: dict[str, Any] = {}
+                if self.round_boundary_mode == "practical":
+                    lifecycle_arguments = {
+                        "boundary_mode": "practical",
+                        "native_lifecycle_options": self.native_lifecycle_options,
+                    }
                 observations = self.hud_video_processor.process(
                     metadata=metadata,
                     match_id=identifier,
                     output_dir=temp_root / "hud",
                     cancel_event=cancel,
                     progress_cb=lambda value, message: progress(0.03 + 0.22 * value, message),
+                    **lifecycle_arguments,
                 )
                 self._persist_hud_report(identifier, observations)
             else:
@@ -217,7 +257,10 @@ class MatchAnalysisPipeline:
                 raise RuntimeError("HUD解析結果のround_noが重複しています")
             if any(str(package.get("match_id")) != identifier for package in packages):
                 raise RuntimeError("HUD解析結果のmatch_idが解析ジョブと一致しません")
-            actual_package_fingerprints = {
+            # Durable Packages include frame/evidence preparation changes.
+            # Their complete hashes were checked above; keep the separate raw
+            # producer fingerprints for any later fresh-processing fallback.
+            actual_package_fingerprints = expected_package_fingerprints if saved_practical else {
                 str(package["round_no"]): self._round_package_fingerprint(package)
                 for package in packages
             }
@@ -244,7 +287,9 @@ class MatchAnalysisPipeline:
                         round_results.append(restored)
                         progress(
                             round_progress_start + round_progress_span * (index + 1) / total,
-                            f"ラウンド {round_no} は保存済み結果を使用しました",
+                            f"区間 {round_no} の保存済み観測を復元しました（採点保留）"
+                            if RoundAnalyzer.boundary_context_is_uncertain(restored.round_package)
+                            else f"ラウンド {round_no} は保存済み結果を使用しました",
                         )
                         continue
                     completed.remove(round_no)
@@ -259,13 +304,18 @@ class MatchAnalysisPipeline:
                     # Persist raw per-round output before advancing the checkpoint. This is the
                     # durable recovery source; match aggregation may replace it later.
                     self.repository.save_analysis_result(result.output)
+                    saved_package_fingerprints[str(round_no)] = self._json_fingerprint(
+                        result.round_package,
+                    )
                     round_results.append(result)
                     completed.append(round_no)
                     failed_rounds = [value for value in failed_rounds if value != round_no]
                     round_diagnostics.pop(str(round_no), None)
                     progress(
                         round_progress_start + round_progress_span * (index + 1) / total,
-                        f"ラウンド {round_no} を評価しました",
+                        f"区間 {round_no} の観測を保存しました（境界未確定・採点保留）"
+                        if RoundAnalyzer.boundary_context_is_uncertain(result.round_package)
+                        else f"ラウンド {round_no} を評価しました",
                     )
                 except AnalysisCancelled:
                     raise
@@ -288,6 +338,7 @@ class MatchAnalysisPipeline:
                             "failed_rounds": sorted(set(failed_rounds)),
                             "round_diagnostics": round_diagnostics,
                             "current_round": round_no,
+                            "saved_round_package_fingerprints": saved_package_fingerprints,
                         }
                     )
                     self.repository.save_job_checkpoint(identifier, "analyzing", checkpoint_state)
@@ -364,6 +415,15 @@ class MatchAnalysisPipeline:
                     "根拠クリップを生成しています",
                 )
 
+            if saved_practical_source_hash is not None and (
+                self._full_source_sha256(metadata.path) != saved_practical_source_hash
+                or self._config_fingerprint() != config_fingerprint
+                or {
+                    str(p["round_no"]): self._json_fingerprint(p)
+                    for p in self.repository.list_round_packages(identifier)
+                } != saved_package_fingerprints
+            ):
+                raise RuntimeError("再開できません: 復元中に動画・設定・保存区間が変更されました")
             status = "failed" if not round_results else "partial" if errors else "completed"
             self.repository.update_match_status(identifier, status)
             self.repository.save_job_checkpoint(
@@ -449,6 +509,9 @@ class MatchAnalysisPipeline:
         output_dir: Path,
         cancel_event: ThreadEvent,
     ) -> dict[str, Any]:
+        if RoundAnalyzer.boundary_context_is_uncertain(package):
+            package["frames"] = []
+            return package
         prepared = self.round_analyzer.fact_builder.enrich(package)
         candidates = self.round_analyzer.selector.select(prepared)
         plan = self.frame_planner.plan(prepared, candidates)
@@ -557,6 +620,16 @@ class MatchAnalysisPipeline:
                 return None
         try:
             self.validator.validate_round_package(package)
+            if RoundAnalyzer.boundary_context_is_uncertain(package):
+                if self.repository.list_round_evaluations(match_id, round_no):
+                    LOGGER.warning("暫定境界の保存済み採点を再利用しません: %s", round_no)
+                    return None
+                output = {
+                    "schema_version": "3.0", "analysis_id": f"RESTORED-{match_id}-R{round_no}",
+                    "match_id": match_id, "round_no": round_no, "evaluations": [],
+                }
+                self.validator.validate_ai_output(output, round_package=package)
+                return RoundAnalysis(package, (), {}, output, {})
             candidates = self.round_analyzer.selector.select(package)
             output = {
                 "schema_version": "3.0",
@@ -663,6 +736,18 @@ class MatchAnalysisPipeline:
                 "hud": self.validator.schemas.hud_observation,
             },
         }
+        if self.round_boundary_mode == "practical":
+            assert self.native_lifecycle_options is not None
+            contract_path = self.native_lifecycle_options.unedited_input_contract_path
+            assert contract_path is not None
+            payload["round_partition"] = {
+                "mode": self.round_boundary_mode,
+                "native_options": asdict(self.native_lifecycle_options),
+                "input_contract_sha256": hashlib.sha256(contract_path.read_bytes()).hexdigest(),
+            }
+            from valorant_ai_coach.hud.global_lifecycle import global_recognizer_fingerprint
+
+            payload["round_partition"]["recognizer_fingerprint"] = global_recognizer_fingerprint()
         if self.hud_video_processor is not None:
             processor = self.hud_video_processor
             payload["hud_processing"] = {
@@ -692,6 +777,47 @@ class MatchAnalysisPipeline:
             if callable(visual_fingerprint):
                 payload["visual_resources"] = visual_fingerprint()
         return self._json_fingerprint(payload)
+
+    @staticmethod
+    def _full_source_sha256(path: Path) -> str:
+        digest = hashlib.sha256()
+        with path.open("rb") as stream:
+            for block in iter(lambda: stream.read(1024 * 1024), b""):
+                digest.update(block)
+        return digest.hexdigest()
+
+    def _completed_practical_packages(
+        self, match_id: str, source: Path, completed: list[int],
+        expected: dict[str, str],
+    ) -> tuple[list[dict[str, Any]], str] | None:
+        """Restore only complete uncertain jobs after source/config validation.
+
+        Called after the existing resume fingerprint gate. This is durable job
+        restoration, not a candidate recognition cache. Incomplete or changed
+        Package inputs retain the existing fresh-processing path.
+        """
+        if (self.round_boundary_mode != "practical" or not expected
+                or set(map(str, completed)) != set(expected)):
+            return None
+        packages = self.repository.list_round_packages(match_id)
+        if (len(packages) != len(expected)
+                or {str(p["round_no"]) for p in packages} != set(expected)):
+            return None
+        for package in packages:
+            self.validator.validate_round_package(package)
+            package_key = str(package["round_no"])
+            if (not RoundAnalyzer.boundary_context_is_uncertain(package)
+                    or self._json_fingerprint(package) != expected[package_key]
+                    or self._restore_round(match_id, int(package["round_no"])) is None):
+                return None
+        from valorant_ai_coach.hud.unedited_input import UneditedInputContract
+
+        assert self.native_lifecycle_options is not None
+        contract_path = self.native_lifecycle_options.unedited_input_contract_path
+        assert contract_path is not None
+        source_hash = self._full_source_sha256(source)
+        UneditedInputContract.load(contract_path, source_video_sha256=source_hash)
+        return packages, source_hash
 
     def _persist_hud_report(self, match_id: str, result: HudVideoProcessingResult) -> None:
         """Keep observed facts and adopted frame references, never all sampled pixels."""

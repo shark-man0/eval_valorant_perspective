@@ -1,0 +1,126 @@
+{
+  "scope": "Post-prediction investigative selection, not independent holdout",
+  "selection_rule": "Five longest triple-unknown native numeric runs; lower middle frame; chronological display order",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "recognizer_fingerprint": "c729f02c87be094fec3a8d92cd986065f83ae56d2b7408dbe93d6321d87d60e9",
+  "profile_fingerprint": "10bfac00544e510ebf3f3e2c0072c9beba24938b2ff996c9012f7e4046d82c99",
+  "native_archive_sha256": "7e57454f8d5fcdb8ada1ee2feb8479030421868700ab4d22f5e7377aaa43cfb2",
+  "triple_unknown_frames": 139,
+  "triple_unknown_run_count": 29,
+  "cases": [
+    {
+      "frame_index": 4481,
+      "run_frames": 6,
+      "run_range_sec": [
+        74.68600260416666,
+        74.7693359375
+      ],
+      "pts_ticks": 1147689,
+      "pts_sec": 74.7193359375,
+      "source_pixel_sha256": "14d908f83f0529d81b943f06dddd5d1ff3c0ce3b06615a79ff0ce33ec8b1306e",
+      "copied_png_sha256": "6313243a7cf585352ebdf93198758a99c9d580e720160ab5ebde70794acabe7a",
+      "manual_topbar_review": {
+        "timer_display": "0:06",
+        "score_ally": null,
+        "score_enemy": 2,
+        "ally_visibility": "unreadable/ambiguous over bright weapon pixels",
+        "timer_present": true,
+        "enemy_score_present": true,
+        "eligible_absent_value_control": false
+      }
+    },
+    {
+      "frame_index": 4531,
+      "run_frames": 28,
+      "run_range_sec": [
+        75.33600260416667,
+        75.78600260416667
+      ],
+      "pts_ticks": 1160489,
+      "pts_sec": 75.55266927083333,
+      "source_pixel_sha256": "05471cd13105cd7297be6801a439c55610a38eb3a985050cc732a5747c54bcec",
+      "copied_png_sha256": "5c33bc6dde393cf38b74424944c1aa8f2fa5562f0ccedf8ec9ec6512f5285259",
+      "manual_topbar_review": {
+        "timer_display": "0:05",
+        "score_ally": 0,
+        "score_enemy": 2,
+        "ally_visibility": "readable",
+        "timer_present": true,
+        "enemy_score_present": true,
+        "eligible_absent_value_control": false
+      }
+    },
+    {
+      "frame_index": 6864,
+      "run_frames": 10,
+      "run_range_sec": [
+        114.3693359375,
+        114.5193359375
+      ],
+      "pts_ticks": 1757737,
+      "pts_sec": 114.43600260416666,
+      "source_pixel_sha256": "8796cb0cb16457bb02d7ec71dd245305e91d99a98e983f7f550a19503d1d068c",
+      "copied_png_sha256": "bd6dbca89563d172a74c070338243e32c8ba8c4c099d9a705c18f25f45fd9619",
+      "manual_topbar_review": {
+        "timer_display": "1:36",
+        "score_ally": 0,
+        "score_enemy": 2,
+        "ally_visibility": "readable",
+        "timer_present": true,
+        "enemy_score_present": true,
+        "eligible_absent_value_control": false
+      }
+    },
+    {
+      "frame_index": 6902,
+      "run_frames": 32,
+      "run_range_sec": [
+        114.8193359375,
+        115.33600260416667
+      ],
+      "pts_ticks": 1767465,
+      "pts_sec": 115.0693359375,
+      "source_pixel_sha256": "5407f3224be40b52d6180d58ff5b290896eaa66165621c6cdc6dd7a115624e5b",
+      "copied_png_sha256": "ddd717d3a7aa74b0a735cbbdd8b59f9e83c0fc872c9406643c454d47e6cb96b4",
+      "manual_topbar_review": {
+        "timer_display": "1:36",
+        "score_ally": 0,
+        "score_enemy": 2,
+        "ally_visibility": "readable",
+        "timer_present": true,
+        "enemy_score_present": true,
+        "eligible_absent_value_control": false
+      }
+    },
+    {
+      "frame_index": 7156,
+      "run_frames": 21,
+      "run_range_sec": [
+        119.13600260416666,
+        119.4693359375
+      ],
+      "pts_ticks": 1832489,
+      "pts_sec": 119.30266927083333,
+      "source_pixel_sha256": "4549a6127cebacc0f349b1c7e5b72725be96a34bca6a727dc1e3fa26225cbb96",
+      "copied_png_sha256": "820503688f30d81b7da216540deccb6be87253f70c14a4f7553bafd62d6b15be",
+      "manual_topbar_review": {
+        "timer_display": "1:32",
+        "score_ally": 0,
+        "score_enemy": 2,
+        "ally_visibility": "readable",
+        "timer_present": true,
+        "enemy_score_present": true,
+        "eligible_absent_value_control": false
+      }
+    }
+  ],
+  "review_provenance": "Manual source topbar inspection after native predictions and explicit longest triple-unknown-run selection; no independent holdout or absence claim",
+  "artifact_hashes": {
+    "selection.json": "3e74b50486dc2e788e5a05468006926483293c6b9eadb779af36f7cd11d10368",
+    "decoded.json": "e18306f45881287d84091f932992e0b424ee74d95ddd0130ac6d14f77e27cff9"
+  },
+  "eligible_timer_absence_controls": 0,
+  "eligible_score_absence_controls": 0,
+  "qualification_created": false,
+  "canonical_e2e_reexecuted": false
+}

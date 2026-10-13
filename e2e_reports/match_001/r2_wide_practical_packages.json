@@ -1,0 +1,3161 @@
+{
+  "scope": "Actual 109-114 second archived current-reader observations through current common replay/Package builder; local window, not whole-match qualification.",
+  "input_sha256": {
+    "e2e_reports/match_001/r2_wide_current_phase_inputs.json": "3addc0eb3e510206602b51544a29eb105fd271770f8ab30d8c4920b8635e17c8"
+  },
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "archived_reader_recognizer_fingerprint": "9f95885a4452e998fbfa401a266d04de9aaa303a8a9d2a1da7165e02743f4991",
+  "current_recognizer_fingerprint": "75efed4a6500a48f564f36e6c7fecf56d4e190d41bea15df204a723c0c572ef3",
+  "round_packages": [
+    {
+      "schema_version": "2.0",
+      "match_id": "match_001",
+      "round_no": 1,
+      "source_video": {
+        "path": "/home/admin/eval_valorant_perspective/ValorantData/videos/Valorant_09-25-2026_0-37-29-379.mp4",
+        "fps": 60.0,
+        "width": 1920,
+        "height": 1080,
+        "duration_sec": 171.019336
+      },
+      "round_window": {
+        "start_sec": 109.00266927083334,
+        "end_sec": 110.98600260416667
+      },
+      "round_meta": {
+        "side": "unknown",
+        "map": "unknown",
+        "player_agent": "unknown",
+        "player_role": "unknown",
+        "round_result": "unknown",
+        "score_before": {
+          "ally": 0,
+          "enemy": 2
+        },
+        "economy_context": null
+      },
+      "observation_quality": {
+        "hud_confidence": 0.0,
+        "visual_confidence": 0.0,
+        "timeline_completeness": 0.0,
+        "missing_intervals": [
+          {
+            "start_sec": 109.00266927083334,
+            "end_sec": 110.98600260416667
+          }
+        ]
+      },
+      "events": [
+        {
+          "event_id": "DERIVED-STATE-000109003",
+          "time_sec": 109.00266927083334,
+          "type": "state_snapshot",
+          "actor": "system",
+          "attributes": {
+            "primary_state": "buy_menu_open",
+            "ally_alive": 5,
+            "enemy_alive": null,
+            "spike_state": "unknown"
+          },
+          "confidence": 0.88
+        },
+        {
+          "event_id": "DERIVED-STATE-000109553",
+          "time_sec": 109.55266927083333,
+          "type": "state_snapshot",
+          "actor": "system",
+          "attributes": {
+            "primary_state": "buy_menu_open",
+            "ally_alive": 5,
+            "enemy_alive": null,
+            "spike_state": "unknown"
+          },
+          "confidence": 0.8546
+        },
+        {
+          "event_id": "DERIVED-STATE-000109936",
+          "time_sec": 109.93600260416666,
+          "type": "state_snapshot",
+          "actor": "system",
+          "attributes": {
+            "primary_state": "buy_menu_open",
+            "ally_alive": null,
+            "enemy_alive": null,
+            "spike_state": "unknown"
+          },
+          "confidence": 0.88
+        },
+        {
+          "event_id": "DERIVED-STATE-000110003",
+          "time_sec": 110.00266927083334,
+          "type": "state_snapshot",
+          "actor": "system",
+          "attributes": {
+            "primary_state": "buy_menu_open",
+            "ally_alive": 5,
+            "enemy_alive": null,
+            "spike_state": "unknown"
+          },
+          "confidence": 0.8356
+        }
+      ],
+      "state_snapshots": [
+        {
+          "time_sec": 109.00266927083334,
+          "spectator_primary_state": null,
+          "score_ally": 0,
+          "score_enemy": 2,
+          "ally_alive": 5,
+          "enemy_alive": null,
+          "hp": null,
+          "armor": null,
+          "weapon": null,
+          "spike_state": "unknown",
+          "round_time_remaining_sec": 2.0,
+          "utility_available_count": null,
+          "player_location": {
+            "zone_id": null,
+            "zone_name": null
+          },
+          "known_enemy_locations": [],
+          "spatial_context": {
+            "cover_available": null,
+            "escape_route_available": null,
+            "line_of_sight_state": "unknown",
+            "exposed_directions_count": null,
+            "view_target_zone_id": null
+          },
+          "source_confidence": {
+            "ally_alive": 0.88,
+            "spike_state": 0.88,
+            "round_time_remaining_sec": 0.9614624381065369,
+            "score_ally": 0.9337831735610962,
+            "score_enemy": 0.960744321346283
+          },
+          "round_time_remaining_display": "0:02",
+          "round_time_remaining_display_provenance": {
+            "reader": "round_timer",
+            "sources": [
+              "strict_timer_glyphs",
+              "comparison_gaussian3x3_v1"
+            ],
+            "confidence": 0.9614624381065369,
+            "cross_checked": false
+          }
+        },
+        {
+          "time_sec": 109.55266927083333,
+          "spectator_primary_state": null,
+          "score_ally": 0,
+          "score_enemy": 2,
+          "ally_alive": 5,
+          "enemy_alive": null,
+          "hp": null,
+          "armor": null,
+          "weapon": null,
+          "spike_state": "unknown",
+          "round_time_remaining_sec": 1.0,
+          "utility_available_count": null,
+          "player_location": {
+            "zone_id": null,
+            "zone_name": null
+          },
+          "known_enemy_locations": [],
+          "spatial_context": {
+            "cover_available": null,
+            "escape_route_available": null,
+            "line_of_sight_state": "unknown",
+            "exposed_directions_count": null,
+            "view_target_zone_id": null
+          },
+          "source_confidence": {
+            "ally_alive": 0.8546,
+            "spike_state": 0.8546,
+            "round_time_remaining_sec": 0.9614624381065369,
+            "score_ally": 0.9353469610214233,
+            "score_enemy": 0.9508659243583679
+          },
+          "round_time_remaining_display": "0:01",
+          "round_time_remaining_display_provenance": {
+            "reader": "round_timer",
+            "sources": [
+              "strict_timer_glyphs",
+              "comparison_gaussian3x3_v1"
+            ],
+            "confidence": 0.9614624381065369,
+            "cross_checked": false
+          }
+        },
+        {
+          "time_sec": 109.93600260416666,
+          "spectator_primary_state": null,
+          "score_ally": 0,
+          "score_enemy": 2,
+          "ally_alive": null,
+          "enemy_alive": null,
+          "hp": null,
+          "armor": null,
+          "weapon": null,
+          "spike_state": "unknown",
+          "round_time_remaining_sec": 1.0,
+          "utility_available_count": null,
+          "player_location": {
+            "zone_id": null,
+            "zone_name": null
+          },
+          "known_enemy_locations": [],
+          "spatial_context": {
+            "cover_available": null,
+            "escape_route_available": null,
+            "line_of_sight_state": "unknown",
+            "exposed_directions_count": null,
+            "view_target_zone_id": null
+          },
+          "source_confidence": {
+            "spike_state": 0.88,
+            "round_time_remaining_sec": 0.9599595069885254,
+            "score_ally": 0.9382184147834778,
+            "score_enemy": 0.9508659243583679
+          },
+          "round_time_remaining_display": "0:01",
+          "round_time_remaining_display_provenance": {
+            "reader": "round_timer",
+            "sources": [
+              "strict_timer_glyphs",
+              "comparison_gaussian3x3_v1"
+            ],
+            "confidence": 0.9599595069885254,
+            "cross_checked": false
+          }
+        },
+        {
+          "time_sec": 110.00266927083334,
+          "spectator_primary_state": null,
+          "score_ally": 0,
+          "score_enemy": 2,
+          "ally_alive": 5,
+          "enemy_alive": null,
+          "hp": null,
+          "armor": null,
+          "weapon": null,
+          "spike_state": "unknown",
+          "round_time_remaining_sec": 1.0,
+          "utility_available_count": null,
+          "player_location": {
+            "zone_id": null,
+            "zone_name": null
+          },
+          "known_enemy_locations": [],
+          "spatial_context": {
+            "cover_available": null,
+            "escape_route_available": null,
+            "line_of_sight_state": "unknown",
+            "exposed_directions_count": null,
+            "view_target_zone_id": null
+          },
+          "source_confidence": {
+            "ally_alive": 0.8356,
+            "spike_state": 0.8356,
+            "round_time_remaining_sec": 0.9599595069885254,
+            "score_ally": 0.9382184147834778,
+            "score_enemy": 0.9628920555114746
+          },
+          "round_time_remaining_display": "0:01",
+          "round_time_remaining_display_provenance": {
+            "reader": "round_timer",
+            "sources": [
+              "strict_timer_glyphs",
+              "comparison_gaussian3x3_v1"
+            ],
+            "confidence": 0.9599595069885254,
+            "cross_checked": false
+          }
+        }
+      ],
+      "deterministic_facts": [
+        {
+          "fact_id": "HT0001",
+          "key": "round_time_remaining_sec",
+          "value": 2.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.00266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0002",
+          "key": "round_time_remaining_sec",
+          "value": 2.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.0193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0003",
+          "key": "round_time_remaining_sec",
+          "value": 2.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.03600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0004",
+          "key": "round_time_remaining_sec",
+          "value": 2.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.05266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0005",
+          "key": "round_time_remaining_sec",
+          "value": 2.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.0693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0006",
+          "key": "round_time_remaining_sec",
+          "value": 2.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.08600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0007",
+          "key": "round_time_remaining_sec",
+          "value": 2.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.10266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0008",
+          "key": "round_time_remaining_sec",
+          "value": 2.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.1193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0009",
+          "key": "round_time_remaining_sec",
+          "value": 2.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.13600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0010",
+          "key": "round_time_remaining_sec",
+          "value": 2.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.15266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0011",
+          "key": "round_time_remaining_sec",
+          "value": 2.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.1693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0012",
+          "key": "round_time_remaining_sec",
+          "value": 2.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.18600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0013",
+          "key": "round_time_remaining_sec",
+          "value": 2.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.20266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0014",
+          "key": "round_time_remaining_sec",
+          "value": 2.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.2193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0015",
+          "key": "round_time_remaining_sec",
+          "value": 2.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.23600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0016",
+          "key": "round_time_remaining_sec",
+          "value": 2.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.25266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0017",
+          "key": "round_time_remaining_sec",
+          "value": 2.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.2693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0018",
+          "key": "round_time_remaining_sec",
+          "value": 2.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.28600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0019",
+          "key": "round_time_remaining_sec",
+          "value": 2.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.30266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0020",
+          "key": "round_time_remaining_sec",
+          "value": 2.0,
+          "confidence": 0.9600576162338257,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.3193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0021",
+          "key": "round_time_remaining_sec",
+          "value": 2.0,
+          "confidence": 0.9462069272994995,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.33600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0022",
+          "key": "round_time_remaining_sec",
+          "value": 2.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.35266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0023",
+          "key": "round_time_remaining_sec",
+          "value": 2.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.3693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0024",
+          "key": "round_time_remaining_sec",
+          "value": 2.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.38600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0025",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.40266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0026",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.4193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0027",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.43600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0028",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.45266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0029",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.4693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0030",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.48600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0031",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.50266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0032",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.5193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0033",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.53600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0034",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.55266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0035",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.5693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0036",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.58600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0037",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.60266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0038",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.6193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0039",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.63600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0040",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.65266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0041",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.6693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0042",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.68600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0043",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.70266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0044",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.7193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0045",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.73600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0046",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.75266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0047",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.7693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0048",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.78600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0049",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.80266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0050",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.8193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0051",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.83600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0052",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.85266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0053",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.8693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0054",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.88600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0055",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.90266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0056",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.9193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0057",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.93600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0058",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.95266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0059",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.9693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0060",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 109.98600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0061",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.00266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0062",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.0193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0063",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.03600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0064",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.05266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0065",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.0693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0066",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.08600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0067",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.10266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0068",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.1193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0069",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.13600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0070",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.15266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0071",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9614624381065369,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.1693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0072",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.18600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0073",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.20266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0074",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.2193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0075",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.23600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0076",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.25266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0077",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.2693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0078",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.28600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0079",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.30266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0080",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.3193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0081",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.33600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0082",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.35266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0083",
+          "key": "round_time_remaining_sec",
+          "value": 1.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.3693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0084",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9599595069885254,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.38600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0085",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9585809111595154,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.40266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0086",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9585809111595154,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.4193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0087",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9585809111595154,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.43600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0088",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9585809111595154,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.45266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0089",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9585809111595154,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.4693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0090",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9585809111595154,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.48600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0091",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9585809111595154,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.50266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0092",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9585809111595154,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.5193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0093",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9585809111595154,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.53600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0094",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9585809111595154,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.55266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0095",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9585809111595154,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.5693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0096",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9585809111595154,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.58600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0097",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9585809111595154,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.60266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0098",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9585809111595154,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.6193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0099",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9585809111595154,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.63600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0100",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9585809111595154,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.65266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0101",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9585809111595154,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.6693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0102",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9585809111595154,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.68600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0103",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9585809111595154,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.70266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0104",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9585809111595154,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.7193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0105",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9585809111595154,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.73600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0106",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9585809111595154,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.75266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0107",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9585809111595154,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.7693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0108",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9585809111595154,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.78600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0109",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9585809111595154,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.80266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0110",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9585809111595154,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.8193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0111",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9585809111595154,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.83600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0112",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9629915952682495,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.85266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0113",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9620289206504822,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.8693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0114",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9629915952682495,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.88600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0115",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9629915952682495,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.90266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0116",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9629915952682495,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.9193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0117",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9629915952682495,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.93600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0118",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9629915952682495,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.95266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0119",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9634609818458557,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.9693359375,
+          "time_range": null
+        }
+      ],
+      "frames": [],
+      "previous_round_context": null,
+      "round_lifecycle": {
+        "mode": "practical",
+        "observed_round_no": null,
+        "start": {
+          "status": "unknown",
+          "candidate": null,
+          "formal_event_id": null
+        },
+        "end": {
+          "status": "unknown",
+          "candidate": null,
+          "formal_event_id": null
+        }
+      }
+    },
+    {
+      "schema_version": "2.0",
+      "match_id": "match_001",
+      "round_no": 2,
+      "source_video": {
+        "path": "/home/admin/eval_valorant_perspective/ValorantData/videos/Valorant_09-25-2026_0-37-29-379.mp4",
+        "fps": 60.0,
+        "width": 1920,
+        "height": 1080,
+        "duration_sec": 171.019336
+      },
+      "round_window": {
+        "start_sec": 110.98600260416667,
+        "end_sec": 171.019336
+      },
+      "round_meta": {
+        "side": "unknown",
+        "map": "unknown",
+        "player_agent": "unknown",
+        "player_role": "unknown",
+        "round_result": "unknown",
+        "score_before": {
+          "ally": 0,
+          "enemy": 2
+        },
+        "economy_context": null
+      },
+      "observation_quality": {
+        "hud_confidence": 0.0,
+        "visual_confidence": 0.0,
+        "timeline_completeness": 0.0,
+        "missing_intervals": [
+          {
+            "start_sec": 110.98600260416667,
+            "end_sec": 171.019336
+          }
+        ]
+      },
+      "events": [
+        {
+          "event_id": "DERIVED-STATE-000113119",
+          "time_sec": 113.1193359375,
+          "type": "state_snapshot",
+          "actor": "system",
+          "attributes": {
+            "primary_state": "live_first_person",
+            "ally_alive": null,
+            "enemy_alive": null,
+            "spike_state": "unknown"
+          },
+          "confidence": 0.88
+        },
+        {
+          "event_id": "DERIVED-STATE-000113186",
+          "time_sec": 113.18600260416666,
+          "type": "state_snapshot",
+          "actor": "system",
+          "attributes": {
+            "primary_state": "live_first_person",
+            "ally_alive": null,
+            "enemy_alive": null,
+            "spike_state": "unknown"
+          },
+          "confidence": 0.88
+        }
+      ],
+      "state_snapshots": [
+        {
+          "time_sec": 112.68600260416666,
+          "spectator_primary_state": false,
+          "score_ally": null,
+          "score_enemy": 2,
+          "ally_alive": null,
+          "enemy_alive": null,
+          "hp": null,
+          "armor": null,
+          "weapon": null,
+          "spike_state": "unknown",
+          "round_time_remaining_sec": null,
+          "utility_available_count": null,
+          "player_location": {
+            "zone_id": null,
+            "zone_name": null
+          },
+          "known_enemy_locations": [],
+          "spatial_context": {
+            "cover_available": null,
+            "escape_route_available": null,
+            "line_of_sight_state": "unknown",
+            "exposed_directions_count": null,
+            "view_target_zone_id": null
+          },
+          "source_confidence": {
+            "spike_state": 0.88,
+            "score_enemy": 0.9630724787712097
+          }
+        },
+        {
+          "time_sec": 113.03600260416667,
+          "spectator_primary_state": false,
+          "score_ally": 0,
+          "score_enemy": 2,
+          "ally_alive": null,
+          "enemy_alive": null,
+          "hp": null,
+          "armor": null,
+          "weapon": null,
+          "spike_state": "unknown",
+          "round_time_remaining_sec": null,
+          "utility_available_count": null,
+          "player_location": {
+            "zone_id": null,
+            "zone_name": null
+          },
+          "known_enemy_locations": [],
+          "spatial_context": {
+            "cover_available": null,
+            "escape_route_available": null,
+            "line_of_sight_state": "unknown",
+            "exposed_directions_count": null,
+            "view_target_zone_id": null
+          },
+          "source_confidence": {
+            "spike_state": 0.88,
+            "score_ally": 0.9249943494796753,
+            "score_enemy": 0.9639614820480347
+          }
+        },
+        {
+          "time_sec": 113.1193359375,
+          "spectator_primary_state": false,
+          "score_ally": null,
+          "score_enemy": 2,
+          "ally_alive": null,
+          "enemy_alive": null,
+          "hp": null,
+          "armor": null,
+          "weapon": null,
+          "spike_state": "unknown",
+          "round_time_remaining_sec": 98.0,
+          "utility_available_count": null,
+          "player_location": {
+            "zone_id": null,
+            "zone_name": null
+          },
+          "known_enemy_locations": [],
+          "spatial_context": {
+            "cover_available": null,
+            "escape_route_available": null,
+            "line_of_sight_state": "unknown",
+            "exposed_directions_count": null,
+            "view_target_zone_id": null
+          },
+          "source_confidence": {
+            "spike_state": 0.88,
+            "round_time_remaining_sec": 0.9621123671531677,
+            "score_enemy": 0.9476748704910278
+          },
+          "round_time_remaining_display": "1:38",
+          "round_time_remaining_display_provenance": {
+            "reader": "round_timer",
+            "sources": [
+              "strict_timer_glyphs",
+              "comparison_gaussian3x3_v1"
+            ],
+            "confidence": 0.9621123671531677,
+            "cross_checked": false
+          }
+        },
+        {
+          "time_sec": 113.6693359375,
+          "spectator_primary_state": false,
+          "score_ally": 0,
+          "score_enemy": 2,
+          "ally_alive": null,
+          "enemy_alive": null,
+          "hp": null,
+          "armor": null,
+          "weapon": null,
+          "spike_state": "unknown",
+          "round_time_remaining_sec": null,
+          "utility_available_count": null,
+          "player_location": {
+            "zone_id": null,
+            "zone_name": null
+          },
+          "known_enemy_locations": [],
+          "spatial_context": {
+            "cover_available": null,
+            "escape_route_available": null,
+            "line_of_sight_state": "unknown",
+            "exposed_directions_count": null,
+            "view_target_zone_id": null
+          },
+          "source_confidence": {
+            "spike_state": 0.88,
+            "score_ally": 0.9369300007820129,
+            "score_enemy": 0.9628920555114746
+          }
+        }
+      ],
+      "deterministic_facts": [
+        {
+          "fact_id": "HT0001",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9600576162338257,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 110.98600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0002",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9634609818458557,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.00266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0003",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9620289206504822,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.0193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0004",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9620289206504822,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.03600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0005",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9602814316749573,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.05266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0006",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9621202349662781,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.0693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0007",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9634609818458557,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.08600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0008",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9634609818458557,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.10266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0009",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9634609818458557,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.1193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0010",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9634609818458557,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.13600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0011",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.963474452495575,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.30266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0012",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.963474452495575,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.3193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0013",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.961708664894104,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.33600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0014",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.961708664894104,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.35266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0015",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9630863666534424,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.3693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0016",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9630863666534424,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.38600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0017",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9631862044334412,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.40266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0018",
+          "key": "round_time_remaining_sec",
+          "value": 0.0,
+          "confidence": 0.9631862044334412,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.4193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0019",
+          "key": "round_time_remaining_sec",
+          "value": 100.0,
+          "confidence": 0.931477963924408,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.43600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0020",
+          "key": "round_time_remaining_sec",
+          "value": 100.0,
+          "confidence": 0.931477963924408,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.45266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0021",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9703618884086609,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.4693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0022",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.971046507358551,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.48600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0023",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.971046507358551,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.50266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0024",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.971046507358551,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.5193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0025",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.971046507358551,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.53600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0026",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.971046507358551,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.55266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0027",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.971046507358551,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.5693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0028",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9699443578720093,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.58600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0029",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9699443578720093,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.60266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0030",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9699443578720093,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.6193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0031",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9727542400360107,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.63600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0032",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9727542400360107,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.65266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0033",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9727542400360107,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.6693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0034",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9727542400360107,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.68600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0035",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9727542400360107,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.70266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0036",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9758377075195312,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.7193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0037",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9758377075195312,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.73600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0038",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9758377075195312,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.75266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0039",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9774425029754639,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.7693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0040",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9761002659797668,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.78600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0041",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.977368175983429,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.80266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0042",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9759424328804016,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.8193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0043",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9878537654876709,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.83600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0044",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9757307171821594,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.88600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0045",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9733097553253174,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.90266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0046",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.974695086479187,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.9193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0047",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9722160696983337,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.93600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0048",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9746643900871277,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.95266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0049",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.973865807056427,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.9693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0050",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9755643010139465,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 111.98600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0051",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9758915305137634,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.00266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0052",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.975091814994812,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.0193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0053",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.975091814994812,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.03600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0054",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.974036455154419,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.05266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0055",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.974036455154419,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.0693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0056",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.974036455154419,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.08600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0057",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.974036455154419,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.10266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0058",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.974036455154419,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.1193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0059",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.974036455154419,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.13600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0060",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.977893054485321,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.15266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0061",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9784380793571472,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.1693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0062",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9784380793571472,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.18600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0063",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9784380793571472,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.20266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0064",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9784380793571472,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.2193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0065",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9784380793571472,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.23600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0066",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9784380793571472,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.25266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0067",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9784380793571472,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.2693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0068",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9784380793571472,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.28600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0069",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9782716631889343,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.30266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0070",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9801541566848755,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.3193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0071",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9792607426643372,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.33600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0072",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9792607426643372,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.35266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0073",
+          "key": "round_time_remaining_sec",
+          "value": 99.0,
+          "confidence": 0.9782716631889343,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.3693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0074",
+          "key": "round_time_remaining_sec",
+          "value": 98.0,
+          "confidence": 0.9791930317878723,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.38600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0075",
+          "key": "round_time_remaining_sec",
+          "value": 98.0,
+          "confidence": 0.9775127172470093,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.40266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0076",
+          "key": "round_time_remaining_sec",
+          "value": 98.0,
+          "confidence": 0.9756559729576111,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.4193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0077",
+          "key": "round_time_remaining_sec",
+          "value": 98.0,
+          "confidence": 0.9756559729576111,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.43600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0078",
+          "key": "round_time_remaining_sec",
+          "value": 98.0,
+          "confidence": 0.9756559729576111,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.45266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0079",
+          "key": "round_time_remaining_sec",
+          "value": 98.0,
+          "confidence": 0.9775130152702332,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.4693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0080",
+          "key": "round_time_remaining_sec",
+          "value": 98.0,
+          "confidence": 0.9775130152702332,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.48600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0081",
+          "key": "round_time_remaining_sec",
+          "value": 98.0,
+          "confidence": 0.9746789932250977,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.50266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0082",
+          "key": "round_time_remaining_sec",
+          "value": 98.0,
+          "confidence": 0.9666543006896973,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.5193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0083",
+          "key": "round_time_remaining_sec",
+          "value": 98.0,
+          "confidence": 0.974844217300415,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 112.53600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0084",
+          "key": "round_time_remaining_sec",
+          "value": 98.0,
+          "confidence": 0.9621123671531677,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 113.1193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0085",
+          "key": "round_time_remaining_sec",
+          "value": 98.0,
+          "confidence": 0.9621123671531677,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 113.13600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0086",
+          "key": "round_time_remaining_sec",
+          "value": 98.0,
+          "confidence": 0.9605517983436584,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 113.15266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0087",
+          "key": "round_time_remaining_sec",
+          "value": 98.0,
+          "confidence": 0.9399515986442566,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 113.1693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0088",
+          "key": "round_time_remaining_sec",
+          "value": 98.0,
+          "confidence": 0.9399515986442566,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 113.18600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0089",
+          "key": "round_time_remaining_sec",
+          "value": 98.0,
+          "confidence": 0.9409599900245667,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 113.20266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0090",
+          "key": "round_time_remaining_sec",
+          "value": 98.0,
+          "confidence": 0.9596883654594421,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 113.2193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0091",
+          "key": "round_time_remaining_sec",
+          "value": 98.0,
+          "confidence": 0.9604780077934265,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 113.23600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0092",
+          "key": "round_time_remaining_sec",
+          "value": 98.0,
+          "confidence": 0.9465813636779785,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 113.25266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0093",
+          "key": "round_time_remaining_sec",
+          "value": 98.0,
+          "confidence": 0.945162296295166,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 113.2693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0094",
+          "key": "round_time_remaining_sec",
+          "value": 98.0,
+          "confidence": 0.945162296295166,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 113.28600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0095",
+          "key": "round_time_remaining_sec",
+          "value": 98.0,
+          "confidence": 0.9422315359115601,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 113.30266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0096",
+          "key": "round_time_remaining_sec",
+          "value": 98.0,
+          "confidence": 0.9422315359115601,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 113.3193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0097",
+          "key": "round_time_remaining_sec",
+          "value": 98.0,
+          "confidence": 0.9422315359115601,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 113.33600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0098",
+          "key": "round_time_remaining_sec",
+          "value": 98.0,
+          "confidence": 0.9435288310050964,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 113.35266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0099",
+          "key": "round_time_remaining_sec",
+          "value": 98.0,
+          "confidence": 0.9435288310050964,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 113.3693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0100",
+          "key": "round_time_remaining_sec",
+          "value": 97.0,
+          "confidence": 0.9412333965301514,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 113.38600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0101",
+          "key": "round_time_remaining_sec",
+          "value": 97.0,
+          "confidence": 0.9399497509002686,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 113.40266927083333,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0102",
+          "key": "round_time_remaining_sec",
+          "value": 97.0,
+          "confidence": 0.938279926776886,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 113.4193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0103",
+          "key": "round_time_remaining_sec",
+          "value": 97.0,
+          "confidence": 0.938279926776886,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 113.43600260416666,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0104",
+          "key": "round_time_remaining_sec",
+          "value": 97.0,
+          "confidence": 0.940709114074707,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 113.45266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0105",
+          "key": "round_time_remaining_sec",
+          "value": 97.0,
+          "confidence": 0.940709114074707,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 113.4693359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0106",
+          "key": "round_time_remaining_sec",
+          "value": 97.0,
+          "confidence": 0.940709114074707,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 113.48600260416667,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0107",
+          "key": "round_time_remaining_sec",
+          "value": 97.0,
+          "confidence": 0.942505419254303,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 113.50266927083334,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0108",
+          "key": "round_time_remaining_sec",
+          "value": 97.0,
+          "confidence": 0.9579760432243347,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 113.5193359375,
+          "time_range": null
+        },
+        {
+          "fact_id": "HT0109",
+          "key": "round_time_remaining_sec",
+          "value": 97.0,
+          "confidence": 0.9579760432243347,
+          "source": "hud",
+          "provenance_event_ids": [],
+          "time_sec": 113.53600260416667,
+          "time_range": null
+        }
+      ],
+      "frames": [],
+      "previous_round_context": null,
+      "round_lifecycle": {
+        "mode": "practical",
+        "observed_round_no": null,
+        "start": {
+          "status": "provisional",
+          "candidate": {
+            "kind": "round_start",
+            "boundary_status": "provisional",
+            "boundary_time_sec": 111.4193359375,
+            "confirmation_time_sec": 111.48600260416667,
+            "evidence_times_sec": [
+              111.4193359375,
+              111.43600260416666,
+              111.45266927083334,
+              111.4693359375,
+              111.48600260416667
+            ],
+            "confidence": 0.9000468022202687,
+            "provenance": {
+              "scope": "global_system",
+              "producer": "unedited_ui_start_tracker",
+              "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+              "preparation_pts_sec": [
+                110.98600260416667,
+                111.40266927083333
+              ],
+              "reader_qualification_required": true,
+              "confirmation_pts_sec": 111.48600260416667,
+              "pts_sec": [
+                111.4193359375,
+                111.43600260416666,
+                111.45266927083334,
+                111.4693359375,
+                111.48600260416667
+              ],
+              "clock_display_samples": [
+                {
+                  "pts_sec": 111.4193359375,
+                  "observed_seconds": 0.0,
+                  "observed_display": "0:00",
+                  "reader_confidence": 0.9631862044334412,
+                  "display_provenance": {
+                    "reader": "round_timer",
+                    "sources": [
+                      "strict_timer_glyphs",
+                      "comparison_gaussian3x3_v1"
+                    ],
+                    "confidence": 0.9631862044334412,
+                    "cross_checked": false
+                  },
+                  "source_pixel_sha256": "44dda08d003391b16c90a664bbea96af9f86e9cb332f5a03f59ecb1b4d7f2ae3",
+                  "previous_source_pixel_sha256": "16d1c869ae826a352c311370b10c3be8f7a5995a121b38f3612006f77042369b"
+                },
+                {
+                  "pts_sec": 111.43600260416666,
+                  "observed_seconds": 100.0,
+                  "observed_display": "1:40",
+                  "reader_confidence": 0.931477963924408,
+                  "display_provenance": {
+                    "reader": "round_timer",
+                    "sources": [
+                      "strict_timer_glyphs",
+                      "comparison_gaussian3x3_v1"
+                    ],
+                    "confidence": 0.931477963924408,
+                    "cross_checked": false
+                  },
+                  "source_pixel_sha256": "cf8733010ac3f5cd79025316ffb9a20a59d85807c86a23c8cfc60bf46fe4005a",
+                  "previous_source_pixel_sha256": "44dda08d003391b16c90a664bbea96af9f86e9cb332f5a03f59ecb1b4d7f2ae3"
+                },
+                {
+                  "pts_sec": 111.45266927083334,
+                  "observed_seconds": 100.0,
+                  "observed_display": "1:40",
+                  "reader_confidence": 0.931477963924408,
+                  "display_provenance": {
+                    "reader": "round_timer",
+                    "sources": [
+                      "strict_timer_glyphs",
+                      "comparison_gaussian3x3_v1"
+                    ],
+                    "confidence": 0.931477963924408,
+                    "cross_checked": false
+                  },
+                  "source_pixel_sha256": "cecdb6d7f617319fc343d599491ca74730a482c3c1825304af4bf27cfe3b40fe",
+                  "previous_source_pixel_sha256": "cf8733010ac3f5cd79025316ffb9a20a59d85807c86a23c8cfc60bf46fe4005a"
+                },
+                {
+                  "pts_sec": 111.4693359375,
+                  "observed_seconds": 99.0,
+                  "observed_display": "1:39",
+                  "reader_confidence": 0.9703618884086609,
+                  "display_provenance": {
+                    "reader": "round_timer",
+                    "sources": [
+                      "strict_timer_glyphs",
+                      "comparison_gaussian3x3_v1"
+                    ],
+                    "confidence": 0.9703618884086609,
+                    "cross_checked": false
+                  },
+                  "source_pixel_sha256": "930801434d9fdcbca13d3f8a77123b0b6076262acb722e7329afc4ee67170cd3",
+                  "previous_source_pixel_sha256": "cecdb6d7f617319fc343d599491ca74730a482c3c1825304af4bf27cfe3b40fe"
+                },
+                {
+                  "pts_sec": 111.48600260416667,
+                  "observed_seconds": 99.0,
+                  "observed_display": "1:39",
+                  "reader_confidence": 0.971046507358551,
+                  "display_provenance": {
+                    "reader": "round_timer",
+                    "sources": [
+                      "strict_timer_glyphs",
+                      "comparison_gaussian3x3_v1"
+                    ],
+                    "confidence": 0.971046507358551,
+                    "cross_checked": false
+                  },
+                  "source_pixel_sha256": "041c2f3bc3b7f994f57baaa3ffe69c4933961c0f7eca0e53312422237b3e12ab",
+                  "previous_source_pixel_sha256": "930801434d9fdcbca13d3f8a77123b0b6076262acb722e7329afc4ee67170cd3"
+                }
+              ],
+              "coherent_clock_begin_pts_sec": 111.43600260416666,
+              "coherent_clock_observation_count": 4,
+              "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+              "source_epoch": "4d064cd235d24963b22b70f71fb0639f",
+              "source_pts_ticks": 1711401,
+              "source_time_base": "1/15360",
+              "source_pts_sec": 111.4193359375,
+              "source_pixel_sha256": "44dda08d003391b16c90a664bbea96af9f86e9cb332f5a03f59ecb1b4d7f2ae3",
+              "profile_fingerprint": "10bfac00544e510ebf3f3e2c0072c9beba24938b2ff996c9012f7e4046d82c99",
+              "recognizer_fingerprint": "75efed4a6500a48f564f36e6c7fecf56d4e190d41bea15df204a723c0c572ef3",
+              "continuity_segment": 0,
+              "boundary_mode": "practical",
+              "qualification_status": "unverified",
+              "actor": "system",
+              "signals": []
+            }
+          },
+          "formal_event_id": null
+        },
+        "end": {
+          "status": "unknown",
+          "candidate": null,
+          "formal_event_id": null
+        }
+      }
+    }
+  ],
+  "export": {
+    "scope": "Existing Package evidence export; not reader qualification or GT",
+    "boundaries": [
+      {
+        "kind": "round_start",
+        "boundary_status": "provisional",
+        "boundary_time_sec": 111.4193359375,
+        "confirmation_time_sec": 111.48600260416667,
+        "evidence_times_sec": [
+          111.4193359375,
+          111.43600260416666,
+          111.45266927083334,
+          111.4693359375,
+          111.48600260416667
+        ],
+        "confidence": 0.9000468022202687,
+        "provenance": {
+          "scope": "global_system",
+          "producer": "unedited_ui_start_tracker",
+          "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+          "preparation_pts_sec": [
+            110.98600260416667,
+            111.40266927083333
+          ],
+          "reader_qualification_required": true,
+          "confirmation_pts_sec": 111.48600260416667,
+          "pts_sec": [
+            111.4193359375,
+            111.43600260416666,
+            111.45266927083334,
+            111.4693359375,
+            111.48600260416667
+          ],
+          "clock_display_samples": [
+            {
+              "pts_sec": 111.4193359375,
+              "observed_seconds": 0.0,
+              "observed_display": "0:00",
+              "reader_confidence": 0.9631862044334412,
+              "display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9631862044334412,
+                "cross_checked": false
+              },
+              "source_pixel_sha256": "44dda08d003391b16c90a664bbea96af9f86e9cb332f5a03f59ecb1b4d7f2ae3",
+              "previous_source_pixel_sha256": "16d1c869ae826a352c311370b10c3be8f7a5995a121b38f3612006f77042369b"
+            },
+            {
+              "pts_sec": 111.43600260416666,
+              "observed_seconds": 100.0,
+              "observed_display": "1:40",
+              "reader_confidence": 0.931477963924408,
+              "display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.931477963924408,
+                "cross_checked": false
+              },
+              "source_pixel_sha256": "cf8733010ac3f5cd79025316ffb9a20a59d85807c86a23c8cfc60bf46fe4005a",
+              "previous_source_pixel_sha256": "44dda08d003391b16c90a664bbea96af9f86e9cb332f5a03f59ecb1b4d7f2ae3"
+            },
+            {
+              "pts_sec": 111.45266927083334,
+              "observed_seconds": 100.0,
+              "observed_display": "1:40",
+              "reader_confidence": 0.931477963924408,
+              "display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.931477963924408,
+                "cross_checked": false
+              },
+              "source_pixel_sha256": "cecdb6d7f617319fc343d599491ca74730a482c3c1825304af4bf27cfe3b40fe",
+              "previous_source_pixel_sha256": "cf8733010ac3f5cd79025316ffb9a20a59d85807c86a23c8cfc60bf46fe4005a"
+            },
+            {
+              "pts_sec": 111.4693359375,
+              "observed_seconds": 99.0,
+              "observed_display": "1:39",
+              "reader_confidence": 0.9703618884086609,
+              "display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9703618884086609,
+                "cross_checked": false
+              },
+              "source_pixel_sha256": "930801434d9fdcbca13d3f8a77123b0b6076262acb722e7329afc4ee67170cd3",
+              "previous_source_pixel_sha256": "cecdb6d7f617319fc343d599491ca74730a482c3c1825304af4bf27cfe3b40fe"
+            },
+            {
+              "pts_sec": 111.48600260416667,
+              "observed_seconds": 99.0,
+              "observed_display": "1:39",
+              "reader_confidence": 0.971046507358551,
+              "display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.971046507358551,
+                "cross_checked": false
+              },
+              "source_pixel_sha256": "041c2f3bc3b7f994f57baaa3ffe69c4933961c0f7eca0e53312422237b3e12ab",
+              "previous_source_pixel_sha256": "930801434d9fdcbca13d3f8a77123b0b6076262acb722e7329afc4ee67170cd3"
+            }
+          ],
+          "coherent_clock_begin_pts_sec": 111.43600260416666,
+          "coherent_clock_observation_count": 4,
+          "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+          "source_epoch": "4d064cd235d24963b22b70f71fb0639f",
+          "source_pts_ticks": 1711401,
+          "source_time_base": "1/15360",
+          "source_pts_sec": 111.4193359375,
+          "source_pixel_sha256": "44dda08d003391b16c90a664bbea96af9f86e9cb332f5a03f59ecb1b4d7f2ae3",
+          "profile_fingerprint": "10bfac00544e510ebf3f3e2c0072c9beba24938b2ff996c9012f7e4046d82c99",
+          "recognizer_fingerprint": "75efed4a6500a48f564f36e6c7fecf56d4e190d41bea15df204a723c0c572ef3",
+          "continuity_segment": 0,
+          "boundary_mode": "practical",
+          "qualification_status": "unverified",
+          "actor": "system",
+          "signals": []
+        }
+      },
+      {
+        "kind": "round_start",
+        "boundary_status": "unknown",
+        "boundary_time_sec": null,
+        "confirmation_time_sec": null,
+        "evidence_times_sec": [],
+        "confidence": null,
+        "provenance": {
+          "reason": "package_endpoint_unknown",
+          "match_id": "match_001",
+          "interval_no": 1,
+          "endpoint": "start"
+        }
+      },
+      {
+        "kind": "round_end",
+        "boundary_status": "unknown",
+        "boundary_time_sec": null,
+        "confirmation_time_sec": null,
+        "evidence_times_sec": [],
+        "confidence": null,
+        "provenance": {
+          "reason": "package_endpoint_unknown",
+          "match_id": "match_001",
+          "interval_no": 1,
+          "endpoint": "end"
+        }
+      },
+      {
+        "kind": "round_end",
+        "boundary_status": "unknown",
+        "boundary_time_sec": null,
+        "confirmation_time_sec": null,
+        "evidence_times_sec": [],
+        "confidence": null,
+        "provenance": {
+          "reason": "package_endpoint_unknown",
+          "match_id": "match_001",
+          "interval_no": 2,
+          "endpoint": "end"
+        }
+      }
+    ],
+    "package_count": 2,
+    "provisional_package_count": 1,
+    "uncertain_package_count": 2,
+    "partitions": [
+      {
+        "interval_no": 1,
+        "window": {
+          "start_sec": 109.00266927083334,
+          "end_sec": 110.98600260416667
+        },
+        "start": "unknown",
+        "end": "unknown"
+      },
+      {
+        "interval_no": 2,
+        "window": {
+          "start_sec": 110.98600260416667,
+          "end_sec": 171.019336
+        },
+        "start": "provisional",
+        "end": "unknown"
+      }
+    ]
+  },
+  "comparison": {
+    "packages": {
+      "previous": 1,
+      "current": 2,
+      "delta": 1
+    },
+    "retained_observation_timestamps": {
+      "previous": 181,
+      "current": 300,
+      "delta": 119
+    },
+    "formal_boundary_events": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    }
+  },
+  "previous_package_windows": [
+    {
+      "start_sec": 110.98600260416667,
+      "end_sec": 171.019336
+    }
+  ],
+  "observed_coverage_sec": [
+    109.00266927083334,
+    113.98600260416667
+  ],
+  "canonical_e2e_reexecuted": false,
+  "scored_evaluations_created": false
+}

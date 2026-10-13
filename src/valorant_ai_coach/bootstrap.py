@@ -13,6 +13,7 @@ from valorant_ai_coach.application import (
     MockCoachAdapter,
     RoundAnalyzer,
 )
+from valorant_ai_coach.application.hud_video_processor import NativeLifecycleOptions
 from valorant_ai_coach.clips import ClipService
 from valorant_ai_coach.events import EventSourceContract
 from valorant_ai_coach.facts import FactBuilder
@@ -119,11 +120,17 @@ def build_services(
             )
         real_hud = RealHudAnalyzer(
             layout_path, role_resolver=role_resolver,
+            template_profile_path=(
+                Path(selected.hud_template_profile_path).expanduser()
+                if selected.hud_template_profile_path.strip() else None
+            ),
             scene_reference_profile_path=(
                 Path(selected.scene_reference_profile_path).expanduser()
                 if selected.scene_reference_profile_path else None
             ),
         )
+        if selected.hud_template_profile_path.strip() and real_hud.template_profile is None:
+            raise ValueError("選択したHUD参照画像設定を読み込めませんでした")
         hud = real_hud
         event_contract = EventSourceContract.load(
             resource_path("config/event_source_contract_v1.json")
@@ -196,6 +203,14 @@ def build_services(
         validator=validator,
         delete_temp_frames=selected.delete_temp_frames,
         hud_video_processor=hud_processor,
+        round_boundary_mode=selected.round_boundary_mode,
+        native_lifecycle_options=(
+            NativeLifecycleOptions(
+                max_png_bytes=selected.native_png_budget_mb * 1024 * 1024,
+                storage_mode="replay",
+                unedited_input_contract_path=Path(selected.unedited_input_contract_path),
+            ) if selected.round_boundary_mode == "practical" else None
+        ),
     )
     return Services(
         selected,

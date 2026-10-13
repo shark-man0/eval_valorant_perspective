@@ -17,18 +17,25 @@ GLOBAL_END_CONTEXT_FLAGS = END_CONTEXT_FLAGS
 
 class UneditedRoundLifecycle:
     def __init__(
-        self, start: UneditedUiStartTracker, qualification: GlobalLifecycleQualification,
+        self, start: UneditedUiStartTracker, qualification: GlobalLifecycleQualification | None,
+        *, boundary_mode: str = 'strict',
     ) -> None:
+        if boundary_mode not in {'strict', 'practical'}:
+            raise ValueError('unsupported boundary mode')
+        if qualification is None and boundary_mode != 'practical':
+            raise ValueError('strict lifecycle requires qualification')
         self.start = start
         self.qualification = qualification
+        self.boundary_mode = boundary_mode
         self.ended = False
-        if 'ui_end_transition' in qualification.components and not {
+        components = qualification.components if qualification is not None else frozenset()
+        if 'ui_end_transition' in components and not {
             'timer', 'score', 'round_result',
-        } <= qualification.components:
+        } <= components:
             raise ValueError('UI end transition requires qualified timer, score and result')
         self.pending_end = (
             UneditedUiEndTracker(native_step_ticks=start.step)
-            if 'ui_end_transition' in qualification.components else None
+            if boundary_mode == 'practical' or 'ui_end_transition' in components else None
         )
 
     @property
@@ -59,7 +66,19 @@ class UneditedRoundLifecycle:
             return decision
         if self.start.state == 'unobserved':
             self.ended = False
-        if not self.start.started or previous is None:
+        # A practical end can stand on independent clock/score/result evidence
+        # even when the recording starts mid-round. It does not invent a start.
+        # The start tracker still validates source binding before this path.
+        source_break = previous is not None and (
+            row['source_pts_ticks'] - previous['source_pts_ticks'] != self.start.step
+            or row['source_epoch'] != previous['source_epoch']
+            or row['source_time_base'] != previous['source_time_base']
+            or row['source_pixel_sha256'] == previous['source_pixel_sha256']
+            or any(row.get('system_evidence', {}).get(key) is True
+                   for key in ('content_jump', 'discontinuity'))
+        )
+        if (previous is None or source_break
+                or not self.start.started and self.boundary_mode != 'practical'):
             if self.pending_end is not None:
                 self.pending_end.reset()
             return None
@@ -74,7 +93,8 @@ class UneditedRoundLifecycle:
             self.start.state = 'round_ended'
             self.ended = True
             return decision
-        if not {'score', 'round_result'} <= self.qualification.components:
+        if (self.qualification is None
+                or not {'score', 'round_result'} <= self.qualification.components):
             return None
         current = row['system_observation']
         evidence = row['system_evidence']
