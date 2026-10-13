@@ -71,7 +71,7 @@ class VisualEventEngine:
                 "config/visual_v2/config/visual_event_detection_contract_v2.json"
             ).parent
         )
-        self.contract = json.loads((root / "visual_event_detection_contract_v2.json").read_text())
+        self.contract = json.loads((root / "visual_event_detection_contract_v2.json").read_text(encoding="utf-8"))
         self.map_definition = map_definition
         self.map_runtime = MapRegistry().runtime
         self.validator = SchemaValidator()

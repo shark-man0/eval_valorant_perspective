@@ -43,3 +43,11 @@ The scanner is observational and cannot certify which unknown sites ought
 to use UTF-8; their data-contract-specific remediation remains OPEN.
 This PR should not be described as resolving all UTF-8 ambiguities.
 Existing test skips are unchanged; complete Windows packaged smoke runs in CI.
+
+## Additional confirmed production I/O fixes
+
+Six Visual code files now use explicit UTF-8 for seven application-owned
+JSON policy/configuration reads, preserving the same parsed JSON data and
+recognition/aggregation behavior. The Linux sysfs thermal sensor decimal
+text is explicitly ASCII. Git/FFmpeg/Tesseract child output retains its
+producer-dependent decoding contract pending separate review.
