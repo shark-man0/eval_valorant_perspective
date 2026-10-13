@@ -915,5 +915,13 @@
     "actual_old_bundle_rejection": "Invalid or mismatched global lifecycle qualification",
     "whole_source_results_scope": "Pre-final-main-integration codefd8b8ff; not current-code full-video certification",
     "current_code_full_e2e_executed": false
+  },
+  "windows_fixture_portability_fix": {
+    "scope": "Test-only explicitUTF8reads and portable real-file fixture name; no assertion or production policy change",
+    "targeted_tests_passed": 55,
+    "runtime_sec": 563.99,
+    "ruff": "PASS",
+    "failed_windows_log_sha256": "e496463fc4669a4aef70e6b49d54c51d6cd5fc437adb2b62e02a1ed1d030f011",
+    "targeted_test_log_sha256": "d754d16c78112e5da2acddedcf99542ca665977b147b35101d868bc81a0759bd"
   }
 }

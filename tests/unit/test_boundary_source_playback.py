@@ -6,7 +6,7 @@ from scripts.diagnostics.prepare_boundary_review import review_html, source_play
 
 
 def test_original_source_link_encodes_private_path_without_changing_timebase(tmp_path):
-    video = tmp_path / '録画 "<& #.mp4'
+    video = tmp_path / '録画 & #.mp4'
     video.write_bytes(b"original recording")
     page = review_html([], source_playback_html(video, [82, 91]))
     assert video.resolve().as_uri() + "#t=82.000000,91.000000" in page

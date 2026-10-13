@@ -132,3 +132,14 @@ lifecycle qualification`. Therefore the whole-source results above attest the
 pre-final-main code `fd8b8ff…`, not current-code full-video accuracy. Preserve
 both results and rejection; do not silently re-sign or install the older bundle.
 Current-code full E2E and regenerated qualification remain future goal work.
+
+## Windows CI fixture portability correction
+
+PR15 initially passed Linux and the PR Windows job, but its push Windows job
+failed 23 tests: 22 locale-dependent UTF-8 reads and a fixture filename with
+Windows-forbidden quote/less-than characters. Fix tests to read UTF-8 explicitly
+and create the real source fixture using portable Unicode/space/ampersand/hash
+characters. No assertion predicate, confidence policy, production code or
+recognizer fingerprint changes. The three affected modules pass **55 tests in
+563.99 seconds** locally; Ruff passes. Preserve the failed Windows log and
+rerun GitHub checks on the corrected commit before merging.
