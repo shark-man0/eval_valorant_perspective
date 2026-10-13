@@ -334,3 +334,19 @@ qualification inference, and keep model predictions out of human review.
 Next: independent numeric labels and prospective positive/negative source
 controls before integrating a qualified numeric reader into the temporal path.
 No pipeline contract, original Schema, threshold or production setting changed.
+
+Numeric review ingestion requires an actual explicitly supplied response and
+a provenance reference. Its private revision binds the original blind receipt,
+reviewed ROI image hashes and exact response bytes. Blank/unanswered cells stay
+unreviewed, `unknown` stays distinct from `absent`, and no missing number is
+filled from OCR. Whole-batch approval without numeric labels, duplicate/unknown
+frame IDs and malformed values are rejected. Existing receipt/label revisions
+are never overwritten. Declaring a provenance string is not programmatic proof
+of human authorship; the trusted conversation record must separately establish
+it. No numeric response has been received or frozen for the real 24-image batch.
+These source labels do not approve identity, lifecycle timing, continuity or
+production adoption and are never a production recognizer input.
+Ingestion/related diagnostics regressions: 103 passed; Ruff, mypy (131 source
+files) and diff checks passed. Invalid/non-finite source times and changed
+review assets are rejected. All human-label tests use explicitly synthetic
+responses and do not constitute a real review or a numeric accuracy result.
