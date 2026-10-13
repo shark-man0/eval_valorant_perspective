@@ -41,7 +41,7 @@ def test_japanese_json_round_trip_when_cp1252_cannot_decode(tmp_path: Path) -> N
 
 def test_bom_and_crlf_are_not_silently_rewritten(tmp_path: Path) -> None:
     path = tmp_path / "bom-data.txt"
-    original = codecs.BOM_UTF8 + "日本語\r\nsecond\r\n".encode("utf-8")
+    original = codecs.BOM_UTF8 + "日本語\r\nsecond\r\n".encode()
     path.write_bytes(original)
     assert path.read_text(encoding="utf-8-sig").splitlines() == ["日本語", "second"]
     assert path.read_bytes() == original
