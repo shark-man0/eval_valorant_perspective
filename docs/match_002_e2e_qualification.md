@@ -199,7 +199,8 @@ opt-in and unqualified; they do not convert geometry into player identity.
 The private v2 evaluation fixture still verifies against the integrated code.
 Related native/UI/report/confidence regressions: 183 passed. Ruff and mypy
 (131 source files) passed. Actual Basic CI for this main SHA succeeded;
-Windows verification was still running at the last observation.
+Windows verification subsequently completed successfully too. These CI outcomes
+do not establish match_002 real-video lifecycle accuracy.
 
 The complete Mac suite on exact main recorded 3628 passed, 5 failed, 5 skipped
 in 276.77 seconds. Four failures are the previously reproduced spectator
