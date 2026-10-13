@@ -21,6 +21,7 @@ from valorant_ai_coach.storage import SQLiteRepository
 from valorant_ai_coach.video import FrameSample, VideoMetadata
 
 from .frame_planner import FramePlanner, PlannedFrame
+from .match_aggregation_service import aggregate_saved_match
 from .hud_video_processor import HudVideoProcessingResult, HudVideoProcessor, NativeLifecycleOptions
 from .round_analyzer import RoundAnalysis, RoundAnalyzer
 
@@ -364,6 +365,8 @@ class MatchAnalysisPipeline:
                 self.repository.save_analysis_result(payload)
 
             checkpoint_state.update({"completed_rounds": sorted(set(completed))})
+            if not resume:
+                checkpoint_state["canonical_evaluation_set"] = "full_post_dedup_v1"
             self.repository.save_job_checkpoint(identifier, "generating_clips", checkpoint_state)
             reusable: dict[tuple[float, float], ClipArtifact] = {}
             scored = self.aggregator.select_clip_exemplars(
@@ -949,6 +952,7 @@ class MatchAnalysisPipeline:
         output.parent.mkdir(parents=True, exist_ok=True)
         payload = {
             **result,
+            "match_aggregation": aggregate_saved_match(self.repository, match_id),
             "processing_errors": errors,
             "clip_errors": clip_errors,
         }
