@@ -3,10 +3,44 @@
 import argparse
 import importlib.util
 import json
+import math
 from collections import Counter
 from pathlib import Path
 
 import jsonschema
+
+
+def confidence_diagnostics(trace, failures):
+    """Explain canonical failures without removing them or repairing the trace.
+
+    Native per-field confidence maps are not scalar confidences. The reference
+    evaluator currently checks every *_confidence key as a scalar. Keep its
+    verdict intact and report this distinct shape mismatch for contract review.
+    No raw values, source paths or arbitrary field names are exported here.
+    """
+    counts = Counter()
+
+    def valid_scalar(value):
+        return (isinstance(value, (int, float)) and not isinstance(value, bool)
+                and math.isfinite(value) and 0 <= value <= 1)
+
+    for code in failures:
+        if not code.startswith("confidence:"):
+            continue
+        _, group, index, field = code.split(":", 3)
+        value = trace[group][int(index)][field]
+        if field == "source_confidence" and isinstance(value, dict):
+            counts["source_confidence_map_failures"] += 1
+            counts["source_confidence_leaf_count"] += len(value)
+            invalid = sum(not valid_scalar(leaf) for leaf in value.values())
+            counts["invalid_source_confidence_leaf_count"] += invalid
+            if not value:
+                counts["empty_source_confidence_maps"] += 1
+            elif not invalid:
+                counts["valid_source_confidence_maps_rejected_as_scalars"] += 1
+        else:
+            counts["other_confidence_failures"] += 1
+    return dict(counts)
 
 
 def evaluate_trace(pack, trace):
@@ -73,6 +107,7 @@ def evaluate_trace(pack, trace):
         "trace_counts": {k: len(v) for k, v in trace.items()},
         "failure_count": len(failures),
         "failure_categories": dict(Counter(f.split(":", 1)[0] for f in failures)),
+        "confidence_diagnostics": confidence_diagnostics(trace, failures),
         "failures": failures,
         "negative_assertion_count": len(assertions["negative_assertions"]),
         "assertion_results": outcomes,

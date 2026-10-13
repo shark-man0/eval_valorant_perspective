@@ -89,7 +89,9 @@ def _check_output_privacy(output: Path) -> None:
         raise ValueError("リポジトリ内の出力先はgitでignoreされたoutputs配下にしてください")
 
 
-def _candidate(frames: list[np.ndarray]) -> tuple[np.ndarray, np.ndarray, float] | None:
+def _candidate(
+    frames: list[np.ndarray], diagnostics: dict[str, Any] | None = None,
+) -> tuple[np.ndarray, np.ndarray, float] | None:
     if len(frames) < 8 or any(frame.shape != frames[0].shape for frame in frames):
         return None
     gray = np.stack([cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) for frame in frames])
@@ -100,6 +102,15 @@ def _candidate(frames: list[np.ndarray]) -> tuple[np.ndarray, np.ndarray, float]
     mask = ((variability <= 12.0) & (persistence >= 0.65)).astype(np.uint8) * 255
     selected = median[mask > 0]
     ratio = float(selected.size / mask.size)
+    if diagnostics is not None:
+        diagnostics.update(
+            roi_dimensions=[int(median.shape[1]), int(median.shape[0])],
+            selected_pixels=int(selected.size), selected_ratio=round(ratio, 6),
+            stable_intensity_pixels=int(np.count_nonzero(variability <= 12.0)),
+            persistent_edge_pixels=int(np.count_nonzero(persistence >= 0.65)),
+            selected_contrast_std=float(selected.std()) if selected.size else None,
+            mask_conditions={"intensity_std_max": 12.0, "edge_persistence_min": 0.65},
+        )
     if selected.size < 64 or float(selected.std()) < 1.0:
         return None
     return median, mask, ratio
@@ -111,7 +122,7 @@ def _validated_candidate(
     """Freeze pixels on even observations; test odd observations only once."""
     training, holdout = frames[::2], frames[1::2]
     stats.update(training_count=len(training), holdout_count=len(holdout))
-    candidate = _candidate(training)
+    candidate = _candidate(training, stats)
     if candidate is None:
         stats["reason"] = "training_structure_insufficient"
         return None
@@ -148,6 +159,17 @@ def _validated_candidate(
     return candidate
 
 
+def sampling_times(
+    duration: float, samples: int, window: tuple[float, float] | None = None,
+) -> tuple[list[float], tuple[float, float]]:
+    """Unlabelled sampling bounds, independent of any expected gameplay state."""
+    start, end = window if window is not None else (0.0, duration)
+    if (any(isinstance(x, bool) or not isinstance(x, (int, float)) or not math.isfinite(x)
+            for x in (duration, start, end)) or not 0 <= start < end <= duration):
+        raise ValueError("sampling window must be finite and inside the source")
+    return np.linspace(start, end, samples + 2)[1:-1].tolist(), (start, end)
+
+
 def create_temporal_profile(
     video: Path,
     layout_path: Path,
@@ -155,6 +177,8 @@ def create_temporal_profile(
     *,
     samples: int = 24,
     video_service: VideoService | None = None,
+    sampling_window: tuple[float, float] | None = None,
+    diagnostics: dict[str, Any] | None = None,
 ) -> Path:
     if not 8 <= samples <= 64:
         raise ValueError("samplesは8〜64で指定してください")
@@ -177,7 +201,7 @@ def create_temporal_profile(
     metadata = service.probe(video)
     if metadata.duration_sec <= 0:
         raise ValueError("動画の長さを取得できません")
-    times = np.linspace(0, metadata.duration_sec, samples + 2)[1:-1].tolist()
+    times, bounds = sampling_times(metadata.duration_sec, samples, sampling_window)
     output.parent.mkdir(parents=True, exist_ok=True)
     with TemporaryDirectory(prefix=".hud-temporal-", dir=output.parent) as temp:
         temp_path = Path(temp)
@@ -192,6 +216,11 @@ def create_temporal_profile(
         )
         if len(extracted) < 8:
             raise ValueError("解析可能なフレームが8枚未満です")
+        if sampling_window is not None and any(
+            not math.isfinite(frame.time_sec) or not bounds[0] <= frame.time_sec < bounds[1]
+            for frame in extracted
+        ):
+            raise ValueError("decoded geometry frame outside sampling window")
         decoded = [
             cv2.imdecode(np.frombuffer(item.path.read_bytes(), np.uint8), cv2.IMREAD_COLOR)
             for item in extracted
@@ -256,6 +285,16 @@ def create_temporal_profile(
                 "selected_ratio": round(ratio, 6),
                 "valid": True,
             }
+        stats = {
+            "sample_count": len(images),
+            "anchor_count": len(valid),
+            "anchors": summaries,
+            "generated_assets_sha256": asset_digest.hexdigest(),
+        }
+        if sampling_window is not None:
+            stats["sampling_window_sec"] = list(bounds)
+        if diagnostics is not None:
+            diagnostics.update(stats, status="candidate_validation_complete")
         if len(valid) < 3:
             # A supported new anchor can improve an existing complete geometry
             # profile. Validate retained assets instead of discarding every new
@@ -267,6 +306,8 @@ def create_temporal_profile(
                     retained.load_template(name, spec["template"], spec.get("threshold", 0.90))
                     available.add(name)
             if not valid or len(available) < 3:
+                if diagnostics is not None:
+                    diagnostics.update(status="rejected", reason="insufficient_geometry_anchors")
                 raise ValueError("有効な幾何アンカーが3個未満です")
         profile = dict(inherited)
         profile["schema_version"] = "1.0"
@@ -286,12 +327,6 @@ def create_temporal_profile(
         profile.setdefault("readers", {})
         # Geometry candidates must never manufacture identity or semantic signals.
         profile["signals"] = inherited.get("signals", {})
-        stats = {
-            "sample_count": len(images),
-            "anchor_count": len(valid),
-            "anchors": summaries,
-            "generated_assets_sha256": asset_digest.hexdigest(),
-        }
         profile["temporal_generation"] = stats
         layout_dest = staging / layout_path.name
         shutil.copy2(layout_path, layout_dest)
@@ -303,6 +338,8 @@ def create_temporal_profile(
             json.dumps(stats, indent=2) + "\n", encoding="utf-8"
         )
         staging.rename(output)
+        if diagnostics is not None:
+            diagnostics["status"] = "generated"
     return output / layout_path.name
 
 
@@ -312,9 +349,14 @@ def main() -> int:
     parser.add_argument("--layout", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--samples", type=int, default=24)
+    parser.add_argument("--sampling-window", nargs=2, type=float,
+                        help="Unlabelled development bounds; excluded frames are never sampled")
     args = parser.parse_args()
     try:
-        print(create_temporal_profile(args.video, args.layout, args.output, samples=args.samples))
+        print(create_temporal_profile(
+            args.video, args.layout, args.output, samples=args.samples,
+            sampling_window=tuple(args.sampling_window) if args.sampling_window else None,
+        ))
     except (OSError, ValueError, TypeError, RuntimeError) as exc:
         parser.exit(1, f"時系列アンカー候補を生成できません: {exc}\n")
     return 0

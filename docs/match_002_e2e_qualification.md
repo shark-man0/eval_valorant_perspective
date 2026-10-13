@@ -1,0 +1,103 @@
+# match_002 E2E qualification
+
+This public summary excludes private GT timestamps, annotation contents, approval
+quotes, source paths and real images. The detailed historical record remains in
+the ignored local review directory. A synthetic oracle is not real-video proof.
+
+## Confirmed artifacts
+
+- Source SHA: `55d909c2d6a5f38575d1cb6c249ddfa7e2a48b96535841317adcae704c6f63b6`.
+- Metadata: 2214.272 s, 1920x1080, 60 fps, 3 original audio tracks.
+- Unedited recording declared; a capture pause does not certify observable
+  gameplay continuity. Development/evaluation partition is frozen privately.
+- Independent reviews cover 23 boundary pairs, score-derived Round numbers,
+  five source-state cores and three scoped continuity intervals.
+- One approximate declared end uses the existing time-bounded count contract,
+  not fabricated native onset/last-absent evidence. A corrected special-view
+  label remains evaluation-only. Exact score-update times and unreviewed
+  ownership/state/continuity remain unannotated.
+- The private fixture has 141 unchanged source images, rational packet-PTS
+  bindings, 45 points, 3 positive states, 47 counts and 28 negatives. Independent
+  approval-to-GT reproduction and physical source metadata were verified.
+- Twenty-four private provenance inputs and the freezer recipe were archived.
+  No GT is consumed by a production recognizer. No private Pack/images are in Git.
+
+Initial fixture: `outputs/match_002/validation_pack_v1`.
+Registry: `datasets/manifests/match_002.json`.
+Initial Pack fingerprint: `b26b5fc268f8dee0c45da2dfacfc43d815428a9ca08c5bf83ef4a5535545fa7d`.
+Assertions fingerprint: `9caae72ed8fb26bd88d230a729640fda8e3811554608b12c5629d17f36799938`.
+Formal fixture completion means independent evaluation fixture only, not runtime
+qualification. Private artifacts must be supplied separately on another machine.
+Verifier compatibility revision: private `validation_pack_v2`, fingerprint
+`6232818ab3dc0fd070899497dde806b88c844b7ee7ff0dfbaac17cd05108df5d`.
+Original GT/assertions/framework/images and the original Pack remain unchanged;
+only the verification-tool fingerprint/compatibility revision changed.
+Registration-only preflight exited 0 without Analyzer/Evaluator or shared export;
+its source/Pack/assertions fingerprints matched the unchanged manifest Schema.
+
+## Evaluation contracts and tests
+
+The original v3 Schemas, compiler, thresholds and negative semantics are retained.
+The original match_001 GT, source, Pack and historical verdicts are unchanged.
+The human-approved match_002 confidence policy v1 validates only the native
+snapshot.source_confidence dictionary: known keys, finite numeric leaves in
+[0,1], additionalProperties=false. Empty/sparse maps confer no identity. No
+dictionary is dropped, averaged or modified; other confidence checks are intact.
+Upstream's additive Practical Mode Schema leaves this dictionary definition
+unchanged. Compatibility accepts only the exact original/current native Schema
+and the fixed v1 dictionary-definition fingerprint, not arbitrary Schema changes.
+
+The synthetic evaluator oracle satisfies 46 boundaries. Each boundary rejects
+deletion, duplication, wrong Round and a +10-second shift. All 65 prohibited
+values yield their specific negative failure; all three positive states reject
+deletion. Empty outputs and ineffective evaluators cannot pass these controls.
+These are evaluator-sensitivity checks, not production recognizer accuracy.
+
+Snapshot fusion preserves actual HUD source PTS; current Visual/Map-only snapshots
+cannot inherit stale HUD fields or owner identity. Same-PTS Trace association,
+multiple-Round membership and downstream facts have synthetic regression tests.
+Before the latest upstream merge: targeted suite 125 passed; geometry tests
+32 passed. After integration: focused strict/practical/builder/policy tests
+102 passed; Ruff and mypy (130 source files) passed. Full post-merge pytest:
+3515 passed, 4 failed, 5 skipped in 277.80 seconds. The failures are the same four
+spectator fixture cases recorded previously and are not claimed resolved.
+Isolated origin/main (`1191543`) reproduces exactly these four failures: 46 passed,
+4 failed in the two spectator test modules. Baseline imports were confirmed to
+come from the isolated main source tree; these are not new branch regressions.
+No new remote CI pass is asserted.
+
+## Geometry candidate: not adopted
+
+The human authorized candidate construction and independent qualification,
+not production adoption. NCC >=0.90, three anchors and identity separation
+remain fixed. No GT/evaluation holdout is used to select references or masks.
+The fixed development plan contains 30 training and 30 separate validation
+frames, at least 10 seconds apart between roles, excluding prior geometry samples.
+Training-derived edge masks/assets are frozen before validation is extracted.
+The isolated candidate contains no identity signals or HUD readers.
+
+Candidate v1: **3/30 fresh geometry successes**; known-invalid large-shift,
+resolution-mismatch and letterbox transforms of real source images all reject.
+Source/config/assets remained unchanged. Transformed controls are not labelled
+unmodified real-video negatives. Independent geometry labels and genuine negative
+qualification remain incomplete. Temporal stability alone does not establish
+that mask pixels exclude digits or state-dependent icons. Structural mask review
+is therefore still required. The candidate is not installed in app settings.
+
+## Remaining goal requirements
+
+- Independently qualify static geometry, positive/negative source controls and
+  global lifecycle evidence before any separate adoption decision.
+- Strict positive lifecycle Full E2E remains **unproven**. Upstream Practical
+  Mode is an explicit provisional pathway, not a replacement for strict safety.
+- Preserve frozen GT/assertions and document verifier/Pack revisions explicitly.
+- Run qualified targeted, fixed-sampled and native full source analysis; verify
+  Event/Snapshot/Fact Round affiliation, actors, provenance and discontinuities.
+- Measure true/false/missing boundaries, duplicates, negative violations,
+  UNKNOWN/UNSCORED, execution time/memory; do not call unannotated intervals GT
+  negatives or substitute synthetic results for real-video measurements.
+- Verify match_001 safety regression and latest-main CI. Distinguish source,
+  recognizer, qualification, Package, Trace and evaluator failures.
+
+No real-video precision/recall, qualified positive Full E2E or completed goal is
+asserted here. Private detailed evidence is retained locally, not published.

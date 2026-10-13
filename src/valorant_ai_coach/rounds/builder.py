@@ -527,7 +527,6 @@ class RoundPackageBuilder:
         resolutions: Sequence[dict[str, Any]] = (),
     ) -> list[dict[str, Any]]:
         from bisect import bisect_right
-        from copy import deepcopy
 
         by_time = {item["time_sec"]: item for item in snapshots}
         hud_times = [self._time(item) for item in hud]
@@ -546,8 +545,7 @@ class RoundPackageBuilder:
             base = self._state_snapshots([hud[index]])
             if not base:
                 continue
-            snapshot = deepcopy(by_time.get(timestamp, base[0]))
-            snapshot["time_sec"] = timestamp
+            snapshot = self._snapshot_at_source_time(by_time, base[0], timestamp)
             if spatial_ok:
                 # Copy only v3 fields. Intermediate sources/scores never leak.
                 for key in snapshot["spatial_context"]:
@@ -565,14 +563,17 @@ class RoundPackageBuilder:
             base = self._state_snapshots([hud[index]])
             if not base:
                 continue
-            snapshot = deepcopy(by_time.get(timestamp, base[0]))
-            snapshot["time_sec"] = timestamp
+            snapshot = self._snapshot_at_source_time(by_time, base[0], timestamp)
             usable = (
                 resolution["calibration_status"] == "ok"
                 and resolution["resolution_scope"] == "exact_zone"
                 and resolution["zone_confidence"]
                 >= self.map_runtime["fusion_thresholds"]["named_zone_min"]
             )
+            if not usable and timestamp not in by_time and base[0]["time_sec"] != timestamp:
+                # An unknown resolver result alone has no observed state to add.
+                # It remains on the resolution timeline, not a retimed HUD copy.
+                continue
             zone = resolution["zone_id"] if usable else None
             snapshot["player_location"] = {"zone_id": zone, "zone_name": zone}
             source = snapshot.setdefault("source_confidence", {})
@@ -582,6 +583,29 @@ class RoundPackageBuilder:
                 source["player_location"] = _source_confidence(resolution["zone_confidence"])
             by_time[timestamp] = snapshot
         return [by_time[key] for key in sorted(by_time)]
+
+    @staticmethod
+    def _snapshot_at_source_time(
+        by_time: dict[float, dict[str, Any]], base: dict[str, Any], timestamp: float,
+    ) -> dict[str, Any]:
+        from copy import deepcopy
+
+        if timestamp in by_time:
+            return deepcopy(by_time[timestamp])
+        if base["time_sec"] == timestamp:
+            return deepcopy(base)
+        # A preceding accepted HUD can gate fusion, but does not observe HP,
+        # timer, score or ownership at this different source PTS. Keep the
+        # original HUD snapshot intact and preserve only current visual facts.
+        return {
+            "time_sec": timestamp,
+            "ally_alive": None, "enemy_alive": None, "hp": None, "armor": None,
+            "weapon": None, "spike_state": "unknown", "round_time_remaining_sec": None,
+            "utility_available_count": None,
+            "player_location": {"zone_id": None, "zone_name": None},
+            "known_enemy_locations": [],
+            "spatial_context": deepcopy(base["spatial_context"]), "source_confidence": {},
+        }
 
     def _unique_boundaries(self, events: Sequence[dict[str, Any]]) -> list[dict[str, Any]]:
         """Use the same boundary population for windows and package events.
@@ -723,7 +747,7 @@ class RoundPackageBuilder:
             and 0 <= float(item["time_sec"]) <= video_duration
         }
         observed_times = sorted({self._time(item) for item in observations})
-        timeline: list[tuple[float, int, str, int | None]] = [
+        timeline: list[tuple[float, int, str, int | str | None]] = [
             (
                 timestamp,
                 0 if kind == "round_end" else 2,
@@ -741,7 +765,7 @@ class RoundPackageBuilder:
         )
         timeline.sort()
         active_start: float | None = None
-        active_start_segment: int | None = None
+        active_start_segment: int | str | None = None
         cursor = -math.inf
 
         def first_observed_until(end: float) -> float | None:
@@ -1018,11 +1042,15 @@ class RoundPackageBuilder:
         )
 
     @staticmethod
-    def _continuity_segment(event: dict[str, Any]) -> int | None:
+    def _continuity_segment(event: dict[str, Any]) -> int | str | None:
         attributes = event.get("attributes")
         provenance = attributes.get("evidence_provenance") if isinstance(attributes, dict) else None
         segment = provenance.get("continuity_segment") if isinstance(provenance, dict) else None
-        return segment if type(segment) is int and segment >= 0 else None
+        if type(segment) is int and segment >= 0:
+            return segment
+        # Global lifecycle uses opaque string tokens; do not silently discard
+        # their source boundary or coerce them into a legacy numeric segment.
+        return segment if isinstance(segment, str) and segment.strip() else None
 
     def _preparation_context_start(
         self,

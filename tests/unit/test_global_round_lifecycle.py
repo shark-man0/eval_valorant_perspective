@@ -267,6 +267,73 @@ def test_two_rounds_end_once_and_no_inferred_second_end(tmp_path):
     assert not any(i['owner'] == 'self' for i in trace['ownership_intervals'])
 
 
+def incomplete_first_round_rows(tmp_path):
+    qualified = qualification(tmp_path)
+    rows = starts() + [observation(5, .6, timer=30)]
+    for i, row in enumerate(starts(), start=6):
+        row['frame_index'] = i
+        row['time_sec'] += 1.1
+        rows.append(row)
+    evidence = proofs(rows, qualified)
+    evidence[5]['content_jump'] = True
+    for i in range(5, len(rows)):
+        evidence[i]['global_continuity']['segment'] = 'independent-second-segment'
+    return qualified, rows, evidence
+
+
+def test_independent_second_start_preserves_first_round_as_incomplete_through_trace(tmp_path):
+    qualified, rows, evidence = incomplete_first_round_rows(tmp_path)
+    original = deepcopy(rows)
+    events = build(rows, qualified, evidence)
+    assert [(e['type'], e['time_sec']) for e in events] == [
+        ('round_start', .2), ('round_start', 1.3),
+    ]
+    assert rows == original
+    builder = RoundPackageBuilder(
+        contract=EventSourceContract.load(resource_path('config/event_source_contract_v1.json')),
+        validator=SchemaValidator(),
+    )
+    packages = builder.build(
+        match_id='incomplete-independent',
+        video_metadata=VideoMetadata(Path('source.mp4'), 2, 1920, 1080, 60, 'h264', None, False, 1),
+        hud_observations=rows, hud_events=events,
+    )
+    assert len(packages) == 2
+    assert all(p['observation_quality']['timeline_completeness'] == 0 for p in packages)
+    assert all(p['round_meta']['round_result'] == 'unknown' for p in packages)
+    assert packages[0]['round_window']['end_sec'] <= packages[1]['round_window']['start_sec']
+    trace = to_e2e_trace(SimpleNamespace(
+        round_packages=packages, observations=rows, visual_observations=(),
+    ))
+    assert [(e['round_id'], e['type'], e['time_sec']) for e in trace['events']] == [
+        ('sample_round_1', 'round_start', .2), ('sample_round_2', 'round_start', 1.3),
+    ]
+    assert all(e['actor'] == 'system' for e in trace['events'])
+    assert not any(i['owner'] == 'self' for i in trace['ownership_intervals'])
+    for snapshot in trace['snapshots']:
+        if snapshot['time_sec'] >= 1.1:
+            assert snapshot['round_id'] == 'sample_round_2'
+
+
+@pytest.mark.parametrize('missing', ['phase', 'timer', 'continuity', 'fresh_segment'])
+def test_missing_first_end_does_not_weaken_independent_second_start_gates(tmp_path, missing):
+    qualified, rows, evidence = incomplete_first_round_rows(tmp_path)
+    if missing == 'phase':
+        for row in rows[6:8]:
+            row['state_flags'] = []
+            row['values']['buy_phase_visible'] = False
+    elif missing == 'timer':
+        rows[8]['quality']['roi_confidence']['round_timer_value'] = .89
+    elif missing == 'continuity':
+        evidence[8]['global_continuity']['confidence'] = .89
+    else:
+        for i in range(5, len(rows)):
+            evidence[i]['global_continuity']['segment'] = 'source-segment-a'
+        evidence[5].pop('content_jump')
+    events = build(rows, qualified, evidence)
+    assert [(e['type'], e['time_sec']) for e in events] == [('round_start', .2)]
+
+
 @pytest.mark.parametrize('missing', ['banner', 'score', 'score_confidence', 'continuity'])
 def test_end_requires_independent_current_evidence_in_same_segment(tmp_path, missing):
     qualified = qualification(tmp_path)

@@ -25,6 +25,7 @@ from .calibrate_temporal import (
     _check_output_privacy,
     _localize_assets,
     create_temporal_profile,
+    sampling_times,
 )
 from .layout import HudLayout
 from .spectator import PanelReference, generate_panel_reference, panel_components
@@ -295,6 +296,7 @@ def create_profile(
     video_service: VideoService | None = None,
     value_invariant_only: bool = False,
     compound_spectator: bool = False,
+    sampling_window: tuple[float, float] | None = None,
 ) -> Path:
     if not 16 <= samples <= 64:
         raise ValueError("samplesは16〜64で指定してください")
@@ -316,14 +318,20 @@ def create_profile(
     metadata = service.probe(video)
     if not math.isfinite(metadata.duration_sec) or metadata.duration_sec <= 0:
         raise ValueError("動画の時間情報が不正です")
+    identity_times, sampling_bounds = sampling_times(
+        metadata.duration_sec, samples, sampling_window
+    )
     output.parent.mkdir(parents=True, exist_ok=True)
     with TemporaryDirectory(prefix=".hud-profile-", dir=output.parent) as temp:
         work = Path(temp)
         stage = work / "profile"
         geometry_mode = "generated"
+        geometry_attempt: dict[str, Any] = {}
         try:
             selected = create_temporal_profile(
-                video, layout_path, stage, samples=samples, video_service=service
+                video, layout_path, stage, samples=samples, video_service=service,
+                sampling_window=sampling_window,
+                diagnostics=geometry_attempt,
             )
             raw = json.loads(selected.with_suffix(".templates.json").read_text(encoding="utf-8"))
         except ValueError as exc:
@@ -340,7 +348,7 @@ def create_profile(
             stage.mkdir()
         paths = service.extract_frames(
             video,
-            np.linspace(0, metadata.duration_sec, samples + 2)[1:-1].tolist(),
+            identity_times,
             work / "identity_frames",
             max_frames=64,
             max_dimension=None,
@@ -348,6 +356,11 @@ def create_profile(
         )
         if len(paths) < 16 or len({float(p.time_sec) for p in paths}) != len(paths):
             raise ValueError("distinct_identity_frames_insufficient")
+        if sampling_window is not None and any(
+            not math.isfinite(frame.time_sec)
+            or not sampling_bounds[0] <= frame.time_sec < sampling_bounds[1] for frame in paths
+        ):
+            raise ValueError("decoded identity frame outside sampling window")
         decoded = [
             cv2.imdecode(np.frombuffer(p.path.read_bytes(), np.uint8), cv2.IMREAD_COLOR)
             for p in paths
@@ -360,10 +373,13 @@ def create_profile(
             "version": 2,
             "sample_count": len(images),
             "geometry_mode": geometry_mode,
+            "geometry_generation": geometry_attempt,
             "references": {},
             "generation_policy": "value_invariant_only" if value_invariant_only else "configured",
             "spectator_method": "compound" if compound_spectator else "configured",
         }
+        if sampling_window is not None:
+            diagnostics["sampling_window_sec"] = list(sampling_bounds)
         raw.setdefault("signals", {})
         inherited = HudTemplateProfile(stage / "hud_layout.templates.json", raw)
         # Retain source geometry provenance even when new anchors replace it.
@@ -538,6 +554,14 @@ def create_profile(
                 if labels is None and compound_spectator:
                     times = [float(p.time_sec) for p in paths]
                     requested = _panel_neighborhood_times(times, metadata.duration_sec, stats)
+                    if sampling_window is not None:
+                        # Keep paired train/holdout membership when a boundary clips a pair.
+                        requested = [
+                            point
+                            for pair in zip(requested[::2], requested[1::2], strict=True)
+                            if all(sampling_bounds[0] < item < sampling_bounds[1] for item in pair)
+                            for point in pair
+                        ]
                     sampling: dict[str, Any] = {
                         "method": "training_proposal_neighborhoods_v1",
                         "initial_training_count": stats.get("training_count", 0),
@@ -560,6 +584,10 @@ def create_profile(
                                 not math.isfinite(actual) or abs(actual - target) > 0.25
                                 for actual, target in zip(extra_times, requested, strict=False)
                             )
+                            or (sampling_window is not None and any(
+                                not sampling_bounds[0] <= actual < sampling_bounds[1]
+                                for actual in extra_times
+                            ))
                         ):
                             sampling["reason"] = "distinct_panel_frames_insufficient"
                         else:
@@ -682,6 +710,8 @@ def main() -> int:
     parser.add_argument("--layout", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--samples", type=int, default=32)
+    parser.add_argument("--sampling-window", nargs=2, type=float,
+                        help="Unlabelled development bounds; do not sample holdout frames")
     parser.add_argument(
         "--value-invariant-only", action="store_true",
         help="Do not generate or inherit intensity-only identity references",
@@ -696,6 +726,7 @@ def main() -> int:
             args.video, args.layout, args.output, samples=args.samples,
             value_invariant_only=args.value_invariant_only,
             compound_spectator=args.compound_spectator,
+            sampling_window=tuple(args.sampling_window) if args.sampling_window else None,
         ))
     except (OSError, ValueError, RuntimeError, cv2.error):
         parser.exit(
