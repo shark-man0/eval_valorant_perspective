@@ -12,7 +12,9 @@ def micro_requests(
     duration: float, triggers: Sequence[tuple[float, str]]
 ) -> tuple[SampleRequest, ...]:
     policy = json.loads(
-        resource_path("config/visual_v2/config/visual_sampling_policy_v2.json").read_text(encoding="utf-8")
+        resource_path(
+            "config/visual_v2/config/visual_sampling_policy_v2.json"
+        ).read_text(encoding="utf-8")
     )
     fps = next(item["fps"] for item in policy["passes"] if item["id"] == "C_micro_candidate")
     intervals = []

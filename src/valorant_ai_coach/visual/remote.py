@@ -7,7 +7,9 @@ from typing import Any
 from valorant_ai_coach.resources import resource_path
 
 _REMOTE_POLICY = json.loads(
-    resource_path("config/visual_v2/config/remote_view_detection_policy_v1.json").read_text(encoding="utf-8")
+    resource_path(
+        "config/visual_v2/config/remote_view_detection_policy_v1.json"
+    ).read_text(encoding="utf-8")
 )
 
 _PRECEDENCE_STATES = {

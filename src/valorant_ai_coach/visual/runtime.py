@@ -52,7 +52,9 @@ class RealVisualAnalyzer:
                 "旧Map/Zone形式は廃止されました。map_zone.registry_rootを指定してください"
             )
         sampling = json.loads(
-            resource_path("config/visual_v2/config/visual_sampling_policy_v2.json").read_text(encoding="utf-8")
+            resource_path(
+                "config/visual_v2/config/visual_sampling_policy_v2.json"
+            ).read_text(encoding="utf-8")
         )
         self.trigger_fps = float(
             next(
