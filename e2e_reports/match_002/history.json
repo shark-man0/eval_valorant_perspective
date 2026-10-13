@@ -1,0 +1,26 @@
+[
+  {
+    "history_key": "bc5088ea98a0d2297b9e10c9cd6d1f37fbebf3df563b1eb18147ec657d06b3f5",
+    "metadata": {
+      "manual_map_id": null,
+      "video_id": "match_002",
+      "source_sha256": "55d909c2d6a5f38575d1cb6c249ddfa7e2a48b96535841317adcae704c6f63b6",
+      "analyzer_commit": "c11ec6d333957cccb270417bc95a8a57f433e6ad",
+      "git_is_dirty": false,
+      "executed_at": "2026-10-13T10:22:56.720471+00:00",
+      "validation_pack": "valorant_e2e_match_002_v3",
+      "validation_pack_sha256": "6232818ab3dc0fd070899497dde806b88c844b7ee7ff0dfbaac17cd05108df5d",
+      "git_dirty_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "settings_fingerprint": "2611cfecc2b148e381d760290c14d70a060efcea2bd837657fe55627ef75554b"
+    },
+    "result": {
+      "status": "fail",
+      "schema_valid": false,
+      "failure_count": null,
+      "negative_assertion_count": null,
+      "error_code": "ANALYZER_FAILED",
+      "detail_truncated": true
+    },
+    "failure_count": null
+  }
+]

@@ -191,7 +191,7 @@ files), and diff checks passed. An initial synthetic case exposed missing
 runtime score handling; the implementation now reports unavailable explicitly
 instead of assuming every anchor has a score. No existing test was weakened.
 
-## Latest-main integration and baseline in progress
+## Latest-main integration and failed baseline attempt
 
 Upstream main `c11ec6d` was inspected and merged without discarding the local
 geometry work. Its native calibration-prefix/UI-measurement extensions remain
@@ -215,6 +215,32 @@ test-isolation correction, so no new full-suite PASS is claimed.
 A fresh full baseline was started from exact main `c11ec6d` with the original
 local profile and the unchanged production sampler. It does not use the local
 geometry candidates, expected labels or external AI. This is not an all-native-
-frame lifecycle qualification run. Analyzer code/source/profile/fixture
-fingerprints must remain stable throughout; no positive result or completed
-Analyzer/Evaluator is asserted while the process is still running.
+frame lifecycle qualification run.
+
+The process terminated with exit 2: `HUD calibration_required:
+insufficient_anchors`. It observed 13,287 HUD frames with zero fresh or effective
+geometry successes; all 13,287 frames contributed to `insufficient_anchors`.
+This is an input-profile/geometry qualification failure, not an independently
+demonstrated Visual, Map, Package or Evaluator failure. Those downstream stages
+were not reached. The Evaluator was not invoked, and no evaluation report exists.
+There are no measured lifecycle accuracy or negative-assertion verdicts to claim.
+The runtime summary's returned-result frame_count=0 must not be mistaken for
+zero decoded/HUD-observed frames. The empty error trace is not a safety PASS.
+Embedded profile-generation diagnostics describe the pre-existing imported
+profile, not a fresh reference-training run on this video.
+
+Analyzer wall time: 1971.697 s; orchestration wall time: 1975.636 s. Decode took
+720.242 s, HUD geometry/features 1177.420 s, and numeric OCR had zero calls.
+A short stack sample identifies Hough-circle processing as a performance
+candidate, not a complete time attribution or an excuse to weaken detection.
+Post-run source SHA, runtime-code fingerprint, profile/all assets and private
+Pack fingerprints all matched their initial bindings. Source, raw output, Trace,
+timings and error logs remain local. The generated shared reports contain only
+the bounded privacy-filtered failed-run summary and hashes/statistics; no video,
+source images, OCR text or private GT are included.
+
+Next: independently finish candidate geometry qualification and run a bounded
+development-only candidate probe before any adoption decision or another full
+run. Preserve the original profile and baseline. Do not compensate for the
+calibration failure by lowering NCC, adding GT-derived boundaries, bypassing
+identity/geometry guards or treating unexecuted downstream checks as successful.
