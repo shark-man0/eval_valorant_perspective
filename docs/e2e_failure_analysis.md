@@ -1624,3 +1624,394 @@ Updated main merges without conflicts; post-merge120related unit tests,
 Ruff and mypy125source filesPASS. No canonical full result or qualification is
 created. The lifecycle blockers remain. See
 [run scope, exact comparison and integration checks](current_contract_targeted_verification.md).
+
+## Frozen numeric targeted evaluation exposes a source/expected discrepancy
+
+The existing development score/timer profile evaluates the fixed13numeric
+witnesses8PASS/5FAIL/0NE versus adopted profile13's0/13/0. Six fieldunknowns
+remain and one enemy-score field mismatches expected2. Reviewing the exact native
+frame74.452669 and the original Pack reference reveals both visibly show1,
+matching the reader. The sync anchor label says2. Evaluator FAIL is retained;
+no GT/threshold/trace change or qualification occurs. This is a separate targeted
+witness discrepancy, not a reclassification of the original82assertions or
+a canonical full gain. Adoption/full is withheld for the Goal's expected-result
+review condition. See
+[terminal comparison, physical evidence and unchanged evaluation](frozen_global_numeric_targeted_review.md).
+
+## Frozen report candidate: prospective source holdout
+
+The existing optional damage_received candidate accepts six new pre-labeled
+source frames correctly (194) and rejects three natural absent-report controls,
+with zero wrong/false accepts, owned observations or formal events. Physical
+splits exclude the prior eight development images. This is one video, one
+death episode and one value, not global lifecycle holdout or complete reader/owner
+qualification. All 82 canonical statuses are retained; no full rerun. See
+[selection, source bindings, counts and remaining gates](death_report_prospective_holdout.md).
+
+## Report cross-context check rejects static field widening
+
+Fresh R1 source displays190 but the original report crop clips seven digit rows
+and returnsunknown. A frozen widened crop on new pre-labeled two-context holdout
+improves correct3→5 and unknown3→1, but loses one correctR2 reading. Reject it:
+unknown→correct3, correct→unknown1, wrong/false accepts0, formal events0. The
+source header identifiesagentレイズ while the red band namesplayerシャバーニ; red-band
+name OCR must not be aliased to killer_agent. No production or82status change.
+See [pixel bounds, semantic separation and rejected comparison](death_report_crop_comparison.md).
+
+## Report fields now reuse current independent header position
+
+An opt-in common fields reader reuses the existing two-supportNCC0.90report
+header to translate its crop, without new templates or thresholds. New fixed
+pre-labeled source holdout improves correct3→6 and unknown3→0 with wrong0 and
+all3natural controls rejected. Missing/ambiguous/out-of-bounds current poses
+fail closed; no retained pose, numeric corroboration, owner or death promotion.
+244relatedtests and final full2661PASS/6SKIP, Ruff/mypyPASS. Standard37-point/profile13
+targeted with explicit isolatedOCR exactly retains12PASS/13FAIL/12NE; initial
+normal-PATH9/16/12is traced by HEAD/current parity to missingTesseract. No full
+canonical rerun or82status change. See
+[current pose, source splits, regression scope and remaining gates](report_field_localization.md).
+
+## Unqualified report portrait labels preserve semantic separation
+
+Existing full-line Japanese OCR is not accepted at0.90 on six development
+frames. An optional existing TemplateValueReader route instead retains the
+current report portrait class as a candidate, separately from player-name text.
+Frozen two-class references with three physical training inputs each produce
+six correct class labels on disjoint source frames and reject three natural
+absent-report controls; numeric correct6 is retained. Owned facts and formal
+HUD/trace events remain0. This does not qualify killer-agent, report subject or
+self-dead ownership and does not change any of the82canonical statuses.
+See [contract, physical split and remaining gates](report_portrait_candidates.md).
+
+## Victim text feasibility separates OCR from ownership/row contract
+
+A frozen border-excluding source crop improves victim-name reading0→3correct on
+three physically disjoint reserved images, with0wrong and all3invalid-field/
+absent-row controls rejected. The current shared analyzer records the three
+accepted bare strings but correctly generates0structured rows and0death events:
+victim-role/row association and independently qualified self binding are still
+missing. The crop handles one observed name only and has two accepted development
+supports; it is not a qualified universal reader. No production or82status
+change. See [source comparison and direct producer/owner blockers](killfeed_subject_gap.md).
+
+## Fixed victim-frame reference fails the row-localization gate
+
+Frozen separator/outer-victim-edge references support only2/3training images
+and0/2other-victim row transfer witnesses atNCC0.90, although3/3same-victim
+witnesses match. Reject the proposal without threshold adjustment or production
+adoption. A transferable separator cannot alone place or assign a victim field;
+current geometric portrait/text support is the next hypothesis. All82statuses
+remain unchanged. See [minimum support and transfer rejection](killfeed_layout_feasibility.md).
+
+## Spectator portrait proposals do not transfer to killfeed geometry
+
+Unmodified portrait_frames and directed occupancy gates yield0portrait proposals
+on8existing-row development images plus1absence image. Neither the frozen
+separator nor readable text compensates for a missing independent portrait/field
+support. Reject direct reuse, preserve spectator policy, and require a dedicated
+killfeed frame family before victim-role or ownership claims. No production or
+82status change. The largest canonical blocker remains qualified global round
+lifecycle; existing result reference/OCR failures must not be repeated as new
+candidates. See [geometry rejection and priority](killfeed_geometric_reuse.md).
+
+## Purchase-phase static evidence survives current native raster check
+
+The frozen current shared profile accepts3/3training and8/8same-case native
+positive images and rejects13/13controls, matching prior JPEG profile results.
+Exact native ticks, pixel/encoded hashes, source SHA and disjoint physical splits
+verify; this is current-code static component evidence, not new blind holdout or
+joint temporal qualification. No real global sidecar or formal event is created.
+Assured start still requires separately supportedtimerandui_transition; canonical
+82statuses remain unchanged. See [gate audit, current measurements and next step](lifecycle_phase_current_native.md).
+
+## Timer native replay retains25/7/0 and finds physical cross-component leakage
+
+The frozen strict timer produces25correct/7unknown/0wrong on32native source
+images, exactly matching current/oldJPEGoutcomes, with no overlap against76timer
+training ticks. Tick69.002669is nevertheless shared by timer training and the
+phase negative split: retain the diagnostic row but prohibit its future joint
+negative use. Same-frame JPEG/native hashes cannot prove independence. Alternate
+ROI timer controls are not natural absent-timer evidence; complete timer/UI
+qualification remains missing. No production or82status change. See
+[current source proof and frozen continuous next review](lifecycle_timer_current_native.md).
+
+## Continuous native UI replay exposes startup-context requirement
+
+Cold5window entry has1anchor and0/162validphase scans. Actual decoder startup
+image with existing4anchor acceptance enables162/162scans and133accepted timers,
+yielding source candidates4.102669and111.419336, with0candidates across3controls.
+All162suffixpixels/PTS agree between runs;2:25is visibly real and preserved.
+Common initialization and independently reset windows make this development
+replay, not joint qualification/full lifecycle. No formal event or82statuschange;
+short-entry geometry failure is not a reclassification of full-run root causes.
+See [source initialization, current candidates and remaining gates](lifecycle_ui_current_native.md).
+
+## Native short windows now have explicit geometry-only source initialization
+
+An opt-in shared measurement entrance validates a matching source assurance and
+an earlier native image, measures its anchors under unchanged policy, and keeps
+it outside value/phase/feature/event streams. Current geometry contradictions
+veto retention; image/assurance mutation rejects the entire packet. Actual162
+frames preserve2start candidates,0control candidates and133accepted timers; all
+windowfreshgeometry remains0while retainedgeometry162is accurately reported.
+113relatedtests,full2707PASS/6SKIP,Ruff/mypyPASS. No qualification or82status
+promotion; qualified/default full entrance remains unchanged. See
+[source-bound API, tests and remaining release gates](native_window_initialization.md).
+
+## Result exact-glyph hypotheses fail before holdout
+
+Four fixed training-only methods retainNCC0.90but fail minimum support,
+comparable population, segmentation or a confusable control. Whole grayscale
+cells support1/3and edge-conjunctive2/3; native counterparts still support1/3
+and retain the E/Aglare bridge. An added39pixel stroke in source-derived Cpasses
+cellNCC0.908383,so synthetic-font success is not exact-semantic qualification.
+Reject all methods without threshold scans or holdout tuning. No production,
+qualification or82status change. See
+[training gates, native evidence and semantic limits](result_glyph_training_feasibility.md).
+
+## Timer unknowns do not supply absence controls
+
+Manual review of all30 existing native spectator-control frames finds legible
+source timer text in every image. Current frozen static reader and native
+projection agree on11correct/19unknown/0wrong;16rejections are ROI-border
+foreground and3separator-dot count. Do not count these rejected positive images
+as absent-timer negatives or qualify a component from prediction-derived labels.
+No production, qualification or82status change. This does not impose a new
+natural-negative-only gate; controls must honestly describe their tested scope.
+See [source labels and qualification limits](timer_control_source_review.md).
+
+## Current native UI measurements survive the public transport
+
+An explicit opt-in returns existing same-pass phase/result/break measurements
+with source provenance in an unqualified namespace. Default system_evidence
+remains empty and qualified admission rejects these measurements as proofs.
+162verified native rasters preserve2start candidates,133accepted timers and
+0candidates across3controls, without diagnostic-sink reconstruction. All
+observations match the previous replay.303relatedtests,Ruff/mypyPASS; no
+qualification, canonical rerun or82status promotion. See
+[source contract, terminal replay and remaining gates](native_ui_measurement_transport.md).
+
+## Static start components now share the current native profile fingerprint
+
+Replay55existing native phase/timer cases under the actual native start profile:
+phase3training/8correctholdout/12negative_rejected;timer25correct/7unknown/0wrong,
+all unchanged. Exclude the previously identified timer-training phase control
+before predictions. Physical joint sets79training/40holdout/12negative have empty
+pairwise intersections; correct initial holdout-name audit32→40without changing
+predictions. No qualification installation or82status promotion. Timer control
+transformation/source audit and independent continuous UI support remain gates.
+See [current common-profile replay and physical split proof](joint_start_component_replay.md).
+
+## Timer type controls now verify the current configured wrapper and native parents
+
+All8existing source-field type controls reject through the current125x85ROI
+wrapper on both JPEG and exact native rasters,0false positives. Inner crop pixel
+identity verifies; native parents are disjoint from joint79training/40holdout/
+12phase negatives. Combined negative physical set20does not imply identical
+component scope. Preserve a decoder interval rejection; wider declared capture
+recovers the originally missing endpoint frame without relaxing completeness.
+No qualification installation or82status change. See
+[control scope, actual wrapper replay and acquisition guards](timer_type_control_native_replay.md).
+
+## Timer/phase partial proof aggregates source provenance without authorizing events
+
+Audit76timer training images, unchanged10digit asset hashes,32native holdout
+cases and8configured-native type controls under the current common profile/code.
+Preserve25correct/7unknown/0wrong and0control false positives; physical/pixel
+splits disjoint. Actual production loader rejects the incomplete timer/phase
+bundle becauseui_transitionis missing. No qualification installation or82status
+promotion. UI evidence still needs physical/context and original exposure review;
+repeated cases do not create independent events and a3episode minimum must not
+be invented from the distinct-image gate. See
+[provenance aggregation and explicit release rejection](start_component_proof_aggregation.md).
+
+## Complete continuous source labels verify all133accepted clock readings
+
+Review all162native images in five existing windows:133correct/29unknown/0wrong
+against original source display strings;25literal phase matches correct and
+0wrong matches. Preserve real2:25and distinguish30menu-obscured fields from
+checked phase absence. Source disappearance matches2existing candidates;3
+controls remain0. No new blind cohort, event-count inflation, qualification or
+82status promotion. See
+[complete image review and physical/event support units](ui_continuous_source_review.md).
+
+## Neutral-white result segmentation removes real letters
+
+A fixed all-channel210/channel-spread12subset changes existing native training
+component counts7,7,6→7,7,5and destroys glyph correspondence even at count7.
+Reject before glyph/control/holdout scoring; no colour-threshold scan or
+qualification. Actual foreground is not uniformly neutral white. Relative local
+contrast must retain both foreground and negative-space discrimination. No
+production or82status change. See
+[colour premise rejection and next evidence requirement](result_neutral_colour_training.md).
+
+## Optional all-glyph contrast guard rejects the known added-stroke hole
+
+Foreground/negative-space contrast masks preserve every selected blank-region
+pixel in population-adaptive groups, withNCC0.90andmin32unchanged. Fixed3native
+references plus all11unassigned training cases give6/14combined source supports.
+Original11holdout remains3correct/8unknown/0wrong;3natural negatives reject.
+Known source-derived39pixelstroke scores0.927641unguarded→0.670662guarded.
+Shared opt-in code/profile integration,176relatedtests andfull2740PASS/6SKIP,
+Ruff/mypyPASS. Existing profiles/defaults unchanged; no qualification, round
+promotion or82status change. See
+[implementation, source splits and remaining end/lifecycle gates](result_local_contrast_guard.md).
+
+## Guarded result preserves the continuous unqualified end pattern
+
+Replay all108native end-window frames under both current-code profiles.
+Timer17, complete score pairs47, result matches29 and one unqualified pattern
+remain identical. Boundary74.486003 and confirmation75.369336 stay distinct;
+the unchanged one-second horizon is satisfied. Terminal source/profile/code
+hashes verify. Preserve the comparator's optional-field failure and finalize
+saved rows without repeating recognition. No active-round, qualification,
+formal event or canonical82status promotion. See
+[continuous evidence and remaining strict release blockers](result_guard_continuous_end.md).
+
+## Guarded end control replay preserves menu and ordinary-play rejection
+
+Actual current guarded profile reprocesses99verified native control images:
+27menu-entry and72active. Result matches0, unqualified end patterns0, pending
+frames0, owned facts0; accepted timer and score counts and states match prior
+controls. Terminal hashes verify. Existing lifecycle already provides end/start
+rearm; reuse it after qualification rather than join isolated windows or infer
+whole-match no-false-R2-end safety. No qualification or82status change. See
+[control scope, comparison and continuous integration gap](result_guard_end_controls.md).
+
+## Current guarded-profile timer/phase/UI source replay clears stale-proof uncertainty
+
+Fresh static63cases preserve phase8correct holdout, timer25correct/7unknown/
+0wrong and8type-control rejections. Current162native UI images compare against
+original manual displays:133correct/29unknown/0wrong;2starts and3zero-candidate
+controls unchanged. Reverify76training pixels and10digit assets. Actual loader
+rejects both stale and current incomplete bundles, for distinct expected reasons.
+UI windows are physically disjoint from timer training; no invented3episode
+gate or independent-event inflation. No installed qualification or82status
+change. See
+[current component evidence, release units and next gate](guarded_lifecycle_component_verification.md).
+
+## Start-only qualification reaches a real native R1 event and targeted canonical PASS
+
+Review candidate support roles against original source labels:9training/7holdout/
+90negative images describe1/1/3temporal cases, not independent events per image.
+Unknown preparation timer remains unknown and contributes phase only. Actual
+source-assured loader admits the current start-only bundle; defaults untouched.
+Fresh358native startup frames produce1system round_start at4.102669, confirmed
+4.202669, no duplicate/end/owned fact. Existing builder and trace preserve the
+event; unchanged canonical GT-R1-ROUND-START passes on the local0–6second trace.
+The open package's upper bound is video duration, not observed coverage;
+completeness remains0. No adopted82status or full-E2E improvement claimed.
+See [source-to-canonical evidence and remaining end/rearm gates](qualified_r1_start_source.md).
+
+## Current score component is reviewed without field/image double counting
+
+Replay54original native score parents through current configured positive
+wrappers and fixed spatial-negative core crops. Field36correct/18unknown/0wrong
+is unchanged; joint27holdout parents are9correct/18unknown/0wrong,27negative
+parents reject. Actual loader admits current start+score candidate bundle;
+88/73/134joint physical split parents have no cross-split overlap. Shared-font
+training ancestry and limited negative scope remain explicit. No default
+installation, end event, owned fact or adopted82status change. See
+[score units, provenance and remaining result/end gate](guarded_score_component_verification.md).
+
+## Guarded result component admission preserves temporal-end gate
+
+Actual unchanged model rechecks14training/11holdout/3natural-negative source
+parents. Held3correct/8unknown/0wrong and0negative false positives persist.
+Configured gray asset support6 and source BGR support7 remain distinct
+measurements, not a claimed gain. Current five-component candidate is admitted;
+102/84/137joint physical parents have no cross-split overlap. Result matches
+do not attest end timestamps or independent temporal events. ui_end_transition
+absent, defaults untouched, no formal event or adopted82status change. See
+[result source units and remaining temporal contract](guarded_result_component_verification.md).
+
+## R1 source-qualified start survives actual application admission and fusion
+
+Fresh39native main images verify against unchanged qualified358-row producer
+output under exact source/code/profile/qualification/input hashes. Actual
+HudVideoProcessor, HUD/visual analyzers, native event/timer merge, fusion and
+terminal validation preserve1system start and canonical local R1-start PASS.
+Unknown identity39, owned facts0, snapshots0 and partial completeness0remain;
+the package's video-duration sentinel is not observed coverage. This is neither
+a new native recognition run nor canonical sampled/full E2E. No adopted82status
+change. See [application path and scope](qualified_r1_start_application.md).
+
+## Complete end source review separates physical caption appearance from matcher support
+
+All108native source frames reviewed without prediction overlays. Accepted
+timer17, score pairs47 and result matches29 are source-correct,0wrong. A brief
+complete caption appears74.436003 before clock74.452669/score74.486003; later
+matcher support75.319336 is not physical UI onset. Preserve partial/clipped/
+obscured ROI distinctions and unknowns; no end backdating or qualification.
+Next test the existing fixed complete-glyph registration against the already
+expanded frozen14training inventory; do not fit to early/held frames. No
+adopted82status change. See
+[source chronology, hypotheses and scope](end_continuous_source_review.md).
+
+## Expanded registered-glyph training is eligible but cannot recover an old word nonmatch
+
+Fixed complete7glyph method on14assigned training parents finds7eligible and
+5combined supports, minimum3/NCC0.90unchanged. Seven invalid frames remain
+unknown; no held/early fitting. The old method adds an AND predicate to the
+fixed word matcher and cannot promote its early nonmatch. Reject for early
+recovery without unnecessary holdout/full execution or production integration.
+A separately qualified registered word representation needs full glyph,
+negative-space and word-geometry constraints. No adopted82status change. See
+[eligibility result and mathematical recovery limit](result_registered_expanded_training.md).
+
+## Independent normalized word model rejects before holdout on negative-space population
+
+Frozen14training parents yield7complete words, but28x56registration leaves
+A29/M26negative-space pixels, below unchanged32minimum. Reject model,0support,
+no held/early scoring or threshold/mask relaxation. Median native-reference
+dimensions retain47/80pixels; these are reference diagnostics, not qualified
+current samples. Next test source-native mask transport with32distinct current
+physical pixels per comparison, retaining all7glyphs/NCC0.90/word geometry.
+No production or adopted82status change. See
+[normalization cause and scope](result_independent_registration_training.md).
+
+## Native-pixel contrast supports late word matches but early segmentation still fails
+
+Frozen14training parents yield7complete/7supports with real current32pixel
+foreground/negative regions and all7NCC0.90. Source-derived stroke control
+rejects0.709370; original held3→5correct/8→6unknown/0wrong, natural FP0.
+Early caption still rejects before NCC because thresholdedTEA/CEmerge into
+4components. Do not hand-split the challenge or integrate as an early fix.
+Next test a training-derived7slotword layout with all glyph/space evidence,
+avoiding one-component-per-letter assumption. No adopted82status change. See
+[fixed evaluation and failure stage](result_native_mask_registration.md).
+
+## Seven fixed slots bypass segmentation but reject the early appearance at NCC0.214
+
+Training-only7slotlayout gives7supports; original held5correct/6unknown/0wrong,
+natural FP0andstroke control0.722216reject. Early image reaches all7slots:
+6glyphs andwordspace below0.90, weakestM0.214195; onlyfinalEpasses. Fusion was
+onlyfirstblocker; stop tuning this late-reference family to the early challenge.
+Return to source-correct clock/score plus qualifiedlate-result temporal path,
+retaining candidate/confirmation separation and one-end-case scope. No
+production or adopted82status change. See
+[fixed slots, appearance evidence and decision](result_fixed_slot_training.md).
+
+## End-history survives same-segment UI uncertainty; prior qualification is now stale
+
+The71frame end prefix is physically/pixel-disjoint from component training;
+6supports represent1known event, not6independent ends. Pre-change loader
+admission is only an audit. Whole-source metadata has no PTS gaps and2duplicate
+rasters81.786/81.836after end; old predictions not reused. Fix ended-history
+clearing on result/report/menu/scan uncertainty; actual source breaks still
+erase history. New regression4FAIL→0, related108PASS,Ruff/mypyPASS. Broad code
+fingerprintfd8b8ff3invalidates all prior qualification; actual loader rejects
+old bundle. Fresh source verification is required, no re-signing or adopted82
+status change. See [history correction and current qualification status](ui_end_component_review.md).
+# Current-code component revalidation after end-history correction
+
+Fresh production recognition on the existing fixed static and continuous
+source cohorts reproduces timer/score/result and R1/R2 start/end patterns
+without increased wrong values or bounded-control false positives. The
+current-code offline admission audit now passes the unchanged loader for all
+six lifecycle components. It remains one exposed end episode, not independent
+temporal generalization or default release. Formal source-owned continuous
+start→end→preparation, package association and canonical evaluation remain
+pending; adopted 23 PASS / 55 FAIL / 4 NE is unchanged. See
+`docs/current_code_lifecycle_revalidation.md` and
+`e2e_reports/match_001/current_code_lifecycle_revalidation.json`.

@@ -1,0 +1,2519 @@
+{
+  "scope": "Fixed original manually reviewed native score holdout and spatial type controls under current guarded profile/code; no new fitting, blind-cohort claim, geometry/temporal qualification or formal event",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "profile_fingerprint": "60b029cb987fe0d7447853e3b4cd791d5defb0918dfaa25a401bd45d2b64c813",
+  "recognizer_fingerprint": "7bbb45ea27708c547a9ceb7c79b6f52e99f765675735ad0e247fd0528021cd2c",
+  "profile_path": "outputs/hud_profiles/round-global-timer-glyph-20261008/result-contrast-guard-diagnostic.templates.json",
+  "old_profile_fingerprint": "287c6453d04b8f334cb32ba3631b91e935b563c070bb0a717548d8daa138d1b5",
+  "positive_windows": [
+    0,
+    1,
+    2
+  ],
+  "negative_windows": [
+    3,
+    4,
+    5
+  ],
+  "positive_input": "Actual configured outer ROI wrapper with unchanged nominal layout",
+  "negative_input": "Original44x45score-sized fields through core reader once, not double subregion crop",
+  "original_split_and_labels_retained": true,
+  "rows": [
+    {
+      "window_index": 0,
+      "source_pts_ticks": 2189097,
+      "pts_sec": 142.5193359375,
+      "source_pixel_sha256": "13ea2a4dc0434b80049d66c63c1d7415bf9d708972ccf6b2b07d5f3c3fa89bae",
+      "encoded_sha256": "24bb1256885fb2102c37eb1da476cbf38502009177a3b92cb3d8c895e15d06d4",
+      "split": "holdout",
+      "pair_outcome": "unknown",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "original_source_display": "0",
+          "outcome": "unknown",
+          "bounds": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "display": "2",
+          "confidence": 0.9536582827568054,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "2",
+          "outcome": "correct",
+          "bounds": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 0,
+      "source_pts_ticks": 2189353,
+      "pts_sec": 142.53600260416667,
+      "source_pixel_sha256": "843f75df2b760e684cfabc792af4fc076f455559c91a7748225aa1876f24b02f",
+      "encoded_sha256": "8e0128d636fd86a0217930f2ac3a85ebd2987ea798d59c0bf78d5be8fb57aebe",
+      "split": "holdout",
+      "pair_outcome": "unknown",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "original_source_display": "0",
+          "outcome": "unknown",
+          "bounds": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "display": "2",
+          "confidence": 0.9539545178413391,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "2",
+          "outcome": "correct",
+          "bounds": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 0,
+      "source_pts_ticks": 2189609,
+      "pts_sec": 142.55266927083332,
+      "source_pixel_sha256": "60e92a15d1eb9d107f9f0945cce8cdb4259f55b9bd5fa433a33dd0eeddf3cdf1",
+      "encoded_sha256": "98bc62c1035aa1fd5e2532b1fa10b79c6cbc0f41591c852f4483e8d99eeb6653",
+      "split": "holdout",
+      "pair_outcome": "unknown",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "original_source_display": "0",
+          "outcome": "unknown",
+          "bounds": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "display": "2",
+          "confidence": 0.9539545178413391,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "2",
+          "outcome": "correct",
+          "bounds": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 0,
+      "source_pts_ticks": 2189865,
+      "pts_sec": 142.5693359375,
+      "source_pixel_sha256": "6620be9483c42c725a9e92d1d6c2375d6e98632b940a7c9ecbcbea15fb29bab8",
+      "encoded_sha256": "e5ed89b092878df837457eb8c4e427c3e1a0013e9d3cca6f7ad379464fe129ed",
+      "split": "holdout",
+      "pair_outcome": "unknown",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "original_source_display": "0",
+          "outcome": "unknown",
+          "bounds": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "display": "2",
+          "confidence": 0.9523216485977173,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "2",
+          "outcome": "correct",
+          "bounds": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 0,
+      "source_pts_ticks": 2190121,
+      "pts_sec": 142.58600260416668,
+      "source_pixel_sha256": "df361a7609c77851ab5c638d4d5e401fb83c2a8d082d859aa29932eb000eee26",
+      "encoded_sha256": "a0eb6f8f41f81294d3b51ee0f2df09a47d56e03373d4272af230f7d58c2fc1c9",
+      "split": "holdout",
+      "pair_outcome": "unknown",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "original_source_display": "0",
+          "outcome": "unknown",
+          "bounds": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "display": "2",
+          "confidence": 0.9499372839927673,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "2",
+          "outcome": "correct",
+          "bounds": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 0,
+      "source_pts_ticks": 2190377,
+      "pts_sec": 142.60266927083333,
+      "source_pixel_sha256": "8d9d5599db82cd1ce1f3ab56fe8fb56d0dd257211eb18266db77e5de447235e0",
+      "encoded_sha256": "26edf7edd86cea959b64291cb4056946a0208f08fa21584e48175ab2ed5282fa",
+      "split": "holdout",
+      "pair_outcome": "unknown",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "original_source_display": "0",
+          "outcome": "unknown",
+          "bounds": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "display": "2",
+          "confidence": 0.9497019052505493,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "2",
+          "outcome": "correct",
+          "bounds": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 0,
+      "source_pts_ticks": 2190633,
+      "pts_sec": 142.6193359375,
+      "source_pixel_sha256": "119aed7460d0d710f973b56a1e2c96f9b8637698cd5d123a3412c3a0d06f13f8",
+      "encoded_sha256": "f28b83a5f4d712530be3a8b3d14d4298a5cb01462b1d0b74228f64de403487f7",
+      "split": "holdout",
+      "pair_outcome": "unknown",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "original_source_display": "0",
+          "outcome": "unknown",
+          "bounds": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "display": "2",
+          "confidence": 0.9497019052505493,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "2",
+          "outcome": "correct",
+          "bounds": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 0,
+      "source_pts_ticks": 2190889,
+      "pts_sec": 142.63600260416666,
+      "source_pixel_sha256": "f31dcf1f51e42b9b07071ee3fb3ebcec6ea8da0cff4153fb9143e7a606145da8",
+      "encoded_sha256": "edd57d66a09bf113a8f18d4708de226baf6b4e7fa94ce1887ab7d01bb372a9f2",
+      "split": "holdout",
+      "pair_outcome": "unknown",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "original_source_display": "0",
+          "outcome": "unknown",
+          "bounds": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "display": "2",
+          "confidence": 0.9497019052505493,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "2",
+          "outcome": "correct",
+          "bounds": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 0,
+      "source_pts_ticks": 2191145,
+      "pts_sec": 142.65266927083334,
+      "source_pixel_sha256": "e140104e9f649d8a0fbdc0d5d55c98468557ce073feebd54adf286c4253d7e42",
+      "encoded_sha256": "2d8700fdb3ecfab5c137589150fb352fba83492a2bc62f04c0d28479837d4a73",
+      "split": "holdout",
+      "pair_outcome": "unknown",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "original_source_display": "0",
+          "outcome": "unknown",
+          "bounds": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "display": "2",
+          "confidence": 0.9540109038352966,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "2",
+          "outcome": "correct",
+          "bounds": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 1,
+      "source_pts_ticks": 375337,
+      "pts_sec": 24.436002604166667,
+      "source_pixel_sha256": "f5b8d74bec8169b554c11e045a1f00aa9b4b61505bea8fec1e2f91e0a3986aba",
+      "encoded_sha256": "a5a8890b34d0c33cb1fe1255bf740d2f8a801fea730cee59dffad4336cafc2a1",
+      "split": "holdout",
+      "pair_outcome": "unknown",
+      "readings": {
+        "ally_score": {
+          "display": "0",
+          "confidence": 0.9465780854225159,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "0",
+          "outcome": "correct",
+          "bounds": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "original_source_display": "1",
+          "outcome": "unknown",
+          "bounds": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 1,
+      "source_pts_ticks": 375593,
+      "pts_sec": 24.452669270833333,
+      "source_pixel_sha256": "3e2ff30920daeb2d0686c26e468cfa20291e068e509dd0bda90c1894e12fa498",
+      "encoded_sha256": "a9f89a5952b75e501a9416b205de47ccad40d7df93b3f214e3f31a99a377fef6",
+      "split": "holdout",
+      "pair_outcome": "unknown",
+      "readings": {
+        "ally_score": {
+          "display": "0",
+          "confidence": 0.9465780854225159,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "0",
+          "outcome": "correct",
+          "bounds": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "original_source_display": "1",
+          "outcome": "unknown",
+          "bounds": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 1,
+      "source_pts_ticks": 375849,
+      "pts_sec": 24.4693359375,
+      "source_pixel_sha256": "724ccd96474fbb562a2423a738bf7fb2f69e74ab28d385d137064f6844f66b14",
+      "encoded_sha256": "c689bd5ed73c9bccc45b12f10136fda553ad326dc8dc4985a67d87fce22ae6ef",
+      "split": "holdout",
+      "pair_outcome": "unknown",
+      "readings": {
+        "ally_score": {
+          "display": "0",
+          "confidence": 0.9465780854225159,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "0",
+          "outcome": "correct",
+          "bounds": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "original_source_display": "1",
+          "outcome": "unknown",
+          "bounds": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 1,
+      "source_pts_ticks": 376105,
+      "pts_sec": 24.486002604166668,
+      "source_pixel_sha256": "7890382f331a2b142883d962a9b31aea03b21877f90ea2e06462a8349e672817",
+      "encoded_sha256": "cb00b385a37f5a2d1bb8893d6cf3492f3e9a6a0e0a0b1ed49f76a1daed4b50f1",
+      "split": "holdout",
+      "pair_outcome": "unknown",
+      "readings": {
+        "ally_score": {
+          "display": "0",
+          "confidence": 0.9465780854225159,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "0",
+          "outcome": "correct",
+          "bounds": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "original_source_display": "1",
+          "outcome": "unknown",
+          "bounds": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 1,
+      "source_pts_ticks": 376361,
+      "pts_sec": 24.502669270833334,
+      "source_pixel_sha256": "c7a96a7689ac1dd0b99bca8f60031f1fcd087a8d090152ba0f794a351bbb8794",
+      "encoded_sha256": "cae4369c25f9e865f88d7e52dc28ad6c65ecaefacf07a82648d89d167c7a3ad7",
+      "split": "holdout",
+      "pair_outcome": "unknown",
+      "readings": {
+        "ally_score": {
+          "display": "0",
+          "confidence": 0.9465780854225159,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "0",
+          "outcome": "correct",
+          "bounds": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "original_source_display": "1",
+          "outcome": "unknown",
+          "bounds": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 1,
+      "source_pts_ticks": 376617,
+      "pts_sec": 24.5193359375,
+      "source_pixel_sha256": "b2abc4dd76b65a41db330ff3a706147bf76b5bfaad8aa0f94ea3b21ddd1deeba",
+      "encoded_sha256": "180f8090b3e9a73b2deaf1edd357404655de1ecf91dcc7ba19f8ff98b230720f",
+      "split": "holdout",
+      "pair_outcome": "unknown",
+      "readings": {
+        "ally_score": {
+          "display": "0",
+          "confidence": 0.9465780854225159,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "0",
+          "outcome": "correct",
+          "bounds": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "original_source_display": "1",
+          "outcome": "unknown",
+          "bounds": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 1,
+      "source_pts_ticks": 376873,
+      "pts_sec": 24.536002604166665,
+      "source_pixel_sha256": "f7c23001b1cdedccaab4dd274c622cf763dc7fcf471b72fd5e96b531b76cf541",
+      "encoded_sha256": "ab956b14817e802973376b26ae48b4153b9bb774d18e5c1d8bfb79ea8e8636c5",
+      "split": "holdout",
+      "pair_outcome": "unknown",
+      "readings": {
+        "ally_score": {
+          "display": "0",
+          "confidence": 0.9465780854225159,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "0",
+          "outcome": "correct",
+          "bounds": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "original_source_display": "1",
+          "outcome": "unknown",
+          "bounds": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 1,
+      "source_pts_ticks": 377129,
+      "pts_sec": 24.552669270833334,
+      "source_pixel_sha256": "d2cc0aad81634e024e9b47d0c8e80b40bf8255a4093637f1a5fbc90f9801102b",
+      "encoded_sha256": "7bba2b8ee7b4c099f2dc445f84df63e2bb99e3a8fc1f11f1e43a991195ea289e",
+      "split": "holdout",
+      "pair_outcome": "unknown",
+      "readings": {
+        "ally_score": {
+          "display": "0",
+          "confidence": 0.9465780854225159,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "0",
+          "outcome": "correct",
+          "bounds": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "original_source_display": "1",
+          "outcome": "unknown",
+          "bounds": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 1,
+      "source_pts_ticks": 377385,
+      "pts_sec": 24.5693359375,
+      "source_pixel_sha256": "892a0e99a91c7405cf98e4875a24bb9548bdef02c3b73aa4d1983e469ca9dd42",
+      "encoded_sha256": "4df605e0fbfffb34f3c6f4e7f299778eb4832f07e76a6309130be45befcd270f",
+      "split": "holdout",
+      "pair_outcome": "unknown",
+      "readings": {
+        "ally_score": {
+          "display": "0",
+          "confidence": 0.9465780854225159,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "0",
+          "outcome": "correct",
+          "bounds": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "original_source_display": "1",
+          "outcome": "unknown",
+          "bounds": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 2,
+      "source_pts_ticks": 1125929,
+      "pts_sec": 73.30266927083333,
+      "source_pixel_sha256": "ce7b643b6989dded4b4ef29eb14a27a07701963fa73bf11db475a9647500d38e",
+      "encoded_sha256": "68131cc226022caa748acb23bbe65bf756c9401e0bb652b3a16ae3540ec6d909",
+      "split": "holdout",
+      "pair_outcome": "correct",
+      "readings": {
+        "ally_score": {
+          "display": "0",
+          "confidence": 0.9315125942230225,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "0",
+          "outcome": "correct",
+          "bounds": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "display": "1",
+          "confidence": 0.9662814140319824,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "1",
+          "outcome": "correct",
+          "bounds": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 2,
+      "source_pts_ticks": 1126185,
+      "pts_sec": 73.3193359375,
+      "source_pixel_sha256": "9849899e8814ab9a1ff5a2cb53f67b23ad14d81833302eefa098c8dc70be229c",
+      "encoded_sha256": "2fba30b0ea88a4380c62807079bb32f8bfb929830899cc13a8c9fb6a039d12da",
+      "split": "holdout",
+      "pair_outcome": "correct",
+      "readings": {
+        "ally_score": {
+          "display": "0",
+          "confidence": 0.9384577870368958,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "0",
+          "outcome": "correct",
+          "bounds": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "display": "1",
+          "confidence": 0.9662814140319824,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "1",
+          "outcome": "correct",
+          "bounds": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 2,
+      "source_pts_ticks": 1126441,
+      "pts_sec": 73.33600260416667,
+      "source_pixel_sha256": "eca37e8cea56b6cb8b84e01477975ea77d0e649918383f382ec530c5eea45d67",
+      "encoded_sha256": "c97f04ea1f98c4b32b4bd59edb2bf4ff1ba5cf07a691f431ae42a61260be8d0a",
+      "split": "holdout",
+      "pair_outcome": "correct",
+      "readings": {
+        "ally_score": {
+          "display": "0",
+          "confidence": 0.9269326329231262,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "0",
+          "outcome": "correct",
+          "bounds": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "display": "1",
+          "confidence": 0.9662814140319824,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "1",
+          "outcome": "correct",
+          "bounds": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 2,
+      "source_pts_ticks": 1126697,
+      "pts_sec": 73.35266927083333,
+      "source_pixel_sha256": "2ed31301f699fa767f0a201d0883036de1793a311d46781a0da670d791982f5b",
+      "encoded_sha256": "36b7b6eb22fd8bb3f9f90c5163a2a4dca18323abe61de6499afb2ab807c9249e",
+      "split": "holdout",
+      "pair_outcome": "correct",
+      "readings": {
+        "ally_score": {
+          "display": "0",
+          "confidence": 0.9287377595901489,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "0",
+          "outcome": "correct",
+          "bounds": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "display": "1",
+          "confidence": 0.9662814140319824,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "1",
+          "outcome": "correct",
+          "bounds": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 2,
+      "source_pts_ticks": 1126953,
+      "pts_sec": 73.3693359375,
+      "source_pixel_sha256": "f20fcf514be84bf6e1789252b7f60899b5b46754fd39ef32708615d963e2bee2",
+      "encoded_sha256": "cb2a9e9135c2ae04bc37f72ba05dc46c2d91705814c21b249cfd39a53a63add7",
+      "split": "holdout",
+      "pair_outcome": "correct",
+      "readings": {
+        "ally_score": {
+          "display": "0",
+          "confidence": 0.9527857899665833,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "0",
+          "outcome": "correct",
+          "bounds": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "display": "1",
+          "confidence": 0.9662814140319824,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "1",
+          "outcome": "correct",
+          "bounds": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 2,
+      "source_pts_ticks": 1127209,
+      "pts_sec": 73.38600260416666,
+      "source_pixel_sha256": "385a7f0069050dfbc049fc79e1731e87f8857dc37dfcbc376eb1f6d293644810",
+      "encoded_sha256": "1f993b3770657396a4df318d50c41465b3ef02dbca1f29e736fc88642d316e4a",
+      "split": "holdout",
+      "pair_outcome": "correct",
+      "readings": {
+        "ally_score": {
+          "display": "0",
+          "confidence": 0.9527857899665833,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "0",
+          "outcome": "correct",
+          "bounds": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "display": "1",
+          "confidence": 0.9662814140319824,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "1",
+          "outcome": "correct",
+          "bounds": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 2,
+      "source_pts_ticks": 1127465,
+      "pts_sec": 73.40266927083333,
+      "source_pixel_sha256": "ca040be25fc0cda4e3b47ff342f6171ce0c66285e39f1ec8a58b7a4cabc45807",
+      "encoded_sha256": "a8f8dcfe5f07a1b128480794da3118bc9adffd746d715b04054954b6e04d719c",
+      "split": "holdout",
+      "pair_outcome": "correct",
+      "readings": {
+        "ally_score": {
+          "display": "0",
+          "confidence": 0.9527857899665833,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "0",
+          "outcome": "correct",
+          "bounds": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "display": "1",
+          "confidence": 0.9662814140319824,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "1",
+          "outcome": "correct",
+          "bounds": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 2,
+      "source_pts_ticks": 1127721,
+      "pts_sec": 73.4193359375,
+      "source_pixel_sha256": "bc6d84da934598204ff0592fae40a062794d8da83431ea13da136511f6a26afc",
+      "encoded_sha256": "f3b2d5b50b316a3d7ff59ff37a196d441a74b0763370782de259d9706a0e29c4",
+      "split": "holdout",
+      "pair_outcome": "correct",
+      "readings": {
+        "ally_score": {
+          "display": "0",
+          "confidence": 0.9527857899665833,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "0",
+          "outcome": "correct",
+          "bounds": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "display": "1",
+          "confidence": 0.9662814140319824,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "1",
+          "outcome": "correct",
+          "bounds": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 2,
+      "source_pts_ticks": 1127977,
+      "pts_sec": 73.43600260416666,
+      "source_pixel_sha256": "21e5d4887e87d33b60eb5daeba33fa194eb83de58f0dd2a52c5a015ae7bfe820",
+      "encoded_sha256": "c1890b2e2af1d95f2ef185bcf72e21cc3229fabd42b6270611bedc63b5e08f13",
+      "split": "holdout",
+      "pair_outcome": "correct",
+      "readings": {
+        "ally_score": {
+          "display": "0",
+          "confidence": 0.9514408111572266,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "0",
+          "outcome": "correct",
+          "bounds": [
+            785,
+            5,
+            900,
+            80
+          ]
+        },
+        "enemy_score": {
+          "display": "1",
+          "confidence": 0.9680429100990295,
+          "sources": [
+            "strict_score_glyphs",
+            "comparison_gaussian3x3_v1",
+            "foreground_white200_rowcontrast_v1"
+          ],
+          "original_source_display": "1",
+          "outcome": "correct",
+          "bounds": [
+            1020,
+            5,
+            1138,
+            80
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 3,
+      "source_pts_ticks": 750633,
+      "pts_sec": 48.8693359375,
+      "source_pixel_sha256": "bdce3e7e54b955228600c179682747df74e4ac87568edc0ddfcefb49724550a6",
+      "encoded_sha256": "9fcc78b956e0cf54b99f2ac192a2ec564f11e7884ef27bccae83c9b982300129",
+      "split": "negative",
+      "pair_outcome": "negative_rejected",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            500,
+            350,
+            544,
+            395
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            1350,
+            350,
+            1394,
+            395
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 3,
+      "source_pts_ticks": 750889,
+      "pts_sec": 48.88600260416667,
+      "source_pixel_sha256": "48e56a9679955493297ba7bde1587333fe819c446060921f7f54d11d9dd8a773",
+      "encoded_sha256": "2b9d6b5dcd70245942dde873f67ba19f34178f892eddb76449aa1c54850a77e6",
+      "split": "negative",
+      "pair_outcome": "negative_rejected",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            500,
+            350,
+            544,
+            395
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            1350,
+            350,
+            1394,
+            395
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 3,
+      "source_pts_ticks": 751145,
+      "pts_sec": 48.902669270833336,
+      "source_pixel_sha256": "089c62b832f48380a46476683bac6e93ef363442f8ee6dcd80165c7ccb828a95",
+      "encoded_sha256": "686cf825d8eec089a4a563109f85e3be310c158982df88f3d464e2d70db19f63",
+      "split": "negative",
+      "pair_outcome": "negative_rejected",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            500,
+            350,
+            544,
+            395
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            1350,
+            350,
+            1394,
+            395
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 3,
+      "source_pts_ticks": 751401,
+      "pts_sec": 48.9193359375,
+      "source_pixel_sha256": "9d3b4ed6943dd1c769a7b48f6012d9302b9f3ff5e4e8d344b6f73ce4acd17dd5",
+      "encoded_sha256": "adb0bbfe9984ce10e6d3378a7d09502eb88bb2c0530e71456eea71a4c7cf2e5e",
+      "split": "negative",
+      "pair_outcome": "negative_rejected",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            500,
+            350,
+            544,
+            395
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            1350,
+            350,
+            1394,
+            395
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 3,
+      "source_pts_ticks": 751657,
+      "pts_sec": 48.93600260416667,
+      "source_pixel_sha256": "2857a2fa031862093d67eb5b1267ce66a23d24e371b9677cc5f58f7cd9c3778c",
+      "encoded_sha256": "790bdc20ae08bdf1c222e1e1541f4cd7bf2d6f6f057832549667f3eb77bde6e9",
+      "split": "negative",
+      "pair_outcome": "negative_rejected",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            500,
+            350,
+            544,
+            395
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            1350,
+            350,
+            1394,
+            395
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 3,
+      "source_pts_ticks": 751913,
+      "pts_sec": 48.95266927083333,
+      "source_pixel_sha256": "6ad3c6d4112701b3a7302d69f362db486276ce47adfdbb9d6ba4263127727c37",
+      "encoded_sha256": "73b0061667e580dfd4077c18ddae22b3a5efb7bc3eb2fba79710698428499519",
+      "split": "negative",
+      "pair_outcome": "negative_rejected",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            500,
+            350,
+            544,
+            395
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            1350,
+            350,
+            1394,
+            395
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 3,
+      "source_pts_ticks": 752169,
+      "pts_sec": 48.9693359375,
+      "source_pixel_sha256": "f5f02f56ae54e015f7fd8f775fb84a34991eeb6276ca74982ae6d214d508279a",
+      "encoded_sha256": "a95495ef414d869ed420e8e38a11f83759699b48d6fb31363c5285fcb2869696",
+      "split": "negative",
+      "pair_outcome": "negative_rejected",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            500,
+            350,
+            544,
+            395
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            1350,
+            350,
+            1394,
+            395
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 3,
+      "source_pts_ticks": 752425,
+      "pts_sec": 48.986002604166664,
+      "source_pixel_sha256": "fbbcd4220635b28c54f198a03822a5de5a6a24a7ba8c7f9a172b691f9d0c76cc",
+      "encoded_sha256": "4e2555530760e38bbaf57e0b3ccb5862ed7918817153af821eb3a5c0d88dd2bb",
+      "split": "negative",
+      "pair_outcome": "negative_rejected",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            500,
+            350,
+            544,
+            395
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            1350,
+            350,
+            1394,
+            395
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 3,
+      "source_pts_ticks": 752681,
+      "pts_sec": 49.00266927083333,
+      "source_pixel_sha256": "9622c95e0f88ebda97bda6e809fb4304568eee8702639553efd049aebd0a2f72",
+      "encoded_sha256": "a0b5597d1aade8a6c59e1db09282e9f86174a76273fc83dd97802c4fd67d7690",
+      "split": "negative",
+      "pair_outcome": "negative_rejected",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            500,
+            350,
+            544,
+            395
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            1350,
+            350,
+            1394,
+            395
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 4,
+      "source_pts_ticks": 1501225,
+      "pts_sec": 97.73600260416667,
+      "source_pixel_sha256": "80421cfd5951b7681132d6aa099a995a9b0b3faf34b5dd494ed3fb2d54550ad9",
+      "encoded_sha256": "28a29113a420e8e124cef2a910a5dae4ea3d3c45a547ae0898924283b206bb10",
+      "split": "negative",
+      "pair_outcome": "negative_rejected",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            500,
+            350,
+            544,
+            395
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            1350,
+            350,
+            1394,
+            395
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 4,
+      "source_pts_ticks": 1501481,
+      "pts_sec": 97.75266927083334,
+      "source_pixel_sha256": "5f9919c5d593a0527803e7502197df9dca8efca844ca5e621a807ddf3b47c3cb",
+      "encoded_sha256": "d58e3a85df2d8125b49ce26a8d9e343388a10f7c8797bf25aabaef71ba706dd6",
+      "split": "negative",
+      "pair_outcome": "negative_rejected",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            500,
+            350,
+            544,
+            395
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            1350,
+            350,
+            1394,
+            395
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 4,
+      "source_pts_ticks": 1501737,
+      "pts_sec": 97.7693359375,
+      "source_pixel_sha256": "6118847a110fd2297de8bae39f0a8cae940c8c894b124b8ff30428251309825f",
+      "encoded_sha256": "1ab3f616716559f717b52ad98292c40d4ccd92deda9ffa04446fc05361e3c2e5",
+      "split": "negative",
+      "pair_outcome": "negative_rejected",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            500,
+            350,
+            544,
+            395
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            1350,
+            350,
+            1394,
+            395
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 4,
+      "source_pts_ticks": 1501993,
+      "pts_sec": 97.78600260416667,
+      "source_pixel_sha256": "d34f7523ea2b413e5201547c168139403124bf839d060f93e61dff0f57625443",
+      "encoded_sha256": "d5f04602f9710d38d4ef7d38309de674d30d2a2f469ec6cf26fac303a4c91d18",
+      "split": "negative",
+      "pair_outcome": "negative_rejected",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            500,
+            350,
+            544,
+            395
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            1350,
+            350,
+            1394,
+            395
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 4,
+      "source_pts_ticks": 1502249,
+      "pts_sec": 97.80266927083333,
+      "source_pixel_sha256": "bc07304a75df1db53be12f71d546c286022ec9332e372100c549b425925d0608",
+      "encoded_sha256": "814505c307d483c81c6ab4306a8a8d8d3caee61af2d77727600dd79361ccb06d",
+      "split": "negative",
+      "pair_outcome": "negative_rejected",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            500,
+            350,
+            544,
+            395
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            1350,
+            350,
+            1394,
+            395
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 4,
+      "source_pts_ticks": 1502505,
+      "pts_sec": 97.8193359375,
+      "source_pixel_sha256": "1aceb7ff721470d7f861ae3846d562cb579543bb914210f53649a5069cced128",
+      "encoded_sha256": "e7ae51e97e21b0a37833d2f54c7537020e94c07d01feeacc91b196826d4edafd",
+      "split": "negative",
+      "pair_outcome": "negative_rejected",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            500,
+            350,
+            544,
+            395
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            1350,
+            350,
+            1394,
+            395
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 4,
+      "source_pts_ticks": 1502761,
+      "pts_sec": 97.83600260416667,
+      "source_pixel_sha256": "2223c9a6c2f5d7a35b7a766527321264eb4d44275840c721e748915012f2b171",
+      "encoded_sha256": "5643d8d5ca23208c413b8d3fad248d234ee98488e82ef3e7f07136e25f32d5f7",
+      "split": "negative",
+      "pair_outcome": "negative_rejected",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            500,
+            350,
+            544,
+            395
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            1350,
+            350,
+            1394,
+            395
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 4,
+      "source_pts_ticks": 1503017,
+      "pts_sec": 97.85266927083333,
+      "source_pixel_sha256": "057eec3ee0df37c17d6ad5bcb4e5040d2fd70b17577490210277e84778c18422",
+      "encoded_sha256": "9f189a2850fd43f84237d42b5b8b9bceef37dbb49b584cc62347291b8b159df4",
+      "split": "negative",
+      "pair_outcome": "negative_rejected",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            500,
+            350,
+            544,
+            395
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            1350,
+            350,
+            1394,
+            395
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 4,
+      "source_pts_ticks": 1503273,
+      "pts_sec": 97.8693359375,
+      "source_pixel_sha256": "39a2bd1ce42852dfed0db75e286e689076cdbe267303d942902792598c91fa00",
+      "encoded_sha256": "999ec15e72b2e97f9a5b9aab72226c2b550a82f4fb888f9e87db7b0939f20bbe",
+      "split": "negative",
+      "pair_outcome": "negative_rejected",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_foreground_touches_roi_border"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            500,
+            350,
+            544,
+            395
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            1350,
+            350,
+            1394,
+            395
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 5,
+      "source_pts_ticks": 1876521,
+      "pts_sec": 122.1693359375,
+      "source_pixel_sha256": "ebeb18f0b97f3b8a00610aa2c9870ba493445956832b5c45fd0e119119d793f1",
+      "encoded_sha256": "10b77677c42dba0382bfa567d79e0f3d6b583eaf78bbcb8e403a5059f22bc690",
+      "split": "negative",
+      "pair_outcome": "negative_rejected",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            500,
+            350,
+            544,
+            395
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            1350,
+            350,
+            1394,
+            395
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 5,
+      "source_pts_ticks": 1876777,
+      "pts_sec": 122.18600260416666,
+      "source_pixel_sha256": "aa2305478a3dbc97df4eba7435a7e6554bee41d848b2af97941cf45342b1eef5",
+      "encoded_sha256": "bb8f8a54320bdd9e6e1d1aa4692e89391709a374ef784762eea07faa173670a6",
+      "split": "negative",
+      "pair_outcome": "negative_rejected",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            500,
+            350,
+            544,
+            395
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            1350,
+            350,
+            1394,
+            395
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 5,
+      "source_pts_ticks": 1877033,
+      "pts_sec": 122.20266927083334,
+      "source_pixel_sha256": "ea8f4a7301be8a286f2569557d4ef454e7b9891c6842f9a1b4dbcbd24af96025",
+      "encoded_sha256": "2567098edc2b3a110dfd2a81826b44626488dcecd03c5fb66404d6b1e56fc868",
+      "split": "negative",
+      "pair_outcome": "negative_rejected",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            500,
+            350,
+            544,
+            395
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            1350,
+            350,
+            1394,
+            395
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 5,
+      "source_pts_ticks": 1877289,
+      "pts_sec": 122.2193359375,
+      "source_pixel_sha256": "c254970c004f2e00ddd3c129f1fa7d2c72dc2836c51a6b1354d6311295a8e6b2",
+      "encoded_sha256": "ffb822c14d564f32b5f21bcfd218f4ffa78af00ae650cdd7148d24c85b984b32",
+      "split": "negative",
+      "pair_outcome": "negative_rejected",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            500,
+            350,
+            544,
+            395
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            1350,
+            350,
+            1394,
+            395
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 5,
+      "source_pts_ticks": 1877545,
+      "pts_sec": 122.23600260416667,
+      "source_pixel_sha256": "773d41f18e9d52b0d2f8f646a7fa1b719f74d947e47e2c3e438349702d423526",
+      "encoded_sha256": "c5630213064b0f85acad64bce437bb4b08658029a9986ab06e7031f040440b4d",
+      "split": "negative",
+      "pair_outcome": "negative_rejected",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            500,
+            350,
+            544,
+            395
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            1350,
+            350,
+            1394,
+            395
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 5,
+      "source_pts_ticks": 1877801,
+      "pts_sec": 122.25266927083334,
+      "source_pixel_sha256": "01c78ba3d7fca1783ab6b32efab321837b10d146af79e68b405d1e341df0ab26",
+      "encoded_sha256": "83963d54220b48186b0d04a8c4d731ef6803c6a6953399fe74ccafd4b92c41d5",
+      "split": "negative",
+      "pair_outcome": "negative_rejected",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            500,
+            350,
+            544,
+            395
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            1350,
+            350,
+            1394,
+            395
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 5,
+      "source_pts_ticks": 1878057,
+      "pts_sec": 122.2693359375,
+      "source_pixel_sha256": "243abc7057788f0f285859c0d747964be2067b63c83df78e3d0f26b9e134f7d0",
+      "encoded_sha256": "abc195e3871bda2180fed5944b181368aaa684a6d2f68caa06a3f785812e4272",
+      "split": "negative",
+      "pair_outcome": "negative_rejected",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            500,
+            350,
+            544,
+            395
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            1350,
+            350,
+            1394,
+            395
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 5,
+      "source_pts_ticks": 1878313,
+      "pts_sec": 122.28600260416667,
+      "source_pixel_sha256": "27b16732febe282cf7a93f6dbca35f8d70d967aa95ad1c11400ef481742b2500",
+      "encoded_sha256": "d620834601a0e75579802ddc5ceb5b9e27d3cc67053d1f3b2febb0d9f11b2790",
+      "split": "negative",
+      "pair_outcome": "negative_rejected",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            500,
+            350,
+            544,
+            395
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            1350,
+            350,
+            1394,
+            395
+          ]
+        }
+      }
+    },
+    {
+      "window_index": 5,
+      "source_pts_ticks": 1878569,
+      "pts_sec": 122.30266927083333,
+      "source_pixel_sha256": "56268326b1496f13625be2ee78b637069d7bc394347069e73f9a4134ee70c029",
+      "encoded_sha256": "65456f49e14b88b4c18caf538e5a6a3d6af78e54127d284930045dceeb69903a",
+      "split": "negative",
+      "pair_outcome": "negative_rejected",
+      "readings": {
+        "ally_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            500,
+            350,
+            544,
+            395
+          ]
+        },
+        "enemy_score": {
+          "display": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_score_expected_one_or_two_digits"
+          ],
+          "outcome": "rejected",
+          "bounds": [
+            1350,
+            350,
+            1394,
+            395
+          ]
+        }
+      }
+    }
+  ],
+  "processed_physical_frames": 54,
+  "reader_calls": 108,
+  "holdout_field_counts": {
+    "correct": 36,
+    "unknown": 18,
+    "wrong": 0
+  },
+  "holdout_pair_counts": {
+    "correct": 9,
+    "unknown": 18,
+    "wrong": 0
+  },
+  "negative_false_positive_field_count": 0,
+  "negative_false_positive_physical_count": 0,
+  "previous_original_profile_field_counts": {
+    "correct": 36,
+    "unknown": 18,
+    "wrong": 0
+  },
+  "previous_original_profile_negative_false_positive": 0,
+  "terminal_hash_verified": true,
+  "runtime_sec": 12.109504828928038,
+  "formal_events": 0,
+  "canonical_full_executed": false,
+  "score_component_aggregation": {
+    "scope": "Current reviewed score component and explicit start/score offline candidate bundle; actual loader admission, no default installation or end-event release",
+    "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "profile_fingerprint": "60b029cb987fe0d7447853e3b4cd791d5defb0918dfaa25a401bd45d2b64c813",
+    "recognizer_fingerprint": "7bbb45ea27708c547a9ceb7c79b6f52e99f765675735ad0e247fd0528021cd2c",
+    "actual_loader_admitted_components": [
+      "purchase_phase",
+      "score",
+      "timer",
+      "ui_transition"
+    ],
+    "score_component_support": {
+      "training_hashes": [
+        "025dd81255fb16459726adccb2a47296ccd251633c9c33a62bc99d2ba03a5b7c",
+        "09bd0e0a43543535afec183cc06a3082aead18c7bdb52cd781d079f004fa8577",
+        "0b46092ed1bf8e41bb59762092c9f5b7f33b40322a23ca76506ae655b16a5e20",
+        "0d96fed4bb59b9c46a84afc3b94f5c80f041eecb7d6a7a5b6e08b6e154a97d51",
+        "12a91bef5f912c8d05ba3c6dbf035ce3386a99fedf6cdd455125dcad52631b93",
+        "149f330b4afa9617d355100c21d1896daf88c8f394a75f60c71228cc103775e5",
+        "154f18013a2071078bcf6f4afe277c952049a578192c43531e4e6d7bb3c394a0",
+        "16d9b1a86a79c1f3918ff57ad939ce48a8cc6a1a6be34ca61a187ffc2d7acfc6",
+        "1ab3f673616c70514740095e09f23c70d5ffbb61deb7d46aaefe4b30ca788d46",
+        "1dd0b9f5ec52a93513360d12d6d7a5b6f6877a25ef19c24620604fbec3886edf",
+        "25017768f520f8a169b552c5cfcf3eb4be7ed5bb931fa30b6120bdd9ae54bfe1",
+        "25ebbf0237bb4ff6bc82dd967d65cc90e2e04f044ade319763f534d6f6c3225d",
+        "2786978b7e011008b87ee8123a54f0ab554c08d6b0c3724faa82725a0dddbc21",
+        "2b025a7463e8f99af2b981ff42208fb4fdd62f86c334b44cebc08b72ee47705d",
+        "2c6acb3b48e09b5865cbb3b9ee04bbc9f201db7698dbc0af7120f4282f4596e3",
+        "2fb4a485597ecf0f692a22404e609722eb22238812ff9e809e5a31ed362ea5fc",
+        "31957e952cfc24744d0e94b1d4563b7ff8e0d93b09c60bbdc983cc2b1775c696",
+        "39edfcbb8da6a17a8ea7bba9c1026cd68c18291a447849758f88283358e65b6c",
+        "3d8932b1b811cdc9ef90f95872e2ced244bc7e75f29cfdbaa81c580080936c39",
+        "4166a41be0f50cd0138f849d094ecefd6b194d60260807002ebda9689a9b8cdb",
+        "48a8d619546e5d1168fd314a6fc997e14c4e7ff9f6cd443b0fb24aa77b5c1f26",
+        "48d61526e048303bc9428a013cf1c6ec9064584fcdef0b7d626bf37db4e87e65",
+        "48ee92532c8d7ea6486a69fbc11beb0aa1c46c1feab2c611a754abae20294358",
+        "4bb69a2e12170d9ef0e484c0ded8919d55d243f51b59525aa5495712489a0ffe",
+        "4c351dbe036917318f919cdc57faf85a8e76c97156b02cd5f9c701365193025e",
+        "4c854c7b1388c0f205de1fe048593a851b3dd5dcb1669807d75fcebc4d114b01",
+        "4eb42bfb2b6e05d2d995cec15897607d389efaaeb00e466aabb8af2dce43c15e",
+        "5465b3108ba93c8ef839a7babc95e1d11a047c4a85fece9926b2bfc70bed998e",
+        "548e71a386be1ec2537c7ae85923ec9c000b880b5373490ea56521809963d189",
+        "562e4ee42207351d21cb5176c3ead85d7fb71d050dd0340886a0f17a0e2d3b78",
+        "63f7782984f1aac3cd6e1a5fb3aa768915933356ca034a3a0fe36299f3590162",
+        "6945cd1b04e0966067cbd6065f73b123813528d692007acce49b160a3945cdf5",
+        "6bacc32432edf398e70c729a7781eaa1baa2aa08e0ca8675bd7dd1715d8ef446",
+        "772641902721eeac6defeb87324ac506e5af447fdcd6889fb8fbac4df71a6f57",
+        "81e9d14e4ee87bc70bb655175c8de1dcea2e442a949a5f3e9e24be17494496cf",
+        "898c834fb377837f05112fa6c526ac2ae50aa7782fa4779e8e7f482d8086004a",
+        "8a5ef744a6e2a4041e4614cb4f1a5038dd222c30053a851e1c9483274f835518",
+        "8a9b6ebfc7f6aab986ad695c1dc1f3f553c7cc2f7b6f892e34945bb0d5dc45b4",
+        "8a9b8d170bd795db5ca686124daf26704a5802d2124961a89a12e60e2273d3e1",
+        "8b63133210cb234c1a937e5cb6983411d177a843c8e51c09a026bdba6e2ba9d2",
+        "8c15d2d0f176c8336aae6b8609dec22e1df4eaed84f2a6ed3cc9883d04b714d5",
+        "92cf5383b6a0e80688707bdee57c3332a5c5b83028b6bb6336f8b0b9f3e74312",
+        "98a70b5405427a3a2b1aeae8617fcdc4e3a12e678789fd59f328b1853f4e5451",
+        "98db55af827beb3b7721794188753cf22aa9d71371c71a2d2aede7ee2bccd9bf",
+        "9e4e05c5b11d773a7acccb9b6f4f16f1c10d45a747684aa8ba32a075139b5ee5",
+        "aa5ff3c49d83fb6b926929ad193862dfe880e4b09fb8d8850f9f5257b94c7e60",
+        "aefb83646573d6844911c822a40cc62c8658cd0f120022fadfda9e942e5614b0",
+        "afe21918683cbc5478a5ab9cb09e6dcffaeada0eb9d446ef1affc23bd8ab2020",
+        "b1ece4bedb924211617eb7c651921e02f7e571cd08e9682540b0e26aaef7de8f",
+        "b50c37051286b483465e9510e47d4db97628e8e93814e0cc5d29973ef1baba8f",
+        "bde5f8cfc6e97607aa1efb6013c2ac346efb8127b2d7a709b42560a868682376",
+        "be078f8a4cc7efc185241534811ea66db186122ff84d3de6ec42427d433f9f49",
+        "bf4dd39d11c6f6bfea9b0488ce39132bc026068830d72ee120d6164688ab454c",
+        "c1aee0622020613f22f9d3e43654198426d5e6764ce7a6ff0303156975e56cbc",
+        "c2fd23ca74c54b4d170b728193762ba8ca41ad5d28aafa5834960fdea7c0d67e",
+        "c4c6ee3f0d82bf238de5d8659a2be94bcf2ecf82f31bdcf657952ea97d82ce0d",
+        "c5838ee6c1092f9cf4a2c5bdb277f7619cb51a43e1522cb5b474e75f372e9807",
+        "cad1663cacfbeaeef5ce7095c115d243f6f8206358797f2f9fff4b94d4b96301",
+        "cc45dc440d278f6151036812eb395ec95a6f39f79e41d2fd00d1fb5ccb529e78",
+        "cd814da5b1cea0a864c4021fd36a1b9245cbce31294ba909234a0f6fb3c574a5",
+        "cf6c9e1254fe03eab5e8523d1510a5a7268403046b95680358230c27da74e546",
+        "d0cabf559918d5736031d3b2af8aec5b3ccbcaea23b357c460324dd37635a1ce",
+        "d390dcc693c1912c0de2006d65d30ce67df332c37f39f03271548978f910fdf1",
+        "d8bdda0075ff7206f76f99ca3dd63a6c15537a6b1bb89721f9a649290827d64a",
+        "da73585efd672be96ced47d99c4ee4c4044fc3841e28c1b60609f76edeec5b77",
+        "e264fcc624bba849f538ef6195cb6d13be3c5115c3036b2cdf113f731ae64e64",
+        "e8b1bc590eec7381d975f50629b5227985f310a3b341508ab04bbcdb5ca7ecaa",
+        "ea15415cdb34202f1eca34602c1b0da9dde2c19d041437ad725f8551b68fb4a3",
+        "ec3ce11851bdc28c70fc8d0cb2920577992f564727ce58f21bfa13b027767945",
+        "ed555ef47aa67895d942b84b9df4246044e63726024b66ecb274a3b32f38cc39",
+        "f1eccb8e8cd1ff12c95f06589f07d48f1bd1dd5f671ad39bdb1c2f24223eb9f1",
+        "f4001aed0ef986037da6c0e14f8b33e83da379a0fdab550d2ba6797b8fb3a4e2",
+        "f6d755a9ee565f7dcfb41980ba5d1f7a707d00ec9c7a83b91065377ea12784d2",
+        "f86057b93fcf6ab95b6681032110babc0a2fb2170856afe7dd7ce4a6b7b7b840",
+        "fbb5612476f76c1c8c85485265071e4769aeaa415954b6f59906e3948f63e0cf",
+        "feb76b279f983c5f6f4a1d526d522d9d733b88b5055c79d9734ce3fd0928eb12"
+      ],
+      "holdout_hashes": [
+        "119aed7460d0d710f973b56a1e2c96f9b8637698cd5d123a3412c3a0d06f13f8",
+        "13ea2a4dc0434b80049d66c63c1d7415bf9d708972ccf6b2b07d5f3c3fa89bae",
+        "21e5d4887e87d33b60eb5daeba33fa194eb83de58f0dd2a52c5a015ae7bfe820",
+        "2ed31301f699fa767f0a201d0883036de1793a311d46781a0da670d791982f5b",
+        "385a7f0069050dfbc049fc79e1731e87f8857dc37dfcbc376eb1f6d293644810",
+        "3e2ff30920daeb2d0686c26e468cfa20291e068e509dd0bda90c1894e12fa498",
+        "60e92a15d1eb9d107f9f0945cce8cdb4259f55b9bd5fa433a33dd0eeddf3cdf1",
+        "6620be9483c42c725a9e92d1d6c2375d6e98632b940a7c9ecbcbea15fb29bab8",
+        "724ccd96474fbb562a2423a738bf7fb2f69e74ab28d385d137064f6844f66b14",
+        "7890382f331a2b142883d962a9b31aea03b21877f90ea2e06462a8349e672817",
+        "843f75df2b760e684cfabc792af4fc076f455559c91a7748225aa1876f24b02f",
+        "892a0e99a91c7405cf98e4875a24bb9548bdef02c3b73aa4d1983e469ca9dd42",
+        "8d9d5599db82cd1ce1f3ab56fe8fb56d0dd257211eb18266db77e5de447235e0",
+        "9849899e8814ab9a1ff5a2cb53f67b23ad14d81833302eefa098c8dc70be229c",
+        "b2abc4dd76b65a41db330ff3a706147bf76b5bfaad8aa0f94ea3b21ddd1deeba",
+        "bc6d84da934598204ff0592fae40a062794d8da83431ea13da136511f6a26afc",
+        "c7a96a7689ac1dd0b99bca8f60031f1fcd087a8d090152ba0f794a351bbb8794",
+        "ca040be25fc0cda4e3b47ff342f6171ce0c66285e39f1ec8a58b7a4cabc45807",
+        "ce7b643b6989dded4b4ef29eb14a27a07701963fa73bf11db475a9647500d38e",
+        "d2cc0aad81634e024e9b47d0c8e80b40bf8255a4093637f1a5fbc90f9801102b",
+        "df361a7609c77851ab5c638d4d5e401fb83c2a8d082d859aa29932eb000eee26",
+        "e140104e9f649d8a0fbdc0d5d55c98468557ce073feebd54adf286c4253d7e42",
+        "eca37e8cea56b6cb8b84e01477975ea77d0e649918383f382ec530c5eea45d67",
+        "f20fcf514be84bf6e1789252b7f60899b5b46754fd39ef32708615d963e2bee2",
+        "f31dcf1f51e42b9b07071ee3fb3ebcec6ea8da0cff4153fb9143e7a606145da8",
+        "f5b8d74bec8169b554c11e045a1f00aa9b4b61505bea8fec1e2f91e0a3986aba",
+        "f7c23001b1cdedccaab4dd274c622cf763dc7fcf471b72fd5e96b531b76cf541"
+      ],
+      "negative_hashes": [
+        "01c78ba3d7fca1783ab6b32efab321837b10d146af79e68b405d1e341df0ab26",
+        "057eec3ee0df37c17d6ad5bcb4e5040d2fd70b17577490210277e84778c18422",
+        "089c62b832f48380a46476683bac6e93ef363442f8ee6dcd80165c7ccb828a95",
+        "1aceb7ff721470d7f861ae3846d562cb579543bb914210f53649a5069cced128",
+        "2223c9a6c2f5d7a35b7a766527321264eb4d44275840c721e748915012f2b171",
+        "243abc7057788f0f285859c0d747964be2067b63c83df78e3d0f26b9e134f7d0",
+        "27b16732febe282cf7a93f6dbca35f8d70d967aa95ad1c11400ef481742b2500",
+        "2857a2fa031862093d67eb5b1267ce66a23d24e371b9677cc5f58f7cd9c3778c",
+        "39a2bd1ce42852dfed0db75e286e689076cdbe267303d942902792598c91fa00",
+        "48e56a9679955493297ba7bde1587333fe819c446060921f7f54d11d9dd8a773",
+        "56268326b1496f13625be2ee78b637069d7bc394347069e73f9a4134ee70c029",
+        "5f9919c5d593a0527803e7502197df9dca8efca844ca5e621a807ddf3b47c3cb",
+        "6118847a110fd2297de8bae39f0a8cae940c8c894b124b8ff30428251309825f",
+        "6ad3c6d4112701b3a7302d69f362db486276ce47adfdbb9d6ba4263127727c37",
+        "773d41f18e9d52b0d2f8f646a7fa1b719f74d947e47e2c3e438349702d423526",
+        "80421cfd5951b7681132d6aa099a995a9b0b3faf34b5dd494ed3fb2d54550ad9",
+        "9622c95e0f88ebda97bda6e809fb4304568eee8702639553efd049aebd0a2f72",
+        "9d3b4ed6943dd1c769a7b48f6012d9302b9f3ff5e4e8d344b6f73ce4acd17dd5",
+        "aa2305478a3dbc97df4eba7435a7e6554bee41d848b2af97941cf45342b1eef5",
+        "bc07304a75df1db53be12f71d546c286022ec9332e372100c549b425925d0608",
+        "bdce3e7e54b955228600c179682747df74e4ac87568edc0ddfcefb49724550a6",
+        "c254970c004f2e00ddd3c129f1fa7d2c72dc2836c51a6b1354d6311295a8e6b2",
+        "d34f7523ea2b413e5201547c168139403124bf839d060f93e61dff0f57625443",
+        "ea8f4a7301be8a286f2569557d4ef454e7b9891c6842f9a1b4dbcbd24af96025",
+        "ebeb18f0b97f3b8a00610aa2c9870ba493445956832b5c45fd0e119119d793f1",
+        "f5f02f56ae54e015f7fd8f775fb84a34991eeb6276ca74982ae6d214d508279a",
+        "fbbcd4220635b28c54f198a03822a5de5a6a24a7ba8c7f9a172b691f9d0c76cc"
+      ],
+      "holdout_correct": 9,
+      "holdout_unknown": 18,
+      "holdout_wrong": 0,
+      "negative_false_positive": 0,
+      "review_provenance": "Frozen original native3positive windows/3spatial-type negative windows under current guarded profile/code, source-only labels originally reviewed before old predictions. Joint ally/enemy physical frame unit27holdout:9bothcorrect18unknown0wrong;27negative parents0false accepts. Historical76parent shared-font glyph training ancestry/10asset equality verified; not new score-location training predictions. Negative crops test44x45core reader type rejection, not natural nominal-field absence or producer geometry. Existing exposure retained, not new blind cohort; neither temporal end proof nor ownership."
+    },
+    "physical_cross_component_counts": {
+      "training": 88,
+      "holdout": 73,
+      "negative": 134
+    },
+    "physical_cross_component_intersections": {
+      "holdout/training": [],
+      "negative/training": [],
+      "negative/holdout": []
+    },
+    "cross_component_pixel_splits_checked_by_actual_loader": true,
+    "candidate_bundle_path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/guarded-score-source-replay-20261013/start-score-components-review.json",
+    "candidate_bundle_sha256": "ec43164529b953ab2b98a663d6296089aa71591aaf0292acb1787c1192ffa8aa",
+    "evidence_sha256": {
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/guarded-score-source-replay-20261013/result.json": "24269fd9b5754e935838b6c2702721091e7501ed7097b303f0c124ca237963e5",
+      "outputs/recognition-investigation/guarded-start-qualification-review-20261013/start-components-review.json": "b872e8abdca36975f5ac71173c33d50ab60a3b99606fbcc3e4a57436613885ec",
+      "outputs/recognition-investigation/guarded-start-components-20261013/audit.json": "a65cd7cde93b4b5c6366cc55cbda9cc559ddf380fa3d814eb205812b78a6b999"
+    },
+    "runtime_default_installed": false,
+    "formal_events_emitted": 0,
+    "new_blind_cohort_claimed": false,
+    "missing_end_components": [
+      "round_result",
+      "ui_end_transition"
+    ],
+    "canonical_e2e_executed": false
+  },
+  "candidate_qualification_bundle_created": true,
+  "runtime_default_installed": false,
+  "new_blind_cohort_claimed": false,
+  "classification_transitions": {
+    "correct_to_correct": 36,
+    "unknown_to_unknown": 18,
+    "unknown_to_correct": 0,
+    "unknown_to_wrong": 0,
+    "correct_to_wrong": 0,
+    "wrong_to_unknown": 0,
+    "wrong_to_correct": 0
+  },
+  "comparison": {
+    "field_correct": {
+      "previous": 36,
+      "current": 36,
+      "delta": 0
+    },
+    "field_unknown": {
+      "previous": 18,
+      "current": 18,
+      "delta": 0
+    },
+    "field_wrong": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "negative_false_positive": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    }
+  },
+  "canonical_last_adopted": {
+    "PASS": 23,
+    "FAIL": 55,
+    "NE": 4
+  },
+  "canonical_current": null,
+  "canonical_delta": null,
+  "target_assertion_ids": [
+    "GT-R1-ROUND-END",
+    "GT-R1-SNAP-0415",
+    "GT-R2-SNAP-11145"
+  ],
+  "evidence_sha256": {
+    "outputs/recognition-investigation/guarded-score-source-replay-20261013/result.json": "24269fd9b5754e935838b6c2702721091e7501ed7097b303f0c124ca237963e5",
+    "outputs/recognition-investigation/guarded-score-source-replay-20261013/aggregation.json": "70ccd96ef04929b568aea90e9f187f722b24a5b05208cd3830d6d52acd4225ac",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/guarded-score-source-replay-20261013/start-score-components-review.json": "ec43164529b953ab2b98a663d6296089aa71591aaf0292acb1787c1192ffa8aa"
+  },
+  "limitations": [
+    "Field confidence alone does not qualify a boundary.",
+    "Spatial44x45core negatives do not prove natural score absence, geometry acceptance or current-frame global producer completeness.",
+    "Pair holdout9correct derives one physical parent per pair;54readings are27parents.",
+    "Training provenance is shared ten-class glyph bank; no new current predictions or score-location training claim.",
+    "No source-owned values or formal end events promoted; result/end-transition components remain absent.",
+    "Current Windows and full E2E not verified."
+  ]
+}

@@ -6,9 +6,11 @@ cannot attest source continuity or authorize a boundary merely by being present.
 
 from __future__ import annotations
 
+import math
 import re
 from collections.abc import Callable, Sequence
 from copy import deepcopy
+from fractions import Fraction
 from typing import Any
 
 from valorant_ai_coach.video.native import NativeSourceFrame
@@ -25,6 +27,69 @@ GLOBAL_CONFIDENCES = frozenset({
     'round_timer_value', 'score_ally_value', 'score_enemy_value',
     'ally_score_value', 'enemy_score_value', PHASE_CONFIDENCE_KEY,
 })
+
+
+def bind_native_ui_measurements(
+    rows: Sequence[dict[str, Any]], scans: Sequence[dict[str, Any]],
+) -> tuple[dict[str, Any], ...]:
+    """Keep actual producer measurements separate from qualified system proofs.
+
+    Called only with the same buffered analyzer pass as the source-bound rows.
+    A missing scan is not a negative observation. This does not authorize events.
+    """
+    if len(scans) != len(rows):
+        raise ValueError('native UI measurement coverage mismatch')
+    boolean_keys = {
+        'content_jump', 'discontinuity', 'phase_scan_valid', 'phase_present',
+        'phase_absence_matched', 'round_result_matched',
+    }
+    confidence_keys = {'phase_confidence', 'confidence', 'round_result_confidence'}
+    bound = []
+    for row, scan in zip(rows, scans, strict=True):
+        if (
+            set(scan) != boolean_keys | confidence_keys
+            or any(type(scan[key]) is not bool for key in boolean_keys)
+            or any(type(scan[key]) not in (int, float) or not math.isfinite(scan[key])
+                   or not 0 <= scan[key] <= 1 for key in confidence_keys)
+        ):
+            raise ValueError('invalid producer-owned native UI measurement')
+        bound.append({**deepcopy(row), 'system_measurements': {
+            'scope': 'unqualified_current_frame', 'qualification_required': True,
+            **{key: row[key] for key in (
+                'source_video_sha256', 'source_epoch', 'source_pts_ticks',
+                'source_time_base', 'source_pts_sec', 'source_pixel_sha256',
+                'input_fingerprint',
+            )},
+            'native_ui': deepcopy(scan),
+        }})
+    return tuple(bound)
+
+
+def calibration_prefix_provenance(
+    prefix: NativeSourceFrame, first: NativeSourceFrame,
+) -> dict[str, Any]:
+    """A verified earlier image is a geometry reference, never temporal proof."""
+    if (
+        not isinstance(prefix, NativeSourceFrame) or not isinstance(first, NativeSourceFrame)
+        or type(prefix.pts_ticks) is not int or prefix.pts_ticks < 0
+        or not isinstance(prefix.time_base, Fraction) or prefix.time_base <= 0
+        or not prefix.source_epoch
+        or not isinstance(prefix.source_video_sha256, str)
+        or re.fullmatch(r'[0-9a-f]{64}', prefix.source_video_sha256) is None
+        or prefix.source_video_sha256 != first.source_video_sha256
+        or prefix.time_base != first.time_base
+        or (prefix.width, prefix.height) != (first.width, first.height)
+        or prefix.pts_ticks >= first.pts_ticks
+    ):
+        raise ValueError('calibration prefix must precede the same native source/geometry')
+    prefix.read_image()
+    return {
+        'scope': 'calibration_only', 'source_video_sha256': prefix.source_video_sha256,
+        'source_pts_ticks': prefix.pts_ticks, 'source_time_base': str(prefix.time_base),
+        'source_pixel_sha256': prefix.pixel_sha256,
+        'encoded_sha256': prefix.encoded_sha256,
+        'width': prefix.width, 'height': prefix.height,
+    }
 
 
 def collect_native_system_observations(

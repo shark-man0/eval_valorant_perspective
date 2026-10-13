@@ -1,0 +1,1052 @@
+{
+  "schema_version": 1,
+  "scope": "Audited partial component aggregation only; incomplete qualification is explicitly rejected by production loader, never installed",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "profile_fingerprint": "10bfac00544e510ebf3f3e2c0072c9beba24938b2ff996c9012f7e4046d82c99",
+  "recognizer_fingerprint": "727c9ba7c88859d0726de307cbdb6b63cdf46f002510c0b2260bbe298f0e763f",
+  "timer_component_support": {
+    "training_hashes": [
+      "025dd81255fb16459726adccb2a47296ccd251633c9c33a62bc99d2ba03a5b7c",
+      "09bd0e0a43543535afec183cc06a3082aead18c7bdb52cd781d079f004fa8577",
+      "0b46092ed1bf8e41bb59762092c9f5b7f33b40322a23ca76506ae655b16a5e20",
+      "0d96fed4bb59b9c46a84afc3b94f5c80f041eecb7d6a7a5b6e08b6e154a97d51",
+      "12a91bef5f912c8d05ba3c6dbf035ce3386a99fedf6cdd455125dcad52631b93",
+      "149f330b4afa9617d355100c21d1896daf88c8f394a75f60c71228cc103775e5",
+      "154f18013a2071078bcf6f4afe277c952049a578192c43531e4e6d7bb3c394a0",
+      "16d9b1a86a79c1f3918ff57ad939ce48a8cc6a1a6be34ca61a187ffc2d7acfc6",
+      "1ab3f673616c70514740095e09f23c70d5ffbb61deb7d46aaefe4b30ca788d46",
+      "1dd0b9f5ec52a93513360d12d6d7a5b6f6877a25ef19c24620604fbec3886edf",
+      "25017768f520f8a169b552c5cfcf3eb4be7ed5bb931fa30b6120bdd9ae54bfe1",
+      "25ebbf0237bb4ff6bc82dd967d65cc90e2e04f044ade319763f534d6f6c3225d",
+      "2786978b7e011008b87ee8123a54f0ab554c08d6b0c3724faa82725a0dddbc21",
+      "2b025a7463e8f99af2b981ff42208fb4fdd62f86c334b44cebc08b72ee47705d",
+      "2c6acb3b48e09b5865cbb3b9ee04bbc9f201db7698dbc0af7120f4282f4596e3",
+      "2fb4a485597ecf0f692a22404e609722eb22238812ff9e809e5a31ed362ea5fc",
+      "31957e952cfc24744d0e94b1d4563b7ff8e0d93b09c60bbdc983cc2b1775c696",
+      "39edfcbb8da6a17a8ea7bba9c1026cd68c18291a447849758f88283358e65b6c",
+      "3d8932b1b811cdc9ef90f95872e2ced244bc7e75f29cfdbaa81c580080936c39",
+      "4166a41be0f50cd0138f849d094ecefd6b194d60260807002ebda9689a9b8cdb",
+      "48a8d619546e5d1168fd314a6fc997e14c4e7ff9f6cd443b0fb24aa77b5c1f26",
+      "48d61526e048303bc9428a013cf1c6ec9064584fcdef0b7d626bf37db4e87e65",
+      "48ee92532c8d7ea6486a69fbc11beb0aa1c46c1feab2c611a754abae20294358",
+      "4bb69a2e12170d9ef0e484c0ded8919d55d243f51b59525aa5495712489a0ffe",
+      "4c351dbe036917318f919cdc57faf85a8e76c97156b02cd5f9c701365193025e",
+      "4c854c7b1388c0f205de1fe048593a851b3dd5dcb1669807d75fcebc4d114b01",
+      "4eb42bfb2b6e05d2d995cec15897607d389efaaeb00e466aabb8af2dce43c15e",
+      "5465b3108ba93c8ef839a7babc95e1d11a047c4a85fece9926b2bfc70bed998e",
+      "548e71a386be1ec2537c7ae85923ec9c000b880b5373490ea56521809963d189",
+      "562e4ee42207351d21cb5176c3ead85d7fb71d050dd0340886a0f17a0e2d3b78",
+      "63f7782984f1aac3cd6e1a5fb3aa768915933356ca034a3a0fe36299f3590162",
+      "6945cd1b04e0966067cbd6065f73b123813528d692007acce49b160a3945cdf5",
+      "6bacc32432edf398e70c729a7781eaa1baa2aa08e0ca8675bd7dd1715d8ef446",
+      "772641902721eeac6defeb87324ac506e5af447fdcd6889fb8fbac4df71a6f57",
+      "81e9d14e4ee87bc70bb655175c8de1dcea2e442a949a5f3e9e24be17494496cf",
+      "898c834fb377837f05112fa6c526ac2ae50aa7782fa4779e8e7f482d8086004a",
+      "8a5ef744a6e2a4041e4614cb4f1a5038dd222c30053a851e1c9483274f835518",
+      "8a9b6ebfc7f6aab986ad695c1dc1f3f553c7cc2f7b6f892e34945bb0d5dc45b4",
+      "8a9b8d170bd795db5ca686124daf26704a5802d2124961a89a12e60e2273d3e1",
+      "8b63133210cb234c1a937e5cb6983411d177a843c8e51c09a026bdba6e2ba9d2",
+      "8c15d2d0f176c8336aae6b8609dec22e1df4eaed84f2a6ed3cc9883d04b714d5",
+      "92cf5383b6a0e80688707bdee57c3332a5c5b83028b6bb6336f8b0b9f3e74312",
+      "98a70b5405427a3a2b1aeae8617fcdc4e3a12e678789fd59f328b1853f4e5451",
+      "98db55af827beb3b7721794188753cf22aa9d71371c71a2d2aede7ee2bccd9bf",
+      "9e4e05c5b11d773a7acccb9b6f4f16f1c10d45a747684aa8ba32a075139b5ee5",
+      "aa5ff3c49d83fb6b926929ad193862dfe880e4b09fb8d8850f9f5257b94c7e60",
+      "aefb83646573d6844911c822a40cc62c8658cd0f120022fadfda9e942e5614b0",
+      "afe21918683cbc5478a5ab9cb09e6dcffaeada0eb9d446ef1affc23bd8ab2020",
+      "b1ece4bedb924211617eb7c651921e02f7e571cd08e9682540b0e26aaef7de8f",
+      "b50c37051286b483465e9510e47d4db97628e8e93814e0cc5d29973ef1baba8f",
+      "bde5f8cfc6e97607aa1efb6013c2ac346efb8127b2d7a709b42560a868682376",
+      "be078f8a4cc7efc185241534811ea66db186122ff84d3de6ec42427d433f9f49",
+      "bf4dd39d11c6f6bfea9b0488ce39132bc026068830d72ee120d6164688ab454c",
+      "c1aee0622020613f22f9d3e43654198426d5e6764ce7a6ff0303156975e56cbc",
+      "c2fd23ca74c54b4d170b728193762ba8ca41ad5d28aafa5834960fdea7c0d67e",
+      "c4c6ee3f0d82bf238de5d8659a2be94bcf2ecf82f31bdcf657952ea97d82ce0d",
+      "c5838ee6c1092f9cf4a2c5bdb277f7619cb51a43e1522cb5b474e75f372e9807",
+      "cad1663cacfbeaeef5ce7095c115d243f6f8206358797f2f9fff4b94d4b96301",
+      "cc45dc440d278f6151036812eb395ec95a6f39f79e41d2fd00d1fb5ccb529e78",
+      "cd814da5b1cea0a864c4021fd36a1b9245cbce31294ba909234a0f6fb3c574a5",
+      "cf6c9e1254fe03eab5e8523d1510a5a7268403046b95680358230c27da74e546",
+      "d0cabf559918d5736031d3b2af8aec5b3ccbcaea23b357c460324dd37635a1ce",
+      "d390dcc693c1912c0de2006d65d30ce67df332c37f39f03271548978f910fdf1",
+      "d8bdda0075ff7206f76f99ca3dd63a6c15537a6b1bb89721f9a649290827d64a",
+      "da73585efd672be96ced47d99c4ee4c4044fc3841e28c1b60609f76edeec5b77",
+      "e264fcc624bba849f538ef6195cb6d13be3c5115c3036b2cdf113f731ae64e64",
+      "e8b1bc590eec7381d975f50629b5227985f310a3b341508ab04bbcdb5ca7ecaa",
+      "ea15415cdb34202f1eca34602c1b0da9dde2c19d041437ad725f8551b68fb4a3",
+      "ec3ce11851bdc28c70fc8d0cb2920577992f564727ce58f21bfa13b027767945",
+      "ed555ef47aa67895d942b84b9df4246044e63726024b66ecb274a3b32f38cc39",
+      "f1eccb8e8cd1ff12c95f06589f07d48f1bd1dd5f671ad39bdb1c2f24223eb9f1",
+      "f4001aed0ef986037da6c0e14f8b33e83da379a0fdab550d2ba6797b8fb3a4e2",
+      "f6d755a9ee565f7dcfb41980ba5d1f7a707d00ec9c7a83b91065377ea12784d2",
+      "f86057b93fcf6ab95b6681032110babc0a2fb2170856afe7dd7ce4a6b7b7b840",
+      "fbb5612476f76c1c8c85485265071e4769aeaa415954b6f59906e3948f63e0cf",
+      "feb76b279f983c5f6f4a1d526d522d9d733b88b5055c79d9734ce3fd0928eb12"
+    ],
+    "holdout_hashes": [
+      "006a9c3f7cf3c440f082f1e2230de7041d08b1d6fb0e03a9db53ec26fb6027f2",
+      "012a9dbbb3ac3c6d886d4de11b4ca4df5f2db6886ae488bf59f5dd0881cb0e52",
+      "110d654836e3d75f85c646b306e12833c5b86244bd8d2ea7a992f53728bb4ce6",
+      "1422b4b1a8e806d8dc6ba00f8eb9d0310e4250ec4b582869426225c2874906b5",
+      "18199591a8a5d49eb9b76fb04803c437d0b45787d5f16600f723e63896f01935",
+      "19af09b12215ad0bff773a4104604647e9ada8513027513c1ebfb2e80d911e40",
+      "2266a543560d8e6362d0519f5a5f6abfc470219b4e441b97e5c6de4f338e6d0f",
+      "2682d5a6d4f413b59e1cc0a78f386cf9782dcc5cb2ecb50617a3dea2f807c04b",
+      "273c38424d5ef656a0fe8a4506e6a765cdb6684f81d150d12649d67c39d6a926",
+      "274d57b6d9c4ef1ea0e6a633517eca0a6f0975f571ae46550a45d4cb680c32fd",
+      "2860cd75f55da64793159a21d7615e3a94034e8b4f2ff5f1ce6c19eec8d934bd",
+      "2f941397a9415fac0a879681f483d3d5d74469fa452c38f519c7e5234b13b89b",
+      "31793e2b202c123b3f120b87d9054e3faa8c6008d784b614ffcdf918db2dac71",
+      "385270d63bc0012c261616c666c8c73a3cb07014f59c1c136e2d2b2642570f53",
+      "3eb19d4c9a58ef2cef539e648161ee2e2e7bee5ee87cfdb6da82a7eabbaae55d",
+      "4c4ade0e26c50a9410baa88b770a0a34fbbabba11b989f52bb9066ad885c57ef",
+      "553798bc36353cc4700baf9b1e2bed3883cfa8cb9f35b0bb016e12674073cc5e",
+      "5e6c547167ea7ee28f25e40fd38a152d91ee32cf8995ca1cd2024da6d07a100f",
+      "680a57bb3f775b5ad1b9c644b19ae2b51746daf9404d5ed36fcde44c3771028d",
+      "71ff19c1582f5f5fc0485d14d3acf5a929c36364bb39d1d63c364ef5a72ec1f0",
+      "765c9c4e4c5c330160b2a289614ffbc89f1c7166a59237ba851104d5d36d30a8",
+      "8133bf4ba0a4344d38a6479421e58c4abdf4ef2eb72e3f9cf414982f4666265b",
+      "a118f6d11c7c32efef491816ed6b5ae997db2571d7ae8a3d9211e81cb49841d2",
+      "b3147ad091ea6cdca3260462a07985bbe0c3706d63613e8657eb0ce6ccde9353",
+      "b383f08f341b653e75107cc55fb6189fb27d9b5e89217976902cffd1275d80c8",
+      "b51bf08eb92308a87a267409b8c22ca4eadd779c044f7f860ac1c9a43eeec4c0",
+      "b96c61caa155f3fc7348e679b6e589546c4c985ea30bd24706590b773ada1637",
+      "ba1124c185f6ba3d7b496ee8b5f34675c1c371a7c39a546919aa2fffd7075ec5",
+      "ca75f70e7460986dac877e4dca000df1c4289333813dc84a25e120434e63e898",
+      "d217c796e7c0c484a80c5e274008f45a4b5da35db4b5e065d570e393f8b467d9",
+      "f0576ff23ebdfe5c686977324a7ac014725b780b31cde4a2bb2d2d88afa002bc",
+      "f90daf2c3eddbeff3d6a1bc5fe2cf011d11310c2d251e44a201e16b917e81c42"
+    ],
+    "negative_hashes": [
+      "2be300625d29cc069485e54d4758b37844502e87c43f58152e54705b1f50b535",
+      "38ab9b062bb9851e4094ea672db182fb3f2960a36516fc9b911c45ff7186c503",
+      "4542d975a8185b39cf8170c6b6458faffa0984efd2b08816c1d557b022553768",
+      "63cc66d4740d61d45e7859e1497072ad66aa845a6f7fbf343810e4af9694c1be",
+      "6b47fc4464712d603e7021bcd5139da2ceda721c87426536399fbe0a46b7e4aa",
+      "7cd1b297f825e66070a0b5d558c43ece13c5f513cfae203f63fc7ac48d2410a5",
+      "a54eee9e50227294a727de6ed5ed04aafcdc0f80dd1d7bf195614b80a86fc998",
+      "c88055b29752fd94bd659b5e4f48bf8bc31988b0453ca5335a9efb18f1d74edd"
+    ],
+    "holdout_correct": 25,
+    "holdout_unknown": 7,
+    "holdout_wrong": 0,
+    "negative_false_positive": 0,
+    "review_provenance": "Frozen historical76source-frame alphabet training with unchanged reference asset hashes; current common-profile32native manually reviewed holdout and8native source-field type controls. Controls test configured wrapper/type rejection, not genuine timer-ROI absence, accepted geometry or temporal transitions. Existing exposed cases, not a new blind cohort."
+  },
+  "purchase_phase_component_support": {
+    "training_hashes": [
+      "22b9129dadeb8173b441f31b92f20bb61423461cd5ae33961ddc104c6b8a71f7",
+      "439c3817810a8d8bcc8c82ed218d5fe0f851c7c5f35308b0b85fcbd328759edd",
+      "470b5f982ae904f52c30a4e5d305d01bc40eac26cedef528b9dbdcc7def9100f"
+    ],
+    "holdout_hashes": [
+      "11474649e45206f151499eae67d39f91925c82ca244f31f7be174e5b33f36fb2",
+      "54ef3f77a8cd3c051bb46d0d309940e8c444dc26d04dd90d312ab334d09ed163",
+      "8e943a39d32a30f137f0ae4b1d763464232d43a0818a4bdc7adf737a299e9f80",
+      "9ad154e6a87bdb05c630cc9f19206d1f9f33276ff9b359c0ea5f5057935bac52",
+      "c77998771b90f0244f92dbf3a84d65ffed2df6b2bc12ecc95452db7837489229",
+      "db27b291aee56e75037ccd785770bf65d4de053e11cc3c00ca6de1ed570f2ba1",
+      "dc40f0ebf0d946148b95f2c14a609a72179a4bfada9e6e3cf8ddaeeec4d9fdaa",
+      "f70508e35f6d4b1ded58c6a19a6a1f9360f99f46763f18579f3419d594a24f88"
+    ],
+    "negative_hashes": [
+      "129139520103420c96212b721acc4b07e61b8fdfece9a5f07769fb45400bfaaa",
+      "1d38eb42be72749dabe25fa0fecfdbd9b1ef58b8f5d2e8a13a1427a89d139097",
+      "31c7bdb4424f3df8dca3eb752e75521e6b7b23184eaf1ce9e53f181afb9fb963",
+      "394152195dfdb479b0c3aff529eace85d3ba614addfd16749ef1a905aa5d9442",
+      "5705062fda3345288452d9b4ef5f0054dfc24bd57ba4552f97665ffcf6c2ac6b",
+      "6c50acba14d7be9d22e494779d4d54a1571dc5afbe58e0c51fd8c0c61c8579be",
+      "8f8a778303fcfcbc2cffcdce8f6c7240c307d5872b96eff46796d6c7fbce3e71",
+      "9de35a21f3ab1d94b22ed0396cef0e239fba021cd84d62ec2c2fd95ba5138403",
+      "9fd764792be8c64e31b78be8579751e256b57f2582cd7a6b470d1cbea3445e5e",
+      "a8150766d43268b76f62c2cc4c074da92ec48e18c14f3f657852fd5c85092ecf",
+      "f1317277e07138373f13b47dc29a39be524db58a58e6389781b7931682abf58d",
+      "fdb6380844056f61637ba93c1677da9503e4087f564fe846cf294d6444d5132b"
+    ],
+    "holdout_correct": 8,
+    "holdout_unknown": 0,
+    "holdout_wrong": 0,
+    "negative_false_positive": 0,
+    "review_provenance": "Current common-profile native static replay2026-10-13; original reviewed labels and image hashes retained, exposed physical cases; one timer-training phase control excluded before predictions. Not UI/geometry or fresh whole-stream qualification."
+  },
+  "timer_training_sources": [
+    {
+      "source_pts_ticks": 23593,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "cd814da5b1cea0a864c4021fd36a1b9245cbce31294ba909234a0f6fb3c574a5",
+      "encoded_sha256": "c0a32b33e1e87dd07453bbf031108301c14eb8c6480bd58c4ea2b287de63b8a8",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-000/frame_00013_000001.536.jpg"
+    },
+    {
+      "source_pts_ticks": 76073,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "aefb83646573d6844911c822a40cc62c8658cd0f120022fadfda9e942e5614b0",
+      "encoded_sha256": "384937cc9618eaa10f964bbb31d0f6c91b7075426a867e0661d37d6b56aacf88",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-000/frame_00063_000004.953.jpg"
+    },
+    {
+      "source_pts_ticks": 109865,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "cf6c9e1254fe03eab5e8523d1510a5a7268403046b95680358230c27da74e546",
+      "encoded_sha256": "2b17a7ed66d83bf1ff4393d766d9851213aa68f5e6858d1a1f306399450502af",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-000/frame_00117_000007.153.jpg"
+    },
+    {
+      "source_pts_ticks": 138281,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "1ab3f673616c70514740095e09f23c70d5ffbb61deb7d46aaefe4b30ca788d46",
+      "encoded_sha256": "cbfc1d944e0db3875fd7905f6aa457a2cee0155a655295efa7dcd004a03e5f69",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-000/frame_00054_000009.003.jpg"
+    },
+    {
+      "source_pts_ticks": 157481,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "98a70b5405427a3a2b1aeae8617fcdc4e3a12e678789fd59f328b1853f4e5451",
+      "encoded_sha256": "18654589a4c2e1e3ba2c1458457e26904bbe5f9bc3e92f39dc104b91d11ecdcc",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-000/frame_00245_000010.253.jpg"
+    },
+    {
+      "source_pts_ticks": 186921,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "d390dcc693c1912c0de2006d65d30ce67df332c37f39f03271548978f910fdf1",
+      "encoded_sha256": "ec7fa7f1e18269b6043a988779b6205ab1170bfdb38a6075a16e4b721c5a9fb9",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-000/frame_00302_000012.169.jpg"
+    },
+    {
+      "source_pts_ticks": 207401,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "6945cd1b04e0966067cbd6065f73b123813528d692007acce49b160a3945cdf5",
+      "encoded_sha256": "6055ec5b3468fef7473d04bd1eb535d2b8a73539ce8eaa4b78a99db8402922de",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-000/frame_00081_000013.503.jpg"
+    },
+    {
+      "source_pts_ticks": 236585,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "8a9b6ebfc7f6aab986ad695c1dc1f3f553c7cc2f7b6f892e34945bb0d5dc45b4",
+      "encoded_sha256": "00f612e0eba93b4241146efe52de9a99816cab85c6756d80ef66dbad3149cee0",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-000/frame_00092_000015.403.jpg"
+    },
+    {
+      "source_pts_ticks": 266025,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "16d9b1a86a79c1f3918ff57ad939ce48a8cc6a1a6be34ca61a187ffc2d7acfc6",
+      "encoded_sha256": "0bcc903223d629d12a4081c2b7db83b39c4787f48c3f643dfaf366370fdb6dfb",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-000/frame_00483_000017.319.jpg"
+    },
+    {
+      "source_pts_ticks": 324137,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "8c15d2d0f176c8336aae6b8609dec22e1df4eaed84f2a6ed3cc9883d04b714d5",
+      "encoded_sha256": "759e362788937032af3e70c697a8fb879089745b0f0bac7de641809cc76b0900",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-001/frame_00027_000021.103.jpg"
+    },
+    {
+      "source_pts_ticks": 369961,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "ed555ef47aa67895d942b84b9df4246044e63726024b66ecb274a3b32f38cc39",
+      "encoded_sha256": "1d92b45253dc3fec6873c3a3a9159136784e49aa80aa67f91b9c42f4f292e3f0",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-001/frame_00079_000024.086.jpg"
+    },
+    {
+      "source_pts_ticks": 439337,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "b1ece4bedb924211617eb7c651921e02f7e571cd08e9682540b0e26aaef7de8f",
+      "encoded_sha256": "e0dd052d6e727c677a06a04d1c1c86b033e2a814979fb59e78ef02519217b306",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-000/frame_00172_000028.603.jpg"
+    },
+    {
+      "source_pts_ticks": 469033,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "4c351dbe036917318f919cdc57faf85a8e76c97156b02cd5f9c701365193025e",
+      "encoded_sha256": "a6d31e293071a8e087e515ed48dbf3a9defb54639c750639d8d8df4a24c58f79",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-001/frame_00200_000030.536.jpg"
+    },
+    {
+      "source_pts_ticks": 503593,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "ec3ce11851bdc28c70fc8d0cb2920577992f564727ce58f21bfa13b027767945",
+      "encoded_sha256": "5d55fee7d835ab9ac95f688e115f10a962f39aff83a4c602c240b3caa20334bc",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-001/frame_00256_000032.786.jpg"
+    },
+    {
+      "source_pts_ticks": 551721,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "25017768f520f8a169b552c5cfcf3eb4be7ed5bb931fa30b6120bdd9ae54bfe1",
+      "encoded_sha256": "64d7e639425b0fb5f798dda43e5085c105be3b4a2f7762256630b524b2623842",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-001/frame_00312_000035.919.jpg"
+    },
+    {
+      "source_pts_ticks": 587049,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "bf4dd39d11c6f6bfea9b0488ce39132bc026068830d72ee120d6164688ab454c",
+      "encoded_sha256": "2ef03b52d97494d5d46a366fc06a95d3c3d929f5dca22648997800dec6ddd531",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-001/frame_00378_000038.219.jpg"
+    },
+    {
+      "source_pts_ticks": 624169,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "f6d755a9ee565f7dcfb41980ba5d1f7a707d00ec9c7a83b91065377ea12784d2",
+      "encoded_sha256": "0522448c5aca6f403fce56966fcd9189df21848d15d87d777a19d0cc85a9449c",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-001/frame_00475_000040.636.jpg"
+    },
+    {
+      "source_pts_ticks": 652585,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "feb76b279f983c5f6f4a1d526d522d9d733b88b5055c79d9734ce3fd0928eb12",
+      "encoded_sha256": "94f9753774ec13e7c0d960687f698878abf90f7deac2597e0cc115d81e614396",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-002/frame_00057_000042.486.jpg"
+    },
+    {
+      "source_pts_ticks": 692521,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "12a91bef5f912c8d05ba3c6dbf035ce3386a99fedf6cdd455125dcad52631b93",
+      "encoded_sha256": "39935368ce90d7aa9c1e71e9b771324754ff7932ccb98eeb6ec5dae2412a279c",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-002/frame_00125_000045.086.jpg"
+    },
+    {
+      "source_pts_ticks": 718633,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "c5838ee6c1092f9cf4a2c5bdb277f7619cb51a43e1522cb5b474e75f372e9807",
+      "encoded_sha256": "0406ee7756d6d692a3b29cb5441281b12da83be8b23f9099d9df8e36fba23d96",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-002/frame_00190_000046.786.jpg"
+    },
+    {
+      "source_pts_ticks": 746537,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "562e4ee42207351d21cb5176c3ead85d7fb71d050dd0340886a0f17a0e2d3b78",
+      "encoded_sha256": "7c006039c7b48ff9e45376e2cefe5c1874b6b53e94b056d16471205e71874be3",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-000/frame_00292_000048.603.jpg"
+    },
+    {
+      "source_pts_ticks": 807977,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "c4c6ee3f0d82bf238de5d8659a2be94bcf2ecf82f31bdcf657952ea97d82ce0d",
+      "encoded_sha256": "63cccfd22d4cc084c4282602239fe70a5b1472090c694305bd2c754c416fb6f0",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-000/frame_00316_000052.603.jpg"
+    },
+    {
+      "source_pts_ticks": 846377,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "ea15415cdb34202f1eca34602c1b0da9dde2c19d041437ad725f8551b68fb4a3",
+      "encoded_sha256": "02c6f71f8adadff28a2b5c5195753a2a24f33f4c817e9eeb08d8459cf97e769d",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-002/frame_00381_000055.103.jpg"
+    },
+    {
+      "source_pts_ticks": 878377,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "149f330b4afa9617d355100c21d1896daf88c8f394a75f60c71228cc103775e5",
+      "encoded_sha256": "25da6b5dadbfaf014e3f3581f98229a9798b419b7645ef57686c584854097b3a",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-002/frame_00452_000057.186.jpg"
+    },
+    {
+      "source_pts_ticks": 916265,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "98db55af827beb3b7721794188753cf22aa9d71371c71a2d2aede7ee2bccd9bf",
+      "encoded_sha256": "d223c6022e696074e08ac959de93c9adc1fad26ae1aefafbb829f64efa96ce39",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-003/frame_00020_000059.653.jpg"
+    },
+    {
+      "source_pts_ticks": 952105,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "8b63133210cb234c1a937e5cb6983411d177a843c8e51c09a026bdba6e2ba9d2",
+      "encoded_sha256": "18e90664158fba84906199dabee893e7ce365264846e962d36d4bd95e04eb603",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-003/frame_00120_000061.986.jpg"
+    },
+    {
+      "source_pts_ticks": 986153,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "f4001aed0ef986037da6c0e14f8b33e83da379a0fdab550d2ba6797b8fb3a4e2",
+      "encoded_sha256": "17fbf5f8ab2447deb30121ea9b0beffcdcc28669a7f5b362aabd7d8148a184ee",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-000/frame_00385_000064.203.jpg"
+    },
+    {
+      "source_pts_ticks": 1009449,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "25ebbf0237bb4ff6bc82dd967d65cc90e2e04f044ade319763f534d6f6c3225d",
+      "encoded_sha256": "3e4a53be4df4e5c2421977d07fb2aedd85b742dafed5eab5346b7372aba37458",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-003/frame_00256_000065.719.jpg"
+    },
+    {
+      "source_pts_ticks": 1059881,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "548e71a386be1ec2537c7ae85923ec9c000b880b5373490ea56521809963d189",
+      "encoded_sha256": "afbdfeed435015451e2ea5a980274776f820ffa0fe0bcda85145d3cb00599c60",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-000/frame_00414_000069.003.jpg"
+    },
+    {
+      "source_pts_ticks": 1133865,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "4bb69a2e12170d9ef0e484c0ded8919d55d243f51b59525aa5495712489a0ffe",
+      "encoded_sha256": "ebd3439f9e633a2e8b4717193ce7ebae332312f1a1e417a02539500df27fd124",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-003/frame_00426_000073.819.jpg"
+    },
+    {
+      "source_pts_ticks": 1181993,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "e264fcc624bba849f538ef6195cb6d13be3c5115c3036b2cdf113f731ae64e64",
+      "encoded_sha256": "9640eb640bf1782c547f6d0e17e4e5704022d691559d061e5dc4989a2c010a28",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-003/frame_00475_000076.953.jpg"
+    },
+    {
+      "source_pts_ticks": 1274921,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "aa5ff3c49d83fb6b926929ad193862dfe880e4b09fb8d8850f9f5257b94c7e60",
+      "encoded_sha256": "1453c90a2cb9d30c0fe9f2422234003e5391da85061ff77111228e51fb869d57",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-000/frame_00498_000083.003.jpg"
+    },
+    {
+      "source_pts_ticks": 1313321,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "2c6acb3b48e09b5865cbb3b9ee04bbc9f201db7698dbc0af7120f4282f4596e3",
+      "encoded_sha256": "8440b9f3c0a59a8b8a6fbda5316cadc2afa18197191bd117d22151df4951db8a",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-001/frame_00013_000085.503.jpg"
+    },
+    {
+      "source_pts_ticks": 1346345,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "cc45dc440d278f6151036812eb395ec95a6f39f79e41d2fd00d1fb5ccb529e78",
+      "encoded_sha256": "40b6cccc0635c9b73dd1539e5934125f55285b18b8aa0652e43bdd7f463a826b",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-004/frame_00117_000087.653.jpg"
+    },
+    {
+      "source_pts_ticks": 1378345,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "5465b3108ba93c8ef839a7babc95e1d11a047c4a85fece9926b2bfc70bed998e",
+      "encoded_sha256": "e74372f18bb085de0f6f02d479515d3de6238f5d5c70eec266be1eb07d4f1e4c",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-004/frame_00171_000089.736.jpg"
+    },
+    {
+      "source_pts_ticks": 1420841,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "3d8932b1b811cdc9ef90f95872e2ced244bc7e75f29cfdbaa81c580080936c39",
+      "encoded_sha256": "a978702a1dbaacc6f0c33049f9f80f59f729839ea0c1b2cdac6b399cb95cc1a3",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-001/frame_00055_000092.503.jpg"
+    },
+    {
+      "source_pts_ticks": 1485353,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "e8b1bc590eec7381d975f50629b5227985f310a3b341508ab04bbcdb5ca7ecaa",
+      "encoded_sha256": "7534231cfd7658754ac7465f47e35f9dca4898943f74caaa92378d58c1dc198c",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-004/frame_00271_000096.703.jpg"
+    },
+    {
+      "source_pts_ticks": 1531945,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "48a8d619546e5d1168fd314a6fc997e14c4e7ff9f6cd443b0fb24aa77b5c1f26",
+      "encoded_sha256": "c86f3672e3523dc50085682612e9f408f9a7ad780cc8baa37e62d5dfc6f47259",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-004/frame_00321_000099.736.jpg"
+    },
+    {
+      "source_pts_ticks": 1562921,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "2fb4a485597ecf0f692a22404e609722eb22238812ff9e809e5a31ed362ea5fc",
+      "encoded_sha256": "ecf8b4b8fcc7a59e2db568003eb5b6aede9d0023a53fcbc2d32cb67dc20bbb5c",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-004/frame_00377_000101.753.jpg"
+    },
+    {
+      "source_pts_ticks": 1588009,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "8a5ef744a6e2a4041e4614cb4f1a5038dd222c30053a851e1c9483274f835518",
+      "encoded_sha256": "f298c12ecb98a600f488e6cc1682a8b5d75b208fbdda4ef4bf9b43d3c5279822",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-004/frame_00435_000103.386.jpg"
+    },
+    {
+      "source_pts_ticks": 1620777,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "31957e952cfc24744d0e94b1d4563b7ff8e0d93b09c60bbdc983cc2b1775c696",
+      "encoded_sha256": "295b73e1e35406086a139b107eb626a02d2727a103bc2cd24417d65b6e4e0bbf",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-004/frame_00491_000105.519.jpg"
+    },
+    {
+      "source_pts_ticks": 1663273,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "39edfcbb8da6a17a8ea7bba9c1026cd68c18291a447849758f88283358e65b6c",
+      "encoded_sha256": "12f0bfa50dfee78f6903e6dd051b9faa4f9348b744f779f127a04d233fbc3a73",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-005/frame_00047_000108.286.jpg"
+    },
+    {
+      "source_pts_ticks": 1685033,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "0d96fed4bb59b9c46a84afc3b94f5c80f041eecb7d6a7a5b6e08b6e154a97d51",
+      "encoded_sha256": "0f937b119ae4a0dcec9ca1d5350a33c43de8e68b914f9383d71c5e67d64e30a4",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-005/frame_00105_000109.703.jpg"
+    },
+    {
+      "source_pts_ticks": 1717545,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "4166a41be0f50cd0138f849d094ecefd6b194d60260807002ebda9689a9b8cdb",
+      "encoded_sha256": "1b76a2f6b2ff837c3d197aac7de6a6ee91c3a43890d4d4079e28c5b5638e8d28",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-005/frame_00162_000111.819.jpg"
+    },
+    {
+      "source_pts_ticks": 1751081,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "afe21918683cbc5478a5ab9cb09e6dcffaeada0eb9d446ef1affc23bd8ab2020",
+      "encoded_sha256": "40c7f44499593a7f0e42368c53e550d1d8d7b86ce40182fe83982ea92af62eb1",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-001/frame_00184_000114.003.jpg"
+    },
+    {
+      "source_pts_ticks": 1788201,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "1dd0b9f5ec52a93513360d12d6d7a5b6f6877a25ef19c24620604fbec3886edf",
+      "encoded_sha256": "7f71a2462a39da86257ea9f2ff97d8aa09f96ae86cfd852b1a7e1bc941563cc5",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-005/frame_00319_000116.419.jpg"
+    },
+    {
+      "source_pts_ticks": 1867305,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "154f18013a2071078bcf6f4afe277c952049a578192c43531e4e6d7bb3c394a0",
+      "encoded_sha256": "13956c0bff47a1f00e463558cfbb09ca451bb5836035de7b2a37abe76820a2de",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-005/frame_00395_000121.569.jpg"
+    },
+    {
+      "source_pts_ticks": 1898793,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "025dd81255fb16459726adccb2a47296ccd251633c9c33a62bc99d2ba03a5b7c",
+      "encoded_sha256": "73ae5db53d33dc9c9c31adc798163187880f509395bf3858ebf946fcca8b715c",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-005/frame_00466_000123.619.jpg"
+    },
+    {
+      "source_pts_ticks": 1927721,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "81e9d14e4ee87bc70bb655175c8de1dcea2e442a949a5f3e9e24be17494496cf",
+      "encoded_sha256": "aadcf912e3f43137a92eca70a9de8b2d3dadeaa3fc43f15e2567a598d103d9f5",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-001/frame_00253_000125.503.jpg"
+    },
+    {
+      "source_pts_ticks": 1951785,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "4eb42bfb2b6e05d2d995cec15897607d389efaaeb00e466aabb8af2dce43c15e",
+      "encoded_sha256": "5e1e0925975c3d10c2827e1799b845f455aa2cf94315a975a0ba213d479d44d8",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-006/frame_00090_000127.069.jpg"
+    },
+    {
+      "source_pts_ticks": 2018345,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "bde5f8cfc6e97607aa1efb6013c2ac346efb8127b2d7a709b42560a868682376",
+      "encoded_sha256": "d7c68d916b861ddd7ee7ed9a711913c8109d691874afb37d90bc4d96c3d5fa58",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-001/frame_00288_000131.403.jpg"
+    },
+    {
+      "source_pts_ticks": 2101289,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "4c854c7b1388c0f205de1fe048593a851b3dd5dcb1669807d75fcebc4d114b01",
+      "encoded_sha256": "d82c5fe08ffaa90105213d7a9a062c802689040a64a6ca66a9df0d35a4f021dd",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-001/frame_00321_000136.803.jpg"
+    },
+    {
+      "source_pts_ticks": 2124329,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "6bacc32432edf398e70c729a7781eaa1baa2aa08e0ca8675bd7dd1715d8ef446",
+      "encoded_sha256": "260adec8cc709aa4e4adf182dd3cdd2456c9d52e1bf53a4a83bf9b2622d0675d",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-006/frame_00261_000138.303.jpg"
+    },
+    {
+      "source_pts_ticks": 2152233,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "f86057b93fcf6ab95b6681032110babc0a2fb2170856afe7dd7ce4a6b7b7b840",
+      "encoded_sha256": "63e269b26717e6cd75b3f0db82a83db07d02900147b1b67307a7321818686e53",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-006/frame_00321_000140.119.jpg"
+    },
+    {
+      "source_pts_ticks": 2185001,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "d8bdda0075ff7206f76f99ca3dd63a6c15537a6b1bb89721f9a649290827d64a",
+      "encoded_sha256": "9507634a482168465d4efe33f487178e88788f6099e0d31197670798ad676098",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-006/frame_00405_000142.253.jpg"
+    },
+    {
+      "source_pts_ticks": 2236969,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "da73585efd672be96ced47d99c4ee4c4044fc3841e28c1b60609f76edeec5b77",
+      "encoded_sha256": "13ea3c191ebf0448e18eafb07ff7c0ab06ff9085b73433a490d27a911e67ce3b",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-006/frame_00452_000145.636.jpg"
+    },
+    {
+      "source_pts_ticks": 2268969,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "2b025a7463e8f99af2b981ff42208fb4fdd62f86c334b44cebc08b72ee47705d",
+      "encoded_sha256": "de08a9d56d200b998d71997a7e5a44d9f24bd34235fee0b898fe8c26bc0c2931",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-007/frame_00026_000147.719.jpg"
+    },
+    {
+      "source_pts_ticks": 2321193,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "898c834fb377837f05112fa6c526ac2ae50aa7782fa4779e8e7f482d8086004a",
+      "encoded_sha256": "ced2c4c44753bdb3e18da594490f837f244a430150ed4090972df0906e4ecab6",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-007/frame_00081_000151.119.jpg"
+    },
+    {
+      "source_pts_ticks": 2421545,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "48ee92532c8d7ea6486a69fbc11beb0aa1c46c1feab2c611a754abae20294358",
+      "encoded_sha256": "1f4fde292ad6d8fe692ea2663c3efc4f5a0ab60a1fe1551158c11a08e1ed8b16",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-007/frame_00114_000157.653.jpg"
+    },
+    {
+      "source_pts_ticks": 2471721,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "c2fd23ca74c54b4d170b728193762ba8ca41ad5d28aafa5834960fdea7c0d67e",
+      "encoded_sha256": "6b2d7bc022c3b5b31d8daeb2321183b4e4af08a071cae59f978ff2138e815a61",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-007/frame_00163_000160.919.jpg"
+    },
+    {
+      "source_pts_ticks": 2500649,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "be078f8a4cc7efc185241534811ea66db186122ff84d3de6ec42427d433f9f49",
+      "encoded_sha256": "cec207c58f00d6e307a622166b4e88ec5486b6650ba23f7f156fde6bbc9dbc7b",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-001/frame_00477_000162.803.jpg"
+    },
+    {
+      "source_pts_ticks": 2524457,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "48d61526e048303bc9428a013cf1c6ec9064584fcdef0b7d626bf37db4e87e65",
+      "encoded_sha256": "0171be54c5cdc7025347f429c84804903282d5c0527866c453eaca5889525b20",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-007/frame_00288_000164.353.jpg"
+    },
+    {
+      "source_pts_ticks": 2554409,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "d0cabf559918d5736031d3b2af8aec5b3ccbcaea23b357c460324dd37635a1ce",
+      "encoded_sha256": "e057e59ad8f44030daa59e686f2859d864b80b60853ccbaac6587a01f33e4e57",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-007/frame_00351_000166.303.jpg"
+    },
+    {
+      "source_pts_ticks": 2608169,
+      "source_tick_provenance": "existing rounded source annotation mapped to unique known15360/256grid; not new native decode",
+      "source_pixel_sha256": "8a9b8d170bd795db5ca686124daf26704a5802d2124961a89a12e60e2273d3e1",
+      "encoded_sha256": "6c7184fe4c22ab63c3a3e8de822685b7969a157b17fd1b8d3add58e8f1e1ea27",
+      "training_source_kind": "frozen JPEG source",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-002/frame_00019_000169.803.jpg"
+    },
+    {
+      "source_pts_ticks": 100393,
+      "source_tick_provenance": "existing native decoder training selection",
+      "source_pixel_sha256": "772641902721eeac6defeb87324ac506e5af447fdcd6889fb8fbac4df71a6f57",
+      "encoded_sha256": "6f1bd3faf3532ffd3835442499dfd24afa04e3e2d1045936ed11054d2c5bace1",
+      "training_source_kind": "frozen native PNG source",
+      "path": "outputs/recognition-investigation/timer-seven-support/source_003.png"
+    },
+    {
+      "source_pts_ticks": 101673,
+      "source_tick_provenance": "existing native decoder training selection",
+      "source_pixel_sha256": "b50c37051286b483465e9510e47d4db97628e8e93814e0cc5d29973ef1baba8f",
+      "encoded_sha256": "d65f248615fd20fb5a70276b7a30253b374e1a5167925f4fd0bd5ebb9ca2a8f4",
+      "training_source_kind": "frozen native PNG source",
+      "path": "outputs/recognition-investigation/timer-seven-support/source_008.png"
+    },
+    {
+      "source_pts_ticks": 102953,
+      "source_tick_provenance": "existing native decoder training selection",
+      "source_pixel_sha256": "cad1663cacfbeaeef5ce7095c115d243f6f8206358797f2f9fff4b94d4b96301",
+      "encoded_sha256": "53939ee0f84d7a1675e271526e2a640d3b673e20b8ca2c8e46be91a8cff7453c",
+      "training_source_kind": "frozen native PNG source",
+      "path": "outputs/recognition-investigation/timer-seven-support/source_013.png"
+    },
+    {
+      "source_pts_ticks": 104233,
+      "source_tick_provenance": "existing native decoder training selection",
+      "source_pixel_sha256": "fbb5612476f76c1c8c85485265071e4769aeaa415954b6f59906e3948f63e0cf",
+      "encoded_sha256": "a242a204216d191e53e58cb9212e6f1abaf0b6361e4ad2aa6313d8616d63d8cc",
+      "training_source_kind": "frozen native PNG source",
+      "path": "outputs/recognition-investigation/timer-seven-support/source_018.png"
+    },
+    {
+      "source_pts_ticks": 105513,
+      "source_tick_provenance": "existing native decoder training selection",
+      "source_pixel_sha256": "92cf5383b6a0e80688707bdee57c3332a5c5b83028b6bb6336f8b0b9f3e74312",
+      "encoded_sha256": "76a883d212a22a41cb1eda7341bf5b0fc50661a1ed0c21a1d17aa7f14e4f46e3",
+      "training_source_kind": "frozen native PNG source",
+      "path": "outputs/recognition-investigation/timer-seven-support/source_023.png"
+    },
+    {
+      "source_pts_ticks": 106793,
+      "source_tick_provenance": "existing native decoder training selection",
+      "source_pixel_sha256": "63f7782984f1aac3cd6e1a5fb3aa768915933356ca034a3a0fe36299f3590162",
+      "encoded_sha256": "9f45374f10fc807f70c994ba5ec84144d5e7c95f1cb4c9a5e07770196e8867aa",
+      "training_source_kind": "frozen native PNG source",
+      "path": "outputs/recognition-investigation/timer-seven-support/source_028.png"
+    },
+    {
+      "source_pts_ticks": 107817,
+      "source_tick_provenance": "existing native decoder training selection",
+      "source_pixel_sha256": "2786978b7e011008b87ee8123a54f0ab554c08d6b0c3724faa82725a0dddbc21",
+      "encoded_sha256": "c6798ff4a46e336892b80f68501e14e8a9af8a7b872ce6e153d264a665602446",
+      "training_source_kind": "frozen native PNG source",
+      "path": "outputs/recognition-investigation/timer-seven-support/source_032.png"
+    },
+    {
+      "source_pts_ticks": 109097,
+      "source_tick_provenance": "existing native decoder training selection",
+      "source_pixel_sha256": "9e4e05c5b11d773a7acccb9b6f4f16f1c10d45a747684aa8ba32a075139b5ee5",
+      "encoded_sha256": "413a00540df64f7f39e993d270a10600d72b8bf2d5ad95fdeea0b7b902ef67ed",
+      "training_source_kind": "frozen native PNG source",
+      "path": "outputs/recognition-investigation/timer-seven-support/source_037.png"
+    },
+    {
+      "source_pts_ticks": 110633,
+      "source_tick_provenance": "existing native decoder training selection",
+      "source_pixel_sha256": "c1aee0622020613f22f9d3e43654198426d5e6764ce7a6ff0303156975e56cbc",
+      "encoded_sha256": "fdbd0cd9aa0d693782812175be7ad0d53ca2dff22fcf64a99d386472fa436e75",
+      "training_source_kind": "frozen native PNG source",
+      "path": "outputs/recognition-investigation/timer-seven-support/source_043.png"
+    },
+    {
+      "source_pts_ticks": 111913,
+      "source_tick_provenance": "existing native decoder training selection",
+      "source_pixel_sha256": "f1eccb8e8cd1ff12c95f06589f07d48f1bd1dd5f671ad39bdb1c2f24223eb9f1",
+      "encoded_sha256": "cf083df887f992dca12b3fd39efcc42dfc8389870b4cd909fb8740d265f78373",
+      "training_source_kind": "frozen native PNG source",
+      "path": "outputs/recognition-investigation/timer-seven-support/source_048.png"
+    },
+    {
+      "source_pts_ticks": 113193,
+      "source_tick_provenance": "existing native decoder training selection",
+      "source_pixel_sha256": "0b46092ed1bf8e41bb59762092c9f5b7f33b40322a23ca76506ae655b16a5e20",
+      "encoded_sha256": "f906530c308657e902943adc03e7062ba40487635555262720bbb849778426e2",
+      "training_source_kind": "frozen native PNG source",
+      "path": "outputs/recognition-investigation/timer-seven-support/source_053.png"
+    },
+    {
+      "source_pts_ticks": 114473,
+      "source_tick_provenance": "existing native decoder training selection",
+      "source_pixel_sha256": "09bd0e0a43543535afec183cc06a3082aead18c7bdb52cd781d079f004fa8577",
+      "encoded_sha256": "dab556d6a9ee1d5f3c44771ee61ce4d0e925c0f430053dcc11b27b7b6da4f6d3",
+      "training_source_kind": "frozen native PNG source",
+      "path": "outputs/recognition-investigation/timer-seven-support/source_058.png"
+    }
+  ],
+  "training_reference_class_support": [
+    {
+      "digit": "0",
+      "glyph_count": 38,
+      "distinct_frames": 32,
+      "supported_glyphs": 37,
+      "supported_frames": 31,
+      "support_fraction": 0.9736842105263158,
+      "reference_path": "outputs/recognition-investigation/timer-glyph-cohort-v2/glyph-044-0.png",
+      "reference_sha256": "601e57a3cdb8cc96a80ba1fa0090673fdc157e8fc729471483342a59a6e4ab45",
+      "qualified_training_support": true
+    },
+    {
+      "digit": "1",
+      "glyph_count": 40,
+      "distinct_frames": 30,
+      "supported_glyphs": 40,
+      "supported_frames": 30,
+      "support_fraction": 1.0,
+      "reference_path": "outputs/recognition-investigation/timer-glyph-cohort-v2/glyph-004-0.png",
+      "reference_sha256": "9d3e1a8f0a492179b1e41043dce7649cc36c26dcea83efe69d8a08088f358da0",
+      "qualified_training_support": true
+    },
+    {
+      "digit": "2",
+      "glyph_count": 12,
+      "distinct_frames": 11,
+      "supported_glyphs": 12,
+      "supported_frames": 11,
+      "support_fraction": 1.0,
+      "reference_path": "outputs/recognition-investigation/timer-glyph-cohort-v2/glyph-000-2.png",
+      "reference_sha256": "ee22e20d6473c1708ce0b6a7f309bc22568966271e158eab0fb6e871f7183477",
+      "qualified_training_support": true
+    },
+    {
+      "digit": "3",
+      "glyph_count": 18,
+      "distinct_frames": 17,
+      "supported_glyphs": 18,
+      "supported_frames": 17,
+      "support_fraction": 1.0,
+      "reference_path": "outputs/recognition-investigation/timer-glyph-cohort-v2/glyph-006-1.png",
+      "reference_sha256": "5ac534136243c34b8adba641b84490a777dc179e52f431b16122c2070b677734",
+      "qualified_training_support": true
+    },
+    {
+      "digit": "4",
+      "glyph_count": 8,
+      "distinct_frames": 8,
+      "supported_glyphs": 8,
+      "supported_frames": 8,
+      "support_fraction": 1.0,
+      "reference_path": "outputs/recognition-investigation/timer-glyph-cohort-v2/glyph-044-1.png",
+      "reference_sha256": "59cdd0993fe7595e0c62157583b2fe96dede31e4a1a89d52ad2790b8117a159c",
+      "qualified_training_support": true
+    },
+    {
+      "digit": "5",
+      "glyph_count": 14,
+      "distinct_frames": 13,
+      "supported_glyphs": 14,
+      "supported_frames": 13,
+      "support_fraction": 1.0,
+      "reference_path": "outputs/recognition-investigation/timer-glyph-cohort-v2/glyph-006-2.png",
+      "reference_sha256": "ca2072c97b90da225cb93c7bcc58475332ed89b9cf0a3c00610beef3340e098f",
+      "qualified_training_support": true
+    },
+    {
+      "digit": "6",
+      "glyph_count": 3,
+      "distinct_frames": 3,
+      "supported_glyphs": 3,
+      "supported_frames": 3,
+      "support_fraction": 1.0,
+      "reference_path": "outputs/recognition-investigation/timer-glyph-cohort-v2/glyph-004-2.png",
+      "reference_sha256": "f31a1175575e4cc6484e73d543b942c38f5e32bf500423968cdf69fc991f4dae",
+      "qualified_training_support": true
+    },
+    {
+      "digit": "7",
+      "glyph_count": 10,
+      "distinct_frames": 10,
+      "supported_glyphs": 10,
+      "supported_frames": 10,
+      "support_fraction": 1.0,
+      "reference_path": "outputs/recognition-investigation/timer-glyph-cohort-v2/glyph-038-2.png",
+      "reference_sha256": "466ab009974a1f11a0763262ce10c2ce93962d2c3a4f5d6db5dcd77057e80a94",
+      "qualified_training_support": true
+    },
+    {
+      "digit": "8",
+      "glyph_count": 6,
+      "distinct_frames": 6,
+      "supported_glyphs": 6,
+      "supported_frames": 6,
+      "support_fraction": 1.0,
+      "reference_path": "outputs/recognition-investigation/timer-glyph-cohort-v2/glyph-014-2.png",
+      "reference_sha256": "f01f3ee9d375b2ec929f27555b66fb69d8a49f87c35dd234944fd5879cfb1ffa",
+      "qualified_training_support": true
+    },
+    {
+      "digit": "9",
+      "glyph_count": 5,
+      "distinct_frames": 5,
+      "supported_glyphs": 5,
+      "supported_frames": 5,
+      "support_fraction": 1.0,
+      "reference_path": "outputs/recognition-investigation/timer-glyph-cohort-v2/glyph-036-2.png",
+      "reference_sha256": "1b219b606e7924e144d89eade5c3e771c248de9a15a2a196b5b6019eb2b212ea",
+      "qualified_training_support": true
+    }
+  ],
+  "training_support_scope": "Historical frozen per-class measurements with current asset equality; no new current training reader predictions claimed.64legacy source times are uniquely mapped annotations,12decoder-native ticks.",
+  "physical_timer_counts": {
+    "training": 76,
+    "holdout": 32,
+    "negative": 8
+  },
+  "joint_physical_counts": {
+    "training": 79,
+    "holdout": 40,
+    "negative": 20
+  },
+  "physical_and_pixel_splits_disjoint": true,
+  "input_sha256": {
+    "e2e_reports/match_001/joint_start_component_replay.json": "e9f96be0048ab51472c98789ed77da0810e54901a2ae9da5337c35e545294703",
+    "e2e_reports/match_001/timer_type_control_native_replay.json": "446d9ae8730e8578c2dd1a2acae64d379a41ea8fa3eca43e1090a1daed2fa395",
+    "outputs/recognition-investigation/timer-glyph-cohort-v2/manifest.json": "e76b2ac7d6c20f042aa30c2badf3860fd669e211a9397c4f13edbd726eb8d739",
+    "outputs/recognition-investigation/timer-seven-support/training-selection.json": "0c9128bec2e50b552b6af0bc55c75dd3766c5d704f168ac7d14baa8672e6d481",
+    "outputs/recognition-investigation/timer-seven-support/blur-alphabet-training.json": "9b3409179cd84bd47ad2d9f778195421f5818032a3e18eb311a3e1780eb0a46c",
+    "outputs/recognition-investigation/lifecycle-timer-current-native-20261012/selection.json": "f857b1e7ccc01e1ad7b34cbf7d3a3393294f33c100793932ea3b7dd8dcb7ce42",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-000/frame_00013_000001.536.jpg": "c0a32b33e1e87dd07453bbf031108301c14eb8c6480bd58c4ea2b287de63b8a8",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-000/frame_00063_000004.953.jpg": "384937cc9618eaa10f964bbb31d0f6c91b7075426a867e0661d37d6b56aacf88",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-000/frame_00117_000007.153.jpg": "2b17a7ed66d83bf1ff4393d766d9851213aa68f5e6858d1a1f306399450502af",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-000/frame_00054_000009.003.jpg": "cbfc1d944e0db3875fd7905f6aa457a2cee0155a655295efa7dcd004a03e5f69",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-000/frame_00245_000010.253.jpg": "18654589a4c2e1e3ba2c1458457e26904bbe5f9bc3e92f39dc104b91d11ecdcc",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-000/frame_00302_000012.169.jpg": "ec7fa7f1e18269b6043a988779b6205ab1170bfdb38a6075a16e4b721c5a9fb9",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-000/frame_00081_000013.503.jpg": "6055ec5b3468fef7473d04bd1eb535d2b8a73539ce8eaa4b78a99db8402922de",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-000/frame_00092_000015.403.jpg": "00f612e0eba93b4241146efe52de9a99816cab85c6756d80ef66dbad3149cee0",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-000/frame_00483_000017.319.jpg": "0bcc903223d629d12a4081c2b7db83b39c4787f48c3f643dfaf366370fdb6dfb",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-001/frame_00027_000021.103.jpg": "759e362788937032af3e70c697a8fb879089745b0f0bac7de641809cc76b0900",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-001/frame_00079_000024.086.jpg": "1d92b45253dc3fec6873c3a3a9159136784e49aa80aa67f91b9c42f4f292e3f0",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-000/frame_00172_000028.603.jpg": "e0dd052d6e727c677a06a04d1c1c86b033e2a814979fb59e78ef02519217b306",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-001/frame_00200_000030.536.jpg": "a6d31e293071a8e087e515ed48dbf3a9defb54639c750639d8d8df4a24c58f79",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-001/frame_00256_000032.786.jpg": "5d55fee7d835ab9ac95f688e115f10a962f39aff83a4c602c240b3caa20334bc",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-001/frame_00312_000035.919.jpg": "64d7e639425b0fb5f798dda43e5085c105be3b4a2f7762256630b524b2623842",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-001/frame_00378_000038.219.jpg": "2ef03b52d97494d5d46a366fc06a95d3c3d929f5dca22648997800dec6ddd531",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-001/frame_00475_000040.636.jpg": "0522448c5aca6f403fce56966fcd9189df21848d15d87d777a19d0cc85a9449c",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-002/frame_00057_000042.486.jpg": "94f9753774ec13e7c0d960687f698878abf90f7deac2597e0cc115d81e614396",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-002/frame_00125_000045.086.jpg": "39935368ce90d7aa9c1e71e9b771324754ff7932ccb98eeb6ec5dae2412a279c",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-002/frame_00190_000046.786.jpg": "0406ee7756d6d692a3b29cb5441281b12da83be8b23f9099d9df8e36fba23d96",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-000/frame_00292_000048.603.jpg": "7c006039c7b48ff9e45376e2cefe5c1874b6b53e94b056d16471205e71874be3",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-000/frame_00316_000052.603.jpg": "63cccfd22d4cc084c4282602239fe70a5b1472090c694305bd2c754c416fb6f0",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-002/frame_00381_000055.103.jpg": "02c6f71f8adadff28a2b5c5195753a2a24f33f4c817e9eeb08d8459cf97e769d",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-002/frame_00452_000057.186.jpg": "25da6b5dadbfaf014e3f3581f98229a9798b419b7645ef57686c584854097b3a",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-003/frame_00020_000059.653.jpg": "d223c6022e696074e08ac959de93c9adc1fad26ae1aefafbb829f64efa96ce39",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-003/frame_00120_000061.986.jpg": "18e90664158fba84906199dabee893e7ce365264846e962d36d4bd95e04eb603",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-000/frame_00385_000064.203.jpg": "17fbf5f8ab2447deb30121ea9b0beffcdcc28669a7f5b362aabd7d8148a184ee",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-003/frame_00256_000065.719.jpg": "3e4a53be4df4e5c2421977d07fb2aedd85b742dafed5eab5346b7372aba37458",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-000/frame_00414_000069.003.jpg": "afbdfeed435015451e2ea5a980274776f820ffa0fe0bcda85145d3cb00599c60",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-003/frame_00426_000073.819.jpg": "ebd3439f9e633a2e8b4717193ce7ebae332312f1a1e417a02539500df27fd124",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-003/frame_00475_000076.953.jpg": "9640eb640bf1782c547f6d0e17e4e5704022d691559d061e5dc4989a2c010a28",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-000/frame_00498_000083.003.jpg": "1453c90a2cb9d30c0fe9f2422234003e5391da85061ff77111228e51fb869d57",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-001/frame_00013_000085.503.jpg": "8440b9f3c0a59a8b8a6fbda5316cadc2afa18197191bd117d22151df4951db8a",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-004/frame_00117_000087.653.jpg": "40b6cccc0635c9b73dd1539e5934125f55285b18b8aa0652e43bdd7f463a826b",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-004/frame_00171_000089.736.jpg": "e74372f18bb085de0f6f02d479515d3de6238f5d5c70eec266be1eb07d4f1e4c",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-001/frame_00055_000092.503.jpg": "a978702a1dbaacc6f0c33049f9f80f59f729839ea0c1b2cdac6b399cb95cc1a3",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-004/frame_00271_000096.703.jpg": "7534231cfd7658754ac7465f47e35f9dca4898943f74caaa92378d58c1dc198c",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-004/frame_00321_000099.736.jpg": "c86f3672e3523dc50085682612e9f408f9a7ad780cc8baa37e62d5dfc6f47259",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-004/frame_00377_000101.753.jpg": "ecf8b4b8fcc7a59e2db568003eb5b6aede9d0023a53fcbc2d32cb67dc20bbb5c",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-004/frame_00435_000103.386.jpg": "f298c12ecb98a600f488e6cc1682a8b5d75b208fbdda4ef4bf9b43d3c5279822",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-004/frame_00491_000105.519.jpg": "295b73e1e35406086a139b107eb626a02d2727a103bc2cd24417d65b6e4e0bbf",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-005/frame_00047_000108.286.jpg": "12f0bfa50dfee78f6903e6dd051b9faa4f9348b744f779f127a04d233fbc3a73",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-005/frame_00105_000109.703.jpg": "0f937b119ae4a0dcec9ca1d5350a33c43de8e68b914f9383d71c5e67d64e30a4",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-005/frame_00162_000111.819.jpg": "1b76a2f6b2ff837c3d197aac7de6a6ee91c3a43890d4d4079e28c5b5638e8d28",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-001/frame_00184_000114.003.jpg": "40c7f44499593a7f0e42368c53e550d1d8d7b86ce40182fe83982ea92af62eb1",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-005/frame_00319_000116.419.jpg": "7f71a2462a39da86257ea9f2ff97d8aa09f96ae86cfd852b1a7e1bc941563cc5",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-005/frame_00395_000121.569.jpg": "13956c0bff47a1f00e463558cfbb09ca451bb5836035de7b2a37abe76820a2de",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-005/frame_00466_000123.619.jpg": "73ae5db53d33dc9c9c31adc798163187880f509395bf3858ebf946fcca8b715c",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-001/frame_00253_000125.503.jpg": "aadcf912e3f43137a92eca70a9de8b2d3dadeaa3fc43f15e2567a598d103d9f5",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-006/frame_00090_000127.069.jpg": "5e1e0925975c3d10c2827e1799b845f455aa2cf94315a975a0ba213d479d44d8",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-001/frame_00288_000131.403.jpg": "d7c68d916b861ddd7ee7ed9a711913c8109d691874afb37d90bc4d96c3d5fa58",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-001/frame_00321_000136.803.jpg": "d82c5fe08ffaa90105213d7a9a062c802689040a64a6ca66a9df0d35a4f021dd",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-006/frame_00261_000138.303.jpg": "260adec8cc709aa4e4adf182dd3cdd2456c9d52e1bf53a4a83bf9b2622d0675d",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-006/frame_00321_000140.119.jpg": "63e269b26717e6cd75b3f0db82a83db07d02900147b1b67307a7321818686e53",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-006/frame_00405_000142.253.jpg": "9507634a482168465d4efe33f487178e88788f6099e0d31197670798ad676098",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-006/frame_00452_000145.636.jpg": "13ea3c191ebf0448e18eafb07ff7c0ab06ff9085b73433a490d27a911e67ce3b",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-007/frame_00026_000147.719.jpg": "de08a9d56d200b998d71997a7e5a44d9f24bd34235fee0b898fe8c26bc0c2931",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-007/frame_00081_000151.119.jpg": "ced2c4c44753bdb3e18da594490f837f244a430150ed4090972df0906e4ecab6",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-007/frame_00114_000157.653.jpg": "1f4fde292ad6d8fe692ea2663c3efc4f5a0ab60a1fe1551158c11a08e1ed8b16",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-007/frame_00163_000160.919.jpg": "6b2d7bc022c3b5b31d8daeb2321183b4e4af08a071cae59f978ff2138e815a61",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-001/frame_00477_000162.803.jpg": "cec207c58f00d6e307a622166b4e88ec5486b6650ba23f7f156fde6bbc9dbc7b",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-007/frame_00288_000164.353.jpg": "0171be54c5cdc7025347f429c84804903282d5c0527866c453eaca5889525b20",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-007/frame_00351_000166.303.jpg": "e057e59ad8f44030daa59e686f2859d864b80b60853ccbaac6587a01f33e4e57",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-a/segment-0000/batch-002/frame_00019_000169.803.jpg": "6c7184fe4c22ab63c3a3e8de822685b7969a157b17fd1b8d3add58e8f1e1ea27",
+    "outputs/recognition-investigation/timer-seven-support/source_003.png": "6f1bd3faf3532ffd3835442499dfd24afa04e3e2d1045936ed11054d2c5bace1",
+    "outputs/recognition-investigation/timer-seven-support/source_008.png": "d65f248615fd20fb5a70276b7a30253b374e1a5167925f4fd0bd5ebb9ca2a8f4",
+    "outputs/recognition-investigation/timer-seven-support/source_013.png": "53939ee0f84d7a1675e271526e2a640d3b673e20b8ca2c8e46be91a8cff7453c",
+    "outputs/recognition-investigation/timer-seven-support/source_018.png": "a242a204216d191e53e58cb9212e6f1abaf0b6361e4ad2aa6313d8616d63d8cc",
+    "outputs/recognition-investigation/timer-seven-support/source_023.png": "76a883d212a22a41cb1eda7341bf5b0fc50661a1ed0c21a1d17aa7f14e4f46e3",
+    "outputs/recognition-investigation/timer-seven-support/source_028.png": "9f45374f10fc807f70c994ba5ec84144d5e7c95f1cb4c9a5e07770196e8867aa",
+    "outputs/recognition-investigation/timer-seven-support/source_032.png": "c6798ff4a46e336892b80f68501e14e8a9af8a7b872ce6e153d264a665602446",
+    "outputs/recognition-investigation/timer-seven-support/source_037.png": "413a00540df64f7f39e993d270a10600d72b8bf2d5ad95fdeea0b7b902ef67ed",
+    "outputs/recognition-investigation/timer-seven-support/source_043.png": "fdbd0cd9aa0d693782812175be7ad0d53ca2dff22fcf64a99d386472fa436e75",
+    "outputs/recognition-investigation/timer-seven-support/source_048.png": "cf083df887f992dca12b3fd39efcc42dfc8389870b4cd909fb8740d265f78373",
+    "outputs/recognition-investigation/timer-seven-support/source_053.png": "f906530c308657e902943adc03e7062ba40487635555262720bbb849778426e2",
+    "outputs/recognition-investigation/timer-seven-support/source_058.png": "dab556d6a9ee1d5f3c44771ee61ce4d0e925c0f430053dcc11b27b7b6da4f6d3",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/timer_glyphs/digit-0.png": "601e57a3cdb8cc96a80ba1fa0090673fdc157e8fc729471483342a59a6e4ab45",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/timer_glyphs/digit-1.png": "9d3e1a8f0a492179b1e41043dce7649cc36c26dcea83efe69d8a08088f358da0",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/timer_glyphs/digit-2.png": "ee22e20d6473c1708ce0b6a7f309bc22568966271e158eab0fb6e871f7183477",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/timer_glyphs/digit-3.png": "5ac534136243c34b8adba641b84490a777dc179e52f431b16122c2070b677734",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/timer_glyphs/digit-4.png": "59cdd0993fe7595e0c62157583b2fe96dede31e4a1a89d52ad2790b8117a159c",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/timer_glyphs/digit-5.png": "ca2072c97b90da225cb93c7bcc58475332ed89b9cf0a3c00610beef3340e098f",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/timer_glyphs/digit-6.png": "f31a1175575e4cc6484e73d543b942c38f5e32bf500423968cdf69fc991f4dae",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/timer_glyphs/digit-7.png": "466ab009974a1f11a0763262ce10c2ce93962d2c3a4f5d6db5dcd77057e80a94",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/timer_glyphs/digit-8.png": "f01f3ee9d375b2ec929f27555b66fb69d8a49f87c35dd234944fd5879cfb1ffa",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/timer_glyphs/digit-9.png": "1b219b606e7924e144d89eade5c3e771c248de9a15a2a196b5b6019eb2b212ea"
+  },
+  "partial_component_file_sha256": "3208cf24ad41f7dfc7b5d8b9247f6ec1c328da53ee057e5090287c394341e3c7",
+  "production_loader_rejected_partial": "Missing or unknown global lifecycle component",
+  "missing_required_component": "ui_transition",
+  "qualification_created": false,
+  "production_changed": false,
+  "canonical_full_executed": false,
+  "runtime_sec": 7.219180812011473,
+  "target_assertion_ids": [
+    "GT-R1-ROUND-START",
+    "GT-R2-ROUND-START",
+    "event_count_constraints-000",
+    "event_count_constraints-004",
+    "ordering_constraints-001"
+  ],
+  "comparison": {
+    "timer_correct": {
+      "previous": 25,
+      "current": 25,
+      "delta": 0
+    },
+    "timer_unknown": {
+      "previous": 7,
+      "current": 7,
+      "delta": 0
+    },
+    "timer_wrong": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "timer_control_false_positive": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "assembled_current_timer_component_proof": {
+      "previous": 0,
+      "current": 1,
+      "delta": 1
+    },
+    "release_qualifications": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    }
+  },
+  "ui_review_remaining": "Current source UI replay has2known development start episodes and3control windows. Neither133accepted timers nor repeated/truncated replay of one event supplies independent positive cases. Review qualification units and original physical source/split provenance; do not invent a3episode minimum or relabel exposed development data as new blind holdout.",
+  "artifact_sha256": {
+    "outputs/recognition-investigation/start-component-proof-20261013/partial-components.json": "3208cf24ad41f7dfc7b5d8b9247f6ec1c328da53ee057e5090287c394341e3c7",
+    "outputs/recognition-investigation/start-component-proof-20261013/result.json": "f80d0186b443a726e2ff81f0007c020d4601f8a13ba5c02a2d15a948c5238d1f",
+    "outputs/recognition-investigation/start-component-proof-20261013/aggregate.py": "7fa00a11d85c8b7f3c6c494429a687fd2f7d33d7283da3cb5d256a99f6a70d8b"
+  }
+}

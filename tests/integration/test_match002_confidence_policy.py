@@ -75,8 +75,9 @@ def test_versioned_pack_adapter_is_hash_bound_and_keeps_all_other_verdicts(tmp_p
                                                 "tests/reference_evaluator.py")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    assertions = json.loads((output / "tests/generated/e2e_assertions_v3.json").read_text(
-        encoding="utf-8"))
+    assertions = json.loads(
+        (output / "tests/generated/e2e_assertions_v3.json").read_text(encoding="utf-8")
+    )
     trace = {"snapshots": [{"source_confidence": {"weapon": .9}}]}
     old = original().evaluate(assertions, trace)
     assert module.evaluate(assertions, trace) == [

@@ -1,0 +1,2644 @@
+{
+  "scope": "Actual shared production opt-in contrast guard, existing original source splits and exposure retained; no installed qualification or formal event",
+  "recognizer_fingerprint": "7bbb45ea27708c547a9ceb7c79b6f52e99f765675735ad0e247fd0528021cd2c",
+  "profile_path": "outputs/hud_profiles/round-global-timer-glyph-20261008/result-contrast-guard-diagnostic.templates.json",
+  "profile_fingerprint": "60b029cb987fe0d7447853e3b4cd791d5defb0918dfaa25a401bd45d2b64c813",
+  "base_profile_fingerprint": "10bfac00544e510ebf3f3e2c0072c9beba24938b2ff996c9012f7e4046d82c99",
+  "training_source_support": 6,
+  "training_frames": 14,
+  "threshold": 0.9,
+  "training_source_sha256": {
+    "outputs/recognition-investigation/result-glyph-cells-20261013/native_training_1.png": "5e6fbcbdaf2de83b52b191e51b36beee14869557eab0ad414a781391c2a7cabe",
+    "outputs/recognition-investigation/result-glyph-cells-20261013/native_training_2.png": "e9f06a7c7b1625fe0fa5933d849cf0f4cbc0758014e5f010ff90fb0b4d60210d",
+    "outputs/recognition-investigation/result-glyph-cells-20261013/native_training_3.png": "de213b6de38e6278fb51d7412ba20e9d04e06dca35abb1944ea440c435a65c22",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00443_000075.453.jpg": "1aa7b3b43954c4ff3ed3de0c7fafb0afe8713b7f32db79725bf85e34841ad65c",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00453_000075.503.jpg": "d95891af4dd55a9b1d852d110799ea640ff32bf31081f458e2151f1a2c562b4f",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00446_000075.703.jpg": "3eac39a81e8f000cd457c69ecd3a913f5d272cc586ee8140261a2dd3e9c4ec92",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00447_000075.786.jpg": "d2bd574f87098182b90271c651d2e00798990a0e7f6e840b02adaaf400e2142c",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00448_000075.853.jpg": "389fb76c0cec96f9a0a1b2299bf094f78453d252f43b0d31468e90853c6bd88d",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00449_000075.869.jpg": "18497d2db1efbe5693b8415a76b3c58fcbe8743972db35d57914449cf92a475b",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00456_000076.186.jpg": "ad85f1a2d6dbf6292d454eee5d2add4fb45ed0a933c6341fdf32d836c3a48872",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00457_000076.203.jpg": "e007195aef9c868829f1068b125ca311d69547364f6617fc5c5d5c64c90749cb",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00459_000076.286.jpg": "7ae934b44625e5ad49aa50a7e60daa4d6df8b8bbc1a0dcb3d474fcc76147ca50",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00460_000076.353.jpg": "ca1661ff359795d59e927cd4fa6a8e017eda853caba6e029a74409a297565d37",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00461_000076.369.jpg": "1bd71d2ccab52b75a83c180bb26313838c1e8dbfe30b2f0e2e6f387809e5adf1"
+  },
+  "prototype_reference_model_not_regenerated": true,
+  "counts": {
+    "holdout_correct": 3,
+    "holdout_unknown": 8,
+    "holdout_wrong": 0,
+    "negative_rejected": 3,
+    "negative_false_positive": 0
+  },
+  "rows": [
+    {
+      "source_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00451_000075.203.jpg",
+      "source_frame_sha256": "f43785b1bb02626de3d43daf87d20590f9fd72eb16258b633dcef8da4d59468d",
+      "pts_sec": 75.202669,
+      "split": "original_holdout",
+      "score": 0.0,
+      "accepted": false,
+      "prototype_accepted": false,
+      "measurement": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.0,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 2975,
+            "current_std": 13.170031422688377,
+            "score": 0.004150330975744725,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 3199,
+            "current_std": 20.25695819286428,
+            "score": 0.07733572497927688,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 3,
+            "mask_population": 3151,
+            "current_std": 18.25553678728975,
+            "score": 0.04229665845615624,
+            "reason": "below_threshold"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "contrast_guard": {
+          "method": "glyph_local_contrast_v1",
+          "score": 0.0,
+          "glyphs": [
+            {
+              "glyph_index": 0,
+              "box": [
+                6,
+                7,
+                32,
+                65
+              ],
+              "group_ncc": [
+                0.4126565149235696,
+                0.10364942649526009,
+                0.05390573152346796
+              ],
+              "foreground_population": 578,
+              "negative_space_population": 127,
+              "polarity_positive": true,
+              "score": 0.05390573152346796
+            },
+            {
+              "glyph_index": 1,
+              "box": [
+                33,
+                7,
+                56,
+                65
+              ],
+              "group_ncc": [
+                0.02045209987312755,
+                0.0,
+                0.03227542360611329
+              ],
+              "foreground_population": 720,
+              "negative_space_population": 174,
+              "polarity_positive": false,
+              "score": 0.0
+            },
+            {
+              "glyph_index": 2,
+              "box": [
+                56,
+                7,
+                88,
+                65
+              ],
+              "group_ncc": [
+                0.11628583872842996
+              ],
+              "foreground_population": 924,
+              "negative_space_population": 49,
+              "polarity_positive": true,
+              "score": 0.11628583872842996
+            },
+            {
+              "glyph_index": 3,
+              "box": [
+                89,
+                7,
+                130,
+                65
+              ],
+              "group_ncc": [
+                0.0,
+                0.05517434456889921
+              ],
+              "foreground_population": 1503,
+              "negative_space_population": 94,
+              "polarity_positive": false,
+              "score": 0.0
+            },
+            {
+              "glyph_index": 4,
+              "box": [
+                142,
+                7,
+                173,
+                65
+              ],
+              "group_ncc": [
+                0.0
+              ],
+              "foreground_population": 893,
+              "negative_space_population": 55,
+              "polarity_positive": false,
+              "score": 0.0
+            },
+            {
+              "glyph_index": 5,
+              "box": [
+                174,
+                7,
+                203,
+                65
+              ],
+              "group_ncc": [
+                0.0,
+                0.0,
+                0.08790061252311909
+              ],
+              "foreground_population": 870,
+              "negative_space_population": 206,
+              "polarity_positive": false,
+              "score": 0.0
+            },
+            {
+              "glyph_index": 6,
+              "box": [
+                205,
+                7,
+                228,
+                65
+              ],
+              "group_ncc": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "foreground_population": 700,
+              "negative_space_population": 165,
+              "polarity_positive": false,
+              "score": 0.0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00444_000075.536.jpg",
+      "source_frame_sha256": "550aec2599df5b42c3204fba5407d6ef49dee2dc87d95282c3b49bb061a03db5",
+      "pts_sec": 75.536003,
+      "split": "original_holdout",
+      "score": 0.9169354711382715,
+      "accepted": true,
+      "prototype_accepted": true,
+      "measurement": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.9169354711382715,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 2975,
+            "current_std": 20.789041444076922,
+            "score": 0.9578923616426362,
+            "reason": "matched"
+          },
+          {
+            "group": 2,
+            "mask_population": 3199,
+            "current_std": 19.283032870487947,
+            "score": 0.9323836718454123,
+            "reason": "matched"
+          },
+          {
+            "group": 3,
+            "mask_population": 3151,
+            "current_std": 17.306640851100102,
+            "score": 0.9452767814140309,
+            "reason": "matched"
+          }
+        ],
+        "presence": true,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "contrast_guard": {
+          "method": "glyph_local_contrast_v1",
+          "score": 0.9169354711382715,
+          "glyphs": [
+            {
+              "glyph_index": 0,
+              "box": [
+                6,
+                7,
+                32,
+                65
+              ],
+              "group_ncc": [
+                0.9924313521296649,
+                0.9942742674171995,
+                0.9953218773041362
+              ],
+              "foreground_population": 578,
+              "negative_space_population": 127,
+              "polarity_positive": true,
+              "score": 0.9924313521296649
+            },
+            {
+              "glyph_index": 1,
+              "box": [
+                33,
+                7,
+                56,
+                65
+              ],
+              "group_ncc": [
+                0.9928456416822237,
+                0.9920801956622121,
+                0.9927353395346031
+              ],
+              "foreground_population": 720,
+              "negative_space_population": 174,
+              "polarity_positive": true,
+              "score": 0.9920801956622121
+            },
+            {
+              "glyph_index": 2,
+              "box": [
+                56,
+                7,
+                88,
+                65
+              ],
+              "group_ncc": [
+                0.9600773201663206
+              ],
+              "foreground_population": 924,
+              "negative_space_population": 49,
+              "polarity_positive": true,
+              "score": 0.9600773201663206
+            },
+            {
+              "glyph_index": 3,
+              "box": [
+                89,
+                7,
+                130,
+                65
+              ],
+              "group_ncc": [
+                0.9169354711382715,
+                0.9769069159371678
+              ],
+              "foreground_population": 1503,
+              "negative_space_population": 94,
+              "polarity_positive": true,
+              "score": 0.9169354711382715
+            },
+            {
+              "glyph_index": 4,
+              "box": [
+                142,
+                7,
+                173,
+                65
+              ],
+              "group_ncc": [
+                0.9814756010031814
+              ],
+              "foreground_population": 893,
+              "negative_space_population": 55,
+              "polarity_positive": true,
+              "score": 0.9814756010031814
+            },
+            {
+              "glyph_index": 5,
+              "box": [
+                174,
+                7,
+                203,
+                65
+              ],
+              "group_ncc": [
+                0.9829149731712292,
+                0.9857220559331891,
+                0.9820610558022123
+              ],
+              "foreground_population": 870,
+              "negative_space_population": 206,
+              "polarity_positive": true,
+              "score": 0.9820610558022123
+            },
+            {
+              "glyph_index": 6,
+              "box": [
+                205,
+                7,
+                228,
+                65
+              ],
+              "group_ncc": [
+                0.9900403758761607,
+                0.9888718394333101,
+                0.9903861323658997
+              ],
+              "foreground_population": 700,
+              "negative_space_population": 165,
+              "polarity_positive": true,
+              "score": 0.9888718394333101
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00454_000075.603.jpg",
+      "source_frame_sha256": "a63d7663e071f237932221ca5f5f952596a4777ebee19ea0263812254fd45542",
+      "pts_sec": 75.602669,
+      "split": "original_holdout",
+      "score": 0.9166158774309658,
+      "accepted": true,
+      "prototype_accepted": true,
+      "measurement": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.9166158774309658,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 2975,
+            "current_std": 20.871104703362807,
+            "score": 0.959873533732795,
+            "reason": "matched"
+          },
+          {
+            "group": 2,
+            "mask_population": 3199,
+            "current_std": 19.348513133740752,
+            "score": 0.9344503389799592,
+            "reason": "matched"
+          },
+          {
+            "group": 3,
+            "mask_population": 3151,
+            "current_std": 17.24864389299628,
+            "score": 0.9496916165091239,
+            "reason": "matched"
+          }
+        ],
+        "presence": true,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "contrast_guard": {
+          "method": "glyph_local_contrast_v1",
+          "score": 0.9166158774309658,
+          "glyphs": [
+            {
+              "glyph_index": 0,
+              "box": [
+                6,
+                7,
+                32,
+                65
+              ],
+              "group_ncc": [
+                0.993336808705159,
+                0.9949601443499416,
+                0.9959213185245203
+              ],
+              "foreground_population": 578,
+              "negative_space_population": 127,
+              "polarity_positive": true,
+              "score": 0.993336808705159
+            },
+            {
+              "glyph_index": 1,
+              "box": [
+                33,
+                7,
+                56,
+                65
+              ],
+              "group_ncc": [
+                0.9926692293201794,
+                0.9910722994401797,
+                0.9924333856399518
+              ],
+              "foreground_population": 720,
+              "negative_space_population": 174,
+              "polarity_positive": true,
+              "score": 0.9910722994401797
+            },
+            {
+              "glyph_index": 2,
+              "box": [
+                56,
+                7,
+                88,
+                65
+              ],
+              "group_ncc": [
+                0.9605050876329649
+              ],
+              "foreground_population": 924,
+              "negative_space_population": 49,
+              "polarity_positive": true,
+              "score": 0.9605050876329649
+            },
+            {
+              "glyph_index": 3,
+              "box": [
+                89,
+                7,
+                130,
+                65
+              ],
+              "group_ncc": [
+                0.9166158774309658,
+                0.9793618800882777
+              ],
+              "foreground_population": 1503,
+              "negative_space_population": 94,
+              "polarity_positive": true,
+              "score": 0.9166158774309658
+            },
+            {
+              "glyph_index": 4,
+              "box": [
+                142,
+                7,
+                173,
+                65
+              ],
+              "group_ncc": [
+                0.9826448052104144
+              ],
+              "foreground_population": 893,
+              "negative_space_population": 55,
+              "polarity_positive": true,
+              "score": 0.9826448052104144
+            },
+            {
+              "glyph_index": 5,
+              "box": [
+                174,
+                7,
+                203,
+                65
+              ],
+              "group_ncc": [
+                0.9857535204931278,
+                0.9881403314713669,
+                0.9853272649909337
+              ],
+              "foreground_population": 870,
+              "negative_space_population": 206,
+              "polarity_positive": true,
+              "score": 0.9853272649909337
+            },
+            {
+              "glyph_index": 6,
+              "box": [
+                205,
+                7,
+                228,
+                65
+              ],
+              "group_ncc": [
+                0.9898556434521731,
+                0.9888397834351901,
+                0.9902783839083121
+              ],
+              "foreground_population": 700,
+              "negative_space_population": 165,
+              "polarity_positive": true,
+              "score": 0.9888397834351901
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00445_000075.619.jpg",
+      "source_frame_sha256": "823e6320bbf400c33e3c64b15cced27cce2d58c5ac0a072a47fb0a207eb2e286",
+      "pts_sec": 75.619336,
+      "split": "original_holdout",
+      "score": 0.9163823074994012,
+      "accepted": true,
+      "prototype_accepted": true,
+      "measurement": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.9163823074994012,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 2975,
+            "current_std": 20.863578933713903,
+            "score": 0.9597638141795661,
+            "reason": "matched"
+          },
+          {
+            "group": 2,
+            "mask_population": 3199,
+            "current_std": 19.28012184226312,
+            "score": 0.933375621859663,
+            "reason": "matched"
+          },
+          {
+            "group": 3,
+            "mask_population": 3151,
+            "current_std": 17.241427844941928,
+            "score": 0.9492570929808758,
+            "reason": "matched"
+          }
+        ],
+        "presence": true,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "contrast_guard": {
+          "method": "glyph_local_contrast_v1",
+          "score": 0.9163823074994012,
+          "glyphs": [
+            {
+              "glyph_index": 0,
+              "box": [
+                6,
+                7,
+                32,
+                65
+              ],
+              "group_ncc": [
+                0.993315072453354,
+                0.9949347839767624,
+                0.9959034480541854
+              ],
+              "foreground_population": 578,
+              "negative_space_population": 127,
+              "polarity_positive": true,
+              "score": 0.993315072453354
+            },
+            {
+              "glyph_index": 1,
+              "box": [
+                33,
+                7,
+                56,
+                65
+              ],
+              "group_ncc": [
+                0.9926692293201794,
+                0.9910722994401797,
+                0.9924333856399518
+              ],
+              "foreground_population": 720,
+              "negative_space_population": 174,
+              "polarity_positive": true,
+              "score": 0.9910722994401797
+            },
+            {
+              "glyph_index": 2,
+              "box": [
+                56,
+                7,
+                88,
+                65
+              ],
+              "group_ncc": [
+                0.9605248194045426
+              ],
+              "foreground_population": 924,
+              "negative_space_population": 49,
+              "polarity_positive": true,
+              "score": 0.9605248194045426
+            },
+            {
+              "glyph_index": 3,
+              "box": [
+                89,
+                7,
+                130,
+                65
+              ],
+              "group_ncc": [
+                0.9163823074994012,
+                0.9774336595260852
+              ],
+              "foreground_population": 1503,
+              "negative_space_population": 94,
+              "polarity_positive": true,
+              "score": 0.9163823074994012
+            },
+            {
+              "glyph_index": 4,
+              "box": [
+                142,
+                7,
+                173,
+                65
+              ],
+              "group_ncc": [
+                0.9826448052104144
+              ],
+              "foreground_population": 893,
+              "negative_space_population": 55,
+              "polarity_positive": true,
+              "score": 0.9826448052104144
+            },
+            {
+              "glyph_index": 5,
+              "box": [
+                174,
+                7,
+                203,
+                65
+              ],
+              "group_ncc": [
+                0.9853532853491618,
+                0.987772969163916,
+                0.9848396402499212
+              ],
+              "foreground_population": 870,
+              "negative_space_population": 206,
+              "polarity_positive": true,
+              "score": 0.9848396402499212
+            },
+            {
+              "glyph_index": 6,
+              "box": [
+                205,
+                7,
+                228,
+                65
+              ],
+              "group_ncc": [
+                0.9899408293861253,
+                0.9887702448241503,
+                0.9901841730455914
+              ],
+              "foreground_population": 700,
+              "negative_space_population": 165,
+              "polarity_positive": true,
+              "score": 0.9887702448241503
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00450_000075.936.jpg",
+      "source_frame_sha256": "b8b367581eabf62d4962105724ae605798b05b4529db9fe25fcc72c3ef7c73a2",
+      "pts_sec": 75.936003,
+      "split": "original_holdout",
+      "score": 0.6437598042691943,
+      "accepted": false,
+      "prototype_accepted": false,
+      "measurement": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.6437598042691943,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 2975,
+            "current_std": 29.061317497266526,
+            "score": 0.6437598042691943,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 3199,
+            "current_std": 35.001862700687035,
+            "score": 0.934018636805303,
+            "reason": "matched"
+          },
+          {
+            "group": 3,
+            "mask_population": 3151,
+            "current_std": 34.56680874907737,
+            "score": 0.9678619175548853,
+            "reason": "matched"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "contrast_guard": {
+          "method": "glyph_local_contrast_v1",
+          "score": 0.8055201520582637,
+          "glyphs": [
+            {
+              "glyph_index": 0,
+              "box": [
+                6,
+                7,
+                32,
+                65
+              ],
+              "group_ncc": [
+                0.8283867743013605,
+                0.8450668012657687,
+                0.8055201520582637
+              ],
+              "foreground_population": 578,
+              "negative_space_population": 127,
+              "polarity_positive": true,
+              "score": 0.8055201520582637
+            },
+            {
+              "glyph_index": 1,
+              "box": [
+                33,
+                7,
+                56,
+                65
+              ],
+              "group_ncc": [
+                0.9880357726678095,
+                0.9687873069422902,
+                0.9823899414195837
+              ],
+              "foreground_population": 720,
+              "negative_space_population": 174,
+              "polarity_positive": true,
+              "score": 0.9687873069422902
+            },
+            {
+              "glyph_index": 2,
+              "box": [
+                56,
+                7,
+                88,
+                65
+              ],
+              "group_ncc": [
+                0.9328913020687228
+              ],
+              "foreground_population": 924,
+              "negative_space_population": 49,
+              "polarity_positive": true,
+              "score": 0.9328913020687228
+            },
+            {
+              "glyph_index": 3,
+              "box": [
+                89,
+                7,
+                130,
+                65
+              ],
+              "group_ncc": [
+                0.9215629559192254,
+                0.9805708871561432
+              ],
+              "foreground_population": 1503,
+              "negative_space_population": 94,
+              "polarity_positive": true,
+              "score": 0.9215629559192254
+            },
+            {
+              "glyph_index": 4,
+              "box": [
+                142,
+                7,
+                173,
+                65
+              ],
+              "group_ncc": [
+                0.981786009015661
+              ],
+              "foreground_population": 893,
+              "negative_space_population": 55,
+              "polarity_positive": true,
+              "score": 0.981786009015661
+            },
+            {
+              "glyph_index": 5,
+              "box": [
+                174,
+                7,
+                203,
+                65
+              ],
+              "group_ncc": [
+                0.9924119286030407,
+                0.9945894638042283,
+                0.9924482653694868
+              ],
+              "foreground_population": 870,
+              "negative_space_population": 206,
+              "polarity_positive": true,
+              "score": 0.9924119286030407
+            },
+            {
+              "glyph_index": 6,
+              "box": [
+                205,
+                7,
+                228,
+                65
+              ],
+              "group_ncc": [
+                0.9967705704442905,
+                0.9968033229241522,
+                0.9971464678032367
+              ],
+              "foreground_population": 700,
+              "negative_space_population": 165,
+              "polarity_positive": true,
+              "score": 0.9967705704442905
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00451_000075.953.jpg",
+      "source_frame_sha256": "e5061e41c86c3d5b8e653950e0341dffac3c39855037dbc4cb0953aa14a47b7b",
+      "pts_sec": 75.952669,
+      "split": "original_holdout",
+      "score": 0.6442333835248826,
+      "accepted": false,
+      "prototype_accepted": false,
+      "measurement": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.6442333835248826,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 2975,
+            "current_std": 28.971239689691313,
+            "score": 0.6442333835248826,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 3199,
+            "current_std": 34.80071009009777,
+            "score": 0.9315837084725354,
+            "reason": "matched"
+          },
+          {
+            "group": 3,
+            "mask_population": 3151,
+            "current_std": 35.041255972156506,
+            "score": 0.9696833701521598,
+            "reason": "matched"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "contrast_guard": {
+          "method": "glyph_local_contrast_v1",
+          "score": 0.7745485781819444,
+          "glyphs": [
+            {
+              "glyph_index": 0,
+              "box": [
+                6,
+                7,
+                32,
+                65
+              ],
+              "group_ncc": [
+                0.8072712044771043,
+                0.8255188622284609,
+                0.7745485781819444
+              ],
+              "foreground_population": 578,
+              "negative_space_population": 127,
+              "polarity_positive": true,
+              "score": 0.7745485781819444
+            },
+            {
+              "glyph_index": 1,
+              "box": [
+                33,
+                7,
+                56,
+                65
+              ],
+              "group_ncc": [
+                0.9879017168530057,
+                0.9694172256174912,
+                0.9830580684640656
+              ],
+              "foreground_population": 720,
+              "negative_space_population": 174,
+              "polarity_positive": true,
+              "score": 0.9694172256174912
+            },
+            {
+              "glyph_index": 2,
+              "box": [
+                56,
+                7,
+                88,
+                65
+              ],
+              "group_ncc": [
+                0.9489697314258815
+              ],
+              "foreground_population": 924,
+              "negative_space_population": 49,
+              "polarity_positive": true,
+              "score": 0.9489697314258815
+            },
+            {
+              "glyph_index": 3,
+              "box": [
+                89,
+                7,
+                130,
+                65
+              ],
+              "group_ncc": [
+                0.9186864706631116,
+                0.9803409266583054
+              ],
+              "foreground_population": 1503,
+              "negative_space_population": 94,
+              "polarity_positive": true,
+              "score": 0.9186864706631116
+            },
+            {
+              "glyph_index": 4,
+              "box": [
+                142,
+                7,
+                173,
+                65
+              ],
+              "group_ncc": [
+                0.9817788083774275
+              ],
+              "foreground_population": 893,
+              "negative_space_population": 55,
+              "polarity_positive": true,
+              "score": 0.9817788083774275
+            },
+            {
+              "glyph_index": 5,
+              "box": [
+                174,
+                7,
+                203,
+                65
+              ],
+              "group_ncc": [
+                0.9930000554571444,
+                0.9954992481182245,
+                0.9942823515447474
+              ],
+              "foreground_population": 870,
+              "negative_space_population": 206,
+              "polarity_positive": true,
+              "score": 0.9930000554571444
+            },
+            {
+              "glyph_index": 6,
+              "box": [
+                205,
+                7,
+                228,
+                65
+              ],
+              "group_ncc": [
+                0.996728270956372,
+                0.9967660583670441,
+                0.9970948751292787
+              ],
+              "foreground_population": 700,
+              "negative_space_population": 165,
+              "polarity_positive": true,
+              "score": 0.996728270956372
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00456_000076.003.jpg",
+      "source_frame_sha256": "f2c0c99fc72d4151e602dd533a36c810d12dac475b937e29d1d91fd6354f9a7f",
+      "pts_sec": 76.002669,
+      "split": "original_holdout",
+      "score": 0.6974799259847269,
+      "accepted": false,
+      "prototype_accepted": false,
+      "measurement": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.6974799259847269,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 2975,
+            "current_std": 27.320859834671815,
+            "score": 0.6974799259847269,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 3199,
+            "current_std": 34.841610739025136,
+            "score": 0.929524003321089,
+            "reason": "matched"
+          },
+          {
+            "group": 3,
+            "mask_population": 3151,
+            "current_std": 40.448307665657815,
+            "score": 0.976832177637347,
+            "reason": "matched"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "contrast_guard": {
+          "method": "glyph_local_contrast_v1",
+          "score": 0.8370429811764709,
+          "glyphs": [
+            {
+              "glyph_index": 0,
+              "box": [
+                6,
+                7,
+                32,
+                65
+              ],
+              "group_ncc": [
+                0.8370429811764709,
+                0.881193254515697,
+                0.869472878742893
+              ],
+              "foreground_population": 578,
+              "negative_space_population": 127,
+              "polarity_positive": true,
+              "score": 0.8370429811764709
+            },
+            {
+              "glyph_index": 1,
+              "box": [
+                33,
+                7,
+                56,
+                65
+              ],
+              "group_ncc": [
+                0.9772937286593781,
+                0.9794667116454399,
+                0.9860963135108994
+              ],
+              "foreground_population": 720,
+              "negative_space_population": 174,
+              "polarity_positive": true,
+              "score": 0.9772937286593781
+            },
+            {
+              "glyph_index": 2,
+              "box": [
+                56,
+                7,
+                88,
+                65
+              ],
+              "group_ncc": [
+                0.9450572154396382
+              ],
+              "foreground_population": 924,
+              "negative_space_population": 49,
+              "polarity_positive": true,
+              "score": 0.9450572154396382
+            },
+            {
+              "glyph_index": 3,
+              "box": [
+                89,
+                7,
+                130,
+                65
+              ],
+              "group_ncc": [
+                0.9159540980761874,
+                0.9815520466630324
+              ],
+              "foreground_population": 1503,
+              "negative_space_population": 94,
+              "polarity_positive": true,
+              "score": 0.9159540980761874
+            },
+            {
+              "glyph_index": 4,
+              "box": [
+                142,
+                7,
+                173,
+                65
+              ],
+              "group_ncc": [
+                0.984587601833606
+              ],
+              "foreground_population": 893,
+              "negative_space_population": 55,
+              "polarity_positive": true,
+              "score": 0.984587601833606
+            },
+            {
+              "glyph_index": 5,
+              "box": [
+                174,
+                7,
+                203,
+                65
+              ],
+              "group_ncc": [
+                0.9945107553235102,
+                0.9980836061485621,
+                0.9968829708720848
+              ],
+              "foreground_population": 870,
+              "negative_space_population": 206,
+              "polarity_positive": true,
+              "score": 0.9945107553235102
+            },
+            {
+              "glyph_index": 6,
+              "box": [
+                205,
+                7,
+                228,
+                65
+              ],
+              "group_ncc": [
+                0.9985954039459256,
+                0.9986112797317095,
+                0.9987107510341705
+              ],
+              "foreground_population": 700,
+              "negative_space_population": 165,
+              "polarity_positive": true,
+              "score": 0.9985954039459256
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00452_000076.019.jpg",
+      "source_frame_sha256": "6fd33db0a3e792e9e85777cf1478fb6d08526afd050f8cff9ccda78f468d5456",
+      "pts_sec": 76.019336,
+      "split": "original_holdout",
+      "score": 0.7266777172387492,
+      "accepted": false,
+      "prototype_accepted": false,
+      "measurement": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.7266777172387492,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 2975,
+            "current_std": 28.650029488712867,
+            "score": 0.7525919017468647,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 3199,
+            "current_std": 35.256494101192494,
+            "score": 0.932451159944685,
+            "reason": "matched"
+          },
+          {
+            "group": 3,
+            "mask_population": 3151,
+            "current_std": 41.63926381976886,
+            "score": 0.9812822662385328,
+            "reason": "matched"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "contrast_guard": {
+          "method": "glyph_local_contrast_v1",
+          "score": 0.7266777172387492,
+          "glyphs": [
+            {
+              "glyph_index": 0,
+              "box": [
+                6,
+                7,
+                32,
+                65
+              ],
+              "group_ncc": [
+                0.7266777172387492,
+                0.7770790302455673,
+                0.7743524897674987
+              ],
+              "foreground_population": 578,
+              "negative_space_population": 127,
+              "polarity_positive": true,
+              "score": 0.7266777172387492
+            },
+            {
+              "glyph_index": 1,
+              "box": [
+                33,
+                7,
+                56,
+                65
+              ],
+              "group_ncc": [
+                0.9900020154191135,
+                0.9891173784717798,
+                0.990139777672786
+              ],
+              "foreground_population": 720,
+              "negative_space_population": 174,
+              "polarity_positive": true,
+              "score": 0.9891173784717798
+            },
+            {
+              "glyph_index": 2,
+              "box": [
+                56,
+                7,
+                88,
+                65
+              ],
+              "group_ncc": [
+                0.9447581627246994
+              ],
+              "foreground_population": 924,
+              "negative_space_population": 49,
+              "polarity_positive": true,
+              "score": 0.9447581627246994
+            },
+            {
+              "glyph_index": 3,
+              "box": [
+                89,
+                7,
+                130,
+                65
+              ],
+              "group_ncc": [
+                0.91673344416394,
+                0.9816644503583045
+              ],
+              "foreground_population": 1503,
+              "negative_space_population": 94,
+              "polarity_positive": true,
+              "score": 0.91673344416394
+            },
+            {
+              "glyph_index": 4,
+              "box": [
+                142,
+                7,
+                173,
+                65
+              ],
+              "group_ncc": [
+                0.9852283517565529
+              ],
+              "foreground_population": 893,
+              "negative_space_population": 55,
+              "polarity_positive": true,
+              "score": 0.9852283517565529
+            },
+            {
+              "glyph_index": 5,
+              "box": [
+                174,
+                7,
+                203,
+                65
+              ],
+              "group_ncc": [
+                0.9973539424430917,
+                0.9984437512615663,
+                0.9968872358333349
+              ],
+              "foreground_population": 870,
+              "negative_space_population": 206,
+              "polarity_positive": true,
+              "score": 0.9968872358333349
+            },
+            {
+              "glyph_index": 6,
+              "box": [
+                205,
+                7,
+                228,
+                65
+              ],
+              "group_ncc": [
+                0.998603456307692,
+                0.9986141568708589,
+                0.9987147512118614
+              ],
+              "foreground_population": 700,
+              "negative_space_population": 165,
+              "polarity_positive": true,
+              "score": 0.998603456307692
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00453_000076.036.jpg",
+      "source_frame_sha256": "f70af92cfcaeb58e331d3b2d337c455b9967fa05c4d7bc25b024b554b456192d",
+      "pts_sec": 76.036003,
+      "split": "original_holdout",
+      "score": 0.7917323650141935,
+      "accepted": false,
+      "prototype_accepted": false,
+      "measurement": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.7917323650141935,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 2975,
+            "current_std": 31.228854012874347,
+            "score": 0.8450215626829674,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 3199,
+            "current_std": 35.5795993746421,
+            "score": 0.9323453185078503,
+            "reason": "matched"
+          },
+          {
+            "group": 3,
+            "mask_population": 3151,
+            "current_std": 42.83082590428598,
+            "score": 0.9817977248888937,
+            "reason": "matched"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "contrast_guard": {
+          "method": "glyph_local_contrast_v1",
+          "score": 0.7917323650141935,
+          "glyphs": [
+            {
+              "glyph_index": 0,
+              "box": [
+                6,
+                7,
+                32,
+                65
+              ],
+              "group_ncc": [
+                0.7917323650141935,
+                0.9135802335640462,
+                0.9550381740228958
+              ],
+              "foreground_population": 578,
+              "negative_space_population": 127,
+              "polarity_positive": true,
+              "score": 0.7917323650141935
+            },
+            {
+              "glyph_index": 1,
+              "box": [
+                33,
+                7,
+                56,
+                65
+              ],
+              "group_ncc": [
+                0.9888626014444292,
+                0.9878405846659205,
+                0.9888756758178033
+              ],
+              "foreground_population": 720,
+              "negative_space_population": 174,
+              "polarity_positive": true,
+              "score": 0.9878405846659205
+            },
+            {
+              "glyph_index": 2,
+              "box": [
+                56,
+                7,
+                88,
+                65
+              ],
+              "group_ncc": [
+                0.9451677915074064
+              ],
+              "foreground_population": 924,
+              "negative_space_population": 49,
+              "polarity_positive": true,
+              "score": 0.9451677915074064
+            },
+            {
+              "glyph_index": 3,
+              "box": [
+                89,
+                7,
+                130,
+                65
+              ],
+              "group_ncc": [
+                0.9131626140939928,
+                0.9822598539865398
+              ],
+              "foreground_population": 1503,
+              "negative_space_population": 94,
+              "polarity_positive": true,
+              "score": 0.9131626140939928
+            },
+            {
+              "glyph_index": 4,
+              "box": [
+                142,
+                7,
+                173,
+                65
+              ],
+              "group_ncc": [
+                0.9882869067403688
+              ],
+              "foreground_population": 893,
+              "negative_space_population": 55,
+              "polarity_positive": true,
+              "score": 0.9882869067403688
+            },
+            {
+              "glyph_index": 5,
+              "box": [
+                174,
+                7,
+                203,
+                65
+              ],
+              "group_ncc": [
+                0.9970002091466692,
+                0.9981721747173065,
+                0.9978884071842968
+              ],
+              "foreground_population": 870,
+              "negative_space_population": 206,
+              "polarity_positive": true,
+              "score": 0.9970002091466692
+            },
+            {
+              "glyph_index": 6,
+              "box": [
+                205,
+                7,
+                228,
+                65
+              ],
+              "group_ncc": [
+                0.9984321634743301,
+                0.9983865752053079,
+                0.9985394048307463
+              ],
+              "foreground_population": 700,
+              "negative_space_population": 165,
+              "polarity_positive": true,
+              "score": 0.9983865752053079
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00454_000076.103.jpg",
+      "source_frame_sha256": "4a3fc8664cfb41bd3e528577d39f25b7ebf273eeb1051c5f10d02313071082d8",
+      "pts_sec": 76.102669,
+      "split": "original_holdout",
+      "score": 0.8730502404800042,
+      "accepted": false,
+      "prototype_accepted": false,
+      "measurement": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.8730502404800042,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 2975,
+            "current_std": 39.885881777540675,
+            "score": 0.8730502404800042,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 3199,
+            "current_std": 46.001012845801014,
+            "score": 0.9387652415335767,
+            "reason": "matched"
+          },
+          {
+            "group": 3,
+            "mask_population": 3151,
+            "current_std": 45.339661624620696,
+            "score": 0.9794261992506469,
+            "reason": "matched"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "contrast_guard": {
+          "method": "glyph_local_contrast_v1",
+          "score": 0.9361480849880519,
+          "glyphs": [
+            {
+              "glyph_index": 0,
+              "box": [
+                6,
+                7,
+                32,
+                65
+              ],
+              "group_ncc": [
+                0.9915142688035689,
+                0.9903968820819711,
+                0.9836925914594188
+              ],
+              "foreground_population": 578,
+              "negative_space_population": 127,
+              "polarity_positive": true,
+              "score": 0.9836925914594188
+            },
+            {
+              "glyph_index": 1,
+              "box": [
+                33,
+                7,
+                56,
+                65
+              ],
+              "group_ncc": [
+                0.9864112666277975,
+                0.9865919460866427,
+                0.9914728118716444
+              ],
+              "foreground_population": 720,
+              "negative_space_population": 174,
+              "polarity_positive": true,
+              "score": 0.9864112666277975
+            },
+            {
+              "glyph_index": 2,
+              "box": [
+                56,
+                7,
+                88,
+                65
+              ],
+              "group_ncc": [
+                0.9549919423629655
+              ],
+              "foreground_population": 924,
+              "negative_space_population": 49,
+              "polarity_positive": true,
+              "score": 0.9549919423629655
+            },
+            {
+              "glyph_index": 3,
+              "box": [
+                89,
+                7,
+                130,
+                65
+              ],
+              "group_ncc": [
+                0.9361480849880519,
+                0.9903435856010662
+              ],
+              "foreground_population": 1503,
+              "negative_space_population": 94,
+              "polarity_positive": true,
+              "score": 0.9361480849880519
+            },
+            {
+              "glyph_index": 4,
+              "box": [
+                142,
+                7,
+                173,
+                65
+              ],
+              "group_ncc": [
+                0.9883666665329895
+              ],
+              "foreground_population": 893,
+              "negative_space_population": 55,
+              "polarity_positive": true,
+              "score": 0.9883666665329895
+            },
+            {
+              "glyph_index": 5,
+              "box": [
+                174,
+                7,
+                203,
+                65
+              ],
+              "group_ncc": [
+                0.9974876570640533,
+                0.9981742056372597,
+                0.9977185557852697
+              ],
+              "foreground_population": 870,
+              "negative_space_population": 206,
+              "polarity_positive": true,
+              "score": 0.9974876570640533
+            },
+            {
+              "glyph_index": 6,
+              "box": [
+                205,
+                7,
+                228,
+                65
+              ],
+              "group_ncc": [
+                0.9987213634346368,
+                0.9984004825225885,
+                0.9986733733704176
+              ],
+              "foreground_population": 700,
+              "negative_space_population": 165,
+              "polarity_positive": true,
+              "score": 0.9984004825225885
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00455_000076.119.jpg",
+      "source_frame_sha256": "c7438dfbaa7b2fec24c022d724022081ae7082bc59b7fb94080c5360bd458113",
+      "pts_sec": 76.119336,
+      "split": "original_holdout",
+      "score": 0.871065402515599,
+      "accepted": false,
+      "prototype_accepted": false,
+      "measurement": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.871065402515599,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 2975,
+            "current_std": 39.3684550137029,
+            "score": 0.871065402515599,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 3199,
+            "current_std": 46.31259545866877,
+            "score": 0.9398462798705038,
+            "reason": "matched"
+          },
+          {
+            "group": 3,
+            "mask_population": 3151,
+            "current_std": 45.378190718175496,
+            "score": 0.9792550771450983,
+            "reason": "matched"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "contrast_guard": {
+          "method": "glyph_local_contrast_v1",
+          "score": 0.9363206983933479,
+          "glyphs": [
+            {
+              "glyph_index": 0,
+              "box": [
+                6,
+                7,
+                32,
+                65
+              ],
+              "group_ncc": [
+                0.9916684577455727,
+                0.9907413499701847,
+                0.9869013180110083
+              ],
+              "foreground_population": 578,
+              "negative_space_population": 127,
+              "polarity_positive": true,
+              "score": 0.9869013180110083
+            },
+            {
+              "glyph_index": 1,
+              "box": [
+                33,
+                7,
+                56,
+                65
+              ],
+              "group_ncc": [
+                0.9863377927597556,
+                0.9865940503437222,
+                0.9897957880895892
+              ],
+              "foreground_population": 720,
+              "negative_space_population": 174,
+              "polarity_positive": true,
+              "score": 0.9863377927597556
+            },
+            {
+              "glyph_index": 2,
+              "box": [
+                56,
+                7,
+                88,
+                65
+              ],
+              "group_ncc": [
+                0.9555966962545087
+              ],
+              "foreground_population": 924,
+              "negative_space_population": 49,
+              "polarity_positive": true,
+              "score": 0.9555966962545087
+            },
+            {
+              "glyph_index": 3,
+              "box": [
+                89,
+                7,
+                130,
+                65
+              ],
+              "group_ncc": [
+                0.9363206983933479,
+                0.990462218019082
+              ],
+              "foreground_population": 1503,
+              "negative_space_population": 94,
+              "polarity_positive": true,
+              "score": 0.9363206983933479
+            },
+            {
+              "glyph_index": 4,
+              "box": [
+                142,
+                7,
+                173,
+                65
+              ],
+              "group_ncc": [
+                0.988404733501124
+              ],
+              "foreground_population": 893,
+              "negative_space_population": 55,
+              "polarity_positive": true,
+              "score": 0.988404733501124
+            },
+            {
+              "glyph_index": 5,
+              "box": [
+                174,
+                7,
+                203,
+                65
+              ],
+              "group_ncc": [
+                0.997753266958957,
+                0.9981834002135958,
+                0.9977317639615992
+              ],
+              "foreground_population": 870,
+              "negative_space_population": 206,
+              "polarity_positive": true,
+              "score": 0.9977317639615992
+            },
+            {
+              "glyph_index": 6,
+              "box": [
+                205,
+                7,
+                228,
+                65
+              ],
+              "group_ncc": [
+                0.998718981083201,
+                0.9983962821235411,
+                0.9986720242705284
+              ],
+              "foreground_population": 700,
+              "negative_space_population": 165,
+              "polarity_positive": true,
+              "score": 0.9983962821235411
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-000/frame_00041_000003.586.jpg",
+      "source_frame_sha256": "e062e94fba7749b0a7b774a19c193df4e78aa7b2d8e40f605acbd264db7344e6",
+      "pts_sec": 3.586003,
+      "split": "original_negative",
+      "score": 0.0,
+      "accepted": false,
+      "prototype_accepted": false,
+      "measurement": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.0,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 2975,
+            "current_std": 38.798737333462256,
+            "score": 0.0,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 3199,
+            "current_std": 40.128960949004274,
+            "score": 0.07113030453158584,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 3,
+            "mask_population": 3151,
+            "current_std": 34.14128175288332,
+            "score": 0.027278610963881032,
+            "reason": "below_threshold"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "contrast_guard": {
+          "method": "glyph_local_contrast_v1",
+          "score": 0.0,
+          "glyphs": [
+            {
+              "glyph_index": 0,
+              "box": [
+                6,
+                7,
+                32,
+                65
+              ],
+              "group_ncc": [
+                0.016401367827464125,
+                0.0,
+                0.0
+              ],
+              "foreground_population": 578,
+              "negative_space_population": 127,
+              "polarity_positive": false,
+              "score": 0.0
+            },
+            {
+              "glyph_index": 1,
+              "box": [
+                33,
+                7,
+                56,
+                65
+              ],
+              "group_ncc": [
+                0.16957237986495957,
+                0.13843976564238392,
+                0.0
+              ],
+              "foreground_population": 720,
+              "negative_space_population": 174,
+              "polarity_positive": true,
+              "score": 0.0
+            },
+            {
+              "glyph_index": 2,
+              "box": [
+                56,
+                7,
+                88,
+                65
+              ],
+              "group_ncc": [
+                0.04620926139531579
+              ],
+              "foreground_population": 924,
+              "negative_space_population": 49,
+              "polarity_positive": true,
+              "score": 0.04620926139531579
+            },
+            {
+              "glyph_index": 3,
+              "box": [
+                89,
+                7,
+                130,
+                65
+              ],
+              "group_ncc": [
+                0.03160089920125675,
+                0.05976760322023458
+              ],
+              "foreground_population": 1503,
+              "negative_space_population": 94,
+              "polarity_positive": false,
+              "score": 0.0
+            },
+            {
+              "glyph_index": 4,
+              "box": [
+                142,
+                7,
+                173,
+                65
+              ],
+              "group_ncc": [
+                0.24261365172359278
+              ],
+              "foreground_population": 893,
+              "negative_space_population": 55,
+              "polarity_positive": true,
+              "score": 0.24261365172359278
+            },
+            {
+              "glyph_index": 5,
+              "box": [
+                174,
+                7,
+                203,
+                65
+              ],
+              "group_ncc": [
+                0.0,
+                0.07974168887758303,
+                0.06341296761157257
+              ],
+              "foreground_population": 870,
+              "negative_space_population": 206,
+              "polarity_positive": false,
+              "score": 0.0
+            },
+            {
+              "glyph_index": 6,
+              "box": [
+                205,
+                7,
+                228,
+                65
+              ],
+              "group_ncc": [
+                0.0,
+                0.0,
+                0.10619359329971044
+              ],
+              "foreground_population": 700,
+              "negative_space_population": 165,
+              "polarity_positive": false,
+              "score": 0.0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-000/frame_00088_000005.886.jpg",
+      "source_frame_sha256": "3cc5a947a2f4e57ed3a97f0bfecedf8432de236374725d2d9e6826b0a87d0fdd",
+      "pts_sec": 5.886003,
+      "split": "original_negative",
+      "score": 0.0,
+      "accepted": false,
+      "prototype_accepted": false,
+      "measurement": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.0,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 2975,
+            "current_std": 20.830700656780884,
+            "score": 0.14321703245071016,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 3199,
+            "current_std": 26.907538735987693,
+            "score": 0.18399191594666975,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 3,
+            "mask_population": 3151,
+            "current_std": 18.540763810410905,
+            "score": 0.1160456371563745,
+            "reason": "below_threshold"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "contrast_guard": {
+          "method": "glyph_local_contrast_v1",
+          "score": 0.0,
+          "glyphs": [
+            {
+              "glyph_index": 0,
+              "box": [
+                6,
+                7,
+                32,
+                65
+              ],
+              "group_ncc": [
+                0.015324352718959234,
+                0.017306210172960333,
+                0.035266520670775625
+              ],
+              "foreground_population": 578,
+              "negative_space_population": 127,
+              "polarity_positive": true,
+              "score": 0.015324352718959234
+            },
+            {
+              "glyph_index": 1,
+              "box": [
+                33,
+                7,
+                56,
+                65
+              ],
+              "group_ncc": [
+                0.08556571008296637,
+                0.0,
+                0.0
+              ],
+              "foreground_population": 720,
+              "negative_space_population": 174,
+              "polarity_positive": false,
+              "score": 0.0
+            },
+            {
+              "glyph_index": 2,
+              "box": [
+                56,
+                7,
+                88,
+                65
+              ],
+              "group_ncc": [
+                0.23419478515351638
+              ],
+              "foreground_population": 924,
+              "negative_space_population": 49,
+              "polarity_positive": true,
+              "score": 0.23419478515351638
+            },
+            {
+              "glyph_index": 3,
+              "box": [
+                89,
+                7,
+                130,
+                65
+              ],
+              "group_ncc": [
+                0.07043213264175753,
+                0.17943922483990923
+              ],
+              "foreground_population": 1503,
+              "negative_space_population": 94,
+              "polarity_positive": true,
+              "score": 0.07043213264175753
+            },
+            {
+              "glyph_index": 4,
+              "box": [
+                142,
+                7,
+                173,
+                65
+              ],
+              "group_ncc": [
+                0.17538843049297181
+              ],
+              "foreground_population": 893,
+              "negative_space_population": 55,
+              "polarity_positive": true,
+              "score": 0.17538843049297181
+            },
+            {
+              "glyph_index": 5,
+              "box": [
+                174,
+                7,
+                203,
+                65
+              ],
+              "group_ncc": [
+                0.0,
+                0.04728247395891531,
+                0.19480729961630258
+              ],
+              "foreground_population": 870,
+              "negative_space_population": 206,
+              "polarity_positive": true,
+              "score": 0.0
+            },
+            {
+              "glyph_index": 6,
+              "box": [
+                205,
+                7,
+                228,
+                65
+              ],
+              "group_ncc": [
+                0.0,
+                0.14122947737769043,
+                0.48591494471657865
+              ],
+              "foreground_population": 700,
+              "negative_space_population": 165,
+              "polarity_positive": true,
+              "score": 0.0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source_path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-005/frame_00176_000112.269.jpg",
+      "source_frame_sha256": "d328bfa854351ba690cda57286e75499b04598936456b3411fa3a17b1f361927",
+      "pts_sec": 112.269336,
+      "split": "original_negative",
+      "score": 0.0,
+      "accepted": false,
+      "prototype_accepted": false,
+      "measurement": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.0,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 2975,
+            "current_std": 27.486809843508723,
+            "score": 0.09247940926522151,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 3199,
+            "current_std": 34.444490539806985,
+            "score": 0.082299992141361,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 3,
+            "mask_population": 3151,
+            "current_std": 16.258432307840486,
+            "score": 0.0,
+            "reason": "below_threshold"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "contrast_guard": {
+          "method": "glyph_local_contrast_v1",
+          "score": 0.0,
+          "glyphs": [
+            {
+              "glyph_index": 0,
+              "box": [
+                6,
+                7,
+                32,
+                65
+              ],
+              "group_ncc": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "foreground_population": 578,
+              "negative_space_population": 127,
+              "polarity_positive": true,
+              "score": 0.0
+            },
+            {
+              "glyph_index": 1,
+              "box": [
+                33,
+                7,
+                56,
+                65
+              ],
+              "group_ncc": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "foreground_population": 720,
+              "negative_space_population": 174,
+              "polarity_positive": true,
+              "score": 0.0
+            },
+            {
+              "glyph_index": 2,
+              "box": [
+                56,
+                7,
+                88,
+                65
+              ],
+              "group_ncc": [
+                0.1853475547568766
+              ],
+              "foreground_population": 924,
+              "negative_space_population": 49,
+              "polarity_positive": true,
+              "score": 0.1853475547568766
+            },
+            {
+              "glyph_index": 3,
+              "box": [
+                89,
+                7,
+                130,
+                65
+              ],
+              "group_ncc": [
+                0.0,
+                0.29496649547545933
+              ],
+              "foreground_population": 1503,
+              "negative_space_population": 94,
+              "polarity_positive": true,
+              "score": 0.0
+            },
+            {
+              "glyph_index": 4,
+              "box": [
+                142,
+                7,
+                173,
+                65
+              ],
+              "group_ncc": [
+                0.0
+              ],
+              "foreground_population": 893,
+              "negative_space_population": 55,
+              "polarity_positive": false,
+              "score": 0.0
+            },
+            {
+              "glyph_index": 5,
+              "box": [
+                174,
+                7,
+                203,
+                65
+              ],
+              "group_ncc": [
+                0.0,
+                0.0,
+                0.17072383150246823
+              ],
+              "foreground_population": 870,
+              "negative_space_population": 206,
+              "polarity_positive": false,
+              "score": 0.0
+            },
+            {
+              "glyph_index": 6,
+              "box": [
+                205,
+                7,
+                228,
+                65
+              ],
+              "group_ncc": [
+                0.0,
+                0.0,
+                0.01282838959300516
+              ],
+              "foreground_population": 700,
+              "negative_space_population": 165,
+              "polarity_positive": false,
+              "score": 0.0
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "control": {
+    "original_word_ncc": 0.9276412717996171,
+    "guarded_score": 0.6706617424840697,
+    "guarded_measurement": {
+      "matcher": "semantic_text_ncc_v1",
+      "threshold": 0.9,
+      "score": 0.6706617424840697,
+      "groups": [
+        {
+          "group": 1,
+          "mask_population": 2975,
+          "current_std": 20.654882214885255,
+          "score": 0.9588974865669149,
+          "reason": "matched"
+        },
+        {
+          "group": 2,
+          "mask_population": 3199,
+          "current_std": 19.135618253078317,
+          "score": 0.9276412717996171,
+          "reason": "matched"
+        },
+        {
+          "group": 3,
+          "mask_population": 3151,
+          "current_std": 17.247075635417495,
+          "score": 0.932081848367872,
+          "reason": "matched"
+        }
+      ],
+      "presence": null,
+      "absence_checked": false,
+      "runtime_transition_authorized": false,
+      "contrast_guard": {
+        "method": "glyph_local_contrast_v1",
+        "score": 0.6706617424840697,
+        "glyphs": [
+          {
+            "glyph_index": 0,
+            "box": [
+              6,
+              7,
+              32,
+              65
+            ],
+            "group_ncc": [
+              0.9913599817357549,
+              0.9926429438681971,
+              0.9936040340403222
+            ],
+            "foreground_population": 578,
+            "negative_space_population": 127,
+            "polarity_positive": true,
+            "score": 0.9913599817357549
+          },
+          {
+            "glyph_index": 1,
+            "box": [
+              33,
+              7,
+              56,
+              65
+            ],
+            "group_ncc": [
+              0.9924600326748251,
+              0.9916162046684218,
+              0.9923024313061101
+            ],
+            "foreground_population": 720,
+            "negative_space_population": 174,
+            "polarity_positive": true,
+            "score": 0.9916162046684218
+          },
+          {
+            "glyph_index": 2,
+            "box": [
+              56,
+              7,
+              88,
+              65
+            ],
+            "group_ncc": [
+              0.9632756125617581
+            ],
+            "foreground_population": 924,
+            "negative_space_population": 49,
+            "polarity_positive": true,
+            "score": 0.9632756125617581
+          },
+          {
+            "glyph_index": 3,
+            "box": [
+              89,
+              7,
+              130,
+              65
+            ],
+            "group_ncc": [
+              0.9187958450355379,
+              0.9755871486040689
+            ],
+            "foreground_population": 1503,
+            "negative_space_population": 94,
+            "polarity_positive": true,
+            "score": 0.9187958450355379
+          },
+          {
+            "glyph_index": 4,
+            "box": [
+              142,
+              7,
+              173,
+              65
+            ],
+            "group_ncc": [
+              0.9799822620589601
+            ],
+            "foreground_population": 893,
+            "negative_space_population": 55,
+            "polarity_positive": true,
+            "score": 0.9799822620589601
+          },
+          {
+            "glyph_index": 5,
+            "box": [
+              174,
+              7,
+              203,
+              65
+            ],
+            "group_ncc": [
+              0.981589150690547,
+              0.6706617424840697,
+              0.9707453491737867
+            ],
+            "foreground_population": 870,
+            "negative_space_population": 206,
+            "polarity_positive": true,
+            "score": 0.6706617424840697
+          },
+          {
+            "glyph_index": 6,
+            "box": [
+              205,
+              7,
+              228,
+              65
+            ],
+            "group_ncc": [
+              0.9864524200953225,
+              0.9796346479024448,
+              0.9840075657215933
+            ],
+            "foreground_population": 700,
+            "negative_space_population": 165,
+            "polarity_positive": true,
+            "score": 0.9796346479024448
+          }
+        ]
+      }
+    },
+    "kind": "Synthetic source-derived39white added pixels; not a natural negative or exact game-font G"
+  },
+  "input_sha256": {
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/score-rowcontrast-late-result-diagnostic.templates.json": "8f0f0edf31972fc11d8b2397b545afb51016efafa4b5b1fecf522f21a45cd797",
+    "outputs/recognition-investigation/result-local-contrast-training-20261013/holdout/result.json": "013aa6aa346cb538693a57836670fb37d690fc1f89debc52c5b326ce73acefb9",
+    "outputs/recognition-investigation/result-local-contrast-training-20261013/additional/result.json": "15f5d602df9325a2ce060d4178829da00fe292964bbb3702f252a1a1eeb5aa55",
+    "outputs/recognition-investigation/result-local-contrast-training-20261013/additional-training-selection.json": "8a5886a568aeb4cc3526a411277f2989de8b89b44f7d2d015d644c4885ec4734",
+    "outputs/recognition-investigation/result-glyph-cells-20261013/native_training_1.png": "5e6fbcbdaf2de83b52b191e51b36beee14869557eab0ad414a781391c2a7cabe",
+    "outputs/recognition-investigation/result-glyph-cells-20261013/native_training_2.png": "e9f06a7c7b1625fe0fa5933d849cf0f4cbc0758014e5f010ff90fb0b4d60210d",
+    "outputs/recognition-investigation/result-glyph-cells-20261013/native_training_3.png": "de213b6de38e6278fb51d7412ba20e9d04e06dca35abb1944ea440c435a65c22",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00443_000075.453.jpg": "1aa7b3b43954c4ff3ed3de0c7fafb0afe8713b7f32db79725bf85e34841ad65c",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00453_000075.503.jpg": "d95891af4dd55a9b1d852d110799ea640ff32bf31081f458e2151f1a2c562b4f",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00446_000075.703.jpg": "3eac39a81e8f000cd457c69ecd3a913f5d272cc586ee8140261a2dd3e9c4ec92",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00447_000075.786.jpg": "d2bd574f87098182b90271c651d2e00798990a0e7f6e840b02adaaf400e2142c",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00448_000075.853.jpg": "389fb76c0cec96f9a0a1b2299bf094f78453d252f43b0d31468e90853c6bd88d",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00449_000075.869.jpg": "18497d2db1efbe5693b8415a76b3c58fcbe8743972db35d57914449cf92a475b",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00456_000076.186.jpg": "ad85f1a2d6dbf6292d454eee5d2add4fb45ed0a933c6341fdf32d836c3a48872",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00457_000076.203.jpg": "e007195aef9c868829f1068b125ca311d69547364f6617fc5c5d5c64c90749cb",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00459_000076.286.jpg": "7ae934b44625e5ad49aa50a7e60daa4d6df8b8bbc1a0dcb3d474fcc76147ca50",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00460_000076.353.jpg": "ca1661ff359795d59e927cd4fa6a8e017eda853caba6e029a74409a297565d37",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00461_000076.369.jpg": "1bd71d2ccab52b75a83c180bb26313838c1e8dbfe30b2f0e2e6f387809e5adf1",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/result-local-contrast-production-20261013/execution-current.json": "63c5339f58734412f3f9ae63940dfa28ac7c878bae6df3289b279e64074852d6",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00451_000075.203.jpg": "f43785b1bb02626de3d43daf87d20590f9fd72eb16258b633dcef8da4d59468d",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00444_000075.536.jpg": "550aec2599df5b42c3204fba5407d6ef49dee2dc87d95282c3b49bb061a03db5",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00454_000075.603.jpg": "a63d7663e071f237932221ca5f5f952596a4777ebee19ea0263812254fd45542",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00445_000075.619.jpg": "823e6320bbf400c33e3c64b15cced27cce2d58c5ac0a072a47fb0a207eb2e286",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00450_000075.936.jpg": "b8b367581eabf62d4962105724ae605798b05b4529db9fe25fcc72c3ef7c73a2",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00451_000075.953.jpg": "e5061e41c86c3d5b8e653950e0341dffac3c39855037dbc4cb0953aa14a47b7b",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00456_000076.003.jpg": "f2c0c99fc72d4151e602dd533a36c810d12dac475b937e29d1d91fd6354f9a7f",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00452_000076.019.jpg": "6fd33db0a3e792e9e85777cf1478fb6d08526afd050f8cff9ccda78f468d5456",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00453_000076.036.jpg": "f70af92cfcaeb58e331d3b2d337c455b9967fa05c4d7bc25b024b554b456192d",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00454_000076.103.jpg": "4a3fc8664cfb41bd3e528577d39f25b7ebf273eeb1051c5f10d02313071082d8",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00455_000076.119.jpg": "c7438dfbaa7b2fec24c022d724022081ae7082bc59b7fb94080c5360bd458113",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-000/frame_00041_000003.586.jpg": "e062e94fba7749b0a7b774a19c193df4e78aa7b2d8e40f605acbd264db7344e6",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-000/frame_00088_000005.886.jpg": "3cc5a947a2f4e57ed3a97f0bfecedf8432de236374725d2d9e6826b0a87d0fdd",
+    "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-005/frame_00176_000112.269.jpg": "d328bfa854351ba690cda57286e75499b04598936456b3411fa3a17b1f361927"
+  },
+  "runtime_sec": 1.7946761520579457,
+  "qualification_created": false,
+  "formal_events": 0,
+  "owned_facts": 0,
+  "canonical_full_executed": false,
+  "schema_version": 1,
+  "target_assertion_ids": [
+    "GT-R1-ROUND-END",
+    "event_count_constraints-002"
+  ],
+  "training_stages": {
+    "three_fixed_background_groups": "ineligible,49/55pixel Aholes and94pixel Mvalley cannot supply3x32background",
+    "adaptive_groups_original_native_sources": "2supported/3,one0.884630rejectedat0.90",
+    "additional_unassigned_inventory": {
+      "original_reference_unchanged": true,
+      "additional_frames": 11,
+      "guard_only_support": 8,
+      "combined_production_word_and_guard_support": 6,
+      "total_training_frames": 14,
+      "original_holdout_preserved": true
+    }
+  },
+  "comparison": {
+    "original11holdout": {
+      "previous_correct": 3,
+      "current_correct": 3,
+      "delta_correct": 0,
+      "previous_unknown": 8,
+      "current_unknown": 8,
+      "delta_unknown": 0,
+      "current_wrong": 0
+    },
+    "three_natural_controls": {
+      "previous_false_positive": 0,
+      "current_false_positive": 0,
+      "delta": 0
+    },
+    "synthetic_added39pixels": {
+      "previous_accepted": true,
+      "current_accepted": false,
+      "transition": "wrong/unqualified literal acceptance to unknown; synthetic not natural source accuracy"
+    },
+    "canonical_e2e": "not rerun; historical23PASS/55FAIL/4NE retained"
+  },
+  "verification": {
+    "related_unit_pass": 176,
+    "full_regression_pass": 2740,
+    "full_regression_skip": 6,
+    "full_regression_runtime_sec": 1937.64,
+    "previous_full_regression_runtime_sec": 1918.35,
+    "runtime_delta_sec": 19.29,
+    "ruff": "PASS",
+    "mypy": "PASS129sourcefiles",
+    "full_test_log_sha256": "92544242f55e5e41c9c8db9bd72d0c11576688c7702a13812d8711e09563293f",
+    "windows_runtime": "unverified"
+  },
+  "source_input_note": "Initial parity script incorrectly used direct JPEG grayscale decode; repaired to actual BGR source/cvtColor path. No reference, mask, threshold, source selection or acceptance changes for parity repair.",
+  "limits": [
+    "Existing exposed same-episode holdout, not newly blind event qualification.",
+    "Synthetic added-stroke control is not the exact game-font G and does not establish all-confusable rejection.",
+    "Static nominal crops; independent continuous start/end/UI qualification still incomplete.",
+    "New code fingerprint invalidates earlier qualification artifacts; no counts silently re-signed."
+  ],
+  "artifact_sha256": {
+    "outputs/recognition-investigation/result-local-contrast-production-20261013/execution-current.json": "63c5339f58734412f3f9ae63940dfa28ac7c878bae6df3289b279e64074852d6",
+    "outputs/recognition-investigation/result-local-contrast-production-20261013/result.json": "d7e8d429716eabdd8633a7abd9e4e2af3a0cd42eaafd29e7fb020284ea2b7f19",
+    "outputs/recognition-investigation/result-local-contrast-training-20261013/result.json": "9f21376cc89a987079d079cc2239632bf54e4b4b94f0ae74e065917057b22179",
+    "outputs/recognition-investigation/result-local-contrast-training-20261013/adaptive/result.json": "7bcd968c34d0eb30e05ad3a49edccb76eb0d78f5565992aa8737e808d09c5ed0",
+    "outputs/recognition-investigation/result-local-contrast-training-20261013/additional/result.json": "15f5d602df9325a2ce060d4178829da00fe292964bbb3702f252a1a1eeb5aa55",
+    "outputs/recognition-investigation/result-local-contrast-training-20261013/holdout/result.json": "013aa6aa346cb538693a57836670fb37d690fc1f89debc52c5b326ce73acefb9",
+    "outputs/recognition-investigation/result-local-contrast-training-20261013/additional-training-selection.json": "8a5886a568aeb4cc3526a411277f2989de8b89b44f7d2d015d644c4885ec4734"
+  }
+}

@@ -1,0 +1,374 @@
+{
+  "scope": "Current optional result component source review and candidate loader admission; no temporal-end qualification or default installation",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "profile_fingerprint": "60b029cb987fe0d7447853e3b4cd791d5defb0918dfaa25a401bd45d2b64c813",
+  "recognizer_fingerprint": "7bbb45ea27708c547a9ceb7c79b6f52e99f765675735ad0e247fd0528021cd2c",
+  "profile_path": "outputs/hud_profiles/round-global-timer-glyph-20261008/result-contrast-guard-diagnostic.templates.json",
+  "training_parents": [
+    {
+      "path": "outputs/recognition-investigation/result-glyph-cells-20261013/native_training_1.png",
+      "source_pts_ticks": 1158185,
+      "encoded_sha256": "5e6fbcbdaf2de83b52b191e51b36beee14869557eab0ad414a781391c2a7cabe",
+      "source_pixel_sha256": "2a0c10e18d01b7e93dedba7272dfa04abfbbe7b151ef50e1de0ffbbb0a413ab6",
+      "source_kind": "existing native decoder metadata",
+      "actual_bgr_source_score": 0.9198016819975172,
+      "source_accepted": true
+    },
+    {
+      "path": "outputs/recognition-investigation/result-glyph-cells-20261013/native_training_2.png",
+      "source_pts_ticks": 1164329,
+      "encoded_sha256": "e9f06a7c7b1625fe0fa5933d849cf0f4cbc0758014e5f010ff90fb0b4d60210d",
+      "source_pixel_sha256": "7a99af9d24125a83705a7e1e335735ac988ba9533fe7f95d9ead7287786a8337",
+      "source_kind": "existing native decoder metadata",
+      "actual_bgr_source_score": 0.9261311074723627,
+      "source_accepted": true
+    },
+    {
+      "path": "outputs/recognition-investigation/result-glyph-cells-20261013/native_training_3.png",
+      "source_pts_ticks": 1171497,
+      "encoded_sha256": "de213b6de38e6278fb51d7412ba20e9d04e06dca35abb1944ea440c435a65c22",
+      "source_pixel_sha256": "f81a19edb9f9384bd93ded62adde460a1679007b053d3646529d9cc3c9f96610",
+      "source_kind": "existing native decoder metadata",
+      "actual_bgr_source_score": 0.9290433655524309,
+      "source_accepted": true
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00443_000075.453.jpg",
+      "source_pts_ticks": 1158953,
+      "encoded_sha256": "1aa7b3b43954c4ff3ed3de0c7fafb0afe8713b7f32db79725bf85e34841ad65c",
+      "source_pixel_sha256": "e445d72592b56da75db9ee999997559e5ca2a58a439e7d1f0ebba0bff2923fe8",
+      "source_kind": "historical source annotation mapped uniquely to known15360/256grid, not a new native decode",
+      "actual_bgr_source_score": 0.9160981788567018,
+      "source_accepted": true
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00453_000075.503.jpg",
+      "source_pts_ticks": 1159721,
+      "encoded_sha256": "d95891af4dd55a9b1d852d110799ea640ff32bf31081f458e2151f1a2c562b4f",
+      "source_pixel_sha256": "aaf534e7c964ee577119ff1588dad5d3934e1cb8e659927644ba585263c1e711",
+      "source_kind": "historical source annotation mapped uniquely to known15360/256grid, not a new native decode",
+      "actual_bgr_source_score": 0.9166793628665375,
+      "source_accepted": true
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00446_000075.703.jpg",
+      "source_pts_ticks": 1162793,
+      "encoded_sha256": "3eac39a81e8f000cd457c69ecd3a913f5d272cc586ee8140261a2dd3e9c4ec92",
+      "source_pixel_sha256": "28ff54a5d89f2d1d94ca2438abdc11e0d803cde80a5d0c824a589226890fab3b",
+      "source_kind": "historical source annotation mapped uniquely to known15360/256grid, not a new native decode",
+      "actual_bgr_source_score": 0.9172258638770517,
+      "source_accepted": true
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00447_000075.786.jpg",
+      "source_pts_ticks": 1164073,
+      "encoded_sha256": "d2bd574f87098182b90271c651d2e00798990a0e7f6e840b02adaaf400e2142c",
+      "source_pixel_sha256": "6cfe590032024b8c53f46b28a98a723cfe9879e4cd02f3fbaa049a8dfde61ab1",
+      "source_kind": "historical source annotation mapped uniquely to known15360/256grid, not a new native decode",
+      "actual_bgr_source_score": 0.0,
+      "source_accepted": false
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00448_000075.853.jpg",
+      "source_pts_ticks": 1165097,
+      "encoded_sha256": "389fb76c0cec96f9a0a1b2299bf094f78453d252f43b0d31468e90853c6bd88d",
+      "source_pixel_sha256": "1859b5832ad399669284782aa816ac26d4a0589c8b44d6d1fb1858962c667911",
+      "source_kind": "historical source annotation mapped uniquely to known15360/256grid, not a new native decode",
+      "actual_bgr_source_score": 0.6852774643320223,
+      "source_accepted": false
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00449_000075.869.jpg",
+      "source_pts_ticks": 1165353,
+      "encoded_sha256": "18497d2db1efbe5693b8415a76b3c58fcbe8743972db35d57914449cf92a475b",
+      "source_pixel_sha256": "db0f4d00158408eee8cb21a4f6771c3e2ddb9fbf958e88ae8c0e306034316013",
+      "source_kind": "historical source annotation mapped uniquely to known15360/256grid, not a new native decode",
+      "actual_bgr_source_score": 0.0,
+      "source_accepted": false
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00456_000076.186.jpg",
+      "source_pts_ticks": 1170217,
+      "encoded_sha256": "ad85f1a2d6dbf6292d454eee5d2add4fb45ed0a933c6341fdf32d836c3a48872",
+      "source_pixel_sha256": "6c071756014865126b91354ca803c4e323011116439320017f7a2a4908b61001",
+      "source_kind": "historical source annotation mapped uniquely to known15360/256grid, not a new native decode",
+      "actual_bgr_source_score": 0.8604150356072312,
+      "source_accepted": false
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00457_000076.203.jpg",
+      "source_pts_ticks": 1170473,
+      "encoded_sha256": "e007195aef9c868829f1068b125ca311d69547364f6617fc5c5d5c64c90749cb",
+      "source_pixel_sha256": "1b83b1c58051510b37012ec9d68b8fa1850b74fac0fc2741edad1a3911848283",
+      "source_kind": "historical source annotation mapped uniquely to known15360/256grid, not a new native decode",
+      "actual_bgr_source_score": 0.8569855096003529,
+      "source_accepted": false
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00459_000076.286.jpg",
+      "source_pts_ticks": 1171753,
+      "encoded_sha256": "7ae934b44625e5ad49aa50a7e60daa4d6df8b8bbc1a0dcb3d474fcc76147ca50",
+      "source_pixel_sha256": "1c6def280fafbf0089b4e1df77f793c061a751dac3b163edd71d82fe399edcfc",
+      "source_kind": "historical source annotation mapped uniquely to known15360/256grid, not a new native decode",
+      "actual_bgr_source_score": 0.9154846025979059,
+      "source_accepted": true
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00460_000076.353.jpg",
+      "source_pts_ticks": 1172777,
+      "encoded_sha256": "ca1661ff359795d59e927cd4fa6a8e017eda853caba6e029a74409a297565d37",
+      "source_pixel_sha256": "833b2238abfca638776430da3a166cd975e41642bd904430ed6ee8ad6b5d3acb",
+      "source_kind": "historical source annotation mapped uniquely to known15360/256grid, not a new native decode",
+      "actual_bgr_source_score": 0.8711384298298945,
+      "source_accepted": false
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00461_000076.369.jpg",
+      "source_pts_ticks": 1173033,
+      "encoded_sha256": "1bd71d2ccab52b75a83c180bb26313838c1e8dbfe30b2f0e2e6f387809e5adf1",
+      "source_pixel_sha256": "ada97bc7b0aa778a6aaece891beec7d6bb76395c25b1acea5be16c5cf5083831",
+      "source_kind": "historical source annotation mapped uniquely to known15360/256grid, not a new native decode",
+      "actual_bgr_source_score": 0.8567593032944147,
+      "source_accepted": false
+    }
+  ],
+  "training_configured_asset_support": 6,
+  "training_bgr_source_accepted": 7,
+  "rows": [
+    {
+      "source_pts_ticks": 1155113,
+      "source_pixel_sha256": "c0b2e12720b2dc2baaa95dae17dcb573f8f7a39259860dcd891d330e9254a568",
+      "encoded_sha256": "f43785b1bb02626de3d43daf87d20590f9fd72eb16258b633dcef8da4d59468d",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00451_000075.203.jpg",
+      "split": "holdout",
+      "score": 0.0,
+      "accepted": false,
+      "source_review": "Original reviewedTEAM ACE presence",
+      "source_tick_provenance": "historical annotation mapped to known native tick grid, not newly decoded"
+    },
+    {
+      "source_pts_ticks": 1160233,
+      "source_pixel_sha256": "6c8461c5f75107d68391052af1c7670c3e6a1f588a9a864c37b50e450ca4df64",
+      "encoded_sha256": "550aec2599df5b42c3204fba5407d6ef49dee2dc87d95282c3b49bb061a03db5",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00444_000075.536.jpg",
+      "split": "holdout",
+      "score": 0.9169354711382715,
+      "accepted": true,
+      "source_review": "Original reviewedTEAM ACE presence",
+      "source_tick_provenance": "historical annotation mapped to known native tick grid, not newly decoded"
+    },
+    {
+      "source_pts_ticks": 1161257,
+      "source_pixel_sha256": "bfd8ae26b57906ad480af4e7138ab2ffa484074df7760f5c49e2b6cf34b7aed1",
+      "encoded_sha256": "a63d7663e071f237932221ca5f5f952596a4777ebee19ea0263812254fd45542",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00454_000075.603.jpg",
+      "split": "holdout",
+      "score": 0.9166158774309658,
+      "accepted": true,
+      "source_review": "Original reviewedTEAM ACE presence",
+      "source_tick_provenance": "historical annotation mapped to known native tick grid, not newly decoded"
+    },
+    {
+      "source_pts_ticks": 1161513,
+      "source_pixel_sha256": "c9b50aeb5608867063bbe69980bcfedf8e2f3731393167deebdf3a589bb3e775",
+      "encoded_sha256": "823e6320bbf400c33e3c64b15cced27cce2d58c5ac0a072a47fb0a207eb2e286",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00445_000075.619.jpg",
+      "split": "holdout",
+      "score": 0.9163823074994012,
+      "accepted": true,
+      "source_review": "Original reviewedTEAM ACE presence",
+      "source_tick_provenance": "historical annotation mapped to known native tick grid, not newly decoded"
+    },
+    {
+      "source_pts_ticks": 1166377,
+      "source_pixel_sha256": "94f917b31fc965083122927021b8862f36bb1fb584cef151e290073cfcc329be",
+      "encoded_sha256": "b8b367581eabf62d4962105724ae605798b05b4529db9fe25fcc72c3ef7c73a2",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00450_000075.936.jpg",
+      "split": "holdout",
+      "score": 0.6437598042691943,
+      "accepted": false,
+      "source_review": "Original reviewedTEAM ACE presence",
+      "source_tick_provenance": "historical annotation mapped to known native tick grid, not newly decoded"
+    },
+    {
+      "source_pts_ticks": 1166633,
+      "source_pixel_sha256": "196354a22cad863a77edb7455a32afe1964bc44be8f306b05b4b745674639f37",
+      "encoded_sha256": "e5061e41c86c3d5b8e653950e0341dffac3c39855037dbc4cb0953aa14a47b7b",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00451_000075.953.jpg",
+      "split": "holdout",
+      "score": 0.6442333835248826,
+      "accepted": false,
+      "source_review": "Original reviewedTEAM ACE presence",
+      "source_tick_provenance": "historical annotation mapped to known native tick grid, not newly decoded"
+    },
+    {
+      "source_pts_ticks": 1167401,
+      "source_pixel_sha256": "d440479b8c3618d5d11fc31936c3bfd5ce37e31f4c691851693a813356e0b98e",
+      "encoded_sha256": "f2c0c99fc72d4151e602dd533a36c810d12dac475b937e29d1d91fd6354f9a7f",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00456_000076.003.jpg",
+      "split": "holdout",
+      "score": 0.6974799259847269,
+      "accepted": false,
+      "source_review": "Original reviewedTEAM ACE presence",
+      "source_tick_provenance": "historical annotation mapped to known native tick grid, not newly decoded"
+    },
+    {
+      "source_pts_ticks": 1167657,
+      "source_pixel_sha256": "1b0caf22a42bf2c3607e68dab8eb26ab74c44aa9ae6b0d2d57d71cdecf994aff",
+      "encoded_sha256": "6fd33db0a3e792e9e85777cf1478fb6d08526afd050f8cff9ccda78f468d5456",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00452_000076.019.jpg",
+      "split": "holdout",
+      "score": 0.7266777172387492,
+      "accepted": false,
+      "source_review": "Original reviewedTEAM ACE presence",
+      "source_tick_provenance": "historical annotation mapped to known native tick grid, not newly decoded"
+    },
+    {
+      "source_pts_ticks": 1167913,
+      "source_pixel_sha256": "eb8ba622bca4c8b10a14862430a256638c655641b9ec77fd5c53790be3241967",
+      "encoded_sha256": "f70af92cfcaeb58e331d3b2d337c455b9967fa05c4d7bc25b024b554b456192d",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00453_000076.036.jpg",
+      "split": "holdout",
+      "score": 0.7917323650141935,
+      "accepted": false,
+      "source_review": "Original reviewedTEAM ACE presence",
+      "source_tick_provenance": "historical annotation mapped to known native tick grid, not newly decoded"
+    },
+    {
+      "source_pts_ticks": 1168937,
+      "source_pixel_sha256": "216a5616be9f31ea15b36dfac23a813139a7b90f44af3b2fb57c44966db88d9b",
+      "encoded_sha256": "4a3fc8664cfb41bd3e528577d39f25b7ebf273eeb1051c5f10d02313071082d8",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00454_000076.103.jpg",
+      "split": "holdout",
+      "score": 0.8730502404800042,
+      "accepted": false,
+      "source_review": "Original reviewedTEAM ACE presence",
+      "source_tick_provenance": "historical annotation mapped to known native tick grid, not newly decoded"
+    },
+    {
+      "source_pts_ticks": 1169193,
+      "source_pixel_sha256": "2b22f42aae4b59ad883d7940a6bde81175f20cc21a7dfc911c790d491df934b2",
+      "encoded_sha256": "c7438dfbaa7b2fec24c022d724022081ae7082bc59b7fb94080c5360bd458113",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00455_000076.119.jpg",
+      "split": "holdout",
+      "score": 0.871065402515599,
+      "accepted": false,
+      "source_review": "Original reviewedTEAM ACE presence",
+      "source_tick_provenance": "historical annotation mapped to known native tick grid, not newly decoded"
+    },
+    {
+      "source_pts_ticks": 55081,
+      "source_pixel_sha256": "f8933ef259d9088807d8db2002be61cfb153a564f511c9a7738865f1393bb752",
+      "encoded_sha256": "e062e94fba7749b0a7b774a19c193df4e78aa7b2d8e40f605acbd264db7344e6",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-000/frame_00041_000003.586.jpg",
+      "split": "negative",
+      "score": 0.0,
+      "accepted": false,
+      "source_review": "Original reviewed non-result source frame",
+      "source_tick_provenance": "historical annotation mapped to known native tick grid, not newly decoded"
+    },
+    {
+      "source_pts_ticks": 90409,
+      "source_pixel_sha256": "be8de094f370639a633a466ea975e64fc1e09d29c9b99559bbbca26015d04b59",
+      "encoded_sha256": "3cc5a947a2f4e57ed3a97f0bfecedf8432de236374725d2d9e6826b0a87d0fdd",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-000/frame_00088_000005.886.jpg",
+      "split": "negative",
+      "score": 0.0,
+      "accepted": false,
+      "source_review": "Original reviewed non-result source frame",
+      "source_tick_provenance": "historical annotation mapped to known native tick grid, not newly decoded"
+    },
+    {
+      "source_pts_ticks": 1724457,
+      "source_pixel_sha256": "5f86d3471f5ec13289cacd4330a8b8b94046635f76dce89cf2f8422164f022e6",
+      "encoded_sha256": "d328bfa854351ba690cda57286e75499b04598936456b3411fa3a17b1f361927",
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-005/frame_00176_000112.269.jpg",
+      "split": "negative",
+      "score": 0.0,
+      "accepted": false,
+      "source_review": "Original reviewed non-result source frame",
+      "source_tick_provenance": "historical annotation mapped to known native tick grid, not newly decoded"
+    }
+  ],
+  "counts": {
+    "correct": 3,
+    "unknown": 8,
+    "wrong": 0,
+    "negative_false_positive": 0
+  },
+  "processed_source_images": 28,
+  "runtime_sec": 3.018873824039474,
+  "actual_loader_admitted_components": [
+    "purchase_phase",
+    "round_result",
+    "score",
+    "timer",
+    "ui_transition"
+  ],
+  "physical_split_counts": {
+    "training": 102,
+    "holdout": 84,
+    "negative": 137
+  },
+  "physical_split_intersections": {
+    "holdout/training": [],
+    "negative/training": [],
+    "negative/holdout": []
+  },
+  "score_result_bundle_path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/guarded-result-component-review-20261013/start-score-result-components-review.json",
+  "score_result_bundle_sha256": "29867131215ace535159b7416b5b4fd3c3e9fd037597c1c17ea696172aa0cdc2",
+  "terminal_hash_verified": true,
+  "default_installed": false,
+  "formal_events": 0,
+  "temporal_end_qualified": false,
+  "new_blind_cohort_claimed": false,
+  "canonical_full_executed": false,
+  "remaining_component": "ui_end_transition",
+  "evidence_sha256": {
+    "outputs/recognition-investigation/guarded-result-component-review-20261013/result.json": "b1b1d294908a771c6161138ef72e1e693a9b9253c25ffadca55b38cd738fa264",
+    "outputs/recognition-investigation/guarded-result-component-review-20261013/execution.log": "6b5dc424b3bc017ec0bd37d8742ee02f1dc4da5e01e3ddb8dff082d432ac67c0",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/guarded-result-component-review-20261013/start-score-result-components-review.json": "29867131215ace535159b7416b5b4fd3c3e9fd037597c1c17ea696172aa0cdc2"
+  },
+  "candidate_qualification_bundle_created": true,
+  "target_assertion_ids": [
+    "GT-R1-ROUND-END",
+    "event_count_constraints-002"
+  ],
+  "comparison": {
+    "holdout_correct": {
+      "previous": 3,
+      "current": 3,
+      "delta": 0
+    },
+    "holdout_unknown": {
+      "previous": 8,
+      "current": 8,
+      "delta": 0
+    },
+    "holdout_wrong": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "natural_negative_false_positive": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    }
+  },
+  "canonical_last_adopted": {
+    "PASS": 23,
+    "FAIL": 55,
+    "NE": 4
+  },
+  "canonical_current": null,
+  "canonical_delta": null,
+  "remaining_blockers": [
+    "Result presence alone does not identify end time; original strict timestamp window remains unchanged.",
+    "No ui_end_transition proof or independent temporal-end holdout claim.",
+    "Single source result episode and previously exposed images, not new blind event cases.",
+    "Current source/app/merge/whole lifecycle/sample/full gates remain pending.",
+    "Existing legacy adjacent-score/current-result end path is not replaced or newly qualified by this UI-end audit.",
+    "Current Windows execution unverified."
+  ]
+}

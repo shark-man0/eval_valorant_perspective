@@ -1,0 +1,822 @@
+{
+  "scope": "Single training-only eligibility test of frozen complete7-glyph registration on all14already assigned training parents; held/early frames not inputs, no parameter scan",
+  "method": "Existing wordNCC0.90 plus measured connected glyph boxes white210/area\u226532/height\u226540%ROI; exactly seven left-to-right glyphs; one-pixel contrast border; normalize grayscale cells to28x56 INTER_AREA; median per-cell reference; min-cell NCC0.90. No free translation search/repair",
+  "current_required_conjunction": "Existing word+contrast guarded predicate AND all7registered grayscale glyph NCC>=0.90",
+  "foreground_threshold": 210,
+  "min_area": 32,
+  "min_width": 3,
+  "min_height_fraction": 0.4,
+  "glyph_count_required": 7,
+  "glyph_cell_size": [
+    28,
+    56
+  ],
+  "interpolation": "INTER_AREA",
+  "threshold": 0.9,
+  "support_minimum": 3,
+  "source_colour_path": "Actual source BGR to gray; no direct JPEG gray conversion parity assumption",
+  "eligibility_rule": "Every supplied frame retained; non7glyph frames fail closed as unknown. Derive median cells from all7glyph eligible training parents only if>=3exist, then require>=3distinct combined predicate supports. No glyph removed or repaired.",
+  "profile_fingerprint": "60b029cb987fe0d7447853e3b4cd791d5defb0918dfaa25a401bd45d2b64c813",
+  "recognizer_fingerprint": "7bbb45ea27708c547a9ceb7c79b6f52e99f765675735ad0e247fd0528021cd2c",
+  "training_rows": [
+    {
+      "source_pts_ticks": 1158185,
+      "source_pixel_sha256": "2a0c10e18d01b7e93dedba7272dfa04abfbbe7b151ef50e1de0ffbbb0a413ab6",
+      "path": "outputs/recognition-investigation/result-glyph-cells-20261013/native_training_1.png",
+      "glyph_count": 7,
+      "glyph_boxes": [
+        [
+          7,
+          8,
+          25,
+          56
+        ],
+        [
+          34,
+          8,
+          21,
+          56
+        ],
+        [
+          57,
+          8,
+          30,
+          56
+        ],
+        [
+          90,
+          8,
+          40,
+          56
+        ],
+        [
+          142,
+          8,
+          31,
+          56
+        ],
+        [
+          174,
+          8,
+          30,
+          56
+        ],
+        [
+          206,
+          8,
+          21,
+          56
+        ]
+      ],
+      "existing_guarded_word_score": 0.9198016819975172,
+      "registered_cell_scores": [
+        0.9992303818684843,
+        0.9991952154413218,
+        0.9993880117023781,
+        0.9756419782799834,
+        0.9989815128876066,
+        0.9823407725971998,
+        0.9972149348057499
+      ],
+      "registered_score": 0.9756419782799834,
+      "combined_score": 0.9198016819975172,
+      "accepted": true,
+      "reason": "accepted"
+    },
+    {
+      "source_pts_ticks": 1164329,
+      "source_pixel_sha256": "7a99af9d24125a83705a7e1e335735ac988ba9533fe7f95d9ead7287786a8337",
+      "path": "outputs/recognition-investigation/result-glyph-cells-20261013/native_training_2.png",
+      "glyph_count": 7,
+      "glyph_boxes": [
+        [
+          7,
+          8,
+          24,
+          56
+        ],
+        [
+          34,
+          8,
+          21,
+          56
+        ],
+        [
+          58,
+          8,
+          29,
+          56
+        ],
+        [
+          90,
+          8,
+          39,
+          56
+        ],
+        [
+          143,
+          8,
+          29,
+          56
+        ],
+        [
+          175,
+          8,
+          27,
+          56
+        ],
+        [
+          206,
+          8,
+          21,
+          56
+        ]
+      ],
+      "existing_guarded_word_score": 0.9261311074723627,
+      "registered_cell_scores": [
+        0.9750435938109628,
+        0.9943707915490232,
+        0.9593416226998229,
+        0.96494893789036,
+        0.9603764206279573,
+        0.9251463961502657,
+        0.9858957578526897
+      ],
+      "registered_score": 0.9251463961502657,
+      "combined_score": 0.9251463961502657,
+      "accepted": true,
+      "reason": "accepted"
+    },
+    {
+      "source_pts_ticks": 1171497,
+      "source_pixel_sha256": "f81a19edb9f9384bd93ded62adde460a1679007b053d3646529d9cc3c9f96610",
+      "path": "outputs/recognition-investigation/result-glyph-cells-20261013/native_training_3.png",
+      "glyph_count": 6,
+      "glyph_boxes": [
+        [
+          7,
+          8,
+          24,
+          56
+        ],
+        [
+          34,
+          0,
+          53,
+          65
+        ],
+        [
+          89,
+          6,
+          40,
+          58
+        ],
+        [
+          143,
+          5,
+          29,
+          59
+        ],
+        [
+          175,
+          8,
+          27,
+          56
+        ],
+        [
+          206,
+          8,
+          21,
+          56
+        ]
+      ],
+      "existing_guarded_word_score": 0.9290433655524309,
+      "registered_cell_scores": [],
+      "registered_score": 0.0,
+      "combined_score": 0.0,
+      "accepted": false,
+      "reason": "glyph_count_not7"
+    },
+    {
+      "source_pts_ticks": 1158953,
+      "source_pixel_sha256": "e445d72592b56da75db9ee999997559e5ca2a58a439e7d1f0ebba0bff2923fe8",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00443_000075.453.jpg",
+      "glyph_count": 7,
+      "glyph_boxes": [
+        [
+          7,
+          8,
+          25,
+          56
+        ],
+        [
+          34,
+          8,
+          21,
+          56
+        ],
+        [
+          57,
+          8,
+          30,
+          56
+        ],
+        [
+          90,
+          8,
+          39,
+          56
+        ],
+        [
+          142,
+          8,
+          31,
+          56
+        ],
+        [
+          174,
+          8,
+          30,
+          56
+        ],
+        [
+          206,
+          8,
+          21,
+          56
+        ]
+      ],
+      "existing_guarded_word_score": 0.9160981788567018,
+      "registered_cell_scores": [
+        0.9991587578168202,
+        0.9989859184863668,
+        0.9989909082906614,
+        0.9730732707322535,
+        0.9986671202357816,
+        0.9817628156629804,
+        0.99791844034467
+      ],
+      "registered_score": 0.9730732707322535,
+      "combined_score": 0.9160981788567018,
+      "accepted": true,
+      "reason": "accepted"
+    },
+    {
+      "source_pts_ticks": 1159721,
+      "source_pixel_sha256": "aaf534e7c964ee577119ff1588dad5d3934e1cb8e659927644ba585263c1e711",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00453_000075.503.jpg",
+      "glyph_count": 7,
+      "glyph_boxes": [
+        [
+          7,
+          8,
+          25,
+          56
+        ],
+        [
+          34,
+          8,
+          21,
+          56
+        ],
+        [
+          57,
+          8,
+          30,
+          56
+        ],
+        [
+          90,
+          8,
+          39,
+          56
+        ],
+        [
+          142,
+          8,
+          31,
+          56
+        ],
+        [
+          174,
+          8,
+          30,
+          56
+        ],
+        [
+          206,
+          8,
+          21,
+          56
+        ]
+      ],
+      "existing_guarded_word_score": 0.9166793628665375,
+      "registered_cell_scores": [
+        0.9992808506050397,
+        0.9989909466017376,
+        0.9989639000385852,
+        0.97287093308742,
+        0.9981125252987483,
+        0.9815486797477655,
+        0.9984971168326762
+      ],
+      "registered_score": 0.97287093308742,
+      "combined_score": 0.9166793628665375,
+      "accepted": true,
+      "reason": "accepted"
+    },
+    {
+      "source_pts_ticks": 1162793,
+      "source_pixel_sha256": "28ff54a5d89f2d1d94ca2438abdc11e0d803cde80a5d0c824a589226890fab3b",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00446_000075.703.jpg",
+      "glyph_count": 7,
+      "glyph_boxes": [
+        [
+          7,
+          8,
+          25,
+          56
+        ],
+        [
+          34,
+          8,
+          21,
+          56
+        ],
+        [
+          57,
+          8,
+          30,
+          56
+        ],
+        [
+          90,
+          8,
+          39,
+          56
+        ],
+        [
+          142,
+          8,
+          31,
+          56
+        ],
+        [
+          174,
+          8,
+          29,
+          56
+        ],
+        [
+          206,
+          8,
+          21,
+          56
+        ]
+      ],
+      "existing_guarded_word_score": 0.9172258638770517,
+      "registered_cell_scores": [
+        0.9989249029653019,
+        0.9990890484092597,
+        0.999345114422547,
+        0.9738485268721285,
+        0.9974848181596644,
+        0.9885136620681598,
+        0.9981019024038147
+      ],
+      "registered_score": 0.9738485268721285,
+      "combined_score": 0.9172258638770517,
+      "accepted": true,
+      "reason": "accepted"
+    },
+    {
+      "source_pts_ticks": 1164073,
+      "source_pixel_sha256": "6cfe590032024b8c53f46b28a98a723cfe9879e4cd02f3fbaa049a8dfde61ab1",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00447_000075.786.jpg",
+      "glyph_count": 1,
+      "glyph_boxes": [
+        [
+          0,
+          0,
+          236,
+          69
+        ]
+      ],
+      "existing_guarded_word_score": 0.0,
+      "registered_cell_scores": [],
+      "registered_score": 0.0,
+      "combined_score": 0.0,
+      "accepted": false,
+      "reason": "glyph_count_not7"
+    },
+    {
+      "source_pts_ticks": 1165097,
+      "source_pixel_sha256": "1859b5832ad399669284782aa816ac26d4a0589c8b44d6d1fb1858962c667911",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00448_000075.853.jpg",
+      "glyph_count": 5,
+      "glyph_boxes": [
+        [
+          0,
+          0,
+          87,
+          69
+        ],
+        [
+          90,
+          8,
+          39,
+          56
+        ],
+        [
+          143,
+          8,
+          29,
+          56
+        ],
+        [
+          175,
+          8,
+          27,
+          56
+        ],
+        [
+          206,
+          8,
+          21,
+          56
+        ]
+      ],
+      "existing_guarded_word_score": 0.6852774643320223,
+      "registered_cell_scores": [],
+      "registered_score": 0.0,
+      "combined_score": 0.0,
+      "accepted": false,
+      "reason": "glyph_count_not7"
+    },
+    {
+      "source_pts_ticks": 1165353,
+      "source_pixel_sha256": "db0f4d00158408eee8cb21a4f6771c3e2ddb9fbf958e88ae8c0e306034316013",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00449_000075.869.jpg",
+      "glyph_count": 5,
+      "glyph_boxes": [
+        [
+          0,
+          0,
+          87,
+          69
+        ],
+        [
+          90,
+          8,
+          39,
+          56
+        ],
+        [
+          142,
+          8,
+          30,
+          56
+        ],
+        [
+          175,
+          8,
+          27,
+          56
+        ],
+        [
+          206,
+          8,
+          21,
+          56
+        ]
+      ],
+      "existing_guarded_word_score": 0.0,
+      "registered_cell_scores": [],
+      "registered_score": 0.0,
+      "combined_score": 0.0,
+      "accepted": false,
+      "reason": "glyph_count_not7"
+    },
+    {
+      "source_pts_ticks": 1170217,
+      "source_pixel_sha256": "6c071756014865126b91354ca803c4e323011116439320017f7a2a4908b61001",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00456_000076.186.jpg",
+      "glyph_count": 7,
+      "glyph_boxes": [
+        [
+          7,
+          7,
+          25,
+          57
+        ],
+        [
+          34,
+          8,
+          21,
+          56
+        ],
+        [
+          58,
+          8,
+          29,
+          56
+        ],
+        [
+          90,
+          8,
+          39,
+          56
+        ],
+        [
+          143,
+          8,
+          29,
+          56
+        ],
+        [
+          175,
+          8,
+          27,
+          56
+        ],
+        [
+          206,
+          8,
+          21,
+          56
+        ]
+      ],
+      "existing_guarded_word_score": 0.8604150356072312,
+      "registered_cell_scores": [
+        0.9494412660906623,
+        0.968792436519282,
+        0.9562983157223687,
+        0.9675779940570103,
+        0.9640726138492955,
+        0.9341499892672621,
+        0.9878486734625141
+      ],
+      "registered_score": 0.9341499892672621,
+      "combined_score": 0.8604150356072312,
+      "accepted": false,
+      "reason": "below_unchanged_threshold"
+    },
+    {
+      "source_pts_ticks": 1170473,
+      "source_pixel_sha256": "1b83b1c58051510b37012ec9d68b8fa1850b74fac0fc2741edad1a3911848283",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00457_000076.203.jpg",
+      "glyph_count": 7,
+      "glyph_boxes": [
+        [
+          7,
+          8,
+          25,
+          56
+        ],
+        [
+          34,
+          8,
+          21,
+          56
+        ],
+        [
+          58,
+          8,
+          29,
+          56
+        ],
+        [
+          90,
+          8,
+          39,
+          56
+        ],
+        [
+          143,
+          8,
+          29,
+          56
+        ],
+        [
+          175,
+          8,
+          27,
+          56
+        ],
+        [
+          206,
+          8,
+          21,
+          56
+        ]
+      ],
+      "existing_guarded_word_score": 0.8569855096003529,
+      "registered_cell_scores": [
+        0.9570638097174281,
+        0.9679356661335706,
+        0.9558426126383428,
+        0.9674064111662847,
+        0.9643274070872385,
+        0.93381528021597,
+        0.988029945678398
+      ],
+      "registered_score": 0.93381528021597,
+      "combined_score": 0.8569855096003529,
+      "accepted": false,
+      "reason": "below_unchanged_threshold"
+    },
+    {
+      "source_pts_ticks": 1171753,
+      "source_pixel_sha256": "1c6def280fafbf0089b4e1df77f793c061a751dac3b163edd71d82fe399edcfc",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00459_000076.286.jpg",
+      "glyph_count": 5,
+      "glyph_boxes": [
+        [
+          7,
+          8,
+          25,
+          56
+        ],
+        [
+          34,
+          0,
+          95,
+          67
+        ],
+        [
+          143,
+          8,
+          29,
+          56
+        ],
+        [
+          175,
+          0,
+          27,
+          64
+        ],
+        [
+          206,
+          8,
+          21,
+          56
+        ]
+      ],
+      "existing_guarded_word_score": 0.9154846025979059,
+      "registered_cell_scores": [],
+      "registered_score": 0.0,
+      "combined_score": 0.0,
+      "accepted": false,
+      "reason": "glyph_count_not7"
+    },
+    {
+      "source_pts_ticks": 1172777,
+      "source_pixel_sha256": "833b2238abfca638776430da3a166cd975e41642bd904430ed6ee8ad6b5d3acb",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00460_000076.353.jpg",
+      "glyph_count": 5,
+      "glyph_boxes": [
+        [
+          7,
+          8,
+          24,
+          56
+        ],
+        [
+          34,
+          0,
+          95,
+          66
+        ],
+        [
+          143,
+          8,
+          29,
+          56
+        ],
+        [
+          174,
+          0,
+          28,
+          64
+        ],
+        [
+          206,
+          8,
+          21,
+          56
+        ]
+      ],
+      "existing_guarded_word_score": 0.8711384298298945,
+      "registered_cell_scores": [],
+      "registered_score": 0.0,
+      "combined_score": 0.0,
+      "accepted": false,
+      "reason": "glyph_count_not7"
+    },
+    {
+      "source_pts_ticks": 1173033,
+      "source_pixel_sha256": "ada97bc7b0aa778a6aaece891beec7d6bb76395c25b1acea5be16c5cf5083831",
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00461_000076.369.jpg",
+      "glyph_count": 5,
+      "glyph_boxes": [
+        [
+          7,
+          8,
+          24,
+          56
+        ],
+        [
+          34,
+          0,
+          95,
+          69
+        ],
+        [
+          143,
+          7,
+          29,
+          57
+        ],
+        [
+          173,
+          0,
+          29,
+          64
+        ],
+        [
+          206,
+          8,
+          21,
+          56
+        ]
+      ],
+      "existing_guarded_word_score": 0.8567593032944147,
+      "registered_cell_scores": [],
+      "registered_score": 0.0,
+      "combined_score": 0.0,
+      "accepted": false,
+      "reason": "glyph_count_not7"
+    }
+  ],
+  "eligible7glyph_source_frames": 7,
+  "combined_training_support": 5,
+  "training_eligible": true,
+  "early_recovery_by_conjunction_possible": false,
+  "early_recovery_reason": "An additional conjunction cannot promote an image rejected by the existing whole-word/contrast predicate. Expanded training does not alter that mathematical cap.",
+  "registered_reference_sha256": [
+    "6c4e2814e9be979cf01131d889d9209569aa848819a6ac3b19df928bf5989397",
+    "87160b59065923388c566a3431e265e4ae66edcd3a49b5409ed616c9dd39cc33",
+    "112f545124fd62d825a06f4027786dd379bcbade26a577cc881da30feb7301ed",
+    "d79ffefdb5ef0514bf65781bc9c2051642e1d2f09d1112b486fa84c077312ebe",
+    "cb6d6aa1b22f9491e7e84893b44f6e107a879e95311319ca160861af0a11680a",
+    "495182b99022367156daf104b00b69b9f8c67950b80d68a2ced436afc7cd3395",
+    "782a9d0ecf87767df72948d6b3617d3c265e3891350bbf68b9decc67f0e22052"
+  ],
+  "holdout_evaluated": false,
+  "qualification_created": false,
+  "production_changed": false,
+  "canonical_full_executed": false,
+  "terminal_hash_verified": true,
+  "runtime_sec": 1.8833471239777282,
+  "source_parent_counts": {
+    "training": 14,
+    "eligible_complete7glyph": 7,
+    "combined_support": 5,
+    "ineligible_kept_unknown": 7
+  },
+  "target_assertion_ids": [
+    "GT-R1-ROUND-END",
+    "event_count_constraints-002"
+  ],
+  "decision": "Training eligible as an additional rejection guard, rejected for the early-result recovery objective because unchanged word/contrast conjunction mathematically caps acceptance. No held/early image scoring, production integration or qualification.",
+  "next_hypothesis": "A separately qualified registered word comparator would need its own complete7glyph NCC floor, negative-space discrimination and learned geometric/word-space constraints. It cannot be described as the unchanged extra-AND guard or inherit its qualification. Freeze training-only criteria before using original held/early challenge images; do not lower raw thresholds or remove identity/geometry safety.",
+  "comparison": {
+    "training_parents": {
+      "previous": 3,
+      "current": 14,
+      "delta": 11
+    },
+    "combined_training_support": {
+      "previous": 0,
+      "current": 5,
+      "delta": 5,
+      "scope": "Expanded already assigned source inventory and current guarded predicate; eligibility, not accuracy improvement."
+    },
+    "formal_round_end_events": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "canonical_last_adopted": {
+      "PASS": 23,
+      "FAIL": 55,
+      "NE": 4
+    },
+    "canonical_current": null,
+    "canonical_delta": null
+  },
+  "evidence_sha256": {
+    "outputs/recognition-investigation/result-registered-expanded-training-20261013/execution.json": "cdce62e51eefa3533992a4eac70556120515f814c3420cf9a7fe2c77f80e5c9b",
+    "outputs/recognition-investigation/result-registered-expanded-training-20261013/result.json": "20342767f0129a1f858af130c59d1eb196963d34c048021e5d796cb1f6fa9f20"
+  }
+}

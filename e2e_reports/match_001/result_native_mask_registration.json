@@ -1,0 +1,2399 @@
+{
+  "scope": "Fixed native-source contrast prototype training and original held/control/early challenge evaluation; no production integration or qualification",
+  "target_assertion_ids": [
+    "GT-R1-ROUND-END",
+    "event_count_constraints-002"
+  ],
+  "recognizer_fingerprint": "7bbb45ea27708c547a9ceb7c79b6f52e99f765675735ad0e247fd0528021cd2c",
+  "prototype_sha256": "c8d4cd3415a268f386edb47ee85d3f84e17eb4909341e602f31cac7662e9e117",
+  "training_parents": 14,
+  "complete_reference_sources": 7,
+  "training_support": 7,
+  "minimum_accepted_current_physical_populations": {
+    "foreground": 596,
+    "negative": 32
+  },
+  "training_rows": [
+    {
+      "source_pts_ticks": 1158185,
+      "source_pixel_sha256": "2a0c10e18d01b7e93dedba7272dfa04abfbbe7b151ef50e1de0ffbbb0a413ab6",
+      "score": 0.9271112588073909,
+      "reason": "accepted",
+      "glyph_count": 7,
+      "glyphs": [
+        {
+          "glyph_index": 0,
+          "actual_source_shape": [
+            58,
+            27
+          ],
+          "reference_shape": [
+            58,
+            27
+          ],
+          "physical_foreground_population": 596,
+          "physical_negative_population": 140,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9990271437915433,
+          "contrast_ncc": [
+            0.9988256507424087,
+            0.9988107385005827,
+            0.9988815027243874
+          ],
+          "polarity_positive": true,
+          "score": 0.9988107385005827
+        },
+        {
+          "glyph_index": 1,
+          "actual_source_shape": [
+            58,
+            23
+          ],
+          "reference_shape": [
+            58,
+            23
+          ],
+          "physical_foreground_population": 719,
+          "physical_negative_population": 174,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9987832855595042,
+          "contrast_ncc": [
+            0.9996492563805954,
+            0.99894581848775,
+            0.9995704332256683
+          ],
+          "polarity_positive": true,
+          "score": 0.9987832855595042
+        },
+        {
+          "glyph_index": 2,
+          "actual_source_shape": [
+            58,
+            32
+          ],
+          "reference_shape": [
+            58,
+            32
+          ],
+          "physical_foreground_population": 938,
+          "physical_negative_population": 47,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9990717813667054,
+          "contrast_ncc": [
+            0.9986879980896014
+          ],
+          "polarity_positive": true,
+          "score": 0.9986879980896014
+        },
+        {
+          "glyph_index": 3,
+          "actual_source_shape": [
+            58,
+            42
+          ],
+          "reference_shape": [
+            58,
+            41
+          ],
+          "physical_foreground_population": 1557,
+          "physical_negative_population": 80,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9271112588073909,
+          "contrast_ncc": [
+            0.973558484822512,
+            0.955240171662361
+          ],
+          "polarity_positive": true,
+          "score": 0.9271112588073909
+        },
+        {
+          "glyph_index": 4,
+          "actual_source_shape": [
+            58,
+            33
+          ],
+          "reference_shape": [
+            58,
+            33
+          ],
+          "physical_foreground_population": 945,
+          "physical_negative_population": 42,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9983191291458225,
+          "contrast_ncc": [
+            0.9992399428010448
+          ],
+          "polarity_positive": true,
+          "score": 0.9983191291458225
+        },
+        {
+          "glyph_index": 5,
+          "actual_source_shape": [
+            58,
+            32
+          ],
+          "reference_shape": [
+            58,
+            31
+          ],
+          "physical_foreground_population": 977,
+          "physical_negative_population": 169,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9756319264785585,
+          "contrast_ncc": [
+            0.9824937582739596,
+            0.9863930128484587,
+            0.9825750203264881
+          ],
+          "polarity_positive": true,
+          "score": 0.9756319264785585
+        },
+        {
+          "glyph_index": 6,
+          "actual_source_shape": [
+            58,
+            23
+          ],
+          "reference_shape": [
+            58,
+            23
+          ],
+          "physical_foreground_population": 724,
+          "physical_negative_population": 169,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9940815435237736,
+          "contrast_ncc": [
+            0.9986494644281216,
+            0.9978692819861606,
+            0.9971380958224685
+          ],
+          "polarity_positive": true,
+          "score": 0.9940815435237736
+        }
+      ]
+    },
+    {
+      "source_pts_ticks": 1164329,
+      "source_pixel_sha256": "7a99af9d24125a83705a7e1e335735ac988ba9533fe7f95d9ead7287786a8337",
+      "score": 0.9120610349852023,
+      "reason": "accepted",
+      "glyph_count": 7,
+      "glyphs": [
+        {
+          "glyph_index": 0,
+          "actual_source_shape": [
+            58,
+            26
+          ],
+          "reference_shape": [
+            58,
+            27
+          ],
+          "physical_foreground_population": 596,
+          "physical_negative_population": 140,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9701508417256588,
+          "contrast_ncc": [
+            0.9643542397710552,
+            0.9643964540477193,
+            0.9644594539385086
+          ],
+          "polarity_positive": true,
+          "score": 0.9643542397710552
+        },
+        {
+          "glyph_index": 1,
+          "actual_source_shape": [
+            58,
+            23
+          ],
+          "reference_shape": [
+            58,
+            23
+          ],
+          "physical_foreground_population": 719,
+          "physical_negative_population": 174,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9932729812833827,
+          "contrast_ncc": [
+            0.9967870507535681,
+            0.9969992620169817,
+            0.9965466836951735
+          ],
+          "polarity_positive": true,
+          "score": 0.9932729812833827
+        },
+        {
+          "glyph_index": 2,
+          "actual_source_shape": [
+            58,
+            31
+          ],
+          "reference_shape": [
+            58,
+            32
+          ],
+          "physical_foreground_population": 938,
+          "physical_negative_population": 47,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9503037835976315,
+          "contrast_ncc": [
+            0.9759574401078036
+          ],
+          "polarity_positive": true,
+          "score": 0.9503037835976315
+        },
+        {
+          "glyph_index": 3,
+          "actual_source_shape": [
+            58,
+            41
+          ],
+          "reference_shape": [
+            58,
+            41
+          ],
+          "physical_foreground_population": 1557,
+          "physical_negative_population": 80,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9755619755108824,
+          "contrast_ncc": [
+            0.9741795333666434,
+            0.9745072353786675
+          ],
+          "polarity_positive": true,
+          "score": 0.9741795333666434
+        },
+        {
+          "glyph_index": 4,
+          "actual_source_shape": [
+            58,
+            31
+          ],
+          "reference_shape": [
+            58,
+            33
+          ],
+          "physical_foreground_population": 920,
+          "physical_negative_population": 32,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9508735902764641,
+          "contrast_ncc": [
+            0.9590385141243047
+          ],
+          "polarity_positive": true,
+          "score": 0.9508735902764641
+        },
+        {
+          "glyph_index": 5,
+          "actual_source_shape": [
+            58,
+            29
+          ],
+          "reference_shape": [
+            58,
+            31
+          ],
+          "physical_foreground_population": 961,
+          "physical_negative_population": 135,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9185530690300919,
+          "contrast_ncc": [
+            0.9120610349852023,
+            0.9267217280133604,
+            0.9120823248895555
+          ],
+          "polarity_positive": true,
+          "score": 0.9120610349852023
+        },
+        {
+          "glyph_index": 6,
+          "actual_source_shape": [
+            58,
+            23
+          ],
+          "reference_shape": [
+            58,
+            23
+          ],
+          "physical_foreground_population": 724,
+          "physical_negative_population": 169,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9834272962025793,
+          "contrast_ncc": [
+            0.9885461507700674,
+            0.9858992124794785,
+            0.9877591688992552
+          ],
+          "polarity_positive": true,
+          "score": 0.9834272962025793
+        }
+      ]
+    },
+    {
+      "source_pts_ticks": 1171497,
+      "source_pixel_sha256": "f81a19edb9f9384bd93ded62adde460a1679007b053d3646529d9cc3c9f96610",
+      "score": 0.0,
+      "reason": "glyph_count_not7",
+      "glyph_count": 6,
+      "glyphs": []
+    },
+    {
+      "source_pts_ticks": 1158953,
+      "source_pixel_sha256": "e445d72592b56da75db9ee999997559e5ca2a58a439e7d1f0ebba0bff2923fe8",
+      "score": 0.9754506107150064,
+      "reason": "accepted",
+      "glyph_count": 7,
+      "glyphs": [
+        {
+          "glyph_index": 0,
+          "actual_source_shape": [
+            58,
+            27
+          ],
+          "reference_shape": [
+            58,
+            27
+          ],
+          "physical_foreground_population": 596,
+          "physical_negative_population": 140,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9989883963958728,
+          "contrast_ncc": [
+            0.999019365245277,
+            0.9990539089470576,
+            0.9991081066273501
+          ],
+          "polarity_positive": true,
+          "score": 0.9989883963958728
+        },
+        {
+          "glyph_index": 1,
+          "actual_source_shape": [
+            58,
+            23
+          ],
+          "reference_shape": [
+            58,
+            23
+          ],
+          "physical_foreground_population": 719,
+          "physical_negative_population": 174,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9987301800319165,
+          "contrast_ncc": [
+            0.9990534026507777,
+            0.9984773339664265,
+            0.9990056478749084
+          ],
+          "polarity_positive": true,
+          "score": 0.9984773339664265
+        },
+        {
+          "glyph_index": 2,
+          "actual_source_shape": [
+            58,
+            32
+          ],
+          "reference_shape": [
+            58,
+            32
+          ],
+          "physical_foreground_population": 938,
+          "physical_negative_population": 47,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9986319088168913,
+          "contrast_ncc": [
+            0.9977087471147055
+          ],
+          "polarity_positive": true,
+          "score": 0.9977087471147055
+        },
+        {
+          "glyph_index": 3,
+          "actual_source_shape": [
+            58,
+            41
+          ],
+          "reference_shape": [
+            58,
+            41
+          ],
+          "physical_foreground_population": 1557,
+          "physical_negative_population": 80,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9856851079320759,
+          "contrast_ncc": [
+            0.9909297059424275,
+            0.9900965925739181
+          ],
+          "polarity_positive": true,
+          "score": 0.9856851079320759
+        },
+        {
+          "glyph_index": 4,
+          "actual_source_shape": [
+            58,
+            33
+          ],
+          "reference_shape": [
+            58,
+            33
+          ],
+          "physical_foreground_population": 945,
+          "physical_negative_population": 42,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9978213227423803,
+          "contrast_ncc": [
+            0.9981889392186738
+          ],
+          "polarity_positive": true,
+          "score": 0.9978213227423803
+        },
+        {
+          "glyph_index": 5,
+          "actual_source_shape": [
+            58,
+            32
+          ],
+          "reference_shape": [
+            58,
+            31
+          ],
+          "physical_foreground_population": 977,
+          "physical_negative_population": 169,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9754506107150064,
+          "contrast_ncc": [
+            0.9821659952383708,
+            0.9858266528542775,
+            0.981768373546634
+          ],
+          "polarity_positive": true,
+          "score": 0.9754506107150064
+        },
+        {
+          "glyph_index": 6,
+          "actual_source_shape": [
+            58,
+            23
+          ],
+          "reference_shape": [
+            58,
+            23
+          ],
+          "physical_foreground_population": 724,
+          "physical_negative_population": 169,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9974337650811309,
+          "contrast_ncc": [
+            0.998417145542427,
+            0.9975690768325268,
+            0.9978639296187032
+          ],
+          "polarity_positive": true,
+          "score": 0.9974337650811309
+        }
+      ]
+    },
+    {
+      "source_pts_ticks": 1159721,
+      "source_pixel_sha256": "aaf534e7c964ee577119ff1588dad5d3934e1cb8e659927644ba585263c1e711",
+      "score": 0.9752612063339877,
+      "reason": "accepted",
+      "glyph_count": 7,
+      "glyphs": [
+        {
+          "glyph_index": 0,
+          "actual_source_shape": [
+            58,
+            27
+          ],
+          "reference_shape": [
+            58,
+            27
+          ],
+          "physical_foreground_population": 596,
+          "physical_negative_population": 140,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9990549844218286,
+          "contrast_ncc": [
+            0.9992168509456839,
+            0.9992883328110852,
+            0.9993072318410368
+          ],
+          "polarity_positive": true,
+          "score": 0.9990549844218286
+        },
+        {
+          "glyph_index": 1,
+          "actual_source_shape": [
+            58,
+            23
+          ],
+          "reference_shape": [
+            58,
+            23
+          ],
+          "physical_foreground_population": 719,
+          "physical_negative_population": 174,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9987707472198284,
+          "contrast_ncc": [
+            0.9990821291427086,
+            0.9985001537971727,
+            0.9990387349715525
+          ],
+          "polarity_positive": true,
+          "score": 0.9985001537971727
+        },
+        {
+          "glyph_index": 2,
+          "actual_source_shape": [
+            58,
+            32
+          ],
+          "reference_shape": [
+            58,
+            32
+          ],
+          "physical_foreground_population": 938,
+          "physical_negative_population": 47,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9985955832712349,
+          "contrast_ncc": [
+            0.9976149803612716
+          ],
+          "polarity_positive": true,
+          "score": 0.9976149803612716
+        },
+        {
+          "glyph_index": 3,
+          "actual_source_shape": [
+            58,
+            41
+          ],
+          "reference_shape": [
+            58,
+            41
+          ],
+          "physical_foreground_population": 1557,
+          "physical_negative_population": 80,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9856804799123432,
+          "contrast_ncc": [
+            0.9910009285072022,
+            0.9904678080183794
+          ],
+          "polarity_positive": true,
+          "score": 0.9856804799123432
+        },
+        {
+          "glyph_index": 4,
+          "actual_source_shape": [
+            58,
+            33
+          ],
+          "reference_shape": [
+            58,
+            33
+          ],
+          "physical_foreground_population": 945,
+          "physical_negative_population": 42,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.997464906707886,
+          "contrast_ncc": [
+            0.9975554574749609
+          ],
+          "polarity_positive": true,
+          "score": 0.997464906707886
+        },
+        {
+          "glyph_index": 5,
+          "actual_source_shape": [
+            58,
+            32
+          ],
+          "reference_shape": [
+            58,
+            31
+          ],
+          "physical_foreground_population": 977,
+          "physical_negative_population": 169,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9752612063339877,
+          "contrast_ncc": [
+            0.9819456741817892,
+            0.985639083258491,
+            0.9812952406994079
+          ],
+          "polarity_positive": true,
+          "score": 0.9752612063339877
+        },
+        {
+          "glyph_index": 6,
+          "actual_source_shape": [
+            58,
+            23
+          ],
+          "reference_shape": [
+            58,
+            23
+          ],
+          "physical_foreground_population": 724,
+          "physical_negative_population": 169,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9981349685296236,
+          "contrast_ncc": [
+            0.9988579169007474,
+            0.9986824981810571,
+            0.9986299064072599
+          ],
+          "polarity_positive": true,
+          "score": 0.9981349685296236
+        }
+      ]
+    },
+    {
+      "source_pts_ticks": 1162793,
+      "source_pixel_sha256": "28ff54a5d89f2d1d94ca2438abdc11e0d803cde80a5d0c824a589226890fab3b",
+      "score": 0.9860284887203997,
+      "reason": "accepted",
+      "glyph_count": 7,
+      "glyphs": [
+        {
+          "glyph_index": 0,
+          "actual_source_shape": [
+            58,
+            27
+          ],
+          "reference_shape": [
+            58,
+            27
+          ],
+          "physical_foreground_population": 596,
+          "physical_negative_population": 140,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9986266782485937,
+          "contrast_ncc": [
+            0.9974824551672247,
+            0.9972775903972831,
+            0.9970595515393337
+          ],
+          "polarity_positive": true,
+          "score": 0.9970595515393337
+        },
+        {
+          "glyph_index": 1,
+          "actual_source_shape": [
+            58,
+            23
+          ],
+          "reference_shape": [
+            58,
+            23
+          ],
+          "physical_foreground_population": 719,
+          "physical_negative_population": 174,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9988911516923225,
+          "contrast_ncc": [
+            0.9989924358401484,
+            0.9987289305523763,
+            0.9990142746792495
+          ],
+          "polarity_positive": true,
+          "score": 0.9987289305523763
+        },
+        {
+          "glyph_index": 2,
+          "actual_source_shape": [
+            58,
+            32
+          ],
+          "reference_shape": [
+            58,
+            32
+          ],
+          "physical_foreground_population": 938,
+          "physical_negative_population": 47,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9991023436866122,
+          "contrast_ncc": [
+            0.9986989471071819
+          ],
+          "polarity_positive": true,
+          "score": 0.9986989471071819
+        },
+        {
+          "glyph_index": 3,
+          "actual_source_shape": [
+            58,
+            41
+          ],
+          "reference_shape": [
+            58,
+            41
+          ],
+          "physical_foreground_population": 1557,
+          "physical_negative_population": 80,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9860284887203997,
+          "contrast_ncc": [
+            0.9896220628156281,
+            0.9900511069675002
+          ],
+          "polarity_positive": true,
+          "score": 0.9860284887203997
+        },
+        {
+          "glyph_index": 4,
+          "actual_source_shape": [
+            58,
+            33
+          ],
+          "reference_shape": [
+            58,
+            33
+          ],
+          "physical_foreground_population": 945,
+          "physical_negative_population": 42,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9967639461558132,
+          "contrast_ncc": [
+            0.9959012012682383
+          ],
+          "polarity_positive": true,
+          "score": 0.9959012012682383
+        },
+        {
+          "glyph_index": 5,
+          "actual_source_shape": [
+            58,
+            31
+          ],
+          "reference_shape": [
+            58,
+            31
+          ],
+          "physical_foreground_population": 977,
+          "physical_negative_population": 169,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9881866645533138,
+          "contrast_ncc": [
+            0.9928980320504314,
+            0.9939323026165344,
+            0.9926258622262975
+          ],
+          "polarity_positive": true,
+          "score": 0.9881866645533138
+        },
+        {
+          "glyph_index": 6,
+          "actual_source_shape": [
+            58,
+            23
+          ],
+          "reference_shape": [
+            58,
+            23
+          ],
+          "physical_foreground_population": 724,
+          "physical_negative_population": 169,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9977538314604266,
+          "contrast_ncc": [
+            0.9984792727716169,
+            0.9983181291071341,
+            0.9983752267220015
+          ],
+          "polarity_positive": true,
+          "score": 0.9977538314604266
+        }
+      ]
+    },
+    {
+      "source_pts_ticks": 1164073,
+      "source_pixel_sha256": "6cfe590032024b8c53f46b28a98a723cfe9879e4cd02f3fbaa049a8dfde61ab1",
+      "score": 0.0,
+      "reason": "glyph_count_not7",
+      "glyph_count": 1,
+      "glyphs": []
+    },
+    {
+      "source_pts_ticks": 1165097,
+      "source_pixel_sha256": "1859b5832ad399669284782aa816ac26d4a0589c8b44d6d1fb1858962c667911",
+      "score": 0.0,
+      "reason": "glyph_count_not7",
+      "glyph_count": 5,
+      "glyphs": []
+    },
+    {
+      "source_pts_ticks": 1165353,
+      "source_pixel_sha256": "db0f4d00158408eee8cb21a4f6771c3e2ddb9fbf958e88ae8c0e306034316013",
+      "score": 0.0,
+      "reason": "glyph_count_not7",
+      "glyph_count": 5,
+      "glyphs": []
+    },
+    {
+      "source_pts_ticks": 1170217,
+      "source_pixel_sha256": "6c071756014865126b91354ca803c4e323011116439320017f7a2a4908b61001",
+      "score": 0.9283870252357787,
+      "reason": "accepted",
+      "glyph_count": 7,
+      "glyphs": [
+        {
+          "glyph_index": 0,
+          "actual_source_shape": [
+            59,
+            27
+          ],
+          "reference_shape": [
+            58,
+            27
+          ],
+          "physical_foreground_population": 596,
+          "physical_negative_population": 140,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.942512407682401,
+          "contrast_ncc": [
+            0.9448766123091823,
+            0.9643880675751385,
+            0.9827359095170397
+          ],
+          "polarity_positive": true,
+          "score": 0.942512407682401
+        },
+        {
+          "glyph_index": 1,
+          "actual_source_shape": [
+            58,
+            23
+          ],
+          "reference_shape": [
+            58,
+            23
+          ],
+          "physical_foreground_population": 719,
+          "physical_negative_population": 174,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9664497523108222,
+          "contrast_ncc": [
+            0.991648630512622,
+            0.9895045224913077,
+            0.990765956873284
+          ],
+          "polarity_positive": true,
+          "score": 0.9664497523108222
+        },
+        {
+          "glyph_index": 2,
+          "actual_source_shape": [
+            58,
+            31
+          ],
+          "reference_shape": [
+            58,
+            32
+          ],
+          "physical_foreground_population": 938,
+          "physical_negative_population": 47,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9478235645532896,
+          "contrast_ncc": [
+            0.9769622441104041
+          ],
+          "polarity_positive": true,
+          "score": 0.9478235645532896
+        },
+        {
+          "glyph_index": 3,
+          "actual_source_shape": [
+            58,
+            41
+          ],
+          "reference_shape": [
+            58,
+            41
+          ],
+          "physical_foreground_population": 1557,
+          "physical_negative_population": 80,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9789962346866552,
+          "contrast_ncc": [
+            0.981860664124886,
+            0.9820947502590697
+          ],
+          "polarity_positive": true,
+          "score": 0.9789962346866552
+        },
+        {
+          "glyph_index": 4,
+          "actual_source_shape": [
+            58,
+            31
+          ],
+          "reference_shape": [
+            58,
+            33
+          ],
+          "physical_foreground_population": 920,
+          "physical_negative_population": 32,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9562864641213875,
+          "contrast_ncc": [
+            0.9614876765702113
+          ],
+          "polarity_positive": true,
+          "score": 0.9562864641213875
+        },
+        {
+          "glyph_index": 5,
+          "actual_source_shape": [
+            58,
+            29
+          ],
+          "reference_shape": [
+            58,
+            31
+          ],
+          "physical_foreground_population": 961,
+          "physical_negative_population": 135,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9283870252357787,
+          "contrast_ncc": [
+            0.93376829631842,
+            0.9455187717282475,
+            0.9326798681161387
+          ],
+          "polarity_positive": true,
+          "score": 0.9283870252357787
+        },
+        {
+          "glyph_index": 6,
+          "actual_source_shape": [
+            58,
+            23
+          ],
+          "reference_shape": [
+            58,
+            23
+          ],
+          "physical_foreground_population": 724,
+          "physical_negative_population": 169,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9857414641723096,
+          "contrast_ncc": [
+            0.9895616496999408,
+            0.9874678376048345,
+            0.9893509709547484
+          ],
+          "polarity_positive": true,
+          "score": 0.9857414641723096
+        }
+      ]
+    },
+    {
+      "source_pts_ticks": 1170473,
+      "source_pixel_sha256": "1b83b1c58051510b37012ec9d68b8fa1850b74fac0fc2741edad1a3911848283",
+      "score": 0.9280704457218355,
+      "reason": "accepted",
+      "glyph_count": 7,
+      "glyphs": [
+        {
+          "glyph_index": 0,
+          "actual_source_shape": [
+            58,
+            27
+          ],
+          "reference_shape": [
+            58,
+            27
+          ],
+          "physical_foreground_population": 596,
+          "physical_negative_population": 140,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9547734084596677,
+          "contrast_ncc": [
+            0.9336783465533173,
+            0.9502908461786861,
+            0.9792276439795871
+          ],
+          "polarity_positive": true,
+          "score": 0.9336783465533173
+        },
+        {
+          "glyph_index": 1,
+          "actual_source_shape": [
+            58,
+            23
+          ],
+          "reference_shape": [
+            58,
+            23
+          ],
+          "physical_foreground_population": 719,
+          "physical_negative_population": 174,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9649237988262988,
+          "contrast_ncc": [
+            0.9921748183978798,
+            0.9901670677525805,
+            0.9907063720758533
+          ],
+          "polarity_positive": true,
+          "score": 0.9649237988262988
+        },
+        {
+          "glyph_index": 2,
+          "actual_source_shape": [
+            58,
+            31
+          ],
+          "reference_shape": [
+            58,
+            32
+          ],
+          "physical_foreground_population": 938,
+          "physical_negative_population": 47,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9472917733065219,
+          "contrast_ncc": [
+            0.9771469264368587
+          ],
+          "polarity_positive": true,
+          "score": 0.9472917733065219
+        },
+        {
+          "glyph_index": 3,
+          "actual_source_shape": [
+            58,
+            41
+          ],
+          "reference_shape": [
+            58,
+            41
+          ],
+          "physical_foreground_population": 1557,
+          "physical_negative_population": 80,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9789701738273309,
+          "contrast_ncc": [
+            0.9818722548814635,
+            0.9821029306314912
+          ],
+          "polarity_positive": true,
+          "score": 0.9789701738273309
+        },
+        {
+          "glyph_index": 4,
+          "actual_source_shape": [
+            58,
+            31
+          ],
+          "reference_shape": [
+            58,
+            33
+          ],
+          "physical_foreground_population": 920,
+          "physical_negative_population": 32,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9563902152688218,
+          "contrast_ncc": [
+            0.961523174264096
+          ],
+          "polarity_positive": true,
+          "score": 0.9563902152688218
+        },
+        {
+          "glyph_index": 5,
+          "actual_source_shape": [
+            58,
+            29
+          ],
+          "reference_shape": [
+            58,
+            31
+          ],
+          "physical_foreground_population": 961,
+          "physical_negative_population": 135,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9280704457218355,
+          "contrast_ncc": [
+            0.9335351394111402,
+            0.9453153734091537,
+            0.9324497987590841
+          ],
+          "polarity_positive": true,
+          "score": 0.9280704457218355
+        },
+        {
+          "glyph_index": 6,
+          "actual_source_shape": [
+            58,
+            23
+          ],
+          "reference_shape": [
+            58,
+            23
+          ],
+          "physical_foreground_population": 724,
+          "physical_negative_population": 169,
+          "all_mapped_negative_pixels_retained": true,
+          "full_cell_ncc": 0.9859287362910092,
+          "contrast_ncc": [
+            0.9895278508625912,
+            0.9874633852079839,
+            0.9893442966535404
+          ],
+          "polarity_positive": true,
+          "score": 0.9859287362910092
+        }
+      ]
+    },
+    {
+      "source_pts_ticks": 1171753,
+      "source_pixel_sha256": "1c6def280fafbf0089b4e1df77f793c061a751dac3b163edd71d82fe399edcfc",
+      "score": 0.0,
+      "reason": "glyph_count_not7",
+      "glyph_count": 5,
+      "glyphs": []
+    },
+    {
+      "source_pts_ticks": 1172777,
+      "source_pixel_sha256": "833b2238abfca638776430da3a166cd975e41642bd904430ed6ee8ad6b5d3acb",
+      "score": 0.0,
+      "reason": "glyph_count_not7",
+      "glyph_count": 5,
+      "glyphs": []
+    },
+    {
+      "source_pts_ticks": 1173033,
+      "source_pixel_sha256": "ada97bc7b0aa778a6aaece891beec7d6bb76395c25b1acea5be16c5cf5083831",
+      "score": 0.0,
+      "reason": "glyph_count_not7",
+      "glyph_count": 5,
+      "glyphs": []
+    }
+  ],
+  "held_rows": [
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00451_000075.203.jpg",
+      "encoded_sha256": "f43785b1bb02626de3d43daf87d20590f9fd72eb16258b633dcef8da4d59468d",
+      "pts_sec": 75.202669,
+      "split": "original_holdout",
+      "old_accepted": false,
+      "measurement": {
+        "score": 0.0,
+        "reason": "glyph_count_not7",
+        "glyph_count": 1,
+        "glyphs": []
+      },
+      "accepted": false
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00444_000075.536.jpg",
+      "encoded_sha256": "550aec2599df5b42c3204fba5407d6ef49dee2dc87d95282c3b49bb061a03db5",
+      "pts_sec": 75.536003,
+      "split": "original_holdout",
+      "old_accepted": true,
+      "measurement": {
+        "score": 0.9259884246800361,
+        "reason": "accepted",
+        "glyph_count": 7,
+        "glyphs": [
+          {
+            "glyph_index": 0,
+            "actual_source_shape": [
+              58,
+              27
+            ],
+            "reference_shape": [
+              58,
+              27
+            ],
+            "physical_foreground_population": 596,
+            "physical_negative_population": 140,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9990520612145279,
+            "contrast_ncc": [
+              0.9991645393456385,
+              0.999270266728864,
+              0.9992846135917559
+            ],
+            "polarity_positive": true,
+            "score": 0.9990520612145279
+          },
+          {
+            "glyph_index": 1,
+            "actual_source_shape": [
+              58,
+              23
+            ],
+            "reference_shape": [
+              58,
+              23
+            ],
+            "physical_foreground_population": 719,
+            "physical_negative_population": 174,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9987909178630099,
+            "contrast_ncc": [
+              0.9991299908812202,
+              0.9985415837260468,
+              0.9990763306475083
+            ],
+            "polarity_positive": true,
+            "score": 0.9985415837260468
+          },
+          {
+            "glyph_index": 2,
+            "actual_source_shape": [
+              58,
+              32
+            ],
+            "reference_shape": [
+              58,
+              32
+            ],
+            "physical_foreground_population": 938,
+            "physical_negative_population": 47,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9985501599988047,
+            "contrast_ncc": [
+              0.9976101379376655
+            ],
+            "polarity_positive": true,
+            "score": 0.9976101379376655
+          },
+          {
+            "glyph_index": 3,
+            "actual_source_shape": [
+              58,
+              42
+            ],
+            "reference_shape": [
+              58,
+              41
+            ],
+            "physical_foreground_population": 1557,
+            "physical_negative_population": 80,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9259884246800361,
+            "contrast_ncc": [
+              0.9722477629476212,
+              0.956935598547598
+            ],
+            "polarity_positive": true,
+            "score": 0.9259884246800361
+          },
+          {
+            "glyph_index": 4,
+            "actual_source_shape": [
+              58,
+              33
+            ],
+            "reference_shape": [
+              58,
+              33
+            ],
+            "physical_foreground_population": 945,
+            "physical_negative_population": 42,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9970773153442759,
+            "contrast_ncc": [
+              0.9966599017621773
+            ],
+            "polarity_positive": true,
+            "score": 0.9966599017621773
+          },
+          {
+            "glyph_index": 5,
+            "actual_source_shape": [
+              58,
+              32
+            ],
+            "reference_shape": [
+              58,
+              31
+            ],
+            "physical_foreground_population": 977,
+            "physical_negative_population": 169,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9753651126030369,
+            "contrast_ncc": [
+              0.9816632400313665,
+              0.9857070160240183,
+              0.9817036594927838
+            ],
+            "polarity_positive": true,
+            "score": 0.9753651126030369
+          },
+          {
+            "glyph_index": 6,
+            "actual_source_shape": [
+              58,
+              23
+            ],
+            "reference_shape": [
+              58,
+              23
+            ],
+            "physical_foreground_population": 724,
+            "physical_negative_population": 169,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9970450392675839,
+            "contrast_ncc": [
+              0.9984198009650976,
+              0.9981618242202188,
+              0.9982273435897006
+            ],
+            "polarity_positive": true,
+            "score": 0.9970450392675839
+          }
+        ]
+      },
+      "accepted": true
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00454_000075.603.jpg",
+      "encoded_sha256": "a63d7663e071f237932221ca5f5f952596a4777ebee19ea0263812254fd45542",
+      "pts_sec": 75.602669,
+      "split": "original_holdout",
+      "old_accepted": true,
+      "measurement": {
+        "score": 0.926882319308082,
+        "reason": "accepted",
+        "glyph_count": 7,
+        "glyphs": [
+          {
+            "glyph_index": 0,
+            "actual_source_shape": [
+              58,
+              27
+            ],
+            "reference_shape": [
+              58,
+              27
+            ],
+            "physical_foreground_population": 596,
+            "physical_negative_population": 140,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9989673970830617,
+            "contrast_ncc": [
+              0.9987344845033298,
+              0.9987746580363603,
+              0.9987960118185996
+            ],
+            "polarity_positive": true,
+            "score": 0.9987344845033298
+          },
+          {
+            "glyph_index": 1,
+            "actual_source_shape": [
+              58,
+              23
+            ],
+            "reference_shape": [
+              58,
+              23
+            ],
+            "physical_foreground_population": 719,
+            "physical_negative_population": 174,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9989720838612733,
+            "contrast_ncc": [
+              0.9989998471521777,
+              0.9989473048221632,
+              0.998981795981929
+            ],
+            "polarity_positive": true,
+            "score": 0.9989473048221632
+          },
+          {
+            "glyph_index": 2,
+            "actual_source_shape": [
+              58,
+              32
+            ],
+            "reference_shape": [
+              58,
+              32
+            ],
+            "physical_foreground_population": 938,
+            "physical_negative_population": 47,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9990982246106607,
+            "contrast_ncc": [
+              0.9986939479161268
+            ],
+            "polarity_positive": true,
+            "score": 0.9986939479161268
+          },
+          {
+            "glyph_index": 3,
+            "actual_source_shape": [
+              58,
+              42
+            ],
+            "reference_shape": [
+              58,
+              41
+            ],
+            "physical_foreground_population": 1557,
+            "physical_negative_population": 80,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.926882319308082,
+            "contrast_ncc": [
+              0.9721621691129225,
+              0.9611363150395483
+            ],
+            "polarity_positive": true,
+            "score": 0.926882319308082
+          },
+          {
+            "glyph_index": 4,
+            "actual_source_shape": [
+              58,
+              33
+            ],
+            "reference_shape": [
+              58,
+              33
+            ],
+            "physical_foreground_population": 945,
+            "physical_negative_population": 42,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9966468472975223,
+            "contrast_ncc": [
+              0.9959927971779683
+            ],
+            "polarity_positive": true,
+            "score": 0.9959927971779683
+          },
+          {
+            "glyph_index": 5,
+            "actual_source_shape": [
+              58,
+              31
+            ],
+            "reference_shape": [
+              58,
+              31
+            ],
+            "physical_foreground_population": 977,
+            "physical_negative_population": 169,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9874406721350347,
+            "contrast_ncc": [
+              0.9927938508078507,
+              0.9939241440870863,
+              0.9925951346344462
+            ],
+            "polarity_positive": true,
+            "score": 0.9874406721350347
+          },
+          {
+            "glyph_index": 6,
+            "actual_source_shape": [
+              58,
+              23
+            ],
+            "reference_shape": [
+              58,
+              23
+            ],
+            "physical_foreground_population": 724,
+            "physical_negative_population": 169,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9968669735036303,
+            "contrast_ncc": [
+              0.9984566552262337,
+              0.99823582619763,
+              0.9982762583058449
+            ],
+            "polarity_positive": true,
+            "score": 0.9968669735036303
+          }
+        ]
+      },
+      "accepted": true
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00445_000075.619.jpg",
+      "encoded_sha256": "823e6320bbf400c33e3c64b15cced27cce2d58c5ac0a072a47fb0a207eb2e286",
+      "pts_sec": 75.619336,
+      "split": "original_holdout",
+      "old_accepted": true,
+      "measurement": {
+        "score": 0.9281351451235244,
+        "reason": "accepted",
+        "glyph_count": 7,
+        "glyphs": [
+          {
+            "glyph_index": 0,
+            "actual_source_shape": [
+              58,
+              27
+            ],
+            "reference_shape": [
+              58,
+              27
+            ],
+            "physical_foreground_population": 596,
+            "physical_negative_population": 140,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.99901236252326,
+            "contrast_ncc": [
+              0.9988138498075539,
+              0.9988554053445702,
+              0.998872269013883
+            ],
+            "polarity_positive": true,
+            "score": 0.9988138498075539
+          },
+          {
+            "glyph_index": 1,
+            "actual_source_shape": [
+              58,
+              23
+            ],
+            "reference_shape": [
+              58,
+              23
+            ],
+            "physical_foreground_population": 719,
+            "physical_negative_population": 174,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9989720838612733,
+            "contrast_ncc": [
+              0.9989998471521777,
+              0.9989473048221632,
+              0.998981795981929
+            ],
+            "polarity_positive": true,
+            "score": 0.9989473048221632
+          },
+          {
+            "glyph_index": 2,
+            "actual_source_shape": [
+              58,
+              32
+            ],
+            "reference_shape": [
+              58,
+              32
+            ],
+            "physical_foreground_population": 938,
+            "physical_negative_population": 47,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9990895415860863,
+            "contrast_ncc": [
+              0.9986631064169486
+            ],
+            "polarity_positive": true,
+            "score": 0.9986631064169486
+          },
+          {
+            "glyph_index": 3,
+            "actual_source_shape": [
+              58,
+              42
+            ],
+            "reference_shape": [
+              58,
+              41
+            ],
+            "physical_foreground_population": 1557,
+            "physical_negative_population": 80,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9281351451235244,
+            "contrast_ncc": [
+              0.9723249009391336,
+              0.9593223198674257
+            ],
+            "polarity_positive": true,
+            "score": 0.9281351451235244
+          },
+          {
+            "glyph_index": 4,
+            "actual_source_shape": [
+              58,
+              33
+            ],
+            "reference_shape": [
+              58,
+              33
+            ],
+            "physical_foreground_population": 945,
+            "physical_negative_population": 42,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9966468472975223,
+            "contrast_ncc": [
+              0.9959927971779683
+            ],
+            "polarity_positive": true,
+            "score": 0.9959927971779683
+          },
+          {
+            "glyph_index": 5,
+            "actual_source_shape": [
+              58,
+              31
+            ],
+            "reference_shape": [
+              58,
+              31
+            ],
+            "physical_foreground_population": 977,
+            "physical_negative_population": 169,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9874098184285317,
+            "contrast_ncc": [
+              0.9925185393170067,
+              0.9936935117566446,
+              0.992327350475816
+            ],
+            "polarity_positive": true,
+            "score": 0.9874098184285317
+          },
+          {
+            "glyph_index": 6,
+            "actual_source_shape": [
+              58,
+              23
+            ],
+            "reference_shape": [
+              58,
+              23
+            ],
+            "physical_foreground_population": 724,
+            "physical_negative_population": 169,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9968091951234203,
+            "contrast_ncc": [
+              0.9984308422104545,
+              0.9982135844868633,
+              0.9982540905681101
+            ],
+            "polarity_positive": true,
+            "score": 0.9968091951234203
+          }
+        ]
+      },
+      "accepted": true
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00450_000075.936.jpg",
+      "encoded_sha256": "b8b367581eabf62d4962105724ae605798b05b4529db9fe25fcc72c3ef7c73a2",
+      "pts_sec": 75.936003,
+      "split": "original_holdout",
+      "old_accepted": false,
+      "measurement": {
+        "score": 0.0,
+        "reason": "glyph_count_not7",
+        "glyph_count": 6,
+        "glyphs": []
+      },
+      "accepted": false
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00451_000075.953.jpg",
+      "encoded_sha256": "e5061e41c86c3d5b8e653950e0341dffac3c39855037dbc4cb0953aa14a47b7b",
+      "pts_sec": 75.952669,
+      "split": "original_holdout",
+      "old_accepted": false,
+      "measurement": {
+        "score": 0.0,
+        "reason": "glyph_count_not7",
+        "glyph_count": 6,
+        "glyphs": []
+      },
+      "accepted": false
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00456_000076.003.jpg",
+      "encoded_sha256": "f2c0c99fc72d4151e602dd533a36c810d12dac475b937e29d1d91fd6354f9a7f",
+      "pts_sec": 76.002669,
+      "split": "original_holdout",
+      "old_accepted": false,
+      "measurement": {
+        "score": 0.0,
+        "reason": "glyph_count_not7",
+        "glyph_count": 6,
+        "glyphs": []
+      },
+      "accepted": false
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00452_000076.019.jpg",
+      "encoded_sha256": "6fd33db0a3e792e9e85777cf1478fb6d08526afd050f8cff9ccda78f468d5456",
+      "pts_sec": 76.019336,
+      "split": "original_holdout",
+      "old_accepted": false,
+      "measurement": {
+        "score": 0.0,
+        "reason": "glyph_count_not7",
+        "glyph_count": 6,
+        "glyphs": []
+      },
+      "accepted": false
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00453_000076.036.jpg",
+      "encoded_sha256": "f70af92cfcaeb58e331d3b2d337c455b9967fa05c4d7bc25b024b554b456192d",
+      "pts_sec": 76.036003,
+      "split": "original_holdout",
+      "old_accepted": false,
+      "measurement": {
+        "score": 0.0,
+        "reason": "glyph_touches_roi_border",
+        "glyph_count": 7,
+        "glyphs": []
+      },
+      "accepted": false
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00454_000076.103.jpg",
+      "encoded_sha256": "4a3fc8664cfb41bd3e528577d39f25b7ebf273eeb1051c5f10d02313071082d8",
+      "pts_sec": 76.102669,
+      "split": "original_holdout",
+      "old_accepted": false,
+      "measurement": {
+        "score": 0.9294977677425857,
+        "reason": "accepted",
+        "glyph_count": 7,
+        "glyphs": [
+          {
+            "glyph_index": 0,
+            "actual_source_shape": [
+              58,
+              27
+            ],
+            "reference_shape": [
+              58,
+              27
+            ],
+            "physical_foreground_population": 596,
+            "physical_negative_population": 140,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9569781474648325,
+            "contrast_ncc": [
+              0.9891015656252254,
+              0.992513321578472,
+              0.9810595355739662
+            ],
+            "polarity_positive": true,
+            "score": 0.9569781474648325
+          },
+          {
+            "glyph_index": 1,
+            "actual_source_shape": [
+              58,
+              23
+            ],
+            "reference_shape": [
+              58,
+              23
+            ],
+            "physical_foreground_population": 719,
+            "physical_negative_population": 174,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9731184136229714,
+            "contrast_ncc": [
+              0.9920370039537226,
+              0.9929639351723563,
+              0.9959628874207408
+            ],
+            "polarity_positive": true,
+            "score": 0.9731184136229714
+          },
+          {
+            "glyph_index": 2,
+            "actual_source_shape": [
+              58,
+              31
+            ],
+            "reference_shape": [
+              58,
+              32
+            ],
+            "physical_foreground_population": 938,
+            "physical_negative_population": 47,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9502152587938868,
+            "contrast_ncc": [
+              0.977470877849501
+            ],
+            "polarity_positive": true,
+            "score": 0.9502152587938868
+          },
+          {
+            "glyph_index": 3,
+            "actual_source_shape": [
+              58,
+              41
+            ],
+            "reference_shape": [
+              58,
+              41
+            ],
+            "physical_foreground_population": 1557,
+            "physical_negative_population": 80,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9789293820893404,
+            "contrast_ncc": [
+              0.9816190792310501,
+              0.9822149599627689
+            ],
+            "polarity_positive": true,
+            "score": 0.9789293820893404
+          },
+          {
+            "glyph_index": 4,
+            "actual_source_shape": [
+              58,
+              31
+            ],
+            "reference_shape": [
+              58,
+              33
+            ],
+            "physical_foreground_population": 920,
+            "physical_negative_population": 32,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9581799149772757,
+            "contrast_ncc": [
+              0.9622526872355012
+            ],
+            "polarity_positive": true,
+            "score": 0.9581799149772757
+          },
+          {
+            "glyph_index": 5,
+            "actual_source_shape": [
+              58,
+              29
+            ],
+            "reference_shape": [
+              58,
+              31
+            ],
+            "physical_foreground_population": 961,
+            "physical_negative_population": 135,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9294977677425857,
+            "contrast_ncc": [
+              0.9346301289565563,
+              0.9459928939889776,
+              0.9335900254445438
+            ],
+            "polarity_positive": true,
+            "score": 0.9294977677425857
+          },
+          {
+            "glyph_index": 6,
+            "actual_source_shape": [
+              58,
+              23
+            ],
+            "reference_shape": [
+              58,
+              23
+            ],
+            "physical_foreground_population": 724,
+            "physical_negative_population": 169,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9855063560696625,
+            "contrast_ncc": [
+              0.9898214414252203,
+              0.9872337305157524,
+              0.9894412936581831
+            ],
+            "polarity_positive": true,
+            "score": 0.9855063560696625
+          }
+        ]
+      },
+      "accepted": true
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00455_000076.119.jpg",
+      "encoded_sha256": "c7438dfbaa7b2fec24c022d724022081ae7082bc59b7fb94080c5360bd458113",
+      "pts_sec": 76.119336,
+      "split": "original_holdout",
+      "old_accepted": false,
+      "measurement": {
+        "score": 0.9287313366274789,
+        "reason": "accepted",
+        "glyph_count": 7,
+        "glyphs": [
+          {
+            "glyph_index": 0,
+            "actual_source_shape": [
+              59,
+              27
+            ],
+            "reference_shape": [
+              58,
+              27
+            ],
+            "physical_foreground_population": 596,
+            "physical_negative_population": 140,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9408197748791558,
+            "contrast_ncc": [
+              0.9834832780384827,
+              0.9875056118503774,
+              0.9795720202570833
+            ],
+            "polarity_positive": true,
+            "score": 0.9408197748791558
+          },
+          {
+            "glyph_index": 1,
+            "actual_source_shape": [
+              58,
+              23
+            ],
+            "reference_shape": [
+              58,
+              23
+            ],
+            "physical_foreground_population": 719,
+            "physical_negative_population": 174,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9737354262087207,
+            "contrast_ncc": [
+              0.9920507160373077,
+              0.9927607604651202,
+              0.9951106771902524
+            ],
+            "polarity_positive": true,
+            "score": 0.9737354262087207
+          },
+          {
+            "glyph_index": 2,
+            "actual_source_shape": [
+              58,
+              31
+            ],
+            "reference_shape": [
+              58,
+              32
+            ],
+            "physical_foreground_population": 938,
+            "physical_negative_population": 47,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9483857070148395,
+            "contrast_ncc": [
+              0.974223297841316
+            ],
+            "polarity_positive": true,
+            "score": 0.9483857070148395
+          },
+          {
+            "glyph_index": 3,
+            "actual_source_shape": [
+              58,
+              41
+            ],
+            "reference_shape": [
+              58,
+              41
+            ],
+            "physical_foreground_population": 1557,
+            "physical_negative_population": 80,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9787298007676392,
+            "contrast_ncc": [
+              0.9817429072111604,
+              0.9824621579510971
+            ],
+            "polarity_positive": true,
+            "score": 0.9787298007676392
+          },
+          {
+            "glyph_index": 4,
+            "actual_source_shape": [
+              58,
+              31
+            ],
+            "reference_shape": [
+              58,
+              33
+            ],
+            "physical_foreground_population": 920,
+            "physical_negative_population": 32,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9581988320482787,
+            "contrast_ncc": [
+              0.9623439664718296
+            ],
+            "polarity_positive": true,
+            "score": 0.9581988320482787
+          },
+          {
+            "glyph_index": 5,
+            "actual_source_shape": [
+              58,
+              29
+            ],
+            "reference_shape": [
+              58,
+              31
+            ],
+            "physical_foreground_population": 961,
+            "physical_negative_population": 135,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9287313366274789,
+            "contrast_ncc": [
+              0.9344540136655605,
+              0.9459393989521278,
+              0.9336066641681476
+            ],
+            "polarity_positive": true,
+            "score": 0.9287313366274789
+          },
+          {
+            "glyph_index": 6,
+            "actual_source_shape": [
+              58,
+              23
+            ],
+            "reference_shape": [
+              58,
+              23
+            ],
+            "physical_foreground_population": 724,
+            "physical_negative_population": 169,
+            "all_mapped_negative_pixels_retained": true,
+            "full_cell_ncc": 0.9855305174503977,
+            "contrast_ncc": [
+              0.989772257617308,
+              0.9871878182304084,
+              0.9893761258440776
+            ],
+            "polarity_positive": true,
+            "score": 0.9855305174503977
+          }
+        ]
+      },
+      "accepted": true
+    },
+    {
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-000/frame_00041_000003.586.jpg",
+      "encoded_sha256": "e062e94fba7749b0a7b774a19c193df4e78aa7b2d8e40f605acbd264db7344e6",
+      "pts_sec": 3.586003,
+      "split": "natural_negative",
+      "old_accepted": false,
+      "measurement": {
+        "score": 0.0,
+        "reason": "glyph_count_not7",
+        "glyph_count": 3,
+        "glyphs": []
+      },
+      "accepted": false
+    },
+    {
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-000/frame_00088_000005.886.jpg",
+      "encoded_sha256": "3cc5a947a2f4e57ed3a97f0bfecedf8432de236374725d2d9e6826b0a87d0fdd",
+      "pts_sec": 5.886003,
+      "split": "natural_negative",
+      "old_accepted": false,
+      "measurement": {
+        "score": 0.0,
+        "reason": "glyph_count_not7",
+        "glyph_count": 0,
+        "glyphs": []
+      },
+      "accepted": false
+    },
+    {
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-005/frame_00176_000112.269.jpg",
+      "encoded_sha256": "d328bfa854351ba690cda57286e75499b04598936456b3411fa3a17b1f361927",
+      "pts_sec": 112.269336,
+      "split": "natural_negative",
+      "old_accepted": false,
+      "measurement": {
+        "score": 0.0,
+        "reason": "glyph_count_not7",
+        "glyph_count": 0,
+        "glyphs": []
+      },
+      "accepted": false
+    },
+    {
+      "path": "outputs/recognition-investigation/r1-end-continuous-result/frame_15.png",
+      "encoded_sha256": "75f47aed696f44eb0931d4423e8a54b16f70dbbf525a294a2679b8fff3f3e397",
+      "pts_sec": 74.43600260416666,
+      "source_pts_ticks": 1143337,
+      "split": "previously_exposed_early_source_challenge",
+      "old_accepted": false,
+      "measurement": {
+        "score": 0.0,
+        "reason": "glyph_count_not7",
+        "glyph_count": 4,
+        "glyphs": []
+      },
+      "accepted": false
+    }
+  ],
+  "control_result": {
+    "score": 0.7093700642915943,
+    "reason": "below_threshold_or_physical_population",
+    "glyph_count": 7,
+    "glyphs": [
+      {
+        "glyph_index": 0,
+        "actual_source_shape": [
+          58,
+          27
+        ],
+        "reference_shape": [
+          58,
+          27
+        ],
+        "physical_foreground_population": 596,
+        "physical_negative_population": 140,
+        "all_mapped_negative_pixels_retained": true,
+        "full_cell_ncc": 0.9990271437915433,
+        "contrast_ncc": [
+          0.9988256507424087,
+          0.9988107385005827,
+          0.9988815027243874
+        ],
+        "polarity_positive": true,
+        "score": 0.9988107385005827
+      },
+      {
+        "glyph_index": 1,
+        "actual_source_shape": [
+          58,
+          23
+        ],
+        "reference_shape": [
+          58,
+          23
+        ],
+        "physical_foreground_population": 719,
+        "physical_negative_population": 174,
+        "all_mapped_negative_pixels_retained": true,
+        "full_cell_ncc": 0.9987832855595042,
+        "contrast_ncc": [
+          0.9996492563805954,
+          0.99894581848775,
+          0.9995704332256683
+        ],
+        "polarity_positive": true,
+        "score": 0.9987832855595042
+      },
+      {
+        "glyph_index": 2,
+        "actual_source_shape": [
+          58,
+          32
+        ],
+        "reference_shape": [
+          58,
+          32
+        ],
+        "physical_foreground_population": 938,
+        "physical_negative_population": 47,
+        "all_mapped_negative_pixels_retained": true,
+        "full_cell_ncc": 0.9990717813667054,
+        "contrast_ncc": [
+          0.9986879980896014
+        ],
+        "polarity_positive": true,
+        "score": 0.9986879980896014
+      },
+      {
+        "glyph_index": 3,
+        "actual_source_shape": [
+          58,
+          42
+        ],
+        "reference_shape": [
+          58,
+          41
+        ],
+        "physical_foreground_population": 1557,
+        "physical_negative_population": 80,
+        "all_mapped_negative_pixels_retained": true,
+        "full_cell_ncc": 0.9271112588073909,
+        "contrast_ncc": [
+          0.973558484822512,
+          0.955240171662361
+        ],
+        "polarity_positive": true,
+        "score": 0.9271112588073909
+      },
+      {
+        "glyph_index": 4,
+        "actual_source_shape": [
+          58,
+          33
+        ],
+        "reference_shape": [
+          58,
+          33
+        ],
+        "physical_foreground_population": 945,
+        "physical_negative_population": 42,
+        "all_mapped_negative_pixels_retained": true,
+        "full_cell_ncc": 0.9983191291458225,
+        "contrast_ncc": [
+          0.9992399428010448
+        ],
+        "polarity_positive": true,
+        "score": 0.9983191291458225
+      },
+      {
+        "glyph_index": 5,
+        "actual_source_shape": [
+          58,
+          32
+        ],
+        "reference_shape": [
+          58,
+          31
+        ],
+        "physical_foreground_population": 977,
+        "physical_negative_population": 169,
+        "all_mapped_negative_pixels_retained": true,
+        "full_cell_ncc": 0.8996858305487633,
+        "contrast_ncc": [
+          0.9824937582739596,
+          0.7093700642915943,
+          0.9077177136634821
+        ],
+        "polarity_positive": true,
+        "score": 0.7093700642915943
+      },
+      {
+        "glyph_index": 6,
+        "actual_source_shape": [
+          58,
+          23
+        ],
+        "reference_shape": [
+          58,
+          23
+        ],
+        "physical_foreground_population": 724,
+        "physical_negative_population": 169,
+        "all_mapped_negative_pixels_retained": true,
+        "full_cell_ncc": 0.9940815435237736,
+        "contrast_ncc": [
+          0.9986494644281216,
+          0.9978692819861606,
+          0.9971380958224685
+        ],
+        "polarity_positive": true,
+        "score": 0.9940815435237736
+      }
+    ]
+  },
+  "blank_result": {
+    "score": 0.0,
+    "reason": "glyph_count_not7",
+    "glyph_count": 0,
+    "glyphs": []
+  },
+  "control_gate_passed": true,
+  "counts": {
+    "holdout_correct": 5,
+    "holdout_unknown": 6,
+    "holdout_wrong": 0,
+    "natural_negative_false_positive": 0,
+    "early_challenge_accepted": false
+  },
+  "early_segmentation_diagnostic": {
+    "scope": "Failure-stage diagnosis only; no candidate/reference/threshold adjustment, source already exposed",
+    "source_pts_ticks": 1143337,
+    "source_pixel_sha256": "4e7b1fc26cdc154ac8d14c23b54b52eaada901e735647b44c1a217e0a8061cb9",
+    "reason": "glyph_count_not7",
+    "retained_component_boxes": [
+      [
+        6,
+        7,
+        80,
+        60
+      ],
+      [
+        90,
+        8,
+        40,
+        46
+      ],
+      [
+        144,
+        8,
+        27,
+        47
+      ],
+      [
+        175,
+        8,
+        52,
+        60
+      ]
+    ],
+    "component_count": 4,
+    "human_reviewed_literal_glyphs": 7,
+    "semantic_caution": "Connected components are segmentation units, not a proof that source contains only4letters. Existing prototype requires7isolatedcomponents and rejects before geometry or NCC."
+  },
+  "comparison": {
+    "held_correct": {
+      "previous": 3,
+      "current": 5,
+      "delta": 2
+    },
+    "held_unknown": {
+      "previous": 8,
+      "current": 6,
+      "delta": -2
+    },
+    "held_wrong": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "natural_negative_false_positive": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "early_challenge_accepted": {
+      "previous": false,
+      "current": false,
+      "delta": 0
+    },
+    "canonical_last_adopted": {
+      "PASS": 23,
+      "FAIL": 55,
+      "NE": 4
+    },
+    "canonical_current": null,
+    "canonical_delta": null
+  },
+  "training_runtime_sec": 2.0298015479929745,
+  "held_runtime_sec": 1.1592202390311286,
+  "evidence_sha256": {
+    "outputs/recognition-investigation/result-native-mask-registration-20261013/prototype.py": "c8d4cd3415a268f386edb47ee85d3f84e17eb4909341e602f31cac7662e9e117",
+    "outputs/recognition-investigation/result-native-mask-registration-20261013/execution.json": "47259e0cfed205704b1991750016aa2a6cc921b79e64b489ca2b21b9b27c6027",
+    "outputs/recognition-investigation/result-native-mask-registration-20261013/result.json": "00e096e31aeb65809f2f357946837b283f78a70482202d1b44058aa951015c72",
+    "outputs/recognition-investigation/result-native-mask-registration-20261013/held-execution.json": "ca8fbd43e994bbf0e155a709f262d46a394250cc9e28895b0c16e27a0b5f25e6",
+    "outputs/recognition-investigation/result-native-mask-registration-20261013/held-result.json": "7d1ea2627e1cb9f8950b59d5a91d9ba3d7a0fa43ea530e1806d6e0b5238752f7",
+    "outputs/recognition-investigation/result-native-mask-registration-20261013/early-segmentation-diagnostic.json": "e7517eb14c9b8fbae637a79475b1534d3214bebb802a3e74044bd480a32cfec9"
+  },
+  "terminal_hash_verified": true,
+  "production_changed": false,
+  "qualification_created": false,
+  "canonical_full_executed": false,
+  "new_blind_cohort_claimed": false,
+  "decision": "Retain measured late-word eligibility as experimental evidence, do not integrate as a solution for early onset: early source fails4components before geometry/NCC. Existing held corrects retained and2unknowns become correct, no measured wrong increase.",
+  "next_hypothesis": "Test a training-only seven-slot word layout with all seven glyph foreground/negative-space checks and word-space evidence, avoiding assumption that each glyph is a separate thresholded connected component. Learn positions only from complete14assigned training images; retain NCC0.90/32distinct-current-pixel gates and reject ambiguity/clipping. Do not split/fit early components by hand or lower segmentation threshold against the challenge."
+}

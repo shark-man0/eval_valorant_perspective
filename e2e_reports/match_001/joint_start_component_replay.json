@@ -1,0 +1,1069 @@
+{
+  "scope": "Current common profile/code static phase and timer replay; existing exposed source review cases, not new blind holdout or UI qualification",
+  "recognizer_fingerprint": "727c9ba7c88859d0726de307cbdb6b63cdf46f002510c0b2260bbe298f0e763f",
+  "profile_fingerprint": "10bfac00544e510ebf3f3e2c0072c9beba24938b2ff996c9012f7e4046d82c99",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "profile_path": "outputs/hud_profiles/round-global-timer-glyph-20261008/score-rowcontrast-late-result-diagnostic.templates.json",
+  "source_reports_sha256": {
+    "e2e_reports/match_001/lifecycle_phase_current_native.json": "d8df3339e2ae43163e0383103608d17bae6026a2c61e3cc6fb0c1e5adcc08a08",
+    "e2e_reports/match_001/lifecycle_timer_current_native.json": "066172452d9487999e41c89d75920549c23a3c48bb4ed351407aa1ec55a8aa0e",
+    "outputs/recognition-investigation/lifecycle-timer-current-native-20261012/selection.json": "f857b1e7ccc01e1ad7b34cbf7d3a3393294f33c100793932ea3b7dd8dcb7ce42",
+    "outputs/recognition-investigation/native-ui-transport-20261013/result.json": "494bb996f5a37f74a462bd0c1a305bb44e2b4bf6684a45df0efba8d072ec7181"
+  },
+  "phase_source_ticks": [
+    23081,
+    38441,
+    59945,
+    13353,
+    28713,
+    1505321,
+    1540649,
+    1577769,
+    1598761,
+    1632809,
+    1709097,
+    122921,
+    384041,
+    768041,
+    1173545,
+    1305641,
+    1661993,
+    1692713,
+    1723433,
+    2027561,
+    2304041,
+    2457641,
+    2611241
+  ],
+  "timer_source_ticks": [
+    19753,
+    134185,
+    181033,
+    218153,
+    248617,
+    288809,
+    346153,
+    396329,
+    458025,
+    478761,
+    532265,
+    581161,
+    668201,
+    748585,
+    801321,
+    837161,
+    902441,
+    989737,
+    1105961,
+    1186857,
+    1262633,
+    1529385,
+    1604649,
+    1727785,
+    1846313,
+    1934377,
+    2015273,
+    2108713,
+    2191913,
+    2243625,
+    2340905,
+    2557993
+  ],
+  "excluded_phase_controls": [
+    {
+      "source_pts_ticks": 1059881,
+      "time_sec": 69.00266927083334,
+      "reason": "timer training conflicts with proposed joint negative split"
+    }
+  ],
+  "frozen_before_current_predictions": true,
+  "production_changed": false,
+  "qualification_created": false,
+  "phase_counts": {
+    "training_correct": 3,
+    "holdout_correct": 8,
+    "negative_rejected": 12
+  },
+  "timer_counts": {
+    "correct": 25,
+    "unknown": 7,
+    "wrong": 0
+  },
+  "rows": [
+    {
+      "component": "purchase_phase",
+      "source_pts_ticks": 23081,
+      "pixel_sha256": "470b5f982ae904f52c30a4e5d305d01bc40eac26cedef528b9dbdcc7def9100f",
+      "encoded_sha256": "0aab97c4236685e670d2b89e9001b59a8e77c1b393bbe193ace0a98df6df17d9",
+      "split": "training",
+      "expected_present": true,
+      "accepted": true,
+      "confidence": 0.9756581805512156,
+      "outcome": "training_correct",
+      "previous_accepted": true
+    },
+    {
+      "component": "purchase_phase",
+      "source_pts_ticks": 38441,
+      "pixel_sha256": "22b9129dadeb8173b441f31b92f20bb61423461cd5ae33961ddc104c6b8a71f7",
+      "encoded_sha256": "0dc39ee196158fbc91f35b420e7a8f8cffa5a1d26a6a6acb5282dae80e6a10b4",
+      "split": "training",
+      "expected_present": true,
+      "accepted": true,
+      "confidence": 0.977443745909752,
+      "outcome": "training_correct",
+      "previous_accepted": true
+    },
+    {
+      "component": "purchase_phase",
+      "source_pts_ticks": 59945,
+      "pixel_sha256": "439c3817810a8d8bcc8c82ed218d5fe0f851c7c5f35308b0b85fcbd328759edd",
+      "encoded_sha256": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+      "split": "training",
+      "expected_present": true,
+      "accepted": true,
+      "confidence": 0.9825946381792128,
+      "outcome": "training_correct",
+      "previous_accepted": true
+    },
+    {
+      "component": "purchase_phase",
+      "source_pts_ticks": 13353,
+      "pixel_sha256": "9ad154e6a87bdb05c630cc9f19206d1f9f33276ff9b359c0ea5f5057935bac52",
+      "encoded_sha256": "41f7647f739453bc9af6cf9ac92de6f47ed01adbf5ed28521ae479f1e8ee6167",
+      "split": "holdout_positive",
+      "expected_present": true,
+      "accepted": true,
+      "confidence": 0.9692594186605111,
+      "outcome": "holdout_correct",
+      "previous_accepted": true
+    },
+    {
+      "component": "purchase_phase",
+      "source_pts_ticks": 28713,
+      "pixel_sha256": "dc40f0ebf0d946148b95f2c14a609a72179a4bfada9e6e3cf8ddaeeec4d9fdaa",
+      "encoded_sha256": "d56f456a9c47d2f913b0a97058c5e3f3202744637fb8264b159ff13a815d40b3",
+      "split": "holdout_positive",
+      "expected_present": true,
+      "accepted": true,
+      "confidence": 0.9665472683044305,
+      "outcome": "holdout_correct",
+      "previous_accepted": true
+    },
+    {
+      "component": "purchase_phase",
+      "source_pts_ticks": 1505321,
+      "pixel_sha256": "f70508e35f6d4b1ded58c6a19a6a1f9360f99f46763f18579f3419d594a24f88",
+      "encoded_sha256": "d835f87de3e4d009ee926a04ee79283456bf74f1245d9e96e3d7c8de8041f66f",
+      "split": "holdout_positive",
+      "expected_present": true,
+      "accepted": true,
+      "confidence": 0.9662639423647382,
+      "outcome": "holdout_correct",
+      "previous_accepted": true
+    },
+    {
+      "component": "purchase_phase",
+      "source_pts_ticks": 1540649,
+      "pixel_sha256": "54ef3f77a8cd3c051bb46d0d309940e8c444dc26d04dd90d312ab334d09ed163",
+      "encoded_sha256": "8a59d99335e698bbf14e5cee7df977f3226c136966adbc6e4c9719910e9aaf98",
+      "split": "holdout_positive",
+      "expected_present": true,
+      "accepted": true,
+      "confidence": 0.9659779527026425,
+      "outcome": "holdout_correct",
+      "previous_accepted": true
+    },
+    {
+      "component": "purchase_phase",
+      "source_pts_ticks": 1577769,
+      "pixel_sha256": "db27b291aee56e75037ccd785770bf65d4de053e11cc3c00ca6de1ed570f2ba1",
+      "encoded_sha256": "61739f9cd374f7284269283dadafff79c5e984fb19f07fb7c55c363514541d41",
+      "split": "holdout_positive",
+      "expected_present": true,
+      "accepted": true,
+      "confidence": 0.9762386814607382,
+      "outcome": "holdout_correct",
+      "previous_accepted": true
+    },
+    {
+      "component": "purchase_phase",
+      "source_pts_ticks": 1598761,
+      "pixel_sha256": "c77998771b90f0244f92dbf3a84d65ffed2df6b2bc12ecc95452db7837489229",
+      "encoded_sha256": "da77fde3d0636fe8460f38eed7ec2ffcaff56e8df41213ec8e15bba23e6f0500",
+      "split": "holdout_positive",
+      "expected_present": true,
+      "accepted": true,
+      "confidence": 0.9443238743014096,
+      "outcome": "holdout_correct",
+      "previous_accepted": true
+    },
+    {
+      "component": "purchase_phase",
+      "source_pts_ticks": 1632809,
+      "pixel_sha256": "11474649e45206f151499eae67d39f91925c82ca244f31f7be174e5b33f36fb2",
+      "encoded_sha256": "5480c13098f2551181fc13b06c455d51b3aaee9c04c5e9dc79ffa09d87bac583",
+      "split": "holdout_positive",
+      "expected_present": true,
+      "accepted": true,
+      "confidence": 0.930303873424797,
+      "outcome": "holdout_correct",
+      "previous_accepted": true
+    },
+    {
+      "component": "purchase_phase",
+      "source_pts_ticks": 1709097,
+      "pixel_sha256": "8e943a39d32a30f137f0ae4b1d763464232d43a0818a4bdc7adf737a299e9f80",
+      "encoded_sha256": "4cb2b18aaca3e67ba1b53b8362c98f83da743ccf9f97ab2e629ca55e12704741",
+      "split": "holdout_positive",
+      "expected_present": true,
+      "accepted": true,
+      "confidence": 0.9535449260163092,
+      "outcome": "holdout_correct",
+      "previous_accepted": true
+    },
+    {
+      "component": "purchase_phase",
+      "source_pts_ticks": 122921,
+      "pixel_sha256": "fdb6380844056f61637ba93c1677da9503e4087f564fe846cf294d6444d5132b",
+      "encoded_sha256": "581434f80998c432ce21b3aa3b91808521dc8efddb8421dcf65ee5fa07fd794b",
+      "split": "control",
+      "expected_present": false,
+      "accepted": false,
+      "confidence": 0,
+      "outcome": "negative_rejected",
+      "previous_accepted": false
+    },
+    {
+      "component": "purchase_phase",
+      "source_pts_ticks": 384041,
+      "pixel_sha256": "9de35a21f3ab1d94b22ed0396cef0e239fba021cd84d62ec2c2fd95ba5138403",
+      "encoded_sha256": "a6710f207d3b7ae31f26b46e24968e73d242b4ff7d506537aa78b27d6c75c853",
+      "split": "control",
+      "expected_present": false,
+      "accepted": false,
+      "confidence": 0,
+      "outcome": "negative_rejected",
+      "previous_accepted": false
+    },
+    {
+      "component": "purchase_phase",
+      "source_pts_ticks": 768041,
+      "pixel_sha256": "1d38eb42be72749dabe25fa0fecfdbd9b1ef58b8f5d2e8a13a1427a89d139097",
+      "encoded_sha256": "78702928f817a5ddf3c1b8fda2cb0f9fc41d22e103d8566aa5eed84bf5da1581",
+      "split": "control",
+      "expected_present": false,
+      "accepted": false,
+      "confidence": 0,
+      "outcome": "negative_rejected",
+      "previous_accepted": false
+    },
+    {
+      "component": "purchase_phase",
+      "source_pts_ticks": 1173545,
+      "pixel_sha256": "a8150766d43268b76f62c2cc4c074da92ec48e18c14f3f657852fd5c85092ecf",
+      "encoded_sha256": "0236c21b2f2737973c3b291bc501ef3306acb4b479c925d652bac8c53a294945",
+      "split": "control",
+      "expected_present": false,
+      "accepted": false,
+      "confidence": 0,
+      "outcome": "negative_rejected",
+      "previous_accepted": false
+    },
+    {
+      "component": "purchase_phase",
+      "source_pts_ticks": 1305641,
+      "pixel_sha256": "9fd764792be8c64e31b78be8579751e256b57f2582cd7a6b470d1cbea3445e5e",
+      "encoded_sha256": "b11db0bd7bec6eee81bf02b046d891d833b5d343a41a79b914230479898cf2f1",
+      "split": "control",
+      "expected_present": false,
+      "accepted": false,
+      "confidence": 0,
+      "outcome": "negative_rejected",
+      "previous_accepted": false
+    },
+    {
+      "component": "purchase_phase",
+      "source_pts_ticks": 1661993,
+      "pixel_sha256": "f1317277e07138373f13b47dc29a39be524db58a58e6389781b7931682abf58d",
+      "encoded_sha256": "3eb2819f740dc4635085b12b2e819120b51dbfcdda5c30c79bc1ad9be10bff57",
+      "split": "control",
+      "expected_present": false,
+      "accepted": false,
+      "confidence": 0,
+      "outcome": "negative_rejected",
+      "previous_accepted": false
+    },
+    {
+      "component": "purchase_phase",
+      "source_pts_ticks": 1692713,
+      "pixel_sha256": "8f8a778303fcfcbc2cffcdce8f6c7240c307d5872b96eff46796d6c7fbce3e71",
+      "encoded_sha256": "cd85cf1bed95a34094089bfc51711fb9f31013171fe16cb45a23f8121306d56a",
+      "split": "control",
+      "expected_present": false,
+      "accepted": false,
+      "confidence": 0,
+      "outcome": "negative_rejected",
+      "previous_accepted": false
+    },
+    {
+      "component": "purchase_phase",
+      "source_pts_ticks": 1723433,
+      "pixel_sha256": "31c7bdb4424f3df8dca3eb752e75521e6b7b23184eaf1ce9e53f181afb9fb963",
+      "encoded_sha256": "df860f64aab53674bac3481184f505b1d6829508b79ac3804f9104c2deb506a4",
+      "split": "control",
+      "expected_present": false,
+      "accepted": false,
+      "confidence": 0,
+      "outcome": "negative_rejected",
+      "previous_accepted": false
+    },
+    {
+      "component": "purchase_phase",
+      "source_pts_ticks": 2027561,
+      "pixel_sha256": "129139520103420c96212b721acc4b07e61b8fdfece9a5f07769fb45400bfaaa",
+      "encoded_sha256": "7fc4fd7fa4a2cd75fdbbfe2f951f91ce88fd3416775eb2b0b65811104bb470f7",
+      "split": "control",
+      "expected_present": false,
+      "accepted": false,
+      "confidence": 0,
+      "outcome": "negative_rejected",
+      "previous_accepted": false
+    },
+    {
+      "component": "purchase_phase",
+      "source_pts_ticks": 2304041,
+      "pixel_sha256": "6c50acba14d7be9d22e494779d4d54a1571dc5afbe58e0c51fd8c0c61c8579be",
+      "encoded_sha256": "b79f495d0299c4b9b196cf3134d02103f5d1a1edfdc69580f18d3354fc7ba381",
+      "split": "control",
+      "expected_present": false,
+      "accepted": false,
+      "confidence": 0,
+      "outcome": "negative_rejected",
+      "previous_accepted": false
+    },
+    {
+      "component": "purchase_phase",
+      "source_pts_ticks": 2457641,
+      "pixel_sha256": "5705062fda3345288452d9b4ef5f0054dfc24bd57ba4552f97665ffcf6c2ac6b",
+      "encoded_sha256": "fa31b13e80a36bbfdf779f070d7e1ffc7ba2a9cf1a19d6a64f53598dd4135ce5",
+      "split": "control",
+      "expected_present": false,
+      "accepted": false,
+      "confidence": 0,
+      "outcome": "negative_rejected",
+      "previous_accepted": false
+    },
+    {
+      "component": "purchase_phase",
+      "source_pts_ticks": 2611241,
+      "pixel_sha256": "394152195dfdb479b0c3aff529eace85d3ba614addfd16749ef1a905aa5d9442",
+      "encoded_sha256": "979ef3bbb5ff5913b0812292aba287512383d005f425ffcddd0bbae5ad762a96",
+      "split": "control",
+      "expected_present": false,
+      "accepted": false,
+      "confidence": 0,
+      "outcome": "negative_rejected",
+      "previous_accepted": false
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 19753,
+      "pixel_sha256": "71ff19c1582f5f5fc0485d14d3acf5a929c36364bb39d1d63c364ef5a72ec1f0",
+      "encoded_sha256": "e6e678b1968359a117c8c6b0afd9463b1f92619aa364786b742704796e4a26d2",
+      "split": "holdout",
+      "manual_reviewed_display": "0:02",
+      "display": "0:02",
+      "confidence": 0.9463896751403809,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "previous_outcome": "correct"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 134185,
+      "pixel_sha256": "680a57bb3f775b5ad1b9c644b19ae2b51746daf9404d5ed36fcde44c3771028d",
+      "encoded_sha256": "dc366994e70dd1aea1b56c2de5f3abcaf5cb0c2860731bb9df299ec0b52a3ebe",
+      "split": "holdout",
+      "manual_reviewed_display": "1:35",
+      "display": "1:35",
+      "confidence": 0.9713817238807678,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "previous_outcome": "correct"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 181033,
+      "pixel_sha256": "8133bf4ba0a4344d38a6479421e58c4abdf4ef2eb72e3f9cf414982f4666265b",
+      "encoded_sha256": "4ccf8efb176797354298324964c9120f4da45515c3356b783e796cbc9955c2db",
+      "split": "holdout",
+      "manual_reviewed_display": "1:32",
+      "display": "1:32",
+      "confidence": 0.9778985977172852,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "previous_outcome": "correct"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 218153,
+      "pixel_sha256": "2f941397a9415fac0a879681f483d3d5d74469fa452c38f519c7e5234b13b89b",
+      "encoded_sha256": "9641bfaf5c6c28751c661e2f912416eea0a0998da0f8b9a6d156532c7491eb87",
+      "split": "holdout",
+      "manual_reviewed_display": "1:29",
+      "display": "1:29",
+      "confidence": 0.9529863595962524,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "previous_outcome": "correct"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 248617,
+      "pixel_sha256": "2860cd75f55da64793159a21d7615e3a94034e8b4f2ff5f1ce6c19eec8d934bd",
+      "encoded_sha256": "6065dd9e1767251a48be899af89c871ba0bec0be691a98cc00fb90fcf5656844",
+      "split": "holdout",
+      "manual_reviewed_display": "1:27",
+      "display": "1:27",
+      "confidence": 0.9576746821403503,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "previous_outcome": "correct"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 288809,
+      "pixel_sha256": "a118f6d11c7c32efef491816ed6b5ae997db2571d7ae8a3d9211e81cb49841d2",
+      "encoded_sha256": "fab1b656d3fb1a33af4aa13efb96cf512d2936e656a36417a8575fb4325e1a23",
+      "split": "holdout",
+      "manual_reviewed_display": "1:25",
+      "display": "1:25",
+      "confidence": 0.9864889979362488,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "previous_outcome": "correct"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 346153,
+      "pixel_sha256": "f0576ff23ebdfe5c686977324a7ac014725b780b31cde4a2bb2d2d88afa002bc",
+      "encoded_sha256": "e4e1e2f8874276e0fc52fc542e436a10b35b5c83706018ae7a6a497335b60182",
+      "split": "holdout",
+      "manual_reviewed_display": "1:21",
+      "display": "1:21",
+      "confidence": 0.985277533531189,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "previous_outcome": "correct"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 396329,
+      "pixel_sha256": "18199591a8a5d49eb9b76fb04803c437d0b45787d5f16600f723e63896f01935",
+      "encoded_sha256": "3340b9bf10f33a4f0817bf47d0e2b430bcfbbcb3ae390a52a8ef5e3c17a9601f",
+      "split": "holdout",
+      "manual_reviewed_display": "1:18",
+      "display": "1:18",
+      "confidence": 0.9882816672325134,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "previous_outcome": "correct"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 458025,
+      "pixel_sha256": "ca75f70e7460986dac877e4dca000df1c4289333813dc84a25e120434e63e898",
+      "encoded_sha256": "e5a3f2e28033ddd6464051a22f25e9b0908fccb96fb5ffafc2dec591a1a4e5e4",
+      "split": "holdout",
+      "manual_reviewed_display": "1:14",
+      "display": null,
+      "confidence": 0.0,
+      "sources": [
+        "strict_timer_expected_exactly_two_separator_dots"
+      ],
+      "outcome": "unknown",
+      "previous_outcome": "unknown"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 478761,
+      "pixel_sha256": "19af09b12215ad0bff773a4104604647e9ada8513027513c1ebfb2e80d911e40",
+      "encoded_sha256": "9d83b3af545e9e31c9e21c58590c3c20f09a144f4e10b6f558a7a9461fc3e4a0",
+      "split": "holdout",
+      "manual_reviewed_display": "1:12",
+      "display": "1:12",
+      "confidence": 0.9801793694496155,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "previous_outcome": "correct"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 532265,
+      "pixel_sha256": "274d57b6d9c4ef1ea0e6a633517eca0a6f0975f571ae46550a45d4cb680c32fd",
+      "encoded_sha256": "7e24515eb5752a68c316173ae9314fe069f507cc375b5b583eee07d0f6e77392",
+      "split": "holdout",
+      "manual_reviewed_display": "1:09",
+      "display": null,
+      "confidence": 0.0,
+      "sources": [
+        "strict_timer_glyph_below_0_90"
+      ],
+      "outcome": "unknown",
+      "previous_outcome": "unknown"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 581161,
+      "pixel_sha256": "b3147ad091ea6cdca3260462a07985bbe0c3706d63613e8657eb0ce6ccde9353",
+      "encoded_sha256": "cacf580c96ca179bbe1b62de839b5c21317619341a9f59f5999e84590e0046f2",
+      "split": "holdout",
+      "manual_reviewed_display": "1:06",
+      "display": "1:06",
+      "confidence": 0.9636114835739136,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "previous_outcome": "correct"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 668201,
+      "pixel_sha256": "b51bf08eb92308a87a267409b8c22ca4eadd779c044f7f860ac1c9a43eeec4c0",
+      "encoded_sha256": "f0ac8bc968beb9fbc32c1d535ed4fd5ec78e00e87a14db1dc67c030ee9018faf",
+      "split": "holdout",
+      "manual_reviewed_display": "1:00",
+      "display": "1:00",
+      "confidence": 0.9505839943885803,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "previous_outcome": "correct"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 748585,
+      "pixel_sha256": "b383f08f341b653e75107cc55fb6189fb27d9b5e89217976902cffd1275d80c8",
+      "encoded_sha256": "ff61709034be5abd5da5642a85dfd5b04b4449a6d9fb444c5071ed485256e052",
+      "split": "holdout",
+      "manual_reviewed_display": "0:55",
+      "display": "0:55",
+      "confidence": 0.9502009153366089,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "previous_outcome": "correct"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 801321,
+      "pixel_sha256": "ba1124c185f6ba3d7b496ee8b5f34675c1c371a7c39a546919aa2fffd7075ec5",
+      "encoded_sha256": "1aed99c347206613d329077682443a08c00f5f030af3c6ede22eae2c72bebb0d",
+      "split": "holdout",
+      "manual_reviewed_display": "0:51",
+      "display": "0:51",
+      "confidence": 0.9474647641181946,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "previous_outcome": "correct"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 837161,
+      "pixel_sha256": "3eb19d4c9a58ef2cef539e648161ee2e2e7bee5ee87cfdb6da82a7eabbaae55d",
+      "encoded_sha256": "9205eac3b47d1f92b6d666200d35b4cab7184ee9008e66d61d2c1c7445a99ca7",
+      "split": "holdout",
+      "manual_reviewed_display": "0:49",
+      "display": "0:49",
+      "confidence": 0.9325509071350098,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "previous_outcome": "correct"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 902441,
+      "pixel_sha256": "110d654836e3d75f85c646b306e12833c5b86244bd8d2ea7a992f53728bb4ce6",
+      "encoded_sha256": "28bc78b9b941d4a8747b990810c40bf7d1beddc936f6d7d4abd5f17d1c9fb929",
+      "split": "holdout",
+      "manual_reviewed_display": "0:45",
+      "display": "0:45",
+      "confidence": 0.9316640496253967,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "previous_outcome": "correct"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 989737,
+      "pixel_sha256": "385270d63bc0012c261616c666c8c73a3cb07014f59c1c136e2d2b2642570f53",
+      "encoded_sha256": "56f0632687ea708b22e11a9d2f6b81305045831f477a71e9a597b9b55c877ec3",
+      "split": "holdout",
+      "manual_reviewed_display": "0:39",
+      "display": "0:39",
+      "confidence": 0.9665167927742004,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "previous_outcome": "correct"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 1105961,
+      "pixel_sha256": "f90daf2c3eddbeff3d6a1bc5fe2cf011d11310c2d251e44a201e16b917e81c42",
+      "encoded_sha256": "56ce0dd825d217b9b41e1082fa1479ec7767587277c4860c10dddf6e8d3ef8e3",
+      "split": "holdout",
+      "manual_reviewed_display": "0:32",
+      "display": null,
+      "confidence": 0.0,
+      "sources": [
+        "strict_timer_foreground_touches_roi_border"
+      ],
+      "outcome": "unknown",
+      "previous_outcome": "unknown"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 1186857,
+      "pixel_sha256": "1422b4b1a8e806d8dc6ba00f8eb9d0310e4250ec4b582869426225c2874906b5",
+      "encoded_sha256": "44d8f734dd81d83a94e142d9603a1428210eab2bb4b1c266bbe0738fcb7af664",
+      "split": "holdout",
+      "manual_reviewed_display": "0:04",
+      "display": "0:04",
+      "confidence": 0.9532173275947571,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "previous_outcome": "correct"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 1262633,
+      "pixel_sha256": "d217c796e7c0c484a80c5e274008f45a4b5da35db4b5e065d570e393f8b467d9",
+      "encoded_sha256": "4d9a58b2dd3af5767442ecb73f8c86f892075189cdcbfe5554d7f50e60a9b881",
+      "split": "holdout",
+      "manual_reviewed_display": "0:29",
+      "display": "0:29",
+      "confidence": 0.9636114835739136,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "previous_outcome": "correct"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 1529385,
+      "pixel_sha256": "4c4ade0e26c50a9410baa88b770a0a34fbbabba11b989f52bb9066ad885c57ef",
+      "encoded_sha256": "7674c77c82dea2ddfab60e380a06af0a71e6b1d7be71247b5937352a5b939d66",
+      "split": "holdout",
+      "manual_reviewed_display": "0:11",
+      "display": "0:11",
+      "confidence": 0.9587973356246948,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "previous_outcome": "correct"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 1604649,
+      "pixel_sha256": "5e6c547167ea7ee28f25e40fd38a152d91ee32cf8995ca1cd2024da6d07a100f",
+      "encoded_sha256": "a8427ae99cfad596fd38d68a27674189519d183ca3029101fc76b1deea90dd2e",
+      "split": "holdout",
+      "manual_reviewed_display": "0:06",
+      "display": "0:06",
+      "confidence": 0.9428489804267883,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "previous_outcome": "correct"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 1727785,
+      "pixel_sha256": "273c38424d5ef656a0fe8a4506e6a765cdb6684f81d150d12649d67c39d6a926",
+      "encoded_sha256": "32327680d35149b8d562c8f5bd997e96879fefee886383d48023c793f892c091",
+      "split": "holdout",
+      "manual_reviewed_display": "1:38",
+      "display": "1:38",
+      "confidence": 0.9775130152702332,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "previous_outcome": "correct"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 1846313,
+      "pixel_sha256": "006a9c3f7cf3c440f082f1e2230de7041d08b1d6fb0e03a9db53ec26fb6027f2",
+      "encoded_sha256": "08ed24100080434046a44c1a205b9f97a860593ecacab56971601be25ca85e58",
+      "split": "holdout",
+      "manual_reviewed_display": "1:31",
+      "display": null,
+      "confidence": 0.0,
+      "sources": [
+        "strict_timer_expected_exactly_two_separator_dots"
+      ],
+      "outcome": "unknown",
+      "previous_outcome": "unknown"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 1934377,
+      "pixel_sha256": "2266a543560d8e6362d0519f5a5f6abfc470219b4e441b97e5c6de4f338e6d0f",
+      "encoded_sha256": "70c223a7dff45d96c90eceadc605dd3098dec9fffad464eb6b737ca195751b06",
+      "split": "holdout",
+      "manual_reviewed_display": "1:25",
+      "display": "1:25",
+      "confidence": 0.9373597502708435,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "previous_outcome": "correct"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 2015273,
+      "pixel_sha256": "2682d5a6d4f413b59e1cc0a78f386cf9782dcc5cb2ecb50617a3dea2f807c04b",
+      "encoded_sha256": "a39da755e721c329c0c1f7247d11ac8a8c50bbcf130a3a3639931efa25bfebf9",
+      "split": "holdout",
+      "manual_reviewed_display": "1:20",
+      "display": null,
+      "confidence": 0.0,
+      "sources": [
+        "strict_timer_foreground_touches_roi_border"
+      ],
+      "outcome": "unknown",
+      "previous_outcome": "unknown"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 2108713,
+      "pixel_sha256": "765c9c4e4c5c330160b2a289614ffbc89f1c7166a59237ba851104d5d36d30a8",
+      "encoded_sha256": "1b4d4cd510caada2c062d6fc138055addc837cfde76d1fb18f6e72b4388b74a8",
+      "split": "holdout",
+      "manual_reviewed_display": "1:14",
+      "display": "1:14",
+      "confidence": 0.9378669857978821,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "previous_outcome": "correct"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 2191913,
+      "pixel_sha256": "012a9dbbb3ac3c6d886d4de11b4ca4df5f2db6886ae488bf59f5dd0881cb0e52",
+      "encoded_sha256": "cabe40acd6ec1378999b2efefd61c6f6c7e38d1db62eecfb37e23505bdba725b",
+      "split": "holdout",
+      "manual_reviewed_display": "1:08",
+      "display": "1:08",
+      "confidence": 0.9479976296424866,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "previous_outcome": "correct"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 2243625,
+      "pixel_sha256": "31793e2b202c123b3f120b87d9054e3faa8c6008d784b614ffcdf918db2dac71",
+      "encoded_sha256": "559c99e6db119ee367456275fd2d51bf70c626bdf3a8411cf611ea6ded89bd7b",
+      "split": "holdout",
+      "manual_reviewed_display": "1:05",
+      "display": null,
+      "confidence": 0.0,
+      "sources": [
+        "strict_timer_foreground_touches_roi_border"
+      ],
+      "outcome": "unknown",
+      "previous_outcome": "unknown"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 2340905,
+      "pixel_sha256": "553798bc36353cc4700baf9b1e2bed3883cfa8cb9f35b0bb016e12674073cc5e",
+      "encoded_sha256": "fdeec86c9daa3822294e7ddc58f638b21eab64afe0d90e6ba32b2dc109a760d7",
+      "split": "holdout",
+      "manual_reviewed_display": "0:58",
+      "display": "0:58",
+      "confidence": 0.9153170585632324,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "previous_outcome": "correct"
+    },
+    {
+      "component": "timer",
+      "source_pts_ticks": 2557993,
+      "pixel_sha256": "b96c61caa155f3fc7348e679b6e589546c4c985ea30bd24706590b773ada1637",
+      "encoded_sha256": "03230b00b2a85fc20678ca1b36aa23773bc76fe4169dfa8e99a644bd13817e8a",
+      "split": "holdout",
+      "manual_reviewed_display": "0:44",
+      "display": null,
+      "confidence": 0.0,
+      "sources": [
+        "strict_timer_foreground_touches_roi_border"
+      ],
+      "outcome": "unknown",
+      "previous_outcome": "unknown"
+    }
+  ],
+  "runtime_sec": 22.054789350018837,
+  "processed_frames": 55,
+  "input_sha256": {
+    "e2e_reports/match_001/lifecycle_phase_current_native.json": "d8df3339e2ae43163e0383103608d17bae6026a2c61e3cc6fb0c1e5adcc08a08",
+    "e2e_reports/match_001/lifecycle_timer_current_native.json": "066172452d9487999e41c89d75920549c23a3c48bb4ed351407aa1ec55a8aa0e",
+    "outputs/recognition-investigation/lifecycle-timer-current-native-20261012/selection.json": "f857b1e7ccc01e1ad7b34cbf7d3a3393294f33c100793932ea3b7dd8dcb7ce42",
+    "outputs/recognition-investigation/native-ui-transport-20261013/result.json": "494bb996f5a37f74a462bd0c1a305bb44e2b4bf6684a45df0efba8d072ec7181",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/joint-start-components-20261013/execution.json": "af01717a9214cab4605c4ae8ceb56109c174e1530cd512b4cbe9d5b21f83fa49",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_01.png": "0aab97c4236685e670d2b89e9001b59a8e77c1b393bbe193ace0a98df6df17d9",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_02.png": "0dc39ee196158fbc91f35b420e7a8f8cffa5a1d26a6a6acb5282dae80e6a10b4",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_03.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_04.png": "41f7647f739453bc9af6cf9ac92de6f47ed01adbf5ed28521ae479f1e8ee6167",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_05.png": "d56f456a9c47d2f913b0a97058c5e3f3202744637fb8264b159ff13a815d40b3",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_06.png": "d835f87de3e4d009ee926a04ee79283456bf74f1245d9e96e3d7c8de8041f66f",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_07.png": "8a59d99335e698bbf14e5cee7df977f3226c136966adbc6e4c9719910e9aaf98",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_08.png": "61739f9cd374f7284269283dadafff79c5e984fb19f07fb7c55c363514541d41",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_09.png": "da77fde3d0636fe8460f38eed7ec2ffcaff56e8df41213ec8e15bba23e6f0500",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_10.png": "5480c13098f2551181fc13b06c455d51b3aaee9c04c5e9dc79ffa09d87bac583",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_11.png": "4cb2b18aaca3e67ba1b53b8362c98f83da743ccf9f97ab2e629ca55e12704741",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_12.png": "581434f80998c432ce21b3aa3b91808521dc8efddb8421dcf65ee5fa07fd794b",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_13.png": "a6710f207d3b7ae31f26b46e24968e73d242b4ff7d506537aa78b27d6c75c853",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_14.png": "78702928f817a5ddf3c1b8fda2cb0f9fc41d22e103d8566aa5eed84bf5da1581",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_16.png": "0236c21b2f2737973c3b291bc501ef3306acb4b479c925d652bac8c53a294945",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_17.png": "b11db0bd7bec6eee81bf02b046d891d833b5d343a41a79b914230479898cf2f1",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_18.png": "3eb2819f740dc4635085b12b2e819120b51dbfcdda5c30c79bc1ad9be10bff57",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_19.png": "cd85cf1bed95a34094089bfc51711fb9f31013171fe16cb45a23f8121306d56a",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_20.png": "df860f64aab53674bac3481184f505b1d6829508b79ac3804f9104c2deb506a4",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_21.png": "7fc4fd7fa4a2cd75fdbbfe2f951f91ce88fd3416775eb2b0b65811104bb470f7",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_22.png": "b79f495d0299c4b9b196cf3134d02103f5d1a1edfdc69580f18d3354fc7ba381",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_23.png": "fa31b13e80a36bbfdf779f070d7e1ffc7ba2a9cf1a19d6a64f53598dd4135ce5",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_24.png": "979ef3bbb5ff5913b0812292aba287512383d005f425ffcddd0bbae5ad762a96",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_01.png": "e6e678b1968359a117c8c6b0afd9463b1f92619aa364786b742704796e4a26d2",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_02.png": "dc366994e70dd1aea1b56c2de5f3abcaf5cb0c2860731bb9df299ec0b52a3ebe",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_03.png": "4ccf8efb176797354298324964c9120f4da45515c3356b783e796cbc9955c2db",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_04.png": "9641bfaf5c6c28751c661e2f912416eea0a0998da0f8b9a6d156532c7491eb87",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_05.png": "6065dd9e1767251a48be899af89c871ba0bec0be691a98cc00fb90fcf5656844",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_06.png": "fab1b656d3fb1a33af4aa13efb96cf512d2936e656a36417a8575fb4325e1a23",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_07.png": "e4e1e2f8874276e0fc52fc542e436a10b35b5c83706018ae7a6a497335b60182",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_08.png": "3340b9bf10f33a4f0817bf47d0e2b430bcfbbcb3ae390a52a8ef5e3c17a9601f",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_09.png": "e5a3f2e28033ddd6464051a22f25e9b0908fccb96fb5ffafc2dec591a1a4e5e4",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_10.png": "9d83b3af545e9e31c9e21c58590c3c20f09a144f4e10b6f558a7a9461fc3e4a0",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_11.png": "7e24515eb5752a68c316173ae9314fe069f507cc375b5b583eee07d0f6e77392",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_12.png": "cacf580c96ca179bbe1b62de839b5c21317619341a9f59f5999e84590e0046f2",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_13.png": "f0ac8bc968beb9fbc32c1d535ed4fd5ec78e00e87a14db1dc67c030ee9018faf",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_14.png": "ff61709034be5abd5da5642a85dfd5b04b4449a6d9fb444c5071ed485256e052",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_15.png": "1aed99c347206613d329077682443a08c00f5f030af3c6ede22eae2c72bebb0d",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_16.png": "9205eac3b47d1f92b6d666200d35b4cab7184ee9008e66d61d2c1c7445a99ca7",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_17.png": "28bc78b9b941d4a8747b990810c40bf7d1beddc936f6d7d4abd5f17d1c9fb929",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_18.png": "56f0632687ea708b22e11a9d2f6b81305045831f477a71e9a597b9b55c877ec3",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_19.png": "56ce0dd825d217b9b41e1082fa1479ec7767587277c4860c10dddf6e8d3ef8e3",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_20.png": "44d8f734dd81d83a94e142d9603a1428210eab2bb4b1c266bbe0738fcb7af664",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_21.png": "4d9a58b2dd3af5767442ecb73f8c86f892075189cdcbfe5554d7f50e60a9b881",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_22.png": "7674c77c82dea2ddfab60e380a06af0a71e6b1d7be71247b5937352a5b939d66",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_23.png": "a8427ae99cfad596fd38d68a27674189519d183ca3029101fc76b1deea90dd2e",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_24.png": "32327680d35149b8d562c8f5bd997e96879fefee886383d48023c793f892c091",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_25.png": "08ed24100080434046a44c1a205b9f97a860593ecacab56971601be25ca85e58",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_26.png": "70c223a7dff45d96c90eceadc605dd3098dec9fffad464eb6b737ca195751b06",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_27.png": "a39da755e721c329c0c1f7247d11ac8a8c50bbcf130a3a3639931efa25bfebf9",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_28.png": "1b4d4cd510caada2c062d6fc138055addc837cfde76d1fb18f6e72b4388b74a8",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_29.png": "cabe40acd6ec1378999b2efefd61c6f6c7e38d1db62eecfb37e23505bdba725b",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_30.png": "559c99e6db119ee367456275fd2d51bf70c626bdf3a8411cf611ea6ded89bd7b",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_31.png": "fdeec86c9daa3822294e7ddc58f638b21eab64afe0d90e6ba32b2dc109a760d7",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-timer-current-native-20261012/source_32.png": "03230b00b2a85fc20678ca1b36aa23773bc76fe4169dfa8e99a644bd13817e8a"
+  },
+  "physical_split_counts": {
+    "training": 79,
+    "holdout": 40,
+    "negative": 12
+  },
+  "physical_split_intersection_empty": true,
+  "purchase_phase_component_support": {
+    "training_hashes": [
+      "22b9129dadeb8173b441f31b92f20bb61423461cd5ae33961ddc104c6b8a71f7",
+      "439c3817810a8d8bcc8c82ed218d5fe0f851c7c5f35308b0b85fcbd328759edd",
+      "470b5f982ae904f52c30a4e5d305d01bc40eac26cedef528b9dbdcc7def9100f"
+    ],
+    "holdout_hashes": [
+      "11474649e45206f151499eae67d39f91925c82ca244f31f7be174e5b33f36fb2",
+      "54ef3f77a8cd3c051bb46d0d309940e8c444dc26d04dd90d312ab334d09ed163",
+      "8e943a39d32a30f137f0ae4b1d763464232d43a0818a4bdc7adf737a299e9f80",
+      "9ad154e6a87bdb05c630cc9f19206d1f9f33276ff9b359c0ea5f5057935bac52",
+      "c77998771b90f0244f92dbf3a84d65ffed2df6b2bc12ecc95452db7837489229",
+      "db27b291aee56e75037ccd785770bf65d4de053e11cc3c00ca6de1ed570f2ba1",
+      "dc40f0ebf0d946148b95f2c14a609a72179a4bfada9e6e3cf8ddaeeec4d9fdaa",
+      "f70508e35f6d4b1ded58c6a19a6a1f9360f99f46763f18579f3419d594a24f88"
+    ],
+    "negative_hashes": [
+      "129139520103420c96212b721acc4b07e61b8fdfece9a5f07769fb45400bfaaa",
+      "1d38eb42be72749dabe25fa0fecfdbd9b1ef58b8f5d2e8a13a1427a89d139097",
+      "31c7bdb4424f3df8dca3eb752e75521e6b7b23184eaf1ce9e53f181afb9fb963",
+      "394152195dfdb479b0c3aff529eace85d3ba614addfd16749ef1a905aa5d9442",
+      "5705062fda3345288452d9b4ef5f0054dfc24bd57ba4552f97665ffcf6c2ac6b",
+      "6c50acba14d7be9d22e494779d4d54a1571dc5afbe58e0c51fd8c0c61c8579be",
+      "8f8a778303fcfcbc2cffcdce8f6c7240c307d5872b96eff46796d6c7fbce3e71",
+      "9de35a21f3ab1d94b22ed0396cef0e239fba021cd84d62ec2c2fd95ba5138403",
+      "9fd764792be8c64e31b78be8579751e256b57f2582cd7a6b470d1cbea3445e5e",
+      "a8150766d43268b76f62c2cc4c074da92ec48e18c14f3f657852fd5c85092ecf",
+      "f1317277e07138373f13b47dc29a39be524db58a58e6389781b7931682abf58d",
+      "fdb6380844056f61637ba93c1677da9503e4087f564fe846cf294d6444d5132b"
+    ],
+    "holdout_correct": 8,
+    "holdout_unknown": 0,
+    "holdout_wrong": 0,
+    "negative_false_positive": 0,
+    "review_provenance": "Current common-profile native static replay2026-10-13; original reviewed labels and image hashes retained, exposed physical cases; one timer-training phase control excluded before predictions. Not UI/geometry or fresh whole-stream qualification."
+  },
+  "remaining_components": [
+    "timer negative-control scope/current common-profile replay",
+    "ui_transition independently reviewed continuous support and controls"
+  ],
+  "qualification_sidecar_created": false,
+  "canonical_full_executed": false,
+  "physical_split_audit_correction": {
+    "previous_audit_sha256": "101ac60a08cbf06e30818ef5e0543f0c777dc9e5c53510f8fdbea646be60c3be",
+    "previous_holdout_physical_count": 32,
+    "corrected_holdout_physical_count": 40,
+    "reason": "Initial audit looked for split=holdout but existing phase report uses holdout_positive. Recheck all23 phase+32timer rows with explicit recognized split names; predictions and measured support unchanged.",
+    "new_predictions": false,
+    "intersections": {
+      "training_holdout": [],
+      "training_negative": [],
+      "holdout_negative": []
+    }
+  },
+  "schema_version": 1,
+  "target_assertion_ids": [
+    "GT-R1-ROUND-START",
+    "GT-R2-ROUND-START",
+    "event_count_constraints-000",
+    "event_count_constraints-004",
+    "ordering_constraints-001"
+  ],
+  "comparison": {
+    "purchase_phase": {
+      "previous": {
+        "training_correct": 3,
+        "holdout_correct": 8,
+        "holdout_wrong": 0,
+        "eligible_negative_rejected": 12,
+        "negative_false_positive": 0
+      },
+      "current": {
+        "training_correct": 3,
+        "holdout_correct": 8,
+        "holdout_wrong": 0,
+        "eligible_negative_rejected": 12,
+        "negative_false_positive": 0
+      },
+      "delta": {
+        "training_correct": 0,
+        "holdout_correct": 0,
+        "holdout_wrong": 0,
+        "eligible_negative_rejected": 0,
+        "negative_false_positive": 0
+      }
+    },
+    "timer": {
+      "previous": {
+        "correct": 25,
+        "unknown": 7,
+        "wrong": 0
+      },
+      "current": {
+        "correct": 25,
+        "unknown": 7,
+        "wrong": 0
+      },
+      "delta": {
+        "correct": 0,
+        "unknown": 0,
+        "wrong": 0
+      }
+    },
+    "phase_profile_fingerprint_aligned_to_native_start_profile": {
+      "previous": false,
+      "current": true
+    },
+    "qualification_sidecars": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    }
+  },
+  "qualification_limits": [
+    "Static nominal crops do not prove calibrated current geometry or UI temporal transitions.",
+    "Existing reviewed holdout cases remain exposed; source cases and reference assets are not changed.",
+    "Current common-profile timer controls and complete UI support/provenance remain to be reviewed."
+  ],
+  "artifact_sha256": {
+    "outputs/recognition-investigation/joint-start-components-20261013/execution.json": "af01717a9214cab4605c4ae8ceb56109c174e1530cd512b4cbe9d5b21f83fa49",
+    "outputs/recognition-investigation/joint-start-components-20261013/result.json": "19ea5c4847b8583d116c4b38db8cc1e7e5cdb0f1e1b3d1c3f03aaa41a43f3d46",
+    "outputs/recognition-investigation/joint-start-components-20261013/result-incomplete-split-audit.json": "101ac60a08cbf06e30818ef5e0543f0c777dc9e5c53510f8fdbea646be60c3be",
+    "outputs/recognition-investigation/joint-start-components-20261013/run.py": "84900a2e63bd3fdb38fef7d4f0f9fcff6ab7a0a531f9b89da50b38f59df38bb3"
+  }
+}

@@ -1,0 +1,204 @@
+{
+  "scope": "Current production guarded-profile replay on existing reviewed continuous menu and active controls; standalone unqualified pattern collection, no active-round or qualification claim",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "recognizer_fingerprint": "7bbb45ea27708c547a9ceb7c79b6f52e99f765675735ad0e247fd0528021cd2c",
+  "profile_path": "outputs/hud_profiles/round-global-timer-glyph-20261008/result-contrast-guard-diagnostic.templates.json",
+  "archive_encoding": "Lossless reencoding with original decoded source pixel hash verification",
+  "windows": [
+    {
+      "name": "numeric_end_menu_entry_control",
+      "window_sec": [
+        83.2,
+        83.65
+      ],
+      "processed_frames": 27
+    },
+    {
+      "name": "pending_end_new_active_inputs",
+      "window_sec": [
+        130.0,
+        131.2
+      ],
+      "processed_frames": 72
+    }
+  ],
+  "formal_events_expected": 0,
+  "horizon_sec": 1,
+  "ncc_threshold": 0.9,
+  "minimum_support_sec": 0.05,
+  "new_blind_holdout_claimed": false,
+  "results": [
+    {
+      "name": "numeric_end_menu_entry_control",
+      "window_sec": [
+        83.2,
+        83.65
+      ],
+      "processed_frames": 27,
+      "runtime_sec": 55.74328468099702,
+      "profile_fingerprint": "60b029cb987fe0d7447853e3b4cd791d5defb0918dfaa25a401bd45d2b64c813",
+      "state_counts": {
+        "unknown": 13,
+        "buy_menu_open": 14
+      },
+      "timer_accepted": 26,
+      "score_pairs_accepted": 27,
+      "result_matched_frames": 0,
+      "source_breaks": 0,
+      "pending_frames": 0,
+      "unqualified_patterns": [],
+      "formal_events": 0,
+      "owned_facts": 0
+    },
+    {
+      "name": "pending_end_new_active_inputs",
+      "window_sec": [
+        130.0,
+        131.2
+      ],
+      "processed_frames": 72,
+      "runtime_sec": 110.20915862300899,
+      "profile_fingerprint": "60b029cb987fe0d7447853e3b4cd791d5defb0918dfaa25a401bd45d2b64c813",
+      "state_counts": {
+        "unknown": 72
+      },
+      "timer_accepted": 64,
+      "score_pairs_accepted": 27,
+      "result_matched_frames": 0,
+      "source_breaks": 0,
+      "pending_frames": 0,
+      "unqualified_patterns": [],
+      "formal_events": 0,
+      "owned_facts": 0
+    }
+  ],
+  "wall_clock_sec": 181.17552564595826,
+  "terminal_hash_verified": true,
+  "canonical_full_executed": false,
+  "qualification_created": false,
+  "active_round_claimed": false,
+  "comparison": [
+    {
+      "name": "numeric_end_menu_entry_control",
+      "metrics": {
+        "processed_frames": {
+          "previous": 27,
+          "current": 27,
+          "delta": 0
+        },
+        "timer_accepted": {
+          "previous": 26,
+          "current": 26,
+          "delta": 0
+        },
+        "score_pairs_accepted": {
+          "previous": 27,
+          "current": 27,
+          "delta": 0
+        },
+        "result_matched_frames": {
+          "previous": 0,
+          "current": 0,
+          "delta": 0
+        },
+        "formal_events": {
+          "previous": 0,
+          "current": 0,
+          "delta": 0
+        },
+        "runtime_sec": {
+          "previous": 66.9434251789935,
+          "current": 55.74328468099702,
+          "delta": -11.200140497996472
+        },
+        "unqualified_patterns": {
+          "previous": 0,
+          "current": 0,
+          "delta": 0
+        }
+      },
+      "state_previous": {
+        "unknown": 13,
+        "buy_menu_open": 14
+      },
+      "state_current": {
+        "unknown": 13,
+        "buy_menu_open": 14
+      },
+      "runtime_caveat": "Historical producer code/profile and acquisition paths differ; no speed claim."
+    },
+    {
+      "name": "pending_end_new_active_inputs",
+      "metrics": {
+        "processed_frames": {
+          "previous": 72,
+          "current": 72,
+          "delta": 0
+        },
+        "timer_accepted": {
+          "previous": 64,
+          "current": 64,
+          "delta": 0
+        },
+        "score_pairs_accepted": {
+          "previous": 27,
+          "current": 27,
+          "delta": 0
+        },
+        "result_matched_frames": {
+          "previous": 0,
+          "current": 0,
+          "delta": 0
+        },
+        "formal_events": {
+          "previous": 0,
+          "current": 0,
+          "delta": 0
+        },
+        "runtime_sec": {
+          "previous": 156.6450297110132,
+          "current": 110.20915862300899,
+          "delta": -46.435871088004205
+        },
+        "unqualified_patterns": {
+          "previous": 0,
+          "current": 0,
+          "delta": 0
+        }
+      },
+      "state_previous": {
+        "unknown": 72
+      },
+      "state_current": {
+        "unknown": 72
+      },
+      "runtime_caveat": "Historical producer code/profile and acquisition paths differ; no speed claim."
+    }
+  ],
+  "diagnostic_result_path": "outputs/recognition-investigation/result-guard-end-controls-20261013/result.json",
+  "diagnostic_result_sha256": "2bba7aa5db7e0d9d809b3be88ab9b933d2523f9e52ac3ecf8e9183a773066aef",
+  "previous_comparison_path": "e2e_reports/match_001/pending_end_current_profile_controls.json",
+  "previous_comparison_sha256": "7bc1c604488b9c5284e4bb1d8273cb6a00e84407cb1e08bf9a0d7df9d12e31da",
+  "input_metadata_sha256": {
+    "e2e_reports/match_001/numeric_end_menu_entry_control.json": "d62416433963521094ed5ef3b48c5c819d34302dac5c76e32f521420a136f573",
+    "e2e_reports/match_001/pending_end_new_active_inputs.json": "e9a26931d8161bdaa40e8fc30982139b789a5d92fe24967d122dcfb9965c35cb"
+  },
+  "target_assertion_ids": [
+    "GT-R1-ROUND-END",
+    "event_count_constraints-002"
+  ],
+  "canonical_previous": {
+    "PASS": 23,
+    "FAIL": 55,
+    "NOT_EVALUATED": 4
+  },
+  "canonical_current": null,
+  "canonical_delta": null,
+  "limitations": [
+    "Previously reviewed source windows, not new blind negatives.",
+    "No full R2-tail or whole-match no-false-end claim.",
+    "No accepted active-round state or native package association established.",
+    "Source breaks absent in these windows; injected-discontinuity regression and canonical checks not reexecuted."
+  ],
+  "verification": "All99original native pixel hashes and cadence verify. Current producer measurements bound to same source frames. Terminal video/profile/code/input hashes verify. No new production code; prior2740passed6skipped/Ruff/mypy results retained."
+}

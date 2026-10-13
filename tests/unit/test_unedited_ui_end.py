@@ -88,6 +88,55 @@ def test_rearm_next_start_with_no_inferred_second_end(tmp_path):
     assert tracker.pending_end.pending is False
 
 
+@pytest.mark.parametrize('overlay', ['result', 'report', 'menu', 'unavailable_scan'])
+def test_completed_end_history_survives_post_result_uncertainty(tmp_path, overlay):
+    rows, tracker = fixture(tmp_path, next_round=True)
+    decisions = replay(rows[:42], tracker)
+    assert tracker.ended and not tracker.start.started
+    row = rows[42]
+    if overlay == 'result':
+        row['system_observation']['state_flags'] = ['round_end_banner']
+    elif overlay == 'report':
+        row['system_observation']['state_flags'] = ['combat_report_visible']
+    elif overlay == 'menu':
+        row['system_observation']['primary_state'] = 'buy_menu_open'
+    else:
+        row['system_evidence']['assured_phase_scan_valid'] = False
+    assert tracker.advance(row, phase_scan_valid=overlay != 'unavailable_scan') is None
+    assert tracker.ended
+    assert not tracker.start.started  # Historical end is not active/player evidence.
+    decisions.extend(replay(rows[43:55], tracker))
+    assert tracker.advance(rows[55], phase_scan_valid=True) is None
+    assert tracker.state == 'next_round_preparation'
+    decisions.extend(replay(rows[56:], tracker))
+    assert [d.kind for d in decisions] == ['round_start', 'round_end', 'round_start']
+    assert decisions[1].time_sec == .44
+    assert tracker.state == 'round_active'
+
+
+@pytest.mark.parametrize('source_break', ['epoch', 'gap', 'repeated_pixels', 'content_jump'])
+def test_completed_end_history_is_cleared_by_source_break(tmp_path, source_break):
+    rows, tracker = fixture(tmp_path, next_round=True)
+    replay(rows[:42], tracker)
+    assert tracker.ended
+    row = rows[42]
+    if source_break == 'epoch':
+        row['source_epoch'] = 'different_capture_epoch'
+    elif source_break == 'gap':
+        row['source_pts_ticks'] += 20
+        row['source_pts_sec'] += .02
+        row['system_observation']['time_sec'] = row['source_pts_sec']
+    elif source_break == 'repeated_pixels':
+        row['source_pixel_sha256'] = rows[41]['source_pixel_sha256']
+    else:
+        row['system_evidence']['content_jump'] = True
+    assert tracker.advance(row, phase_scan_valid=True) is None
+    assert not tracker.ended
+    assert not tracker.start.started
+    replay(rows[43:56], tracker)
+    assert tracker.state == 'pre_round'
+
+
 @pytest.mark.parametrize('failure', [
     'menu', 'spectator', 'occlusion', 'scan', 'phase', 'raw_phase', 'score_rollback',
     'partial_score_conflict', 'additional_clock', 'weak_result', 'brief_result',

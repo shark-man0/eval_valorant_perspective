@@ -1,0 +1,620 @@
+{
+  "schema_version": "1.0",
+  "scope": "Frozen row structure feasibility; rejection prevents adopting an episode-specific name crop",
+  "target_assertion_ids": [
+    "GT-R2-DEATH",
+    "OWN-R2-SELF-DEAD",
+    "event_count_constraints-005"
+  ],
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "recognizer_fingerprint": "b6fc1b8302b55a31c7b2343d630e51c2b900f8020ace070296e32bca3efd9b82",
+  "config": {
+    "scope": "Frozen independent row support diagnostic only; target GT-R2-DEATH/OWN-R2-SELF-DEAD/event_count_constraints-005, no owner proof",
+    "training_inputs": {
+      "outputs/recognition-investigation/death-current-source-20261012/frame_009.png": "1572bd0093dcdc7021146430462a152df98cb2536c016501b14a6cca114919b8",
+      "outputs/recognition-investigation/death-current-source-20261012/frame_010.png": "a9e6d4a0de7487d02a7aa6a411aeb05c59db5cf8e0a58a407b49d3165d6442ec",
+      "outputs/recognition-investigation/death-current-source-20261012/frame_027.png": "649af0dd5982ad39506c48bc75ecaa38ddd290138cf6321abda3ca158316feab"
+    },
+    "training_pixel_hashes": [
+      "6376244a49e2ff3a4cfb257b6dc12ee6df605b16538cc5d7bcf85fbe71b3dd24",
+      "978c1be02e01f080d08b04be9d7d61dd26d8d80c0c3da3fb21130fbb95a50f86",
+      "a86ce87d01a437107aeaa99fad33477b89c5a1455eb6dfed43fb7eee2f3b58df"
+    ],
+    "references": {
+      "separator": {
+        "bounds_px": [
+          1716,
+          96,
+          1746,
+          131
+        ],
+        "reference_sha256": "d3fdac532ae966fb4f074295729708bb1fd4864c30c083a5e4147aa3978a9e1b",
+        "mask_sha256": "6ffb52325cff603fe5a2d13b068d11a75cc02406283fb3582ad3e6ef7daf087a",
+        "population": 696,
+        "variance": 37.59530736145746
+      },
+      "victim_edge": {
+        "bounds_px": [
+          1898,
+          96,
+          1914,
+          131
+        ],
+        "reference_sha256": "2a84c9fc00dc511e581b5dac1f2733508abe03e86c3612451c6de5bdedb5b9a1",
+        "mask_sha256": "381b2471e6568c540d77d6e81738e739a4734754ffdb509384c28568a0eb04bd",
+        "population": 377,
+        "variance": 61.36959727268536
+      }
+    },
+    "threshold": 0.9,
+    "roi_px": [
+      1440,
+      45,
+      1918,
+      188
+    ],
+    "search": "all x/y positions inside current kill_feed ROI, independent masked NCC for each support, pair only same row and ordered separator->victim edge",
+    "not_in_mask": [
+      "victim name",
+      "killer name",
+      "weapon",
+      "portrait interior"
+    ],
+    "qualification_created": false
+  },
+  "artifact_sha256": {
+    "outputs/recognition-investigation/killfeed-layout-20261012/frozen-config-v2.json": "e38bd0eecc37f5581fd7a64826a4336515f4761a7bf76755e2a7ba5e953fdde6",
+    "outputs/recognition-investigation/killfeed-layout-20261012/probe-selection.json": "8e4608cd2ee33d01d610ddbae01f5f9191c79b3594adba4845efcf7f78c50c29",
+    "outputs/recognition-investigation/killfeed-layout-20261012/result.json": "e54165a579d1ae1e84ec912644d5e7c5d6d01ec1fb77b527083160686faccc1c",
+    "outputs/recognition-investigation/killfeed-layout-20261012/separator-v2.png": "d3fdac532ae966fb4f074295729708bb1fd4864c30c083a5e4147aa3978a9e1b",
+    "outputs/recognition-investigation/killfeed-layout-20261012/separator-mask-v2.png": "6ffb52325cff603fe5a2d13b068d11a75cc02406283fb3582ad3e6ef7daf087a",
+    "outputs/recognition-investigation/killfeed-layout-20261012/victim_edge-v2.png": "2a84c9fc00dc511e581b5dac1f2733508abe03e86c3612451c6de5bdedb5b9a1",
+    "outputs/recognition-investigation/killfeed-layout-20261012/victim_edge-mask-v2.png": "381b2471e6568c540d77d6e81738e739a4734754ffdb509384c28568a0eb04bd"
+  },
+  "results": {
+    "training": [
+      {
+        "path": "outputs/recognition-investigation/death-current-source-20261012/frame_009.png",
+        "pixel_sha256": "6376244a49e2ff3a4cfb257b6dc12ee6df605b16538cc5d7bcf85fbe71b3dd24",
+        "support_counts": {
+          "separator": 1,
+          "victim_edge": 0
+        },
+        "best_scores": {
+          "separator": 0.9908917543789143,
+          "victim_edge": 0.8940220485309917
+        },
+        "pairs": []
+      },
+      {
+        "path": "outputs/recognition-investigation/death-current-source-20261012/frame_010.png",
+        "pixel_sha256": "978c1be02e01f080d08b04be9d7d61dd26d8d80c0c3da3fb21130fbb95a50f86",
+        "support_counts": {
+          "separator": 1,
+          "victim_edge": 7
+        },
+        "best_scores": {
+          "separator": 0.9940267453263529,
+          "victim_edge": 0.9929754060217446
+        },
+        "pairs": [
+          {
+            "separator": {
+              "x": 276,
+              "y": 51,
+              "score": 0.9940267394642235
+            },
+            "victim_edge": {
+              "x": 457,
+              "y": 50,
+              "score": 0.9037106917825422
+            },
+            "field_px": [
+              1754,
+              103,
+              1841,
+              125
+            ],
+            "score": 0.9037106917825422
+          },
+          {
+            "separator": {
+              "x": 276,
+              "y": 51,
+              "score": 0.9940267394642235
+            },
+            "victim_edge": {
+              "x": 458,
+              "y": 50,
+              "score": 0.9695501521856559
+            },
+            "field_px": [
+              1754,
+              103,
+              1842,
+              125
+            ],
+            "score": 0.9695501521856559
+          },
+          {
+            "separator": {
+              "x": 276,
+              "y": 51,
+              "score": 0.9940267394642235
+            },
+            "victim_edge": {
+              "x": 457,
+              "y": 51,
+              "score": 0.9107566333089786
+            },
+            "field_px": [
+              1754,
+              103,
+              1841,
+              125
+            ],
+            "score": 0.9107566333089786
+          },
+          {
+            "separator": {
+              "x": 276,
+              "y": 51,
+              "score": 0.9940267394642235
+            },
+            "victim_edge": {
+              "x": 458,
+              "y": 51,
+              "score": 0.9929754060217443
+            },
+            "field_px": [
+              1754,
+              103,
+              1842,
+              125
+            ],
+            "score": 0.9929754060217443
+          },
+          {
+            "separator": {
+              "x": 276,
+              "y": 51,
+              "score": 0.9940267394642235
+            },
+            "victim_edge": {
+              "x": 459,
+              "y": 51,
+              "score": 0.9045832622871209
+            },
+            "field_px": [
+              1754,
+              103,
+              1843,
+              125
+            ],
+            "score": 0.9045832622871209
+          },
+          {
+            "separator": {
+              "x": 276,
+              "y": 51,
+              "score": 0.9940267394642235
+            },
+            "victim_edge": {
+              "x": 458,
+              "y": 52,
+              "score": 0.9501142757949665
+            },
+            "field_px": [
+              1754,
+              103,
+              1842,
+              125
+            ],
+            "score": 0.9501142757949665
+          }
+        ]
+      },
+      {
+        "path": "outputs/recognition-investigation/death-current-source-20261012/frame_027.png",
+        "pixel_sha256": "a86ce87d01a437107aeaa99fad33477b89c5a1455eb6dfed43fb7eee2f3b58df",
+        "support_counts": {
+          "separator": 1,
+          "victim_edge": 5
+        },
+        "best_scores": {
+          "separator": 0.9891559670560471,
+          "victim_edge": 0.9820816810179755
+        },
+        "pairs": [
+          {
+            "separator": {
+              "x": 276,
+              "y": 51,
+              "score": 0.9891559598101889
+            },
+            "victim_edge": {
+              "x": 458,
+              "y": 50,
+              "score": 0.9610889628186633
+            },
+            "field_px": [
+              1754,
+              103,
+              1842,
+              125
+            ],
+            "score": 0.9610889628186633
+          },
+          {
+            "separator": {
+              "x": 276,
+              "y": 51,
+              "score": 0.9891559598101889
+            },
+            "victim_edge": {
+              "x": 457,
+              "y": 51,
+              "score": 0.9033211519141768
+            },
+            "field_px": [
+              1754,
+              103,
+              1841,
+              125
+            ],
+            "score": 0.9033211519141768
+          },
+          {
+            "separator": {
+              "x": 276,
+              "y": 51,
+              "score": 0.9891559598101889
+            },
+            "victim_edge": {
+              "x": 458,
+              "y": 51,
+              "score": 0.9820816810179758
+            },
+            "field_px": [
+              1754,
+              103,
+              1842,
+              125
+            ],
+            "score": 0.9820816810179758
+          },
+          {
+            "separator": {
+              "x": 276,
+              "y": 51,
+              "score": 0.9891559598101889
+            },
+            "victim_edge": {
+              "x": 458,
+              "y": 52,
+              "score": 0.9482758525436504
+            },
+            "field_px": [
+              1754,
+              103,
+              1842,
+              125
+            ],
+            "score": 0.9482758525436504
+          }
+        ]
+      }
+    ],
+    "holdout": [
+      {
+        "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/source_01.png",
+        "time_sec": 148.20266927083333,
+        "pixel_sha256": "cec51cd0988d33747a8610e558cedf9ea9c8d277f7d87321d6c5f0cc29c2cfcd",
+        "support_counts": {
+          "separator": 1,
+          "victim_edge": 5
+        },
+        "best_scores": {
+          "separator": 0.9891939962753957,
+          "victim_edge": 0.9820044823850236
+        },
+        "pairs": [
+          {
+            "separator": {
+              "x": 276,
+              "y": 51,
+              "score": 0.9891944990517513
+            },
+            "victim_edge": {
+              "x": 458,
+              "y": 50,
+              "score": 0.9570013396243578
+            },
+            "field_px": [
+              1754,
+              103,
+              1842,
+              125
+            ],
+            "score": 0.9570013396243578
+          },
+          {
+            "separator": {
+              "x": 276,
+              "y": 51,
+              "score": 0.9891944990517513
+            },
+            "victim_edge": {
+              "x": 457,
+              "y": 51,
+              "score": 0.9041827658028412
+            },
+            "field_px": [
+              1754,
+              103,
+              1841,
+              125
+            ],
+            "score": 0.9041827658028412
+          },
+          {
+            "separator": {
+              "x": 276,
+              "y": 51,
+              "score": 0.9891944990517513
+            },
+            "victim_edge": {
+              "x": 458,
+              "y": 51,
+              "score": 0.9820044823850235
+            },
+            "field_px": [
+              1754,
+              103,
+              1842,
+              125
+            ],
+            "score": 0.9820044823850235
+          },
+          {
+            "separator": {
+              "x": 276,
+              "y": 51,
+              "score": 0.9891944990517513
+            },
+            "victim_edge": {
+              "x": 458,
+              "y": 52,
+              "score": 0.9517173204858282
+            },
+            "field_px": [
+              1754,
+              103,
+              1842,
+              125
+            ],
+            "score": 0.9517173204858282
+          }
+        ]
+      },
+      {
+        "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/source_02.png",
+        "time_sec": 148.70266927083333,
+        "pixel_sha256": "223eebce3670e87ae2af647f6adb3060582df46cacd827d50793f519977f38f4",
+        "support_counts": {
+          "separator": 1,
+          "victim_edge": 3
+        },
+        "best_scores": {
+          "separator": 0.989380009676234,
+          "victim_edge": 0.9556084214078869
+        },
+        "pairs": [
+          {
+            "separator": {
+              "x": 276,
+              "y": 51,
+              "score": 0.989379577171816
+            },
+            "victim_edge": {
+              "x": 458,
+              "y": 50,
+              "score": 0.9316221775466937
+            },
+            "field_px": [
+              1754,
+              103,
+              1842,
+              125
+            ],
+            "score": 0.9316221775466937
+          },
+          {
+            "separator": {
+              "x": 276,
+              "y": 51,
+              "score": 0.989379577171816
+            },
+            "victim_edge": {
+              "x": 458,
+              "y": 51,
+              "score": 0.9556084214078866
+            },
+            "field_px": [
+              1754,
+              103,
+              1842,
+              125
+            ],
+            "score": 0.9556084214078866
+          },
+          {
+            "separator": {
+              "x": 276,
+              "y": 51,
+              "score": 0.989379577171816
+            },
+            "victim_edge": {
+              "x": 458,
+              "y": 52,
+              "score": 0.9196054012041348
+            },
+            "field_px": [
+              1754,
+              103,
+              1842,
+              125
+            ],
+            "score": 0.9196054012041348
+          }
+        ]
+      },
+      {
+        "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/source_03.png",
+        "time_sec": 149.20266927083333,
+        "pixel_sha256": "17276d3c795746fc0c5e0234418737fd643c70d639dfd3cbe0a5281520f26a4d",
+        "support_counts": {
+          "separator": 1,
+          "victim_edge": 3
+        },
+        "best_scores": {
+          "separator": 0.9879883283048102,
+          "victim_edge": 0.9757753525554878
+        },
+        "pairs": [
+          {
+            "separator": {
+              "x": 276,
+              "y": 51,
+              "score": 0.9879892425210224
+            },
+            "victim_edge": {
+              "x": 458,
+              "y": 50,
+              "score": 0.9471506865111611
+            },
+            "field_px": [
+              1754,
+              103,
+              1842,
+              125
+            ],
+            "score": 0.9471506865111611
+          },
+          {
+            "separator": {
+              "x": 276,
+              "y": 51,
+              "score": 0.9879892425210224
+            },
+            "victim_edge": {
+              "x": 458,
+              "y": 51,
+              "score": 0.9757753525554883
+            },
+            "field_px": [
+              1754,
+              103,
+              1842,
+              125
+            ],
+            "score": 0.9757753525554883
+          },
+          {
+            "separator": {
+              "x": 276,
+              "y": 51,
+              "score": 0.9879892425210224
+            },
+            "victim_edge": {
+              "x": 458,
+              "y": 52,
+              "score": 0.9444852589565057
+            },
+            "field_px": [
+              1754,
+              103,
+              1842,
+              125
+            ],
+            "score": 0.9444852589565057
+          }
+        ]
+      },
+      {
+        "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/negative/source_01.png",
+        "time_sec": 130.00266927083334,
+        "pixel_sha256": "07095f4d2d824b8a8a14ba55fd5c6b336fbb4302c31e7d2597bf50e4125722d8",
+        "support_counts": {
+          "separator": 2,
+          "victim_edge": 0
+        },
+        "best_scores": {
+          "separator": 0.9868165682074381,
+          "victim_edge": 0.8069668347708027
+        },
+        "pairs": []
+      },
+      {
+        "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/negative/source_02.png",
+        "time_sec": 140.00266927083334,
+        "pixel_sha256": "f37a10e47bd0d424144de9f7ff4e2bb33a144d0dc13587645a3d2c34d9f55211",
+        "support_counts": {
+          "separator": 1,
+          "victim_edge": 0
+        },
+        "best_scores": {
+          "separator": 0.9864186842208855,
+          "victim_edge": 0.8280808454351036
+        },
+        "pairs": []
+      },
+      {
+        "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/negative/source_03.png",
+        "time_sec": 146.00266927083334,
+        "pixel_sha256": "06e9e8226d5bfa0264943ffbe5b9b8c7a272c92b11ed82c8ac5c4cfca5f010d3",
+        "support_counts": {
+          "separator": 0,
+          "victim_edge": 0
+        },
+        "best_scores": {
+          "separator": 0.2677085787847664,
+          "victim_edge": 0.7015258176334604
+        },
+        "pairs": []
+      }
+    ],
+    "runtime_sec": 1.6012427679961547,
+    "input_sha256": {
+      "outputs/recognition-investigation/death-current-source-20261012/frame_009.png": "1572bd0093dcdc7021146430462a152df98cb2536c016501b14a6cca114919b8",
+      "outputs/recognition-investigation/death-current-source-20261012/frame_010.png": "a9e6d4a0de7487d02a7aa6a411aeb05c59db5cf8e0a58a407b49d3165d6442ec",
+      "outputs/recognition-investigation/death-current-source-20261012/frame_027.png": "649af0dd5982ad39506c48bc75ecaa38ddd290138cf6321abda3ca158316feab",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/source_01.png": "b6d835b3e2198d2ae4f6f5d9e8c8560648a923c283b26de99a4f95e240852d30",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/source_02.png": "b994ca60dcb7e19f9eb6df164c21277a00163e47c39a69747bd7c7ada8a8dfa4",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/source_03.png": "15df6216614e3f7e4a8e50c2afb4853f3e052bfa0cea008bc0d42ce9a6117907",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/negative/source_01.png": "1a72b7eed3d2c757c4e7702c47e3f8754ad68a7625327a79451c7a40bd82c23a",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/negative/source_02.png": "fbc40a9abc5b7e6bc9898871195f0ec2083ca6f758e107b68570512c76cbe9ad",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/negative/source_03.png": "c468592b065b2821f130531c4fe366c0a4a9b0832e32a69207d3d494281688f2"
+    },
+    "qualification_created": false,
+    "production_changed": false
+  },
+  "summary": {
+    "training_physical_frames": 3,
+    "training_supported_pairs": 2,
+    "minimum_training_support_required": 3,
+    "same_victim_holdout_physical_frames": 3,
+    "same_victim_supported_pairs": 3,
+    "other_victim_transfer_frames": 2,
+    "other_victim_supported_pairs": 0,
+    "absent_row_frames": 1,
+    "absent_row_pairs": 0
+  },
+  "decision": "REJECTED: two supported training frames below minimum three; victim-edge support does not transfer to other existing rows",
+  "qualification_created": false,
+  "production_changed": false,
+  "canonical_re_evaluated": false,
+  "thresholds_changed": false,
+  "initial_mask_rejected_before_holdout": "Wider portrait-frame patch could include portrait interior near its top; v2 restricted to the outer wedge before prediction",
+  "next_hypothesis": "Reuse geometric portrait frame/adjacent text evidence for a current victim field, paired with transferable separator; do not expand NCC mask into agent/name pixels or relax threshold"
+}

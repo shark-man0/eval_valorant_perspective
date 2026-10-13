@@ -1,0 +1,186 @@
+{
+  "scope": "Temporal evidence/admission audit before code change, followed by completed-end history regression fix. No new source-qualified formal end or adopted canonical result.",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "pre_change_admission_audit": {
+    "scope": "Actual loader admission and physical/source unit audit only, not independent temporal qualification or default runtime release",
+    "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "profile_fingerprint": "60b029cb987fe0d7447853e3b4cd791d5defb0918dfaa25a401bd45d2b64c813",
+    "recognizer_fingerprint": "7bbb45ea27708c547a9ceb7c79b6f52e99f765675735ad0e247fd0528021cd2c",
+    "candidate_path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/ui-end-component-review-20261013/lifecycle-admission-audit.json",
+    "candidate_sha256": "3cbae8db455c9c48ab2129bd9853835a8f145679cc0b44212f1900555a6975c5",
+    "loader_admitted_components": [
+      "purchase_phase",
+      "round_result",
+      "score",
+      "timer",
+      "ui_end_transition",
+      "ui_transition"
+    ],
+    "loader_rejection": null,
+    "end_context_frames": 71,
+    "support_images": [
+      {
+        "role": "clock_before",
+        "source_pts_ticks": 1143081,
+        "source_pixel_sha256": "68578730b4e08ac6fd89b3688111c23291bf8096b38bcad362e086baf865eec7",
+        "support_source_correct": true,
+        "count_scope": "Physical evidence support image, not independent end event"
+      },
+      {
+        "role": "clock_reset",
+        "source_pts_ticks": 1143593,
+        "source_pixel_sha256": "af7f8635c45a202f1099c8520d361e9cdaf828dc9a70a8fb30fcadfc1a55b4cb",
+        "support_source_correct": true,
+        "count_scope": "Physical evidence support image, not independent end event"
+      },
+      {
+        "role": "score_update",
+        "source_pts_ticks": 1144105,
+        "source_pixel_sha256": "dcefd8d92f370ab8b978619017a4e7f7b5f0ce71de50034c0fdfc8893a03a610",
+        "support_source_correct": true,
+        "count_scope": "Physical evidence support image, not independent end event"
+      },
+      {
+        "role": "score_stable",
+        "source_pts_ticks": 1144873,
+        "source_pixel_sha256": "d28735ae8138f10f7ba901fad711d2d3ef0316bb4739a0838335c4c50e40c22b",
+        "support_source_correct": true,
+        "count_scope": "Physical evidence support image, not independent end event"
+      },
+      {
+        "role": "result_first",
+        "source_pts_ticks": 1156905,
+        "source_pixel_sha256": "402f90b137916b45d1da4bb53b38ddaccfaf2ea149a665fdaa1f0532fef95bec",
+        "support_source_correct": true,
+        "count_scope": "Physical evidence support image, not independent end event"
+      },
+      {
+        "role": "result_confirmed",
+        "source_pts_ticks": 1157673,
+        "source_pixel_sha256": "17d297d12b348cdb2282f6b3ee3f1d27143c615117d407116e3b8c51378b1511",
+        "support_source_correct": true,
+        "count_scope": "Physical evidence support image, not independent end event"
+      }
+    ],
+    "training_context_images": 14,
+    "negative_cases": [
+      {
+        "name": "numeric_end_menu_entry_control",
+        "frames": 27,
+        "end_patterns": 0
+      },
+      {
+        "name": "pending_end_new_active_inputs",
+        "frames": 72,
+        "end_patterns": 0
+      }
+    ],
+    "physical_overlap": {
+      "whole_prefix_with_global_training": [],
+      "negative_with_global_training": [],
+      "negative_with_prefix": []
+    },
+    "temporal_case_counts": {
+      "known_end_episode": 1,
+      "new_blind_end_episodes": 0,
+      "negative_windows": 2,
+      "reviewed_pattern_decisions": 1
+    },
+    "independent_temporal_generalization_proven": false,
+    "development_exposure_retained": true,
+    "boundary_time_sec": 74.48600260416667,
+    "confirmation_time_sec": 75.3693359375,
+    "rule": "first_observed_score_change",
+    "formal_events_released": 0,
+    "default_installed": false,
+    "canonical_full_e2e_executed": false,
+    "next_required_check": "Complete source-owned active-start\u2192end\u2192rearm path without splicing windows or importing raw diagnostic measurements as runtime proofs. Inspect source metadata first to avoid unnecessary full recognition.",
+    "evidence_sha256": {
+      "outputs/recognition-investigation/guarded-result-component-review-20261013/start-score-result-components-review.json": "29867131215ace535159b7416b5b4fd3c3e9fd037597c1c17ea696172aa0cdc2",
+      "outputs/recognition-investigation/result-guard-continuous-end-20261013/guarded.json": "576010c1fbf1e8a42199481baec2f1fc36a6b324a0a3472c400271f238cb5c98",
+      "outputs/recognition-investigation/end-continuous-source-review-20261013/manual-labels.json": "7eff863c4fb3687954e90dd572c8f2adc2949f6e3725a86069297f84d94b6822",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/ui-end-component-review-20261013/lifecycle-admission-audit.json": "3cbae8db455c9c48ab2129bd9853835a8f145679cc0b44212f1900555a6975c5"
+    },
+    "production_changed": false
+  },
+  "source_metadata_only_audit": {
+    "scope": "Immutable source metadata audit only. Old recognition/profile/code output is deliberately not reused for current qualification or boundaries. Archive full-source integrity retained; current466raster/PTSmatches verify archive lineage in known windows, not a new decode of all10259frames.",
+    "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "archive_sha256": "7e57454f8d5fcdb8ada1ee2feb8479030421868700ab4d22f5e7377aaa43cfb2",
+    "manifest_sha256": "80dbbfbac46b44e0d80521086fb58849bfb6dc33b7d991fdb9800cd18dbd1eb1",
+    "archived_source_frames": 10259,
+    "current_raster_matches": 466,
+    "native_pts_gaps": [],
+    "repeated_rasters": [
+      {
+        "pts_sec": 81.78600260416667,
+        "source_pts_ticks": 1256233,
+        "kind": "repeated_decoded_raster"
+      },
+      {
+        "pts_sec": 81.83600260416667,
+        "source_pts_ticks": 1257001,
+        "kind": "repeated_decoded_raster"
+      }
+    ],
+    "before_end_repeated_rasters": 0,
+    "source_metadata_gap_end_to_r2": false,
+    "old_recognizer_fingerprint": "c729f02c87be094fec3a8d92cd986065f83ae56d2b7408dbe93d6321d87d60e9",
+    "old_predictions_reused": false,
+    "source_guard_policy_changed": false
+  },
+  "current_qualification_status": {
+    "old_recognizer_fingerprint": "7bbb45ea27708c547a9ceb7c79b6f52e99f765675735ad0e247fd0528021cd2c",
+    "current_recognizer_fingerprint": "fd8b8ff3da3c1c9775604141f61062d39656f59e492610ed482e8530db691817",
+    "actual_stale_bundle_rejection": "Invalid or mismatched global lifecycle qualification",
+    "qualification_current": false,
+    "next_step": "Fresh current-code source replay and review; no re-signing old counts."
+  },
+  "change": "Preserve completed-end segment history through uncertain current UI; clear on actual source break/invalid binding. Historical end never sets started or player ownership. Event predicates and timestamps unchanged.",
+  "tests": {
+    "regression_before": {
+      "passed": 4,
+      "failed": 4
+    },
+    "regression_after": {
+      "passed": 8,
+      "failed": 0
+    },
+    "related_unit": {
+      "passed": 108,
+      "failed": 0,
+      "runtime_sec": 77.24
+    },
+    "ruff": "PASS",
+    "mypy": "PASS:129sourcefiles",
+    "full_regression_after_change": "NOT_RUN: candidate source/temporal gates pending"
+  },
+  "comparison": {
+    "end_history_regression_failures": {
+      "previous": 4,
+      "current": 0,
+      "delta": -4
+    },
+    "adopted_canonical_last": {
+      "PASS": 23,
+      "FAIL": 55,
+      "NE": 4
+    },
+    "new_canonical_current": null,
+    "new_canonical_delta": null
+  },
+  "evidence_sha256": {
+    "outputs/recognition-investigation/ui-end-component-review-20261013/result.json": "3e3545282cf84274f39ff80a774a74bae8680ad33f8bdcb7d6845e99de39f88b",
+    "outputs/recognition-investigation/ui-end-component-review-20261013/source-metadata-audit.json": "3ef8d1e50131b58dba9dca0d93ad3de1e8fc399c0d177507e72ac196fcae44f5",
+    "outputs/recognition-investigation/ui-end-component-review-20261013/post-change-qualification-status.json": "995b4b24bcddc8be4b08e617ee86f1e4af89e1ab76ffc102f76e3353c1bf416b",
+    "outputs/recognition-investigation/ui-end-component-review-20261013/end-history-before.log": "a73cf82cb4bf4cc1e941a78f4a5886a8a2da6a94f16152028b7e04c73892ed1d",
+    "outputs/recognition-investigation/ui-end-component-review-20261013/end-history-after.log": "a1038298bf3aca6030c36249d5de2b51c3596321e49d062e8802c2955184eb69",
+    "outputs/recognition-investigation/ui-end-component-review-20261013/related-tests-after-change.log": "803b74641975728f5237795257e3e7c2cb25998089e55a4d18407ccb25e6de3e"
+  },
+  "production_thresholds_changed": false,
+  "source_break_policy_changed": false,
+  "formal_source_end_released": false,
+  "default_qualification_installed": false,
+  "canonical_full_e2e_executed": false,
+  "next_required_work": "Fresh current-code component/source verification, then source-owned continuous start/end/rearm collection. Do not re-sign old counts or splice isolated windows."
+}
