@@ -107,7 +107,7 @@ def test_ready_requires_production_readable_assets_not_generation_status(tmp_pat
 
 def test_nested_digit_bank_assets_participate_in_profile_fingerprint(tmp_path):
     layout = tmp_path / "layout.json"
-    layout.write_text("{}")
+    layout.write_text("{}", encoding="utf-8")
     sidecar = tmp_path / "profile.json"
     first, second = tmp_path / "first.png", tmp_path / "second.png"
     first.write_bytes(b"first reference")
@@ -115,7 +115,7 @@ def test_nested_digit_bank_assets_participate_in_profile_fingerprint(tmp_path):
     raw = {"schema_version": "1.0", "readers": {
         "player_hp_armor": {"templates": {"0": [first.name, second.name]}}
     }}
-    sidecar.write_text(json.dumps(raw))
+    sidecar.write_text(json.dumps(raw), encoding="utf-8")
     profile = HudTemplateProfile(sidecar, raw)
     assert set(profile.asset_paths) == {Path(first.name), Path(second.name)}
     before = profile.fingerprint(layout)
@@ -126,10 +126,10 @@ def test_nested_digit_bank_assets_participate_in_profile_fingerprint(tmp_path):
 def inputs(tmp_path, panel_images):
     layout = tmp_path / "base.json"
     _layout(layout)
-    raw = json.loads(layout.read_text())
+    raw = json.loads(layout.read_text(encoding="utf-8"))
     raw["rois"]["ammo_current_weapon"] = {"norm": [0.03, 0.60, 0.23, 0.95], "px": None}
     raw["rois"]["spectated_player_panel"] = {"norm": [0.30, 0.60, 0.55, 0.95], "px": None}
-    layout.write_text(json.dumps(raw))
+    layout.write_text(json.dumps(raw), encoding="utf-8")
     frames = _frames(changing=True, count=32)
     hud = HudLayout.load(layout)
     for index, frame in enumerate(frames):
@@ -150,10 +150,10 @@ def test_geometry_fallback_distinguishes_current_attempt_from_inherited_history(
     )[0].path
     base = create_anchor_profile(layout, seed, tmp_path / "base")
     sidecar = base.with_suffix(".templates.json")
-    raw = json.loads(sidecar.read_text())
+    raw = json.loads(sidecar.read_text(encoding="utf-8"))
     historical = {"sample_count": 64, "anchor_count": 4, "anchors": {}}
     raw["temporal_generation"] = historical
-    sidecar.write_text(json.dumps(raw))
+    sidecar.write_text(json.dumps(raw), encoding="utf-8")
     original = sidecar.read_bytes()
     blank = [np.full_like(frames[0], 70) for _ in range(32)]
     generated = create_profile(
@@ -170,7 +170,7 @@ def test_geometry_fallback_distinguishes_current_attempt_from_inherited_history(
     assert attempt["sampling_window_sec"] == [2.0, 4.0]
     assert after.raw["temporal_generation"] == historical
     assert sidecar.read_bytes() == original
-    local = json.loads((generated.parent / "profile_diagnostics.json").read_text())
+    local = json.loads((generated.parent / "profile_diagnostics.json").read_text(encoding="utf-8"))
     assert local["geometry_generation"] == attempt
 
 
@@ -227,7 +227,7 @@ def test_panel_resampling_rejects_unusable_native_observations(
         raw = generator._localize_assets(profile.raw, base.parent)
         selected = stage / "hud_layout.json"
         selected.write_bytes(base.read_bytes())
-        selected.with_suffix(".templates.json").write_text(json.dumps(raw))
+        selected.with_suffix(".templates.json").write_text(json.dumps(raw), encoding="utf-8")
         return selected
 
     proposal_calls = []
@@ -307,7 +307,7 @@ def test_generated_layout_consumed_without_json_edits(tmp_path, panel_images):
     assert all(
         profile.raw["signals"][name]["template"].startswith("identity/") for name in STRUCTURES
     )
-    stats = (out / "profile_diagnostics.json").read_text()
+    stats = (out / "profile_diagnostics.json").read_text(encoding="utf-8")
     assert "private.mp4" not in stats and str(tmp_path) not in stats
     assert layout.read_bytes() == original
     # A newly visible panel must not retain live identity.
@@ -364,14 +364,14 @@ def test_inherited_geometry_mask_cannot_be_weapon_identity(tmp_path, panel_image
         Path("private.mp4"), layout, tmp_path / "base", video_service=FakeVideoService(frames)
     )
     sidecar = base.with_suffix(".templates.json")
-    raw = json.loads(sidecar.read_text())
+    raw = json.loads(sidecar.read_text(encoding="utf-8"))
     mask = raw["signals"]["weapon_ammo_structure"]["mask"]
     raw["anchors"]["round_timer"]["mask"] = mask
     if copy_mask:
         copy = sidecar.parent / "identity" / "copied.mask.png"
         copy.write_bytes((sidecar.parent / mask).read_bytes())
         raw["signals"]["weapon_ammo_structure"]["mask"] = "identity/copied.mask.png"
-    sidecar.write_text(json.dumps(raw))
+    sidecar.write_text(json.dumps(raw), encoding="utf-8")
     generated = create_profile(
         Path("private.mp4"), base, tmp_path / "next", video_service=FakeVideoService(frames)
     )
@@ -420,7 +420,7 @@ def test_invalid_inherited_identity_is_regenerated_and_readers_preserved(tmp_pat
         "signals": {"hp_hud_structure": {"roi": "player_hp_armor", "template": "missing.png"}},
     }
     sidecar = layout.with_suffix(".templates.json")
-    sidecar.write_text(json.dumps(base))
+    sidecar.write_text(json.dumps(base), encoding="utf-8")
     original = sidecar.read_bytes()
     generated = create_profile(
         Path("private.mp4"),
@@ -519,7 +519,7 @@ def test_replaced_source_geometry_cannot_be_inherited_as_identity(
     raw["signals"] = {
         "hp_hud_structure": {"roi": "player_hp_armor", "template": str(asset), "threshold": 0.90}
     }
-    sidecar.write_text(json.dumps(raw))
+    sidecar.write_text(json.dumps(raw), encoding="utf-8")
     generated = create_profile(
         Path("private.mp4"), base, tmp_path / "generated", video_service=FakeVideoService(frames)
     )

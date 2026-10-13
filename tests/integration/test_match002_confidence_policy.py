@@ -27,7 +27,7 @@ def original():
                                                                   "score_ally": .9}])
 def test_typed_maps_preserved_and_original_verdict_unchanged(value):
     base = original()
-    schema = json.loads((ROOT / "schemas/round_package_schema_v2.json").read_text())
+    schema = json.loads((ROOT / "schemas/round_package_schema_v2.json").read_text(encoding="utf-8"))
     trace = {"snapshots": [{"source_confidence": value}]}
     before = copy.deepcopy(trace)
     assert base._finite_confidence_failures(trace) == ["confidence:snapshots:0:source_confidence"]
@@ -40,7 +40,7 @@ def test_typed_maps_preserved_and_original_verdict_unchanged(value):
                                   {"weapon": "0.9"}, {"weapon": -1}, {"weapon": 1.01},
                                   {"weapon": float("nan")}, {"weapon": float("inf")}])
 def test_invalid_native_maps_rejected(value):
-    schema = json.loads((ROOT / "schemas/round_package_schema_v2.json").read_text())
+    schema = json.loads((ROOT / "schemas/round_package_schema_v2.json").read_text(encoding="utf-8"))
     assert typed_confidence_failures({"snapshots": [{"source_confidence": value}]},
                                      original(), schema) == [
                                          "confidence:snapshots:0:source_confidence"]
@@ -48,7 +48,7 @@ def test_invalid_native_maps_rejected(value):
 
 @pytest.mark.parametrize("value", [True, "0.9", -1, 1.1, float("nan"), float("inf"), {}])
 def test_other_confidence_checks_remain_strict(value):
-    schema = json.loads((ROOT / "schemas/round_package_schema_v2.json").read_text())
+    schema = json.loads((ROOT / "schemas/round_package_schema_v2.json").read_text(encoding="utf-8"))
     trace = {"snapshots": [{"source_confidence": {}, "confidence": value}],
              "events": [{"source_confidence": value}]}
     assert typed_confidence_failures(trace, original(), schema) == [
@@ -59,9 +59,9 @@ def test_versioned_pack_adapter_is_hash_bound_and_keeps_all_other_verdicts(tmp_p
     # The synthetic fixture carries match_002 ID, not real source evidence.
     pack = valid_pack(tmp_path, monkeypatch)
     timeline, source, _ = (tmp_path / name for name in ("timeline", "source", "pack"))
-    data = json.loads((timeline / "timeline_ground_truth_v3.json").read_text())
+    data = json.loads((timeline / "timeline_ground_truth_v3.json").read_text(encoding="utf-8"))
     data["fixture_id"] = "match_002"
-    (timeline / "timeline_ground_truth_v3.json").write_text(json.dumps(data))
+    (timeline / "timeline_ground_truth_v3.json").write_text(json.dumps(data), encoding="utf-8")
     output = tmp_path / "versioned"
     monkeypatch.setattr(sys, "argv", ["stage", "--timeline-stage", str(timeline),
                                      "--source-stage", str(source), "--canonical-pack", str(PACK),
@@ -75,12 +75,12 @@ def test_versioned_pack_adapter_is_hash_bound_and_keeps_all_other_verdicts(tmp_p
                                                 "tests/reference_evaluator.py")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    assertions = json.loads((output / "tests/generated/e2e_assertions_v3.json").read_text())
+    assertions = json.loads((output / "tests/generated/e2e_assertions_v3.json").read_text(encoding="utf-8"))
     trace = {"snapshots": [{"source_confidence": {"weapon": .9}}]}
     old = original().evaluate(assertions, trace)
     assert module.evaluate(assertions, trace) == [
         failure for failure in old if failure != "confidence:snapshots:0:source_confidence"]
-    (output / "tests/reference_evaluator.py").write_text("# tampered")
+    (output / "tests/reference_evaluator.py").write_text("# tampered", encoding="utf-8")
     reseal(output)
     with pytest.raises(ValueError, match="unauthorized confidence policy"):
         validate(output, PACK)
@@ -89,9 +89,9 @@ def test_versioned_pack_adapter_is_hash_bound_and_keeps_all_other_verdicts(tmp_p
 
 def test_policy_cannot_be_used_for_match001(tmp_path, monkeypatch):
     timeline, _, _ = setup(tmp_path, monkeypatch)
-    data = json.loads((timeline / "timeline_ground_truth_v3.json").read_text())
+    data = json.loads((timeline / "timeline_ground_truth_v3.json").read_text(encoding="utf-8"))
     data["fixture_id"] = "match_001"
-    (timeline / "timeline_ground_truth_v3.json").write_text(json.dumps(data))
+    (timeline / "timeline_ground_truth_v3.json").write_text(json.dumps(data), encoding="utf-8")
     monkeypatch.setattr(sys, "argv", sys.argv + ["--confidence-policy", POLICY_VERSION])
     with pytest.raises(ValueError, match="restricted to match_002"):
         main()
@@ -103,8 +103,8 @@ def test_additive_schema_compatibility_does_not_relax_dictionary_contract(tmp_pa
     path = schema_dir / "round_package_schema_v2.json"
     path.write_bytes((ROOT / "schemas/round_package_schema_v2.json").read_bytes())
     assert len(native_policy_schema_hash(tmp_path, ROOT)) == 64
-    data = json.loads(path.read_text())
+    data = json.loads(path.read_text(encoding="utf-8"))
     data["$defs"]["snapshot_source_confidence"]["additionalProperties"] = True
-    path.write_text(json.dumps(data))
+    path.write_text(json.dumps(data), encoding="utf-8")
     with pytest.raises(ValueError, match="changed native dictionary Schema"):
         native_policy_schema_hash(tmp_path, ROOT)
