@@ -126,7 +126,7 @@ def test_nested_digit_bank_assets_participate_in_profile_fingerprint(tmp_path):
 def inputs(tmp_path, panel_images):
     layout = tmp_path / "base.json"
     _layout(layout)
-    raw = json.loads(layout.read_text())
+    raw = json.loads(layout.read_text(encoding="utf-8"))
     raw["rois"]["ammo_current_weapon"] = {"norm": [0.03, 0.60, 0.23, 0.95], "px": None}
     raw["rois"]["spectated_player_panel"] = {"norm": [0.30, 0.60, 0.55, 0.95], "px": None}
     layout.write_text(json.dumps(raw))
@@ -150,7 +150,7 @@ def test_geometry_fallback_distinguishes_current_attempt_from_inherited_history(
     )[0].path
     base = create_anchor_profile(layout, seed, tmp_path / "base")
     sidecar = base.with_suffix(".templates.json")
-    raw = json.loads(sidecar.read_text())
+    raw = json.loads(sidecar.read_text(encoding="utf-8"))
     historical = {"sample_count": 64, "anchor_count": 4, "anchors": {}}
     raw["temporal_generation"] = historical
     sidecar.write_text(json.dumps(raw))
@@ -170,7 +170,7 @@ def test_geometry_fallback_distinguishes_current_attempt_from_inherited_history(
     assert attempt["sampling_window_sec"] == [2.0, 4.0]
     assert after.raw["temporal_generation"] == historical
     assert sidecar.read_bytes() == original
-    local = json.loads((generated.parent / "profile_diagnostics.json").read_text())
+    local = json.loads((generated.parent / "profile_diagnostics.json").read_text(encoding="utf-8"))
     assert local["geometry_generation"] == attempt
 
 
@@ -307,7 +307,7 @@ def test_generated_layout_consumed_without_json_edits(tmp_path, panel_images):
     assert all(
         profile.raw["signals"][name]["template"].startswith("identity/") for name in STRUCTURES
     )
-    stats = (out / "profile_diagnostics.json").read_text()
+    stats = (out / "profile_diagnostics.json").read_text(encoding="utf-8")
     assert "private.mp4" not in stats and str(tmp_path) not in stats
     assert layout.read_bytes() == original
     # A newly visible panel must not retain live identity.
@@ -364,7 +364,7 @@ def test_inherited_geometry_mask_cannot_be_weapon_identity(tmp_path, panel_image
         Path("private.mp4"), layout, tmp_path / "base", video_service=FakeVideoService(frames)
     )
     sidecar = base.with_suffix(".templates.json")
-    raw = json.loads(sidecar.read_text())
+    raw = json.loads(sidecar.read_text(encoding="utf-8"))
     mask = raw["signals"]["weapon_ammo_structure"]["mask"]
     raw["anchors"]["round_timer"]["mask"] = mask
     if copy_mask:
