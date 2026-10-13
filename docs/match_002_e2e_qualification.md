@@ -350,3 +350,50 @@ Ingestion/related diagnostics regressions: 103 passed; Ruff, mypy (131 source
 files) and diff checks passed. Invalid/non-finite source times and changed
 review assets are rejected. All human-label tests use explicitly synthetic
 responses and do not constitute a real review or a numeric accuracy result.
+
+## Explicit numeric review comparison (2026-10-14)
+
+The subsequent trusted human response supplied all 24 numeric rows. The earlier
+pending-review statements above describe the preceding checkpoint, not current
+status. Exact labels and response bytes were frozen privately against the
+unchanged blind receipt and reviewed ROI hashes. They authorize numeric
+visibility only, not identity, event timing, continuity or production adoption.
+The lifecycle GT and formal Validation Pack remain unchanged.
+
+The already frozen component-crop probe was compared without rerunning the
+Analyzer or OCR, altering its confidence floor, or selecting a new reader.
+Counts are for the 24 exposed development points, not an independent holdout:
+
+| Field | Visible values | Correct reads | Missing | Wrong reads | Absent false accepts |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Timer | 16 | 9 | 7 | 0 | 0 |
+| Ally score | 22 | 13 | 9 | 0 | 0 |
+| Enemy score | 22 | 16 | 6 | 0 | 0 |
+
+Absent correct rejections were 8, 2 and 2 respectively. There were 22 unique
+source images; repeated identical images are not independent conditions.
+Unique-image missing counts were 5, 7 and 4 respectively. No unknown or
+unreviewed labels were silently counted as successful negative controls.
+
+Each field had 3 point-level misses without a crop proposal. Further misses
+after crop proposal were Timer 4, ally score 6 and enemy score 3, due to the
+unchanged OCR floor or format requirement. This is a diagnostic classification,
+not evidence to lower thresholds or repeatedly tune OCR against these labels.
+
+Correct diagnostic reads on geometry-valid points were only 6, 7 and 10.
+Geometry-invalid diagnostic reads are reported separately and cannot enter the
+production pipeline. Original runtime observations still contain no admitted
+global numeric values or events. No continuous lifecycle or full E2E positive
+result is established by this point-only comparison.
+
+The comparison CLI verifies exact human response, label/review/probe/raw hashes,
+complete per-field inventory and source-image association. It rejects changed
+assets, missing/duplicate rows, malformed or below-floor accepted outputs and
+conflicting reviews of identical images. Output is counts and hashes only;
+source labels, OCR strings, images and timestamps stay private. Next work is
+prospectively frozen source/negative qualification before any reader adoption;
+the final evaluation holdout must remain outside training or candidate selection.
+
+Numeric comparison and related geometry/review/probe regressions: 124 passed.
+Ruff, mypy (131 source files) and `git diff --check` passed. This is the targeted
+regression suite, not a new full-suite or real-video lifecycle PASS.
