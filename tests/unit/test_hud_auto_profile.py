@@ -141,6 +141,77 @@ def inputs(tmp_path, panel_images):
     return layout, frames
 
 
+def test_geometry_fallback_distinguishes_current_attempt_from_inherited_history(
+    tmp_path, panel_images,
+):
+    layout, frames = inputs(tmp_path, panel_images)
+    seed = FakeVideoService(frames).extract_frames(
+        Path("private.mp4"), [0], tmp_path / "seed_frame"
+    )[0].path
+    base = create_anchor_profile(layout, seed, tmp_path / "base")
+    sidecar = base.with_suffix(".templates.json")
+    raw = json.loads(sidecar.read_text())
+    historical = {"sample_count": 64, "anchor_count": 4, "anchors": {}}
+    raw["temporal_generation"] = historical
+    sidecar.write_text(json.dumps(raw))
+    original = sidecar.read_bytes()
+    blank = [np.full_like(frames[0], 70) for _ in range(32)]
+    generated = create_profile(
+        Path("private.mp4"), base, tmp_path / "candidate",
+        video_service=FakeVideoService(blank), sampling_window=(2.0, 4.0),
+    )
+    after = HudTemplateProfile.load(generated.with_suffix(".templates.json"))
+    diagnostics = after.raw["automatic_identity_generation"]
+    assert diagnostics["geometry_mode"] == "inherited"
+    attempt = diagnostics["geometry_generation"]
+    assert attempt["status"] == "rejected"
+    assert attempt["sample_count"] == 32
+    assert attempt["anchor_count"] == 0
+    assert attempt["sampling_window_sec"] == [2.0, 4.0]
+    assert after.raw["temporal_generation"] == historical
+    assert sidecar.read_bytes() == original
+    local = json.loads((generated.parent / "profile_diagnostics.json").read_text())
+    assert local["geometry_generation"] == attempt
+
+
+@pytest.mark.parametrize("outside_identity", [False, True])
+def test_automatic_profile_uses_same_development_bounds_for_both_passes(
+    tmp_path, panel_images, outside_identity,
+):
+    layout, frames = inputs(tmp_path, panel_images)
+
+    class BoundedService(FakeVideoService):
+        requests = []
+
+        def extract_frames(self, video, timestamps, output_dir, **kwargs):
+            self.requests.append((output_dir.name, list(timestamps)))
+            assert all(2.0 < time < 4.0 for time in timestamps)
+            result = super().extract_frames(video, timestamps, output_dir, **kwargs)
+            if outside_identity and output_dir.name == "identity_frames":
+                result[0] = FrameSample(4.0, result[0].path)
+            return result
+
+    service = BoundedService(frames)
+    output = tmp_path / "candidate"
+    if outside_identity:
+        with pytest.raises(ValueError, match="decoded identity frame outside sampling window"):
+            create_profile(
+                Path("private.mp4"), layout, output, video_service=service,
+                sampling_window=(2.0, 4.0),
+            )
+        assert not output.exists()
+    else:
+        generated = create_profile(
+            Path("private.mp4"), layout, output, video_service=service,
+            sampling_window=(2.0, 4.0),
+        )
+        profile = HudTemplateProfile.load(generated.with_suffix(".templates.json"))
+        assert profile.raw["automatic_identity_generation"]["sampling_window_sec"] == [2.0, 4.0]
+        assert profile.raw["temporal_generation"]["sampling_window_sec"] == [2.0, 4.0]
+    assert len(service.requests) == 2
+    assert service.requests[0][1] == service.requests[1][1]
+
+
 @pytest.mark.parametrize("fault", ["duplicate", "missing", "resolution"])
 def test_panel_resampling_rejects_unusable_native_observations(
     tmp_path, panel_images, monkeypatch, fault,

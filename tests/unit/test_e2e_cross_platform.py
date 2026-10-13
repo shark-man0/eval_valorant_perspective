@@ -56,6 +56,17 @@ def test_posix_absolute_path_preserved(tmp_path):
     )
 
 
+@pytest.mark.skipif(os.name == "nt", reason="Host-native POSIX path test")
+def test_posix_absolute_symlink_spelling_preserved(tmp_path):
+    target = tmp_path / "source.mp4"
+    target.write_bytes(b"synthetic source")
+    alias = tmp_path / "recording link.mp4"
+    alias.symlink_to(target)
+    result = runtime.native_path(alias, tmp_path / "different-root")
+    assert result == alias
+    assert result.read_bytes() == target.read_bytes()
+
+
 def test_video_and_pack_cli_env_local_default_precedence(tmp_path):
     (tmp_path / ".env.local").write_text(
         'VALORANT_E2E_VIDEO="local/video.mp4"\nVALORANT_E2E_PACK=local/pack\n',

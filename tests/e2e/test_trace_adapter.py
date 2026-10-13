@@ -53,6 +53,30 @@ def test_duration_features_use_native_onset_timestamp():
                for feature in to_e2e_trace(result)["temporal_features"])
 
 
+def test_duration_features_preserve_round_membership_without_clipping_unsafe_intervals():
+    result = SimpleNamespace(round_packages=[
+        {"round_no": 9, "round_window": {"start_sec": 99, "end_sec": 100.5},
+         "events": [{"type": "status_effect", "time_sec": 100.4, "actor": "player",
+                     "confidence": 0.91, "attributes": {"duration_sec": 0.8}}]},
+        {"round_no": 10, "round_window": {"start_sec": 100.5, "end_sec": 104},
+         "events": [{"type": "hold_angle", "time_sec": 101.2, "actor": "player",
+                     "confidence": 0.87, "attributes": {"duration_sec": 2}}]},
+    ])
+    trace = to_e2e_trace(result)
+    assert [row["round_id"] for row in trace["temporal_features"]] == [
+        "sample_round_1", "sample_round_2",
+    ]
+    first, second = trace["temporal_features"]
+    # Do not hide a source interval crossing a package/source boundary by clipping
+    # it or transferring it to the next round. The evaluator must still see it.
+    assert first["interval"] == pytest.approx([100.4, 101.2])
+    assert second["interval"] == pytest.approx([101.2, 103.2])
+    assert first["confidence"] == 0.91 and second["confidence"] == 0.87
+    assert [row["round_id"] for row in trace["events"]] == [
+        "sample_round_1", "sample_round_2",
+    ]
+
+
 def test_trace_adapter_keeps_unknowns_confidence_and_package_order() -> None:
     package = {
         "round_no": 9,

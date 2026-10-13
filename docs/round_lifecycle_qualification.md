@@ -1,11 +1,21 @@
 # Round lifecycle qualification — work in progress
 
+Current policy update (2026-10-09): complete R1-end recognition in this recording
+is no longer mandatory. Retain an incomplete R1 without inferred end and
+preserve independently evidenced later-start safety. Main real-video qualification
+now uses the unedited full match_002 after independent validation preparation
+(source received and intake verified 2026-10-09); retain match_001 for edited-source
+regressions. See [recording plan](round_lifecycle_recording_plan.md) and
+[partial-round policy and validation split](round_lifecycle_partial_policy.md).
+The original acceptance target and historical blocker audit below are retained
+as investigation provenance, not the current stop condition.
+
 ## Scope and provenance
 
-The acceptance target is the complete source-frame → HUD evidence → lifecycle
+The original acceptance target was the complete source-frame → HUD evidence → lifecycle
 decision → native event → RoundWindow → package association → trace → canonical
 evaluator contract. Two trustworthy starts and one trustworthy end in the supplied
-recording must be observed; passing synthetic tests alone does not complete it.
+recording were required; passing synthetic tests alone did not complete it.
 
 Work started from clean main `9bb50abd463ab0ef41fb35c59dbe0d7679a64082`, after
 fetch and fast-forward pull, on `work/round-lifecycle-boundaries`.

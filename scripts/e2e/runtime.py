@@ -58,12 +58,17 @@ def setting(cli: str | None, name: str, env: Mapping[str, str], local: Mapping[s
 
 
 def native_path(value: str | Path, root: Path) -> Path:
-    """Use host-native paths. Relative inputs are consistently repository-relative."""
+    """Preserve absolute POSIX inputs; resolve relative inputs against the repository."""
     text = str(value)
     # A copied Windows machine-local config is not a Linux relative filename.
     if not IS_WINDOWS and PureWindowsPath(text).drive:
         raise CaseError("FOREIGN_WINDOWS_PATH")
     path = Path(value).expanduser()
+    # macOS aliases /var to /private/var. Resolving an already absolute
+    # POSIX input rewrites its user-supplied spelling for no rooting benefit.
+    # File/content identity is checked independently by the E2E runner.
+    if path.is_absolute() and not IS_WINDOWS:
+        return path
     return (path if path.is_absolute() else root / path).resolve()
 
 

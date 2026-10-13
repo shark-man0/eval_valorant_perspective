@@ -16,6 +16,7 @@ from valorant_ai_coach.hud.models import (
     spectator_primary_state_evidence,
     timer_display_evidence,
 )
+from valorant_ai_coach.maps.registry import MapRegistry
 
 # Match the HUD temporal detector's own >1s discontinuity cutoff.
 MAX_SAMPLE_GAP_SEC = 1.0
@@ -38,11 +39,65 @@ def _required_confidence(value: Any, context: str) -> float:
     return confidence
 
 
+def _current_visual_snapshot(snapshot: dict, visuals: tuple, resolutions: tuple) -> dict:
+    """Require explicit same-PTS visual evidence, never nearest HUD confidence."""
+    timestamp = float(snapshot["time_sec"])
+    failure = f"Snapshot at {timestamp} has no matching HUD confidence or current visual source"
+    nullable_hud = ("ally_alive", "enemy_alive", "hp", "armor", "weapon",
+                    "round_time_remaining_sec", "utility_available_count", "score_ally",
+                    "score_enemy", "ammo_current", "ammo_reserve")
+    if (any(snapshot.get(key) is not None for key in nullable_hud)
+            or snapshot.get("spike_state", "unknown") != "unknown"
+            or any(key in snapshot for key in ("spectator_primary_state",
+                   "round_time_remaining_display", "round_time_remaining_display_provenance"))
+            or snapshot.get("known_enemy_locations")):
+        raise ValueError(failure)
+    confidence = snapshot.get("source_confidence") or {}
+    if not confidence or set(confidence) - {"spatial_context", "player_location"}:
+        raise ValueError(failure)
+    for key, value in confidence.items():
+        _required_confidence(value, f"current snapshot {key} source confidence")
+    current = [v for v in visuals if float(v["time_sec"]) == timestamp]
+    row = {"primary_state": "unknown", "view_owner": "unknown"}
+    if "spatial_context" in confidence:
+        if len(current) != 1:
+            raise ValueError(failure)
+        visual = current[0]
+        spatial, quality = visual["spatial"], visual["quality"]
+        expected = min(_required_confidence(spatial["confidence"], "spatial confidence"),
+                       _required_confidence(quality["visual_confidence"], "visual confidence"))
+        if (not visual["analysis_eligibility"]["player_mechanics"] or quality["occluded"]
+                or spatial["confidence"] < .85 or confidence["spatial_context"] != expected
+                or any(value != spatial[key]
+                       for key, value in snapshot["spatial_context"].items())):
+            raise ValueError(failure)
+        row["visual_confidence"] = quality["visual_confidence"]
+    location = snapshot.get("player_location") or {}
+    if "player_location" in confidence:
+        sources = [r for r in resolutions if float(r["time_sec"]) == timestamp]
+        if len(sources) != 1:
+            raise ValueError(failure)
+        resolution = sources[0]
+        threshold = MapRegistry().runtime["fusion_thresholds"]["named_zone_min"]
+        score = _required_confidence(resolution["zone_confidence"], "zone confidence")
+        if (resolution["calibration_status"] != "ok"
+                or resolution["resolution_scope"] != "exact_zone" or score < threshold
+                or not resolution["zone_id"] or location.get("zone_id") != resolution["zone_id"]
+                or location.get("zone_name") != resolution["zone_id"]
+                or confidence["player_location"] != score):
+            raise ValueError(failure)
+        row["zone_id"] = resolution["zone_id"]
+    elif any(value is not None for value in location.values()):
+        raise ValueError(failure)
+    return row
+
+
 def to_e2e_trace(result: Any) -> dict[str, list[dict[str, Any]]]:
     """Convert a HudVideoProcessingResult (or sample-shaped object) to trace v1."""
     packages = tuple(getattr(result, "round_packages", ()))
     observations = tuple(getattr(result, "observations", ()))
     visual_observations = tuple(getattr(result, "visual_observations", ()))
+    zone_resolutions = tuple(getattr(result, "zone_resolutions", ()))
     trace: dict[str, list[dict[str, Any]]] = {
         "events": [], "state_intervals": [], "ownership_intervals": [],
         "snapshots": [], "visual_observations": [], "temporal_features": [],
@@ -76,7 +131,10 @@ def to_e2e_trace(result: Any) -> dict[str, list[dict[str, Any]]]:
             source = next((o for o in observations
                            if float(o.get("time_sec", -1)) == timestamp), None)
             if source is None:
-                raise ValueError(f"Snapshot at {timestamp} has no matching HUD confidence")
+                row.update(_current_visual_snapshot(
+                    snapshot, visual_observations, zone_resolutions))
+                trace["snapshots"].append(row)
+                continue
             player_location = snapshot.get("player_location") or {}
             if "zone_id" in player_location:
                 row["zone_id"] = player_location["zone_id"]
@@ -284,6 +342,9 @@ def to_e2e_trace(result: Any) -> dict[str, list[dict[str, Any]]]:
             else [event_time - float(duration), event_time]
         )
         trace["temporal_features"].append({
+            # Preserve the source event's package membership. Do not reassign by
+            # interval endpoint or clip an unsafe span to make evaluation pass.
+            "round_id": event["round_id"],
             "feature": f"{event['type']}.duration_sec",
             "interval": interval,
             "value": float(duration), "confidence": event["confidence"],

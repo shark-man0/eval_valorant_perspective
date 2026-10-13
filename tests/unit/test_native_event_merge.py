@@ -1,6 +1,5 @@
 from copy import deepcopy
 from dataclasses import replace
-from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
@@ -95,8 +94,21 @@ def qualified_processor(tmp_path):
     video.write_bytes(b'synthetic-video')
     metadata = VideoMetadata(video, 1, 1920, 1080, 60, 'h264', None, False, video.stat().st_size)
     processor = build_processor(FakeVideo(), analyzer)
-    frames = [FrameSample(time, Path(f'{time}.jpg')) for time in (.04, .10, .20, .40, .50, .58)]
+    frames = [
+        FrameSample(time, tmp_path / f'{time}.jpg')
+        for time in (.04, .10, .20, .40, .50, .58)
+    ]
     return processor, metadata, frames, native
+
+
+def test_native_merge_fixture_does_not_write_decoder_images_into_cwd(tmp_path, monkeypatch):
+    working = tmp_path / 'working'
+    working.mkdir()
+    monkeypatch.chdir(working)
+    processor, metadata, frames, native = qualified_processor(tmp_path)
+    assert all(frame.path.parent == tmp_path for frame in frames)
+    processor.process_frames(metadata, 'synthetic-merge', frames, native_lifecycle=native)
+    assert not list(working.iterdir())
 
 
 def test_sampled_processing_preserves_player_observations_during_native_merge(tmp_path):

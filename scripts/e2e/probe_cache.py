@@ -7,6 +7,7 @@ import json
 import math
 import os
 import tempfile
+from fractions import Fraction
 from pathlib import Path
 from typing import Any
 
@@ -195,6 +196,31 @@ class CachedVideoService:
             return None
         return points
 
+    def _decode_exact_identity(
+        self, payload: Any, points: tuple[float, ...]
+    ) -> tuple[tuple[int, ...], str, str] | None:
+        if (not isinstance(payload, dict)
+                or set(payload) != {"points", "ticks", "time_base", "source_sha256"}
+                or payload["source_sha256"] != self.source_sha256
+                or not isinstance(payload["ticks"], list)
+                or len(payload["ticks"]) != len(points)
+                or any(type(tick) is not int or tick < 0 for tick in payload["ticks"])
+                or not isinstance(payload["time_base"], str)):
+            return None
+        ticks = tuple(payload["ticks"])
+        try:
+            base = Fraction(payload["time_base"])
+            valid = (base > 0
+                     and all(after > before
+                             for before, after in zip(ticks, ticks[1:], strict=False))
+                     and all(abs(float(tick * base) - point) <= .00000051
+                             for tick, point in zip(ticks, points, strict=True)))
+        except (ValueError, ZeroDivisionError, OverflowError):
+            return None
+        if not valid:
+            return None
+        return ticks, str(base), self.source_sha256
+
     def presentation_times(self, path: Path, *, cancel_event: Any = None) -> tuple[float, ...]:
         with timing_stage("pts_scan"):
             return self._presentation_times(path, cancel_event=cancel_event)
@@ -202,7 +228,12 @@ class CachedVideoService:
     def _presentation_times(self, path: Path, *, cancel_event: Any = None) -> tuple[float, ...]:
         current_path = self.video._require_video(path)
         payload = self._load("pts")
-        points = self._decode_pts(payload)
+        points = self._decode_pts(payload.get("points") if isinstance(payload, dict) else payload)
+        identity = None
+        if isinstance(payload, dict) and points is not None:
+            identity = self._decode_exact_identity(payload, points)
+            if identity is None:
+                points = None  # Invalid binding cannot silently become a legacy timeline.
         if points is not None:
             self.stats["hits"] += 1
         else:
@@ -211,9 +242,25 @@ class CachedVideoService:
             if self._decode_pts(list(points)) is None:
                 raise ValueError("wrapped VideoService returned an invalid presentation timeline")
             points = tuple(float(point) for point in points)
-            self._save("pts", list(points))
+            payload = list(points)
+            exact = getattr(self.video, "_tick_cache", None)
+            if exact is not None:
+                stat = current_path.stat()
+                key = (str(current_path), stat.st_size, stat.st_mtime_ns)
+                if exact[0] != key:
+                    raise ValueError("wrapped exact timeline source changed")
+                payload = {"points": list(points), "ticks": list(exact[1]),
+                           "time_base": exact[2], "source_sha256": exact[3]}
+                identity = self._decode_exact_identity(payload, points)
+                if identity is None:
+                    raise ValueError("wrapped exact timeline identity is invalid")
+            self._save("pts", payload)
         stat = current_path.stat()
-        self.video._pts_cache = ((str(current_path), stat.st_size, stat.st_mtime_ns), points)
+        key = (str(current_path), stat.st_size, stat.st_mtime_ns)
+        self.video._pts_cache = (key, points)
+        # Legacy float-only entries remain usable but never gain inferred ticks.
+        # Clear any binding from another path rather than letting it leak into extraction.
+        self.video._tick_cache = (key, *identity) if identity is not None else None
         return points
 
     def extract_frames(self, *args: Any, **kwargs: Any) -> Any:

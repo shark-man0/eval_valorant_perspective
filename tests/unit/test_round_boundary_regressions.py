@@ -301,12 +301,13 @@ def test_observation_gap_splits_actual_round_boundaries_into_fragments():
     assert [event["event_id"] for event in boundary_events] == ["e0", "e1", "e2", "e3"]
 
 
-def test_explicit_continuity_segment_change_prevents_complete_pairing():
+@pytest.mark.parametrize('segments', [(3, 4), ('source-a', 'source-b'), (0, '0')])
+def test_explicit_continuity_segment_change_prevents_complete_pairing(segments):
     samples = [observation(round(time * 0.5, 1)) for time in range(20, 41)]
     result = build(
         samples,
         [(10, "round_start"), (20, "round_end")],
-        continuity_segments={0: 3, 1: 4},
+        continuity_segments={0: segments[0], 1: segments[1]},
     )
     assert len(result) == 2
     assert all(item["observation_quality"]["timeline_completeness"] == 0 for item in result)
@@ -346,22 +347,37 @@ def test_duplicate_out_of_order_boundaries_have_one_shared_window_and_event_popu
     assert [e["event_id"] for e in boundaries] == ["e1", "e0"]
 
 
-def test_same_boundary_with_conflicting_segments_fails_closed():
+@pytest.mark.parametrize("segments", [(3, 4), ("source-a", "source-b"), (0, "0")])
+def test_same_boundary_with_conflicting_segments_fails_closed(segments):
     with pytest.raises(RoundPackageBuildError, match="continuity segment"):
         build(
             [observation(10), observation(11)],
             [(10, "round_start"), (10, "round_start")],
-            continuity_segments={0: 3, 1: 4},
+            continuity_segments={0: segments[0], 1: segments[1]},
         )
 
 
-def test_boundary_with_missing_segment_cannot_discard_known_segment():
+@pytest.mark.parametrize("segment", [3, "source-a"])
+def test_boundary_with_missing_segment_cannot_discard_known_segment(segment):
     with pytest.raises(RoundPackageBuildError, match="continuity segment"):
         build(
             [observation(10), observation(11)],
             [(10, "round_start"), (10, "round_start")],
-            continuity_segments={0: 3},
+            continuity_segments={0: segment},
         )
+
+
+@pytest.mark.parametrize("segment", [3, "source-a"])
+def test_matching_source_segments_preserve_complete_round(segment):
+    result = build(
+        [observation(time / 2) for time in range(20, 41)],
+        [(10, "round_start"), (20, "round_end")],
+        continuity_segments={0: segment, 1: segment},
+    )
+    assert len(result) == 1
+    assert result[0]["round_window"] == {"start_sec": 10, "end_sec": 20}
+    assert result[0]["observation_quality"]["timeline_completeness"] == 1
+    assert [event["type"] for event in result[0]["events"]] == ["round_start", "round_end"]
 
 
 def test_bounded_diagnostic_preserves_native_boundary_and_trace_association():

@@ -84,6 +84,76 @@ def test_cached_pts_are_installed_before_extraction(tmp_path: Path) -> None:
     assert backend._pts_cache[1] == (0.0, 0.017, 0.034)
 
 
+def test_exact_source_ticks_survive_service_recreation(tmp_path, monkeypatch):
+    from types import SimpleNamespace
+
+    from valorant_ai_coach.video import VideoService
+
+    path = tmp_path / "recording.mp4"
+    path.write_bytes(b"video")
+    calls = []
+
+    def probe(*args):
+        calls.append(args)
+        return SimpleNamespace(returncode=0, stdout=json.dumps({
+            "streams": [{"time_base": "1/15360"}],
+            "frames": [
+                {"best_effort_timestamp_time": ".036003", "best_effort_timestamp": 553},
+                {"best_effort_timestamp_time": ".052669", "best_effort_timestamp": 809},
+            ],
+        }))
+
+    monkeypatch.setattr("valorant_ai_coach.video.service._run_cancellable_process", probe)
+    backend = VideoService()
+    cold = CachedVideoService(backend, tmp_path / "cache", SOURCE_HASH, PROBE_FINGERPRINT)
+    expected = cold.presentation_times(path)
+    assert backend._tick_cache is not None
+    identity = backend._tick_cache
+    recreated = VideoService()
+    warm = CachedVideoService(recreated, tmp_path / "cache", SOURCE_HASH, PROBE_FINGERPRINT)
+    assert warm.presentation_times(path) == expected
+    assert recreated._tick_cache == identity
+    assert len(calls) == 1
+
+
+@pytest.mark.parametrize("fault", ["source", "count", "repeat", "boolean", "base", "pts"])
+def test_corrupt_exact_identity_is_refreshed_not_relabelled_legacy(tmp_path, fault):
+    path = tmp_path / "recording.mp4"
+    path.write_bytes(b"video")
+    backend = FakeVideoService(path)
+    service = CachedVideoService(backend, tmp_path / "cache", SOURCE_HASH, PROBE_FINGERPRINT)
+    payload = {"points": [0.0, .017, .034], "ticks": [0, 17, 34],
+               "time_base": "1/1000", "source_sha256": SOURCE_HASH}
+    if fault == "source":
+        payload["source_sha256"] = "0" * 64
+    elif fault == "count":
+        payload["ticks"] = [0]
+    elif fault == "repeat":
+        payload["ticks"] = [0, 17, 17]
+    elif fault == "boolean":
+        payload["ticks"] = [False, 17, 34]
+    elif fault == "base":
+        payload["time_base"] = "0/1"
+    else:
+        payload["ticks"] = [0, 170, 340]
+    service._save("pts", payload)
+    assert service.presentation_times(path) == (0.0, .017, .034)
+    assert backend.pts_calls == 1
+    assert backend._tick_cache is None
+
+
+def test_legacy_float_cache_cannot_inherit_another_source_identity(tmp_path):
+    path = tmp_path / "recording.mp4"
+    path.write_bytes(b"video")
+    backend = FakeVideoService(path)
+    backend._tick_cache = (("other", 5, 0), (0, 17, 34), "1/1000", SOURCE_HASH)
+    service = CachedVideoService(backend, tmp_path / "cache", SOURCE_HASH, PROBE_FINGERPRINT)
+    service._save("pts", [0.0, .017, .034])
+    assert service.presentation_times(path) == (0.0, .017, .034)
+    assert backend.pts_calls == 0
+    assert backend._tick_cache is None
+
+
 @pytest.mark.parametrize(
     "bad_pts",
     [[], [0.0, 0.0], [0.2, 0.1], [float("nan")], [float("inf")], [-0.1]],

@@ -209,6 +209,8 @@ def parser() -> argparse.ArgumentParser:
     p.add_argument("--video-id")
     p.add_argument("--validation-pack")
     p.add_argument("--register", action="store_true")
+    p.add_argument("--register-only", action="store_true",
+                   help="Validate physical source/Pack and register without Analyzer/Evaluator")
     p.add_argument("--hud-layout")
     p.add_argument("--visual-profile")
     p.add_argument("--manual-map-id", default="")
@@ -241,6 +243,9 @@ def parser() -> argparse.ArgumentParser:
 def run_case(args, *, root=APP_ROOT, runner=subprocess.run, probe=None) -> int:
     from scripts.e2e.run_metrics import FullRunLock
 
+    register_only = getattr(args, "register_only", False)
+    if register_only and not args.register:
+        raise CaseError("REGISTER_ONLY_REQUIRES_REGISTER")
     budget = getattr(args, "native_png_budget", None)
     scene = getattr(args, "scene_reference_profile", None)
     assurance = getattr(args, "unedited_input_contract", None)
@@ -253,6 +258,8 @@ def run_case(args, *, root=APP_ROOT, runner=subprocess.run, probe=None) -> int:
     if getattr(args, "mode", "full") == "full":
         if getattr(args, "frame_suite", None) or getattr(args, "category", []):
             raise CaseError("BOUNDED_OPTIONS_REQUIRE_BOUNDED_MODE")
+        if register_only:
+            return _run_case(args, root=root, runner=runner, probe=probe)
         with FullRunLock(root):
             return _run_case(args, root=root, runner=runner, probe=probe)
     return _run_case(args, root=root, runner=runner, probe=probe)
@@ -293,6 +300,7 @@ def _run_case(args, *, root=APP_ROOT, runner=subprocess.run, probe=None) -> int:
     evaluation = {"pass": False, "schema_valid": False, "failures": []}
     assertions_hash = None
     mode = getattr(args, "mode", "full")
+    register_only = getattr(args, "register_only", False)
     started = time.perf_counter()
     command_results = []
     orchestration_stages = {}
@@ -376,20 +384,34 @@ def _run_case(args, *, root=APP_ROOT, runner=subprocess.run, probe=None) -> int:
         validate_manifest(actual, root)
         if expected:
             match_manifest(expected, actual)
-        command(
-            [
+        validation_command = [
                 sys.executable,
                 str(pack / "tests/validate_pack.py"),
                 "--project-root",
                 str(root / "src"),
-            ],
-            "validation_pack",
-        )
+            ]
+        if register_only:
+            validation_command.extend(["--source-video", str(video)])
+        command(validation_command, "validation_pack")
+        if register_only and (
+            sha256_file(video) != digest or pack_identity(pack)[1:] != (pack_hash, assertions_hash)
+        ):
+            raise CaseError("REGISTRATION_INPUT_CHANGED")
         if args.register:
             manifest_path.parent.mkdir(parents=True, exist_ok=True)
             with manifest_path.open("x", encoding="utf-8") as stream:
                 stream.write(json.dumps(actual, indent=2, allow_nan=False) + "\n")
             print(f"Registered dataset: datasets/manifests/{video_id}.json", flush=True)
+        if register_only:
+            receipt = {"status": "registered", "video_id": video_id,
+                       "source_sha256": digest, "validation_pack_sha256": pack_hash,
+                       "assertions_sha256": assertions_hash,
+                       "analyzer_executed": False, "evaluator_executed": False,
+                       "runtime_qualification_asserted": False}
+            (output / "registration.json").write_text(
+                json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
+            print("Registration only: no Analyzer/Evaluator or shared E2E report generated")
+            return 0
         cmd = [
             sys.executable,
             str(root / "tests/e2e/run_real_video.py"),
@@ -597,6 +619,8 @@ def _run_case(args, *, root=APP_ROOT, runner=subprocess.run, probe=None) -> int:
         print(error, file=sys.stderr)
         code = 2
     save_context(output, metadata, assertions_sha256=assertions_hash, exit_code=code)
+    if register_only:
+        return code  # Never replace existing shared E2E results on registration failure.
     report_started = time.perf_counter()
     try:
         if mode == "full":

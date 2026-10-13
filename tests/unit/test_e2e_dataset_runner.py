@@ -134,6 +134,37 @@ def execute(c):
     return runner.run_case(c.args, root=c.root, runner=c.command, probe=c.probe)
 
 
+def test_registration_only_does_not_run_analyzer_or_replace_reports(case):
+    case.args.register_only = True
+    old = case.root / "e2e_reports/match_001/summary.json"
+    write_json(old, {"preserved": True})
+    assert execute(case) == 0
+    assert json.loads(old.read_text()) == {"preserved": True}
+    assert (case.root / "datasets/manifests/match_001.json").is_file()
+    validation = next(cmd for cmd in case.calls if "validate_pack.py" in cmd[1])
+    assert "--source-video" in validation
+    assert not any("run_real_video.py" in cmd[1] or "evaluate_saved_trace.py" in cmd[1]
+                   for cmd in case.calls)
+    receipt = json.loads(next((case.root / "outputs").rglob("registration.json")).read_text())
+    assert receipt["analyzer_executed"] is False and receipt["evaluator_executed"] is False
+
+
+def test_registration_only_failure_preserves_existing_reports(case):
+    case.args.register_only = True
+    case.state["probe_error"] = True
+    old = case.root / "e2e_reports/match_001/summary.json"
+    write_json(old, {"preserved": True})
+    assert execute(case) == 2
+    assert json.loads(old.read_text()) == {"preserved": True}
+    assert not (case.root / "datasets/manifests/match_001.json").exists()
+
+
+def test_registration_only_requires_explicit_register(case):
+    case.args.register_only, case.args.register = True, False
+    with pytest.raises(runner.CaseError, match="REGISTER_ONLY_REQUIRES_REGISTER"):
+        execute(case)
+
+
 def test_pack_fingerprint_uses_posix_order_independent_of_enumeration(case, monkeypatch):
     from pathlib import PurePosixPath, PureWindowsPath
 

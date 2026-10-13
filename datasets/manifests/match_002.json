@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "video_id": "match_002",
+  "filename": "match_002.mp4",
+  "sha256": "55d909c2d6a5f38575d1cb6c249ddfa7e2a48b96535841317adcae704c6f63b6",
+  "duration_sec": 2214.272,
+  "width": 1920,
+  "height": 1080,
+  "fps": 60.0,
+  "audio_tracks": 3,
+  "validation_pack": "valorant_e2e_match_002_v3",
+  "validation_pack_sha256": "6232818ab3dc0fd070899497dde806b88c844b7ee7ff0dfbaac17cd05108df5d",
+  "assertions_sha256": "9caae72ed8fb26bd88d230a729640fda8e3811554608b12c5629d17f36799938"
+}

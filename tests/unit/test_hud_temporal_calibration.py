@@ -9,6 +9,7 @@ from valorant_ai_coach.hud.calibrate_temporal import (
     _candidate,
     _validated_candidate,
     create_temporal_profile,
+    sampling_times,
 )
 from valorant_ai_coach.video.service import FrameSample, VideoMetadata
 
@@ -28,6 +29,51 @@ class FakeVideoService:
             assert cv2.imwrite(str(frame_path), frame)
             result.append(FrameSample(timestamps[index], frame_path))
         return result
+
+
+@pytest.mark.parametrize("window", [(2.0, 4.0), None])
+def test_sampling_window_preserves_default_and_excludes_end(window):
+    times, bounds = sampling_times(10.0, 24, window)
+    assert bounds == (window or (0.0, 10.0))
+    assert len(times) == 24
+    assert all(bounds[0] < time < bounds[1] for time in times)
+    assert times == pytest.approx(np.linspace(*bounds, 26)[1:-1])
+
+
+@pytest.mark.parametrize("window", [(-1, 4), (4, 4), (4, 11), (float("nan"), 4)])
+def test_invalid_sampling_window_is_rejected(window):
+    with pytest.raises(ValueError):
+        sampling_times(10.0, 24, window)
+
+
+def test_geometry_sampling_and_diagnostics_are_development_only(tmp_path):
+    layout = tmp_path / "hud_layout.json"
+    _layout(layout)
+    service = FakeVideoService(_frames())
+    result = create_temporal_profile(
+        Path("dummy.mp4"), layout, tmp_path / "out", video_service=service,
+        sampling_window=(2.0, 4.0),
+    )
+    diagnostics = json.loads(result.with_suffix(".templates.json").read_text())
+    assert diagnostics["temporal_generation"]["sampling_window_sec"] == [2.0, 4.0]
+
+
+def test_decoded_geometry_frame_outside_window_cannot_train(tmp_path):
+    layout = tmp_path / "hud_layout.json"
+    _layout(layout)
+
+    class OutsideService(FakeVideoService):
+        def extract_frames(self, *args, **kwargs):
+            frames = super().extract_frames(*args, **kwargs)
+            return [FrameSample(4.0, frames[0].path), *frames[1:]]
+
+    out = tmp_path / "out"
+    with pytest.raises(ValueError):
+        create_temporal_profile(
+            Path("dummy.mp4"), layout, out, video_service=OutsideService(_frames()),
+            sampling_window=(2.0, 4.0),
+        )
+    assert not out.exists()
 
 
 def _layout(path: Path):
@@ -86,6 +132,30 @@ def test_rejects_too_few_or_uninformative_frames(frames):
     assert _candidate(frames) is None
     constant = [np.full((100, 100, 3), 55, np.uint8) for _ in range(24)]
     assert _candidate(constant) is None
+
+
+def test_rejected_geometry_attempt_keeps_current_statistics(tmp_path):
+    layout = tmp_path / "hud_layout.json"
+    _layout(layout)
+    frames = [np.full((360, 640, 3), 70, np.uint8) for _ in range(24)]
+    diagnostics = {}
+    with pytest.raises(ValueError, match="3個未満"):
+        create_temporal_profile(
+            Path("dummy.mp4"), layout, tmp_path / "out",
+            video_service=FakeVideoService(frames), sampling_window=(2.0, 4.0),
+            diagnostics=diagnostics,
+        )
+    assert diagnostics["status"] == "rejected"
+    assert diagnostics["sample_count"] == 24
+    assert diagnostics["anchor_count"] == 0
+    assert diagnostics["sampling_window_sec"] == [2.0, 4.0]
+    for anchor in diagnostics["anchors"].values():
+        assert anchor["reason"] == "training_structure_insufficient"
+        assert anchor["selected_pixels"] == anchor["persistent_edge_pixels"] == 0
+        assert anchor["stable_intensity_pixels"] > 0
+        assert anchor["selected_contrast_std"] is None
+    assert not (tmp_path / "out").exists()
+    assert "dummy.mp4" not in json.dumps(diagnostics)
 
 
 def test_preserves_prior_readers_signals_and_source_assets_and_refuses_overwrite(tmp_path):
