@@ -879,5 +879,21 @@
     "R1 prefix before3.602669 and R2 preparation buy menu near85s outside native round windows; preserve unknown context and investigate association.",
     "GT-R1-SNAP-705 has no snapshot matching its live state/smoke predicate in the native-only trace; investigate application merge, not a comparable standard full regression result.",
     "Main sampled/full application merge and independent temporal qualification remain pending."
-  ]
+  ],
+  "integration_checks": {
+    "integrated_git_head": "de7c9d8014f74026e862b1a21611ab2b5d2ab426",
+    "pytest": {
+      "passed": 3224,
+      "skipped": 6,
+      "runtime_sec": 2157.26,
+      "log_sha256": "960b50227c94b4710de41e580f37e5d11bc3402a60ef7e1c0c0d5699d9d4e782"
+    },
+    "ruff": "PASS",
+    "mypy": {
+      "status": "PASS",
+      "source_files": 131
+    },
+    "recognizer_fingerprint_unchanged_after_remote_main_integration": true,
+    "windows_current_commit_ci": "pending"
+  }
 }

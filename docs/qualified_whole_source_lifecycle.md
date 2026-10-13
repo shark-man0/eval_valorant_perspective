@@ -106,3 +106,14 @@ Machine-readable full 82-outcome diagnostic:
 `e2e_reports/match_001/qualified_whole_source_lifecycle.json`.
 Local source outputs:
 `outputs/recognition-investigation/qualified-whole-source-lifecycle-20261013/`.
+
+## Integrated regression checkpoint
+
+Remote branch changes including latest main and Match aggregation integrate
+without conflict. Recognition fingerprint remains unchanged. At integrated
+HEAD `de7c9d8014f74026e862b1a21611ab2b5d2ab426`, full regression is **3224 PASS /
+6 SKIP in 2157.26 seconds**; Ruff PASS; mypy PASS on 131 source files. Skips
+cover the separately configured real-video fixture, local Tesseract, native
+Windows paths and unavailable PowerShell. They are not Windows verification.
+The separate source-native whole-video run above remains the real-image
+lifecycle evidence. Linux/Windows GitHub CI will run after push.
