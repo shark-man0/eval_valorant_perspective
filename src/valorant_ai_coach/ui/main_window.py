@@ -607,7 +607,9 @@ class MainWindow(QMainWindow):
         self._audio_probe_request_id = None
         self._clear_audio_track_metadata()
         self._current_match_id = match_id
-        self.current_evaluations = list(result.evaluations)
+        self.current_evaluations = list(
+            getattr(result, "display_evaluations", result.evaluations)
+        )
         self.current_round_partitions = getattr(result, "round_partitions", ())
         context = [
             value
@@ -626,7 +628,8 @@ class MainWindow(QMainWindow):
         suffix = f" — {' / '.join(context)}" if context else ""
         self.result_title.setText(
             f"GOOD {result.good_count} / 改善 {result.improve_count} / "
-            f"UNSCORED {result.unscored_count}{suffix}"
+            f"UNSCORED {result.unscored_count}"
+            f"（画面表示 {len(self.current_evaluations)} / 保存 {len(result.evaluations)}）{suffix}"
         )
         diagnostics = getattr(result, "diagnostics", ())
         self.result_diagnostics.setText("\n".join(diagnostics[:8]))

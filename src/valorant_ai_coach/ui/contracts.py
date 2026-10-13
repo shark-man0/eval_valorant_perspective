@@ -98,6 +98,8 @@ class MatchResultView:
     player_agent: str | None = None
     diagnostics: tuple[str, ...] = ()
     round_partitions: tuple[RoundPartitionView, ...] = ()
+    # Complete stored set remains in evaluations; UI cards use only this sample.
+    display_evaluations: tuple[EvaluationView, ...] = ()
 
 
 __all__ = [

@@ -366,12 +366,9 @@ class MatchAnalysisPipeline:
             checkpoint_state.update({"completed_rounds": sorted(set(completed))})
             self.repository.save_job_checkpoint(identifier, "generating_clips", checkpoint_state)
             reusable: dict[tuple[float, float], ClipArtifact] = {}
-            scored = [
-                item
-                for evaluations in by_round.values()
-                for item in evaluations
-                if item["label"] in {"good", "improve"}
-            ]
+            scored = self.aggregator.select_clip_exemplars(
+                [item for evaluations in by_round.values() for item in evaluations]
+            )
             for index, evaluation in enumerate(scored):
                 self._check_cancel(cancel)
                 interval = evaluation["display_clip"]
@@ -916,7 +913,7 @@ class MatchAnalysisPipeline:
     def _aggregate_round_evaluations(
         self, round_results: list[Any]
     ) -> dict[int, list[dict[str, Any]]]:
-        """Display-aggregate every Round's evaluations after the 0.55 confidence floor (D-1b).
+        """Deduplicate the full stored evaluation set after the 0.55 floor (D-1b).
 
         The floor is applied to each evaluation *before* merging, so a weak good/improve becomes
         ``unscored`` on its own and can no longer pull a confident same-rule neighbour below the
