@@ -1,0 +1,161 @@
+{
+  "scope": "Training-only neutral-white segmentation and full glyph foreground/negative-space feasibility; unchanged source images, no qualification or holdout",
+  "source_sha256": {
+    "outputs/recognition-investigation/result-glyph-cells-20261013/native_training_1.png": "5e6fbcbdaf2de83b52b191e51b36beee14869557eab0ad414a781391c2a7cabe",
+    "outputs/recognition-investigation/result-glyph-cells-20261013/native_training_2.png": "e9f06a7c7b1625fe0fa5933d849cf0f4cbc0758014e5f010ff90fb0b4d60210d",
+    "outputs/recognition-investigation/result-glyph-cells-20261013/native_training_3.png": "de213b6de38e6278fb51d7412ba20e9d04e06dca35abb1944ea440c435a65c22"
+  },
+  "neutral_glyph_counts": [
+    7,
+    7,
+    5
+  ],
+  "gray_glyph_counts": [
+    7,
+    7,
+    6
+  ],
+  "neutral_boxes": [
+    [
+      [
+        16,
+        32,
+        20,
+        60
+      ],
+      [
+        34,
+        14,
+        55,
+        63
+      ],
+      [
+        60,
+        16,
+        84,
+        63
+      ],
+      [
+        92,
+        16,
+        109,
+        62
+      ],
+      [
+        110,
+        8,
+        128,
+        64
+      ],
+      [
+        146,
+        12,
+        170,
+        64
+      ],
+      [
+        208,
+        12,
+        212,
+        60
+      ]
+    ],
+    [
+      [
+        7,
+        12,
+        31,
+        64
+      ],
+      [
+        34,
+        20,
+        55,
+        64
+      ],
+      [
+        58,
+        10,
+        87,
+        64
+      ],
+      [
+        90,
+        12,
+        129,
+        63
+      ],
+      [
+        143,
+        12,
+        171,
+        64
+      ],
+      [
+        175,
+        30,
+        202,
+        64
+      ],
+      [
+        206,
+        12,
+        227,
+        64
+      ]
+    ],
+    [
+      [
+        7,
+        8,
+        31,
+        52
+      ],
+      [
+        34,
+        10,
+        53,
+        60
+      ],
+      [
+        100,
+        12,
+        129,
+        64
+      ],
+      [
+        175,
+        8,
+        202,
+        64
+      ],
+      [
+        206,
+        8,
+        227,
+        64
+      ]
+    ]
+  ],
+  "qualification_created": false,
+  "production_changed": false,
+  "holdout_evaluated": false,
+  "threshold": 0.9,
+  "training_support": 0,
+  "status": "training_segmentation_rejected",
+  "runtime_sec": 0.016451047034934163,
+  "recognizer_fingerprint": "727c9ba7c88859d0726de307cbdb6b63cdf46f002510c0b2260bbe298f0e763f",
+  "target_assertion_ids": [
+    "GT-R1-ROUND-END",
+    "event_count_constraints-002"
+  ],
+  "fixed_white_min_channel": 210,
+  "fixed_max_channel_spread": 12,
+  "artifact_sha256": {
+    "outputs/recognition-investigation/result-neutral-colour-training-20261013/freeze.json": "5a571260d8b3e803851e966a37fa71052114c6164210d7bb73486b45a625d324",
+    "outputs/recognition-investigation/result-neutral-colour-training-20261013/result.json": "269def6413926a2b4c9aacf448b0e6cf634f02e6629ee2a94c8b4f81031b0683",
+    "outputs/recognition-investigation/result-neutral-colour-training-20261013/probe.py": "ffbff8681cbdcfa56e77ae80016cac931e9ee384032d7ab525a26e59d1d98131"
+  },
+  "decision": "Reject before glyph recognition or holdout: neutral-white condition removes real letter strokes and splits/omits characters. Component count7 alone does not prove correct seven glyph correspondence. Do not scan colour thresholds or install this method.",
+  "next_requirement": "Reference/recognition must tolerate actual nonneutral/translucent foreground while retaining glyph negative-space discrimination; use relative local contrast, not a constant white-font assumption."
+}

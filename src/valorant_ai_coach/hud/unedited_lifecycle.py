@@ -64,8 +64,6 @@ class UneditedRoundLifecycle:
             if self.pending_end is not None:
                 self.pending_end.reset()
             return decision
-        if self.start.state == 'unobserved':
-            self.ended = False
         # A practical end can stand on independent clock/score/result evidence
         # even when the recording starts mid-round. It does not invent a start.
         # The start tracker still validates source binding before this path.
@@ -77,6 +75,12 @@ class UneditedRoundLifecycle:
             or any(row.get('system_evidence', {}).get(key) is True
                    for key in ('content_jump', 'discontinuity'))
         )
+        # A failed current UI scan clears preparation evidence, not the known
+        # completed end in this source segment. This hint never enables an
+        # active round or bypasses the end predicate. Source breaks still erase
+        # it so later preparation cannot inherit an earlier segment's history.
+        if source_break:
+            self.ended = False
         if (previous is None or source_break
                 or not self.start.started and self.boundary_mode != 'practical'):
             if self.pending_end is not None:

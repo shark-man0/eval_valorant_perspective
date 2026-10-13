@@ -1,0 +1,498 @@
+{
+  "scope": "One fixed training-only independent registered-word prototype; not existing word matcher AND, no held/early/GT input, no production integration",
+  "target_assertion_ids": [
+    "GT-R1-ROUND-END",
+    "event_count_constraints-002"
+  ],
+  "foreground_threshold": 210,
+  "component_min_area": 32,
+  "component_min_width": 3,
+  "component_min_height_fraction": 0.4,
+  "glyph_count_required": 7,
+  "one_pixel_border": true,
+  "glyph_size": [
+    28,
+    56
+  ],
+  "interpolation": "INTER_AREA",
+  "threshold": 0.9,
+  "minimum_distinct_support": 3,
+  "negative_space": "Existing GlyphContrastGuard, foreground and internal negative-space population>=32, all selected background retained, same NCC floor/polarity",
+  "geometry": "All7width,height,top signatures and6gaps normalized by median glyph height; min/max envelopes from all eligible training parents plus1physical-pixel quantization allowance; gap3must be unique widest word space; no free pose search or glyph dropping",
+  "reference": "Median per-cell of all7-component eligible training parents; canonical strip with4blank separator pixels only for coordinate transport, not counted as source evidence",
+  "parent_execution_sha256": "cdce62e51eefa3533992a4eac70556120515f814c3420cf9a7fe2c77f80e5c9b",
+  "recognizer_fingerprint": "7bbb45ea27708c547a9ceb7c79b6f52e99f765675735ad0e247fd0528021cd2c",
+  "complete_word_training_frames": 7,
+  "reference_rejection": "glyph contrast has insufficient foreground/negative space",
+  "geometry_envelope": {
+    "lower": [
+      0.4107142857142857,
+      0.35714285714285715,
+      0.5,
+      0.6785714285714285,
+      0.5,
+      0.4642857142857143,
+      0.35714285714285715,
+      0.9821428571428571,
+      0.9821428571428571,
+      0.9821428571428571,
+      0.9821428571428571,
+      0.9821428571428571,
+      0.9821428571428571,
+      0.9821428571428571,
+      -0.017857142857142856,
+      -0.017857142857142856,
+      -0.017857142857142856,
+      -0.017857142857142856,
+      -0.017857142857142856,
+      -0.017857142857142856,
+      -0.017857142857142856,
+      0.017857142857142856,
+      0.017857142857142856,
+      0.03571428571428571,
+      0.19642857142857142,
+      0.0,
+      0.017857142857142856
+    ],
+    "upper": [
+      0.4642857142857143,
+      0.39285714285714285,
+      0.5535714285714286,
+      0.7321428571428572,
+      0.5714285714285715,
+      0.5535714285714286,
+      0.39285714285714285,
+      1.0357142857142856,
+      1.0178571428571428,
+      1.0178571428571428,
+      1.0178571428571428,
+      1.0178571428571428,
+      1.0178571428571428,
+      1.0178571428571428,
+      0.017857142857142856,
+      0.03571428571428571,
+      0.03571428571428571,
+      0.03571428571428571,
+      0.03571428571428571,
+      0.03571428571428571,
+      0.03571428571428571,
+      0.07142857142857142,
+      0.07142857142857142,
+      0.07142857142857142,
+      0.26785714285714285,
+      0.07142857142857142,
+      0.08928571428571427
+    ],
+    "physical_pixel_allowance": 0.017857142857142856
+  },
+  "training_rows": [
+    {
+      "source_pts_ticks": 1158185,
+      "source_pixel_sha256": "2a0c10e18d01b7e93dedba7272dfa04abfbbe7b151ef50e1de0ffbbb0a413ab6",
+      "glyph_count": 7,
+      "word_space_valid": true,
+      "geometry_valid": true,
+      "cell_ncc": [
+        0.9992303818684843,
+        0.9991952154413218,
+        0.9993880117023781,
+        0.9756419782799834,
+        0.9989815128876066,
+        0.9823407725971998,
+        0.9972149348057499
+      ],
+      "contrast": null,
+      "score": 0.0,
+      "accepted": false
+    },
+    {
+      "source_pts_ticks": 1164329,
+      "source_pixel_sha256": "7a99af9d24125a83705a7e1e335735ac988ba9533fe7f95d9ead7287786a8337",
+      "glyph_count": 7,
+      "word_space_valid": true,
+      "geometry_valid": true,
+      "cell_ncc": [
+        0.9750435938109628,
+        0.9943707915490232,
+        0.9593416226998229,
+        0.96494893789036,
+        0.9603764206279573,
+        0.9251463961502657,
+        0.9858957578526897
+      ],
+      "contrast": null,
+      "score": 0.0,
+      "accepted": false
+    },
+    {
+      "source_pts_ticks": 1171497,
+      "source_pixel_sha256": "f81a19edb9f9384bd93ded62adde460a1679007b053d3646529d9cc3c9f96610",
+      "glyph_count": 6,
+      "word_space_valid": false,
+      "geometry_valid": false,
+      "cell_ncc": [],
+      "contrast": null,
+      "score": 0.0,
+      "accepted": false
+    },
+    {
+      "source_pts_ticks": 1158953,
+      "source_pixel_sha256": "e445d72592b56da75db9ee999997559e5ca2a58a439e7d1f0ebba0bff2923fe8",
+      "glyph_count": 7,
+      "word_space_valid": true,
+      "geometry_valid": true,
+      "cell_ncc": [
+        0.9991587578168202,
+        0.9989859184863668,
+        0.9989909082906614,
+        0.9730732707322535,
+        0.9986671202357816,
+        0.9817628156629804,
+        0.99791844034467
+      ],
+      "contrast": null,
+      "score": 0.0,
+      "accepted": false
+    },
+    {
+      "source_pts_ticks": 1159721,
+      "source_pixel_sha256": "aaf534e7c964ee577119ff1588dad5d3934e1cb8e659927644ba585263c1e711",
+      "glyph_count": 7,
+      "word_space_valid": true,
+      "geometry_valid": true,
+      "cell_ncc": [
+        0.9992808506050397,
+        0.9989909466017376,
+        0.9989639000385852,
+        0.97287093308742,
+        0.9981125252987483,
+        0.9815486797477655,
+        0.9984971168326762
+      ],
+      "contrast": null,
+      "score": 0.0,
+      "accepted": false
+    },
+    {
+      "source_pts_ticks": 1162793,
+      "source_pixel_sha256": "28ff54a5d89f2d1d94ca2438abdc11e0d803cde80a5d0c824a589226890fab3b",
+      "glyph_count": 7,
+      "word_space_valid": true,
+      "geometry_valid": true,
+      "cell_ncc": [
+        0.9989249029653019,
+        0.9990890484092597,
+        0.999345114422547,
+        0.9738485268721285,
+        0.9974848181596644,
+        0.9885136620681598,
+        0.9981019024038147
+      ],
+      "contrast": null,
+      "score": 0.0,
+      "accepted": false
+    },
+    {
+      "source_pts_ticks": 1164073,
+      "source_pixel_sha256": "6cfe590032024b8c53f46b28a98a723cfe9879e4cd02f3fbaa049a8dfde61ab1",
+      "glyph_count": 1,
+      "word_space_valid": false,
+      "geometry_valid": false,
+      "cell_ncc": [],
+      "contrast": null,
+      "score": 0.0,
+      "accepted": false
+    },
+    {
+      "source_pts_ticks": 1165097,
+      "source_pixel_sha256": "1859b5832ad399669284782aa816ac26d4a0589c8b44d6d1fb1858962c667911",
+      "glyph_count": 5,
+      "word_space_valid": false,
+      "geometry_valid": false,
+      "cell_ncc": [],
+      "contrast": null,
+      "score": 0.0,
+      "accepted": false
+    },
+    {
+      "source_pts_ticks": 1165353,
+      "source_pixel_sha256": "db0f4d00158408eee8cb21a4f6771c3e2ddb9fbf958e88ae8c0e306034316013",
+      "glyph_count": 5,
+      "word_space_valid": false,
+      "geometry_valid": false,
+      "cell_ncc": [],
+      "contrast": null,
+      "score": 0.0,
+      "accepted": false
+    },
+    {
+      "source_pts_ticks": 1170217,
+      "source_pixel_sha256": "6c071756014865126b91354ca803c4e323011116439320017f7a2a4908b61001",
+      "glyph_count": 7,
+      "word_space_valid": true,
+      "geometry_valid": true,
+      "cell_ncc": [
+        0.9494412660906623,
+        0.968792436519282,
+        0.9562983157223687,
+        0.9675779940570103,
+        0.9640726138492955,
+        0.9341499892672621,
+        0.9878486734625141
+      ],
+      "contrast": null,
+      "score": 0.0,
+      "accepted": false
+    },
+    {
+      "source_pts_ticks": 1170473,
+      "source_pixel_sha256": "1b83b1c58051510b37012ec9d68b8fa1850b74fac0fc2741edad1a3911848283",
+      "glyph_count": 7,
+      "word_space_valid": true,
+      "geometry_valid": true,
+      "cell_ncc": [
+        0.9570638097174281,
+        0.9679356661335706,
+        0.9558426126383428,
+        0.9674064111662847,
+        0.9643274070872385,
+        0.93381528021597,
+        0.988029945678398
+      ],
+      "contrast": null,
+      "score": 0.0,
+      "accepted": false
+    },
+    {
+      "source_pts_ticks": 1171753,
+      "source_pixel_sha256": "1c6def280fafbf0089b4e1df77f793c061a751dac3b163edd71d82fe399edcfc",
+      "glyph_count": 5,
+      "word_space_valid": false,
+      "geometry_valid": false,
+      "cell_ncc": [],
+      "contrast": null,
+      "score": 0.0,
+      "accepted": false
+    },
+    {
+      "source_pts_ticks": 1172777,
+      "source_pixel_sha256": "833b2238abfca638776430da3a166cd975e41642bd904430ed6ee8ad6b5d3acb",
+      "glyph_count": 5,
+      "word_space_valid": false,
+      "geometry_valid": false,
+      "cell_ncc": [],
+      "contrast": null,
+      "score": 0.0,
+      "accepted": false
+    },
+    {
+      "source_pts_ticks": 1173033,
+      "source_pixel_sha256": "ada97bc7b0aa778a6aaece891beec7d6bb76395c25b1acea5be16c5cf5083831",
+      "glyph_count": 5,
+      "word_space_valid": false,
+      "geometry_valid": false,
+      "cell_ncc": [],
+      "contrast": null,
+      "score": 0.0,
+      "accepted": false
+    }
+  ],
+  "training_support": 0,
+  "training_eligible": false,
+  "holdout_evaluated": false,
+  "production_changed": false,
+  "qualification_created": false,
+  "canonical_full_executed": false,
+  "terminal_hash_verified": true,
+  "runtime_sec": 1.738519448088482,
+  "population_audit": {
+    "scope": "Training-only mask population cause audit, no held image scoring, parameter sweep, new current glyph predictions or admission",
+    "execution_sha256": "265848cdc70f0bb0c3254d6a5de053aa059d7deb5bcb60995c7a5bfc75d70ee3",
+    "eligible_training_parents": 7,
+    "rows": [
+      {
+        "glyph_index": 0,
+        "normalized_shape": [
+          56,
+          28
+        ],
+        "normalized_reference_population": {
+          "foreground_core": 626,
+          "negative_space": 126,
+          "meets32each": true
+        },
+        "training_median_native_shape": [
+          58,
+          27
+        ],
+        "median_native_reference_population": {
+          "foreground_core": 596,
+          "negative_space": 140,
+          "meets32each": true
+        }
+      },
+      {
+        "glyph_index": 1,
+        "normalized_shape": [
+          56,
+          28
+        ],
+        "normalized_reference_population": {
+          "foreground_core": 901,
+          "negative_space": 200,
+          "meets32each": true
+        },
+        "training_median_native_shape": [
+          58,
+          23
+        ],
+        "median_native_reference_population": {
+          "foreground_core": 719,
+          "negative_space": 174,
+          "meets32each": true
+        }
+      },
+      {
+        "glyph_index": 2,
+        "normalized_shape": [
+          56,
+          28
+        ],
+        "normalized_reference_population": {
+          "foreground_core": 771,
+          "negative_space": 29,
+          "meets32each": false
+        },
+        "training_median_native_shape": [
+          58,
+          32
+        ],
+        "median_native_reference_population": {
+          "foreground_core": 938,
+          "negative_space": 47,
+          "meets32each": true
+        }
+      },
+      {
+        "glyph_index": 3,
+        "normalized_shape": [
+          56,
+          28
+        ],
+        "normalized_reference_population": {
+          "foreground_core": 920,
+          "negative_space": 26,
+          "meets32each": false
+        },
+        "training_median_native_shape": [
+          58,
+          41
+        ],
+        "median_native_reference_population": {
+          "foreground_core": 1557,
+          "negative_space": 80,
+          "meets32each": true
+        }
+      },
+      {
+        "glyph_index": 4,
+        "normalized_shape": [
+          56,
+          28
+        ],
+        "normalized_reference_population": {
+          "foreground_core": 755,
+          "negative_space": 32,
+          "meets32each": true
+        },
+        "training_median_native_shape": [
+          58,
+          33
+        ],
+        "median_native_reference_population": {
+          "foreground_core": 945,
+          "negative_space": 42,
+          "meets32each": true
+        }
+      },
+      {
+        "glyph_index": 5,
+        "normalized_shape": [
+          56,
+          28
+        ],
+        "normalized_reference_population": {
+          "foreground_core": 872,
+          "negative_space": 127,
+          "meets32each": true
+        },
+        "training_median_native_shape": [
+          58,
+          31
+        ],
+        "median_native_reference_population": {
+          "foreground_core": 977,
+          "negative_space": 169,
+          "meets32each": true
+        }
+      },
+      {
+        "glyph_index": 6,
+        "normalized_shape": [
+          56,
+          28
+        ],
+        "normalized_reference_population": {
+          "foreground_core": 903,
+          "negative_space": 196,
+          "meets32each": true
+        },
+        "training_median_native_shape": [
+          58,
+          23
+        ],
+        "median_native_reference_population": {
+          "foreground_core": 724,
+          "negative_space": 169,
+          "meets32each": true
+        }
+      }
+    ],
+    "normalization_minimum": 32,
+    "native_shape_scope": "Population diagnostics on median physical training dimensions only; not actual native candidate mask support or a qualified model. Upsampled pixels cannot count as additional independent evidence.",
+    "production_changed": false
+  },
+  "decision": "Reject independent28x56word prototype before held/control/early scoring: actual reference negative-space gate fails, A29/M26<32. No threshold or mask-population relaxation.",
+  "next_hypothesis": "Preserve median native glyph reference dimensions and transport reference/masks onto each actual source glyph patch; evaluate contrast on original current image pixels, require>=32distinct physical foreground and negative-space samples per comparison. Preserve all7NCC/word geometry and split criteria; upsampling current image cannot add support.",
+  "evidence_sha256": {
+    "outputs/recognition-investigation/result-independent-registration-training-20261013/execution.json": "265848cdc70f0bb0c3254d6a5de053aa059d7deb5bcb60995c7a5bfc75d70ee3",
+    "outputs/recognition-investigation/result-independent-registration-training-20261013/result.json": "a024a5af2470c9e63ea48cfb1dd45ba0c8a32e29771c647d4bfc62ab49be5030",
+    "outputs/recognition-investigation/result-independent-registration-training-20261013/population-audit.json": "86762c2308131164435fd98981695f543e66545d97f428f13238e30f47ae7456"
+  },
+  "comparison": {
+    "training_sources": {
+      "previous": 14,
+      "current": 14,
+      "delta": 0
+    },
+    "additional_AND_guard_training_support": {
+      "previous": 5,
+      "current": null,
+      "delta": null,
+      "scope": "Previous conjunction and current independent word model have different predicates."
+    },
+    "current_independent_training_support": 0,
+    "formal_round_end_events": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "canonical_last_adopted": {
+      "PASS": 23,
+      "FAIL": 55,
+      "NE": 4
+    },
+    "canonical_current": null,
+    "canonical_delta": null
+  }
+}

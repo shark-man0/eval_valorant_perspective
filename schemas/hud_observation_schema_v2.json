@@ -355,7 +355,7 @@
           }
         },
         "combat_report_readings": {
-          "description": "Unqualified current-frame numeric observations only; not player-owned damage or confirmed death attributes.",
+          "description": "Unqualified current-frame numeric observations and report portrait labels; no player-owned damage, killer identity or confirmed death attributes.",
           "type": [
             "object",
             "null"
@@ -489,6 +489,50 @@
                         "minimum": 0,
                         "maximum": 1
                       }
+                    }
+                  }
+                },
+                "report_portrait_label": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "confidence",
+                    "sources",
+                    "cross_checked",
+                    "roi_bounds_norm",
+                    "label"
+                  ],
+                  "properties": {
+                    "confidence": {
+                      "type": "number",
+                      "minimum": 0.9,
+                      "maximum": 1
+                    },
+                    "sources": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "cross_checked": {
+                      "const": false
+                    },
+                    "roi_bounds_norm": {
+                      "type": "array",
+                      "minItems": 4,
+                      "maxItems": 4,
+                      "items": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      }
+                    },
+                    "label": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 64
                     }
                   }
                 }

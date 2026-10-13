@@ -1,0 +1,727 @@
+{
+  "schema_version": 1,
+  "scope": "Same8 previously reviewed source-field type controls at decoder-verified native PTS; actual configured125x85ROI wrapper, no shifted production geometry, no natural timer-absent assertion",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "profile_fingerprint": "10bfac00544e510ebf3f3e2c0072c9beba24938b2ff996c9012f7e4046d82c99",
+  "recognizer_fingerprint": "727c9ba7c88859d0726de307cbdb6b63cdf46f002510c0b2260bbe298f0e763f",
+  "counts": {
+    "jpeg_rejected": 8,
+    "jpeg_false_positive": 0,
+    "native_rejected": 8,
+    "native_false_positive": 0
+  },
+  "rows": [
+    {
+      "sample_index": 0,
+      "time_sec": 5.653,
+      "source_frame": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-000/frame_00080_000005.653.jpg",
+      "source_file_sha256": "ba80ed77367cc9f4fd1182e834922f0ec304f08752097eac4add7378a1ae9d16",
+      "field_bounds": [
+        815,
+        27,
+        890,
+        67
+      ],
+      "field_sha256": "744d24ae7cfe9c788e3a911d2b2d0eebe7c064995f63a971227b0b0f7e869168",
+      "expected_type": "not_timer",
+      "selection_provenance": "fixed uniform-rank alternate score-adjacent and HP-adjacent fields, spatial type rejection diagnostic, selected before predictions",
+      "requested_source_pts_ticks": 86825,
+      "requested_time_sec": 5.652669270833333,
+      "reader_outer_bounds": [
+        790,
+        0,
+        915,
+        85
+      ],
+      "reader_outer_shape": [
+        85,
+        125
+      ],
+      "inner_bounds_within_outer": [
+        25,
+        27,
+        100,
+        67
+      ],
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/timer-type-controls-current-native-20261013/source_00.png",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "source_pts_ticks": 86825,
+      "source_time_base": "1/15360",
+      "source_epoch": "df6a5eb1bbf74a51b1575364437e748f",
+      "source_time_sec": 5.652669270833333,
+      "pixel_sha256": "6b47fc4464712d603e7021bcd5139da2ceda721c87426536399fbe0a46b7e4aa",
+      "encoded_sha256": "b9cd7484313edd957d405c2f8223e4c47667f2c0e28082de62ce8247fd5ccc71",
+      "width": 1920,
+      "height": 1080,
+      "acquisition_pts_ticks": [
+        86313,
+        86569,
+        86825,
+        87081,
+        87337
+      ],
+      "manual_review": {
+        "source_pts_ticks": 86825,
+        "pixel_sha256": "6b47fc4464712d603e7021bcd5139da2ceda721c87426536399fbe0a46b7e4aa",
+        "expected_type": "not_timer",
+        "source_review_note": "single score-adjacent zero"
+      },
+      "predictions": {
+        "jpeg": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_timer_foreground_touches_roi_border"
+          ],
+          "false_positive": false,
+          "inner_field_pixel_sha256": "744d24ae7cfe9c788e3a911d2b2d0eebe7c064995f63a971227b0b0f7e869168",
+          "wrapper_pixel_equivalence": true
+        },
+        "native": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_timer_foreground_touches_roi_border"
+          ],
+          "false_positive": false,
+          "inner_field_pixel_sha256": "7e720055faf10a3c8b09772ee29226c6ccf5706608cbae97958e405978e7b69b",
+          "wrapper_pixel_equivalence": true
+        }
+      }
+    },
+    {
+      "sample_index": 1,
+      "time_sec": 28.953,
+      "source_frame": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-001/frame_00139_000028.953.jpg",
+      "source_file_sha256": "e4b6a44a0dba3e9dd9cb6e81a19a6f27065698aec0dec98bdd4d14bf24ff91ec",
+      "field_bounds": [
+        500,
+        925,
+        575,
+        965
+      ],
+      "field_sha256": "84f14aa7a2b1d11b546b33cdb87db1453c997c10fbcff8fd12eab5575a706fa2",
+      "expected_type": "not_timer",
+      "selection_provenance": "fixed uniform-rank alternate score-adjacent and HP-adjacent fields, spatial type rejection diagnostic, selected before predictions",
+      "requested_source_pts_ticks": 444713,
+      "requested_time_sec": 28.952669270833333,
+      "reader_outer_bounds": [
+        475,
+        898,
+        600,
+        983
+      ],
+      "reader_outer_shape": [
+        85,
+        125
+      ],
+      "inner_bounds_within_outer": [
+        25,
+        27,
+        100,
+        67
+      ],
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/timer-type-controls-current-native-20261013/source_01.png",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "source_pts_ticks": 444713,
+      "source_time_base": "1/15360",
+      "source_epoch": "edf48c915c024bf7b30915c5c0547f2d",
+      "source_time_sec": 28.952669270833333,
+      "pixel_sha256": "2be300625d29cc069485e54d4758b37844502e87c43f58152e54705b1f50b535",
+      "encoded_sha256": "b718704a9e95a99816c7737535aa27d2a1e106d21637b49fbc1e4f3686472661",
+      "width": 1920,
+      "height": 1080,
+      "acquisition_pts_ticks": [
+        444201,
+        444457,
+        444713,
+        444969,
+        445225
+      ],
+      "manual_review": {
+        "source_pts_ticks": 444713,
+        "pixel_sha256": "2be300625d29cc069485e54d4758b37844502e87c43f58152e54705b1f50b535",
+        "expected_type": "not_timer",
+        "source_review_note": "scene/plain colour or non-timer text"
+      },
+      "predictions": {
+        "jpeg": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_timer_foreground_touches_roi_border"
+          ],
+          "false_positive": false,
+          "inner_field_pixel_sha256": "84f14aa7a2b1d11b546b33cdb87db1453c997c10fbcff8fd12eab5575a706fa2",
+          "wrapper_pixel_equivalence": true
+        },
+        "native": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_timer_foreground_touches_roi_border"
+          ],
+          "false_positive": false,
+          "inner_field_pixel_sha256": "4a3e3f477bc23b96853cc9547961963e16119e8d9e4f60126df957fde96ad923",
+          "wrapper_pixel_equivalence": true
+        }
+      }
+    },
+    {
+      "sample_index": 2,
+      "time_sec": 46.503,
+      "source_frame": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00279_000046.503.jpg",
+      "source_file_sha256": "cffac9aecd8b81335c6ef04114cbbdf64b44630507682b3382a327d76628472f",
+      "field_bounds": [
+        815,
+        27,
+        890,
+        67
+      ],
+      "field_sha256": "acb56c0648424390cc99ed9497f7221575750d331e042d1b69e67043a2c8da90",
+      "expected_type": "not_timer",
+      "selection_provenance": "fixed uniform-rank alternate score-adjacent and HP-adjacent fields, spatial type rejection diagnostic, selected before predictions",
+      "requested_source_pts_ticks": 714281,
+      "requested_time_sec": 46.50266927083333,
+      "reader_outer_bounds": [
+        790,
+        0,
+        915,
+        85
+      ],
+      "reader_outer_shape": [
+        85,
+        125
+      ],
+      "inner_bounds_within_outer": [
+        25,
+        27,
+        100,
+        67
+      ],
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/timer-type-controls-current-native-20261013/source_02.png",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "source_pts_ticks": 714281,
+      "source_time_base": "1/15360",
+      "source_epoch": "36b3061052d34237b5c9d3150976c5cd",
+      "source_time_sec": 46.50266927083333,
+      "pixel_sha256": "c88055b29752fd94bd659b5e4f48bf8bc31988b0453ca5335a9efb18f1d74edd",
+      "encoded_sha256": "22a056fa9c5e49259f7f4b8986ece614f48fab2519e23325d4b9e19f85c2373a",
+      "width": 1920,
+      "height": 1080,
+      "acquisition_pts_ticks": [
+        713769,
+        714025,
+        714281,
+        714537,
+        714793
+      ],
+      "manual_review": {
+        "source_pts_ticks": 714281,
+        "pixel_sha256": "c88055b29752fd94bd659b5e4f48bf8bc31988b0453ca5335a9efb18f1d74edd",
+        "expected_type": "not_timer",
+        "source_review_note": "single score-adjacent zero"
+      },
+      "predictions": {
+        "jpeg": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_timer_foreground_touches_roi_border"
+          ],
+          "false_positive": false,
+          "inner_field_pixel_sha256": "acb56c0648424390cc99ed9497f7221575750d331e042d1b69e67043a2c8da90",
+          "wrapper_pixel_equivalence": true
+        },
+        "native": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_timer_foreground_touches_roi_border"
+          ],
+          "false_positive": false,
+          "inner_field_pixel_sha256": "93246f35c1c6833e898fea14f4a05e8023fca93a8fd58e8edb210c66c4e4d8be",
+          "wrapper_pixel_equivalence": true
+        }
+      }
+    },
+    {
+      "sample_index": 3,
+      "time_sec": 64.103,
+      "source_frame": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00187_000064.103.jpg",
+      "source_file_sha256": "c0d5d99140e0d2e3900ea87261930b92ae853dea50c11a538659f0804c7e42a7",
+      "field_bounds": [
+        500,
+        925,
+        575,
+        965
+      ],
+      "field_sha256": "30a81e78961ad6497260d8b75e73f752f72ac99870bee4c70a4f24ae10213fe7",
+      "expected_type": "not_timer",
+      "selection_provenance": "fixed uniform-rank alternate score-adjacent and HP-adjacent fields, spatial type rejection diagnostic, selected before predictions",
+      "requested_source_pts_ticks": 984617,
+      "requested_time_sec": 64.10266927083333,
+      "reader_outer_bounds": [
+        475,
+        898,
+        600,
+        983
+      ],
+      "reader_outer_shape": [
+        85,
+        125
+      ],
+      "inner_bounds_within_outer": [
+        25,
+        27,
+        100,
+        67
+      ],
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/timer-type-controls-current-native-20261013/source_03.png",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "source_pts_ticks": 984617,
+      "source_time_base": "1/15360",
+      "source_epoch": "2ac64f338a6b45f49c59419ac4053b25",
+      "source_time_sec": 64.10266927083333,
+      "pixel_sha256": "63cc66d4740d61d45e7859e1497072ad66aa845a6f7fbf343810e4af9694c1be",
+      "encoded_sha256": "d4ddfbd8a0fd2fea35beae8ea30f4a0eb8bb7d6b9300bcb2b2fd9c780a79a144",
+      "width": 1920,
+      "height": 1080,
+      "acquisition_pts_ticks": [
+        984105,
+        984361,
+        984617,
+        984873,
+        985129
+      ],
+      "manual_review": {
+        "source_pts_ticks": 984617,
+        "pixel_sha256": "63cc66d4740d61d45e7859e1497072ad66aa845a6f7fbf343810e4af9694c1be",
+        "expected_type": "not_timer",
+        "source_review_note": "scene/plain colour or non-timer text"
+      },
+      "predictions": {
+        "jpeg": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_timer_foreground_touches_roi_border"
+          ],
+          "false_positive": false,
+          "inner_field_pixel_sha256": "30a81e78961ad6497260d8b75e73f752f72ac99870bee4c70a4f24ae10213fe7",
+          "wrapper_pixel_equivalence": true
+        },
+        "native": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_timer_foreground_touches_roi_border"
+          ],
+          "false_positive": false,
+          "inner_field_pixel_sha256": "997ae6b557a525264db134b43ba1ec5743fe48917be1d43002895b802588afb6",
+          "wrapper_pixel_equivalence": true
+        }
+      }
+    },
+    {
+      "sample_index": 4,
+      "time_sec": 88.703,
+      "source_frame": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-004/frame_00142_000088.703.jpg",
+      "source_file_sha256": "1fc5ec6fd5d49e24ce02b1f7e9fe95b544b099677de10da9db2e79806bc2df93",
+      "field_bounds": [
+        815,
+        27,
+        890,
+        67
+      ],
+      "field_sha256": "e3d0f36662d21d7c31c5317f351caefd71a8f544f9be96ac3cf3599d2073f2a5",
+      "expected_type": "not_timer",
+      "selection_provenance": "fixed uniform-rank alternate score-adjacent and HP-adjacent fields, spatial type rejection diagnostic, selected before predictions",
+      "requested_source_pts_ticks": 1362473,
+      "requested_time_sec": 88.70266927083334,
+      "reader_outer_bounds": [
+        790,
+        0,
+        915,
+        85
+      ],
+      "reader_outer_shape": [
+        85,
+        125
+      ],
+      "inner_bounds_within_outer": [
+        25,
+        27,
+        100,
+        67
+      ],
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/timer-type-controls-current-native-20261013/source_04.png",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "source_pts_ticks": 1362473,
+      "source_time_base": "1/15360",
+      "source_epoch": "8d2b777e7388491cb8b5597ed520a9a6",
+      "source_time_sec": 88.70266927083334,
+      "pixel_sha256": "7cd1b297f825e66070a0b5d558c43ece13c5f513cfae203f63fc7ac48d2410a5",
+      "encoded_sha256": "459ef9f633f83aa5c5600048538ea32f90ae1c63c26103e14db8cb16f2f46f1a",
+      "width": 1920,
+      "height": 1080,
+      "acquisition_pts_ticks": [
+        1361961,
+        1362217,
+        1362473,
+        1362729,
+        1362985
+      ],
+      "manual_review": {
+        "source_pts_ticks": 1362473,
+        "pixel_sha256": "7cd1b297f825e66070a0b5d558c43ece13c5f513cfae203f63fc7ac48d2410a5",
+        "expected_type": "not_timer",
+        "source_review_note": "single score-adjacent zero"
+      },
+      "predictions": {
+        "jpeg": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_timer_foreground_touches_roi_border"
+          ],
+          "false_positive": false,
+          "inner_field_pixel_sha256": "e3d0f36662d21d7c31c5317f351caefd71a8f544f9be96ac3cf3599d2073f2a5",
+          "wrapper_pixel_equivalence": true
+        },
+        "native": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_timer_foreground_touches_roi_border"
+          ],
+          "false_positive": false,
+          "inner_field_pixel_sha256": "60a23c85930ad56032c2d1ae5bfce85484751dadbc7ac9d059be2e1ed95a7d5d",
+          "wrapper_pixel_equivalence": true
+        }
+      }
+    },
+    {
+      "sample_index": 5,
+      "time_sec": 109.753,
+      "source_frame": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-005/frame_00107_000109.753.jpg",
+      "source_file_sha256": "ea063a9ec24cfbcaaa6b197cc9067a0dd8081c14c5c6631174a367629d75e2ee",
+      "field_bounds": [
+        500,
+        925,
+        575,
+        965
+      ],
+      "field_sha256": "4777335ac7482da48f11f20beb770f6f94a0bfbc479b09cb40630c2aa967fa08",
+      "expected_type": "not_timer",
+      "selection_provenance": "fixed uniform-rank alternate score-adjacent and HP-adjacent fields, spatial type rejection diagnostic, selected before predictions",
+      "requested_source_pts_ticks": 1685801,
+      "requested_time_sec": 109.75266927083334,
+      "reader_outer_bounds": [
+        475,
+        898,
+        600,
+        983
+      ],
+      "reader_outer_shape": [
+        85,
+        125
+      ],
+      "inner_bounds_within_outer": [
+        25,
+        27,
+        100,
+        67
+      ],
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/timer-type-controls-current-native-20261013/source_05.png",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "source_pts_ticks": 1685801,
+      "source_time_base": "1/15360",
+      "source_epoch": "8c802eeed92b42c78f8eb4dc03918e8a",
+      "source_time_sec": 109.75266927083334,
+      "pixel_sha256": "a54eee9e50227294a727de6ed5ed04aafcdc0f80dd1d7bf195614b80a86fc998",
+      "encoded_sha256": "506ec71e38f86d929b11608cbf62ef0e8f042894b438734ee805e57816a72353",
+      "width": 1920,
+      "height": 1080,
+      "acquisition_pts_ticks": [
+        1685289,
+        1685545,
+        1685801,
+        1686057,
+        1686313
+      ],
+      "manual_review": {
+        "source_pts_ticks": 1685801,
+        "pixel_sha256": "a54eee9e50227294a727de6ed5ed04aafcdc0f80dd1d7bf195614b80a86fc998",
+        "expected_type": "not_timer",
+        "source_review_note": "scene/plain colour or non-timer text"
+      },
+      "predictions": {
+        "jpeg": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_timer_foreground_touches_roi_border"
+          ],
+          "false_positive": false,
+          "inner_field_pixel_sha256": "4777335ac7482da48f11f20beb770f6f94a0bfbc479b09cb40630c2aa967fa08",
+          "wrapper_pixel_equivalence": true
+        },
+        "native": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_timer_foreground_touches_roi_border"
+          ],
+          "false_positive": false,
+          "inner_field_pixel_sha256": "15de102b64b6b3604a08254ffe9dbf6a4c6f2e3614ad0b579824ed9d0d7c1515",
+          "wrapper_pixel_equivalence": true
+        }
+      }
+    },
+    {
+      "sample_index": 6,
+      "time_sec": 127.603,
+      "source_frame": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-001/frame_00266_000127.603.jpg",
+      "source_file_sha256": "8cfeffb8c1906f1ea8b0089c941a5f09a3cc303918646c6662b3997693a6a8b0",
+      "field_bounds": [
+        815,
+        27,
+        890,
+        67
+      ],
+      "field_sha256": "d7edf7e2e73009a3c2687eacd1c307315f08ae94740db5f851c0c04bacd7a5d4",
+      "expected_type": "not_timer",
+      "selection_provenance": "fixed uniform-rank alternate score-adjacent and HP-adjacent fields, spatial type rejection diagnostic, selected before predictions",
+      "requested_source_pts_ticks": 1959977,
+      "requested_time_sec": 127.60266927083333,
+      "reader_outer_bounds": [
+        790,
+        0,
+        915,
+        85
+      ],
+      "reader_outer_shape": [
+        85,
+        125
+      ],
+      "inner_bounds_within_outer": [
+        25,
+        27,
+        100,
+        67
+      ],
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/timer-type-controls-current-native-20261013/source_06.png",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "source_pts_ticks": 1959977,
+      "source_time_base": "1/15360",
+      "source_epoch": "05fd469e9a31407bb5636a1640dae932",
+      "source_time_sec": 127.60266927083333,
+      "pixel_sha256": "38ab9b062bb9851e4094ea672db182fb3f2960a36516fc9b911c45ff7186c503",
+      "encoded_sha256": "5c8784ef57b297717d73066f5861efed8fc886195f566a7142472e0d97d588b2",
+      "width": 1920,
+      "height": 1080,
+      "acquisition_pts_ticks": [
+        1959465,
+        1959721,
+        1959977,
+        1960233,
+        1960489
+      ],
+      "manual_review": {
+        "source_pts_ticks": 1959977,
+        "pixel_sha256": "38ab9b062bb9851e4094ea672db182fb3f2960a36516fc9b911c45ff7186c503",
+        "expected_type": "not_timer",
+        "source_review_note": "single score-adjacent zero"
+      },
+      "predictions": {
+        "jpeg": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_timer_expected_three_or_four_digits"
+          ],
+          "false_positive": false,
+          "inner_field_pixel_sha256": "d7edf7e2e73009a3c2687eacd1c307315f08ae94740db5f851c0c04bacd7a5d4",
+          "wrapper_pixel_equivalence": true
+        },
+        "native": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_timer_expected_three_or_four_digits"
+          ],
+          "false_positive": false,
+          "inner_field_pixel_sha256": "081a63a48745ff4ec154e9c7c8191274e1f637262e009ae57f11de66d04a4bff",
+          "wrapper_pixel_equivalence": true
+        }
+      }
+    },
+    {
+      "sample_index": 7,
+      "time_sec": 153.603,
+      "source_frame": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-001/frame_00422_000153.603.jpg",
+      "source_file_sha256": "acdf5a29580f0d015c54a2a40f405cb02c2b04a9c41c81170746a1a93a9c6977",
+      "field_bounds": [
+        500,
+        925,
+        575,
+        965
+      ],
+      "field_sha256": "0cfd1f6123f376e37a31f755c4817ed62446dcca4fcc438e8260be281a9c1431",
+      "expected_type": "not_timer",
+      "selection_provenance": "fixed uniform-rank alternate score-adjacent and HP-adjacent fields, spatial type rejection diagnostic, selected before predictions",
+      "requested_source_pts_ticks": 2359337,
+      "requested_time_sec": 153.60266927083333,
+      "reader_outer_bounds": [
+        475,
+        898,
+        600,
+        983
+      ],
+      "reader_outer_shape": [
+        85,
+        125
+      ],
+      "inner_bounds_within_outer": [
+        25,
+        27,
+        100,
+        67
+      ],
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/timer-type-controls-current-native-20261013/source_07.png",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "source_pts_ticks": 2359337,
+      "source_time_base": "1/15360",
+      "source_epoch": "d837e5c051ce4e13aca2bcc098d8a305",
+      "source_time_sec": 153.60266927083333,
+      "pixel_sha256": "4542d975a8185b39cf8170c6b6458faffa0984efd2b08816c1d557b022553768",
+      "encoded_sha256": "67ffba4717a985bcb486f4e5beb9b356e8196effaa3da035b3af94dda9e5bf92",
+      "width": 1920,
+      "height": 1080,
+      "acquisition_pts_ticks": [
+        2358825,
+        2359081,
+        2359337,
+        2359593,
+        2359849
+      ],
+      "manual_review": {
+        "source_pts_ticks": 2359337,
+        "pixel_sha256": "4542d975a8185b39cf8170c6b6458faffa0984efd2b08816c1d557b022553768",
+        "expected_type": "not_timer",
+        "source_review_note": "scene/plain colour or non-timer text"
+      },
+      "predictions": {
+        "jpeg": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_timer_foreground_touches_roi_border"
+          ],
+          "false_positive": false,
+          "inner_field_pixel_sha256": "0cfd1f6123f376e37a31f755c4817ed62446dcca4fcc438e8260be281a9c1431",
+          "wrapper_pixel_equivalence": true
+        },
+        "native": {
+          "value": null,
+          "confidence": 0.0,
+          "sources": [
+            "strict_timer_foreground_touches_roi_border"
+          ],
+          "false_positive": false,
+          "inner_field_pixel_sha256": "33f27b336d6d0b0375c1915750617c594af4e434439544fe4fcb42cf2ea30960",
+          "wrapper_pixel_equivalence": true
+        }
+      }
+    }
+  ],
+  "runtime_sec": 1.5598853910341859,
+  "decode_runtime_sec": 118.14707426005043,
+  "processed_physical_controls": 8,
+  "reader_calls": 16,
+  "acquisition_frame_count": 40,
+  "parent_native_pts_disjoint_from_joint_training_holdout_phase_controls": true,
+  "joint_physical_counts": {
+    "training": 79,
+    "holdout": 40,
+    "negative": 20
+  },
+  "input_sha256": {
+    "outputs/recognition-investigation/timer-gaussian-fresh-holdout/negative-selection.json": "3cde9ce4809eaa80c383765dddba718b0cd2de33d207e36b8bd71809f225bcdb",
+    "outputs/recognition-investigation/timer-gaussian-fresh-holdout/negative-labels.json": "795e3f4bea3bbd10e55d1025f0a22ae67c8d411486a99e210479b46952227236",
+    "e2e_reports/match_001/joint_start_component_replay.json": "e9f96be0048ab51472c98789ed77da0810e54901a2ae9da5337c35e545294703",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-000/frame_00080_000005.653.jpg": "ba80ed77367cc9f4fd1182e834922f0ec304f08752097eac4add7378a1ae9d16",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-001/frame_00139_000028.953.jpg": "e4b6a44a0dba3e9dd9cb6e81a19a6f27065698aec0dec98bdd4d14bf24ff91ec",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00279_000046.503.jpg": "cffac9aecd8b81335c6ef04114cbbdf64b44630507682b3382a327d76628472f",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00187_000064.103.jpg": "c0d5d99140e0d2e3900ea87261930b92ae853dea50c11a538659f0804c7e42a7",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-004/frame_00142_000088.703.jpg": "1fc5ec6fd5d49e24ce02b1f7e9fe95b544b099677de10da9db2e79806bc2df93",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-005/frame_00107_000109.753.jpg": "ea063a9ec24cfbcaaa6b197cc9067a0dd8081c14c5c6631174a367629d75e2ee",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-001/frame_00266_000127.603.jpg": "8cfeffb8c1906f1ea8b0089c941a5f09a3cc303918646c6662b3997693a6a8b0",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-001/frame_00422_000153.603.jpg": "acdf5a29580f0d015c54a2a40f405cb02c2b04a9c41c81170746a1a93a9c6977",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/timer-type-controls-current-native-20261013/selection_v3.json": "7ae8fe765466869b1f148c274bc7dbbbfd526c94cc3d5081cd1ce9804f6aa00e",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/timer-type-controls-current-native-20261013/source_00.png": "b9cd7484313edd957d405c2f8223e4c47667f2c0e28082de62ce8247fd5ccc71",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/timer-type-controls-current-native-20261013/source_01.png": "b718704a9e95a99816c7737535aa27d2a1e106d21637b49fbc1e4f3686472661",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/timer-type-controls-current-native-20261013/source_02.png": "22a056fa9c5e49259f7f4b8986ece614f48fab2519e23325d4b9e19f85c2373a",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/timer-type-controls-current-native-20261013/source_03.png": "d4ddfbd8a0fd2fea35beae8ea30f4a0eb8bb7d6b9300bcb2b2fd9c780a79a144",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/timer-type-controls-current-native-20261013/source_04.png": "459ef9f633f83aa5c5600048538ea32f90ae1c63c26103e14db8cb16f2f46f1a",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/timer-type-controls-current-native-20261013/source_05.png": "506ec71e38f86d929b11608cbf62ef0e8f042894b438734ee805e57816a72353",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/timer-type-controls-current-native-20261013/source_06.png": "5c8784ef57b297717d73066f5861efed8fc886195f566a7142472e0d97d588b2",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/timer-type-controls-current-native-20261013/source_07.png": "67ffba4717a985bcb486f4e5beb9b356e8196effaa3da035b3af94dda9e5bf92",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/timer-type-controls-current-native-20261013/acquired.json": "aceb7048641dfecdc6e61292ab1104d043fa471cb545f86dce9b9b85833f1a78",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/timer-type-controls-current-native-20261013/native-control-review.png": "6fa0b528cd6d54b6ba5416327078a8c3cd7edf00ea15b9af24c6a3ca70539f9b",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/timer-type-controls-current-native-20261013/native-labels.json": "87b70b1528fad4e4a28ae1862ff6c9c352abae5087e776e3150c71a849836ee0"
+  },
+  "original_interval_missing_ticks_recovered": [
+    1685289
+  ],
+  "recovery_verified": true,
+  "guard_behavior": "Original incomplete interval rejected; widened declared acquisition interval proves the original missing source tick exists. No skipped expected frames or decoder guard relaxation. Exact FFmpeg endpoint exclusion mechanism not diagnosed.",
+  "negative_scope": "Current configured timer wrapper and alphabet reject actual alternate source-field types; not natural timer-absent ROI, geometry or temporal qualification.",
+  "qualification_created": false,
+  "production_changed": false,
+  "canonical_full_executed": false,
+  "remaining_components": [
+    "Complete timer component training/holdout/control provenance aggregation",
+    "Independently reviewed continuous UI transition qualification"
+  ],
+  "target_assertion_ids": [
+    "GT-R1-ROUND-START",
+    "GT-R2-ROUND-START",
+    "event_count_constraints-000",
+    "event_count_constraints-004",
+    "ordering_constraints-001"
+  ],
+  "comparison": {
+    "previous_raw_jpeg_field_controls": {
+      "rejected": 8,
+      "false_positive": 0
+    },
+    "current_configured_jpeg_wrapper": {
+      "rejected": 8,
+      "false_positive": 0
+    },
+    "current_configured_native_wrapper": {
+      "rejected": 8,
+      "false_positive": 0
+    },
+    "delta_vs_previous": {
+      "rejected": 0,
+      "false_positive": 0
+    }
+  },
+  "artifact_sha256": {
+    "outputs/recognition-investigation/timer-type-controls-current-native-20261013/selection.json": "54bb145618f5a4bc8acffb313a34787f59c37b28e70de30a136cadc559dceb77",
+    "outputs/recognition-investigation/timer-type-controls-current-native-20261013/selection_v2.json": "5b421840c087ff3c14cd31d14190daa28b4b2c8b45fa9110e30da97bf1568e49",
+    "outputs/recognition-investigation/timer-type-controls-current-native-20261013/selection_v3.json": "7ae8fe765466869b1f148c274bc7dbbbfd526c94cc3d5081cd1ce9804f6aa00e",
+    "outputs/recognition-investigation/timer-type-controls-current-native-20261013/acquired.json": "aceb7048641dfecdc6e61292ab1104d043fa471cb545f86dce9b9b85833f1a78",
+    "outputs/recognition-investigation/timer-type-controls-current-native-20261013/failed-window-inspection.json": "135b918b6b9d550b0f1344d25c00c69a765e823049e9c1fd82a52e1d62ba9c53",
+    "outputs/recognition-investigation/timer-type-controls-current-native-20261013/native-labels.json": "87b70b1528fad4e4a28ae1862ff6c9c352abae5087e776e3150c71a849836ee0",
+    "outputs/recognition-investigation/timer-type-controls-current-native-20261013/native-control-review.png": "6fa0b528cd6d54b6ba5416327078a8c3cd7edf00ea15b9af24c6a3ca70539f9b",
+    "outputs/recognition-investigation/timer-type-controls-current-native-20261013/result.json": "e528d90bd65adfa2b971cac66d35cafcfd89c96c7637f14015a1cab3e83e57d4",
+    "outputs/recognition-investigation/timer-type-controls-current-native-20261013/acquire.py": "c766be0a889f856a98fb9c2ab991ccc444a77b6534b4d66e3dbe12532ed6799e",
+    "outputs/recognition-investigation/timer-type-controls-current-native-20261013/evaluate.py": "7295c8f0c83e85bec2e7a290b22ab29ffccac9aaeaf5bad197c0729bc13a94a1"
+  },
+  "verification": "Current configured wrapper pixels equal original declared fields; terminal source/input/profile/code hashes verified; no shared code changed; preceding303relatedPASS,Ruff/mypy retained.",
+  "windows_runtime": "unverified"
+}

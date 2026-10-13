@@ -260,19 +260,17 @@ def _validate_report_readings(values: dict[str, Any]) -> None:
         )
         or not isinstance(report["fields"], dict)
         or not report["fields"]
-        or set(report["fields"]) - {"damage_received", "damage_given"}
+        or set(report["fields"]) - {"damage_received", "damage_given", "report_portrait_label"}
     ):
         raise ValueError("Invalid source combat report reading")
-    for reading in report["fields"].values():
+    for name, reading in report["fields"].items():
+        portrait = name == 'report_portrait_label'
+        content_keys = {'label'} if portrait else {'display', 'value'}
         if (
             not isinstance(reading, dict)
-            or set(reading) != {
-                "display", "value", "confidence", "sources", "cross_checked", "roi_bounds_norm",
+            or set(reading) != content_keys | {
+                "confidence", "sources", "cross_checked", "roi_bounds_norm",
             }
-            or not isinstance(reading["display"], str)
-            or re.fullmatch(r"[0-9]{1,6}", reading["display"]) is None
-            or type(reading["value"]) is not int
-            or reading["value"] != int(reading["display"])
             or type(reading["confidence"]) not in (int, float)
             or not math.isfinite(reading["confidence"])
             or not .90 <= reading["confidence"] <= 1
@@ -285,7 +283,19 @@ def _validate_report_readings(values: dict[str, Any]) -> None:
             or any(type(v) not in (int, float) or not math.isfinite(v)
                    for v in reading["roi_bounds_norm"])
         ):
-            raise ValueError("Invalid combat report numeric field")
+            raise ValueError("Invalid combat report candidate field")
+        if portrait:
+            label = reading['label']
+            if (not isinstance(label, str) or not label.strip() or len(label) > 64
+                    or reading['cross_checked'] is not False
+                    or f'template:{label}' not in reading['sources']
+                    or 'report_header_pose' not in reading['sources']):
+                raise ValueError('Invalid report portrait label provenance')
+        elif (not isinstance(reading['display'], str)
+                or re.fullmatch(r'[0-9]{1,6}', reading['display']) is None
+                or type(reading['value']) is not int
+                or reading['value'] != int(reading['display'])):
+            raise ValueError('Invalid combat report numeric field')
         x1, y1, x2, y2 = reading["roi_bounds_norm"]
         if not (0 <= x1 < x2 <= 1 and 0 <= y1 < y2 <= 1):
             raise ValueError("Invalid combat report field bounds")

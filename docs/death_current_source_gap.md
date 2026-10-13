@@ -106,3 +106,22 @@ using the existing fields reader. Real source verification retains six correct
 displays and rejects two absent fields without any player ownership or death
 event. Victim/agent semantics and qualification remain incomplete. See
 [source-preserved readings and regression evidence](death_report_readings.md).
+
+## Cross-context source contract correction
+
+The frozen R2 damage crop truncates R1's190glyphs. Static widening fixesR1 but
+loses a correctR2 reading and is rejected. SourceR1 also separates the agent
+headerレイズ from the red-band player nameシャバーニ; the original raw OCR crop
+label must not be treated as a qualified agent reader. This does not invalidate
+R2's visible headerフェイド or its194source display. The next field-localization
+and agent/player-name contracts are distinct from current self ownership. See
+[prospective comparison and rejected candidate](death_report_crop_comparison.md).
+
+## Victim-name feasibility and remaining row/subject contract
+
+Later source-only diagnostics show a fixed crop excluding an adjacent border
+reads three reserved victim-name frames at0.90, with three controls rejected.
+The shared analyzer correctly refuses to interpret bare text as a structured
+victim row or self-dead ownership. Source/video/terminal hashes verify; no
+production changes or canonical gains. See
+[victim OCR versus row and subject proof](killfeed_subject_gap.md).

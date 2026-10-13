@@ -1,0 +1,4363 @@
+{
+  "scope": "Fixed seven-slot word prototype training and original counter/held/early evaluation, no production integration or qualification",
+  "target_assertion_ids": [
+    "GT-R1-ROUND-END",
+    "event_count_constraints-002"
+  ],
+  "training_sources": 14,
+  "training_support": 7,
+  "reference_eligibility": {
+    "reason": "reference_eligible",
+    "eligible": 7,
+    "slots": [
+      [
+        7,
+        8,
+        25,
+        56
+      ],
+      [
+        34,
+        8,
+        21,
+        56
+      ],
+      [
+        57,
+        8,
+        30,
+        56
+      ],
+      [
+        90,
+        8,
+        39,
+        56
+      ],
+      [
+        142,
+        8,
+        31,
+        56
+      ],
+      [
+        174,
+        8,
+        29,
+        56
+      ],
+      [
+        206,
+        8,
+        21,
+        56
+      ]
+    ],
+    "word_space_bounds": [
+      130,
+      8,
+      141,
+      64
+    ]
+  },
+  "training_rows": [
+    {
+      "source_pts_ticks": 1158185,
+      "source_pixel_sha256": "2a0c10e18d01b7e93dedba7272dfa04abfbbe7b151ef50e1de0ffbbb0a413ab6",
+      "score": 0.9940815435237736,
+      "reason": "accepted",
+      "glyphs": [
+        {
+          "glyph_index": 0,
+          "box": [
+            6,
+            7,
+            33,
+            65
+          ],
+          "full_cell_ncc": 0.9990267889119893,
+          "contrast_ncc": [
+            0.9988086173653047,
+            0.998800659462806,
+            0.9988671695597762
+          ],
+          "polarity_positive": true,
+          "foreground_population": 595,
+          "negative_population": 140,
+          "score": 0.998800659462806
+        },
+        {
+          "glyph_index": 1,
+          "box": [
+            33,
+            7,
+            56,
+            65
+          ],
+          "full_cell_ncc": 0.9987832855595042,
+          "contrast_ncc": [
+            0.9996492563805954,
+            0.99894581848775,
+            0.9995704332256683
+          ],
+          "polarity_positive": true,
+          "foreground_population": 719,
+          "negative_population": 174,
+          "score": 0.9987832855595042
+        },
+        {
+          "glyph_index": 2,
+          "box": [
+            56,
+            7,
+            88,
+            65
+          ],
+          "full_cell_ncc": 0.9991221331993888,
+          "contrast_ncc": [
+            0.9986756161900375
+          ],
+          "polarity_positive": true,
+          "foreground_population": 936,
+          "negative_population": 47,
+          "score": 0.9986756161900375
+        },
+        {
+          "glyph_index": 3,
+          "box": [
+            89,
+            7,
+            130,
+            65
+          ],
+          "full_cell_ncc": 0.998412154034649,
+          "contrast_ncc": [
+            0.9987581565467911,
+            0.9975251550856736
+          ],
+          "polarity_positive": true,
+          "foreground_population": 1570,
+          "negative_population": 72,
+          "score": 0.9975251550856736
+        },
+        {
+          "glyph_index": 4,
+          "box": [
+            141,
+            7,
+            174,
+            65
+          ],
+          "full_cell_ncc": 0.9982370688335965,
+          "contrast_ncc": [
+            0.9992112854693221
+          ],
+          "polarity_positive": true,
+          "foreground_population": 938,
+          "negative_population": 42,
+          "score": 0.9982370688335965
+        },
+        {
+          "glyph_index": 5,
+          "box": [
+            173,
+            7,
+            204,
+            65
+          ],
+          "full_cell_ncc": 0.9984393011335262,
+          "contrast_ncc": [
+            0.9990235205832184,
+            0.9990808448991892,
+            0.9990183258136802
+          ],
+          "polarity_positive": true,
+          "foreground_population": 959,
+          "negative_population": 167,
+          "score": 0.9984393011335262
+        },
+        {
+          "glyph_index": 6,
+          "box": [
+            205,
+            7,
+            228,
+            65
+          ],
+          "full_cell_ncc": 0.9940815435237736,
+          "contrast_ncc": [
+            0.9986494644281216,
+            0.9978692819861606,
+            0.9971380958224685
+          ],
+          "polarity_positive": true,
+          "foreground_population": 724,
+          "negative_population": 169,
+          "score": 0.9940815435237736
+        }
+      ],
+      "word_space_ncc": 0.9992473571439648,
+      "word_space_polarity": true
+    },
+    {
+      "source_pts_ticks": 1164329,
+      "source_pixel_sha256": "7a99af9d24125a83705a7e1e335735ac988ba9533fe7f95d9ead7287786a8337",
+      "score": 0.9715407124057449,
+      "reason": "accepted",
+      "glyphs": [
+        {
+          "glyph_index": 0,
+          "box": [
+            6,
+            7,
+            33,
+            65
+          ],
+          "full_cell_ncc": 0.994250333338158,
+          "contrast_ncc": [
+            0.9915986166025698,
+            0.9923454749960647,
+            0.9934193560754189
+          ],
+          "polarity_positive": true,
+          "foreground_population": 595,
+          "negative_population": 140,
+          "score": 0.9915986166025698
+        },
+        {
+          "glyph_index": 1,
+          "box": [
+            33,
+            7,
+            56,
+            65
+          ],
+          "full_cell_ncc": 0.9932729812833827,
+          "contrast_ncc": [
+            0.9967870507535681,
+            0.9969992620169817,
+            0.9965466836951735
+          ],
+          "polarity_positive": true,
+          "foreground_population": 719,
+          "negative_population": 174,
+          "score": 0.9932729812833827
+        },
+        {
+          "glyph_index": 2,
+          "box": [
+            56,
+            7,
+            88,
+            65
+          ],
+          "full_cell_ncc": 0.9882983791524687,
+          "contrast_ncc": [
+            0.9908777764922486
+          ],
+          "polarity_positive": true,
+          "foreground_population": 936,
+          "negative_population": 47,
+          "score": 0.9882983791524687
+        },
+        {
+          "glyph_index": 3,
+          "box": [
+            89,
+            7,
+            130,
+            65
+          ],
+          "full_cell_ncc": 0.9843148842469873,
+          "contrast_ncc": [
+            0.9781734654318536,
+            0.9776275995812109
+          ],
+          "polarity_positive": true,
+          "foreground_population": 1570,
+          "negative_population": 72,
+          "score": 0.9776275995812109
+        },
+        {
+          "glyph_index": 4,
+          "box": [
+            141,
+            7,
+            174,
+            65
+          ],
+          "full_cell_ncc": 0.9835529187237775,
+          "contrast_ncc": [
+            0.9894055980035213
+          ],
+          "polarity_positive": true,
+          "foreground_population": 938,
+          "negative_population": 42,
+          "score": 0.9835529187237775
+        },
+        {
+          "glyph_index": 5,
+          "box": [
+            173,
+            7,
+            204,
+            65
+          ],
+          "full_cell_ncc": 0.9764076928622565,
+          "contrast_ncc": [
+            0.9721310690530334,
+            0.9761932140965537,
+            0.9715407124057449
+          ],
+          "polarity_positive": true,
+          "foreground_population": 959,
+          "negative_population": 167,
+          "score": 0.9715407124057449
+        },
+        {
+          "glyph_index": 6,
+          "box": [
+            205,
+            7,
+            228,
+            65
+          ],
+          "full_cell_ncc": 0.9834272962025793,
+          "contrast_ncc": [
+            0.9885461507700674,
+            0.9858992124794785,
+            0.9877591688992552
+          ],
+          "polarity_positive": true,
+          "foreground_population": 724,
+          "negative_population": 169,
+          "score": 0.9834272962025793
+        }
+      ],
+      "word_space_ncc": 0.9903689740763548,
+      "word_space_polarity": true
+    },
+    {
+      "source_pts_ticks": 1171497,
+      "source_pixel_sha256": "f81a19edb9f9384bd93ded62adde460a1679007b053d3646529d9cc3c9f96610",
+      "score": 0.7311925017160923,
+      "reason": "below_threshold_or_polarity",
+      "glyphs": [
+        {
+          "glyph_index": 0,
+          "box": [
+            6,
+            7,
+            33,
+            65
+          ],
+          "full_cell_ncc": 0.9940859101550088,
+          "contrast_ncc": [
+            0.9929292292474267,
+            0.9938716316804128,
+            0.9940985854519674
+          ],
+          "polarity_positive": true,
+          "foreground_population": 595,
+          "negative_population": 140,
+          "score": 0.9929292292474267
+        },
+        {
+          "glyph_index": 1,
+          "box": [
+            33,
+            7,
+            56,
+            65
+          ],
+          "full_cell_ncc": 0.773358800933481,
+          "contrast_ncc": [
+            0.8984677545408681,
+            0.9079516830887149,
+            0.9525501714044399
+          ],
+          "polarity_positive": true,
+          "foreground_population": 719,
+          "negative_population": 174,
+          "score": 0.773358800933481
+        },
+        {
+          "glyph_index": 2,
+          "box": [
+            56,
+            7,
+            88,
+            65
+          ],
+          "full_cell_ncc": 0.7311925017160923,
+          "contrast_ncc": [
+            0.9320507832675166
+          ],
+          "polarity_positive": true,
+          "foreground_population": 936,
+          "negative_population": 47,
+          "score": 0.7311925017160923
+        },
+        {
+          "glyph_index": 3,
+          "box": [
+            89,
+            7,
+            130,
+            65
+          ],
+          "full_cell_ncc": 0.9116863508582409,
+          "contrast_ncc": [
+            0.8806516643657268,
+            0.9675396764756178
+          ],
+          "polarity_positive": true,
+          "foreground_population": 1570,
+          "negative_population": 72,
+          "score": 0.8806516643657268
+        },
+        {
+          "glyph_index": 4,
+          "box": [
+            141,
+            7,
+            174,
+            65
+          ],
+          "full_cell_ncc": 0.8724379440137416,
+          "contrast_ncc": [
+            0.9761641657945114
+          ],
+          "polarity_positive": true,
+          "foreground_population": 938,
+          "negative_population": 42,
+          "score": 0.8724379440137416
+        },
+        {
+          "glyph_index": 5,
+          "box": [
+            173,
+            7,
+            204,
+            65
+          ],
+          "full_cell_ncc": 0.9806261788508779,
+          "contrast_ncc": [
+            0.9813453870168336,
+            0.9836052931035371,
+            0.9808646216410505
+          ],
+          "polarity_positive": true,
+          "foreground_population": 959,
+          "negative_population": 167,
+          "score": 0.9806261788508779
+        },
+        {
+          "glyph_index": 6,
+          "box": [
+            205,
+            7,
+            228,
+            65
+          ],
+          "full_cell_ncc": 0.986469848656998,
+          "contrast_ncc": [
+            0.9903447497380169,
+            0.9875747467119271,
+            0.9899092467252764
+          ],
+          "polarity_positive": true,
+          "foreground_population": 724,
+          "negative_population": 169,
+          "score": 0.986469848656998
+        }
+      ],
+      "word_space_ncc": 0.9550433875966767,
+      "word_space_polarity": true
+    },
+    {
+      "source_pts_ticks": 1158953,
+      "source_pixel_sha256": "e445d72592b56da75db9ee999997559e5ca2a58a439e7d1f0ebba0bff2923fe8",
+      "score": 0.9958259036145216,
+      "reason": "accepted",
+      "glyphs": [
+        {
+          "glyph_index": 0,
+          "box": [
+            6,
+            7,
+            33,
+            65
+          ],
+          "full_cell_ncc": 0.9989719854936548,
+          "contrast_ncc": [
+            0.9989946838682717,
+            0.9990365754086332,
+            0.999078685744643
+          ],
+          "polarity_positive": true,
+          "foreground_population": 595,
+          "negative_population": 140,
+          "score": 0.9989719854936548
+        },
+        {
+          "glyph_index": 1,
+          "box": [
+            33,
+            7,
+            56,
+            65
+          ],
+          "full_cell_ncc": 0.9987301800319165,
+          "contrast_ncc": [
+            0.9990534026507777,
+            0.9984773339664265,
+            0.9990056478749084
+          ],
+          "polarity_positive": true,
+          "foreground_population": 719,
+          "negative_population": 174,
+          "score": 0.9984773339664265
+        },
+        {
+          "glyph_index": 2,
+          "box": [
+            56,
+            7,
+            88,
+            65
+          ],
+          "full_cell_ncc": 0.9986710178875703,
+          "contrast_ncc": [
+            0.9977555929299464
+          ],
+          "polarity_positive": true,
+          "foreground_population": 936,
+          "negative_population": 47,
+          "score": 0.9977555929299464
+        },
+        {
+          "glyph_index": 3,
+          "box": [
+            89,
+            7,
+            130,
+            65
+          ],
+          "full_cell_ncc": 0.9978464036162032,
+          "contrast_ncc": [
+            0.9968526258950201,
+            0.9958259036145216
+          ],
+          "polarity_positive": true,
+          "foreground_population": 1570,
+          "negative_population": 72,
+          "score": 0.9958259036145216
+        },
+        {
+          "glyph_index": 4,
+          "box": [
+            141,
+            7,
+            174,
+            65
+          ],
+          "full_cell_ncc": 0.9978792203652241,
+          "contrast_ncc": [
+            0.9982705034924358
+          ],
+          "polarity_positive": true,
+          "foreground_population": 938,
+          "negative_population": 42,
+          "score": 0.9978792203652241
+        },
+        {
+          "glyph_index": 5,
+          "box": [
+            173,
+            7,
+            204,
+            65
+          ],
+          "full_cell_ncc": 0.9980548052203234,
+          "contrast_ncc": [
+            0.9986899571223653,
+            0.9987736517018323,
+            0.9986311281319975
+          ],
+          "polarity_positive": true,
+          "foreground_population": 959,
+          "negative_population": 167,
+          "score": 0.9980548052203234
+        },
+        {
+          "glyph_index": 6,
+          "box": [
+            205,
+            7,
+            228,
+            65
+          ],
+          "full_cell_ncc": 0.9974337650811309,
+          "contrast_ncc": [
+            0.998417145542427,
+            0.9975690768325268,
+            0.9978639296187032
+          ],
+          "polarity_positive": true,
+          "foreground_population": 724,
+          "negative_population": 169,
+          "score": 0.9974337650811309
+        }
+      ],
+      "word_space_ncc": 0.9987981267836779,
+      "word_space_polarity": true
+    },
+    {
+      "source_pts_ticks": 1159721,
+      "source_pixel_sha256": "aaf534e7c964ee577119ff1588dad5d3934e1cb8e659927644ba585263c1e711",
+      "score": 0.9961657630261702,
+      "reason": "accepted",
+      "glyphs": [
+        {
+          "glyph_index": 0,
+          "box": [
+            6,
+            7,
+            33,
+            65
+          ],
+          "full_cell_ncc": 0.9990387504757838,
+          "contrast_ncc": [
+            0.999221641195834,
+            0.9992993344864218,
+            0.9993034821665847
+          ],
+          "polarity_positive": true,
+          "foreground_population": 595,
+          "negative_population": 140,
+          "score": 0.9990387504757838
+        },
+        {
+          "glyph_index": 1,
+          "box": [
+            33,
+            7,
+            56,
+            65
+          ],
+          "full_cell_ncc": 0.9987707472198284,
+          "contrast_ncc": [
+            0.9990821291427086,
+            0.9985001537971727,
+            0.9990387349715525
+          ],
+          "polarity_positive": true,
+          "foreground_population": 719,
+          "negative_population": 174,
+          "score": 0.9985001537971727
+        },
+        {
+          "glyph_index": 2,
+          "box": [
+            56,
+            7,
+            88,
+            65
+          ],
+          "full_cell_ncc": 0.9986800204197311,
+          "contrast_ncc": [
+            0.9976815097154016
+          ],
+          "polarity_positive": true,
+          "foreground_population": 936,
+          "negative_population": 47,
+          "score": 0.9976815097154016
+        },
+        {
+          "glyph_index": 3,
+          "box": [
+            89,
+            7,
+            130,
+            65
+          ],
+          "full_cell_ncc": 0.997943696806902,
+          "contrast_ncc": [
+            0.996788623425805,
+            0.9961657630261702
+          ],
+          "polarity_positive": true,
+          "foreground_population": 1570,
+          "negative_population": 72,
+          "score": 0.9961657630261702
+        },
+        {
+          "glyph_index": 4,
+          "box": [
+            141,
+            7,
+            174,
+            65
+          ],
+          "full_cell_ncc": 0.9977663264713147,
+          "contrast_ncc": [
+            0.9976396287256691
+          ],
+          "polarity_positive": true,
+          "foreground_population": 938,
+          "negative_population": 42,
+          "score": 0.9976396287256691
+        },
+        {
+          "glyph_index": 5,
+          "box": [
+            173,
+            7,
+            204,
+            65
+          ],
+          "full_cell_ncc": 0.9980604407433895,
+          "contrast_ncc": [
+            0.9987359530288231,
+            0.998837824570175,
+            0.9985824321173772
+          ],
+          "polarity_positive": true,
+          "foreground_population": 959,
+          "negative_population": 167,
+          "score": 0.9980604407433895
+        },
+        {
+          "glyph_index": 6,
+          "box": [
+            205,
+            7,
+            228,
+            65
+          ],
+          "full_cell_ncc": 0.9981349685296236,
+          "contrast_ncc": [
+            0.9988579169007474,
+            0.9986824981810571,
+            0.9986299064072599
+          ],
+          "polarity_positive": true,
+          "foreground_population": 724,
+          "negative_population": 169,
+          "score": 0.9981349685296236
+        }
+      ],
+      "word_space_ncc": 0.9986827996707619,
+      "word_space_polarity": true
+    },
+    {
+      "source_pts_ticks": 1162793,
+      "source_pixel_sha256": "28ff54a5d89f2d1d94ca2438abdc11e0d803cde80a5d0c824a589226890fab3b",
+      "score": 0.9958608603325819,
+      "reason": "accepted",
+      "glyphs": [
+        {
+          "glyph_index": 0,
+          "box": [
+            6,
+            7,
+            33,
+            65
+          ],
+          "full_cell_ncc": 0.998629822005053,
+          "contrast_ncc": [
+            0.9974595569827818,
+            0.9972634925304329,
+            0.99705633252001
+          ],
+          "polarity_positive": true,
+          "foreground_population": 595,
+          "negative_population": 140,
+          "score": 0.99705633252001
+        },
+        {
+          "glyph_index": 1,
+          "box": [
+            33,
+            7,
+            56,
+            65
+          ],
+          "full_cell_ncc": 0.9988911516923225,
+          "contrast_ncc": [
+            0.9989924358401484,
+            0.9987289305523763,
+            0.9990142746792495
+          ],
+          "polarity_positive": true,
+          "foreground_population": 719,
+          "negative_population": 174,
+          "score": 0.9987289305523763
+        },
+        {
+          "glyph_index": 2,
+          "box": [
+            56,
+            7,
+            88,
+            65
+          ],
+          "full_cell_ncc": 0.9991934883603651,
+          "contrast_ncc": [
+            0.9987532974869948
+          ],
+          "polarity_positive": true,
+          "foreground_population": 936,
+          "negative_population": 47,
+          "score": 0.9987532974869948
+        },
+        {
+          "glyph_index": 3,
+          "box": [
+            89,
+            7,
+            130,
+            65
+          ],
+          "full_cell_ncc": 0.9982323992914037,
+          "contrast_ncc": [
+            0.9958608603325819,
+            0.9961073242577714
+          ],
+          "polarity_positive": true,
+          "foreground_population": 1570,
+          "negative_population": 72,
+          "score": 0.9958608603325819
+        },
+        {
+          "glyph_index": 4,
+          "box": [
+            141,
+            7,
+            174,
+            65
+          ],
+          "full_cell_ncc": 0.997011693327248,
+          "contrast_ncc": [
+            0.9958886275877011
+          ],
+          "polarity_positive": true,
+          "foreground_population": 938,
+          "negative_population": 42,
+          "score": 0.9958886275877011
+        },
+        {
+          "glyph_index": 5,
+          "box": [
+            173,
+            7,
+            204,
+            65
+          ],
+          "full_cell_ncc": 0.9961168102011542,
+          "contrast_ncc": [
+            0.9965464104346065,
+            0.9971231294574333,
+            0.9964902129622
+          ],
+          "polarity_positive": true,
+          "foreground_population": 959,
+          "negative_population": 167,
+          "score": 0.9961168102011542
+        },
+        {
+          "glyph_index": 6,
+          "box": [
+            205,
+            7,
+            228,
+            65
+          ],
+          "full_cell_ncc": 0.9977538314604266,
+          "contrast_ncc": [
+            0.9984792727716169,
+            0.9983181291071341,
+            0.9983752267220015
+          ],
+          "polarity_positive": true,
+          "foreground_population": 724,
+          "negative_population": 169,
+          "score": 0.9977538314604266
+        }
+      ],
+      "word_space_ncc": 0.9980960984942319,
+      "word_space_polarity": true
+    },
+    {
+      "source_pts_ticks": 1164073,
+      "source_pixel_sha256": "6cfe590032024b8c53f46b28a98a723cfe9879e4cd02f3fbaa049a8dfde61ab1",
+      "score": 0.0,
+      "reason": "below_threshold_or_polarity",
+      "glyphs": [
+        {
+          "glyph_index": 0,
+          "box": [
+            6,
+            7,
+            33,
+            65
+          ],
+          "full_cell_ncc": 0.9596671968186637,
+          "contrast_ncc": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "polarity_positive": true,
+          "foreground_population": 595,
+          "negative_population": 140,
+          "score": 0.0
+        },
+        {
+          "glyph_index": 1,
+          "box": [
+            33,
+            7,
+            56,
+            65
+          ],
+          "full_cell_ncc": 0.9140452526545199,
+          "contrast_ncc": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "polarity_positive": true,
+          "foreground_population": 719,
+          "negative_population": 174,
+          "score": 0.0
+        },
+        {
+          "glyph_index": 2,
+          "box": [
+            56,
+            7,
+            88,
+            65
+          ],
+          "full_cell_ncc": 0.9329305601328418,
+          "contrast_ncc": [
+            0.0
+          ],
+          "polarity_positive": true,
+          "foreground_population": 936,
+          "negative_population": 47,
+          "score": 0.0
+        },
+        {
+          "glyph_index": 3,
+          "box": [
+            89,
+            7,
+            130,
+            65
+          ],
+          "full_cell_ncc": 0.8928881469397308,
+          "contrast_ncc": [
+            0.0,
+            0.0
+          ],
+          "polarity_positive": true,
+          "foreground_population": 1570,
+          "negative_population": 72,
+          "score": 0.0
+        },
+        {
+          "glyph_index": 4,
+          "box": [
+            141,
+            7,
+            174,
+            65
+          ],
+          "full_cell_ncc": 0.9163061325994116,
+          "contrast_ncc": [
+            0.0
+          ],
+          "polarity_positive": true,
+          "foreground_population": 938,
+          "negative_population": 42,
+          "score": 0.0
+        },
+        {
+          "glyph_index": 5,
+          "box": [
+            173,
+            7,
+            204,
+            65
+          ],
+          "full_cell_ncc": 0.914730034122856,
+          "contrast_ncc": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "polarity_positive": true,
+          "foreground_population": 959,
+          "negative_population": 167,
+          "score": 0.0
+        },
+        {
+          "glyph_index": 6,
+          "box": [
+            205,
+            7,
+            228,
+            65
+          ],
+          "full_cell_ncc": 0.9096633429989293,
+          "contrast_ncc": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "polarity_positive": true,
+          "foreground_population": 724,
+          "negative_population": 169,
+          "score": 0.0
+        }
+      ],
+      "word_space_ncc": 0.9491989028315295,
+      "word_space_polarity": true
+    },
+    {
+      "source_pts_ticks": 1165097,
+      "source_pixel_sha256": "1859b5832ad399669284782aa816ac26d4a0589c8b44d6d1fb1858962c667911",
+      "score": 0.6356658216997528,
+      "reason": "below_threshold_or_polarity",
+      "glyphs": [
+        {
+          "glyph_index": 0,
+          "box": [
+            6,
+            7,
+            33,
+            65
+          ],
+          "full_cell_ncc": 0.6356658216997528,
+          "contrast_ncc": [
+            0.759043948639038,
+            0.7802787887484774,
+            0.7753664228164575
+          ],
+          "polarity_positive": true,
+          "foreground_population": 595,
+          "negative_population": 140,
+          "score": 0.6356658216997528
+        },
+        {
+          "glyph_index": 1,
+          "box": [
+            33,
+            7,
+            56,
+            65
+          ],
+          "full_cell_ncc": 0.8954059903238285,
+          "contrast_ncc": [
+            0.9894629375695382,
+            0.9628000149024423,
+            0.9753742489530028
+          ],
+          "polarity_positive": true,
+          "foreground_population": 719,
+          "negative_population": 174,
+          "score": 0.8954059903238285
+        },
+        {
+          "glyph_index": 2,
+          "box": [
+            56,
+            7,
+            88,
+            65
+          ],
+          "full_cell_ncc": 0.9321045928302659,
+          "contrast_ncc": [
+            0.9678489855715501
+          ],
+          "polarity_positive": true,
+          "foreground_population": 936,
+          "negative_population": 47,
+          "score": 0.9321045928302659
+        },
+        {
+          "glyph_index": 3,
+          "box": [
+            89,
+            7,
+            130,
+            65
+          ],
+          "full_cell_ncc": 0.9720220561466559,
+          "contrast_ncc": [
+            0.9754111307563591,
+            0.9692617781919917
+          ],
+          "polarity_positive": true,
+          "foreground_population": 1570,
+          "negative_population": 72,
+          "score": 0.9692617781919917
+        },
+        {
+          "glyph_index": 4,
+          "box": [
+            141,
+            7,
+            174,
+            65
+          ],
+          "full_cell_ncc": 0.9770679332904737,
+          "contrast_ncc": [
+            0.9796766771003294
+          ],
+          "polarity_positive": true,
+          "foreground_population": 938,
+          "negative_population": 42,
+          "score": 0.9770679332904737
+        },
+        {
+          "glyph_index": 5,
+          "box": [
+            173,
+            7,
+            204,
+            65
+          ],
+          "full_cell_ncc": 0.9665249587934679,
+          "contrast_ncc": [
+            0.965998943342097,
+            0.9715037420968741,
+            0.9654740648008694
+          ],
+          "polarity_positive": true,
+          "foreground_population": 959,
+          "negative_population": 167,
+          "score": 0.9654740648008694
+        },
+        {
+          "glyph_index": 6,
+          "box": [
+            205,
+            7,
+            228,
+            65
+          ],
+          "full_cell_ncc": 0.9734437376155295,
+          "contrast_ncc": [
+            0.9842380060627081,
+            0.9763365043585163,
+            0.9848605821274102
+          ],
+          "polarity_positive": true,
+          "foreground_population": 724,
+          "negative_population": 169,
+          "score": 0.9734437376155295
+        }
+      ],
+      "word_space_ncc": 0.9850799768856311,
+      "word_space_polarity": true
+    },
+    {
+      "source_pts_ticks": 1165353,
+      "source_pixel_sha256": "db0f4d00158408eee8cb21a4f6771c3e2ddb9fbf958e88ae8c0e306034316013",
+      "score": 0.6199491329994922,
+      "reason": "below_threshold_or_polarity",
+      "glyphs": [
+        {
+          "glyph_index": 0,
+          "box": [
+            6,
+            7,
+            33,
+            65
+          ],
+          "full_cell_ncc": 0.6199491329994922,
+          "contrast_ncc": [
+            0.8280815290808005,
+            0.8350670119605995,
+            0.8067133398349081
+          ],
+          "polarity_positive": true,
+          "foreground_population": 595,
+          "negative_population": 140,
+          "score": 0.6199491329994922
+        },
+        {
+          "glyph_index": 1,
+          "box": [
+            33,
+            7,
+            56,
+            65
+          ],
+          "full_cell_ncc": 0.9010207126093197,
+          "contrast_ncc": [
+            0.9924393145986778,
+            0.9698467084350714,
+            0.9885659341383516
+          ],
+          "polarity_positive": true,
+          "foreground_population": 719,
+          "negative_population": 174,
+          "score": 0.9010207126093197
+        },
+        {
+          "glyph_index": 2,
+          "box": [
+            56,
+            7,
+            88,
+            65
+          ],
+          "full_cell_ncc": 0.9273656330814847,
+          "contrast_ncc": [
+            0.9611945970266835
+          ],
+          "polarity_positive": true,
+          "foreground_population": 936,
+          "negative_population": 47,
+          "score": 0.9273656330814847
+        },
+        {
+          "glyph_index": 3,
+          "box": [
+            89,
+            7,
+            130,
+            65
+          ],
+          "full_cell_ncc": 0.9737662718386396,
+          "contrast_ncc": [
+            0.9756700996981202,
+            0.9698637943719104
+          ],
+          "polarity_positive": true,
+          "foreground_population": 1570,
+          "negative_population": 72,
+          "score": 0.9698637943719104
+        },
+        {
+          "glyph_index": 4,
+          "box": [
+            141,
+            7,
+            174,
+            65
+          ],
+          "full_cell_ncc": 0.9770633980724361,
+          "contrast_ncc": [
+            0.9792216016897817
+          ],
+          "polarity_positive": true,
+          "foreground_population": 938,
+          "negative_population": 42,
+          "score": 0.9770633980724361
+        },
+        {
+          "glyph_index": 5,
+          "box": [
+            173,
+            7,
+            204,
+            65
+          ],
+          "full_cell_ncc": 0.9680252469210288,
+          "contrast_ncc": [
+            0.9659569692444953,
+            0.9714725414791728,
+            0.9653487674930292
+          ],
+          "polarity_positive": true,
+          "foreground_population": 959,
+          "negative_population": 167,
+          "score": 0.9653487674930292
+        },
+        {
+          "glyph_index": 6,
+          "box": [
+            205,
+            7,
+            228,
+            65
+          ],
+          "full_cell_ncc": 0.9736382146908135,
+          "contrast_ncc": [
+            0.9838270123394487,
+            0.9767208549977513,
+            0.9844961280702476
+          ],
+          "polarity_positive": true,
+          "foreground_population": 724,
+          "negative_population": 169,
+          "score": 0.9736382146908135
+        }
+      ],
+      "word_space_ncc": 0.9849222927342358,
+      "word_space_polarity": true
+    },
+    {
+      "source_pts_ticks": 1170217,
+      "source_pixel_sha256": "6c071756014865126b91354ca803c4e323011116439320017f7a2a4908b61001",
+      "score": 0.950120436583269,
+      "reason": "accepted",
+      "glyphs": [
+        {
+          "glyph_index": 0,
+          "box": [
+            6,
+            7,
+            33,
+            65
+          ],
+          "full_cell_ncc": 0.9678053432973784,
+          "contrast_ncc": [
+            0.950120436583269,
+            0.9704442543679962,
+            0.9879627026729353
+          ],
+          "polarity_positive": true,
+          "foreground_population": 595,
+          "negative_population": 140,
+          "score": 0.950120436583269
+        },
+        {
+          "glyph_index": 1,
+          "box": [
+            33,
+            7,
+            56,
+            65
+          ],
+          "full_cell_ncc": 0.9664497523108222,
+          "contrast_ncc": [
+            0.991648630512622,
+            0.9895045224913077,
+            0.990765956873284
+          ],
+          "polarity_positive": true,
+          "foreground_population": 719,
+          "negative_population": 174,
+          "score": 0.9664497523108222
+        },
+        {
+          "glyph_index": 2,
+          "box": [
+            56,
+            7,
+            88,
+            65
+          ],
+          "full_cell_ncc": 0.9884605250829461,
+          "contrast_ncc": [
+            0.9906439699820736
+          ],
+          "polarity_positive": true,
+          "foreground_population": 936,
+          "negative_population": 47,
+          "score": 0.9884605250829461
+        },
+        {
+          "glyph_index": 3,
+          "box": [
+            89,
+            7,
+            130,
+            65
+          ],
+          "full_cell_ncc": 0.9840683042567009,
+          "contrast_ncc": [
+            0.980993979889118,
+            0.9813317628393783
+          ],
+          "polarity_positive": true,
+          "foreground_population": 1570,
+          "negative_population": 72,
+          "score": 0.980993979889118
+        },
+        {
+          "glyph_index": 4,
+          "box": [
+            141,
+            7,
+            174,
+            65
+          ],
+          "full_cell_ncc": 0.9862331493732692,
+          "contrast_ncc": [
+            0.9883332502596558
+          ],
+          "polarity_positive": true,
+          "foreground_population": 938,
+          "negative_population": 42,
+          "score": 0.9862331493732692
+        },
+        {
+          "glyph_index": 5,
+          "box": [
+            173,
+            7,
+            204,
+            65
+          ],
+          "full_cell_ncc": 0.9814703576148753,
+          "contrast_ncc": [
+            0.9836707138487899,
+            0.9858087445931922,
+            0.9826765264428611
+          ],
+          "polarity_positive": true,
+          "foreground_population": 959,
+          "negative_population": 167,
+          "score": 0.9814703576148753
+        },
+        {
+          "glyph_index": 6,
+          "box": [
+            205,
+            7,
+            228,
+            65
+          ],
+          "full_cell_ncc": 0.9857414641723096,
+          "contrast_ncc": [
+            0.9895616496999408,
+            0.9874678376048345,
+            0.9893509709547484
+          ],
+          "polarity_positive": true,
+          "foreground_population": 724,
+          "negative_population": 169,
+          "score": 0.9857414641723096
+        }
+      ],
+      "word_space_ncc": 0.990932942868782,
+      "word_space_polarity": true
+    },
+    {
+      "source_pts_ticks": 1170473,
+      "source_pixel_sha256": "1b83b1c58051510b37012ec9d68b8fa1850b74fac0fc2741edad1a3911848283",
+      "score": 0.9339299596664187,
+      "reason": "accepted",
+      "glyphs": [
+        {
+          "glyph_index": 0,
+          "box": [
+            6,
+            7,
+            33,
+            65
+          ],
+          "full_cell_ncc": 0.9546211731115866,
+          "contrast_ncc": [
+            0.9339299596664187,
+            0.9503736405009773,
+            0.9792455935708213
+          ],
+          "polarity_positive": true,
+          "foreground_population": 595,
+          "negative_population": 140,
+          "score": 0.9339299596664187
+        },
+        {
+          "glyph_index": 1,
+          "box": [
+            33,
+            7,
+            56,
+            65
+          ],
+          "full_cell_ncc": 0.9649237988262988,
+          "contrast_ncc": [
+            0.9921748183978798,
+            0.9901670677525805,
+            0.9907063720758533
+          ],
+          "polarity_positive": true,
+          "foreground_population": 719,
+          "negative_population": 174,
+          "score": 0.9649237988262988
+        },
+        {
+          "glyph_index": 2,
+          "box": [
+            56,
+            7,
+            88,
+            65
+          ],
+          "full_cell_ncc": 0.9880973236019696,
+          "contrast_ncc": [
+            0.9906127463025323
+          ],
+          "polarity_positive": true,
+          "foreground_population": 936,
+          "negative_population": 47,
+          "score": 0.9880973236019696
+        },
+        {
+          "glyph_index": 3,
+          "box": [
+            89,
+            7,
+            130,
+            65
+          ],
+          "full_cell_ncc": 0.9841066267423747,
+          "contrast_ncc": [
+            0.9812350389238705,
+            0.9815516604292523
+          ],
+          "polarity_positive": true,
+          "foreground_population": 1570,
+          "negative_population": 72,
+          "score": 0.9812350389238705
+        },
+        {
+          "glyph_index": 4,
+          "box": [
+            141,
+            7,
+            174,
+            65
+          ],
+          "full_cell_ncc": 0.9861170758483861,
+          "contrast_ncc": [
+            0.9882939217296755
+          ],
+          "polarity_positive": true,
+          "foreground_population": 938,
+          "negative_population": 42,
+          "score": 0.9861170758483861
+        },
+        {
+          "glyph_index": 5,
+          "box": [
+            173,
+            7,
+            204,
+            65
+          ],
+          "full_cell_ncc": 0.981463771212964,
+          "contrast_ncc": [
+            0.9835987074828539,
+            0.9857494667207786,
+            0.9826016355590834
+          ],
+          "polarity_positive": true,
+          "foreground_population": 959,
+          "negative_population": 167,
+          "score": 0.981463771212964
+        },
+        {
+          "glyph_index": 6,
+          "box": [
+            205,
+            7,
+            228,
+            65
+          ],
+          "full_cell_ncc": 0.9859287362910092,
+          "contrast_ncc": [
+            0.9895278508625912,
+            0.9874633852079839,
+            0.9893442966535404
+          ],
+          "polarity_positive": true,
+          "foreground_population": 724,
+          "negative_population": 169,
+          "score": 0.9859287362910092
+        }
+      ],
+      "word_space_ncc": 0.9908152841997345,
+      "word_space_polarity": true
+    },
+    {
+      "source_pts_ticks": 1171753,
+      "source_pixel_sha256": "1c6def280fafbf0089b4e1df77f793c061a751dac3b163edd71d82fe399edcfc",
+      "score": 0.7587850302288968,
+      "reason": "below_threshold_or_polarity",
+      "glyphs": [
+        {
+          "glyph_index": 0,
+          "box": [
+            6,
+            7,
+            33,
+            65
+          ],
+          "full_cell_ncc": 0.9943854950508815,
+          "contrast_ncc": [
+            0.9950068285475092,
+            0.9944722465959938,
+            0.99534600837654
+          ],
+          "polarity_positive": true,
+          "foreground_population": 595,
+          "negative_population": 140,
+          "score": 0.9943854950508815
+        },
+        {
+          "glyph_index": 1,
+          "box": [
+            33,
+            7,
+            56,
+            65
+          ],
+          "full_cell_ncc": 0.8179681192499216,
+          "contrast_ncc": [
+            0.933798006707356,
+            0.9112916584746349,
+            0.9111545780363353
+          ],
+          "polarity_positive": true,
+          "foreground_population": 719,
+          "negative_population": 174,
+          "score": 0.8179681192499216
+        },
+        {
+          "glyph_index": 2,
+          "box": [
+            56,
+            7,
+            88,
+            65
+          ],
+          "full_cell_ncc": 0.7587850302288968,
+          "contrast_ncc": [
+            0.9381836648626704
+          ],
+          "polarity_positive": true,
+          "foreground_population": 936,
+          "negative_population": 47,
+          "score": 0.7587850302288968
+        },
+        {
+          "glyph_index": 3,
+          "box": [
+            89,
+            7,
+            130,
+            65
+          ],
+          "full_cell_ncc": 0.8895233370287167,
+          "contrast_ncc": [
+            0.8995573955842678,
+            0.9719604547165103
+          ],
+          "polarity_positive": true,
+          "foreground_population": 1570,
+          "negative_population": 72,
+          "score": 0.8895233370287167
+        },
+        {
+          "glyph_index": 4,
+          "box": [
+            141,
+            7,
+            174,
+            65
+          ],
+          "full_cell_ncc": 0.9598850312612351,
+          "contrast_ncc": [
+            0.987683243031207
+          ],
+          "polarity_positive": true,
+          "foreground_population": 938,
+          "negative_population": 42,
+          "score": 0.9598850312612351
+        },
+        {
+          "glyph_index": 5,
+          "box": [
+            173,
+            7,
+            204,
+            65
+          ],
+          "full_cell_ncc": 0.9209020995119578,
+          "contrast_ncc": [
+            0.9164646537064077,
+            0.9731347904965141,
+            0.9681611459906331
+          ],
+          "polarity_positive": true,
+          "foreground_population": 959,
+          "negative_population": 167,
+          "score": 0.9164646537064077
+        },
+        {
+          "glyph_index": 6,
+          "box": [
+            205,
+            7,
+            228,
+            65
+          ],
+          "full_cell_ncc": 0.9865434366245723,
+          "contrast_ncc": [
+            0.9905332416532666,
+            0.9879078985704808,
+            0.990096623846263
+          ],
+          "polarity_positive": true,
+          "foreground_population": 724,
+          "negative_population": 169,
+          "score": 0.9865434366245723
+        }
+      ],
+      "word_space_ncc": 0.9876172729451729,
+      "word_space_polarity": true
+    },
+    {
+      "source_pts_ticks": 1172777,
+      "source_pixel_sha256": "833b2238abfca638776430da3a166cd975e41642bd904430ed6ee8ad6b5d3acb",
+      "score": 0.8258381800638462,
+      "reason": "below_threshold_or_polarity",
+      "glyphs": [
+        {
+          "glyph_index": 0,
+          "box": [
+            6,
+            7,
+            33,
+            65
+          ],
+          "full_cell_ncc": 0.9933542437346423,
+          "contrast_ncc": [
+            0.9943568560220903,
+            0.9947128873351951,
+            0.9963019764558685
+          ],
+          "polarity_positive": true,
+          "foreground_population": 595,
+          "negative_population": 140,
+          "score": 0.9933542437346423
+        },
+        {
+          "glyph_index": 1,
+          "box": [
+            33,
+            7,
+            56,
+            65
+          ],
+          "full_cell_ncc": 0.900752311248472,
+          "contrast_ncc": [
+            0.978866726787606,
+            0.9573472950895768,
+            0.9341966080900089
+          ],
+          "polarity_positive": true,
+          "foreground_population": 719,
+          "negative_population": 174,
+          "score": 0.900752311248472
+        },
+        {
+          "glyph_index": 2,
+          "box": [
+            56,
+            7,
+            88,
+            65
+          ],
+          "full_cell_ncc": 0.8957966670074607,
+          "contrast_ncc": [
+            0.9615970369872006
+          ],
+          "polarity_positive": true,
+          "foreground_population": 936,
+          "negative_population": 47,
+          "score": 0.8957966670074607
+        },
+        {
+          "glyph_index": 3,
+          "box": [
+            89,
+            7,
+            130,
+            65
+          ],
+          "full_cell_ncc": 0.8258381800638462,
+          "contrast_ncc": [
+            0.8525353325304562,
+            0.9130740316065352
+          ],
+          "polarity_positive": true,
+          "foreground_population": 1570,
+          "negative_population": 72,
+          "score": 0.8258381800638462
+        },
+        {
+          "glyph_index": 4,
+          "box": [
+            141,
+            7,
+            174,
+            65
+          ],
+          "full_cell_ncc": 0.8801659213829622,
+          "contrast_ncc": [
+            0.9866733117949016
+          ],
+          "polarity_positive": true,
+          "foreground_population": 938,
+          "negative_population": 42,
+          "score": 0.8801659213829622
+        },
+        {
+          "glyph_index": 5,
+          "box": [
+            173,
+            7,
+            204,
+            65
+          ],
+          "full_cell_ncc": 0.8650402808630209,
+          "contrast_ncc": [
+            0.8752982030850167,
+            0.9434057421846446,
+            0.9449061331777082
+          ],
+          "polarity_positive": true,
+          "foreground_population": 959,
+          "negative_population": 167,
+          "score": 0.8650402808630209
+        },
+        {
+          "glyph_index": 6,
+          "box": [
+            205,
+            7,
+            228,
+            65
+          ],
+          "full_cell_ncc": 0.9827286796877742,
+          "contrast_ncc": [
+            0.9882443084017467,
+            0.9860008400331628,
+            0.9884579355791212
+          ],
+          "polarity_positive": true,
+          "foreground_population": 724,
+          "negative_population": 169,
+          "score": 0.9827286796877742
+        }
+      ],
+      "word_space_ncc": 0.9844754052534079,
+      "word_space_polarity": true
+    },
+    {
+      "source_pts_ticks": 1173033,
+      "source_pixel_sha256": "ada97bc7b0aa778a6aaece891beec7d6bb76395c25b1acea5be16c5cf5083831",
+      "score": 0.7911936477699568,
+      "reason": "below_threshold_or_polarity",
+      "glyphs": [
+        {
+          "glyph_index": 0,
+          "box": [
+            6,
+            7,
+            33,
+            65
+          ],
+          "full_cell_ncc": 0.9933363347913003,
+          "contrast_ncc": [
+            0.9945279960897349,
+            0.9948970561572462,
+            0.9963629534344031
+          ],
+          "polarity_positive": true,
+          "foreground_population": 595,
+          "negative_population": 140,
+          "score": 0.9933363347913003
+        },
+        {
+          "glyph_index": 1,
+          "box": [
+            33,
+            7,
+            56,
+            65
+          ],
+          "full_cell_ncc": 0.9309370831479066,
+          "contrast_ncc": [
+            0.985424656670005,
+            0.9737474190587171,
+            0.9504465849942578
+          ],
+          "polarity_positive": true,
+          "foreground_population": 719,
+          "negative_population": 174,
+          "score": 0.9309370831479066
+        },
+        {
+          "glyph_index": 2,
+          "box": [
+            56,
+            7,
+            88,
+            65
+          ],
+          "full_cell_ncc": 0.8704512318555444,
+          "contrast_ncc": [
+            0.9565617109310477
+          ],
+          "polarity_positive": true,
+          "foreground_population": 936,
+          "negative_population": 47,
+          "score": 0.8704512318555444
+        },
+        {
+          "glyph_index": 3,
+          "box": [
+            89,
+            7,
+            130,
+            65
+          ],
+          "full_cell_ncc": 0.7963115744087442,
+          "contrast_ncc": [
+            0.7911936477699568,
+            0.9007280865497517
+          ],
+          "polarity_positive": true,
+          "foreground_population": 1570,
+          "negative_population": 72,
+          "score": 0.7911936477699568
+        },
+        {
+          "glyph_index": 4,
+          "box": [
+            141,
+            7,
+            174,
+            65
+          ],
+          "full_cell_ncc": 0.8621157135266734,
+          "contrast_ncc": [
+            0.9870291099422093
+          ],
+          "polarity_positive": true,
+          "foreground_population": 938,
+          "negative_population": 42,
+          "score": 0.8621157135266734
+        },
+        {
+          "glyph_index": 5,
+          "box": [
+            173,
+            7,
+            204,
+            65
+          ],
+          "full_cell_ncc": 0.8547517835697456,
+          "contrast_ncc": [
+            0.8686344356345586,
+            0.9306465106208331,
+            0.9388216406908377
+          ],
+          "polarity_positive": true,
+          "foreground_population": 959,
+          "negative_population": 167,
+          "score": 0.8547517835697456
+        },
+        {
+          "glyph_index": 6,
+          "box": [
+            205,
+            7,
+            228,
+            65
+          ],
+          "full_cell_ncc": 0.9827909660686529,
+          "contrast_ncc": [
+            0.9885692399525522,
+            0.9863712453306095,
+            0.9888087214505118
+          ],
+          "polarity_positive": true,
+          "foreground_population": 724,
+          "negative_population": 169,
+          "score": 0.9827909660686529
+        }
+      ],
+      "word_space_ncc": 0.9827678077371892,
+      "word_space_polarity": true
+    }
+  ],
+  "held_rows": [
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00451_000075.203.jpg",
+      "encoded_sha256": "f43785b1bb02626de3d43daf87d20590f9fd72eb16258b633dcef8da4d59468d",
+      "pts_sec": 75.202669,
+      "split": "original_holdout",
+      "old_accepted": false,
+      "measurement": {
+        "score": 0.0,
+        "reason": "below_threshold_or_polarity",
+        "glyphs": [
+          {
+            "glyph_index": 0,
+            "box": [
+              6,
+              7,
+              33,
+              65
+            ],
+            "full_cell_ncc": 0.3945909971841094,
+            "contrast_ncc": [
+              0.4047324843761761,
+              0.10751239175310867,
+              0.07940151540878632
+            ],
+            "polarity_positive": true,
+            "foreground_population": 595,
+            "negative_population": 140,
+            "score": 0.07940151540878632
+          },
+          {
+            "glyph_index": 1,
+            "box": [
+              33,
+              7,
+              56,
+              65
+            ],
+            "full_cell_ncc": 0.0,
+            "contrast_ncc": [
+              0.020795010503698887,
+              0.0,
+              0.03140106444803656
+            ],
+            "polarity_positive": false,
+            "foreground_population": 719,
+            "negative_population": 174,
+            "score": 0.0
+          },
+          {
+            "glyph_index": 2,
+            "box": [
+              56,
+              7,
+              88,
+              65
+            ],
+            "full_cell_ncc": 0.0,
+            "contrast_ncc": [
+              0.08949282640582328
+            ],
+            "polarity_positive": true,
+            "foreground_population": 936,
+            "negative_population": 47,
+            "score": 0.0
+          },
+          {
+            "glyph_index": 3,
+            "box": [
+              89,
+              7,
+              130,
+              65
+            ],
+            "full_cell_ncc": 0.055408039706648475,
+            "contrast_ncc": [
+              0.0,
+              0.022091730369088743
+            ],
+            "polarity_positive": false,
+            "foreground_population": 1570,
+            "negative_population": 72,
+            "score": 0.0
+          },
+          {
+            "glyph_index": 4,
+            "box": [
+              141,
+              7,
+              174,
+              65
+            ],
+            "full_cell_ncc": 0.0,
+            "contrast_ncc": [
+              0.0
+            ],
+            "polarity_positive": false,
+            "foreground_population": 938,
+            "negative_population": 42,
+            "score": 0.0
+          },
+          {
+            "glyph_index": 5,
+            "box": [
+              173,
+              7,
+              204,
+              65
+            ],
+            "full_cell_ncc": 0.2844796120200107,
+            "contrast_ncc": [
+              0.0005017949283594499,
+              0.0,
+              0.06469304520742473
+            ],
+            "polarity_positive": false,
+            "foreground_population": 959,
+            "negative_population": 167,
+            "score": 0.0
+          },
+          {
+            "glyph_index": 6,
+            "box": [
+              205,
+              7,
+              228,
+              65
+            ],
+            "full_cell_ncc": 0.0,
+            "contrast_ncc": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "polarity_positive": false,
+            "foreground_population": 724,
+            "negative_population": 169,
+            "score": 0.0
+          }
+        ],
+        "word_space_ncc": 0.0,
+        "word_space_polarity": false
+      },
+      "accepted": false
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00444_000075.536.jpg",
+      "encoded_sha256": "550aec2599df5b42c3204fba5407d6ef49dee2dc87d95282c3b49bb061a03db5",
+      "pts_sec": 75.536003,
+      "split": "original_holdout",
+      "old_accepted": true,
+      "measurement": {
+        "score": 0.996046057395806,
+        "reason": "accepted",
+        "glyphs": [
+          {
+            "glyph_index": 0,
+            "box": [
+              6,
+              7,
+              33,
+              65
+            ],
+            "full_cell_ncc": 0.9990408723824296,
+            "contrast_ncc": [
+              0.9991740586098685,
+              0.9992911302704393,
+              0.9992902307365417
+            ],
+            "polarity_positive": true,
+            "foreground_population": 595,
+            "negative_population": 140,
+            "score": 0.9990408723824296
+          },
+          {
+            "glyph_index": 1,
+            "box": [
+              33,
+              7,
+              56,
+              65
+            ],
+            "full_cell_ncc": 0.9987909178630099,
+            "contrast_ncc": [
+              0.9991299908812202,
+              0.9985415837260468,
+              0.9990763306475083
+            ],
+            "polarity_positive": true,
+            "foreground_population": 719,
+            "negative_population": 174,
+            "score": 0.9985415837260468
+          },
+          {
+            "glyph_index": 2,
+            "box": [
+              56,
+              7,
+              88,
+              65
+            ],
+            "full_cell_ncc": 0.9986285375967375,
+            "contrast_ncc": [
+              0.9976766778645846
+            ],
+            "polarity_positive": true,
+            "foreground_population": 936,
+            "negative_population": 47,
+            "score": 0.9976766778645846
+          },
+          {
+            "glyph_index": 3,
+            "box": [
+              89,
+              7,
+              130,
+              65
+            ],
+            "full_cell_ncc": 0.9980148978609089,
+            "contrast_ncc": [
+              0.9961666302708845,
+              0.996046057395806
+            ],
+            "polarity_positive": true,
+            "foreground_population": 1570,
+            "negative_population": 72,
+            "score": 0.996046057395806
+          },
+          {
+            "glyph_index": 4,
+            "box": [
+              141,
+              7,
+              174,
+              65
+            ],
+            "full_cell_ncc": 0.9973724351987544,
+            "contrast_ncc": [
+              0.9967546625927417
+            ],
+            "polarity_positive": true,
+            "foreground_population": 938,
+            "negative_population": 42,
+            "score": 0.9967546625927417
+          },
+          {
+            "glyph_index": 5,
+            "box": [
+              173,
+              7,
+              204,
+              65
+            ],
+            "full_cell_ncc": 0.9979113539760127,
+            "contrast_ncc": [
+              0.9985352782729047,
+              0.9987168257494875,
+              0.9985899204172456
+            ],
+            "polarity_positive": true,
+            "foreground_population": 959,
+            "negative_population": 167,
+            "score": 0.9979113539760127
+          },
+          {
+            "glyph_index": 6,
+            "box": [
+              205,
+              7,
+              228,
+              65
+            ],
+            "full_cell_ncc": 0.9970450392675839,
+            "contrast_ncc": [
+              0.9984198009650976,
+              0.9981618242202188,
+              0.9982273435897006
+            ],
+            "polarity_positive": true,
+            "foreground_population": 724,
+            "negative_population": 169,
+            "score": 0.9970450392675839
+          }
+        ],
+        "word_space_ncc": 0.998473599688296,
+        "word_space_polarity": true
+      },
+      "accepted": true
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00454_000075.603.jpg",
+      "encoded_sha256": "a63d7663e071f237932221ca5f5f952596a4777ebee19ea0263812254fd45542",
+      "pts_sec": 75.602669,
+      "split": "original_holdout",
+      "old_accepted": true,
+      "measurement": {
+        "score": 0.9959765682894421,
+        "reason": "accepted",
+        "glyphs": [
+          {
+            "glyph_index": 0,
+            "box": [
+              6,
+              7,
+              33,
+              65
+            ],
+            "full_cell_ncc": 0.9989728716583185,
+            "contrast_ncc": [
+              0.9987280458409507,
+              0.9987717299297023,
+              0.9987793011306011
+            ],
+            "polarity_positive": true,
+            "foreground_population": 595,
+            "negative_population": 140,
+            "score": 0.9987280458409507
+          },
+          {
+            "glyph_index": 1,
+            "box": [
+              33,
+              7,
+              56,
+              65
+            ],
+            "full_cell_ncc": 0.9989720838612733,
+            "contrast_ncc": [
+              0.9989998471521777,
+              0.9989473048221632,
+              0.998981795981929
+            ],
+            "polarity_positive": true,
+            "foreground_population": 719,
+            "negative_population": 174,
+            "score": 0.9989473048221632
+          },
+          {
+            "glyph_index": 2,
+            "box": [
+              56,
+              7,
+              88,
+              65
+            ],
+            "full_cell_ncc": 0.999185599981183,
+            "contrast_ncc": [
+              0.9987532713849631
+            ],
+            "polarity_positive": true,
+            "foreground_population": 936,
+            "negative_population": 47,
+            "score": 0.9987532713849631
+          },
+          {
+            "glyph_index": 3,
+            "box": [
+              89,
+              7,
+              130,
+              65
+            ],
+            "full_cell_ncc": 0.9982609057030638,
+            "contrast_ncc": [
+              0.9963379648879309,
+              0.9965112325484313
+            ],
+            "polarity_positive": true,
+            "foreground_population": 1570,
+            "negative_population": 72,
+            "score": 0.9963379648879309
+          },
+          {
+            "glyph_index": 4,
+            "box": [
+              141,
+              7,
+              174,
+              65
+            ],
+            "full_cell_ncc": 0.9969252198859025,
+            "contrast_ncc": [
+              0.9959765682894421
+            ],
+            "polarity_positive": true,
+            "foreground_population": 938,
+            "negative_population": 42,
+            "score": 0.9959765682894421
+          },
+          {
+            "glyph_index": 5,
+            "box": [
+              173,
+              7,
+              204,
+              65
+            ],
+            "full_cell_ncc": 0.9963691776793322,
+            "contrast_ncc": [
+              0.9968667576597939,
+              0.9973170552863361,
+              0.9968789398561408
+            ],
+            "polarity_positive": true,
+            "foreground_population": 959,
+            "negative_population": 167,
+            "score": 0.9963691776793322
+          },
+          {
+            "glyph_index": 6,
+            "box": [
+              205,
+              7,
+              228,
+              65
+            ],
+            "full_cell_ncc": 0.9968669735036303,
+            "contrast_ncc": [
+              0.9984566552262337,
+              0.99823582619763,
+              0.9982762583058449
+            ],
+            "polarity_positive": true,
+            "foreground_population": 724,
+            "negative_population": 169,
+            "score": 0.9968669735036303
+          }
+        ],
+        "word_space_ncc": 0.9982501427585028,
+        "word_space_polarity": true
+      },
+      "accepted": true
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00445_000075.619.jpg",
+      "encoded_sha256": "823e6320bbf400c33e3c64b15cced27cce2d58c5ac0a072a47fb0a207eb2e286",
+      "pts_sec": 75.619336,
+      "split": "original_holdout",
+      "old_accepted": true,
+      "measurement": {
+        "score": 0.9959765682894421,
+        "reason": "accepted",
+        "glyphs": [
+          {
+            "glyph_index": 0,
+            "box": [
+              6,
+              7,
+              33,
+              65
+            ],
+            "full_cell_ncc": 0.9990091527216866,
+            "contrast_ncc": [
+              0.9988014821354527,
+              0.9988466690474402,
+              0.9988499743770701
+            ],
+            "polarity_positive": true,
+            "foreground_population": 595,
+            "negative_population": 140,
+            "score": 0.9988014821354527
+          },
+          {
+            "glyph_index": 1,
+            "box": [
+              33,
+              7,
+              56,
+              65
+            ],
+            "full_cell_ncc": 0.9989720838612733,
+            "contrast_ncc": [
+              0.9989998471521777,
+              0.9989473048221632,
+              0.998981795981929
+            ],
+            "polarity_positive": true,
+            "foreground_population": 719,
+            "negative_population": 174,
+            "score": 0.9989473048221632
+          },
+          {
+            "glyph_index": 2,
+            "box": [
+              56,
+              7,
+              88,
+              65
+            ],
+            "full_cell_ncc": 0.9991777287916075,
+            "contrast_ncc": [
+              0.9987223946375914
+            ],
+            "polarity_positive": true,
+            "foreground_population": 936,
+            "negative_population": 47,
+            "score": 0.9987223946375914
+          },
+          {
+            "glyph_index": 3,
+            "box": [
+              89,
+              7,
+              130,
+              65
+            ],
+            "full_cell_ncc": 0.9982314984451122,
+            "contrast_ncc": [
+              0.9966504587196896,
+              0.9966827399310872
+            ],
+            "polarity_positive": true,
+            "foreground_population": 1570,
+            "negative_population": 72,
+            "score": 0.9966504587196896
+          },
+          {
+            "glyph_index": 4,
+            "box": [
+              141,
+              7,
+              174,
+              65
+            ],
+            "full_cell_ncc": 0.9969252198859025,
+            "contrast_ncc": [
+              0.9959765682894421
+            ],
+            "polarity_positive": true,
+            "foreground_population": 938,
+            "negative_population": 42,
+            "score": 0.9959765682894421
+          },
+          {
+            "glyph_index": 5,
+            "box": [
+              173,
+              7,
+              204,
+              65
+            ],
+            "full_cell_ncc": 0.9962567892892975,
+            "contrast_ncc": [
+              0.9966143430715264,
+              0.9971115715533314,
+              0.996634608193693
+            ],
+            "polarity_positive": true,
+            "foreground_population": 959,
+            "negative_population": 167,
+            "score": 0.9962567892892975
+          },
+          {
+            "glyph_index": 6,
+            "box": [
+              205,
+              7,
+              228,
+              65
+            ],
+            "full_cell_ncc": 0.9968091951234203,
+            "contrast_ncc": [
+              0.9984308422104545,
+              0.9982135844868633,
+              0.9982540905681101
+            ],
+            "polarity_positive": true,
+            "foreground_population": 724,
+            "negative_population": 169,
+            "score": 0.9968091951234203
+          }
+        ],
+        "word_space_ncc": 0.9982486909800746,
+        "word_space_polarity": true
+      },
+      "accepted": true
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00450_000075.936.jpg",
+      "encoded_sha256": "b8b367581eabf62d4962105724ae605798b05b4529db9fe25fcc72c3ef7c73a2",
+      "pts_sec": 75.936003,
+      "split": "original_holdout",
+      "old_accepted": false,
+      "measurement": {
+        "score": 0.6216574671291892,
+        "reason": "below_threshold_or_polarity",
+        "glyphs": [
+          {
+            "glyph_index": 0,
+            "box": [
+              6,
+              7,
+              33,
+              65
+            ],
+            "full_cell_ncc": 0.6216574671291892,
+            "contrast_ncc": [
+              0.8474380597824599,
+              0.8502542442305923,
+              0.833689819452287
+            ],
+            "polarity_positive": true,
+            "foreground_population": 595,
+            "negative_population": 140,
+            "score": 0.6216574671291892
+          },
+          {
+            "glyph_index": 1,
+            "box": [
+              33,
+              7,
+              56,
+              65
+            ],
+            "full_cell_ncc": 0.8975279792242835,
+            "contrast_ncc": [
+              0.992899629418928,
+              0.9671827965185268,
+              0.9896122628994636
+            ],
+            "polarity_positive": true,
+            "foreground_population": 719,
+            "negative_population": 174,
+            "score": 0.8975279792242835
+          },
+          {
+            "glyph_index": 2,
+            "box": [
+              56,
+              7,
+              88,
+              65
+            ],
+            "full_cell_ncc": 0.9573106918158902,
+            "contrast_ncc": [
+              0.9840383101589337
+            ],
+            "polarity_positive": true,
+            "foreground_population": 936,
+            "negative_population": 47,
+            "score": 0.9573106918158902
+          },
+          {
+            "glyph_index": 3,
+            "box": [
+              89,
+              7,
+              130,
+              65
+            ],
+            "full_cell_ncc": 0.9737886381187064,
+            "contrast_ncc": [
+              0.974640821134268,
+              0.9685711223096044
+            ],
+            "polarity_positive": true,
+            "foreground_population": 1570,
+            "negative_population": 72,
+            "score": 0.9685711223096044
+          },
+          {
+            "glyph_index": 4,
+            "box": [
+              141,
+              7,
+              174,
+              65
+            ],
+            "full_cell_ncc": 0.9773211229726405,
+            "contrast_ncc": [
+              0.9790814688751209
+            ],
+            "polarity_positive": true,
+            "foreground_population": 938,
+            "negative_population": 42,
+            "score": 0.9773211229726405
+          },
+          {
+            "glyph_index": 5,
+            "box": [
+              173,
+              7,
+              204,
+              65
+            ],
+            "full_cell_ncc": 0.9688264609102251,
+            "contrast_ncc": [
+              0.9675057155454563,
+              0.9725413749870734,
+              0.9667727621929003
+            ],
+            "polarity_positive": true,
+            "foreground_population": 959,
+            "negative_population": 167,
+            "score": 0.9667727621929003
+          },
+          {
+            "glyph_index": 6,
+            "box": [
+              205,
+              7,
+              228,
+              65
+            ],
+            "full_cell_ncc": 0.975729179402264,
+            "contrast_ncc": [
+              0.9842137386420082,
+              0.9818652134537291,
+              0.9844806898789951
+            ],
+            "polarity_positive": true,
+            "foreground_population": 724,
+            "negative_population": 169,
+            "score": 0.975729179402264
+          }
+        ],
+        "word_space_ncc": 0.9845986641831524,
+        "word_space_polarity": true
+      },
+      "accepted": false
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00451_000075.953.jpg",
+      "encoded_sha256": "e5061e41c86c3d5b8e653950e0341dffac3c39855037dbc4cb0953aa14a47b7b",
+      "pts_sec": 75.952669,
+      "split": "original_holdout",
+      "old_accepted": false,
+      "measurement": {
+        "score": 0.6228038845900005,
+        "reason": "below_threshold_or_polarity",
+        "glyphs": [
+          {
+            "glyph_index": 0,
+            "box": [
+              6,
+              7,
+              33,
+              65
+            ],
+            "full_cell_ncc": 0.6228038845900005,
+            "contrast_ncc": [
+              0.8270240657631103,
+              0.8322335696702106,
+              0.8076324247011483
+            ],
+            "polarity_positive": true,
+            "foreground_population": 595,
+            "negative_population": 140,
+            "score": 0.6228038845900005
+          },
+          {
+            "glyph_index": 1,
+            "box": [
+              33,
+              7,
+              56,
+              65
+            ],
+            "full_cell_ncc": 0.9006254124613329,
+            "contrast_ncc": [
+              0.992907719997858,
+              0.9680728136515349,
+              0.9904623859735737
+            ],
+            "polarity_positive": true,
+            "foreground_population": 719,
+            "negative_population": 174,
+            "score": 0.9006254124613329
+          },
+          {
+            "glyph_index": 2,
+            "box": [
+              56,
+              7,
+              88,
+              65
+            ],
+            "full_cell_ncc": 0.9647360837867702,
+            "contrast_ncc": [
+              0.9869730841650497
+            ],
+            "polarity_positive": true,
+            "foreground_population": 936,
+            "negative_population": 47,
+            "score": 0.9647360837867702
+          },
+          {
+            "glyph_index": 3,
+            "box": [
+              89,
+              7,
+              130,
+              65
+            ],
+            "full_cell_ncc": 0.9750994091618826,
+            "contrast_ncc": [
+              0.9749291493933429,
+              0.9687912977880128
+            ],
+            "polarity_positive": true,
+            "foreground_population": 1570,
+            "negative_population": 72,
+            "score": 0.9687912977880128
+          },
+          {
+            "glyph_index": 4,
+            "box": [
+              141,
+              7,
+              174,
+              65
+            ],
+            "full_cell_ncc": 0.9786797843417054,
+            "contrast_ncc": [
+              0.9794588313441868
+            ],
+            "polarity_positive": true,
+            "foreground_population": 938,
+            "negative_population": 42,
+            "score": 0.9786797843417054
+          },
+          {
+            "glyph_index": 5,
+            "box": [
+              173,
+              7,
+              204,
+              65
+            ],
+            "full_cell_ncc": 0.9690698126452585,
+            "contrast_ncc": [
+              0.9675868640079682,
+              0.9728332960130307,
+              0.9676008983282848
+            ],
+            "polarity_positive": true,
+            "foreground_population": 959,
+            "negative_population": 167,
+            "score": 0.9675868640079682
+          },
+          {
+            "glyph_index": 6,
+            "box": [
+              205,
+              7,
+              228,
+              65
+            ],
+            "full_cell_ncc": 0.9758874175455268,
+            "contrast_ncc": [
+              0.9839846643281539,
+              0.9815884679780289,
+              0.9842598578476021
+            ],
+            "polarity_positive": true,
+            "foreground_population": 724,
+            "negative_population": 169,
+            "score": 0.9758874175455268
+          }
+        ],
+        "word_space_ncc": 0.9851119064856825,
+        "word_space_polarity": true
+      },
+      "accepted": false
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00456_000076.003.jpg",
+      "encoded_sha256": "f2c0c99fc72d4151e602dd533a36c810d12dac475b937e29d1d91fd6354f9a7f",
+      "pts_sec": 76.002669,
+      "split": "original_holdout",
+      "old_accepted": false,
+      "measurement": {
+        "score": 0.6441480762204044,
+        "reason": "below_threshold_or_polarity",
+        "glyphs": [
+          {
+            "glyph_index": 0,
+            "box": [
+              6,
+              7,
+              33,
+              65
+            ],
+            "full_cell_ncc": 0.6441480762204044,
+            "contrast_ncc": [
+              0.8506447428252998,
+              0.8885982308710683,
+              0.8775081029061392
+            ],
+            "polarity_positive": true,
+            "foreground_population": 595,
+            "negative_population": 140,
+            "score": 0.6441480762204044
+          },
+          {
+            "glyph_index": 1,
+            "box": [
+              33,
+              7,
+              56,
+              65
+            ],
+            "full_cell_ncc": 0.9381365873125811,
+            "contrast_ncc": [
+              0.9859440275852734,
+              0.9897604853035216,
+              0.9937012084899912
+            ],
+            "polarity_positive": true,
+            "foreground_population": 719,
+            "negative_population": 174,
+            "score": 0.9381365873125811
+          },
+          {
+            "glyph_index": 2,
+            "box": [
+              56,
+              7,
+              88,
+              65
+            ],
+            "full_cell_ncc": 0.9821080752717479,
+            "contrast_ncc": [
+              0.9853480691545706
+            ],
+            "polarity_positive": true,
+            "foreground_population": 936,
+            "negative_population": 47,
+            "score": 0.9821080752717479
+          },
+          {
+            "glyph_index": 3,
+            "box": [
+              89,
+              7,
+              130,
+              65
+            ],
+            "full_cell_ncc": 0.9754936902146596,
+            "contrast_ncc": [
+              0.9743165714771144,
+              0.9697349881279214
+            ],
+            "polarity_positive": true,
+            "foreground_population": 1570,
+            "negative_population": 72,
+            "score": 0.9697349881279214
+          },
+          {
+            "glyph_index": 4,
+            "box": [
+              141,
+              7,
+              174,
+              65
+            ],
+            "full_cell_ncc": 0.9778746575800279,
+            "contrast_ncc": [
+              0.9846131167424892
+            ],
+            "polarity_positive": true,
+            "foreground_population": 938,
+            "negative_population": 42,
+            "score": 0.9778746575800279
+          },
+          {
+            "glyph_index": 5,
+            "box": [
+              173,
+              7,
+              204,
+              65
+            ],
+            "full_cell_ncc": 0.9705905429881314,
+            "contrast_ncc": [
+              0.9727279750225882,
+              0.977133366750361,
+              0.9725709664713656
+            ],
+            "polarity_positive": true,
+            "foreground_population": 959,
+            "negative_population": 167,
+            "score": 0.9705905429881314
+          },
+          {
+            "glyph_index": 6,
+            "box": [
+              205,
+              7,
+              228,
+              65
+            ],
+            "full_cell_ncc": 0.9809064688609336,
+            "contrast_ncc": [
+              0.9873642561118872,
+              0.9845747517782454,
+              0.9872375762418698
+            ],
+            "polarity_positive": true,
+            "foreground_population": 724,
+            "negative_population": 169,
+            "score": 0.9809064688609336
+          }
+        ],
+        "word_space_ncc": 0.9857053748611,
+        "word_space_polarity": true
+      },
+      "accepted": false
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00452_000076.019.jpg",
+      "encoded_sha256": "6fd33db0a3e792e9e85777cf1478fb6d08526afd050f8cff9ccda78f468d5456",
+      "pts_sec": 76.019336,
+      "split": "original_holdout",
+      "old_accepted": false,
+      "measurement": {
+        "score": 0.6916879831854214,
+        "reason": "below_threshold_or_polarity",
+        "glyphs": [
+          {
+            "glyph_index": 0,
+            "box": [
+              6,
+              7,
+              33,
+              65
+            ],
+            "full_cell_ncc": 0.6916879831854214,
+            "contrast_ncc": [
+              0.756668325325462,
+              0.7819054334542133,
+              0.8203510201081528
+            ],
+            "polarity_positive": true,
+            "foreground_population": 595,
+            "negative_population": 140,
+            "score": 0.6916879831854214
+          },
+          {
+            "glyph_index": 1,
+            "box": [
+              33,
+              7,
+              56,
+              65
+            ],
+            "full_cell_ncc": 0.9653054225558587,
+            "contrast_ncc": [
+              0.9934609884560854,
+              0.9924872995183252,
+              0.9936027086292556
+            ],
+            "polarity_positive": true,
+            "foreground_population": 719,
+            "negative_population": 174,
+            "score": 0.9653054225558587
+          },
+          {
+            "glyph_index": 2,
+            "box": [
+              56,
+              7,
+              88,
+              65
+            ],
+            "full_cell_ncc": 0.9822127840655985,
+            "contrast_ncc": [
+              0.9852741003557749
+            ],
+            "polarity_positive": true,
+            "foreground_population": 936,
+            "negative_population": 47,
+            "score": 0.9822127840655985
+          },
+          {
+            "glyph_index": 3,
+            "box": [
+              89,
+              7,
+              130,
+              65
+            ],
+            "full_cell_ncc": 0.9753689062917725,
+            "contrast_ncc": [
+              0.9746324277942384,
+              0.9701787077980037
+            ],
+            "polarity_positive": true,
+            "foreground_population": 1570,
+            "negative_population": 72,
+            "score": 0.9701787077980037
+          },
+          {
+            "glyph_index": 4,
+            "box": [
+              141,
+              7,
+              174,
+              65
+            ],
+            "full_cell_ncc": 0.9711678153669833,
+            "contrast_ncc": [
+              0.9828223104239133
+            ],
+            "polarity_positive": true,
+            "foreground_population": 938,
+            "negative_population": 42,
+            "score": 0.9711678153669833
+          },
+          {
+            "glyph_index": 5,
+            "box": [
+              173,
+              7,
+              204,
+              65
+            ],
+            "full_cell_ncc": 0.9764224754253926,
+            "contrast_ncc": [
+              0.977651778335698,
+              0.9809305644264996,
+              0.9761249236248907
+            ],
+            "polarity_positive": true,
+            "foreground_population": 959,
+            "negative_population": 167,
+            "score": 0.9761249236248907
+          },
+          {
+            "glyph_index": 6,
+            "box": [
+              205,
+              7,
+              228,
+              65
+            ],
+            "full_cell_ncc": 0.9825287446917964,
+            "contrast_ncc": [
+              0.9874679605745762,
+              0.9844856496368901,
+              0.9873907761110728
+            ],
+            "polarity_positive": true,
+            "foreground_population": 724,
+            "negative_population": 169,
+            "score": 0.9825287446917964
+          }
+        ],
+        "word_space_ncc": 0.9844237281689949,
+        "word_space_polarity": true
+      },
+      "accepted": false
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00453_000076.036.jpg",
+      "encoded_sha256": "f70af92cfcaeb58e331d3b2d337c455b9967fa05c4d7bc25b024b554b456192d",
+      "pts_sec": 76.036003,
+      "split": "original_holdout",
+      "old_accepted": false,
+      "measurement": {
+        "score": 0.8268078818790746,
+        "reason": "below_threshold_or_polarity",
+        "glyphs": [
+          {
+            "glyph_index": 0,
+            "box": [
+              6,
+              7,
+              33,
+              65
+            ],
+            "full_cell_ncc": 0.8809165998130118,
+            "contrast_ncc": [
+              0.8268078818790746,
+              0.9119555563352847,
+              0.9582313970659704
+            ],
+            "polarity_positive": true,
+            "foreground_population": 595,
+            "negative_population": 140,
+            "score": 0.8268078818790746
+          },
+          {
+            "glyph_index": 1,
+            "box": [
+              33,
+              7,
+              56,
+              65
+            ],
+            "full_cell_ncc": 0.9905544840586906,
+            "contrast_ncc": [
+              0.9934539905186196,
+              0.9924446468800174,
+              0.993596208166825
+            ],
+            "polarity_positive": true,
+            "foreground_population": 719,
+            "negative_population": 174,
+            "score": 0.9905544840586906
+          },
+          {
+            "glyph_index": 2,
+            "box": [
+              56,
+              7,
+              88,
+              65
+            ],
+            "full_cell_ncc": 0.9819359421369385,
+            "contrast_ncc": [
+              0.9850631956961466
+            ],
+            "polarity_positive": true,
+            "foreground_population": 936,
+            "negative_population": 47,
+            "score": 0.9819359421369385
+          },
+          {
+            "glyph_index": 3,
+            "box": [
+              89,
+              7,
+              130,
+              65
+            ],
+            "full_cell_ncc": 0.9751826903229122,
+            "contrast_ncc": [
+              0.9731582413028071,
+              0.9698685241493207
+            ],
+            "polarity_positive": true,
+            "foreground_population": 1570,
+            "negative_population": 72,
+            "score": 0.9698685241493207
+          },
+          {
+            "glyph_index": 4,
+            "box": [
+              141,
+              7,
+              174,
+              65
+            ],
+            "full_cell_ncc": 0.9752151817629885,
+            "contrast_ncc": [
+              0.9848722501292707
+            ],
+            "polarity_positive": true,
+            "foreground_population": 938,
+            "negative_population": 42,
+            "score": 0.9752151817629885
+          },
+          {
+            "glyph_index": 5,
+            "box": [
+              173,
+              7,
+              204,
+              65
+            ],
+            "full_cell_ncc": 0.9798863968283991,
+            "contrast_ncc": [
+              0.9764480072533335,
+              0.9798646044110182,
+              0.9758908842852709
+            ],
+            "polarity_positive": true,
+            "foreground_population": 959,
+            "negative_population": 167,
+            "score": 0.9758908842852709
+          },
+          {
+            "glyph_index": 6,
+            "box": [
+              205,
+              7,
+              228,
+              65
+            ],
+            "full_cell_ncc": 0.9841077284999694,
+            "contrast_ncc": [
+              0.9887039826710894,
+              0.9866455951051277,
+              0.9888110445616808
+            ],
+            "polarity_positive": true,
+            "foreground_population": 724,
+            "negative_population": 169,
+            "score": 0.9841077284999694
+          }
+        ],
+        "word_space_ncc": 0.9838373777639129,
+        "word_space_polarity": true
+      },
+      "accepted": false
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00454_000076.103.jpg",
+      "encoded_sha256": "4a3fc8664cfb41bd3e528577d39f25b7ebf273eeb1051c5f10d02313071082d8",
+      "pts_sec": 76.102669,
+      "split": "original_holdout",
+      "old_accepted": false,
+      "measurement": {
+        "score": 0.9569611388615046,
+        "reason": "accepted",
+        "glyphs": [
+          {
+            "glyph_index": 0,
+            "box": [
+              6,
+              7,
+              33,
+              65
+            ],
+            "full_cell_ncc": 0.9569611388615046,
+            "contrast_ncc": [
+              0.9891786781883489,
+              0.9925005463494574,
+              0.9809355718147451
+            ],
+            "polarity_positive": true,
+            "foreground_population": 595,
+            "negative_population": 140,
+            "score": 0.9569611388615046
+          },
+          {
+            "glyph_index": 1,
+            "box": [
+              33,
+              7,
+              56,
+              65
+            ],
+            "full_cell_ncc": 0.9731184136229714,
+            "contrast_ncc": [
+              0.9920370039537226,
+              0.9929639351723563,
+              0.9959628874207408
+            ],
+            "polarity_positive": true,
+            "foreground_population": 719,
+            "negative_population": 174,
+            "score": 0.9731184136229714
+          },
+          {
+            "glyph_index": 2,
+            "box": [
+              56,
+              7,
+              88,
+              65
+            ],
+            "full_cell_ncc": 0.9879160108122972,
+            "contrast_ncc": [
+              0.9909821660341416
+            ],
+            "polarity_positive": true,
+            "foreground_population": 936,
+            "negative_population": 47,
+            "score": 0.9879160108122972
+          },
+          {
+            "glyph_index": 3,
+            "box": [
+              89,
+              7,
+              130,
+              65
+            ],
+            "full_cell_ncc": 0.9830257079436172,
+            "contrast_ncc": [
+              0.9795525503041211,
+              0.9803512430170845
+            ],
+            "polarity_positive": true,
+            "foreground_population": 1570,
+            "negative_population": 72,
+            "score": 0.9795525503041211
+          },
+          {
+            "glyph_index": 4,
+            "box": [
+              141,
+              7,
+              174,
+              65
+            ],
+            "full_cell_ncc": 0.9860551565987823,
+            "contrast_ncc": [
+              0.9872728220024832
+            ],
+            "polarity_positive": true,
+            "foreground_population": 938,
+            "negative_population": 42,
+            "score": 0.9860551565987823
+          },
+          {
+            "glyph_index": 5,
+            "box": [
+              173,
+              7,
+              204,
+              65
+            ],
+            "full_cell_ncc": 0.9826648044600137,
+            "contrast_ncc": [
+              0.9839363390915241,
+              0.9857978940012759,
+              0.982998981520535
+            ],
+            "polarity_positive": true,
+            "foreground_population": 959,
+            "negative_population": 167,
+            "score": 0.9826648044600137
+          },
+          {
+            "glyph_index": 6,
+            "box": [
+              205,
+              7,
+              228,
+              65
+            ],
+            "full_cell_ncc": 0.9855063560696625,
+            "contrast_ncc": [
+              0.9898214414252203,
+              0.9872337305157524,
+              0.9894412936581831
+            ],
+            "polarity_positive": true,
+            "foreground_population": 724,
+            "negative_population": 169,
+            "score": 0.9855063560696625
+          }
+        ],
+        "word_space_ncc": 0.9909760106074836,
+        "word_space_polarity": true
+      },
+      "accepted": true
+    },
+    {
+      "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00455_000076.119.jpg",
+      "encoded_sha256": "c7438dfbaa7b2fec24c022d724022081ae7082bc59b7fb94080c5360bd458113",
+      "pts_sec": 76.119336,
+      "split": "original_holdout",
+      "old_accepted": false,
+      "measurement": {
+        "score": 0.9652407369647107,
+        "reason": "accepted",
+        "glyphs": [
+          {
+            "glyph_index": 0,
+            "box": [
+              6,
+              7,
+              33,
+              65
+            ],
+            "full_cell_ncc": 0.9652407369647107,
+            "contrast_ncc": [
+              0.9897942610719523,
+              0.9939057713371836,
+              0.9856806837838238
+            ],
+            "polarity_positive": true,
+            "foreground_population": 595,
+            "negative_population": 140,
+            "score": 0.9652407369647107
+          },
+          {
+            "glyph_index": 1,
+            "box": [
+              33,
+              7,
+              56,
+              65
+            ],
+            "full_cell_ncc": 0.9737354262087207,
+            "contrast_ncc": [
+              0.9920507160373077,
+              0.9927607604651202,
+              0.9951106771902524
+            ],
+            "polarity_positive": true,
+            "foreground_population": 719,
+            "negative_population": 174,
+            "score": 0.9737354262087207
+          },
+          {
+            "glyph_index": 2,
+            "box": [
+              56,
+              7,
+              88,
+              65
+            ],
+            "full_cell_ncc": 0.9872536315405855,
+            "contrast_ncc": [
+              0.9905180151963738
+            ],
+            "polarity_positive": true,
+            "foreground_population": 936,
+            "negative_population": 47,
+            "score": 0.9872536315405855
+          },
+          {
+            "glyph_index": 3,
+            "box": [
+              89,
+              7,
+              130,
+              65
+            ],
+            "full_cell_ncc": 0.9841230252031633,
+            "contrast_ncc": [
+              0.9807431991693957,
+              0.981645928705651
+            ],
+            "polarity_positive": true,
+            "foreground_population": 1570,
+            "negative_population": 72,
+            "score": 0.9807431991693957
+          },
+          {
+            "glyph_index": 4,
+            "box": [
+              141,
+              7,
+              174,
+              65
+            ],
+            "full_cell_ncc": 0.9860777039567857,
+            "contrast_ncc": [
+              0.9873448578233757
+            ],
+            "polarity_positive": true,
+            "foreground_population": 938,
+            "negative_population": 42,
+            "score": 0.9860777039567857
+          },
+          {
+            "glyph_index": 5,
+            "box": [
+              173,
+              7,
+              204,
+              65
+            ],
+            "full_cell_ncc": 0.9829544509253525,
+            "contrast_ncc": [
+              0.9847823915524456,
+              0.986564729024284,
+              0.9839455436118396
+            ],
+            "polarity_positive": true,
+            "foreground_population": 959,
+            "negative_population": 167,
+            "score": 0.9829544509253525
+          },
+          {
+            "glyph_index": 6,
+            "box": [
+              205,
+              7,
+              228,
+              65
+            ],
+            "full_cell_ncc": 0.9855305174503977,
+            "contrast_ncc": [
+              0.989772257617308,
+              0.9871878182304084,
+              0.9893761258440776
+            ],
+            "polarity_positive": true,
+            "foreground_population": 724,
+            "negative_population": 169,
+            "score": 0.9855305174503977
+          }
+        ],
+        "word_space_ncc": 0.9910303097519944,
+        "word_space_polarity": true
+      },
+      "accepted": true
+    },
+    {
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-000/frame_00041_000003.586.jpg",
+      "encoded_sha256": "e062e94fba7749b0a7b774a19c193df4e78aa7b2d8e40f605acbd264db7344e6",
+      "pts_sec": 3.586003,
+      "split": "natural_negative",
+      "old_accepted": false,
+      "measurement": {
+        "score": 0.0,
+        "reason": "below_threshold_or_polarity",
+        "glyphs": [
+          {
+            "glyph_index": 0,
+            "box": [
+              6,
+              7,
+              33,
+              65
+            ],
+            "full_cell_ncc": 0.0,
+            "contrast_ncc": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "polarity_positive": false,
+            "foreground_population": 595,
+            "negative_population": 140,
+            "score": 0.0
+          },
+          {
+            "glyph_index": 1,
+            "box": [
+              33,
+              7,
+              56,
+              65
+            ],
+            "full_cell_ncc": 0.07297903833703044,
+            "contrast_ncc": [
+              0.18091575581863137,
+              0.14934413748733727,
+              0.0
+            ],
+            "polarity_positive": true,
+            "foreground_population": 719,
+            "negative_population": 174,
+            "score": 0.0
+          },
+          {
+            "glyph_index": 2,
+            "box": [
+              56,
+              7,
+              88,
+              65
+            ],
+            "full_cell_ncc": 0.07596402383853693,
+            "contrast_ncc": [
+              0.09669791790036429
+            ],
+            "polarity_positive": true,
+            "foreground_population": 936,
+            "negative_population": 47,
+            "score": 0.07596402383853693
+          },
+          {
+            "glyph_index": 3,
+            "box": [
+              89,
+              7,
+              130,
+              65
+            ],
+            "full_cell_ncc": 0.0,
+            "contrast_ncc": [
+              0.0,
+              0.014816741254111745
+            ],
+            "polarity_positive": false,
+            "foreground_population": 1570,
+            "negative_population": 72,
+            "score": 0.0
+          },
+          {
+            "glyph_index": 4,
+            "box": [
+              141,
+              7,
+              174,
+              65
+            ],
+            "full_cell_ncc": 0.27128789260839725,
+            "contrast_ncc": [
+              0.2081411254275174
+            ],
+            "polarity_positive": true,
+            "foreground_population": 938,
+            "negative_population": 42,
+            "score": 0.2081411254275174
+          },
+          {
+            "glyph_index": 5,
+            "box": [
+              173,
+              7,
+              204,
+              65
+            ],
+            "full_cell_ncc": 0.0,
+            "contrast_ncc": [
+              0.0,
+              0.04813116537583419,
+              0.026612099266551337
+            ],
+            "polarity_positive": false,
+            "foreground_population": 959,
+            "negative_population": 167,
+            "score": 0.0
+          },
+          {
+            "glyph_index": 6,
+            "box": [
+              205,
+              7,
+              228,
+              65
+            ],
+            "full_cell_ncc": 0.0,
+            "contrast_ncc": [
+              0.0,
+              0.0,
+              0.12140353641689003
+            ],
+            "polarity_positive": false,
+            "foreground_population": 724,
+            "negative_population": 169,
+            "score": 0.0
+          }
+        ],
+        "word_space_ncc": 0.0,
+        "word_space_polarity": false
+      },
+      "accepted": false
+    },
+    {
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-000/frame_00088_000005.886.jpg",
+      "encoded_sha256": "3cc5a947a2f4e57ed3a97f0bfecedf8432de236374725d2d9e6826b0a87d0fdd",
+      "pts_sec": 5.886003,
+      "split": "natural_negative",
+      "old_accepted": false,
+      "measurement": {
+        "score": 0.0,
+        "reason": "below_threshold_or_polarity",
+        "glyphs": [
+          {
+            "glyph_index": 0,
+            "box": [
+              6,
+              7,
+              33,
+              65
+            ],
+            "full_cell_ncc": 0.0,
+            "contrast_ncc": [
+              0.0039002422716551154,
+              0.02107774975531679,
+              0.011413182548808612
+            ],
+            "polarity_positive": true,
+            "foreground_population": 595,
+            "negative_population": 140,
+            "score": 0.0
+          },
+          {
+            "glyph_index": 1,
+            "box": [
+              33,
+              7,
+              56,
+              65
+            ],
+            "full_cell_ncc": 0.0,
+            "contrast_ncc": [
+              0.09725811674277297,
+              0.0,
+              0.0
+            ],
+            "polarity_positive": false,
+            "foreground_population": 719,
+            "negative_population": 174,
+            "score": 0.0
+          },
+          {
+            "glyph_index": 2,
+            "box": [
+              56,
+              7,
+              88,
+              65
+            ],
+            "full_cell_ncc": 0.0006851254266543965,
+            "contrast_ncc": [
+              0.21054343274578471
+            ],
+            "polarity_positive": true,
+            "foreground_population": 936,
+            "negative_population": 47,
+            "score": 0.0006851254266543965
+          },
+          {
+            "glyph_index": 3,
+            "box": [
+              89,
+              7,
+              130,
+              65
+            ],
+            "full_cell_ncc": 0.12249290639141971,
+            "contrast_ncc": [
+              0.0,
+              0.09175594401747944
+            ],
+            "polarity_positive": true,
+            "foreground_population": 1570,
+            "negative_population": 72,
+            "score": 0.0
+          },
+          {
+            "glyph_index": 4,
+            "box": [
+              141,
+              7,
+              174,
+              65
+            ],
+            "full_cell_ncc": 0.1530404607862973,
+            "contrast_ncc": [
+              0.13051686115529199
+            ],
+            "polarity_positive": true,
+            "foreground_population": 938,
+            "negative_population": 42,
+            "score": 0.13051686115529199
+          },
+          {
+            "glyph_index": 5,
+            "box": [
+              173,
+              7,
+              204,
+              65
+            ],
+            "full_cell_ncc": 0.176482190788433,
+            "contrast_ncc": [
+              0.06802577639256478,
+              0.12500796968155523,
+              0.25050413436079855
+            ],
+            "polarity_positive": true,
+            "foreground_population": 959,
+            "negative_population": 167,
+            "score": 0.06802577639256478
+          },
+          {
+            "glyph_index": 6,
+            "box": [
+              205,
+              7,
+              228,
+              65
+            ],
+            "full_cell_ncc": 0.1998341684177935,
+            "contrast_ncc": [
+              0.0,
+              0.09941305961953817,
+              0.48524696546192386
+            ],
+            "polarity_positive": true,
+            "foreground_population": 724,
+            "negative_population": 169,
+            "score": 0.0
+          }
+        ],
+        "word_space_ncc": 0.0,
+        "word_space_polarity": false
+      },
+      "accepted": false
+    },
+    {
+      "path": "outputs/e2e/match_001/20261006T063149Z-cc009d82/processing_frames/pass-b/batch-005/frame_00176_000112.269.jpg",
+      "encoded_sha256": "d328bfa854351ba690cda57286e75499b04598936456b3411fa3a17b1f361927",
+      "pts_sec": 112.269336,
+      "split": "natural_negative",
+      "old_accepted": false,
+      "measurement": {
+        "score": 0.0,
+        "reason": "below_threshold_or_polarity",
+        "glyphs": [
+          {
+            "glyph_index": 0,
+            "box": [
+              6,
+              7,
+              33,
+              65
+            ],
+            "full_cell_ncc": 0.0,
+            "contrast_ncc": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "polarity_positive": true,
+            "foreground_population": 595,
+            "negative_population": 140,
+            "score": 0.0
+          },
+          {
+            "glyph_index": 1,
+            "box": [
+              33,
+              7,
+              56,
+              65
+            ],
+            "full_cell_ncc": 0.0,
+            "contrast_ncc": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "polarity_positive": true,
+            "foreground_population": 719,
+            "negative_population": 174,
+            "score": 0.0
+          },
+          {
+            "glyph_index": 2,
+            "box": [
+              56,
+              7,
+              88,
+              65
+            ],
+            "full_cell_ncc": 0.0,
+            "contrast_ncc": [
+              0.10674022991127548
+            ],
+            "polarity_positive": true,
+            "foreground_population": 936,
+            "negative_population": 47,
+            "score": 0.0
+          },
+          {
+            "glyph_index": 3,
+            "box": [
+              89,
+              7,
+              130,
+              65
+            ],
+            "full_cell_ncc": 0.13408137631355826,
+            "contrast_ncc": [
+              0.0,
+              0.23382784315658794
+            ],
+            "polarity_positive": true,
+            "foreground_population": 1570,
+            "negative_population": 72,
+            "score": 0.0
+          },
+          {
+            "glyph_index": 4,
+            "box": [
+              141,
+              7,
+              174,
+              65
+            ],
+            "full_cell_ncc": 0.0,
+            "contrast_ncc": [
+              0.0
+            ],
+            "polarity_positive": false,
+            "foreground_population": 938,
+            "negative_population": 42,
+            "score": 0.0
+          },
+          {
+            "glyph_index": 5,
+            "box": [
+              173,
+              7,
+              204,
+              65
+            ],
+            "full_cell_ncc": 0.0,
+            "contrast_ncc": [
+              0.0,
+              0.0,
+              0.004721444571288614
+            ],
+            "polarity_positive": false,
+            "foreground_population": 959,
+            "negative_population": 167,
+            "score": 0.0
+          },
+          {
+            "glyph_index": 6,
+            "box": [
+              205,
+              7,
+              228,
+              65
+            ],
+            "full_cell_ncc": 0.0,
+            "contrast_ncc": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "polarity_positive": false,
+            "foreground_population": 724,
+            "negative_population": 169,
+            "score": 0.0
+          }
+        ],
+        "word_space_ncc": 0.0,
+        "word_space_polarity": false
+      },
+      "accepted": false
+    },
+    {
+      "path": "outputs/recognition-investigation/r1-end-continuous-result/frame_15.png",
+      "encoded_sha256": "75f47aed696f44eb0931d4423e8a54b16f70dbbf525a294a2679b8fff3f3e397",
+      "pts_sec": 74.43600260416666,
+      "source_pts_ticks": 1143337,
+      "split": "previously_exposed_early_source_challenge",
+      "old_accepted": false,
+      "measurement": {
+        "score": 0.2141949512429536,
+        "reason": "below_threshold_or_polarity",
+        "glyphs": [
+          {
+            "glyph_index": 0,
+            "box": [
+              6,
+              7,
+              33,
+              65
+            ],
+            "full_cell_ncc": 0.5769881069935842,
+            "contrast_ncc": [
+              0.8569916957982944,
+              0.8547929154525733,
+              0.7752020450184247
+            ],
+            "polarity_positive": true,
+            "foreground_population": 595,
+            "negative_population": 140,
+            "score": 0.5769881069935842
+          },
+          {
+            "glyph_index": 1,
+            "box": [
+              33,
+              7,
+              56,
+              65
+            ],
+            "full_cell_ncc": 0.6326312540255344,
+            "contrast_ncc": [
+              0.6111082748570899,
+              0.5793989582864254,
+              0.5639147818969986
+            ],
+            "polarity_positive": true,
+            "foreground_population": 719,
+            "negative_population": 174,
+            "score": 0.5639147818969986
+          },
+          {
+            "glyph_index": 2,
+            "box": [
+              56,
+              7,
+              88,
+              65
+            ],
+            "full_cell_ncc": 0.40441763059317776,
+            "contrast_ncc": [
+              0.3910028481644386
+            ],
+            "polarity_positive": true,
+            "foreground_population": 936,
+            "negative_population": 47,
+            "score": 0.3910028481644386
+          },
+          {
+            "glyph_index": 3,
+            "box": [
+              89,
+              7,
+              130,
+              65
+            ],
+            "full_cell_ncc": 0.4695807161459843,
+            "contrast_ncc": [
+              0.2141949512429536,
+              0.2864451915688797
+            ],
+            "polarity_positive": true,
+            "foreground_population": 1570,
+            "negative_population": 72,
+            "score": 0.2141949512429536
+          },
+          {
+            "glyph_index": 4,
+            "box": [
+              141,
+              7,
+              174,
+              65
+            ],
+            "full_cell_ncc": 0.7316792348885185,
+            "contrast_ncc": [
+              0.5130356528398451
+            ],
+            "polarity_positive": true,
+            "foreground_population": 938,
+            "negative_population": 42,
+            "score": 0.5130356528398451
+          },
+          {
+            "glyph_index": 5,
+            "box": [
+              173,
+              7,
+              204,
+              65
+            ],
+            "full_cell_ncc": 0.606659994201029,
+            "contrast_ncc": [
+              0.3548715713994932,
+              0.3870545291704854,
+              0.3768277709417177
+            ],
+            "polarity_positive": true,
+            "foreground_population": 959,
+            "negative_population": 167,
+            "score": 0.3548715713994932
+          },
+          {
+            "glyph_index": 6,
+            "box": [
+              205,
+              7,
+              228,
+              65
+            ],
+            "full_cell_ncc": 0.947583220145185,
+            "contrast_ncc": [
+              0.9837972437902229,
+              0.9820618153334691,
+              0.9849265253310787
+            ],
+            "polarity_positive": true,
+            "foreground_population": 724,
+            "negative_population": 169,
+            "score": 0.947583220145185
+          }
+        ],
+        "word_space_ncc": 0.6500023082600558,
+        "word_space_polarity": true
+      },
+      "accepted": false
+    }
+  ],
+  "held_counts": {
+    "holdout_correct": 5,
+    "holdout_unknown": 6,
+    "holdout_wrong": 0,
+    "natural_negative_false_positive": 0,
+    "early_challenge_accepted": false
+  },
+  "counterexample_score": 0.7222160175920974,
+  "counterexample_rejected": true,
+  "early_measurement": {
+    "score": 0.2141949512429536,
+    "reason": "below_threshold_or_polarity",
+    "glyphs": [
+      {
+        "glyph_index": 0,
+        "box": [
+          6,
+          7,
+          33,
+          65
+        ],
+        "full_cell_ncc": 0.5769881069935842,
+        "contrast_ncc": [
+          0.8569916957982944,
+          0.8547929154525733,
+          0.7752020450184247
+        ],
+        "polarity_positive": true,
+        "foreground_population": 595,
+        "negative_population": 140,
+        "score": 0.5769881069935842
+      },
+      {
+        "glyph_index": 1,
+        "box": [
+          33,
+          7,
+          56,
+          65
+        ],
+        "full_cell_ncc": 0.6326312540255344,
+        "contrast_ncc": [
+          0.6111082748570899,
+          0.5793989582864254,
+          0.5639147818969986
+        ],
+        "polarity_positive": true,
+        "foreground_population": 719,
+        "negative_population": 174,
+        "score": 0.5639147818969986
+      },
+      {
+        "glyph_index": 2,
+        "box": [
+          56,
+          7,
+          88,
+          65
+        ],
+        "full_cell_ncc": 0.40441763059317776,
+        "contrast_ncc": [
+          0.3910028481644386
+        ],
+        "polarity_positive": true,
+        "foreground_population": 936,
+        "negative_population": 47,
+        "score": 0.3910028481644386
+      },
+      {
+        "glyph_index": 3,
+        "box": [
+          89,
+          7,
+          130,
+          65
+        ],
+        "full_cell_ncc": 0.4695807161459843,
+        "contrast_ncc": [
+          0.2141949512429536,
+          0.2864451915688797
+        ],
+        "polarity_positive": true,
+        "foreground_population": 1570,
+        "negative_population": 72,
+        "score": 0.2141949512429536
+      },
+      {
+        "glyph_index": 4,
+        "box": [
+          141,
+          7,
+          174,
+          65
+        ],
+        "full_cell_ncc": 0.7316792348885185,
+        "contrast_ncc": [
+          0.5130356528398451
+        ],
+        "polarity_positive": true,
+        "foreground_population": 938,
+        "negative_population": 42,
+        "score": 0.5130356528398451
+      },
+      {
+        "glyph_index": 5,
+        "box": [
+          173,
+          7,
+          204,
+          65
+        ],
+        "full_cell_ncc": 0.606659994201029,
+        "contrast_ncc": [
+          0.3548715713994932,
+          0.3870545291704854,
+          0.3768277709417177
+        ],
+        "polarity_positive": true,
+        "foreground_population": 959,
+        "negative_population": 167,
+        "score": 0.3548715713994932
+      },
+      {
+        "glyph_index": 6,
+        "box": [
+          205,
+          7,
+          228,
+          65
+        ],
+        "full_cell_ncc": 0.947583220145185,
+        "contrast_ncc": [
+          0.9837972437902229,
+          0.9820618153334691,
+          0.9849265253310787
+        ],
+        "polarity_positive": true,
+        "foreground_population": 724,
+        "negative_population": 169,
+        "score": 0.947583220145185
+      }
+    ],
+    "word_space_ncc": 0.6500023082600558,
+    "word_space_polarity": true
+  },
+  "comparison": {
+    "held_correct": {
+      "previous": 5,
+      "current": 5,
+      "delta": 0
+    },
+    "held_unknown": {
+      "previous": 6,
+      "current": 6,
+      "delta": 0
+    },
+    "held_wrong": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "natural_negative_false_positive": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "early_compared_semantic_slots": {
+      "previous": 0,
+      "current": 7,
+      "delta": 7
+    },
+    "early_acceptance": {
+      "previous": false,
+      "current": false,
+      "delta": 0
+    },
+    "canonical_last_adopted": {
+      "PASS": 23,
+      "FAIL": 55,
+      "NE": 4
+    },
+    "canonical_current": null,
+    "canonical_delta": null
+  },
+  "training_runtime_sec": 1.8937813920201734,
+  "held_runtime_sec": 1.604439876973629,
+  "source_exposure_retained": true,
+  "new_blind_cohort_claimed": false,
+  "model_refit_after_held": false,
+  "production_changed": false,
+  "qualification_created": false,
+  "canonical_full_executed": false,
+  "evidence_sha256": {
+    "outputs/recognition-investigation/result-fixed-slot-training-20261013/prototype.py": "c978abfe3eb279a8726ed549f71df0c4368b3a54da1fb78c916fbd3b8e5ae1c6",
+    "outputs/recognition-investigation/result-fixed-slot-training-20261013/parent_native.py": "c8d4cd3415a268f386edb47ee85d3f84e17eb4909341e602f31cac7662e9e117",
+    "outputs/recognition-investigation/result-fixed-slot-training-20261013/execution.json": "abb8dcd0cf5734fb8d891dae38f50255333ad418c326f0adf0344c21ab7f3e16",
+    "outputs/recognition-investigation/result-fixed-slot-training-20261013/result.json": "fc71b32f9efb71b163f08fbc2a14e5a6bf44cb2d76a41785616b69bb62430f05",
+    "outputs/recognition-investigation/result-fixed-slot-training-20261013/held-execution.json": "b083cc153b1c2035032f96579c4b489a748c1b03955ee8f80f69d09042fc0ee6",
+    "outputs/recognition-investigation/result-fixed-slot-training-20261013/held-result.json": "c017da6d4987465efaf5f325ca57c87913b00783fcf0283077d3bf38505e20f5"
+  },
+  "decision": "Reject as early renderer recovery. Current seven-slot representation bypasses component fusion but six glyphs and word-space fail unchanged NCC floor; weakest M contrast0.214194951. Do not tune to this exposed challenge.",
+  "remaining_blocker": "Early rendering not supported by available late references. Existing qualified late-result, source-correct clock reset/score transition and delayed-confirmation contract remain the practical lifecycle path, without claiming strict-window improvement.",
+  "next_action": "Return to explicit temporal-end qualification support/context review using current five-component source evidence, preserving one observed end case and real physical splits. Keep first observed score-change candidate time and separate confirmation; no early-caption backdating or speculative new templates."
+}

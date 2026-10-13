@@ -1,0 +1,48 @@
+{
+  "scope": "Frozen proposed continuous UI review windows, no predictions/labels or qualification. Entire native cadence retained; no GT input. Same-source existing windows are development replay, not newly blind episodes.",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "recognizer_fingerprint": "b6fc1b8302b55a31c7b2343d630e51c2b900f8020ace070296e32bca3efd9b82",
+  "profile_path": "outputs/hud_profiles/round-global-timer-glyph-20261008/score-rowcontrast-late-result-diagnostic.templates.json",
+  "profile_fingerprint": "10bfac00544e510ebf3f3e2c0072c9beba24938b2ff996c9012f7e4046d82c99",
+  "source_split_basis": "timer training76ticks, timer holdout32ticks, current phase training3/positive8/control13ticks; all temporal context included in split checks",
+  "windows": [
+    {
+      "name": "r1_ui_development",
+      "split": "training",
+      "start_sec": 3.9,
+      "end_sec": 4.5,
+      "overlap_with_timer_training_ticks": []
+    },
+    {
+      "name": "r2_ui_development",
+      "split": "holdout_review",
+      "start_sec": 111.2,
+      "end_sec": 111.8,
+      "overlap_with_timer_training_ticks": []
+    },
+    {
+      "name": "active_control",
+      "split": "negative_review",
+      "start_sec": 8.0,
+      "end_sec": 8.5,
+      "overlap_with_timer_training_ticks": []
+    },
+    {
+      "name": "menu_control",
+      "split": "negative_review",
+      "start_sec": 85.0,
+      "end_sec": 85.5,
+      "overlap_with_timer_training_ticks": []
+    },
+    {
+      "name": "spectator_control",
+      "split": "negative_review",
+      "start_sec": 160.0,
+      "end_sec": 160.5,
+      "overlap_with_timer_training_ticks": []
+    }
+  ],
+  "qualification_created": false,
+  "acceptance_windows_used": false,
+  "note": "Window names are offline review context only, never runtime round IDs. One source start episode per positive window cannot become three independent boundary events."
+}

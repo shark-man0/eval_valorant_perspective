@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import math
 import re
 from collections.abc import Callable, Mapping, Sequence
@@ -25,7 +26,11 @@ from .models import HudObservationV2, accept_hud_value, empty_hud_values
 from .native_lifecycle import NativeLifecycleAnalysis, collect_qualified_native_lifecycle
 from .native_scene_evidence import collect_native_scene_evidence
 from .native_scene_input import observe_native_scene_window
-from .native_system_input import collect_native_system_observations
+from .native_system_input import (
+    bind_native_ui_measurements,
+    calibration_prefix_provenance,
+    collect_native_system_observations,
+)
 from .readers import (
     FrameFeatureObservation,
     HudReader,
@@ -47,6 +52,7 @@ from .templates import (
     load_profile_readers,
 )
 from .temporal import HudDirectEventBuilder
+from .unedited_input import UneditedInputContract
 
 
 class HudAnalysisError(RuntimeError):
@@ -326,27 +332,75 @@ class RealHudAnalyzer:
         *,
         native_step_ticks: int,
         video_metadata: VideoMetadata | None = None,
+        calibration_prefix: NativeSourceFrame | None = None,
+        input_contract_path: Path | None = None,
+        include_ui_measurements: bool = False,
     ) -> tuple[dict[str, Any], ...]:
         """Measure native global inputs without events or player-owned output.
 
         No scene/UI qualification is implied. A qualified continuity/UI producer
         must separately bind proofs to these exact native PTS/pixel identities.
         This explicit entrance leaves the default full sampler unchanged.
+        An optional earlier decoder-owned image may initialize geometry under
+        explicit source assurance. It never enters the window's value, feature,
+        phase or event stream, and cannot override contradictory current geometry.
+        Opt-in UI measurements preserve the existing producer's scan results in
+        a separate unqualified namespace, never as system_evidence or events.
         """
+        if type(include_ui_measurements) is not bool:
+            raise ValueError('include_ui_measurements must be a boolean')
+        scans: list[dict[str, Any]] = []
+        initialization: dict[str, Any] | None = None
+        contract: UneditedInputContract | None = None
+        if calibration_prefix is not None:
+            if (not frames or input_contract_path is None or not self._native_profile_readers
+                    or self.template_profile is None or self.layout.layout_format != 'v3'):
+                raise ValueError(
+                    'calibration prefix requires configured v3 profile and source contract'
+                )
+            initialization = calibration_prefix_provenance(calibration_prefix, frames[0])
+            contract = UneditedInputContract.load(
+                input_contract_path, source_video_sha256=frames[0].source_video_sha256,
+            )
+            initialization['input_contract_sha256'] = contract.fingerprint
+        elif input_contract_path is not None:
+            raise ValueError('initialization contract requires an explicit calibration prefix')
+
         def native_fingerprint() -> str:
             if self._base_fingerprint() != self._native_loaded_base_fingerprint:
                 raise HudAnalysisError('native analyzer profile changed; reload analyzer')
+            context = ''
+            if initialization is not None:
+                assert calibration_prefix is not None and input_contract_path is not None
+                calibration_prefix.read_image()
+                if hashlib.sha256(input_contract_path.read_bytes()).hexdigest() != (
+                    initialization['input_contract_sha256']
+                ):
+                    raise HudAnalysisError('native initialization contract changed')
+                context = json.dumps(initialization, sort_keys=True, separators=(',', ':'))
+            if include_ui_measurements:
+                context += ':unqualified_native_ui_measurements_v1'
             return hashlib.sha256(
-                (self.fingerprint() + global_recognizer_fingerprint()).encode()
+                (self.fingerprint() + global_recognizer_fingerprint() + context).encode()
             ).hexdigest()
 
-        return collect_native_system_observations(
-            frames, native_step_ticks=native_step_ticks,
-            observe=lambda source: self.observe_frames(
-                source, video_metadata, _build_events=False,
-            ).observations,
+        def observe(source: Sequence[NativeSourceFrame]) -> Sequence[dict[str, Any]]:
+            options: dict[str, Any] = {} if calibration_prefix is None else {
+                '_native_calibration_prefix': calibration_prefix,
+                '_native_input_contract': contract,
+            }
+            measured = self.observe_frames(
+                source, video_metadata, _build_events=False, **options,
+            )
+            if include_ui_measurements:
+                scans.extend(deepcopy(measured.native_ui_measurements))
+            return measured.observations
+
+        rows = collect_native_system_observations(
+            frames, native_step_ticks=native_step_ticks, observe=observe,
             fingerprint=native_fingerprint,
         )
+        return bind_native_ui_measurements(rows, scans) if include_ui_measurements else rows
 
     def observe_qualified_unedited_native_start_frames(
         self, frames: Sequence[NativeSourceFrame], *, native_step_ticks: int,
@@ -390,6 +444,8 @@ class RealHudAnalyzer:
         additional_signals: Sequence[Mapping[str, Any]] | None = None,
         cancel_event: Event | None = None,
         _build_events: bool = True,
+        _native_calibration_prefix: NativeSourceFrame | None = None,
+        _native_input_contract: UneditedInputContract | None = None,
     ) -> HudFrameAnalysis:
         """Observe sampled frames and return HUD facts before package building.
 
@@ -400,6 +456,18 @@ class RealHudAnalyzer:
 
         if additional_signals is not None and len(additional_signals) != len(frames):
             raise ValueError("additional_signalsの件数はframesと一致する必要があります")
+        prefix_provenance: dict[str, Any] | None = None
+        if _native_calibration_prefix is not None:
+            if (_build_events or not frames or anchor_detections is not None
+                    or additional_signals is not None or self.template_profile is None
+                    or letterboxed is not None or crop_applied is not None
+                    or _native_input_contract is None
+                    or _native_input_contract.source_video_sha256 != frames[0].source_video_sha256):
+                raise ValueError('native calibration prefix is measurement-only without overrides')
+            prefix_provenance = calibration_prefix_provenance(
+                _native_calibration_prefix, frames[0],
+            )
+            prefix_provenance['input_contract_sha256'] = _native_input_contract.fingerprint
         if self.scene_source_binding is not None:
             self.scene_source_binding.verify()
         telemetry = CalibrationTelemetry(self.template_profile, self.layout)
@@ -489,6 +557,34 @@ class RealHudAnalyzer:
         if not dimensions_match:
             calibration = CalibrationResult(False, ("frame_resolution_changed",), 0, None, None)
 
+        first_current_calibration = calibration
+        if prefix_provenance is not None:
+            assert _native_calibration_prefix is not None and self.template_profile is not None
+            prefix_image = _native_calibration_prefix.read_image()
+            with timing_stage('hud_geometry'):
+                prefix_anchors, prefix_scores, prefix_messages = (
+                    self.template_profile.detect_anchors(prefix_image, self.layout)
+                )
+                prefix_calibration = self.layout.validate_calibration(
+                    prefix_image.shape[1], prefix_image.shape[0],
+                    detected_anchors=prefix_anchors, letterboxed=_detect_letterbox(prefix_image),
+                    crop_applied=crop_state,
+                )
+            if not prefix_calibration.calibrated:
+                raise HudNotCalibratedError('native calibration prefix lacks accepted anchors')
+            # Preserve the ordinary retention rule: missing anchors alone may
+            # retain a measured reference; geometry contradictions cannot.
+            if not calibration.calibrated and calibration.reasons == ('insufficient_anchors',):
+                calibration = prefix_calibration
+            prefix_provenance.update(
+                anchor_scores=prefix_scores, diagnostics=list(prefix_messages),
+                source_time_sec=_native_calibration_prefix.time_sec,
+                age_at_window_start_sec=(
+                    _frame_time(frames[0], 0)-_native_calibration_prefix.time_sec
+                ),
+            )
+            del prefix_image
+
         observations: list[dict[str, Any]] = []
         native_ui_measurements: list[dict[str, Any]] = []
         semantic_phase = SemanticPhaseContext()
@@ -498,7 +594,7 @@ class RealHudAnalyzer:
             diagnostics.append("calibration_required: " + ", ".join(calibration.reasons))
 
         current_anchors = detected_anchors or {}
-        current_calibration = calibration
+        current_calibration = first_current_calibration
         roster_cut_indices = frozenset(
             position for position, feature in enumerate(features)
             if any(
@@ -884,6 +980,10 @@ class RealHudAnalyzer:
         change_times = set(_observation_change_times(observations, evidence_by_frame))
         change_times.update(float(event["time_sec"]) for event in hud_events)
         self.last_calibration_diagnostics = telemetry.snapshot()
+        if prefix_provenance is not None:
+            assert _native_calibration_prefix is not None
+            _native_calibration_prefix.read_image()
+            self.last_calibration_diagnostics['native_calibration_prefix'] = prefix_provenance
         return HudFrameAnalysis(
             observations=tuple(observations),
             hud_events=hud_events,
