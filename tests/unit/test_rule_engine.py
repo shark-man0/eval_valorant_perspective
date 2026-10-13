@@ -106,7 +106,9 @@ def test_aggregation_deduplicates_time_and_group_members() -> None:
     result = EvaluationAggregator(rule_config, registry).aggregate(values)
     assert len(result) == 1
     assert result[0]["primary_rule_id"] == "DEC-01"
-    assert result[0]["confidence"] == 0.9
+    # D-1 (approved): the merged evaluation cites the union of its members' facts, so it takes
+    # the weakest member's confidence (0.8, 0.9 and 0.8 were merged), not the strongest.
+    assert result[0]["confidence"] == 0.8
     assert result[0]["related_rule_ids"] == ["INFO-03"]
 
 
