@@ -1,0 +1,208 @@
+"""Freeze an unseen development cohort before measuring a fixed numeric proposal.
+
+Reads prior diagnostic sampling metadata only, never GT or Validation Packs.
+No training, production adoption, temporal qualification or event generation.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import math
+import re
+from collections import Counter
+from pathlib import Path
+
+import cv2
+
+from scripts.diagnostics import numeric_text_localization
+from scripts.diagnostics.build_geometry_candidate import read_frames
+from scripts.diagnostics.freeze_numeric_review import FIELDS
+from scripts.diagnostics.prepare_numeric_review import prepare
+from scripts.e2e.frame_replay import decoder_fingerprints
+from scripts.e2e.probe_cache import CachedVideoService
+from scripts.e2e.run_dataset_case import sha256_file
+from scripts.e2e.run_metrics import code_fingerprint
+from valorant_ai_coach.hud.analyzers import RealHudAnalyzer
+from valorant_ai_coach.hud.calibrate_temporal import _check_output_privacy
+from valorant_ai_coach.hud.templates import HudTemplateProfile, TesseractDigitsReader
+from valorant_ai_coach.schema_validation import SchemaValidator
+from valorant_ai_coach.video import FrameSample, VideoService
+
+
+def sampling_times(end: float, previous: list[float]) -> list[float]:
+    if (type(end) not in (int, float) or not math.isfinite(end) or end <= 0
+            or any(type(t) not in (int, float) or not math.isfinite(t) or t < 0
+                   for t in previous)):
+        raise ValueError("finite development boundary/prior diagnostic PTS required")
+    # Fixed before image inspection; neither state nor OCR/GT chooses samples.
+    times = [16.75 + 30 * i for i in range(math.ceil(end / 30))
+             if 16.75 + 30 * i < end
+             and all(abs(16.75 + 30 * i - old) >= 2 for old in previous)]
+    if len(times) < 8:
+        raise ValueError("insufficient untouched development points")
+    return times
+
+
+def freeze_plan(video: Path, source_sha: str, trial: Path, histories: list[Path],
+                end: float, output: Path) -> dict:
+    _check_output_privacy(output.resolve())
+    if output.exists():
+        raise FileExistsError("freeze a new private prospective plan")
+    previous, excluded_hashes = [], set()
+    for path in histories:
+        history = json.loads(path.read_text(encoding="utf-8"))
+        if (history.get("source_sha256") != source_sha
+                or history.get("candidate_assets_frozen_before_validation") is not True
+                or history.get("production_adopted") is not False
+                or history.get("identity_assets_generated") is not False):
+            raise ValueError("only same-source unadopted geometry diagnostics permitted")
+        for row in history["training_frames"] + history["validation_frames"]:
+            previous.append(row["source_frame_pts"])
+            excluded_hashes.add(row["sha256"])
+    times = sampling_times(end, previous)
+    if sha256_file(video) != source_sha:
+        raise ValueError("source video mismatch")
+    layout, profile = trial / "hud_layout.json", trial / "hud_layout.templates.json"
+    assets = HudTemplateProfile.load(profile)
+    paths = [layout, profile, *histories, Path(__file__),
+             Path(numeric_text_localization.__file__),
+             *[assets.resolve_asset(str(p)) for p in assets.asset_paths]]
+    result = {"kind": "prospective_numeric_point_plan_not_lifecycle_gt",
+              "source_sha256": source_sha, "source_path": str(video.resolve()),
+              "trial_layout_path": str(layout.resolve()), "development_end_sec": end,
+              "times": times, "period_sec": 30, "phase_sec": 16.75,
+              "exclusion_radius_sec": 2, "excluded_source_hashes": sorted(excluded_hashes),
+              "inputs_sha256": {str(p.resolve()): sha256_file(p) for p in paths},
+              "runtime_code_fingerprint": code_fingerprint(Path(__file__).resolve().parents[2]),
+              "production_adopted": False, "training_performed": False,
+              "evaluation_holdout_used": False, "source_labels_available": False}
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+    return result
+
+
+def measure(plan_path: Path, output: Path) -> dict:
+    _check_output_privacy(output.resolve())
+    if output.exists():
+        raise FileExistsError("measure only once into a new private directory")
+    plan_hash = sha256_file(plan_path)
+    plan = json.loads(plan_path.read_text(encoding="utf-8"))
+    if plan.get("kind") != "prospective_numeric_point_plan_not_lifecycle_gt":
+        raise ValueError("frozen prospective plan required")
+    video, layout = Path(plan["source_path"]), Path(plan["trial_layout_path"])
+    root = Path(__file__).resolve().parents[2]
+
+    def verify():
+        if (sha256_file(plan_path) != plan_hash
+                or code_fingerprint(root) != plan["runtime_code_fingerprint"]
+                or sha256_file(video) != plan["source_sha256"]
+                or any(sha256_file(Path(p)) != h for p, h in plan["inputs_sha256"].items())):
+            raise ValueError("frozen source/code/profile inputs changed")
+
+    verify()
+    output.mkdir(parents=True)
+    (output / "hud_layout.json").write_bytes(layout.read_bytes())
+    service = VideoService()
+    decoder, _ = decoder_fingerprints(service.ffprobe_path)
+    cached = CachedVideoService(service, Path("outputs/e2e_cache/probe"),
+                                plan["source_sha256"], decoder)
+    metadata = cached.probe(video)
+    if plan["development_end_sec"] > metadata.duration_sec:
+        raise ValueError("development window outside source")
+    images, records = read_frames(cached, video, plan["times"],
+                                  output / "validation_frames", metadata)
+    if any(not 0 <= r["source_frame_pts"] < plan["development_end_sec"] for r in records):
+        raise ValueError("decoded point escaped development partition")
+    # Frozen capture images may duplicate earlier images despite new PTS. Keep
+    # the cohort (no outcome-driven replacement), and report overlap explicitly.
+    report = {"source_sha256": plan["source_sha256"], "validation_frames": records,
+              "plan_sha256": plan_hash, "training_performed": False}
+    report_path = output / "candidate_report.json"
+    report_path.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    scans = []
+    analyzer = RealHudAnalyzer(layout, diagnostic_sink=scans.append)
+    if analyzer.global_qualification is not None:
+        raise ValueError("unqualified point probe must not inherit temporal qualification")
+    paths = sorted((output / "validation_frames").glob("*.jpg"))
+    frames = [FrameSample(row["source_frame_pts"], path)
+              for row, path in zip(records, paths, strict=True)]
+    measured = analyzer.observe_frames(frames, metadata, _build_events=False)
+    if (measured.hud_events or len(measured.observations) != len(frames)
+            or len(scans) != len(frames)
+            or any(row["source_pts_sec"] != frame.time_sec
+                   for row, frame in zip(scans, frames, strict=True))):
+        raise ValueError("point-only coverage/events contract violated")
+    validator = SchemaValidator()
+    for row, frame in zip(measured.observations, frames, strict=True):
+        validator.validate_hud_observation(row)
+        if row["time_sec"] != frame.time_sec:
+            raise ValueError("observation source PTS mismatch")
+    localized = []
+    reader = TesseractDigitsReader()
+    for index, image in enumerate(images):
+        for name in FIELDS:
+            x1, y1, x2, y2 = analyzer.layout.normalized_roi(name).pixel_bounds(
+                metadata.width, metadata.height)
+            gray = cv2.cvtColor(image[y1:y2, x1:x2], cv2.COLOR_BGR2GRAY)
+            bounds = numeric_text_localization.propose(gray, timer=name == "round_timer")
+            row = {"sample_index": index, "region": name, "bounds_in_roi": bounds,
+                   "source_image_sha256": records[index]["sha256"],
+                   "runtime_geometry_valid": scans[index]["geometry_calibrated"],
+                   "localization_qualified": False, "passed_to_analyzer": False,
+                   "meets_ocr_floor_and_format": False}
+            if bounds:
+                a, b, c, d = bounds
+                value = reader.read(image, gray[b:d, a:c])
+                pattern = r"[0-9]{1,2}:[0-5][0-9]" if name == "round_timer" else r"[0-9]{1,2}"
+                row.update(raw_ocr_text=value.value, ocr_confidence=value.confidence,
+                           meets_ocr_floor_and_format=(value.value is not None
+                           and value.confidence >= .90
+                           and re.fullmatch(pattern, value.value) is not None))
+            localized.append(row)
+    raw_path = output / "observations.json"
+    raw_path.write_text(json.dumps({"production_adopted": False,
+        "observations": measured.observations, "hud_events": [],
+        "producer_diagnostics": scans,
+        "localized_numeric_diagnostics_not_analyzer_input": localized}, indent=2) + "\n")
+    summary = {"kind": "prospective_numeric_point_probe_not_lifecycle_e2e",
+               "source_sha256": plan["source_sha256"], "plan_sha256": plan_hash,
+               "runtime_code_fingerprint": plan["runtime_code_fingerprint"],
+               "candidate_report_sha256": sha256_file(report_path),
+               "frames": len(records), "observations_sha256": sha256_file(raw_path),
+               "production_adopted": False, "production_qualified": False,
+               "previous_source_image_overlap_count": sum(
+                   r["sha256"] in plan["excluded_source_hashes"] for r in records),
+               "unique_image_count": len({r["sha256"] for r in records}),
+               "state_counts": dict(Counter(r["primary_state"] for r in measured.observations)),
+               "ocr_floor_and_format_counts_not_correctness": {name: sum(
+                   r["region"] == name and r["meets_ocr_floor_and_format"] for r in localized)
+                   for name in FIELDS}, "event_count": 0, "source_review_pending": True}
+    verify()
+    (output / "probe_summary.json").write_text(json.dumps(summary, indent=2) + "\n")
+    prepare(output, output, output / "blind_review")
+    return summary
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    sub = parser.add_subparsers(dest="command", required=True)
+    freeze = sub.add_parser("freeze")
+    freeze.add_argument("--video", type=Path, required=True)
+    freeze.add_argument("--source-sha256", required=True)
+    freeze.add_argument("--trial", type=Path, required=True)
+    freeze.add_argument("--history", type=Path, action="append", required=True)
+    freeze.add_argument("--development-end", type=float, required=True)
+    freeze.add_argument("--output", type=Path, required=True)
+    run = sub.add_parser("measure")
+    run.add_argument("--plan", type=Path, required=True)
+    run.add_argument("--output", type=Path, required=True)
+    args = parser.parse_args()
+    result = (freeze_plan(args.video, args.source_sha256, args.trial, args.history,
+                          args.development_end, args.output) if args.command == "freeze"
+              else measure(args.plan, args.output))
+    print(json.dumps({k: v for k, v in result.items()
+                      if k not in {"inputs_sha256", "source_path", "trial_layout_path"}}, indent=2))
+
+
+if __name__ == "__main__":
+    main()

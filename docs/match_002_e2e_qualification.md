@@ -397,3 +397,34 @@ the final evaluation holdout must remain outside training or candidate selection
 Numeric comparison and related geometry/review/probe regressions: 124 passed.
 Ruff, mypy (131 source files) and `git diff --check` passed. This is the targeted
 regression suite, not a new full-suite or real-video lifecycle PASS.
+
+## Prospectively frozen numeric cohort (2026-10-14)
+
+The unchanged numeric proposal was measured on a new fixed development cohort.
+Sampling uses a predeclared phase/period and excludes prior unlabelled geometry
+training/validation points within 2 seconds. Neither numeric review labels nor
+lifecycle GT/Validation Packs determine the sample times. The plan binds source,
+runtime/proposal code, original trial layout/profile, assets and prior diagnostic
+receipts before decoding. No reference training or profile installation occurs.
+
+Twelve development points were retained, all with unique images and zero hash
+overlap against prior candidate training/validation images. No outcome-dependent
+sample replacement occurred. Final evaluation holdout was not decoded or used.
+The real point Analyzer produced 11 unknown states and 1 buy-menu state, with
+event generation explicitly disabled. These are not continuous temporal
+observations and cannot establish lifecycle boundaries or source continuity.
+
+Outside the Analyzer, unchanged crop/OCR confidence>=0.90 and syntax conditions
+held in Timer 7, ally score 6 and enemy score 10 cases. These remain **proposal
+acceptance counts, not correct-read counts** until the new independent source
+review is complete. No production numeric admission, adoption or qualification
+is inferred. Private source-only review shows broad ROIs/original images and
+withholds predictions/confidence/proposed crops. It has no labels or inferred
+approvals. If positive or absent-negative coverage is insufficient, further
+independent controls remain necessary rather than declaring qualification.
+
+Source SHA, runtime fingerprint, source images and frozen inputs were checked
+again after processing. Planning/comparison/geometry/numeric regressions:
+136 passed; Ruff, mypy (131 source files), and diff checks passed. This is not
+a new full-suite or full-match E2E PASS. The latest fetched main remains the
+previous exact baseline commit; no experiment has been installed there.
