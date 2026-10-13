@@ -164,9 +164,9 @@ def test_native_prefix_retains_acquired_geometry(frames, tmp_path, monkeypatch):
     import json
 
     layout = tmp_path / 'layout.json'
-    raw = json.loads(resource_path('config/hud_layout_1080p_v3.json').read_text())
+    raw = json.loads(resource_path('config/hud_layout_1080p_v3.json').read_text(encoding="utf-8"))
     raw['reference_resolution'] = {'width': 64, 'height': 64}
-    layout.write_text(json.dumps(raw))
+    layout.write_text(json.dumps(raw), encoding="utf-8")
     texts = iter(['0:00', '2:25'])
     timer = SimpleNamespace(read=lambda *args: ReaderResult(
         next(texts), .95, sources=('synthetic-ocr',),

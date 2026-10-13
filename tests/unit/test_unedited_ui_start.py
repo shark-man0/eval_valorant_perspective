@@ -18,7 +18,7 @@ def make_contract(tmp_path, source_hash):
     )
     value['source_video_sha256'] = source_hash
     p = tmp_path / 'input.json'
-    p.write_text(json.dumps(value))
+    p.write_text(json.dumps(value), encoding="utf-8")
     return p, UneditedInputContract.load(p, source_video_sha256=source_hash)
 
 
@@ -34,9 +34,9 @@ def test_source_assurance_never_applies_to_another_video(tmp_path):
     assert contract.source_video_sha256 == 'a' * 64
     with pytest.raises(ValueError, match='matching'):
         UneditedInputContract.load(path, source_video_sha256='b' * 64)
-    value = json.loads(path.read_text())
+    value = json.loads(path.read_text(encoding="utf-8"))
     value['no_user_edit'] = 1
-    path.write_text(json.dumps(value))
+    path.write_text(json.dumps(value), encoding="utf-8")
     with pytest.raises(ValueError):
         UneditedInputContract.load(path, source_video_sha256='a' * 64)
 
@@ -169,7 +169,7 @@ def test_assured_qualification_removes_edit_components_only(tmp_path):
     data['components'] = {key: components[key] for key in ('timer', 'purchase_phase')}
     data['components']['ui_transition'] = components['continuity']
     path = tmp_path / 'qualification.json'
-    path.write_text(json.dumps(data))
+    path.write_text(json.dumps(data), encoding="utf-8")
     with pytest.raises(ValueError):
         GlobalLifecycleQualification.load(path, data['profile_fingerprint'])
     q = GlobalLifecycleQualification.load(
@@ -178,7 +178,7 @@ def test_assured_qualification_removes_edit_components_only(tmp_path):
     assert q.components == frozenset({'timer', 'purchase_phase', 'ui_transition'})
     data['components']['timer']['holdout_wrong'] = 1
     data['components']['timer']['holdout_correct'] = 2
-    path.write_text(json.dumps(data))
+    path.write_text(json.dumps(data), encoding="utf-8")
     with pytest.raises(ValueError, match='Unqualified'):
         GlobalLifecycleQualification.load(
             path, data['profile_fingerprint'], unedited_input_contract=contract,
@@ -192,7 +192,7 @@ def test_assurance_does_not_qualify_ui_transition_automatically(tmp_path):
     _, contract = make_contract(tmp_path, 'a' * 64)
     data = report()
     path = tmp_path / 'qualification.json'
-    path.write_text(json.dumps(data))
+    path.write_text(json.dumps(data), encoding="utf-8")
     with pytest.raises(ValueError, match='Missing'):
         GlobalLifecycleQualification.load(
             path, data['profile_fingerprint'], unedited_input_contract=contract,
@@ -213,7 +213,7 @@ def test_assured_joint_evidence_can_share_frames_within_the_same_split(tmp_path)
         'timer', 'purchase_phase', 'ui_transition',
     )}
     path = tmp_path / 'joint-qualification.json'
-    path.write_text(json.dumps(data))
+    path.write_text(json.dumps(data), encoding="utf-8")
     result = GlobalLifecycleQualification.load(
         path, data['profile_fingerprint'], unedited_input_contract=contract,
     )
@@ -239,7 +239,7 @@ def test_assurance_never_allows_cross_component_split_leakage(tmp_path, left, ri
     # components and must still invalidate the complete global qualification.
     data['components']['purchase_phase'][right][0] = data['components']['timer'][left][0]
     path = tmp_path / 'leaked-qualification.json'
-    path.write_text(json.dumps(data))
+    path.write_text(json.dumps(data), encoding="utf-8")
     with pytest.raises(ValueError, match='splits overlap across global components'):
         GlobalLifecycleQualification.load(
             path, data['profile_fingerprint'], unedited_input_contract=contract,
