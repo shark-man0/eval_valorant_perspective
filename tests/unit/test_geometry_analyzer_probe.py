@@ -8,7 +8,7 @@ import pytest
 from test_geometry_candidate_challenge import fixture
 
 from scripts.diagnostics import probe_geometry_analyzer as subject
-from scripts.diagnostics.probe_geometry_analyzer import build_trial
+from scripts.diagnostics.probe_geometry_analyzer import add_global_digit_proposals, build_trial
 from scripts.e2e.run_dataset_case import sha256_file
 from valorant_ai_coach.hud.templates import HudTemplateProfile
 
@@ -121,14 +121,73 @@ def test_point_probe_rejects_missing_output_or_temporal_events(tmp_path, monkeyp
         template_profile = object()
         global_qualification = None
 
+        def __init__(self, sink):
+            self.sink = sink
+
         def observe_frames(self, frames, metadata, *, _build_events):
             assert _build_events is False and [f.time_sec for f in frames] == [.5]
+            self.sink({"source_pts_sec": .5, "raw_accepted_reader_values": {}})
             return SimpleNamespace(
                 observations=[] if fault == "missing_observation" else [observation(.5)],
                 hud_events=[{"type": "round_start"}] if fault == "generated_event" else [],
                 calibration_diagnostics={}, diagnostics=[])
 
-    monkeypatch.setattr(subject, "RealHudAnalyzer", lambda _: FakeAnalyzer())
+    monkeypatch.setattr(subject, "RealHudAnalyzer",
+                        lambda _, **kwargs: FakeAnalyzer(kwargs["diagnostic_sink"]))
     with pytest.raises(ValueError, match="coverage|generated events"):
         subject.probe(video, layout, candidate, tmp_path / "review", tmp_path / "approval",
                       tmp_path / "probe")
+
+
+def test_opt_in_global_digits_preserve_existing_readers_and_fallback_policy():
+    strict_timer = {"kind": "strict_timer_glyphs", "threshold": .99}
+    raw = {"readers": {"round_timer": strict_timer}, "ocr_fallback_rois": []}
+    assert add_global_digit_proposals(raw) == ["ally_score", "enemy_score"]
+    assert raw["readers"]["round_timer"] is strict_timer
+    assert raw["ocr_fallback_rois"] == []
+    assert all(raw["readers"][key]["minimum_confidence"] == .90
+               for key in ("ally_score", "enemy_score"))
+    assert add_global_digit_proposals(raw) == []
+
+
+def test_global_digits_are_opt_in_and_add_no_geometry_assets(tmp_path):
+    candidate = fixture(tmp_path / "candidate")
+    layout, raw = base_fixture(tmp_path, candidate)
+    receipt = build_trial(layout, candidate, tmp_path / "trial", global_digits=True)
+    result = HudTemplateProfile.load(tmp_path / "trial/hud_layout.templates.json")
+    assert receipt["global_digit_proposals"] == ["ally_score", "enemy_score"]
+    assert receipt["global_digit_readers_qualified"] is False
+    assert result.raw["readers"]["round_timer"] == raw["readers"]["round_timer"]
+    assert result.raw["readers"]["ally_score"]["templates"] == {}
+    assert result.raw["signals"]["buy_menu_grid_present"]["threshold"] == .90
+
+
+@pytest.mark.parametrize("value,confidence", [
+    ("1714", .99), ("1:40", .899), ("1:40", float("nan")), (None, 0),
+])
+def test_timer_proposal_rejects_missing_colon_or_insufficient_confidence(value, confidence):
+    from valorant_ai_coach.hud.readers import ReaderResult
+    from valorant_ai_coach.hud.templates import SegmentedDigitsReader
+
+    raw = {"readers": {}}
+    add_global_digit_proposals(raw)
+    reader = SegmentedDigitsReader(
+        None, raw["readers"]["round_timer"], fallback=SimpleNamespace(
+            read=lambda *_: ReaderResult(value, confidence, ("synthetic_numeric_reader",))))
+    image = np.zeros((20, 40), np.uint8)
+    assert reader.read(image, image).value is None
+
+
+def test_explicit_minimum_accepts_threshold_without_fabricating_cross_checks():
+    from valorant_ai_coach.hud.readers import ReaderResult
+    from valorant_ai_coach.hud.templates import SegmentedDigitsReader
+
+    raw = {"readers": {}}
+    add_global_digit_proposals(raw)
+    reader = SegmentedDigitsReader(
+        None, raw["readers"]["round_timer"], fallback=SimpleNamespace(
+            read=lambda *_: ReaderResult("1:40", .90, ("synthetic_numeric_reader",))))
+    image = np.zeros((20, 40), np.uint8)
+    result = reader.read(image, image)
+    assert result.value == "1:40" and result.confidence == .90
+    assert result.cross_checked is False

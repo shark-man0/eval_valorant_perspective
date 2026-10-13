@@ -288,3 +288,49 @@ Measured Analyzer time: 3.642 s. Versioned repeat receipt SHA:
 `fc75d2be3e27d4726c5c26a77f73d2dae9f8905d700aa55fa9e54bcfd6d8dc06`.
 The original receipt remains unchanged. Neither run confers negative or
 temporal qualification; further work is needed before production adoption.
+
+## Global numeric acquisition proposals: unqualified
+
+An explicit diagnostic-only `--global-digits` option adds absent Timer/Score
+readers with minimum confidence 0.90 and strict timer format. Existing readers
+(including stricter ones), fallback policy, independent assets and identity
+gates are not replaced. The base profile remains unchanged. Producer-side
+diagnostics are captured before value admission and stored only privately.
+
+On the exposed 24 development images, broad-ROI OCR produced zero accepted
+Timer/Score values, both before and after state admission. A source crop check
+returned `tesseract_no_digits`; simple bright-text binarization alone also did
+not meet the unchanged confidence floor. This narrows the acquisition problem
+to numeric text isolation, rather than an identity-gate override.
+
+The diagnostic component-row proposal uses configured ROI pixels, bright
+connected components, relative size/aspect and row consistency. It rejects
+ambiguous rows, blank/frame-only regions, and timers without an observed
+two-dot colon. It does not synthesize missing punctuation. No expected digit,
+GT timestamp, evaluation Pack or state label enters the proposal. This is a
+crop candidate, not proof that its contents are a timer or score.
+
+With `--diagnose-numeric-localization`, these crops are measured strictly
+outside the Analyzer. Of 24 images per field, proposed crop counts were Timer
+13, ally Score 19, enemy Score 19. OCR confidence>=0.90 plus syntax held in
+9, 13 and 16 cases respectively. These are **not correctness counts or
+accuracy**, include potentially geometry-invalid points, and are not used to
+select an accepted production reader. Runtime observations remain 24 unknowns,
+with no admitted global numeric values or events. The known development images
+are exposed diagnostics, not a new independent holdout.
+
+Probe receipt SHA:
+`2a3d00cc85eefcb2688a908e78302d3b0dbb38b13895ce14f75ea0109641168d`.
+A private blind review page shows broad configured ROIs and original images,
+not OCR predictions/confidence or proposed crop boxes. All numeric labels
+remain unset pending independent review; no review approval is inferred.
+Its receipt SHA:
+`58419da660cd9c08141fb604c84f23fbc4c11e1edb76d3a3c51d1f46d0808f75`.
+
+Related geometry/numeric/probe/blind-review tests: 84 passed; Ruff, mypy (131
+source files), and diff checks passed. Tests preserve stricter existing readers,
+reject below-floor/NaN/malformed timer reads, prohibit colon fabrication and
+qualification inference, and keep model predictions out of human review.
+Next: independent numeric labels and prospective positive/negative source
+controls before integrating a qualified numeric reader into the temporal path.
+No pipeline contract, original Schema, threshold or production setting changed.
