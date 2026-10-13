@@ -607,8 +607,9 @@ class MainWindow(QMainWindow):
         self._audio_probe_request_id = None
         self._clear_audio_track_metadata()
         self._current_match_id = match_id
+        display_evaluations = getattr(result, "display_evaluations", None)
         self.current_evaluations = list(
-            getattr(result, "display_evaluations", result.evaluations)
+            result.evaluations if display_evaluations is None else display_evaluations
         )
         self.current_round_partitions = getattr(result, "round_partitions", ())
         context = [

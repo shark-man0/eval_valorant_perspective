@@ -99,7 +99,7 @@ class MatchResultView:
     diagnostics: tuple[str, ...] = ()
     round_partitions: tuple[RoundPartitionView, ...] = ()
     # Complete stored set remains in evaluations; UI cards use only this sample.
-    display_evaluations: tuple[EvaluationView, ...] = ()
+    display_evaluations: tuple[EvaluationView, ...] | None = None
 
 
 __all__ = [
