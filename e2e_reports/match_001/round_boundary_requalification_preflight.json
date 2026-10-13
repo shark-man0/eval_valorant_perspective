@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0",
+  "scope": "source_preflight_and_loader_admission_only",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "recognizer_fingerprint": "5b32ea0c5be3d23aadd5e1ef4057619c10c7104d3d210a69d39433bffea6dfc8",
+  "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+  "script_sha256": "2b7b4d0b32a2244dc20b41a0dbcfc014893bbad561205aba734cddd39487b6e3",
+  "source_metadata": {
+    "frame_count": 10259,
+    "time_base": "1/15360",
+    "first_pts_ticks": 553,
+    "last_pts_ticks": 2626601,
+    "first_pts_sec": 0.03600260416666667,
+    "last_pts_sec": 171.00266927083334,
+    "step_ticks_counts": {
+      "256": 10258
+    },
+    "uniform_cadence": true,
+    "capture_loss_excluded": false,
+    "width": 1920,
+    "height": 1080
+  },
+  "qualification_established": false,
+  "recognition_executed": false,
+  "validation_pack_loaded": false,
+  "windows": [
+    {
+      "requested_window_sec": [
+        0.0,
+        0.1
+      ],
+      "frame_count": 4,
+      "time_base": "1/15360",
+      "first_pts_ticks": 553,
+      "last_pts_ticks": 1321,
+      "first_pts_sec": 0.03600260416666667,
+      "last_pts_sec": 0.08600260416666666,
+      "step_ticks_counts": {
+        "256": 3
+      },
+      "uniform_cadence": true,
+      "capture_loss_excluded": false,
+      "source_epoch": "ec69e1956f0f4953a1f483aaa8ec95b5",
+      "ordered_pts_pixel_sha256": "df5ad69e4d3d263fec4f696eb6f031df861f03cd60b51e98ebbd2dbae6c40256",
+      "adjacent_duplicate_rasters": [],
+      "retained_png_bytes": 8016954,
+      "scene_continuity_qualified": false
+    },
+    {
+      "requested_window_sec": [
+        81.7,
+        81.9
+      ],
+      "frame_count": 12,
+      "time_base": "1/15360",
+      "first_pts_ticks": 1254953,
+      "last_pts_ticks": 1257769,
+      "first_pts_sec": 81.70266927083334,
+      "last_pts_sec": 81.88600260416666,
+      "step_ticks_counts": {
+        "256": 11
+      },
+      "uniform_cadence": true,
+      "capture_loss_excluded": false,
+      "source_epoch": "b5c070c8329e4b3eb0c307a91de060b3",
+      "ordered_pts_pixel_sha256": "d3a097b74d7cb5e1e9dce1f94b527be7d25615cde65e43ebc61205c718bf129a",
+      "adjacent_duplicate_rasters": [
+        {
+          "previous_pts_ticks": 1255977,
+          "pts_ticks": 1256233,
+          "time_sec": 81.78600260416667
+        },
+        {
+          "previous_pts_ticks": 1256745,
+          "pts_ticks": 1257001,
+          "time_sec": 81.83600260416667
+        }
+      ],
+      "retained_png_bytes": 25748283,
+      "scene_continuity_qualified": false
+    }
+  ],
+  "profile_fingerprint": null,
+  "qualification_sha256": null,
+  "loader_admission": "not_attempted",
+  "blockers": [
+    "current_private_profile_and_qualification_assets_required",
+    "source_review_and_independent_temporal_evidence_not_evaluated"
+  ],
+  "terminal_integrity_verified": true,
+  "elapsed_sec": 48.945727958052885
+}
