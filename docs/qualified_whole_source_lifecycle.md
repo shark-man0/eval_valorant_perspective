@@ -117,3 +117,18 @@ cover the separately configured real-video fixture, local Tesseract, native
 Windows paths and unavailable PowerShell. They are not Windows verification.
 The separate source-native whole-video run above remains the real-image
 lifecycle evidence. Linux/Windows GitHub CI will run after push.
+
+## Latest-main integration supersedes source qualification
+
+During validation, main advanced to `8e87c57db6bcb809e687edeca2ebba33e66510dd`
+with Match002 fixtures and source-clock/package safety work. Merge it without
+conflicts; regression at `013638c743a121efdb862a5cefe2a6eda771bcba` is **3631
+PASS / 6 SKIP in 2271.57 seconds**, Ruff PASS, mypy PASS on 131 source files.
+
+These upstream code changes alter the recognizer fingerprint to
+`5b32ea0c5be3d23aadd5e1ef4057619c10c7104d3d210a69d39433bffea6dfc8`.
+The actual loader rejects the prior bundle with `Invalid or mismatched global
+lifecycle qualification`. Therefore the whole-source results above attest the
+pre-final-main code `fd8b8ff…`, not current-code full-video accuracy. Preserve
+both results and rejection; do not silently re-sign or install the older bundle.
+Current-code full E2E and regenerated qualification remain future goal work.

@@ -18071,21 +18071,14 @@
     "canonical_status_unchanged": true
   },
   "current_qualification_status": {
-    "recognizer_fingerprint": "fd8b8ff3da3c1c9775604141f61062d39656f59e492610ed482e8530db691817",
+    "recognizer_fingerprint": "5b32ea0c5be3d23aadd5e1ef4057619c10c7104d3d210a69d39433bffea6dfc8",
     "old_bundles_stale": true,
-    "current_offline_admission_audit_path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/current-code-components-20261013/end_admission/lifecycle-admission-audit.json",
-    "current_offline_admission_audit_sha256": "c4bfdd6ab442bed5b0ac1336f30afb6e53539644ce2499d2575314b2f705af0f",
-    "actual_current_loader_admitted_components": [
-      "purchase_phase",
-      "round_result",
-      "score",
-      "timer",
-      "ui_end_transition",
-      "ui_transition"
-    ],
+    "actual_old_bundle_rejection": "Invalid or mismatched global lifecycle qualification",
     "current_default_release": false,
     "independent_temporal_generalization_proven": false,
-    "prior_qualified_source_native_application_passes_historical": true
+    "latest_current_code_regression": "3631PASS/6SKIP;RuffPASS;mypy131PASS",
+    "previous_native_source_and_admission_reports_historical_after_latest_main": true,
+    "reason": "main8e87c57 adds calibration and source-clock/package safety changes covered by broad fingerprint"
   },
   "current_code_lifecycle_revalidation": {
     "report_path": "e2e_reports/match_001/current_code_lifecycle_revalidation.json",
@@ -18102,11 +18095,12 @@
     ],
     "default_installed": false,
     "formal_source_end_released": false,
-    "canonical_full_executed": false
+    "canonical_full_executed": false,
+    "validity_after_latest_main": "Historical codefd8b8ff evidence; do not re-sign as code5b32ea qualification"
   },
   "qualified_whole_source_lifecycle": {
     "report_path": "e2e_reports/match_001/qualified_whole_source_lifecycle.json",
-    "report_sha256": "2c337fe02fc41247aeb8e7cfe8633f56083632fc3e872d68b2158caad029a5cd",
+    "report_sha256": "ce071e1a8db9bcfb0fcf5ce9a0969c400dbc8019f9f06e2103fc49e4fcd5f620",
     "native_trace_counts": {
       "pass": 27,
       "fail": 51,
