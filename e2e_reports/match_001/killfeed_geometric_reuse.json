@@ -1,0 +1,341 @@
+{
+  "schema_version": "1.0",
+  "scope": "Unmodified spectator portrait proposal reuse on exposed killfeed development images, not production or holdout qualification",
+  "target_assertion_ids": [
+    "GT-R2-DEATH",
+    "OWN-R2-SELF-DEAD",
+    "event_count_constraints-005"
+  ],
+  "recognizer_fingerprint": "b6fc1b8302b55a31c7b2343d630e51c2b900f8020ace070296e32bca3efd9b82",
+  "config": {
+    "scope": "Unmodified existing portrait_frames geometry diagnostic on exposed source images, paired with frozen transferable separator; no qualification",
+    "source_roi_px": [
+      1440,
+      45,
+      1918,
+      188
+    ],
+    "Canny": [
+      60,
+      150
+    ],
+    "portrait_policy": "unchanged spectator portrait_frames with _orientation",
+    "separator_threshold": 0.9,
+    "pair_policy": "separator before portrait; portrait fully within separator row plus/minus three pixels; text components between separator and portrait must contain at least three vertically aligned glyph-like supports",
+    "input_sha256": {
+      "outputs/recognition-investigation/death-current-source-20261012/frame_009.png": "1572bd0093dcdc7021146430462a152df98cb2536c016501b14a6cca114919b8",
+      "outputs/recognition-investigation/death-current-source-20261012/frame_010.png": "a9e6d4a0de7487d02a7aa6a411aeb05c59db5cf8e0a58a407b49d3165d6442ec",
+      "outputs/recognition-investigation/death-current-source-20261012/frame_027.png": "649af0dd5982ad39506c48bc75ecaa38ddd290138cf6321abda3ca158316feab",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/source_01.png": "b6d835b3e2198d2ae4f6f5d9e8c8560648a923c283b26de99a4f95e240852d30",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/source_02.png": "b994ca60dcb7e19f9eb6df164c21277a00163e47c39a69747bd7c7ada8a8dfa4",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/source_03.png": "15df6216614e3f7e4a8e50c2afb4853f3e052bfa0cea008bc0d42ce9a6117907",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/negative/source_01.png": "1a72b7eed3d2c757c4e7702c47e3f8754ad68a7625327a79451c7a40bd82c23a",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/negative/source_02.png": "fbc40a9abc5b7e6bc9898871195f0ec2083ca6f758e107b68570512c76cbe9ad",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/negative/source_03.png": "c468592b065b2821f130531c4fe366c0a4a9b0832e32a69207d3d494281688f2"
+    },
+    "reference_sha256": "d3fdac532ae966fb4f074295729708bb1fd4864c30c083a5e4147aa3978a9e1b",
+    "mask_sha256": "6ffb52325cff603fe5a2d13b068d11a75cc02406283fb3582ad3e6ef7daf087a"
+  },
+  "results": {
+    "scope": "Unmodified existing portrait_frames geometry diagnostic on exposed source images, paired with frozen transferable separator; no qualification",
+    "runtime_sec": 1.4615548730362207,
+    "rows": [
+      {
+        "pixel_sha256": "6376244a49e2ff3a4cfb257b6dc12ee6df605b16538cc5d7bcf85fbe71b3dd24",
+        "path": "outputs/recognition-investigation/death-current-source-20261012/frame_009.png",
+        "split": "training",
+        "time_sec": null,
+        "portrait_boxes": [],
+        "portrait_diagnostics": {
+          "portrait_candidate_count": 340,
+          "portrait_frame_score": 0.6134615384615385,
+          "portrait_supported_count": 0,
+          "portrait_geometry_count": 6,
+          "portrait_occupancy_rejected": 6,
+          "portrait_side_scores": [
+            0.75,
+            0.8833333333333333,
+            0.07692307692307693,
+            0.7435897435897436
+          ]
+        },
+        "separator_matches": [
+          [
+            276,
+            51,
+            0.9908914352630471
+          ]
+        ],
+        "pairs": [],
+        "text_rejected_pairs": []
+      },
+      {
+        "pixel_sha256": "978c1be02e01f080d08b04be9d7d61dd26d8d80c0c3da3fb21130fbb95a50f86",
+        "path": "outputs/recognition-investigation/death-current-source-20261012/frame_010.png",
+        "split": "training",
+        "time_sec": null,
+        "portrait_boxes": [],
+        "portrait_diagnostics": {
+          "portrait_candidate_count": 320,
+          "portrait_frame_score": 0.43450074515648285,
+          "portrait_supported_count": 0,
+          "portrait_geometry_count": 1,
+          "portrait_occupancy_rejected": 1,
+          "portrait_side_scores": [
+            0.19672131147540983,
+            0.7049180327868853,
+            0.3090909090909091,
+            0.5272727272727272
+          ]
+        },
+        "separator_matches": [
+          [
+            276,
+            51,
+            0.9940264252008646
+          ]
+        ],
+        "pairs": [],
+        "text_rejected_pairs": []
+      },
+      {
+        "pixel_sha256": "a86ce87d01a437107aeaa99fad33477b89c5a1455eb6dfed43fb7eee2f3b58df",
+        "path": "outputs/recognition-investigation/death-current-source-20261012/frame_027.png",
+        "split": "training",
+        "time_sec": null,
+        "portrait_boxes": [],
+        "portrait_diagnostics": {
+          "portrait_candidate_count": 293,
+          "portrait_frame_score": 0.0,
+          "portrait_supported_count": 0,
+          "portrait_geometry_count": 0,
+          "portrait_occupancy_rejected": 0,
+          "portrait_side_scores": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "separator_matches": [
+          [
+            276,
+            51,
+            0.9891556484991889
+          ]
+        ],
+        "pairs": [],
+        "text_rejected_pairs": []
+      },
+      {
+        "pixel_sha256": "cec51cd0988d33747a8610e558cedf9ea9c8d277f7d87321d6c5f0cc29c2cfcd",
+        "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/source_01.png",
+        "split": "exposed_transfer",
+        "time_sec": 148.20266927083333,
+        "portrait_boxes": [],
+        "portrait_diagnostics": {
+          "portrait_candidate_count": 281,
+          "portrait_frame_score": 0.5625,
+          "portrait_supported_count": 0,
+          "portrait_geometry_count": 1,
+          "portrait_occupancy_rejected": 1,
+          "portrait_side_scores": [
+            1.0,
+            1.0,
+            0.08333333333333333,
+            0.16666666666666666
+          ]
+        },
+        "separator_matches": [
+          [
+            276,
+            51,
+            0.9891936777062901
+          ]
+        ],
+        "pairs": [],
+        "text_rejected_pairs": []
+      },
+      {
+        "pixel_sha256": "223eebce3670e87ae2af647f6adb3060582df46cacd827d50793f519977f38f4",
+        "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/source_02.png",
+        "split": "exposed_transfer",
+        "time_sec": 148.70266927083333,
+        "portrait_boxes": [],
+        "portrait_diagnostics": {
+          "portrait_candidate_count": 314,
+          "portrait_frame_score": 0.5902777777777778,
+          "portrait_supported_count": 0,
+          "portrait_geometry_count": 1,
+          "portrait_occupancy_rejected": 1,
+          "portrait_side_scores": [
+            1.0,
+            1.0,
+            0.19444444444444445,
+            0.16666666666666666
+          ]
+        },
+        "separator_matches": [
+          [
+            276,
+            51,
+            0.989379691047223
+          ]
+        ],
+        "pairs": [],
+        "text_rejected_pairs": []
+      },
+      {
+        "pixel_sha256": "17276d3c795746fc0c5e0234418737fd643c70d639dfd3cbe0a5281520f26a4d",
+        "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/source_03.png",
+        "split": "exposed_transfer",
+        "time_sec": 149.20266927083333,
+        "portrait_boxes": [],
+        "portrait_diagnostics": {
+          "portrait_candidate_count": 289,
+          "portrait_frame_score": 0.696969696969697,
+          "portrait_supported_count": 0,
+          "portrait_geometry_count": 2,
+          "portrait_occupancy_rejected": 2,
+          "portrait_side_scores": [
+            0.8863636363636364,
+            0.5681818181818182,
+            0.5277777777777778,
+            0.8055555555555556
+          ]
+        },
+        "separator_matches": [
+          [
+            276,
+            51,
+            0.9879880101239887
+          ]
+        ],
+        "pairs": [],
+        "text_rejected_pairs": []
+      },
+      {
+        "pixel_sha256": "07095f4d2d824b8a8a14ba55fd5c6b336fbb4302c31e7d2597bf50e4125722d8",
+        "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/negative/source_01.png",
+        "split": "exposed_transfer",
+        "time_sec": 130.00266927083334,
+        "portrait_boxes": [],
+        "portrait_diagnostics": {
+          "portrait_candidate_count": 456,
+          "portrait_frame_score": 0.5236111111111111,
+          "portrait_supported_count": 0,
+          "portrait_geometry_count": 2,
+          "portrait_occupancy_rejected": 2,
+          "portrait_side_scores": [
+            0.9,
+            0.75,
+            0.1111111111111111,
+            0.3333333333333333
+          ]
+        },
+        "separator_matches": [
+          [
+            202,
+            51,
+            0.9868162504039814
+          ],
+          [
+            239,
+            90,
+            0.9795005222238445
+          ]
+        ],
+        "pairs": [],
+        "text_rejected_pairs": []
+      },
+      {
+        "pixel_sha256": "f37a10e47bd0d424144de9f7ff4e2bb33a144d0dc13587645a3d2c34d9f55211",
+        "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/negative/source_02.png",
+        "split": "exposed_transfer",
+        "time_sec": 140.00266927083334,
+        "portrait_boxes": [],
+        "portrait_diagnostics": {
+          "portrait_candidate_count": 349,
+          "portrait_frame_score": 0.4662004662004662,
+          "portrait_supported_count": 0,
+          "portrait_geometry_count": 4,
+          "portrait_occupancy_rejected": 4,
+          "portrait_side_scores": [
+            1.0,
+            0.41025641025641024,
+            0.3181818181818182,
+            0.13636363636363635
+          ]
+        },
+        "separator_matches": [
+          [
+            186,
+            51,
+            0.9864183665455669
+          ]
+        ],
+        "pairs": [],
+        "text_rejected_pairs": []
+      },
+      {
+        "pixel_sha256": "06e9e8226d5bfa0264943ffbe5b9b8c7a272c92b11ed82c8ac5c4cfca5f010d3",
+        "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/negative/source_03.png",
+        "split": "exposed_transfer",
+        "time_sec": 146.00266927083334,
+        "portrait_boxes": [],
+        "portrait_diagnostics": {
+          "portrait_candidate_count": 255,
+          "portrait_frame_score": 0.4582843713278496,
+          "portrait_supported_count": 0,
+          "portrait_geometry_count": 6,
+          "portrait_occupancy_rejected": 6,
+          "portrait_side_scores": [
+            0.358695652173913,
+            0.2717391304347826,
+            0.6891891891891891,
+            0.5135135135135135
+          ]
+        },
+        "separator_matches": [],
+        "pairs": [],
+        "text_rejected_pairs": []
+      }
+    ],
+    "input_sha256": {
+      "outputs/recognition-investigation/death-current-source-20261012/frame_009.png": "1572bd0093dcdc7021146430462a152df98cb2536c016501b14a6cca114919b8",
+      "outputs/recognition-investigation/death-current-source-20261012/frame_010.png": "a9e6d4a0de7487d02a7aa6a411aeb05c59db5cf8e0a58a407b49d3165d6442ec",
+      "outputs/recognition-investigation/death-current-source-20261012/frame_027.png": "649af0dd5982ad39506c48bc75ecaa38ddd290138cf6321abda3ca158316feab",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/source_01.png": "b6d835b3e2198d2ae4f6f5d9e8c8560648a923c283b26de99a4f95e240852d30",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/source_02.png": "b994ca60dcb7e19f9eb6df164c21277a00163e47c39a69747bd7c7ada8a8dfa4",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/source_03.png": "15df6216614e3f7e4a8e50c2afb4853f3e052bfa0cea008bc0d42ce9a6117907",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/negative/source_01.png": "1a72b7eed3d2c757c4e7702c47e3f8754ad68a7625327a79451c7a40bd82c23a",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/negative/source_02.png": "fbc40a9abc5b7e6bc9898871195f0ec2083ca6f758e107b68570512c76cbe9ad",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/negative/source_03.png": "c468592b065b2821f130531c4fe366c0a4a9b0832e32a69207d3d494281688f2"
+    },
+    "qualification_created": false,
+    "production_changed": false
+  },
+  "artifact_sha256": {
+    "outputs/recognition-investigation/killfeed-geometric-20261012/frozen-config.json": "cc3cb886dc39e71d6c5d42de253fedbad22c8603dd25c60aebc5aae51e8903ab",
+    "outputs/recognition-investigation/killfeed-geometric-20261012/result.json": "56ffdda15849890664dfbb4e9a18b0f2b4f20523ebd4b8abcf72ead4af49cd74",
+    "src/valorant_ai_coach/hud/spectator.py": "ae03933c9e1dcff371034071ffaf2f5217230d2b9af6f09db49fe86c60643096",
+    "src/valorant_ai_coach/hud/frameless.py": "42ee9629d43091fd0741ddd99d7029ba9282a70ba5f05cec914d942dea111f38"
+  },
+  "summary": {
+    "physical_images": 9,
+    "existing_row_images": 8,
+    "absent_row_images": 1,
+    "supported_portrait_frames": 0,
+    "accepted_geometry_text_pairs": 0,
+    "qualification_created": false,
+    "production_changed": false
+  },
+  "decision": "REJECTED unmodified reuse: no current portrait proposal passes existing directed side occupancy and geometry gates",
+  "remaining_blockers": [
+    "Spectator frame proposals assume axis-aligned sides; killfeed frame family has different shape/scale",
+    "Frameless alternative additionally requires two text rows, unlike a killfeed name row",
+    "No victim role, self owner or death confidence is inferred from text or separator alone"
+  ],
+  "canonical_re_evaluated": false,
+  "thresholds_changed": false
+}

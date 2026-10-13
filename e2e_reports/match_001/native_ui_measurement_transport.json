@@ -1,0 +1,631 @@
+{
+  "scope": "Current shared API on all162 existing verified native rasters, reused decoder metadata; fresh native geometry-only startup; no diagnostic sink reconstruction, new frame selection or qualification",
+  "previous_result_sha256": "651c743bdb54527acedf6eae31abdfaed19dae6d398606ae1b9774e1cffa57d0",
+  "recognizer_fingerprint": "727c9ba7c88859d0726de307cbdb6b63cdf46f002510c0b2260bbe298f0e763f",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "profile_fingerprint": "10bfac00544e510ebf3f3e2c0072c9beba24938b2ff996c9012f7e4046d82c99",
+  "windows": [
+    {
+      "name": "r1_ui_development",
+      "split": "training",
+      "start_sec": 3.9,
+      "end_sec": 4.5,
+      "overlap_with_timer_training_ticks": []
+    },
+    {
+      "name": "r2_ui_development",
+      "split": "holdout_review",
+      "start_sec": 111.2,
+      "end_sec": 111.8,
+      "overlap_with_timer_training_ticks": []
+    },
+    {
+      "name": "active_control",
+      "split": "negative_review",
+      "start_sec": 8.0,
+      "end_sec": 8.5,
+      "overlap_with_timer_training_ticks": []
+    },
+    {
+      "name": "menu_control",
+      "split": "negative_review",
+      "start_sec": 85.0,
+      "end_sec": 85.5,
+      "overlap_with_timer_training_ticks": []
+    },
+    {
+      "name": "spectator_control",
+      "split": "negative_review",
+      "start_sec": 160.0,
+      "end_sec": 160.5,
+      "overlap_with_timer_training_ticks": []
+    }
+  ],
+  "include_ui_measurements": true,
+  "formal_events_expected": 0,
+  "results": [
+    {
+      "name": "r1_ui_development",
+      "processed_frames": 36,
+      "runtime_sec": 54.49612354999408,
+      "phase_scan_valid": 36,
+      "accepted_timer_count": 36,
+      "candidates": [
+        {
+          "kind": "round_start",
+          "time_sec": 4.102669270833333,
+          "confidence": 0.9541926383972168,
+          "attributes": {
+            "evidence_provenance": {
+              "scope": "global_system",
+              "producer": "unedited_ui_start_tracker",
+              "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+              "preparation_pts_sec": [
+                3.9693359375,
+                4.086002604166667
+              ],
+              "reader_qualification_required": true,
+              "confirmation_pts_sec": 4.202669270833334,
+              "pts_sec": [
+                4.102669270833333,
+                4.1193359375,
+                4.136002604166666,
+                4.152669270833333,
+                4.1693359375,
+                4.186002604166666,
+                4.202669270833334
+              ],
+              "clock_display_samples": [
+                {
+                  "pts_sec": 4.102669270833333,
+                  "observed_seconds": 0.0,
+                  "observed_display": "0:00",
+                  "reader_confidence": 0.9541926383972168,
+                  "display_provenance": {
+                    "reader": "round_timer",
+                    "sources": [
+                      "strict_timer_glyphs",
+                      "comparison_gaussian3x3_v1"
+                    ],
+                    "confidence": 0.9541926383972168,
+                    "cross_checked": false
+                  },
+                  "source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b",
+                  "previous_source_pixel_sha256": "6ab7cd27a8756b687f70857d6bf0d2a8732625d15161e2de41a139f31fd193e1"
+                },
+                {
+                  "pts_sec": 4.1193359375,
+                  "observed_seconds": 145.0,
+                  "observed_display": "2:25",
+                  "reader_confidence": 0.9596534371376038,
+                  "display_provenance": {
+                    "reader": "round_timer",
+                    "sources": [
+                      "strict_timer_glyphs",
+                      "comparison_gaussian3x3_v1"
+                    ],
+                    "confidence": 0.9596534371376038,
+                    "cross_checked": false
+                  },
+                  "source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a",
+                  "previous_source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b"
+                },
+                {
+                  "pts_sec": 4.136002604166666,
+                  "observed_seconds": 145.0,
+                  "observed_display": "2:25",
+                  "reader_confidence": 0.9596534371376038,
+                  "display_provenance": {
+                    "reader": "round_timer",
+                    "sources": [
+                      "strict_timer_glyphs",
+                      "comparison_gaussian3x3_v1"
+                    ],
+                    "confidence": 0.9596534371376038,
+                    "cross_checked": false
+                  },
+                  "source_pixel_sha256": "7b784dd56e27c48a760671568acbd458bc496400335ee4b3181798d0584a4044",
+                  "previous_source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a"
+                },
+                {
+                  "pts_sec": 4.152669270833333,
+                  "observed_seconds": 99.0,
+                  "observed_display": "1:39",
+                  "reader_confidence": 0.9597947001457214,
+                  "display_provenance": {
+                    "reader": "round_timer",
+                    "sources": [
+                      "strict_timer_glyphs",
+                      "comparison_gaussian3x3_v1"
+                    ],
+                    "confidence": 0.9597947001457214,
+                    "cross_checked": false
+                  },
+                  "source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0",
+                  "previous_source_pixel_sha256": "7b784dd56e27c48a760671568acbd458bc496400335ee4b3181798d0584a4044"
+                },
+                {
+                  "pts_sec": 4.1693359375,
+                  "observed_seconds": 99.0,
+                  "observed_display": "1:39",
+                  "reader_confidence": 0.9597947001457214,
+                  "display_provenance": {
+                    "reader": "round_timer",
+                    "sources": [
+                      "strict_timer_glyphs",
+                      "comparison_gaussian3x3_v1"
+                    ],
+                    "confidence": 0.9597947001457214,
+                    "cross_checked": false
+                  },
+                  "source_pixel_sha256": "d18c9060f352e53b37967c62e12f3ee51b06e330664ee49da476b3751cda8f83",
+                  "previous_source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0"
+                },
+                {
+                  "pts_sec": 4.186002604166666,
+                  "observed_seconds": 99.0,
+                  "observed_display": "1:39",
+                  "reader_confidence": 0.9629917144775391,
+                  "display_provenance": {
+                    "reader": "round_timer",
+                    "sources": [
+                      "strict_timer_glyphs",
+                      "comparison_gaussian3x3_v1"
+                    ],
+                    "confidence": 0.9629917144775391,
+                    "cross_checked": false
+                  },
+                  "source_pixel_sha256": "0e795ed52d0eac85bf325988a8d629c2be975f8fbce0d9bfa33a8a0c773eee86",
+                  "previous_source_pixel_sha256": "d18c9060f352e53b37967c62e12f3ee51b06e330664ee49da476b3751cda8f83"
+                },
+                {
+                  "pts_sec": 4.202669270833334,
+                  "observed_seconds": 99.0,
+                  "observed_display": "1:39",
+                  "reader_confidence": 0.9629917144775391,
+                  "display_provenance": {
+                    "reader": "round_timer",
+                    "sources": [
+                      "strict_timer_glyphs",
+                      "comparison_gaussian3x3_v1"
+                    ],
+                    "confidence": 0.9629917144775391,
+                    "cross_checked": false
+                  },
+                  "source_pixel_sha256": "bcb5a25b6b58a0efb563575d4be9ba3507bf290b327fa64996a1d903970695a2",
+                  "previous_source_pixel_sha256": "0e795ed52d0eac85bf325988a8d629c2be975f8fbce0d9bfa33a8a0c773eee86"
+                }
+              ],
+              "coherent_clock_begin_pts_sec": 4.152669270833333,
+              "coherent_clock_observation_count": 4
+            }
+          }
+        }
+      ],
+      "formal_events": 0,
+      "owned_observations": 0,
+      "diagnostic_sink_used": false,
+      "observations_match_previous": true,
+      "measurements_match_previous_derived_evidence": true
+    },
+    {
+      "name": "r2_ui_development",
+      "processed_frames": 36,
+      "runtime_sec": 56.22816430206876,
+      "phase_scan_valid": 36,
+      "accepted_timer_count": 30,
+      "candidates": [
+        {
+          "kind": "round_start",
+          "time_sec": 111.4193359375,
+          "confidence": 0.931477963924408,
+          "attributes": {
+            "evidence_provenance": {
+              "scope": "global_system",
+              "producer": "unedited_ui_start_tracker",
+              "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+              "preparation_pts_sec": [
+                111.2693359375,
+                111.40266927083333
+              ],
+              "reader_qualification_required": true,
+              "confirmation_pts_sec": 111.48600260416667,
+              "pts_sec": [
+                111.4193359375,
+                111.43600260416666,
+                111.45266927083334,
+                111.4693359375,
+                111.48600260416667
+              ],
+              "clock_display_samples": [
+                {
+                  "pts_sec": 111.4193359375,
+                  "observed_seconds": 0.0,
+                  "observed_display": "0:00",
+                  "reader_confidence": 0.9631862044334412,
+                  "display_provenance": {
+                    "reader": "round_timer",
+                    "sources": [
+                      "strict_timer_glyphs",
+                      "comparison_gaussian3x3_v1"
+                    ],
+                    "confidence": 0.9631862044334412,
+                    "cross_checked": false
+                  },
+                  "source_pixel_sha256": "44dda08d003391b16c90a664bbea96af9f86e9cb332f5a03f59ecb1b4d7f2ae3",
+                  "previous_source_pixel_sha256": "16d1c869ae826a352c311370b10c3be8f7a5995a121b38f3612006f77042369b"
+                },
+                {
+                  "pts_sec": 111.43600260416666,
+                  "observed_seconds": 100.0,
+                  "observed_display": "1:40",
+                  "reader_confidence": 0.931477963924408,
+                  "display_provenance": {
+                    "reader": "round_timer",
+                    "sources": [
+                      "strict_timer_glyphs",
+                      "comparison_gaussian3x3_v1"
+                    ],
+                    "confidence": 0.931477963924408,
+                    "cross_checked": false
+                  },
+                  "source_pixel_sha256": "cf8733010ac3f5cd79025316ffb9a20a59d85807c86a23c8cfc60bf46fe4005a",
+                  "previous_source_pixel_sha256": "44dda08d003391b16c90a664bbea96af9f86e9cb332f5a03f59ecb1b4d7f2ae3"
+                },
+                {
+                  "pts_sec": 111.45266927083334,
+                  "observed_seconds": 100.0,
+                  "observed_display": "1:40",
+                  "reader_confidence": 0.931477963924408,
+                  "display_provenance": {
+                    "reader": "round_timer",
+                    "sources": [
+                      "strict_timer_glyphs",
+                      "comparison_gaussian3x3_v1"
+                    ],
+                    "confidence": 0.931477963924408,
+                    "cross_checked": false
+                  },
+                  "source_pixel_sha256": "cecdb6d7f617319fc343d599491ca74730a482c3c1825304af4bf27cfe3b40fe",
+                  "previous_source_pixel_sha256": "cf8733010ac3f5cd79025316ffb9a20a59d85807c86a23c8cfc60bf46fe4005a"
+                },
+                {
+                  "pts_sec": 111.4693359375,
+                  "observed_seconds": 99.0,
+                  "observed_display": "1:39",
+                  "reader_confidence": 0.9703618884086609,
+                  "display_provenance": {
+                    "reader": "round_timer",
+                    "sources": [
+                      "strict_timer_glyphs",
+                      "comparison_gaussian3x3_v1"
+                    ],
+                    "confidence": 0.9703618884086609,
+                    "cross_checked": false
+                  },
+                  "source_pixel_sha256": "930801434d9fdcbca13d3f8a77123b0b6076262acb722e7329afc4ee67170cd3",
+                  "previous_source_pixel_sha256": "cecdb6d7f617319fc343d599491ca74730a482c3c1825304af4bf27cfe3b40fe"
+                },
+                {
+                  "pts_sec": 111.48600260416667,
+                  "observed_seconds": 99.0,
+                  "observed_display": "1:39",
+                  "reader_confidence": 0.971046507358551,
+                  "display_provenance": {
+                    "reader": "round_timer",
+                    "sources": [
+                      "strict_timer_glyphs",
+                      "comparison_gaussian3x3_v1"
+                    ],
+                    "confidence": 0.971046507358551,
+                    "cross_checked": false
+                  },
+                  "source_pixel_sha256": "041c2f3bc3b7f994f57baaa3ffe69c4933961c0f7eca0e53312422237b3e12ab",
+                  "previous_source_pixel_sha256": "930801434d9fdcbca13d3f8a77123b0b6076262acb722e7329afc4ee67170cd3"
+                }
+              ],
+              "coherent_clock_begin_pts_sec": 111.43600260416666,
+              "coherent_clock_observation_count": 4
+            }
+          }
+        }
+      ],
+      "formal_events": 0,
+      "owned_observations": 0,
+      "diagnostic_sink_used": false,
+      "observations_match_previous": true,
+      "measurements_match_previous_derived_evidence": true
+    },
+    {
+      "name": "active_control",
+      "processed_frames": 30,
+      "runtime_sec": 54.70357604697347,
+      "phase_scan_valid": 30,
+      "accepted_timer_count": 26,
+      "candidates": [],
+      "formal_events": 0,
+      "owned_observations": 0,
+      "diagnostic_sink_used": false,
+      "observations_match_previous": true,
+      "measurements_match_previous_derived_evidence": true
+    },
+    {
+      "name": "menu_control",
+      "processed_frames": 30,
+      "runtime_sec": 49.58646160794888,
+      "phase_scan_valid": 30,
+      "accepted_timer_count": 30,
+      "candidates": [],
+      "formal_events": 0,
+      "owned_observations": 0,
+      "diagnostic_sink_used": false,
+      "observations_match_previous": true,
+      "measurements_match_previous_derived_evidence": true
+    },
+    {
+      "name": "spectator_control",
+      "processed_frames": 30,
+      "runtime_sec": 60.58989856101107,
+      "phase_scan_valid": 30,
+      "accepted_timer_count": 11,
+      "candidates": [],
+      "formal_events": 0,
+      "owned_observations": 0,
+      "diagnostic_sink_used": false,
+      "observations_match_previous": true,
+      "measurements_match_previous_derived_evidence": true
+    }
+  ],
+  "processed_frames": 162,
+  "runtime_sec": 302.3538050989155,
+  "previous_runtime_sec": 424.8293937620474,
+  "input_sha256": {
+    "outputs/recognition-investigation/native-initialization-api-20261012/result.json": "651c743bdb54527acedf6eae31abdfaed19dae6d398606ae1b9774e1cffa57d0",
+    "datasets/input_contracts/match_001.unedited.json": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-ui-transport-20261013/execution.json": "43866678d391fbc5e047576b39d4088ae50476270ec566f68623d38c5edf2e65",
+    "outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/result.json": "177dec3b82b24e15981956c215744ee18a5f0cdbf168d055538d459f71aad6d0",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_000.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_001.png": "e790bd155383fac3eb439d4311a89840467fce57938a80dae2448e628dfd9211",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_002.png": "1dc0d9b8c59355b43eb723b1961110bb53d1ce8a62176490f5c632dd6ee5f2ad",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_003.png": "00e2240728fa5e6c6cd1d8a29adebecb993d61abb4c9a97aea47902d53f041e1",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_004.png": "77d745206022589fc826823873bc1305e922fdda01854eac4a7eed10876d6c80",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_005.png": "d4dafbd08a45d736ff634bb6537d9d0991d3023a611db6a229874a4755c9f8d3",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_006.png": "3d4c25843ec375524762f21a11a17b7bf7854f65680ceaf0396b5a597a1d94dc",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_007.png": "eddab3d93b6a8d910aaa923a260a7be4779514c79670dc8d2fefb3a1e0863473",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_008.png": "995c70d5658ba86dd220d7d02f947982e00c9d4cdf9456dde224924df8211951",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_009.png": "a3a788841be688ba3d97be42478708e5cd8571ff74c6a1a1fce8172f88ad0104",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_010.png": "2ca7c16fac54a93af47a678cd1491bffc7a8ec0edf9634d4c2be4e4a134741e2",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_011.png": "0971d607cd0a91eb2c2af8e4949dd601201575ad6050945d1583ecad529797e9",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_012.png": "3f7f964b6993d20bba3396e160e6b6edf41cc5352b0b0ad57de9254ddb7fe0a5",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_013.png": "ffc878007fe550701c8e5be11f78b1a6d91bc88f77972cc48b370ac4cf7e7bb6",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_014.png": "d72a67e8f64bc6ffe0b90a1f6118c522380a2bd83eabd4e84b6a5f36f7b605fc",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_015.png": "40a1ca141705ef466d3cdcd339bfa1e519a8bd998cabb9ea204da72dcaa6d382",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_016.png": "87a43e4a4c0e1f7eb1ea8e6fedccbefa5bc6eddd8d29c61dc25e92dbeef418f8",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_017.png": "e2e07cdce5e63bde4205fa7401ca54f9b6917872957efe3b303f0286e370b43b",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_018.png": "d81a979afdc6bee35155fc029a0621d43a7b0dbbe29fc364cd0010cbfa697707",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_019.png": "2c747572f073d4c8769933863cf6e99c8498bccb4469b8476cc12784854b7a7e",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_020.png": "ee5be2e35aabe7ac9b9fc01fd438dc28c4e5c76f73f66e7cd6df752bc72edd2d",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_021.png": "aa5727f8ff3428eaf3705c3fb9b42acc78c278fb3ce21276969cd8505aa2aae2",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_022.png": "01510fbbc2c0e101c72555f846ca75adf24b073891d8e9160c94ec54be0e5413",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_023.png": "1a3208bb41afe765aa7f691964df102279ec81e9366d13ae326cc537c3a66b76",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_024.png": "0252b863b5f5d2108ebd46178ea6a4a2cba005b51af5205dee7723c2d26a9ac8",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_025.png": "fa80efcbffa9e29d82948fbb605bcbb10baab44ac31c17434085e97c671c887e",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_026.png": "ec2d668e223d2f20a8b53d813a1681e4c1c79b120857244b11f42d341dadfc74",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_027.png": "6e6edeefc2aa5d1a45960e741815a8c08090793d8be0b74a8a7b344051a6f67d",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_028.png": "91eab8a0e9d080f64d9cc83c31c77f733dcaeaccd50b1ae6c30877f41a987f55",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_029.png": "91d79bfba35b3afa2e8fe7bb5274926fbe6a254207dd9a9ab55d5cb3ebab625c",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_030.png": "865d86c05a9a51dd11650f0550ef973d1517bc0b855388ecabc412f3c6d02503",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_031.png": "e6859d09306127fbf5ba45cc3257d45936a3ecdb1ee2cdef7e912395cd00b6e6",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_032.png": "8304227211be2e4c94e53328a6ef9e3bd2a57d0d45077f38d5a9f5a5f26b057c",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_033.png": "f131510796b400c98408512c4dbce29849dab5e068afa0bc8e9fc4e5d8db74e4",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_034.png": "862c47bd51ba5eadc464d4fe002b59f713efc97b57ffae0fd7c8f6de46616fef",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r1_ui_development/source_035.png": "f0365cf2c4d16c537089835e69cc14fca99d875560dc9a787dae701d78bbabbc",
+    "outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/result.json": "d657cff820450485b3957bfff4a7a27785feecb67adf2a4fcfecaf83b9da9af9",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_000.png": "5f577cb33258a9d2c0b9c97354e54967431276f7cb2af7fdfe1a6fefa94cc982",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_001.png": "4bffe8ea8e4a09672590762def4c4a6b82d6fdc8d99e3580dd67d654163572c4",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_002.png": "8b9bf92b5dfb05a55c9b959b38045aedc638e5fccf569fbae4d9df3d38b6063a",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_003.png": "160a361473115520d0383199eb11e4a605cfd47efc6eb730f2a265a395d8d666",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_004.png": "4cb2b18aaca3e67ba1b53b8362c98f83da743ccf9f97ab2e629ca55e12704741",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_005.png": "ba1161a3336ea235718ebb986da13afbfd33a4c955729df37d737be49633bffd",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_006.png": "abae27918183ae9d26907f1799ec94ca5dfa12a25a922a9a68efe618e8db748a",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_007.png": "c88e3eff71f0d0447cddfef840e8d85dd388838a6de507ba6fb0e244ea3a45a5",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_008.png": "2a4919a5a5dcd593db82ccf668e542cd2a7bad081f7119eb9351f00489c60ebb",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_009.png": "2fb8d29385d4c045ef595c4125e54890b198ca656f637e9820ee5b0723213658",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_010.png": "92762d38bfb104351a71d0581abcff9f0d028f4ff41c5c97939e75b5049f084d",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_011.png": "a1726d87729c377bf3b5aba07c20614a24296ac315a5efc4c9a2d97daddc5ffd",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_012.png": "35eb8ecb922c5dbd8150bb878754085b5e30355049e95ad95b82634b6bca2a35",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_013.png": "8b1eb8959eba8bb4592d43b75917b9e5a410b984c0cd2eaaae660faf1c5dc292",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_014.png": "06328e063d96f8e4ac3715f0f173b7670dd99a48045f1fbf09d57df5a39877a0",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_015.png": "1b6f0ef5861f2f8f932d317aeb5a8d86401bf7abc1811badcbf854b426167a6f",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_016.png": "a5abce7ef9e92963d8e8e7469dd422ddb783361879150fba614542da249437b5",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_017.png": "f7ccc512bc79a2a9ed721d42c328d176a62085761513ea401af85557bfeb4ea0",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_018.png": "5f3f9faf67216634f08ffa2409156c8fb3bd7d417ff1c25d14885c901229dbdc",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_019.png": "f1023ab39f121df1139156e240d31e4bb3670d3395b6fb41774822b1f956a17f",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_020.png": "72f7b87ec87a17beb5d55941e4e304748e15ff356dfaba6755393387673e75e5",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_021.png": "af9c4ca2cb69a744dcbbf10b24de2c066f6fd0db1ec6b4ed2bde35776e977415",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_022.png": "2b3b37b153b1f50c389e0f98e08170a1e166312650df17ad43c88c21886b9470",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_023.png": "3077c10a902938df427b085e419fcf5b6fa6b3ba1abe440ab1a973855ee40b0c",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_024.png": "07ec8847feaa914cf7cd8069b00970b5aa8a79077aed1b299c714cf4988bd5ad",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_025.png": "99147c761b92a5deb7a9fc936f8bfad08eba9b4788544582ed302ecc462ebda7",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_026.png": "41028341d65e60655b42ed6c9def8b9e2bf0a372a458a962e5e64e0eb2c8a760",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_027.png": "a96ee7ee9e9905c665b668975c3135f46a686712be268a96073866ecd359d003",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_028.png": "b2715fd1ea0787fcafcdcfd9713ed8bf75223605d0c1c5e09767dfe91840c50d",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_029.png": "c88c7901988f9de298030bb148d66aab5847ced372fb010cdd4f88a1d738a37b",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_030.png": "31bd7c0b22c024906461412c2db8a951db1e87b82448012e3bc3b46dd42ab013",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_031.png": "e54f86aef7439fd60da2c14c2e1200811a13d09c51d432f49751afbfa64e2bc8",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_032.png": "a2ec40b5188c42258ad7a460b97dd42bbe88f531cb8862765c8e14eda24f97f0",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_033.png": "65519d86cd4cd0d838c998e878f90c3a7dcd69041538f67e61d6ba193c60e8d1",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_034.png": "68f3f9870f81d42ea3ea979089b2f329f7263fe3ea4f6acdaea09e49dc92e786",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/r2_ui_development/source_035.png": "4e2ab1724f968a23aa8c3ef15a76623c75bfb0eee9dc22a36557dfef03848fe8",
+    "outputs/recognition-investigation/native-initialization-api-20261012/active_control/result.json": "361a565801b71165ae5e624b40ab6691c2add8ab9e7b4548ae2140bec6ccbc55",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_000.png": "581434f80998c432ce21b3aa3b91808521dc8efddb8421dcf65ee5fa07fd794b",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_001.png": "fe37db4cd6a2e337cd46fbbed452608408162c14ad9b7842d309fe827e43a588",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_002.png": "af421968eaf93a271d2089e522c3859b8a679e3948b63b1399f4b6ace14fc4ca",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_003.png": "08a480fc2ca119e2fb21f3de12e52a2d26854b8293c41a5fe7848a0568a674e7",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_004.png": "b0b3914bb896d2be311ebcd87680144e7cbf6537feb334502294883653f04192",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_005.png": "81c02e7d0fbe28e9277b7d68fa91d8428de0b4720f9e86ce343c866048583544",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_006.png": "31f06d059f3ba8d84b84da42bd155811f9f811762655da7352f146c292855440",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_007.png": "69636da4522d9998b7e26ca2e9e2c9cbfda6339e94c7d1a08f2b150d10b4b818",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_008.png": "4072c81483099f708ba3da28a8b25c5af7bf10d9f3a7331efb5ddf77ce75dd8c",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_009.png": "4853d64d0d4bb88c221370946fb101eed3fe146d75d8e08ffc97f98995f51dab",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_010.png": "c98989490e0b53b2180bd9afdbd8443341aae0b6d85b11f2a4110f0eaf8c5017",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_011.png": "2c77ed160d4f90c76a54db2d37a22fa2b48115f021e11f95b4ecfb286bc3985e",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_012.png": "0123431060957d59c73765f870b447b48fd4fd27d335f717e5158a00ab3b92cf",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_013.png": "431e32c10cdc2ddf3942c525e7e391cf620ab8da02e824b591c474f04cf2e54b",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_014.png": "73ff7ac7968a064f58fdefc575e7cfd18702b22e4c5bf440aabdc7a8f3d067b4",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_015.png": "79e8ebb995dba95edd24417764a9a58a855781bbb2d49cfd6df25485600f3831",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_016.png": "40013cdd886ac3810559228374d1b5df50deaf4ebf80f031e0035aa7e0ba4ddd",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_017.png": "24ea705826df726f344480a6288280c73e0d450dc8932c3e1c34282cbed2165c",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_018.png": "bb46427895315c98e6ee0e9f943925998320d82b072e04b3ac9868d5cc2398c8",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_019.png": "994dc22322bf11fc5616607e489f4a9fdb69a471c3539bcf6e7169399a385bab",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_020.png": "43fc8fb036fd07350f43ecb09227f623e932d954b28e3e3e5e44b4e4172daaa0",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_021.png": "bc84e6bac9f3250128c65404c0f820a5b37309ff740cfcdb7082d73692e0dd42",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_022.png": "960dc137c27b51f9eeb24ccfdd38092abc09d711068923fb6471fa0f411420ba",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_023.png": "0926bafbfd3679b140448388eb08b8a2685fca3c66fbced268c98a9e4949e8dc",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_024.png": "99295a2e67913e15a0bf7e6df9a50324b4dbab89bc54112d33b56c67dfd0bc30",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_025.png": "d3576533082179c06ec2ac50f3a18bc2fc8c79b95a9fbbc7f01c0172403d7a55",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_026.png": "931fa5e7eaf7710edc6c7923fc95a3f0d220bd761c951fa154f45388a48305b6",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_027.png": "238dd6587912def993434f57a97fbc54ceb055aa233df96fd85aabdea4ff1589",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_028.png": "ccdb3d50ff2e4750ae6e9068483e82a702cc9d908dfa700ee6a31b4b7dff5430",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/active_control/source_029.png": "03949ce7341dc5b74e245cb5cfbb96b50e8afa669094adfa0e8f359aacb9dcf8",
+    "outputs/recognition-investigation/native-initialization-api-20261012/menu_control/result.json": "873c00d9c3b6ec1a7efb4c0eb33708b5ff3f03bae019704f57cbf49df9d73814",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_000.png": "b11db0bd7bec6eee81bf02b046d891d833b5d343a41a79b914230479898cf2f1",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_001.png": "d395e01e416d0cb89d06b5b965b6266b14a3cb3cd6b48b7df1f2de57f488f335",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_002.png": "f065e0c073b77df8ba69d66c7023e512176a3070caab78755c6ed50547574f1f",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_003.png": "42387ff247a34016df53b7e4bff176871d24a2a19f9c6ecfaccc1b211224d35a",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_004.png": "8b772539bfdb1402b3770a846a1b6601d83669dbcf723efddff20455d43ecae3",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_005.png": "f516e7645a587dc3353066e9f015b4c61cdf0383dd373fc74696541ab81c4394",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_006.png": "64a43af689674fcfaf1af9ba2190f3b78379a01c51d5b8266cb61cd97a8cb103",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_007.png": "08ce5eea34d4c734b54f7eae031fd69ec81bb1341a71de3764667dcc9ff984b7",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_008.png": "835f8566806f84d411d04abb7d7d58ee9c946fa5cae398e3d366d6ea07ac9c53",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_009.png": "54ed724118f419a5372c34c09c87393078ba83901c0f31db06c41cb80ed950a4",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_010.png": "017b186b45ad53f2db17f4b6a4b67dd434af1456bf9d0cf25c400570517b081c",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_011.png": "c87bdaddc77e5da198ca49d1bbb9bb624d05e8386b733f3302dc80023c7c82a7",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_012.png": "3447e51a60db40d411795418d72c47c13db0a3153685619a70c40b7bb6b0e58c",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_013.png": "1d78857aa7e1dd43262558f44b5606ef13283fefcf398de8a8ef91c7418d115f",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_014.png": "2d1dbb72f230636dd17c470e41472dadab39168df214beb6d699862be0ddb6f4",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_015.png": "4b0afff31230daec2a513e06aa0694edfd0da8bb7caf53e87964ecace68c17da",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_016.png": "90205e8f8c1b9a985498fb2f19044d93213ea2ca17128b0f55701fcf424d64ea",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_017.png": "9952a073ff7bb4178f245f2550beac848cfca18a51e4fbfb2dcf6222fcd3a6a2",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_018.png": "6f152d14858aa7a78970d73314063cec85476000c7f34d00e861350ae04e79c6",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_019.png": "2888c37d8ce2649097bd87ec7c2cba88eb56bb992a91c2373a26b37a9bb913d5",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_020.png": "5dd6f78208c60f2f451f102c3906ec62b86ac37ddfeb748fe0eba7d03b80dbd9",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_021.png": "8aabfc05ce1e39bf8735fc1b187c24b4316ea75f88d918bcdee1d11c2542efe1",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_022.png": "9d3a9a10ac6fb8bbf4e1d1263f234abecec4bf5e3d2d5f0c2ef6bdde4f62a18a",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_023.png": "67eb8621ffaec32897f4dadea0eac188ccac6108329237177455f771ded24f0b",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_024.png": "0f0f36f6fc2912282cafb6c687b1a780cb9c2b69097e2b1db35c6c9f4bbb8c69",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_025.png": "990e849a4aeb496f3b274b8d2af8fcbe5cc535345760ba11d6fc34f14d047dd5",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_026.png": "494dde9a7b2c744833581634aeba8a3d013f8b6c4754a4c470d1deabbcab41eb",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_027.png": "74dc3b7f23e15be52f44fd7c20586e7e439052f15cfb5477ac23d2c352f96269",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_028.png": "8856161cfc32a6753e7c12e0051291d84604a4bcccc5fe2104755ace0a45bd1e",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/menu_control/source_029.png": "210e2d68e1664c6541829cc0659ecaf57a10fecc0f225945751626ba4f9cf00a",
+    "outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/result.json": "9f7d62ba537f0696b6babb15db2841ef08ca51f7cba5b4c85b93c3a36915fcd2",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_000.png": "fa31b13e80a36bbfdf779f070d7e1ffc7ba2a9cf1a19d6a64f53598dd4135ce5",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_001.png": "098c13e56cd10b03a8c0e24f0646cd763a422ee399d98bc8502b0aa3225e43fe",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_002.png": "17f650cb9cdb2c75ef678b1695f4d1904b31b15ecb1a6d6c00cead6983adf640",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_003.png": "6d813bb4df6dde54d06efaa9d283389f3fa8dd59582d5b18a0161475fe40211e",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_004.png": "00fe4961be43065df639268b5531e447e7d6d5756223262a1a5cf14807f8b8e1",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_005.png": "6dfe678bc136f27ba1da47420a18134590253d6e293268105c05fff4a51ba88b",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_006.png": "fb6e2d1a41c5266820ba6c553495a01bec00c2a2d451b3635c88f27191653b4d",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_007.png": "85af45defa705b5382c367ae82e5cd348a320013510961909c90d19b95d945dc",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_008.png": "58472169caeba10c8c09b11839b190ce472ca3d76ea1819b8ea8571fd52c26a9",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_009.png": "563249f5920710fafbacb18efcfb4bed5ddd2c62749f9630b10fa43df6a737b4",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_010.png": "686b0493d00fe2cd0eec6ab65418d2cc52b439aa3da9b50186137e261f2a5438",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_011.png": "a836f96b96c6f100ec2429ef89d37d611e971b4e5946e419da6012112ca5eb67",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_012.png": "c4964af52fe6953e1b31f29fbf4b16fc22692adcdffd2bb6decc398184b443a0",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_013.png": "906c5120689f69532197ac480771aae521cea307af3a63e89d66d3fcad8e320e",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_014.png": "be3cd25f3fd2a630b0fee9bd45e1ed79b3c3eb441679408c1785ee98b426d44a",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_015.png": "028e32d1ffe45323a7249e8092f48f89795c90404c40ddabe7c35add96b7d210",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_016.png": "88cbe5c360d9d1e85fd4d6ca1a6d4a7cec2b945db517c25aed88e72f5fb6c0cf",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_017.png": "b10b06b25d90602ec4250d8bc119e85a62743f2ca1d4fd04d2a004f852e1cf81",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_018.png": "d841f0dc0b44ae1ec91dbccc1f3e6fdf38143e75c6b331dd64fc2eee2a0969ba",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_019.png": "d3230369d2606d9db468d07b16a1d775cd8268e1753d47143be4babdce0ef8ea",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_020.png": "507422baee944691b75501f22233cd6c965e4f044c25731cba73141c3bb974a9",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_021.png": "60e452a09524159945db1e946af529aba5e8dd45e524342bea76da8e07c0d630",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_022.png": "e5f1ba0b9342cb5af04db9d64dd256357f48bbd71426c2efe9580cbcc3d2f8c3",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_023.png": "443c800dc5558376f1f2e3d692536bc3666ce5a7dac46b0dcf84dabeee132470",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_024.png": "d3ed1fb827be3be9e28c274e983c48e960ddddea7810e11518834743f83cfd58",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_025.png": "73ad9253e9320c0d414cf208d5178a4c310a7d8cf5bfd9571a90d354fc83df4d",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_026.png": "bf4c8128b196a45f49cf205a2daf6a60e04cb925bdc14a3815ea99e5501f733b",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_027.png": "c836556b88607aa98a99b9fa50836695dec6b6843ecbe4956e7c40c316ff266c",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_028.png": "8e792a750b90bb28459cb9716aa4e6bda067dadffc7cc2771675b400945aeb52",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_029.png": "eb97131bee891eb0e1d43a30edce10db5108fcac920a053d14c06f974caa484d"
+  },
+  "qualification_created": false,
+  "canonical_full_executed": false,
+  "schema_version": 1,
+  "target_assertion_ids": [
+    "GT-R1-ROUND-START",
+    "GT-R2-ROUND-START",
+    "event_count_constraints-000",
+    "event_count_constraints-004",
+    "ordering_constraints-001"
+  ],
+  "change": "Opt-in same-pass current native UI measurements in source-bound unqualified namespace. Default system_evidence stays empty; no formal event contract change.",
+  "comparison": {
+    "processed_frames": {
+      "previous": 162,
+      "current": 162,
+      "delta": 0
+    },
+    "start_candidates": {
+      "previous": 2,
+      "current": 2,
+      "delta": 0
+    },
+    "control_start_candidates": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "accepted_timer": {
+      "previous": 133,
+      "current": 133,
+      "delta": 0
+    },
+    "formal_events": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "owned_observations": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "phase_scan_valid": {
+      "previous": 162,
+      "current": 162,
+      "delta": 0
+    }
+  },
+  "runtime_comparison": {
+    "previous_total_sec": 424.8293937620474,
+    "current_total_sec": 302.3538050989155,
+    "total_delta_sec": -122.47558866313193,
+    "total_comparable": false,
+    "reason": "Current replay reuses verified native rasters; earlier run decoded each suffix. No pipeline speed claim.",
+    "previous_analyzer_sec": 284.65611688105855,
+    "current_analyzer_sec": 275.60422406799626,
+    "analyzer_scope": "Same162frames, prior includes diagnostic_sink, current not; single-run difference, no controlled performance benchmark."
+  },
+  "verification": {
+    "native_transport_unit_pass": 51,
+    "lifecycle_package_regression_pass": 252,
+    "ruff": "PASS",
+    "mypy": "PASS128sourcefiles",
+    "full_regression": "Not rerun; previous2707/6 predates this optional transport change.",
+    "canonical_full": "Not executed: reader/UI qualification and release gates incomplete.",
+    "windows_runtime": "unverified"
+  },
+  "artifact_sha256": {
+    "outputs/recognition-investigation/native-ui-transport-20261013/execution.json": "43866678d391fbc5e047576b39d4088ae50476270ec566f68623d38c5edf2e65",
+    "outputs/recognition-investigation/native-ui-transport-20261013/result.json": "494bb996f5a37f74a462bd0c1a305bb44e2b4bf6684a45df0efba8d072ec7181",
+    "outputs/recognition-investigation/native-ui-transport-20261013/run.py": "2e827f3a6ee310904164d1645b5dbaa42dd916828b070be1a1b47360d4987a72",
+    "outputs/recognition-investigation/native-ui-transport-20261013/r1_ui_development.json": "36181f2511ca0d666fa23058ffb3794e1d78cfe121b4edf06bd3125ee9b0d897",
+    "outputs/recognition-investigation/native-ui-transport-20261013/r2_ui_development.json": "af451ec494cbe1cefaaf052368b0af1886a4a8f2bb704429b5cb337fac99d62f",
+    "outputs/recognition-investigation/native-ui-transport-20261013/active_control.json": "8e586e1d16343b518cfb08ef01a819aac919ff27374b348ffc33e2d1114877f2",
+    "outputs/recognition-investigation/native-ui-transport-20261013/menu_control.json": "4b2b1f62adbd67549735a21695c7220af552ef62747da79dff7ee6f261370a2d",
+    "outputs/recognition-investigation/native-ui-transport-20261013/spectator_control.json": "6684b9df5ade2672037faccc07213683dc711e54ae4b8d79d7198c40f5ff14c4"
+  }
+}

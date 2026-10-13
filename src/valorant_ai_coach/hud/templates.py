@@ -33,7 +33,7 @@ from valorant_ai_coach.resources import resource_path
 from .hp_glyphs import StrictHpGlyphReader, UnavailableStrictHpGlyphReader
 from .layout import HudLayout, NormalizedRoi
 from .readers import HudReader, ReaderResult
-from .report_header import ReportHeader, report_header_evidence
+from .report_header import ReportFieldLocator, ReportHeader, report_header_evidence
 from .score_glyphs import StrictScoreGlyphReader, UnavailableStrictScoreGlyphReader
 from .semantic_text import MATCHER as SEMANTIC_TEXT_MATCHER
 from .semantic_text import SIGNAL_ROIS, SemanticTextReference
@@ -112,6 +112,8 @@ class HudTemplateProfile:
                     and "mask" not in spec
                 ):
                     raise ValueError("oriented identity requires its independent edge mask")
+                if 'contrast_guard' in spec and spec.get('matcher') != SEMANTIC_TEXT_MATCHER:
+                    raise ValueError('semantic contrast guard requires the semantic matcher')
                 template = self.load_template(
                     str(name), str(spec["template"]), float(spec.get("threshold", 0.90))
                 )
@@ -147,6 +149,20 @@ class HudTemplateProfile:
                             raise ValueError("semantic text asset is unreadable")
                         return np.asarray(image, dtype=np.uint8)
 
+                    guard = None
+                    if 'contrast_guard' in spec:
+                        from .glyph_contrast import METHOD, GlyphContrastGuard
+
+                        raw_guard = spec['contrast_guard']
+                        if (
+                            name != 'round_end_template'
+                            or not isinstance(raw_guard, Mapping)
+                            or set(raw_guard) != {'method', 'template'}
+                            or raw_guard['method'] != METHOD
+                            or not isinstance(raw_guard['template'], str)
+                        ):
+                            raise ValueError('invalid semantic contrast guard specification')
+                        guard = GlyphContrastGuard(gray_asset(raw_guard['template']))
                     self._semantic_text[str(name)] = SemanticTextReference(
                         template.image,
                         gray_asset(str(spec["mask"])),
@@ -156,6 +172,7 @@ class HudTemplateProfile:
                             for row in raw_training
                         ],
                         template.threshold,
+                        contrast_guard=guard,
                     )
                 elif "mask" in spec:
                     value_matcher = spec.get("matcher") in (MATCHER, WEAPON_MATCHER)
@@ -752,6 +769,11 @@ class HudTemplateProfile:
                 continue
             kind = raw_spec.get("kind")
             try:
+                if ('portrait_fields' in raw_spec
+                        and (kind != 'fields' or roi_name != 'combat_report')):
+                    raise ValueError('Report portrait fields are candidate/report-only')
+                if 'localization' in raw_spec and (kind != 'fields' or roi_name != 'combat_report'):
+                    raise ValueError('Report field localization is candidate/report-only')
                 if "minimum_confidence" in raw_spec and kind not in {"digits", "fields"}:
                     raise ValueError(
                         "minimum_confidence is supported only for digits/fields readers"
@@ -937,6 +959,50 @@ class HudTemplateProfile:
                     )
                 elif kind == "fields":
                     fields = raw_spec.get("fields", {})
+                    locator = None
+                    portraits: dict[
+                        str, tuple[tuple[float, float, float, float], HudReader[str]]
+                    ] = {}
+                    if 'localization' in raw_spec:
+                        local = raw_spec['localization']
+                        if (
+                            roi_name != 'combat_report' or self._report_header is None
+                            or not isinstance(local, Mapping)
+                            or set(local) != {'method', 'reference_origin_norm'}
+                            or local['method'] != 'report_header_pose_v1'
+                            or not isinstance(local['reference_origin_norm'], list)
+                            or len(local['reference_origin_norm']) != 2
+                        ):
+                            raise ValueError('invalid Report field localization')
+                        locator = ReportFieldLocator(
+                            self._report_header, tuple(local['reference_origin_norm']),
+                        )
+                        locator.validate()
+                        if not isinstance(fields, Mapping):
+                            raise ValueError('localized Report fields require a mapping')
+                    if 'portrait_fields' in raw_spec:
+                        raw_portraits = raw_spec['portrait_fields']
+                        if (locator is None or not isinstance(raw_portraits, Mapping)
+                                or set(raw_portraits) != {'report_portrait_label'}):
+                            raise ValueError('Report portraits require current header location')
+                        spec = raw_portraits['report_portrait_label']
+                        if (not isinstance(spec, Mapping)
+                                or set(spec) != {'bounds', 'values', 'threshold'}
+                                or type(spec['threshold']) not in (int, float)
+                                or not math.isfinite(spec['threshold'])
+                                or not .90 <= spec['threshold'] <= 1
+                                or not isinstance(spec['values'], Mapping) or not spec['values']
+                                or not all(
+                                    isinstance(k, str) and k.strip() and len(k) <= 64
+                                    and isinstance(v, str) for k, v in spec['values'].items()
+                                )):
+                            raise ValueError('invalid Report portrait field specification')
+                        portraits['report_portrait_label'] = (
+                            _bounds(spec['bounds']),
+                            TemplateValueReader(
+                                self._load_values(spec['values'], spec['threshold']),
+                            ),
+                        )
                     if isinstance(fields, Mapping):
                         readers[str(roi_name)] = NumericFieldsReader(
                             {
@@ -954,6 +1020,8 @@ class HudTemplateProfile:
                                     white_text_threshold=raw_spec.get("white_text_threshold"),
                                 ),
                             ),
+                            locator=locator,
+                            portrait_fields=portraits,
                         )
                 elif kind == "ability_slots":
                     readers[str(roi_name)] = AbilitySlotsReader(self, raw_spec.get("slots", []))
@@ -966,7 +1034,8 @@ class HudTemplateProfile:
                     readers[str(roi_name)] = SubregionReader(readers[str(roi_name)], subregion)
             except (OSError, TypeError, ValueError, cv2.error) as exc:
                 self.reader_diagnostics.append(f"reader {roi_name}: {exc}")
-                if "minimum_confidence" in raw_spec:
+                if ("minimum_confidence" in raw_spec or 'localization' in raw_spec
+                        or 'portrait_fields' in raw_spec):
                     # Invalid explicit safety configuration must not disappear
                     # and allow the analyzer's legacy OCR fallback to replace it.
                     readers[str(roi_name)] = UnavailableConfiguredReader()
@@ -1380,9 +1449,15 @@ class NumericFieldsReader:
         self,
         fields: Mapping[str, tuple[float, float, float, float]],
         reader: HudReader[str],
+        *, locator: ReportFieldLocator | None = None,
+        portrait_fields: Mapping[
+            str, tuple[tuple[float, float, float, float], HudReader[str]]
+        ] | None = None,
     ) -> None:
         self.fields = dict(fields)
         self.reader = reader
+        self.locator = locator
+        self.portrait_fields = dict(portrait_fields or {})
 
     def read_candidates(self, roi: ImageU8) -> dict[str, dict[str, Any]]:
         """Retain original displays for unqualified report observations.
@@ -1394,6 +1469,10 @@ class NumericFieldsReader:
         if roi.size == 0 or roi.ndim not in (2, 3):
             return candidates
         height, width = roi.shape[:2]
+        offset = self.locator.offset(roi) if self.locator is not None else (0, 0, 1.0)
+        if offset is None:
+            return candidates
+        dx, dy, location_confidence = offset
         for name, bounds in self.fields.items():
             if name not in {"damage_received", "damage_given"}:
                 continue
@@ -1402,7 +1481,8 @@ class NumericFieldsReader:
                 continue
             left, top = round(x1 * width), round(y1 * height)
             right, bottom = round(x2 * width), round(y2 * height)
-            if right <= left or bottom <= top:
+            left, top, right, bottom = left + dx, top + dy, right + dx, bottom + dy
+            if not (0 <= left < right <= width and 0 <= top < bottom <= height):
                 continue
             result = self.reader.read(roi, roi[top:bottom, left:right])
             if (
@@ -1419,11 +1499,46 @@ class NumericFieldsReader:
             candidates[name] = {
                 "display": result.value,
                 "value": int(result.value),
-                "confidence": result.confidence,
-                "sources": list(result.sources),
+                "confidence": min(result.confidence, location_confidence),
+                "sources": list(result.sources) + (
+                    ['report_header_pose'] if self.locator is not None else []
+                ),
                 "cross_checked": result.cross_checked,
-                "roi_bounds_norm": list(bounds),
+                "roi_bounds_norm": (
+                    [left / width, top / height, right / width, bottom / height]
+                    if self.locator is not None else list(bounds)
+                ),
             }
+        # A class label describes the current report portrait only. It is not
+        # OCR display text, killer identity, a player name or a death fact.
+        if self.locator is not None:
+            for name, (bounds, reader) in self.portrait_fields.items():
+                if name != 'report_portrait_label':
+                    continue
+                x1, y1, x2, y2 = bounds
+                if not (0 <= x1 < x2 <= 1 and 0 <= y1 < y2 <= 1):
+                    continue
+                left, top = round(x1 * width) + dx, round(y1 * height) + dy
+                right, bottom = round(x2 * width) + dx, round(y2 * height) + dy
+                if not (0 <= left < right <= width and 0 <= top < bottom <= height):
+                    continue
+                result = reader.read(roi, roi[top:bottom, left:right])
+                if (not isinstance(result.value, str) or not result.value.strip()
+                        or len(result.value) > 64
+                        or type(result.confidence) not in (int, float)
+                        or not math.isfinite(result.confidence)
+                        or not .90 <= result.confidence <= 1
+                        or not result.sources
+                        or not all(isinstance(s, str) and s.strip() for s in result.sources)
+                        or f'template:{result.value}' not in result.sources):
+                    continue
+                candidates[name] = {
+                    'label': result.value,
+                    'confidence': min(result.confidence, location_confidence),
+                    'sources': list(result.sources) + ['report_header_pose'],
+                    'cross_checked': False,
+                    'roi_bounds_norm': [left/width, top/height, right/width, bottom/height],
+                }
         return candidates
 
     def read(self, image: ImageU8, roi: ImageU8) -> ReaderResult[dict[str, int]]:

@@ -1,0 +1,619 @@
+{
+  "schema_version": 1,
+  "scope": "Manual source review of all30 exposed native spectator-control rasters; not fresh independent holdout; predictions hidden in contact sheet; original diagnostics already exposed",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "recognizer_fingerprint": "f85a3cf49fbe1c43abd85abe926b0cc4071069e7b83763bf9bb1aca8ba8a8c69",
+  "profile_fingerprint": "10bfac00544e510ebf3f3e2c0072c9beba24938b2ff996c9012f7e4046d82c99",
+  "processed_frames": 30,
+  "timer_present_frames": 30,
+  "natural_absent_control_eligible": 0,
+  "counts": {
+    "correct": 11,
+    "unknown": 19,
+    "wrong": 0
+  },
+  "native_system_counts": {
+    "unknown": 19,
+    "correct": 11
+  },
+  "unknown_reasons": {
+    "strict_timer_foreground_touches_roi_border": 16,
+    "strict_timer_expected_exactly_two_separator_dots": 3
+  },
+  "rows": [
+    {
+      "source_pts_ticks": 2457641,
+      "pixel_sha256": "5705062fda3345288452d9b4ef5f0054dfc24bd57ba4552f97665ffcf6c2ac6b",
+      "reviewed_display": "0:51",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "fa31b13e80a36bbfdf779f070d7e1ffc7ba2a9cf1a19d6a64f53598dd4135ce5",
+      "time_sec": 160.00266927083334,
+      "display": null,
+      "confidence": 0.0,
+      "sources": [
+        "strict_timer_foreground_touches_roi_border"
+      ],
+      "outcome": "unknown",
+      "native_system_seconds": null,
+      "native_system_outcome": "unknown"
+    },
+    {
+      "source_pts_ticks": 2457897,
+      "pixel_sha256": "0a1786a76df8d166eeaa0464b3865cd98accaa924c62f6cebbd00ea693a44cf8",
+      "reviewed_display": "0:51",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "098c13e56cd10b03a8c0e24f0646cd763a422ee399d98bc8502b0aa3225e43fe",
+      "time_sec": 160.0193359375,
+      "display": "0:51",
+      "confidence": 0.95149827003479,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "native_system_seconds": 51.0,
+      "native_system_outcome": "correct"
+    },
+    {
+      "source_pts_ticks": 2458153,
+      "pixel_sha256": "2da96e7150cf3a266962d03fa5f8e68a1b12d5db9af0b07235342b6e72fdc4a7",
+      "reviewed_display": "0:51",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "17f650cb9cdb2c75ef678b1695f4d1904b31b15ecb1a6d6c00cead6983adf640",
+      "time_sec": 160.03600260416667,
+      "display": null,
+      "confidence": 0.0,
+      "sources": [
+        "strict_timer_foreground_touches_roi_border"
+      ],
+      "outcome": "unknown",
+      "native_system_seconds": null,
+      "native_system_outcome": "unknown"
+    },
+    {
+      "source_pts_ticks": 2458409,
+      "pixel_sha256": "cd9b6f425fdb582d59b20388303904c43def02f81fd63a30c69af95567abf143",
+      "reviewed_display": "0:51",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "6d813bb4df6dde54d06efaa9d283389f3fa8dd59582d5b18a0161475fe40211e",
+      "time_sec": 160.05266927083332,
+      "display": null,
+      "confidence": 0.0,
+      "sources": [
+        "strict_timer_expected_exactly_two_separator_dots"
+      ],
+      "outcome": "unknown",
+      "native_system_seconds": null,
+      "native_system_outcome": "unknown"
+    },
+    {
+      "source_pts_ticks": 2458665,
+      "pixel_sha256": "1b9fdb64979561761d3e00b42d69e14675adcfad6ef27622c91aa0bc072da5a6",
+      "reviewed_display": "0:51",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "00fe4961be43065df639268b5531e447e7d6d5756223262a1a5cf14807f8b8e1",
+      "time_sec": 160.0693359375,
+      "display": null,
+      "confidence": 0.0,
+      "sources": [
+        "strict_timer_foreground_touches_roi_border"
+      ],
+      "outcome": "unknown",
+      "native_system_seconds": null,
+      "native_system_outcome": "unknown"
+    },
+    {
+      "source_pts_ticks": 2458921,
+      "pixel_sha256": "2ef598f49b3ed7319fa187ac159dd47847c4b709540d36e218e7a203e18756dd",
+      "reviewed_display": "0:51",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "6dfe678bc136f27ba1da47420a18134590253d6e293268105c05fff4a51ba88b",
+      "time_sec": 160.08600260416668,
+      "display": null,
+      "confidence": 0.0,
+      "sources": [
+        "strict_timer_foreground_touches_roi_border"
+      ],
+      "outcome": "unknown",
+      "native_system_seconds": null,
+      "native_system_outcome": "unknown"
+    },
+    {
+      "source_pts_ticks": 2459177,
+      "pixel_sha256": "7851f9bf3618dde0b403c973ab7518aa4747a5f5a021c8b141a8eb751600543d",
+      "reviewed_display": "0:51",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "fb6e2d1a41c5266820ba6c553495a01bec00c2a2d451b3635c88f27191653b4d",
+      "time_sec": 160.10266927083333,
+      "display": "0:51",
+      "confidence": 0.9362234473228455,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "native_system_seconds": 51.0,
+      "native_system_outcome": "correct"
+    },
+    {
+      "source_pts_ticks": 2459433,
+      "pixel_sha256": "42da70bc00e4f41953762b809a8a8ec7c8e71be550e4e4e6bbefedba69a81d32",
+      "reviewed_display": "0:51",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "85af45defa705b5382c367ae82e5cd348a320013510961909c90d19b95d945dc",
+      "time_sec": 160.1193359375,
+      "display": "0:51",
+      "confidence": 0.9362234473228455,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "native_system_seconds": 51.0,
+      "native_system_outcome": "correct"
+    },
+    {
+      "source_pts_ticks": 2459689,
+      "pixel_sha256": "82554978569eb9faf504fb8c111df7cbd065f94fa29cb74acbd9c4014c9712b3",
+      "reviewed_display": "0:51",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "58472169caeba10c8c09b11839b190ce472ca3d76ea1819b8ea8571fd52c26a9",
+      "time_sec": 160.13600260416666,
+      "display": "0:51",
+      "confidence": 0.9307971000671387,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "native_system_seconds": 51.0,
+      "native_system_outcome": "correct"
+    },
+    {
+      "source_pts_ticks": 2459945,
+      "pixel_sha256": "cfcbe4332f15bcbd6f55f2b42423a359248de52711e57c66e5e02ab1fef07909",
+      "reviewed_display": "0:51",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "563249f5920710fafbacb18efcfb4bed5ddd2c62749f9630b10fa43df6a737b4",
+      "time_sec": 160.15266927083334,
+      "display": null,
+      "confidence": 0.0,
+      "sources": [
+        "strict_timer_foreground_touches_roi_border"
+      ],
+      "outcome": "unknown",
+      "native_system_seconds": null,
+      "native_system_outcome": "unknown"
+    },
+    {
+      "source_pts_ticks": 2460201,
+      "pixel_sha256": "59912ce987696565e9191f0ceca2f72cdad03a43d4214db1e57409b405c97367",
+      "reviewed_display": "0:51",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "686b0493d00fe2cd0eec6ab65418d2cc52b439aa3da9b50186137e261f2a5438",
+      "time_sec": 160.1693359375,
+      "display": "0:51",
+      "confidence": 0.9772046804428101,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "native_system_seconds": 51.0,
+      "native_system_outcome": "correct"
+    },
+    {
+      "source_pts_ticks": 2460457,
+      "pixel_sha256": "18ed7d94229e054d0a1bd88fcfd392d2d1f350ba83d0a9156df43c22bc920114",
+      "reviewed_display": "0:51",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "a836f96b96c6f100ec2429ef89d37d611e971b4e5946e419da6012112ca5eb67",
+      "time_sec": 160.18600260416667,
+      "display": null,
+      "confidence": 0.0,
+      "sources": [
+        "strict_timer_expected_exactly_two_separator_dots"
+      ],
+      "outcome": "unknown",
+      "native_system_seconds": null,
+      "native_system_outcome": "unknown"
+    },
+    {
+      "source_pts_ticks": 2460713,
+      "pixel_sha256": "e7b617825f1873fbf4c086882ef52f5045b1ea821832072c29873ad8e1e7ff4c",
+      "reviewed_display": "0:51",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "c4964af52fe6953e1b31f29fbf4b16fc22692adcdffd2bb6decc398184b443a0",
+      "time_sec": 160.20266927083333,
+      "display": "0:51",
+      "confidence": 0.9246482253074646,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "native_system_seconds": 51.0,
+      "native_system_outcome": "correct"
+    },
+    {
+      "source_pts_ticks": 2460969,
+      "pixel_sha256": "f1d27955f3144faf74d2448c66d7d080ce50e01cf2281c4bc8becd4316d599fb",
+      "reviewed_display": "0:51",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "906c5120689f69532197ac480771aae521cea307af3a63e89d66d3fcad8e320e",
+      "time_sec": 160.2193359375,
+      "display": "0:51",
+      "confidence": 0.9270639419555664,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "native_system_seconds": 51.0,
+      "native_system_outcome": "correct"
+    },
+    {
+      "source_pts_ticks": 2461225,
+      "pixel_sha256": "1e2fd4c983a2c9940df486b0dea7bca5f5bdf67b2c87fe2f7b30c9a3d0324fe2",
+      "reviewed_display": "0:51",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "be3cd25f3fd2a630b0fee9bd45e1ed79b3c3eb441679408c1785ee98b426d44a",
+      "time_sec": 160.23600260416666,
+      "display": "0:51",
+      "confidence": 0.9314059019088745,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "native_system_seconds": 51.0,
+      "native_system_outcome": "correct"
+    },
+    {
+      "source_pts_ticks": 2461481,
+      "pixel_sha256": "a8b33b12292db77fc03d5062388c0d45a6475a9a7c4dddef9cec011f16ff78bd",
+      "reviewed_display": "0:51",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "028e32d1ffe45323a7249e8092f48f89795c90404c40ddabe7c35add96b7d210",
+      "time_sec": 160.25266927083334,
+      "display": "0:51",
+      "confidence": 0.9339250922203064,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "native_system_seconds": 51.0,
+      "native_system_outcome": "correct"
+    },
+    {
+      "source_pts_ticks": 2461737,
+      "pixel_sha256": "fe0305528020b99d05bbc3682040e7625a876ce35ae10ce4e8905145b18bde80",
+      "reviewed_display": "0:51",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "88cbe5c360d9d1e85fd4d6ca1a6d4a7cec2b945db517c25aed88e72f5fb6c0cf",
+      "time_sec": 160.2693359375,
+      "display": "0:51",
+      "confidence": 0.9403968453407288,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "native_system_seconds": 51.0,
+      "native_system_outcome": "correct"
+    },
+    {
+      "source_pts_ticks": 2461993,
+      "pixel_sha256": "9f2fc19a803bf486d8eca0150e8f8fca3bd562ddaccd060482d86893b360fb50",
+      "reviewed_display": "0:51",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "b10b06b25d90602ec4250d8bc119e85a62743f2ca1d4fd04d2a004f852e1cf81",
+      "time_sec": 160.28600260416667,
+      "display": "0:51",
+      "confidence": 0.9412356019020081,
+      "sources": [
+        "strict_timer_glyphs",
+        "comparison_gaussian3x3_v1"
+      ],
+      "outcome": "correct",
+      "native_system_seconds": 51.0,
+      "native_system_outcome": "correct"
+    },
+    {
+      "source_pts_ticks": 2462249,
+      "pixel_sha256": "97b1db9a4e7f72dfdf28bc6928454befd5fe4788d97442e327df011917429932",
+      "reviewed_display": "0:51",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "d841f0dc0b44ae1ec91dbccc1f3e6fdf38143e75c6b331dd64fc2eee2a0969ba",
+      "time_sec": 160.30266927083332,
+      "display": null,
+      "confidence": 0.0,
+      "sources": [
+        "strict_timer_expected_exactly_two_separator_dots"
+      ],
+      "outcome": "unknown",
+      "native_system_seconds": null,
+      "native_system_outcome": "unknown"
+    },
+    {
+      "source_pts_ticks": 2462505,
+      "pixel_sha256": "308e37d72b3c0c1e53d578129c37d390b5e9dbafc1c9cfdfbf72982e9c593a26",
+      "reviewed_display": "0:51",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "d3230369d2606d9db468d07b16a1d775cd8268e1753d47143be4babdce0ef8ea",
+      "time_sec": 160.3193359375,
+      "display": null,
+      "confidence": 0.0,
+      "sources": [
+        "strict_timer_foreground_touches_roi_border"
+      ],
+      "outcome": "unknown",
+      "native_system_seconds": null,
+      "native_system_outcome": "unknown"
+    },
+    {
+      "source_pts_ticks": 2462761,
+      "pixel_sha256": "e7d3e895830d8ac0d8d22db61ec4978864680750529805835ef0bcbb5f2a00a2",
+      "reviewed_display": "0:51",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "507422baee944691b75501f22233cd6c965e4f044c25731cba73141c3bb974a9",
+      "time_sec": 160.33600260416668,
+      "display": null,
+      "confidence": 0.0,
+      "sources": [
+        "strict_timer_foreground_touches_roi_border"
+      ],
+      "outcome": "unknown",
+      "native_system_seconds": null,
+      "native_system_outcome": "unknown"
+    },
+    {
+      "source_pts_ticks": 2463017,
+      "pixel_sha256": "45cc2159d333ebd95e98573549a349890bd0a417ce9257fea8780fed6f0815d2",
+      "reviewed_display": "0:51",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "60e452a09524159945db1e946af529aba5e8dd45e524342bea76da8e07c0d630",
+      "time_sec": 160.35266927083333,
+      "display": null,
+      "confidence": 0.0,
+      "sources": [
+        "strict_timer_foreground_touches_roi_border"
+      ],
+      "outcome": "unknown",
+      "native_system_seconds": null,
+      "native_system_outcome": "unknown"
+    },
+    {
+      "source_pts_ticks": 2463273,
+      "pixel_sha256": "d1c0875f00a7367d21890db46a5a8297f93e4a82793673c4dadaa03ff8f11665",
+      "reviewed_display": "0:51",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "e5f1ba0b9342cb5af04db9d64dd256357f48bbd71426c2efe9580cbcc3d2f8c3",
+      "time_sec": 160.3693359375,
+      "display": null,
+      "confidence": 0.0,
+      "sources": [
+        "strict_timer_foreground_touches_roi_border"
+      ],
+      "outcome": "unknown",
+      "native_system_seconds": null,
+      "native_system_outcome": "unknown"
+    },
+    {
+      "source_pts_ticks": 2463529,
+      "pixel_sha256": "471234fec8ccda496eb46a3221bd45f85d0fb72b1e43d707f0e117a6263aae9e",
+      "reviewed_display": "0:50",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "443c800dc5558376f1f2e3d692536bc3666ce5a7dac46b0dcf84dabeee132470",
+      "time_sec": 160.38600260416666,
+      "display": null,
+      "confidence": 0.0,
+      "sources": [
+        "strict_timer_foreground_touches_roi_border"
+      ],
+      "outcome": "unknown",
+      "native_system_seconds": null,
+      "native_system_outcome": "unknown"
+    },
+    {
+      "source_pts_ticks": 2463785,
+      "pixel_sha256": "969430b38b915d50370e26c89de085c5964cb175ea691e6e443e6748718a3aa1",
+      "reviewed_display": "0:50",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "d3ed1fb827be3be9e28c274e983c48e960ddddea7810e11518834743f83cfd58",
+      "time_sec": 160.40266927083334,
+      "display": null,
+      "confidence": 0.0,
+      "sources": [
+        "strict_timer_foreground_touches_roi_border"
+      ],
+      "outcome": "unknown",
+      "native_system_seconds": null,
+      "native_system_outcome": "unknown"
+    },
+    {
+      "source_pts_ticks": 2464041,
+      "pixel_sha256": "fc3edfb4e6104a01d0473c8657aecf7381d85045671042700587e145e80afc46",
+      "reviewed_display": "0:50",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "73ad9253e9320c0d414cf208d5178a4c310a7d8cf5bfd9571a90d354fc83df4d",
+      "time_sec": 160.4193359375,
+      "display": null,
+      "confidence": 0.0,
+      "sources": [
+        "strict_timer_foreground_touches_roi_border"
+      ],
+      "outcome": "unknown",
+      "native_system_seconds": null,
+      "native_system_outcome": "unknown"
+    },
+    {
+      "source_pts_ticks": 2464297,
+      "pixel_sha256": "c11ac08b5b9ddc3c37e209527bf8aea9782a1c1f7be757c4fe3093e6f3f36823",
+      "reviewed_display": "0:50",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "bf4c8128b196a45f49cf205a2daf6a60e04cb925bdc14a3815ea99e5501f733b",
+      "time_sec": 160.43600260416667,
+      "display": null,
+      "confidence": 0.0,
+      "sources": [
+        "strict_timer_foreground_touches_roi_border"
+      ],
+      "outcome": "unknown",
+      "native_system_seconds": null,
+      "native_system_outcome": "unknown"
+    },
+    {
+      "source_pts_ticks": 2464553,
+      "pixel_sha256": "630a506739d5c274583d271804045dbbe1e1d57e159b4f1694353706079f506a",
+      "reviewed_display": "0:50",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "c836556b88607aa98a99b9fa50836695dec6b6843ecbe4956e7c40c316ff266c",
+      "time_sec": 160.45266927083333,
+      "display": null,
+      "confidence": 0.0,
+      "sources": [
+        "strict_timer_foreground_touches_roi_border"
+      ],
+      "outcome": "unknown",
+      "native_system_seconds": null,
+      "native_system_outcome": "unknown"
+    },
+    {
+      "source_pts_ticks": 2464809,
+      "pixel_sha256": "42cb5b76206bc6aa78f47800ce2f99b7520bd92a1ddf077dfd98439a05d5f7db",
+      "reviewed_display": "0:50",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "8e792a750b90bb28459cb9716aa4e6bda067dadffc7cc2771675b400945aeb52",
+      "time_sec": 160.4693359375,
+      "display": null,
+      "confidence": 0.0,
+      "sources": [
+        "strict_timer_foreground_touches_roi_border"
+      ],
+      "outcome": "unknown",
+      "native_system_seconds": null,
+      "native_system_outcome": "unknown"
+    },
+    {
+      "source_pts_ticks": 2465065,
+      "pixel_sha256": "c669254f5b029fa2b62217828074961d4433e8ea95526fbdcdc4485e656a4824",
+      "reviewed_display": "0:50",
+      "timer_present": true,
+      "natural_absent_control_eligible": false,
+      "encoded_sha256": "eb97131bee891eb0e1d43a30edce10db5108fcac920a053d14c06f974caa484d",
+      "time_sec": 160.48600260416666,
+      "display": null,
+      "confidence": 0.0,
+      "sources": [
+        "strict_timer_foreground_touches_roi_border"
+      ],
+      "outcome": "unknown",
+      "native_system_seconds": null,
+      "native_system_outcome": "unknown"
+    }
+  ],
+  "runtime_sec": 4.689930155989714,
+  "input_sha256": {
+    "outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/result.json": "9f7d62ba537f0696b6babb15db2841ef08ca51f7cba5b4c85b93c3a36915fcd2",
+    "outputs/recognition-investigation/native-initialization-api-20261012/result.json": "651c743bdb54527acedf6eae31abdfaed19dae6d398606ae1b9774e1cffa57d0",
+    "outputs/recognition-investigation/timer-natural-control-review-20261013/selection.json": "89231fd8ae1163e9c8dca5b9e51833c7a6a776b0e898adc7deadf53cb054c91e",
+    "outputs/recognition-investigation/timer-natural-control-review-20261013/manual-labels.json": "9e109c120ea927c7d7cb789ed9883f2e3c083d91efb61a4d97e1e24dd06369f4",
+    "outputs/recognition-investigation/timer-natural-control-review-20261013/timer-review.png": "e400bae425d06dc81315589c37f8ad118ddb944675ce063fcabad5d10c0c86b4",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_000.png": "fa31b13e80a36bbfdf779f070d7e1ffc7ba2a9cf1a19d6a64f53598dd4135ce5",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_001.png": "098c13e56cd10b03a8c0e24f0646cd763a422ee399d98bc8502b0aa3225e43fe",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_002.png": "17f650cb9cdb2c75ef678b1695f4d1904b31b15ecb1a6d6c00cead6983adf640",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_003.png": "6d813bb4df6dde54d06efaa9d283389f3fa8dd59582d5b18a0161475fe40211e",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_004.png": "00fe4961be43065df639268b5531e447e7d6d5756223262a1a5cf14807f8b8e1",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_005.png": "6dfe678bc136f27ba1da47420a18134590253d6e293268105c05fff4a51ba88b",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_006.png": "fb6e2d1a41c5266820ba6c553495a01bec00c2a2d451b3635c88f27191653b4d",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_007.png": "85af45defa705b5382c367ae82e5cd348a320013510961909c90d19b95d945dc",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_008.png": "58472169caeba10c8c09b11839b190ce472ca3d76ea1819b8ea8571fd52c26a9",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_009.png": "563249f5920710fafbacb18efcfb4bed5ddd2c62749f9630b10fa43df6a737b4",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_010.png": "686b0493d00fe2cd0eec6ab65418d2cc52b439aa3da9b50186137e261f2a5438",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_011.png": "a836f96b96c6f100ec2429ef89d37d611e971b4e5946e419da6012112ca5eb67",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_012.png": "c4964af52fe6953e1b31f29fbf4b16fc22692adcdffd2bb6decc398184b443a0",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_013.png": "906c5120689f69532197ac480771aae521cea307af3a63e89d66d3fcad8e320e",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_014.png": "be3cd25f3fd2a630b0fee9bd45e1ed79b3c3eb441679408c1785ee98b426d44a",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_015.png": "028e32d1ffe45323a7249e8092f48f89795c90404c40ddabe7c35add96b7d210",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_016.png": "88cbe5c360d9d1e85fd4d6ca1a6d4a7cec2b945db517c25aed88e72f5fb6c0cf",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_017.png": "b10b06b25d90602ec4250d8bc119e85a62743f2ca1d4fd04d2a004f852e1cf81",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_018.png": "d841f0dc0b44ae1ec91dbccc1f3e6fdf38143e75c6b331dd64fc2eee2a0969ba",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_019.png": "d3230369d2606d9db468d07b16a1d775cd8268e1753d47143be4babdce0ef8ea",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_020.png": "507422baee944691b75501f22233cd6c965e4f044c25731cba73141c3bb974a9",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_021.png": "60e452a09524159945db1e946af529aba5e8dd45e524342bea76da8e07c0d630",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_022.png": "e5f1ba0b9342cb5af04db9d64dd256357f48bbd71426c2efe9580cbcc3d2f8c3",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_023.png": "443c800dc5558376f1f2e3d692536bc3666ce5a7dac46b0dcf84dabeee132470",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_024.png": "d3ed1fb827be3be9e28c274e983c48e960ddddea7810e11518834743f83cfd58",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_025.png": "73ad9253e9320c0d414cf208d5178a4c310a7d8cf5bfd9571a90d354fc83df4d",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_026.png": "bf4c8128b196a45f49cf205a2daf6a60e04cb925bdc14a3815ea99e5501f733b",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_027.png": "c836556b88607aa98a99b9fa50836695dec6b6843ecbe4956e7c40c316ff266c",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_028.png": "8e792a750b90bb28459cb9716aa4e6bda067dadffc7cc2771675b400945aeb52",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/native-initialization-api-20261012/spectator_control/source_029.png": "eb97131bee891eb0e1d43a30edce10db5108fcac920a053d14c06f974caa484d"
+  },
+  "qualification_created": false,
+  "production_changed": false,
+  "canonical_full_executed": false,
+  "decision": "All30 are positive timer observations. Do not label19 recognizer unknowns as negative controls or invent absence; natural absence qualification remains missing.",
+  "artifact_sha256": {
+    "outputs/recognition-investigation/timer-natural-control-review-20261013/selection.json": "89231fd8ae1163e9c8dca5b9e51833c7a6a776b0e898adc7deadf53cb054c91e",
+    "outputs/recognition-investigation/timer-natural-control-review-20261013/manual-labels.json": "9e109c120ea927c7d7cb789ed9883f2e3c083d91efb61a4d97e1e24dd06369f4",
+    "outputs/recognition-investigation/timer-natural-control-review-20261013/timer-review.png": "e400bae425d06dc81315589c37f8ad118ddb944675ce063fcabad5d10c0c86b4",
+    "outputs/recognition-investigation/timer-natural-control-review-20261013/result.json": "baf8aaa9df46a1595c6ad20356a6d1c97d19b23f67f2f84d2bacbf0dd4c12055"
+  },
+  "target_assertion_ids": [
+    "GT-R1-ROUND-START",
+    "GT-R2-ROUND-START"
+  ],
+  "comparison": {
+    "previous": {
+      "accepted": 11,
+      "unknown": 19,
+      "wrong": null,
+      "natural_absent_control_verified": 0
+    },
+    "current": {
+      "accepted": 11,
+      "unknown": 19,
+      "wrong": 0,
+      "natural_absent_control_verified": 0
+    },
+    "delta": {
+      "accepted": 0,
+      "unknown": 0,
+      "wrong": null,
+      "natural_absent_control_verified": 0
+    }
+  },
+  "qualification_limit": "This rejects using these30 images as absent-timer negatives; it neither introduces a natural-negative-only qualification requirement nor invalidates separately reviewed synthetic/type controls. Previously exposed source cases are development evidence."
+}

@@ -1,0 +1,1539 @@
+{
+  "scope": "Current shared profile static purchase-phase detector on native rasters of existing physically separated reviewed training/holdout/control source frames; not globally fresh holdout or temporal lifecycle qualification",
+  "recognizer_fingerprint": "b6fc1b8302b55a31c7b2343d630e51c2b900f8020ace070296e32bca3efd9b82",
+  "profile_fingerprint": "8b5955f1d7de7139949815a7853260b9a66b6fd48140b64351030a6e78e9a5db",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "input_sha256": {
+    "outputs/recognition-investigation/phase-evidence/structural-text/frozen-manifest.json": "0ba568d22c53c126552f5a72f4f58194b8d011f0bbcd1970be598b9f191329e5",
+    "outputs/recognition-investigation/phase-evidence/structural-text/fresh-holdout-selection.json": "1d3b8fb5a8dada31e5f4f5f1ade76d11731758fdf235ec70338f60fb672b7b72",
+    "outputs/recognition-investigation/phase-evidence/structural-text/fresh-holdout-results.json": "e3848842852094e047174cc203a80b8da29d1b401f86d7fd3a989ebab0117942",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00009_000001.503.jpg": "deb2e4ba2b083c17c6b31c1aab5e3f550ed38cba9530b5c1f5fe4b8eae6d0302",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00015_000002.503.jpg": "fc04d0e5d56d89195d0cf96ed68dea5163ff8acd337467b03f7ec0927bbee174",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-000/frame_00048_000003.903.jpg": "84bb6ee112a2f77cd7af6e2e743fe0865599ef7427cc609184eb8c3dad0e1b84",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-000/frame_00005_000000.869.jpg": "42dd4e620def6d42fcb34b8a049fbaca329e3c83435d42710249904d9ca897d4",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-000/frame_00017_000001.869.jpg": "269ed5bf186e897e7a9d908d9bcc625582277300e4227d3859c54501379b6fa7",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-001/frame_00088_000098.003.jpg": "bef2b2c52139cfb1930f00f99c052f117d584742f6b1d0e05295e2afc5dab9e2",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-004/frame_00330_000100.303.jpg": "b42fc4807b7265e1fb3215a6ae8e32a234deaa2486ee6ba27d84c3311ba86fbc",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-004/frame_00416_000102.719.jpg": "1c37db9bb782a447a4ede8223e6c44ec0eb18ad30d6402fa27858f3987f86316",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-004/frame_00461_000104.086.jpg": "efd0bef0e9260227c910181a43b0309a1dab00b4e49b9317461451a14ec237d7",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-005/frame_00010_000106.303.jpg": "7f69778e32e4ce79bcbade9303a37c267cf8c85f5386ba29260897cfc9d35999",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-005/frame_00153_000111.269.jpg": "6507ef5baac6a5dff9ade550c4a8f2493d20dab70e5c36e5949cec5a37186814",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-000/frame_00146_000008.003.jpg": "c804671682f6b2176577e3470b8da036779263260591b6a7a369bc8a7dd532f6",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-001/frame_00090_000025.003.jpg": "4d5ff4be0b072bb31cc6456bbe9c59f9bdcbf534262fa1189cc1704e901d31e9",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00300_000050.003.jpg": "e49b2c51b96006f1954559d3b1229ca475dd34d69127c4f2e116fba4aa7482a2",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00414_000069.003.jpg": "afbdfeed435015451e2ea5a980274776f820ffa0fe0bcda85145d3cb00599c60",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00458_000076.403.jpg": "74a832b17f1d4cd603dba816b4e63390920aa5e29d4030f3c5fbc14e090b6154",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-001/frame_00010_000085.003.jpg": "896cd3012fe1610a65e290c64b5554b10fd3d2387ace7655ce1d67a9f01b035d",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-005/frame_00044_000108.203.jpg": "9109ff0a12d7f8c8a21f9058dec5f64feb4320de132281b9d655deba9126e13c",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-005/frame_00129_000110.203.jpg": "d5aa243b69fab96d5b31a8fbd5c9d26e759eca31e06da5f696cd80379b06df09",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-001/frame_00173_000112.203.jpg": "0988bdf799061cb472700920d8414f066e1587af446184d57063a70604bc3258",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-001/frame_00292_000132.003.jpg": "0ad9fef058ff19dbcfb1d0b61a30bb8adbc850f80c7e35f5721b66fd1e2c74ef",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-007/frame_00052_000150.003.jpg": "6f86d44b893d92a530d96a976691bd52a30f04e9ee17f33c80caf4ec74c25b1b",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-001/frame_00460_000160.003.jpg": "cd30f58d924fea22413d08a6e54107b1264d8e817b06a49f7ecac19f48d863d2",
+    "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-007/frame_00437_000170.003.jpg": "873d8dbef8b774b8b08938589f6a567bf4b4cdce45332d0a649f6b48782b155c",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/selection.json": "471336a0ef31004b36555c378c38060b572e19c70433984f57792af8af6ffe68",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/acquired.json": "bab94b8d06f25ca297e11219a945fc7f6d5f8d28f45afbd4c8357eda40951873",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/native-review.png": "1d158aa7994f4fb9eddc2021f5b9f20d243e879a11e86436796e6a2175a153c3",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_01.png": "0aab97c4236685e670d2b89e9001b59a8e77c1b393bbe193ace0a98df6df17d9",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_02.png": "0dc39ee196158fbc91f35b420e7a8f8cffa5a1d26a6a6acb5282dae80e6a10b4",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_03.png": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_04.png": "41f7647f739453bc9af6cf9ac92de6f47ed01adbf5ed28521ae479f1e8ee6167",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_05.png": "d56f456a9c47d2f913b0a97058c5e3f3202744637fb8264b159ff13a815d40b3",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_06.png": "d835f87de3e4d009ee926a04ee79283456bf74f1245d9e96e3d7c8de8041f66f",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_07.png": "8a59d99335e698bbf14e5cee7df977f3226c136966adbc6e4c9719910e9aaf98",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_08.png": "61739f9cd374f7284269283dadafff79c5e984fb19f07fb7c55c363514541d41",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_09.png": "da77fde3d0636fe8460f38eed7ec2ffcaff56e8df41213ec8e15bba23e6f0500",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_10.png": "5480c13098f2551181fc13b06c455d51b3aaee9c04c5e9dc79ffa09d87bac583",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_11.png": "4cb2b18aaca3e67ba1b53b8362c98f83da743ccf9f97ab2e629ca55e12704741",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_12.png": "581434f80998c432ce21b3aa3b91808521dc8efddb8421dcf65ee5fa07fd794b",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_13.png": "a6710f207d3b7ae31f26b46e24968e73d242b4ff7d506537aa78b27d6c75c853",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_14.png": "78702928f817a5ddf3c1b8fda2cb0f9fc41d22e103d8566aa5eed84bf5da1581",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_15.png": "bfde8c05523983e63865f08f6b6d9942d080a9d76ac42f99adc4769eae6ce3d3",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_16.png": "0236c21b2f2737973c3b291bc501ef3306acb4b479c925d652bac8c53a294945",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_17.png": "b11db0bd7bec6eee81bf02b046d891d833b5d343a41a79b914230479898cf2f1",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_18.png": "3eb2819f740dc4635085b12b2e819120b51dbfcdda5c30c79bc1ad9be10bff57",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_19.png": "cd85cf1bed95a34094089bfc51711fb9f31013171fe16cb45a23f8121306d56a",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_20.png": "df860f64aab53674bac3481184f505b1d6829508b79ac3804f9104c2deb506a4",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_21.png": "7fc4fd7fa4a2cd75fdbbfe2f951f91ce88fd3416775eb2b0b65811104bb470f7",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_22.png": "b79f495d0299c4b9b196cf3134d02103f5d1a1edfdc69580f18d3354fc7ba381",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_23.png": "fa31b13e80a36bbfdf779f070d7e1ffc7ba2a9cf1a19d6a64f53598dd4135ce5",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_24.png": "979ef3bbb5ff5913b0812292aba287512383d005f425ffcddd0bbae5ad762a96"
+  },
+  "counts": {
+    "training_correct": 3,
+    "training_unknown": 0,
+    "holdout_correct": 8,
+    "holdout_unknown": 0,
+    "holdout_wrong": 0,
+    "control_rejected": 13,
+    "control_false_positive": 0
+  },
+  "rows": [
+    {
+      "reviewed_time_sec": 1.503,
+      "historical_frame_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00009_000001.503.jpg",
+      "split": "training",
+      "expected_present": true,
+      "requested_pts_ticks": 23081,
+      "requested_time_sec": 1.5026692708333333,
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_01.png",
+      "source_pts_ticks": 23081,
+      "time_sec": 1.5026692708333333,
+      "encoded_sha256": "0aab97c4236685e670d2b89e9001b59a8e77c1b393bbe193ace0a98df6df17d9",
+      "pixel_sha256": "470b5f982ae904f52c30a4e5d305d01bc40eac26cedef528b9dbdcc7def9100f",
+      "source_time_base": "1/15360",
+      "accepted": true,
+      "observed_present": true,
+      "confidence": 0.9756581805512156,
+      "semantic_measurements": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.9756581805512156,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 4727,
+            "current_std": 27.285305754706123,
+            "score": 0.9756581805512156,
+            "reason": "matched"
+          },
+          {
+            "group": 2,
+            "mask_population": 2503,
+            "current_std": 29.227444399308606,
+            "score": 0.9901640508498166,
+            "reason": "matched"
+          },
+          {
+            "group": 3,
+            "mask_population": 2415,
+            "current_std": 32.58702860560218,
+            "score": 0.991604115704895,
+            "reason": "matched"
+          }
+        ],
+        "presence": true,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "roi": "center_phase_banner",
+        "pixel_bounds": [
+          765,
+          170,
+          1155,
+          240
+        ],
+        "crop_pixel_sha256": "5eeea64284794fd5ed982162ae356a6663c704b870dbd59914bf52e64705a569"
+      },
+      "result": "training_correct"
+    },
+    {
+      "reviewed_time_sec": 2.503,
+      "historical_frame_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00015_000002.503.jpg",
+      "split": "training",
+      "expected_present": true,
+      "requested_pts_ticks": 38441,
+      "requested_time_sec": 2.502669270833333,
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_02.png",
+      "source_pts_ticks": 38441,
+      "time_sec": 2.502669270833333,
+      "encoded_sha256": "0dc39ee196158fbc91f35b420e7a8f8cffa5a1d26a6a6acb5282dae80e6a10b4",
+      "pixel_sha256": "22b9129dadeb8173b441f31b92f20bb61423461cd5ae33961ddc104c6b8a71f7",
+      "source_time_base": "1/15360",
+      "accepted": true,
+      "observed_present": true,
+      "confidence": 0.977443745909752,
+      "semantic_measurements": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.977443745909752,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 4727,
+            "current_std": 22.718159354770425,
+            "score": 0.9818036687247336,
+            "reason": "matched"
+          },
+          {
+            "group": 2,
+            "mask_population": 2503,
+            "current_std": 17.969180088057648,
+            "score": 0.977443745909752,
+            "reason": "matched"
+          },
+          {
+            "group": 3,
+            "mask_population": 2415,
+            "current_std": 21.630849581622073,
+            "score": 0.9784441201494056,
+            "reason": "matched"
+          }
+        ],
+        "presence": true,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "roi": "center_phase_banner",
+        "pixel_bounds": [
+          765,
+          170,
+          1155,
+          240
+        ],
+        "crop_pixel_sha256": "8b3026842508357856ae9965952a03401b01fae56108203e6b3898f1d1a3da57"
+      },
+      "result": "training_correct"
+    },
+    {
+      "reviewed_time_sec": 3.903,
+      "historical_frame_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-000/frame_00048_000003.903.jpg",
+      "split": "training",
+      "expected_present": true,
+      "requested_pts_ticks": 59945,
+      "requested_time_sec": 3.9026692708333335,
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_03.png",
+      "source_pts_ticks": 59945,
+      "time_sec": 3.9026692708333335,
+      "encoded_sha256": "61cf1fbf9729e7717799148ad8f2bd2d3a8390de8bd19401e3dd961d7af2022c",
+      "pixel_sha256": "439c3817810a8d8bcc8c82ed218d5fe0f851c7c5f35308b0b85fcbd328759edd",
+      "source_time_base": "1/15360",
+      "accepted": true,
+      "observed_present": true,
+      "confidence": 0.9825946381792128,
+      "semantic_measurements": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.9825946381792128,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 4727,
+            "current_std": 25.5110505842731,
+            "score": 0.9863430545176082,
+            "reason": "matched"
+          },
+          {
+            "group": 2,
+            "mask_population": 2503,
+            "current_std": 27.72647452336074,
+            "score": 0.9825946381792128,
+            "reason": "matched"
+          },
+          {
+            "group": 3,
+            "mask_population": 2415,
+            "current_std": 28.902452715144204,
+            "score": 0.9956806173793102,
+            "reason": "matched"
+          }
+        ],
+        "presence": true,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "roi": "center_phase_banner",
+        "pixel_bounds": [
+          765,
+          170,
+          1155,
+          240
+        ],
+        "crop_pixel_sha256": "f91492345796bd3e63176a4959971b4f64151495d52d434c09d33c1775ea3765"
+      },
+      "result": "training_correct"
+    },
+    {
+      "reviewed_time_sec": 0.869336,
+      "historical_frame_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-000/frame_00005_000000.869.jpg",
+      "split": "holdout_positive",
+      "expected_present": true,
+      "requested_pts_ticks": 13353,
+      "requested_time_sec": 0.8693359375,
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_04.png",
+      "source_pts_ticks": 13353,
+      "time_sec": 0.8693359375,
+      "encoded_sha256": "41f7647f739453bc9af6cf9ac92de6f47ed01adbf5ed28521ae479f1e8ee6167",
+      "pixel_sha256": "9ad154e6a87bdb05c630cc9f19206d1f9f33276ff9b359c0ea5f5057935bac52",
+      "source_time_base": "1/15360",
+      "accepted": true,
+      "observed_present": true,
+      "confidence": 0.9692594186605111,
+      "semantic_measurements": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.9692594186605111,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 4727,
+            "current_std": 33.98836498788818,
+            "score": 0.9746769889814818,
+            "reason": "matched"
+          },
+          {
+            "group": 2,
+            "mask_population": 2503,
+            "current_std": 36.631387104406336,
+            "score": 0.9692594186605111,
+            "reason": "matched"
+          },
+          {
+            "group": 3,
+            "mask_population": 2415,
+            "current_std": 46.65969486134328,
+            "score": 0.9769996335510351,
+            "reason": "matched"
+          }
+        ],
+        "presence": true,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "roi": "center_phase_banner",
+        "pixel_bounds": [
+          765,
+          170,
+          1155,
+          240
+        ],
+        "crop_pixel_sha256": "0c5ff20ec1084ecb1c01e13ec29a9f048fd2d0444c9b8926293b186c6db73c5f"
+      },
+      "result": "holdout_correct"
+    },
+    {
+      "reviewed_time_sec": 1.869336,
+      "historical_frame_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-000/frame_00017_000001.869.jpg",
+      "split": "holdout_positive",
+      "expected_present": true,
+      "requested_pts_ticks": 28713,
+      "requested_time_sec": 1.8693359375,
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_05.png",
+      "source_pts_ticks": 28713,
+      "time_sec": 1.8693359375,
+      "encoded_sha256": "d56f456a9c47d2f913b0a97058c5e3f3202744637fb8264b159ff13a815d40b3",
+      "pixel_sha256": "dc40f0ebf0d946148b95f2c14a609a72179a4bfada9e6e3cf8ddaeeec4d9fdaa",
+      "source_time_base": "1/15360",
+      "accepted": true,
+      "observed_present": true,
+      "confidence": 0.9665472683044305,
+      "semantic_measurements": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.9665472683044305,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 4727,
+            "current_std": 22.54195799617099,
+            "score": 0.9700735465595759,
+            "reason": "matched"
+          },
+          {
+            "group": 2,
+            "mask_population": 2503,
+            "current_std": 19.392339366020845,
+            "score": 0.9665472683044305,
+            "reason": "matched"
+          },
+          {
+            "group": 3,
+            "mask_population": 2415,
+            "current_std": 20.663095640999174,
+            "score": 0.9694629096241753,
+            "reason": "matched"
+          }
+        ],
+        "presence": true,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "roi": "center_phase_banner",
+        "pixel_bounds": [
+          765,
+          170,
+          1155,
+          240
+        ],
+        "crop_pixel_sha256": "b81411cf1d331a176582a28858945ac94ca1013ba3e37d14f17023fed6f73751"
+      },
+      "result": "holdout_correct"
+    },
+    {
+      "reviewed_time_sec": 98.002669,
+      "historical_frame_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-001/frame_00088_000098.003.jpg",
+      "split": "holdout_positive",
+      "expected_present": true,
+      "requested_pts_ticks": 1505321,
+      "requested_time_sec": 98.00266927083334,
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_06.png",
+      "source_pts_ticks": 1505321,
+      "time_sec": 98.00266927083334,
+      "encoded_sha256": "d835f87de3e4d009ee926a04ee79283456bf74f1245d9e96e3d7c8de8041f66f",
+      "pixel_sha256": "f70508e35f6d4b1ded58c6a19a6a1f9360f99f46763f18579f3419d594a24f88",
+      "source_time_base": "1/15360",
+      "accepted": true,
+      "observed_present": true,
+      "confidence": 0.9662639423647382,
+      "semantic_measurements": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.9662639423647382,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 4727,
+            "current_std": 37.34388854740757,
+            "score": 0.9805647915379604,
+            "reason": "matched"
+          },
+          {
+            "group": 2,
+            "mask_population": 2503,
+            "current_std": 42.53568673337716,
+            "score": 0.9662639423647382,
+            "reason": "matched"
+          },
+          {
+            "group": 3,
+            "mask_population": 2415,
+            "current_std": 41.79823156439472,
+            "score": 0.9810795791048366,
+            "reason": "matched"
+          }
+        ],
+        "presence": true,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "roi": "center_phase_banner",
+        "pixel_bounds": [
+          765,
+          170,
+          1155,
+          240
+        ],
+        "crop_pixel_sha256": "70fb3032f7eef8bfd442cda492c5f795670dcbf005a8b2532cb3c0404c42d307"
+      },
+      "result": "holdout_correct"
+    },
+    {
+      "reviewed_time_sec": 100.302669,
+      "historical_frame_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-004/frame_00330_000100.303.jpg",
+      "split": "holdout_positive",
+      "expected_present": true,
+      "requested_pts_ticks": 1540649,
+      "requested_time_sec": 100.30266927083333,
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_07.png",
+      "source_pts_ticks": 1540649,
+      "time_sec": 100.30266927083333,
+      "encoded_sha256": "8a59d99335e698bbf14e5cee7df977f3226c136966adbc6e4c9719910e9aaf98",
+      "pixel_sha256": "54ef3f77a8cd3c051bb46d0d309940e8c444dc26d04dd90d312ab334d09ed163",
+      "source_time_base": "1/15360",
+      "accepted": true,
+      "observed_present": true,
+      "confidence": 0.9659779527026425,
+      "semantic_measurements": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.9659779527026425,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 4727,
+            "current_std": 36.70049333544319,
+            "score": 0.9659779527026425,
+            "reason": "matched"
+          },
+          {
+            "group": 2,
+            "mask_population": 2503,
+            "current_std": 45.639463296064676,
+            "score": 0.9778747826915255,
+            "reason": "matched"
+          },
+          {
+            "group": 3,
+            "mask_population": 2415,
+            "current_std": 43.30190132330949,
+            "score": 0.9887186306056824,
+            "reason": "matched"
+          }
+        ],
+        "presence": true,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "roi": "center_phase_banner",
+        "pixel_bounds": [
+          765,
+          170,
+          1155,
+          240
+        ],
+        "crop_pixel_sha256": "1169cbe084f2917b5dabf83a2a3c47c527a6cfbaa3de97816132f1b387344f63"
+      },
+      "result": "holdout_correct"
+    },
+    {
+      "reviewed_time_sec": 102.719336,
+      "historical_frame_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-004/frame_00416_000102.719.jpg",
+      "split": "holdout_positive",
+      "expected_present": true,
+      "requested_pts_ticks": 1577769,
+      "requested_time_sec": 102.7193359375,
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_08.png",
+      "source_pts_ticks": 1577769,
+      "time_sec": 102.7193359375,
+      "encoded_sha256": "61739f9cd374f7284269283dadafff79c5e984fb19f07fb7c55c363514541d41",
+      "pixel_sha256": "db27b291aee56e75037ccd785770bf65d4de053e11cc3c00ca6de1ed570f2ba1",
+      "source_time_base": "1/15360",
+      "accepted": true,
+      "observed_present": true,
+      "confidence": 0.9762386814607382,
+      "semantic_measurements": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.9762386814607382,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 4727,
+            "current_std": 45.00478301214366,
+            "score": 0.9775703406104888,
+            "reason": "matched"
+          },
+          {
+            "group": 2,
+            "mask_population": 2503,
+            "current_std": 41.47082449004972,
+            "score": 0.9762386814607382,
+            "reason": "matched"
+          },
+          {
+            "group": 3,
+            "mask_population": 2415,
+            "current_std": 42.577266019997964,
+            "score": 0.982088041008584,
+            "reason": "matched"
+          }
+        ],
+        "presence": true,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "roi": "center_phase_banner",
+        "pixel_bounds": [
+          765,
+          170,
+          1155,
+          240
+        ],
+        "crop_pixel_sha256": "9ad2e73ab7924c53f7f852410036f20243340e6da28bd94a58049baa7fd4dc65"
+      },
+      "result": "holdout_correct"
+    },
+    {
+      "reviewed_time_sec": 104.086003,
+      "historical_frame_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-004/frame_00461_000104.086.jpg",
+      "split": "holdout_positive",
+      "expected_present": true,
+      "requested_pts_ticks": 1598761,
+      "requested_time_sec": 104.08600260416667,
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_09.png",
+      "source_pts_ticks": 1598761,
+      "time_sec": 104.08600260416667,
+      "encoded_sha256": "da77fde3d0636fe8460f38eed7ec2ffcaff56e8df41213ec8e15bba23e6f0500",
+      "pixel_sha256": "c77998771b90f0244f92dbf3a84d65ffed2df6b2bc12ecc95452db7837489229",
+      "source_time_base": "1/15360",
+      "accepted": true,
+      "observed_present": true,
+      "confidence": 0.9443238743014096,
+      "semantic_measurements": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.9443238743014096,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 4727,
+            "current_std": 42.96494605244994,
+            "score": 0.9758831244749575,
+            "reason": "matched"
+          },
+          {
+            "group": 2,
+            "mask_population": 2503,
+            "current_std": 43.77053910721797,
+            "score": 0.9619481956973861,
+            "reason": "matched"
+          },
+          {
+            "group": 3,
+            "mask_population": 2415,
+            "current_std": 40.28855999399528,
+            "score": 0.9443238743014096,
+            "reason": "matched"
+          }
+        ],
+        "presence": true,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "roi": "center_phase_banner",
+        "pixel_bounds": [
+          765,
+          170,
+          1155,
+          240
+        ],
+        "crop_pixel_sha256": "816a590583e78e5b0675e793d316cc70ee3ff15b2c208e61891890266110cfde"
+      },
+      "result": "holdout_correct"
+    },
+    {
+      "reviewed_time_sec": 106.302669,
+      "historical_frame_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-005/frame_00010_000106.303.jpg",
+      "split": "holdout_positive",
+      "expected_present": true,
+      "requested_pts_ticks": 1632809,
+      "requested_time_sec": 106.30266927083333,
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_10.png",
+      "source_pts_ticks": 1632809,
+      "time_sec": 106.30266927083333,
+      "encoded_sha256": "5480c13098f2551181fc13b06c455d51b3aaee9c04c5e9dc79ffa09d87bac583",
+      "pixel_sha256": "11474649e45206f151499eae67d39f91925c82ca244f31f7be174e5b33f36fb2",
+      "source_time_base": "1/15360",
+      "accepted": true,
+      "observed_present": true,
+      "confidence": 0.930303873424797,
+      "semantic_measurements": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.930303873424797,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 4727,
+            "current_std": 45.639952673013774,
+            "score": 0.9495565467600827,
+            "reason": "matched"
+          },
+          {
+            "group": 2,
+            "mask_population": 2503,
+            "current_std": 48.33182357125397,
+            "score": 0.930303873424797,
+            "reason": "matched"
+          },
+          {
+            "group": 3,
+            "mask_population": 2415,
+            "current_std": 51.15415009892888,
+            "score": 0.9886001040326953,
+            "reason": "matched"
+          }
+        ],
+        "presence": true,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "roi": "center_phase_banner",
+        "pixel_bounds": [
+          765,
+          170,
+          1155,
+          240
+        ],
+        "crop_pixel_sha256": "b3916ea8a33f34797b11f747def9dde97b159cbd436db29f2f4665adff23eaba"
+      },
+      "result": "holdout_correct"
+    },
+    {
+      "reviewed_time_sec": 111.269336,
+      "historical_frame_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-005/frame_00153_000111.269.jpg",
+      "split": "holdout_positive",
+      "expected_present": true,
+      "requested_pts_ticks": 1709097,
+      "requested_time_sec": 111.2693359375,
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_11.png",
+      "source_pts_ticks": 1709097,
+      "time_sec": 111.2693359375,
+      "encoded_sha256": "4cb2b18aaca3e67ba1b53b8362c98f83da743ccf9f97ab2e629ca55e12704741",
+      "pixel_sha256": "8e943a39d32a30f137f0ae4b1d763464232d43a0818a4bdc7adf737a299e9f80",
+      "source_time_base": "1/15360",
+      "accepted": true,
+      "observed_present": true,
+      "confidence": 0.9535449260163092,
+      "semantic_measurements": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.9535449260163092,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 4727,
+            "current_std": 25.388157352770786,
+            "score": 0.9535449260163092,
+            "reason": "matched"
+          },
+          {
+            "group": 2,
+            "mask_population": 2503,
+            "current_std": 46.25679096889019,
+            "score": 0.9814874249449976,
+            "reason": "matched"
+          },
+          {
+            "group": 3,
+            "mask_population": 2415,
+            "current_std": 44.475796577335956,
+            "score": 0.9813184173626669,
+            "reason": "matched"
+          }
+        ],
+        "presence": true,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "roi": "center_phase_banner",
+        "pixel_bounds": [
+          765,
+          170,
+          1155,
+          240
+        ],
+        "crop_pixel_sha256": "1a9e8b50c8d18ba6d951a74789e0132eeb374319791f89c75d9e35ecf37eddf8"
+      },
+      "result": "holdout_correct"
+    },
+    {
+      "reviewed_time_sec": 8.002669,
+      "historical_frame_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-000/frame_00146_000008.003.jpg",
+      "split": "control",
+      "expected_present": false,
+      "requested_pts_ticks": 122921,
+      "requested_time_sec": 8.002669270833334,
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_12.png",
+      "source_pts_ticks": 122921,
+      "time_sec": 8.002669270833334,
+      "encoded_sha256": "581434f80998c432ce21b3aa3b91808521dc8efddb8421dcf65ee5fa07fd794b",
+      "pixel_sha256": "fdb6380844056f61637ba93c1677da9503e4087f564fe846cf294d6444d5132b",
+      "source_time_base": "1/15360",
+      "accepted": false,
+      "observed_present": null,
+      "confidence": 0,
+      "semantic_measurements": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.01942206621550608,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 4727,
+            "current_std": 15.262951109627481,
+            "score": 0.01942206621550608,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 2503,
+            "current_std": 24.01273944442229,
+            "score": 0.08549262058094728,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 3,
+            "mask_population": 2415,
+            "current_std": 12.007229938958643,
+            "score": 0.09397620058717948,
+            "reason": "below_threshold"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "roi": "center_phase_banner",
+        "pixel_bounds": [
+          765,
+          170,
+          1155,
+          240
+        ],
+        "crop_pixel_sha256": "271ec8f9568740bcb2fafea43b9f14218083100d14c3041a21aa69b5255fc616"
+      },
+      "result": "control_rejected"
+    },
+    {
+      "reviewed_time_sec": 25.002669,
+      "historical_frame_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-001/frame_00090_000025.003.jpg",
+      "split": "control",
+      "expected_present": false,
+      "requested_pts_ticks": 384041,
+      "requested_time_sec": 25.002669270833334,
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_13.png",
+      "source_pts_ticks": 384041,
+      "time_sec": 25.002669270833334,
+      "encoded_sha256": "a6710f207d3b7ae31f26b46e24968e73d242b4ff7d506537aa78b27d6c75c853",
+      "pixel_sha256": "9de35a21f3ab1d94b22ed0396cef0e239fba021cd84d62ec2c2fd95ba5138403",
+      "source_time_base": "1/15360",
+      "accepted": false,
+      "observed_present": null,
+      "confidence": 0,
+      "semantic_measurements": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.0,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 4727,
+            "current_std": 53.668013245839575,
+            "score": 0.022969523580166025,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 2503,
+            "current_std": 7.563542318774505,
+            "score": 0.03635660196653387,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 3,
+            "mask_population": 2415,
+            "current_std": 4.483197209678821,
+            "score": 0.0,
+            "reason": "contrast_unavailable"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "roi": "center_phase_banner",
+        "pixel_bounds": [
+          765,
+          170,
+          1155,
+          240
+        ],
+        "crop_pixel_sha256": "0f7134e4defad5af207a3094ecd9f8f5aecaa42a83f2076330150c05184d5d19"
+      },
+      "result": "control_rejected"
+    },
+    {
+      "reviewed_time_sec": 50.002669,
+      "historical_frame_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00300_000050.003.jpg",
+      "split": "control",
+      "expected_present": false,
+      "requested_pts_ticks": 768041,
+      "requested_time_sec": 50.00266927083333,
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_14.png",
+      "source_pts_ticks": 768041,
+      "time_sec": 50.00266927083333,
+      "encoded_sha256": "78702928f817a5ddf3c1b8fda2cb0f9fc41d22e103d8566aa5eed84bf5da1581",
+      "pixel_sha256": "1d38eb42be72749dabe25fa0fecfdbd9b1ef58b8f5d2e8a13a1427a89d139097",
+      "source_time_base": "1/15360",
+      "accepted": false,
+      "observed_present": null,
+      "confidence": 0,
+      "semantic_measurements": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.0,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 4727,
+            "current_std": 5.0305004166078,
+            "score": 0.0,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 2503,
+            "current_std": 38.192131028603384,
+            "score": 0.0,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 3,
+            "mask_population": 2415,
+            "current_std": 3.9405616908391607,
+            "score": 0.0,
+            "reason": "contrast_unavailable"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "roi": "center_phase_banner",
+        "pixel_bounds": [
+          765,
+          170,
+          1155,
+          240
+        ],
+        "crop_pixel_sha256": "8439d90c5b20360d5f155655ca6dc666b8faa01ca7fe824ca5a01dfcfad31c6c"
+      },
+      "result": "control_rejected"
+    },
+    {
+      "reviewed_time_sec": 69.002669,
+      "historical_frame_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00414_000069.003.jpg",
+      "split": "control",
+      "expected_present": false,
+      "requested_pts_ticks": 1059881,
+      "requested_time_sec": 69.00266927083334,
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_15.png",
+      "source_pts_ticks": 1059881,
+      "time_sec": 69.00266927083334,
+      "encoded_sha256": "bfde8c05523983e63865f08f6b6d9942d080a9d76ac42f99adc4769eae6ce3d3",
+      "pixel_sha256": "b5b227d74f05bdda2311519c7f7017af1983d2f9e2b59ef3a844f79f5a8f9be3",
+      "source_time_base": "1/15360",
+      "accepted": false,
+      "observed_present": null,
+      "confidence": 0,
+      "semantic_measurements": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.0,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 4727,
+            "current_std": 9.563299088977496,
+            "score": 0.0,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 2503,
+            "current_std": 0.5907984045061331,
+            "score": 0.0,
+            "reason": "contrast_unavailable"
+          },
+          {
+            "group": 3,
+            "mask_population": 2415,
+            "current_std": 7.004974586062856,
+            "score": 0.0,
+            "reason": "below_threshold"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "roi": "center_phase_banner",
+        "pixel_bounds": [
+          765,
+          170,
+          1155,
+          240
+        ],
+        "crop_pixel_sha256": "f4dfa768867645f0021f05480e5f7123c5112add43bb1aadad11284da4235f15"
+      },
+      "result": "control_rejected"
+    },
+    {
+      "reviewed_time_sec": 76.402669,
+      "historical_frame_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00458_000076.403.jpg",
+      "split": "control",
+      "expected_present": false,
+      "requested_pts_ticks": 1173545,
+      "requested_time_sec": 76.40266927083333,
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_16.png",
+      "source_pts_ticks": 1173545,
+      "time_sec": 76.40266927083333,
+      "encoded_sha256": "0236c21b2f2737973c3b291bc501ef3306acb4b479c925d652bac8c53a294945",
+      "pixel_sha256": "a8150766d43268b76f62c2cc4c074da92ec48e18c14f3f657852fd5c85092ecf",
+      "source_time_base": "1/15360",
+      "accepted": false,
+      "observed_present": null,
+      "confidence": 0,
+      "semantic_measurements": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.0,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 4727,
+            "current_std": 38.038669120847345,
+            "score": 0.0,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 2503,
+            "current_std": 54.7488319540552,
+            "score": 0.13418319663668307,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 3,
+            "mask_population": 2415,
+            "current_std": 57.74791675390665,
+            "score": 0.05843385296189168,
+            "reason": "below_threshold"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "roi": "center_phase_banner",
+        "pixel_bounds": [
+          765,
+          170,
+          1155,
+          240
+        ],
+        "crop_pixel_sha256": "cf4b068ae1149ed1ccf0f75429ba594c0eeb2e9da1859de71318eea850039d2f"
+      },
+      "result": "control_rejected"
+    },
+    {
+      "reviewed_time_sec": 85.002669,
+      "historical_frame_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-001/frame_00010_000085.003.jpg",
+      "split": "control",
+      "expected_present": false,
+      "requested_pts_ticks": 1305641,
+      "requested_time_sec": 85.00266927083334,
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_17.png",
+      "source_pts_ticks": 1305641,
+      "time_sec": 85.00266927083334,
+      "encoded_sha256": "b11db0bd7bec6eee81bf02b046d891d833b5d343a41a79b914230479898cf2f1",
+      "pixel_sha256": "9fd764792be8c64e31b78be8579751e256b57f2582cd7a6b470d1cbea3445e5e",
+      "source_time_base": "1/15360",
+      "accepted": false,
+      "observed_present": null,
+      "confidence": 0,
+      "semantic_measurements": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.0,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 4727,
+            "current_std": 27.1974670412348,
+            "score": 0.0,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 2503,
+            "current_std": 57.69482252206594,
+            "score": 0.03649617457850209,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 3,
+            "mask_population": 2415,
+            "current_std": 26.764960908316905,
+            "score": 0.02420198545247039,
+            "reason": "below_threshold"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "roi": "center_phase_banner",
+        "pixel_bounds": [
+          765,
+          170,
+          1155,
+          240
+        ],
+        "crop_pixel_sha256": "192773ab7e0a7c4359e36366880bf8951614dde34449ffd306bbe4d2d259ae24"
+      },
+      "result": "control_rejected"
+    },
+    {
+      "reviewed_time_sec": 108.202669,
+      "historical_frame_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-005/frame_00044_000108.203.jpg",
+      "split": "control",
+      "expected_present": false,
+      "requested_pts_ticks": 1661993,
+      "requested_time_sec": 108.20266927083334,
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_18.png",
+      "source_pts_ticks": 1661993,
+      "time_sec": 108.20266927083334,
+      "encoded_sha256": "3eb2819f740dc4635085b12b2e819120b51dbfcdda5c30c79bc1ad9be10bff57",
+      "pixel_sha256": "f1317277e07138373f13b47dc29a39be524db58a58e6389781b7931682abf58d",
+      "source_time_base": "1/15360",
+      "accepted": false,
+      "observed_present": null,
+      "confidence": 0,
+      "semantic_measurements": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.0,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 4727,
+            "current_std": 30.254587811617956,
+            "score": 0.0,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 2503,
+            "current_std": 59.42314453129419,
+            "score": 0.035780335253120604,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 3,
+            "mask_population": 2415,
+            "current_std": 26.98104282685952,
+            "score": 0.023472916360531063,
+            "reason": "below_threshold"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "roi": "center_phase_banner",
+        "pixel_bounds": [
+          765,
+          170,
+          1155,
+          240
+        ],
+        "crop_pixel_sha256": "847d7212033ec1ca5fec3bb1fb84a5dfac2ccd1e55f708cb3bf0a2433ec0f643"
+      },
+      "result": "control_rejected"
+    },
+    {
+      "reviewed_time_sec": 110.202669,
+      "historical_frame_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-005/frame_00129_000110.203.jpg",
+      "split": "control",
+      "expected_present": false,
+      "requested_pts_ticks": 1692713,
+      "requested_time_sec": 110.20266927083334,
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_19.png",
+      "source_pts_ticks": 1692713,
+      "time_sec": 110.20266927083334,
+      "encoded_sha256": "cd85cf1bed95a34094089bfc51711fb9f31013171fe16cb45a23f8121306d56a",
+      "pixel_sha256": "8f8a778303fcfcbc2cffcdce8f6c7240c307d5872b96eff46796d6c7fbce3e71",
+      "source_time_base": "1/15360",
+      "accepted": false,
+      "observed_present": null,
+      "confidence": 0,
+      "semantic_measurements": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.0,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 4727,
+            "current_std": 29.038296257448952,
+            "score": 0.0,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 2503,
+            "current_std": 51.86218192727784,
+            "score": 0.036109024421214636,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 3,
+            "mask_population": 2415,
+            "current_std": 26.962399190063117,
+            "score": 0.03174159192861999,
+            "reason": "below_threshold"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "roi": "center_phase_banner",
+        "pixel_bounds": [
+          765,
+          170,
+          1155,
+          240
+        ],
+        "crop_pixel_sha256": "b4ff7aab51affa03fab908f5e60a051dded22fd3e6311aa95403b9f00fd93292"
+      },
+      "result": "control_rejected"
+    },
+    {
+      "reviewed_time_sec": 112.202669,
+      "historical_frame_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-001/frame_00173_000112.203.jpg",
+      "split": "control",
+      "expected_present": false,
+      "requested_pts_ticks": 1723433,
+      "requested_time_sec": 112.20266927083334,
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_20.png",
+      "source_pts_ticks": 1723433,
+      "time_sec": 112.20266927083334,
+      "encoded_sha256": "df860f64aab53674bac3481184f505b1d6829508b79ac3804f9104c2deb506a4",
+      "pixel_sha256": "31c7bdb4424f3df8dca3eb752e75521e6b7b23184eaf1ce9e53f181afb9fb963",
+      "source_time_base": "1/15360",
+      "accepted": false,
+      "observed_present": null,
+      "confidence": 0,
+      "semantic_measurements": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.021694844133871422,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 4727,
+            "current_std": 5.148464013927961,
+            "score": 0.021694844133871422,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 2503,
+            "current_std": 34.153138199200505,
+            "score": 0.03139700054899076,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 3,
+            "mask_population": 2415,
+            "current_std": 10.914398352906977,
+            "score": 0.025101327538704157,
+            "reason": "below_threshold"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "roi": "center_phase_banner",
+        "pixel_bounds": [
+          765,
+          170,
+          1155,
+          240
+        ],
+        "crop_pixel_sha256": "fa208c80634e52cbdd8a044ef2ddf1fb1a8cf305abe38a4eb77add51eeff835c"
+      },
+      "result": "control_rejected"
+    },
+    {
+      "reviewed_time_sec": 132.002669,
+      "historical_frame_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-001/frame_00292_000132.003.jpg",
+      "split": "control",
+      "expected_present": false,
+      "requested_pts_ticks": 2027561,
+      "requested_time_sec": 132.00266927083334,
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_21.png",
+      "source_pts_ticks": 2027561,
+      "time_sec": 132.00266927083334,
+      "encoded_sha256": "7fc4fd7fa4a2cd75fdbbfe2f951f91ce88fd3416775eb2b0b65811104bb470f7",
+      "pixel_sha256": "129139520103420c96212b721acc4b07e61b8fdfece9a5f07769fb45400bfaaa",
+      "source_time_base": "1/15360",
+      "accepted": false,
+      "observed_present": null,
+      "confidence": 0,
+      "semantic_measurements": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.0,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 4727,
+            "current_std": 23.05850278990847,
+            "score": 0.0,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 2503,
+            "current_std": 25.474062841985578,
+            "score": 0.0788221703532235,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 3,
+            "mask_population": 2415,
+            "current_std": 48.05945564164372,
+            "score": 0.0,
+            "reason": "below_threshold"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "roi": "center_phase_banner",
+        "pixel_bounds": [
+          765,
+          170,
+          1155,
+          240
+        ],
+        "crop_pixel_sha256": "c7d344aebb1799d4ce07b79bc03d81ade868a15750cfff5d1a8a58d114e9b6c3"
+      },
+      "result": "control_rejected"
+    },
+    {
+      "reviewed_time_sec": 150.002669,
+      "historical_frame_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-007/frame_00052_000150.003.jpg",
+      "split": "control",
+      "expected_present": false,
+      "requested_pts_ticks": 2304041,
+      "requested_time_sec": 150.00266927083334,
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_22.png",
+      "source_pts_ticks": 2304041,
+      "time_sec": 150.00266927083334,
+      "encoded_sha256": "b79f495d0299c4b9b196cf3134d02103f5d1a1edfdc69580f18d3354fc7ba381",
+      "pixel_sha256": "6c50acba14d7be9d22e494779d4d54a1571dc5afbe58e0c51fd8c0c61c8579be",
+      "source_time_base": "1/15360",
+      "accepted": false,
+      "observed_present": null,
+      "confidence": 0,
+      "semantic_measurements": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.0,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 4727,
+            "current_std": 8.60102795453021,
+            "score": 0.019037915474160103,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 2503,
+            "current_std": 46.57051413396145,
+            "score": 0.03970384724362555,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 3,
+            "mask_population": 2415,
+            "current_std": 1.806371602381282,
+            "score": 0.0,
+            "reason": "contrast_unavailable"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "roi": "center_phase_banner",
+        "pixel_bounds": [
+          765,
+          170,
+          1155,
+          240
+        ],
+        "crop_pixel_sha256": "604faee3d5aa31ac2fac45581e70aefbb48d90cfe43f5a47a7947bf6acc880c5"
+      },
+      "result": "control_rejected"
+    },
+    {
+      "reviewed_time_sec": 160.002669,
+      "historical_frame_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-001/frame_00460_000160.003.jpg",
+      "split": "control",
+      "expected_present": false,
+      "requested_pts_ticks": 2457641,
+      "requested_time_sec": 160.00266927083334,
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_23.png",
+      "source_pts_ticks": 2457641,
+      "time_sec": 160.00266927083334,
+      "encoded_sha256": "fa31b13e80a36bbfdf779f070d7e1ffc7ba2a9cf1a19d6a64f53598dd4135ce5",
+      "pixel_sha256": "5705062fda3345288452d9b4ef5f0054dfc24bd57ba4552f97665ffcf6c2ac6b",
+      "source_time_base": "1/15360",
+      "accepted": false,
+      "observed_present": null,
+      "confidence": 0,
+      "semantic_measurements": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.0,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 4727,
+            "current_std": 34.07495208241267,
+            "score": 0.0,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 2503,
+            "current_std": 49.74191842371485,
+            "score": 0.026034861152906222,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 3,
+            "mask_population": 2415,
+            "current_std": 12.824834131886345,
+            "score": 0.07158543704160196,
+            "reason": "below_threshold"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "roi": "center_phase_banner",
+        "pixel_bounds": [
+          765,
+          170,
+          1155,
+          240
+        ],
+        "crop_pixel_sha256": "295767f050e6b42ba515cc71725c18ff4264150a07d61da401b49b35a5c114b0"
+      },
+      "result": "control_rejected"
+    },
+    {
+      "reviewed_time_sec": 170.002669,
+      "historical_frame_path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-007/frame_00437_000170.003.jpg",
+      "split": "control",
+      "expected_present": false,
+      "requested_pts_ticks": 2611241,
+      "requested_time_sec": 170.00266927083334,
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/lifecycle-phase-current-native-20261012/source_24.png",
+      "source_pts_ticks": 2611241,
+      "time_sec": 170.00266927083334,
+      "encoded_sha256": "979ef3bbb5ff5913b0812292aba287512383d005f425ffcddd0bbae5ad762a96",
+      "pixel_sha256": "394152195dfdb479b0c3aff529eace85d3ba614addfd16749ef1a905aa5d9442",
+      "source_time_base": "1/15360",
+      "accepted": false,
+      "observed_present": null,
+      "confidence": 0,
+      "semantic_measurements": {
+        "matcher": "semantic_text_ncc_v1",
+        "threshold": 0.9,
+        "score": 0.0,
+        "groups": [
+          {
+            "group": 1,
+            "mask_population": 4727,
+            "current_std": 33.851873595124495,
+            "score": 0.06782247570786497,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 2,
+            "mask_population": 2503,
+            "current_std": 18.738853702942464,
+            "score": 0.0,
+            "reason": "below_threshold"
+          },
+          {
+            "group": 3,
+            "mask_population": 2415,
+            "current_std": 15.320507968511961,
+            "score": 0.03937269368183455,
+            "reason": "below_threshold"
+          }
+        ],
+        "presence": null,
+        "absence_checked": false,
+        "runtime_transition_authorized": false,
+        "roi": "center_phase_banner",
+        "pixel_bounds": [
+          765,
+          170,
+          1155,
+          240
+        ],
+        "crop_pixel_sha256": "15ff17d7491682f19813986961ced0e738f07095a1131703934964d199970f7b"
+      },
+      "result": "control_rejected"
+    }
+  ],
+  "runtime_sec": 17.03477655199822,
+  "decode_runtime_sec": 326.26771587110125,
+  "processed_frames": 24,
+  "geometry_scope": "Declared nominal layout crops, not current native HUD calibration/identity qualification",
+  "qualification_created": false,
+  "production_changed": false,
+  "canonical_full_executed": false,
+  "physical_splits_disjoint": true,
+  "native_review_before_predictions": true,
+  "historical_comparison": {
+    "scope": "Same source review cohort, previous production-profile detector on JPEG, current native raster and code; not a new blind holdout",
+    "training": {
+      "previous": 3,
+      "current": 3,
+      "delta": 0
+    },
+    "correct_positive": {
+      "previous": 8,
+      "current": 8,
+      "delta": 0
+    },
+    "control_false_positive": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    }
+  },
+  "component_support": {
+    "component": "purchase_phase",
+    "training_hashes": [
+      "22b9129dadeb8173b441f31b92f20bb61423461cd5ae33961ddc104c6b8a71f7",
+      "439c3817810a8d8bcc8c82ed218d5fe0f851c7c5f35308b0b85fcbd328759edd",
+      "470b5f982ae904f52c30a4e5d305d01bc40eac26cedef528b9dbdcc7def9100f"
+    ],
+    "holdout_hashes": [
+      "11474649e45206f151499eae67d39f91925c82ca244f31f7be174e5b33f36fb2",
+      "54ef3f77a8cd3c051bb46d0d309940e8c444dc26d04dd90d312ab334d09ed163",
+      "8e943a39d32a30f137f0ae4b1d763464232d43a0818a4bdc7adf737a299e9f80",
+      "9ad154e6a87bdb05c630cc9f19206d1f9f33276ff9b359c0ea5f5057935bac52",
+      "c77998771b90f0244f92dbf3a84d65ffed2df6b2bc12ecc95452db7837489229",
+      "db27b291aee56e75037ccd785770bf65d4de053e11cc3c00ca6de1ed570f2ba1",
+      "dc40f0ebf0d946148b95f2c14a609a72179a4bfada9e6e3cf8ddaeeec4d9fdaa",
+      "f70508e35f6d4b1ded58c6a19a6a1f9360f99f46763f18579f3419d594a24f88"
+    ],
+    "negative_hashes": [
+      "129139520103420c96212b721acc4b07e61b8fdfece9a5f07769fb45400bfaaa",
+      "1d38eb42be72749dabe25fa0fecfdbd9b1ef58b8f5d2e8a13a1427a89d139097",
+      "31c7bdb4424f3df8dca3eb752e75521e6b7b23184eaf1ce9e53f181afb9fb963",
+      "394152195dfdb479b0c3aff529eace85d3ba614addfd16749ef1a905aa5d9442",
+      "5705062fda3345288452d9b4ef5f0054dfc24bd57ba4552f97665ffcf6c2ac6b",
+      "6c50acba14d7be9d22e494779d4d54a1571dc5afbe58e0c51fd8c0c61c8579be",
+      "8f8a778303fcfcbc2cffcdce8f6c7240c307d5872b96eff46796d6c7fbce3e71",
+      "9de35a21f3ab1d94b22ed0396cef0e239fba021cd84d62ec2c2fd95ba5138403",
+      "9fd764792be8c64e31b78be8579751e256b57f2582cd7a6b470d1cbea3445e5e",
+      "a8150766d43268b76f62c2cc4c074da92ec48e18c14f3f657852fd5c85092ecf",
+      "b5b227d74f05bdda2311519c7f7017af1983d2f9e2b59ef3a844f79f5a8f9be3",
+      "f1317277e07138373f13b47dc29a39be524db58a58e6389781b7931682abf58d",
+      "fdb6380844056f61637ba93c1677da9503e4087f564fe846cf294d6444d5132b"
+    ],
+    "holdout_correct": 8,
+    "holdout_unknown": 0,
+    "holdout_wrong": 0,
+    "negative_false_positive": 0,
+    "review_provenance": "Historical source labels retained; corresponding native raster contact sheet inspected before current shared detector predictions, 2026-10-12. Same physical cases, not globally fresh or temporal qualification."
+  },
+  "artifact_sha256": {
+    "outputs/recognition-investigation/lifecycle-phase-current-native-20261012/selection.json": "471336a0ef31004b36555c378c38060b572e19c70433984f57792af8af6ffe68",
+    "outputs/recognition-investigation/lifecycle-phase-current-native-20261012/acquired.json": "bab94b8d06f25ca297e11219a945fc7f6d5f8d28f45afbd4c8357eda40951873",
+    "outputs/recognition-investigation/lifecycle-phase-current-native-20261012/native-review.png": "1d158aa7994f4fb9eddc2021f5b9f20d243e879a11e86436796e6a2175a153c3",
+    "outputs/recognition-investigation/lifecycle-phase-current-native-20261012/result.json": "8d7d9f3c153d0cee238a04f9f00c58f17d4c77292307419da964600beb938731"
+  },
+  "target_assertion_ids": [
+    "GT-R1-ROUND-START",
+    "GT-R2-ROUND-START",
+    "event_count_constraints-000",
+    "event_count_constraints-004",
+    "ordering_constraints-001"
+  ],
+  "remaining_required_components_for_assured_start": [
+    "timer",
+    "ui_transition"
+  ],
+  "qualification_sidecar_created": false,
+  "formal_events_created": 0,
+  "joint_qualification_compatibility": {
+    "timer_training_source_ticks_count": 76,
+    "overlap_with_timer_training": [
+      {
+        "source_pts_ticks": 1059881,
+        "time_sec": 69.00266927083334,
+        "phase_split": "control"
+      }
+    ],
+    "joint_negative_eligible_count": 12,
+    "individual_phase_report_counts_retained": true,
+    "component_support_not_directly_installable_in_joint_bundle": true,
+    "reason": "physical PTS conflict, despite different JPEG/native hashes; move control69.002669 out of any future joint negative split, keep all original diagnostic rows"
+  }
+}

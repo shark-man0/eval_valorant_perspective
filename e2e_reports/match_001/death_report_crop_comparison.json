@@ -1,0 +1,731 @@
+{
+  "schema_version": "1.0",
+  "scope": "Source-diagnosed report numeric crop comparison; fresh prospective same-video holdout, no qualified death or canonical E2E",
+  "analysis_head": "3f88b1a6120114643e71f72b247eb860e9b8416d",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "recognizer_fingerprint": "8512c0f5a3df560143a3f33e28ca7f3bb2a1d995473c7f6601c4209706580c8c",
+  "baseline_profile_fingerprint": "81828e0d02de191c172deaeea4091d74b3bd59b8af40c0527b1c2f54ac63ff7c",
+  "candidate_profile_fingerprint": "f58eaaf639c0db5e36e1da580517a96b8ddd04e81af3e354692b79419156a26c",
+  "candidate_decision": "REJECTED",
+  "decision_reason": "One previously correct R2 report field becomes unknown; do not adopt a static crop widening with new regression.",
+  "baseline_counts": {
+    "holdout_correct": 3,
+    "holdout_unknown": 3,
+    "holdout_wrong": 0,
+    "negative_rejected": 3,
+    "negative_false_positive": 0
+  },
+  "candidate_counts": {
+    "holdout_correct": 5,
+    "holdout_unknown": 1,
+    "holdout_wrong": 0,
+    "negative_rejected": 3,
+    "negative_false_positive": 0
+  },
+  "transitions": {
+    "unknown->correct": 3,
+    "rejected->rejected": 3,
+    "correct->correct": 2,
+    "correct->unknown": 1
+  },
+  "baseline_runtime_sec": 16.685004228027537,
+  "candidate_runtime_sec": 16.771536165033467,
+  "runtime_delta_sec": 0.08653193700592965,
+  "processed_frames": 10,
+  "rows": [
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_01.png",
+      "time_sec": 0.30266927083333334,
+      "source_pts_ticks": 4649,
+      "source_time_base": "1/15360",
+      "source_epoch": "faee44ff830049d5b704717cfd490cf0",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "abbf3ab31203e9c46667008722a97b470000cd0e9822c3281a0dbad859ba8552",
+      "pixel_sha256": "7a695f812e9418fd574cc6387676fb92ed15c525182615ece4274c5fd4a26e12",
+      "split": "holdout",
+      "manual_expected_display": "190",
+      "current_report_visible": true,
+      "prediction": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 0.30266927083333334,
+        "source_pixel_sha256": "7a695f812e9418fd574cc6387676fb92ed15c525182615ece4274c5fd4a26e12",
+        "profile_fingerprint": "f58eaaf639c0db5e36e1da580517a96b8ddd04e81af3e354692b79419156a26c",
+        "fields": {
+          "damage_received": {
+            "display": "190",
+            "value": 190,
+            "confidence": 0.9661391399999999,
+            "sources": [
+              "tesseract_digits"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.512,
+              0.952054794520548,
+              0.608
+            ]
+          }
+        }
+      },
+      "result": "correct",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_02.png",
+      "time_sec": 0.45266927083333336,
+      "source_pts_ticks": 6953,
+      "source_time_base": "1/15360",
+      "source_epoch": "5551d48789d5429680e287e10c7a311b",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "3ec903f18e57274ee6736fdc3a3ec8a2dee885f54d1b90d2b82dc529d45f3ba9",
+      "pixel_sha256": "b90be3094eaed07feb5f1f885ce7297b5bf4f8a62d8489cf78c28cee60309b3f",
+      "split": "holdout",
+      "manual_expected_display": "190",
+      "current_report_visible": true,
+      "prediction": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 0.45266927083333336,
+        "source_pixel_sha256": "b90be3094eaed07feb5f1f885ce7297b5bf4f8a62d8489cf78c28cee60309b3f",
+        "profile_fingerprint": "f58eaaf639c0db5e36e1da580517a96b8ddd04e81af3e354692b79419156a26c",
+        "fields": {
+          "damage_received": {
+            "display": "190",
+            "value": 190,
+            "confidence": 0.9669184900000001,
+            "sources": [
+              "tesseract_digits"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.512,
+              0.952054794520548,
+              0.608
+            ]
+          }
+        }
+      },
+      "result": "correct",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_03.png",
+      "time_sec": 0.6026692708333333,
+      "source_pts_ticks": 9257,
+      "source_time_base": "1/15360",
+      "source_epoch": "238aac91ee9044359ddd1049b59e2413",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "98eaa036ec706bbdaa6465cc07d8881054e8462d3d388012027841350012ee8d",
+      "pixel_sha256": "4d5c9bf27609ce6afc1b24b34bfb8d36371b5d15aec9caad50f8a57adffa718d",
+      "split": "holdout",
+      "manual_expected_display": "190",
+      "current_report_visible": true,
+      "prediction": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 0.6026692708333333,
+        "source_pixel_sha256": "4d5c9bf27609ce6afc1b24b34bfb8d36371b5d15aec9caad50f8a57adffa718d",
+        "profile_fingerprint": "f58eaaf639c0db5e36e1da580517a96b8ddd04e81af3e354692b79419156a26c",
+        "fields": {
+          "damage_received": {
+            "display": "190",
+            "value": 190,
+            "confidence": 0.9674340100000001,
+            "sources": [
+              "tesseract_digits"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.512,
+              0.952054794520548,
+              0.608
+            ]
+          }
+        }
+      },
+      "result": "correct",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_07.png",
+      "time_sec": 1.4026692708333333,
+      "source_pts_ticks": 21545,
+      "source_time_base": "1/15360",
+      "source_epoch": "dff0fd39a0a74a7dbc0f370ebe521dab",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "cb1df094574e190b8c04c3de4c89a7a276d7fda72c5643a4164d286724504d13",
+      "pixel_sha256": "52d0ffa59bf20d7885af918efa32df7bace258d49c2165999d5739facff3ee48",
+      "split": "negative",
+      "manual_expected_display": null,
+      "current_report_visible": false,
+      "prediction": null,
+      "result": "rejected",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_08.png",
+      "time_sec": 128.00266927083334,
+      "source_pts_ticks": 1966121,
+      "source_time_base": "1/15360",
+      "source_epoch": "f569bacce759414d8c532fb5245d629a",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "f8251a07a62856c3e3095ebbaa984cee29288b84c77632fd69038dcfd4841510",
+      "pixel_sha256": "684d7644e092a5340266e66714a6d79d4d012c02e1b598bd5b4112959e170956",
+      "split": "negative",
+      "manual_expected_display": null,
+      "current_report_visible": false,
+      "prediction": null,
+      "result": "rejected",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_09.png",
+      "time_sec": 142.00266927083334,
+      "source_pts_ticks": 2181161,
+      "source_time_base": "1/15360",
+      "source_epoch": "63aadf67dc36456a9d09e1be94c990c0",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "afae316418fdd84e6cde3bf1f052a4d195bf74b600f41bb752583ca414cad062",
+      "pixel_sha256": "204422368352699818358b1096f84c5c00b23192144ca801c16499ba45921602",
+      "split": "negative",
+      "manual_expected_display": null,
+      "current_report_visible": false,
+      "prediction": null,
+      "result": "rejected",
+      "primary_state": "live_first_person",
+      "player_specific_hud_valid": true
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_04.png",
+      "time_sec": 150.00266927083334,
+      "source_pts_ticks": 2304041,
+      "source_time_base": "1/15360",
+      "source_epoch": "199fbf7a380542dd9420b5899104aaa6",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "b79f495d0299c4b9b196cf3134d02103f5d1a1edfdc69580f18d3354fc7ba381",
+      "pixel_sha256": "6c50acba14d7be9d22e494779d4d54a1571dc5afbe58e0c51fd8c0c61c8579be",
+      "split": "holdout",
+      "manual_expected_display": "194",
+      "current_report_visible": true,
+      "prediction": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 150.00266927083334,
+        "source_pixel_sha256": "6c50acba14d7be9d22e494779d4d54a1571dc5afbe58e0c51fd8c0c61c8579be",
+        "profile_fingerprint": "f58eaaf639c0db5e36e1da580517a96b8ddd04e81af3e354692b79419156a26c",
+        "fields": {
+          "damage_received": {
+            "display": "194",
+            "value": 194,
+            "confidence": 0.93962372,
+            "sources": [
+              "tesseract_digits"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.512,
+              0.952054794520548,
+              0.608
+            ]
+          }
+        }
+      },
+      "result": "correct",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_05.png",
+      "time_sec": 152.00266927083334,
+      "source_pts_ticks": 2334761,
+      "source_time_base": "1/15360",
+      "source_epoch": "466989731f994fbdaec7728ea907383e",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "088257e159d950936d3422b5687d2d1386066651350dadfd1d590d31a015b653",
+      "pixel_sha256": "cf8a736ed8ff85e5cdf35ddf20de6d7b3ae50006c46ad6a890dc8611af5d5f6a",
+      "split": "holdout",
+      "manual_expected_display": "194",
+      "current_report_visible": true,
+      "prediction": null,
+      "result": "unknown",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_06.png",
+      "time_sec": 156.00266927083334,
+      "source_pts_ticks": 2396201,
+      "source_time_base": "1/15360",
+      "source_epoch": "cdc9be81fe7e40648b8f978607d025ac",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "b657707c32bfd7d7a9781d917cfd6c9e365d0ad66d63a5025d6f26eb0e428232",
+      "pixel_sha256": "6c6504dff7efc529c3216e58e06c3653c39ebfb7faf6fa796d508c599ec63ce2",
+      "split": "holdout",
+      "manual_expected_display": "194",
+      "current_report_visible": true,
+      "prediction": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 156.00266927083334,
+        "source_pixel_sha256": "6c6504dff7efc529c3216e58e06c3653c39ebfb7faf6fa796d508c599ec63ce2",
+        "profile_fingerprint": "f58eaaf639c0db5e36e1da580517a96b8ddd04e81af3e354692b79419156a26c",
+        "fields": {
+          "damage_received": {
+            "display": "194",
+            "value": 194,
+            "confidence": 0.93610596,
+            "sources": [
+              "tesseract_digits"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.512,
+              0.952054794520548,
+              0.608
+            ]
+          }
+        }
+      },
+      "result": "correct",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    }
+  ],
+  "baseline_rows": [
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_01.png",
+      "time_sec": 0.30266927083333334,
+      "source_pts_ticks": 4649,
+      "source_time_base": "1/15360",
+      "source_epoch": "faee44ff830049d5b704717cfd490cf0",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "abbf3ab31203e9c46667008722a97b470000cd0e9822c3281a0dbad859ba8552",
+      "pixel_sha256": "7a695f812e9418fd574cc6387676fb92ed15c525182615ece4274c5fd4a26e12",
+      "split": "holdout",
+      "manual_expected_display": "190",
+      "current_report_visible": true,
+      "prediction": null,
+      "result": "unknown",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_02.png",
+      "time_sec": 0.45266927083333336,
+      "source_pts_ticks": 6953,
+      "source_time_base": "1/15360",
+      "source_epoch": "5551d48789d5429680e287e10c7a311b",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "3ec903f18e57274ee6736fdc3a3ec8a2dee885f54d1b90d2b82dc529d45f3ba9",
+      "pixel_sha256": "b90be3094eaed07feb5f1f885ce7297b5bf4f8a62d8489cf78c28cee60309b3f",
+      "split": "holdout",
+      "manual_expected_display": "190",
+      "current_report_visible": true,
+      "prediction": null,
+      "result": "unknown",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_03.png",
+      "time_sec": 0.6026692708333333,
+      "source_pts_ticks": 9257,
+      "source_time_base": "1/15360",
+      "source_epoch": "238aac91ee9044359ddd1049b59e2413",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "98eaa036ec706bbdaa6465cc07d8881054e8462d3d388012027841350012ee8d",
+      "pixel_sha256": "4d5c9bf27609ce6afc1b24b34bfb8d36371b5d15aec9caad50f8a57adffa718d",
+      "split": "holdout",
+      "manual_expected_display": "190",
+      "current_report_visible": true,
+      "prediction": null,
+      "result": "unknown",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_07.png",
+      "time_sec": 1.4026692708333333,
+      "source_pts_ticks": 21545,
+      "source_time_base": "1/15360",
+      "source_epoch": "dff0fd39a0a74a7dbc0f370ebe521dab",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "cb1df094574e190b8c04c3de4c89a7a276d7fda72c5643a4164d286724504d13",
+      "pixel_sha256": "52d0ffa59bf20d7885af918efa32df7bace258d49c2165999d5739facff3ee48",
+      "split": "negative",
+      "manual_expected_display": null,
+      "current_report_visible": false,
+      "prediction": null,
+      "result": "rejected",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_08.png",
+      "time_sec": 128.00266927083334,
+      "source_pts_ticks": 1966121,
+      "source_time_base": "1/15360",
+      "source_epoch": "f569bacce759414d8c532fb5245d629a",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "f8251a07a62856c3e3095ebbaa984cee29288b84c77632fd69038dcfd4841510",
+      "pixel_sha256": "684d7644e092a5340266e66714a6d79d4d012c02e1b598bd5b4112959e170956",
+      "split": "negative",
+      "manual_expected_display": null,
+      "current_report_visible": false,
+      "prediction": null,
+      "result": "rejected",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_09.png",
+      "time_sec": 142.00266927083334,
+      "source_pts_ticks": 2181161,
+      "source_time_base": "1/15360",
+      "source_epoch": "63aadf67dc36456a9d09e1be94c990c0",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "afae316418fdd84e6cde3bf1f052a4d195bf74b600f41bb752583ca414cad062",
+      "pixel_sha256": "204422368352699818358b1096f84c5c00b23192144ca801c16499ba45921602",
+      "split": "negative",
+      "manual_expected_display": null,
+      "current_report_visible": false,
+      "prediction": null,
+      "result": "rejected",
+      "primary_state": "live_first_person",
+      "player_specific_hud_valid": true
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_04.png",
+      "time_sec": 150.00266927083334,
+      "source_pts_ticks": 2304041,
+      "source_time_base": "1/15360",
+      "source_epoch": "199fbf7a380542dd9420b5899104aaa6",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "b79f495d0299c4b9b196cf3134d02103f5d1a1edfdc69580f18d3354fc7ba381",
+      "pixel_sha256": "6c50acba14d7be9d22e494779d4d54a1571dc5afbe58e0c51fd8c0c61c8579be",
+      "split": "holdout",
+      "manual_expected_display": "194",
+      "current_report_visible": true,
+      "prediction": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 150.00266927083334,
+        "source_pixel_sha256": "6c50acba14d7be9d22e494779d4d54a1571dc5afbe58e0c51fd8c0c61c8579be",
+        "profile_fingerprint": "81828e0d02de191c172deaeea4091d74b3bd59b8af40c0527b1c2f54ac63ff7c",
+        "fields": {
+          "damage_received": {
+            "display": "194",
+            "value": 194,
+            "confidence": 0.96230637,
+            "sources": [
+              "tesseract_digits"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.512,
+              0.952054794520548,
+              0.578
+            ]
+          }
+        }
+      },
+      "result": "correct",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_05.png",
+      "time_sec": 152.00266927083334,
+      "source_pts_ticks": 2334761,
+      "source_time_base": "1/15360",
+      "source_epoch": "466989731f994fbdaec7728ea907383e",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "088257e159d950936d3422b5687d2d1386066651350dadfd1d590d31a015b653",
+      "pixel_sha256": "cf8a736ed8ff85e5cdf35ddf20de6d7b3ae50006c46ad6a890dc8611af5d5f6a",
+      "split": "holdout",
+      "manual_expected_display": "194",
+      "current_report_visible": true,
+      "prediction": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 152.00266927083334,
+        "source_pixel_sha256": "cf8a736ed8ff85e5cdf35ddf20de6d7b3ae50006c46ad6a890dc8611af5d5f6a",
+        "profile_fingerprint": "81828e0d02de191c172deaeea4091d74b3bd59b8af40c0527b1c2f54ac63ff7c",
+        "fields": {
+          "damage_received": {
+            "display": "194",
+            "value": 194,
+            "confidence": 0.96386398,
+            "sources": [
+              "tesseract_digits"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.512,
+              0.952054794520548,
+              0.578
+            ]
+          }
+        }
+      },
+      "result": "correct",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_06.png",
+      "time_sec": 156.00266927083334,
+      "source_pts_ticks": 2396201,
+      "source_time_base": "1/15360",
+      "source_epoch": "cdc9be81fe7e40648b8f978607d025ac",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "b657707c32bfd7d7a9781d917cfd6c9e365d0ad66d63a5025d6f26eb0e428232",
+      "pixel_sha256": "6c6504dff7efc529c3216e58e06c3653c39ebfb7faf6fa796d508c599ec63ce2",
+      "split": "holdout",
+      "manual_expected_display": "194",
+      "current_report_visible": true,
+      "prediction": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 156.00266927083334,
+        "source_pixel_sha256": "6c6504dff7efc529c3216e58e06c3653c39ebfb7faf6fa796d508c599ec63ce2",
+        "profile_fingerprint": "81828e0d02de191c172deaeea4091d74b3bd59b8af40c0527b1c2f54ac63ff7c",
+        "fields": {
+          "damage_received": {
+            "display": "194",
+            "value": 194,
+            "confidence": 0.96384354,
+            "sources": [
+              "tesseract_digits"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.512,
+              0.952054794520548,
+              0.578
+            ]
+          }
+        }
+      },
+      "result": "correct",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    }
+  ],
+  "input_sha256": {
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/selection.json": "d4dfb4ec9a72b69a3d2f140ac9a5ca85865bbb4c78d2b6370933ef646033ae1e",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/labels.json": "3be63c0d9a747e572316b37a410052d4b49efac7b33f289c5620c75cbc6f4a2c",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/acquired.json": "d1541b9c4474bee7e6d53949d313de224beadb2fde5d16b4239ad27342204930",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-ocr-runtime-20261012/usr/bin/tesseract": "a068bbb0a958445c44c39c34e2bed340819b557a900b2311bd3ad32691676553",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-ocr-runtime-20261012/usr/share/tesseract-ocr/5/tessdata/eng.traineddata": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-ocr-runtime-20261012/usr/share/tesseract-ocr/5/tessdata/jpn.traineddata": "1f5de9236d2e85f5fdf4b3c500f2d4926f8d9449f28f5394472d9e8d83b91b4d",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_01.png": "abbf3ab31203e9c46667008722a97b470000cd0e9822c3281a0dbad859ba8552",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_02.png": "3ec903f18e57274ee6736fdc3a3ec8a2dee885f54d1b90d2b82dc529d45f3ba9",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_03.png": "98eaa036ec706bbdaa6465cc07d8881054e8462d3d388012027841350012ee8d",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_04.png": "b79f495d0299c4b9b196cf3134d02103f5d1a1edfdc69580f18d3354fc7ba381",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_05.png": "088257e159d950936d3422b5687d2d1386066651350dadfd1d590d31a015b653",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_06.png": "b657707c32bfd7d7a9781d917cfd6c9e365d0ad66d63a5025d6f26eb0e428232",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_07.png": "cb1df094574e190b8c04c3de4c89a7a276d7fda72c5643a4164d286724504d13",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_08.png": "f8251a07a62856c3e3095ebbaa984cee29288b84c77632fd69038dcfd4841510",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_09.png": "afae316418fdd84e6cde3bf1f052a4d195bf74b600f41bb752583ca414cad062",
+    "outputs/recognition-investigation/death-current-source-20261012/calibration_prefix.png": "31381637c73a176f7138f0dc3e284bbfdde99be1698949a32d71bb13b9c503e6"
+  },
+  "baseline_input_sha256": {
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/selection_baseline.json": "bdbc8f974847adad3de334c02d264015e3222e1eb1292bdbd4df9fc77590cc88",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/labels.json": "3be63c0d9a747e572316b37a410052d4b49efac7b33f289c5620c75cbc6f4a2c",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/acquired.json": "d1541b9c4474bee7e6d53949d313de224beadb2fde5d16b4239ad27342204930",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-ocr-runtime-20261012/usr/bin/tesseract": "a068bbb0a958445c44c39c34e2bed340819b557a900b2311bd3ad32691676553",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-ocr-runtime-20261012/usr/share/tesseract-ocr/5/tessdata/eng.traineddata": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-ocr-runtime-20261012/usr/share/tesseract-ocr/5/tessdata/jpn.traineddata": "1f5de9236d2e85f5fdf4b3c500f2d4926f8d9449f28f5394472d9e8d83b91b4d",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_01.png": "abbf3ab31203e9c46667008722a97b470000cd0e9822c3281a0dbad859ba8552",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_02.png": "3ec903f18e57274ee6736fdc3a3ec8a2dee885f54d1b90d2b82dc529d45f3ba9",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_03.png": "98eaa036ec706bbdaa6465cc07d8881054e8462d3d388012027841350012ee8d",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_04.png": "b79f495d0299c4b9b196cf3134d02103f5d1a1edfdc69580f18d3354fc7ba381",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_05.png": "088257e159d950936d3422b5687d2d1386066651350dadfd1d590d31a015b653",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_06.png": "b657707c32bfd7d7a9781d917cfd6c9e365d0ad66d63a5025d6f26eb0e428232",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_07.png": "cb1df094574e190b8c04c3de4c89a7a276d7fda72c5643a4164d286724504d13",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_08.png": "f8251a07a62856c3e3095ebbaa984cee29288b84c77632fd69038dcfd4841510",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-full-glyph-holdout-20261012/source_09.png": "afae316418fdd84e6cde3bf1f052a4d195bf74b600f41bb752583ca414cad062",
+    "outputs/recognition-investigation/death-current-source-20261012/calibration_prefix.png": "31381637c73a176f7138f0dc3e284bbfdde99be1698949a32d71bb13b9c503e6"
+  },
+  "training_pixel_hashes": [
+    "23e29412e77319bef71b847f85ab68757529f96d4437a06fd2ccb6a7d4dcfe6b",
+    "974da4abab552d97d663c67c3a8ba5dc2638ed9c076690365c54eac1657e651b",
+    "c51a1fbf9d12b607a937b3890c1d08775720e7d780c18d3455cca3a3927c9024",
+    "6376244a49e2ff3a4cfb257b6dc12ee6df605b16538cc5d7bcf85fbe71b3dd24",
+    "978c1be02e01f080d08b04be9d7d61dd26d8d80c0c3da3fb21130fbb95a50f86",
+    "a86ce87d01a437107aeaa99fad33477b89c5a1455eb6dfed43fb7eee2f3b58df"
+  ],
+  "training_holdout_overlap": [],
+  "training_negative_overlap": [],
+  "holdout_negative_overlap": [],
+  "crop_clipping_evidence": {
+    "scope": "Diagnostic only; no new crop, preprocessing or threshold applied to the reader",
+    "frozen_field_bounds_px": [
+      1832,
+      526,
+      1897,
+      559
+    ],
+    "rows": [
+      {
+        "input_index": 1,
+        "probe_bounds_px": [
+          1832,
+          538,
+          1897,
+          575
+        ],
+        "diagnostic_white_threshold": 200,
+        "components": [
+          {
+            "x": 1841,
+            "y": 544,
+            "w": 8,
+            "h": 22,
+            "area": 97
+          },
+          {
+            "x": 1856,
+            "y": 544,
+            "w": 14,
+            "h": 22,
+            "area": 149
+          },
+          {
+            "x": 1873,
+            "y": 544,
+            "w": 14,
+            "h": 22,
+            "area": 174
+          }
+        ],
+        "white_pixels_below_frozen_roi_end": 109
+      },
+      {
+        "input_index": 2,
+        "probe_bounds_px": [
+          1832,
+          538,
+          1897,
+          575
+        ],
+        "diagnostic_white_threshold": 200,
+        "components": [
+          {
+            "x": 1841,
+            "y": 544,
+            "w": 8,
+            "h": 22,
+            "area": 104
+          },
+          {
+            "x": 1856,
+            "y": 544,
+            "w": 14,
+            "h": 22,
+            "area": 156
+          },
+          {
+            "x": 1873,
+            "y": 544,
+            "w": 14,
+            "h": 22,
+            "area": 180
+          }
+        ],
+        "white_pixels_below_frozen_roi_end": 124
+      }
+    ]
+  },
+  "unmodified_reader_r1_initial_result": [
+    {
+      "index": 0,
+      "shape": [
+        33,
+        65,
+        3
+      ],
+      "crop_pixel_sha256": "b5793f973d8f9df4a8e6888885d958df40e8b64cc8de23fe4785544403fd69ef",
+      "raw_value": null,
+      "confidence": 0.0,
+      "sources": [
+        "tesseract_digits",
+        "numeric_reader_below_configured_confidence"
+      ],
+      "cross_checked": false
+    },
+    {
+      "index": 1,
+      "shape": [
+        33,
+        65,
+        3
+      ],
+      "crop_pixel_sha256": "9f190274543e9f3c6571bc46affb0c75a924c54d454f26cdbeaed160fbdad9a5",
+      "raw_value": null,
+      "confidence": 0.0,
+      "sources": [
+        "tesseract_digits",
+        "numeric_reader_below_configured_confidence"
+      ],
+      "cross_checked": false
+    },
+    {
+      "index": 2,
+      "shape": [
+        33,
+        65,
+        3
+      ],
+      "crop_pixel_sha256": "ab42248a19b40f46c458380f357689833362f4480de5848d629e33b0663bbfd6",
+      "raw_value": null,
+      "confidence": 0.0,
+      "sources": [
+        "tesseract_digits",
+        "numeric_reader_below_configured_confidence"
+      ],
+      "cross_checked": false
+    }
+  ],
+  "semantic_contract_evidence": {
+    "source_header": "自分を倒した敵 レイズ",
+    "red_band_player_name": "シャバーニ",
+    "decision": "Do not reinterpret red-band player names as killer agents; header and portrait need separate agent semantics."
+  },
+  "formal_events_baseline": [],
+  "formal_events_current": [],
+  "existing_player_hud_valid_baseline": 1,
+  "existing_player_hud_valid_current": 1,
+  "report_readings_with_player_hud_valid": 0,
+  "qualification_created": false,
+  "production_changed": false,
+  "canonical_re_evaluated": false,
+  "canonical_previous": {
+    "PASS": 23,
+    "FAIL": 55,
+    "NE": 4
+  },
+  "canonical_current": null,
+  "canonical_delta": null,
+  "limitations": [
+    "Same-video and two report contexts only; not global lifecycle qualification or a temporal death test.",
+    "R1 images used to diagnose clipping are training/development, not part of the prospective holdout.",
+    "The new profile changes only one field bound; it remains private and rejected.",
+    "No character or damage expected values from the Validation Pack are supplied to production."
+  ]
+}

@@ -1,0 +1,731 @@
+{
+  "scope": "Actual shared qualified source-assured producer entrance on freshly decoded complete startup-to-after-start native sequence; local reviewed start-only bundle, no default installation or canonical adoption",
+  "window_sec": [
+    0,
+    6
+  ],
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "profile_fingerprint": "60b029cb987fe0d7447853e3b4cd791d5defb0918dfaa25a401bd45d2b64c813",
+  "recognizer_fingerprint": "7bbb45ea27708c547a9ceb7c79b6f52e99f765675735ad0e247fd0528021cd2c",
+  "qualification_sha256": "b872e8abdca36975f5ac71173c33d50ab60a3b99606fbcc3e4a57436613885ec",
+  "native_step_ticks": 256,
+  "gt_runtime_input": false,
+  "external_system_evidence_injected": false,
+  "default_sampler_changed": false,
+  "processed_frames": 358,
+  "native_first_pts_ticks": 553,
+  "native_last_pts_ticks": 91945,
+  "producer_runtime_sec": 622.0676877179649,
+  "wall_clock_sec": 831.5592023479985,
+  "events": [
+    {
+      "time_sec": 4.102669270833333,
+      "type": "round_start",
+      "actor": "system",
+      "attributes": {
+        "evidence_provenance": {
+          "scope": "global_system",
+          "producer": "unedited_ui_start_tracker",
+          "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+          "preparation_pts_sec": [
+            3.602669270833333,
+            4.086002604166667
+          ],
+          "confirmation_pts_sec": 4.202669270833334,
+          "pts_sec": [
+            4.102669270833333,
+            4.1193359375,
+            4.136002604166666,
+            4.152669270833333,
+            4.1693359375,
+            4.186002604166666,
+            4.202669270833334
+          ],
+          "clock_display_samples": [
+            {
+              "pts_sec": 4.102669270833333,
+              "observed_seconds": 0.0,
+              "observed_display": "0:00",
+              "reader_confidence": 0.9541926383972168,
+              "display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9541926383972168,
+                "cross_checked": false
+              },
+              "source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b",
+              "previous_source_pixel_sha256": "6ab7cd27a8756b687f70857d6bf0d2a8732625d15161e2de41a139f31fd193e1"
+            },
+            {
+              "pts_sec": 4.1193359375,
+              "observed_seconds": 145.0,
+              "observed_display": "2:25",
+              "reader_confidence": 0.9596534371376038,
+              "display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9596534371376038,
+                "cross_checked": false
+              },
+              "source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a",
+              "previous_source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b"
+            },
+            {
+              "pts_sec": 4.136002604166666,
+              "observed_seconds": 145.0,
+              "observed_display": "2:25",
+              "reader_confidence": 0.9596534371376038,
+              "display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9596534371376038,
+                "cross_checked": false
+              },
+              "source_pixel_sha256": "7b784dd56e27c48a760671568acbd458bc496400335ee4b3181798d0584a4044",
+              "previous_source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a"
+            },
+            {
+              "pts_sec": 4.152669270833333,
+              "observed_seconds": 99.0,
+              "observed_display": "1:39",
+              "reader_confidence": 0.9597947001457214,
+              "display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9597947001457214,
+                "cross_checked": false
+              },
+              "source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0",
+              "previous_source_pixel_sha256": "7b784dd56e27c48a760671568acbd458bc496400335ee4b3181798d0584a4044"
+            },
+            {
+              "pts_sec": 4.1693359375,
+              "observed_seconds": 99.0,
+              "observed_display": "1:39",
+              "reader_confidence": 0.9597947001457214,
+              "display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9597947001457214,
+                "cross_checked": false
+              },
+              "source_pixel_sha256": "d18c9060f352e53b37967c62e12f3ee51b06e330664ee49da476b3751cda8f83",
+              "previous_source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0"
+            },
+            {
+              "pts_sec": 4.186002604166666,
+              "observed_seconds": 99.0,
+              "observed_display": "1:39",
+              "reader_confidence": 0.9629917144775391,
+              "display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9629917144775391,
+                "cross_checked": false
+              },
+              "source_pixel_sha256": "0e795ed52d0eac85bf325988a8d629c2be975f8fbce0d9bfa33a8a0c773eee86",
+              "previous_source_pixel_sha256": "d18c9060f352e53b37967c62e12f3ee51b06e330664ee49da476b3751cda8f83"
+            },
+            {
+              "pts_sec": 4.202669270833334,
+              "observed_seconds": 99.0,
+              "observed_display": "1:39",
+              "reader_confidence": 0.9629917144775391,
+              "display_provenance": {
+                "reader": "round_timer",
+                "sources": [
+                  "strict_timer_glyphs",
+                  "comparison_gaussian3x3_v1"
+                ],
+                "confidence": 0.9629917144775391,
+                "cross_checked": false
+              },
+              "source_pixel_sha256": "bcb5a25b6b58a0efb563575d4be9ba3507bf290b327fa64996a1d903970695a2",
+              "previous_source_pixel_sha256": "0e795ed52d0eac85bf325988a8d629c2be975f8fbce0d9bfa33a8a0c773eee86"
+            }
+          ],
+          "coherent_clock_begin_pts_sec": 4.152669270833333,
+          "coherent_clock_observation_count": 4,
+          "qualification_sha256": "b872e8abdca36975f5ac71173c33d50ab60a3b99606fbcc3e4a57436613885ec",
+          "profile_fingerprint": "60b029cb987fe0d7447853e3b4cd791d5defb0918dfaa25a401bd45d2b64c813",
+          "recognizer_fingerprint": "7bbb45ea27708c547a9ceb7c79b6f52e99f765675735ad0e247fd0528021cd2c",
+          "continuity_segment": 0,
+          "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+          "source_epoch": "ec618446b75c46c8b0d724283eb1338a",
+          "source_pts_ticks": 63017,
+          "source_time_base": "1/15360",
+          "source_pts_sec": 4.102669270833333,
+          "source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b"
+        }
+      },
+      "event_id": "HUD-ROUND_START-4.103",
+      "confidence": 0.911719242550644
+    }
+  ],
+  "state_counts": {
+    "unknown": 358
+  },
+  "lifecycle_state_counts": {
+    "unobserved": 83,
+    "pre_round": 146,
+    "transient_ui_transition": 21,
+    "round_active": 108
+  },
+  "formal_round_start_count": 1,
+  "formal_round_end_count": 0,
+  "owned_facts": 0,
+  "duplicate_starts": 0,
+  "terminal_hash_verified": true,
+  "runtime_default_installed": false,
+  "canonical_e2e_executed": false,
+  "whole_r1_to_r2_claimed": false,
+  "profile_diagnostics": [
+    "global lifecycle qualification: Missing or unknown global lifecycle component"
+  ],
+  "qualification_review": {
+    "actual_loader_admitted_components": [
+      "purchase_phase",
+      "timer",
+      "ui_transition"
+    ],
+    "physical_ui_support_counts": {
+      "training": 9,
+      "holdout": 7,
+      "negative": 90
+    },
+    "independent_temporal_case_counts": {
+      "training": 1,
+      "holdout": 1,
+      "negative": 3
+    },
+    "case_reviews": [
+      {
+        "name": "r1_ui_development",
+        "split": "training",
+        "independent_temporal_cases": 1,
+        "candidate_time_sec": 4.102669270833333,
+        "confirmation_time_sec": 4.202669270833334,
+        "source_support_images": [
+          {
+            "source_pts_ticks": 60969,
+            "source_pixel_sha256": "e7fd447968482a2c92eb2e2f8f0752106aed9b418055b37784edd4a6a866ae34",
+            "role": "observed_preparation",
+            "reviewed_original_display": "0:00",
+            "literal_phase_present": true,
+            "support_correct": true,
+            "actual_timer_display": "0:00",
+            "timer_support_status": "source_correct",
+            "independent_event_counted": false
+          },
+          {
+            "source_pts_ticks": 62761,
+            "source_pixel_sha256": "6ab7cd27a8756b687f70857d6bf0d2a8732625d15161e2de41a139f31fd193e1",
+            "role": "observed_preparation",
+            "reviewed_original_display": "0:00",
+            "literal_phase_present": true,
+            "support_correct": true,
+            "actual_timer_display": "0:00",
+            "timer_support_status": "source_correct",
+            "independent_event_counted": false
+          },
+          {
+            "source_pts_ticks": 63017,
+            "source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b",
+            "role": "observed_boundary_candidate",
+            "reviewed_original_display": "0:00",
+            "literal_phase_present": false,
+            "support_correct": true,
+            "actual_timer_display": "0:00",
+            "timer_support_status": "source_correct",
+            "independent_event_counted": false
+          },
+          {
+            "source_pts_ticks": 63273,
+            "source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a",
+            "role": "observed_ui_or_clock_corroboration",
+            "reviewed_original_display": "2:25",
+            "literal_phase_present": false,
+            "support_correct": true,
+            "actual_timer_display": "2:25",
+            "timer_support_status": "source_correct",
+            "independent_event_counted": false
+          },
+          {
+            "source_pts_ticks": 63529,
+            "source_pixel_sha256": "7b784dd56e27c48a760671568acbd458bc496400335ee4b3181798d0584a4044",
+            "role": "observed_ui_or_clock_corroboration",
+            "reviewed_original_display": "2:25",
+            "literal_phase_present": false,
+            "support_correct": true,
+            "actual_timer_display": "2:25",
+            "timer_support_status": "source_correct",
+            "independent_event_counted": false
+          },
+          {
+            "source_pts_ticks": 63785,
+            "source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0",
+            "role": "observed_ui_or_clock_corroboration",
+            "reviewed_original_display": "1:39",
+            "literal_phase_present": false,
+            "support_correct": true,
+            "actual_timer_display": "1:39",
+            "timer_support_status": "source_correct",
+            "independent_event_counted": false
+          },
+          {
+            "source_pts_ticks": 64041,
+            "source_pixel_sha256": "d18c9060f352e53b37967c62e12f3ee51b06e330664ee49da476b3751cda8f83",
+            "role": "observed_ui_or_clock_corroboration",
+            "reviewed_original_display": "1:39",
+            "literal_phase_present": false,
+            "support_correct": true,
+            "actual_timer_display": "1:39",
+            "timer_support_status": "source_correct",
+            "independent_event_counted": false
+          },
+          {
+            "source_pts_ticks": 64297,
+            "source_pixel_sha256": "0e795ed52d0eac85bf325988a8d629c2be975f8fbce0d9bfa33a8a0c773eee86",
+            "role": "observed_ui_or_clock_corroboration",
+            "reviewed_original_display": "1:39",
+            "literal_phase_present": false,
+            "support_correct": true,
+            "actual_timer_display": "1:39",
+            "timer_support_status": "source_correct",
+            "independent_event_counted": false
+          },
+          {
+            "source_pts_ticks": 64553,
+            "source_pixel_sha256": "bcb5a25b6b58a0efb563575d4be9ba3507bf290b327fa64996a1d903970695a2",
+            "role": "observed_ui_or_clock_corroboration",
+            "reviewed_original_display": "1:39",
+            "literal_phase_present": false,
+            "support_correct": true,
+            "actual_timer_display": "1:39",
+            "timer_support_status": "source_correct",
+            "independent_event_counted": false
+          }
+        ],
+        "scope": "One reviewed temporal case with correlated physical evidence support, not one event per image."
+      },
+      {
+        "name": "r2_ui_development",
+        "split": "holdout",
+        "independent_temporal_cases": 1,
+        "candidate_time_sec": 111.4193359375,
+        "confirmation_time_sec": 111.48600260416667,
+        "source_support_images": [
+          {
+            "source_pts_ticks": 1709097,
+            "source_pixel_sha256": "8e943a39d32a30f137f0ae4b1d763464232d43a0818a4bdc7adf737a299e9f80",
+            "role": "observed_preparation",
+            "reviewed_original_display": "0:00",
+            "literal_phase_present": true,
+            "support_correct": true,
+            "actual_timer_display": null,
+            "timer_support_status": "unknown_not_clock_support",
+            "independent_event_counted": false
+          },
+          {
+            "source_pts_ticks": 1711145,
+            "source_pixel_sha256": "16d1c869ae826a352c311370b10c3be8f7a5995a121b38f3612006f77042369b",
+            "role": "observed_preparation",
+            "reviewed_original_display": "0:00",
+            "literal_phase_present": true,
+            "support_correct": true,
+            "actual_timer_display": "0:00",
+            "timer_support_status": "source_correct",
+            "independent_event_counted": false
+          },
+          {
+            "source_pts_ticks": 1711401,
+            "source_pixel_sha256": "44dda08d003391b16c90a664bbea96af9f86e9cb332f5a03f59ecb1b4d7f2ae3",
+            "role": "observed_boundary_candidate",
+            "reviewed_original_display": "0:00",
+            "literal_phase_present": false,
+            "support_correct": true,
+            "actual_timer_display": "0:00",
+            "timer_support_status": "source_correct",
+            "independent_event_counted": false
+          },
+          {
+            "source_pts_ticks": 1711657,
+            "source_pixel_sha256": "cf8733010ac3f5cd79025316ffb9a20a59d85807c86a23c8cfc60bf46fe4005a",
+            "role": "observed_ui_or_clock_corroboration",
+            "reviewed_original_display": "1:40",
+            "literal_phase_present": false,
+            "support_correct": true,
+            "actual_timer_display": "1:40",
+            "timer_support_status": "source_correct",
+            "independent_event_counted": false
+          },
+          {
+            "source_pts_ticks": 1711913,
+            "source_pixel_sha256": "cecdb6d7f617319fc343d599491ca74730a482c3c1825304af4bf27cfe3b40fe",
+            "role": "observed_ui_or_clock_corroboration",
+            "reviewed_original_display": "1:40",
+            "literal_phase_present": false,
+            "support_correct": true,
+            "actual_timer_display": "1:40",
+            "timer_support_status": "source_correct",
+            "independent_event_counted": false
+          },
+          {
+            "source_pts_ticks": 1712169,
+            "source_pixel_sha256": "930801434d9fdcbca13d3f8a77123b0b6076262acb722e7329afc4ee67170cd3",
+            "role": "observed_ui_or_clock_corroboration",
+            "reviewed_original_display": "1:39",
+            "literal_phase_present": false,
+            "support_correct": true,
+            "actual_timer_display": "1:39",
+            "timer_support_status": "source_correct",
+            "independent_event_counted": false
+          },
+          {
+            "source_pts_ticks": 1712425,
+            "source_pixel_sha256": "041c2f3bc3b7f994f57baaa3ffe69c4933961c0f7eca0e53312422237b3e12ab",
+            "role": "observed_ui_or_clock_corroboration",
+            "reviewed_original_display": "1:39",
+            "literal_phase_present": false,
+            "support_correct": true,
+            "actual_timer_display": "1:39",
+            "timer_support_status": "source_correct",
+            "independent_event_counted": false
+          }
+        ],
+        "scope": "One reviewed temporal case with correlated physical evidence support, not one event per image."
+      },
+      {
+        "name": "active_control",
+        "split": "negative",
+        "independent_temporal_cases": 1,
+        "unqualified_start_candidates": 0,
+        "source_image_count": 30,
+        "scope": "Existing continuous negative window; frames are correlated support, not independent negative episodes."
+      },
+      {
+        "name": "menu_control",
+        "split": "negative",
+        "independent_temporal_cases": 1,
+        "unqualified_start_candidates": 0,
+        "source_image_count": 30,
+        "scope": "Existing continuous negative window; frames are correlated support, not independent negative episodes."
+      },
+      {
+        "name": "spectator_control",
+        "split": "negative",
+        "independent_temporal_cases": 1,
+        "unqualified_start_candidates": 0,
+        "source_image_count": 30,
+        "scope": "Existing continuous negative window; frames are correlated support, not independent negative episodes."
+      }
+    ],
+    "original_exposure_retained": true,
+    "new_blind_cohort_claimed": false,
+    "runtime_default_installed": false,
+    "end_qualification_present": false,
+    "remaining_gates": [
+      "Actual qualified producer entrance on source frames, with system actor and event provenance.",
+      "Continuous source and negative controls; separate starts must not pretend R1-to-R2 rearm.",
+      "Sampled canonical regression and eventual candidate full E2E.",
+      "End components score/round_result/ui_end_transition not qualified; no formal R1 end or inferred R2 start rearm."
+    ]
+  },
+  "transport": {
+    "scope": "Actual native producer output to existing schema-valid builder and trace; explicit open fragment, no full-round scoring or canonical evaluator claim",
+    "native_result_sha256": "14a19da583d0d1d555250a9a3e19b220a209294cd8ac4fcd87de00c67e6a323b",
+    "profile_fingerprint": "60b029cb987fe0d7447853e3b4cd791d5defb0918dfaa25a401bd45d2b64c813",
+    "recognizer_fingerprint": "7bbb45ea27708c547a9ceb7c79b6f52e99f765675735ad0e247fd0528021cd2c",
+    "package_count": 1,
+    "package_summary": [
+      {
+        "round_no": 1,
+        "round_window": {
+          "start_sec": 3.602669270833333,
+          "end_sec": 171.019336
+        },
+        "observation_quality": {
+          "hud_confidence": 0.0,
+          "visual_confidence": 0.0,
+          "timeline_completeness": 0.0,
+          "missing_intervals": [
+            {
+              "start_sec": 3.602669270833333,
+              "end_sec": 171.019336
+            }
+          ]
+        },
+        "event_count": 1,
+        "snapshot_count": 0
+      }
+    ],
+    "trace_boundary_events": [
+      {
+        "round_id": "sample_round_1",
+        "type": "round_start",
+        "actor": "system",
+        "time_sec": 4.102669270833333,
+        "attributes": {
+          "evidence_provenance": {
+            "scope": "global_system",
+            "producer": "unedited_ui_start_tracker",
+            "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+            "preparation_pts_sec": [
+              3.602669270833333,
+              4.086002604166667
+            ],
+            "confirmation_pts_sec": 4.202669270833334,
+            "pts_sec": [
+              4.102669270833333,
+              4.1193359375,
+              4.136002604166666,
+              4.152669270833333,
+              4.1693359375,
+              4.186002604166666,
+              4.202669270833334
+            ],
+            "clock_display_samples": [
+              {
+                "pts_sec": 4.102669270833333,
+                "observed_seconds": 0.0,
+                "observed_display": "0:00",
+                "reader_confidence": 0.9541926383972168,
+                "display_provenance": {
+                  "reader": "round_timer",
+                  "sources": [
+                    "strict_timer_glyphs",
+                    "comparison_gaussian3x3_v1"
+                  ],
+                  "confidence": 0.9541926383972168,
+                  "cross_checked": false
+                },
+                "source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b",
+                "previous_source_pixel_sha256": "6ab7cd27a8756b687f70857d6bf0d2a8732625d15161e2de41a139f31fd193e1"
+              },
+              {
+                "pts_sec": 4.1193359375,
+                "observed_seconds": 145.0,
+                "observed_display": "2:25",
+                "reader_confidence": 0.9596534371376038,
+                "display_provenance": {
+                  "reader": "round_timer",
+                  "sources": [
+                    "strict_timer_glyphs",
+                    "comparison_gaussian3x3_v1"
+                  ],
+                  "confidence": 0.9596534371376038,
+                  "cross_checked": false
+                },
+                "source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a",
+                "previous_source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b"
+              },
+              {
+                "pts_sec": 4.136002604166666,
+                "observed_seconds": 145.0,
+                "observed_display": "2:25",
+                "reader_confidence": 0.9596534371376038,
+                "display_provenance": {
+                  "reader": "round_timer",
+                  "sources": [
+                    "strict_timer_glyphs",
+                    "comparison_gaussian3x3_v1"
+                  ],
+                  "confidence": 0.9596534371376038,
+                  "cross_checked": false
+                },
+                "source_pixel_sha256": "7b784dd56e27c48a760671568acbd458bc496400335ee4b3181798d0584a4044",
+                "previous_source_pixel_sha256": "d2776117d1c7d2bffd02a654774f574d13d66ab07ff66d5ef9ce9fae032a4b5a"
+              },
+              {
+                "pts_sec": 4.152669270833333,
+                "observed_seconds": 99.0,
+                "observed_display": "1:39",
+                "reader_confidence": 0.9597947001457214,
+                "display_provenance": {
+                  "reader": "round_timer",
+                  "sources": [
+                    "strict_timer_glyphs",
+                    "comparison_gaussian3x3_v1"
+                  ],
+                  "confidence": 0.9597947001457214,
+                  "cross_checked": false
+                },
+                "source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0",
+                "previous_source_pixel_sha256": "7b784dd56e27c48a760671568acbd458bc496400335ee4b3181798d0584a4044"
+              },
+              {
+                "pts_sec": 4.1693359375,
+                "observed_seconds": 99.0,
+                "observed_display": "1:39",
+                "reader_confidence": 0.9597947001457214,
+                "display_provenance": {
+                  "reader": "round_timer",
+                  "sources": [
+                    "strict_timer_glyphs",
+                    "comparison_gaussian3x3_v1"
+                  ],
+                  "confidence": 0.9597947001457214,
+                  "cross_checked": false
+                },
+                "source_pixel_sha256": "d18c9060f352e53b37967c62e12f3ee51b06e330664ee49da476b3751cda8f83",
+                "previous_source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0"
+              },
+              {
+                "pts_sec": 4.186002604166666,
+                "observed_seconds": 99.0,
+                "observed_display": "1:39",
+                "reader_confidence": 0.9629917144775391,
+                "display_provenance": {
+                  "reader": "round_timer",
+                  "sources": [
+                    "strict_timer_glyphs",
+                    "comparison_gaussian3x3_v1"
+                  ],
+                  "confidence": 0.9629917144775391,
+                  "cross_checked": false
+                },
+                "source_pixel_sha256": "0e795ed52d0eac85bf325988a8d629c2be975f8fbce0d9bfa33a8a0c773eee86",
+                "previous_source_pixel_sha256": "d18c9060f352e53b37967c62e12f3ee51b06e330664ee49da476b3751cda8f83"
+              },
+              {
+                "pts_sec": 4.202669270833334,
+                "observed_seconds": 99.0,
+                "observed_display": "1:39",
+                "reader_confidence": 0.9629917144775391,
+                "display_provenance": {
+                  "reader": "round_timer",
+                  "sources": [
+                    "strict_timer_glyphs",
+                    "comparison_gaussian3x3_v1"
+                  ],
+                  "confidence": 0.9629917144775391,
+                  "cross_checked": false
+                },
+                "source_pixel_sha256": "bcb5a25b6b58a0efb563575d4be9ba3507bf290b327fa64996a1d903970695a2",
+                "previous_source_pixel_sha256": "0e795ed52d0eac85bf325988a8d629c2be975f8fbce0d9bfa33a8a0c773eee86"
+              }
+            ],
+            "coherent_clock_begin_pts_sec": 4.152669270833333,
+            "coherent_clock_observation_count": 4,
+            "qualification_sha256": "b872e8abdca36975f5ac71173c33d50ab60a3b99606fbcc3e4a57436613885ec",
+            "profile_fingerprint": "60b029cb987fe0d7447853e3b4cd791d5defb0918dfaa25a401bd45d2b64c813",
+            "recognizer_fingerprint": "7bbb45ea27708c547a9ceb7c79b6f52e99f765675735ad0e247fd0528021cd2c",
+            "continuity_segment": 0,
+            "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+            "source_epoch": "ec618446b75c46c8b0d724283eb1338a",
+            "source_pts_ticks": 63017,
+            "source_time_base": "1/15360",
+            "source_pts_sec": 4.102669270833333,
+            "source_pixel_sha256": "c0b7183414d3624d0fbf3292ae06f58fa28725c8d5f39596aaf4b50beb46801b"
+          }
+        },
+        "confidence": 0.911719242550644
+      }
+    ],
+    "actor_time_type_attributes_preserved": true,
+    "source_breaks": 0,
+    "partial_quality_preserved": true,
+    "runtime_sec": 1.6319544850848615,
+    "canonical_e2e_executed": false,
+    "whole_r1_to_r2_claimed": false,
+    "default_installed": false
+  },
+  "targeted_acceptance": {
+    "scope": "Evaluation-only canonical assertion result on source0-6second fragment. Full82report is saved for transparency; other incomplete-coverage outcomes are not a full-match run.",
+    "trace_sha256": "2bba99604de26c2db56996db45eddbfc1178985b3a41987da66f382ad732c80e",
+    "evaluation_sha256": "4b079065a383574cfc4927099c7ee23889ce646dcc1f9c1fbb1dc4fb1efbd636",
+    "validation_code_schema_assertion_hashes": {
+      "ValorantData/valorant_e2e_validation_pack_v3/tests/generated/e2e_assertions_v3.json": "c5e242b611ce227d1d2633e5e24c00dfe65168d8124ab58fbdea84b1d7f0d820",
+      "ValorantData/valorant_e2e_validation_pack_v3/tests/reference_evaluator.py": "9384bcc0aab792123c724a11004e5e17bfc3360592236c1307223f192cf93f80",
+      "ValorantData/valorant_e2e_validation_pack_v3/schemas/e2e_output_trace_schema_v1.json": "acf56ac2a15b00accb6916a12705ab3e606af16b10d13f7368230e2075a989c6"
+    },
+    "selected_assertion_results": [
+      {
+        "assertion_id": "GT-R1-ROUND-START",
+        "group": "required_point_events",
+        "index": 0,
+        "status": "pass",
+        "failures": []
+      }
+    ],
+    "source_coverage_sec": [
+      0,
+      6
+    ],
+    "canonical_full_e2e_executed": false,
+    "canonical_baseline_updated": false
+  },
+  "evidence_sha256": {
+    "outputs/recognition-investigation/qualified-r1-start-native-20261013/result.json": "14a19da583d0d1d555250a9a3e19b220a209294cd8ac4fcd87de00c67e6a323b",
+    "outputs/recognition-investigation/qualified-r1-start-native-20261013/packages.json": "0cbeb7a6540490727136f8f0139eedc2d819a6b3a5e85abe6ca513402d008839",
+    "outputs/recognition-investigation/qualified-r1-start-native-20261013/trace.json": "2bba99604de26c2db56996db45eddbfc1178985b3a41987da66f382ad732c80e",
+    "outputs/recognition-investigation/qualified-r1-start-native-20261013/transport-result.json": "6e758c0f247267619ce4788a6bb61ca9c8bfda6f8c470ebc68fbc4d5d8b6f7f2",
+    "outputs/recognition-investigation/qualified-r1-start-native-20261013/targeted-acceptance.json": "a15f6f3ad946dacedba5bbf6960ec4d98265837867bf3fd03a3c91f35655d767",
+    "outputs/recognition-investigation/guarded-start-qualification-review-20261013/result.json": "8c33f66029500c58265d3d5bccb98bd628df7f03ab97a7a4e651c5bd9ecb0fb9",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/guarded-start-qualification-review-20261013/start-components-review.json": "b872e8abdca36975f5ac71173c33d50ab60a3b99606fbcc3e4a57436613885ec",
+    "outputs/recognition-investigation/guarded-start-qualification-review-20261013/review-first-attempt.json": "f3cff693bdf9c093b0fb8f1321de170dd93f172aa35982d0188fb1ae99486944"
+  },
+  "comparison": {
+    "local_formal_round_starts": {
+      "previous": 0,
+      "current": 1,
+      "delta": 1
+    },
+    "local_formal_round_ends": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "local_duplicate_starts": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "canonical_last_adopted": {
+      "PASS": 23,
+      "FAIL": 55,
+      "NE": 4
+    },
+    "canonical_current": null,
+    "canonical_delta": null,
+    "runtime_previous_comparable": null
+  },
+  "remaining_blockers": [
+    "Score/result/end-transition qualification not present; no continuous whole-match R1-end/R2-rearm claim.",
+    "Only source0-6seconds processed; full-video false boundaries and negative/discontinuity assertions not verified.",
+    "Partial package extends to actual video duration with completeness0; that interval is not source observation coverage.",
+    "Application processor merge, sampled canonical regression and adopted full E2E remain pending.",
+    "Current Windows execution not verified."
+  ],
+  "cross_component_physical_split_audit": {
+    "physical_counts": {
+      "training": 88,
+      "holdout": 46,
+      "negative": 107
+    },
+    "overlap": {
+      "holdout/training": [],
+      "negative/training": [],
+      "negative/holdout": []
+    },
+    "all_components_physical_disjoint": true
+  }
+}

@@ -132,11 +132,16 @@ def test_shared_frame_loader_verifies_native_pixels_on_every_read(frames):
         load_frame(frames[0])
 
 
-def test_real_analyzer_native_entrance_does_not_invoke_event_builder(frames, monkeypatch):
+@pytest.mark.parametrize('include_ui', [False, True])
+def test_real_analyzer_native_entrance_does_not_invoke_event_builder(
+    frames, monkeypatch, include_ui,
+):
     analyzer = RealHudAnalyzer(resource_path('config/hud_layout_1080p_v3.json'))
     monkeypatch.setattr('valorant_ai_coach.hud.analyzers.HudDirectEventBuilder.build',
                         lambda *a, **k: pytest.fail('native measurements cannot emit events'))
-    rows = analyzer.observe_native_system_frames(frames, native_step_ticks=256)
+    rows = analyzer.observe_native_system_frames(
+        frames, native_step_ticks=256, include_ui_measurements=include_ui,
+    )
     assert len(rows) == 2
     assert all(row['system_evidence'] == {} for row in rows)
     assert all(row['system_observation']['primary_state'] == 'unknown' for row in rows)

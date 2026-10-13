@@ -97,7 +97,9 @@ def _exact(reference: Image, observed: Image, mask: NDArray[np.bool_]) -> float:
     return float(a @ b / denominator) if denominator > 1e-9 else -1.0
 
 
-def report_header_evidence(image: Image, model: ReportHeader) -> dict[str, Any]:
+def report_header_evidence(
+    image: Image, model: ReportHeader, *, include_pose: bool = False,
+) -> dict[str, Any]:
     """Both groups must match under a shared bounded horizontal/local ROI pose."""
     if image.ndim == 3:
         image = np.asarray(cv2.cvtColor(image, cv2.COLOR_BGR2GRAY), dtype=np.uint8)
@@ -128,10 +130,61 @@ def report_header_evidence(image: Image, model: ReportHeader) -> dict[str, Any]:
         for template, mask, x1, x2 in groups
     ]
     confidence = max(0.0, min(1.0, min(exact)))
-    return {
+    evidence: dict[str, Any] = {
         "present": True if confidence >= model.threshold else None,
         "score": confidence,
         "reason": "static_header_support"
         if confidence >= model.threshold
         else "insufficient_or_contradictory_support",
     }
+    if include_pose:
+        # Presence is an exclusion-only contract. Field placement additionally
+        # requires one header location: two separate headers cannot authorize
+        # choosing a numeric field from either one.
+        # Nearby pixel matches may describe one anti-aliased header. A second
+        # qualifying position outside that two-pixel neighbourhood is ambiguous,
+        # even when two supported headers fit within one template's height.
+        separated = np.abs(np.arange(joint.shape[0]) - dy) > 2
+        ambiguous = bool(np.any(joint[separated] >= model.threshold))
+        evidence['pose'] = (
+            [origin + dx, dy] if evidence['present'] is True and not ambiguous else None
+        )
+    return evidence
+
+
+@dataclass(frozen=True)
+class ReportFieldLocator:
+    """Opt-in candidate field placement using the existing independent header.
+
+    This measures local translation only; it cannot establish ownership or
+    qualify the numeric value. No pose is retained between observations.
+    """
+
+    header: ReportHeader
+    reference_origin_norm: tuple[float, float]
+
+    def validate(self) -> None:
+        self.header.validate()
+        origin = self.reference_origin_norm
+        if (
+            len(origin) != 2
+            or any(type(v) not in (int, float) or not np.isfinite(v) for v in origin)
+            or origin[0] != self.header.reference_x
+            or not 0 <= origin[1] < 1
+            or round(origin[1] * self.header.input_shape[0]) + self.header.reference.shape[0]
+            > self.header.input_shape[0]
+        ):
+            raise ValueError('invalid Report field reference origin')
+
+    def offset(self, image: Image) -> tuple[int, int, float] | None:
+        self.validate()
+        evidence = report_header_evidence(image, self.header, include_pose=True)
+        pose = evidence.get('pose')
+        if pose is None:
+            return None
+        height, width = self.header.input_shape
+        return (
+            pose[0] - round(self.reference_origin_norm[0] * width),
+            pose[1] - round(self.reference_origin_norm[1] * height),
+            evidence['score'],
+        )

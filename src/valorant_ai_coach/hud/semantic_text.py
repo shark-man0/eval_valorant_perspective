@@ -10,6 +10,7 @@ import cv2
 import numpy as np
 from numpy.typing import NDArray
 
+from .glyph_contrast import GlyphContrastGuard
 from .round_lifecycle import (
     MAX_SAMPLE_GAP_SEC,
     MIN_START_CONFIRMATION_SEC,
@@ -45,6 +46,8 @@ class SemanticTextReference:
         regions: ImageU8,
         training: Sequence[tuple[str, ImageU8]],
         threshold: float,
+        *,
+        contrast_guard: GlyphContrastGuard | None = None,
     ) -> None:
         if not np.isfinite(threshold) or not 0.90 <= threshold <= 1.0:
             raise ValueError("semantic text requires NCC >= .90")
@@ -79,6 +82,9 @@ class SemanticTextReference:
         self.reference = reference.copy()
         self.masks = tuple(masks)
         self.threshold = threshold
+        if contrast_guard is not None and contrast_guard.reference.shape != reference.shape:
+            raise ValueError("semantic contrast guard shape mismatch")
+        self.contrast_guard = contrast_guard
         hashes = [frame_hash for frame_hash, _ in training]
         if (
             len(training) < 3
@@ -92,7 +98,8 @@ class SemanticTextReference:
 
     def score(self, image: ImageU8) -> float:
         """Minimum per-group masked NCC; no search or missing-group substitution."""
-        return min(masked_score(self.reference, image, mask) for mask in self.masks)
+        score = min(masked_score(self.reference, image, mask) for mask in self.masks)
+        return min(score, self.contrast_guard.score(image)) if self.contrast_guard else score
 
     def measure(self, image: ImageU8) -> dict[str, Any]:
         """Expose rejection evidence, never infer absence from a nonmatch.
@@ -119,6 +126,9 @@ class SemanticTextReference:
                 ),
             })
         score = min(group["score"] for group in groups)
+        guard = self.contrast_guard.measure(image) if self.contrast_guard else None
+        if guard is not None:
+            score = min(score, guard['score'])
         return {
             "matcher": MATCHER,
             "threshold": self.threshold,
@@ -127,6 +137,7 @@ class SemanticTextReference:
             "presence": True if score >= self.threshold else None,
             "absence_checked": False,
             "runtime_transition_authorized": False,
+            **({'contrast_guard': guard} if guard is not None else {}),
         }
 
 

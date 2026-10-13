@@ -17291,6 +17291,131 @@
     "ruff": "PASS",
     "mypy": "PASS 121 source files"
   },
+  "frozen_global_numeric_targeted_review": {
+    "scope": "Frozen existing development readers on canonical fixed targeted numeric set; not full or independent qualification",
+    "run_path": "outputs/recognition-investigation/frozen-global-numeric-targeted-20261010",
+    "commit": "27c8465ef9dfa22afba623922e0fddef5d1fdade",
+    "counts": {
+      "passed": 8,
+      "failed": 5,
+      "not_evaluated": 0
+    },
+    "comparison": {
+      "comparable": true,
+      "reason": null,
+      "deltas": {
+        "wall_sec": {
+          "current": 107.48475753999082,
+          "previous": 132.53940225101542,
+          "delta": -25.054644711024594,
+          "percent_change": -18.903544369072815
+        },
+        "evaluation_pass": {
+          "current": 0.0,
+          "previous": 0.0,
+          "delta": 0.0,
+          "percent_change": null
+        },
+        "failed": {
+          "current": 5.0,
+          "previous": 13.0,
+          "delta": -8.0,
+          "percent_change": -61.53846153846154
+        },
+        "not_evaluated": {
+          "current": 0.0,
+          "previous": 0.0,
+          "delta": 0.0,
+          "percent_change": null
+        },
+        "passed": {
+          "current": 8.0,
+          "previous": 0.0,
+          "delta": 8.0,
+          "percent_change": null
+        },
+        "schema_valid": {
+          "current": 0.0,
+          "previous": 0.0,
+          "delta": 0.0,
+          "percent_change": null
+        },
+        "state_spectator_first_person": {
+          "current": 1.0,
+          "previous": 1.0,
+          "delta": 0.0,
+          "percent_change": 0.0
+        },
+        "state_unknown": {
+          "current": 12.0,
+          "previous": 12.0,
+          "delta": 0.0,
+          "percent_change": 0.0
+        }
+      }
+    },
+    "wall_sec": 107.48475753999082,
+    "input_fingerprint": {
+      "video_id": "match_001",
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
+      "assertions_sha256": "c5e242b611ce227d1d2633e5e24c00dfe65168d8124ab58fbdea84b1d7f0d820",
+      "input_scope": "isolated_points",
+      "profile_fingerprint": "260781017df6d7c4a83d96d306ffb31d4c3cec277a655d70bcfa8b61525e251e",
+      "code_fingerprint": "d261ddc23fb5dbb1850d7b9468b8a382348fb97aec175db15165f32ae6c91b45",
+      "suite_sha256": "7e31b647825dd19141be161dee315e007f46c098fdc4d7882b52c7572378a898",
+      "selected_categories": [
+        "timer_score"
+      ],
+      "pts_sec": [
+        4.102669,
+        4.152669,
+        42.969336,
+        59.502669,
+        74.386003,
+        74.452669,
+        82.002669,
+        111.402669,
+        111.452669,
+        124.536003,
+        147.502669,
+        151.002669,
+        170.002669
+      ],
+      "calibration_prefix": [
+        0.036003,
+        0.102669,
+        0.169336
+      ]
+    },
+    "terminal_hashes_verified": true,
+    "field_mismatch_count": 1,
+    "field_unknown_count": 6,
+    "source_reviewed_mismatch": {
+      "pts_sec": 74.452669,
+      "source_pts_ticks": 1143593,
+      "source_time_base": "1/15360",
+      "native_frame_sha256": "9651831d02373f475e09868e67b06026441f8213aea55e8734102210b6358e44",
+      "native_pixel_sha256": "af7f8635c45a202f1099c8520d361e9cdaf828dc9a70a8fb30fcadfc1a55b4cb",
+      "reference_image_sha256": "942cc5027d00abdb5d4329aa7341e5b7536774b3a8d35e646c58520faf0ba03c",
+      "sync_anchors_sha256": "b127e51cac1ecaa930ecaf12c075aaadfed6a8e69d39c6f73ae03a1781a860c8",
+      "anchor_id": "SYNC-R1-POSTCUT",
+      "json_pointer": "/anchors/4/score_enemy",
+      "fixed_expected": 2,
+      "reader_actual": 1,
+      "visually_reviewed_native_enemy_score": 1,
+      "visually_reviewed_reference_enemy_score": 1,
+      "review_provenance": "Original native top-bar crop and full unaltered Validation Pack reference viewed after targeted prediction; not independent blind holdout",
+      "decision": "Source-correct read contradicts fixed witness label; evaluator FAIL retained"
+    },
+    "production_changed": false,
+    "threshold_changed": false,
+    "validation_pack_changed": false,
+    "qualification_created": false,
+    "canonical_full_current": null,
+    "canonical_full_delta": null,
+    "remaining": "Independent lifecycle qualification and source/expected witness discrepancy review; no full adoption"
+  },
   "practical_full_application_followup": {
     "report": "e2e_reports/match_001/practical_full_application_verification.json",
     "report_sha256": "1c3fc31fbf74f138b276c131836f3f0e773faa270aa50f3190d5e10a4d8bef5b",
@@ -17374,5 +17499,626 @@
       "current source self-dead identity / ownership",
       "Strict round association"
     ]
+  },
+  "death_report_prospective_holdout": {
+    "source_report": "e2e_reports/match_001/death_report_prospective_holdout.json",
+    "correct": 6,
+    "unknown": 0,
+    "wrong": 0,
+    "natural_negative_rejections": 3,
+    "false_accepts": 0,
+    "owned_observations": 0,
+    "formal_events": 0,
+    "qualification_created": false,
+    "production_changed": false,
+    "canonical_re_evaluated": false,
+    "next_blockers": [
+      "single displayed value and death episode support",
+      "victim/agent semantics",
+      "current source self-dead ownership",
+      "Strict round qualification"
+    ]
+  },
+  "death_report_crop_comparison": {
+    "source_report": "e2e_reports/match_001/death_report_crop_comparison.json",
+    "original_r1_correct": 0,
+    "original_r1_unknown": 2,
+    "original_r1_wrong": 0,
+    "frozen_crop_clipped_digit_rows": 7,
+    "baseline_holdout_correct": 3,
+    "candidate_holdout_correct": 5,
+    "unknown_to_correct": 3,
+    "correct_to_unknown": 1,
+    "wrong": 0,
+    "negative_false_positive": 0,
+    "decision": "REJECTED",
+    "production_changed": false,
+    "canonical_re_evaluated": false,
+    "next_contract": "value-invariant report local field placement; agent header/portrait versus separate player-name semantics; current self-dead ownership"
+  },
+  "report_field_localization": {
+    "source_report": "e2e_reports/match_001/report_field_localization.json",
+    "holdout_baseline_correct": 3,
+    "holdout_current_correct": 6,
+    "unknown_to_correct": 3,
+    "correct_to_unknown": 0,
+    "wrong": 0,
+    "negative_false_positive": 0,
+    "report_owned_observations": 0,
+    "formal_events": 0,
+    "qualification_created": false,
+    "default_profile_changed": false,
+    "thresholds_changed": false,
+    "canonical_re_evaluated": false,
+    "full_unit_tests_passed": 2661,
+    "full_unit_tests_skipped": 6,
+    "related_tests_passed": 244,
+    "standard_targeted": {
+      "PASS": 12,
+      "FAIL": 13,
+      "NE": 12,
+      "matches_previous_failure_records": true,
+      "ocr_runtime": "explicit isolated existing Tesseract"
+    },
+    "next_blockers": [
+      "separate agent header/portrait from report player name",
+      "complete reader and current source owner qualification",
+      "Strict round association"
+    ],
+    "final_recognizer_fingerprint": "74bbda51d0ed3e0ecd9c9d0a74ca79c16f5a685a9bba4d88fb5042d590f7c695"
+  },
+  "report_portrait_candidates": {
+    "source_report": "e2e_reports/match_001/report_portrait_candidates.json",
+    "target_assertion_ids": [
+      "GT-R2-DEATH",
+      "OWN-R2-SELF-DEAD",
+      "event_count_constraints-005"
+    ],
+    "counts": {
+      "portrait_correct": 6,
+      "portrait_unknown": 0,
+      "portrait_wrong": 0,
+      "negative_rejected": 3,
+      "negative_false_positive": 0,
+      "numeric_correct": 6,
+      "numeric_unknown": 0,
+      "numeric_wrong": 0
+    },
+    "qualification_created": false,
+    "canonical_re_evaluated": false,
+    "default_profile_changed": false,
+    "owned_observations": 0,
+    "formal_events": 0,
+    "recognizer_fingerprint": "b6fc1b8302b55a31c7b2343d630e51c2b900f8020ace070296e32bca3efd9b82",
+    "next_blockers": [
+      "One video, two report contexts, two classes only",
+      "Natural controls have no report; no unseen agent or contradictory portrait holdout",
+      "Source frames exposed to earlier numeric testing, independent only of portrait reference generation",
+      "No report subject/role or current self-dead owner qualification",
+      "No continuity or canonical full evaluation"
+    ],
+    "tests": {
+      "related_passed": 169,
+      "full_passed": 2690,
+      "full_skipped": 6,
+      "ruff": "PASS",
+      "mypy_source_files": 128
+    }
+  },
+  "killfeed_subject_gap": {
+    "source_report": "e2e_reports/match_001/killfeed_subject_gap.json",
+    "target_assertion_ids": [
+      "GT-R2-DEATH",
+      "OWN-R2-SELF-DEAD",
+      "event_count_constraints-005"
+    ],
+    "victim_holdout_original_correct": 0,
+    "victim_holdout_current_correct": 3,
+    "victim_holdout_wrong": 0,
+    "controls_rejected": 3,
+    "structured_producer_rows": 0,
+    "owned_observations": 0,
+    "formal_events": 0,
+    "production_changed": false,
+    "qualification_created": false,
+    "canonical_re_evaluated": false,
+    "next_contract": [
+      "Current independent row localization and complete victim-role field",
+      "Structured killfeed rows with original text and source provenance",
+      "Independent subject/self binding, not a hard-coded observed username",
+      "Second death source plus qualified confidence and temporal suppression",
+      "Strict round association"
+    ]
+  },
+  "killfeed_layout_feasibility": {
+    "source_report": "e2e_reports/match_001/killfeed_layout_feasibility.json",
+    "summary": {
+      "training_physical_frames": 3,
+      "training_supported_pairs": 2,
+      "minimum_training_support_required": 3,
+      "same_victim_holdout_physical_frames": 3,
+      "same_victim_supported_pairs": 3,
+      "other_victim_transfer_frames": 2,
+      "other_victim_supported_pairs": 0,
+      "absent_row_frames": 1,
+      "absent_row_pairs": 0
+    },
+    "decision": "REJECTED: two supported training frames below minimum three; victim-edge support does not transfer to other existing rows",
+    "production_changed": false,
+    "qualification_created": false,
+    "canonical_re_evaluated": false,
+    "next_hypothesis": "Reuse geometric portrait frame/adjacent text evidence for a current victim field, paired with transferable separator; do not expand NCC mask into agent/name pixels or relax threshold"
+  },
+  "killfeed_geometric_reuse": {
+    "source_report": "e2e_reports/match_001/killfeed_geometric_reuse.json",
+    "summary": {
+      "physical_images": 9,
+      "existing_row_images": 8,
+      "absent_row_images": 1,
+      "supported_portrait_frames": 0,
+      "accepted_geometry_text_pairs": 0,
+      "qualification_created": false,
+      "production_changed": false
+    },
+    "decision": "REJECTED unmodified reuse: no current portrait proposal passes existing directed side occupancy and geometry gates",
+    "next_implementation": "Dedicated killfeed polygon-frame/current text geometry with independent controls; preserve spectator policy. Priority 1 remains independently qualified global lifecycle."
+  },
+  "lifecycle_phase_current_native": {
+    "source_report": "e2e_reports/match_001/lifecycle_phase_current_native.json",
+    "counts": {
+      "training_correct": 3,
+      "training_unknown": 0,
+      "holdout_correct": 8,
+      "holdout_unknown": 0,
+      "holdout_wrong": 0,
+      "control_rejected": 13,
+      "control_false_positive": 0
+    },
+    "static_component_supported": true,
+    "qualification_created": false,
+    "canonical_re_evaluated": false,
+    "production_changed": false,
+    "remaining_required_components_for_assured_start": [
+      "timer",
+      "ui_transition"
+    ],
+    "recognizer_fingerprint": "b6fc1b8302b55a31c7b2343d630e51c2b900f8020ace070296e32bca3efd9b82",
+    "profile_fingerprint": "8b5955f1d7de7139949815a7853260b9a66b6fd48140b64351030a6e78e9a5db"
+  },
+  "lifecycle_timer_current_native": {
+    "source_report": "e2e_reports/match_001/lifecycle_timer_current_native.json",
+    "counts": {
+      "current_jpeg": {
+        "correct": 25,
+        "unknown": 7,
+        "wrong": 0
+      },
+      "current_native": {
+        "correct": 25,
+        "unknown": 7,
+        "wrong": 0
+      }
+    },
+    "original_training_sources": 76,
+    "physical_holdout_sources": 32,
+    "cross_component_phase_conflicts": [
+      {
+        "source_pts_ticks": 1059881,
+        "time_sec": 69.00266927083334,
+        "phase_split": "control"
+      }
+    ],
+    "qualification_created": false,
+    "canonical_re_evaluated": false,
+    "production_changed": false,
+    "next_step": "e2e_reports/match_001/lifecycle_ui_review_plan.json"
+  },
+  "lifecycle_ui_current_native": {
+    "source_report": "e2e_reports/match_001/lifecycle_ui_current_native.json",
+    "processed_native_frames": 162,
+    "cold_valid_phase_scans": 0,
+    "source_initialized_valid_phase_scans": 162,
+    "source_initialized_timer_accepted": 133,
+    "source_initialized_start_candidates": 2,
+    "control_start_candidates": 0,
+    "formal_events": 0,
+    "qualification_created": false,
+    "production_changed": false,
+    "canonical_re_evaluated": false,
+    "short_window_cold_geometry_failure_not_reclassified_as_full_run_root_cause": true,
+    "next_implementation": "Provenance-bound explicit native window initialization that preserves calibration policy and resets temporal semantics; separate independently reviewed joint qualification remains required."
+  },
+  "native_initialization_api": {
+    "source_report": "e2e_reports/match_001/native_initialization_api.json",
+    "production_changed": "explicit opt-in source-assured native system measurement initialization",
+    "default_mode_changed": false,
+    "qualification_created": false,
+    "canonical_re_evaluated": false,
+    "current_start_candidates": 2,
+    "control_start_candidates": 0,
+    "formal_events": 0,
+    "related_tests": 113,
+    "full_tests_passed": 2707,
+    "full_tests_skipped": 6,
+    "next_blockers": [
+      "No independent joint UI/reader qualification created",
+      "Only previously exposed two source start contexts and three controls, not fresh holdout",
+      "Qualified event entrance unchanged; default full behavior untouched",
+      "R1 end timestamp semantics and result qualification still missing",
+      "Whole R1-to-R2 lifecycle and canonical full validation not performed",
+      "Windows current code/CI not validated"
+    ]
+  },
+  "result_glyph_training_feasibility": {
+    "source_report": "e2e_reports/match_001/result_glyph_training_feasibility.json",
+    "whole_cell_training_support": 1,
+    "conjunctive_edge_training_support": 2,
+    "stable_tile_training_eligible": false,
+    "registered_glyph_training_eligible": false,
+    "native_whole_cell_training_support": 1,
+    "source_aperture_control_NCC": 0.9083827557682203,
+    "source_aperture_control_accepted_at_point90": true,
+    "production_changed": false,
+    "qualification_created": false,
+    "canonical_re_evaluated": false,
+    "next_requirement": "Independently supported background/foreground discrimination and exact glyph negative-space proof; obtain additional source training support before another frozen reference, not a lower NCC or synthesized value."
+  },
+  "timer_control_source_review": {
+    "report": "e2e_reports/match_001/timer_control_source_review.json",
+    "source_frames": 30,
+    "correct": 11,
+    "unknown": 19,
+    "wrong": 0,
+    "timer_absent_frames": 0,
+    "qualification_created": false,
+    "canonical_re_evaluated": false,
+    "decision": "19unknowns are readable positives; do not use prediction rejection as ground truth absence."
+  },
+  "native_ui_measurement_transport": {
+    "report": "e2e_reports/match_001/native_ui_measurement_transport.json",
+    "processed_frames": 162,
+    "start_candidates": 2,
+    "control_candidates": 0,
+    "formal_events": 0,
+    "qualification_created": false,
+    "canonical_re_evaluated": false,
+    "behavior": "opt-in unqualified transport; default/strict acceptance unchanged",
+    "verification": "303relatedPASS;Ruff/mypyPASS;real native raster replay complete"
+  },
+  "joint_start_component_replay": {
+    "report": "e2e_reports/match_001/joint_start_component_replay.json",
+    "current_common_profile_fingerprint": "10bfac00544e510ebf3f3e2c0072c9beba24938b2ff996c9012f7e4046d82c99",
+    "current_code_fingerprint": "727c9ba7c88859d0726de307cbdb6b63cdf46f002510c0b2260bbe298f0e763f",
+    "purchase_phase_support": "3training/8correctholdout/12negative_rejected",
+    "timer_support": "25correct/7unknown/0wrong",
+    "physical_splits": {
+      "training": 79,
+      "holdout": 40,
+      "negative": 12
+    },
+    "qualification_created": false,
+    "canonical_re_evaluated": false,
+    "remaining": "Timer control scope/replay and UI temporal independent review; no full lifecycle qualification."
+  },
+  "timer_type_control_native_replay": {
+    "report": "e2e_reports/match_001/timer_type_control_native_replay.json",
+    "controls": 8,
+    "configured_jpeg_rejected": 8,
+    "configured_native_rejected": 8,
+    "false_positive": 0,
+    "joint_physical_counts": {
+      "training": 79,
+      "holdout": 40,
+      "negative": 20
+    },
+    "qualification_created": false,
+    "canonical_re_evaluated": false,
+    "decision": "Type controls now source/native/wrapper bound; do not treat as natural timer-ROI absence or geometry/temporal qualification."
+  },
+  "start_component_proof_aggregation": {
+    "report": "e2e_reports/match_001/start_component_proof_aggregation.json",
+    "timer_source_counts": {
+      "training": 76,
+      "holdout": 32,
+      "negative": 8
+    },
+    "current_common_profile_fingerprint": "10bfac00544e510ebf3f3e2c0072c9beba24938b2ff996c9012f7e4046d82c99",
+    "qualification_created": false,
+    "canonical_re_evaluated": false,
+    "loader_rejected_partial": "Missing or unknown global lifecycle component",
+    "remaining_required_component": "ui_transition",
+    "scope": "Historical frozen training statistics, current native holdout/type controls; incomplete release proof, no event authorization."
+  },
+  "ui_continuous_source_review": {
+    "report": "e2e_reports/match_001/ui_continuous_source_review.json",
+    "source_frames_reviewed": 162,
+    "timer_correct": 133,
+    "timer_unknown": 29,
+    "timer_wrong": 0,
+    "literal_phase_matches_correct": 25,
+    "wrong_phase_matches": 0,
+    "distinct_source_transition_cases": 2,
+    "menu_phase_obscured_frames": 30,
+    "qualification_created": false,
+    "canonical_re_evaluated": false,
+    "limit": "Original development exposure retained; correlated frame support is not independent event count or new blind holdout."
+  },
+  "result_neutral_colour_training": {
+    "report": "e2e_reports/match_001/result_neutral_colour_training.json",
+    "training_support": 0,
+    "neutral_glyph_counts": [
+      7,
+      7,
+      5
+    ],
+    "qualification_created": false,
+    "canonical_re_evaluated": false,
+    "decision": "Neutral-white colour segmentation rejects actual letter strokes; no threshold scan/production adoption."
+  },
+  "result_local_contrast_guard": {
+    "report": "e2e_reports/match_001/result_local_contrast_guard.json",
+    "production_change": "Opt-in additional all-glyph foreground/negative-space rejection; unguarded defaults unchanged",
+    "combined_training_support": 6,
+    "holdout_correct": 3,
+    "holdout_unknown": 8,
+    "holdout_wrong": 0,
+    "natural_negative_false_positive": 0,
+    "synthetic_added_stroke_rejected": true,
+    "qualification_created": false,
+    "canonical_re_evaluated": false,
+    "tests": "176related;2740PASS6SKIPfull;Ruff/mypyPASS",
+    "remaining": "Current fingerprint component qualification and continuous lifecycle; no canonical assertion promotion."
+  },
+  "result_guard_continuous_end": {
+    "artifact": "e2e_reports/match_001/result_guard_continuous_end.json",
+    "artifact_sha256": "6dbf9f74d89c4251d6482fab78bbfa64bfeb25095cb99d603d3a6cb0f2070263",
+    "document": "docs/result_guard_continuous_end.md",
+    "formal_events": 0,
+    "qualification_created": false,
+    "canonical_status_unchanged": true,
+    "summary": "Paired108native frames per profile retain one unqualified end pattern at74.48600260416667 confirmed75.3693359375. All29result matches survive guard; timer17 and score pairs47 identical. Source/code/profile/input terminal hashes verify. No active-round or release claim."
+  },
+  "result_guard_end_controls": {
+    "artifact": "e2e_reports/match_001/result_guard_end_controls.json",
+    "artifact_sha256": "2a62be4e810dc7a4ff28e298b059211bbd914f1e4c7e9a63b2bc1601e15c328d",
+    "document": "docs/result_guard_end_controls.md",
+    "processed_frames": 99,
+    "result_false_positives": 0,
+    "unqualified_end_patterns": 0,
+    "formal_events": 0,
+    "qualification_created": false,
+    "canonical_status_unchanged": true,
+    "next_blocker": "Current-profile component/temporal qualification and continuous R1-to-R2 lifecycle. Preserve source cohort exposure; no whole-match safety inference."
+  },
+  "guarded_lifecycle_component_verification": {
+    "artifact": "e2e_reports/match_001/guarded_lifecycle_component_verification.json",
+    "artifact_sha256": "c985562c74c5be08e09de70e38bbcf3582894d49596dea9ef113e668ab06299e",
+    "document": "docs/guarded_lifecycle_component_verification.md",
+    "static_frames": 63,
+    "continuous_frames": 162,
+    "timer_correct": 133,
+    "timer_unknown": 29,
+    "timer_wrong": 0,
+    "start_candidates": 2,
+    "control_candidates": 0,
+    "qualification_created": false,
+    "canonical_status_unchanged": true
+  },
+  "qualified_r1_start_source": {
+    "artifact": "e2e_reports/match_001/qualified_r1_start_source.json",
+    "artifact_sha256": "9b2a6a75e4149302e14195f2df2ee9d4c7011cb4bec22b79a37a3606118b4e82",
+    "document": "docs/qualified_r1_start_source.md",
+    "processed_frames": 358,
+    "formal_round_start_count": 1,
+    "formal_round_end_count": 0,
+    "duplicate_starts": 0,
+    "targeted_canonical_pass": [
+      "GT-R1-ROUND-START"
+    ],
+    "canonical_baseline_unchanged": true,
+    "default_installed": false,
+    "qualification_scope": "Current start-only bundle,1training temporal case/1original holdout/3negative windows with9/7/90correlated physical support images; not full lifecycle or new blind cohort."
+  },
+  "guarded_score_component_verification": {
+    "artifact": "e2e_reports/match_001/guarded_score_component_verification.json",
+    "artifact_sha256": "0e45268ec3f1f10cbdfa556ffcd21b192ad868acc9c557a3a44e8e142b9f99c8",
+    "document": "docs/guarded_score_component_verification.md",
+    "source_frames": 54,
+    "holdout_pair_counts": {
+      "correct": 9,
+      "unknown": 18,
+      "wrong": 0
+    },
+    "negative_false_positive": 0,
+    "actual_loader_admitted_components": [
+      "purchase_phase",
+      "score",
+      "timer",
+      "ui_transition"
+    ],
+    "default_installed": false,
+    "canonical_status_unchanged": true,
+    "next_blocker": "Round-result and UI end-transition qualification; preserve independent temporal scope, no inferred timestamps."
+  },
+  "guarded_result_component_verification": {
+    "artifact": "e2e_reports/match_001/guarded_result_component_verification.json",
+    "artifact_sha256": "76129cc1b5914eb1bb5e35fd852c28faae0ffa4e8e1a3d9a8750639dcf9dc6fb",
+    "document": "docs/guarded_result_component_verification.md",
+    "counts": {
+      "correct": 3,
+      "unknown": 8,
+      "wrong": 0,
+      "negative_false_positive": 0
+    },
+    "actual_loader_admitted_components": [
+      "purchase_phase",
+      "round_result",
+      "score",
+      "timer",
+      "ui_transition"
+    ],
+    "default_installed": false,
+    "temporal_end_qualified": false,
+    "canonical_status_unchanged": true,
+    "next_blocker": "Explicit temporal-end qualification units and independent continuous lifecycle/application verification; do not convert one known end episode into independent cases."
+  },
+  "qualified_r1_start_application": {
+    "artifact": "e2e_reports/match_001/qualified_r1_start_application.json",
+    "artifact_sha256": "b26c504215dbfd8dc36607666aa00b16f3b91546d8337e50abde761c0b5fb925",
+    "document": "docs/qualified_r1_start_application.md",
+    "main_source_frames": 39,
+    "validated_native_frames": 358,
+    "targeted_canonical_pass": [
+      "GT-R1-ROUND-START"
+    ],
+    "native_start_count": 1,
+    "native_end_count": 0,
+    "owned_facts": 0,
+    "application_merge_verified": true,
+    "canonical_baseline_unchanged": true,
+    "default_installed": false
+  },
+  "end_continuous_source_review": {
+    "artifact": "e2e_reports/match_001/end_continuous_source_review.json",
+    "artifact_sha256": "ddbc04de7f96bc628d4959a157b6bd7c3f4d9e38054838cef66ea72fb5fe46ef",
+    "document": "docs/end_continuous_source_review.md",
+    "reviewed_frames": 108,
+    "source_caption_first_sec": 74.43600260416666,
+    "matcher_support_first_sec": 75.3193359375,
+    "accepted_timer_correct": 17,
+    "accepted_score_pair_correct": 47,
+    "accepted_result_correct": 29,
+    "accepted_wrong": 0,
+    "qualification_created": false,
+    "production_changed": false,
+    "canonical_status_unchanged": true,
+    "next_blocker": "Early/transient complete result rendering is not qualified; investigate registered complete-glyph eligibility using existing expanded frozen training, never backdate from manual labels."
+  },
+  "result_registered_expanded_training": {
+    "artifact": "e2e_reports/match_001/result_registered_expanded_training.json",
+    "artifact_sha256": "b26d44ba2f4639931dfe93d5ed409270142ab27f8a78c0f1b800d86b266f5db8",
+    "document": "docs/result_registered_expanded_training.md",
+    "training_parents": 14,
+    "eligible7glyph": 7,
+    "combined_support": 5,
+    "holdout_evaluated": false,
+    "decision": "Reject for early recovery: additional AND guard cannot promote existing word nonmatch. Training eligibility alone is not progress on end timing.",
+    "production_changed": false,
+    "canonical_status_unchanged": true
+  },
+  "result_independent_registration_training": {
+    "artifact": "e2e_reports/match_001/result_independent_registration_training.json",
+    "artifact_sha256": "80b8bf3d939734eafd4c1dc479ce520193df89693dbe6ceb7c840c959e7e2299",
+    "document": "docs/result_independent_registration_training.md",
+    "training_sources": 14,
+    "complete_word_sources": 7,
+    "training_support": 0,
+    "decision": "Reject canonical28x56mask footprint: A29/M26negative pixels below32; preserve current native image coordinates in next training-only hypothesis.",
+    "holdout_evaluated": false,
+    "production_changed": false,
+    "canonical_status_unchanged": true
+  },
+  "result_native_mask_registration": {
+    "artifact": "e2e_reports/match_001/result_native_mask_registration.json",
+    "artifact_sha256": "9c2ef490e39d11310d5f7d502513e8c2d909091c9b49e29d2c9ca43843ea9136",
+    "document": "docs/result_native_mask_registration.md",
+    "training_support": 7,
+    "held_correct": 5,
+    "held_unknown": 6,
+    "held_wrong": 0,
+    "natural_negative_false_positive": 0,
+    "early_accepted": false,
+    "early_failure": "4connectedcomponents for7semanticglyphs, pre-NCC rejection",
+    "production_changed": false,
+    "canonical_status_unchanged": true
+  },
+  "result_fixed_slot_training": {
+    "artifact": "e2e_reports/match_001/result_fixed_slot_training.json",
+    "artifact_sha256": "df4746f43b51497a553ea196f985f98e56626e1e5623e5bc672a3b5a6fbc94f7",
+    "document": "docs/result_fixed_slot_training.md",
+    "training_support": 7,
+    "held_correct": 5,
+    "held_unknown": 6,
+    "held_wrong": 0,
+    "natural_negative_false_positive": 0,
+    "early_ncc_min": 0.2141949512429536,
+    "early_accepted": false,
+    "decision": "Stop early-image comparator tuning; component fusion was only first blocker, appearance stillfails6/7glyphs. Return to source-correct clock/score plus qualified late-result temporal path.",
+    "production_changed": false,
+    "canonical_status_unchanged": true
+  },
+  "ui_end_component_review": {
+    "artifact": "e2e_reports/match_001/ui_end_component_review.json",
+    "artifact_sha256": "8a47c8ad67c003b127e0063e89e424fa3e3e3437176f596e059e29f0aab806ca",
+    "document": "docs/ui_end_component_review.md",
+    "pre_change_loader_admitted_components": [
+      "purchase_phase",
+      "round_result",
+      "score",
+      "timer",
+      "ui_end_transition",
+      "ui_transition"
+    ],
+    "known_end_episode": 1,
+    "held_support_images": 6,
+    "prefix_frames": 71,
+    "negative_windows": 2,
+    "fresh_qualification_required": true,
+    "current_recognizer_fingerprint": "fd8b8ff3da3c1c9775604141f61062d39656f59e492610ed482e8530db691817",
+    "ended_history_unit_failures_before": 4,
+    "ended_history_unit_failures_after": 0,
+    "related_unit_pass": 108,
+    "canonical_status_unchanged": true
+  },
+  "current_qualification_status": {
+    "recognizer_fingerprint": "fd8b8ff3da3c1c9775604141f61062d39656f59e492610ed482e8530db691817",
+    "old_bundles_stale": true,
+    "current_offline_admission_audit_path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/current-code-components-20261013/end_admission/lifecycle-admission-audit.json",
+    "current_offline_admission_audit_sha256": "c4bfdd6ab442bed5b0ac1336f30afb6e53539644ce2499d2575314b2f705af0f",
+    "actual_current_loader_admitted_components": [
+      "purchase_phase",
+      "round_result",
+      "score",
+      "timer",
+      "ui_end_transition",
+      "ui_transition"
+    ],
+    "current_default_release": false,
+    "independent_temporal_generalization_proven": false,
+    "prior_qualified_source_native_application_passes_historical": true
+  },
+  "current_code_lifecycle_revalidation": {
+    "report_path": "e2e_reports/match_001/current_code_lifecycle_revalidation.json",
+    "report_sha256": "c8e7fb9412d9f8ba77d557954f5e480ae7f0ee94c3196f9233aa50255ae6de0d",
+    "recognizer_fingerprint": "fd8b8ff3da3c1c9775604141f61062d39656f59e492610ed482e8530db691817",
+    "fresh_source_recognition_verified": true,
+    "loader_admission_audit_components": [
+      "purchase_phase",
+      "round_result",
+      "score",
+      "timer",
+      "ui_end_transition",
+      "ui_transition"
+    ],
+    "default_installed": false,
+    "formal_source_end_released": false,
+    "canonical_full_executed": false
+  },
+  "qualified_whole_source_lifecycle": {
+    "report_path": "e2e_reports/match_001/qualified_whole_source_lifecycle.json",
+    "report_sha256": "52db6de331660e830952d29ff3e7906c139ed54facb916440830ec30d25c3193",
+    "native_trace_counts": {
+      "pass": 27,
+      "fail": 51,
+      "not_evaluated": 4
+    },
+    "standard_full_e2e_executed": false,
+    "adopted_baseline_unchanged": true,
+    "formal_events": {
+      "start": 2,
+      "end": 1
+    },
+    "package_count": 2,
+    "negative_failures": 0
   }
 }

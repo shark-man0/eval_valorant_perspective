@@ -1,0 +1,569 @@
+{
+  "schema_version": "1.0",
+  "scope": "Source victim-name OCR and shared producer/ownership gap investigation only; no reader qualification or runtime identity injection",
+  "target_assertion_ids": [
+    "GT-R2-DEATH",
+    "OWN-R2-SELF-DEAD",
+    "event_count_constraints-005"
+  ],
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "recognizer_fingerprint": "b6fc1b8302b55a31c7b2343d630e51c2b900f8020ace070296e32bca3efd9b82",
+  "profile_fingerprint": "253a571ecff51dd1043ef9469af27df2644f3bc7647581b7919af4e559183511",
+  "diagnostic_injected_reader": {
+    "type": "Existing SubregionReader(TesseractTextReader eng psm7)",
+    "bounds_in_kill_feed_norm": [
+      0.6569037656903766,
+      0.40559440559440557,
+      0.8410041841004184,
+      0.5594405594405595
+    ],
+    "ocr_fallback_rois": [],
+    "qualification_inherited": false
+  },
+  "artifact_sha256": {
+    "outputs/recognition-investigation/killfeed-subject-20261012/frozen-config.json": "237ca3a129e7c1f246578cb9e608e0d8b6b50c9508ff0ac164294d9e49e84a61",
+    "outputs/recognition-investigation/killfeed-subject-20261012/result.json": "bf4bb37be5c0bfd68fb526564ee216f159deb2b011b9a256f78d00c9e15ccc11",
+    "outputs/recognition-investigation/killfeed-subject-20261012/holdout-selection.json": "1748b6017426053caa736d4b1bce97c2aa247f0e62fdb87db99d8c9fceaa5504",
+    "outputs/recognition-investigation/killfeed-subject-20261012/holdout-labels.json": "e001b134fb2562e8520e790c4ed5e4ee8c5f59653138f0b3490d8b8e1d54d9d5",
+    "outputs/recognition-investigation/killfeed-subject-20261012/holdout-result.json": "b56e755abf88378c034ecf110c955d3237467b91b797835ff56d4f24effbd4cb",
+    "outputs/recognition-investigation/killfeed-subject-20261012/producer-gap.json": "3bf0ec5a7852a65996ac3f0b053c91a86d375e4deeb1527b98bb568b700c7e75"
+  },
+  "source_input_sha256": {
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/killfeed-subject-20261012/holdout-selection.json": "1748b6017426053caa736d4b1bce97c2aa247f0e62fdb87db99d8c9fceaa5504",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/killfeed-subject-20261012/holdout-labels.json": "e001b134fb2562e8520e790c4ed5e4ee8c5f59653138f0b3490d8b8e1d54d9d5",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/killfeed-subject-20261012/frozen-config.json": "237ca3a129e7c1f246578cb9e608e0d8b6b50c9508ff0ac164294d9e49e84a61",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/source_01.png": "b6d835b3e2198d2ae4f6f5d9e8c8560648a923c283b26de99a4f95e240852d30",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/source_02.png": "b994ca60dcb7e19f9eb6df164c21277a00163e47c39a69747bd7c7ada8a8dfa4",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/source_03.png": "15df6216614e3f7e4a8e50c2afb4853f3e052bfa0cea008bc0d42ce9a6117907",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/negative/source_01.png": "1a72b7eed3d2c757c4e7702c47e3f8754ad68a7625327a79451c7a40bd82c23a",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/negative/source_02.png": "fbc40a9abc5b7e6bc9898871195f0ec2083ca6f758e107b68570512c76cbe9ad",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/negative/source_03.png": "c468592b065b2821f130531c4fe366c0a4a9b0832e32a69207d3d494281688f2"
+  },
+  "source_code_sha256": {
+    "src/valorant_ai_coach/hud/analyzers.py": "7b53d7970edcd48029f80e080a15acc2af37cf345237db91a66811b80b7a292c",
+    "src/valorant_ai_coach/hud/temporal.py": "6c954431a8748419d21f5d16103690e3fdcc56a2d0eddc0f3be763706fcbd366",
+    "src/valorant_ai_coach/hud/identity.py": "5221dc65d0062ffb54e361db8981e9265ced7898fd9ffbed8fc1a9b633a6fc24",
+    "src/valorant_ai_coach/hud/templates.py": "421f95ef8c30d2bb8d27acf531bacaafacffec059bbf10b4f9a35b0861c35e2c"
+  },
+  "development_predictions": [
+    {
+      "frame": 1,
+      "crop": "original",
+      "display": "|",
+      "confidence": 0.43918556000000003,
+      "sources": [
+        "tesseract_text"
+      ],
+      "accepted": false,
+      "crop_pixel_sha256": "61e91cdd03cb6e1ddd7a537914c62ebf11f29a9972045b1dea1b3ae407452643"
+    },
+    {
+      "frame": 1,
+      "crop": "glyph_context",
+      "display": "|",
+      "confidence": 0.42809620000000004,
+      "sources": [
+        "tesseract_text"
+      ],
+      "accepted": false,
+      "crop_pixel_sha256": "97f2ed61bef5a49640ba4d5e2097ff6ccb0fd2bc3ea74f327fadff9ed1a79339"
+    },
+    {
+      "frame": 5,
+      "crop": "original",
+      "display": "i £",
+      "confidence": 0.06504736,
+      "sources": [
+        "tesseract_text"
+      ],
+      "accepted": false,
+      "crop_pixel_sha256": "7f91ef325af89d099077b5a67553ff4dc2eb536f6eec24b50e54abd2dc6a2d3e"
+    },
+    {
+      "frame": 5,
+      "crop": "glyph_context",
+      "display": "i, #22",
+      "confidence": 0.04200993,
+      "sources": [
+        "tesseract_text"
+      ],
+      "accepted": false,
+      "crop_pixel_sha256": "290d77017dbd466f3e0a7d9f3175f7a136f03166531e954dc7afc02f66c9eeb0"
+    },
+    {
+      "frame": 9,
+      "crop": "original",
+      "display": "sharkman |",
+      "confidence": 0.53393677,
+      "sources": [
+        "tesseract_text"
+      ],
+      "accepted": false,
+      "crop_pixel_sha256": "d01f5f405f801b9fe09c3f6ed190acc5838db6c329825d25ae793398d0587ed8"
+    },
+    {
+      "frame": 9,
+      "crop": "glyph_context",
+      "display": "sharkman",
+      "confidence": 0.9252330000000001,
+      "sources": [
+        "tesseract_text"
+      ],
+      "accepted": true,
+      "crop_pixel_sha256": "7e7277f7232b03a5ac6f794d23ad92dab5df7fca53fb979bbfd793ac50ba1571"
+    },
+    {
+      "frame": 10,
+      "crop": "original",
+      "display": "sharkman |",
+      "confidence": 0.66890411,
+      "sources": [
+        "tesseract_text"
+      ],
+      "accepted": false,
+      "crop_pixel_sha256": "fa424e29c8bc74a769872a30af20392d3e466d437133f67759d36aaaa13f08d1"
+    },
+    {
+      "frame": 10,
+      "crop": "glyph_context",
+      "display": "sharkman",
+      "confidence": 0.91428368,
+      "sources": [
+        "tesseract_text"
+      ],
+      "accepted": true,
+      "crop_pixel_sha256": "f5a2d5407ce439bc3ead056f2a1b19f06347e30d20cf6e6a0e595a462707a789"
+    },
+    {
+      "frame": 27,
+      "crop": "original",
+      "display": "sharkman ,",
+      "confidence": 0.00096331,
+      "sources": [
+        "tesseract_text"
+      ],
+      "accepted": false,
+      "crop_pixel_sha256": "c746540b66677398fec8ae54d1db6bd9155215f577b2682acd429ab352fcd39d"
+    },
+    {
+      "frame": 27,
+      "crop": "glyph_context",
+      "display": "sharkman",
+      "confidence": 0.8975932299999999,
+      "sources": [
+        "tesseract_text"
+      ],
+      "accepted": false,
+      "crop_pixel_sha256": "23aa41e1f089405760bb3393f1163f05d6557a4112aa89aa12299e9347ec73a8"
+    }
+  ],
+  "holdout": {
+    "scope": "Frozen development crop transferred to previously reserved victim OCR images, not globally fresh holdout, one victim name only",
+    "input_sha256": {
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/killfeed-subject-20261012/holdout-selection.json": "1748b6017426053caa736d4b1bce97c2aa247f0e62fdb87db99d8c9fceaa5504",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/killfeed-subject-20261012/holdout-labels.json": "e001b134fb2562e8520e790c4ed5e4ee8c5f59653138f0b3490d8b8e1d54d9d5",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/killfeed-subject-20261012/frozen-config.json": "237ca3a129e7c1f246578cb9e608e0d8b6b50c9508ff0ac164294d9e49e84a61",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/source_01.png": "b6d835b3e2198d2ae4f6f5d9e8c8560648a923c283b26de99a4f95e240852d30",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/source_02.png": "b994ca60dcb7e19f9eb6df164c21277a00163e47c39a69747bd7c7ada8a8dfa4",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/source_03.png": "15df6216614e3f7e4a8e50c2afb4853f3e052bfa0cea008bc0d42ce9a6117907",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/negative/source_01.png": "1a72b7eed3d2c757c4e7702c47e3f8754ad68a7625327a79451c7a40bd82c23a",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/negative/source_02.png": "fbc40a9abc5b7e6bc9898871195f0ec2083ca6f758e107b68570512c76cbe9ad",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-holdout-20261012/negative/source_03.png": "c468592b065b2821f130531c4fe366c0a4a9b0832e32a69207d3d494281688f2"
+    },
+    "counts": {
+      "original_correct": 0,
+      "original_unknown": 3,
+      "original_wrong": 0,
+      "current_correct": 3,
+      "current_unknown": 0,
+      "current_wrong": 0,
+      "original_negative_rejected": 3,
+      "original_negative_false_accept": 0,
+      "current_negative_rejected": 3,
+      "current_negative_false_accept": 0
+    },
+    "rows": [
+      {
+        "source_pts_ticks": 2276393,
+        "time_sec": 148.20266927083333,
+        "pixel_sha256": "cec51cd0988d33747a8610e558cedf9ea9c8d277f7d87321d6c5f0cc29c2cfcd",
+        "crop": "original",
+        "bounds_px": [
+          1752,
+          98,
+          1844,
+          128
+        ],
+        "raw_display": "sharkman",
+        "confidence": 0.0,
+        "sources": [
+          "tesseract_text"
+        ],
+        "accepted": null,
+        "expected_display": "sharkman",
+        "result": "unknown",
+        "owner_known": false
+      },
+      {
+        "source_pts_ticks": 2276393,
+        "time_sec": 148.20266927083333,
+        "pixel_sha256": "cec51cd0988d33747a8610e558cedf9ea9c8d277f7d87321d6c5f0cc29c2cfcd",
+        "crop": "current",
+        "bounds_px": [
+          1754,
+          103,
+          1842,
+          125
+        ],
+        "raw_display": "sharkman",
+        "confidence": 0.9046579,
+        "sources": [
+          "tesseract_text"
+        ],
+        "accepted": "sharkman",
+        "expected_display": "sharkman",
+        "result": "correct",
+        "owner_known": false
+      },
+      {
+        "source_pts_ticks": 2284073,
+        "time_sec": 148.70266927083333,
+        "pixel_sha256": "223eebce3670e87ae2af647f6adb3060582df46cacd827d50793f519977f38f4",
+        "crop": "original",
+        "bounds_px": [
+          1752,
+          98,
+          1844,
+          128
+        ],
+        "raw_display": "sharkman |",
+        "confidence": 0.61388596,
+        "sources": [
+          "tesseract_text"
+        ],
+        "accepted": null,
+        "expected_display": "sharkman",
+        "result": "unknown",
+        "owner_known": false
+      },
+      {
+        "source_pts_ticks": 2284073,
+        "time_sec": 148.70266927083333,
+        "pixel_sha256": "223eebce3670e87ae2af647f6adb3060582df46cacd827d50793f519977f38f4",
+        "crop": "current",
+        "bounds_px": [
+          1754,
+          103,
+          1842,
+          125
+        ],
+        "raw_display": "sharkman",
+        "confidence": 0.92120773,
+        "sources": [
+          "tesseract_text"
+        ],
+        "accepted": "sharkman",
+        "expected_display": "sharkman",
+        "result": "correct",
+        "owner_known": false
+      },
+      {
+        "source_pts_ticks": 2291753,
+        "time_sec": 149.20266927083333,
+        "pixel_sha256": "17276d3c795746fc0c5e0234418737fd643c70d639dfd3cbe0a5281520f26a4d",
+        "crop": "original",
+        "bounds_px": [
+          1752,
+          98,
+          1844,
+          128
+        ],
+        "raw_display": "sharkman |",
+        "confidence": 0.52392151,
+        "sources": [
+          "tesseract_text"
+        ],
+        "accepted": null,
+        "expected_display": "sharkman",
+        "result": "unknown",
+        "owner_known": false
+      },
+      {
+        "source_pts_ticks": 2291753,
+        "time_sec": 149.20266927083333,
+        "pixel_sha256": "17276d3c795746fc0c5e0234418737fd643c70d639dfd3cbe0a5281520f26a4d",
+        "crop": "current",
+        "bounds_px": [
+          1754,
+          103,
+          1842,
+          125
+        ],
+        "raw_display": "sharkman",
+        "confidence": 0.9198088799999999,
+        "sources": [
+          "tesseract_text"
+        ],
+        "accepted": "sharkman",
+        "expected_display": "sharkman",
+        "result": "correct",
+        "owner_known": false
+      },
+      {
+        "source_pts_ticks": 1996841,
+        "time_sec": 130.00266927083334,
+        "pixel_sha256": "07095f4d2d824b8a8a14ba55fd5c6b336fbb4302c31e7d2597bf50e4125722d8",
+        "crop": "original",
+        "bounds_px": [
+          1752,
+          98,
+          1844,
+          128
+        ],
+        "raw_display": "BEWPA ¢",
+        "confidence": 0.53365803,
+        "sources": [
+          "tesseract_text"
+        ],
+        "accepted": null,
+        "expected_display": null,
+        "result": "negative_rejected",
+        "owner_known": false
+      },
+      {
+        "source_pts_ticks": 1996841,
+        "time_sec": 130.00266927083334,
+        "pixel_sha256": "07095f4d2d824b8a8a14ba55fd5c6b336fbb4302c31e7d2597bf50e4125722d8",
+        "crop": "current",
+        "bounds_px": [
+          1754,
+          103,
+          1842,
+          125
+        ],
+        "raw_display": "BIEL PA ¢",
+        "confidence": 0.0,
+        "sources": [
+          "tesseract_text"
+        ],
+        "accepted": null,
+        "expected_display": null,
+        "result": "negative_rejected",
+        "owner_known": false
+      },
+      {
+        "source_pts_ticks": 2150441,
+        "time_sec": 140.00266927083334,
+        "pixel_sha256": "f37a10e47bd0d424144de9f7ff4e2bb33a144d0dc13587645a3d2c34d9f55211",
+        "crop": "original",
+        "bounds_px": [
+          1752,
+          98,
+          1844,
+          128
+        ],
+        "raw_display": "LADY... /",
+        "confidence": 0.08612003,
+        "sources": [
+          "tesseract_text"
+        ],
+        "accepted": null,
+        "expected_display": null,
+        "result": "negative_rejected",
+        "owner_known": false
+      },
+      {
+        "source_pts_ticks": 2150441,
+        "time_sec": 140.00266927083334,
+        "pixel_sha256": "f37a10e47bd0d424144de9f7ff4e2bb33a144d0dc13587645a3d2c34d9f55211",
+        "crop": "current",
+        "bounds_px": [
+          1754,
+          103,
+          1842,
+          125
+        ],
+        "raw_display": "LARD...",
+        "confidence": 0.0,
+        "sources": [
+          "tesseract_text"
+        ],
+        "accepted": null,
+        "expected_display": null,
+        "result": "negative_rejected",
+        "owner_known": false
+      },
+      {
+        "source_pts_ticks": 2242601,
+        "time_sec": 146.00266927083334,
+        "pixel_sha256": "06e9e8226d5bfa0264943ffbe5b9b8c7a272c92b11ed82c8ac5c4cfca5f010d3",
+        "crop": "original",
+        "bounds_px": [
+          1752,
+          98,
+          1844,
+          128
+        ],
+        "raw_display": "_ =a",
+        "confidence": 0.15533333000000002,
+        "sources": [
+          "tesseract_text"
+        ],
+        "accepted": null,
+        "expected_display": null,
+        "result": "negative_rejected",
+        "owner_known": false
+      },
+      {
+        "source_pts_ticks": 2242601,
+        "time_sec": 146.00266927083334,
+        "pixel_sha256": "06e9e8226d5bfa0264943ffbe5b9b8c7a272c92b11ed82c8ac5c4cfca5f010d3",
+        "crop": "current",
+        "bounds_px": [
+          1754,
+          103,
+          1842,
+          125
+        ],
+        "raw_display": ", <=",
+        "confidence": 0.16224174000000002,
+        "sources": [
+          "tesseract_text"
+        ],
+        "accepted": null,
+        "expected_display": null,
+        "result": "negative_rejected",
+        "owner_known": false
+      }
+    ],
+    "runtime_sec": 5.651673690066673,
+    "production_changed": false,
+    "qualification_created": false,
+    "source_owner_resolved": false
+  },
+  "shared_producer": {
+    "scope": "Shared production reader bindings with existing text OCR diagnostic injection; no owned identity supplied",
+    "recognizer_fingerprint": "b6fc1b8302b55a31c7b2343d630e51c2b900f8020ace070296e32bca3efd9b82",
+    "profile_fingerprint": "253a571ecff51dd1043ef9469af27df2644f3bc7647581b7919af4e559183511",
+    "rows": [
+      {
+        "source_pts_ticks": 1996841,
+        "time_sec": 130.00266927083334,
+        "pixel_sha256": "07095f4d2d824b8a8a14ba55fd5c6b336fbb4302c31e7d2597bf50e4125722d8",
+        "raw_accepted_killfeed": null,
+        "reader_confidence": null,
+        "normalized_rows": [],
+        "primary_state": "unknown",
+        "hud_confidence": 0.0,
+        "player_specific_hud_valid": false,
+        "identity": {
+          "live": false,
+          "positive_count": 2,
+          "reason": "spectator_exclusion_unverified"
+        },
+        "combat_report_visible": false
+      },
+      {
+        "source_pts_ticks": 2150441,
+        "time_sec": 140.00266927083334,
+        "pixel_sha256": "f37a10e47bd0d424144de9f7ff4e2bb33a144d0dc13587645a3d2c34d9f55211",
+        "raw_accepted_killfeed": null,
+        "reader_confidence": null,
+        "normalized_rows": [],
+        "primary_state": "unknown",
+        "hud_confidence": 0.0,
+        "player_specific_hud_valid": false,
+        "identity": {
+          "live": false,
+          "positive_count": 3,
+          "reason": "spectator_exclusion_unverified"
+        },
+        "combat_report_visible": true
+      },
+      {
+        "source_pts_ticks": 2242601,
+        "time_sec": 146.00266927083334,
+        "pixel_sha256": "06e9e8226d5bfa0264943ffbe5b9b8c7a272c92b11ed82c8ac5c4cfca5f010d3",
+        "raw_accepted_killfeed": null,
+        "reader_confidence": null,
+        "normalized_rows": [],
+        "primary_state": "unknown",
+        "hud_confidence": 0.0,
+        "player_specific_hud_valid": false,
+        "identity": {
+          "live": false,
+          "positive_count": 2,
+          "reason": "spectator_exclusion_unverified"
+        },
+        "combat_report_visible": false
+      },
+      {
+        "source_pts_ticks": 2276393,
+        "time_sec": 148.20266927083333,
+        "pixel_sha256": "cec51cd0988d33747a8610e558cedf9ea9c8d277f7d87321d6c5f0cc29c2cfcd",
+        "raw_accepted_killfeed": "sharkman",
+        "reader_confidence": null,
+        "normalized_rows": [],
+        "primary_state": "unknown",
+        "hud_confidence": 0.0,
+        "player_specific_hud_valid": false,
+        "identity": {
+          "live": false,
+          "positive_count": 0,
+          "reason": "spectator_exclusion_unverified"
+        },
+        "combat_report_visible": true
+      },
+      {
+        "source_pts_ticks": 2284073,
+        "time_sec": 148.70266927083333,
+        "pixel_sha256": "223eebce3670e87ae2af647f6adb3060582df46cacd827d50793f519977f38f4",
+        "raw_accepted_killfeed": "sharkman",
+        "reader_confidence": null,
+        "normalized_rows": [],
+        "primary_state": "unknown",
+        "hud_confidence": 0.0,
+        "player_specific_hud_valid": false,
+        "identity": {
+          "live": false,
+          "positive_count": 0,
+          "reason": "competing_view_evidence"
+        },
+        "combat_report_visible": true
+      },
+      {
+        "source_pts_ticks": 2291753,
+        "time_sec": 149.20266927083333,
+        "pixel_sha256": "17276d3c795746fc0c5e0234418737fd643c70d639dfd3cbe0a5281520f26a4d",
+        "raw_accepted_killfeed": "sharkman",
+        "reader_confidence": null,
+        "normalized_rows": [],
+        "primary_state": "unknown",
+        "hud_confidence": 0.0,
+        "player_specific_hud_valid": false,
+        "identity": {
+          "live": false,
+          "positive_count": 0,
+          "reason": "spectator_exclusion_unverified"
+        },
+        "combat_report_visible": true
+      }
+    ],
+    "events": [],
+    "runtime_sec": 13.339383361046202,
+    "processed_frames": 7,
+    "production_changed": false
+  },
+  "physical_training_holdout_disjoint": true,
+  "qualification_created": false,
+  "production_changed": false,
+  "canonical_re_evaluated": false,
+  "next_contract": [
+    "Current independent row localization and complete victim-role field",
+    "Structured killfeed rows with original text and source provenance",
+    "Independent subject/self binding, not a hard-coded observed username",
+    "Second death source plus qualified confidence and temporal suppression",
+    "Strict round association"
+  ],
+  "source_video_file_sha256_verified_after_diagnostics": true
+}

@@ -1,0 +1,909 @@
+{
+  "schema_version": "1.0",
+  "scope": "Opt-in source-localized report numeric candidates; actual common analyzer on new pre-labeled source frames, no qualification or owned death",
+  "analysis_head": "3f88b1a6120114643e71f72b247eb860e9b8416d",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "recognizer_fingerprint": "74bbda51d0ed3e0ecd9c9d0a74ca79c16f5a685a9bba4d88fb5042d590f7c695",
+  "baseline_profile_fingerprint": "81828e0d02de191c172deaeea4091d74b3bd59b8af40c0527b1c2f54ac63ff7c",
+  "localized_profile_fingerprint": "2ec07ae8944b190b85a6338d1c22b2c18960a1ab38c30a017dbfd8fa12ead32f",
+  "baseline_counts": {
+    "holdout_correct": 3,
+    "holdout_unknown": 3,
+    "holdout_wrong": 0,
+    "negative_rejected": 3,
+    "negative_false_positive": 0
+  },
+  "localized_counts": {
+    "holdout_correct": 6,
+    "holdout_unknown": 0,
+    "holdout_wrong": 0,
+    "negative_rejected": 3,
+    "negative_false_positive": 0
+  },
+  "transitions": {
+    "unknown->correct": 3,
+    "rejected->rejected": 3,
+    "correct->correct": 3
+  },
+  "baseline_wall_sec": 17.024077552952804,
+  "localized_wall_sec": 17.597559339017607,
+  "processed_frames": 10,
+  "rows": [
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_01.png",
+      "time_sec": 0.3526692708333333,
+      "source_pts_ticks": 5417,
+      "source_time_base": "1/15360",
+      "source_epoch": "8ab7715c532a45188a9232e720aeab9d",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "6315e75db6661b9dec1e4666bfb1a2ba294dc0586c1e8723a6111c4187d0daec",
+      "pixel_sha256": "22ef20861d6ac22ad38549063fff25e6c9e1d2cc4b38c2548c33620a89c9ebc6",
+      "split": "holdout",
+      "manual_expected_display": "190",
+      "current_report_visible": true,
+      "prediction": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 0.3526692708333333,
+        "source_pixel_sha256": "22ef20861d6ac22ad38549063fff25e6c9e1d2cc4b38c2548c33620a89c9ebc6",
+        "profile_fingerprint": "2ec07ae8944b190b85a6338d1c22b2c18960a1ab38c30a017dbfd8fa12ead32f",
+        "fields": {
+          "damage_received": {
+            "display": "190",
+            "value": 190,
+            "confidence": 0.96678825,
+            "sources": [
+              "tesseract_digits",
+              "report_header_pose"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.544,
+              0.952054794520548,
+              0.61
+            ]
+          }
+        }
+      },
+      "result": "correct",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_02.png",
+      "time_sec": 0.5026692708333333,
+      "source_pts_ticks": 7721,
+      "source_time_base": "1/15360",
+      "source_epoch": "1976bdc8c6ed43f2be83f9212241008c",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "6266a45c405b1bc70c5b494b1fc2eba442f0278c28bc3f77c17ff3a431230967",
+      "pixel_sha256": "93b120cfdd48402066af88811d8cca92e9406fc6850954823a5129eb0097002a",
+      "split": "holdout",
+      "manual_expected_display": "190",
+      "current_report_visible": true,
+      "prediction": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 0.5026692708333333,
+        "source_pixel_sha256": "93b120cfdd48402066af88811d8cca92e9406fc6850954823a5129eb0097002a",
+        "profile_fingerprint": "2ec07ae8944b190b85a6338d1c22b2c18960a1ab38c30a017dbfd8fa12ead32f",
+        "fields": {
+          "damage_received": {
+            "display": "190",
+            "value": 190,
+            "confidence": 0.9636901899999999,
+            "sources": [
+              "tesseract_digits",
+              "report_header_pose"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.544,
+              0.952054794520548,
+              0.61
+            ]
+          }
+        }
+      },
+      "result": "correct",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_03.png",
+      "time_sec": 0.6526692708333334,
+      "source_pts_ticks": 10025,
+      "source_time_base": "1/15360",
+      "source_epoch": "fc495e80af984f60b5647a0c7e4d5554",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "b66ffeaef9d9b711c053b1a924016d89448258b0bdd730ed998b4dceda0a1761",
+      "pixel_sha256": "aba471443ff2a3d765e564c476383a4d983ecd9a8106018905fb2a9c30456236",
+      "split": "holdout",
+      "manual_expected_display": "190",
+      "current_report_visible": true,
+      "prediction": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 0.6526692708333334,
+        "source_pixel_sha256": "aba471443ff2a3d765e564c476383a4d983ecd9a8106018905fb2a9c30456236",
+        "profile_fingerprint": "2ec07ae8944b190b85a6338d1c22b2c18960a1ab38c30a017dbfd8fa12ead32f",
+        "fields": {
+          "damage_received": {
+            "display": "190",
+            "value": 190,
+            "confidence": 0.9649837499999999,
+            "sources": [
+              "tesseract_digits",
+              "report_header_pose"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.544,
+              0.952054794520548,
+              0.61
+            ]
+          }
+        }
+      },
+      "result": "correct",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_07.png",
+      "time_sec": 1.6026692708333334,
+      "source_pts_ticks": 24617,
+      "source_time_base": "1/15360",
+      "source_epoch": "978dbb23621b4b7d848a8fb7c59e33c4",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "6c8736984c76cd4daa66076ef62b2c4e4589c1c5fa079fc9342beac2c02b9509",
+      "pixel_sha256": "cacbf04aba9c513485cfc806b3327b7e43e7ac53af2c9623cfabe9ae05aabc2b",
+      "split": "negative",
+      "manual_expected_display": null,
+      "current_report_visible": false,
+      "prediction": null,
+      "result": "rejected",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_08.png",
+      "time_sec": 126.00266927083334,
+      "source_pts_ticks": 1935401,
+      "source_time_base": "1/15360",
+      "source_epoch": "cb0bf04af14c43b28f071631d3c637d2",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "2b3ac373d49808b123ceb5d8c326b9d37f080560dff61de85de0651451e74098",
+      "pixel_sha256": "6b75d7ddeb61aabd150fdaa339d3308f4f009088a0a60bce05f8482736f60f7a",
+      "split": "negative",
+      "manual_expected_display": null,
+      "current_report_visible": false,
+      "prediction": null,
+      "result": "rejected",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_09.png",
+      "time_sec": 144.00266927083334,
+      "source_pts_ticks": 2211881,
+      "source_time_base": "1/15360",
+      "source_epoch": "588e9d71e90740e78e95413ba8845dee",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "23f3b586251f6c777d64625a968b4e5db08a601aa101b34025a7d058ce55fdda",
+      "pixel_sha256": "f45eb852909a1baa52d1a0e3d07b52640dbd35d707f0783eec8f3e770fa9d6e0",
+      "split": "negative",
+      "manual_expected_display": null,
+      "current_report_visible": false,
+      "prediction": null,
+      "result": "rejected",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_04.png",
+      "time_sec": 151.50266927083334,
+      "source_pts_ticks": 2327081,
+      "source_time_base": "1/15360",
+      "source_epoch": "72a3dcc2cb9f44e287a1a4a6f42afdc0",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "6d1d9cffe7d6e80d3e159077e78922a191e768e86ebf0029f8af3f84eebb1c66",
+      "pixel_sha256": "38e295f311c1494dc4301e23f9bf8bcbd29559089444035c7106b5a318737bf8",
+      "split": "holdout",
+      "manual_expected_display": "194",
+      "current_report_visible": true,
+      "prediction": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 151.50266927083334,
+        "source_pixel_sha256": "38e295f311c1494dc4301e23f9bf8bcbd29559089444035c7106b5a318737bf8",
+        "profile_fingerprint": "2ec07ae8944b190b85a6338d1c22b2c18960a1ab38c30a017dbfd8fa12ead32f",
+        "fields": {
+          "damage_received": {
+            "display": "194",
+            "value": 194,
+            "confidence": 0.93884247,
+            "sources": [
+              "tesseract_digits",
+              "report_header_pose"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.512,
+              0.952054794520548,
+              0.578
+            ]
+          }
+        }
+      },
+      "result": "correct",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_05.png",
+      "time_sec": 154.50266927083334,
+      "source_pts_ticks": 2373161,
+      "source_time_base": "1/15360",
+      "source_epoch": "09ec283b2c16483186c6073f10dcec69",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "60ea114829c2728cd965534d7b22fa8a07bcd107b12c78ee693abe817ed548ca",
+      "pixel_sha256": "db2ba0af27e2d721b09996eed9cc4585571f20ce6d8003ae776be04a2cd9436c",
+      "split": "holdout",
+      "manual_expected_display": "194",
+      "current_report_visible": true,
+      "prediction": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 154.50266927083334,
+        "source_pixel_sha256": "db2ba0af27e2d721b09996eed9cc4585571f20ce6d8003ae776be04a2cd9436c",
+        "profile_fingerprint": "2ec07ae8944b190b85a6338d1c22b2c18960a1ab38c30a017dbfd8fa12ead32f",
+        "fields": {
+          "damage_received": {
+            "display": "194",
+            "value": 194,
+            "confidence": 0.9614827699999999,
+            "sources": [
+              "tesseract_digits",
+              "report_header_pose"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.512,
+              0.952054794520548,
+              0.578
+            ]
+          }
+        }
+      },
+      "result": "correct",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_06.png",
+      "time_sec": 158.00266927083334,
+      "source_pts_ticks": 2426921,
+      "source_time_base": "1/15360",
+      "source_epoch": "674ce3fc20404c3896b8a46996230acd",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "5fc9ab4a26f36778643682405a8104b24961407a2b1d1d5b9a9a701f1fbeb5b0",
+      "pixel_sha256": "3660827e370179a7838bc245016df1eacdbe89270f071ddd1012ad3b23f76890",
+      "split": "holdout",
+      "manual_expected_display": "194",
+      "current_report_visible": true,
+      "prediction": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 158.00266927083334,
+        "source_pixel_sha256": "3660827e370179a7838bc245016df1eacdbe89270f071ddd1012ad3b23f76890",
+        "profile_fingerprint": "2ec07ae8944b190b85a6338d1c22b2c18960a1ab38c30a017dbfd8fa12ead32f",
+        "fields": {
+          "damage_received": {
+            "display": "194",
+            "value": 194,
+            "confidence": 0.9607233399999999,
+            "sources": [
+              "tesseract_digits",
+              "report_header_pose"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.512,
+              0.952054794520548,
+              0.578
+            ]
+          }
+        }
+      },
+      "result": "correct",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    }
+  ],
+  "baseline_rows": [
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_01.png",
+      "time_sec": 0.3526692708333333,
+      "source_pts_ticks": 5417,
+      "source_time_base": "1/15360",
+      "source_epoch": "8ab7715c532a45188a9232e720aeab9d",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "6315e75db6661b9dec1e4666bfb1a2ba294dc0586c1e8723a6111c4187d0daec",
+      "pixel_sha256": "22ef20861d6ac22ad38549063fff25e6c9e1d2cc4b38c2548c33620a89c9ebc6",
+      "split": "holdout",
+      "manual_expected_display": "190",
+      "current_report_visible": true,
+      "prediction": null,
+      "result": "unknown",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_02.png",
+      "time_sec": 0.5026692708333333,
+      "source_pts_ticks": 7721,
+      "source_time_base": "1/15360",
+      "source_epoch": "1976bdc8c6ed43f2be83f9212241008c",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "6266a45c405b1bc70c5b494b1fc2eba442f0278c28bc3f77c17ff3a431230967",
+      "pixel_sha256": "93b120cfdd48402066af88811d8cca92e9406fc6850954823a5129eb0097002a",
+      "split": "holdout",
+      "manual_expected_display": "190",
+      "current_report_visible": true,
+      "prediction": null,
+      "result": "unknown",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_03.png",
+      "time_sec": 0.6526692708333334,
+      "source_pts_ticks": 10025,
+      "source_time_base": "1/15360",
+      "source_epoch": "fc495e80af984f60b5647a0c7e4d5554",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "b66ffeaef9d9b711c053b1a924016d89448258b0bdd730ed998b4dceda0a1761",
+      "pixel_sha256": "aba471443ff2a3d765e564c476383a4d983ecd9a8106018905fb2a9c30456236",
+      "split": "holdout",
+      "manual_expected_display": "190",
+      "current_report_visible": true,
+      "prediction": null,
+      "result": "unknown",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_07.png",
+      "time_sec": 1.6026692708333334,
+      "source_pts_ticks": 24617,
+      "source_time_base": "1/15360",
+      "source_epoch": "978dbb23621b4b7d848a8fb7c59e33c4",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "6c8736984c76cd4daa66076ef62b2c4e4589c1c5fa079fc9342beac2c02b9509",
+      "pixel_sha256": "cacbf04aba9c513485cfc806b3327b7e43e7ac53af2c9623cfabe9ae05aabc2b",
+      "split": "negative",
+      "manual_expected_display": null,
+      "current_report_visible": false,
+      "prediction": null,
+      "result": "rejected",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_08.png",
+      "time_sec": 126.00266927083334,
+      "source_pts_ticks": 1935401,
+      "source_time_base": "1/15360",
+      "source_epoch": "cb0bf04af14c43b28f071631d3c637d2",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "2b3ac373d49808b123ceb5d8c326b9d37f080560dff61de85de0651451e74098",
+      "pixel_sha256": "6b75d7ddeb61aabd150fdaa339d3308f4f009088a0a60bce05f8482736f60f7a",
+      "split": "negative",
+      "manual_expected_display": null,
+      "current_report_visible": false,
+      "prediction": null,
+      "result": "rejected",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_09.png",
+      "time_sec": 144.00266927083334,
+      "source_pts_ticks": 2211881,
+      "source_time_base": "1/15360",
+      "source_epoch": "588e9d71e90740e78e95413ba8845dee",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "23f3b586251f6c777d64625a968b4e5db08a601aa101b34025a7d058ce55fdda",
+      "pixel_sha256": "f45eb852909a1baa52d1a0e3d07b52640dbd35d707f0783eec8f3e770fa9d6e0",
+      "split": "negative",
+      "manual_expected_display": null,
+      "current_report_visible": false,
+      "prediction": null,
+      "result": "rejected",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_04.png",
+      "time_sec": 151.50266927083334,
+      "source_pts_ticks": 2327081,
+      "source_time_base": "1/15360",
+      "source_epoch": "72a3dcc2cb9f44e287a1a4a6f42afdc0",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "6d1d9cffe7d6e80d3e159077e78922a191e768e86ebf0029f8af3f84eebb1c66",
+      "pixel_sha256": "38e295f311c1494dc4301e23f9bf8bcbd29559089444035c7106b5a318737bf8",
+      "split": "holdout",
+      "manual_expected_display": "194",
+      "current_report_visible": true,
+      "prediction": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 151.50266927083334,
+        "source_pixel_sha256": "38e295f311c1494dc4301e23f9bf8bcbd29559089444035c7106b5a318737bf8",
+        "profile_fingerprint": "81828e0d02de191c172deaeea4091d74b3bd59b8af40c0527b1c2f54ac63ff7c",
+        "fields": {
+          "damage_received": {
+            "display": "194",
+            "value": 194,
+            "confidence": 0.93884247,
+            "sources": [
+              "tesseract_digits"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.512,
+              0.952054794520548,
+              0.578
+            ]
+          }
+        }
+      },
+      "result": "correct",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_05.png",
+      "time_sec": 154.50266927083334,
+      "source_pts_ticks": 2373161,
+      "source_time_base": "1/15360",
+      "source_epoch": "09ec283b2c16483186c6073f10dcec69",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "60ea114829c2728cd965534d7b22fa8a07bcd107b12c78ee693abe817ed548ca",
+      "pixel_sha256": "db2ba0af27e2d721b09996eed9cc4585571f20ce6d8003ae776be04a2cd9436c",
+      "split": "holdout",
+      "manual_expected_display": "194",
+      "current_report_visible": true,
+      "prediction": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 154.50266927083334,
+        "source_pixel_sha256": "db2ba0af27e2d721b09996eed9cc4585571f20ce6d8003ae776be04a2cd9436c",
+        "profile_fingerprint": "81828e0d02de191c172deaeea4091d74b3bd59b8af40c0527b1c2f54ac63ff7c",
+        "fields": {
+          "damage_received": {
+            "display": "194",
+            "value": 194,
+            "confidence": 0.9614827699999999,
+            "sources": [
+              "tesseract_digits"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.512,
+              0.952054794520548,
+              0.578
+            ]
+          }
+        }
+      },
+      "result": "correct",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_06.png",
+      "time_sec": 158.00266927083334,
+      "source_pts_ticks": 2426921,
+      "source_time_base": "1/15360",
+      "source_epoch": "674ce3fc20404c3896b8a46996230acd",
+      "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "encoded_sha256": "5fc9ab4a26f36778643682405a8104b24961407a2b1d1d5b9a9a701f1fbeb5b0",
+      "pixel_sha256": "3660827e370179a7838bc245016df1eacdbe89270f071ddd1012ad3b23f76890",
+      "split": "holdout",
+      "manual_expected_display": "194",
+      "current_report_visible": true,
+      "prediction": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 158.00266927083334,
+        "source_pixel_sha256": "3660827e370179a7838bc245016df1eacdbe89270f071ddd1012ad3b23f76890",
+        "profile_fingerprint": "81828e0d02de191c172deaeea4091d74b3bd59b8af40c0527b1c2f54ac63ff7c",
+        "fields": {
+          "damage_received": {
+            "display": "194",
+            "value": 194,
+            "confidence": 0.9607233399999999,
+            "sources": [
+              "tesseract_digits"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.512,
+              0.952054794520548,
+              0.578
+            ]
+          }
+        }
+      },
+      "result": "correct",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    }
+  ],
+  "header_poses": [
+    {
+      "source_pts_ticks": 5417,
+      "evidence": {
+        "present": true,
+        "score": 0.9672634838198256,
+        "reason": "static_header_support",
+        "pose": [
+          28,
+          234
+        ]
+      }
+    },
+    {
+      "source_pts_ticks": 7721,
+      "evidence": {
+        "present": true,
+        "score": 0.9696714140319999,
+        "reason": "static_header_support",
+        "pose": [
+          28,
+          234
+        ]
+      }
+    },
+    {
+      "source_pts_ticks": 10025,
+      "evidence": {
+        "present": true,
+        "score": 0.9699634045719779,
+        "reason": "static_header_support",
+        "pose": [
+          28,
+          234
+        ]
+      }
+    },
+    {
+      "source_pts_ticks": 24617,
+      "evidence": {
+        "present": null,
+        "score": 0.0,
+        "reason": "insufficient_or_contradictory_support",
+        "pose": null
+      }
+    },
+    {
+      "source_pts_ticks": 1935401,
+      "evidence": {
+        "present": null,
+        "score": 0.17542731382241053,
+        "reason": "insufficient_or_contradictory_support",
+        "pose": null
+      }
+    },
+    {
+      "source_pts_ticks": 2211881,
+      "evidence": {
+        "present": null,
+        "score": 0.056793056540742994,
+        "reason": "insufficient_or_contradictory_support",
+        "pose": null
+      }
+    },
+    {
+      "source_pts_ticks": 2327081,
+      "evidence": {
+        "present": true,
+        "score": 0.9910288749329174,
+        "reason": "static_header_support",
+        "pose": [
+          28,
+          218
+        ]
+      }
+    },
+    {
+      "source_pts_ticks": 2373161,
+      "evidence": {
+        "present": true,
+        "score": 0.9946876792409756,
+        "reason": "static_header_support",
+        "pose": [
+          28,
+          218
+        ]
+      }
+    },
+    {
+      "source_pts_ticks": 2426921,
+      "evidence": {
+        "present": true,
+        "score": 0.994908804776155,
+        "reason": "static_header_support",
+        "pose": [
+          28,
+          218
+        ]
+      }
+    }
+  ],
+  "input_sha256": {
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/selection.json": "eba3807d35b296addf75d32feccb186a42027e0e0cf27d2946d4eafd81add5a9",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/labels.json": "c48c5566ac34dd4790a0e5d85bf15e91803cde89538a5dd39db6178bebb541aa",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/acquired.json": "53b6ca6be4eed7a47e4bddec47707b718cd1df96031d3376e1545ee7ba485e13",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-ocr-runtime-20261012/usr/bin/tesseract": "a068bbb0a958445c44c39c34e2bed340819b557a900b2311bd3ad32691676553",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-ocr-runtime-20261012/usr/share/tesseract-ocr/5/tessdata/eng.traineddata": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-ocr-runtime-20261012/usr/share/tesseract-ocr/5/tessdata/jpn.traineddata": "1f5de9236d2e85f5fdf4b3c500f2d4926f8d9449f28f5394472d9e8d83b91b4d",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_01.png": "6315e75db6661b9dec1e4666bfb1a2ba294dc0586c1e8723a6111c4187d0daec",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_02.png": "6266a45c405b1bc70c5b494b1fc2eba442f0278c28bc3f77c17ff3a431230967",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_03.png": "b66ffeaef9d9b711c053b1a924016d89448258b0bdd730ed998b4dceda0a1761",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_04.png": "6d1d9cffe7d6e80d3e159077e78922a191e768e86ebf0029f8af3f84eebb1c66",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_05.png": "60ea114829c2728cd965534d7b22fa8a07bcd107b12c78ee693abe817ed548ca",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_06.png": "5fc9ab4a26f36778643682405a8104b24961407a2b1d1d5b9a9a701f1fbeb5b0",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_07.png": "6c8736984c76cd4daa66076ef62b2c4e4589c1c5fa079fc9342beac2c02b9509",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_08.png": "2b3ac373d49808b123ceb5d8c326b9d37f080560dff61de85de0651451e74098",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_09.png": "23f3b586251f6c777d64625a968b4e5db08a601aa101b34025a7d058ce55fdda",
+    "outputs/recognition-investigation/death-current-source-20261012/calibration_prefix.png": "31381637c73a176f7138f0dc3e284bbfdde99be1698949a32d71bb13b9c503e6"
+  },
+  "baseline_input_sha256": {
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/selection_baseline.json": "b8a80067d50154d849acda75bc44498ea472045479e99344b2bc08bba110f125",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/labels.json": "c48c5566ac34dd4790a0e5d85bf15e91803cde89538a5dd39db6178bebb541aa",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/acquired.json": "53b6ca6be4eed7a47e4bddec47707b718cd1df96031d3376e1545ee7ba485e13",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-ocr-runtime-20261012/usr/bin/tesseract": "a068bbb0a958445c44c39c34e2bed340819b557a900b2311bd3ad32691676553",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-ocr-runtime-20261012/usr/share/tesseract-ocr/5/tessdata/eng.traineddata": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-ocr-runtime-20261012/usr/share/tesseract-ocr/5/tessdata/jpn.traineddata": "1f5de9236d2e85f5fdf4b3c500f2d4926f8d9449f28f5394472d9e8d83b91b4d",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_01.png": "6315e75db6661b9dec1e4666bfb1a2ba294dc0586c1e8723a6111c4187d0daec",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_02.png": "6266a45c405b1bc70c5b494b1fc2eba442f0278c28bc3f77c17ff3a431230967",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_03.png": "b66ffeaef9d9b711c053b1a924016d89448258b0bdd730ed998b4dceda0a1761",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_04.png": "6d1d9cffe7d6e80d3e159077e78922a191e768e86ebf0029f8af3f84eebb1c66",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_05.png": "60ea114829c2728cd965534d7b22fa8a07bcd107b12c78ee693abe817ed548ca",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_06.png": "5fc9ab4a26f36778643682405a8104b24961407a2b1d1d5b9a9a701f1fbeb5b0",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_07.png": "6c8736984c76cd4daa66076ef62b2c4e4589c1c5fa079fc9342beac2c02b9509",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_08.png": "2b3ac373d49808b123ceb5d8c326b9d37f080560dff61de85de0651451e74098",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_09.png": "23f3b586251f6c777d64625a968b4e5db08a601aa101b34025a7d058ce55fdda",
+    "outputs/recognition-investigation/death-current-source-20261012/calibration_prefix.png": "31381637c73a176f7138f0dc3e284bbfdde99be1698949a32d71bb13b9c503e6"
+  },
+  "training_pixel_hashes": [
+    "23e29412e77319bef71b847f85ab68757529f96d4437a06fd2ccb6a7d4dcfe6b",
+    "974da4abab552d97d663c67c3a8ba5dc2638ed9c076690365c54eac1657e651b",
+    "c51a1fbf9d12b607a937b3890c1d08775720e7d780c18d3455cca3a3927c9024",
+    "6376244a49e2ff3a4cfb257b6dc12ee6df605b16538cc5d7bcf85fbe71b3dd24",
+    "978c1be02e01f080d08b04be9d7d61dd26d8d80c0c3da3fb21130fbb95a50f86",
+    "a86ce87d01a437107aeaa99fad33477b89c5a1455eb6dfed43fb7eee2f3b58df"
+  ],
+  "training_holdout_overlap": [],
+  "training_negative_overlap": [],
+  "holdout_negative_overlap": [],
+  "existing_source_regression_counts": {
+    "holdout_correct": 6,
+    "holdout_unknown": 0,
+    "holdout_wrong": 0,
+    "negative_rejected": 3,
+    "negative_false_positive": 0
+  },
+  "head_hp_parity": {
+    "scope": "Exact source pixels, identical profile and current versus HEAD modules in isolated Python processes; three lost HP witnesses, not a full E2E rerun",
+    "default_tesseract_resolution": null,
+    "isolated_tesseract_sha256": "a068bbb0a958445c44c39c34e2bed340819b557a900b2311bd3ad32691676553",
+    "head_modules_sha256": {
+      "src/valorant_ai_coach/hud/report_header.py": "e84025c216be9820027ecbe1e84308e58a1d5d50116a7c29d8faa493fc29778b",
+      "src/valorant_ai_coach/hud/templates.py": "3e8474bc4e6593284f24ceb01c350eec38bb95ad453f451cf62ef203b6ddfcdb"
+    },
+    "input_image_file_sha256": {
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/report-localization-targeted-20261012/decoded_frames/frame_00000_000000.036.jpg": "2f464845c936f83b7bf7a6a0ac11573c62e249e80b8c96bbf01b9b29c16567de",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/report-localization-targeted-20261012/decoded_frames/frame_00001_000000.103.jpg": "a52c796095c2d61219bbeddc6790e693651cf1c6e046ed8f5e2cc4102d4b4835",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/report-localization-targeted-20261012/decoded_frames/frame_00002_000000.169.jpg": "035f6808ad14234b463d3471990a0376524fa37274d8cf5182c61cd5261a162a",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/report-localization-targeted-20261012/decoded_frames/frame_00024_000141.936.jpg": "a2cd71f0dfffadcccb428c5af66b7bdabf84210229639626add18e87b9eb2b04",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/report-localization-targeted-20261012/decoded_frames/frame_00025_000145.853.jpg": "dd324e79d13095ae6ab3fa70d8139960c44f898d145b7e98ce8be503a9e27b68",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/report-localization-targeted-20261012/decoded_frames/frame_00027_000147.019.jpg": "2a111ecede28ea119ce5ab185cb248cf5c58a849d6bf4db33452f82f9071f7a0"
+    },
+    "rows": {
+      "default_missing_ocr_HEAD": [
+        {
+          "pts": 141.936003,
+          "state": "live_first_person",
+          "hp": null,
+          "hp_confidence": 0.0
+        },
+        {
+          "pts": 145.852669,
+          "state": "live_first_person",
+          "hp": null,
+          "hp_confidence": 0.0
+        },
+        {
+          "pts": 147.019336,
+          "state": "live_first_person",
+          "hp": null,
+          "hp_confidence": 0.0
+        }
+      ],
+      "default_missing_ocr_current": [
+        {
+          "pts": 141.936003,
+          "state": "live_first_person",
+          "hp": null,
+          "hp_confidence": 0.0
+        },
+        {
+          "pts": 145.852669,
+          "state": "live_first_person",
+          "hp": null,
+          "hp_confidence": 0.0
+        },
+        {
+          "pts": 147.019336,
+          "state": "live_first_person",
+          "hp": null,
+          "hp_confidence": 0.0
+        }
+      ],
+      "isolated_ocr_HEAD": [
+        {
+          "pts": 141.936003,
+          "state": "live_first_person",
+          "hp": 80,
+          "hp_confidence": 0.96222198
+        },
+        {
+          "pts": 145.852669,
+          "state": "live_first_person",
+          "hp": 80,
+          "hp_confidence": 0.9643634799999999
+        },
+        {
+          "pts": 147.019336,
+          "state": "live_first_person",
+          "hp": 80,
+          "hp_confidence": 0.95837181
+        }
+      ],
+      "isolated_ocr_current": [
+        {
+          "pts": 141.936003,
+          "state": "live_first_person",
+          "hp": 80,
+          "hp_confidence": 0.96222198
+        },
+        {
+          "pts": 145.852669,
+          "state": "live_first_person",
+          "hp": 80,
+          "hp_confidence": 0.9643634799999999
+        },
+        {
+          "pts": 147.019336,
+          "state": "live_first_person",
+          "hp": 80,
+          "hp_confidence": 0.95837181
+        }
+      ]
+    }
+  },
+  "standard_targeted": {
+    "previous_counts": {
+      "passed": 12,
+      "failed": 13,
+      "not_evaluated": 12
+    },
+    "current_counts": {
+      "passed": 12,
+      "failed": 13,
+      "not_evaluated": 12
+    },
+    "delta": {
+      "passed": 0,
+      "failed": 0,
+      "not_evaluated": 0
+    },
+    "previous_wall_sec": 550.0471270009875,
+    "current_wall_sec": 262.47170612204354,
+    "processed_frames": 37,
+    "state_counts": {
+      "buy_menu_open": 3,
+      "live_first_person": 6,
+      "spectator_first_person": 6,
+      "unknown": 22
+    },
+    "failure_records_identical": true,
+    "trace_sha256": "f0799f3b83ec16557111a59265143414ddf0356f2abb1f38b46d08f09926c00a",
+    "terminal_hashes_verified": true,
+    "scope": "Adopted profile13 with explicitly isolated existing OCR; fixed 37 points, not temporal/full assertions; completed before final opt-in-only ambiguity strengthening",
+    "source_artifact_root": "outputs/recognition-investigation/report-localization-targeted-ocr-20261012",
+    "runtime_comparison": "descriptive; OCR availability and cache conditions differ from older run",
+    "missing_ocr_counts": {
+      "passed": 9,
+      "failed": 16,
+      "not_evaluated": 12
+    }
+  },
+  "tests": {
+    "focused_passed": 244,
+    "full_passed": 2661,
+    "full_skipped": 6,
+    "full_wall_sec": 1841.35,
+    "ruff": "PASS",
+    "mypy_source_files": 128,
+    "mypy": "PASS"
+  },
+  "primary_state_counts": {
+    "unknown": 9
+  },
+  "report_owned_observations": 0,
+  "formal_events": [],
+  "qualified": false,
+  "default_profile_changed": false,
+  "thresholds_changed": false,
+  "canonical_full_executed": false,
+  "canonical_full_baseline": {
+    "PASS": 23,
+    "FAIL": 55,
+    "NE": 4
+  },
+  "canonical_current": null,
+  "limitations": [
+    "Same video, two report contexts and two positive values; not complete numerical, identity or temporal death qualification.",
+    "Report numbers remain candidates; matching an independent header does not cross-check the numeric value or identify its owner.",
+    "Global code fingerprint changed; older qualified recognition archives are not reusable as current results.",
+    "Windows code/runtime/real-video verification of these uncommitted changes remains outstanding."
+  ],
+  "initial_recognizer_fingerprint": "6fc7e101b3c7914f4626d90fb773dc105d7d86851c09856b5cdb5ce377dd8ee0",
+  "final_source_revalidation": {
+    "recognizer_fingerprint": "74bbda51d0ed3e0ecd9c9d0a74ca79c16f5a685a9bba4d88fb5042d590f7c695",
+    "input_sha256": {
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/selection_revalidated.json": "53635eed8fe892730985bfe16f6607ca294c60956d9bd95f680c5532fbe9d9ad",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/labels.json": "c48c5566ac34dd4790a0e5d85bf15e91803cde89538a5dd39db6178bebb541aa",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/acquired.json": "53b6ca6be4eed7a47e4bddec47707b718cd1df96031d3376e1545ee7ba485e13",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-ocr-runtime-20261012/usr/bin/tesseract": "a068bbb0a958445c44c39c34e2bed340819b557a900b2311bd3ad32691676553",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-ocr-runtime-20261012/usr/share/tesseract-ocr/5/tessdata/eng.traineddata": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-ocr-runtime-20261012/usr/share/tesseract-ocr/5/tessdata/jpn.traineddata": "1f5de9236d2e85f5fdf4b3c500f2d4926f8d9449f28f5394472d9e8d83b91b4d",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_01.png": "6315e75db6661b9dec1e4666bfb1a2ba294dc0586c1e8723a6111c4187d0daec",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_02.png": "6266a45c405b1bc70c5b494b1fc2eba442f0278c28bc3f77c17ff3a431230967",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_03.png": "b66ffeaef9d9b711c053b1a924016d89448258b0bdd730ed998b4dceda0a1761",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_04.png": "6d1d9cffe7d6e80d3e159077e78922a191e768e86ebf0029f8af3f84eebb1c66",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_05.png": "60ea114829c2728cd965534d7b22fa8a07bcd107b12c78ee693abe817ed548ca",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_06.png": "5fc9ab4a26f36778643682405a8104b24961407a2b1d1d5b9a9a701f1fbeb5b0",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_07.png": "6c8736984c76cd4daa66076ef62b2c4e4589c1c5fa079fc9342beac2c02b9509",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_08.png": "2b3ac373d49808b123ceb5d8c326b9d37f080560dff61de85de0651451e74098",
+      "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_09.png": "23f3b586251f6c777d64625a968b4e5db08a601aa101b34025a7d058ce55fdda",
+      "outputs/recognition-investigation/death-current-source-20261012/calibration_prefix.png": "31381637c73a176f7138f0dc3e284bbfdde99be1698949a32d71bb13b9c503e6"
+    },
+    "counts": {
+      "holdout_correct": 6,
+      "holdout_unknown": 0,
+      "holdout_wrong": 0,
+      "negative_rejected": 3,
+      "negative_false_positive": 0
+    },
+    "formal_events": [],
+    "runtime_sec": 22.55828536604531,
+    "runtime_note": "revalidation overlapped related unit tests; not a performance comparison",
+    "reason": "synthetic near-header ambiguity safety strengthening",
+    "prediction_metadata_identical_to_initial_source_check": true
+  }
+}

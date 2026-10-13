@@ -1,0 +1,827 @@
+{
+  "schema_version": "1.0",
+  "scope": "Frozen training-only result glyph-discrimination feasibility, no holdout tuning, profile adoption or semantic qualification",
+  "target_assertion_ids": [
+    "GT-R1-ROUND-END",
+    "event_count_constraints-002"
+  ],
+  "recognizer_fingerprint": "f85a3cf49fbe1c43abd85abe926b0cc4071069e7b83763bf9bb1aca8ba8a8c69",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "methods": {
+    "result.json": {
+      "method": "median grayscale, white210 connected tall glyph boxes, one pixel full contrast border, minimum independent whole-cell grayscale NCC0.90; no binary tiles/search/repair",
+      "threshold": 0.9,
+      "glyph_boxes": [
+        [
+          6,
+          7,
+          32,
+          65
+        ],
+        [
+          33,
+          7,
+          56,
+          65
+        ],
+        [
+          56,
+          7,
+          88,
+          65
+        ],
+        [
+          89,
+          7,
+          130,
+          65
+        ],
+        [
+          142,
+          7,
+          173,
+          65
+        ],
+        [
+          174,
+          7,
+          203,
+          65
+        ],
+        [
+          205,
+          7,
+          228,
+          65
+        ]
+      ],
+      "per_glyph_training_scores": [
+        [
+          0.9933946161652439,
+          0.9826788233648821,
+          0.9060070036071165,
+          0.931241235268656,
+          0.899567661866301,
+          0.9748423287568325,
+          0.9746030875254721
+        ],
+        [
+          0.9947860884989586,
+          0.9727025683937043,
+          0.9070762911841276,
+          0.9397026483466636,
+          0.9298528403612623,
+          0.9976624138751808,
+          0.9991676463389546
+        ],
+        [
+          0.9996549867035601,
+          0.8663091010947583,
+          0.9325903186474535,
+          0.9932193981044228,
+          0.9930303795575522,
+          0.9965333265487865,
+          0.9976039244946735
+        ]
+      ],
+      "minimum_training_scores": [
+        0.899567661866301,
+        0.9070762911841276,
+        0.8663091010947583
+      ],
+      "training_support": 1,
+      "training_source_hashes": [
+        "8f48694886e7a490b27ff0548f0fb7b54c834729b52a2d7dbfa375c248cbb62b",
+        "9f51380e00db3f4633ad18d2e80519744e0146466b28f1d3987ae7a1080ac6cf",
+        "734d31fe819a8e40d242917a2e454a1b068107073ec6108d0ef976d6fcbd9269"
+      ],
+      "synthetic_control_scores": {
+        "exact": [
+          1.0,
+          0.9999999999999999,
+          0.9999999999999999,
+          0.9999999999999998,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "TEAM AGE": [
+          1.0,
+          0.9999999999999999,
+          0.9999999999999999,
+          0.9999999999999998,
+          1.0,
+          0.8955819810313623,
+          1.0
+        ],
+        "blank": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "synthetic_counterexample_rejected": true,
+      "runtime_sec": 0.047760882996954024,
+      "status": "training_rejected",
+      "qualification_created": false,
+      "production_changed": false,
+      "holdout_evaluated": false,
+      "semantic_identity_verified": false,
+      "input_sha256": {
+        "outputs/recognition-investigation/result-common-structure-training/freeze.json": "bec54fa3b85ba3c91eccc0153cbbd54621b6f919710c12f04d2be9ede4fa3cd4",
+        "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/result-glyph-cells-20261013/frozen-config.json": "4963ddd3ee124a50d70b1c383fdff3ab78133fe6c0eb10630791a79ab2efcff0",
+        "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00452_000075.403.jpg": "8f48694886e7a490b27ff0548f0fb7b54c834729b52a2d7dbfa375c248cbb62b",
+        "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00455_000075.803.jpg": "9f51380e00db3f4633ad18d2e80519744e0146466b28f1d3987ae7a1080ac6cf",
+        "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00458_000076.269.jpg": "734d31fe819a8e40d242917a2e454a1b068107073ec6108d0ef976d6fcbd9269"
+      }
+    },
+    "edge-gate-result.json": {
+      "method": "Existing semantic whole-group NCC0.90 plus minimum per-glyph existing structural_score0.90, signed-agnostic oriented edge recall/precision with unchanged one-pixel/20degree tolerance; no threshold tuning or new production code",
+      "training_scores": [
+        {
+          "word_NCC": 0.9276434614935632,
+          "glyph_scores": [
+            0.9811320754716981,
+            0.9837837837837838,
+            0.9459459459459459,
+            0.9815303430079155,
+            0.8051470588235294,
+            0.9877551020408163,
+            1.0
+          ],
+          "joint_score": 0.8051470588235294
+        },
+        {
+          "word_NCC": 0.943065355067696,
+          "glyph_scores": [
+            0.9874213836477987,
+            1.0,
+            0.9342105263157895,
+            0.97911227154047,
+            0.9301470588235294,
+            1.0,
+            1.0
+          ],
+          "joint_score": 0.9301470588235294
+        },
+        {
+          "word_NCC": 0.9461018908700318,
+          "glyph_scores": [
+            0.9936708860759493,
+            0.9259259259259259,
+            0.990990990990991,
+            0.9841688654353562,
+            0.9888888888888889,
+            0.996,
+            0.9891304347826086
+          ],
+          "joint_score": 0.9259259259259259
+        }
+      ],
+      "training_support": 2,
+      "synthetic_control_scores": {
+        "exact": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "TEAM AGE": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.9551569506726457,
+          1.0
+        ],
+        "blank": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "synthetic_counterexample_rejected": false,
+      "status": "training_rejected",
+      "reason": "insufficient supported training and/or confusable not rejected",
+      "runtime_sec": 0.2160389559576288,
+      "qualification_created": false,
+      "production_changed": false,
+      "holdout_evaluated": false,
+      "input_sha256": {
+        "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/result-glyph-cells-20261013/edge-gate-frozen-config.json": "f71badc53ef1dd8519000865ff18b63a644dc530e5ad843a539a18a23560142f",
+        "outputs/hud_profiles/round-global-timer-glyph-20261008/score-rowcontrast-late-result-diagnostic.templates.json": "8f0f0edf31972fc11d8b2397b545afb51016efafa4b5b1fecf522f21a45cd797",
+        "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00452_000075.403.jpg": "8f48694886e7a490b27ff0548f0fb7b54c834729b52a2d7dbfa375c248cbb62b",
+        "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00455_000075.803.jpg": "9f51380e00db3f4633ad18d2e80519744e0146466b28f1d3987ae7a1080ac6cf",
+        "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00458_000076.269.jpg": "734d31fe819a8e40d242917a2e454a1b068107073ec6108d0ef976d6fcbd9269"
+      }
+    },
+    "stable-tiles-result.json": {
+      "method": "Existing whole-group NCC0.90 plus whole-glyph3x3 stable binary210 tiles; unanimous training foreground/background, every tile≥80%and≥32comparablepixels, mixed tiles NCC0.90, constant tiles agreement0.90, every glyph≥32stableforeground/32stablebackground; no search/repair",
+      "glyph_boxes": [
+        [
+          7,
+          8,
+          24,
+          56
+        ],
+        [
+          34,
+          8,
+          21,
+          56
+        ],
+        [
+          57,
+          8,
+          30,
+          56
+        ],
+        [
+          90,
+          8,
+          39,
+          56
+        ],
+        [
+          143,
+          8,
+          29,
+          56
+        ],
+        [
+          175,
+          8,
+          27,
+          56
+        ],
+        [
+          206,
+          8,
+          21,
+          56
+        ]
+      ],
+      "training_eligibility_rejections": [
+        {
+          "glyph": 1,
+          "tile": [
+            0,
+            2
+          ],
+          "reason": "insufficient_comparable_population",
+          "fraction": 0.5037593984962406,
+          "population": 67
+        },
+        {
+          "glyph": 1,
+          "tile": [
+            1,
+            2
+          ],
+          "reason": "insufficient_comparable_population",
+          "fraction": 0.45864661654135336,
+          "population": 61
+        },
+        {
+          "glyph": 1,
+          "tile": [
+            2,
+            2
+          ],
+          "reason": "insufficient_comparable_population",
+          "fraction": 0.7698412698412699,
+          "population": 97
+        },
+        {
+          "glyph": 2,
+          "tile": [
+            0,
+            0
+          ],
+          "reason": "insufficient_comparable_population",
+          "fraction": 0.3105263157894737,
+          "population": 59
+        },
+        {
+          "glyph": 2,
+          "tile": [
+            1,
+            0
+          ],
+          "reason": "insufficient_comparable_population",
+          "fraction": 0.5842105263157895,
+          "population": 111
+        },
+        {
+          "glyph": 2,
+          "tile": [
+            1,
+            1
+          ],
+          "reason": "insufficient_comparable_population",
+          "fraction": 0.7736842105263158,
+          "population": 147
+        }
+      ],
+      "training_scores": [],
+      "training_support": 0,
+      "synthetic_eligibility_rejections": [],
+      "synthetic_control_scores": {
+        "exact": 0.9999999999999998,
+        "TEAM AGE": 0.65,
+        "blank": 0.0
+      },
+      "runtime_sec": 0.11017541598994285,
+      "qualification_created": false,
+      "production_changed": false,
+      "holdout_evaluated": false,
+      "input_sha256": {
+        "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/result-glyph-cells-20261013/stable-tiles-frozen-config.json": "edf3fd726e99b585f428c36782f51e926d952d149ff77e9f40e2132d0a4db979",
+        "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00452_000075.403.jpg": "8f48694886e7a490b27ff0548f0fb7b54c834729b52a2d7dbfa375c248cbb62b",
+        "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00455_000075.803.jpg": "9f51380e00db3f4633ad18d2e80519744e0146466b28f1d3987ae7a1080ac6cf",
+        "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00458_000076.269.jpg": "734d31fe819a8e40d242917a2e454a1b068107073ec6108d0ef976d6fcbd9269"
+      },
+      "status": "training_rejected"
+    },
+    "registered-result.json": {
+      "method": "Existing wordNCC0.90 plus measured connected glyph boxes white210/area≥32/height≥40%ROI; exactly seven left-to-right glyphs; one-pixel contrast border; normalize grayscale cells to28x56 INTER_AREA; median per-cell reference; min-cell NCC0.90. No free translation search/repair",
+      "training": [],
+      "training_support": 0,
+      "synthetic_control_scores": {
+        "exact": [
+          1.0,
+          1.0,
+          1.0,
+          0.9999999999999999,
+          0.9999999999999999,
+          0.9999999999999999,
+          1.0
+        ],
+        "TEAM AGE": [
+          1.0,
+          1.0,
+          1.0,
+          0.9999999999999999,
+          0.9999999999999999,
+          0.8935411589160971,
+          1.0
+        ],
+        "blank": [
+          0.0
+        ]
+      },
+      "synthetic_counterexample_rejected": true,
+      "status": "training_rejected",
+      "runtime_sec": 0.02497395104728639,
+      "qualification_created": false,
+      "production_changed": false,
+      "holdout_evaluated": false,
+      "input_sha256": {
+        "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/result-glyph-cells-20261013/registered-frozen-config.json": "94425d00ab1c947d9ee4a56aa84e65ff62a78e60d91fb95259ae2fb3910d2eda",
+        "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00452_000075.403.jpg": "8f48694886e7a490b27ff0548f0fb7b54c834729b52a2d7dbfa375c248cbb62b",
+        "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00455_000075.803.jpg": "9f51380e00db3f4633ad18d2e80519744e0146466b28f1d3987ae7a1080ac6cf",
+        "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00458_000076.269.jpg": "734d31fe819a8e40d242917a2e454a1b068107073ec6108d0ef976d6fcbd9269"
+      }
+    }
+  },
+  "native_encoding_check": {
+    "scope": "Same three physical training frames, native encoding check only, not new training support or holdout. No parameter change.",
+    "rows": [
+      {
+        "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/result-glyph-cells-20261013/native_training_1.png",
+        "source_pts_ticks": 1158185,
+        "time_sec": 75.40266927083333,
+        "pixel_sha256": "2a0c10e18d01b7e93dedba7272dfa04abfbbe7b151ef50e1de0ffbbb0a413ab6",
+        "encoded_sha256": "5e6fbcbdaf2de83b52b191e51b36beee14869557eab0ad414a781391c2a7cabe",
+        "glyph_count": 7,
+        "glyph_boxes": [
+          [
+            7,
+            8,
+            25,
+            56
+          ],
+          [
+            34,
+            8,
+            21,
+            56
+          ],
+          [
+            57,
+            8,
+            30,
+            56
+          ],
+          [
+            90,
+            8,
+            40,
+            56
+          ],
+          [
+            142,
+            8,
+            31,
+            56
+          ],
+          [
+            174,
+            8,
+            30,
+            56
+          ],
+          [
+            206,
+            8,
+            21,
+            56
+          ]
+        ],
+        "old_reference_cell_scores": [
+          0.9932969113462273,
+          0.9830123800902829,
+          0.906095120233729,
+          0.9304638312069367,
+          0.9006577934060255,
+          0.9745877542945229,
+          0.9746508856251146
+        ]
+      },
+      {
+        "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/result-glyph-cells-20261013/native_training_2.png",
+        "source_pts_ticks": 1164329,
+        "time_sec": 75.80266927083333,
+        "pixel_sha256": "7a99af9d24125a83705a7e1e335735ac988ba9533fe7f95d9ead7287786a8337",
+        "encoded_sha256": "e9f06a7c7b1625fe0fa5933d849cf0f4cbc0758014e5f010ff90fb0b4d60210d",
+        "glyph_count": 7,
+        "glyph_boxes": [
+          [
+            7,
+            8,
+            24,
+            56
+          ],
+          [
+            34,
+            8,
+            21,
+            56
+          ],
+          [
+            58,
+            8,
+            29,
+            56
+          ],
+          [
+            90,
+            8,
+            39,
+            56
+          ],
+          [
+            143,
+            8,
+            29,
+            56
+          ],
+          [
+            175,
+            8,
+            27,
+            56
+          ],
+          [
+            206,
+            8,
+            21,
+            56
+          ]
+        ],
+        "old_reference_cell_scores": [
+          0.9948118130084467,
+          0.972501987824969,
+          0.9070152888795696,
+          0.9391829579806777,
+          0.929622372523956,
+          0.9974983076114773,
+          0.9990246586861989
+        ]
+      },
+      {
+        "path": "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/result-glyph-cells-20261013/native_training_3.png",
+        "source_pts_ticks": 1171497,
+        "time_sec": 76.2693359375,
+        "pixel_sha256": "f81a19edb9f9384bd93ded62adde460a1679007b053d3646529d9cc3c9f96610",
+        "encoded_sha256": "de213b6de38e6278fb51d7412ba20e9d04e06dca35abb1944ea440c435a65c22",
+        "glyph_count": 6,
+        "glyph_boxes": [
+          [
+            7,
+            8,
+            24,
+            56
+          ],
+          [
+            34,
+            0,
+            53,
+            65
+          ],
+          [
+            89,
+            6,
+            40,
+            58
+          ],
+          [
+            143,
+            5,
+            29,
+            59
+          ],
+          [
+            175,
+            8,
+            27,
+            56
+          ],
+          [
+            206,
+            8,
+            21,
+            56
+          ]
+        ],
+        "old_reference_cell_scores": [
+          0.9994145070231333,
+          0.8658796456300665,
+          0.9338737744343819,
+          0.9927831116424236,
+          0.9927949582707986,
+          0.9965053657849395,
+          0.9976392144421857
+        ]
+      }
+    ],
+    "native_median_cell_scores": [
+      [
+        0.9933940723884693,
+        0.9825355617092134,
+        0.906905959401319,
+        0.9302674151487075,
+        0.8998465738369074,
+        0.9746360558573668,
+        0.9742132910345724
+      ],
+      [
+        0.9947412204475063,
+        0.971769689933169,
+        0.9075494404879735,
+        0.9391517528564735,
+        0.9290017595327841,
+        0.9978098103382645,
+        0.9992798905424761
+      ],
+      [
+        0.9996754335287359,
+        0.8676603649451848,
+        0.9337605137916718,
+        0.9933694422582042,
+        0.9934524917554544,
+        0.996784765884619,
+        0.997780018146043
+      ]
+    ],
+    "native_training_support": 1,
+    "runtime_sec": 42.884112027008086,
+    "qualification_created": false,
+    "production_changed": false,
+    "holdout_evaluated": false,
+    "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06"
+  },
+  "source_aperture_control": {
+    "scope": "Synthetic added stroke in source-derived C aperture, not a natural video frame or proof of exact G font shape",
+    "modified_pixels": 39,
+    "cell_NCC": 0.9083827557682203,
+    "accepted_at_point90": true,
+    "bounds_px": [
+      188,
+      35,
+      201,
+      38
+    ],
+    "original_video_changed": false,
+    "used_for_reference_generation": false
+  },
+  "segmentation_diagnostic": {
+    "scope": "Post-training rejection inspection, no retuning",
+    "rows": [
+      {
+        "source": {
+          "pts_sec": 75.402669,
+          "frame_sha256": "8f48694886e7a490b27ff0548f0fb7b54c834729b52a2d7dbfa375c248cbb62b",
+          "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00452_000075.403.jpg",
+          "pixel_sha256": "adc41484d5c5bb68ed974df4cde8b80f0b181d15acd074ec3df73a6e513ed3be"
+        },
+        "glyph_count": 7,
+        "boxes": [
+          [
+            7,
+            8,
+            25,
+            56,
+            756
+          ],
+          [
+            34,
+            8,
+            21,
+            56,
+            914
+          ],
+          [
+            57,
+            8,
+            30,
+            56,
+            1173
+          ],
+          [
+            90,
+            8,
+            39,
+            56,
+            1941
+          ],
+          [
+            142,
+            8,
+            31,
+            56,
+            1193
+          ],
+          [
+            174,
+            8,
+            29,
+            56,
+            1226
+          ],
+          [
+            206,
+            8,
+            21,
+            56,
+            932
+          ]
+        ]
+      },
+      {
+        "source": {
+          "pts_sec": 75.802669,
+          "frame_sha256": "9f51380e00db3f4633ad18d2e80519744e0146466b28f1d3987ae7a1080ac6cf",
+          "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-a/segment-0000/batch-000/frame_00455_000075.803.jpg",
+          "pixel_sha256": "8ecdb4580c4cd971629648ab1e353fbf57dccacfe73e5a3d9220c2e973b36b0e"
+        },
+        "glyph_count": 7,
+        "boxes": [
+          [
+            7,
+            8,
+            24,
+            56,
+            708
+          ],
+          [
+            34,
+            8,
+            21,
+            56,
+            900
+          ],
+          [
+            58,
+            8,
+            29,
+            56,
+            1086
+          ],
+          [
+            90,
+            8,
+            39,
+            56,
+            1880
+          ],
+          [
+            143,
+            8,
+            29,
+            56,
+            1092
+          ],
+          [
+            175,
+            8,
+            27,
+            56,
+            1129
+          ],
+          [
+            206,
+            8,
+            21,
+            56,
+            897
+          ]
+        ]
+      },
+      {
+        "source": {
+          "pts_sec": 76.269336,
+          "frame_sha256": "734d31fe819a8e40d242917a2e454a1b068107073ec6108d0ef976d6fcbd9269",
+          "path": "outputs/recognition-investigation/timer-only-profile15/full16/processing_frames/pass-b/batch-003/frame_00458_000076.269.jpg",
+          "pixel_sha256": "58cf5de245c124457e33a77d56143d04cfcaafde08e9307a22e719d2160807a9"
+        },
+        "glyph_count": 6,
+        "boxes": [
+          [
+            7,
+            8,
+            24,
+            56,
+            739
+          ],
+          [
+            34,
+            0,
+            53,
+            65,
+            2823
+          ],
+          [
+            89,
+            6,
+            40,
+            58,
+            1909
+          ],
+          [
+            143,
+            0,
+            29,
+            64,
+            1196
+          ],
+          [
+            175,
+            8,
+            27,
+            56,
+            1120
+          ],
+          [
+            206,
+            8,
+            21,
+            56,
+            894
+          ]
+        ]
+      }
+    ]
+  },
+  "artifact_sha256": {
+    "outputs/recognition-investigation/result-glyph-cells-20261013/result.json": "ecb0c94e558901f4bb486c10b9ff70a42691489e42c4110936d4dff9399683bb",
+    "outputs/recognition-investigation/result-glyph-cells-20261013/edge-gate-result.json": "c2270789e15f106cee6f01463d47d2c03099c9197ccdf64c4b4d68599f2045cb",
+    "outputs/recognition-investigation/result-glyph-cells-20261013/stable-tiles-result.json": "9cfd170d17974fbe7a03d5a84322b8b58bbef3c139191906cea83d6023fd4261",
+    "outputs/recognition-investigation/result-glyph-cells-20261013/registered-result.json": "8b73b86b3c725f2c1456166272f618d71bc5e2342838dfcdc39ec51e492de78d",
+    "outputs/recognition-investigation/result-glyph-cells-20261013/frozen-config.json": "4963ddd3ee124a50d70b1c383fdff3ab78133fe6c0eb10630791a79ab2efcff0",
+    "outputs/recognition-investigation/result-glyph-cells-20261013/edge-gate-frozen-config.json": "f71badc53ef1dd8519000865ff18b63a644dc530e5ad843a539a18a23560142f",
+    "outputs/recognition-investigation/result-glyph-cells-20261013/stable-tiles-frozen-config.json": "edf3fd726e99b585f428c36782f51e926d952d149ff77e9f40e2132d0a4db979",
+    "outputs/recognition-investigation/result-glyph-cells-20261013/registered-frozen-config.json": "94425d00ab1c947d9ee4a56aa84e65ff62a78e60d91fb95259ae2fb3910d2eda",
+    "outputs/recognition-investigation/result-glyph-cells-20261013/source-aperture-control.json": "6c36b203fe900f6509f453593eec5e11525a96049b52541c86181b02abdbb855",
+    "outputs/recognition-investigation/result-glyph-cells-20261013/segmentation-diagnostic.json": "2cd8b4aa7f28c9a9a25c5eaa25f7154cac5203cfccc7e7dad652707fa6a6319b",
+    "outputs/recognition-investigation/result-glyph-cells-20261013/native-encoding-result.json": "65e849d1d02310dcba25cf236da5b7663f17152da9be0739fdcb635b48b5da6d",
+    "outputs/recognition-investigation/result-glyph-cells-20261013/native-encoding-selection.json": "10082aaccfb37d310d83e46efa37a484aa55f03e113d603a783f43384197310e"
+  },
+  "decision": "All four fixed methods rejected at training eligibility/support or confusable gate. Native encoding retains the failure; no threshold scan or holdout execution.",
+  "production_changed": false,
+  "qualification_created": false,
+  "canonical_re_evaluated": false,
+  "next_requirement": "Independently supported background/foreground discrimination and exact glyph negative-space proof; obtain additional source training support before another frozen reference, not a lower NCC or synthesized value."
+}

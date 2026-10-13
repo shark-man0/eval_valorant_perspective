@@ -1,0 +1,480 @@
+{
+  "scope": "Optional shared producer unqualified report portrait class candidates, not killer-agent qualification or death ownership",
+  "recognizer_fingerprint": "b6fc1b8302b55a31c7b2343d630e51c2b900f8020ace070296e32bca3efd9b82",
+  "profile_fingerprint": "aec87092683cc2d65b578f63ae2c435159dd14013b516c2628564c0ee1914473",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "input_sha256": {
+    "outputs/recognition-investigation/death-report-localized-holdout-20261012/selection.json": "eba3807d35b296addf75d32feccb186a42027e0e0cf27d2946d4eafd81add5a9",
+    "outputs/recognition-investigation/death-report-localized-holdout-20261012/labels.json": "c48c5566ac34dd4790a0e5d85bf15e91803cde89538a5dd39db6178bebb541aa",
+    "outputs/recognition-investigation/death-report-localized-holdout-20261012/acquired.json": "53b6ca6be4eed7a47e4bddec47707b718cd1df96031d3376e1545ee7ba485e13",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/report-text-contract-20261012/portrait-frozen-config.json": "5df31c9e21cb7104f09a4653189693e4d5659308170ee948fb3c44997d43e617",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/report-text-contract-20261012/training-result.json": "cd3e060168070200a51ea6f4da7008fa7ff659371da2b414079e4641a1cacdf7",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/death-report-portrait-diagnostic.templates.json": "bc337443c1b0a9cd10faab717b921c9490071ac3e3180d2a85d30f5061701f1d",
+    "outputs/recognition-investigation/death-report-r1-holdout-20261012/source_01.png": "b0f1232287876d2e56de2ae1739a155623f907e5ae436adccf644cfe8afef6cb",
+    "outputs/recognition-investigation/death-report-r1-holdout-20261012/source_02.png": "a2c76ed0a4e6bd70a21769276d989d57344935273d553cafa027bbc9966a2c16",
+    "outputs/recognition-investigation/death-current-source-20261012/calibration_prefix.png": "31381637c73a176f7138f0dc3e284bbfdde99be1698949a32d71bb13b9c503e6",
+    "outputs/recognition-investigation/death-current-source-20261012/frame_009.png": "1572bd0093dcdc7021146430462a152df98cb2536c016501b14a6cca114919b8",
+    "outputs/recognition-investigation/death-current-source-20261012/frame_010.png": "a9e6d4a0de7487d02a7aa6a411aeb05c59db5cf8e0a58a407b49d3165d6442ec",
+    "outputs/recognition-investigation/death-current-source-20261012/frame_027.png": "649af0dd5982ad39506c48bc75ecaa38ddd290138cf6321abda3ca158316feab",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/report_portrait_development/raze.png": "a4bf7a44f36e15aab821cebb028a8df47dea6936c3722eb5ae2014aa4e25b693",
+    "outputs/hud_profiles/round-global-timer-glyph-20261008/report_portrait_development/fade.png": "d38f987405c7fd9e422c40efdd734085aa3f8d19f085460d74719cf8148f2263",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_01.png": "6315e75db6661b9dec1e4666bfb1a2ba294dc0586c1e8723a6111c4187d0daec",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_02.png": "6266a45c405b1bc70c5b494b1fc2eba442f0278c28bc3f77c17ff3a431230967",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_03.png": "b66ffeaef9d9b711c053b1a924016d89448258b0bdd730ed998b4dceda0a1761",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_04.png": "6d1d9cffe7d6e80d3e159077e78922a191e768e86ebf0029f8af3f84eebb1c66",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_05.png": "60ea114829c2728cd965534d7b22fa8a07bcd107b12c78ee693abe817ed548ca",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_06.png": "5fc9ab4a26f36778643682405a8104b24961407a2b1d1d5b9a9a701f1fbeb5b0",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_07.png": "6c8736984c76cd4daa66076ef62b2c4e4589c1c5fa079fc9342beac2c02b9509",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_08.png": "2b3ac373d49808b123ceb5d8c326b9d37f080560dff61de85de0651451e74098",
+    "/home/admin/eval_valorant_perspective/outputs/recognition-investigation/death-report-localized-holdout-20261012/source_09.png": "23f3b586251f6c777d64625a968b4e5db08a601aa101b34025a7d058ce55fdda"
+  },
+  "training_support": {
+    "レイズ": 3,
+    "フェイド": 3
+  },
+  "training_predictions": [
+    {
+      "pixel_sha256": "23e29412e77319bef71b847f85ab68757529f96d4437a06fd2ccb6a7d4dcfe6b",
+      "label": "レイズ",
+      "prediction": "レイズ",
+      "confidence": 0.99649977684021
+    },
+    {
+      "pixel_sha256": "974da4abab552d97d663c67c3a8ba5dc2638ed9c076690365c54eac1657e651b",
+      "label": "レイズ",
+      "prediction": "レイズ",
+      "confidence": 0.9454078078269958
+    },
+    {
+      "pixel_sha256": "c51a1fbf9d12b607a937b3890c1d08775720e7d780c18d3455cca3a3927c9024",
+      "label": "レイズ",
+      "prediction": "レイズ",
+      "confidence": 0.9944005608558655
+    },
+    {
+      "pixel_sha256": "6376244a49e2ff3a4cfb257b6dc12ee6df605b16538cc5d7bcf85fbe71b3dd24",
+      "label": "フェイド",
+      "prediction": "フェイド",
+      "confidence": 0.9997631907463074
+    },
+    {
+      "pixel_sha256": "978c1be02e01f080d08b04be9d7d61dd26d8d80c0c3da3fb21130fbb95a50f86",
+      "label": "フェイド",
+      "prediction": "フェイド",
+      "confidence": 0.9980475902557373
+    },
+    {
+      "pixel_sha256": "a86ce87d01a437107aeaa99fad33477b89c5a1455eb6dfed43fb7eee2f3b58df",
+      "label": "フェイド",
+      "prediction": "フェイド",
+      "confidence": 0.9894980192184448
+    }
+  ],
+  "counts": {
+    "portrait_correct": 6,
+    "portrait_unknown": 0,
+    "portrait_wrong": 0,
+    "negative_rejected": 3,
+    "negative_false_positive": 0,
+    "numeric_correct": 6,
+    "numeric_unknown": 0,
+    "numeric_wrong": 0
+  },
+  "rows": [
+    {
+      "source_pts_ticks": 5417,
+      "time_sec": 0.3526692708333333,
+      "pixel_sha256": "22ef20861d6ac22ad38549063fff25e6c9e1d2cc4b38c2548c33620a89c9ebc6",
+      "source_header_label": "レイズ",
+      "prediction": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 0.3526692708333333,
+        "source_pixel_sha256": "22ef20861d6ac22ad38549063fff25e6c9e1d2cc4b38c2548c33620a89c9ebc6",
+        "profile_fingerprint": "aec87092683cc2d65b578f63ae2c435159dd14013b516c2628564c0ee1914473",
+        "fields": {
+          "damage_received": {
+            "display": "190",
+            "value": 190,
+            "confidence": 0.96678825,
+            "sources": [
+              "tesseract_digits",
+              "report_header_pose"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.544,
+              0.952054794520548,
+              0.61
+            ]
+          },
+          "report_portrait_label": {
+            "label": "レイズ",
+            "confidence": 0.9672634838198256,
+            "sources": [
+              "template:レイズ",
+              "report_header_pose"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.06621004566210045,
+              0.232,
+              0.2374429223744292,
+              0.392
+            ]
+          }
+        }
+      },
+      "result": "correct",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "source_pts_ticks": 7721,
+      "time_sec": 0.5026692708333333,
+      "pixel_sha256": "93b120cfdd48402066af88811d8cca92e9406fc6850954823a5129eb0097002a",
+      "source_header_label": "レイズ",
+      "prediction": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 0.5026692708333333,
+        "source_pixel_sha256": "93b120cfdd48402066af88811d8cca92e9406fc6850954823a5129eb0097002a",
+        "profile_fingerprint": "aec87092683cc2d65b578f63ae2c435159dd14013b516c2628564c0ee1914473",
+        "fields": {
+          "damage_received": {
+            "display": "190",
+            "value": 190,
+            "confidence": 0.9636901899999999,
+            "sources": [
+              "tesseract_digits",
+              "report_header_pose"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.544,
+              0.952054794520548,
+              0.61
+            ]
+          },
+          "report_portrait_label": {
+            "label": "レイズ",
+            "confidence": 0.950745701789856,
+            "sources": [
+              "template:レイズ",
+              "report_header_pose"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.06621004566210045,
+              0.232,
+              0.2374429223744292,
+              0.392
+            ]
+          }
+        }
+      },
+      "result": "correct",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "source_pts_ticks": 10025,
+      "time_sec": 0.6526692708333334,
+      "pixel_sha256": "aba471443ff2a3d765e564c476383a4d983ecd9a8106018905fb2a9c30456236",
+      "source_header_label": "レイズ",
+      "prediction": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 0.6526692708333334,
+        "source_pixel_sha256": "aba471443ff2a3d765e564c476383a4d983ecd9a8106018905fb2a9c30456236",
+        "profile_fingerprint": "aec87092683cc2d65b578f63ae2c435159dd14013b516c2628564c0ee1914473",
+        "fields": {
+          "damage_received": {
+            "display": "190",
+            "value": 190,
+            "confidence": 0.9649837499999999,
+            "sources": [
+              "tesseract_digits",
+              "report_header_pose"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.544,
+              0.952054794520548,
+              0.61
+            ]
+          },
+          "report_portrait_label": {
+            "label": "レイズ",
+            "confidence": 0.9440979957580566,
+            "sources": [
+              "template:レイズ",
+              "report_header_pose"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.06621004566210045,
+              0.232,
+              0.2374429223744292,
+              0.392
+            ]
+          }
+        }
+      },
+      "result": "correct",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "source_pts_ticks": 24617,
+      "time_sec": 1.6026692708333334,
+      "pixel_sha256": "cacbf04aba9c513485cfc806b3327b7e43e7ac53af2c9623cfabe9ae05aabc2b",
+      "source_header_label": null,
+      "prediction": null,
+      "result": "rejected",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "source_pts_ticks": 1935401,
+      "time_sec": 126.00266927083334,
+      "pixel_sha256": "6b75d7ddeb61aabd150fdaa339d3308f4f009088a0a60bce05f8482736f60f7a",
+      "source_header_label": null,
+      "prediction": null,
+      "result": "rejected",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "source_pts_ticks": 2211881,
+      "time_sec": 144.00266927083334,
+      "pixel_sha256": "f45eb852909a1baa52d1a0e3d07b52640dbd35d707f0783eec8f3e770fa9d6e0",
+      "source_header_label": null,
+      "prediction": null,
+      "result": "rejected",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "source_pts_ticks": 2327081,
+      "time_sec": 151.50266927083334,
+      "pixel_sha256": "38e295f311c1494dc4301e23f9bf8bcbd29559089444035c7106b5a318737bf8",
+      "source_header_label": "フェイド",
+      "prediction": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 151.50266927083334,
+        "source_pixel_sha256": "38e295f311c1494dc4301e23f9bf8bcbd29559089444035c7106b5a318737bf8",
+        "profile_fingerprint": "aec87092683cc2d65b578f63ae2c435159dd14013b516c2628564c0ee1914473",
+        "fields": {
+          "damage_received": {
+            "display": "194",
+            "value": 194,
+            "confidence": 0.93884247,
+            "sources": [
+              "tesseract_digits",
+              "report_header_pose"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.512,
+              0.952054794520548,
+              0.578
+            ]
+          },
+          "report_portrait_label": {
+            "label": "フェイド",
+            "confidence": 0.9898400902748108,
+            "sources": [
+              "template:フェイド",
+              "report_header_pose"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.06621004566210045,
+              0.2,
+              0.2374429223744292,
+              0.36
+            ]
+          }
+        }
+      },
+      "result": "correct",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "source_pts_ticks": 2373161,
+      "time_sec": 154.50266927083334,
+      "pixel_sha256": "db2ba0af27e2d721b09996eed9cc4585571f20ce6d8003ae776be04a2cd9436c",
+      "source_header_label": "フェイド",
+      "prediction": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 154.50266927083334,
+        "source_pixel_sha256": "db2ba0af27e2d721b09996eed9cc4585571f20ce6d8003ae776be04a2cd9436c",
+        "profile_fingerprint": "aec87092683cc2d65b578f63ae2c435159dd14013b516c2628564c0ee1914473",
+        "fields": {
+          "damage_received": {
+            "display": "194",
+            "value": 194,
+            "confidence": 0.9614827699999999,
+            "sources": [
+              "tesseract_digits",
+              "report_header_pose"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.512,
+              0.952054794520548,
+              0.578
+            ]
+          },
+          "report_portrait_label": {
+            "label": "フェイド",
+            "confidence": 0.9914352893829346,
+            "sources": [
+              "template:フェイド",
+              "report_header_pose"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.06621004566210045,
+              0.2,
+              0.2374429223744292,
+              0.36
+            ]
+          }
+        }
+      },
+      "result": "correct",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    },
+    {
+      "source_pts_ticks": 2426921,
+      "time_sec": 158.00266927083334,
+      "pixel_sha256": "3660827e370179a7838bc245016df1eacdbe89270f071ddd1012ad3b23f76890",
+      "source_header_label": "フェイド",
+      "prediction": {
+        "status": "candidate",
+        "reader": "combat_report",
+        "source_pts_sec": 158.00266927083334,
+        "source_pixel_sha256": "3660827e370179a7838bc245016df1eacdbe89270f071ddd1012ad3b23f76890",
+        "profile_fingerprint": "aec87092683cc2d65b578f63ae2c435159dd14013b516c2628564c0ee1914473",
+        "fields": {
+          "damage_received": {
+            "display": "194",
+            "value": 194,
+            "confidence": 0.9607233399999999,
+            "sources": [
+              "tesseract_digits",
+              "report_header_pose"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.8036529680365296,
+              0.512,
+              0.952054794520548,
+              0.578
+            ]
+          },
+          "report_portrait_label": {
+            "label": "フェイド",
+            "confidence": 0.9903806447982788,
+            "sources": [
+              "template:フェイド",
+              "report_header_pose"
+            ],
+            "cross_checked": false,
+            "roi_bounds_norm": [
+              0.06621004566210045,
+              0.2,
+              0.2374429223744292,
+              0.36
+            ]
+          }
+        }
+      },
+      "result": "correct",
+      "primary_state": "unknown",
+      "player_specific_hud_valid": false
+    }
+  ],
+  "processed_frames": 10,
+  "runtime_sec": 23.99096374202054,
+  "formal_events": 0,
+  "trace_events": 0,
+  "owned_observations": 0,
+  "qualification_created": false,
+  "canonical_full_executed": false,
+  "default_profile_changed": false,
+  "diagnostic_artifact_sha256": {
+    "outputs/recognition-investigation/report-text-contract-20261012/producer-result.json": "8cdd2e2cab8ff9327ac83970b826c3d07905bf10e6555861378fbc76a7fdf155",
+    "outputs/recognition-investigation/report-text-contract-20261012/producer-selection.json": "30847759635af5df6f8f62917c04a01b479ed77bc8e9c6d8e628596ccc4af320",
+    "outputs/recognition-investigation/report-text-contract-20261012/training-result.json": "cd3e060168070200a51ea6f4da7008fa7ff659371da2b414079e4641a1cacdf7",
+    "outputs/recognition-investigation/report-text-contract-20261012/corrected-training-result.json": "f5a245ebf104563ebaf0dcd47f24d939ef32915fb45e6df6ecc3511f149d9ad2",
+    "outputs/recognition-investigation/report-text-contract-20261012/portrait-frozen-config.json": "5df31c9e21cb7104f09a4653189693e4d5659308170ee948fb3c44997d43e617"
+  },
+  "target_assertion_ids": [
+    "GT-R2-DEATH",
+    "OWN-R2-SELF-DEAD",
+    "event_count_constraints-005"
+  ],
+  "previous_current_delta": {
+    "source_portrait_correct": {
+      "previous": 0,
+      "current": 6,
+      "delta": 6
+    },
+    "source_portrait_unknown": {
+      "previous": 6,
+      "current": 0,
+      "delta": -6
+    },
+    "source_portrait_wrong": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "numeric_correct": {
+      "previous": 6,
+      "current": 6,
+      "delta": 0
+    },
+    "negative_false_positive": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    },
+    "formal_events": {
+      "previous": 0,
+      "current": 0,
+      "delta": 0
+    }
+  },
+  "qualification_limits": [
+    "One video, two report contexts, two classes only",
+    "Natural controls have no report; no unseen agent or contradictory portrait holdout",
+    "Source frames exposed to earlier numeric testing, independent only of portrait reference generation",
+    "No report subject/role or current self-dead owner qualification",
+    "No continuity or canonical full evaluation"
+  ],
+  "tests": {
+    "related_passed": 169,
+    "ruff": "PASS",
+    "mypy_source_files": 128,
+    "full_regression": {
+      "passed": 2690,
+      "skipped": 6,
+      "exit_code": 0,
+      "runtime_sec": 1865.89,
+      "log_sha256": "15b19f6c6834c4f964a4a1a0bd429914455e8daaa65f7eaa01ab6bbf7e20f1b5"
+    }
+  }
+}

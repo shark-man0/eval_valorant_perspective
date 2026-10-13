@@ -256,3 +256,18 @@ Local native source/replay tests: **50 passed**; Ruff and mypy: passed.
 Linux job `38188766402` passed all tests but aborted during Qt finalization
 (shared QObject deletion/allocator error). The prior explicit media cleanup
 was insufficient; that separate regression remains open.
+
+### Agent versus player-name semantics: source correction
+
+The later cross-context check shows the R1 header identifies agent `レイズ`,
+while the red band shows player name `シャバーニ`. The original feasibility
+diagnostic labeled a red-band crop `killer_agent_text`; its six R2 strings
+remain the original raw measurement, but that label does not prove agent
+semantics. R2's red-band player name happens to be `フェイド`, matching its agent.
+Do not use whitespace normalization of this field to create killer_agent.
+The actual source header/portrait and player-name fields need separate
+qualification. The numeric-only profile remains available; an explicit optional
+unqualified portrait-class candidate now preserves a separate label without
+creating killer-agent or ownership semantics. See
+[portrait source contract and qualification limits](report_portrait_candidates.md).
+See [source geometry and semantic evidence](death_report_crop_comparison.md).
