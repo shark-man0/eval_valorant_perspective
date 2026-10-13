@@ -118,7 +118,7 @@ def main() -> None:
     if args.summary_json:
         result = {key: value for key, value in result.items() if key != "sites"}
     if args.summary_json or args.json:
-        print(json.dumps(result, ensure_ascii=False, indent=2))
+        print(json.dumps(result, ensure_ascii=True, indent=2))
     else:
         print(f"{result['python_files']} Python files; {result['io_sites']} I/O call sites")
         for category, count in result["categories"].items():
