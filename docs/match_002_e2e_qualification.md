@@ -428,3 +428,28 @@ again after processing. Planning/comparison/geometry/numeric regressions:
 136 passed; Ruff, mypy (131 source files), and diff checks passed. This is not
 a new full-suite or full-match E2E PASS. The latest fetched main remains the
 previous exact baseline commit; no experiment has been installed there.
+
+The independent numeric response for the new cohort remains missing. A later
+integrity audit confirmed all twelve decoded points are inside the original
+frozen development partition, original receipts/raw bindings are unchanged and
+source SHA still matches. No Analyzer or OCR rerun occurred.
+
+Future diagnostic plans use an explicit v2 contract: the source-bound non-GT
+partition file is required, the CLI limit must equal its frozen development
+end, and its hash is checked before/after processing. Decoder pixel/probe and
+Tesseract executable fingerprints are also frozen and checked. Changed source,
+partition or toolchain fails before decoding. A v1 plan is not rewritten or
+upgraded in place. Current post-run toolchain measurements are not retroactively
+claimed as pre-run provenance for the already completed v1 cohort. No production
+Schema, recognizer threshold, qualification policy or formal fixture changes.
+
+The existing Mac spectator regression was revalidated separately: 50 passed,
+4 failed in the icon/absence/runner modules. The abstract positive icon reports
+7 orientation bins against the unchanged required 8, with ambiguous/unknown
+output. This explains the shared synthetic fixture failures; it does not prove
+a real-video defect or justify weakening the eight-bin contract, changing
+expected results or claiming the full suite is green. Production stays unchanged.
+
+Updated partition/planning/numeric/geometry targeted suite: 145 passed; Ruff,
+mypy (131 source files), and diff checks passed. The four separately reproduced
+spectator failures remain recorded and unresolved; no full-suite PASS is claimed.

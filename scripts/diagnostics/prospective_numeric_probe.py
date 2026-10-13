@@ -9,6 +9,7 @@ import argparse
 import json
 import math
 import re
+import shutil
 from collections import Counter
 from pathlib import Path
 
@@ -29,6 +30,29 @@ from valorant_ai_coach.schema_validation import SchemaValidator
 from valorant_ai_coach.video import FrameSample, VideoService
 
 
+def verify_partition(path: Path, source_sha: str, end: float) -> None:
+    partition = json.loads(path.read_text(encoding="utf-8"))
+    if (partition.get("kind") != "development_holdout_partition_not_gt"
+            or partition.get("source_video_sha256") != source_sha):
+        raise ValueError("source-bound frozen non-GT partition required")
+    development, holdout = partition["development"], partition["holdout"]
+    values = [development["start_sec_inclusive"], development["end_sec_exclusive"],
+              holdout["start_sec_inclusive"], holdout["end_sec_exclusive"], end]
+    if (any(type(v) not in (int, float) or not math.isfinite(v) for v in values)
+            or values[0] != 0 or not 0 < values[1] == values[2] < values[3]
+            or end != values[1]):
+        raise ValueError("development limit must equal frozen partition, never holdout")
+
+
+def toolchain_fingerprints() -> dict:
+    service = VideoService()
+    probe, pixels = decoder_fingerprints(service.ffprobe_path)
+    executable = shutil.which("tesseract")
+    if executable is None:
+        raise ValueError("prospective numeric qualification requires local Tesseract")
+    return {"probe": probe, "decoded_pixels": pixels, "tesseract": sha256_file(Path(executable))}
+
+
 def sampling_times(end: float, previous: list[float]) -> list[float]:
     if (type(end) not in (int, float) or not math.isfinite(end) or end <= 0
             or any(type(t) not in (int, float) or not math.isfinite(t) or t < 0
@@ -44,10 +68,11 @@ def sampling_times(end: float, previous: list[float]) -> list[float]:
 
 
 def freeze_plan(video: Path, source_sha: str, trial: Path, histories: list[Path],
-                end: float, output: Path) -> dict:
+                end: float, output: Path, *, partition: Path) -> dict:
     _check_output_privacy(output.resolve())
     if output.exists():
         raise FileExistsError("freeze a new private prospective plan")
+    verify_partition(partition, source_sha, end)
     previous, excluded_hashes = [], set()
     for path in histories:
         history = json.loads(path.read_text(encoding="utf-8"))
@@ -64,16 +89,18 @@ def freeze_plan(video: Path, source_sha: str, trial: Path, histories: list[Path]
         raise ValueError("source video mismatch")
     layout, profile = trial / "hud_layout.json", trial / "hud_layout.templates.json"
     assets = HudTemplateProfile.load(profile)
-    paths = [layout, profile, *histories, Path(__file__),
+    paths = [layout, profile, partition, *histories, Path(__file__),
              Path(numeric_text_localization.__file__),
              *[assets.resolve_asset(str(p)) for p in assets.asset_paths]]
     result = {"kind": "prospective_numeric_point_plan_not_lifecycle_gt",
+              "schema_version": 2, "partition_path": str(partition.resolve()),
               "source_sha256": source_sha, "source_path": str(video.resolve()),
               "trial_layout_path": str(layout.resolve()), "development_end_sec": end,
               "times": times, "period_sec": 30, "phase_sec": 16.75,
               "exclusion_radius_sec": 2, "excluded_source_hashes": sorted(excluded_hashes),
               "inputs_sha256": {str(p.resolve()): sha256_file(p) for p in paths},
               "runtime_code_fingerprint": code_fingerprint(Path(__file__).resolve().parents[2]),
+              "toolchain_fingerprints": toolchain_fingerprints(),
               "production_adopted": False, "training_performed": False,
               "evaluation_holdout_used": False, "source_labels_available": False}
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -87,13 +114,17 @@ def measure(plan_path: Path, output: Path) -> dict:
         raise FileExistsError("measure only once into a new private directory")
     plan_hash = sha256_file(plan_path)
     plan = json.loads(plan_path.read_text(encoding="utf-8"))
-    if plan.get("kind") != "prospective_numeric_point_plan_not_lifecycle_gt":
-        raise ValueError("frozen prospective plan required")
+    if (plan.get("kind") != "prospective_numeric_point_plan_not_lifecycle_gt"
+            or plan.get("schema_version") != 2):
+        raise ValueError("frozen v2 partition-bound prospective plan required; do not rewrite v1")
     video, layout = Path(plan["source_path"]), Path(plan["trial_layout_path"])
     root = Path(__file__).resolve().parents[2]
 
     def verify():
+        verify_partition(Path(plan["partition_path"]), plan["source_sha256"],
+                         plan["development_end_sec"])
         if (sha256_file(plan_path) != plan_hash
+                or toolchain_fingerprints() != plan["toolchain_fingerprints"]
                 or code_fingerprint(root) != plan["runtime_code_fingerprint"]
                 or sha256_file(video) != plan["source_sha256"]
                 or any(sha256_file(Path(p)) != h for p, h in plan["inputs_sha256"].items())):
@@ -192,13 +223,15 @@ def main() -> None:
     freeze.add_argument("--trial", type=Path, required=True)
     freeze.add_argument("--history", type=Path, action="append", required=True)
     freeze.add_argument("--development-end", type=float, required=True)
+    freeze.add_argument("--partition", type=Path, required=True)
     freeze.add_argument("--output", type=Path, required=True)
     run = sub.add_parser("measure")
     run.add_argument("--plan", type=Path, required=True)
     run.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     result = (freeze_plan(args.video, args.source_sha256, args.trial, args.history,
-                          args.development_end, args.output) if args.command == "freeze"
+                          args.development_end, args.output, partition=args.partition)
+              if args.command == "freeze"
               else measure(args.plan, args.output))
     print(json.dumps({k: v for k, v in result.items()
                       if k not in {"inputs_sha256", "source_path", "trial_layout_path"}}, indent=2))
