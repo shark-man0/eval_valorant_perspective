@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import re
 import sys
 from pathlib import Path
@@ -71,3 +72,28 @@ def test_release_workflow_is_release_only() -> None:
     assert re.search(r"(?m)^\s{2}push:\s*$", text)
     assert "branches:" not in text
     assert "release create" not in text.lower()
+
+
+def test_build_info_records_resolved_dependency_and_tool_versions(tmp_path: Path) -> None:
+    tools = _load_release_tools()
+    dependencies = tmp_path / "DEPENDENCIES.txt"
+    dependencies.write_text("numpy==2.5.4\n", encoding="utf-8")
+    output = tmp_path / "BUILD-INFO.json"
+    tools.write_build_info(
+        output, commit="a" * 40, python_version="Python 3.12.10",
+        dependency_file=dependencies, build_command="test",
+    )
+    payload = json.loads(output.read_text(encoding="utf-8"))
+    assert payload["commit"] == "a" * 40
+    assert payload["resolved_dependencies"]["sha256"] == tools.sha256_file(dependencies)
+    assert payload["build_tools"]["pip"] is not None
+    assert set(payload["build_tools"]) == {"pip", "setuptools", "wheel", "pyinstaller"}
+
+
+def test_release_script_requires_pip_check_and_isolated_dependency_audit() -> None:
+    script = (ROOT / "scripts/release/build_release.ps1").read_text(encoding="utf-8")
+    assert 'Invoke-Checked $PythonExe @("-m", "pip", "check")' in script
+    assert "work\\dependency-audit-venv" in script
+    assert '"pip-audit==2.10.1"' in script
+    assert '"--no-deps"' in script and '"DEPENDENCY-AUDIT.json"' in script
+    assert 'Where-Object { $_ -notmatch "(?i)^valorant-ai-coach==" }' in script

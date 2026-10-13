@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.metadata
 import json
 import re
 import sys
@@ -70,6 +71,17 @@ def validate_release_tag(tag: str, version: str) -> None:
         raise ValueError(f"Release tag {tag!r} does not match project version {expected!r}")
 
 
+def build_tool_versions() -> dict[str, str | None]:
+    """Installed release build tool versions; does not imply wheel hash locking."""
+    versions: dict[str, str | None] = {}
+    for name in ("pip", "setuptools", "wheel", "pyinstaller"):
+        try:
+            versions[name] = importlib.metadata.version(name)
+        except importlib.metadata.PackageNotFoundError:
+            versions[name] = None
+    return versions
+
+
 def write_build_info(
     output: Path,
     *,
@@ -100,6 +112,7 @@ def write_build_info(
             "sha256": sha256_file(dependency_file),
         },
         "build_command": build_command,
+        "build_tools": build_tool_versions(),
     }
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(

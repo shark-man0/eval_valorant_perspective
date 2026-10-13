@@ -71,3 +71,54 @@ A snapshot difference is not an Analyzer execution prohibition. The accepted ran
 - External tool version parsing stores only the first version line.
 - Git commit/dirty state is unavailable in packaged/non-repository execution.
 - Raspberry Pi temperature/throttling fields are best-effort and never required for a successful run.
+
+
+## SEC-08 incremental audit (2026-10-13, Issue #34)
+
+The Windows main verification run 38382176853 resolved CPython 3.12.10,
+PySide6 6.11.2 (including Addons, Essentials, shiboken6), NumPy 2.5.4,
+OpenCV 4.14.0.94, OpenAI SDK 2.54.0, PyInstaller 6.22.3, Ruff 0.16.9,
+setuptools 84.0.0, and the direct versions already constrained. These
+are observed Windows versions, **not** a Linux, ARM64 or future guarantee.
+The validated NumPy 2.5.4 Windows x64 CPython 3.12 wheel is listed on PyPI
+with SHA-256 a7b1b6353e36a7e50de2973a38d705c88ee93adcf120673cee7f45a4a3fa223a.
+The Windows constraint now pins this *observed* NumPy version; the shared
+E2E baseline remains 2.5.3 and is intentionally unchanged.
+
+The official Windows release script now fails closed on pip check and,
+after capturing all resolved packages into DEPENDENCIES.txt, runs the
+2.10.1 version of pip-audit **from a separate virtual environment** using
+--no-deps on pinned freeze requirements (excluding only the editable
+first-party project, which has no PyPI vulnerability record). It writes
+DEPENDENCY-AUDIT.json with dependency vulnerability evidence. A detected
+vulnerability, unavailable advisory service or install failure causes the
+release build to stop, not bypass the audit. The audit environment is
+created under work/, outside the PyInstaller allowlisted payload.
+Release BUILD-INFO.json also records installed pip/setuptools/wheel/
+PyInstaller versions; output ZIP and EXE still receive SHA-256 checksums.
+
+### Strategy decisions
+
+| Method | Decision | Rationale |
+| --- | --- | --- |
+| Pin verified direct NumPy on Windows | Adopt | Closes actual Windows version drift without a speculative upgrade. |
+| Snapshot all transitive versions and audit | Adopt | Existing DEPENDENCIES.txt plus new audit JSON; low impact on Qt. |
+| Full hash-locked Windows wheelhouse | Defer | Requires collecting and verifying every platform-specific transitive wheel on an isolated Windows runner; source build dependencies are also not locked. |
+| Cross-OS shared lock | Reject | Python/ABI/platform-specific wheels make Linux and Windows resolutions differ. |
+| SBOM / attestation / bit-for-bit PyInstaller output | Future | Candidate for additional CI jobs and multi-build validation, not yet verified. |
+| Broad PySide6/OpenCV/NumPy/PyInstaller upgrades | Reject here | Would confound Issue #18 Qt shutdown investigation and regression baselines. |
+
+The PyInstaller GHSA-9fxf-4qw3-ghmr affects versions before 6.22.1;
+the observed Windows 6.22.3 is above that patched threshold. This is
+a **targeted advisory check**, not a complete clean bill from pip-audit.
+Full release vulnerability audit has not been executed in this session:
+the release workflow is manual/tag triggered and requires Windows/Inno Setup.
+The standalone environment available to this review is not the project's
+Python 3.12 Windows interpreter, and its pip check is not representative.
+
+For an official release, run on Windows x64 with network access to the
+advisory service. Verify DEPENDENCY-AUDIT.json, DEPENDENCIES.txt, BUILD-INFO.json,
+artifact checksums, packaged smoke test and absence of secrets/videos/logs.
+Maintain a separate OS-native wheel-hash lock only after independent
+download/installation validation. Never claim a release is bit-for-bit
+reproducible solely from freeze lists or artifact hashes.
