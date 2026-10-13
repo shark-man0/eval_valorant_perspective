@@ -1,0 +1,12 @@
+{
+  "version": "experimental_enclosure_geometry_v2",
+  "production_adoption_authorized": false,
+  "interior_exclusion_norm": [0.08, 0.08, 0.92, 0.92],
+  "interior_exclusion_by_anchor": {"player_hp_armor": null},
+  "enclosure_boundary_only": ["player_hp_armor"],
+  "reader_padding_px": 4,
+  "region_exclusions": {
+    "top_match_bar": ["ally_roster", "enemy_roster", "ally_score", "enemy_score", "round_timer", "spike_top_center", "spike_carrier_indicator"]
+  },
+  "notes": "Experimental HP candidate keeps training-stable enclosed UI boundaries only, plus configured numeric field exclusion. No text values, GT, identity or production adoption. Absent enclosure fails closed; source ablations and independent negatives remain required."
+}

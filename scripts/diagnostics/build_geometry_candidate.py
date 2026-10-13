@@ -21,6 +21,7 @@ from scripts.diagnostics.diagnose_geometry_edges import (
     replay_geometry,
     summary,
 )
+from scripts.diagnostics.geometry_enclosure_mask import enclosure_boundary_support
 from scripts.e2e.frame_replay import decoder_fingerprints
 from scripts.e2e.probe_cache import CachedVideoService
 from scripts.e2e.run_dataset_case import sha256_file
@@ -30,31 +31,43 @@ from valorant_ai_coach.hud.templates import HudTemplateProfile
 from valorant_ai_coach.video import VideoService
 
 
-def sampling_plan(end: float, previous: list[float], *, temporal_split: bool = False) -> dict:
+def sampling_plan(end: float, previous: list[float], *, temporal_split: bool = False,
+                  phase: float = 3.25, training_override: list[float] | None = None) -> dict:
     if (type(end) not in (int, float) or not math.isfinite(end) or end <= 0
             or any(type(t) not in (int, float) or not math.isfinite(t) or t < 0
                    for t in previous)):
         raise ValueError("finite development boundary/history required")
+    if not math.isfinite(phase) or not 0 <= phase < 8:
+        raise ValueError("fixed sampling phase must be in [0,8)")
     roles = {}
     for role, offset in (("training", 3.25), ("validation", 13.25)):
         if temporal_split:
             start, stop = (0, end / 2 - 5) if role == "training" else (end / 2 + 5, end)
-            times = [start + 3.25 + 8 * i for i in range(math.ceil((stop - start) / 8))
-                     if start + 3.25 + 8 * i < stop]
+            times = [start + phase + 8 * i for i in range(math.ceil((stop - start) / 8))
+                     if start + phase + 8 * i < stop]
         else:
             times = [offset + 20 * index for index in range(math.ceil(end / 20))
                      if offset + 20 * index < end]
         roles[role] = [t for t in times if all(abs(t - old) >= 2 for old in previous)]
+        if role == "training" and training_override is not None:
+            if (not temporal_split or len(set(training_override)) != len(training_override)
+                    or any(type(t) not in (int, float) or not math.isfinite(t)
+                           or not 0 <= t < end / 2 - 5 for t in training_override)):
+                raise ValueError("reuse only source-bound training in the training partition")
+            roles[role] = list(training_override)
         if len(roles[role]) < 8:
             raise ValueError("insufficient unseen development samples")
     return {"development_end_sec": end, "period_sec": 8 if temporal_split else 20,
             "exclusion_radius_sec": 2,
             "temporal_split": temporal_split,
+            "sampling_phase_sec": phase,
+            "training_reused": training_override is not None,
             "previous_geometry_pts": sorted(set(previous)), **roles}
 
 
 def content_mask(mask: np.ndarray, name: str, layout: HudLayout, base: dict,
-                 policy: dict, width: int, height: int) -> np.ndarray:
+                 policy: dict, width: int, height: int,
+                 template: np.ndarray | None = None) -> np.ndarray:
     """Exclude content by configuration, never by observed timer/HP value or GT."""
     result = mask.copy()
     h, w = mask.shape
@@ -71,7 +84,14 @@ def content_mask(mask: np.ndarray, name: str, layout: HudLayout, base: dict,
         result[max(0, math.floor(b * h) - pad):min(h, math.ceil(d * h) + pad),
                max(0, math.floor(a * w) - pad):min(w, math.ceil(c * w) + pad)] = 0
 
-    exclude(policy["interior_exclusion_norm"])
+    interior = policy.get("interior_exclusion_by_anchor", {}).get(
+        name, policy["interior_exclusion_norm"])
+    if interior is not None:
+        exclude(interior)
+    if name in policy.get("enclosure_boundary_only", []):
+        if template is None or template.shape != mask.shape:
+            raise ValueError("training template required for enclosure support")
+        result &= enclosure_boundary_support(template)
     for rect in base.get("readers", {}).get(name, {}).get("fields", {}).values():
         exclude(rect, padding)
     ax1, ay1, _, _ = layout.normalized_roi(name).pixel_bounds(width, height)
@@ -122,7 +142,7 @@ def build(training: list[np.ndarray], layout: HudLayout, base: dict, output: Pat
         template, mask, statistics = candidate
         if exclusion_policy is not None:
             old_population = int(np.count_nonzero(mask))
-            mask = content_mask(mask, name, layout, base, exclusion_policy, width, height)
+            mask = content_mask(mask, name, layout, base, exclusion_policy, width, height, template)
             population = int(np.count_nonzero(mask))
             statistics["pre_exclusion_mask_population"] = old_population
             statistics["pre_exclusion_contrast_std"] = statistics["selected_contrast_std"]
@@ -165,6 +185,8 @@ def main() -> None:
     parser.add_argument("--prior-diagnostics", type=Path, action="append", required=True)
     parser.add_argument("--content-exclusion-policy", type=Path)
     parser.add_argument("--temporal-split", action="store_true")
+    parser.add_argument("--sampling-phase", type=float, default=3.25)
+    parser.add_argument("--reuse-training", type=Path)
     args = parser.parse_args()
     output = args.output.resolve()
     _check_output_privacy(output)
@@ -185,6 +207,18 @@ def main() -> None:
     if args.content_exclusion_policy:
         inputs.append(args.content_exclusion_policy)
         exclusion = json.loads(args.content_exclusion_policy.read_text(encoding="utf-8"))
+        inputs.append(Path(__file__).with_name("geometry_enclosure_mask.py"))
+    reused, training_override = None, None
+    if args.reuse_training:
+        reuse_report = args.reuse_training / "candidate_report.json"
+        reused = json.loads(reuse_report.read_text(encoding="utf-8"))
+        if (reused["source_sha256"] != args.source_sha256
+                or reused.get("candidate_assets_frozen_before_validation") is not True
+                or reused.get("production_adopted") is not False):
+            raise ValueError("source-bound unadopted training data required")
+        training_override = [row["requested_sec"] for row in reused["training_frames"]]
+        inputs.extend([reuse_report, *sorted(
+            (args.reuse_training / "training_frames").glob("*.jpg"))])
     hashes = {str(path): sha256_file(path) for path in inputs}
     for path in args.prior_diagnostics:
         history = json.loads(path.read_text(encoding="utf-8"))
@@ -198,7 +232,8 @@ def main() -> None:
         rows = (history["training_frames"] + history["validation_frames"]
                 if candidate_history else history["frames"])
         previous.extend(row["source_frame_pts"] for row in rows)
-    plan = sampling_plan(args.development_end, previous, temporal_split=args.temporal_split)
+    plan = sampling_plan(args.development_end, previous, temporal_split=args.temporal_split,
+                         phase=args.sampling_phase, training_override=training_override)
     if sha256_file(args.video) != args.source_sha256:
         raise ValueError("source SHA mismatch")
     video_service = VideoService()
@@ -212,8 +247,24 @@ def main() -> None:
     base = json.loads(args.layout.with_suffix(".templates.json").read_text(encoding="utf-8"))
     output.mkdir(parents=True)
     (output / "plan.json").write_text(json.dumps(plan, indent=2) + "\n", encoding="utf-8")
-    training, training_records = read_frames(
-        service, args.video, plan["training"], output / "training_frames", metadata)
+    if reused is None:
+        training, training_records = read_frames(
+            service, args.video, plan["training"], output / "training_frames", metadata)
+    else:
+        training_records = reused["training_frames"]
+        paths = sorted((args.reuse_training / "training_frames").glob("*.jpg"))
+        if len(paths) != len(training_records):
+            raise ValueError("training image inventory changed")
+        (output / "training_frames").mkdir()
+        training = []
+        for path, record in zip(paths, training_records, strict=True):
+            if sha256_file(path) != record["sha256"]:
+                raise ValueError("reused training image changed")
+            image = cv2.imread(str(path))
+            if image is None or image.shape[:2] != (metadata.height, metadata.width):
+                raise ValueError("reused training dimensions mismatch")
+            shutil.copyfile(path, output / "training_frames" / path.name)
+            training.append(image)
     diagnostics = build(training, layout, base, output, exclusion)
     shutil.copyfile(args.layout, output / "hud_layout.json")
     frozen = {p.name: sha256_file(p) for p in output.glob("*.png")}

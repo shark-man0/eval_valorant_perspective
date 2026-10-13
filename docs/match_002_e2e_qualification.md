@@ -135,3 +135,58 @@ UTF-8; the on-disk filename uses legal Unicode/reserved-URI characters, while a
 separate filesystem-free test preserves quote/angle-bracket URI coverage. No
 expectation, threshold or CI skip was relaxed. Affected Mac regressions: 56
 passed; actual Windows verification of the fix remains pending.
+
+## Candidate v3: independently reviewed, not adopted
+
+The training-only HP enclosure-boundary experiment excludes numeric interiors
+and retains both sides of structural outlines for the unchanged raw NCC matcher.
+It reuses the frozen 28 training images, not earlier validation images. A new
+fixed sampling phase, excluding prior samples, supplies 24 validation frames.
+Assets are frozen before validation; identity signals/readers remain absent.
+The candidate accepts fresh geometry in only **3/24** validation frames.
+All **72** single-anchor ablation challenges reject the erased anchor; these
+counterfactual controls do not substitute for unmodified real-video negatives.
+
+An independent blind human review confirms the mask's fixed-UI scope and the
+three configured structures' visibility/alignment in all 24 source images.
+Approval is bound privately to the review, source images and frozen candidate
+fingerprints. It does not approve ownership, lifecycle timing, continuity or
+production adoption. No thresholds, original fixture or runtime policy changed.
+The low fresh-geometry acceptance remains a recognizer limitation, not evidence
+that the other reviewed frames lack HUD structures. Negative qualification and
+strict positive lifecycle Full E2E remain incomplete.
+
+Candidate report SHA:
+`ef3e51e1912e0d993f78037b0a41277dbaac460510321aa39f4e1efc317792f8`.
+Ablation report SHA:
+`feba28285068c370dc6ca791af7ab2172459e5a21173041cd7afe40270a0dacf`.
+Candidate/enclosure/challenge/blind-review regressions: 49 passed; Ruff,
+mypy (130 source files) and diff checks passed. These are not full-suite or
+real-video lifecycle PASS claims.
+
+For main commit `9f870b7`, both Basic CI and Windows verification subsequently
+completed successfully. This confirms the CI test-harness fixes, not adoption
+or real-video qualification of this local geometry candidate.
+
+The reviewed-measurement CLI binds the human approval, blind receipt, frozen
+assets and source image inventory by hash and recomputes runtime measurements.
+It never fits assets, changes thresholds, imports lifecycle GT or approves a
+profile. Missing runtime scores remain unavailable, not fabricated zero scores.
+The 24 sampled frames contain 22 unique source images; repeated images are not
+counted as additional independent visual conditions.
+
+Per-anchor acceptance is timer 9/24, HP/armor 16/24, abilities 21/24. The timer's
+raw NCC median is 0.843 whereas its descriptive edge similarity median is
+0.931. This is evidence of a pixel/structure mismatch in some cases, not proof
+of a safe replacement matcher. The edge metric has no acceptance threshold and
+cannot qualify geometry. A training-only reference-medoid comparison did not
+justify a new candidate: timer support changed 13 to 14, HP support worsened
+18 to 13, and ability support remained 22. No validation pixel selected a
+reference and no new candidate was promoted from these measurements.
+
+Reviewed-measurement receipt SHA:
+`9fcb36da7d3f00ab1c114861e7c5d668d969ec78886f9460e3dd6bb51ca7eba0`.
+Expanded diagnostic/geometry regressions: 62 passed; Ruff, mypy (130 source
+files), and diff checks passed. An initial synthetic case exposed missing
+runtime score handling; the implementation now reports unavailable explicitly
+instead of assuming every anchor has a score. No existing test was weakened.

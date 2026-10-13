@@ -112,3 +112,15 @@ def test_numeric_content_changes_cannot_raise_or_lower_masked_ncc():
     changed_score = raw_scores([cv2.cvtColor(changed, cv2.COLOR_GRAY2BGR)], gray, mask)[0]
     assert original_score >= .90
     assert changed_score == pytest.approx(original_score, abs=1e-6)
+
+
+def test_reused_training_does_not_reuse_examined_validation():
+    earlier = sampling_plan(720, [], temporal_split=True)
+    history = earlier["training"] + earlier["validation"]
+    current = sampling_plan(720, history, temporal_split=True, phase=5.75,
+                            training_override=earlier["training"])
+    assert current["training"] == earlier["training"] and current["training_reused"] is True
+    assert all(abs(time - old) >= 2 for time in current["validation"] for old in history)
+    with pytest.raises(ValueError, match="training partition"):
+        sampling_plan(720, [], temporal_split=True,
+                      training_override=earlier["validation"])
