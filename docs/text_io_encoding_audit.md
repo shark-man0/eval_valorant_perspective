@@ -26,6 +26,31 @@ bytes.decode()/str.encode() default to UTF-8 even on Windows; binary ffmpeg
 output must not be converted into textual data. Existing PowerShell UTF8
 parameters and deliberate BOM/CRLF behavior are retained.
 
+## Measured inventory (current main baseline + PR #39)
+
+From Linux Basic CI run 38392798509 on the PR snapshot (2026-10-13):
+
+| Metric | Count |
+| --- | ---: |
+| Python files scanned | 552 |
+| Python I/O call sites inventoried | 1,532 |
+| Binary I/O | 662 |
+| Explicit UTF-8 / UTF-8-SIG | 420 |
+| Other explicit encoding | 10 |
+| Needs manual producer/contract review | 440 |
+
+These **1,532 sites are not 1,532 encoding omissions**. The 440 candidate
+sites include subprocess and encode/decode calls, and are not confirmed
+UTF-8 requirements. Seven application-owned Visual JSON reads and one E2E
+JSON write were corrected; the thermal sysfs read deliberately uses ASCII.
+Actual classification totals may shift as independently developed code is
+merged. Review the `--json` output before assigning an individual site.
+
+The scan itself previously failed when the Windows console used cp1252;
+its JSON CLI output now uses ASCII escapes for non-ASCII labels so audit
+reports can be written to a locale-limited stdout without losing information.
+The synthetic BOM test continues to check the exact same UTF-8 bytes.
+
 ## Verified minimal correction
 
 The E2E runner emits application-owned error_code.json as a JSON document.
