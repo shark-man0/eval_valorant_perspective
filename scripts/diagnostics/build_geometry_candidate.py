@@ -21,6 +21,8 @@ from scripts.diagnostics.diagnose_geometry_edges import (
     replay_geometry,
     summary,
 )
+from scripts.e2e.frame_replay import decoder_fingerprints
+from scripts.e2e.probe_cache import CachedVideoService
 from scripts.e2e.run_dataset_case import sha256_file
 from valorant_ai_coach.hud.calibrate_temporal import ANCHORS, _check_output_privacy
 from valorant_ai_coach.hud.layout import HudLayout
@@ -28,20 +30,56 @@ from valorant_ai_coach.hud.templates import HudTemplateProfile
 from valorant_ai_coach.video import VideoService
 
 
-def sampling_plan(end: float, previous: list[float]) -> dict:
+def sampling_plan(end: float, previous: list[float], *, temporal_split: bool = False) -> dict:
     if (type(end) not in (int, float) or not math.isfinite(end) or end <= 0
             or any(type(t) not in (int, float) or not math.isfinite(t) or t < 0
                    for t in previous)):
         raise ValueError("finite development boundary/history required")
     roles = {}
     for role, offset in (("training", 3.25), ("validation", 13.25)):
-        times = [offset + 20 * index for index in range(math.ceil(end / 20))
-                 if offset + 20 * index < end]
+        if temporal_split:
+            start, stop = (0, end / 2 - 5) if role == "training" else (end / 2 + 5, end)
+            times = [start + 3.25 + 8 * i for i in range(math.ceil((stop - start) / 8))
+                     if start + 3.25 + 8 * i < stop]
+        else:
+            times = [offset + 20 * index for index in range(math.ceil(end / 20))
+                     if offset + 20 * index < end]
         roles[role] = [t for t in times if all(abs(t - old) >= 2 for old in previous)]
         if len(roles[role]) < 8:
             raise ValueError("insufficient unseen development samples")
-    return {"development_end_sec": end, "period_sec": 20, "exclusion_radius_sec": 2,
+    return {"development_end_sec": end, "period_sec": 8 if temporal_split else 20,
+            "exclusion_radius_sec": 2,
+            "temporal_split": temporal_split,
             "previous_geometry_pts": sorted(set(previous)), **roles}
+
+
+def content_mask(mask: np.ndarray, name: str, layout: HudLayout, base: dict,
+                 policy: dict, width: int, height: int) -> np.ndarray:
+    """Exclude content by configuration, never by observed timer/HP value or GT."""
+    result = mask.copy()
+    h, w = mask.shape
+    padding = policy.get("reader_padding_px")
+    if type(padding) is not int or not 0 <= padding <= 16:
+        raise ValueError("invalid content-exclusion padding")
+
+    def exclude(rect, pad=0):
+        if (len(rect) != 4 or any(type(v) not in (float, int) or not math.isfinite(v)
+                                 or not 0 <= v <= 1 for v in rect)
+                or not rect[0] < rect[2] or not rect[1] < rect[3]):
+            raise ValueError("invalid normalized content exclusion")
+        a, b, c, d = rect
+        result[max(0, math.floor(b * h) - pad):min(h, math.ceil(d * h) + pad),
+               max(0, math.floor(a * w) - pad):min(w, math.ceil(c * w) + pad)] = 0
+
+    exclude(policy["interior_exclusion_norm"])
+    for rect in base.get("readers", {}).get(name, {}).get("fields", {}).values():
+        exclude(rect, padding)
+    ax1, ay1, _, _ = layout.normalized_roi(name).pixel_bounds(width, height)
+    for region in policy.get("region_exclusions", {}).get(name, []):
+        x1, y1, x2, y2 = layout.normalized_roi(region).pixel_bounds(width, height)
+        result[max(0, y1 - ay1 - padding):min(h, max(0, y2 - ay1 + padding)),
+               max(0, x1 - ax1 - padding):min(w, max(0, x2 - ax1 + padding))] = 0
+    return result
 
 
 def read_frames(service, video: Path, times: list[float], directory: Path, metadata) -> tuple:
@@ -64,7 +102,8 @@ def read_frames(service, video: Path, times: list[float], directory: Path, metad
     return images, records
 
 
-def build(training: list[np.ndarray], layout: HudLayout, base: dict, output: Path) -> dict:
+def build(training: list[np.ndarray], layout: HudLayout, base: dict, output: Path,
+          exclusion_policy: dict | None = None) -> dict:
     specs, diagnostics = {}, {}
     height, width = training[0].shape[:2]
     if layout.reference_resolution != (width, height):
@@ -81,6 +120,20 @@ def build(training: list[np.ndarray], layout: HudLayout, base: dict, output: Pat
             diagnostics[name] = {"status": "training_structure_insufficient"}
             continue
         template, mask, statistics = candidate
+        if exclusion_policy is not None:
+            old_population = int(np.count_nonzero(mask))
+            mask = content_mask(mask, name, layout, base, exclusion_policy, width, height)
+            population = int(np.count_nonzero(mask))
+            statistics["pre_exclusion_mask_population"] = old_population
+            statistics["pre_exclusion_contrast_std"] = statistics["selected_contrast_std"]
+            statistics["content_exclusion_removed_pixels"] = old_population - population
+            statistics["mask_population"] = population
+            statistics["mask_ratio"] = population / mask.size
+            statistics["selected_contrast_std"] = (
+                float(template[mask > 0].std()) if population else 0.0)
+            if population < 64 or float(template[mask > 0].std()) < 1:
+                diagnostics[name] = {**statistics, "status": "content_structure_insufficient"}
+                continue
         specs[name] = {"template": f"{name}.template.png", "mask": f"{name}.mask.png",
                        "threshold": threshold}
         search = base.get("anchors", {}).get(name, {}).get("search_region")
@@ -110,6 +163,8 @@ def main() -> None:
     parser.add_argument("--source-sha256", required=True)
     parser.add_argument("--development-end", type=float, required=True)
     parser.add_argument("--prior-diagnostics", type=Path, action="append", required=True)
+    parser.add_argument("--content-exclusion-policy", type=Path)
+    parser.add_argument("--temporal-split", action="store_true")
     args = parser.parse_args()
     output = args.output.resolve()
     _check_output_privacy(output)
@@ -126,17 +181,30 @@ def main() -> None:
     inputs = [args.layout, args.layout.with_suffix(".templates.json"), args.approval,
               Path(__file__), Path(__file__).with_name("diagnose_geometry_edges.py"),
               *args.prior_diagnostics]
+    exclusion = None
+    if args.content_exclusion_policy:
+        inputs.append(args.content_exclusion_policy)
+        exclusion = json.loads(args.content_exclusion_policy.read_text(encoding="utf-8"))
     hashes = {str(path): sha256_file(path) for path in inputs}
     for path in args.prior_diagnostics:
         history = json.loads(path.read_text(encoding="utf-8"))
-        if (history.get("kind") != "geometry_edge_experiment_not_profile"
+        candidate_history = (history.get("candidate_assets_frozen_before_validation") is True
+                             and history.get("production_adopted") is False
+                             and history.get("identity_assets_generated") is False)
+        if ((history.get("kind") != "geometry_edge_experiment_not_profile"
+             and not candidate_history)
                 or history["source_sha256"] != args.source_sha256):
             raise ValueError("only same-source geometry diagnostics may exclude samples")
-        previous.extend(row["source_frame_pts"] for row in history["frames"])
-    plan = sampling_plan(args.development_end, previous)
+        rows = (history["training_frames"] + history["validation_frames"]
+                if candidate_history else history["frames"])
+        previous.extend(row["source_frame_pts"] for row in rows)
+    plan = sampling_plan(args.development_end, previous, temporal_split=args.temporal_split)
     if sha256_file(args.video) != args.source_sha256:
         raise ValueError("source SHA mismatch")
-    service = VideoService()
+    video_service = VideoService()
+    fingerprint, _ = decoder_fingerprints(video_service.ffprobe_path)
+    service = CachedVideoService(video_service, Path("outputs/e2e_cache/probe"),
+                                 args.source_sha256, fingerprint)
     metadata = service.probe(args.video)
     if args.development_end > metadata.duration_sec:
         raise ValueError("development window outside source")
@@ -146,7 +214,7 @@ def main() -> None:
     (output / "plan.json").write_text(json.dumps(plan, indent=2) + "\n", encoding="utf-8")
     training, training_records = read_frames(
         service, args.video, plan["training"], output / "training_frames", metadata)
-    diagnostics = build(training, layout, base, output)
+    diagnostics = build(training, layout, base, output, exclusion)
     shutil.copyfile(args.layout, output / "hud_layout.json")
     frozen = {p.name: sha256_file(p) for p in output.glob("*.png")}
     frozen.update({name: sha256_file(output / name)

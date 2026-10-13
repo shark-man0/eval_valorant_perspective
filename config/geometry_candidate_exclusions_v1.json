@@ -1,0 +1,10 @@
+{
+  "version": "experimental_geometry_content_exclusion_v1",
+  "production_adoption_authorized": false,
+  "interior_exclusion_norm": [0.08, 0.08, 0.92, 0.92],
+  "reader_padding_px": 4,
+  "region_exclusions": {
+    "top_match_bar": ["ally_roster", "enemy_roster", "ally_score", "enemy_score", "round_timer", "spike_top_center", "spike_carrier_indicator"]
+  },
+  "notes": "Conservative border-only geometry experiment plus configured numeric fields and dynamic roster/score/spike regions. This is not proof that remaining pixels are static UI. Independent structure review and source negatives are still required."
+}

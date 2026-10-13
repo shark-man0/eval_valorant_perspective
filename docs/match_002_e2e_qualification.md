@@ -101,3 +101,37 @@ is therefore still required. The candidate is not installed in app settings.
 
 No real-video precision/recall, qualified positive Full E2E or completed goal is
 asserted here. Private detailed evidence is retained locally, not published.
+
+## Follow-up candidate rejection and CI diagnosis
+
+Candidate v1 structure review found stable numeric glyphs in its masks; it is
+rejected rather than adopted. Candidate v2 excludes configured numeric fields,
+anchor interiors and dynamic roster/score/spike subregions. Fresh, disjoint
+development sampling produced 28 training and 21 validation frames. Geometry
+accepted 6/21 validation frames, and the three source-transform controls rejected.
+However, 63 single-anchor ablation challenges exposed 16 false HP anchor matches
+after the actual HP ROI was erased. All 16 occur in the 21 HP-removal cases;
+timer/ability removals did not falsely match. The tiny HP line mask is therefore
+not sufficient qualified geometry. Candidate v2 is rejected too, with no runtime
+adoption or threshold change. These are counterfactual source-derived controls,
+not unmodified real-video GT. References were not altered by the challenge.
+
+The v2 frozen plan's period label incorrectly says 20 seconds; its explicit
+sampling list uses the 8-second temporal-split lattice. That metadata and
+post-exclusion contrast/ratio accounting are corrected for future outputs, not
+silently rewritten into the original artifact. The observed rejection is valid
+independently of the label because exact sampled frame identities are frozen.
+
+Geometry/content-exclusion/challenge regressions: 42 passed. The new challenge
+fixture initially lacked the required coordinate-system declaration; it was
+corrected without weakening production validation or negative expectations.
+Ruff and mypy (130 source files) passed.
+
+For main commit `8e87c57`, Basic CI completed successfully. Windows verification
+completed with 23 pytest failures, 3490 passes, 11 skips, 86% coverage. Failures
+were test-side default-encoding reads of UTF-8 JSON and an illegal Windows test
+filename, not the Mac-only four spectator failures. Reads now explicitly use
+UTF-8; the on-disk filename uses legal Unicode/reserved-URI characters, while a
+separate filesystem-free test preserves quote/angle-bracket URI coverage. No
+expectation, threshold or CI skip was relaxed. Affected Mac regressions: 56
+passed; actual Windows verification of the fix remains pending.
