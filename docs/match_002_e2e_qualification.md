@@ -244,3 +244,47 @@ development-only candidate probe before any adoption decision or another full
 run. Preserve the original profile and baseline. Do not compensate for the
 calibration failure by lowering NCC, adding GT-derived boundaries, bypassing
 identity/geometry guards or treating unexecuted downstream checks as successful.
+
+## Bounded real Analyzer connection of geometry candidate v3
+
+A private point-only CLI replaces only the isolated trial's geometry anchors.
+It preserves the base layout and independent signal/reader assets by hash,
+rejects geometry-as-identity asset reuse (including renamed identical contents),
+keeps existing anchor floors and does not inherit a global qualification file.
+It never installs app settings, generates references or runs AI. Human geometry
+labels check artifact admission but are not passed into the Analyzer.
+
+The actual `RealHudAnalyzer` processed the same 24 reviewed development source
+images with event generation explicitly disabled. All 24 observations passed
+the existing HUD Schema. Fresh geometry succeeded 3 times; effective geometry
+succeeded 13 times (10 retained), and 11 frames remained geometry-invalid.
+All 24 primary states were unknown. Identity reasons: geometry_invalid 11,
+spectator_exclusion_unverified 11, competing_view_evidence 1,
+structure_evidence_insufficient 1. Timer, both scores, HP and ammo remained null.
+The measured Analyzer time was 3.871 s; this excludes source hashing/admission
+checks and is not a continuous targeted or full E2E runtime.
+
+Global numeric acquisition has an additional concrete configuration gap:
+the base profile has only a HP/armor reader and explicitly empty OCR fallback
+ROIs. It has no configured Timer/Score reader. Production `_read_values` is
+invoked before live identity classification when geometry is valid, so this
+missing acquisition configuration must not be conflated with identity failure.
+Do not remove the spectator gate to compensate for absent global readers.
+Any future numeric-reader proposal needs separate source/negative qualification;
+this probe does not enable a fallback or relax its confidence policy.
+
+Probe receipt SHA:
+`5ac944369528b9e7c6e67e80ee307599db3baafd954c39eb67aa4e7f31cf61d7`.
+Geometry/probe/review/enclosure/challenge regressions: 23 passed. The probe
+rejects incomplete observation coverage and any unexpectedly generated event.
+It preserves source/video/base/candidate/review bindings and leaves thresholds,
+original profiles and the frozen evaluation fixture unchanged. No formal event,
+identity qualification, negative-assertion verdict or production adoption is
+claimed from these isolated observations.
+
+A repeat with explicit runtime/probe-code fingerprints and post-run review/
+approval integrity checks produced identical observation bytes and counts.
+Measured Analyzer time: 3.642 s. Versioned repeat receipt SHA:
+`fc75d2be3e27d4726c5c26a77f73d2dae9f8905d700aa55fa9e54bcfd6d8dc06`.
+The original receipt remains unchanged. Neither run confers negative or
+temporal qualification; further work is needed before production adoption.
