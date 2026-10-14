@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "source_video_sha256": "55d909c2d6a5f38575d1cb6c249ddfa7e2a48b96535841317adcae704c6f63b6",
+  "no_user_edit": true,
+  "no_intentional_frame_deletion_join_or_reorder": true,
+  "no_intentional_speed_change": true,
+  "scene_preserving_edit_excluded": true,
+  "assurance_provenance": "Human user confirmed this source is an unedited screen recording: 元動画は編集等は一切しておらず、画面を録画しただけの映像です. This excludes intentional user editing only. Recording pauses, frozen screen content, frame loss, PTS anomalies, obscured game progression, UI transitions and recognizer errors remain possible. It does not certify observable game continuity, Round boundaries, player ownership or profile qualification. Applies only to the bound match_002 source SHA."
+}

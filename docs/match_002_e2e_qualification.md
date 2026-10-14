@@ -1254,3 +1254,42 @@ Native-input/global-diagnostic/frozen-profile regressions:56passed. Two new CLI
 cases verify defaultfalse, explicittrue and no qualification/event release.
 Scoped Ruff, production mypy(132files), git diff --check pass. Real-frame scans
 prove only measured input acquisition, not lifecycle or full-E2E completion.
+
+## Follow-up input availability and explicit source assurance (2026-10-14)
+
+Measure the subsequent85 native development frames with the same frozen WON
+diagnostic profile, without changing readers, masks, thresholds or GT. Terminal
+source/profile/recognizer integrity checks pass. Counts:6 fresh geometry successes,
+56 effective successes,50 retained frames,29 geometry-invalid frames;36 accepted
+timer displays,33 paired accepted scores and56 result-reference matches. Of the
+matched frames,19 also have both an accepted timer display and paired score.
+All85 player states remainunknown, qualified System evidence rows0 and events0.
+Receipt SHA:
+`64b1d2d34845194547fcc93e419be27c7b4221e170271d5e1a0891c768ace4e1`.
+Elapsed42.732seconds. These availability counts are not reviewed value accuracy,
+precision/recall, a proven score update or a Round end.
+
+The earlier two joint observations were therefore insufficient to conclude that
+the readers never acquire post-result inputs. Keep input availability separate
+from transition/continuity qualification. The follow-up decoder starts a new
+analysis context; do not stitch these independent receipts into a lifecycle
+proof, carry geometry between them or imply one uninterrupted qualified epoch.
+Next temporal verification must retain one source-owned continuous sequence and
+its actual preceding/following evidence, not a concatenation of saved outcomes.
+
+Register `datasets/input_contracts/match_002.unedited.json` from the human's
+source-specific unedited-screen-recording assurance. It uses the existing strict
+UneditedInputContract format and exact source SHA; it excludes intentional user
+editing only. It explicitly does not certify capture pauses/freezes, frame loss,
+observable game progression, scene continuity, boundaries, ownership or profile
+qualification. No GT/expected state/PTS is present, no default runner/profile
+selection changes and no qualification or event is released by registration.
+Contract SHA:
+`f3e0fd8e0cb8bb3da224f05c1cac8909e31400e56f1794a9473ef3f0d5539ead`.
+The separate original provenance review remains unchanged.
+
+Two new tests load the registered source contract and reject reuse for another
+source. Related source-assurance/UI-start/UI-end/native-input/CLI cases:86passed.
+Scoped Ruff, production mypy(132files), git diff --check pass. Existing
+match_001 source contract/GT/Pack remain unchanged. No production profile is
+adopted and formal lifecycle/full-E2E completion remains unproven.
