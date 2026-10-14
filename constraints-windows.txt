@@ -1,5 +1,7 @@
 # Reproducible direct dependency set used by the Windows test/build workflow.
 # CI verifies this set on Windows/Python 3.12; transitive platform wheels are resolved by pip.
+# NumPy 2.5.4 is the version actually installed in green Windows main CI 38382176853.
+numpy==2.5.4
 PySide6==6.11.2
 jsonschema==4.26.0
 keyring==25.7.0

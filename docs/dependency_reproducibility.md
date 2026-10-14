@@ -71,3 +71,167 @@ A snapshot difference is not an Analyzer execution prohibition. The accepted ran
 - External tool version parsing stores only the first version line.
 - Git commit/dirty state is unavailable in packaged/non-repository execution.
 - Raspberry Pi temperature/throttling fields are best-effort and never required for a successful run.
+
+
+## SEC-08 incremental audit (2026-10-13, Issue #34)
+
+The Windows main verification run 38382176853 resolved CPython 3.12.10,
+PySide6 6.11.2 (including Addons, Essentials, shiboken6), NumPy 2.5.4,
+OpenCV 4.14.0.94, OpenAI SDK 2.54.0, PyInstaller 6.22.3, Ruff 0.16.9,
+setuptools 84.0.0, and the direct versions already constrained. These
+are observed Windows versions, **not** a Linux, ARM64 or future guarantee.
+The validated NumPy 2.5.4 Windows x64 CPython 3.12 wheel is listed on PyPI
+with SHA-256 a7b1b6353e36a7e50de2973a38d705c88ee93adcf120673cee7f45a4a3fa223a.
+The Windows constraint now pins this *observed* NumPy version; the shared
+E2E baseline remains 2.5.3 and is intentionally unchanged.
+
+The official Windows release script now fails closed on pip check and,
+after capturing all resolved packages into DEPENDENCIES.txt, runs the
+2.10.1 version of pip-audit **from a separate virtual environment** using
+--no-deps on pinned freeze requirements (excluding only the editable
+first-party project, which has no PyPI vulnerability record). It writes
+DEPENDENCY-AUDIT.json with dependency vulnerability evidence. A detected
+vulnerability, unavailable advisory service or install failure causes the
+release build to stop, not bypass the audit. The audit environment is
+created under work/, outside the PyInstaller allowlisted payload.
+Release BUILD-INFO.json also records installed pip/setuptools/wheel/
+PyInstaller versions; output ZIP and EXE still receive SHA-256 checksums.
+
+### Strategy decisions
+
+| Method | Decision | Rationale |
+| --- | --- | --- |
+| Pin verified direct NumPy on Windows | Adopt | Closes actual Windows version drift without a speculative upgrade. |
+| Snapshot all transitive versions and audit | Adopt | Existing DEPENDENCIES.txt plus new audit JSON; low impact on Qt. |
+| Full hash-locked Windows wheelhouse | Defer | Requires collecting and verifying every platform-specific transitive wheel on an isolated Windows runner; source build dependencies are also not locked. |
+| Cross-OS shared lock | Reject | Python/ABI/platform-specific wheels make Linux and Windows resolutions differ. |
+| SBOM / attestation / bit-for-bit PyInstaller output | Future | Candidate for additional CI jobs and multi-build validation, not yet verified. |
+| Broad PySide6/OpenCV/NumPy/PyInstaller upgrades | Reject here | Would confound Issue #18 Qt shutdown investigation and regression baselines. |
+
+The PyInstaller GHSA-9fxf-4qw3-ghmr affects versions before 6.22.1;
+the observed Windows 6.22.3 is above that patched threshold. This is
+a **targeted advisory check**, not a complete clean bill from pip-audit.
+Full release vulnerability audit has not been executed in this session:
+the release workflow is manual/tag triggered and requires Windows/Inno Setup.
+The standalone environment available to this review is not the project's
+Python 3.12 Windows interpreter, and its pip check is not representative.
+
+For an official release, run on Windows x64 with network access to the
+advisory service. Verify DEPENDENCY-AUDIT.json, DEPENDENCIES.txt, BUILD-INFO.json,
+artifact checksums, packaged smoke test and absence of secrets/videos/logs.
+Maintain a separate OS-native wheel-hash lock only after independent
+download/installation validation. Never claim a release is bit-for-bit
+reproducible solely from freeze lists or artifact hashes.
+
+
+## Independent Windows PyInstaller comparison (Issue #34)
+
+The `.github/workflows/release-reproducibility.yml` workflow builds the
+**same immutable PR-head commit** on two distinct GitHub-hosted Windows
+runners, each with a new Python 3.12 environment. Both jobs install the
+constrained dependencies, require `pip check`, build a fresh PyInstaller
+onedir payload, and run the packaged smoke test. Each saves the exact
+resolved pip version list, Python/build-tool versions and content SHA-256
+of every regular file in the packaged tree. The comparison job records
+missing, extra and byte-different relative paths, as well as Python,
+package and tool-version drift; it retains a JSON report. It does **not**
+claim that a green workflow means bit-for-bit reproducibility: compare the
+explicit `bit_for_bit_equal` and `reproducible_environment` JSON fields.
+
+This is an **independent onedir build probe**, not two complete release
+builds: Inno Setup installer/ZIP reproducibility, FFmpeg/Inno Setup
+checksums, provenance signatures and transitive wheel hash locks still
+require separate official release evidence. If the content hashes differ,
+review the named differing files before deciding whether an acceptable
+nondeterminism (timestamps, bytecode, embedding) explains the delta; never
+suppress the mismatch by filtering files from the inventory.
+
+## Confirmed 2-run baseline and deterministic PyInstaller inputs
+
+The initial independent rebuild workflow #38501514340 (commit `a72a702`)
+created 425 files on each of two distinct Windows runners with the same
+resolved Python and build-tool versions. **Five byte hashes differed**:
+`VALORANT-AI-Coach.exe`, `_internal/base_library.zip`, and the three
+`_internal/{jsonschema-4.26.0,keyring-25.7.0,numpy-2.5.4}.dist-info/RECORD`
+files. The comparison was a failure of bit-for-bit identity despite green
+build and smoke-test steps, not a successful reproducibility certification.
+
+PyInstaller 6.22.3 documents both `PYTHONHASHSEED` (hashed collection and
+bytecode stability) and `SOURCE_DATE_EPOCH` (Windows executable PE build
+timestamp). The official release script and independent comparison jobs
+now set hash seed 1 and the actual source commit's Unix timestamp before
+the PyInstaller build. The comparison is rerun without ignoring or deleting
+any of the five differing files; an identical result must be observed
+before reporting byte reproducibility. Remaining differences may arise
+from package RECORD data or build tools and require further investigation.
+
+## Isolated remaining RECORD nondeterminism (2026-10-14)
+
+In the independent rerun #38502011265 at commit `1288066`, both
+425-file payloads had identical environment metadata, and the EXE and
+`base_library.zip` became byte-identical after the reproducible-build
+settings. The only remaining mismatches were the `RECORD` files for
+jsonschema 4.26.0, keyring 25.7.0, and NumPy 2.5.4.
+A new evidence-only CSV-row hashing field now allows the next independent
+run to distinguish changed filenames/record entries from differences
+in CSV formatting or row order. No `RECORD` content is omitted from
+bundle hashing or normalized inside the distributed application. Absolute
+runner paths are hashed rather than emitted to public artifacts.
+
+## Root cause isolation: pip-created Windows launcher timestamps
+
+The row-by-row comparison in workflow #38502512373 found that exactly four
+`RECORD` entries differed: `../../Scripts/jsonschema.exe`,
+`../../Scripts/keyring.exe`, `../../Scripts/f2py.exe`, and
+`../../Scripts/numpy-config.exe`. Three `RECORD` files consequently had
+different SHA-256 values despite all packaged runtime binaries matching.
+Windows `Scripts/*.exe` console-entrypoint launchers are created by pip's
+vendored distlib **during dependency installation**, and may embed ZIP
+timestamps. Upstream distlib supports `SOURCE_DATE_EPOCH` for generated
+launcher ZIP entries, so the reproducibility controls were moved before
+all pip installation, not just before PyInstaller. They are also applied
+in the official release script. The next independent rebuild must validate
+whether this eliminates the three final byte mismatches without filtering
+or changing any distributed `RECORD` data.
+
+References: https://github.com/pypa/distlib/issues/164 and
+https://github.com/pypa/distlib/blob/master/distlib/scripts.py
+
+
+## Resolved Windows wheel archive checksums
+
+The independent Windows rebuild workflow also captures pip's installation
+report (`pip install --report`). The archived snapshot records each
+installed artifact's package name, version and SHA-256 archive hash when
+provided by pip, plus an explicit unhashed list (including the editable
+first-party source). It never includes original download URLs, auth query
+strings, or local checkout paths.
+
+Hashes from both independent runners are compared along with the complete
+packaged-file inventory and dependency versions. The pip report covers
+resolved install artifacts rather than establishing `--require-hashes`
+enforcement; preinstalled tools and packages without download records may
+not be represented. An exact wheel hash lock and an independently
+reproduced complete ZIP/Inno Setup release remain separate open work.
+The earlier independent onedir run #38502954619 achieved exact 425/425
+content SHA-256 agreement before this additional audit evidence.
+
+## Pinned pip 26.2.1 for Windows release and audit gates
+
+As of 2026-10-14, pip 26.2.1 (released 2026-08-04) supports Python 3.12.
+The release script now uses `pip==26.2.1` rather than an unbounded
+upgrade. The two independent Windows build jobs and the advisory-audit
+workflow use the same pinned pip version for resolution. This satisfies
+the SEC-08 request to reassess the historical pip >=26.2 suggestion
+without silently changing the installer behavior in future releases.
+
+pip 26.2 changed isolated-build constraints: ordinary `-c` no longer
+constrains the isolated PEP 517 environment; explicit
+`--build-constraint` is necessary for a separately frozen backend.
+Our resolved distribution hashes, package versions and onedir hashes
+are retained as evidence, not a full transitive or build-backend lock.
+Re-run independent comparison and CI after the pinned upgrade before
+claiming compatibility with the new pip release.
+
+Upstream sources: https://discuss.python.org/t/announcement-pip-26-2/108319
+and https://pypi.org/project/pip/26.2.1/ .
