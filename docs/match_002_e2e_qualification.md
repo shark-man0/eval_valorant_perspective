@@ -661,3 +661,39 @@ Integrity-bound control receipt SHA:
 Sparse-review/control/adapter/numeric/planning/probe targeted regressions:
 127 passed. Ruff, mypy (131 source files) and diff checks passed. The formal
 full-match lifecycle outcome remains unproven; prior full-suite failures remain.
+
+## Explicit native numeric-region reader (2026-10-14)
+
+The frozen pixel-only component-row kernel now has an opt-in native reader:
+`numeric_region_locator: "bright_components_v1"`. It is allowed only on explicitly
+configured empty-template `digits` readers for the three global numeric ROIs,
+with their original timer/integer format. No shipped profile or app setting is
+changed. Existing profiles without this field keep the original reader path.
+Invalid explicit locator, format, templates, subregion or confidence floor fails
+closed instead of allowing legacy OCR fallback. The existing configured floor
+is preserved and cannot fall below 0.90. Missing colon pixels, ambiguity,
+fractional timers, invalid or missing value provenance and low confidence are
+not repaired. Localization never creates an independent crosscheck.
+
+The private connection probe supports `--native`: it clones the existing
+unqualified trial profile locally, preserves geometry and identity assets,
+and uses the real Analyzer constructor without injected readers. It binds the
+new runtime/profile fingerprints separately from historical frozen-cohort
+fingerprints; old receipts and outputs are not overwritten. Both original and
+generated profile/assets, source video and runtime fingerprints are checked
+before/after processing. No qualification file, GT, expected numeric values,
+event synthesis or application settings enter this path.
+
+On the twelve-image fixed cohort, normalized Timer/ally/enemy values were
+obtained on 5/5/8 images; on the thirteen-image source-control cohort, counts
+were 4/8/9. All 25 observations match the prior diagnostic connection in values,
+confidence, state, geometry and quality, except for the explicit localization
+source tag. Both routes produce zero ownership promotions and zero events.
+The source remains unchanged. This verifies native factory connectivity only,
+not continuous lifecycle, profile qualification or full-match E2E success.
+
+Native-reader/profile-cloning, existing template behavior, lifecycle safety,
+source-negative ingestion and numeric-review regressions: 224 passed. Ruff,
+mypy (132 source files) and `git diff --check` passed. Historical full-suite
+limitations remain; the full suite was not rerun at this checkpoint. Geometry,
+identity and temporal qualification remain separate unfinished requirements.

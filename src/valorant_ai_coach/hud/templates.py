@@ -32,6 +32,8 @@ from valorant_ai_coach.resources import resource_path
 
 from .hp_glyphs import StrictHpGlyphReader, UnavailableStrictHpGlyphReader
 from .layout import HudLayout, NormalizedRoi
+from .numeric_regions import LOCATOR as NUMERIC_REGION_LOCATOR
+from .numeric_regions import LocalizedNumericReader
 from .readers import HudReader, ReaderResult
 from .report_header import ReportFieldLocator, ReportHeader, report_header_evidence
 from .score_glyphs import StrictScoreGlyphReader, UnavailableStrictScoreGlyphReader
@@ -769,6 +771,16 @@ class HudTemplateProfile:
                 continue
             kind = raw_spec.get("kind")
             try:
+                if "numeric_region_locator" in raw_spec:
+                    allowed = {"kind", "format", "templates", "minimum_confidence", "psm",
+                               "whitelist", "executable", "white_text_threshold",
+                               "numeric_region_locator"}
+                    expected_format = "timer_mmss" if roi_name == "round_timer" else "integer"
+                    if (kind != "digits" or roi_name not in DEFAULT_DIGIT_OCR_ROIS
+                            or raw_spec["numeric_region_locator"] != NUMERIC_REGION_LOCATOR
+                            or set(raw_spec) - allowed or raw_spec.get("templates") != {}
+                            or raw_spec.get("format") != expected_format):
+                        raise ValueError("numeric locator requires explicit empty-template globals")
                 if ('portrait_fields' in raw_spec
                         and (kind != 'fields' or roi_name != 'combat_report')):
                     raise ValueError('Report portrait fields are candidate/report-only')
@@ -813,6 +825,10 @@ class HudTemplateProfile:
                             white_text_threshold=raw_spec.get("white_text_threshold"),
                         ),
                     )
+                    if "numeric_region_locator" in raw_spec:
+                        readers[str(roi_name)] = LocalizedNumericReader(
+                            readers[str(roi_name)], timer=roi_name == "round_timer",
+                            minimum=raw_spec.get("minimum_confidence", .90))
                 elif kind == "text":
                     reader = TesseractTextReader(
                         language=str(raw_spec.get("language", "")),
@@ -1035,7 +1051,7 @@ class HudTemplateProfile:
             except (OSError, TypeError, ValueError, cv2.error) as exc:
                 self.reader_diagnostics.append(f"reader {roi_name}: {exc}")
                 if ("minimum_confidence" in raw_spec or 'localization' in raw_spec
-                        or 'portrait_fields' in raw_spec):
+                        or 'portrait_fields' in raw_spec or "numeric_region_locator" in raw_spec):
                     # Invalid explicit safety configuration must not disappear
                     # and allow the analyzer's legacy OCR fallback to replace it.
                     readers[str(roi_name)] = UnavailableConfiguredReader()
