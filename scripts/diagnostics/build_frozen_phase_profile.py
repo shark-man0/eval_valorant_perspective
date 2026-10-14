@@ -19,7 +19,7 @@ import numpy as np
 from valorant_ai_coach.hud.calibrate_profile import _bundle_assets, _write_asset
 from valorant_ai_coach.hud.calibrate_temporal import _check_output_privacy, _localize_assets
 from valorant_ai_coach.hud.layout import HudLayout
-from valorant_ai_coach.hud.semantic_text import MATCHER, SemanticTextReference
+from valorant_ai_coach.hud.semantic_text import MATCHER, SIGNAL_ROIS, SemanticTextReference
 from valorant_ai_coach.hud.templates import HudTemplateProfile
 
 
@@ -34,8 +34,12 @@ def gray(path: Path) -> np.ndarray:
     return image
 
 
-def build_profile(layout_path: Path, reference_dir: Path, archive_root: Path, output: Path) -> Path:
+def build_profile(layout_path: Path, reference_dir: Path, archive_root: Path, output: Path,
+                  *, signal: str = "buy_phase_template") -> Path:
     """Preserve frozen bytes/ROI/threshold and bundle all existing assets."""
+    if signal not in ("buy_phase_template", "round_end_template"):
+        raise ValueError("explicit positive purchase/result signal required")
+    roi = SIGNAL_ROIS[signal]
     layout_path = layout_path.resolve()
     reference_dir = reference_dir.resolve()
     archive_root = archive_root.resolve()
@@ -65,7 +69,7 @@ def build_profile(layout_path: Path, reference_dir: Path, archive_root: Path, ou
         raise ValueError("frozen crop requires four integer bounds")
     x1, y1, x2, y2 = bounds
     width, height = layout.reference_resolution
-    left, top, right, bottom = layout.normalized_roi("center_phase_banner").pixel_bounds(
+    left, top, right, bottom = layout.normalized_roi(roi).pixel_bounds(
         width, height
     )
     if not left <= x1 < x2 <= right or not top <= y1 < y2 <= bottom:
@@ -102,8 +106,8 @@ def build_profile(layout_path: Path, reference_dir: Path, archive_root: Path, ou
             name = f"training-{index}.png"
             _write_asset(assets / name, crop)
             exemplars.append({"template": f"phase/{name}", "frame_sha256": frame_hash})
-        raw.setdefault("signals", {})["buy_phase_template"] = {
-            "roi": "center_phase_banner", "matcher": MATCHER,
+        raw.setdefault("signals", {})[signal] = {
+            "roi": roi, "matcher": MATCHER,
             "roi_bounds": [(x1 - left) / (right - left), (y1 - top) / (bottom - top),
                            (x2 - left) / (right - left), (y2 - top) / (bottom - top)],
             "template": "phase/reference.png", "mask": "phase/mask.png",
@@ -116,7 +120,7 @@ def build_profile(layout_path: Path, reference_dir: Path, archive_root: Path, ou
             json.dumps(raw, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
         )
         loaded = HudTemplateProfile.load(selected.with_suffix(".templates.json"))
-        if loaded.reader_diagnostics or "buy_phase_template" not in loaded._semantic_text:
+        if loaded.reader_diagnostics or signal not in loaded._semantic_text:
             raise ValueError("generated phase reference did not load")
         if any(not loaded.resolve_asset(path).is_file() for path in loaded.asset_paths):
             raise ValueError("generated phase assets are missing")
@@ -136,6 +140,7 @@ def build_profile(layout_path: Path, reference_dir: Path, archive_root: Path, ou
             raise ValueError("frozen profile inputs changed during generation")
         diagnostics = {
             "status": "diagnostic_only_not_adopted", "matcher": MATCHER,
+            "signal": signal,
             "base_profile_fingerprint": base_fingerprint,
             "frozen_manifest_sha256": manifest_hash,
             "frozen_asset_hashes": manifest["asset_hashes"],
@@ -157,8 +162,11 @@ def main() -> None:
     parser.add_argument("--reference-dir", required=True, type=Path)
     parser.add_argument("--archive-root", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--signal", choices=("buy_phase_template", "round_end_template"),
+                        default="buy_phase_template")
     args = parser.parse_args()
-    print(build_profile(args.layout, args.reference_dir, args.archive_root, args.output))
+    print(build_profile(args.layout, args.reference_dir, args.archive_root, args.output,
+                        signal=args.signal))
 
 
 if __name__ == "__main__":

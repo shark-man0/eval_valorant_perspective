@@ -82,6 +82,31 @@ def test_frozen_profile_preserves_base_and_moves_as_one_directory(tmp_path):
     )
 
 
+def test_result_profile_uses_only_explicit_result_signal_without_ownership(tmp_path):
+    layout, reference, archive, image = inputs(tmp_path)
+    raw = json.loads(layout.read_text())
+    raw["regions"]["round_end_banner"] = raw["regions"]["center_phase_banner"].copy()
+    layout.write_text(json.dumps(raw))
+    generated = build_profile(layout, reference, archive, tmp_path / "result",
+                              signal="round_end_template")
+    profile = HudTemplateProfile.load(generated.with_suffix(".templates.json"))
+    assert "buy_phase_template" not in profile.raw["signals"]
+    assert profile.raw["signals"]["round_end_template"]["roi"] == "round_end_banner"
+    assert profile.raw["signals"]["round_end_template"]["threshold"] == .90
+    signals = profile.detect_signals(image, HudLayout.load(generated))
+    assert signals["round_end_template"] is True
+    assert signals.get("self_hud_identity_trustworthy") is not True
+    assert not list(generated.parent.glob("*.global_qualification.json"))
+
+
+@pytest.mark.parametrize("signal", ["phase_absence_template", "live", "", None])
+def test_builder_cannot_convert_positive_text_to_absence_or_identity(tmp_path, signal):
+    layout, reference, archive, _ = inputs(tmp_path)
+    with pytest.raises(ValueError, match="positive purchase/result"):
+        build_profile(layout, reference, archive, tmp_path / "rejected", signal=signal)
+    assert not (tmp_path / "rejected").exists()
+
+
 @pytest.mark.parametrize("mutation", ["asset", "training", "threshold", "crop", "escape"])
 def test_invalid_frozen_inputs_leave_no_published_profile(tmp_path, mutation):
     layout, reference, archive, _ = inputs(tmp_path)

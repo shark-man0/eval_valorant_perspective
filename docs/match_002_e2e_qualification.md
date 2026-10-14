@@ -1158,3 +1158,52 @@ Related recapture/discovery/capture/semantic/frozen-profile/cache tests:
 100passed; scoped Ruff, production mypy(132files), diff checks pass. Raw images,
 PTS, paths and source receipts remain local. Whole-pipeline start/end, geometry,
 positive transition, package affiliation and final E2E qualification remain open.
+
+## Reviewed result semantics and frozen held measurement (2026-10-14)
+
+Human reply explicitly transcribes both ROI sets:1,2,3,4,6 as WON and5 as LOST.
+Preserve the literal response in a separate immutable review receipt, bound to
+the unchanged discovery report/page/assets/source parents. The configured
+center-phase ROI therefore contains result text in these images; it does not
+prove purchase phase. No held-image labels, boundary times, ownership,
+continuity or adoption follow from this reference-only review. Receipt SHA:
+`64837c106bc92d041cffccd44e1323d6894a8cee1ba54127a5d219fb2ac23c16`.
+
+Add a frozen-candidate measurement CLI. It verifies source/layout/assets before
+and after, reconstructs the same grouped NCC references using training only,
+measures every preselected candidate in original order and never reselects one
+using held results. It rejects altered assets/source/layout, premeasured audits,
+preassigned semantic labels and training/held overlap. Nonmatches remain unknown,
+with absence_checked=false and runtime_transition_authorized=false.
+
+On the40 development held images, candidate1..6 accept20,17,19,17,18,9 images,
+respectively. These are unlabelled match counts, not correct detections, recall,
+precision or qualified independent episodes. No combined OR matcher is created.
+Measurement receipt SHA:
+`75bc3718bf430c90a921fa854c10f79138abb633e0011202c43edcb615b11e5b`.
+
+Extend the existing diagnostic profile builder with an explicit positive signal
+choice, defaulting unchanged to buy_phase_template. round_end_template uses its
+own configured ROI and the existing semantic matcher. Absence/ownership signals
+are rejected. Build one WON reference from the first training-ranked candidate
+and the first three human-reviewed WON source parents, not from held ranking.
+These three parents share one display episode and do not qualify temporal use.
+The generated profile preserves the existing purchase reference/base assets,
+has three matched training parents at NCC.90 and creates no qualification file.
+
+An initial manual ROI-origin transcription was wrong; the constructor rejected
+it for insufficient support before publishing any profile. Preserve that failed
+manifest. Derive the correct absolute crop from actual configured ROI bounds
+plus unchanged candidate-relative bounds in a new manifest. No matcher, mask,
+glyph coordinates within the ROI, threshold or reference image is altered.
+Successful manifest SHA:
+`ec09cd07dedcb2e10952d55b0f81f2f3f02f4d4ac6cb94a27edbeb30e172ef65`.
+Diagnostic receipt SHA:
+`da96ead7f740a01e0534047c540f85bac6bff64260c9e1ab8ca4f065ee8802fd`.
+
+This is a local diagnostic profile only, not production adoption or a Round
+end detection result. Independent source/geometry/UI-transition qualification
+and actual downstream package/trace/full-E2E proof remain required. Raw assets,
+source paths and exact PTS stay local; only aggregate and hashes are shared.
+Final related tests:111passed. Scoped Ruff, production mypy(132files) and
+git diff --check pass. No current full-suite or formal full-E2E success is claimed.
