@@ -843,3 +843,62 @@ mypy (132 production files) and diff checks pass. Source/GT/Pack and production
 code remain unchanged. Next distinguish missing representative training support
 from unreviewed semantics, using frozen source-only evidence rather than GT-
 selected frames or another full run with unqualified references.
+
+## Additional fixed source-only development pool (2026-10-14)
+
+Instead of continuing to fit the sparse exposed pool, freeze a separate sampling
+plan before source capture: phase1.375 seconds, cadence3 seconds, within the
+existing development partition, excluding points within0.5 seconds of prior
+geometry/numeric sampling metadata. Only source sampling/hash fields are read;
+GT, expected state, candidate matching and evaluation outcomes cannot select
+the new times. The final evaluation holdout is not accessed. This is additional
+development input, not a new independent temporal holdout or validation Pack.
+This denser source-collection radius does not replace the earlier two-second
+prospective qualification exclusion. Of179 requests,116 fall within that prior
+two-second neighbourhood and63 outside it. Neither all179 images nor their
+alternating held split can be promoted to independent qualification cases merely
+because their encoded hashes differ. The existing qualification/safety gates
+remain unchanged; this pool is for development reference discovery only.
+
+`scripts/diagnostics/capture_unlabeled_banner_pool.py` separates plan freezing
+from capture, limits requests to256, rejects source/decoder/code/partition drift,
+preserves source resolution and actual sampled PTS, and reports duplicate/previous
+source hashes without replacing samples based on prediction. No image-array pool
+is retained by capture: each saved frame is checked individually. OCR/Analyzer
+are never invoked. The original video and audio remain unchanged; retained JPEG
+stills are private sampled observations, not a lossless native temporal sequence.
+
+The frozen plan contains179 requests. Actual capture produced179 frames with174
+distinct encoded source-image hashes, 5 exact duplicates, and0 overlaps with the
+reserved prior-source hashes. Source/decoder/code/plan hashes passed terminal
+checks. Capture time was13.406seconds; OCR calls, Analyzer calls and generated
+events were all0. Peak RSS was not measured. An earlier pre-capture plan was
+superseded after validation changes and was not decoded or overwritten.
+
+Latest plan SHA:
+`8a7a175fe2f9ac5f68405ae9c27cae3d58ce318318ce32524cd8251e4f1ab007`.
+Capture receipt SHA:
+`e3e0092ae0efcb8de15f87ce4ec8a9abcc7f821f217a439f8349cb94c805706a`.
+
+The already fixed three-component discovery kernel splits the174 unique parents
+into87training/87held images. Per configured ROI there are18 row proposals,
+5 training-support rejections,13 supported proposals and10 support clusters;
+the existing training-frequency cap returns4 candidates. Their training support
+is13/12/11/11 and held acceptance11/13/13/7. These are unreviewed shape matches,
+not correctness, recall or qualification. Developer visual inspection finds
+purchase-like text in all four retained variants; no reviewed result reference
+is established. Investigate training-only cluster diversity/pruning separately
+from source coverage rather than interpreting a capped candidate list as proof
+that a result was absent. Do not use held outcomes to select a new candidate.
+
+Fresh discovery receipt SHA:
+`e68c80f42fe053f63e83327b82bc462fb05df823057f2554ea8127a20c8ed2ee`.
+The earlier three-reference transcription request remains pending and unchanged.
+No semantic label, production setting, reference sidecar or qualification is
+installed. New positive matches do not justify releasing Round events.
+
+Related source-capture/discovery/semantic/geometry/native/lifecycle tests:
+161passed. Ruff, mypy (132 production files) and diff checks pass. The freshly
+fetched main remains`c11ec6d`; other branch work is not overwritten or used as
+match_002 proof. Round start/end, Package affiliation and Full E2E completion
+remain unproved; these source/reference steps do not redefine that objective.
