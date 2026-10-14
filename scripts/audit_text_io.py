@@ -49,6 +49,11 @@ def scan_source(source: str, path: str) -> list[dict[str, Any]]:
             kind, category = name, "Binary I/O"
         elif name in {"read_text", "write_text"} and isinstance(fn, ast.Attribute):
             kind, category = name, ""
+        elif name == "open" and parent == "os":
+            kind, category = "os.open", "Binary I/O"
+        elif name == "open" and parent == "tokenize":
+            # tokenize.open reads the PEP 263 encoding declaration itself.
+            kind, category = "tokenize.open", "その他の明示的encoding"
         elif name == "open" and (parent in {None, "io"} or isinstance(fn, ast.Attribute)):
             kind, category = "open", ""
             mode = _literal(_keyword(node, "mode"))
@@ -71,13 +76,22 @@ def scan_source(source: str, path: str) -> list[dict[str, Any]]:
 
         encoding_node = _keyword(node, "encoding")
         if kind in {"decode", "encode"} and encoding_node is None and node.args:
+            # codecs.decode(value, encoding) differs from bytes.decode(encoding).
+            index = 1 if parent == "codecs" else 0
+            if len(node.args) > index:
+                encoding_node = node.args[index]
+        if kind == "read_text" and encoding_node is None and node.args:
             encoding_node = node.args[0]
+        if kind == "write_text" and encoding_node is None and len(node.args) > 1:
+            encoding_node = node.args[1]
         if kind == "open" and encoding_node is None:
-            index = 1 if isinstance(fn, ast.Attribute) else 3
+            # Path.open(mode, buffering, encoding) / builtins.open(file, mode,
+            # buffering, encoding) have different positional offsets.
+            index = 2 if isinstance(fn, ast.Attribute) else 3
             if len(node.args) > index:
                 encoding_node = node.args[index]
         encoding = _literal(encoding_node)
-        if category != "Binary I/O":
+        if category not in {"Binary I/O", "その他の明示的encoding"}:
             if isinstance(encoding, str) and encoding.lower().replace("_", "-") in UTF8:
                 category = "UTF-8明示"
             elif encoding_node is not None:
