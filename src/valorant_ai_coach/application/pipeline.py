@@ -21,8 +21,8 @@ from valorant_ai_coach.storage import SQLiteRepository
 from valorant_ai_coach.video import FrameSample, VideoMetadata
 
 from .frame_planner import FramePlanner, PlannedFrame
-from .match_aggregation_service import aggregate_saved_match
 from .hud_video_processor import HudVideoProcessingResult, HudVideoProcessor, NativeLifecycleOptions
+from .match_aggregation_service import aggregate_saved_match
 from .round_analyzer import RoundAnalysis, RoundAnalyzer
 
 LOGGER = logging.getLogger(__name__)
@@ -950,9 +950,20 @@ class MatchAnalysisPipeline:
             raise RuntimeError(f"保存済みmatchを読み出せません: {match_id}")
         output = self.data_dir / "matches" / match_id / "analysis.json"
         output.parent.mkdir(parents=True, exist_ok=True)
+        # A malformed or incomplete stored Round must not turn an otherwise
+        # recoverable partial Match into a failed analysis during JSON export.
+        # Match totals are withheld rather than inferred in that case.
+        try:
+            match_aggregation = aggregate_saved_match(self.repository, match_id)
+            match_aggregation_error = None
+        except (ValueError, RuntimeError) as exc:
+            LOGGER.warning("Stored Match aggregation unavailable for %s: %s", match_id, exc)
+            match_aggregation = None
+            match_aggregation_error = "保存結果の整合性を検証できません（Match集計を省略）"
         payload = {
             **result,
-            "match_aggregation": aggregate_saved_match(self.repository, match_id),
+            "match_aggregation": match_aggregation,
+            "match_aggregation_error": match_aggregation_error,
             "processing_errors": errors,
             "clip_errors": clip_errors,
         }

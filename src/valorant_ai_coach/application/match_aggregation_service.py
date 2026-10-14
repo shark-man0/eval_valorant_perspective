@@ -25,6 +25,14 @@ def _round_numbers(value: object) -> set[int]:
     }
 
 
+def _boundary_uncertain_or_invalid(package: dict[str, Any]) -> bool:
+    """Malformed lifecycle must not crash history/JSON report read paths."""
+    try:
+        return RoundAnalyzer.boundary_context_is_uncertain(package)
+    except (KeyError, TypeError, ValueError):
+        return True
+
+
 def aggregate_saved_match(repository: SQLiteRepository, match_id: str) -> dict[str, Any]:
     """Recalculate from stored rows and explicitly expose any unverifiable state.
 
@@ -65,12 +73,13 @@ def aggregate_saved_match(repository: SQLiteRepository, match_id: str) -> dict[s
         output: dict[str, Any] | None = None
         if round_no in failed:
             reason = "失敗したRoundの保存済み評価は採用しません"
-        elif RoundAnalyzer.boundary_context_is_uncertain(package):
+        elif _boundary_uncertain_or_invalid(package):
             if stored:
+                # A valid Practical Round with scores is a storage-contract violation.
                 raise MatchAggregationError(
-                    f"R{round_no}: 境界未確定なのに採点済み評価が保存されています"
+                    f"R{round_no}: 境界未確定または不正なのに採点済み評価が保存されています"
                 )
-            reason = "Practical/unknown境界のため採点保留"
+            reason = "Practical/unknownまたは不正な境界のため採点保留"
         elif stored or round_no in completed:
             output = {
                 "schema_version": "3.0",
