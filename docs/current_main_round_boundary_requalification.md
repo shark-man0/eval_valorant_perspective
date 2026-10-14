@@ -170,7 +170,9 @@ The upper window **171.019336** is the metadata duration sentinel, not an End or
 coverage beyond 6 seconds. HUD / visual confidence and timeline completeness
 remain **0**, missing coverage is explicit, and snapshots / owned facts remain 0.
 
-This verifies native→builder→adapter transport, not the full sampled
+The subsequent [actual application follow-up](current_main_round_application_followup.md)
+verifies real fixed-frame HUD/visual fusion. This initial measurement verifies
+native→builder→adapter transport, not the full sampled
 `HudVideoProcessor` / HUD-visual fusion application path. The summary exporter
 initially used `data_quality` instead of `observation_quality` after native,
 schema and Trace checks succeeded. Finalize the same immutable artifacts after
@@ -262,3 +264,10 @@ qualification gates, fixed source/decoder/profile/pack, storage/memory/runtime
 estimates and comparable conditions. No new full run is justified by this
 Start-only result. This PR is a reviewable partial checkpoint, not Issue #16
 completion or authorization to merge a default qualification release.
+
+## Subsequent current-code follow-up
+
+[Application merge, actual R2 entrance and source breaks](current_main_round_application_followup.md)
+closes fixed-frame R1 HUD/visual fusion, records R2 geometry failure and two actual
+source-break resets. All four Linux/Windows checks pass on 79b6eea. Full lifecycle,
+independent End evidence and full sampler remain unqualified.

@@ -1,0 +1,135 @@
+{
+  "decision": "B: partial Start-only qualification; full lifecycle and independent End transfer incomplete",
+  "start_main_sha": "c11ec6d333957cccb270417bc95a8a57f433e6ad",
+  "measurement_code_commit": "79b6eea5b8cc559498e3873366a85fe23f593cd8",
+  "production_changed": false,
+  "application": {
+    "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "recognizer_fingerprint": "5b32ea0c5be3d23aadd5e1ef4057619c10c7104d3d210a69d39433bffea6dfc8",
+    "profile_fingerprint": "60b029cb987fe0d7447853e3b4cd791d5defb0918dfaa25a401bd45d2b64c813",
+    "qualification_sha256": "23c44eeeb8c47e2c17cde924a969274701afbc487c1455e6cae8bea4e8ae32ea",
+    "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+    "window_sec": [
+      [
+        0,
+        0.08
+      ],
+      [
+        3.9,
+        4.5
+      ]
+    ],
+    "frames": 39,
+    "elapsed_sec": 18.475281583028845,
+    "retained_png_bytes": 45491368,
+    "peak_process_rss_bytes": 141721600,
+    "owned_facts": 0,
+    "terminal_integrity_verified": true,
+    "application_processing_sec": 12.223770500044338,
+    "native_artifact_sha256": "969794eb923d30104b8b0056b6d22710830c3f623d583effb0682a6a5a614975",
+    "native_to_trace_equal": true,
+    "round_packages": 1,
+    "trace_events": 1,
+    "trace_snapshots": 0,
+    "package_windows": [
+      {
+        "start_sec": 3.602669270833333,
+        "end_sec": 171.019336
+      }
+    ],
+    "package_quality": [
+      {
+        "hud_confidence": 0.0,
+        "visual_confidence": 0.0,
+        "timeline_completeness": 0.0,
+        "missing_intervals": [
+          {
+            "start_sec": 3.602669270833333,
+            "end_sec": 171.019336
+          }
+        ]
+      }
+    ],
+    "full_sampler_exercised": false,
+    "target_canonical_result": "GT-R1-ROUND-START PASS",
+    "trace_sha256": "5135ee3a79eeebf48d57a22e6156fbed367f7140bb48f0664729fa02ac3b5dbf"
+  },
+  "r2_actual_entrance": {
+    "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "recognizer_fingerprint": "5b32ea0c5be3d23aadd5e1ef4057619c10c7104d3d210a69d39433bffea6dfc8",
+    "profile_fingerprint": "60b029cb987fe0d7447853e3b4cd791d5defb0918dfaa25a401bd45d2b64c813",
+    "qualification_sha256": "23c44eeeb8c47e2c17cde924a969274701afbc487c1455e6cae8bea4e8ae32ea",
+    "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+    "window_sec": [
+      111.0,
+      111.8
+    ],
+    "frames": 48,
+    "elapsed_sec": 14.034638207987882,
+    "retained_png_bytes": 70650570,
+    "peak_process_rss_bytes": 124321792,
+    "owned_facts": 0,
+    "terminal_integrity_verified": true,
+    "events": 0,
+    "geometry_counts": {
+      "frames": 48,
+      "fresh_geometry_success": 0,
+      "effective_geometry_success": 0,
+      "retained_geometry_frames": 0,
+      "geometry_invalid_unknown": 48,
+      "geometry_valid_state_unknown": 0,
+      "live_identity_evidence_insufficient": 48,
+      "insufficient_anchors_frames": 48
+    },
+    "geometry_reasons": {
+      "insufficient_anchors": 48
+    },
+    "calibration_prefix_supplied": false,
+    "source_epochs_spliced": false,
+    "interpretation": "missing geometry initialization prevents detection; zero events is not R2 absence"
+  },
+  "source_break_actual_entrance": {
+    "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "recognizer_fingerprint": "5b32ea0c5be3d23aadd5e1ef4057619c10c7104d3d210a69d39433bffea6dfc8",
+    "profile_fingerprint": "60b029cb987fe0d7447853e3b4cd791d5defb0918dfaa25a401bd45d2b64c813",
+    "qualification_sha256": "23c44eeeb8c47e2c17cde924a969274701afbc487c1455e6cae8bea4e8ae32ea",
+    "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+    "window_sec": [
+      81.7,
+      81.9
+    ],
+    "frames": 12,
+    "elapsed_sec": 5.231602209038101,
+    "retained_png_bytes": 25748283,
+    "peak_process_rss_bytes": 120946688,
+    "owned_facts": 0,
+    "terminal_integrity_verified": true,
+    "events": 0,
+    "source_breaks_sec": [
+      81.78600260416667,
+      81.83600260416667
+    ],
+    "final_continuity_segment": 2
+  },
+  "ci_79b6eea": {
+    "linux_push": "PASS",
+    "linux_pr": "PASS",
+    "windows_push": "PASS",
+    "windows_pr": "PASS",
+    "run_ids": [
+      38494002527,
+      38494008570,
+      38494002501,
+      38494008386
+    ]
+  },
+  "full_lifecycle_qualification_established": false,
+  "new_independent_end_episodes": 0,
+  "full_E2E_executed": false,
+  "canonical_baseline_updated": false,
+  "GT_input_to_production": false,
+  "runtime_default_installed": false,
+  "known_end_timing_changed": false,
+  "peak_rss_scope": "macOS process ru_maxrss, decoder child RSS unmeasured",
+  "initial_application_export_failure_preserved": true
+}
