@@ -10,6 +10,7 @@ import json
 import math
 import re
 from collections import Counter
+from decimal import Decimal
 from pathlib import Path
 
 from scripts.diagnostics.freeze_numeric_review import FIELDS, parse_response, verify_review_assets
@@ -20,13 +21,15 @@ OUTCOMES = ("correct_value", "wrong_value", "missing_visible_value",
             "correct_absent_rejection", "false_accept_absent", "unknown", "unreviewed")
 
 
-def _number(value: str, field: str) -> int:
+def _number(value: str, field: str, *, source_label: bool = False) -> int | Decimal:
     pattern = r"[0-9]{1,2}:[0-5][0-9]" if field == "round_timer" else r"[0-9]{1,2}"
+    if field == "round_timer" and source_label:
+        pattern += r"(?:\.[0-9]{1,3})?"
     if not isinstance(value, str) or re.fullmatch(pattern, value) is None:
         raise ValueError("accepted numeric value has invalid format")
     if field == "round_timer":
-        minutes, seconds = map(int, value.split(":"))
-        return minutes * 60 + seconds
+        minutes, seconds = value.split(":")
+        return int(minutes) * 60 + Decimal(seconds)
     return int(value)
 
 
@@ -48,7 +51,7 @@ def classify(label: dict | None, row: dict, field: str) -> str:
         return "false_accept_absent" if accepted else "correct_absent_rejection"
     if label["kind"] != "value":
         raise ValueError("unknown explicit label kind")
-    expected = _number(label["display"], field)
+    expected = _number(label["display"], field, source_label=True)
     if not accepted:
         return "missing_visible_value"
     return "correct_value" if actual == expected else "wrong_value"

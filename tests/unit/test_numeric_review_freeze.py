@@ -18,6 +18,11 @@ def test_partial_explicit_labels_never_fill_missing_values():
     assert result[2]["ally_score"] is None
 
 
+def test_fractional_source_display_is_preserved_not_truncated():
+    result = parse_response("1,0:13.73,0,1\n", {1})
+    assert result[1]["round_timer"] == {"kind": "value", "display": "0:13.73"}
+
+
 @pytest.mark.parametrize("text", [
     "", "全部承認します", "1,,,", "1,1:7,2,3", "1,1714,2,3",
     "1,1:60,2,3", "1,1:40,-1,3", "1,1:40,true,3", "1,1:40,2,NaN",

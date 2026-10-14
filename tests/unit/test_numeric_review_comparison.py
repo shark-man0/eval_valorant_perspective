@@ -127,6 +127,15 @@ def test_numeric_equivalence_never_fabricates_missing_colon():
         classify({"kind": "value", "display": "0:01"}, accepted("001"), "round_timer")
 
 
+def test_fractional_source_label_is_not_rounded_to_make_reader_correct():
+    label = {"kind": "value", "display": "0:13.73"}
+    assert classify(label, accepted("0:13"), "round_timer") == "wrong_value"
+    assert classify(label, {"meets_ocr_floor_and_format": False},
+                    "round_timer") == "missing_visible_value"
+    with pytest.raises(ValueError):
+        classify(label, accepted("0:13.73"), "round_timer")
+
+
 def test_repeated_source_images_are_not_independent_conditions(tmp_path):
     result = compare(*bundle(tmp_path, repeat=True), tmp_path / "comparison.json")
     assert result["frame_count"] == 2 and result["unique_source_image_count"] == 1

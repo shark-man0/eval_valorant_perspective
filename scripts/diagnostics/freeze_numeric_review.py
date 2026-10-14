@@ -42,7 +42,10 @@ def parse_response(response: str, allowed: set[int]) -> dict[int, dict]:
             elif value in {"unknown", "absent"}:
                 labels[name] = {"kind": value}
             else:
-                pattern = r"[0-9]{1,2}:[0-5][0-9]" if name == "round_timer" else r"[0-9]{1,2}"
+                # Review labels describe visible source text, not reader formats.
+                # Preserve fractional displays even when production cannot read them.
+                pattern = (r"[0-9]{1,2}:[0-5][0-9](?:\.[0-9]{1,3})?"
+                           if name == "round_timer" else r"[0-9]{1,2}")
                 if re.fullmatch(pattern, value) is None:
                     raise ValueError("numeric label has invalid explicit format")
                 labels[name] = {"kind": "value", "display": value}

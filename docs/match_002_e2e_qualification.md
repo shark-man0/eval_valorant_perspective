@@ -546,3 +546,54 @@ Blind receipt SHA:
 `285fdcf9421057e801d705c9da5868c06eb34ab5e1646650f137f2e6cff07aa1`.
 Planning/numeric/geometry/review targeted regressions: 152 passed; Ruff, mypy
 (131 source files) and diff checks passed. No new full-suite or full E2E PASS.
+
+## Source-negative review and diagnostic reader connection (2026-10-14)
+
+The trusted human supplied all 13 explicit source rows. Exact response/label
+revisions are private and bound to the original blind source assets. Earlier
+pending-review statements describe the preceding checkpoint. Low contrast did
+not imply absence: reviewed absence counts are Timer 6, ally score 1 and enemy
+score 1, not thirteen negatives per field.
+
+| Field | Visible values | Correct reads | Missing | Wrong reads | Absent false accepts |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Timer | 7 | 4 | 3 | 0 | 0 |
+| Ally score | 12 | 8 | 4 | 0 | 0 |
+| Enemy score | 12 | 9 | 3 | 0 | 0 |
+
+The source includes a fractional Timer display. Review ingestion now preserves
+fractional source strings exactly; Decimal comparison never truncates/rounds
+them to make integer-reader outputs correct. Production formats, Schemas,
+thresholds and original raw outputs remain unchanged. The fractional case was
+unlocalized/missing, not accepted or silently counted as absent. No private
+source value, label row or timestamp is published here.
+
+A diagnostic-only adapter wraps explicit empty-template numeric proposals and
+the existing configured reader, preserving stricter confidence floors and OCR
+settings. It rejects strict readers, trained glyphs and inner-ROI overrides;
+localization never confers a numeric crosscheck. Missing colon, fractional OCR
+output, non-finite/below-floor confidence or missing provenance stays absent.
+It is not registered as a production profile kind and never installs settings.
+
+Through the real Analyzer reader-injection entrance, the already frozen twelve
+development points yielded normalized values in Timer 5, ally score 5 and enemy
+score 8 cases. All 12 observations were Schema-valid, with 11 unknown states
+and 1 buy-menu state, unchanged from the original probe. Player ownership
+promotions and events were both zero. The thirteen source-control points yielded
+Timer 4, ally score 8 and enemy score 9 normalized values, 13 unknown states,
+zero ownership promotions and zero events. Direct reader connection works;
+this is still unqualified point processing, not continuous lifecycle proof.
+
+The source-control cohort's only absent-score image is geometry-invalid, so
+Analyzer-level abstention there cannot independently qualify the Score reader.
+Outside-Analyzer localization abstained on that actual image, but one image
+still falls below the unchanged distinct-negative support requirement. Prior
+exposed/training negatives are not relabelled as prospective controls to fill
+the quota. Global components, geometry and temporal/source qualification remain
+incomplete; no qualification file, production adoption or full E2E PASS.
+
+Connection receipts:
+`8f2d06fee1c0f5da7915f2c588511f1103fefb143d7d289d708c01e06189472f`,
+`d79ccebb21491a56850c058da23659a2f980b3b5bcf97f379ca5d7cad0d4fbe4`.
+Review/planning/adapter/probe targeted regressions: 108 passed. Ruff, mypy (131
+source files) and diff checks passed. Existing full-suite limitations remain.
