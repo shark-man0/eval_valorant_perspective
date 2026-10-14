@@ -2,7 +2,7 @@ from __future__ import annotations
 import argparse,json,subprocess
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
-C=json.loads((ROOT/'contracts/audio_transport_contract_v1.json').read_text())
+C=json.loads((ROOT/'contracts/audio_transport_contract_v1.json').read_text(encoding="utf-8"))
 def streams(path):
     x=json.loads(subprocess.check_output(['ffprobe','-v','error','-show_entries','stream=index,codec_type,codec_name,channels','-of','json',str(path)],text=True))
     return x['streams']

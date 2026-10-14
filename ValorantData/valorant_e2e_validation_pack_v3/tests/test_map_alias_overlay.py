@@ -2,7 +2,9 @@ from __future__ import annotations
 import json,unicodedata,re
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
-D=json.loads((ROOT/'integration_overrides/map_zone_v3/summit_observed_ja_alias_overlay_v1.json').read_text())
+D=json.loads((ROOT/'integration_overrides/map_zone_v3/summit_observed_ja_alias_overlay_v1.json').read_text(
+    encoding="utf-8",
+))
 def norm(s): return re.sub(r'\s+',' ',unicodedata.normalize('NFKC',s).strip())
 seen=set()
 for r in D['records']:
