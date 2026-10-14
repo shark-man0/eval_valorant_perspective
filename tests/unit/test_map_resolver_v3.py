@@ -188,7 +188,7 @@ def test_registry_rejects_invalid_data_without_rewriting_mask(registry, tmp_path
     root = tmp_path / "bundle"
     shutil.copytree(registry.root, root)
     path = root / "config/maps/summit_map_v3.json"
-    data = json.loads(path.read_text())
+    data = json.loads(path.read_text(encoding="utf-8"))
     if mutation == "extra":
         data["adjacency"] = {}
     elif mutation == "missing_zone":
@@ -201,7 +201,7 @@ def test_registry_rejects_invalid_data_without_rewriting_mask(registry, tmp_path
     else:
         reference = root / "assets/summit_minimap_reference.png"
         reference.write_bytes(b"invalid reference")
-    path.write_text(json.dumps(data))
+    path.write_text(json.dumps(data), encoding="utf-8")
     mask = root / "config/maps/summit_operational_mask_v1.json"
     before = mask.read_bytes()
     with pytest.raises(MapRegistryError):
