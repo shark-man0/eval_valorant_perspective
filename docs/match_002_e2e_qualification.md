@@ -950,3 +950,40 @@ absence, and source/result/end qualification remains unfinished. Existing frozen
 profile/semantic/native/lifecycle regressions:117passed. Ruff, mypy(132production
 files), and diff checks pass. No production-code or canonical-Pack change was
 needed for this reference/input checkpoint; no merge/adoption is performed.
+
+## Fixed reviewed reference on separate source images (2026-10-14)
+
+Measure the unchanged, human-transcribed old purchase reference on all87 fixed
+held parents of the additional development pool. Source inventory/hash, original
+discovery receipt, preview hashes and configured profile/assets were verified
+before/after measurement. Use the native grouped semantic matcher and configured
+ROI/subregion directly, without reference fitting, OCR, GT, expected state or
+qualifier creation. This is an isolated reference-image measurement; it does
+not establish runtime geometry, ownership or temporal continuity.
+
+The fixed reference matches13/87 at the unchanged0.90 threshold. All labels
+remain null. Nonmatches remain unverified, not automatically absent or negative
+controls; matches are not automatically correct. The images are exposed same-
+match development data, some near earlier samples, not a new independent temporal
+holdout. No cohort accuracy, recall, false-positive rate or qualification PASS
+is claimed from these predictions.
+
+Prepare six targeted human-review cases: the first three matches and nonmatches
+within each model group, at least15seconds apart inside the group, displayed in
+source-hash order. Selection is explicitly prediction-stratified, not a random
+sample or new blind cohort. The page shows broad source ROI crops and original
+image links, no model scores, selected class or expected transcription. Human
+review must supply the actual displayed text, absent or unknown; omitted cases
+cannot acquire labels. Requested scope excludes event timing, identity,
+continuity, adoption and the full87-image cohort. Such targeted image review
+cannot substitute for episode-level/whole-pipeline qualification.
+
+Private frozen measurement SHA:
+`dd5f7655922fc7627412775dd8f2287022b7b90401e4823861e88963061b9517`.
+Private review-page SHA:
+`4c78913194b6cd9038bb3b836ae2dd17bf14bd8d5766b138f4a16425446f9eb2`.
+The review receipt records source/preview/profile bindings and the recognizer
+fingerprint at export. The implementation fingerprint is a post-measurement
+export record, not an asserted pre-frozen code/temporal qualification. Raw
+measurements and the complete review remain local; no original reference,
+Schema, GT, Pack, production setting or recognizer is changed.
