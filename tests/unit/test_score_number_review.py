@@ -17,7 +17,7 @@ def fragments(tmp_path):
               "evidence_bindings": [{"evidence_path": "frame.jpg",
                                      "sha256": sha256_file(image), "source_frame_pts": 45.3}]}
     path = tmp_path / "points.json"
-    path.write_text(json.dumps(record))
+    path.write_text(json.dumps(record), encoding="utf-8")
     return path, record, image
 
 
@@ -48,6 +48,6 @@ def test_unsafe_or_ambiguous_score_review_rejected(tmp_path, mutation):
         record["production_input"] = True
     else:
         record["points"] = []
-    path.write_text(json.dumps(record))
+    path.write_text(json.dumps(record), encoding="utf-8")
     with pytest.raises(ValueError):
         prepare(path)

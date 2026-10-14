@@ -11,12 +11,12 @@ def test_configured_icon_generation_does_not_require_panel_clustering(
     tmp_path, panel_images, monkeypatch
 ):
     layout, frames = inputs(tmp_path, panel_images)
-    raw = json.loads(layout.read_text())
+    raw = json.loads(layout.read_text(encoding="utf-8"))
     raw["rois"]["spectator_icon"] = {
         "px": [10, 270, 35, 298],
         "norm": [10 / 640, 270 / 360, 35 / 640, 298 / 360],
     }
-    layout.write_text(json.dumps(raw))
+    layout.write_text(json.dumps(raw), encoding="utf-8")
 
     def forbidden(*args, **kwargs):
         raise AssertionError("icon mode must not invoke legacy panel clustering")

@@ -185,7 +185,7 @@ def test_failed_support_diagnostics_self_scores_private_bounded_and_local_unchan
     for name in ("summary.json", "hud_calibration.json"):
         output = tmp_path / name
         assert output.stat().st_size <= MAX_REPORT_BYTES
-        assert "PRIVATE" not in output.read_text()
+        assert "PRIVATE" not in output.read_text(encoding="utf-8")
     assert raw == before
 
 
