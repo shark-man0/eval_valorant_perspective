@@ -7232,5 +7232,29 @@
     },
     "windows_current_commit": "not_yet_verified",
     "new_full_e2e_runs": 0
+  },
+  "latest_main_integration": {
+    "remote_main": "055bc63",
+    "merge_commit": "2009d8ef4e79de9e1b15f756858a12a58b043c48",
+    "conflicts": 0,
+    "related_run": {
+      "passed": 245,
+      "failed": 1,
+      "seconds": 216.95,
+      "failure": "UTF-8 audit found two default-encoding calls introduced by release snapshot changes"
+    },
+    "fix": "Explicit utf-8 on both encode calls; same bytes as prior Python default",
+    "fix_verification": {
+      "passed": 27,
+      "seconds": 10.82,
+      "audit_unclassified": 0,
+      "ruff": "pass",
+      "mypy_source_files": 132
+    },
+    "current_global_recognizer_fingerprint": "886a3bca458de9d19517a1e640b3a25c44a79adfe5ea281a7c83b39e8c8ab165",
+    "historical_candidate_fingerprint": "96c79de983a298b1f849c742c9653728c527481d929e2991b6e6f918dfe95da5",
+    "old_qualification_actual_loader": "rejected as mismatched; no re-signing",
+    "candidate_counts_are_historical_pre_merge": true,
+    "new_full_e2e_runs": 0
   }
 }
