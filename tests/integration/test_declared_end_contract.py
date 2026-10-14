@@ -29,9 +29,13 @@ def marker():
 
 
 def assertions():
-    policy = json.loads((PACK / "ground_truth/evaluation_policy_v3.json").read_text())
+    policy = json.loads((PACK / "ground_truth/evaluation_policy_v3.json").read_text(
+        encoding="utf-8",
+    ))
     value = constraint(marker(), policy)
-    schema = json.loads((PACK / "schemas/e2e_ground_truth_schema_v3.json").read_text())
+    schema = json.loads((PACK / "schemas/e2e_ground_truth_schema_v3.json").read_text(
+        encoding="utf-8",
+    ))
     Draft202012Validator({"$ref": "#/$defs/count_constraint", "$defs": schema["$defs"]}).validate(
         value)
     builder = load_module("declared_end_assertion_builder", PACK / "tests/build_assertions.py")
@@ -96,6 +100,8 @@ def test_unapproved_or_derived_inputs_cannot_become_positive_constraints(fault):
         value["approved_time_sec"] = float("nan")
     else:
         value["approved_time_sec"] = True
-    policy = json.loads((PACK / "ground_truth/evaluation_policy_v3.json").read_text())
+    policy = json.loads((PACK / "ground_truth/evaluation_policy_v3.json").read_text(
+        encoding="utf-8",
+    ))
     with pytest.raises(ValueError):
         constraint(value, policy)

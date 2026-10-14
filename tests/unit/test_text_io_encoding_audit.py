@@ -141,3 +141,20 @@ def test_reviewed_fixture_text_io_is_explicit_utf8() -> None:
         file_text = [s for s in sites if s["operation"] in {"read_text", "write_text"}]
         assert file_text, filename
         assert all(s["category"] == "UTF-8明示" for s in file_text), filename
+
+
+def test_reviewed_integration_json_readers_explicit_utf8() -> None:
+    root = Path(__file__).resolve().parents[2]
+    for filename in (
+        "tests/integration/test_boundary_state_composition.py",
+        "tests/integration/test_composed_boundary_timeline.py",
+        "tests/integration/test_declared_end_contract.py",
+        "tests/integration/test_e2e_share_workflow.py",
+        "tests/integration/test_e2e_shot_contract.py",
+        "tests/integration/test_hud_pipeline_wiring.py",
+        "tests/integration/test_lifecycle_fixture_audit.py",
+    ):
+        sites = scan_source((root / filename).read_text(encoding="utf-8"), filename)
+        readers = [x for x in sites if x["operation"] == "read_text"]
+        assert readers, filename
+        assert all(x["category"] == "UTF-8明示" for x in readers), filename
