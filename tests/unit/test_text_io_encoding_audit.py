@@ -112,7 +112,7 @@ def test_ffprobe_json_subprocess_calls_use_explicit_utf8() -> None:
 
 
 def test_utf8_subprocess_json_survives_cp1252_host() -> None:
-    code = "import sys; sys.stdout.buffer.write('日本語'.encode())"
+    code = "import sys; sys.stdout.buffer.write('試合と戦術'.encode())"
     raw = subprocess.run([sys.executable, "-c", code], capture_output=True, check=True).stdout
     with pytest.raises(UnicodeDecodeError):
         raw.decode("cp1252")
@@ -120,4 +120,4 @@ def test_utf8_subprocess_json_survives_cp1252_host() -> None:
         [sys.executable, "-c", code], capture_output=True, check=True,
         text=True, encoding="utf-8",
     )
-    assert result.stdout == "日本語"
+    assert result.stdout == "試合と戦術"
