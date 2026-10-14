@@ -97,3 +97,48 @@ def test_release_script_requires_pip_check_and_isolated_dependency_audit() -> No
     assert '"pip-audit==2.10.1"' in script
     assert '"--no-deps"' in script and '"DEPENDENCY-AUDIT.json"' in script
     assert 'Where-Object { $_ -notmatch "(?i)^valorant-ai-coach==" }' in script
+
+
+
+def test_independent_windows_snapshot_records_sha_and_versions(tmp_path: Path) -> None:
+    snapshot = ROOT / "scripts" / "release" / "build_snapshot.py"
+    spec = importlib.util.spec_from_file_location("build_snapshot", snapshot)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    root = tmp_path / "payload"
+    root.mkdir()
+    (root / "日本語.txt").write_text("fixture", encoding="utf-8")
+    packages = tmp_path / "installed.txt"
+    packages.write_text("pip==25.0\nnumpy==2.5.4\n", encoding="utf-8")
+    one = tmp_path / "one.json"
+    two = tmp_path / "two.json"
+    result = module.capture_snapshot(root, packages, "a" * 40, one)
+    assert result["files"][0]["path"] == "日本語.txt"
+    assert result["files"][0]["sha256"] == module._sha256(root / "日本語.txt")
+    assert result["dependencies"] == ["numpy==2.5.4", "pip==25.0"]
+    module.capture_snapshot(root, packages, "a" * 40, two)
+    comparison = module.compare_snapshots(one, two, tmp_path / "compare.json")
+    assert comparison["bit_for_bit_equal"] is True
+    assert comparison["reproducible_environment"] is True
+    assert comparison["changed_hashes"] == []
+
+    (root / "日本語.txt").write_text("different", encoding="utf-8")
+    module.capture_snapshot(root, packages, "a" * 40, two)
+    comparison = module.compare_snapshots(one, two, tmp_path / "compare.json")
+    assert comparison["bit_for_bit_equal"] is False
+    assert comparison["changed_hashes"][0]["path"] == "日本語.txt"
+    assert comparison["same_commit"] is True
+
+
+def test_independent_rebuild_workflow_uses_two_windows_runners() -> None:
+    text = (
+        ROOT / ".github" / "workflows" / "release-reproducibility.yml"
+    ).read_text(encoding="utf-8")
+    assert "replica: [a, b]" in text
+    assert "runs-on: windows-latest" in text
+    assert "github.event.pull_request.head.sha || github.sha" in text
+    assert "python -m pip check" in text
+    assert "python -m PyInstaller" in text
+    assert "independent-windows-build-comparison" in text

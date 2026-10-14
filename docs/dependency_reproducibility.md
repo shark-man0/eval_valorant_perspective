@@ -122,3 +122,26 @@ artifact checksums, packaged smoke test and absence of secrets/videos/logs.
 Maintain a separate OS-native wheel-hash lock only after independent
 download/installation validation. Never claim a release is bit-for-bit
 reproducible solely from freeze lists or artifact hashes.
+
+
+## Independent Windows PyInstaller comparison (Issue #34)
+
+The `.github/workflows/release-reproducibility.yml` workflow builds the
+**same immutable PR-head commit** on two distinct GitHub-hosted Windows
+runners, each with a new Python 3.12 environment. Both jobs install the
+constrained dependencies, require `pip check`, build a fresh PyInstaller
+onedir payload, and run the packaged smoke test. Each saves the exact
+resolved pip version list, Python/build-tool versions and content SHA-256
+of every regular file in the packaged tree. The comparison job records
+missing, extra and byte-different relative paths, as well as Python,
+package and tool-version drift; it retains a JSON report. It does **not**
+claim that a green workflow means bit-for-bit reproducibility: compare the
+explicit `bit_for_bit_equal` and `reproducible_environment` JSON fields.
+
+This is an **independent onedir build probe**, not two complete release
+builds: Inno Setup installer/ZIP reproducibility, FFmpeg/Inno Setup
+checksums, provenance signatures and transitive wheel hash locks still
+require separate official release evidence. If the content hashes differ,
+review the named differing files before deciding whether an acceptable
+nondeterminism (timestamps, bytecode, embedding) explains the delta; never
+suppress the mismatch by filtering files from the inventory.
