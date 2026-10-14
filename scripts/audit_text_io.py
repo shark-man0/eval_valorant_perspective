@@ -5,9 +5,9 @@ from __future__ import annotations
 import argparse
 import ast
 import json
-from functools import lru_cache
 import tokenize
 from collections import Counter
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
