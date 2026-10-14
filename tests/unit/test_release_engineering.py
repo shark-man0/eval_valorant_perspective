@@ -232,3 +232,16 @@ def test_pip_install_report_hashes_omit_private_download_urls(tmp_path: Path) ->
     assert "install_artifacts" in mismatch["metadata_drift"]
     assert mismatch["bit_for_bit_equal"]
     assert not mismatch["reproducible_environment"]
+
+
+def test_release_uses_current_pinned_pip_in_all_windows_gates() -> None:
+    script = (ROOT / "scripts/release/build_release.ps1").read_text(encoding="utf-8")
+    assert (
+        'Invoke-Checked $PythonExe @("-m", "pip", "install", "--upgrade", "pip==26.2.1")'
+        in script
+    )
+    for workflow_name in ("release-reproducibility.yml", "dependency-audit.yml"):
+        workflow = (ROOT / ".github" / "workflows" / workflow_name).read_text(
+            encoding="utf-8"
+        )
+        assert "python -m pip install --upgrade pip==26.2.1" in workflow

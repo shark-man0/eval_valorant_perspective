@@ -169,7 +169,7 @@ try {
     $env:PYTHONHASHSEED = "1"
     $env:SOURCE_DATE_EPOCH = $SourceDateEpoch
     if (-not $SkipDependencyInstall) {
-        Invoke-Checked $PythonExe @("-m", "pip", "install", "--upgrade", "pip")
+        Invoke-Checked $PythonExe @("-m", "pip", "install", "--upgrade", "pip==26.2.1")
         Invoke-Checked $PythonExe @(
             "-m", "pip", "install", "-c", "constraints-windows.txt", "-e", ".[gui,dev,build]"
         )

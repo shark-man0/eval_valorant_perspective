@@ -215,3 +215,23 @@ not be represented. An exact wheel hash lock and an independently
 reproduced complete ZIP/Inno Setup release remain separate open work.
 The earlier independent onedir run #38502954619 achieved exact 425/425
 content SHA-256 agreement before this additional audit evidence.
+
+## Pinned pip 26.2.1 for Windows release and audit gates
+
+As of 2026-10-14, pip 26.2.1 (released 2026-08-04) supports Python 3.12.
+The release script now uses `pip==26.2.1` rather than an unbounded
+upgrade. The two independent Windows build jobs and the advisory-audit
+workflow use the same pinned pip version for resolution. This satisfies
+the SEC-08 request to reassess the historical pip >=26.2 suggestion
+without silently changing the installer behavior in future releases.
+
+pip 26.2 changed isolated-build constraints: ordinary `-c` no longer
+constrains the isolated PEP 517 environment; explicit
+`--build-constraint` is necessary for a separately frozen backend.
+Our resolved distribution hashes, package versions and onedir hashes
+are retained as evidence, not a full transitive or build-backend lock.
+Re-run independent comparison and CI after the pinned upgrade before
+claiming compatibility with the new pip release.
+
+Upstream sources: https://discuss.python.org/t/announcement-pip-26-2/108319
+and https://pypi.org/project/pip/26.2.1/ .
