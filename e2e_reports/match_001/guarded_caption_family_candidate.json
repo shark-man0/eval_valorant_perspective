@@ -356,5 +356,336 @@
     "held-native/manual-labels.json": "dbd1d3f4cfc0ff7e45c7a0b8d8658d6c1be0166d80f318d5b42115c41d156481",
     "held-native/human-source-sequence-review.json": "87d894190257816dcae582a7ba73aa702c25f226dcfce9ad5d0712e0e86f8da1",
     "held-result/A-abstention-audit.json": "b1b10b337d454b357b0ce5ae4da80da2edc25ebef193bf033250ac705312cef4"
+  },
+  "postintegration": {
+    "recognizer_fingerprint": "58117f2bfe84f072c37f0989846145d7fad7a3a29d807ba55d9be9a6136a4f68",
+    "static_counts": {
+      "phase": {
+        "training_correct": 3,
+        "holdout_correct": 8,
+        "negative_rejected": 12
+      },
+      "timer": {
+        "correct": 25,
+        "unknown": 7
+      },
+      "score_fields": {
+        "unknown": 18,
+        "correct": 36
+      },
+      "score_pairs": {
+        "unknown": 18,
+        "correct": 9
+      },
+      "result": {
+        "unknown": 8,
+        "correct": 3,
+        "negative_rejected": 3
+      }
+    },
+    "static_elapsed_sec": 6.6781661250279285,
+    "terminal_integrity_verified": true,
+    "native_window_frames": 369,
+    "native_window_elapsed_sec": 166.13068037497578,
+    "native_window_summaries": [
+      {
+        "name": "r1_ui_development",
+        "split": "training",
+        "processed_frames": 36,
+        "elapsed_sec": 12.880299917014781,
+        "source_epoch": "60d120e5512649f38b0629775999236a",
+        "first_tick": 59945,
+        "last_tick": 68905,
+        "source_breaks": 0,
+        "timer_source_comparison": {
+          "correct": 36
+        },
+        "score_field_source_comparison": {},
+        "phase_false_accepts_against_original_labels": 0,
+        "result_false_accepts_against_original_labels": 0,
+        "exact_archive_pixel_matches": 0,
+        "retained_png_bytes": 39517807,
+        "timer_accepted": 36,
+        "complete_score_pairs": 36,
+        "result_matched_frames": 0,
+        "phase_scan_valid": 36,
+        "primary_state_counts": {
+          "unknown": 36
+        },
+        "formal_events": 0,
+        "player_owned_facts": 0
+      },
+      {
+        "name": "r2_ui_development",
+        "split": "holdout_review",
+        "processed_frames": 36,
+        "elapsed_sec": 13.280147332989145,
+        "source_epoch": "df27064fece8465d98f7ad0942d850a3",
+        "first_tick": 1708073,
+        "last_tick": 1717033,
+        "source_breaks": 0,
+        "timer_source_comparison": {
+          "unknown": 6,
+          "correct": 30
+        },
+        "score_field_source_comparison": {},
+        "phase_false_accepts_against_original_labels": 0,
+        "result_false_accepts_against_original_labels": 0,
+        "exact_archive_pixel_matches": 0,
+        "retained_png_bytes": 47362214,
+        "timer_accepted": 30,
+        "complete_score_pairs": 28,
+        "result_matched_frames": 0,
+        "phase_scan_valid": 36,
+        "primary_state_counts": {
+          "unknown": 36
+        },
+        "formal_events": 0,
+        "player_owned_facts": 0
+      },
+      {
+        "name": "active_control",
+        "split": "negative_review",
+        "processed_frames": 30,
+        "elapsed_sec": 13.808269791014027,
+        "source_epoch": "18158e0353694a1aaed31d53ba7c1da3",
+        "first_tick": 122921,
+        "last_tick": 130345,
+        "source_breaks": 0,
+        "timer_source_comparison": {
+          "correct": 26,
+          "unknown": 4
+        },
+        "score_field_source_comparison": {},
+        "phase_false_accepts_against_original_labels": 0,
+        "result_false_accepts_against_original_labels": 0,
+        "exact_archive_pixel_matches": 0,
+        "retained_png_bytes": 54508520,
+        "timer_accepted": 26,
+        "complete_score_pairs": 29,
+        "result_matched_frames": 0,
+        "phase_scan_valid": 30,
+        "primary_state_counts": {
+          "unknown": 28,
+          "live_first_person": 2
+        },
+        "formal_events": 0,
+        "player_owned_facts": 0
+      },
+      {
+        "name": "menu_control",
+        "split": "negative_review",
+        "processed_frames": 30,
+        "elapsed_sec": 12.517358458018862,
+        "source_epoch": "741eb22e78f44b3f883980eaff1292b6",
+        "first_tick": 1305641,
+        "last_tick": 1313065,
+        "source_breaks": 0,
+        "timer_source_comparison": {
+          "correct": 30
+        },
+        "score_field_source_comparison": {},
+        "phase_false_accepts_against_original_labels": 0,
+        "result_false_accepts_against_original_labels": 0,
+        "exact_archive_pixel_matches": 0,
+        "retained_png_bytes": 47443947,
+        "timer_accepted": 30,
+        "complete_score_pairs": 30,
+        "result_matched_frames": 0,
+        "phase_scan_valid": 30,
+        "primary_state_counts": {
+          "buy_menu_open": 30
+        },
+        "formal_events": 0,
+        "player_owned_facts": 0
+      },
+      {
+        "name": "spectator_control",
+        "split": "negative_review",
+        "processed_frames": 30,
+        "elapsed_sec": 15.580438042001333,
+        "source_epoch": "58430711cd894cc1a6e3fd1e379ea919",
+        "first_tick": 2457641,
+        "last_tick": 2465065,
+        "source_breaks": 0,
+        "timer_source_comparison": {
+          "unknown": 19,
+          "correct": 11
+        },
+        "score_field_source_comparison": {},
+        "phase_false_accepts_against_original_labels": 0,
+        "result_false_accepts_against_original_labels": 0,
+        "exact_archive_pixel_matches": 0,
+        "retained_png_bytes": 61437807,
+        "timer_accepted": 11,
+        "complete_score_pairs": 25,
+        "result_matched_frames": 0,
+        "phase_scan_valid": 30,
+        "primary_state_counts": {
+          "spectator_first_person": 30
+        },
+        "formal_events": 0,
+        "player_owned_facts": 0
+      },
+      {
+        "name": "r1_end_continuous_result_inputs",
+        "split": "known_end_review",
+        "processed_frames": 108,
+        "elapsed_sec": 54.87715133302845,
+        "source_epoch": "5a346200a1c14bea9fc248fae85564ef",
+        "first_tick": 1139753,
+        "last_tick": 1167145,
+        "source_breaks": 0,
+        "timer_source_comparison": {
+          "correct": 17,
+          "unknown": 91
+        },
+        "score_field_source_comparison": {
+          "correct": 115,
+          "unknown": 101
+        },
+        "phase_false_accepts_against_original_labels": 0,
+        "result_false_accepts_against_original_labels": 0,
+        "exact_archive_pixel_matches": 0,
+        "retained_png_bytes": 234041629,
+        "timer_accepted": 17,
+        "complete_score_pairs": 48,
+        "result_matched_frames": 29,
+        "phase_scan_valid": 108,
+        "primary_state_counts": {
+          "unknown": 108
+        },
+        "formal_events": 0,
+        "player_owned_facts": 0
+      },
+      {
+        "name": "numeric_end_menu_entry_control",
+        "split": "negative_review",
+        "processed_frames": 27,
+        "elapsed_sec": 13.351031625003088,
+        "source_epoch": "7b35c6f9b0c041169deb6f30edbadd76",
+        "first_tick": 1277993,
+        "last_tick": 1284649,
+        "source_breaks": 0,
+        "timer_source_comparison": {},
+        "score_field_source_comparison": {},
+        "phase_false_accepts_against_original_labels": 0,
+        "result_false_accepts_against_original_labels": 0,
+        "exact_archive_pixel_matches": 0,
+        "retained_png_bytes": 50135393,
+        "timer_accepted": 26,
+        "complete_score_pairs": 27,
+        "result_matched_frames": 0,
+        "phase_scan_valid": 27,
+        "primary_state_counts": {
+          "unknown": 13,
+          "buy_menu_open": 14
+        },
+        "formal_events": 0,
+        "player_owned_facts": 0
+      },
+      {
+        "name": "pending_end_new_active_inputs",
+        "split": "negative_review",
+        "processed_frames": 72,
+        "elapsed_sec": 27.511967166967224,
+        "source_epoch": "fe153dfcce364648840c8836646a9cbc",
+        "first_tick": 1996841,
+        "last_tick": 2015017,
+        "source_breaks": 0,
+        "timer_source_comparison": {},
+        "score_field_source_comparison": {},
+        "phase_false_accepts_against_original_labels": 0,
+        "result_false_accepts_against_original_labels": 0,
+        "exact_archive_pixel_matches": 0,
+        "retained_png_bytes": 148753871,
+        "timer_accepted": 64,
+        "complete_score_pairs": 27,
+        "result_matched_frames": 0,
+        "phase_scan_valid": 72,
+        "primary_state_counts": {
+          "unknown": 72
+        },
+        "formal_events": 0,
+        "player_owned_facts": 0
+      }
+    ],
+    "start_admission_bundle_sha256": "a1bebb223d6805f1da9ee4ee6dacd6da130001d6da451075e76e2186d16f9591",
+    "admitted_components": [
+      "purchase_phase",
+      "timer",
+      "ui_transition"
+    ],
+    "current_native_start_execution": "complete",
+    "full_pytest_execution": "complete, exit 1",
+    "CI": "pending; do not inherit earlier commit checks",
+    "dataset_pass": 38,
+    "ruff": "pass",
+    "mypy_files_pass": 132,
+    "focused_first_result": {
+      "pass": 227,
+      "fail": 1,
+      "reason": "merged UTF-8 audit found branch I/O sites; fixed separately"
+    },
+    "UTF8_fix_checks": {
+      "pass": 28,
+      "fail": 0
+    },
+    "native_start": {
+      "processed_frames": 358,
+      "producer_elapsed_sec": 118.02771399996709,
+      "elapsed_sec": 152.54492062499048,
+      "retained_png_bytes": 607990858,
+      "peak_process_rss_bytes": 133627904,
+      "round_packages": 1,
+      "trace_round_starts": 1,
+      "trace_round_ends": 0,
+      "trace_snapshots": 0,
+      "source_to_native_to_trace_attrs_equal": true,
+      "player_owned_facts": 0,
+      "terminal_integrity_verified": true,
+      "time_sec": 4.102669270833333,
+      "confidence": 0.9117099378029602
+    },
+    "application": {
+      "frames": 39,
+      "elapsed_sec": 18.19358204101445,
+      "application_processing_sec": 11.274505915993359,
+      "peak_process_rss_bytes": 149553152,
+      "retained_png_bytes": 45491368,
+      "round_packages": 1,
+      "trace_events": 1,
+      "trace_snapshots": 0,
+      "owned_facts": 0,
+      "native_to_trace_equal": true,
+      "terminal_integrity_verified": true
+    },
+    "targeted_canonical_R1_Start": "PASS native and application; evaluated after production",
+    "full_pytest": {
+      "pass": 3741,
+      "fail": 4,
+      "skip": 9,
+      "elapsed_sec": 442.1,
+      "coverage_percent": 86.46350106307584,
+      "failures": [
+        "test_spectator_absence_guard::test_global_scene_detail_cannot_override_current_local_icon_evidence[crop1-True]",
+        "test_spectator_icon::test_abstract_icon_is_detected_across_small_rendering_shifts",
+        "test_spectator_icon::test_profile_uses_only_configured_icon_roi_and_obscuring_context",
+        "test_spectator_icon::test_short_menu_close_x_vetoes_icon_without_menu_grid_candidate"
+      ],
+      "same_four_preintegration_failures": true,
+      "Qt_shutdown_abort_observed_this_run": false
+    }
+  },
+  "source_score_display_review": {
+    "user_answer": "D",
+    "first_new_score_tick": 22050560,
+    "previous_old_score_tick": 22050304,
+    "time_base": "1/15360",
+    "first_new_score_sec": 1435.5833333333333,
+    "human_review_sidecar_sha256": "e490f918afca4d4fa3f8cb810a5f42a371e377b540f67d60ad95000fe80978ea",
+    "prompt_offered_D_as_choice": true,
+    "internal_game_End_GT": false,
+    "formal_End_qualification": false
   }
 }
