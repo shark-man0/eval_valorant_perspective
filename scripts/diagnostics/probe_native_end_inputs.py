@@ -172,7 +172,10 @@ def main() -> None:
         'previous_comparable_run': None, 'runtime_delta': None,
         'wall_clock_sec': time.perf_counter() - started,
     }
-    args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')
+    args.output.write_text(
+        json.dumps(report, ensure_ascii=False, indent=2) + '\n',
+        encoding="utf-8",
+    )
     print(json.dumps({k: report[k] for k in (
         'processed_end_frames', 'timer_display_available', 'score_pair_available',
         'round_result_matched_frames', 'wall_clock_sec',
