@@ -597,3 +597,30 @@ Connection receipts:
 `d79ccebb21491a56850c058da23659a2f980b3b5bcf97f379ca5d7cad0d4fbe4`.
 Review/planning/adapter/probe targeted regressions: 108 passed. Ruff, mypy (131
 source files) and diff checks passed. Existing full-suite limitations remain.
+
+## Remaining fixed-pool score-presence review (2026-10-14)
+
+To investigate insufficient absent-score support without tuning OCR or decoding
+another cohort, the remaining images of the already frozen 75-point development
+pool were prepared for source-only presence review. All thirteen previously
+selected/reviewed source hashes are excluded without reading their labels.
+Exact duplicate images are deduplicated, leaving 61 distinct unreviewed images.
+No OCR, Analyzer, source sampling, GT input or reference generation was rerun.
+
+The private gallery shows only broad configured ally/enemy score ROIs and
+original-image links. It requests only frame IDs with actually absent scores,
+not full numeric transcription. Unreadable is not absent; omitted responses stay
+unreviewed and cannot become positive or negative labels. A source-only receipt
+binds the original frozen selection, parent probe, layout and all reviewed
+image/ROI hashes. It does not bind fabricated model results for unmeasured points,
+infer negative support or authorize production/temporal/identity behavior.
+
+Presence receipt SHA:
+`c41f7dd51904503bb7484df0a5e43326d52fe6f509e8942de32709f430e04b08`.
+If this pool does not contain enough independently reviewed absent-score
+evidence, retain the qualification failure rather than sampling nearby copies
+of a black screen merely to satisfy the minimum count. Source diversity and
+real numeric-reader behavior remain separate from geometry-gated abstention.
+
+Presence/adapter/numeric/planning/probe targeted regressions: 112 passed. Ruff,
+mypy (131 source files) and diff checks passed; full-match lifecycle is incomplete.
