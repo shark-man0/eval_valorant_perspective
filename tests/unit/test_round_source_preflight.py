@@ -2,6 +2,8 @@
 import argparse
 import hashlib
 import json
+import subprocess
+import sys
 from dataclasses import replace
 from fractions import Fraction
 
@@ -80,3 +82,16 @@ def test_wrong_source_sha_rejects_before_probe_or_contract(tmp_path, monkeypatch
                         lambda *a, **k: pytest.fail("must not launch decoder"))
     with pytest.raises(ValueError, match="source video SHA256 mismatch"):
         run(argparse.Namespace(video=video, source_sha256="0" * 64))
+
+
+def test_template_selection_requires_layout_and_bundle_before_source_access(tmp_path):
+    result = subprocess.run([
+        sys.executable, "scripts/e2e/preflight_round_source.py",
+        "--video", str(tmp_path / "missing.mp4"), "--source-sha256", "0" * 64,
+        "--input-contract", str(tmp_path / "missing.json"),
+        "--template-profile", str(tmp_path / "templates.json"),
+        "--output", str(tmp_path / "report.json"),
+    ], capture_output=True, text=True)
+    assert result.returncode == 2
+    assert "template profile requires a layout profile and qualification" in result.stderr
+    assert not (tmp_path / "report.json").exists()

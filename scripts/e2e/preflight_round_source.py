@@ -26,7 +26,11 @@ from valorant_ai_coach.hud.analyzers import RealHudAnalyzer  # noqa: E402
 from valorant_ai_coach.hud.global_lifecycle import global_recognizer_fingerprint  # noqa: E402
 from valorant_ai_coach.hud.native_assured_start import current_assured_qualification  # noqa: E402
 from valorant_ai_coach.hud.unedited_input import UneditedInputContract  # noqa: E402
-from valorant_ai_coach.video.native import NativeSourceFrame, _sha256, decode_native_window  # noqa: E402
+from valorant_ai_coach.video.native import (  # noqa: E402
+    NativeSourceFrame,
+    _sha256,
+    decode_native_window,
+)
 
 
 def summarize_ticks(ticks: Sequence[int], time_base: Fraction) -> dict[str, Any]:
@@ -111,7 +115,10 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     if args.profile is None or args.qualification is None:
         report["blockers"].append("current_private_profile_and_qualification_assets_required")
     else:
-        analyzer = RealHudAnalyzer(args.profile, global_qualification_path=args.qualification)
+        analyzer = RealHudAnalyzer(
+            args.profile, template_profile_path=args.template_profile,
+            global_qualification_path=args.qualification,
+        )
         report["profile_fingerprint"] = analyzer._base_fingerprint()
         qualification = current_assured_qualification(analyzer, contract)
         report["qualification_sha256"] = qualification.report_sha256
@@ -147,6 +154,7 @@ def main() -> None:
     parser.add_argument("--source-sha256", required=True)
     parser.add_argument("--input-contract", required=True, type=Path)
     parser.add_argument("--profile", type=Path)
+    parser.add_argument("--template-profile", type=Path)
     parser.add_argument("--qualification", type=Path)
     parser.add_argument("--window", action="append", nargs=2, type=float, default=[])
     parser.add_argument("--max-png-bytes", type=int, default=256 * 1024 * 1024)
@@ -155,6 +163,8 @@ def main() -> None:
     args = parser.parse_args()
     if (args.profile is None) != (args.qualification is None):
         parser.error("profile and qualification must be supplied together")
+    if args.template_profile is not None and args.profile is None:
+        parser.error("template profile requires a layout profile and qualification")
     report = run(args)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")

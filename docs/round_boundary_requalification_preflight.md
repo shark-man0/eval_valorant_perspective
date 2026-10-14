@@ -1,5 +1,10 @@
 # Issue #16: current-main source preflight and qualification blockers
 
+**Initial checkpoint, superseded:** private assets were subsequently recovered
+and hash-verified. See [current-main revalidation and bounded start evidence](
+current_main_round_boundary_requalification.md) for the latest results. The
+unavailable-assets decision below records the initial state, not the final state.
+
 ## Decision
 
 **C: unqualified / blocked on private recognition evidence.** This checkpoint

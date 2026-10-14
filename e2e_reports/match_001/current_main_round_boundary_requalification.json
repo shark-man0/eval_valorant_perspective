@@ -1,0 +1,681 @@
+{
+  "scope": "B: bounded current-code start-only admission and actual source-native-package-trace evidence; whole lifecycle and new independent temporal generalization remain unqualified",
+  "start_main_sha": "c11ec6d333957cccb270417bc95a8a57f433e6ad",
+  "production_code_changed": false,
+  "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "profile_fingerprint": "60b029cb987fe0d7447853e3b4cd791d5defb0918dfaa25a401bd45d2b64c813",
+  "recognizer_fingerprint": "5b32ea0c5be3d23aadd5e1ef4057619c10c7104d3d210a69d39433bffea6dfc8",
+  "asset_transfer": {
+    "initial_files_verified": 156,
+    "dependency_files_verified": 613,
+    "dependency_image_files": 590,
+    "dependency_bytes": 1085995423,
+    "historical_hashes_match": true,
+    "remote_before_after_identical": true,
+    "relative_structure_retained": true,
+    "original_manifest_sha256": "c47524dc84f844758c3bd2ded5a80389fc12245bb333bb1b3bbd6798b07366bf",
+    "dependency_manifest_sha256": "19fae14c56dd3c2a34d30efb0b4bf96388347053e62f106e3a43557d9d371a41",
+    "other_new_profiles_excluded": true
+  },
+  "static_components": {
+    "counts": {
+      "phase": {
+        "training_correct": 3,
+        "holdout_correct": 8,
+        "negative_rejected": 12
+      },
+      "timer": {
+        "correct": 25,
+        "unknown": 7
+      },
+      "score_fields": {
+        "unknown": 18,
+        "correct": 36
+      },
+      "score_pairs": {
+        "unknown": 18,
+        "correct": 9
+      },
+      "result": {
+        "unknown": 8,
+        "correct": 3,
+        "negative_rejected": 3
+      }
+    },
+    "timer_training_parents_verified": 76,
+    "timer_digit_assets_verified": 10,
+    "timer_type_controls_false_positive": 0,
+    "score_negative_fields_false_positive": 0,
+    "result_BGR_training_support": 7,
+    "training_parent_exact_archival_native_pixel_matches": {
+      "timer": 12,
+      "timer_parents": 76,
+      "result": 3,
+      "result_parents": 14
+    },
+    "other_training_parents_encoding_scope": "hash-verified historical source-backed reencodings; not newly decoded native frames",
+    "elapsed_sec": 6.064843166968785,
+    "artifact_sha256": "f430132d9c9715acb6bce81dae0dbe2ea04098f5b1270d72f3d6b800fd7bcd06"
+  },
+  "static_physical_split_audit": {
+    "counts": {
+      "training": 93,
+      "holdout": 78,
+      "negative": 50
+    },
+    "intersections": {
+      "training_holdout": [],
+      "training_negative": [],
+      "holdout_negative": []
+    },
+    "disjoint": true,
+    "result_source_tick_mapping_not_new_native_metadata": true
+  },
+  "qualification": {
+    "historical_bundle_sha256": "c4bfdd6ab442bed5b0ac1336f30afb6e53539644ce2499d2575314b2f705af0f",
+    "actual_stale_rejection": "Invalid or mismatched global lifecycle qualification",
+    "current_static_incomplete_support": {
+      "current_incomplete_support_sha256": "fb175466e1835243b51c461856c4c7384ad140a9ec78d64b3c2e369c33e43e51",
+      "actual_loader_rejection": "Missing or unknown global lifecycle component",
+      "fresh_static_results_sha256": "f430132d9c9715acb6bce81dae0dbe2ea04098f5b1270d72f3d6b800fd7bcd06",
+      "components": [
+        "timer",
+        "purchase_phase",
+        "score",
+        "round_result"
+      ],
+      "support_hashes_verified_against_current_rasters": true,
+      "pixel_split_intersections_empty": true,
+      "aggregate_pixel_split_counts": [
+        93,
+        78,
+        50
+      ],
+      "qualification_established": false,
+      "formal_events_released": 0
+    },
+    "start_candidate_bundle_sha256": "23c44eeeb8c47e2c17cde924a969274701afbc487c1455e6cae8bea4e8ae32ea",
+    "actual_start_loader_admission": [
+      "purchase_phase",
+      "timer",
+      "ui_transition"
+    ],
+    "ui_support_image_counts": {
+      "training": 9,
+      "holdout": 7,
+      "negative": 90
+    },
+    "ui_temporal_units": {
+      "training_cases": 1,
+      "held_review_cases": 1,
+      "negative_windows": 3
+    },
+    "start_joint_physical_split_counts": {
+      "training": 88,
+      "holdout": 46,
+      "negative": 107
+    },
+    "cross_component_physical_splits_disjoint": true,
+    "original_exposure_retained": true,
+    "new_blind_cohort": false,
+    "runtime_default_installed": false,
+    "end_qualification_established": false,
+    "whole_lifecycle_qualification_established": false
+  },
+  "fresh_native_windows": {
+    "processed_frames": 369,
+    "elapsed_sec": 155.5038238330162,
+    "windows": [
+      {
+        "name": "r1_ui_development",
+        "split": "training",
+        "processed_frames": 36,
+        "elapsed_sec": 13.161282333021518,
+        "source_epoch": "1897edb4fcc4405f8d2c827e55e9b712",
+        "first_tick": 59945,
+        "last_tick": 68905,
+        "source_breaks": 0,
+        "timer_source_comparison": {
+          "correct": 36
+        },
+        "score_field_source_comparison": {},
+        "phase_false_accepts_against_original_labels": 0,
+        "result_false_accepts_against_original_labels": 0,
+        "exact_archive_pixel_matches": 0,
+        "retained_png_bytes": 39517807,
+        "timer_accepted": 36,
+        "complete_score_pairs": 36,
+        "result_matched_frames": 0,
+        "phase_scan_valid": 36,
+        "primary_state_counts": {
+          "unknown": 36
+        },
+        "formal_events": 0,
+        "player_owned_facts": 0,
+        "diagnostic_patterns": [
+          {
+            "kind": "round_start",
+            "boundary_sec": 4.102669270833333,
+            "confirmation_sec": 4.202669270833334,
+            "confidence": 0.9541926383972168,
+            "qualification": "unqualified_diagnostic_pattern"
+          }
+        ]
+      },
+      {
+        "name": "r2_ui_development",
+        "split": "holdout_review",
+        "processed_frames": 36,
+        "elapsed_sec": 13.212107458035462,
+        "source_epoch": "c79d824ed35b4004a994250f19bc7b5b",
+        "first_tick": 1708073,
+        "last_tick": 1717033,
+        "source_breaks": 0,
+        "timer_source_comparison": {
+          "unknown": 6,
+          "correct": 30
+        },
+        "score_field_source_comparison": {},
+        "phase_false_accepts_against_original_labels": 0,
+        "result_false_accepts_against_original_labels": 0,
+        "exact_archive_pixel_matches": 0,
+        "retained_png_bytes": 47362214,
+        "timer_accepted": 30,
+        "complete_score_pairs": 28,
+        "result_matched_frames": 0,
+        "phase_scan_valid": 36,
+        "primary_state_counts": {
+          "unknown": 36
+        },
+        "formal_events": 0,
+        "player_owned_facts": 0,
+        "diagnostic_patterns": [
+          {
+            "kind": "round_start",
+            "boundary_sec": 111.4193359375,
+            "confirmation_sec": 111.48600260416667,
+            "confidence": 0.931477963924408,
+            "qualification": "unqualified_diagnostic_pattern"
+          }
+        ]
+      },
+      {
+        "name": "active_control",
+        "split": "negative_review",
+        "processed_frames": 30,
+        "elapsed_sec": 13.104352959024254,
+        "source_epoch": "02d5625d5d9f49bd99d76fce651af81a",
+        "first_tick": 122921,
+        "last_tick": 130345,
+        "source_breaks": 0,
+        "timer_source_comparison": {
+          "correct": 26,
+          "unknown": 4
+        },
+        "score_field_source_comparison": {},
+        "phase_false_accepts_against_original_labels": 0,
+        "result_false_accepts_against_original_labels": 0,
+        "exact_archive_pixel_matches": 0,
+        "retained_png_bytes": 54508520,
+        "timer_accepted": 26,
+        "complete_score_pairs": 29,
+        "result_matched_frames": 0,
+        "phase_scan_valid": 30,
+        "primary_state_counts": {
+          "unknown": 28,
+          "live_first_person": 2
+        },
+        "formal_events": 0,
+        "player_owned_facts": 0,
+        "diagnostic_patterns": []
+      },
+      {
+        "name": "menu_control",
+        "split": "negative_review",
+        "processed_frames": 30,
+        "elapsed_sec": 11.622989667055663,
+        "source_epoch": "64f3f0c498dd478f8e6f2930bcc00d10",
+        "first_tick": 1305641,
+        "last_tick": 1313065,
+        "source_breaks": 0,
+        "timer_source_comparison": {
+          "correct": 30
+        },
+        "score_field_source_comparison": {},
+        "phase_false_accepts_against_original_labels": 0,
+        "result_false_accepts_against_original_labels": 0,
+        "exact_archive_pixel_matches": 0,
+        "retained_png_bytes": 47443947,
+        "timer_accepted": 30,
+        "complete_score_pairs": 30,
+        "result_matched_frames": 0,
+        "phase_scan_valid": 30,
+        "primary_state_counts": {
+          "buy_menu_open": 30
+        },
+        "formal_events": 0,
+        "player_owned_facts": 0,
+        "diagnostic_patterns": []
+      },
+      {
+        "name": "spectator_control",
+        "split": "negative_review",
+        "processed_frames": 30,
+        "elapsed_sec": 13.819209708017297,
+        "source_epoch": "42ac8d63f4a34474a8c27fbf664aee27",
+        "first_tick": 2457641,
+        "last_tick": 2465065,
+        "source_breaks": 0,
+        "timer_source_comparison": {
+          "unknown": 19,
+          "correct": 11
+        },
+        "score_field_source_comparison": {},
+        "phase_false_accepts_against_original_labels": 0,
+        "result_false_accepts_against_original_labels": 0,
+        "exact_archive_pixel_matches": 0,
+        "retained_png_bytes": 61437807,
+        "timer_accepted": 11,
+        "complete_score_pairs": 25,
+        "result_matched_frames": 0,
+        "phase_scan_valid": 30,
+        "primary_state_counts": {
+          "spectator_first_person": 30
+        },
+        "formal_events": 0,
+        "player_owned_facts": 0,
+        "diagnostic_patterns": []
+      },
+      {
+        "name": "r1_end_continuous_result_inputs",
+        "split": "known_end_review",
+        "processed_frames": 108,
+        "elapsed_sec": 49.11489458294818,
+        "source_epoch": "f959520481e1466795ffb2cf580cf2b1",
+        "first_tick": 1139753,
+        "last_tick": 1167145,
+        "source_breaks": 0,
+        "timer_source_comparison": {
+          "correct": 17,
+          "unknown": 91
+        },
+        "score_field_source_comparison": {
+          "correct": 115,
+          "unknown": 101
+        },
+        "phase_false_accepts_against_original_labels": 0,
+        "result_false_accepts_against_original_labels": 0,
+        "exact_archive_pixel_matches": 0,
+        "retained_png_bytes": 234041629,
+        "timer_accepted": 17,
+        "complete_score_pairs": 48,
+        "result_matched_frames": 29,
+        "phase_scan_valid": 108,
+        "primary_state_counts": {
+          "unknown": 108
+        },
+        "formal_events": 0,
+        "player_owned_facts": 0,
+        "diagnostic_patterns": [
+          {
+            "kind": "round_end",
+            "boundary_sec": 74.48600260416667,
+            "confirmation_sec": 75.3693359375,
+            "confidence": 0.9180924279198346,
+            "qualification": "unqualified_diagnostic_pattern"
+          }
+        ]
+      },
+      {
+        "name": "numeric_end_menu_entry_control",
+        "split": "negative_review",
+        "processed_frames": 27,
+        "elapsed_sec": 12.42148487502709,
+        "source_epoch": "b57b237170584dc88862a397bc79263c",
+        "first_tick": 1277993,
+        "last_tick": 1284649,
+        "source_breaks": 0,
+        "timer_source_comparison": {},
+        "score_field_source_comparison": {},
+        "phase_false_accepts_against_original_labels": 0,
+        "result_false_accepts_against_original_labels": 0,
+        "exact_archive_pixel_matches": 0,
+        "retained_png_bytes": 50135393,
+        "timer_accepted": 26,
+        "complete_score_pairs": 27,
+        "result_matched_frames": 0,
+        "phase_scan_valid": 27,
+        "primary_state_counts": {
+          "unknown": 13,
+          "buy_menu_open": 14
+        },
+        "formal_events": 0,
+        "player_owned_facts": 0,
+        "diagnostic_patterns": []
+      },
+      {
+        "name": "pending_end_new_active_inputs",
+        "split": "negative_review",
+        "processed_frames": 72,
+        "elapsed_sec": 26.743389957991894,
+        "source_epoch": "a4e8037ed4784e9f9607e1e73addbff9",
+        "first_tick": 1996841,
+        "last_tick": 2015017,
+        "source_breaks": 0,
+        "timer_source_comparison": {},
+        "score_field_source_comparison": {},
+        "phase_false_accepts_against_original_labels": 0,
+        "result_false_accepts_against_original_labels": 0,
+        "exact_archive_pixel_matches": 0,
+        "retained_png_bytes": 148753871,
+        "timer_accepted": 64,
+        "complete_score_pairs": 27,
+        "result_matched_frames": 0,
+        "phase_scan_valid": 72,
+        "primary_state_counts": {
+          "unknown": 72
+        },
+        "formal_events": 0,
+        "player_owned_facts": 0,
+        "diagnostic_patterns": []
+      }
+    ],
+    "exact_archival_pixel_matches": 0,
+    "per_window_png_budget": 268435456,
+    "max_retained_window_png_bytes": 234041629,
+    "qualification_bundle_supplied": false,
+    "formal_events_released": 0,
+    "whole_source_active_start_end_path_proven": false,
+    "artifact_sha256": "2c62f138c2629e91e720e7117608c6fdb92612ae983b3bbfdda2edbad9f868f6"
+  },
+  "cross_decoder_origin_comparison": {
+    "scope": "decoder-output comparison on four origin frames, not recognition qualification",
+    "linux_ffmpeg": "6.1.1-3ubuntu5",
+    "mac_ffmpeg": "9.0.2",
+    "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "rows": [
+      {
+        "tick": 553,
+        "linux_current_equals_archive": true,
+        "linux_sha256": "c51a1fbf9d12b607a937b3890c1d08775720e7d780c18d3455cca3a3927c9024",
+        "mac_sha256": "291edad6c48766070b70b8cef3ff52cb13b9f1ec40813f74a3c24b68c7ccd923",
+        "max_channel_difference": 3,
+        "changed_channels": 6058804,
+        "mean_absolute_channel_difference": 1.762216595936214
+      },
+      {
+        "tick": 809,
+        "linux_current_equals_archive": true,
+        "linux_sha256": "1d2fc784c53815c5b9d0ce5ace01ba35929816deb37139bdf8051bf60cc492de",
+        "mac_sha256": "c56ceaa56b025353d9efde3b3bc65a97e4766cd402cc247dbab5390c57a5ba73",
+        "max_channel_difference": 3,
+        "changed_channels": 6055938,
+        "mean_absolute_channel_difference": 1.7628597608024692
+      },
+      {
+        "tick": 1065,
+        "linux_current_equals_archive": true,
+        "linux_sha256": "dbaa35f7cdd80d7843b35b3f5a159ef000a393b8713c87591960f41df2ef7c81",
+        "mac_sha256": "0e9eb74856343701cb3793990141161dac84c226cf7dccc2186d22557644c1bc",
+        "max_channel_difference": 3,
+        "changed_channels": 6065603,
+        "mean_absolute_channel_difference": 1.7668878600823046
+      },
+      {
+        "tick": 1321,
+        "linux_current_equals_archive": true,
+        "linux_sha256": "fe9808a07f19b4a9cce6454b33d59adc7e664e4e776c2d7abc040af4e75ee3a8",
+        "mac_sha256": "91c7158f8f602f3c4f61fe8a058bb81a9f10cab7b6ce2e11d2b40d96117d5abd",
+        "max_channel_difference": 3,
+        "changed_channels": 6055162,
+        "mean_absolute_channel_difference": 1.7691271219135802
+      }
+    ],
+    "linux_observed_ticks": [
+      553,
+      809,
+      1065,
+      1321,
+      2089
+    ]
+  },
+  "actual_native_start": {
+    "window_sec": [
+      0,
+      6
+    ],
+    "frames": 358,
+    "first_tick": 553,
+    "last_tick": 91945,
+    "native_start_events": 1,
+    "native_end_events": 0,
+    "actor": "system",
+    "boundary_sec": 4.102669270833333,
+    "confirmation_sec": 4.202669270833334,
+    "confidence": 0.9117099378029602,
+    "boundary_source_tick": 63017,
+    "source_time_base": "1/15360",
+    "source_epoch": "c6ddb4068a864a998eb6ff1369b84ed2",
+    "source_pixel_sha256": "db3dbf0aa80d6825c4420b941808bf099c4ebd9271855daccbedb37e1255d4ee",
+    "continuity_segment": 0,
+    "preparation_pts_sec": [
+      3.602669270833333,
+      4.086002604166667
+    ],
+    "original_clock_display_samples": [
+      {
+        "time_sec": 4.102669270833333,
+        "display": "0:00"
+      },
+      {
+        "time_sec": 4.1193359375,
+        "display": "2:25"
+      },
+      {
+        "time_sec": 4.136002604166666,
+        "display": "2:25"
+      },
+      {
+        "time_sec": 4.152669270833333,
+        "display": "1:39"
+      },
+      {
+        "time_sec": 4.1693359375,
+        "display": "1:39"
+      },
+      {
+        "time_sec": 4.186002604166666,
+        "display": "1:39"
+      },
+      {
+        "time_sec": 4.202669270833334,
+        "display": "1:39"
+      }
+    ],
+    "round_packages": 1,
+    "trace_total_events": 1,
+    "trace_starts": 1,
+    "trace_ends": 0,
+    "snapshots": 0,
+    "player_owned_facts": 0,
+    "package_windows": [
+      {
+        "start_sec": 3.602669270833333,
+        "end_sec": 171.019336
+      }
+    ],
+    "package_quality": [
+      {
+        "hud_confidence": 0.0,
+        "visual_confidence": 0.0,
+        "timeline_completeness": 0.0,
+        "missing_intervals": [
+          {
+            "start_sec": 3.602669270833333,
+            "end_sec": 171.019336
+          }
+        ]
+      }
+    ],
+    "duration_sentinel_is_not_round_end": true,
+    "observation_coverage_is_only_0_to_6_sec": true,
+    "source_native_trace_attributes_equal": true,
+    "schema_validation_passed": true,
+    "application_HUD_visual_fusion_exercised": false,
+    "recognition_elapsed_sec": null,
+    "peak_rss_bytes": null,
+    "reporter_failure": "Summary exporter asked for data_quality instead of observation_quality after current producer, schema, native replay and trace assertions succeeded; same outputs finalized without repeating recognition.",
+    "report_finalized_without_recognition_repeat": true,
+    "artifact_sha256": {
+      "selection.json": "a553a920fae9bdf89d01a6093e561c24d30c3b7439c3ecb2de7b72b8fec91683",
+      "native.json": "969794eb923d30104b8b0056b6d22710830c3f623d583effb0682a6a5a614975",
+      "packages.json": "ee527f868d68579f78baad8cb4d3200fec8b52f54a01b31daebae48dcf3ce4d2",
+      "trace.json": "dddcb4552e906aa089f3d7b1592cd436e53781a856a2f54c11bde599a9d8a96c"
+    }
+  },
+  "canonical_targeted_R1_start": {
+    "scope": "Post-recognition canonical single R1-start outcome on the actual local 0-6 second source trace; other fragment outcomes are retained privately, not a whole-match E2E result",
+    "pack_fingerprint": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
+    "assertions_sha256": "c5e242b611ce227d1d2633e5e24c00dfe65168d8124ab58fbdea84b1d7f0d820",
+    "trace_sha256": "dddcb4552e906aa089f3d7b1592cd436e53781a856a2f54c11bde599a9d8a96c",
+    "target_outcome": [
+      {
+        "assertion_id": "GT-R1-ROUND-START",
+        "group": "required_point_events",
+        "index": 0,
+        "status": "pass",
+        "failures": []
+      }
+    ],
+    "full_E2E_executed": false,
+    "canonical_baseline_updated": false,
+    "production_received_GT": false
+  },
+  "canonical_adopted_historical_baseline": {
+    "pass": 23,
+    "fail": 55,
+    "not_evaluated": 4,
+    "updated": false
+  },
+  "strict_R1_end_candidate_window_difference_sec": 0.003002604166667311,
+  "safety_scope": {
+    "start_candidates_in_three_negative_windows": 0,
+    "end_candidates_in_two_negative_windows": 0,
+    "negative_image_counts": {
+      "start": 90,
+      "end": 99
+    },
+    "full_video_false_positive_rate": "not_evaluated",
+    "R2_end_absence_to_EOF": "not_evaluated",
+    "whole_round_package_and_application_trace_correctness": "not_evaluated",
+    "unknown_or_provisional_promoted": false
+  },
+  "input_and_method_limits": [
+    "Fixed historical physical cases remain exposed, not new blind holdout.",
+    "One known end with correlated images is not multiple independent ends.",
+    "PNG/raw outputs agree on current macOS; Linux and macOS decoded pixels differ.",
+    "R1 end candidate is not a formal released end and remains outside the fixed GT window.",
+    "Separate decoder/tracker windows were not spliced.",
+    "No full or fixed-sampled production E2E, match_002 GT or real API use."
+  ],
+  "verification_attempts_retained": [
+    "Archive-continuous preflight refused a changed origin raster before reader calls.",
+    "Fresh-window reporting initially assumed an optional timer display key; one bounded repair rerun, unchanged recognizer.",
+    "Native producer/package/trace succeeded but summary used the wrong quality key; saved same-run artifacts finalized without re-recognition.",
+    "Windows CI initially failed new preflight import formatting under pinned Ruff; formatting corrected."
+  ],
+  "final_preflight_with_explicit_guarded_template": {
+    "schema_version": "1.0",
+    "scope": "source_preflight_and_loader_admission_only",
+    "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "recognizer_fingerprint": "5b32ea0c5be3d23aadd5e1ef4057619c10c7104d3d210a69d39433bffea6dfc8",
+    "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+    "script_sha256": "3e255fe53a4741d38b3d6620d6a5b422cb1e9915851ac3abc154d43cac874948",
+    "source_metadata": {
+      "frame_count": 10259,
+      "time_base": "1/15360",
+      "first_pts_ticks": 553,
+      "last_pts_ticks": 2626601,
+      "first_pts_sec": 0.03600260416666667,
+      "last_pts_sec": 171.00266927083334,
+      "step_ticks_counts": {
+        "256": 10258
+      },
+      "uniform_cadence": true,
+      "capture_loss_excluded": false,
+      "width": 1920,
+      "height": 1080
+    },
+    "qualification_established": false,
+    "recognition_executed": false,
+    "validation_pack_loaded": false,
+    "windows": [
+      {
+        "requested_window_sec": [
+          0.0,
+          0.1
+        ],
+        "frame_count": 4,
+        "time_base": "1/15360",
+        "first_pts_ticks": 553,
+        "last_pts_ticks": 1321,
+        "first_pts_sec": 0.03600260416666667,
+        "last_pts_sec": 0.08600260416666666,
+        "step_ticks_counts": {
+          "256": 3
+        },
+        "uniform_cadence": true,
+        "capture_loss_excluded": false,
+        "source_epoch": "6ff0f8a69add4d548f81c6519b5cf2f2",
+        "ordered_pts_pixel_sha256": "df5ad69e4d3d263fec4f696eb6f031df861f03cd60b51e98ebbd2dbae6c40256",
+        "adjacent_duplicate_rasters": [],
+        "retained_png_bytes": 8016954,
+        "scene_continuity_qualified": false
+      },
+      {
+        "requested_window_sec": [
+          81.7,
+          81.9
+        ],
+        "frame_count": 12,
+        "time_base": "1/15360",
+        "first_pts_ticks": 1254953,
+        "last_pts_ticks": 1257769,
+        "first_pts_sec": 81.70266927083334,
+        "last_pts_sec": 81.88600260416666,
+        "step_ticks_counts": {
+          "256": 11
+        },
+        "uniform_cadence": true,
+        "capture_loss_excluded": false,
+        "source_epoch": "eb9f1d2c635f43ed946dc18f8f1ffd17",
+        "ordered_pts_pixel_sha256": "d3a097b74d7cb5e1e9dce1f94b527be7d25615cde65e43ebc61205c718bf129a",
+        "adjacent_duplicate_rasters": [
+          {
+            "previous_pts_ticks": 1255977,
+            "pts_ticks": 1256233,
+            "time_sec": 81.78600260416667
+          },
+          {
+            "previous_pts_ticks": 1256745,
+            "pts_ticks": 1257001,
+            "time_sec": 81.83600260416667
+          }
+        ],
+        "retained_png_bytes": 25748283,
+        "scene_continuity_qualified": false
+      }
+    ],
+    "profile_fingerprint": "60b029cb987fe0d7447853e3b4cd791d5defb0918dfaa25a401bd45d2b64c813",
+    "qualification_sha256": "23c44eeeb8c47e2c17cde924a969274701afbc487c1455e6cae8bea4e8ae32ea",
+    "loader_admission": "accepted_not_temporal_qualification",
+    "components": [
+      "purchase_phase",
+      "timer",
+      "ui_transition"
+    ],
+    "terminal_integrity_verified": true,
+    "elapsed_sec": 44.376995917002205,
+    "script_hash_matches_final_source": true
+  }
+}
