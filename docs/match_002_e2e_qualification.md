@@ -902,3 +902,51 @@ Related source-capture/discovery/semantic/geometry/native/lifecycle tests:
 fetched main remains`c11ec6d`; other branch work is not overwritten or used as
 match_002 proof. Round start/end, Package affiliation and Full E2E completion
 remain unproved; these source/reference steps do not redefine that objective.
+
+## Reviewed purchase reference and actual native input (2026-10-14)
+
+The human explicitly transcribed the three originally requested reference
+candidates as purchase-phase text. Freeze exactly those three reference labels,
+original parent/asset/report/page hashes and trusted conversation provenance.
+Do not label the thirty held images, other ROI candidates, Round boundaries,
+identity, continuity or adoption from this response. Original generation bytes
+and all reviewed source assets were verified before recording the response.
+The response and complete label record remain private and Git-ignored.
+
+Private transcription receipt SHA:
+`92d76cccbc3c484ddb47652166d74a23de7a13633014dc537115a6a3036054ee`.
+
+Use the first frozen candidate by the existing training-only order; do not
+select a variant by held predictions. Bundle its unchanged reference/mask/groups
+and exactly the three human-reviewed source parents using the existing frozen
+phase-profile builder. The native semantic matcher admits3/3 training parents
+at the unchanged0.90 threshold and spatial/contrast/support gates. The private
+profile configures only `buy_phase_template`; neither similarly cropped end-ROI
+candidates nor failed purchase matches become result/absence references. Existing
+geometry, independent identity and numeric readers are preserved. No qualification
+file or application setting is installed. This is a diagnostic candidate, not
+independent held/negative/temporal qualification or production adoption.
+
+Private frozen training manifest SHA:
+`0ffed3f5722039308daa67de9196070dd9a691125e573863e920728d4cbcd419`.
+Bundled-profile diagnostic SHA:
+`24ad3a42794508cbe17be9698995209f04f1cf55211f72949c4a3d786240a1b5`.
+
+Fresh production native-window decoding/Analyzer on exactly the earlier
+first-start85 physical source rasters and integer PTS yields12 purchase-phase
+observations, previously0. Geometry remains4fresh/56effective, Timer42accepted;
+all primary states remain unknown. Source/decoder/profile/code terminal checks
+pass; elapsed45.329seconds. No external readers, saved predictions, supplied
+geometry, GT or expected boundary enters recognition. Qualification is absent
+and released events remain0; the acquisition gain is not a measured start
+recall/Full E2E improvement. No player identity or owned fact is inferred.
+
+Native input receipt SHA:
+`682b6f5a89f8e93dba4318592cb153d8a341e5d1c998f63c96ee0477630229a0`.
+
+Next independently qualify held/negative semantic evidence and the positive UI
+transition/source contract. A missing purchase match is still not proof of UI
+absence, and source/result/end qualification remains unfinished. Existing frozen-
+profile/semantic/native/lifecycle regressions:117passed. Ruff, mypy(132production
+files), and diff checks pass. No production-code or canonical-Pack change was
+needed for this reference/input checkpoint; no merge/adoption is performed.
