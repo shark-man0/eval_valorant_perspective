@@ -212,7 +212,8 @@ def validate_source(pack: Path, video_path: Path, ffprobe: str = "ffprobe") -> N
     if before != profile["sha256"]:
         raise ValueError("physical source SHA mismatch")
     result = subprocess.run([ffprobe, "-v", "error", "-show_streams", "-show_format", "-of", "json",
-                             str(video_path)], capture_output=True, text=True, encoding="utf-8", check=True)
+                             str(video_path)], capture_output=True, text=True,
+                            encoding="utf-8", check=True)
     metadata = json.loads(result.stdout)
     videos = [s for s in metadata["streams"] if s["codec_type"] == "video"]
     if len(videos) != 1:
