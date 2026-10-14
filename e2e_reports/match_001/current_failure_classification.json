@@ -7211,5 +7211,26 @@
     "adopted_82_matrix_equal_to_HEAD": true,
     "remote_main_before_integration": "becc9eb",
     "full_e2e_rerun_for_push": false
+  },
+  "main_integration_verification": {
+    "merged_remote_main": "becc9eb",
+    "merge_commit": "f0430017029aae39a3fd0ec8c15566e7e1a962e4",
+    "conflicts": 0,
+    "tests": {
+      "passed": 367,
+      "seconds": 178.17,
+      "log": "outputs/recognition-investigation/current-failure-classification-20261014/main-merge-tests.log"
+    },
+    "ruff": "pass",
+    "mypy": {
+      "status": "pass",
+      "source_files": 131
+    },
+    "dataset_validation": {
+      "status": "pass",
+      "cases": 38
+    },
+    "windows_current_commit": "not_yet_verified",
+    "new_full_e2e_runs": 0
   }
 }

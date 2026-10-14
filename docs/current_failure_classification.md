@@ -214,3 +214,5 @@ Analysis checks: unique 82 IDs; exclusive 50 FAIL assignments; status counts 28/
 Machine-readable definitions, actual values/coverage/PTS, reasons, secondary dependencies and hashes: [current_failure_classification.json](../e2e_reports/match_001/current_failure_classification.json).
 
 Pre-push verification: 212 related tests PASS in 170.65 seconds; Ruff PASS; mypy 131 source files PASS. The adopted 82-row matrix is exactly equal to HEAD. No full E2E was repeated for publication. Remote main advanced to becc9eb (L5 storage/display separation); integration validation is recorded below when completed.
+
+Main integration: remote becc9eb merged without conflicts in f0430017029aae39a3fd0ec8c15566e7e1a962e4. Post-merge L5 storage/display, practical evaluation/resume, non-vision safety and HUD integration tests: 367 PASS in 178.17 seconds. Ruff and mypy 131 files PASS; dataset validation 38 cases PASS. Current-commit Windows CI is not yet verified. No full E2E was repeated for this merge.
