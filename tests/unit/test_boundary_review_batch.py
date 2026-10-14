@@ -109,20 +109,20 @@ def test_batch_cli_preserves_private_source_integrity_and_never_joins_windows(
             assert chunks == []
         return
     review.main()
-    report = json.loads((output / "review_evidence.json").read_text())
+    report = json.loads((output / "review_evidence.json").read_text(encoding="utf-8"))
     assert chunks == [600, 198]
     assert len(report["frames"]) == 798
     assert report["window_continuity_certified"] is False
     assert report["source_playback_available"] is playback
     assert report["annotations"] == []
     assert report["schedule"]["plan_sha256"] == review.sha256_file(plan_path)
-    page = (output / "tasks/review_0.html").read_text()
+    page = (output / "tasks/review_0.html").read_text(encoding="utf-8")
     assert "../frames_00/0.jpg" in page and "NOT ground truth" in page
     assert ("<video" in page) is playback
     if playback:
         assert source.resolve().as_uri() + "#t=0.000000,599.000000" in page
-        second_page = (output / "tasks/review_1.html").read_text()
+        second_page = (output / "tasks/review_1.html").read_text(encoding="utf-8")
         assert source.resolve().as_uri() + "#t=700.000000,899.000000" in second_page
         assert "#t=0.000000,899.000000" not in page + second_page
-    assert "&lt;note&gt;" in (output / "index.html").read_text()
+    assert "&lt;note&gt;" in (output / "index.html").read_text(encoding="utf-8")
     assert source.read_bytes() == b"source"

@@ -22,7 +22,9 @@ def test_native_event_membership_is_schema_compatible_and_does_not_hide_cut_viol
     adapter = load_module("membership_trace_adapter", ROOT / "tests/e2e/trace_adapter.py")
     pack = ROOT / "ValorantData/valorant_e2e_validation_pack_v3"
     evaluator = load_module("membership_evaluator", pack / "tests/reference_evaluator.py")
-    schema = json.loads((pack / "schemas/e2e_output_trace_schema_v1.json").read_text())
+    schema = json.loads((pack / "schemas/e2e_output_trace_schema_v1.json").read_text(
+        encoding="utf-8",
+    ))
     result = SimpleNamespace(round_packages=[{
         "events": [{"type": "status_effect", "time_sec": 100.4, "actor": "player",
                     "confidence": 0.91, "attributes": {"duration_sec": 0.8}}],

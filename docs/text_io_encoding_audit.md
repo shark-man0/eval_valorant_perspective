@@ -153,3 +153,16 @@ parameters change, not assertions, synthetic input payloads, frozen ground
 truth, or comparison rules. An AST regression test guards these sites.
 Other test candidates require separate contract review, and the latest CI
 inventory remains authoritative for post-change totals.
+
+## Reviewed integration/report readers (2026-10-14 continuation)
+
+After the 265-site Windows inventory (commit `783d931`), 15 test modules
+were reviewed for reads of application-owned JSON, HTML and E2E schema
+files. Exactly **49 `read_text()` calls** now explicitly use UTF-8 in
+commits `c872486` and its successor. The synthetic inputs and assertions
+are unchanged; no ground truth, hashes or evaluation-policy semantics were
+modified. Long call sites are wrapped without altering file content.
+Two AST regression checks enumerate all 15 modules and assert that every
+`read_text` has `encoding="utf-8"`. A fresh CI inventory is needed for
+post-change counts; the Linux Qt destructor abort is tracked under #18
+rather than being hidden or treated as an encoding regression.

@@ -56,10 +56,12 @@ def test_original_compiler_and_unknown_runtime_identity_are_preserved(tmp_path, 
         PACK / "tests/reference_evaluator.py").read_bytes()
     assert (output / "assets/synthetic.jpg").read_bytes() == (
         timeline / "assets/synthetic.jpg").read_bytes()
-    runtime = json.loads((output / "inputs/e2e_inputs_v3.json").read_text())
+    runtime = json.loads((output / "inputs/e2e_inputs_v3.json").read_text(encoding="utf-8"))
     assert runtime["player_context"]["agent"] == "unknown"
     assert runtime["player_context"]["player_name"] == "unknown"
-    assertions = json.loads((output / "tests/generated/e2e_assertions_v3.json").read_text())
+    assertions = json.loads((output / "tests/generated/e2e_assertions_v3.json").read_text(
+        encoding="utf-8",
+    ))
     assert len(assertions["required_point_events"]) == 3
     assert len(assertions["negative_assertions"]) == 11
     assert assertions["negative_assertions"][0]["id"] == "synthetic-safety"

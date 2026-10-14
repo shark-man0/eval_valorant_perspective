@@ -31,7 +31,9 @@ def inputs(tmp_path):
     witness = {"production_input": False, "video_id": "match_test",
                "source_video_sha256": "a" * 64, "pairs": [[1, "round_start", 1.0, 1.1]]}
     catalog = {f["source_frame_pts"]: [(manifest, f)] for f in frames}
-    policy = json.loads((PACK / "ground_truth/evaluation_policy_v3.json").read_text())
+    policy = json.loads((PACK / "ground_truth/evaluation_policy_v3.json").read_text(
+        encoding="utf-8",
+    ))
     return ledger, witness, catalog, policy
 
 
@@ -40,7 +42,9 @@ def test_v3_fragment_does_not_invent_confidence_or_unknown_facts(tmp_path):
     before = copy.deepcopy((ledger, witness, frames, policy))
     points, bindings = preparation.prepare(ledger, witness, frames, policy)
     point = points[0]["point"]
-    schema = json.loads((PACK / "schemas/e2e_ground_truth_schema_v3.json").read_text())
+    schema = json.loads((PACK / "schemas/e2e_ground_truth_schema_v3.json").read_text(
+        encoding="utf-8",
+    ))
     Draft202012Validator({"$ref": "#/$defs/point_event", "$defs": schema["$defs"]}).validate(point)
     assert point["evidence_bracket"] == {"last_absent_sec": 1.0, "first_present_sec": 1.1}
     assert point["tolerance_before_sec"] == point["tolerance_after_sec"] == .1
@@ -101,7 +105,7 @@ def test_cli_preserves_source_bytes_and_writes_only_private_staging_not_a_manife
                                      "--review-root", str(tmp_path),
                                      "--canonical-pack", str(PACK), "--output", str(output)])
     preparation.main()
-    report = json.loads((output / "point_fragments.json").read_text())
+    report = json.loads((output / "point_fragments.json").read_text(encoding="utf-8"))
     assert report["formal_pack_completed"] is False and report["production_input"] is False
     assert not (output / "timeline_ground_truth_v3.json").exists()
     for binding in report["evidence_bindings"]:

@@ -158,3 +158,21 @@ def test_reviewed_integration_json_readers_explicit_utf8() -> None:
         readers = [x for x in sites if x["operation"] == "read_text"]
         assert readers, filename
         assert all(x["category"] == "UTF-8明示" for x in readers), filename
+
+
+def test_reviewed_report_and_schema_readers_explicit_utf8() -> None:
+    root = Path(__file__).resolve().parents[2]
+    for filename in (
+        "tests/integration/test_pack_stage_assembly.py",
+        "tests/integration/test_source_state_negatives.py",
+        "tests/integration/test_trace_round_membership.py",
+        "tests/unit/test_e2e_report_recovery.py",
+        "tests/unit/test_e2e_share_report.py",
+        "tests/unit/test_prepare_boundary_points.py",
+        "tests/unit/test_visual_core_v2.py",
+        "tests/unit/test_boundary_review_batch.py",
+    ):
+        sites = scan_source((root / filename).read_text(encoding="utf-8"), filename)
+        readers = [x for x in sites if x["operation"] == "read_text"]
+        assert readers, filename
+        assert all(x["category"] == "UTF-8明示" for x in readers), filename
