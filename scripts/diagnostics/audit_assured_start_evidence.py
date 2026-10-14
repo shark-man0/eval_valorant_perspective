@@ -95,7 +95,9 @@ def main() -> None:
         'canonical_current': None, 'canonical_delta': None,
     }
     # UTF-8 JSON is an application-owned diagnostic artifact.
-    args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n', encoding="utf-8")
+    args.output.write_text(
+        json.dumps(result, ensure_ascii=False, indent=2) + '\n', encoding="utf-8"
+    )
     print(json.dumps({'reports': len(records),
                       'current_code_matches': sum(r['code_matches'] for r in records),
                       'dependency_mismatches': sum(

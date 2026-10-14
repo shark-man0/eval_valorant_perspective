@@ -80,7 +80,9 @@ def main() -> None:
     report["observation_input_sha256"] = sha256_file(args.observations)
     output.mkdir(parents=True)
     # UTF-8 JSON is an application-owned diagnostic artifact.
-    (output / "review_plan.json").write_text(json.dumps(report, indent=2, allow_nan=False) + "\n", encoding="utf-8")
+    (output / "review_plan.json").write_text(
+        json.dumps(report, indent=2, allow_nan=False) + "\n", encoding="utf-8"
+    )
     cards = []
     frames_by_time = {frame["source_frame_pts"]: frame for frame in evidence["frames"]}
     for row in report["items"]:
