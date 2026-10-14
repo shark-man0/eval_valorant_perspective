@@ -15,7 +15,7 @@ expected Round number.
 The Match aggregator validates every reconstructed input against canonical
 schemas. A corrupt Round Package is excluded with an incomplete status.
 An evaluation whose package is missing causes a hard fail-closed error.
-Round numbers recorded as failed but missing their package are explicitly
+Round numbers recorded as completed or failed but missing their package are explicitly
 listed in `storage_provenance.missing_failed_round_packages` and the Match
 remains incomplete. A saved-but-unevaluated or Practical/unknown boundary Round
 is reported as `not_evaluated`, with 0 scored evaluations. The Match is never

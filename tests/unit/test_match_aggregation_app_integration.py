@@ -283,3 +283,12 @@ def test_pipeline_json_export_is_safe_when_match_aggregation_cannot_validate(
     assert record["match_aggregation"] is None
     assert record["match_aggregation_error"]
     assert len(record["evaluations"]) == 2
+
+def test_missing_completed_package_is_incomplete(tmp_path: Path) -> None:
+    repo, _ = saved(tmp_path, ("TC-006",))
+    repo.save_job_checkpoint(MATCH, "completed", {"completed_rounds": [1, 2]})
+    result = aggregate_saved_match(repo, MATCH)
+    assert result["completeness"]["status"] == "incomplete"
+    assert "completed_round_package_missing" in result["completeness"]["blocking_reasons"]
+    assert result["storage_provenance"]["missing_completed_round_packages"] == [2]
+    assert len(result["evaluations"]) == 1

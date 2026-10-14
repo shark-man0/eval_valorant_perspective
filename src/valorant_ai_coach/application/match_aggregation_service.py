@@ -114,20 +114,34 @@ def aggregate_saved_match(repository: SQLiteRepository, match_id: str) -> dict[s
             if item["code"] != "display_limit_reached"
         ]
     missing_failed = sorted(failed - seen)
-    if missing_failed:
-        # It is unsafe to invent a Round Package solely for a failed Round number.
+    missing_completed = sorted(completed - seen)
+    for code, missing, detail in (
+        (
+            "failed_round_package_missing",
+            missing_failed,
+            "失敗したRoundの保存済みPackageがありません",
+        ),
+        (
+            "completed_round_package_missing",
+            missing_completed,
+            "完了記録のあるRoundの保存済みPackageがありません",
+        ),
+    ):
+        if not missing:
+            continue
+        # Never infer the data of a Round whose existence is only checkpointed.
         completeness = view["completeness"]
         completeness["status"] = "incomplete"
         completeness["blocking_reasons"] = sorted(
-            set(completeness["blocking_reasons"]) | {"failed_round_package_missing"}
+            set(completeness["blocking_reasons"]) | {code}
         )
         view["issues"].extend({
-            "code": "failed_round_package_missing",
+            "code": code,
             "round_no": number,
             "rule_id": None,
             "evaluation_id": None,
-            "detail": "失敗したRoundの保存済みPackageがありません",
-        } for number in missing_failed)
+            "detail": detail,
+        } for number in missing)
     view["storage_provenance"] = {
         "source": "sqlite_recomputed",
         "saved_evaluation_set": (
@@ -137,5 +151,6 @@ def aggregate_saved_match(repository: SQLiteRepository, match_id: str) -> dict[s
         ),
         "candidate_scopes_restored": False,
         "missing_failed_round_packages": missing_failed,
+        "missing_completed_round_packages": missing_completed,
     }
     return view
