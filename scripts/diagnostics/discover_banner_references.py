@@ -47,9 +47,12 @@ def text_rows(gray, *, minimum_glyphs: int = 4):
     return sorted(boxes)
 
 
-def propose(crops, hashes, *, minimum_glyphs: int = 4, diagnostics: dict | None = None):
+def propose(crops, hashes, *, minimum_glyphs: int = 4, diagnostics: dict | None = None,
+            candidate_limit: int = 4):
     """Existing >=.90 grouped NCC, all candidate selection training-only."""
     proposals = []
+    if type(candidate_limit) is not int or candidate_limit not in (4, 16):
+        raise ValueError("bounded standard/audit candidate limit required")
     rejections = Counter()
     row_count = 0
     for crop in crops:
@@ -76,7 +79,7 @@ def propose(crops, hashes, *, minimum_glyphs: int = 4, diagnostics: dict | None 
         key = proposal[-1]
         if key not in unique:
             unique[key] = proposal
-    selected = sorted(unique.values(), key=lambda p: (-len(p[-1]), p[0]))[:4]
+    selected = sorted(unique.values(), key=lambda p: (-len(p[-1]), p[0]))[:candidate_limit]
     if diagnostics is not None:
         diagnostics.update(training_row_proposals=row_count, rejections=dict(rejections),
                            supported_proposals=len(proposals), support_clusters=len(unique),
@@ -85,12 +88,15 @@ def propose(crops, hashes, *, minimum_glyphs: int = 4, diagnostics: dict | None 
 
 
 def discover(pool: Path, layout_path: Path, partition_path: Path, output: Path,
-             reserved: set[str], *, minimum_glyphs: int = 4) -> dict:
+             reserved: set[str], *, minimum_glyphs: int = 4,
+             training_candidate_audit: bool = False) -> dict:
     _check_output_privacy(output.resolve())
     if output.exists():
         raise FileExistsError("new private discovery directory required")
     if type(minimum_glyphs) is not int or minimum_glyphs not in (3, 4):
         raise ValueError("explicit three/four-component diagnostic proposal required")
+    if type(training_candidate_audit) is not bool:
+        raise ValueError("training audit must be explicitly boolean")
     selection_path = pool / "review_selection.json"
     selection = json.loads(selection_path.read_text(encoding="utf-8"))
     parent_path = pool / "candidate_report.json"
@@ -132,6 +138,8 @@ def discover(pool: Path, layout_path: Path, partition_path: Path, output: Path,
     report = {"kind": "unlabeled_banner_discovery_not_qualification",
               "source_sha256": parent["source_sha256"], "threshold": .90,
               "minimum_glyphs": minimum_glyphs,
+              "training_candidate_audit": training_candidate_audit,
+              "held_predictions_measured": not training_candidate_audit,
               "training_count": len(training), "held_count": len(held),
               "training_hashes": [r[2]["sha256"] for r in training],
               "held_hashes": [r[2]["sha256"] for r in held],
@@ -151,7 +159,8 @@ def discover(pool: Path, layout_path: Path, partition_path: Path, output: Path,
         crops = [cv2.cvtColor(r[3][y1:y2, x1:x2], cv2.COLOR_BGR2GRAY) for r in training]
         diagnostics = {}
         candidates = propose(crops, report["training_hashes"], minimum_glyphs=minimum_glyphs,
-                             diagnostics=diagnostics)
+                             diagnostics=diagnostics,
+                             candidate_limit=16 if training_candidate_audit else 4)
         report["proposal_diagnostics"][role] = diagnostics
         rows = []
         for number, (box, reference, mask, groups, matcher, support) in enumerate(candidates, 1):
@@ -165,13 +174,16 @@ def discover(pool: Path, layout_path: Path, partition_path: Path, output: Path,
             a, b, c, d = box
             reference_index = next(i for i, crop in enumerate(crops)
                                    if np.array_equal(reference, crop[b:d, a:c]))
-            scores = [matcher.score(cv2.cvtColor(r[3][y1:y2, x1:x2],
-                         cv2.COLOR_BGR2GRAY)[b:d, a:c]) for r in held]
+            scores = None if training_candidate_audit else [
+                matcher.score(cv2.cvtColor(r[3][y1:y2, x1:x2],
+                              cv2.COLOR_BGR2GRAY)[b:d, a:c]) for r in held]
             rows.append({"candidate_id": name, "bounds_in_roi": box,
                          "asset_hashes": assets, "training_support_indices": support,
                          "reference_training_index": reference_index,
                          "reference_source_hash": report["training_hashes"][reference_index],
-                         "held_scores": scores, "held_accept_count": sum(s >= .90 for s in scores),
+                         "held_scores": scores,
+                         "held_accept_count": (
+                             None if scores is None else sum(s >= .90 for s in scores)),
                          "semantic_label": None})
             source_uri = html.escape(training[reference_index][1].resolve().as_uri())
             cards.append(f'<h2>{html.escape(name)}</h2><img src="{name}_reference.png">'
@@ -180,8 +192,10 @@ def discover(pool: Path, layout_path: Path, partition_path: Path, output: Path,
                          'reference元画像</a>')
         report["roles"][role] = rows
     # Broad crops, not detector boxes or scores, for the fixed held source group.
-    cards.append('<h1>固定held画像：画面上の表示内容を確認</h1>')
-    for number, (pool_index, path, source, image) in enumerate(held, 1):
+    if not training_candidate_audit:
+        cards.append('<h1>固定held画像：画面上の表示内容を確認</h1>')
+    for number, (pool_index, path, source, image) in enumerate(
+            [] if training_candidate_audit else held, 1):
         review_row = {"frame_id": number, "pool_index": pool_index,
                       "source_hash": source["sha256"], "roi_assets": {}}
         cards.append(f'<h2>Frame {number}</h2>'
@@ -212,9 +226,12 @@ def main():
     parser.add_argument("--reserved-source-hash", action="append", default=[])
     parser.add_argument("--minimum-glyphs", type=int, choices=(3, 4), default=4,
                         help="Diagnostic proposal only; matcher/qualification gates unchanged")
+    parser.add_argument("--training-candidate-audit", action="store_true",
+                        help="Inspect at most 16 supported training clusters; no held predictions")
     args = parser.parse_args()
     result = discover(args.pool, args.layout, args.partition, args.output,
-                      set(args.reserved_source_hash), minimum_glyphs=args.minimum_glyphs)
+                      set(args.reserved_source_hash), minimum_glyphs=args.minimum_glyphs,
+                      training_candidate_audit=args.training_candidate_audit)
     print(json.dumps({"training": result["training_count"], "held": result["held_count"],
                       "candidates": {k: len(v) for k, v in result["roles"].items()},
                       "production_adopted": False}))

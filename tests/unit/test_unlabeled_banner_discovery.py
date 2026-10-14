@@ -1,4 +1,5 @@
 import json
+from types import SimpleNamespace
 
 import cv2
 import numpy as np
@@ -125,6 +126,36 @@ def test_held_pixels_do_not_change_candidates(tmp_path, monkeypatch):
         assert [[r[k] for k in keys] for r in before["roles"][role]] == [
             [r[k] for k in keys] for r in after["roles"][role]]
         assert all(row["held_accept_count"] == 0 for row in after["roles"][role])
+
+
+def test_training_candidate_audit_never_scores_held_images(tmp_path, monkeypatch):
+    monkeypatch.setattr(subject, "_check_output_privacy", lambda *_: None)
+    pool, layout, partition, _ = fixture(tmp_path)
+    original = subject.propose
+
+    def training_only(*args, **kwargs):
+        assert kwargs["candidate_limit"] == 16
+        proposals = original(*args, **kwargs)
+        return [(*p[:4], SimpleNamespace(score=lambda *_: pytest.fail("held score in audit")),
+                 p[5]) for p in proposals]
+
+    monkeypatch.setattr(subject, "propose", training_only)
+    output = tmp_path / "audit"
+    result = subject.discover(pool, layout, partition, output, set(),
+                              training_candidate_audit=True)
+    assert result["held_predictions_measured"] is False
+    assert result["review_frames"] == []
+    assert not list(output.glob("held_*.png"))
+    for rows in result["roles"].values():
+        assert rows
+        assert all(row["held_scores"] is None and row["held_accept_count"] is None
+                   and row["semantic_label"] is None for row in rows)
+
+
+@pytest.mark.parametrize("limit", [0, 3, 5, 100, True])
+def test_audit_candidate_output_is_bounded(limit):
+    with pytest.raises(ValueError):
+        subject.propose([text()] * 3, ["1" * 64, "2" * 64, "3" * 64], candidate_limit=limit)
 
 
 @pytest.mark.parametrize("fault", ["hash", "holdout"])

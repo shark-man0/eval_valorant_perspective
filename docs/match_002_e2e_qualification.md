@@ -987,3 +987,49 @@ fingerprint at export. The implementation fingerprint is a post-measurement
 export record, not an asserted pre-frozen code/temporal qualification. Raw
 measurements and the complete review remain local; no original reference,
 Schema, GT, Pack, production setting or recognizer is changed.
+
+## Complete supported-training audit and six-case source review (2026-10-14)
+
+Add `--training-candidate-audit` to inspect up to16 supported training clusters
+without scoring or rendering held images. The ordinary candidate cap remains4.
+NCC, masks, contrast/groups, three-parent support and production recognition are
+unchanged. Held scores/counts are explicitly null in this audit, semantic labels
+remain null, and no qualification/profile is written. A regression replaces the
+held scorer with a failure to verify that audit mode never calls it.
+
+On the existing87training parents, all10 supported clusters per configured ROI
+are now exposed, including the6 formerly omitted by the cap. Developer visual
+inspection finds purchase-like text in every retained reference, not a round
+result. Therefore the cap alone does not explain missing result references.
+No semantic approval is inferred for these additional references. Descriptive
+training-only white-component analysis finds178 qualifying-height components
+of20..90pixels and5 above90pixels; it does not establish that those5 components
+are result glyphs or justify changing native recognition/acceptance thresholds.
+Keep source/feature/three-parent-support insufficiency distinct from pruning.
+
+The human subsequently reviewed exactly the6 previously requested source cases:
+three include purchase-phase text, two transcribe different visible menu text,
+and one explicitly reports no text. Preserve the complete literal response,
+source/preview/report/page hashes and trusted reply reference locally. Do not
+turn an ancillary Round caption into Round-ID GT, reinterpret other text as a
+runtime phase-disappearance proof, or annotate the other81cohort images.
+
+The previously frozen matcher agrees with all6 target-reference classifications:
+3 reviewed target matches,3 reviewed target rejections,0 reviewed classification
+errors. These are prediction-stratified targeted image cases, not an accuracy
+estimate for all87images, a randomized independent temporal cohort or full
+qualification. One rejection has explicit absent text; two have alternative
+transcribed text. No runtime absence checker, event or adoption is authorized.
+No profile/threshold was tuned to this response.
+
+The pending six-case transcription is resolved. Start/transition/source,
+result/end, geometry coverage and whole-pipeline qualification remain separate
+unfinished gates. Related discovery/semantic/frozen-profile/global-lifecycle
+regressions:108passed. Ruff, mypy(132production files) and diff checks pass.
+
+Final private training-audit receipt SHA:
+`547562b5e25eed2ca7242e5cec36dc76509abf97b858ef15a089e2f4766d6c5e`.
+The final implementation preserves all10 training candidates/assets/support sets
+from the initial audit and still measures no held predictions. Earlier artifacts
+are not overwritten. Private six-case transcription receipt SHA:
+`fecdf81758893bb1ce6e9b57e09c05df6b51e1b780ed2809727f1f363d6af0ec`.
