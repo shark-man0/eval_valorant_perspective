@@ -60,6 +60,15 @@ def test_diagnostic_json_writes_are_explicitly_utf8() -> None:
         "audit_native_adjacent_regions.py",
         "audit_native_png_storage.py",
         "audit_native_seed_failure.py",
+        "audit_corner_crop_context.py",
+        "audit_fixed_camera_domains.py",
+        "compare_native_foreground.py",
+        "validate_fixed_shared_score_source.py",
+        "validate_frozen_result_feature.py",
+        "validate_native_system_prefix.py",
+        "validate_scene_chain_cohort.py",
+        "validate_scene_world_holdout.py",
+        "validate_unedited_native_start.py",
     )
     for filename in audited:
         path = root / "scripts" / "diagnostics" / filename
@@ -67,3 +76,12 @@ def test_diagnostic_json_writes_are_explicitly_utf8() -> None:
         writers = [site for site in findings if site["operation"] == "write_text"]
         assert writers, filename
         assert all(site["category"] == "UTF-8明示" for site in writers), filename
+
+
+def test_frame_suite_json_writes_are_explicitly_utf8() -> None:
+    root = Path(__file__).resolve().parents[2]
+    path = root / "scripts" / "e2e" / "build_frame_suites.py"
+    findings = scan_source(path.read_text(encoding="utf-8"), str(path))
+    writers = [site for site in findings if site["operation"] == "write_text"]
+    assert writers
+    assert all(site["category"] == "UTF-8明示" for site in writers)

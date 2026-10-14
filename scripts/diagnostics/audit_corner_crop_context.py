@@ -120,7 +120,8 @@ def main():
             },
             indent=2,
         )
-        + "\n"
+        + "\n",
+        encoding="utf-8",
     )
     print(
         json.dumps(

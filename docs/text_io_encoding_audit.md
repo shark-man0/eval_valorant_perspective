@@ -93,3 +93,34 @@ The source package's 131 Python files were also spot-audited for direct
 Path.read_text/write_text/open calls; all observed output writers use
 explicit UTF-8, and observed `rb`/`xb` paths are intentionally binary.
 This limited pass does not cover every AST call category in that package.
+
+## Continued source-contract triage (2026-10-14)
+
+The independent latest-head Linux CI #38495100212 (commit `327e685`) printed
+all **363** unresolved AST candidates, down from the prior **441** snapshot.
+The full `--review-json` report records the concrete path, line, operation and
+expression for every candidate. This count is **pre-this-commit**:
+
+| Scope | Unresolved AST candidates |
+| --- | ---: |
+| tests/ | 288 |
+| scripts/ | 41 |
+| src/ | 23 |
+| ValorantData/ | 11 |
+| **Total** | **363** |
+
+By operation: 167 `write_text`, 111 `read_text`, 49 `encode`,
+33 `subprocess`, 2 `decode`, 1 `open`. Python's default
+`str.encode()`/`bytes.decode()` is UTF-8 rather than the host locale;
+those call sites are therefore not evidence of Windows text file failures.
+The subprocess cases require individual producer/protocol contracts.
+The test-site majority mostly concerns synthetic fixture text and must not
+be conflated with application-owned production I/O.
+
+On inspecting the remaining diagnostic and frame-suite writers individually,
+**16 additional application-generated JSON file writes in ten source files**
+were confirmed to need explicit UTF-8; they are now fixed without changing
+JSON structure, provenance, hash checks, error handling, newline arguments or
+recognition/GT decisions. Static regression tests cover all ten file paths.
+The post-change count must be measured on CI; the current PR is still an
+incremental remediation rather than closure of all Issue #28 contracts.

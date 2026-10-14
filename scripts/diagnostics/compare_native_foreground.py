@@ -97,7 +97,8 @@ def main():
         'reference_source_report_sha256': hashlib.sha256(report_bytes).hexdigest(),
     }
     (args.output_directory / 'predecode_selection.json').write_text(
-        json.dumps(selection, indent=2) + '\n'
+        json.dumps(selection, indent=2) + '\n',
+        encoding="utf-8",
     )
     rows = []
     panels = []

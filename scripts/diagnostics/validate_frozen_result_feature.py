@@ -98,7 +98,7 @@ def run():
         'source_video_sha256': source_hash, 'input_sha256': inputs,
         'exhaustive_exposure_proven': False, 'same_episode_correlation': True,
         'predictions_made': False, 'qualification_created': False,
-    }, indent=2) + '\n')
+    }, indent=2) + '\n', encoding="utf-8")
     directory.mkdir()
     rows = []
 
@@ -140,7 +140,7 @@ def run():
         'qualification_created': False, 'production_changed': False,
         'canonical_previous': {'PASS': 23, 'FAIL': 55, 'NE': 4},
         'canonical_current': None, 'canonical_delta': None,
-    }, indent=2) + '\n')
+    }, indent=2) + '\n', encoding="utf-8")
     print(json.dumps({'processed': len(rows), 'reserved': len(selected),
                       'previous_accepts': sum(r['previous']['presence'] is True for r in rows),
                       'current_accepts': sum(r['current']['presence'] is True for r in rows),

@@ -334,7 +334,7 @@ def main() -> None:
         out = ROOT / "datasets/e2e_suites/match_001"
         out.mkdir(parents=True, exist_ok=True)
         for name, data in (("targeted.json", targeted), ("sampled.json", sampled)):
-            (out / name).write_text(json.dumps(data, indent=2) + "\n")
+            (out / name).write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
     else:
         print(
             json.dumps(

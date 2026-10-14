@@ -93,7 +93,8 @@ def main():
             },
             indent=2,
         )
-        + "\n"
+        + "\n",
+        encoding="utf-8",
     )
     for row in rows:
         print(json.dumps({k: v for k, v in row.items() if k != "domain_audit"}))
