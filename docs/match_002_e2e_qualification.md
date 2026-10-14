@@ -453,3 +453,55 @@ expected results or claiming the full suite is green. Production stays unchanged
 Updated partition/planning/numeric/geometry targeted suite: 145 passed; Ruff,
 mypy (131 source files), and diff checks passed. The four separately reproduced
 spectator failures remain recorded and unresolved; no full-suite PASS is claimed.
+
+## New cohort independent numeric review received (2026-10-14)
+
+The trusted human subsequently supplied all twelve explicit source rows. The
+earlier missing-response statements and blocker audit are historical, not
+current. New immutable label/response revisions bind the original blind ROI
+assets, source hashes and frozen probe receipt. No original receipt, lifecycle
+GT, Validation Pack, raw probe output or code/profile was modified to fit labels.
+Analyzer and OCR were not rerun; prediction-free review remained independent of
+the frozen outputs. Scope remains numeric visibility only, not identity,
+event timing, continuity, temporal qualification or production adoption.
+
+| Field | Visible values | Correct reads | Missing | Wrong reads | Absent negatives | Absent false accepts |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Timer | 10 | 7 | 3 | 0 | 2 | 0 |
+| Ally score | 12 | 6 | 6 | 0 | 0 | 0 |
+| Enemy score | 12 | 10 | 2 | 0 | 0 | 0 |
+
+All twelve source images are distinct. Timer's 3 misses and enemy score's 2
+misses occur after a crop proposal but fail the unchanged OCR floor/format.
+Ally score has 1 no-crop miss and 5 OCR floor/format misses. No thresholds were
+relaxed. Zero wrong accepted values is evidence about these reviewed points
+only, not general accuracy or precision across a match. The new cohort contains
+no absent-score negative; therefore it proves nothing about absent-score false
+acceptance. Prior exposed negatives remain separate and are not relabelled as
+prospective negatives or merged into a stronger qualification claim.
+
+Geometry-valid point counts contain only Timer 5, ally score 5 and enemy score
+8 correct diagnostic reads. Geometry-invalid reads remain outside admissible
+production input. All localized results still have passed_to_analyzer=false and
+localization_qualified=false. No runtime Round events or actual Package
+affiliation were established by this comparison. Broad numeric acquisition,
+geometry and continuous temporal qualification remain incomplete.
+
+Remaining qualification must cover actual absent-score source evidence,
+continuous start/end evidence and geometry without deriving labels from OCR,
+using final evaluation holdout to tune, weakening confidence/negative contracts
+or installing an unqualified profile. The response resolves the numeric-review
+wait; it does not establish full-match lifecycle success.
+
+The existing `GlobalLifecycleQualification.load` contract requires at least
+three distinct training, holdout and negative hashes per component, disjoint
+within and across components, at least three reviewed correct holdout cases,
+zero wrong holdout cases and zero negative false positives. This new cohort has
+only two absent Timer images and no absent Score images, so its source-negative
+support alone is insufficient even though accepted values were all correct.
+Do not reduce required support or manufacture qualification from these counts.
+Broader source/temporal components still require their own reviewed evidence.
+
+Review ingestion/comparison/planning regressions: 63 passed; Ruff, mypy (131
+source files), and diff checks passed. This targeted result does not replace
+the separately recorded full-suite spectator failures or formal real-video E2E.
