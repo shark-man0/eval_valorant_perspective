@@ -1,5 +1,7 @@
 import json
+from types import SimpleNamespace
 
+import numpy as np
 import pytest
 from test_geometry_candidate_challenge import fixture
 
@@ -8,9 +10,11 @@ from scripts.diagnostics.prospective_numeric_probe import (
     freeze_plan,
     measure,
     sampling_times,
+    select_low_contrast,
     verify_partition,
 )
 from scripts.e2e.run_dataset_case import sha256_file
+from valorant_ai_coach.hud.layout import NormalizedRoi
 
 
 @pytest.fixture(autouse=True)
@@ -130,3 +134,40 @@ def test_other_source_or_gt_cannot_replace_partition(tmp_path):
                                     sha256_file(video)}))
     with pytest.raises(ValueError, match="non-GT partition"):
         verify_partition(partition, sha256_file(video), 720)
+
+
+def test_low_contrast_candidate_selection_uses_no_digits_or_absence_labels():
+    images = [np.full((32, 32, 3), i * 10, np.uint8) for i in range(10)]
+    records = [{"sha256": str(i)} for i in range(10)]
+    records[1]["sha256"] = records[0]["sha256"]
+    layout = SimpleNamespace(normalized_roi=lambda _: NormalizedRoi(0, 0, 1, 1))
+    indices, receipt = select_low_contrast(images, records, layout)
+    assert indices == [0, 2, 3, 4, 5, 6]
+    assert receipt["absence_inferred"] is False
+    assert receipt["ocr_used_for_selection"] is False
+    assert select_low_contrast(images, records, layout) == (indices, receipt)
+
+
+@pytest.mark.parametrize("phase,period", [(True, 5), (0, 4), (5, 5), (0, 31), (0, float("nan"))])
+def test_pool_cadence_cannot_be_unbounded_or_ambiguous(phase, period):
+    with pytest.raises(ValueError, match="bounded fixed"):
+        sampling_times(720, [], phase=phase, period=period)
+
+
+def test_previous_numeric_cohort_is_excluded_without_reading_its_labels(tmp_path):
+    _, _, video, trial, history = frozen(tmp_path)
+    prior = tmp_path / "prior"
+    prior.mkdir()
+    report = prior / "candidate_report.json"
+    report.write_text(json.dumps({"source_sha256": sha256_file(video), "training_performed": False,
+        "validation_frames": [{"source_frame_pts": 16.75, "sha256": "2" * 64}]}))
+    (prior / "probe_summary.json").write_text(json.dumps({
+        "kind": "prospective_numeric_point_probe_not_lifecycle_e2e",
+        "source_sha256": sha256_file(video), "production_adopted": False,
+        "candidate_report_sha256": sha256_file(report)}))
+    result = freeze_plan(video, sha256_file(video), trial, [history], 720,
+                         tmp_path / "new.json", partition=tmp_path / "partition.json",
+                         prior_numeric_probes=[prior])
+    assert 16.75 not in result["times"]
+    assert "2" * 64 in result["excluded_source_hashes"]
+    assert not (prior / "labels.json").exists()

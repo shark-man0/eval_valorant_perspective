@@ -14,6 +14,7 @@ from collections import Counter
 from pathlib import Path
 
 import cv2
+import numpy as np
 
 from scripts.diagnostics import numeric_text_localization
 from scripts.diagnostics.build_geometry_candidate import read_frames
@@ -53,22 +54,65 @@ def toolchain_fingerprints() -> dict:
     return {"probe": probe, "decoded_pixels": pixels, "tesseract": sha256_file(Path(executable))}
 
 
-def sampling_times(end: float, previous: list[float]) -> list[float]:
+def sampling_times(end: float, previous: list[float], *, phase: float = 16.75,
+                   period: float = 30) -> list[float]:
     if (type(end) not in (int, float) or not math.isfinite(end) or end <= 0
             or any(type(t) not in (int, float) or not math.isfinite(t) or t < 0
                    for t in previous)):
         raise ValueError("finite development boundary/prior diagnostic PTS required")
+    if (type(phase) not in (int, float) or type(period) not in (int, float)
+            or not math.isfinite(phase) or not math.isfinite(period)
+            or not 5 <= period <= 30 or not 0 <= phase < period):
+        raise ValueError("bounded fixed phase/period required")
     # Fixed before image inspection; neither state nor OCR/GT chooses samples.
-    times = [16.75 + 30 * i for i in range(math.ceil(end / 30))
-             if 16.75 + 30 * i < end
-             and all(abs(16.75 + 30 * i - old) >= 2 for old in previous)]
+    times = [phase + period * i for i in range(math.ceil(end / period))
+             if phase + period * i < end
+             and all(abs(phase + period * i - old) >= 2 for old in previous)]
     if len(times) < 8:
         raise ValueError("insufficient untouched development points")
     return times
 
 
+def select_low_contrast(images: list, records: list[dict], layout) -> tuple[list[int], dict]:
+    """Candidate negatives only: rank raw ROI contrast before invoking any OCR.
+
+    No absence/state assertion is inferred. Human source labels are still needed.
+    Exact duplicate images are not chosen as separate review conditions.
+    """
+    selected, ranks = set(), {}
+    for field in FIELDS:
+        scores = []
+        for index, image in enumerate(images):
+            x1, y1, x2, y2 = layout.normalized_roi(field).pixel_bounds(
+                image.shape[1], image.shape[0])
+            gray = cv2.cvtColor(image[y1:y2, x1:x2], cv2.COLOR_BGR2GRAY)
+            scores.append((float(np.std(gray)), index))
+        unique, chosen = set(), []
+        for contrast, index in sorted(scores):
+            digest = records[index]["sha256"]
+            if digest in unique:
+                continue
+            unique.add(digest)
+            chosen.append({"pool_index": index, "contrast": contrast})
+            selected.add(index)
+            if len(chosen) == 6:
+                break
+        ranks[field] = chosen
+    # If a duplicate was selected for a different ROI, still review it only once.
+    seen, indices = set(), []
+    for index in sorted(selected):
+        if records[index]["sha256"] not in seen:
+            indices.append(index)
+            seen.add(records[index]["sha256"])
+    return indices, {"method": "lowest_raw_roi_contrast_six_per_field",
+                     "ranking": ranks, "selected_pool_indices": indices,
+                     "absence_inferred": False, "ocr_used_for_selection": False}
+
+
 def freeze_plan(video: Path, source_sha: str, trial: Path, histories: list[Path],
-                end: float, output: Path, *, partition: Path) -> dict:
+                end: float, output: Path, *, partition: Path, phase: float = 16.75,
+                period: float = 30, low_contrast_candidates: bool = False,
+                prior_numeric_probes: list[Path] | None = None) -> dict:
     _check_output_privacy(output.resolve())
     if output.exists():
         raise FileExistsError("freeze a new private prospective plan")
@@ -84,19 +128,37 @@ def freeze_plan(video: Path, source_sha: str, trial: Path, histories: list[Path]
         for row in history["training_frames"] + history["validation_frames"]:
             previous.append(row["source_frame_pts"])
             excluded_hashes.add(row["sha256"])
-    times = sampling_times(end, previous)
+    numeric_inputs = []
+    for directory in prior_numeric_probes or []:
+        report_path = directory / "candidate_report.json"
+        summary_path = directory / "probe_summary.json"
+        report = json.loads(report_path.read_text(encoding="utf-8"))
+        summary = json.loads(summary_path.read_text(encoding="utf-8"))
+        if (summary.get("kind") != "prospective_numeric_point_probe_not_lifecycle_e2e"
+                or summary.get("source_sha256") != source_sha
+                or summary.get("production_adopted") is not False
+                or summary.get("candidate_report_sha256") != sha256_file(report_path)
+                or report.get("source_sha256") != source_sha
+                or report.get("training_performed") is not False):
+            raise ValueError("only bound unadopted numeric sampling history permitted")
+        for row in report["validation_frames"]:
+            previous.append(row["source_frame_pts"])
+            excluded_hashes.add(row["sha256"])
+        numeric_inputs.extend((report_path, summary_path))
+    times = sampling_times(end, previous, phase=phase, period=period)
     if sha256_file(video) != source_sha:
         raise ValueError("source video mismatch")
     layout, profile = trial / "hud_layout.json", trial / "hud_layout.templates.json"
     assets = HudTemplateProfile.load(profile)
-    paths = [layout, profile, partition, *histories, Path(__file__),
+    paths = [layout, profile, partition, *histories, *numeric_inputs, Path(__file__),
              Path(numeric_text_localization.__file__),
              *[assets.resolve_asset(str(p)) for p in assets.asset_paths]]
     result = {"kind": "prospective_numeric_point_plan_not_lifecycle_gt",
               "schema_version": 2, "partition_path": str(partition.resolve()),
               "source_sha256": source_sha, "source_path": str(video.resolve()),
               "trial_layout_path": str(layout.resolve()), "development_end_sec": end,
-              "times": times, "period_sec": 30, "phase_sec": 16.75,
+              "times": times, "period_sec": period, "phase_sec": phase,
+              "review_selection": "low_contrast_candidates" if low_contrast_candidates else "all",
               "exclusion_radius_sec": 2, "excluded_source_hashes": sorted(excluded_hashes),
               "inputs_sha256": {str(p.resolve()): sha256_file(p) for p in paths},
               "runtime_code_fingerprint": code_fingerprint(Path(__file__).resolve().parents[2]),
@@ -119,6 +181,7 @@ def measure(plan_path: Path, output: Path) -> dict:
         raise ValueError("frozen v2 partition-bound prospective plan required; do not rewrite v1")
     video, layout = Path(plan["source_path"]), Path(plan["trial_layout_path"])
     root = Path(__file__).resolve().parents[2]
+    selection_hash = None
 
     def verify():
         verify_partition(Path(plan["partition_path"]), plan["source_sha256"],
@@ -127,6 +190,8 @@ def measure(plan_path: Path, output: Path) -> dict:
                 or toolchain_fingerprints() != plan["toolchain_fingerprints"]
                 or code_fingerprint(root) != plan["runtime_code_fingerprint"]
                 or sha256_file(video) != plan["source_sha256"]
+                or (selection_hash is not None and sha256_file(
+                    output / "review_selection.json") != selection_hash)
                 or any(sha256_file(Path(p)) != h for p, h in plan["inputs_sha256"].items())):
             raise ValueError("frozen source/code/profile inputs changed")
 
@@ -140,10 +205,24 @@ def measure(plan_path: Path, output: Path) -> dict:
     metadata = cached.probe(video)
     if plan["development_end_sec"] > metadata.duration_sec:
         raise ValueError("development window outside source")
-    images, records = read_frames(cached, video, plan["times"],
-                                  output / "validation_frames", metadata)
+    select_candidates = plan.get("review_selection") == "low_contrast_candidates"
+    directory = output / ("pool_frames" if select_candidates else "validation_frames")
+    images, records = read_frames(cached, video, plan["times"], directory, metadata)
     if any(not 0 <= r["source_frame_pts"] < plan["development_end_sec"] for r in records):
         raise ValueError("decoded point escaped development partition")
+    if select_candidates:
+        from valorant_ai_coach.hud.layout import HudLayout
+        indices, selection = select_low_contrast(images, records, HudLayout.load(layout))
+        selection.update(plan_sha256=plan_hash, pool_records=records,
+                         selection_frozen_before_numeric_measurement=True)
+        (output / "review_selection.json").write_text(json.dumps(selection, indent=2) + "\n")
+        selection_hash = sha256_file(output / "review_selection.json")
+        pool_paths = sorted(directory.glob("*.jpg"))
+        (output / "validation_frames").mkdir()
+        for number, index in enumerate(indices):
+            destination = output / "validation_frames" / f"frame_{number:05d}.jpg"
+            shutil.copyfile(pool_paths[index], destination)
+        images, records = [images[i] for i in indices], [records[i] for i in indices]
     # Frozen capture images may duplicate earlier images despite new PTS. Keep
     # the cohort (no outcome-driven replacement), and report overlap explicitly.
     report = {"source_sha256": plan["source_sha256"], "validation_frames": records,
@@ -200,6 +279,10 @@ def measure(plan_path: Path, output: Path) -> dict:
                "runtime_code_fingerprint": plan["runtime_code_fingerprint"],
                "candidate_report_sha256": sha256_file(report_path),
                "frames": len(records), "observations_sha256": sha256_file(raw_path),
+               "pool_frame_count": len(plan["times"]),
+               "source_selection_kind": plan.get("review_selection", "all"),
+               "selection_sha256": selection_hash,
+               "low_contrast_is_absence_proof": False,
                "production_adopted": False, "production_qualified": False,
                "previous_source_image_overlap_count": sum(
                    r["sha256"] in plan["excluded_source_hashes"] for r in records),
@@ -224,13 +307,20 @@ def main() -> None:
     freeze.add_argument("--history", type=Path, action="append", required=True)
     freeze.add_argument("--development-end", type=float, required=True)
     freeze.add_argument("--partition", type=Path, required=True)
+    freeze.add_argument("--sampling-phase", type=float, default=16.75)
+    freeze.add_argument("--sampling-period", type=float, default=30)
+    freeze.add_argument("--low-contrast-candidates", action="store_true")
+    freeze.add_argument("--prior-numeric-probe", type=Path, action="append")
     freeze.add_argument("--output", type=Path, required=True)
     run = sub.add_parser("measure")
     run.add_argument("--plan", type=Path, required=True)
     run.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     result = (freeze_plan(args.video, args.source_sha256, args.trial, args.history,
-                          args.development_end, args.output, partition=args.partition)
+                          args.development_end, args.output, partition=args.partition,
+                          phase=args.sampling_phase, period=args.sampling_period,
+                          low_contrast_candidates=args.low_contrast_candidates,
+                          prior_numeric_probes=args.prior_numeric_probe)
               if args.command == "freeze"
               else measure(args.plan, args.output))
     print(json.dumps({k: v for k, v in result.items()

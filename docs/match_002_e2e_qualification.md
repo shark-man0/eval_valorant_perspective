@@ -505,3 +505,44 @@ Broader source/temporal components still require their own reviewed evidence.
 Review ingestion/comparison/planning regressions: 63 passed; Ruff, mypy (131
 source files), and diff checks passed. This targeted result does not replace
 the separately recorded full-suite spectator failures or formal real-video E2E.
+
+## Additional source-negative candidates (2026-10-14)
+
+The unchanged numeric crop/OCR proposal was measured against a new source
+cohort intended to find absent-value controls, without assuming that any image
+is actually negative. A fixed 5-second development grid was frozen before
+decoding, excluding prior geometry samples and the previous numeric cohort
+within 2 seconds. Only source/PTS/hash metadata is consumed from prior diagnostic
+reports; no review labels, GT timestamps, Validation Pack or OCR predictions
+select the source pool. The final evaluation holdout remains untouched.
+
+The frozen pool retained 75 points. A predeclared ranking selects the six lowest
+raw grayscale ROI standard deviations per field, deduplicates source images
+and freezes selection before invoking numeric OCR. Low contrast is **not** an
+absence/unknown-state proof. Human review must supply visible values, absent
+or unknown normally; a visible number cannot be relabelled as absent to fill
+the negative quota. This is a contrast-selected control cohort, not a random
+accuracy/recall estimate or a proxy for diverse real-world negatives.
+
+Thirteen distinct images were selected, with no hash overlap against previous
+candidate training/validation or reviewed numeric cohort images. Real point
+Analyzer output remained 13 unknowns with event generation disabled. Outside
+the Analyzer, unchanged OCR confidence/format conditions held in Timer 4,
+ally score 8 and enemy score 9 cases. These are not correctness or false-positive
+counts. A prediction-free private review page has no numeric labels yet. No
+negative verdict, qualification file, production adoption or lifecycle event
+is fabricated from this measurement. If reviewed controls remain insufficient,
+do not relax the existing distinct-evidence requirements.
+
+Source, code, profile/assets, partition/toolchain and frozen selection hashes
+were verified after processing. Original earlier cohorts and human responses
+remain immutable. This diagnostic sampling/ranking extension does not change
+production recognition, Schemas, confidence/NCC thresholds, identity gates,
+source continuity or the formal evaluation fixture.
+
+Probe receipt SHA:
+`76970b2bfcbd7542b0b57482fecb15d2e077cde6ba947315e2dc22fd315c231d`.
+Blind receipt SHA:
+`285fdcf9421057e801d705c9da5868c06eb34ab5e1646650f137f2e6cff07aa1`.
+Planning/numeric/geometry/review targeted regressions: 152 passed; Ruff, mypy
+(131 source files) and diff checks passed. No new full-suite or full E2E PASS.
