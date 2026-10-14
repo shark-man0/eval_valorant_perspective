@@ -349,6 +349,8 @@ def test_close_waits_until_analysis_worker_has_stopped(
     app.processEvents()
     assert window._allow_close is True
 
+    _destroy_widget(window, app)
+
 
 def test_history_exposes_resumable_job_and_forwards_identity(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
