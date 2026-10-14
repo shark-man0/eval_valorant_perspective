@@ -14,7 +14,7 @@ def valid_pack(tmp_path, monkeypatch):
     timeline, source, output = setup(tmp_path, monkeypatch)
     (timeline / "assets/synthetic.jpg").unlink()  # This test owns the temporary fixture.
     bindings, entries = [], []
-    points = json.loads((timeline / "timeline_ground_truth_v3.json").read_text(,
+    points = json.loads((timeline / "timeline_ground_truth_v3.json").read_text(
         encoding="utf-8",
     ))
     for row in points["rounds"]:
@@ -51,7 +51,7 @@ def valid_pack(tmp_path, monkeypatch):
         "video_stream": {"width": 8, "height": 8, "fps": 60, "time_base": "1/60"}}),
         encoding="utf-8",
     )
-    provenance = json.loads((source / "provenance.json").read_text(,
+    provenance = json.loads((source / "provenance.json").read_text(
         encoding="utf-8",
     ))
     provenance["point_fragments_sha256"] = digest(binding_path)
@@ -64,7 +64,7 @@ def valid_pack(tmp_path, monkeypatch):
 
 def reseal(pack):
     """Tests-only rehashing reaches semantic guards beyond the integrity guard."""
-    manifest = json.loads((pack / "MANIFEST.json").read_text(,
+    manifest = json.loads((pack / "MANIFEST.json").read_text(
         encoding="utf-8",
     ))
     for name in manifest["files"]:
@@ -91,7 +91,7 @@ def test_corrupt_fixture_rejected(tmp_path, monkeypatch, fault):
         next((pack / "assets/reference_frames").glob("*.jpg")).write_bytes(b"changed")
     elif fault in {"pts", "filename_time"}:
         path = pack / "ground_truth/frame_pts_sidecar_v3.json"
-        data = json.loads(path.read_text(,
+        data = json.loads(path.read_text(
             encoding="utf-8",
         ))
         data["entries"][0]["packet_pts_ticks" if fault == "pts" else "requested_sec"] = 100
@@ -100,7 +100,7 @@ def test_corrupt_fixture_rejected(tmp_path, monkeypatch, fault):
     elif fault == "bracket_order":
         # Merely reordering keys is legal; reversing their semantic values is not.
         path = pack / "ground_truth/timeline_ground_truth_v3.json"
-        data = json.loads(path.read_text(,
+        data = json.loads(path.read_text(
             encoding="utf-8",
         ))
         data["rounds"][0]["point_events"][0]["evidence_bracket"] = {
@@ -109,7 +109,7 @@ def test_corrupt_fixture_rejected(tmp_path, monkeypatch, fault):
         reseal(pack)
     elif fault == "actor_coverage":
         path = pack / "ground_truth/negative_assertions_v3.json"
-        data = json.loads(path.read_text(,
+        data = json.loads(path.read_text(
             encoding="utf-8",
         ))
         data["assertions"].pop()
@@ -129,7 +129,7 @@ def test_extra_non_system_end_fails_with_required_boundaries_present(tmp_path, m
                                                 pack / "tests/reference_evaluator.py")
     evaluator = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(evaluator)
-    assertions = json.loads((pack / "tests/generated/e2e_assertions_v3.json").read_text(,
+    assertions = json.loads((pack / "tests/generated/e2e_assertions_v3.json").read_text(
         encoding="utf-8",
     ))
     events = [{"round_id": rid, "type": kind, "actor": "system", "time_sec": time,

@@ -45,7 +45,7 @@ def test_archive_inventory_and_recipe_are_verified(tmp_path):
 @pytest.mark.parametrize("fault", ["recipe", "input", "escape", "unverified"])
 def test_invalid_archive_rejected(tmp_path, fault):
     root = archive(tmp_path)
-    receipt = json.loads((root / "provenance.json").read_text(,
+    receipt = json.loads((root / "provenance.json").read_text(
         encoding="utf-8",
     ))
     if fault == "recipe":
@@ -83,7 +83,7 @@ def test_finalization_transport_keeps_fixture_bytes_and_pins_validator(tmp_path,
     assert (output / "ground_truth/timeline_ground_truth_v3.json").read_bytes() == (
         stage / "ground_truth/timeline_ground_truth_v3.json").read_bytes()
     assert pack_identity(output)[0]["formal_pack_completed"] is True
-    manifest = json.loads((output / "MANIFEST.json").read_text(,
+    manifest = json.loads((output / "MANIFEST.json").read_text(
         encoding="utf-8",
     ))
     manifest["validation_tools"]["scripts/e2e/finalize_fixture.py"] = "0" * 64

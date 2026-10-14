@@ -54,7 +54,7 @@ def test_geometry_sampling_and_diagnostics_are_development_only(tmp_path):
         Path("dummy.mp4"), layout, tmp_path / "out", video_service=service,
         sampling_window=(2.0, 4.0),
     )
-    diagnostics = json.loads(result.with_suffix(".templates.json").read_text(,
+    diagnostics = json.loads(result.with_suffix(".templates.json").read_text(
         encoding="utf-8",
     ))
     assert diagnostics["temporal_generation"]["sampling_window_sec"] == [2.0, 4.0]
@@ -177,7 +177,7 @@ def test_preserves_prior_readers_signals_and_source_assets_and_refuses_overwrite
     out = tmp_path / "generated"
     result = create_temporal_profile(Path("dummy.mp4"), layout, out,
                                      video_service=FakeVideoService(_frames(changing=True)))
-    generated = json.loads(result.with_name("hud_layout.templates.json").read_text(,
+    generated = json.loads(result.with_name("hud_layout.templates.json").read_text(
         encoding="utf-8",
     ))
     assert generated["readers"] == {"digits": {"kind": "digits", "template": str(local_asset)}}
@@ -187,7 +187,7 @@ def test_preserves_prior_readers_signals_and_source_assets_and_refuses_overwrite
         "round_timer", "top_match_bar", "player_hp_armor", "abilities",
     }
     assert not any("identity" in key for key in generated["anchors"])
-    stats = json.loads((out / "temporal_stats.json").read_text(,
+    stats = json.loads((out / "temporal_stats.json").read_text(
         encoding="utf-8",
     ))
     assert generated["temporal_generation"] == stats
@@ -258,7 +258,7 @@ def test_supported_partial_geometry_replaces_only_supported_anchor(tmp_path):
     result = create_temporal_profile(
         Path("dummy.mp4"), layout, tmp_path / "out", video_service=FakeVideoService(images)
     )
-    profile = json.loads(result.with_suffix(".templates.json").read_text(,
+    profile = json.loads(result.with_suffix(".templates.json").read_text(
         encoding="utf-8",
     ))
     assert profile["anchors"]["round_timer"]["template"] == "anchors/round_timer.png"

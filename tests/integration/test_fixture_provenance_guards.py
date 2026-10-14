@@ -29,7 +29,7 @@ def fixture(tmp_path, monkeypatch):
 
 def test_ledger_must_match_fixture_identity(tmp_path, monkeypatch):
     pack, ledger, _ = fixture(tmp_path, monkeypatch)
-    data = json.loads(ledger.read_text(, encoding="utf-8"))
+    data = json.loads(ledger.read_text( encoding="utf-8"))
     data["video_id"] = "wrong"
     ledger.write_text(json.dumps(data), encoding="utf-8")
     with pytest.raises(ValueError, match="fixture mismatch"):
@@ -46,7 +46,7 @@ def test_changed_approval_fails_before_assembly(tmp_path, monkeypatch):
 def test_escaped_approval_is_not_accepted(tmp_path, monkeypatch):
     pack, ledger, _ = fixture(tmp_path, monkeypatch)
     outside = tmp_path.parent / "synthetic-outside.json"
-    data = json.loads(ledger.read_text(, encoding="utf-8"))
+    data = json.loads(ledger.read_text( encoding="utf-8"))
     data["inputs"][0]["file"] = str(outside)
     ledger.write_text(json.dumps(data), encoding="utf-8")
     with pytest.raises(ValueError, match="escaped"):
@@ -64,7 +64,7 @@ def test_reassembly_difference_is_not_silently_resealed(tmp_path, monkeypatch):
 
 def test_change_during_reassembly_is_rejected(tmp_path, monkeypatch):
     pack, ledger, _ = fixture(tmp_path, monkeypatch)
-    data = json.loads(ledger.read_text(, encoding="utf-8"))
+    data = json.loads(ledger.read_text( encoding="utf-8"))
 
     def changed(*_):
         ledger.write_text(json.dumps({**data, "changed": True}),

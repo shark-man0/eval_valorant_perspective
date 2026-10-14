@@ -118,7 +118,7 @@ def test_cli_escapes_text_and_refuses_overwrite(tmp_path, monkeypatch):
     monkeypatch.setattr(sys, "argv", ["batch", "--candidate", str(candidate),
                                      "--evidence", str(manifest), "--output", str(output)])
     batch.main()
-    page = (output / "index.html").read_text(,
+    page = (output / "index.html").read_text(
         encoding="utf-8",
     )
     assert "&lt;script&gt;" in page and "<script>" not in page
