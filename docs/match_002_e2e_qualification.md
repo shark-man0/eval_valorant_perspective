@@ -753,3 +753,56 @@ convert accepted numeric transitions into Round events. None of these bounded
 measurements is a Full E2E, negative-safety PASS or production profile release.
 Related native/geometry/numeric/lifecycle regressions: 198 passed; Ruff, mypy
 (132 production files) and diff checks pass. Full-suite limitations remain.
+
+## Unlabeled banner-reference discovery (2026-10-14)
+
+Missing purchase/result references are now investigated using the existing
+fixed development image pool, without decoding a new cohort, reading GT/labels,
+or selecting by expected timestamps. Previously selected numeric-review parents
+and two separately reserved score-control hashes are excluded. Exact duplicate
+parents are deduplicated. Remaining source hashes split deterministically into
+30 training and 30 held images; the final evaluation holdout is not accessed.
+
+`scripts/diagnostics/discover_banner_references.py` derives bright text-row
+proposals from training pixels inside the configured banner ROIs. Foreground
+neighbourhood masks and three separated support groups are checked by the
+existing `SemanticTextReference`, including NCC >=0.90, contrast/support floors
+and three distinct training parents. Selection/ranking uses training support
+only. Held images measure frozen candidates and cannot change their masks,
+reference bytes, boxes or selection. No OCR or semantic label enters discovery.
+All source inputs, candidates, review crops, originating reference-parent hashes
+and the review page are bound in a new private receipt.
+
+Three candidate variants were found per configured ROI. Their training support
+is 5/4/4, held acceptance 2/1/1. These are repeated shapes, not reviewed correct
+phase/result classifications. Both ROIs discover the same purchase-like text
+family: an end-ROI proposal is **not** evidence of a round result. No result
+reference has been established. ROI names cannot supply semantics. The current
+four-component row proposal also does not cover every short English caption;
+that diagnostic coverage limitation must not become an absence assertion.
+
+The three reference variants bind three distinct training parents. Human
+transcription of those reference images/source parents is requested separately
+from lifecycle GT. Semantic labels remain null and no template sidecar,
+qualification report, application setting or event is generated. Even an
+approved reference transcription would not supply missing held/negative/event-
+level qualification or justify production adoption. Multiple same-match frames
+must not be counted as independent temporal episodes or cross-match evidence.
+
+Latest private candidate report SHA:
+`60d4b9882b65b63473e2e8a7c8816b5610f4029ca2352e7b65b65eb64f42e9ae`.
+Review-page SHA:
+`499ebe273cf3a35b4465739ca9d6c942061dc57f5c2abbe5b9465a0e8bbbdd17`.
+Receipt revisions added source/review bindings only; reference/mask bytes,
+training selection and held predictions are identical to the first run.
+The fixed development images are exposed diagnostic/regression evidence, not
+new blind temporal qualification or a full-E2E improvement.
+
+Tests verify that held-image replacement cannot change training candidates,
+blank/background nonmatches cannot imply semantics, reserved/previously
+reviewed parents and evaluation-holdout frames cannot enter training, modified
+hashes reject before output, and discovery cannot write a configured profile or
+qualification. Related discovery/semantic/native/geometry/lifecycle modules:
+144 passed. Ruff, mypy (132 production files) and diff checks pass. All existing
+thresholds, Schemas, canonical Packs and production recognizers remain unchanged
+in this checkpoint; full-match lifecycle is still incomplete.
