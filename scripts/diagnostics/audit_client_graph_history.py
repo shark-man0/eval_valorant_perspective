@@ -79,7 +79,7 @@ def main():
               'native_frames': len(rows), 'wall_clock_sec': time.monotonic()-started,
               'qualification_created': False, 'runtime_continuity_authorized': False,
               'canonical_current': None, 'canonical_delta': None}
-    args.output.write_text(json.dumps(result, indent=2)+'\n')
+    args.output.write_text(json.dumps(result, indent=2)+'\n', encoding="utf-8")
     print(json.dumps({'native_frames': len(rows), 'runtime_sec': result['wall_clock_sec']}))
 
 

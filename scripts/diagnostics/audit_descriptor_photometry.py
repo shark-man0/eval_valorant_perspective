@@ -107,7 +107,7 @@ def main():
         "rows": rows,
         "wall_clock_sec": time.perf_counter() - start,
     }
-    args.output.write_text(json.dumps(report, indent=2) + "\n")
+    args.output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps([{k: v for k, v in r.items() if k != "measurements"} for r in rows]))
 
 
