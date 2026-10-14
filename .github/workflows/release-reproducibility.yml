@@ -34,7 +34,7 @@ jobs:
           "PYTHONHASHSEED=1" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
           "SOURCE_DATE_EPOCH=$epoch" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
       - name: Install the same constrained Windows environment
-        run: python -m pip install -c constraints-windows.txt -e ".[gui,dev,build]"
+        run: python -m pip install --report installed-artifacts.json -c constraints-windows.txt -e ".[gui,dev,build]"
       - name: Validate resolved dependency graph
         run: python -m pip check
       - name: Build independent PyInstaller directory
@@ -55,7 +55,7 @@ jobs:
           $resolved | Sort-Object | Set-Content -LiteralPath "independent-dependencies.txt" -Encoding UTF8
           $commit = (& git rev-parse HEAD).Trim()
           if ($LASTEXITCODE -ne 0) { throw "git rev-parse failed" }
-          python scripts/release/build_snapshot.py capture --distribution dist/VALORANT-AI-Coach --dependencies independent-dependencies.txt --commit $commit --output independent-snapshot.json
+          python scripts/release/build_snapshot.py capture --distribution dist/VALORANT-AI-Coach --dependencies independent-dependencies.txt --commit $commit --install-report installed-artifacts.json --output independent-snapshot.json
           if ($LASTEXITCODE -ne 0) { throw 'build snapshot failed' }
       - name: Save complete textual evidence (not large binaries)
         uses: actions/upload-artifact@v4

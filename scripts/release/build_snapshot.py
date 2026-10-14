@@ -51,8 +51,37 @@ def _record_rows(path: Path) -> dict[str, str]:
     return result
 
 
+def _install_artifacts(report: Path) -> dict[str, list]:
+    """Record pip distribution archive SHA-256 without exposing index URLs."""
+    payload = json.loads(report.read_text(encoding="utf-8"))
+    if not isinstance(payload.get("install"), list):
+        raise ValueError("pip install report must contain an install list")
+    hashed: list[dict[str, str]] = []
+    unhashed: list[dict[str, str]] = []
+    for entry in payload["install"]:
+        metadata = entry["metadata"]
+        name, version = str(metadata["name"]).lower(), str(metadata["version"])
+        info = entry.get("download_info", {})
+        archive = info.get("archive_info", {})
+        hashes = archive.get("hashes", {})
+        digest = hashes.get("sha256")
+        if digest is None:
+            legacy = archive.get("hash", "")
+            if isinstance(legacy, str) and legacy.startswith("sha256="):
+                digest = legacy.removeprefix("sha256=")
+        if isinstance(digest, str) and re.fullmatch(r"[0-9a-fA-F]{64}", digest):
+            hashed.append({"name": name, "version": version, "sha256": digest.lower()})
+        else:
+            # Local editable sources or archives without a supplied hash.
+            unhashed.append({"name": name, "version": version})
+    hashed.sort(key=lambda x: (x["name"], x["version"], x["sha256"]))
+    unhashed.sort(key=lambda x: (x["name"], x["version"]))
+    return {"hashed": hashed, "unhashed": unhashed}
+
+
 def capture_snapshot(
     distribution: Path, dependencies: Path, commit: str, output: Path,
+    install_report: Path | None = None,
 ) -> dict:
     """Capture content hashes, not mtimes, runner paths, or a claimed wheel lock."""
     if not COMMIT_RE.fullmatch(commit):
@@ -93,6 +122,7 @@ def capture_snapshot(
         "dependencies": resolved,
         "files": files,
         "record_rows": record_rows,
+        "install_artifacts": _install_artifacts(install_report) if install_report else None,
     }
     _write_json(output, result)
     return result
@@ -110,7 +140,10 @@ def compare_snapshots(first: Path, second: Path, output: Path) -> dict:
     changed = sorted(p for p in common if left_files[p] != right_files[p])
     version_drift = {
         field: [left.get(field), right.get(field)]
-        for field in ("commit", "platform", "python", "build_tools", "dependencies")
+        for field in (
+            "commit", "platform", "python", "build_tools", "dependencies",
+            "install_artifacts",
+        )
         if left.get(field) != right.get(field)
     }
     result = {
@@ -159,6 +192,7 @@ def main() -> None:
     capture.add_argument("--distribution", type=Path, required=True)
     capture.add_argument("--dependencies", type=Path, required=True)
     capture.add_argument("--commit", required=True)
+    capture.add_argument("--install-report", type=Path)
     capture.add_argument("--output", type=Path, required=True)
     compare = sub.add_parser("compare")
     compare.add_argument("--first", type=Path, required=True)
@@ -168,6 +202,7 @@ def main() -> None:
     if args.action == "capture":
         result = capture_snapshot(
             args.distribution, args.dependencies, args.commit, args.output,
+            args.install_report,
         )
         print(f"Recorded {len(result['files'])} hashed payload files.")
     else:

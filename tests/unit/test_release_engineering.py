@@ -186,3 +186,49 @@ def test_reproducible_controls_apply_before_package_install() -> None:
     assert workflow.index("Pin source timestamp before pip") < workflow.index(
         "Install the same constrained Windows environment"
     )
+
+
+
+def test_pip_install_report_hashes_omit_private_download_urls(tmp_path: Path) -> None:
+    snapshot = ROOT / "scripts" / "release" / "build_snapshot.py"
+    spec = importlib.util.spec_from_file_location("build_snapshot_pip", snapshot)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    report = tmp_path / "pip.json"
+    report.write_text(
+        json.dumps({"install": [
+            {"metadata": {"name": "NumPy", "version": "2.5.4"},
+             "download_info": {"url": "https://private.example/?token=hidden",
+                               "archive_info": {"hashes": {"sha256": "a" * 64}}}},
+            {"metadata": {"name": "valorant-ai-coach", "version": "0.1.0"},
+             "download_info": {"url": "file:///private/user/project",
+                               "dir_info": {"editable": True}}},
+        ]}),
+        encoding="utf-8",
+    )
+    evidence = module._install_artifacts(report)
+    assert evidence["hashed"] == [{"name": "numpy", "version": "2.5.4", "sha256": "a" * 64}]
+    assert evidence["unhashed"] == [{"name": "valorant-ai-coach", "version": "0.1.0"}]
+    assert "private.example" not in json.dumps(evidence)
+    assert "private/user" not in json.dumps(evidence)
+
+    folder = tmp_path / "dist"
+    folder.mkdir()
+    (folder / "app.exe").write_bytes(b"app")
+    deps = tmp_path / "dependencies.txt"
+    deps.write_text("numpy==2.5.4\n", encoding="utf-8")
+    first, second = tmp_path / "first.json", tmp_path / "second.json"
+    module.capture_snapshot(folder, deps, "a" * 40, first, report)
+    module.capture_snapshot(folder, deps, "a" * 40, second, report)
+    comparison = module.compare_snapshots(first, second, tmp_path / "comparison.json")
+    assert comparison["bit_for_bit_equal"]
+    assert comparison["reproducible_environment"]
+    document = json.loads(second.read_text(encoding="utf-8"))
+    document["install_artifacts"]["hashed"][0]["sha256"] = "b" * 64
+    second.write_text(json.dumps(document), encoding="utf-8")
+    mismatch = module.compare_snapshots(first, second, tmp_path / "comparison.json")
+    assert "install_artifacts" in mismatch["metadata_drift"]
+    assert mismatch["bit_for_bit_equal"]
+    assert not mismatch["reproducible_environment"]

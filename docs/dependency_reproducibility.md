@@ -196,3 +196,22 @@ or changing any distributed `RECORD` data.
 
 References: https://github.com/pypa/distlib/issues/164 and
 https://github.com/pypa/distlib/blob/master/distlib/scripts.py
+
+
+## Resolved Windows wheel archive checksums
+
+The independent Windows rebuild workflow also captures pip's installation
+report (`pip install --report`). The archived snapshot records each
+installed artifact's package name, version and SHA-256 archive hash when
+provided by pip, plus an explicit unhashed list (including the editable
+first-party source). It never includes original download URLs, auth query
+strings, or local checkout paths.
+
+Hashes from both independent runners are compared along with the complete
+packaged-file inventory and dependency versions. The pip report covers
+resolved install artifacts rather than establishing `--require-hashes`
+enforcement; preinstalled tools and packages without download records may
+not be represented. An exact wheel hash lock and an independently
+reproduced complete ZIP/Inno Setup release remain separate open work.
+The earlier independent onedir run #38502954619 achieved exact 425/425
+content SHA-256 agreement before this additional audit evidence.
