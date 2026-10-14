@@ -51,9 +51,6 @@ def aggregate_saved_match(repository: SQLiteRepository, match_id: str) -> dict[s
         checkpoint = {}
     completed = _round_numbers(checkpoint.get("completed_rounds"))
     failed = _round_numbers(checkpoint.get("failed_rounds"))
-    diagnostics = checkpoint.get("round_diagnostics", {})
-    if not isinstance(diagnostics, dict):
-        diagnostics = {}
     inputs: list[RoundInput] = []
     seen: set[int] = set()
     for package in packages:
@@ -91,9 +88,7 @@ def aggregate_saved_match(repository: SQLiteRepository, match_id: str) -> dict[s
         else:
             reason = "評価結果または完了チェックポイントがありません"
         if round_no in failed:
-            detail = diagnostics.get(str(round_no))
-            if isinstance(detail, str) and detail:
-                reason = f"保存済みRoundの解析失敗: {type(detail).__name__}"
+            reason = "保存済みRoundの解析失敗（詳細はジョブ診断に記録）"
         inputs.append(
             RoundInput(round_package=package, output=output, evaluation_failure=reason)
         )
@@ -110,6 +105,14 @@ def aggregate_saved_match(repository: SQLiteRepository, match_id: str) -> dict[s
     view = MatchAggregator().aggregate(
         inputs, match_id=match_id, expected_round_numbers=None
     ).to_dict()
+    # On post-L5 data, reaching the UI budget cannot imply missing stored
+    # records. Keep the measured per-rule counts/limit flags unchanged, but
+    # remove the *legacy truncation* warning for this proven complete input.
+    if checkpoint.get("canonical_evaluation_set") == _FULL_SET_MARKER:
+        view["issues"] = [
+            item for item in view["issues"]
+            if item["code"] != "display_limit_reached"
+        ]
     missing_failed = sorted(failed - seen)
     if missing_failed:
         # It is unsafe to invent a Round Package solely for a failed Round number.

@@ -21,6 +21,16 @@ remains incomplete. A saved-but-unevaluated or Practical/unknown boundary Round
 is reported as `not_evaluated`, with 0 scored evaluations. The Match is never
 `verified_complete` when `expected_round_numbers` is unknown.
 
+Post-L5 checkpoints remove the obsolete `display_limit_reached` **truncation**
+warning from the recomputed result: reaching a per-rule UI budget no longer
+implies that stored rows were discarded. Legacy or unverified sets retain
+that warning when the observed threshold is reached. Raw counts and
+`RuleAggregate.display_limit_reached` still reflect the observed threshold.
+
+A failed/corrupt stored Match view is withheld from generated `analysis.json`
+as `match_aggregation: null` with a sanitized error rather than aborting the
+otherwise recoverable pipeline. History and JSON export similarly fail closed.
+
 Stored v1 rows do not retain candidate selections or analysis scopes; the
 recomputed view does not recreate them. `storage_provenance.candidate_scopes_restored`
 is false. Some context checks may consequently be less informative than during

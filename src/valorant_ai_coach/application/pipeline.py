@@ -953,6 +953,8 @@ class MatchAnalysisPipeline:
         # A malformed or incomplete stored Round must not turn an otherwise
         # recoverable partial Match into a failed analysis during JSON export.
         # Match totals are withheld rather than inferred in that case.
+        match_aggregation: dict[str, Any] | None
+        match_aggregation_error: str | None
         try:
             match_aggregation = aggregate_saved_match(self.repository, match_id)
             match_aggregation_error = None

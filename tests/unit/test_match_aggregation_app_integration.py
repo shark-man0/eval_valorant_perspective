@@ -20,6 +20,7 @@ from valorant_ai_coach.application.match_aggregation import (
     RoundInput,
 )
 from valorant_ai_coach.application.match_aggregation_service import aggregate_saved_match
+from valorant_ai_coach.application.pipeline import MatchAnalysisPipeline
 from valorant_ai_coach.non_video.features import NonVideoFeatures
 from valorant_ai_coach.storage import SQLiteRepository
 from valorant_ai_coach.ui.backend import BackendFacade
@@ -228,3 +229,57 @@ def test_backend_history_and_presentation_read_same_saved_aggregation(
 def test_summary_on_failure_does_not_echo_private_error_content() -> None:
     assert "SECRET" not in format_match_summary(None, "SECRET")
     assert format_match_summary(None, None) == ""
+
+def test_new_full_set_does_not_emit_legacy_display_thinning_warning(
+    tmp_path: Path,
+) -> None:
+    repo, _ = saved(tmp_path, ("TC-006", "TC-006", "TC-006"))
+    full = aggregate_saved_match(repo, MATCH)
+    assert len(full["evaluations"]) == 3
+    assert not [i for i in full["issues"] if i["code"] == "display_limit_reached"]
+
+    repo.save_job_checkpoint(MATCH, "completed", {"completed_rounds": [1, 2, 3]})
+    old = aggregate_saved_match(repo, MATCH)
+    assert len(old["evaluations"]) == 3
+    assert any(i["code"] == "display_limit_reached" for i in old["issues"])
+
+
+def test_corrupt_round_lifecycle_fails_closed_not_keyerror(tmp_path: Path) -> None:
+    repo, analyses = saved(tmp_path, ("TC-006",))
+    corrupt = deepcopy(analyses[0].round_package)
+    corrupt["round_lifecycle"] = {"start": {}, "end": {}}
+    repo.save_round_package(corrupt)
+    with pytest.raises(MatchAggregationError, match="境界未確定または不正"):
+        aggregate_saved_match(repo, MATCH)
+
+
+def test_incomplete_round_with_invalid_lifecycle_is_quarantined(tmp_path: Path) -> None:
+    repo, analyses = saved(tmp_path, ("TC-006",))
+    empty = deepcopy(analyses[0].output)
+    empty["evaluations"] = []
+    repo.save_analysis_result(empty)
+    corrupt = deepcopy(analyses[0].round_package)
+    corrupt["round_lifecycle"] = {"start": {}}
+    repo.save_round_package(corrupt)
+    summary = aggregate_saved_match(repo, MATCH)
+    assert summary["completeness"]["status"] == "incomplete"
+    assert summary["completeness"]["rounds_excluded_invalid"] == [1]
+    assert summary["evaluations"] == []
+
+
+def test_pipeline_json_export_is_safe_when_match_aggregation_cannot_validate(
+    tmp_path: Path,
+) -> None:
+    repo, analyses = saved(tmp_path, ("TC-006",))
+    orphan = deepcopy(analyses[0].output)
+    orphan["round_no"] = 2
+    orphan["evaluations"][0]["evaluation_id"] = "E-ORPHAN"
+    repo.save_analysis_result(orphan)
+    pipeline = MatchAnalysisPipeline.__new__(MatchAnalysisPipeline)
+    pipeline.repository = repo
+    pipeline.data_dir = tmp_path
+    export = pipeline._write_analysis_json(MATCH, [], [])
+    record = json.loads(export.read_text(encoding="utf-8"))
+    assert record["match_aggregation"] is None
+    assert record["match_aggregation_error"]
+    assert len(record["evaluations"]) == 2
