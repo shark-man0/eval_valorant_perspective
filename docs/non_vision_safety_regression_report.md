@@ -336,8 +336,10 @@ D-1とD-1bは承認を受けて実装済み（§5）。D-1bはL-5と相互作用
 - **本PRとの関係**: 本PRはGUI・Qt関連のコードを変更していない（`ui/`・`application/hud_video_processor.py`を含まない）。
   今回の追加修正（`rules/aggregator.py`）は純粋Pythonのルール層で、Qtと接点がない。新たな回帰かどうかは、
   最新main統合状態でのLinux CIの結果（§6）で確認する。
-- **未解決**: abortの根本原因（Qt終了処理の順序）は本PRの範囲外であり、修正していない。CI失敗時は、ログのテスト結果（passed件数）と
-  exit codeを併せて確認し、assertion失敗かprocess abortかを区別すること。
+- **その後の調査**: 原因は「`MainWindow`を明示破棄しないままインタプリタ終了処理に入り、PySide6のfinalizeがC++ツリーを破棄してヒープを壊す」
+  ことだった。`main()`と`test_ui_smoke.py`の1テストが該当していた。再現条件・根拠・修正・修正前後の比較は
+  `docs/qt_shutdown_abort_analysis.md`を参照（独立PR `fix/qt-shutdown-lifecycle`）。本PRの時点ではこの修正は含まれていない。
+  CI失敗時は、ログのテスト結果（passed件数）とexit codeを併せて確認し、assertion失敗かprocess abortかを区別すること。
 
 ## 10. Windows CI: エンコーディング指定漏れの修正（Qt abortとは別問題）
 
