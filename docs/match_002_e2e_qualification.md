@@ -1033,3 +1033,128 @@ The final implementation preserves all10 training candidates/assets/support sets
 from the initial audit and still measures no held predictions. Earlier artifacts
 are not overwritten. Private six-case transcription receipt SHA:
 `fecdf81758893bb1ce6e9b57e09c05df6b51e1b780ed2809727f1f363d6af0ec`.
+
+## Reuse retained development frames for proposal diagnostics (2026-10-14)
+
+The failed exact-main baseline retained all13,287 sampled JPEGs. Reuse these
+instead of decoding the recording again or introducing another capture sampler.
+However, the persisted baseline trace is empty and the extraction service kept
+per-image decoder PTS/hash identities in memory rather than writing sidecars.
+The filename carries only a rounded timestamp. The run-level source SHA does not
+prove an exact source-PTS binding for each retained image. These images are
+therefore exploratory development inputs only, not qualification evidence.
+
+Filter filenames before opening pixels: only rounded times in[0,719.999) enter
+this inventory; no final evaluation holdout image is opened. The resulting4,320
+native1920x1080 images span approximate filename times0.000..719.800seconds.
+The unchanged diagnostic three-component row proposer finds803 images with rows
+and841 total rows. Rounded(top,height) groups account for668 rows at(70,70),
+83 at(50,80),22 at(70,80),21 at(60,70), and16 at(140,30). These are feature
+counts, not purchase/result labels or detection accuracy. No candidate is selected
+or accepted on these counts, and no temporal/held qualification is inferred.
+
+SHA-256 of the ordered inventory (relative filename bytes followed by each
+image's SHA-256 digest):
+`cf80c2683a80489c88b70981b292cbd1939ee53553e4e1c682440b173a883431`.
+No source image, original video or existing receipt was modified.
+
+Training-only inspection of two large connected components from the previous
+sparse pool reveals expanded-map outlines, not result glyphs. This is developer
+feature diagnosis, not human semantic annotation. Raising the glyph-height cap
+to admit those components would also admit map geometry and is not justified.
+Keep the threshold/height/group/support conditions unchanged. Sparse sampling,
+occlusion, feature extraction and semantic qualification remain distinct gates.
+The resolved six-image human transcription stays unchanged; no additional image
+is assigned a human label. Related discovery/capture/frozen-phase/semantic tests:
+72passed. Scoped Ruff and git diff --check pass. No new whole-video E2E or
+real-video improvement is claimed.
+
+## Feature-selected source recapture, without GT (2026-10-14)
+
+The retained-frame inventory identifies81 development images with rows in the
+rounded(top,height)=(50,80) feature bin. Selecting the first such image at least
+15seconds after the previous selected example, developer inspection finds actual
+result-caption glyphs in two examples. This supplies a concrete next action:
+recapture these source-selected images densely enough to test the unchanged
+reference constructor, rather than widening glyph dimensions or lowering NCC.
+No independent semantic annotation follows from developer inspection.
+
+A preliminary exploratory fit to all81 retained crops (no held scoring or
+qualification) yields84 proposals,12 insufficient-support rejections,
+72 supported proposals and16 distinct support sets. All use the existing
+three-group masked NCC>=.90 and minimum three distinct image hashes. Adjacent
+frames can share one display episode: these counts cannot establish independent
+episode support, temporal continuity, precision or end-event qualification.
+
+Add `scripts/diagnostics/recapture_banner_features.py` with explicit freeze and
+capture modes. Selection inspects development filenames before pixels, uses
+only the configured ROI and explicit structural bins, and binds all inspected
+image hashes plus layout/partition/code/toolchain. The frozen requests are
+approximate filename times, never asserted decoder PTS. Capture obtains fresh
+decoder ticks/timebase/video/image hashes, verifies the source and all inputs
+before and after, rejects missing exact identities or incomplete coverage, and
+writes private source records compatible with existing discovery. Output marks
+feature-conditioned selection, no independent temporal cohort, no semantic
+labels, no generated events and no qualification. This is not a production
+sampler or recognizer change, and it cannot authorize adoption.
+
+Private81-request plan SHA:
+`fe6c190d5699051d26f5a6c3a54d575eb23ea4a9c40983d6c3f382064c5f2135`.
+It binds4,326 inputs. Real-source capture has been started; completion and
+post-run integrity checks must be inspected before using its result.
+
+Nine new synthetic cases cover holdout pixel exclusion, invalid feature bins,
+exact identity requirements and source mutation rejection. Related tests:
+81passed; scoped Ruff, production mypy(132files), git diff --check pass.
+No new full E2E, Round events or formal lifecycle improvement is claimed.
+
+## Exact source-bound result-reference candidates (2026-10-14)
+
+The initial recapture launched a redundant full ffprobe PTS scan. Confirm its
+live process and the existing valid exact-PTS cache (132,855 decoder frames)
+before deliberately cancelling that scan. This was a diagnosed redundant-work
+cancellation, not an inference that an observation timeout meant failure. The
+interrupted run exits130 and supplies no accepted capture result. Preserve its
+plan; do not overwrite or treat it as successful.
+
+Use the existing CachedVideoService, binding its implementation into a new
+versioned plan. It validates the cached payload/source/timebase/ticks and primes
+the same VideoService decoder; legacy float-only identities still fail the
+recapture checks. Add before/after retained-image checks, plan-generation input
+integrity checks and finite source metadata/resolution checks. These affect only
+the diagnostic tool, not production recognition, the sampler or qualification.
+
+New plan SHA:
+`2e965cc9f59819ad5ca7f71dbe83f74e192433aaf31c15682c31d156c677868c`.
+The new capture finishes successfully with81 distinct images and81 complete
+decoder tick/timebase/video/image bindings. Source and frozen inputs pass both
+pre- and post-capture checks. Probe-cache statistics:2hits,0misses,0writes.
+Capture receipt SHA:
+`09635ec58236c1bf3f3a5c970d49290f18367dbae2e2b240ebe9aa63a3809992`.
+Selection receipt SHA:
+`536926e47b418a2c0f4b8826fe7abf2e78ed8ae7cca5eb940b20b0e8773e2e38`.
+
+Run existing training-only discovery on the recaptured pool:41training parents,
+40held parents; no held scores or held galleries are measured/rendered. For each
+configured ROI,42 training row proposals yield6 support rejections,36 supported
+proposals and6 distinct support sets. Supports are22,21,20,20,16,12. Developer
+inspection finds five WON-like references and one LOST-like reference, in contrast
+to the previous sparse pool's exclusively purchase-like supported candidates.
+This supports investigating input cadence rather than weakening matcher gates;
+it does not prove static accuracy, episode independence or lifecycle recall.
+The shared configured ROI names do not assign semantic meaning.
+
+Discovery receipt SHA:
+`1af726a0ed1a00973bf2b83ea389f63c16866b1e39153d548edb51ca7f0c6459`.
+Review page SHA:
+`fbca4e3db933890165b2153afbd6f6943527c0ad3ff728c2f633b6c7bdcf9938`.
+Request independent human transcription of the six result-role references and
+their source-parent links. Until answered, labels staynull. No production profile,
+qualification file, event, GT or evaluation result is generated from this fit.
+The feature-conditioned pool remains development diagnostic data, not an
+independent temporal cohort or final holdout.
+
+Related recapture/discovery/capture/semantic/frozen-profile/cache tests:
+100passed; scoped Ruff, production mypy(132files), diff checks pass. Raw images,
+PTS, paths and source receipts remain local. Whole-pipeline start/end, geometry,
+positive transition, package affiliation and final E2E qualification remain open.
