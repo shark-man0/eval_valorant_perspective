@@ -160,6 +160,14 @@ try {
         )
     }
 
+    # Stable Windows entrypoint launchers, bytecode and PE headers.
+    # Use the source commit date before pip installs (distlib creates Scripts/*.exe).
+    $SourceDateEpoch = (& git show -s --format=%ct HEAD).Trim()
+    if ($LASTEXITCODE -ne 0 -or $SourceDateEpoch -notmatch '^[0-9]{10,}$') {
+        throw "Could not resolve stable source commit timestamp."
+    }
+    $env:PYTHONHASHSEED = "1"
+    $env:SOURCE_DATE_EPOCH = $SourceDateEpoch
     if (-not $SkipDependencyInstall) {
         Invoke-Checked $PythonExe @("-m", "pip", "install", "--upgrade", "pip")
         Invoke-Checked $PythonExe @(
@@ -179,154 +187,6 @@ try {
         )
     }
 
-    # Stable hash iteration order and Windows PE header time for reproducible builds.
-    $SourceDateEpoch = (& git show -s --format=%ct HEAD).Trim()
-    if ($LASTEXITCODE -ne 0 -or $SourceDateEpoch -notmatch '^[0-9]{10,}
-
-    $DistDir = Join-Path $Root "dist\VALORANT-AI-Coach"
-    $DistExe = Join-Path $DistDir "VALORANT-AI-Coach.exe"
-    if (-not (Test-Path $DistExe)) {
-        throw "PyInstaller output is missing: $DistExe"
-    }
-    Copy-Item -Force (Join-Path $Root "docs\windows_distribution.md") (Join-Path $DistDir "README-Windows.md")
-    Assert-DistributionContents $DistDir
-    Invoke-PackagedSmoke $DistExe (Join-Path $Root "work\pyinstaller-smoke\localappdata")
-
-    $ReleaseDir = Join-Path $Root "release"
-    $StageDir = Join-Path $Root "work\release-stage"
-    Remove-Item -Recurse -Force $ReleaseDir -ErrorAction SilentlyContinue
-    Remove-Item -Recurse -Force $StageDir -ErrorAction SilentlyContinue
-    New-Item -ItemType Directory -Force -Path $ReleaseDir, $StageDir | Out-Null
-
-    $PortableRoot = Join-Path $StageDir $Names.portable_root
-    New-Item -ItemType Directory -Force -Path $PortableRoot | Out-Null
-    Copy-Item -Recurse -Force (Join-Path $DistDir "*") $PortableRoot
-    Assert-DistributionContents $PortableRoot
-
-    $PortableZip = Join-Path $ReleaseDir $Names.portable_zip
-    Compress-Archive -Path $PortableRoot -DestinationPath $PortableZip -CompressionLevel Optimal
-
-    $PortableSmokeDir = Join-Path $Root "work\portable-smoke"
-    Remove-Item -Recurse -Force $PortableSmokeDir -ErrorAction SilentlyContinue
-    Expand-Archive -Path $PortableZip -DestinationPath $PortableSmokeDir -Force
-    $PortableExe = Join-Path $PortableSmokeDir "$($Names.portable_root)\VALORANT-AI-Coach.exe"
-    Invoke-PackagedSmoke $PortableExe (Join-Path $Root "work\portable-smoke-data")
-
-    $IsccPath = Resolve-Iscc $IsccPath
-    Invoke-Checked $IsccPath @(
-        "/DMyAppVersion=$Version",
-        "/DSourceDir=$DistDir",
-        "/DOutputDir=$ReleaseDir",
-        "installer\VALORANT-AI-Coach.iss"
-    )
-    $Installer = Join-Path $ReleaseDir $Names.installer
-    if (-not (Test-Path $Installer)) {
-        throw "Expected installer was not created: $Installer"
-    }
-
-    $InstallerSmoke = Join-Path $Root "work\installer-smoke"
-    $InstallDir = Join-Path $InstallerSmoke "app"
-    $InstallerData = Join-Path $InstallerSmoke "localappdata"
-    Remove-Item -Recurse -Force $InstallerSmoke -ErrorAction SilentlyContinue
-    New-Item -ItemType Directory -Force -Path $InstallerSmoke, $InstallerData | Out-Null
-
-    Invoke-Installer $Installer $InstallDir (Join-Path $InstallerSmoke "install-1.log")
-    $InstalledExe = Join-Path $InstallDir "VALORANT-AI-Coach.exe"
-    if (-not (Test-Path $InstalledExe)) {
-        throw "Installer did not place the application executable."
-    }
-    Invoke-PackagedSmoke $InstalledExe $InstallerData
-
-    $UserData = Join-Path $InstallerData "ValorantAICoach"
-    $Sentinel = Join-Path $UserData "preserve-on-upgrade-and-uninstall.txt"
-    "release-engineering-sentinel" | Set-Content -Encoding UTF8 $Sentinel
-
-    Invoke-Installer $Installer $InstallDir (Join-Path $InstallerSmoke "install-2-upgrade.log")
-    if (-not (Test-Path $Sentinel) -or -not (Test-Path (Join-Path $UserData "app.db"))) {
-        throw "Reinstall/upgrade simulation modified user data."
-    }
-    Invoke-PackagedSmoke $InstalledExe $InstallerData -PreserveExistingData
-
-    $Uninstaller = Get-ChildItem -LiteralPath $InstallDir -Filter "unins*.exe" |
-        Select-Object -First 1
-    if ($null -eq $Uninstaller) {
-        throw "Inno Setup uninstaller was not created."
-    }
-    $uninstallProcess = Start-Process -FilePath $Uninstaller.FullName -ArgumentList (
-        "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART"
-    ) -Wait -PassThru
-    if ($uninstallProcess.ExitCode -ne 0) {
-        throw "Uninstaller failed with exit code $($uninstallProcess.ExitCode)."
-    }
-    if (Test-Path $InstalledExe) {
-        throw "Uninstaller left the installed application executable behind."
-    }
-    if (-not (Test-Path $Sentinel) -or -not (Test-Path (Join-Path $UserData "app.db"))) {
-        throw "Uninstaller removed user data."
-    }
-
-    $Dependencies = Join-Path $ReleaseDir "DEPENDENCIES.txt"
-    $dependencyLines = & $PythonExe -m pip list --format=freeze
-    if ($LASTEXITCODE -ne 0) {
-        throw "Could not record the resolved dependency set."
-    }
-    $dependencyLines | Sort-Object | Set-Content -Encoding UTF8 $Dependencies
-
-    # Install the auditor in an isolated environment: never perturb release dependencies.
-    # Audit the fully resolved, pinned environment; the local editable project
-    # is deliberately excluded because it is not published to PyPI.
-    $AuditRoot = Join-Path $Root "work\dependency-audit-venv"
-    $AuditPython = Join-Path $AuditRoot "Scripts\python.exe"
-    $AuditInput = Join-Path $StageDir "dependency-audit-requirements.txt"
-    Invoke-Checked $PythonExe @("-m", "venv", $AuditRoot)
-    Invoke-Checked $AuditPython @("-m", "pip", "install", "pip-audit==2.10.1")
-    $auditRequirements = @(
-        Get-Content -LiteralPath $Dependencies -Encoding UTF8 |
-            Where-Object { $_ -notmatch "(?i)^valorant-ai-coach==" }
-    )
-    $auditRequirements | Set-Content -LiteralPath $AuditInput -Encoding UTF8
-    Invoke-Checked $AuditPython @(
-        "-m", "pip_audit", "--no-deps", "-r", $AuditInput,
-        "--format", "json", "--output", (Join-Path $ReleaseDir "DEPENDENCY-AUDIT.json")
-    )
-
-    $Commit = (& git rev-parse HEAD).Trim()
-    if ($LASTEXITCODE -ne 0) {
-        throw "Could not determine the release commit."
-    }
-    $PythonVersion = (& $PythonExe --version 2>&1 | Out-String).Trim()
-    Invoke-Checked $PythonExe @(
-        "scripts\release\release_tools.py",
-        "build-info",
-        "--output", (Join-Path $ReleaseDir "BUILD-INFO.json"),
-        "--commit", $Commit,
-        "--python", $PythonVersion,
-        "--dependencies", $Dependencies,
-        "--build-command", ".\scripts\release\build_release.ps1"
-    )
-
-    Copy-Item -Force ".github\RELEASE_NOTES_TEMPLATE.md" (
-        Join-Path $ReleaseDir "RELEASE_NOTES_TEMPLATE.md"
-    )
-    Invoke-Checked $PythonExe @(
-        "scripts\release\release_tools.py",
-        "checksums",
-        "--output", (Join-Path $ReleaseDir "SHA256SUMS.txt"),
-        $PortableZip,
-        $Installer
-    )
-
-    Write-Host "Windows release artifacts:"
-    Get-ChildItem -LiteralPath $ReleaseDir | Select-Object Name, Length
-}
-finally {
-    Pop-Location
-}
-) {
-        throw "Could not resolve stable source commit timestamp."
-    }
-    $env:PYTHONHASHSEED = "1"
-    $env:SOURCE_DATE_EPOCH = $SourceDateEpoch
     Invoke-Checked $PythonExe @(
         "-m", "PyInstaller", "--noconfirm", "--clean", "VALORANT-AI-Coach.spec"
     )

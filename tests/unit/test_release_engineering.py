@@ -174,3 +174,15 @@ def test_record_hash_comparison_identifies_changed_csv_rows(tmp_path: Path) -> N
     assert diff["changed_rows"] == ["numpy/a.py"]
     assert not diff["only_first"] and not diff["only_second"]
     assert diff["parsed_csv_equivalent"] is False
+
+
+def test_reproducible_controls_apply_before_package_install() -> None:
+    script = (ROOT / "scripts" / "release" / "build_release.ps1").read_text(encoding="utf-8")
+    assert script.index("$env:SOURCE_DATE_EPOCH") < script.index("if (-not $SkipDependencyInstall)")
+    assert '"-m", "PyInstaller"' in script
+    workflow = (ROOT / ".github" / "workflows" / "release-reproducibility.yml").read_text(
+        encoding="utf-8"
+    )
+    assert workflow.index("Pin source timestamp before pip") < workflow.index(
+        "Install the same constrained Windows environment"
+    )

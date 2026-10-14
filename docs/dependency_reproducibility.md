@@ -177,3 +177,22 @@ run to distinguish changed filenames/record entries from differences
 in CSV formatting or row order. No `RECORD` content is omitted from
 bundle hashing or normalized inside the distributed application. Absolute
 runner paths are hashed rather than emitted to public artifacts.
+
+## Root cause isolation: pip-created Windows launcher timestamps
+
+The row-by-row comparison in workflow #38502512373 found that exactly four
+`RECORD` entries differed: `../../Scripts/jsonschema.exe`,
+`../../Scripts/keyring.exe`, `../../Scripts/f2py.exe`, and
+`../../Scripts/numpy-config.exe`. Three `RECORD` files consequently had
+different SHA-256 values despite all packaged runtime binaries matching.
+Windows `Scripts/*.exe` console-entrypoint launchers are created by pip's
+vendored distlib **during dependency installation**, and may embed ZIP
+timestamps. Upstream distlib supports `SOURCE_DATE_EPOCH` for generated
+launcher ZIP entries, so the reproducibility controls were moved before
+all pip installation, not just before PyInstaller. They are also applied
+in the official release script. The next independent rebuild must validate
+whether this eliminates the three final byte mismatches without filtering
+or changing any distributed `RECORD` data.
+
+References: https://github.com/pypa/distlib/issues/164 and
+https://github.com/pypa/distlib/blob/master/distlib/scripts.py
