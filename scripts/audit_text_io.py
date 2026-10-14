@@ -87,6 +87,9 @@ def scan_source(source: str, path: str) -> list[dict[str, Any]]:
         findings.append({
             "path": path, "line": node.lineno, "operation": kind,
             "category": category, "encoding": encoding,
+            "expression": " ".join(
+                (ast.get_source_segment(source, node) or "").split()
+            )[:240],
         })
     return sorted(findings, key=lambda item: (item["line"], item["operation"]))
 
@@ -113,11 +116,21 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--summary-json", action="store_true")
     parser.add_argument("--json", action="store_true")
+    parser.add_argument("--review-json", action="store_true",
+                        help="Emit every unresolved site with AST source expression")
     args = parser.parse_args()
     result = scan_repository()
+    if args.review_json:
+        unknown = [site for site in result["sites"] if site["category"] == "要調査"]
+        result = {
+            "total_unresolved": len(unknown),
+            "by_operation": dict(sorted(Counter(x["operation"] for x in unknown).items())),
+            "by_scope": dict(sorted(Counter(x["path"].split("/")[0] for x in unknown).items())),
+            "sites": unknown,
+        }
     if args.summary_json:
         result = {key: value for key, value in result.items() if key != "sites"}
-    if args.summary_json or args.json:
+    if args.summary_json or args.json or args.review_json:
         print(json.dumps(result, ensure_ascii=True, indent=2))
     else:
         print(f"{result['python_files']} Python files; {result['io_sites']} I/O call sites")
