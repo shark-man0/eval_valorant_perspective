@@ -40,7 +40,7 @@ def main() -> None:
     initial_hashes = {str(args.input_contract): digest(args.input_contract)}
     for path in args.report:
         initial_hashes[str(path)] = digest(path)
-        report = json.loads(path.read_text())
+        report = json.loads(path.read_text(encoding="utf-8"))
         dependencies = report.get('input_sha256', {})
         if not isinstance(dependencies, dict):
             raise ValueError(f'invalid dependency mapping: {path}')

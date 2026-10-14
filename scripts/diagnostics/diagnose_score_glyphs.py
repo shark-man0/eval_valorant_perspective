@@ -36,7 +36,7 @@ def run(args):
     args.output_dir.mkdir(parents=True, exist_ok=False)
     source_hash = sha256(args.video)
     archive_hash = sha256(args.native_report)
-    native = json.loads(args.native_report.read_text())
+    native = json.loads(args.native_report.read_text(encoding="utf-8"))
     if (
         source_hash != native['source_video_sha256']
         or native.get('native_pts_coverage_verified') is not True

@@ -25,7 +25,7 @@ def sha(path: Path) -> str:
 
 
 def load(path: str):
-    return json.loads((ROOT / path).read_text())
+    return json.loads((ROOT / path).read_text(encoding="utf-8"))
 
 
 def ref(path: str, description: str) -> dict:

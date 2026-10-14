@@ -35,7 +35,9 @@ def run():
     sidecar = layout.parent / 'score-rowcontrast-late-result-diagnostic.templates.json'
     analyzer = RealHudAnalyzer(layout, template_profile_path=sidecar)
     profile, code = analyzer.fingerprint(), global_recognizer_fingerprint()
-    old = json.loads((reports / 'frozen_result_late_native_cohort.json').read_text())
+    old = json.loads(
+        (reports / 'frozen_result_late_native_cohort.json').read_text(encoding="utf-8")
+    )
     paths = set(old['input_sha256']) | {str(p) for p in reports.glob('*.json')}
     inputs = {}
     exposed = set()

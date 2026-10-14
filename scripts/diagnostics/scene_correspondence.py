@@ -209,7 +209,7 @@ def run(args):
     started = time.perf_counter()
     report_hash = sha256(args.source_report)
     script_hash = sha256(Path(__file__))
-    data = json.loads(args.source_report.read_text())
+    data = json.loads(args.source_report.read_text(encoding="utf-8"))
     video_hash = sha256(args.video)
     if video_hash != data["source_video_sha256"]:
         raise ValueError("source video hash mismatch")

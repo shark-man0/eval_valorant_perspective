@@ -67,7 +67,7 @@ def main() -> None:
     _check_output_privacy(output)
     if output.exists():
         raise FileExistsError("use a new private output directory")
-    evidence = json.loads(args.evidence.read_text())
+    evidence = json.loads(args.evidence.read_text(encoding="utf-8"))
     # Source evidence images must still agree with the frozen extraction record.
     for frame in evidence["frames"]:
         path = (args.evidence.parent / frame["image"]).resolve()
@@ -75,7 +75,7 @@ def main() -> None:
             sha256_file(path) != frame["evidence_frame_sha256"]
         ):
             raise ValueError("source evidence image integrity failed")
-    report = assemble(evidence, json.loads(args.observations.read_text()))
+    report = assemble(evidence, json.loads(args.observations.read_text(encoding="utf-8")))
     report["evidence_manifest_sha256"] = sha256_file(args.evidence)
     report["observation_input_sha256"] = sha256_file(args.observations)
     output.mkdir(parents=True)

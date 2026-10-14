@@ -25,7 +25,7 @@ def run():
     output = root / 'score_background_current_reader_replay.json'
     if output.exists():
         raise ValueError('new output required')
-    plan, review, previous = [json.loads(p.read_text()) for p in (
+    plan, review, previous = [json.loads(p.read_text(encoding="utf-8")) for p in (
         plan_path, review_path, previous_path,
     )]
     if (digest(plan_path) != previous['plan_sha256']
@@ -39,7 +39,7 @@ def run():
     inputs = {str(p): digest(p) for p in (
         plan_path, review_path, previous_path, sidecar, Path(__file__),
     )}
-    specs = json.loads(sidecar.read_text())['readers']
+    specs = json.loads(sidecar.read_text(encoding="utf-8"))['readers']
     readers = {}
     for role in ('ally_score', 'enemy_score'):
         spec = specs[role]

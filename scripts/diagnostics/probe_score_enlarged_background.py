@@ -29,7 +29,7 @@ def main() -> None:
     if args.output.exists() or args.archive.exists():
         raise ValueError('new output and archive required')
     plan_hash = digest(args.plan)
-    plan = json.loads(args.plan.read_text())
+    plan = json.loads(args.plan.read_text(encoding="utf-8"))
     for path, expected in plan['input_sha256'].items():
         if digest(Path(path)) != expected:
             raise ValueError('frozen input mismatch')
