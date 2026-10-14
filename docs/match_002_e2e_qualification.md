@@ -624,3 +624,40 @@ real numeric-reader behavior remain separate from geometry-gated abstention.
 
 Presence/adapter/numeric/planning/probe targeted regressions: 112 passed. Ruff,
 mypy (131 source files) and diff checks passed; full-match lifecycle is incomplete.
+
+## Sparse presence response and fixed-reader controls (2026-10-14)
+
+The human subsequently identified two remaining-gallery images with both scores
+absent. Only those explicit cells are frozen; the other 59 images remain
+unreviewed and Timer labels are not inferred. The private revision binds the
+exact response, trusted conversation reference, original source/ROI hashes
+and receipt. Original reviews, earlier blocker audits and outputs are unchanged.
+
+The unchanged diagnostic adapter was measured on the two reviewed source images,
+outside the Analyzer and without native geometry admission. Both scores were
+rejected on both images: 2 reviewed controls and 0 false positives per side.
+Original profile/assets, numeric localization code and decoder/Tesseract
+fingerprints were checked against the source pool's frozen plan before measuring
+and again after measuring. The test receives only actual image pixels; expected
+absence labels and review Frame IDs do not enter the reader.
+
+Together with the independently reviewed absent-score image in the preceding
+source-control cohort, each score now has three distinct absent-source hashes
+with zero false accepted values. Hash uniqueness was verified, not achieved by
+copying images or counting unreviewed frames. This resolves the specific missing
+source-negative support count; it is **not full lifecycle/profile qualification**.
+Source diversity/cross-match generalization, geometry, temporal components,
+native factory integration and actual Round/Package affiliation remain separate
+requirements. No qualification file, production setting or Schema is changed.
+
+Sparse review ingestion rejects ambiguous, unknown/duplicate/conflicting IDs and
+changed assets; unknown or a no-matches declaration cannot manufacture negative
+labels. Tests exercise an actual false-positive result and verify that it is
+reported, not masked by the always-unqualified diagnostic status. Public test
+examples use synthetic fractional values rather than private reviewed values.
+
+Integrity-bound control receipt SHA:
+`ac21151be5b1ab2ce1174a52402c2a37986854ec8ee4d6b3ef945351e382f283`.
+Sparse-review/control/adapter/numeric/planning/probe targeted regressions:
+127 passed. Ruff, mypy (131 source files) and diff checks passed. The formal
+full-match lifecycle outcome remains unproven; prior full-suite failures remain.

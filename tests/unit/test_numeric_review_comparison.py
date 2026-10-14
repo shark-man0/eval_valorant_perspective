@@ -128,12 +128,12 @@ def test_numeric_equivalence_never_fabricates_missing_colon():
 
 
 def test_fractional_source_label_is_not_rounded_to_make_reader_correct():
-    label = {"kind": "value", "display": "0:13.73"}
-    assert classify(label, accepted("0:13"), "round_timer") == "wrong_value"
+    label = {"kind": "value", "display": "0:27.46"}
+    assert classify(label, accepted("0:27"), "round_timer") == "wrong_value"
     assert classify(label, {"meets_ocr_floor_and_format": False},
                     "round_timer") == "missing_visible_value"
     with pytest.raises(ValueError):
-        classify(label, accepted("0:13.73"), "round_timer")
+        classify(label, accepted("0:27.46"), "round_timer")
 
 
 def test_repeated_source_images_are_not_independent_conditions(tmp_path):

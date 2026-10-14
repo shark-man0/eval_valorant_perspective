@@ -19,8 +19,8 @@ def test_partial_explicit_labels_never_fill_missing_values():
 
 
 def test_fractional_source_display_is_preserved_not_truncated():
-    result = parse_response("1,0:13.73,0,1\n", {1})
-    assert result[1]["round_timer"] == {"kind": "value", "display": "0:13.73"}
+    result = parse_response("1,0:27.46,0,1\n", {1})
+    assert result[1]["round_timer"] == {"kind": "value", "display": "0:27.46"}
 
 
 @pytest.mark.parametrize("text", [

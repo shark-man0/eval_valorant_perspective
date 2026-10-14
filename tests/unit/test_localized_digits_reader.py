@@ -26,7 +26,7 @@ def test_wrapper_preserves_value_and_confidence_without_fabricating_crosscheck(m
     assert result.cross_checked is False
 
 
-@pytest.mark.parametrize("value,confidence", [("1714", .99), ("0:13.73", .99),
+@pytest.mark.parametrize("value,confidence", [("1714", .99), ("0:27.46", .99),
     ("1:60", .99), ("1:40", .899), ("1:40", float("nan")), ("1:40", 1.1), ("1:40", True)])
 def test_no_format_or_confidence_repair(monkeypatch, roi, value, confidence):
     assert adapted(monkeypatch, value, confidence).read(roi, roi).value is None
