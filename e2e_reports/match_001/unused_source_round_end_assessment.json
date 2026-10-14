@@ -1,0 +1,92 @@
+{
+  "scope": "Additional unused-source frozen baseline; End remains unqualified",
+  "source_sha256": "06919642d69f68895ac123b505bfd7d3643dd28d903585008fcdc2b7f1b7e3fd",
+  "source_user_confirmed_unused": true,
+  "source_user_confirmed_unedited": true,
+  "metadata": {
+    "duration_sec": 2329.266016,
+    "source_bytes": 3641953546,
+    "resolution": [
+      1920,
+      1080
+    ],
+    "fps": "60/1",
+    "time_base": "1/15360"
+  },
+  "measurement_code_commit": "f53e055f4f7f60cf02f84174b16f015d3f8946a8",
+  "recognizer_fingerprint": "5b32ea0c5be3d23aadd5e1ef4057619c10c7104d3d210a69d39433bffea6dfc8",
+  "profile_fingerprint": "60b029cb987fe0d7447853e3b4cd791d5defb0918dfaa25a401bd45d2b64c813",
+  "input_contract_sha256": "99871590f3dec8ab1ca9310841363a456b4faad86dfbf9873f2f6d33bb9fe34e",
+  "preregistration_sha256": "53ce69edc8322c83c7d853d40036e87d77770d0694554181e4391a9f8c068392",
+  "source_manifest_sha256": "3b10d27e30ff1cf3bb64c24387da1018a7c0b241cb679d3018c2c0a8d1561771",
+  "labels_sha256": "b10b8772003aaa2bd9cff65b965f06a79a39332f47ff43bb873f11d67e14eff6",
+  "labels_review_scope": "Assistant source transcription before predictions; independent user review of four supports pending",
+  "native_window": {
+    "sec": [
+      72.8,
+      75.5
+    ],
+    "frames": 163,
+    "first_tick": 1118208,
+    "last_tick": 1159680,
+    "step_ticks": 256,
+    "acquisition_budget_bytes": 402653184,
+    "retained_png_bytes": 274451572
+  },
+  "native_measurement": {
+    "status": "failed_safe",
+    "error_type": "HudNotCalibratedError",
+    "error": "native calibration prefix lacks accepted anchors",
+    "End_patterns": "unmeasured",
+    "elapsed_sec": 24.772623499971814,
+    "peak_process_rss_bytes": 100663296,
+    "events_released": 0,
+    "terminal_integrity_verified": true
+  },
+  "component_diagnostic": {
+    "image_supports": 10,
+    "temporal_End_episodes": 1,
+    "counts": {
+      "round_timer:correct": 9,
+      "ally_score:correct": 10,
+      "enemy_score:correct": 9,
+      "round_result:correct": 4,
+      "round_timer:unknown": 1,
+      "round_result:unknown": 4,
+      "enemy_score:unknown": 1
+    },
+    "numeric_timer_supports": 7,
+    "timer_icon_blank_controls": 3,
+    "complete_LOST_supports": 4,
+    "animated_result_excluded": 2,
+    "fixed_ROIs": true,
+    "geometry_not_admitted": true,
+    "counts_are_not_production": true,
+    "raw_predictions_sha256": "82048925a89eb16340944c1bf129e4ffba9aee02d364eccde615c6bf5f062239",
+    "initial_score_type_comparison_invalid": true,
+    "recognition_rerun": false,
+    "elapsed_sec": 8.715301959018689,
+    "prefix_anchor_scores": {
+      "round_timer": 0.8562569618225098,
+      "top_match_bar": 0.37582874298095703,
+      "player_hp_armor": 0.5585066080093384,
+      "abilities": 0.3459008038043976
+    },
+    "result_reference_caption": "TEAM ACE",
+    "observed_caption": "LOST",
+    "complete_result_scores": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "formal_End_qualification_established": false,
+  "profile_fitted_on_new_source": false,
+  "production_changed": false,
+  "source_epochs_spliced": false,
+  "full_E2E_executed": false,
+  "canonical_baseline_updated": false,
+  "latest_verified_CI_commit": "f53e055f4f7f60cf02f84174b16f015d3f8946a8",
+  "linux_windows_four_jobs_pass": true
+}
