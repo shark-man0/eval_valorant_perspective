@@ -2015,3 +2015,88 @@ start→end→preparation, package association and canonical evaluation remain
 pending; adopted 23 PASS / 55 FAIL / 4 NE is unchanged. See
 `docs/current_code_lifecycle_revalidation.md` and
 `e2e_reports/match_001/current_code_lifecycle_revalidation.json`.
+
+## Strict native replay integration after package-context audit
+
+The existing whole-source raw replay decoder was rejected by the application
+collector in Strict Mode based solely on storage. Add explicit Strict replay
+selection without changing qualification, event gates, source verification or
+default PNG/full sampling. Common Python CLI layers forward and fingerprint
+storage/buffer settings. Related tests: 200 PASS / 1 host-Windows SKIP; Ruff and
+mypy131 PASS. The production fingerprint changes to96c79de…, and actual old
+qualification rejection remains enforced. Fresh current-code real-image
+qualification/application validation is pending; adopted23/55/4 is unchanged.
+See `docs/strict_native_replay.md` and
+`e2e_reports/match_001/strict_native_replay.json`. No new full E2E was launched.
+
+## Whole-source Strict application collector verified
+
+Fresh current-code source collection now completes through the real Strict
+application entrance with bounded raw replay:10259frames,2starts,1end,noR2end,
+2source breaks and preserved package/trace provenance. Collector19410.573s;
+native-only canonical trace27PASS/51FAIL/4NE,20negativeassertionsPASS. This is
+not the main sampled HUD/visual merge or standard fullE2E; adopted23/55/4 stays
+unchanged. Next use the exact current source/code/profile/qualification-bound
+native output for fixed sampled main integration. Independent temporal
+qualification, context association, current full regression and WindowsCI
+remain pending. See`docs/strict_replay_whole_source.md` and its82-outcomeJSON.
+
+## Fixed sampled main merge and OCR availability
+
+Current fixed sampled reader comparison improves numeric coverage without new
+labelled wrong values or primary-state/player-validity changes. Match OCR
+availability: baseline13 gives7PASS/12FAIL/11NE; guarded candidate15PASS/4FAIL/11NE.
+An initial missingTesseract dependency suppressed twoHP passes in both. Restore
+only a private official-package toolchain for controlled fresh point processes;
+no system/default profile change or old native cache reuse under changed OCR.
+The separate actual per-point HUD/visual/native merge preserves allthree native
+boundaries, but is not standard fullE2E. Adopted23/55/4 remains. Next full
+regression and exact-runtime native verification before full application use.
+See`docs/strict_replay_sampled_merge.md` and its hashed machine-readable report.
+
+## Latest completed full candidate: semantic28/50/4, adoption pending
+
+Common full runner with fresh Strict source replay and matching privateOCR
+normally completes:6614mainframes,37806.726s,2systemstarts/1systemend,2packages.
+Five FAIL→PASS,zero oldPASS regressions,zero negative failures and no interval
+span across the two source breaks. Full82candidate matrix and terminal hashes
+are stored separately from adopted23/55/4.
+
+Canonical overall pass remains false:720valid per-field snapshot confidence maps
+are copied into reserved top-level scalarconfidence fields and rejected by v3.
+Their2636leaves are valid; this is trace contract serialization, not permission
+to alter the pack/evaluator or suppress checks. Fix that boundary while preserving
+native maps/provenance, then safely re-adapt saved raw without10.5h recognition.
+R1end74.486003 still misses fixed window ending74.483; source timing semantics
+and new full numeric outputs require review. The old29package-scope cluster is
+historical and must be reclassified for current50FAIL after real split. See
+`docs/strict_replay_full_candidate.md` and its82-outcome machine record.
+
+## Confidence trace contract fixed by representation, not evaluator relaxation
+
+Normalize native typed support maps into the trace's reserved conservative scalar
+(minimum, empty0), preserving the original map in source_confidence_by_field and
+rejecting every invalid leaf/name/type. Native packages/scoring/recognition and
+ValidationPack/evaluator remain unchanged. On terminal-hash-verified savedfull raw,
+confidence errors720→0,total messages779→59; all82semantic results remain28/50/4,
+all nonconfidence snapshot fields and other trace groups are identical. Common
+--from-raw CLI produces the same verified trace. Related50tests,Ruff,mypyPASS.
+No new10.5hCV run; next current50failure classification/source timing/full numeric
+review, not another recognizer tweak. See docs/trace_confidence_contract.md.
+
+## Current 50 FAIL reclassified after actual package split
+
+Latest normalized candidate remains28PASS/50FAIL/4NE; adopted23/55/4 is unchanged.
+The historical29package-scope cluster no longer describes active R2 failures.
+Exclusive current blockers:17inside-package snapshot HUD-gate failures,9preparation
+scope/context failures,4death-contract failures and other state/ownership/field/visual
+failures. All missing snapshot targets have decoded main frames; none has a local
+HUD-gate-eligible frame. Current spectator coverage29.1533%,selfR1/R2coverage
+8.9225%/5.7927%,remote/smoke/expanded-mapcoverage0. R1endexists but is0.0030026s
+outside the strictwindow. No single-root guaranteed PASS gain is established.
+All82candidate predicates and actual coverage/field values are preserved separately
+from the adopted matrix. Next audit source-qualified global vs owned snapshot fields,
+then death subject/attributes and preparation association; preserve source breaks and
+unknown-owned facts. No production change or newfull E2E. See
+[full current classification and priority](current_failure_classification.md) and
+`e2e_reports/match_001/current_failure_classification.json`.

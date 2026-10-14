@@ -100,7 +100,9 @@ def test_cli_exports_only_private_diagnostics_not_a_runtime_profile(tmp_path, mo
     _layout(layout)
     layout.with_suffix(".templates.json").write_text(json.dumps({
         "schema_version": "1.0", "anchors": {}, "readers": {},
-    }))
+    }),
+        encoding="utf-8",
+    )
     output = tmp_path / "experiment"
     class Service(FakeVideoService):
         def extract_frames(self, *args, **kwargs):
@@ -129,7 +131,7 @@ def test_cli_exports_only_private_diagnostics_not_a_runtime_profile(tmp_path, mo
         assert not list(output.glob("*.png"))
         return
     experiment.main()
-    report = json.loads((output / "diagnostics.json").read_text())
+    report = json.loads((output / "diagnostics.json").read_text(encoding="utf-8"))
     assert report["production_qualified"] is False
     assert report["identity_assets_generated"] is False
     assert report["sample_count"] == 32

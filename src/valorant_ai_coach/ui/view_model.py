@@ -7,7 +7,8 @@ confidence or timestamp, and never invents a clip or an evidence range that is n
 from __future__ import annotations
 
 import math
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable, Mapping, Sequence
+from typing import Any
 
 from .contracts import EvaluationView
 
@@ -51,6 +52,56 @@ def filter_evaluations(
     return selected
 
 
+def format_match_summary(
+    value: Mapping[str, Any] | None, error: str | None = None
+) -> str:
+    """Compact read-only Match totals; full refs and context remain in JSON export."""
+    if error:
+        return "Match集計: 利用できません（保存データが不完全または不正）"
+    if not value:
+        return ""
+    completeness = value.get("completeness") or {}
+    rounds = value.get("rounds") or []
+    rules = value.get("rules") or []
+    refs = value.get("evaluations") or []
+    counts = {label: sum(int(r["label_counts"][label]) for r in rounds
+                         if r.get("status") == "included") for label in _LABELS}
+    parts = [
+        f"Match集計: {len(rounds)} Round / GOOD {counts['good']} / "
+        f"IMPROVE {counts['improve']} / UNSCORED {counts['unscored']}",
+        f"完全性: {completeness.get('status', 'unknown')} "
+        f"(未評価 {len(completeness.get('rounds_not_evaluated', []))} / "
+        f"除外 {len(completeness.get('rounds_excluded_invalid', []))})",
+    ]
+    if rules:
+        entries = []
+        for rule in rules[:8]:
+            labels = rule.get("counts", {})
+            entries.append(
+                f"{rule['rule_id']} {labels.get('good', 0)}/"
+                f"{labels.get('improve', 0)}/{labels.get('unscored', 0)}"
+            )
+        parts.append("Rule別 GOOD/IMPROVE/UNSCORED: " + "、".join(entries))
+        if len(rules) > 8:
+            parts.append(f"他 {len(rules) - 8} RuleはJSON参照")
+    blockers = completeness.get("blocking_reasons") or []
+    if blockers:
+        parts.append("不完全の理由: " + ", ".join(str(x) for x in blockers[:8]))
+    missing = sorted({
+        str(item)
+        for rule in rules
+        for ctx in rule.get("context_by_round", [])
+        for item in ctx.get("missing_context", [])
+    })
+    if missing:
+        parts.append("不足文脈: " + ", ".join(missing[:8]))
+    if refs:
+        parts.append(
+            "根拠参照: " + ", ".join(str(x.get("evaluation_id")) for x in refs[:8])
+        )
+    return "\n".join(parts)
+
+
 def format_clock(seconds: float) -> str:
     minutes, remainder = divmod(max(0, round(seconds)), 60)
     return f"{minutes:02d}:{remainder:02d}"
@@ -87,6 +138,7 @@ __all__ = [
     "SCORED_LABELS",
     "clip_status",
     "filter_evaluations",
+    "format_match_summary",
     "format_clock",
     "label_counts",
     "parse_time_range",

@@ -20,6 +20,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from valorant_ai_coach.application.match_aggregation_service import aggregate_saved_match
 from valorant_ai_coach.storage.repository import SQLiteRepository
 
 _LABELS = ("good", "improve", "unscored")
@@ -308,6 +309,15 @@ class NonVideoFeatures:
             }
             for e in result["evaluations"]
         ]
+        match_aggregation: dict[str, Any] | None
+        match_aggregation_error: str | None = None
+        try:
+            match_aggregation = self._clean_value(
+                aggregate_saved_match(self.repository, match_id)
+            )
+        except (ValueError, RuntimeError):
+            match_aggregation = None
+            match_aggregation_error = "保存データを検証できないためMatch集計を省略しました"
         return {
             "export_format_version": 1,
             "match": {
@@ -320,6 +330,8 @@ class NonVideoFeatures:
             },
             "counts": {label: result[label + "_count"] for label in _LABELS},
             "evaluations": evaluations,
+            "match_aggregation": match_aggregation,
+            "match_aggregation_error": match_aggregation_error,
         }
 
     @classmethod

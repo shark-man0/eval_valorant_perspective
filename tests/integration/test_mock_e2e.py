@@ -174,6 +174,14 @@ def test_mock_round_package_runs_through_frames_rules_db_and_clips(tmp_path: Pat
     assert len(video.requested_timestamps) <= 12
     assert max(video.requested_timestamps) <= packages[0]["round_window"]["end_sec"]
     assert result.analysis_json.is_file()
+    exported = json.loads(result.analysis_json.read_text(encoding="utf-8"))
+    view = exported["match_aggregation"]
+    assert view is not None
+    assert view["schema_version"] == "match_aggregation.v1"
+    assert view["match_id"] == "M-E2E"
+    assert len(view["evaluations"]) == len(stored["evaluations"])
+    assert view["completeness"]["status"] == "unverifiable"
+    assert exported["match_aggregation_error"] is None
     assert progress[-1][0] == 1.0
     assert not (tmp_path / "temp" / "M-E2E").exists()
 
@@ -431,5 +439,10 @@ def test_one_round_failure_isolated_and_later_round_continues(tmp_path: Path) ->
         for error in checkpoint["checkpoint"]["processing_errors"]
     )
     analysis = json.loads(result.analysis_json.read_text(encoding="utf-8"))
+    view = analysis["match_aggregation"]
+    assert view is not None
+    assert view["completeness"]["status"] == "incomplete"
+    assert "failed_round_package_missing" in view["completeness"]["blocking_reasons"]
+    assert view["storage_provenance"]["missing_failed_round_packages"] == [1]
     assert analysis["clip_errors"] == []
     assert any("round 1: broken round" in error for error in analysis["processing_errors"])

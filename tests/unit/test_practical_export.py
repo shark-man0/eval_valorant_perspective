@@ -61,13 +61,15 @@ def test_saved_packages_feed_separate_accuracy_cli(practical_build, tmp_path):
     source = tmp_path / 'packages.json'
     truth = tmp_path / 'truth.json'
     report = tmp_path / 'accuracy.json'
-    source.write_text(json.dumps({'round_packages': packages}))
+    source.write_text(json.dumps({'round_packages': packages}), encoding="utf-8")
     truth.write_text(json.dumps({'boundaries': [
         {'id': 'synthetic-independent-start', 'kind': 'round_start', 'time_sec': 2},
-    ]}))
+    ]}),
+        encoding="utf-8",
+    )
     assert main(['--packages', str(source), '--truth', str(truth),
                  '--output', str(report)]) == 0
-    result = json.loads(report.read_text())
+    result = json.loads(report.read_text(encoding="utf-8"))
     assert result['counts']['PASS'] == 1
     assert result['confirmed_boundary_count'] == 0
     assert result['provisional_boundary_count'] == 1

@@ -29,7 +29,7 @@ def main() -> None:
     if args.output.exists() or args.archive.exists():
         raise ValueError('new output and archive required')
     plan_hash = digest(args.plan)
-    plan = json.loads(args.plan.read_text())
+    plan = json.loads(args.plan.read_text(encoding="utf-8"))
     for path, expected in plan['input_sha256'].items():
         if digest(Path(path)) != expected:
             raise ValueError('frozen input mismatch')
@@ -88,7 +88,7 @@ def main() -> None:
     report = dict(scope='Frozen score-only nominal ROI diagnostic; no geometry/lifecycle claim',
                   plan_sha256=plan_hash, rows=rows, wall_clock_sec=time.perf_counter()-started,
                   qualification_created=False, canonical_current=None, canonical_delta=None)
-    args.output.write_text(json.dumps(report, indent=2)+'\n')
+    args.output.write_text(json.dumps(report, indent=2)+'\n', encoding="utf-8")
     print(json.dumps({k: v for k, v in report.items() if k != 'rows'}))
 
 

@@ -177,7 +177,7 @@ def main() -> None:
         'previous_comparable_runtime': None, 'runtime_delta': None,
         'wall_clock_sec': time.perf_counter() - started,
     }
-    args.output.write_text(json.dumps(result, indent=2) + '\n')
+    args.output.write_text(json.dumps(result, indent=2) + '\n', encoding="utf-8")
     print(json.dumps({'timer': timer_counts if 'timer' in predictions else None,
                       'phase_flags': phase_counts if 'phase' in predictions else None,
                       'phase_raw_reader': phase_reader_counts if 'phase' in predictions else None,

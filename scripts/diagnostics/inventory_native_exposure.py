@@ -78,7 +78,7 @@ def main():
         "terminal_bindings_match": True,
         "exhaustive_exposure_proven": False,
     }
-    args.output.write_text(json.dumps(report, indent=2) + "\n")
+    args.output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({k: v for k, v in report.items() if k not in {"sources", "skipped"}}))
 
 

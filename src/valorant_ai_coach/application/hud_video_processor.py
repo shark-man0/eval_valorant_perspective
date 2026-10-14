@@ -76,7 +76,12 @@ class FrameExtractor(Protocol):
 
 @dataclass(frozen=True, slots=True)
 class NativeLifecycleOptions:
-    """Explicit whole-source processing with a mandatory PNG storage ceiling."""
+    """Explicit whole-source processing with bounded PNG or raw replay storage.
+
+    Storage selection never changes strict qualification or boundary semantics.
+    The positive PNG ceiling remains required for constructor compatibility;
+    replay instead uses the independently bounded raw-frame buffer.
+    """
 
     max_png_bytes: int
     png_prediction: str = "up"
@@ -443,8 +448,6 @@ class HudVideoProcessor:
         """Share decoder/source verification; strict alone releases formal events."""
         self._check_cancel(cancel_event)
         contract = None
-        if options.storage_mode == "replay" and boundary_mode != "practical":
-            raise HudVideoProcessingError("source replay is explicit practical storage only")
         if boundary_mode not in {"strict", "practical"}:
             raise HudVideoProcessingError("unsupported boundary mode")
         if boundary_mode == "practical" and options.unedited_input_contract_path is None:

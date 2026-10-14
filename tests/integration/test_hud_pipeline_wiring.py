@@ -112,7 +112,9 @@ def test_real_mode_selects_two_pass_pipeline_and_persists_observation_evidence(
     result = services.pipeline.analyze_video(source, match_id="M-HUD-PIPELINE")
     assert result.status == "completed"
     assert processor.analyzer.calls == 2
-    report = json.loads((result.analysis_json.parent / "hud-analysis.json").read_text())
+    report = json.loads((result.analysis_json.parent / "hud-analysis.json").read_text(
+        encoding="utf-8",
+    ))
     assert report["observations"]
     assert report["hud_events"]
     assert report["adopted_frames"]

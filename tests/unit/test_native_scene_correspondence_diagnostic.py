@@ -30,15 +30,17 @@ def inputs(tmp_path):
         rows.append({"pts_sec": pts, "frame_sha256": sha256_file(path)})
     report = {"source_video_sha256": sha256_file(video), "native_pts_coverage_verified": True,
               "windows": [{"window_sec": [1.0, 1.02], "rows": rows}]}
-    (run / "results.json").write_text(json.dumps(report))
+    (run / "results.json").write_text(json.dumps(report), encoding="utf-8")
     layout = tmp_path / "layout.json"
     layout.write_text(json.dumps({
         "schema_version": "1.0", "roi_coordinate_system": "normalized_0_to_1",
         "calibrated": True, "reference_resolution": {"width": 640, "height": 360},
         "regions": {"phase": {"x": .38, "y": .28, "width": .25, "height": .19}},
-    }))
+    }),
+        encoding="utf-8",
+    )
     declared = tmp_path / "method.json"
-    declared.write_text(json.dumps({"method": method()}))
+    declared.write_text(json.dumps({"method": method()}), encoding="utf-8")
     return video, run, layout, declared
 
 
@@ -57,7 +59,7 @@ def test_native_comparison_uses_identical_feature_population_without_attesting(t
 @pytest.mark.parametrize("failure", ["frame", "coverage", "source", "order", "roi", "nan", "bool"])
 def test_native_comparison_rejects_invalid_source_contract(tmp_path, failure):
     video, run, layout, declared = inputs(tmp_path)
-    report = json.loads((run / "results.json").read_text())
+    report = json.loads((run / "results.json").read_text(encoding="utf-8"))
     roles = ["phase"]
     if failure == "frame":
         report["windows"][0]["rows"][0]["frame_sha256"] = "0" * 64
@@ -73,7 +75,7 @@ def test_native_comparison_rejects_invalid_source_contract(tmp_path, failure):
         report["windows"][0]["rows"][0]["pts_sec"] = True
     else:
         roles = ["unconfigured"]
-    (run / "results.json").write_text(json.dumps(report))
+    (run / "results.json").write_text(json.dumps(report), encoding="utf-8")
     with pytest.raises((ValueError, KeyError)):
         measure_run(video, run, layout, declared, roles)
 

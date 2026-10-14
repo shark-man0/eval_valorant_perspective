@@ -204,6 +204,7 @@ def test_full_run_lock_rejects_a_second_process_and_releases(tmp_path: Path) -> 
             check=True,
             capture_output=True,
             text=True,
+            encoding="ascii",
         )
         assert result.stdout.strip() == "busy"
     with FullRunLock(tmp_path):

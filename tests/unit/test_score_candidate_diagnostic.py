@@ -90,7 +90,7 @@ def candidate(tmp_path):
             "templates": {digit: f"{digit}.png" for digit in refs},
         }
     path = tmp_path / "candidate.json"
-    path.write_text(json.dumps({"readers": specs}))
+    path.write_text(json.dumps({"readers": specs}), encoding="utf-8")
     return path, specs
 
 
@@ -123,7 +123,7 @@ def test_unfrozen_candidate_declaration_rejected(tmp_path, invalid):
         spec["subregion_norm"] = [0, 0, 2, 1]
     else:
         del specs["enemy_score"]
-    path.write_text(json.dumps({"readers": specs}))
+    path.write_text(json.dumps({"readers": specs}), encoding="utf-8")
     with pytest.raises(ValueError):
         load_score_candidate(path)
 
@@ -140,12 +140,14 @@ def cohort(tmp_path):
         "calibrated": True, "reference_resolution": {"width": 100, "height": 48},
         "regions": {role: {"x": 0, "y": 0, "width": 1, "height": 1}
                     for role in ("ally_score", "enemy_score")},
-    }))
+    }),
+        encoding="utf-8",
+    )
     manifest = tmp_path / "manifest.json"
     data = {"source_video_sha256": "a" * 64, "windows": [{"split": "holdout", "rows": [{
         "frame_sha256": digest, "source_pts_ticks": 10, "time_base": "1/100", "pts_sec": .1,
     }]}]}
-    manifest.write_text(json.dumps(data))
+    manifest.write_text(json.dumps(data), encoding="utf-8")
     return layout, manifest, source, data
 
 
@@ -172,6 +174,6 @@ def test_source_replay_rejects_wrong_image_and_pts_binding(tmp_path, invalid):
         (source / "frame.png").write_bytes(b"changed")
     else:
         data["windows"][0]["rows"][0]["pts_sec"] = .2
-        manifest.write_text(json.dumps(data))
+        manifest.write_text(json.dumps(data), encoding="utf-8")
     with pytest.raises(ValueError):
         replay(layout, path, manifest, source)

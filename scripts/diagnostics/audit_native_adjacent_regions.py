@@ -98,7 +98,7 @@ def main():
         raise ValueError('declaration changed')
     result['declaration_sha256'] = hashlib.sha256(raw).hexdigest()
     result['wall_clock_sec'] = time.monotonic()-started
-    args.output.write_text(json.dumps(result, indent=2)+'\n')
+    args.output.write_text(json.dumps(result, indent=2)+'\n', encoding="utf-8")
     print(json.dumps({'native_frames': result['native_frames'],
                       'adjacent_pairs': len(result['rows']),
                       'wall_clock_sec': result['wall_clock_sec']}))

@@ -90,7 +90,7 @@ def main() -> None:
         'wall_sec': time.perf_counter()-started,
         'canonical_current': None, 'canonical_delta': None,
     }
-    args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')
+    args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n', encoding="utf-8")
     print(json.dumps({k: report[k] for k in (
         'processed_frames', 'phase_scan_valid_frames', 'wall_sec', 'released_events',
     )} | {'candidate_count': len(candidates)}))

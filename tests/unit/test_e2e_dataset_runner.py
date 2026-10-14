@@ -139,13 +139,15 @@ def test_registration_only_does_not_run_analyzer_or_replace_reports(case):
     old = case.root / "e2e_reports/match_001/summary.json"
     write_json(old, {"preserved": True})
     assert execute(case) == 0
-    assert json.loads(old.read_text()) == {"preserved": True}
+    assert json.loads(old.read_text(encoding="utf-8")) == {"preserved": True}
     assert (case.root / "datasets/manifests/match_001.json").is_file()
     validation = next(cmd for cmd in case.calls if "validate_pack.py" in cmd[1])
     assert "--source-video" in validation
     assert not any("run_real_video.py" in cmd[1] or "evaluate_saved_trace.py" in cmd[1]
                    for cmd in case.calls)
-    receipt = json.loads(next((case.root / "outputs").rglob("registration.json")).read_text())
+    receipt = json.loads(next((case.root / "outputs").rglob("registration.json")).read_text(
+        encoding="utf-8",
+    ))
     assert receipt["analyzer_executed"] is False and receipt["evaluator_executed"] is False
 
 
@@ -155,7 +157,7 @@ def test_registration_only_failure_preserves_existing_reports(case):
     old = case.root / "e2e_reports/match_001/summary.json"
     write_json(old, {"preserved": True})
     assert execute(case) == 2
-    assert json.loads(old.read_text()) == {"preserved": True}
+    assert json.loads(old.read_text(encoding="utf-8")) == {"preserved": True}
     assert not (case.root / "datasets/manifests/match_001.json").exists()
 
 
@@ -437,7 +439,8 @@ def test_native_options_reject_before_any_command(case, mode, budget, scene):
     assert case.calls == []
 
 
-def test_native_cli_forwarding_and_settings_binding(case, monkeypatch):
+@pytest.mark.parametrize('storage', ['png', 'replay'])
+def test_native_cli_forwarding_and_settings_binding(case, monkeypatch, storage):
     # Mocked orchestration boundary, not scene qualification or runtime acceptance.
     from valorant_ai_coach.hud.scene_source_binding import SceneSourceBinding
 
@@ -449,12 +452,30 @@ def test_native_cli_forwarding_and_settings_binding(case, monkeypatch):
 
     monkeypatch.setattr(SceneSourceBinding, 'load', load)
     case.args.native_png_budget = 1000
+    case.args.native_storage = storage
+    case.args.native_replay_buffer = 32 * 1024 * 1024
     case.args.scene_reference_profile = str(case.root / 'scene.json')
     assert execute(case) == 0
     cmd = next(c for c in case.calls if 'run_real_video.py' in str(c))
     assert cmd[cmd.index('--native-png-budget') + 1] == '1000'
+    assert cmd[cmd.index('--native-storage') + 1] == storage
+    assert cmd[cmd.index('--native-replay-buffer') + 1] == str(32 * 1024 * 1024)
     assert cmd[cmd.index('--scene-reference-profile') + 1] == case.args.scene_reference_profile
     assert fingerprints == [case.root / 'scene.json', case.root / 'scene.json']
+
+
+@pytest.mark.parametrize('storage,buffer,error', [
+    ('other', 64, 'INVALID_NATIVE_STORAGE_OPTIONS'),
+    ('replay', 0, 'INVALID_NATIVE_STORAGE_OPTIONS'),
+    ('replay', True, 'INVALID_NATIVE_STORAGE_OPTIONS'),
+    ('replay', 64, 'NATIVE_LIFECYCLE_REQUIRES'),
+])
+def test_native_storage_never_enables_unbound_or_invalid_collection(case, storage, buffer, error):
+    case.args.native_storage = storage
+    case.args.native_replay_buffer = buffer
+    with pytest.raises(runner.CaseError, match=error):
+        execute(case)
+    assert case.calls == []
 
 
 def test_unedited_contract_cli_is_source_specific_and_terminally_bound(case):

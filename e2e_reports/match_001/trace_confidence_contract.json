@@ -1,0 +1,49 @@
+{
+  "scope": "Evaluation-only re-adaptation of terminal-hash-verified completed full raw; no new CV/full E2E or recognition result modification",
+  "recognizer_fingerprint_unchanged": "96c79de983a298b1f849c742c9653728c527481d929e2991b6e6f918dfe95da5",
+  "native_raw_unchanged": true,
+  "source_field_confidences_preserved": 720,
+  "scalar_rule": "minimum over valid field confidences, empty map0; no leaf confidence increase",
+  "nonconfidence_snapshot_fields_identical": true,
+  "all_other_trace_groups_identical": true,
+  "all82assertion_results_identical": true,
+  "previous_confidence_errors": 720,
+  "current_confidence_errors": 0,
+  "previous_total_failure_messages": 779,
+  "current_total_failure_messages": 59,
+  "counts": {
+    "pass": 28,
+    "fail": 50,
+    "not_evaluated": 4
+  },
+  "canonical_overall_pass": false,
+  "negative_assertion_failures": 0,
+  "adaptation_runtime_sec": 1.8012633280595765,
+  "adaptation_and_evaluation_runtime_sec": 6.969136559055187,
+  "input_sha256": {
+    "outputs/recognition-investigation/strict-replay-full-20261014/run/raw_processing.json": "a0fefe8546f1e86ff2d0195ea6cf3fc6fd48b2698a5f524853469c8551a123e2",
+    "outputs/recognition-investigation/strict-replay-full-20261014/run/e2e_trace.json": "03a5474832bc510dbd1a1fd57693c09917cbcec87d89ee6f7c3845b0c5bfbd8e",
+    "outputs/recognition-investigation/strict-replay-full-20261014/run/evaluation_report.json": "403f73b50697c045a2300d78a461dbb1ed0af8f7b9ce762c3de82c6e99dc8908",
+    "outputs/recognition-investigation/strict-replay-full-20261014/run/runtime_summary.json": "42b2ae4f86ba82ed3058fd9f8a737f763fea52662d2a95752adcd1edea23c92f",
+    "ValorantData/valorant_e2e_validation_pack_v3/tests/reference_evaluator.py": "9384bcc0aab792123c724a11004e5e17bfc3360592236c1307223f192cf93f80",
+    "ValorantData/valorant_e2e_validation_pack_v3/tests/generated/e2e_assertions_v3.json": "c5e242b611ce227d1d2633e5e24c00dfe65168d8124ab58fbdea84b1d7f0d820",
+    "ValorantData/valorant_e2e_validation_pack_v3/schemas/e2e_output_trace_schema_v1.json": "acf56ac2a15b00accb6916a12705ab3e606af16b10d13f7368230e2075a989c6"
+  },
+  "trace_adapter_sha256": "452cadc1c4622ce452e7c76db484f67e016b0a27b05ce0df783f364dd6c2513a",
+  "output_sha256": {
+    "outputs/recognition-investigation/trace-confidence-contract-20261014/trace.json": "ab7b9d49899d8bb1107024d25cc07521aa37b680760d60d4d99ed336d6adc6cb",
+    "outputs/recognition-investigation/trace-confidence-contract-20261014/evaluation.json": "c4d6480c4dd2ebc438beb2fe6d0ede5a227708388498b57efa70e35afc87c076"
+  },
+  "canonical_evaluator_or_validation_pack_modified": false,
+  "recognition_reexecuted": false,
+  "terminal_hashes_verified": true,
+  "adopted_baseline_updated": false,
+  "tests": {
+    "related_passed": 50,
+    "runtime_sec": 14.71,
+    "ruff": "PASS",
+    "mypy": "PASS131sourcefiles"
+  },
+  "post_verification_adapter_change": "Documentation comments only; confidence/observation conversion logic unchanged",
+  "common_from_raw_cli_verified": true
+}

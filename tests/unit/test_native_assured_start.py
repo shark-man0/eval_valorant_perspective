@@ -204,7 +204,10 @@ def test_assured_transport_cannot_publish_tampered_inputs(tmp_path, tamper):
                                     native.source_rows[0]['source_video_sha256'])
 
 
-def test_auto_collection_selects_assured_provider_without_scene_assets(tmp_path, monkeypatch):
+@pytest.mark.parametrize('storage', ['png', 'replay'])
+def test_auto_collection_selects_assured_provider_without_scene_assets(
+    tmp_path, monkeypatch, storage,
+):
     processor, metadata, original, calls = provider(tmp_path, monkeypatch)
     _, _, _, native = assured(tmp_path / 'assured')
     processor.analyzer._native_profile_readers = True
@@ -218,7 +221,7 @@ def test_auto_collection_selects_assured_provider_without_scene_assets(tmp_path,
 
     processor.analyzer.observe_qualified_unedited_native_start_frames = collect
     measured = processor.collect_native_lifecycle(metadata, NativeLifecycleOptions(
-        1000, unedited_input_contract_path=native.input_contract_path,
+        1000, unedited_input_contract_path=native.input_contract_path, storage_mode=storage,
     ))
     assert measured == native
     assert calls[-1] == 'terminal'

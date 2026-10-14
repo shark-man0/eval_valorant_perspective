@@ -78,7 +78,7 @@ def main():
     args = parser.parse_args()
     if args.output.exists():
         raise ValueError("refuse to overwrite evidence")
-    declaration = json.loads(args.declaration.read_text())
+    declaration = json.loads(args.declaration.read_text(encoding="utf-8"))
     paths = [Path(p) for p in declaration["bindings"]] + [
         args.declaration,
         args.result,
@@ -89,9 +89,9 @@ def main():
     bindings = {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}
     if any(bindings[p] != digest for p, digest in declaration["bindings"].items()):
         raise ValueError("frozen inputs changed")
-    results = json.loads(args.result.read_text())["rows"]
-    partition = json.loads(args.partition.read_text())["rows"]
-    profile = json.loads(args.profile.read_text())
+    results = json.loads(args.result.read_text(encoding="utf-8"))["rows"]
+    partition = json.loads(args.partition.read_text(encoding="utf-8"))["rows"]
+    profile = json.loads(args.profile.read_text(encoding="utf-8"))
     refs = {r["id"]: r for r in profile["references"]}
     row, measured = results[4], partition[4]
     if row["image"] != measured["image"]:
@@ -131,7 +131,7 @@ def main():
         "terminal_bindings_match": True,
         "rows": rows,
     }
-    args.output.write_text(json.dumps(report, indent=2) + "\n")
+    args.output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps([r["result"] for r in rows]))
 
 

@@ -38,7 +38,12 @@ from valorant_ai_coach.observability.sanitize import sanitize_text
 
 from .non_video_dialog import NonVideoDialog
 from .settings_dialog import SettingsDialog
-from .view_model import clip_status, filter_evaluations, time_range_text
+from .view_model import (
+    clip_status,
+    filter_evaluations,
+    format_match_summary,
+    time_range_text,
+)
 from .workers import AnalysisWorker, VideoProbeWorker
 
 LOGGER = logging.getLogger(__name__)
@@ -274,6 +279,12 @@ class MainWindow(QMainWindow):
         self.result_diagnostics.setTextFormat(Qt.TextFormat.PlainText)
         self.result_diagnostics.setVisible(False)
         root.addWidget(self.result_diagnostics)
+        self.match_summary = QLabel()
+        self.match_summary.setObjectName("muted")
+        self.match_summary.setWordWrap(True)
+        self.match_summary.setTextFormat(Qt.TextFormat.PlainText)
+        self.match_summary.setVisible(False)
+        root.addWidget(self.match_summary)
         self.round_observations = QTreeWidget()
         self.round_observations.setObjectName("roundObservations")
         self.round_observations.setHeaderLabels(
@@ -607,7 +618,10 @@ class MainWindow(QMainWindow):
         self._audio_probe_request_id = None
         self._clear_audio_track_metadata()
         self._current_match_id = match_id
-        self.current_evaluations = list(result.evaluations)
+        display_evaluations = getattr(result, "display_evaluations", None)
+        self.current_evaluations = list(
+            result.evaluations if display_evaluations is None else display_evaluations
+        )
         self.current_round_partitions = getattr(result, "round_partitions", ())
         context = [
             value
@@ -626,11 +640,18 @@ class MainWindow(QMainWindow):
         suffix = f" — {' / '.join(context)}" if context else ""
         self.result_title.setText(
             f"GOOD {result.good_count} / 改善 {result.improve_count} / "
-            f"UNSCORED {result.unscored_count}{suffix}"
+            f"UNSCORED {result.unscored_count}"
+            f"（画面表示 {len(self.current_evaluations)} / 保存 {len(result.evaluations)}）{suffix}"
         )
         diagnostics = getattr(result, "diagnostics", ())
         self.result_diagnostics.setText("\n".join(diagnostics[:8]))
         self.result_diagnostics.setVisible(bool(diagnostics))
+        summary = format_match_summary(
+            getattr(result, "match_aggregation", None),
+            getattr(result, "match_aggregation_error", None),
+        )
+        self.match_summary.setText(sanitize_text(summary))
+        self.match_summary.setVisible(bool(summary))
         self.category_filter.blockSignals(True)
         self.round_filter.blockSignals(True)
         self.category_filter.clear()

@@ -314,7 +314,10 @@ def main() -> None:
         "frames": [{"source_frame_pts": frame.time_sec, "sha256": sha256_file(frame.path)}
                    for frame in frames],
     }
-    (output / "diagnostics.json").write_text(json.dumps(report, indent=2, allow_nan=False) + "\n")
+    (output / "diagnostics.json").write_text(
+        json.dumps(report, indent=2, allow_nan=False) + "\n",
+        encoding="utf-8",
+    )
     print(json.dumps({"status": "diagnostic_complete", "production_qualified": False}))
 
 

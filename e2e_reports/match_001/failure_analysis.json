@@ -42,7 +42,7 @@
       "category": "round package",
       "fail_count": 29,
       "fail_percent": 52.72727272727272,
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "assertion_ids": [
         "GT-R2-ROUND-START",
         "GT-R2-DEATH",
@@ -87,7 +87,7 @@
       "category": "snapshot",
       "fail_count": 7,
       "fail_percent": 12.727272727272727,
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "assertion_ids": [
         "GT-R1-SNAP-585",
         "GT-R1-SNAP-595",
@@ -110,7 +110,7 @@
       "category": "round start/end",
       "fail_count": 4,
       "fail_percent": 7.2727272727272725,
-      "implementation_status": "\u90e8\u5206\u5b9f\u88c5",
+      "implementation_status": "部分実装",
       "assertion_ids": [
         "GT-R1-ROUND-START",
         "GT-R1-ROUND-END",
@@ -130,7 +130,7 @@
       "category": "visual event",
       "fail_count": 3,
       "fail_percent": 5.454545454545454,
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "assertion_ids": [
         "GT-R1-MUZZLE-1",
         "GT-R1-MUZZLE-2",
@@ -149,7 +149,7 @@
       "category": "kill/death/combat event",
       "fail_count": 2,
       "fail_percent": 3.6363636363636362,
-      "implementation_status": "\u90e8\u5206\u5b9f\u88c5",
+      "implementation_status": "部分実装",
       "assertion_ids": [
         "GT-R1-DEATH",
         "event_count_constraints-001"
@@ -167,7 +167,7 @@
       "category": "remote state",
       "fail_count": 2,
       "fail_percent": 3.6363636363636362,
-      "implementation_status": "\u8a8d\u8b58\u5931\u6557",
+      "implementation_status": "認識失敗",
       "assertion_ids": [
         "GT-R1-ASTRAL-1",
         "GT-R1-ASTRAL-2"
@@ -185,7 +185,7 @@
       "category": "temporal context",
       "fail_count": 2,
       "fail_percent": 3.6363636363636362,
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "assertion_ids": [
         "GT-R1-SNAP-733",
         "GT-R1-SNAP-7445"
@@ -203,7 +203,7 @@
       "category": "buy phase",
       "fail_count": 1,
       "fail_percent": 1.8181818181818181,
-      "implementation_status": "\u90e8\u5206\u5b9f\u88c5",
+      "implementation_status": "部分実装",
       "assertion_ids": [
         "GT-R1-BUY-FLAG"
       ],
@@ -220,7 +220,7 @@
       "category": "smoke state",
       "fail_count": 1,
       "fail_percent": 1.8181818181818181,
-      "implementation_status": "\u8a8d\u8b58\u5931\u6557",
+      "implementation_status": "認識失敗",
       "assertion_ids": [
         "GT-R1-SMOKE"
       ],
@@ -237,7 +237,7 @@
       "category": "live identity",
       "fail_count": 1,
       "fail_percent": 1.8181818181818181,
-      "implementation_status": "\u8a8d\u8b58\u5931\u6557",
+      "implementation_status": "認識失敗",
       "assertion_ids": [
         "OWN-R1-SELF"
       ],
@@ -254,7 +254,7 @@
       "category": "ownership",
       "fail_count": 1,
       "fail_percent": 1.8181818181818181,
-      "implementation_status": "\u672a\u5b9f\u88c5",
+      "implementation_status": "未実装",
       "assertion_ids": [
         "OWN-R1-SELF-DEAD"
       ],
@@ -271,7 +271,7 @@
       "category": "killfeed / snapshot",
       "fail_count": 1,
       "fail_percent": 1.8181818181818181,
-      "implementation_status": "\u672a\u5b9f\u88c5",
+      "implementation_status": "未実装",
       "assertion_ids": [
         "GT-R1-SNAP-475"
       ],
@@ -289,7 +289,7 @@
       "category": "event detection",
       "fail_count": 1,
       "fail_percent": 1.8181818181818181,
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "assertion_ids": [
         "event_count_constraints-003"
       ],
@@ -303,10 +303,10 @@
     }
   ],
   "implementation_status_summary": {
-    "\u90e8\u5206\u5b9f\u88c5": 7,
-    "upstream\u4f9d\u5b58": 42,
-    "\u8a8d\u8b58\u5931\u6557": 4,
-    "\u672a\u5b9f\u88c5": 2,
+    "部分実装": 7,
+    "upstream依存": 42,
+    "認識失敗": 4,
+    "未実装": 2,
     "evaluator / validation": 0
   },
   "category_summary": {
@@ -380,7 +380,7 @@
       "primary_root_cause": "round_boundary",
       "root_cause_description": "No round_start/end HUD events; missing banner/score context for temporal detector",
       "direct_or_upstream": "direct",
-      "implementation_status": "\u90e8\u5206\u5b9f\u88c5",
+      "implementation_status": "部分実装",
       "upstream_dependencies": [
         "round_boundary",
         "round_package_scope"
@@ -480,7 +480,7 @@
       "primary_root_cause": "player_death_semantics",
       "root_cause_description": "No player_death event; death transition evidence and victim/killer/report attributes unavailable",
       "direct_or_upstream": "direct",
-      "implementation_status": "\u90e8\u5206\u5b9f\u88c5",
+      "implementation_status": "部分実装",
       "upstream_dependencies": [
         "current_frame_death_evidence",
         "death_attributes",
@@ -578,7 +578,7 @@
       "primary_root_cause": "round_boundary",
       "root_cause_description": "No round_start/end HUD events; missing banner/score context for temporal detector",
       "direct_or_upstream": "direct",
-      "implementation_status": "\u90e8\u5206\u5b9f\u88c5",
+      "implementation_status": "部分実装",
       "upstream_dependencies": [
         "round_boundary",
         "round_package_scope"
@@ -666,7 +666,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "round_boundary",
         "round_package_scope"
@@ -771,7 +771,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "current_frame_death_evidence",
         "death_attributes",
@@ -848,7 +848,7 @@
       "primary_root_cause": "ordering_point_dependency",
       "root_cause_description": "Required point events missing; no ordering result",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "GT-R1-ROUND-START",
         "GT-R1-DEATH"
@@ -907,7 +907,7 @@
       "primary_root_cause": "ordering_point_dependency",
       "root_cause_description": "Required point events missing; no ordering result",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "GT-R1-ROUND-START",
         "GT-R1-ROUND-END"
@@ -966,7 +966,7 @@
       "primary_root_cause": "ordering_point_dependency",
       "root_cause_description": "Required point events missing; no ordering result",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "GT-R1-DEATH",
         "GT-R1-ROUND-END"
@@ -1025,7 +1025,7 @@
       "primary_root_cause": "ordering_point_dependency",
       "root_cause_description": "Required point events missing; no ordering result",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "GT-R2-ROUND-START",
         "GT-R2-DEATH"
@@ -1115,7 +1115,7 @@
       "primary_root_cause": "buy_phase_evidence",
       "root_cause_description": "buy_phase_banner absent on all4661 observations; profile lacks buy-phase template and score readers",
       "direct_or_upstream": "direct",
-      "implementation_status": "\u90e8\u5206\u5b9f\u88c5",
+      "implementation_status": "部分実装",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -1224,7 +1224,7 @@
       "primary_root_cause": "astra_evidence",
       "root_cause_description": "remote_control_view/astra_astral absent; existing feature/classifier evidence not qualified",
       "direct_or_upstream": "direct",
-      "implementation_status": "\u8a8d\u8b58\u5931\u6557",
+      "implementation_status": "認識失敗",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -1333,7 +1333,7 @@
       "primary_root_cause": "astra_evidence",
       "root_cause_description": "remote_control_view/astra_astral absent; existing feature/classifier evidence not qualified",
       "direct_or_upstream": "direct",
-      "implementation_status": "\u8a8d\u8b58\u5931\u6557",
+      "implementation_status": "認識失敗",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -1442,7 +1442,7 @@
       "primary_root_cause": "smoke_evidence",
       "root_cause_description": "vision_obscured_smoke absent; conservative existing smoke feature conditions not satisfied",
       "direct_or_upstream": "direct",
-      "implementation_status": "\u8a8d\u8b58\u5931\u6557",
+      "implementation_status": "認識失敗",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -1539,12 +1539,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
+      "implementation_status": "実装済み",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
       ],
-      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
+      "fix_target": "維持・回帰保護",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -1628,7 +1628,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -1743,7 +1743,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -1859,7 +1859,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -1975,7 +1975,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -2090,7 +2090,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -2185,7 +2185,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -2281,7 +2281,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -5108,7 +5108,7 @@
       "primary_root_cause": "live_ownership_coverage",
       "root_cause_description": "455 identified live frames cannot cover90% of required R1 self interval",
       "direct_or_upstream": "direct",
-      "implementation_status": "\u8a8d\u8b58\u5931\u6557",
+      "implementation_status": "認識失敗",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -5126,7 +5126,7 @@
       "secondary_blockers": [
         {
           "kind": "ownership_contract",
-          "detail": "adapter maps only live\u2192self and spectator\u2192teammate; buy/remote/dead contexts need independently evidenced ownership semantics; no HUD attribution policy relaxation"
+          "detail": "adapter maps only live→self and spectator→teammate; buy/remote/dead contexts need independently evidenced ownership semantics; no HUD attribution policy relaxation"
         }
       ],
       "pass_requirements": {
@@ -5196,7 +5196,7 @@
       "primary_root_cause": "self_dead_owner_export",
       "root_cause_description": "trace adapter emits self/teammate_spectated/unknown only; self_dead_ui has no emission path",
       "direct_or_upstream": "direct",
-      "implementation_status": "\u672a\u5b9f\u88c5",
+      "implementation_status": "未実装",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -5214,7 +5214,7 @@
       "secondary_blockers": [
         {
           "kind": "ownership_contract",
-          "detail": "adapter maps only live\u2192self and spectator\u2192teammate; buy/remote/dead contexts need independently evidenced ownership semantics; no HUD attribution policy relaxation"
+          "detail": "adapter maps only live→self and spectator→teammate; buy/remote/dead contexts need independently evidenced ownership semantics; no HUD attribution policy relaxation"
         }
       ],
       "pass_requirements": {
@@ -5225,7 +5225,7 @@
       },
       "failure_category_tags": [
         "ownership",
-        "\u672a\u5b9f\u88c5field / export"
+        "未実装field / export"
       ]
     },
     {
@@ -5285,7 +5285,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -5307,7 +5307,7 @@
         },
         {
           "kind": "ownership_contract",
-          "detail": "adapter maps only live\u2192self and spectator\u2192teammate; buy/remote/dead contexts need independently evidenced ownership semantics; no HUD attribution policy relaxation"
+          "detail": "adapter maps only live→self and spectator→teammate; buy/remote/dead contexts need independently evidenced ownership semantics; no HUD attribution policy relaxation"
         }
       ],
       "pass_requirements": {
@@ -5378,7 +5378,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -5400,7 +5400,7 @@
         },
         {
           "kind": "ownership_contract",
-          "detail": "adapter maps only live\u2192self and spectator\u2192teammate; buy/remote/dead contexts need independently evidenced ownership semantics; no HUD attribution policy relaxation"
+          "detail": "adapter maps only live→self and spectator→teammate; buy/remote/dead contexts need independently evidenced ownership semantics; no HUD attribution policy relaxation"
         }
       ],
       "pass_requirements": {
@@ -5471,7 +5471,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "state_evidence",
         "round_package_scope"
@@ -5493,7 +5493,7 @@
         },
         {
           "kind": "ownership_contract",
-          "detail": "adapter maps only live\u2192self and spectator\u2192teammate; buy/remote/dead contexts need independently evidenced ownership semantics; no HUD attribution policy relaxation"
+          "detail": "adapter maps only live→self and spectator→teammate; buy/remote/dead contexts need independently evidenced ownership semantics; no HUD attribution policy relaxation"
         }
       ],
       "pass_requirements": {
@@ -5522,7 +5522,7 @@
         "primary_state": "live_first_person",
         "buy_phase_banner": true,
         "player_alive": true,
-        "location_label_raw": "A \u30ed\u30d3\u30fc"
+        "location_label_raw": "A ロビー"
       },
       "assertion_definition": {
         "id": "GT-R1-SNAP-0035",
@@ -5533,7 +5533,7 @@
           "primary_state": "live_first_person",
           "buy_phase_banner": true,
           "player_alive": true,
-          "location_label_raw": "A \u30ed\u30d3\u30fc"
+          "location_label_raw": "A ロビー"
         }
       },
       "actual": {
@@ -5600,7 +5600,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -5650,7 +5650,7 @@
         "score_player": 0,
         "score_enemy": 1,
         "game_timer_display": "1:39",
-        "location_label_raw": "A \u30e1\u30a4\u30f3"
+        "location_label_raw": "A メイン"
       },
       "assertion_definition": {
         "id": "GT-R1-SNAP-0415",
@@ -5664,7 +5664,7 @@
           "score_player": 0,
           "score_enemy": 1,
           "game_timer_display": "1:39",
-          "location_label_raw": "A \u30e1\u30a4\u30f3"
+          "location_label_raw": "A メイン"
         }
       },
       "actual": {
@@ -5746,7 +5746,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -5792,7 +5792,7 @@
         "snapshot",
         "timer reader",
         "upstream dependency failure",
-        "\u672a\u5b9f\u88c5field / export"
+        "未実装field / export"
       ]
     },
     {
@@ -5878,7 +5878,7 @@
       "primary_root_cause": "nonself_killfeed_snapshot_field",
       "root_cause_description": "Matching snapshot lacks nonself_killfeed_row_visible; current snapshot/adapter has no producer for this field",
       "direct_or_upstream": "direct",
-      "implementation_status": "\u672a\u5b9f\u88c5",
+      "implementation_status": "未実装",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -5917,7 +5917,7 @@
       "failure_category_tags": [
         "killfeed / snapshot",
         "snapshot",
-        "\u672a\u5b9f\u88c5field / export"
+        "未実装field / export"
       ]
     },
     {
@@ -5998,7 +5998,7 @@
       "primary_root_cause": "snapshot_hud_confidence",
       "root_cause_description": "No HUD observation with hud_confidence>=0.65 inside assertion tolerance; builder admits none",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -6113,7 +6113,7 @@
       "primary_root_cause": "snapshot_hud_confidence",
       "root_cause_description": "No HUD observation with hud_confidence>=0.65 inside assertion tolerance; builder admits none",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -6217,7 +6217,7 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
+      "implementation_status": "実装済み",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -6225,7 +6225,7 @@
         "primary_state",
         "vision_obscured_smoke"
       ],
-      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
+      "fix_target": "維持・回帰保護",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -6345,7 +6345,7 @@
       "primary_root_cause": "snapshot_hud_confidence",
       "root_cause_description": "No HUD observation with hud_confidence>=0.65 inside assertion tolerance; builder admits none",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -6385,7 +6385,7 @@
       "failure_category_tags": [
         "snapshot",
         "upstream dependency failure",
-        "\u672a\u5b9f\u88c5field / export"
+        "未実装field / export"
       ]
     },
     {
@@ -6487,7 +6487,7 @@
       "primary_root_cause": "native_sample_tolerance",
       "root_cause_description": "No analyzed native HUD sample inside required tolerance; cannot fix by changing returned recognition value alone",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -6528,7 +6528,7 @@
         "snapshot",
         "temporal context",
         "upstream dependency failure",
-        "\u672a\u5b9f\u88c5field / export"
+        "未実装field / export"
       ]
     },
     {
@@ -6630,7 +6630,7 @@
       "primary_root_cause": "snapshot_hud_confidence",
       "root_cause_description": "No HUD observation with hud_confidence>=0.65 inside assertion tolerance; builder admits none",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -6670,7 +6670,7 @@
       "failure_category_tags": [
         "snapshot",
         "upstream dependency failure",
-        "\u672a\u5b9f\u88c5field / export"
+        "未実装field / export"
       ]
     },
     {
@@ -6688,7 +6688,7 @@
         "player_alive": true,
         "player_hp": 48,
         "muzzle_flash_visible": true,
-        "location_label_raw": "\u4e2d\u592e\u30d5\u30a1\u30a6\u30f3\u30c6\u30f3",
+        "location_label_raw": "中央ファウンテン",
         "spectator_primary_state": false
       },
       "assertion_definition": {
@@ -6701,7 +6701,7 @@
           "player_alive": true,
           "player_hp": 48,
           "muzzle_flash_visible": true,
-          "location_label_raw": "\u4e2d\u592e\u30d5\u30a1\u30a6\u30f3\u30c6\u30f3",
+          "location_label_raw": "中央ファウンテン",
           "spectator_primary_state": false
         }
       },
@@ -6779,7 +6779,7 @@
       "primary_root_cause": "snapshot_hud_confidence",
       "root_cause_description": "No HUD observation with hud_confidence>=0.65 inside assertion tolerance; builder admits none",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -6823,7 +6823,7 @@
         "HP reader",
         "snapshot",
         "upstream dependency failure",
-        "\u672a\u5b9f\u88c5field / export"
+        "未実装field / export"
       ]
     },
     {
@@ -6932,7 +6932,7 @@
       "primary_root_cause": "snapshot_hud_confidence",
       "root_cause_description": "No HUD observation with hud_confidence>=0.65 inside assertion tolerance; builder admits none",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -6978,7 +6978,7 @@
         "snapshot",
         "timer reader",
         "upstream dependency failure",
-        "\u672a\u5b9f\u88c5field / export"
+        "未実装field / export"
       ]
     },
     {
@@ -7059,7 +7059,7 @@
       "primary_root_cause": "snapshot_hud_confidence",
       "root_cause_description": "No HUD observation with hud_confidence>=0.65 inside assertion tolerance; builder admits none",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -7188,7 +7188,7 @@
       "primary_root_cause": "native_sample_tolerance",
       "root_cause_description": "No analyzed native HUD sample inside required tolerance; cannot fix by changing returned recognition value alone",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -7232,7 +7232,7 @@
         "temporal context",
         "timer reader",
         "upstream dependency failure",
-        "\u672a\u5b9f\u88c5field / export"
+        "未実装field / export"
       ]
     },
     {
@@ -7250,7 +7250,7 @@
         "buy_phase_banner": true,
         "player_alive": true,
         "player_hp": 100,
-        "location_label_raw": "\u30a2\u30bf\u30c3\u30af\u5074\u30b9\u30dd\u30fc\u30f3",
+        "location_label_raw": "アタック側スポーン",
         "combat_report_visible": true
       },
       "assertion_definition": {
@@ -7263,7 +7263,7 @@
           "buy_phase_banner": true,
           "player_alive": true,
           "player_hp": 100,
-          "location_label_raw": "\u30a2\u30bf\u30c3\u30af\u5074\u30b9\u30dd\u30fc\u30f3",
+          "location_label_raw": "アタック側スポーン",
           "combat_report_visible": true
         }
       },
@@ -7341,7 +7341,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -7474,7 +7474,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -7611,7 +7611,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -7659,7 +7659,7 @@
         "snapshot",
         "timer reader",
         "upstream dependency failure",
-        "\u672a\u5b9f\u88c5field / export"
+        "未実装field / export"
       ]
     },
     {
@@ -7747,7 +7747,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -7870,7 +7870,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -7993,7 +7993,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -8109,7 +8109,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -8230,7 +8230,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -8281,13 +8281,13 @@
         "primary_state": "spectator_first_person",
         "player_alive": false,
         "view_owner": "teammate_spectated",
-        "spectated_name": "\u30c1\u30a7\u30f3\u30d0\u30fc\u306e\u304a\u30c1\u30a7\u30f3\u30d0\u30fc",
+        "spectated_name": "チェンバーのおチェンバー",
         "spectated_hp": 100,
         "spectated_ammo_mag": 21,
         "spectated_ammo_reserve": 50,
         "spectated_weapon": "Vandal",
         "combat_report_visible": true,
-        "spectated_location_label_raw": "\u4e2d\u592e\u30d5\u30a1\u30a6\u30f3\u30c6\u30f3"
+        "spectated_location_label_raw": "中央ファウンテン"
       },
       "assertion_definition": {
         "id": "GT-R2-SNAP-151",
@@ -8298,13 +8298,13 @@
           "primary_state": "spectator_first_person",
           "player_alive": false,
           "view_owner": "teammate_spectated",
-          "spectated_name": "\u30c1\u30a7\u30f3\u30d0\u30fc\u306e\u304a\u30c1\u30a7\u30f3\u30d0\u30fc",
+          "spectated_name": "チェンバーのおチェンバー",
           "spectated_hp": 100,
           "spectated_ammo_mag": 21,
           "spectated_ammo_reserve": 50,
           "spectated_weapon": "Vandal",
           "combat_report_visible": true,
-          "spectated_location_label_raw": "\u4e2d\u592e\u30d5\u30a1\u30a6\u30f3\u30c6\u30f3"
+          "spectated_location_label_raw": "中央ファウンテン"
         }
       },
       "actual": {
@@ -8401,7 +8401,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -8452,7 +8452,7 @@
         "snapshot",
         "spectator detection",
         "upstream dependency failure",
-        "\u672a\u5b9f\u88c5field / export"
+        "未実装field / export"
       ]
     },
     {
@@ -8476,7 +8476,7 @@
         "spectated_weapon": "Vandal",
         "muzzle_flash_visible": true,
         "combat_report_visible": true,
-        "spectated_location_label_raw": "B\u30e1\u30a4\u30f3"
+        "spectated_location_label_raw": "Bメイン"
       },
       "assertion_definition": {
         "id": "GT-R2-SNAP-170",
@@ -8494,7 +8494,7 @@
           "spectated_weapon": "Vandal",
           "muzzle_flash_visible": true,
           "combat_report_visible": true,
-          "spectated_location_label_raw": "B\u30e1\u30a4\u30f3"
+          "spectated_location_label_raw": "Bメイン"
         }
       },
       "actual": {
@@ -8596,7 +8596,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -8650,7 +8650,7 @@
         "snapshot",
         "spectator detection",
         "upstream dependency failure",
-        "\u672a\u5b9f\u88c5field / export"
+        "未実装field / export"
       ]
     },
     {
@@ -8722,7 +8722,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -8823,7 +8823,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -8924,7 +8924,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "round_package_scope",
         "hud_confidence_gate",
@@ -9030,7 +9030,7 @@
       "primary_root_cause": "weapon_visual_input_guard",
       "root_cause_description": "No eligible player muzzle observation in required time; HUD identity unknown and visual evidence insufficient",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "player_mechanics_eligibility",
         "weapon_visual_evidence",
@@ -9127,7 +9127,7 @@
       "primary_root_cause": "weapon_visual_input_guard",
       "root_cause_description": "No eligible player muzzle observation in required time; HUD identity unknown and visual evidence insufficient",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "player_mechanics_eligibility",
         "weapon_visual_evidence",
@@ -9224,7 +9224,7 @@
       "primary_root_cause": "weapon_visual_input_guard",
       "root_cause_description": "No eligible player muzzle observation in required time; HUD identity unknown and visual evidence insufficient",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "player_mechanics_eligibility",
         "weapon_visual_evidence",
@@ -9289,7 +9289,7 @@
       "primary_root_cause": "round_boundary",
       "root_cause_description": "No round_start/end HUD events; missing banner/score context for temporal detector",
       "direct_or_upstream": "direct",
-      "implementation_status": "\u90e8\u5206\u5b9f\u88c5",
+      "implementation_status": "部分実装",
       "upstream_dependencies": [
         "event_producer",
         "round_package_scope"
@@ -9359,7 +9359,7 @@
       "primary_root_cause": "player_death_semantics",
       "root_cause_description": "No player_death event; death transition evidence and victim/killer/report attributes unavailable",
       "direct_or_upstream": "direct",
-      "implementation_status": "\u90e8\u5206\u5b9f\u88c5",
+      "implementation_status": "部分実装",
       "upstream_dependencies": [
         "event_producer",
         "round_package_scope"
@@ -9434,7 +9434,7 @@
       "primary_root_cause": "round_boundary",
       "root_cause_description": "No round_start/end HUD events; missing banner/score context for temporal detector",
       "direct_or_upstream": "direct",
-      "implementation_status": "\u90e8\u5206\u5b9f\u88c5",
+      "implementation_status": "部分実装",
       "upstream_dependencies": [
         "event_producer",
         "round_package_scope"
@@ -9517,7 +9517,7 @@
       "primary_root_cause": "shot_evidence",
       "root_cause_description": "No shot in required window; visual candidate path exists but all14 candidates suppressed below threshold",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "event_producer",
         "round_package_scope"
@@ -9581,7 +9581,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "event_producer",
         "round_package_scope"
@@ -9656,7 +9656,7 @@
       "primary_root_cause": "round_package_scope",
       "root_cause_description": "1 partial package [7.369336,171.002669] mapped exclusively to sample_round_1; no sample_round_2; pre-window R1 observations excluded",
       "direct_or_upstream": "upstream",
-      "implementation_status": "upstream\u4f9d\u5b58",
+      "implementation_status": "upstream依存",
       "upstream_dependencies": [
         "event_producer",
         "round_package_scope"
@@ -9733,12 +9733,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
+      "implementation_status": "実装済み",
       "upstream_dependencies": [
         "event_producer",
         "round_package_scope"
       ],
-      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
+      "fix_target": "維持・回帰保護",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -9832,12 +9832,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
+      "implementation_status": "実装済み",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
+      "fix_target": "維持・回帰保護",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -9925,12 +9925,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
+      "implementation_status": "実装済み",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
+      "fix_target": "維持・回帰保護",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -10018,12 +10018,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
+      "implementation_status": "実装済み",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
+      "fix_target": "維持・回帰保護",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -10111,12 +10111,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
+      "implementation_status": "実装済み",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
+      "fix_target": "維持・回帰保護",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -10182,12 +10182,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
+      "implementation_status": "実装済み",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
+      "fix_target": "維持・回帰保護",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -10255,12 +10255,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
+      "implementation_status": "実装済み",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
+      "fix_target": "維持・回帰保護",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -10334,12 +10334,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
+      "implementation_status": "実装済み",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
+      "fix_target": "維持・回帰保護",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -10405,12 +10405,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
+      "implementation_status": "実装済み",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
+      "fix_target": "維持・回帰保護",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -10476,12 +10476,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
+      "implementation_status": "実装済み",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
+      "fix_target": "維持・回帰保護",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -10557,12 +10557,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
+      "implementation_status": "実装済み",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
+      "fix_target": "維持・回帰保護",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -10638,12 +10638,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
+      "implementation_status": "実装済み",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
+      "fix_target": "維持・回帰保護",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -10686,7 +10686,7 @@
         "must_not_state_match": {
           "state": "spectator_first_person"
         },
-        "reason": "Live player footage can display \u89b3\u6226\u8005 N; text alone must not force spectator state."
+        "reason": "Live player footage can display 観戦者 N; text alone must not force spectator state."
       },
       "assertion_definition": {
         "id": "NEG-SPECTATOR-COUNT-TEXT",
@@ -10697,7 +10697,7 @@
         "must_not_state_match": {
           "state": "spectator_first_person"
         },
-        "reason": "Live player footage can display \u89b3\u6226\u8005 N; text alone must not force spectator state."
+        "reason": "Live player footage can display 観戦者 N; text alone must not force spectator state."
       },
       "actual": {
         "violations": 0,
@@ -10709,12 +10709,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
+      "implementation_status": "実装済み",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
+      "fix_target": "維持・回帰保護",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -10806,12 +10806,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
+      "implementation_status": "実装済み",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
+      "fix_target": "維持・回帰保護",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -10887,12 +10887,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
+      "implementation_status": "実装済み",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
+      "fix_target": "維持・回帰保護",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -10970,12 +10970,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
+      "implementation_status": "実装済み",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
+      "fix_target": "維持・回帰保護",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -11061,12 +11061,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
+      "implementation_status": "実装済み",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
+      "fix_target": "維持・回帰保護",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -11132,12 +11132,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
+      "implementation_status": "実装済み",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
+      "fix_target": "維持・回帰保護",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -11203,12 +11203,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
+      "implementation_status": "実装済み",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
+      "fix_target": "維持・回帰保護",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -11256,7 +11256,7 @@
             "to": "summit_a_approach"
           }
         },
-        "reason": "A \u30ed\u30d3\u30fc and A \u30e1\u30a4\u30f3 are the same operational zone in the current map contract; string change alone is not position_change."
+        "reason": "A ロビー and A メイン are the same operational zone in the current map contract; string change alone is not position_change."
       },
       "assertion_definition": {
         "id": "NEG-SAME-ZONE-CALLOUT-CHANGE",
@@ -11272,7 +11272,7 @@
             "to": "summit_a_approach"
           }
         },
-        "reason": "A \u30ed\u30d3\u30fc and A \u30e1\u30a4\u30f3 are the same operational zone in the current map contract; string change alone is not position_change."
+        "reason": "A ロビー and A メイン are the same operational zone in the current map contract; string change alone is not position_change."
       },
       "actual": {
         "violations": 0,
@@ -11284,12 +11284,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
+      "implementation_status": "実装済み",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
+      "fix_target": "維持・回帰保護",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -11361,12 +11361,12 @@
       "primary_root_cause": null,
       "root_cause_description": null,
       "direct_or_upstream": "-",
-      "implementation_status": "\u5b9f\u88c5\u6e08\u307f",
+      "implementation_status": "実装済み",
       "upstream_dependencies": [
         "current_frame_safety",
         "event_and_snapshot_output"
       ],
-      "fix_target": "\u7dad\u6301\u30fb\u56de\u5e30\u4fdd\u8b77",
+      "fix_target": "維持・回帰保護",
       "pass_gain_certainty": "not_applicable",
       "guaranteed_pass_gain_from_single_root_fix": 0,
       "missing_trace_contract_fields": [],
@@ -13463,7 +13463,7 @@
     "spectator detection": 4,
     "live identity": 1,
     "ownership": 1,
-    "\u672a\u5b9f\u88c5field / export": 12,
+    "未実装field / export": 12,
     "snapshot": 25,
     "ally score": 4,
     "enemy score": 4,
@@ -16613,7 +16613,7 @@
     "remaining": [
       "independent positive temporal qualification",
       "streaming pending-end implementation and explicit qualification gate",
-      "complete R1start\u2192active\u2192end lifecycle context",
+      "complete R1start→active→end lifecycle context",
       "canonical targeted/sampled/full validation when qualified"
     ],
     "next_action": "Implement streaming pending-end collector behind a separately qualified opt-in contract, preserving default same-frame route; validate state/reset/duplicate/event provenance before real release."
@@ -18071,14 +18071,21 @@
     "canonical_status_unchanged": true
   },
   "current_qualification_status": {
-    "recognizer_fingerprint": "5b32ea0c5be3d23aadd5e1ef4057619c10c7104d3d210a69d39433bffea6dfc8",
+    "recognizer_fingerprint": "96c79de983a298b1f849c742c9653728c527481d929e2991b6e6f918dfe95da5",
     "old_bundles_stale": true,
-    "actual_old_bundle_rejection": "Invalid or mismatched global lifecycle qualification",
-    "current_default_release": false,
+    "fresh_start_only_bundle_path": "outputs/recognition-investigation/strict-replay-components-20261013/start_qualification/start-components-review.json",
+    "fresh_start_only_bundle_sha256": "7776684dc1a81b0df23b1455408632506cb6609fbf509815233e88a26e0cceb5",
+    "current_r1_start_qualified_application_source_verified": true,
+    "offline_end_components_admitted_not_finally_qualified": true,
     "independent_temporal_generalization_proven": false,
-    "latest_current_code_regression": "3631PASS/6SKIP;RuffPASS;mypy131PASS",
-    "previous_native_source_and_admission_reports_historical_after_latest_main": true,
-    "reason": "main8e87c57 adds calibration and source-clock/package safety changes covered by broad fingerprint"
+    "default_qualification_installed": false,
+    "whole_source_strict_replay_collection_verified": true,
+    "full_main_hud_visual_merge_pending": true,
+    "current_full_regression_with_private_ocr": {
+      "PASS": 3646,
+      "SKIP": 5,
+      "runtime_sec": 2361.57
+    }
   },
   "current_code_lifecycle_revalidation": {
     "report_path": "e2e_reports/match_001/current_code_lifecycle_revalidation.json",
@@ -18114,5 +18121,990 @@
     },
     "package_count": 2,
     "negative_failures": 0
+  },
+  "package_context_audit": {
+    "report_path": "e2e_reports/match_001/package_context_audit.json",
+    "report_sha256": "999ddd7412376beb1fc938da82e48d4746d40e3436761d83b59c94104a305691",
+    "historical_upstream_recognition_reused_only_as_frozen_builder_fixture": true,
+    "current_code_runtime_recognition_revalidated": false,
+    "strict_unassigned_frames": 1966,
+    "practical_unassigned_frames": 0,
+    "practical_unknown_fragments": 3,
+    "new_adopted_passes": 0
+  },
+  "strict_native_replay": {
+    "report_path": "e2e_reports/match_001/strict_native_replay.json",
+    "report_sha256": "a9d8d9ad27c8688a36b38fc70c8e240b44b1fa3267a34955a4ce43161b540988",
+    "recognizer_fingerprint": "96c79de983a298b1f849c742c9653728c527481d929e2991b6e6f918dfe95da5",
+    "runtime_source_qualification_pending": true,
+    "adopted_baseline_unchanged": true
+  },
+  "strict_replay_source_verification": {
+    "report_path": "e2e_reports/match_001/strict_replay_source_verification.json",
+    "report_sha256": "542eda7c56cbf620b146fd574063df9cc5ea623928bc2581edc64bdc1d401e61",
+    "recognizer_fingerprint": "96c79de983a298b1f849c742c9653728c527481d929e2991b6e6f918dfe95da5",
+    "fresh_source_component_replay": true,
+    "current_r1_start_native_and_application_assertion_pass": true,
+    "canonical_full_executed": false
+  },
+  "strict_replay_whole_source": {
+    "report_path": "e2e_reports/match_001/strict_replay_whole_source.json",
+    "report_sha256": "5b7106c1f4fef567d90e4ffb31efa2e718a1d47ffcf7f0667174370b3c57fc39",
+    "current_recognizer_fingerprint": "96c79de983a298b1f849c742c9653728c527481d929e2991b6e6f918dfe95da5",
+    "actual_strict_application_collector_verified": true,
+    "processed_frames": 10259,
+    "formal_round_starts": 2,
+    "formal_round_ends": 1,
+    "package_count": 2,
+    "native_only_trace_counts": {
+      "pass": 27,
+      "fail": 51,
+      "not_evaluated": 4
+    },
+    "standard_full_e2e_executed": false,
+    "adopted_baseline_unchanged": true
+  },
+  "strict_replay_sampled_merge": {
+    "report_path": "e2e_reports/match_001/strict_replay_sampled_merge.json",
+    "report_sha256": "aa65e7e2efe8e3a13e820a9eb06d27d67177809e8153cbb74909a71f7f562ec2",
+    "restored_ocr_baseline_counts": {
+      "passed": 7,
+      "failed": 12,
+      "not_evaluated": 11
+    },
+    "restored_ocr_candidate_counts": {
+      "passed": 15,
+      "failed": 4,
+      "not_evaluated": 11
+    },
+    "labelled_wrong_values": 0,
+    "adopted_baseline_unchanged": true
+  },
+  "latest_full_candidate": {
+    "report_path": "e2e_reports/match_001/strict_replay_full_candidate.json",
+    "report_sha256": "3c1884c750c8154b8253db40bfb55886046821583882d7bd3050812bce0654bf",
+    "counts": {
+      "PASS": 28,
+      "FAIL": 50,
+      "NE": 4
+    },
+    "adopted_baseline_unchanged": true,
+    "new_semantic_passes": 5,
+    "existing_pass_regressions": 0,
+    "negative_assertion_failures": 0,
+    "confidence_map_errors": 720,
+    "next_priority": "Trace confidence-map/scalar contract, then source-derived end timing and remaining50semantic failure classification"
+  },
+  "latest_full_candidate_assertion_results": [
+    {
+      "assertion_id": "GT-R1-ROUND-START",
+      "group": "required_point_events",
+      "index": 0,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "GT-R1-DEATH",
+      "group": "required_point_events",
+      "index": 1,
+      "status": "fail",
+      "failures": [
+        "missing_point:GT-R1-DEATH"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-ROUND-END",
+      "group": "required_point_events",
+      "index": 2,
+      "status": "fail",
+      "failures": [
+        "missing_point:GT-R1-ROUND-END"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-ROUND-START",
+      "group": "required_point_events",
+      "index": 3,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "GT-R2-DEATH",
+      "group": "required_point_events",
+      "index": 4,
+      "status": "fail",
+      "failures": [
+        "missing_point:GT-R2-DEATH"
+      ]
+    },
+    {
+      "assertion_id": "ordering_constraints-000",
+      "group": "ordering_constraints",
+      "index": 0,
+      "status": "not_evaluated",
+      "failures": []
+    },
+    {
+      "assertion_id": "ordering_constraints-001",
+      "group": "ordering_constraints",
+      "index": 1,
+      "status": "not_evaluated",
+      "failures": []
+    },
+    {
+      "assertion_id": "ordering_constraints-002",
+      "group": "ordering_constraints",
+      "index": 2,
+      "status": "not_evaluated",
+      "failures": []
+    },
+    {
+      "assertion_id": "ordering_constraints-003",
+      "group": "ordering_constraints",
+      "index": 3,
+      "status": "not_evaluated",
+      "failures": []
+    },
+    {
+      "assertion_id": "GT-R1-BUY-FLAG",
+      "group": "required_state_intervals",
+      "index": 0,
+      "status": "fail",
+      "failures": [
+        "state_coverage:GT-R1-BUY-FLAG"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-ASTRAL-1",
+      "group": "required_state_intervals",
+      "index": 1,
+      "status": "fail",
+      "failures": [
+        "state_coverage:GT-R1-ASTRAL-1"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-ASTRAL-2",
+      "group": "required_state_intervals",
+      "index": 2,
+      "status": "fail",
+      "failures": [
+        "state_coverage:GT-R1-ASTRAL-2"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SMOKE",
+      "group": "required_state_intervals",
+      "index": 3,
+      "status": "fail",
+      "failures": [
+        "state_coverage:GT-R1-SMOKE"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-COMBAT-REPORT",
+      "group": "required_state_intervals",
+      "index": 4,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "GT-R2-BUY-FLAG",
+      "group": "required_state_intervals",
+      "index": 5,
+      "status": "fail",
+      "failures": [
+        "state_coverage:GT-R2-BUY-FLAG"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-BUY-MENU-1",
+      "group": "required_state_intervals",
+      "index": 6,
+      "status": "fail",
+      "failures": [
+        "state_coverage:GT-R2-BUY-MENU-1"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-BUY-MENU-2",
+      "group": "required_state_intervals",
+      "index": 7,
+      "status": "fail",
+      "failures": [
+        "state_coverage:GT-R2-BUY-MENU-2"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-ASTRAL-1",
+      "group": "required_state_intervals",
+      "index": 8,
+      "status": "fail",
+      "failures": [
+        "state_coverage:GT-R2-ASTRAL-1"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-ASTRAL-2",
+      "group": "required_state_intervals",
+      "index": 9,
+      "status": "fail",
+      "failures": [
+        "state_coverage:GT-R2-ASTRAL-2"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-EXPANDED-MAP",
+      "group": "required_state_intervals",
+      "index": 10,
+      "status": "fail",
+      "failures": [
+        "state_coverage:GT-R2-EXPANDED-MAP"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-SPECTATOR",
+      "group": "required_state_intervals",
+      "index": 11,
+      "status": "fail",
+      "failures": [
+        "state_coverage:GT-R2-SPECTATOR"
+      ]
+    },
+    {
+      "assertion_id": "OWN-R1-SELF",
+      "group": "required_ownership_intervals",
+      "index": 0,
+      "status": "fail",
+      "failures": [
+        "ownership_coverage:OWN-R1-SELF"
+      ]
+    },
+    {
+      "assertion_id": "OWN-R1-SELF-DEAD",
+      "group": "required_ownership_intervals",
+      "index": 1,
+      "status": "fail",
+      "failures": [
+        "ownership_coverage:OWN-R1-SELF-DEAD"
+      ]
+    },
+    {
+      "assertion_id": "OWN-R2-SELF",
+      "group": "required_ownership_intervals",
+      "index": 2,
+      "status": "fail",
+      "failures": [
+        "ownership_coverage:OWN-R2-SELF"
+      ]
+    },
+    {
+      "assertion_id": "OWN-R2-SELF-DEAD",
+      "group": "required_ownership_intervals",
+      "index": 3,
+      "status": "fail",
+      "failures": [
+        "ownership_coverage:OWN-R2-SELF-DEAD"
+      ]
+    },
+    {
+      "assertion_id": "OWN-R2-TEAMMATE",
+      "group": "required_ownership_intervals",
+      "index": 4,
+      "status": "fail",
+      "failures": [
+        "ownership_coverage:OWN-R2-TEAMMATE"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-0035",
+      "group": "required_snapshots",
+      "index": 0,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R1-SNAP-0035"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-0415",
+      "group": "required_snapshots",
+      "index": 1,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R1-SNAP-0415"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-475",
+      "group": "required_snapshots",
+      "index": 2,
+      "status": "fail",
+      "failures": [
+        "snapshot:GT-R1-SNAP-475:nonself_killfeed_row_visible"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-585",
+      "group": "required_snapshots",
+      "index": 3,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R1-SNAP-585"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-595",
+      "group": "required_snapshots",
+      "index": 4,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R1-SNAP-595"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-705",
+      "group": "required_snapshots",
+      "index": 5,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-728",
+      "group": "required_snapshots",
+      "index": 6,
+      "status": "fail",
+      "failures": [
+        "snapshot:GT-R1-SNAP-728:ammo_mag",
+        "snapshot:GT-R1-SNAP-728:ammo_reserve",
+        "snapshot:GT-R1-SNAP-728:reload_animation_visible"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-733",
+      "group": "required_snapshots",
+      "index": 7,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R1-SNAP-733"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-734",
+      "group": "required_snapshots",
+      "index": 8,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R1-SNAP-734"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-7425",
+      "group": "required_snapshots",
+      "index": 9,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R1-SNAP-7425"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-7438",
+      "group": "required_snapshots",
+      "index": 10,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R1-SNAP-7438"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-7440",
+      "group": "required_snapshots",
+      "index": 11,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R1-SNAP-7440"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-7445",
+      "group": "required_snapshots",
+      "index": 12,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R1-SNAP-7445"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-820",
+      "group": "required_snapshots",
+      "index": 13,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R2-SNAP-820"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-1050",
+      "group": "required_snapshots",
+      "index": 14,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R2-SNAP-1050"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-11145",
+      "group": "required_snapshots",
+      "index": 15,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R2-SNAP-11145"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-143",
+      "group": "required_snapshots",
+      "index": 16,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R2-SNAP-143"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-1475",
+      "group": "required_snapshots",
+      "index": 17,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R2-SNAP-1475"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-1476",
+      "group": "required_snapshots",
+      "index": 18,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R2-SNAP-1476"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-1477",
+      "group": "required_snapshots",
+      "index": 19,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R2-SNAP-1477"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-149",
+      "group": "required_snapshots",
+      "index": 20,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R2-SNAP-149"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-151",
+      "group": "required_snapshots",
+      "index": 21,
+      "status": "fail",
+      "failures": [
+        "missing_snapshot:GT-R2-SNAP-151"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-170",
+      "group": "required_snapshots",
+      "index": 22,
+      "status": "fail",
+      "failures": [
+        "snapshot:GT-R2-SNAP-170:player_alive",
+        "snapshot:GT-R2-SNAP-170:spectated_name",
+        "snapshot:GT-R2-SNAP-170:spectated_hp",
+        "snapshot:GT-R2-SNAP-170:spectated_ammo_mag",
+        "snapshot:GT-R2-SNAP-170:spectated_ammo_reserve",
+        "snapshot:GT-R2-SNAP-170:spectated_weapon",
+        "snapshot:GT-R2-SNAP-170:muzzle_flash_visible",
+        "snapshot:GT-R2-SNAP-170:spectated_location_label_raw"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-0035-DERIVED-zone_id",
+      "group": "derived_assertions",
+      "index": 0,
+      "status": "fail",
+      "failures": [
+        "missing_derived_snapshot:GT-R1-SNAP-0035-DERIVED-zone_id"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-0415-DERIVED-zone_id",
+      "group": "derived_assertions",
+      "index": 1,
+      "status": "fail",
+      "failures": [
+        "missing_derived_snapshot:GT-R1-SNAP-0415-DERIVED-zone_id"
+      ]
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-820-DERIVED-zone_id",
+      "group": "derived_assertions",
+      "index": 2,
+      "status": "fail",
+      "failures": [
+        "missing_derived_snapshot:GT-R2-SNAP-820-DERIVED-zone_id"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-MUZZLE-1",
+      "group": "required_visual_observations",
+      "index": 0,
+      "status": "fail",
+      "failures": [
+        "missing_visual_observation:GT-R1-MUZZLE-1"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-MUZZLE-2",
+      "group": "required_visual_observations",
+      "index": 1,
+      "status": "fail",
+      "failures": [
+        "missing_visual_observation:GT-R1-MUZZLE-2"
+      ]
+    },
+    {
+      "assertion_id": "GT-R1-MUZZLE-3",
+      "group": "required_visual_observations",
+      "index": 2,
+      "status": "fail",
+      "failures": [
+        "missing_visual_observation:GT-R1-MUZZLE-3"
+      ]
+    },
+    {
+      "assertion_id": "event_count_constraints-000",
+      "group": "event_count_constraints",
+      "index": 0,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "event_count_constraints-001",
+      "group": "event_count_constraints",
+      "index": 1,
+      "status": "fail",
+      "failures": [
+        "count:sample_round_1:player_death"
+      ]
+    },
+    {
+      "assertion_id": "event_count_constraints-002",
+      "group": "event_count_constraints",
+      "index": 2,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "event_count_constraints-003",
+      "group": "event_count_constraints",
+      "index": 3,
+      "status": "fail",
+      "failures": [
+        "count:sample_round_1:shot"
+      ]
+    },
+    {
+      "assertion_id": "event_count_constraints-004",
+      "group": "event_count_constraints",
+      "index": 4,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "event_count_constraints-005",
+      "group": "event_count_constraints",
+      "index": 5,
+      "status": "fail",
+      "failures": [
+        "count:sample_round_2:player_death"
+      ]
+    },
+    {
+      "assertion_id": "event_count_constraints-006",
+      "group": "event_count_constraints",
+      "index": 6,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-REMOTE-R1A",
+      "group": "negative_assertions",
+      "index": 0,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-REMOTE-R1B",
+      "group": "negative_assertions",
+      "index": 1,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-REMOTE-R2A",
+      "group": "negative_assertions",
+      "index": 2,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-REMOTE-R2B",
+      "group": "negative_assertions",
+      "index": 3,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-ASTRAL-NOT-SMOKE",
+      "group": "negative_assertions",
+      "index": 4,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-SMOKE-NOT-ASTRAL",
+      "group": "negative_assertions",
+      "index": 5,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-SMOKE-WORLD-SPOT",
+      "group": "negative_assertions",
+      "index": 6,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-NONSELF-KILLFEED",
+      "group": "negative_assertions",
+      "index": 7,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-RELOAD-NOT-SHOT",
+      "group": "negative_assertions",
+      "index": 8,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-BUY-MENU-1",
+      "group": "negative_assertions",
+      "index": 9,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-BUY-MENU-2",
+      "group": "negative_assertions",
+      "index": 10,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-SPECTATOR-COUNT-TEXT",
+      "group": "negative_assertions",
+      "index": 11,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-DEAD-PLAYER-MECHANICS",
+      "group": "negative_assertions",
+      "index": 12,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-EXPANDED-MAP-MECHANICS",
+      "group": "negative_assertions",
+      "index": 13,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-SPECTATOR-POISON-151",
+      "group": "negative_assertions",
+      "index": 14,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-SPECTATOR-POISON-170",
+      "group": "negative_assertions",
+      "index": 15,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-STALE-COMBAT-REPORT",
+      "group": "negative_assertions",
+      "index": 16,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-R2-NO-ROUND-END",
+      "group": "negative_assertions",
+      "index": 17,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-SAME-ZONE-CALLOUT-CHANGE",
+      "group": "negative_assertions",
+      "index": 18,
+      "status": "pass",
+      "failures": []
+    },
+    {
+      "assertion_id": "NEG-CONTENT-JUMP-SPAN",
+      "group": "negative_assertions",
+      "index": 19,
+      "status": "pass",
+      "failures": []
+    }
+  ],
+  "trace_confidence_contract": {
+    "report_path": "e2e_reports/match_001/trace_confidence_contract.json",
+    "report_sha256": "7bbf206f0af2129b110ba8344558b799e677e74683ec53a9f8c5de0f752f106e",
+    "confidence_errors_previous": 720,
+    "confidence_errors_current": 0,
+    "semantic_assertions_unchanged": [
+      28,
+      50,
+      4
+    ],
+    "raw_recognition_and_native_confidence_maps_unchanged": true,
+    "new_full_e2e_executed": false,
+    "next_priority": "Reclassify current50semantic FAIL and investigate source-derived end timing; review full numeric correctness before adoption"
+  },
+  "current_candidate_failure_classification": {
+    "report": "e2e_reports/match_001/current_failure_classification.json",
+    "candidate_counts": {
+      "pass": 28,
+      "fail": 50,
+      "not_evaluated": 4
+    },
+    "root_cause_summary": [
+      {
+        "root_cause": "snapshot_hud_gate",
+        "fail_count": 17,
+        "percentage_of_fail": 34.0,
+        "implementation_status": "upstream dependency",
+        "assertion_ids": [
+          "GT-R1-SNAP-0415",
+          "GT-R1-SNAP-585",
+          "GT-R1-SNAP-595",
+          "GT-R1-SNAP-733",
+          "GT-R1-SNAP-734",
+          "GT-R1-SNAP-7425",
+          "GT-R1-SNAP-7438",
+          "GT-R1-SNAP-7440",
+          "GT-R1-SNAP-7445",
+          "GT-R2-SNAP-11145",
+          "GT-R2-SNAP-143",
+          "GT-R2-SNAP-1475",
+          "GT-R2-SNAP-1476",
+          "GT-R2-SNAP-1477",
+          "GT-R2-SNAP-149",
+          "GT-R2-SNAP-151",
+          "GT-R1-SNAP-0415-DERIVED-zone_id"
+        ],
+        "guaranteed_pass_gain": 0,
+        "conditional_primary_gain_ceiling": 17
+      },
+      {
+        "root_cause": "preparation_scope",
+        "fail_count": 9,
+        "percentage_of_fail": 18.0,
+        "implementation_status": "upstream dependency",
+        "assertion_ids": [
+          "GT-R1-BUY-FLAG",
+          "GT-R2-BUY-FLAG",
+          "GT-R2-BUY-MENU-1",
+          "GT-R2-BUY-MENU-2",
+          "GT-R1-SNAP-0035",
+          "GT-R2-SNAP-820",
+          "GT-R2-SNAP-1050",
+          "GT-R1-SNAP-0035-DERIVED-zone_id",
+          "GT-R2-SNAP-820-DERIVED-zone_id"
+        ],
+        "guaranteed_pass_gain": 0,
+        "conditional_primary_gain_ceiling": 9
+      },
+      {
+        "root_cause": "death_event_contract",
+        "fail_count": 4,
+        "percentage_of_fail": 8.0,
+        "implementation_status": "partial implementation",
+        "assertion_ids": [
+          "GT-R1-DEATH",
+          "GT-R2-DEATH",
+          "event_count_constraints-001",
+          "event_count_constraints-005"
+        ],
+        "guaranteed_pass_gain": 0,
+        "conditional_primary_gain_ceiling": 4
+      },
+      {
+        "root_cause": "remote_state",
+        "fail_count": 4,
+        "percentage_of_fail": 8.0,
+        "implementation_status": "recognition failure",
+        "assertion_ids": [
+          "GT-R1-ASTRAL-1",
+          "GT-R1-ASTRAL-2",
+          "GT-R2-ASTRAL-1",
+          "GT-R2-ASTRAL-2"
+        ],
+        "guaranteed_pass_gain": 0,
+        "conditional_primary_gain_ceiling": 4
+      },
+      {
+        "root_cause": "owned_visual_evidence",
+        "fail_count": 4,
+        "percentage_of_fail": 8.0,
+        "implementation_status": "upstream dependency",
+        "assertion_ids": [
+          "GT-R1-MUZZLE-1",
+          "GT-R1-MUZZLE-2",
+          "GT-R1-MUZZLE-3",
+          "event_count_constraints-003"
+        ],
+        "guaranteed_pass_gain": 0,
+        "conditional_primary_gain_ceiling": 4
+      },
+      {
+        "root_cause": "self_ownership",
+        "fail_count": 2,
+        "percentage_of_fail": 4.0,
+        "implementation_status": "upstream dependency",
+        "assertion_ids": [
+          "OWN-R1-SELF",
+          "OWN-R2-SELF"
+        ],
+        "guaranteed_pass_gain": 0,
+        "conditional_primary_gain_ceiling": 2
+      },
+      {
+        "root_cause": "dead_ownership",
+        "fail_count": 2,
+        "percentage_of_fail": 4.0,
+        "implementation_status": "partial implementation",
+        "assertion_ids": [
+          "OWN-R1-SELF-DEAD",
+          "OWN-R2-SELF-DEAD"
+        ],
+        "guaranteed_pass_gain": 0,
+        "conditional_primary_gain_ceiling": 2
+      },
+      {
+        "root_cause": "round_end_time",
+        "fail_count": 1,
+        "percentage_of_fail": 2.0,
+        "implementation_status": "partial implementation",
+        "assertion_ids": [
+          "GT-R1-ROUND-END"
+        ],
+        "guaranteed_pass_gain": 0,
+        "conditional_primary_gain_ceiling": 1
+      },
+      {
+        "root_cause": "smoke_state",
+        "fail_count": 1,
+        "percentage_of_fail": 2.0,
+        "implementation_status": "recognition failure",
+        "assertion_ids": [
+          "GT-R1-SMOKE"
+        ],
+        "guaranteed_pass_gain": 0,
+        "conditional_primary_gain_ceiling": 1
+      },
+      {
+        "root_cause": "expanded_map_state",
+        "fail_count": 1,
+        "percentage_of_fail": 2.0,
+        "implementation_status": "partial implementation",
+        "assertion_ids": [
+          "GT-R2-EXPANDED-MAP"
+        ],
+        "guaranteed_pass_gain": 0,
+        "conditional_primary_gain_ceiling": 1
+      },
+      {
+        "root_cause": "spectator_coverage",
+        "fail_count": 1,
+        "percentage_of_fail": 2.0,
+        "implementation_status": "recognition failure",
+        "assertion_ids": [
+          "GT-R2-SPECTATOR"
+        ],
+        "guaranteed_pass_gain": 0,
+        "conditional_primary_gain_ceiling": 1
+      },
+      {
+        "root_cause": "teammate_ownership",
+        "fail_count": 1,
+        "percentage_of_fail": 2.0,
+        "implementation_status": "upstream dependency",
+        "assertion_ids": [
+          "OWN-R2-TEAMMATE"
+        ],
+        "guaranteed_pass_gain": 0,
+        "conditional_primary_gain_ceiling": 1
+      },
+      {
+        "root_cause": "killfeed_export",
+        "fail_count": 1,
+        "percentage_of_fail": 2.0,
+        "implementation_status": "missing implementation",
+        "assertion_ids": [
+          "GT-R1-SNAP-475"
+        ],
+        "guaranteed_pass_gain": 0,
+        "conditional_primary_gain_ceiling": 1
+      },
+      {
+        "root_cause": "ammo_reload_contract",
+        "fail_count": 1,
+        "percentage_of_fail": 2.0,
+        "implementation_status": "partial implementation",
+        "assertion_ids": [
+          "GT-R1-SNAP-728"
+        ],
+        "guaranteed_pass_gain": 0,
+        "conditional_primary_gain_ceiling": 1
+      },
+      {
+        "root_cause": "spectator_snapshot_contract",
+        "fail_count": 1,
+        "percentage_of_fail": 2.0,
+        "implementation_status": "partial implementation",
+        "assertion_ids": [
+          "GT-R2-SNAP-170"
+        ],
+        "guaranteed_pass_gain": 0,
+        "conditional_primary_gain_ceiling": 1
+      }
+    ],
+    "production_changed": false,
+    "new_full_e2e_runs": 0,
+    "adopted_matrix_unchanged": true
   }
 }
