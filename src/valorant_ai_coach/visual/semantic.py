@@ -112,7 +112,7 @@ class SemanticVisualAdapter:
         self.policy = json.loads(
             resource_path(
                 "config/visual_v2/config/visual_semantic_inference_policy_v2.json"
-            ).read_text()
+            ).read_text(encoding="utf-8")
         )
         self.diagnostics: list[str] = []
 

@@ -94,7 +94,7 @@ def test_verbose_shared_reports_bounded_private_and_raw_unchanged(tmp_path, many
         )
     before = copy.deepcopy(inputs["raw"])
     share_report.export_report(**inputs)
-    summary = json.loads((tmp_path / "summary.json").read_text())
+    summary = json.loads((tmp_path / "summary.json").read_text(encoding="utf-8"))
     assert summary["result"]["detail_truncated"] is True
     hud = summary["hud_calibration"]
     refs = hud["automatic_identity_generation"]["references"]
@@ -113,7 +113,7 @@ def test_verbose_shared_reports_bounded_private_and_raw_unchanged(tmp_path, many
         payload = (tmp_path / name).read_bytes()
         assert len(payload) <= 128 * 1024
         assert b"PRIVATE" not in payload
-    assert json.loads((tmp_path / "hud_calibration.json").read_text()) == {
+    assert json.loads((tmp_path / "hud_calibration.json").read_text(encoding="utf-8")) == {
         "metadata": summary["metadata"],
         **hud,
     }
@@ -124,12 +124,12 @@ def test_second_fallback_removes_diagnostic_arrays(tmp_path, monkeypatch):
     inputs["raw"]["hud_calibration_diagnostics"] = verbose()
     # Measure the summary without arrays to choose a real byte boundary between stages.
     share_report.export_report(**inputs)
-    summary = json.loads((tmp_path / "summary.json").read_text())
+    summary = json.loads((tmp_path / "summary.json").read_text(encoding="utf-8"))
     share_report._drop_verbose_diagnostics(summary)
     bound = len((json.dumps(summary, ensure_ascii=False, indent=2) + "\n").encode()) + 32
     monkeypatch.setattr(share_report, "MAX_REPORT_BYTES", bound)
     share_report.export_report(**inputs)
-    data = json.loads((tmp_path / "summary.json").read_text())
+    data = json.loads((tmp_path / "summary.json").read_text(encoding="utf-8"))
     assert data["result"]["detail_truncated"]
     refs = data["hud_calibration"]["automatic_identity_generation"]["references"]
     assert "candidates" not in refs["weapon_ammo_structure"]["weapon_ammo_generation"]
@@ -191,7 +191,7 @@ def test_export_failure_preserves_context_and_can_recover(case, monkeypatch):
     assert execute(case) == 2
     run = next((case.root / "outputs/e2e/match_001").iterdir())
     assert (run / "run_metadata.json").is_file()
-    assert json.loads((run / "evaluation_report.json").read_text())["pass"] is True
+    assert json.loads((run / "evaluation_report.json").read_text(encoding="utf-8"))["pass"] is True
     monkeypatch.setattr(share_report, "export_report", original)
     assert reexport(recovery_args(case, run), root=case.root) == 0
 
@@ -216,7 +216,9 @@ def test_legacy_recovery_keeps_historical_metadata_unknown(case, monkeypatch):
     (run / "run_metadata.json").unlink()
     monkeypatch.setattr("subprocess.run", lambda *a, **k: pytest.fail("Analyzer/git executed"))
     assert reexport(recovery_args(case, run), root=case.root) == 0
-    meta = json.loads((case.root / "recovered/summary.json").read_text())["metadata"]
+    meta = json.loads((case.root / "recovered/summary.json").read_text(
+        encoding="utf-8",
+    ))["metadata"]
     for key in ("analyzer_commit", "git_is_dirty", "executed_at", "settings_fingerprint"):
         assert meta[key] is None
     assert meta["source_sha256"]

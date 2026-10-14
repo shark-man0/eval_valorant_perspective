@@ -68,7 +68,7 @@ def inspect_recording(
     def probe(*args: str) -> dict:
         result = subprocess.run(
             [ffprobe, "-v", "error", *args, "-of", "json", str(video)],
-            capture_output=True, check=True, text=True,
+            capture_output=True, check=True, text=True, encoding="utf-8",
         )
         return json.loads(result.stdout)
 

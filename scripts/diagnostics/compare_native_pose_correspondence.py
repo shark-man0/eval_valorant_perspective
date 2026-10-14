@@ -119,7 +119,7 @@ def main():
               'declaration_sha256': hashlib.sha256(raw).hexdigest(), 'rows': rows,
               'qualification_created': False, 'runtime_behavior_changed': False,
               'canonical_current': None, 'canonical_delta': None}
-    args.output.write_text(json.dumps(result, indent=2)+'\n')
+    args.output.write_text(json.dumps(result, indent=2)+'\n', encoding="utf-8")
     print(json.dumps([{'candidates': r['comparison']['candidate_count'],
                       'inliers': r['comparison']['inlier_count'],
                       'quorum': r['comparison']['descriptive_geometric_quorum']} for r in rows]))

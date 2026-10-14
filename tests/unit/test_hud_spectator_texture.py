@@ -120,7 +120,7 @@ def test_shared_candidate_support_bounded_private_and_local_unchanged(tmp_path):
     for name in ("summary.json", "hud_calibration.json"):
         path = tmp_path / name
         assert path.stat().st_size < MAX_REPORT_BYTES
-        assert "PRIVATE" not in path.read_text()
+        assert "PRIVATE" not in path.read_text(encoding="utf-8")
     assert raw == before
 
 
@@ -140,12 +140,12 @@ def test_size_fallback_keeps_support_summary_without_representatives(tmp_path, m
         },
     }
     export_report(**inputs)
-    summary = json.loads((tmp_path / "summary.json").read_text())
+    summary = json.loads((tmp_path / "summary.json").read_text(encoding="utf-8"))
     share_report._drop_verbose_diagnostics(summary)
     bound = len((json.dumps(summary, ensure_ascii=False, indent=2) + "\n").encode()) + 32
     monkeypatch.setattr(share_report, "MAX_REPORT_BYTES", bound)
     export_report(**inputs)
-    summary = json.loads((tmp_path / "summary.json").read_text())
+    summary = json.loads((tmp_path / "summary.json").read_text(encoding="utf-8"))
     generation = summary["hud_calibration"]["automatic_identity_generation"]["references"][
         "spectator_panel"
     ]["spectator_generation"]

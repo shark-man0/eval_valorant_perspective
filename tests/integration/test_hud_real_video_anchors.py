@@ -32,7 +32,9 @@ def test_provided_recording_matches_authoritative_state_samples(tmp_path: Path) 
     )
     analysis = RealHudAnalyzer(layout).observe_frames(frames, video_metadata=metadata)
     assert analysis.calibration.calibrated, analysis.calibration.reasons
-    contract = json.loads((Path(__file__).parents[1] / "hud_state_samples_v2.json").read_text())
+    contract = json.loads((Path(__file__).parents[1] / "hud_state_samples_v2.json").read_text(
+        encoding="utf-8",
+    ))
     for case in contract["samples"]:
         nearby = [
             item

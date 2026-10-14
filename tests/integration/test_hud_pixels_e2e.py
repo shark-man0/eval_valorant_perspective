@@ -174,7 +174,8 @@ def test_calibrated_pixels_reach_round_package_and_sqlite_without_fabrication(
                         }
                     },
                 }
-            )
+            ),
+            encoding="utf-8",
         )
         selected_layout = create_profile(source, base, tmp_path / "automatic", samples=16)
     services = build_services(
@@ -189,7 +190,9 @@ def test_calibrated_pixels_reach_round_package_and_sqlite_without_fabrication(
     )
     result = services.pipeline.analyze_video(source, match_id="M-PIXELS")
     assert result.status == "completed"
-    report = json.loads((result.analysis_json.parent / "hud-analysis.json").read_text())
+    report = json.loads((result.analysis_json.parent / "hud-analysis.json").read_text(
+        encoding="utf-8",
+    ))
     assert report["sampled_frame_count"] >= 8
     assert any(item["primary_state"] == "live_first_person" for item in report["observations"])
     packages = services.repository.list_round_packages(result.match_id)

@@ -29,7 +29,7 @@ def make_profile(tmp_path, roles=tuple(ROLES), *, threshold=0.90, missing=False,
             "threshold": threshold,
         }
     p = tmp_path / "profile.json"
-    p.write_text(json.dumps({"schema_version": "1.0", "signals": specs}))
+    p.write_text(json.dumps({"schema_version": "1.0", "signals": specs}), encoding="utf-8")
     return HudTemplateProfile.load(p), images
 
 

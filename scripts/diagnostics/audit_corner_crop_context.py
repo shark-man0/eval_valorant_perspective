@@ -84,8 +84,8 @@ def main():
     args = parser.parse_args()
     if args.output.exists():
         raise ValueError("refuse to overwrite diagnostic evidence")
-    declaration = json.loads(args.declaration.read_text())
-    profile = json.loads(args.profile.read_text())
+    declaration = json.loads(args.declaration.read_text(encoding="utf-8"))
+    profile = json.loads(args.profile.read_text(encoding="utf-8"))
     paths = [args.declaration, args.profile, Path(__file__)] + [
         args.profile.parent / reference["asset"] for reference in profile["references"]
     ]
@@ -120,7 +120,8 @@ def main():
             },
             indent=2,
         )
-        + "\n"
+        + "\n",
+        encoding="utf-8",
     )
     print(
         json.dumps(

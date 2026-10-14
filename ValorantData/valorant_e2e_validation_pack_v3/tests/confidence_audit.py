@@ -5,7 +5,7 @@ from pathlib import Path
 
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument('--trace',required=True); args=ap.parse_args()
-    d=json.loads(Path(args.trace).read_text())
+    d=json.loads(Path(args.trace).read_text(encoding="utf-8"))
     vals=[]
     for group in ('events','state_intervals','ownership_intervals','snapshots','visual_observations'):
         for x in d.get(group,[]):

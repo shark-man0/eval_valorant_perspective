@@ -615,7 +615,9 @@ def _run_case(args, *, root=APP_ROOT, runner=subprocess.run, probe=None) -> int:
         metadata["error_code"] = error
         evaluation = {**evaluation, "pass": False}
         # Exception text and local paths are not suitable for Git reports.
-        (output / "error_code.json").write_text(json.dumps({"error_code": error}) + "\n")
+        (output / "error_code.json").write_text(
+            json.dumps({"error_code": error}) + "\n", encoding="utf-8"
+        )
         print(error, file=sys.stderr)
         code = 2
     save_context(output, metadata, assertions_sha256=assertions_hash, exit_code=code)

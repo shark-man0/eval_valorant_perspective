@@ -19,7 +19,7 @@ def setup(inputs, tmp_path, monkeypatch):
     layout, profile, asset, data = inputs
     boxes = [[40,50,100,110], [110,50,150,110], [40,160,100,220], [460,160,540,220]]
     data['references'][0]['world_boxes_640x360'] = boxes
-    profile.write_text(json.dumps(data))
+    profile.write_text(json.dumps(data), encoding="utf-8")
     frames = []
     native = cv2.imread(str(asset))
     for index in range(2):
@@ -66,7 +66,7 @@ def setup(inputs, tmp_path, monkeypatch):
             qualification_data['components']['continuity'].copy()
         )
     qpath = layout.with_name('hud_layout.global_qualification.json')
-    qpath.write_text(json.dumps(qualification_data))
+    qpath.write_text(json.dumps(qualification_data), encoding="utf-8")
     analyzer = RealHudAnalyzer(layout, scene_reference_profile_path=profile)
     return analyzer, frames, qpath, qualification_data, asset, measure
 
@@ -95,7 +95,7 @@ def test_legacy_qualification_cannot_authorize_scene_only_route(setup):
     analyzer, frames, path, data, _, _ = setup
     del data['components']['scene_continuity']
     del data['components']['ui_transition']
-    path.write_text(json.dumps(data))
+    path.write_text(json.dumps(data), encoding="utf-8")
     with pytest.raises(ValueError, match='paired scene/UI'):
         analyzer.collect_qualified_native_scene_window(frames, native_step_ticks=256)
 

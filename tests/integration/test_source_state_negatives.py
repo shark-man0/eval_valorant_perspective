@@ -41,11 +41,15 @@ def test_omen_correction_is_generic_remote_positive_and_not_astra_negative():
     state = states[0]["state_interval"]
     assert state["state"] == "remote_control_view" and state["subtype"] is None
     assert state["exhaustive"] is False and "edge_brackets" not in state
-    schema = json.loads((PACK / "schemas/e2e_ground_truth_schema_v3.json").read_text())
+    schema = json.loads((PACK / "schemas/e2e_ground_truth_schema_v3.json").read_text(
+        encoding="utf-8",
+    ))
     Draft202012Validator({"$ref": "#/$defs/state_interval",
                          "$defs": schema["$defs"]}).validate(state)
     Draft202012Validator(json.loads(
-        (PACK / "schemas/negative_assertions_schema_v3.json").read_text())).validate(negatives)
+        (PACK / "schemas/negative_assertions_schema_v3.json").read_text(
+            encoding="utf-8",
+        ))).validate(negatives)
     assert bindings[0]["source_frame_pts"] == 10.2
     assertions = {key: [] for key in ("required_point_events", "ordering_constraints",
                                     "required_snapshots", "event_count_constraints")}

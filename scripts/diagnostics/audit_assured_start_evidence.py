@@ -40,7 +40,7 @@ def main() -> None:
     initial_hashes = {str(args.input_contract): digest(args.input_contract)}
     for path in args.report:
         initial_hashes[str(path)] = digest(path)
-        report = json.loads(path.read_text())
+        report = json.loads(path.read_text(encoding="utf-8"))
         dependencies = report.get('input_sha256', {})
         if not isinstance(dependencies, dict):
             raise ValueError(f'invalid dependency mapping: {path}')
@@ -94,7 +94,10 @@ def main() -> None:
         ],
         'canonical_current': None, 'canonical_delta': None,
     }
-    args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n')
+    # UTF-8 JSON is an application-owned diagnostic artifact.
+    args.output.write_text(
+        json.dumps(result, ensure_ascii=False, indent=2) + '\n', encoding="utf-8"
+    )
     print(json.dumps({'reports': len(records),
                       'current_code_matches': sum(r['code_matches'] for r in records),
                       'dependency_mismatches': sum(

@@ -43,19 +43,23 @@ def inputs(tmp_path):
                          "frame_sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
     manifest = {"crop_xyxy": [0, 0, 120, 40], "threshold": 0.9,
                 "asset_hashes": hashes, "training_frames": training}
-    (reference_dir / "frozen-manifest.json").write_text(json.dumps(manifest))
+    (reference_dir / "frozen-manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
     layout_path = base / "base.json"
     layout_path.write_text(json.dumps({
         "schema_version": "1.0", "roi_coordinate_system": "normalized_0_to_1",
         "calibrated": True, "reference_resolution": {"width": 120, "height": 40},
         "regions": {"center_phase_banner": {"x": 0, "y": 0, "width": 1, "height": 1}},
-    }))
+    }),
+        encoding="utf-8",
+    )
     shutil.copy2(reference_dir / "reference.png", base / "anchor.png")
     layout_path.with_suffix(".templates.json").write_text(json.dumps({
         "schema_version": "1.0", "ocr_fallback_rois": [],
         "anchors": {"round_timer": {"template": "anchor.png", "threshold": 0.9,
                                     "search_region": "center_phase_banner"}},
-    }))
+    }),
+        encoding="utf-8",
+    )
     return layout_path, reference_dir, archive, image
 
 
@@ -86,7 +90,7 @@ def test_frozen_profile_preserves_base_and_moves_as_one_directory(tmp_path):
 def test_invalid_frozen_inputs_leave_no_published_profile(tmp_path, mutation):
     layout, reference, archive, _ = inputs(tmp_path)
     manifest_path = reference / "frozen-manifest.json"
-    manifest = json.loads(manifest_path.read_text())
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     if mutation == "asset":
         (reference / "mask.png").write_bytes(b"corrupt")
     elif mutation == "training":
@@ -97,7 +101,7 @@ def test_invalid_frozen_inputs_leave_no_published_profile(tmp_path, mutation):
         manifest["crop_xyxy"] = [-1, 0, 120, 40]
     else:
         manifest["training_frames"][0]["frame"] = "../outside.png"
-    manifest_path.write_text(json.dumps(manifest))
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
     output = tmp_path / "invalid"
     with pytest.raises(ValueError):
         build_profile(layout, reference, archive, output)

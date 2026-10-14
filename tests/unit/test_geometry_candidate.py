@@ -36,7 +36,7 @@ def test_candidate_contains_only_geometry_assets_and_keeps_threshold(tmp_path):
     before = [frame.copy() for frame in training]
     report = build(training, layout(), {"anchors": {}, "signals": {"identity": "must_not_copy"}},
                    tmp_path)
-    raw = json.loads((tmp_path / "hud_layout.templates.json").read_text())
+    raw = json.loads((tmp_path / "hud_layout.templates.json").read_text(encoding="utf-8"))
     assert set(raw["anchors"]) == set(ANCHORS)
     assert raw["signals"] == {} and raw["readers"] == {}
     assert all(spec["threshold"] == .90 and "mask" in spec for spec in raw["anchors"].values())
@@ -49,7 +49,7 @@ def test_candidate_contains_only_geometry_assets_and_keeps_threshold(tmp_path):
 def test_no_candidate_is_fabricated_from_flat_frames(tmp_path):
     report = build([np.full((100, 160, 3), 70, np.uint8)] * 16, layout(), {}, tmp_path)
     assert all(row["status"] == "training_structure_insufficient" for row in report.values())
-    raw = json.loads((tmp_path / "hud_layout.templates.json").read_text())
+    raw = json.loads((tmp_path / "hud_layout.templates.json").read_text(encoding="utf-8"))
     assert raw["anchors"] == {} and not list(tmp_path.glob("*.png"))
 
 

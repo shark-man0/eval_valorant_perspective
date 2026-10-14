@@ -20,7 +20,9 @@ def run():
     if output.exists():
         raise ValueError('new output required')
     manifest_path, labels_path = root / 'manifest.json', root / 'training-blind-labels.json'
-    manifest, labels = (json.loads(p.read_text()) for p in (manifest_path, labels_path))
+    manifest, labels = (
+        json.loads(p.read_text(encoding="utf-8")) for p in (manifest_path, labels_path)
+    )
     if (labels['manifest_sha256'] != digest(manifest_path)
             or not labels['all_four_training_pages_visually_reviewed'] or labels['holdout_used']):
         raise ValueError('frozen training review required')
@@ -43,7 +45,7 @@ def run():
                 raise ValueError('training glyph changed')
             bank[digit].append((row, glyph, cv2.imread(str(path), cv2.IMREAD_GRAYSCALE)))
     classes = []
-    specs = json.loads(sidecar.read_text())['readers']
+    specs = json.loads(sidecar.read_text(encoding="utf-8"))['readers']
     for digit in bank:
         asset = profile / specs['ally_score']['templates'][digit]
         if specs['enemy_score']['templates'][digit] != specs['ally_score']['templates'][digit]:
@@ -80,7 +82,7 @@ def run():
                   'Natural nominal score-absence negatives remain unproven',
                   'Positive score source holdout remains separate from lifecycle holdout',
               ]}
-    output.write_text(json.dumps(result, indent=2) + '\n')
+    output.write_text(json.dumps(result, indent=2) + '\n', encoding="utf-8")
     print(json.dumps({c['digit']: [len(c['origins']), c['supported_distinct_source_frames'],
                                   round(c['support_fraction'], 4)] for c in classes}))
 

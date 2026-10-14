@@ -48,7 +48,7 @@ def report():
 
 def qualification(tmp_path, data=None):
     path = tmp_path / 'qualification.json'
-    path.write_text(json.dumps(data or report()))
+    path.write_text(json.dumps(data or report()), encoding="utf-8")
     return GlobalLifecycleQualification.load(path, digest('synthetic-profile'))
 
 
@@ -424,7 +424,7 @@ def test_analyzer_loads_profile_bound_report_and_invalidates_injected_readers(tm
     data = report()
     data['profile_fingerprint'] = base_fingerprint
     path = layout.with_name('hud_layout.global_qualification.json')
-    path.write_text(json.dumps(data))
+    path.write_text(json.dumps(data), encoding="utf-8")
     qualified = RealHudAnalyzer(layout)
     assert qualified.global_qualification is not None
     assert qualified.global_qualification.profile_fingerprint == base_fingerprint
@@ -432,7 +432,9 @@ def test_analyzer_loads_profile_bound_report_and_invalidates_injected_readers(tm
     overridden = RealHudAnalyzer(layout, readers={'round_timer': object()})
     assert overridden.global_qualification is None
     assert any('Injected readers' in note for note in overridden.profile_diagnostics)
-    path.write_text(json.dumps({**data, 'profile_fingerprint': digest('another-profile')}))
+    path.write_text(json.dumps({**data, 'profile_fingerprint': digest('another-profile')}),
+        encoding="utf-8",
+    )
     assert RealHudAnalyzer(layout).global_qualification is None
 
 
@@ -448,7 +450,9 @@ def test_analyzer_reports_missing_paired_runtime_producer_without_changing_quali
     if paired:
         for name in ('scene_continuity', 'ui_transition'):
             data['components'][name] = deepcopy(data['components']['continuity'])
-    layout.with_name('hud_layout.global_qualification.json').write_text(json.dumps(data))
+    layout.with_name('hud_layout.global_qualification.json').write_text(json.dumps(data),
+        encoding="utf-8",
+    )
     analyzer = RealHudAnalyzer(layout)
     assert analyzer.global_qualification is not None
     assert analyzer.global_qualification.components == frozenset(data['components'])
@@ -467,7 +471,9 @@ def test_qualified_analyzer_rejects_external_global_proof_and_preserves_source_a
     baseline = RealHudAnalyzer(layout)
     data = report()
     data['profile_fingerprint'] = baseline.fingerprint()
-    layout.with_name('hud_layout.global_qualification.json').write_text(json.dumps(data))
+    layout.with_name('hud_layout.global_qualification.json').write_text(json.dumps(data),
+        encoding="utf-8",
+    )
     analyzer = RealHudAnalyzer(layout)
     qualified = analyzer.global_qualification
     assert qualified is not None

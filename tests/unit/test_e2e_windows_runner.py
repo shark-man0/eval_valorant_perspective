@@ -58,6 +58,7 @@ def test_windows_runner_rejects_missing_required_video_id(tmp_path: Path) -> Non
         cwd=tmp_path,
         capture_output=True,
         text=True,
+        encoding="utf-8",
         check=False,
     )
 
@@ -80,6 +81,7 @@ def test_windows_runner_power_shell_behavior_harness(tmp_path: Path) -> None:
         cwd=tmp_path,
         capture_output=True,
         text=True,
+        encoding="utf-8",
         check=False,
     )
 
@@ -94,6 +96,7 @@ def test_windows_launcher_environment_connectivity(tmp_path):
         cwd=tmp_path,
         capture_output=True,
         text=True,
+        encoding="utf-8",
         check=False,
     )
     assert result.returncode == 0, result.stdout + result.stderr

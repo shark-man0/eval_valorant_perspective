@@ -118,14 +118,18 @@ def test_accuracy_cli_keeps_input_hashes_and_canonical_scope(tmp_path):
     prediction_file = tmp_path / 'predictions.json'
     truth_file = tmp_path / 'truth.json'
     report_file = tmp_path / 'reports' / 'accuracy.json'
-    prediction_file.write_text(json.dumps({'boundaries': [predicted(4).to_dict()]}))
+    prediction_file.write_text(json.dumps({'boundaries': [predicted(4).to_dict()]}),
+        encoding="utf-8",
+    )
     truth_file.write_text(json.dumps({'complete_review': True, 'boundaries': [
         {'id': 'independent-start', 'kind': 'round_start', 'time_sec': 4},
-    ]}))
+    ]}),
+        encoding="utf-8",
+    )
     original_prediction, original_truth = prediction_file.read_bytes(), truth_file.read_bytes()
     assert main(['--predictions', str(prediction_file), '--truth', str(truth_file),
                  '--output', str(report_file)]) == 0
-    report = json.loads(report_file.read_text())
+    report = json.loads(report_file.read_text(encoding="utf-8"))
     assert report['counts'] == {'PASS': 1, 'FAIL': 0, 'NE': 0}
     assert report['canonical_evaluation_modified'] is False
     assert report['source_binding']['source_binding_verified'] is False
@@ -145,11 +149,15 @@ def test_cross_video_cli_cannot_publish_matching_time_pass(tmp_path):
     output = tmp_path / 'result.json'
     predictions.write_text(json.dumps({
         'source_video_sha256': 'a' * 64, 'boundaries': [predicted(4).to_dict()],
-    }))
+    }),
+        encoding="utf-8",
+    )
     truth.write_text(json.dumps({
         'source_video_sha256': 'b' * 64,
         'boundaries': [{'id': 'different-video-start', 'kind': 'round_start', 'time_sec': 4}],
-    }))
+    }),
+        encoding="utf-8",
+    )
     with pytest.raises(ValueError, match='source videos differ'):
         main(['--predictions', str(predictions), '--truth', str(truth), '--output', str(output)])
     assert not output.exists()

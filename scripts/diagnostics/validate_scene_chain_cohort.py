@@ -179,7 +179,8 @@ def main():
     excluded_pixels = set(freeze.get("excluded_native_pixel_sha256", []))
     args.output_dir.mkdir(parents=True)
     (args.output_dir / "predecode-bindings.json").write_text(
-        json.dumps({"file_sha256": bindings, "decoded": False}, indent=2) + "\n"
+        json.dumps({"file_sha256": bindings, "decoded": False}, indent=2) + "\n",
+        encoding="utf-8",
     )
     windows = []
     for index, (start, end) in enumerate(freeze["windows_sec"]):
@@ -308,7 +309,7 @@ def main():
     }
     if "observer_options" in freeze:
         report["observer_options"] = freeze["observer_options"]
-    args.output.write_text(json.dumps(report, indent=2) + "\n")
+    args.output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(
         json.dumps(
             {

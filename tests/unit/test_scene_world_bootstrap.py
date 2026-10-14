@@ -32,7 +32,7 @@ def profile(tmp_path: Path):
         ],
     }
     path = tmp_path / "profile.json"
-    path.write_text(json.dumps(data))
+    path.write_text(json.dumps(data), encoding="utf-8")
     return image, path, data
 
 
@@ -83,6 +83,6 @@ def test_profile_rejects_unbound_assets_runtime_metadata_or_protected_pixels(tmp
         entry["expected_start_timestamp"] = 4.1
     elif corruption == "ui":
         entry["world_boxes_640x360"] = ((0, 0, 100, 100),) + BOXES[1:]
-    path.write_text(json.dumps(data))
+    path.write_text(json.dumps(data), encoding="utf-8")
     with pytest.raises(ValueError):
         WorldLandmarkBootstrap(path)

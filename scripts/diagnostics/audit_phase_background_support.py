@@ -79,7 +79,7 @@ def main():
                                               for r in rows),
               'phase_absent': None, 'runtime_authorized': False,
               'qualification_created': False, 'canonical_current': None, 'canonical_delta': None}
-    args.output.write_text(json.dumps(result, indent=2)+'\n')
+    args.output.write_text(json.dumps(result, indent=2)+'\n', encoding="utf-8")
     print(json.dumps({'frames': len(rows), 'reference_std': result['reference_group_gray_std'],
                       'all_group_support_frames': result['all_group_support_frames']}))
 

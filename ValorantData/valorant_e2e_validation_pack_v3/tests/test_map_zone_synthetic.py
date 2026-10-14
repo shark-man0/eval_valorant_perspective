@@ -2,7 +2,7 @@ from __future__ import annotations
 import json, math
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
-D=json.loads((ROOT/'fixtures/map_zone_synthetic_v1.json').read_text())
+D=json.loads((ROOT/'fixtures/map_zone_synthetic_v1.json').read_text(encoding="utf-8"))
 
 def norm(pixel):
     x0,y0,x1,y1=D['calibration']['pixel_roi']; x,y=pixel

@@ -70,7 +70,7 @@ def main() -> None:
     ) or args.native_step_ticks <= 0 or args.native_max_png_bytes <= 0:
         raise ValueError('choose paired archive inputs or explicit fresh window and source hash')
     manifest_hash = digest(args.archive_manifest) if archived else None
-    manifest = json.loads(args.archive_manifest.read_text()) if archived else None
+    manifest = json.loads(args.archive_manifest.read_text(encoding="utf-8")) if archived else None
     source_hash = manifest['source_video_sha256'] if archived else args.source_sha256
     frames = []
     for index, row in enumerate(manifest['source_frames'] if archived else (), 1):
@@ -172,7 +172,10 @@ def main() -> None:
         'previous_comparable_run': None, 'runtime_delta': None,
         'wall_clock_sec': time.perf_counter() - started,
     }
-    args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')
+    args.output.write_text(
+        json.dumps(report, ensure_ascii=False, indent=2) + '\n',
+        encoding="utf-8",
+    )
     print(json.dumps({k: report[k] for k in (
         'processed_end_frames', 'timer_display_available', 'score_pair_available',
         'round_result_matched_frames', 'wall_clock_sec',

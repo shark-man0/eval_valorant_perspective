@@ -84,7 +84,7 @@ def main():
               'wall_clock_sec': time.monotonic()-started,
               'qualification_created': False, 'canonical_current': None,
               'canonical_delta': None}
-    args.output.write_text(json.dumps(result, indent=2)+'\n')
+    args.output.write_text(json.dumps(result, indent=2)+'\n', encoding="utf-8")
     links = sum(bool(r['scene_measurement']['descriptive_scene_link'])
                 for w in windows for r in w['rows'])
     print(json.dumps({'native_frames': sum(w['native_frames'] for w in windows),

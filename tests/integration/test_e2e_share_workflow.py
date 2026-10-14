@@ -27,7 +27,9 @@ def test_canonical_evaluator_and_shared_summary_reconcile(tmp_path):
         pytest.skip("Separate validation pack is not installed")
     evaluator = load(pack / "tests/reference_evaluator.py", "share_reference")
     adapter = load(ROOT / "tests/e2e/evaluate_saved_trace.py", "share_adapter")
-    assertions = json.loads((pack / "tests/generated/e2e_assertions_v3.json").read_text())
+    assertions = json.loads((pack / "tests/generated/e2e_assertions_v3.json").read_text(
+        encoding="utf-8",
+    ))
     trace = {
         key: []
         for key in (
@@ -51,7 +53,7 @@ def test_canonical_evaluator_and_shared_summary_reconcile(tmp_path):
         metadata={"video_id": "test", "git_is_dirty": True},
         output_dir=tmp_path,
     )
-    result = json.loads(path.read_text())
+    result = json.loads(path.read_text(encoding="utf-8"))
     assert result["result"]["status"] == "fail"
     assert result["e2e"]["failure_message_count"] == len(expected)
     for status, key in (("pass", "passed"), ("fail", "failed"), ("not_evaluated", "not_evaluated")):
@@ -63,7 +65,7 @@ def test_canonical_evaluator_and_shared_summary_reconcile(tmp_path):
     )
     assert result["negative_assertions"]["failed"] == 0
     assert result["negative_assertions"]["passed"] == len(assertions["negative_assertions"])
-    assert str(ROOT) not in path.read_text()
+    assert str(ROOT) not in path.read_text(encoding="utf-8")
 
 
 def test_inconsistent_evaluator_cannot_produce_false_pass(tmp_path):
@@ -75,4 +77,4 @@ def test_inconsistent_evaluator_cannot_produce_false_pass(tmp_path):
         metadata={},
         output_dir=tmp_path,
     )
-    assert json.loads(report.read_text())["result"]["status"] == "fail"
+    assert json.loads(report.read_text(encoding="utf-8"))["result"]["status"] == "fail"
