@@ -54,6 +54,52 @@ def test_trial_replaces_only_geometry_preserving_independent_assets(tmp_path):
         build_trial(layout, candidate, tmp_path / "trial")
 
 
+def missing_bar_fixture(tmp_path):
+    candidate = fixture(tmp_path / "candidate")
+    layout, base_raw = base_fixture(tmp_path, candidate)
+    path = candidate / "hud_layout.templates.json"
+    raw = json.loads(path.read_text(encoding="utf-8"))
+    del raw["anchors"]["top_match_bar"]
+    path.write_text(json.dumps(raw), encoding="utf-8")
+    fingerprints = candidate / "candidate_fingerprint.json"
+    frozen = json.loads(fingerprints.read_text(encoding="utf-8"))
+    frozen[path.name] = sha256_file(path)
+    fingerprints.write_text(json.dumps(frozen), encoding="utf-8")
+    return candidate, layout, base_raw
+
+
+def test_retaining_base_anchor_is_explicit_and_does_not_replace_candidates(tmp_path):
+    candidate, layout, base_raw = missing_bar_fixture(tmp_path)
+    default = tmp_path / "default"
+    build_trial(layout, candidate, default)
+    assert "top_match_bar" not in HudTemplateProfile.load(
+        default / "hud_layout.templates.json").raw["anchors"]
+    output = tmp_path / "retained"
+    receipt = build_trial(layout, candidate, output, retain_base_geometry=True)
+    trial = HudTemplateProfile.load(output / "hud_layout.templates.json")
+    assert set(trial.raw["anchors"]) == set(base_raw["anchors"])
+    assert set(receipt["retained_base_geometry"]) == {"top_match_bar"}
+    assert trial.raw["anchors"]["top_match_bar"] == base_raw["anchors"]["top_match_bar"]
+    assert receipt["production_adopted"] is False
+    assert not (output / "hud_layout.global_qualification.json").exists()
+
+
+@pytest.mark.parametrize("fault", ["low_threshold", "missing_mask", "identity_reuse"])
+def test_retained_anchor_safety_contract_cannot_be_bypassed(tmp_path, fault):
+    candidate, layout, raw = missing_bar_fixture(tmp_path)
+    bar = raw["anchors"]["top_match_bar"]
+    if fault == "low_threshold":
+        bar["threshold"] = .89
+    elif fault == "missing_mask":
+        del bar["mask"]
+    else:
+        bar["template"] = "independent.png"
+    layout.with_suffix(".templates.json").write_text(json.dumps(raw), encoding="utf-8")
+    with pytest.raises(ValueError):
+        build_trial(layout, candidate, tmp_path / "rejected", retain_base_geometry=True)
+    assert not (tmp_path / "rejected").exists()
+
+
 def test_geometry_cannot_become_an_identity_reference_even_under_another_filename(tmp_path):
     candidate = fixture(tmp_path / "candidate")
     layout, raw = base_fixture(tmp_path, candidate)

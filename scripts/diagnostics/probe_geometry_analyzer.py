@@ -59,9 +59,9 @@ def add_global_digit_proposals(raw: dict) -> list[str]:
 
 
 def build_trial(base_layout: Path, candidate: Path, output: Path, *,
-                global_digits: bool = False) -> dict:
-    if type(global_digits) is not bool:
-        raise ValueError("global digit proposal must be explicitly boolean")
+                global_digits: bool = False, retain_base_geometry: bool = False) -> dict:
+    if type(global_digits) is not bool or type(retain_base_geometry) is not bool:
+        raise ValueError("trial options must be explicitly boolean")
     _check_output_privacy(output.resolve())
     if output.exists():
         raise FileExistsError("use a new private diagnostic directory")
@@ -98,6 +98,23 @@ def build_trial(base_layout: Path, candidate: Path, output: Path, *,
     before = base.fingerprint(base_layout)
     mixed = _absolute_assets(base.raw, base)
     mixed["anchors"] = _absolute_assets(geometry.raw, geometry)["anchors"]
+    retained = {}
+    if retain_base_geometry:
+        for name, spec in base.raw.get("anchors", {}).items():
+            if name in mixed["anchors"]:
+                continue
+            threshold = spec.get("threshold", .90)
+            if (name not in {"round_timer", "top_match_bar", "player_hp_armor", "abilities"}
+                    or type(threshold) not in (int, float) or not math.isfinite(threshold)
+                    or not .90 <= threshold <= 1 or not spec.get("template")
+                    or not spec.get("mask")):
+                raise ValueError("retained geometry requires named masked anchors and NCC >=.90")
+            hashes = {str(p): sha256_file(base.resolve_asset(str(p)))
+                      for p in HudTemplateProfile._find_asset_paths(spec)}
+            if set(hashes.values()) & set(independent_hashes.values()):
+                raise ValueError("retained geometry cannot be reused as independent evidence")
+            retained[name] = {"threshold": threshold, "asset_hashes": hashes}
+            mixed["anchors"][name] = _absolute_assets({"anchor": spec}, base)["anchor"]
     added = add_global_digit_proposals(mixed) if global_digits else []
     output.mkdir(parents=True)
     layout_path = output / "hud_layout.json"
@@ -112,6 +129,8 @@ def build_trial(base_layout: Path, candidate: Path, output: Path, *,
                "trial_profile_fingerprint": trial.fingerprint(layout_path),
                "independent_assets_sha256": independent_hashes,
                "global_digit_proposals": added,
+               "retained_base_geometry": retained,
+               "retained_base_geometry_new_source_reviewed": False,
                "global_digit_readers_qualified": False,
                "global_qualification_inherited": False,
                "identity_assets_generated": False, "production_adopted": False}
@@ -122,7 +141,8 @@ def build_trial(base_layout: Path, candidate: Path, output: Path, *,
 
 def probe(video: Path, base_layout: Path, candidate: Path, review: Path,
           approval: Path, output: Path, *, global_digits: bool = False,
-          diagnose_numeric_localization: bool = False) -> dict:
+          diagnose_numeric_localization: bool = False,
+          retain_base_geometry: bool = False) -> dict:
     # Fully bind the reviewed frozen artifacts before entering the analyzer.
     reviewed = summarize(candidate, review, approval)
     root = Path(__file__).resolve().parents[2]
@@ -133,7 +153,8 @@ def probe(video: Path, base_layout: Path, candidate: Path, review: Path,
     report = json.loads(report_path.read_text(encoding="utf-8"))
     if sha256_file(video) != report["source_sha256"]:
         raise ValueError("source video SHA mismatch")
-    binding = build_trial(base_layout, candidate, output, global_digits=global_digits)
+    binding = build_trial(base_layout, candidate, output, global_digits=global_digits,
+                          retain_base_geometry=retain_base_geometry)
     sources = report["validation_frames"]
     paths = sorted((candidate / "validation_frames").glob("*.jpg"))
     frames = [FrameSample(row["source_frame_pts"], path)
@@ -255,11 +276,14 @@ def main() -> None:
                         help="Propose absent Timer/Score readers locally; not qualification")
     parser.add_argument("--diagnose-numeric-localization", action="store_true",
                         help="Measure unqualified component crops outside the Analyzer")
+    parser.add_argument("--retain-base-geometry", action="store_true",
+                        help="Retain missing masked base anchors at original NCC; unqualified")
     args = parser.parse_args()
     print(json.dumps(probe(args.video, args.base_layout, args.candidate, args.review,
                            args.approval, args.output,
                            global_digits=args.global_digits,
-                           diagnose_numeric_localization=args.diagnose_numeric_localization),
+                           diagnose_numeric_localization=args.diagnose_numeric_localization,
+                           retain_base_geometry=args.retain_base_geometry),
                      allow_nan=False))
 
 

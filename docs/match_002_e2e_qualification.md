@@ -697,3 +697,59 @@ source-negative ingestion and numeric-review regressions: 224 passed. Ruff,
 mypy (132 source files) and `git diff --check` passed. Historical full-suite
 limitations remain; the full suite was not rerun at this checkpoint. Geometry,
 identity and temporal qualification remain separate unfinished requirements.
+
+## Continuous native development input gates (2026-10-14)
+
+Fresh production native-window decoding measured three bounded development
+windows around the first start, next start and first result. Every window has
+85 distinct physical source rasters, exact integer-PTS cadence, one independent
+decoder epoch and terminal source/profile/code checks. No references, expected
+values, injected geometry, lifecycle proofs or GT enter recognition. Windows
+are not spliced or used to claim a complete Round or source-wide continuity.
+The held evaluation interval is not decoded or used for this experiment.
+
+| Development window | Fresh geometry | Effective geometry | Timer accepted | Both scores accepted | Released events |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| First start | 4/85 | 56/85 | 42/85 | 33/85 | 0 |
+| Next start | 7/85 | 31/85 | 30/85 | 20/85 | 0 |
+| First result | 15/85 | 85/85 | 77/85 | 50/85 | 0 |
+
+All states remain unknown. Counts above are acquisition, **not reviewed numeric
+accuracy or lifecycle recall**. Native global projection releases no owned
+values. These runs have no loaded qualification, no configured semantic purchase
+or result references, and no released events. Thus the first-result failure is
+not attributable to invalid geometry in this bounded window. Missing semantic
+inputs, geometry acquisition failures and identity insufficiency are separate
+gates; actor=system cannot bypass them or create player ownership. Runtime was
+44.761 / 37.018 / 54.634 seconds respectively. Peak RSS/storage was not measured.
+
+Private raw report hashes (in the same order):
+
+- `dccb0058eb823d382c0c0f08f98c5923564683bc73821bb7a87c05250ccc6d37`
+- `40b831566dc1f754b2b5b970727429cba3a7097670a9b29dbcc7da35291d5688`
+- `b4093af3266b9805de49c69bfaf4429d4bb29136fefa43a1a7912f0fe62c71b4`
+
+The point-trial builder replaced all base geometry anchors with the three
+candidate anchors, dropping the original masked top-match-bar anchor. An
+explicit `--retain-base-geometry` experiment now preserves missing masked base
+anchors, original assets and NCC >=0.90 without replacing candidate anchors,
+changing the three-anchor condition, reusing geometry for identity or inheriting
+qualification. Original assets remain unchanged; the retained anchor is not
+independently source-reviewed for this new recording. Missing masks/assets,
+lower floors and geometry/identity asset reuse reject the experiment.
+
+On exactly the same first-start rasters/PTS, the original top-match-bar anchor
+accepted 0/85 (NCC min/median/max 0.265/0.277/0.372). All 85 observations remained
+identical to the three-anchor trial, including the 56 effective geometries and
+42 accepted timers. Therefore merely retaining this old anchor is **not an
+improvement** and does not justify adoption or lowered NCC. This counterfactual
+took 45.466 seconds; raw SHA:
+`b065739f9d514b53ee7cf55196d38e6f0bccd07ced445b771e28d3d63cba62f1`.
+
+Next work must supply independently reviewed, source-supported purchase/result
+references and temporal qualification, while separately resolving geometry
+coverage. Do not repeat the full baseline with the same missing inputs or
+convert accepted numeric transitions into Round events. None of these bounded
+measurements is a Full E2E, negative-safety PASS or production profile release.
+Related native/geometry/numeric/lifecycle regressions: 198 passed; Ruff, mypy
+(132 production files) and diff checks pass. Full-suite limitations remain.
