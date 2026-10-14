@@ -58,8 +58,8 @@ def test_cli_checks_private_source_image_integrity_before_output(tmp_path, monke
     if fault == "escape":
         source["frames"][0]["image"] = "../outside.jpg"
     manifest, notes, output = tmp_path / "source.json", tmp_path / "notes.json", tmp_path / "out"
-    manifest.write_text(json.dumps(source))
-    notes.write_text(json.dumps(observations()))
+    manifest.write_text(json.dumps(source), encoding="utf-8")
+    notes.write_text(json.dumps(observations()), encoding="utf-8")
     monkeypatch.setattr(sys, "argv", ["review", "--evidence", str(manifest),
                                      "--observations", str(notes), "--output", str(output)])
     with pytest.raises(ValueError, match="integrity"):
@@ -75,18 +75,18 @@ def test_cli_links_frozen_frames_and_escapes_notes_without_replacing_inputs(tmp_
         path.write_bytes(f"source frame {index}".encode())
         frame["evidence_frame_sha256"] = review.sha256_file(path)
     manifest, notes, output = tmp_path / "source.json", tmp_path / "notes.json", tmp_path / "out"
-    manifest.write_text(json.dumps(source))
+    manifest.write_text(json.dumps(source), encoding="utf-8")
     observations_input = observations()
     observations_input[0]["notes"] = "<script>not markup</script>"
-    notes.write_text(json.dumps(observations_input))
+    notes.write_text(json.dumps(observations_input), encoding="utf-8")
     before = manifest.read_bytes(), notes.read_bytes()
     monkeypatch.setattr(sys, "argv", ["review", "--evidence", str(manifest),
                                      "--observations", str(notes), "--output", str(output)])
     review.main()
-    report = json.loads((output / "review_plan.json").read_text())
+    report = json.loads((output / "review_plan.json").read_text(encoding="utf-8"))
     assert report["evidence_manifest_sha256"] == review.sha256_file(manifest)
     assert report["observation_input_sha256"] == review.sha256_file(notes)
-    page = (output / "index.html").read_text()
+    page = (output / "index.html").read_text(encoding="utf-8")
     assert "&lt;script&gt;" in page and "<script>" not in page
     assert (tmp_path / "frame_0.jpg").as_uri() in page
     assert before == (manifest.read_bytes(), notes.read_bytes())

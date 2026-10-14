@@ -40,7 +40,9 @@ def fixture():
                       "continuity_approval": True, "approval_quote": "synthetic approval",
                       "continuity_status": "independently_reviewed_interval",
                       "review_item_id": "source1", "review_window_sec": [0, 2.5]}]}
-    schema = json.loads((PACK / "schemas/e2e_ground_truth_schema_v3.json").read_text())
+    schema = json.loads((PACK / "schemas/e2e_ground_truth_schema_v3.json").read_text(
+        encoding="utf-8",
+    ))
     policy = {"utility_used": "unannotated", "shot_granularity": "burst_start"}
     return [fragments, approval, review, declared, continuity, schema, policy]
 
@@ -86,7 +88,9 @@ def test_unchanged_compiler_and_evaluator_keep_all_positive_and_duplicate_checks
 
     timeline = compose(*fixture())
     compiler = module("build_assertions")
-    vocab = json.loads((PACK / "contracts/event_attribute_vocab_v1.json").read_text())
+    vocab = json.loads((PACK / "contracts/event_attribute_vocab_v1.json").read_text(
+        encoding="utf-8",
+    ))
     values = {"ground_truth/timeline_ground_truth_v3.json": timeline,
               "ground_truth/negative_assertions_v3.json": {"assertions": []},
               "contracts/event_attribute_vocab_v1.json": vocab}

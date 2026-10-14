@@ -51,7 +51,7 @@ def run():
     if output.exists() or reserve.exists() or directory.exists():
         raise ValueError('new evidence paths required; do not overwrite a prior run')
     frozen_path = reports / 'result_persistent_minchannel_training.json'
-    frozen = json.loads(frozen_path.read_text())
+    frozen = json.loads(frozen_path.read_text(encoding="utf-8"))
     feature_directory = Path(frozen['asset_directory'])
     for name, digest in frozen['asset_sha256'].items():
         if sha(feature_directory / name) != digest:
@@ -60,7 +60,7 @@ def run():
                           / 'result-late-diagnostic')
     training_path = (Path('outputs/recognition-investigation/result-support-inventory-20261008')
                      / 'reference-freeze.json')
-    training = json.loads(training_path.read_text())
+    training = json.loads(training_path.read_text(encoding="utf-8"))
     inputs = {str(frozen_path): sha(frozen_path), str(training_path): sha(training_path),
               str(Path(__file__)): sha(Path(__file__))}
 
@@ -75,7 +75,9 @@ def run():
         return SemanticTextReference(*images[:3], support, .90)
 
     previous, current = load_matcher(original_directory), load_matcher(feature_directory)
-    old_reserve = json.loads((reports / 'frozen_result_late_native_cohort.json').read_text())
+    old_reserve = json.loads(
+        (reports / 'frozen_result_late_native_cohort.json').read_text(encoding="utf-8")
+    )
     exposure_paths = set(old_reserve['input_sha256']) | {str(p) for p in reports.glob('*.json')}
     exposed = set()
     for name in sorted(exposure_paths):
@@ -96,7 +98,7 @@ def run():
         'source_video_sha256': source_hash, 'input_sha256': inputs,
         'exhaustive_exposure_proven': False, 'same_episode_correlation': True,
         'predictions_made': False, 'qualification_created': False,
-    }, indent=2) + '\n')
+    }, indent=2) + '\n', encoding="utf-8")
     directory.mkdir()
     rows = []
 
@@ -138,7 +140,7 @@ def run():
         'qualification_created': False, 'production_changed': False,
         'canonical_previous': {'PASS': 23, 'FAIL': 55, 'NE': 4},
         'canonical_current': None, 'canonical_delta': None,
-    }, indent=2) + '\n')
+    }, indent=2) + '\n', encoding="utf-8")
     print(json.dumps({'processed': len(rows), 'reserved': len(selected),
                       'previous_accepts': sum(r['previous']['presence'] is True for r in rows),
                       'current_accepts': sum(r['current']['presence'] is True for r in rows),

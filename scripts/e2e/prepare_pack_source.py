@@ -84,7 +84,7 @@ def main() -> None:
 
     def probe(options: list[str]) -> dict:
         result = subprocess.run([ffprobe, "-v", "error", *options, "-of", "json", str(args.video)],
-                                capture_output=True, text=True, check=True)
+                                capture_output=True, text=True, encoding="utf-8", check=True)
         return json.loads(result.stdout)
 
     metadata = probe(["-show_streams", "-show_format"])

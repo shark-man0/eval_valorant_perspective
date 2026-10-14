@@ -31,7 +31,7 @@ def source(tmp_path):
         ],
     }
     path = tmp_path / "profile.json"
-    path.write_text(json.dumps(data))
+    path.write_text(json.dumps(data), encoding="utf-8")
     return image, path, data
 
 
@@ -64,7 +64,7 @@ def test_protected_ui_is_not_initialization_evidence(source):
 def test_competing_reference_proposals_are_withheld(source):
     image, path, data = source
     data["references"].append({**data["references"][0], "id": "other-reference"})
-    path.write_text(json.dumps(data))
+    path.write_text(json.dumps(data), encoding="utf-8")
     result = WorldDomainBootstrap(path).recognize(image)
     assert result["reference_ambiguity"]
     assert not result["diagnostic_initialization_proposed"]
@@ -73,7 +73,7 @@ def test_competing_reference_proposals_are_withheld(source):
 def test_landmark_scope_is_not_implicitly_promoted_to_domain_review(source):
     _, path, data = source
     data["scope"] = "diagnostic_landmarks_only"
-    path.write_text(json.dumps(data))
+    path.write_text(json.dumps(data), encoding="utf-8")
     with pytest.raises(ValueError):
         WorldDomainBootstrap(path)
 

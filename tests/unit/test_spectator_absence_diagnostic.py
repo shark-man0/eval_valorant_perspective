@@ -46,12 +46,13 @@ def test_diagnostic_output_has_only_aggregate_counts(tmp_path, monkeypatch):
     manifest.write_text(
         json.dumps(
             {"portrait_training": [], "portrait_holdout": [], "ordinary_absence": [str(image_path)]}
-        )
+        ),
+        encoding="utf-8",
     )
     output = tmp_path / "aggregate.json"
     monkeypatch.setattr(sys, "argv", ["diagnostic", str(manifest), str(output)])
     main()
-    text = output.read_text()
+    text = output.read_text(encoding="utf-8")
     data = json.loads(text)
     assert data["diagnostic_only"]
     assert data["cohorts"]["ordinary_absence"]["counts"]["runtime_checked_absence"] == 1
@@ -70,7 +71,8 @@ def test_identical_pixels_across_training_holdout_reject(tmp_path, monkeypatch):
                 "portrait_holdout": [str(image_path)],
                 "ordinary_absence": [],
             }
-        )
+        ),
+        encoding="utf-8",
     )
     monkeypatch.setattr(sys, "argv", ["diagnostic", str(manifest), str(tmp_path / "output.json")])
     with pytest.raises(ValueError, match="identical decoded pixels"):
@@ -87,7 +89,8 @@ def test_oracle_fields_rejected_by_diagnostic_contract(tmp_path, monkeypatch):
                 "ordinary_absence": [],
                 "expected_state": "spectator",
             }
-        )
+        ),
+        encoding="utf-8",
     )
     monkeypatch.setattr(sys, "argv", ["diagnostic", str(manifest), str(tmp_path / "output.json")])
     with pytest.raises(ValueError, match="exact diagnostic cohort"):

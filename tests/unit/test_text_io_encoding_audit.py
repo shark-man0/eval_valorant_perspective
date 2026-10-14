@@ -1,0 +1,216 @@
+"""Cross-platform evidence for UTF-8, cp1252, BOM and I/O classification."""
+
+import codecs
+import json
+import subprocess
+import sys
+from pathlib import Path
+
+import pytest
+
+from scripts.audit_text_io import scan_source
+
+
+def test_inventory_distinguishes_explicit_utf8_binary_and_unknown() -> None:
+    source = """
+from pathlib import Path
+import subprocess
+a = Path('a').read_text(encoding='utf-8')
+b = Path('b').read_text()
+c = Path('c').open('rb')
+d = open('d', 'w', encoding='utf-8-sig')
+e = subprocess.run(['git', 'status'], text=True, capture_output=True)
+f = Path('e').write_bytes(b'123')
+"""
+    result = scan_source(source, "synthetic.py")
+    assert [item["category"] for item in result] == [
+        "UTF-8明示", "要調査", "Binary I/O",
+        "UTF-8明示", "要調査", "Binary I/O",
+    ]
+
+
+def test_japanese_json_round_trip_when_cp1252_cannot_decode(tmp_path: Path) -> None:
+    path = tmp_path / "日本語 テスト #.json"
+    payload = {"録画": "試合と戦術", "count": 2}
+    path.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8", newline="\n")
+    raw = path.read_bytes()
+    assert codecs.decode(raw, "utf-8") == path.read_text(encoding="utf-8")
+    with pytest.raises(UnicodeDecodeError):
+        raw.decode("cp1252")
+    assert json.loads(path.read_text(encoding="utf-8")) == payload
+    assert path.read_bytes() == raw
+
+
+def test_bom_and_crlf_are_not_silently_rewritten(tmp_path: Path) -> None:
+    path = tmp_path / "bom-data.txt"
+    original = codecs.BOM_UTF8 + "日本語\r\nsecond\r\n".encode()
+    path.write_bytes(original)
+    assert path.read_text(encoding="utf-8-sig").splitlines() == ["日本語", "second"]
+    assert path.read_bytes() == original
+    assert path.read_text(encoding="utf-8").startswith("\ufeff")
+
+
+def test_diagnostic_json_writes_are_explicitly_utf8() -> None:
+    """Protect application-owned diagnostic JSON from Windows locale drift."""
+    root = Path(__file__).resolve().parents[2]
+    audited = (
+        "assemble_source_review_plan.py",
+        "audit_assured_start_evidence.py",
+        "audit_client_graph_history.py",
+        "audit_descriptor_competitors.py",
+        "audit_descriptor_photometry.py",
+        "audit_native_adjacent_regions.py",
+        "audit_native_png_storage.py",
+        "audit_native_seed_failure.py",
+        "audit_corner_crop_context.py",
+        "audit_fixed_camera_domains.py",
+        "compare_native_foreground.py",
+        "validate_fixed_shared_score_source.py",
+        "validate_frozen_result_feature.py",
+        "validate_native_system_prefix.py",
+        "validate_scene_chain_cohort.py",
+        "validate_scene_world_holdout.py",
+        "validate_unedited_native_start.py",
+    )
+    for filename in audited:
+        path = root / "scripts" / "diagnostics" / filename
+        findings = scan_source(path.read_text(encoding="utf-8"), str(path))
+        writers = [site for site in findings if site["operation"] == "write_text"]
+        assert writers, filename
+        assert all(site["category"] == "UTF-8明示" for site in writers), filename
+
+
+def test_frame_suite_json_writes_are_explicitly_utf8() -> None:
+    root = Path(__file__).resolve().parents[2]
+    path = root / "scripts" / "e2e" / "build_frame_suites.py"
+    findings = scan_source(path.read_text(encoding="utf-8"), str(path))
+    writers = [site for site in findings if site["operation"] == "write_text"]
+    assert writers
+    assert all(site["category"] == "UTF-8明示" for site in writers)
+
+
+def test_ffprobe_json_subprocess_calls_use_explicit_utf8() -> None:
+    root = Path(__file__).resolve().parents[2]
+    audited = (
+        "src/valorant_ai_coach/video/native.py",
+        "src/valorant_ai_coach/video/native_replay.py",
+        "scripts/diagnostics/diagnose_native_global_lifecycle.py",
+        "scripts/diagnostics/diagnose_roster_window.py",
+        "scripts/diagnostics/intake_recording.py",
+        "scripts/e2e/prepare_pack_source.py",
+        "scripts/e2e/validate_fixture.py",
+    )
+    for filename in audited:
+        path = root / filename
+        findings = scan_source(path.read_text(encoding="utf-8"), str(path))
+        text_processes = [
+            site for site in findings
+            if site["operation"] == "subprocess" and site["category"] != "Binary I/O"
+        ]
+        assert text_processes, filename
+        assert all(site["category"] == "UTF-8明示" for site in text_processes), filename
+
+
+def test_utf8_subprocess_json_survives_cp1252_host() -> None:
+    code = "import sys; sys.stdout.buffer.write('試合と戦術'.encode())"
+    raw = subprocess.run([sys.executable, "-c", code], capture_output=True, check=True).stdout
+    with pytest.raises(UnicodeDecodeError):
+        raw.decode("cp1252")
+    result = subprocess.run(
+        [sys.executable, "-c", code], capture_output=True, check=True,
+        text=True, encoding="utf-8",
+    )
+    assert result.stdout == "試合と戦術"
+
+
+def test_reviewed_fixture_text_io_is_explicit_utf8() -> None:
+    root = Path(__file__).resolve().parents[2]
+    audited = (
+        "tests/integration/test_fixture_validation.py",
+        "tests/integration/test_finalized_fixture.py",
+        "tests/integration/test_fixture_provenance_guards.py",
+        "tests/unit/test_approved_boundary_ledger.py",
+        "tests/unit/test_hud_auto_profile.py",
+        "tests/unit/test_boundary_review_assembly.py",
+        "tests/unit/test_scene_source_binding.py",
+        "tests/unit/test_hud_temporal_calibration.py",
+    )
+    for filename in audited:
+        source = (root / filename).read_text(encoding="utf-8")
+        sites = scan_source(source, filename)
+        file_text = [s for s in sites if s["operation"] in {"read_text", "write_text"}]
+        assert file_text, filename
+        assert all(s["category"] == "UTF-8明示" for s in file_text), filename
+
+
+def test_reviewed_integration_json_readers_explicit_utf8() -> None:
+    root = Path(__file__).resolve().parents[2]
+    for filename in (
+        "tests/integration/test_boundary_state_composition.py",
+        "tests/integration/test_composed_boundary_timeline.py",
+        "tests/integration/test_declared_end_contract.py",
+        "tests/integration/test_e2e_share_workflow.py",
+        "tests/integration/test_e2e_shot_contract.py",
+        "tests/integration/test_hud_pipeline_wiring.py",
+        "tests/integration/test_lifecycle_fixture_audit.py",
+    ):
+        sites = scan_source((root / filename).read_text(encoding="utf-8"), filename)
+        readers = [x for x in sites if x["operation"] == "read_text"]
+        assert readers, filename
+        assert all(x["category"] == "UTF-8明示" for x in readers), filename
+
+
+def test_reviewed_report_and_schema_readers_explicit_utf8() -> None:
+    root = Path(__file__).resolve().parents[2]
+    for filename in (
+        "tests/integration/test_pack_stage_assembly.py",
+        "tests/integration/test_source_state_negatives.py",
+        "tests/integration/test_trace_round_membership.py",
+        "tests/unit/test_e2e_report_recovery.py",
+        "tests/unit/test_e2e_share_report.py",
+        "tests/unit/test_prepare_boundary_points.py",
+        "tests/unit/test_visual_core_v2.py",
+        "tests/unit/test_boundary_review_batch.py",
+    ):
+        sites = scan_source((root / filename).read_text(encoding="utf-8"), filename)
+        readers = [x for x in sites if x["operation"] == "read_text"]
+        assert readers, filename
+        assert all(x["category"] == "UTF-8明示" for x in readers), filename
+
+
+def test_reviewed_contracts_close_inventory_without_ignoring_new_calls() -> None:
+    from scripts.audit_text_io import scan_repository
+
+    root = Path(__file__).resolve().parents[2]
+    ledger = json.loads(
+        (root / "scripts/text_io_reviewed_contracts.json").read_text(encoding="utf-8")
+    )
+    inventory = scan_repository(root)
+    unresolved = [site for site in inventory["sites"] if site["category"] == "要調査"]
+    assert unresolved == [], unresolved[:20]
+    for decision in ledger["sites"]:
+        matches = [
+            site for site in inventory["sites"]
+            if site["path"] == decision["path"]
+            and site["operation"] == decision["operation"]
+            and site["expression"] == decision["expression"]
+        ]
+        assert matches, decision
+        assert all(s["category"] == decision["category"] for s in matches), decision
+
+
+def test_reviewed_contracts_do_not_suppress_new_receivers() -> None:
+    source = "class Custom: pass\nx = Custom().encode()"
+    assert scan_source(source, "unknown_test.py")[0]["category"] == "要調査"
+    assert scan_source("x = '日本語'.encode()", "unknown_test.py")[0]["category"] == "要調査"
+
+
+def test_zero_unclassified_cli_switch_is_wired() -> None:
+    script = (Path(__file__).resolve().parents[2] / "scripts/audit_text_io.py").read_text(
+        encoding="utf-8"
+    )
+    assert '"--require-classified"' in script
+    workflow = (
+        Path(__file__).resolve().parents[2] / ".github/workflows/text-io-review.yml"
+    ).read_text(encoding="utf-8")
+    assert "python scripts/audit_text_io.py --require-classified --summary-json" in workflow

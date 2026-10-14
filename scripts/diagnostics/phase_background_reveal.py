@@ -131,7 +131,7 @@ def main():
               'native_png_sha256': images, 'rows': rows, 'synthetic_controls': controls,
               'wall_clock_sec': time.monotonic()-started, 'qualification_created': False,
               'canonical_current': None, 'canonical_delta': None}
-    args.output.write_text(json.dumps(result, indent=2)+'\n')
+    args.output.write_text(json.dumps(result, indent=2)+'\n', encoding="utf-8")
     print(json.dumps({'native_frames': len(rows), 'controls': len(controls),
                       'runtime_sec': result['wall_clock_sec']}))
 

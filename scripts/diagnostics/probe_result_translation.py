@@ -129,7 +129,7 @@ def main() -> None:
     }
     counts = result['comparison']['accepted_result_frames']
     counts['delta'] = counts['current'] - counts['previous']
-    args.output.write_text(json.dumps(result, indent=2) + '\n')
+    args.output.write_text(json.dumps(result, indent=2) + '\n', encoding="utf-8")
     print(json.dumps({'frames': result['processed_frames'], 'acceptance': counts,
                       'wall_clock_sec': result['wall_clock_sec']}))
 

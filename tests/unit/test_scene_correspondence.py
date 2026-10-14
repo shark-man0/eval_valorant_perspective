@@ -63,7 +63,8 @@ def test_missing_duplicate_or_backward_native_pts_rejected_before_image_loading(
                     {"rows": [{"source_pts_ticks": tick, "time_base": "1/15360"} for tick in ticks]}
                 ],
             }
-        )
+        ),
+        encoding="utf-8",
     )
     with pytest.raises(ValueError, match="every native frame"):
         run(Namespace(source_report=report, video=video, window_index=0, frames_root=tmp_path))

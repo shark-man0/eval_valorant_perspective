@@ -260,7 +260,10 @@ def ffprobe_native_locators(
         "-of", "json", str(video),
     ]
     try:
-        result = subprocess.run(command, capture_output=True, text=True, check=False, timeout=600)
+        result = subprocess.run(
+            command, capture_output=True, text=True, encoding="utf-8",
+            check=False, timeout=600,
+        )
         if result.returncode:
             raise ManifestError("ffprobe failed")
         payload = json.loads(result.stdout)

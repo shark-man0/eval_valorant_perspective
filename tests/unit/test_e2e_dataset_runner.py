@@ -139,13 +139,15 @@ def test_registration_only_does_not_run_analyzer_or_replace_reports(case):
     old = case.root / "e2e_reports/match_001/summary.json"
     write_json(old, {"preserved": True})
     assert execute(case) == 0
-    assert json.loads(old.read_text()) == {"preserved": True}
+    assert json.loads(old.read_text(encoding="utf-8")) == {"preserved": True}
     assert (case.root / "datasets/manifests/match_001.json").is_file()
     validation = next(cmd for cmd in case.calls if "validate_pack.py" in cmd[1])
     assert "--source-video" in validation
     assert not any("run_real_video.py" in cmd[1] or "evaluate_saved_trace.py" in cmd[1]
                    for cmd in case.calls)
-    receipt = json.loads(next((case.root / "outputs").rglob("registration.json")).read_text())
+    receipt = json.loads(next((case.root / "outputs").rglob("registration.json")).read_text(
+        encoding="utf-8",
+    ))
     assert receipt["analyzer_executed"] is False and receipt["evaluator_executed"] is False
 
 
@@ -155,7 +157,7 @@ def test_registration_only_failure_preserves_existing_reports(case):
     old = case.root / "e2e_reports/match_001/summary.json"
     write_json(old, {"preserved": True})
     assert execute(case) == 2
-    assert json.loads(old.read_text()) == {"preserved": True}
+    assert json.loads(old.read_text(encoding="utf-8")) == {"preserved": True}
     assert not (case.root / "datasets/manifests/match_001.json").exists()
 
 

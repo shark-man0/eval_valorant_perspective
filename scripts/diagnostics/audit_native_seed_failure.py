@@ -84,7 +84,7 @@ def main():
               'stop_candidates': len(inliers), 'stop_inliers': sum(inliers),
               'required_inlier_ratio': .90, 'qualification_created': False,
               'canonical_current': None, 'canonical_delta': None}
-    args.output.write_text(json.dumps(result, indent=2)+'\n')
+    args.output.write_text(json.dumps(result, indent=2)+'\n', encoding="utf-8")
     print(json.dumps({k: result[k] for k in ('seed_pts_sec', 'stop_pts_sec', 'stop_reason',
                                            'stop_candidates', 'stop_inliers')}))
 

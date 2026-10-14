@@ -55,7 +55,7 @@ def _inputs(tmp_path, **changes):
 def test_pass_and_failure_details_are_bounded_and_reconciled(tmp_path):
     args = _inputs(tmp_path)
     path = export_report(**args)
-    data = json.loads(path.read_text())
+    data = json.loads(path.read_text(encoding="utf-8"))
     assert data["result"]["status"] == "pass"
     assert data["counts"]["events"] == 1
     assert data["result"]["failure_count"] == 0
@@ -63,7 +63,7 @@ def test_pass_and_failure_details_are_bounded_and_reconciled(tmp_path):
     args["evaluation"]["pass"] = False
     args["evaluation"].update(failure_count=1, failures=["missing_point:point_1"])
     path = export_report(**args)
-    data = json.loads(path.read_text())
+    data = json.loads(path.read_text(encoding="utf-8"))
     assert data["result"]["status"] == "fail"
     assert data["failures"][0]["assertion_id"] == "point_1"
     assert data["failures"][0]["category"] == "missing_point"
@@ -84,7 +84,7 @@ def test_map_gate_diagnostics_are_shared_without_private_strings(tmp_path):
             ],
         }
     ]
-    data = json.loads(export_report(**args).read_text())
+    data = json.loads(export_report(**args).read_text(encoding="utf-8"))
     assert data["map_zone"]["diagnostic_counts"] == {
         "map_calibration_skipped_hud_eligibility": 1,
         "map_marker_not_evaluated": 1,
@@ -114,10 +114,10 @@ def test_nested_secrets_paths_and_hostile_text_never_leak(tmp_path):
     out = tmp_path / "share"
     args["output_dir"] = out
     export_report(**args)
-    serialized = "".join(p.read_text() for p in out.iterdir() if p.is_file())
+    serialized = "".join(p.read_text(encoding="utf-8") for p in out.iterdir() if p.is_file())
     for secret in ("Alice", "secret-token", "API_KEY", "/Users", "C:\\\\Users", "video.mp4"):
         assert secret not in serialized
-    data = json.loads((out / "summary.json").read_text())
+    data = json.loads((out / "summary.json").read_text(encoding="utf-8"))
     assert data["metadata"]["video_id"] is None
     assert data["result"]["error_code"] is None
     assert data["result"]["status"] == "fail"
@@ -140,7 +140,7 @@ def test_error_unknown_counts_dirty_history_and_no_output_copy(tmp_path):
         assertions={},
     )
     export_report(**args)
-    data = json.loads((tmp_path / "summary.json").read_text())
+    data = json.loads((tmp_path / "summary.json").read_text(encoding="utf-8"))
     assert data["result"]["status"] == "fail"
     assert data["counts"]["events"] is None
     assert data["metadata"]["git_is_dirty"] is True
@@ -151,9 +151,11 @@ def test_error_unknown_counts_dirty_history_and_no_output_copy(tmp_path):
         "history.json",
         "hud_calibration.json",
     }
-    assert json.loads((tmp_path / "hud_calibration.json").read_text())["available"] is False
+    assert json.loads((tmp_path / "hud_calibration.json").read_text(
+        encoding="utf-8",
+    ))["available"] is False
     export_report(**args)
-    history = json.loads((tmp_path / "history.json").read_text())
+    history = json.loads((tmp_path / "history.json").read_text(encoding="utf-8"))
     assert len(history) == 1
 
 
@@ -164,7 +166,7 @@ def test_history_distinguishes_dirty_and_settings_fingerprints(tmp_path):
     export_report(**args)
     args["metadata"]["settings_fingerprint"] = "e" * 64
     export_report(**args)
-    assert len(json.loads((tmp_path / "history.json").read_text())) == 2
+    assert len(json.loads((tmp_path / "history.json").read_text(encoding="utf-8"))) == 2
 
 
 def test_expected_actual_layers_negative_discontinuity_and_fractional_time(tmp_path):
@@ -207,7 +209,7 @@ def test_expected_actual_layers_negative_discontinuity_and_fractional_time(tmp_p
         }
     )
     path = export_report(**args)
-    data = json.loads(path.read_text())
+    data = json.loads(path.read_text(encoding="utf-8"))
     assert data["failures"][0]["expected"] == {"score_ally": 1}
     assert data["failures"][0]["actual"] == {"score_ally": 2, "score_enemy": 3, "time_sec": 4}
     assert data["failures"][0]["confidence"] is None
@@ -256,14 +258,15 @@ def test_untrusted_strings_and_existing_history_are_rebuilt(tmp_path):
                     "extra": "LEAK_ME",
                 }
             ]
-        )
+        ),
+        encoding="utf-8",
     )
     export_report(**args)
-    serialized = "".join(p.read_text() for p in args["output_dir"].iterdir())
+    serialized = "".join(p.read_text(encoding="utf-8") for p in args["output_dir"].iterdir())
     assert "sk-proj-abcdefghijklmnop" not in serialized
     assert "LEAK_ME" not in serialized
     assert "secret-token" not in serialized
-    data = json.loads((args["output_dir"] / "summary.json").read_text())
+    data = json.loads((args["output_dir"] / "summary.json").read_text(encoding="utf-8"))
     assert data["evidence_files"] == ["report.json"]
 
 
@@ -274,14 +277,14 @@ def test_history_keeps_allowlisted_manual_map_and_rejects_private_values(tmp_pat
     args["metadata"]["settings_fingerprint"] = "e" * 64
     export_report(**args)
     path = tmp_path / "history.json"
-    history = json.loads(path.read_text())
+    history = json.loads(path.read_text(encoding="utf-8"))
     assert len(history) == 2
     assert all(row["metadata"]["manual_map_id"] == "summit" for row in history)
     history[0]["metadata"]["manual_map_id"] = "private-player-secret"
     history[0]["result"]["detail_truncated"] = True
-    path.write_text(json.dumps(history))
+    path.write_text(json.dumps(history), encoding="utf-8")
     export_report(**args)
-    history = json.loads(path.read_text())
+    history = json.loads(path.read_text(encoding="utf-8"))
     assert history[0]["metadata"]["manual_map_id"] is None
     assert history[0]["result"]["detail_truncated"] is True
-    assert "private-player-secret" not in path.read_text()
+    assert "private-player-secret" not in path.read_text(encoding="utf-8")

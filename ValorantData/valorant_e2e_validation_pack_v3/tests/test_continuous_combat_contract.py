@@ -2,7 +2,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
-D=json.loads((ROOT/'fixtures/continuous_combat_contract_v1.json').read_text())
+D=json.loads((ROOT/'fixtures/continuous_combat_contract_v1.json').read_text(encoding="utf-8"))
 by={x['type']:x for x in D['timeline']}
 reaction=by['shot']['t']-by['enemy_spotted']['t']
 duration=by['engagement_end']['t']-by['engagement_start']['t']

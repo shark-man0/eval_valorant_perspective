@@ -108,7 +108,10 @@ def run(video: Path, native_run: Path, layout_path: Path, method_path: Path,
         "events_emitted": 0, "profile_adopted": False,
         "geometry_assumed": "configured reference ROI; diagnostic only",
     }
-    (output_dir / "selection.json").write_text(json.dumps(freeze, indent=2) + "\n")
+    (output_dir / "selection.json").write_text(
+        json.dumps(freeze, indent=2) + "\n",
+        encoding="utf-8",
+    )
     windows = []
     for window_index, window in enumerate(source["windows"]):
         results = []
@@ -161,7 +164,7 @@ def run(video: Path, native_run: Path, layout_path: Path, method_path: Path,
             or sha256_file(executable_path) != executable_hash):
         raise ValueError("diagnostic input changed during OCR")
     report = {**freeze, "windows": windows}
-    (output_dir / "results.json").write_text(json.dumps(report, indent=2) + "\n")
+    (output_dir / "results.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     return report
 
 

@@ -16,14 +16,14 @@ def approval(tmp_path, name="approved.json"):
               "items": [{"round_id": "r1", "event_type": kind, "event_time_sec": time}
                         for kind, time in [("round_start", 1), ("round_end", 2)]]}
     path = tmp_path / name
-    path.write_text(json.dumps(record))
+    path.write_text(json.dumps(record), encoding="utf-8")
     return path, record
 
 
 def test_ledger_preserves_approved_times_scope_and_unknown_brackets_without_inference(tmp_path):
     path, record = approval(tmp_path)
     record["items"][1]["last_absent_sec"] = None
-    path.write_text(json.dumps(record))
+    path.write_text(json.dumps(record), encoding="utf-8")
     before = path.read_bytes()
     result = assemble([path], 1)
     assert [row["approved_time_sec"] for row in result["boundaries"]] == [1, 2]
@@ -52,7 +52,7 @@ def test_unapproved_incomplete_or_conflicting_records_fail(tmp_path, fault):
         record["items"][0]["event_time_sec"] = float("nan") if fault == "nan" else True
     else:
         record["items"].append(copy.deepcopy(record["items"][0]))
-    path.write_text(json.dumps(record))
+    path.write_text(json.dumps(record), encoding="utf-8")
     with pytest.raises(ValueError):
         assemble([path], 1)
 
@@ -61,7 +61,7 @@ def test_source_mismatch_and_coverage_fail(tmp_path):
     path, record = approval(tmp_path)
     other = tmp_path / "other.json"
     record["source_video_sha256"] = "b" * 64
-    other.write_text(json.dumps(record))
+    other.write_text(json.dumps(record), encoding="utf-8")
     with pytest.raises(ValueError, match="identity"):
         assemble([path, other], 1)
     with pytest.raises(ValueError, match="coverage"):
@@ -73,7 +73,7 @@ def test_item_specific_quotes_are_preserved_without_inventing_a_shared_quote(tmp
     del record["review_provenance"]["approval_quote"]
     for i, row in enumerate(record["items"]):
         row["approval_quote"] = f"item {i} approved"
-    path.write_text(json.dumps(record))
+    path.write_text(json.dumps(record), encoding="utf-8")
     result = assemble([path], 1)
     assert [row["review_provenance"]["approval_quote"] for row in result["boundaries"]] == [
         "item 0 approved", "item 1 approved",
@@ -91,13 +91,13 @@ def test_explicit_batch_approval_is_hash_bound_and_does_not_approve_other_items(
                                           ("result_display_animation_onset", 2),
                                           ("post_side_switch_purchase_context", None)]]}
     batch_path = tmp_path / "batch.json"
-    batch_path.write_text(json.dumps(batch))
+    batch_path.write_text(json.dumps(batch), encoding="utf-8")
     del record["items"]
     record["review_batch"] = {"file": "batch.json", "sha256": sha256_file(batch_path)}
     record["approved_batch_item_indices"] = [0, 1]
-    path.write_text(json.dumps(record))
+    path.write_text(json.dumps(record), encoding="utf-8")
     if modified:
-        batch_path.write_text("{}")
+        batch_path.write_text("{}", encoding="utf-8")
         with pytest.raises(ValueError, match="binding"):
             assemble([path], 1)
     else:

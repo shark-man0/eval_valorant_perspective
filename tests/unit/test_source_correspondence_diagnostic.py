@@ -62,10 +62,10 @@ def test_invalid_source_and_changed_method_rejected(tmp_path):
         measure(image, image[:10], method())
     path = tmp_path / "method.json"
     value = method()
-    path.write_text(json.dumps({"method": value}))
+    path.write_text(json.dumps({"method": value}), encoding="utf-8")
     assert load_method(path) == value
     value["descriptive_patch_ncc"] = .8
-    path.write_text(json.dumps({"method": value}))
+    path.write_text(json.dumps({"method": value}), encoding="utf-8")
     with pytest.raises(ValueError):
         load_method(path)
 

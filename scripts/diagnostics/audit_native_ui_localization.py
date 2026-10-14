@@ -137,7 +137,7 @@ def main():
         'code_sha256': hashes, 'native_png_sha256': images, 'rows': rows,
         'qualification_created': False, 'runtime_behavior_changed': False,
     }
-    args.output.write_text(json.dumps(result, indent=2) + '\n')
+    args.output.write_text(json.dumps(result, indent=2) + '\n', encoding="utf-8")
     print(json.dumps({'native_images': len(images), 'measured_pairs': len(rows),
                       'report': str(args.output)}))
 

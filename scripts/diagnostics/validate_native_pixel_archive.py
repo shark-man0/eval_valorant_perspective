@@ -86,7 +86,7 @@ def main():
         'decoder_archive_connection_implemented': False, 'recognizer_executed': False,
         'qualification_created': False, 'canonical_current': None, 'canonical_delta': None,
     }
-    args.output.write_text(json.dumps(result, indent=2)+'\n')
+    args.output.write_text(json.dumps(result, indent=2)+'\n', encoding="utf-8")
     print(json.dumps(result))
 
 

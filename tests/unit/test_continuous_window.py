@@ -107,7 +107,7 @@ def test_cli_uses_fresh_native_window_without_external_prefix_or_fake_events(
     expected_calls = (["fresh_services"] if source_fault
                       else ["fresh_services", "native_processing"])
     assert calls == expected_calls
-    raw = json.loads((output / "raw_processing.json").read_text())
+    raw = json.loads((output / "raw_processing.json").read_text(encoding="utf-8"))
     mutated = integrity_fault == "source" and not processing_error and not source_fault
     assert raw["source_hash_verified_after_processing"] is not mutated
     assert raw["runtime_mode"]["ground_truth_loaded"] is False

@@ -10,13 +10,17 @@ def fixture(tmp_path, monkeypatch):
     pack = tmp_path / "pack"
     (pack / "ground_truth").mkdir(parents=True)
     (pack / "ground_truth/timeline_ground_truth_v3.json").write_text(json.dumps({
-        "fixture_id": "synthetic", "rounds": [{}]}))
+        "fixture_id": "synthetic", "rounds": [{}]}),
+        encoding="utf-8",
+    )
     approval = tmp_path / "approval.json"
-    approval.write_text('{"synthetic": true}')
+    approval.write_text('{"synthetic": true}', encoding="utf-8")
     ledger = tmp_path / "ledger.json"
     ledger.write_text(json.dumps({"video_id": "synthetic", "source_video_sha256": "a" * 64,
                                   "inputs": [{"file": approval.name,
-                                              "sha256": subject.digest(approval)}]}))
+                                              "sha256": subject.digest(approval)}]}),
+        encoding="utf-8",
+    )
     # These tests stop before fragment generation; structural validation and
     # each original converter have their own real integration tests.
     monkeypatch.setattr(subject, "validate", lambda *_: None)
@@ -25,16 +29,16 @@ def fixture(tmp_path, monkeypatch):
 
 def test_ledger_must_match_fixture_identity(tmp_path, monkeypatch):
     pack, ledger, _ = fixture(tmp_path, monkeypatch)
-    data = json.loads(ledger.read_text())
+    data = json.loads(ledger.read_text( encoding="utf-8"))
     data["video_id"] = "wrong"
-    ledger.write_text(json.dumps(data))
+    ledger.write_text(json.dumps(data), encoding="utf-8")
     with pytest.raises(ValueError, match="fixture mismatch"):
         subject.verify_chain(pack, tmp_path, {"ledger": ledger}, tmp_path)
 
 
 def test_changed_approval_fails_before_assembly(tmp_path, monkeypatch):
     pack, ledger, approval = fixture(tmp_path, monkeypatch)
-    approval.write_text('{"changed": true}')
+    approval.write_text('{"changed": true}', encoding="utf-8")
     with pytest.raises(ValueError, match="approval changed"):
         subject.verify_chain(pack, tmp_path, {"ledger": ledger}, tmp_path)
 
@@ -42,9 +46,9 @@ def test_changed_approval_fails_before_assembly(tmp_path, monkeypatch):
 def test_escaped_approval_is_not_accepted(tmp_path, monkeypatch):
     pack, ledger, _ = fixture(tmp_path, monkeypatch)
     outside = tmp_path.parent / "synthetic-outside.json"
-    data = json.loads(ledger.read_text())
+    data = json.loads(ledger.read_text( encoding="utf-8"))
     data["inputs"][0]["file"] = str(outside)
-    ledger.write_text(json.dumps(data))
+    ledger.write_text(json.dumps(data), encoding="utf-8")
     with pytest.raises(ValueError, match="escaped"):
         subject.verify_chain(pack, tmp_path, {"ledger": ledger}, tmp_path)
 
@@ -60,10 +64,12 @@ def test_reassembly_difference_is_not_silently_resealed(tmp_path, monkeypatch):
 
 def test_change_during_reassembly_is_rejected(tmp_path, monkeypatch):
     pack, ledger, _ = fixture(tmp_path, monkeypatch)
-    data = json.loads(ledger.read_text())
+    data = json.loads(ledger.read_text( encoding="utf-8"))
 
     def changed(*_):
-        ledger.write_text(json.dumps({**data, "changed": True}))
+        ledger.write_text(json.dumps({**data, "changed": True}),
+            encoding="utf-8",
+        )
         return data
 
     monkeypatch.setattr(subject, "assemble", changed)

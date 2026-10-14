@@ -22,7 +22,7 @@ def main():
     args = parser.parse_args()
     if args.output.exists():
         raise ValueError("refuse to overwrite evidence")
-    declaration = json.loads(args.declaration.read_text())
+    declaration = json.loads(args.declaration.read_text(encoding="utf-8"))
     paths = [Path(p) for p in declaration["bindings"]] + [
         args.declaration,
         args.result,
@@ -35,9 +35,9 @@ def main():
     bindings = {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}
     if any(bindings[p] != digest for p, digest in declaration["bindings"].items()):
         raise ValueError("frozen inputs changed")
-    profile = json.loads(args.profile.read_text())
+    profile = json.loads(args.profile.read_text(encoding="utf-8"))
     references = {r["id"]: r for r in profile["references"]}
-    saved = json.loads(args.result.read_text())
+    saved = json.loads(args.result.read_text(encoding="utf-8"))
     started = time.perf_counter()
     rows = []
     for row in saved["rows"]:
@@ -93,7 +93,8 @@ def main():
             },
             indent=2,
         )
-        + "\n"
+        + "\n",
+        encoding="utf-8",
     )
     for row in rows:
         print(json.dumps({k: v for k, v in row.items() if k != "domain_audit"}))

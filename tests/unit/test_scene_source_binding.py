@@ -29,7 +29,7 @@ def inputs(tmp_path):
         }],
     }
     path = tmp_path / 'scene.json'
-    path.write_text(json.dumps(data))
+    path.write_text(json.dumps(data), encoding="utf-8")
     layout = tmp_path / 'hud_layout.json'
     layout.write_bytes(resource_path('config/hud_layout_1080p_v3.json').read_bytes())
     return layout, path, asset, data
@@ -72,7 +72,7 @@ def test_old_hud_only_qualification_cannot_authorize_configured_scene_assets(inp
     data = report()
     data['profile_fingerprint'] = hud.fingerprint()
     qualification = layout.with_name('hud_layout.global_qualification.json')
-    qualification.write_text(json.dumps(data))
+    qualification.write_text(json.dumps(data), encoding="utf-8")
     assert RealHudAnalyzer(layout).global_qualification is not None
     scene = RealHudAnalyzer(layout, scene_reference_profile_path=path)
     assert scene.global_qualification is None
@@ -87,7 +87,9 @@ def test_profile_binding_does_not_install_producer_or_create_qualification(input
     data['profile_fingerprint'] = analyzer.fingerprint()
     data['components']['scene_continuity'] = data['components']['continuity'].copy()
     data['components']['ui_transition'] = data['components']['continuity'].copy()
-    layout.with_name('hud_layout.global_qualification.json').write_text(json.dumps(data))
+    layout.with_name('hud_layout.global_qualification.json').write_text(json.dumps(data),
+        encoding="utf-8",
+    )
     analyzer = RealHudAnalyzer(layout, scene_reference_profile_path=path)
     assert analyzer.global_qualification is not None
     assert any('producer is not installed' in note for note in analyzer.profile_diagnostics)
@@ -98,15 +100,17 @@ def test_changed_review_provenance_invalidates_previously_bound_report(inputs):
     analyzer = RealHudAnalyzer(layout, scene_reference_profile_path=path)
     data = report()
     data['profile_fingerprint'] = analyzer.fingerprint()
-    layout.with_name('hud_layout.global_qualification.json').write_text(json.dumps(data))
+    layout.with_name('hud_layout.global_qualification.json').write_text(json.dumps(data),
+        encoding="utf-8",
+    )
     raw['references'][0]['review_provenance'] += '; amended review'
-    path.write_text(json.dumps(raw))
+    path.write_text(json.dumps(raw), encoding="utf-8")
     assert RealHudAnalyzer(layout, scene_reference_profile_path=path).global_qualification is None
 
 
 def test_decoded_reference_pixel_binding_is_required(inputs):
     _, path, _, raw = inputs
     raw['references'][0]['source_pixel_sha256'] = '0' * 64
-    path.write_text(json.dumps(raw))
+    path.write_text(json.dumps(raw), encoding="utf-8")
     with pytest.raises(ValueError, match='pixels changed'):
         SceneSourceBinding.load(path)

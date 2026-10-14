@@ -59,6 +59,16 @@ jobs:
       - run: python -m pip install -c constraints-windows.txt -e ".[gui,dev,build]"
       - run: python tests/validate_dataset.py
       - run: python -m pytest --durations=25 --cov=valorant_ai_coach --cov-report=term-missing --cov-fail-under=75
+      - name: Verify UTF-8 contracts with Windows UTF-8 mode disabled
+        shell: pwsh
+        env:
+          PYTHONUTF8: "0"
+          PYTHONIOENCODING: "utf-8"
+        run: |
+          python -c "import locale, sys; print('Windows locale encoding:', locale.getencoding()); assert sys.flags.utf8_mode == 0"
+          python -m pytest tests/unit/test_text_io_encoding_audit.py -q
+      - name: Inventory Python text I/O (observational)
+        run: python scripts/audit_text_io.py --summary-json
       - run: python -m ruff check src tests scripts/e2e
       - run: python -m mypy src/valorant_ai_coach
       - run: python -m PyInstaller --noconfirm --clean VALORANT-AI-Coach.spec

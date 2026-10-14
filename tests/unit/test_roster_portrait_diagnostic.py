@@ -59,10 +59,14 @@ def fixture(tmp_path):
     layout.write_text(json.dumps({"schema_version": "1", "calibrated": True,
         "roi_coordinate_system": "normalized_0_to_1",
         "reference_resolution": {"width": 120, "height": 60},
-        "regions": {"ally_roster": {"x": 0, "y": 0, "width": 1, "height": 1}}}))
+        "regions": {"ally_roster": {"x": 0, "y": 0, "width": 1, "height": 1}}}),
+        encoding="utf-8",
+    )
     manifest = tmp_path / "manifest.json"
     manifest.write_text(json.dumps({"method": METHOD, "training_frames": rows,
-        "crops": {"portrait": {"side": "ally", "xyxy": [3, 5, 23, 25]}}}))
+        "crops": {"portrait": {"side": "ally", "xyxy": [3, 5, 23, 25]}}}),
+        encoding="utf-8",
+    )
     return layout, manifest, training, probes, tmp_path / "out.json"
 
 
@@ -75,7 +79,7 @@ def test_replay_hashes_only_and_preserves_source_inputs(tmp_path):
     assert result["liveness_counts"] is None
     assert len(result["rows"]) == 1
     assert [p.read_bytes() for p in args[:2]] == before
-    assert str(tmp_path) not in args[-1].read_text()
+    assert str(tmp_path) not in args[-1].read_text(encoding="utf-8")
     with pytest.raises(FileExistsError):
         replay(*args)
 
@@ -92,7 +96,7 @@ def test_replay_rejects_unbound_or_changed_inputs(tmp_path, failure):
         manifest["crops"]["portrait"]["xyxy"] = [0, 0, 121, 60]
     else:
         manifest["method"] = "unfrozen"
-    args[1].write_text(json.dumps(manifest))
+    args[1].write_text(json.dumps(manifest), encoding="utf-8")
     with pytest.raises(ValueError):
         replay(*args)
     assert not args[-1].exists()
@@ -103,7 +107,7 @@ def test_edge_reference_without_training_support_cannot_probe_positive(tmp_path)
     manifest = json.loads(args[1].read_bytes())
     manifest["method"] = EDGE_METHOD
     manifest["control_roi"] = "ally_roster"
-    args[1].write_text(json.dumps(manifest))
+    args[1].write_text(json.dumps(manifest), encoding="utf-8")
     # Probe contains an exact copy of reference pixels but is a distinct frame.
     image = cv2.imread(str(args[2] / "0.jpg"), cv2.IMREAD_GRAYSCALE)
     image[-1, -1] = 255 - image[-1, -1]
@@ -129,7 +133,7 @@ def test_bank_replay_uses_distinct_supported_training_group(tmp_path):
         cv2.imwrite(str(path), image)
         manifest["training_frames"].append({
             "frame": path.name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
-    args[1].write_text(json.dumps(manifest))
+    args[1].write_text(json.dumps(manifest), encoding="utf-8")
     base[-10:, -10:] = 200
     cv2.imwrite(str(args[3] / "probe.jpg"), base)
     report = replay(*args)

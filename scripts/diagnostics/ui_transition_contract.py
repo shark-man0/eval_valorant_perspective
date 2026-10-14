@@ -165,7 +165,7 @@ def main() -> None:
     result["script_sha256"] = code_hash
     result["source_video_sha256"] = data["r1"]["source_video_sha256"]
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(result, indent=2) + "\n")
+    args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
 
 
 if __name__ == "__main__":

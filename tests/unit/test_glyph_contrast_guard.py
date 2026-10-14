@@ -126,7 +126,9 @@ def write_profile(tmp_path, *, guard_method='glyph_local_contrast_v1', role='rou
         'contrast_guard': {'method': guard_method, 'template': 'guard.png'},
     }
     path = tmp_path / 'profile.json'
-    path.write_text(json.dumps({'schema_version': '1.0', 'anchors': {}, 'signals': {role: spec}}))
+    path.write_text(json.dumps({'schema_version': '1.0', 'anchors': {}, 'signals': {role: spec}}),
+        encoding="utf-8",
+    )
     return HudTemplateProfile.load(path)
 
 
@@ -137,7 +139,7 @@ def test_profile_loads_opt_in_guard_and_hashes_its_asset(tmp_path):
     assert model.contrast_guard is not None
     assert model.score(text_image('TEAM AGE')) < .9
     layout = tmp_path / 'layout.json'
-    layout.write_text('{}')
+    layout.write_text('{}', encoding="utf-8")
     previous = profile.fingerprint(layout)
     path = tmp_path / 'guard.png'
     path.write_bytes(path.read_bytes()+b'changed')
@@ -160,9 +162,9 @@ def test_nonsemantic_matcher_cannot_ignore_requested_guard(tmp_path):
 
     write_profile(tmp_path)
     path = tmp_path / 'profile.json'
-    raw = json.loads(path.read_text())
+    raw = json.loads(path.read_text(encoding="utf-8"))
     raw['signals']['round_end_template']['matcher'] = 'plain_pixels'
-    path.write_text(json.dumps(raw))
+    path.write_text(json.dumps(raw), encoding="utf-8")
     profile = HudTemplateProfile.load(path)
     assert 'round_end_template' not in profile._signal_templates
     assert any('requires the semantic matcher' in d for d in profile.reader_diagnostics)
