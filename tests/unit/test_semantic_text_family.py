@@ -58,14 +58,14 @@ def test_family_rejects_unsafe_definitions(case):
 def family_profile(tmp_path):
     write_profile(tmp_path)
     path = tmp_path / "profile.json"
-    data = json.loads(path.read_text())
+    data = json.loads(path.read_text(encoding="utf-8"))
     base = data["signals"]["round_end_template"]
     variant = {key: base[key] for key in (
         "template", "mask", "support_regions", "training", "contrast_guard",
     )}
     variant["label"] = "additional"
     base["variants"] = [variant]
-    path.write_text(json.dumps(data))
+    path.write_text(json.dumps(data), encoding="utf-8")
     return path
 
 
@@ -88,16 +88,16 @@ def test_profile_family_is_opt_in_and_preserves_unknown_and_measurement(tmp_path
 
 def test_variant_only_asset_changes_invalidate_profile_fingerprint(tmp_path):
     path = family_profile(tmp_path)
-    data = json.loads(path.read_text())
+    data = json.loads(path.read_text(encoding="utf-8"))
     variant = data["signals"]["round_end_template"]["variants"][0]
     asset = tmp_path / "variant-only.png"
     asset.write_bytes((tmp_path / "word.png").read_bytes())
     variant["template"] = asset.name
-    path.write_text(json.dumps(data))
+    path.write_text(json.dumps(data), encoding="utf-8")
     profile = HudTemplateProfile.load(path)
     assert not profile.reader_diagnostics
     layout = tmp_path / "layout.json"
-    layout.write_text("{}")
+    layout.write_text("{}", encoding="utf-8")
     before = profile.fingerprint(layout)
     asset.write_bytes(asset.read_bytes() + b"changed")
     assert profile.fingerprint(layout) != before
@@ -109,7 +109,7 @@ def test_variant_only_asset_changes_invalidate_profile_fingerprint(tmp_path):
 ])
 def test_malformed_variant_disables_signal_without_primary_fallback(tmp_path, case):
     path = family_profile(tmp_path)
-    data = json.loads(path.read_text())
+    data = json.loads(path.read_text(encoding="utf-8"))
     spec = data["signals"]["round_end_template"]
     variant = spec["variants"][0]
     if case == "role":
@@ -130,7 +130,7 @@ def test_malformed_variant_disables_signal_without_primary_fallback(tmp_path, ca
         variant["threshold"] = .1
     else:
         variant["template"] = "missing.png"
-    path.write_text(json.dumps(data))
+    path.write_text(json.dumps(data), encoding="utf-8")
     profile = HudTemplateProfile.load(path)
     assert "round_end_template" not in profile._signal_templates
     assert "round_end_template" not in profile._semantic_text

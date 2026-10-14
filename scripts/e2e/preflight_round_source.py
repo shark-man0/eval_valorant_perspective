@@ -92,7 +92,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         [ffprobe, "-v", "error", "-threads", "1", "-select_streams", "v:0",
          "-show_streams", "-show_frames", "-show_entries",
          "stream=time_base,width,height:frame=best_effort_timestamp", "-of", "json",
-         str(args.video)], capture_output=True, text=True, check=True, timeout=args.timeout_sec,
+         str(args.video)], capture_output=True, text=True, encoding="utf-8",
+        check=True, timeout=args.timeout_sec,
     )
     data = json.loads(probe.stdout)
     stream = data["streams"][0]

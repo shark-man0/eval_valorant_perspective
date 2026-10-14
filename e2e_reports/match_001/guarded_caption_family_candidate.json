@@ -1,0 +1,360 @@
+{
+  "scope": "Frozen pre-main-integration candidate evaluation, not current-main End qualification",
+  "implementation_commit": "ef0fa1b",
+  "integrated_main": "edc3b684aadac25b076665dcbb55bda254d335f3",
+  "integration_commit": "d9dd4a90bf44cc0e5aea40ab5d32dd97929e3c39",
+  "current_recognizer_fingerprint": "58117f2bfe84f072c37f0989846145d7fad7a3a29d807ba55d9be9a6136a4f68",
+  "candidate_freeze": {
+    "scope": "Candidate freeze before untouched negative/held windows",
+    "recognizer_fingerprint": "7897d6bcb9600c6541b48a26c94cd4e22bd9a3a692269366a0b3e2d5610e4dbc",
+    "profile_fingerprint": "445f61d7440dee58c480253338b19df500c676c519e84810d1f7332c3ea798ee",
+    "training_manifest_sha256": "2ce9774a46de7343de6bda42c9f2da17d8cbde05e942e6cdb83590aa3b0a54a1",
+    "split_plan_sha256": "ff449e2aca51edf9150800bdd0f290f4a3516b747beb1dd8793156e2b74daf91",
+    "candidate_threshold": 0.9,
+    "runtime_qualification_created": false,
+    "geometry_anchor_thresholds": [
+      0.9,
+      0.9,
+      0.9,
+      0.9
+    ],
+    "caption_families": [
+      "primary_LOST",
+      "WON"
+    ],
+    "numeric_clock_end_predicate_unchanged": true,
+    "Spike_icon_missing_clock_case_not_supported": true,
+    "old_source_baseline_unchanged": true,
+    "old_qualification_expected_stale": true
+  },
+  "held": {
+    "scope": "Frozen candidate on two new held-event cases, source-sequence human review only; no exact End GT or formal native event release",
+    "candidate_freeze": {
+      "scope": "Candidate freeze before untouched negative/held windows",
+      "recognizer_fingerprint": "7897d6bcb9600c6541b48a26c94cd4e22bd9a3a692269366a0b3e2d5610e4dbc",
+      "profile_fingerprint": "445f61d7440dee58c480253338b19df500c676c519e84810d1f7332c3ea798ee",
+      "training_manifest_sha256": "2ce9774a46de7343de6bda42c9f2da17d8cbde05e942e6cdb83590aa3b0a54a1",
+      "split_plan_sha256": "ff449e2aca51edf9150800bdd0f290f4a3516b747beb1dd8793156e2b74daf91",
+      "candidate_threshold": 0.9,
+      "runtime_qualification_created": false,
+      "geometry_anchor_thresholds": [
+        0.9,
+        0.9,
+        0.9,
+        0.9
+      ],
+      "caption_families": [
+        "primary_LOST",
+        "WON"
+      ],
+      "numeric_clock_end_predicate_unchanged": true,
+      "Spike_icon_missing_clock_case_not_supported": true,
+      "old_source_baseline_unchanged": true,
+      "old_qualification_expected_stale": true
+    },
+    "source_sha256": "06919642d69f68895ac123b505bfd7d3643dd28d903585008fcdc2b7f1b7e3fd",
+    "labels_sha256": "dbd1d3f4cfc0ff7e45c7a0b8d8658d6c1be0166d80f318d5b42115c41d156481",
+    "human_source_review_sha256": "87d894190257816dcae582a7ba73aa702c25f226dcfce9ad5d0712e0e86f8da1",
+    "independent_event_cases": 2,
+    "source_video_blind_transfer_claimed": false,
+    "new_case_prediction_once": true,
+    "cases": [
+      {
+        "case": "A",
+        "frames": 343,
+        "first_tick": 20886528,
+        "last_tick": 20974080,
+        "producer_elapsed_sec": null,
+        "geometry_counts_unmeasured": true,
+        "primary_state_counts": {
+          "unknown": 343
+        },
+        "semantic_result_matches": 44,
+        "phase_scans_valid": 343,
+        "complete_score_pairs": 264,
+        "diagnostic_End_patterns": [],
+        "source_breaks_sec": [],
+        "retained_png_bytes": 565232547
+      },
+      {
+        "case": "B",
+        "frames": 145,
+        "first_tick": 22038528,
+        "last_tick": 22075392,
+        "producer_elapsed_sec": null,
+        "geometry_counts_unmeasured": true,
+        "primary_state_counts": {
+          "unknown": 145
+        },
+        "semantic_result_matches": 51,
+        "phase_scans_valid": 145,
+        "complete_score_pairs": 141,
+        "diagnostic_End_patterns": [
+          {
+            "type": "round_end",
+            "time_sec": 1435.5833333333333,
+            "confidence": 0.9018939137458801,
+            "attributes": {
+              "evidence_provenance": {
+                "scope": "global_system",
+                "producer": "unedited_ui_end_tracker",
+                "temporal_contract": "ui_end_transition_v1",
+                "signals": [
+                  "accepted_clock_decrease",
+                  "accepted_score_transition",
+                  "qualified_stable_round_result"
+                ],
+                "clock_change": {
+                  "before": {
+                    "tick": 22049024,
+                    "pts_sec": 1435.4833333333333,
+                    "source_pixel_sha256": "c1b9d7fe58451239f62a77d5ea48ec198fbe0da12db3debc7eb837c8858aa403",
+                    "seconds": 63.0,
+                    "observed_display": "1:03",
+                    "confidence": 0.9634609818458557
+                  },
+                  "after": {
+                    "tick": 22049536,
+                    "pts_sec": 1435.5166666666667,
+                    "source_pixel_sha256": "a7a15413003ae4d514ffe116312f9f40e0e24cc97851c95ed9142db127a2acc4",
+                    "seconds": 6.0,
+                    "observed_display": "0:06",
+                    "confidence": 0.9018939137458801
+                  }
+                },
+                "score_before": {
+                  "first": {
+                    "tick": 22043392,
+                    "pts_sec": 1435.1166666666666,
+                    "source_pixel_sha256": "20edbf9549f958415ca9b9c87671ea8637777b6cac55c67c4b3ded6890033a69",
+                    "values": [
+                      10,
+                      5
+                    ],
+                    "confidence": 0.9020988941192627
+                  },
+                  "last": {
+                    "tick": 22050304,
+                    "pts_sec": 1435.5666666666666,
+                    "source_pixel_sha256": "c8227b1453de1bf9da803d9dc12518c8c9002422a686dc4a700915bab3771c1a",
+                    "values": [
+                      10,
+                      5
+                    ],
+                    "confidence": 0.9390875697135925
+                  },
+                  "confidence": 0.9020988941192627
+                },
+                "score_after": {
+                  "first": {
+                    "tick": 22050560,
+                    "pts_sec": 1435.5833333333333,
+                    "source_pixel_sha256": "72cfe40acdc7461c1f2fa7976095498efad355704d9f6b26f8657cff06904a44",
+                    "values": [
+                      10,
+                      6
+                    ],
+                    "confidence": 0.9561678171157837
+                  },
+                  "last": {
+                    "tick": 22055936,
+                    "pts_sec": 1435.9333333333334,
+                    "source_pixel_sha256": "c059c6978cd4ad152624b6ebe6150e31a249c4a66bb900e1e472a9aac8da75d1",
+                    "values": [
+                      10,
+                      6
+                    ],
+                    "confidence": 0.9463869333267212
+                  },
+                  "confidence": 0.9199575781822205
+                },
+                "score_stability": {
+                  "tick": 22051328,
+                  "pts_sec": 1435.6333333333334,
+                  "source_pixel_sha256": "5face914f33a52443bd9f63e3dc6d52d2054e3b059957efd7d20a78005ae57da"
+                },
+                "result_first": {
+                  "tick": 22062592,
+                  "pts_sec": 1436.3666666666666,
+                  "source_pixel_sha256": "7564a9415f1f2f00038c5b63271ac9de92d4e3c100141c8389f9fcfb14ac935c",
+                  "confidence": 0.9949452969213595
+                },
+                "result_confirmation": {
+                  "tick": 22063360,
+                  "pts_sec": 1436.4166666666667,
+                  "source_pixel_sha256": "6a32a65ddeb0b4e6cd97d8136571fd953289c6830c130df90aa921fff1f7bb11",
+                  "confidence": 0.9968631608608487
+                },
+                "confirmation_pts_sec": 1436.4166666666667,
+                "pts_sec": [
+                  1435.5166666666667,
+                  1435.5833333333333,
+                  1436.3666666666666,
+                  1436.4166666666667
+                ],
+                "timestamp_rule": "first_observed_score_change"
+              }
+            }
+          }
+        ],
+        "source_breaks_sec": [],
+        "retained_png_bytes": 249956786
+      }
+    ],
+    "total_frames": 488,
+    "support_counts": {
+      "timer:correct": 10,
+      "score_ally:correct": 11,
+      "score_enemy:correct": 10,
+      "result:correct": 9,
+      "score_enemy:unknown": 1,
+      "timer:unknown": 1,
+      "result:unknown": 1
+    },
+    "formal_events_released": 0,
+    "player_owned_facts": 0,
+    "full_lifecycle_qualification_established": false,
+    "terminal_integrity_verified": true,
+    "producer_elapsed_sec": null,
+    "peak_process_rss_bytes": null,
+    "postprocessing_verification_elapsed_sec": 14.46928795799613,
+    "source_sequence_review_confirmed_by_user": true,
+    "exact_temporal_GT_confirmed": false,
+    "post_held_tuning": false,
+    "initial_optional_timer_key_failure_preserved": true,
+    "finalized_from_immutable_actual_rows": true,
+    "reader_recognition_rerun": false,
+    "raw_rows_sha256": {
+      "A": "43d816b1f5aaae000701550266601daa4ce9922fe3c81fca563b8f1800c287a3",
+      "B": "485b0ff23abfd54b2eff528e9984450056caee9085d5d4c5f44270d49de891a2"
+    }
+  },
+  "negative_windows": [
+    {
+      "name": "active",
+      "sec": [
+        1800,
+        1800.3
+      ],
+      "frames": 19,
+      "semantic_result_matches": 0,
+      "End_patterns": [],
+      "geometry_counts": {
+        "frames": 19,
+        "fresh_geometry_success": 0,
+        "effective_geometry_success": 19,
+        "retained_geometry_frames": 19,
+        "geometry_invalid_unknown": 0,
+        "geometry_valid_state_unknown": 19,
+        "live_identity_evidence_insufficient": 19,
+        "insufficient_anchors_frames": 19
+      },
+      "elapsed_sec": 12.948782125022262,
+      "png_bytes": 39663697,
+      "first_tick": 27648000,
+      "last_tick": 27652608
+    },
+    {
+      "name": "scoreboard",
+      "sec": [
+        1830,
+        1830.3
+      ],
+      "frames": 19,
+      "semantic_result_matches": 0,
+      "End_patterns": [],
+      "geometry_counts": {
+        "frames": 19,
+        "fresh_geometry_success": 0,
+        "effective_geometry_success": 19,
+        "retained_geometry_frames": 19,
+        "geometry_invalid_unknown": 0,
+        "geometry_valid_state_unknown": 19,
+        "live_identity_evidence_insufficient": 19,
+        "insufficient_anchors_frames": 19
+      },
+      "elapsed_sec": 15.004743041994516,
+      "png_bytes": 35874521,
+      "first_tick": 28108800,
+      "last_tick": 28113408
+    },
+    {
+      "name": "glow_active",
+      "sec": [
+        1860,
+        1860.3
+      ],
+      "frames": 19,
+      "semantic_result_matches": 0,
+      "End_patterns": [],
+      "geometry_counts": {
+        "frames": 19,
+        "fresh_geometry_success": 0,
+        "effective_geometry_success": 19,
+        "retained_geometry_frames": 19,
+        "geometry_invalid_unknown": 0,
+        "geometry_valid_state_unknown": 19,
+        "live_identity_evidence_insufficient": 19,
+        "insufficient_anchors_frames": 19
+      },
+      "elapsed_sec": 12.793888874992263,
+      "png_bytes": 28170889,
+      "first_tick": 28569600,
+      "last_tick": 28574208
+    },
+    {
+      "name": "spectator_spike",
+      "sec": [
+        1920,
+        1920.3
+      ],
+      "frames": 19,
+      "semantic_result_matches": 0,
+      "End_patterns": [],
+      "geometry_counts": {
+        "frames": 19,
+        "fresh_geometry_success": 0,
+        "effective_geometry_success": 19,
+        "retained_geometry_frames": 19,
+        "geometry_invalid_unknown": 0,
+        "geometry_valid_state_unknown": 19,
+        "live_identity_evidence_insufficient": 19,
+        "insufficient_anchors_frames": 19
+      },
+      "elapsed_sec": 15.513880375016015,
+      "png_bytes": 34075729,
+      "first_tick": 29491200,
+      "last_tick": 29495808
+    }
+  ],
+  "negative_evaluation_elapsed_sec": 72.736,
+  "held_WON_evaluated": false,
+  "formal_End_qualification": false,
+  "full_lifecycle_qualification": false,
+  "independent_exact_End_GT": false,
+  "new_source_video_generalization_claimed": false,
+  "old_match_001_End_GT_miss_ms": 3.00260416667,
+  "adopted_canonical_baseline": [
+    23,
+    55,
+    4
+  ],
+  "preintegration_tests": {
+    "related_pass": 358,
+    "dataset_pass": 38,
+    "full_pass": 3657,
+    "full_fail": 4,
+    "full_skip": 9,
+    "full_elapsed_sec": 425.27,
+    "coverage_percent": 86.38311379146167,
+    "ruff": "pass",
+    "mypy_files_pass": 131
+  },
+  "private_artifact_sha256": {
+    "split-plan.json": "ff449e2aca51edf9150800bdd0f290f4a3516b747beb1dd8793156e2b74daf91",
+    "candidate-freeze.json": "80e805b7cd21c004ba2539c3fb15ab72a9a69ace19e415189040314b4ffb0aca",
+    "held-native/manual-labels.json": "dbd1d3f4cfc0ff7e45c7a0b8d8658d6c1be0166d80f318d5b42115c41d156481",
+    "held-native/human-source-sequence-review.json": "87d894190257816dcae582a7ba73aa702c25f226dcfce9ad5d0712e0e86f8da1",
+    "held-result/A-abstention-audit.json": "b1b10b337d454b357b0ce5ae4da80da2edc25ebef193bf033250ac705312cef4"
+  }
+}
