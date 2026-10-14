@@ -40,7 +40,9 @@ jobs:
       - name: Run repository-contained tests with coverage
         run: python -m pytest --durations=25 --cov=valorant_ai_coach --cov-report=term-missing --cov-fail-under=75
       - name: Inventory Python text I/O (observational)
-        run: python scripts/audit_text_io.py --summary-json
+        run: |
+          python scripts/audit_text_io.py --summary-json
+          python scripts/audit_text_io.py --review-json
       - name: Ruff
         run: python -m ruff check src tests scripts/e2e
       - name: mypy
