@@ -1,0 +1,270 @@
+{
+  "scope": "Fixed30point sampled HUD comparison and per-point actual HUD/visual/native merge; separate controlled private Tesseract availability check. No standard full E2E or default qualification release.",
+  "recognizer_fingerprint": "96c79de983a298b1f849c742c9653728c527481d929e2991b6e6f918dfe95da5",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "suite_sha256": "9fe21d77675c79af05b2adecbaa2984d098624196bc80d876e1d89b7e712fc11",
+  "without_tesseract": {
+    "baseline": {
+      "counts": {
+        "passed": 5,
+        "failed": 14,
+        "not_evaluated": 11
+      },
+      "state_counts": {
+        "unknown": 20,
+        "buy_menu_open": 2,
+        "live_first_person": 3,
+        "spectator_first_person": 5
+      },
+      "runtime_sec": 161.74908297602087
+    },
+    "candidate": {
+      "counts": {
+        "passed": 13,
+        "failed": 6,
+        "not_evaluated": 11
+      },
+      "state_counts": {
+        "unknown": 20,
+        "buy_menu_open": 2,
+        "live_first_person": 3,
+        "spectator_first_person": 5
+      },
+      "runtime_sec": 163.04353155894205
+    }
+  },
+  "without_tesseract_application_merge": {
+    "counts": {
+      "passed": 13,
+      "failed": 6,
+      "not_evaluated": 11
+    },
+    "runtime_sec": 1072.5046426570043,
+    "unique_source_native_boundaries": 3,
+    "isolated_point_contexts_preserved": true
+  },
+  "with_private_tesseract": {
+    "baseline": {
+      "counts": {
+        "passed": 7,
+        "failed": 12,
+        "not_evaluated": 11
+      },
+      "state_counts": {
+        "unknown": 20,
+        "buy_menu_open": 2,
+        "live_first_person": 3,
+        "spectator_first_person": 5
+      },
+      "runtime_sec": 205.8079806889873,
+      "labelled_wrong_values": 0
+    },
+    "candidate": {
+      "counts": {
+        "passed": 15,
+        "failed": 4,
+        "not_evaluated": 11
+      },
+      "state_counts": {
+        "unknown": 20,
+        "buy_menu_open": 2,
+        "live_first_person": 3,
+        "spectator_first_person": 5
+      },
+      "runtime_sec": 207.45701241202187,
+      "labelled_wrong_values": 0
+    }
+  },
+  "current_previous_delta": [
+    {
+      "metric": "passed",
+      "current": 15,
+      "previous": 7,
+      "delta": 8,
+      "percent_change": 114.28571428571428
+    },
+    {
+      "metric": "failed",
+      "current": 4,
+      "previous": 12,
+      "delta": -8,
+      "percent_change": -66.66666666666666
+    },
+    {
+      "metric": "not_evaluated",
+      "current": 11,
+      "previous": 11,
+      "delta": 0,
+      "percent_change": 0.0
+    },
+    {
+      "metric": "unknown",
+      "current": 20,
+      "previous": 20,
+      "delta": 0,
+      "percent_change": 0.0
+    },
+    {
+      "metric": "live",
+      "current": 3,
+      "previous": 3,
+      "delta": 0,
+      "percent_change": 0.0
+    },
+    {
+      "metric": "spectator",
+      "current": 5,
+      "previous": 5,
+      "delta": 0,
+      "percent_change": 0.0
+    },
+    {
+      "metric": "menu",
+      "current": 2,
+      "previous": 2,
+      "delta": 0,
+      "percent_change": 0.0
+    },
+    {
+      "metric": "wall_sec",
+      "current": null,
+      "previous": null,
+      "delta": null,
+      "percent_change": null
+    },
+    {
+      "metric": "fps",
+      "current": null,
+      "previous": null,
+      "delta": null,
+      "percent_change": null
+    }
+  ],
+  "state_and_player_validity_unchanged_all_points": true,
+  "labelled_unknown_to_wrong": 0,
+  "labelled_correct_to_wrong": 0,
+  "private_ocr_scope": {
+    "version": "5.3.4",
+    "source": "System-configured Ubuntu apt repository packages; dpkg-deb extraction into private outputs, no package install or admin rights",
+    "package_sha256": {
+      "libgif7_5.2.2-1ubuntu1.2_arm64.deb": "ef7849d9887be357725efc55c71456e1b6d4911e88314121471f715f0f0bc0c4",
+      "liblept5_1.82.0-3build4_arm64.deb": "ade7e6886511ab34b36ce5207ce4f00f1b030a6939fcdac4a9c1d6eaf3d83284",
+      "libtesseract5_5.3.4-1build5_arm64.deb": "e0c53e9b7f5b42f0250b288d5a4d3590ea5bf09ab5e937a8b05a0fbc56d63eea",
+      "tesseract-ocr-eng_1%3a4.1.0-2_all.deb": "b1996b3113c78663f4dd16cf18aa1f288b07e9624f8d4a0ddbd7d9b52a234ba7",
+      "tesseract-ocr-osd_1%3a4.1.0-2_all.deb": "a266496b3268134493808c1595c9d16ac92c7e1c28e3e0bf46fdb322df95ca68",
+      "tesseract-ocr_5.3.4-1build5_arm64.deb": "d6e51e837f5eb9038628e84d8539a4f1fe6643e26f8db4946a397a710601e536"
+    },
+    "binary_sha256": "a068bbb0a958445c44c39c34e2bed340819b557a900b2311bd3ad32691676553",
+    "eng_model_sha256": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2",
+    "wrapper_sha256": "fbdb4d61bbb6aea5c13f887d8b134cb85061699cb667aaeac4442e37b5017aab",
+    "system_PATH_or_packages_modified": false,
+    "OMP_THREAD_LIMIT": 1,
+    "previous_native_recognition_cache_used_under_changed_OCR_environment": false
+  },
+  "console_summary_error_after_restored_recognition": {
+    "source_process_exit_status": 1,
+    "reason": "Diagnostic final print referenced removed merge summary; both source reports and terminal hashes were already published",
+    "verification_finalizer_exit_status": 0,
+    "finalization_sha256": "2e39510c96a6baa9c709a2c22905fe9added69294ea861de6101ef9696cda8f4",
+    "recognition_reexecuted": false
+  },
+  "remaining_point_failures": [
+    {
+      "pts_sec": 42.969336,
+      "categories": [
+        "timer_score",
+        "known_false_positive"
+      ],
+      "field": "timer",
+      "expected": 61.0,
+      "actual": null,
+      "reason": "expected_value_unavailable"
+    },
+    {
+      "pts_sec": 124.536003,
+      "categories": [
+        "timer_score",
+        "known_false_positive"
+      ],
+      "field": "timer",
+      "expected": 86.0,
+      "actual": null,
+      "reason": "expected_value_unavailable"
+    },
+    {
+      "pts_sec": 147.502669,
+      "categories": [
+        "timer_score",
+        "regression_protection"
+      ],
+      "field": "timer",
+      "expected": 63.0,
+      "actual": null,
+      "reason": "expected_value_unavailable"
+    },
+    {
+      "pts_sec": 147.502669,
+      "categories": [
+        "timer_score",
+        "regression_protection"
+      ],
+      "field": "score_player",
+      "expected": 0,
+      "actual": null,
+      "reason": "expected_value_unavailable"
+    },
+    {
+      "pts_sec": 170.002669,
+      "categories": [
+        "timer_score",
+        "regression_protection"
+      ],
+      "field": "timer",
+      "expected": 41.0,
+      "actual": null,
+      "reason": "expected_value_unavailable"
+    },
+    {
+      "pts_sec": 170.002669,
+      "categories": [
+        "timer_score",
+        "regression_protection"
+      ],
+      "field": "score_enemy",
+      "expected": 2,
+      "actual": null,
+      "reason": "expected_value_unavailable"
+    }
+  ],
+  "sampled_ne_reason": "11frames lack independent expected labels; never filled with new ground truth",
+  "adopted_canonical_baseline": {
+    "PASS": 23,
+    "FAIL": 55,
+    "NE": 4
+  },
+  "standard_full_e2e_executed": false,
+  "independent_temporal_generalization_proven": false,
+  "native_collection_under_restored_ocr_verified": false,
+  "evidence_sha256": {
+    "outputs/recognition-investigation/strict-replay-sampled-merge-20261014/result.json": "0f7951e8a9b46cb029ac75a9338dd205683071538e9447658e96ecc881a68b3d",
+    "outputs/recognition-investigation/strict-replay-sampled-merge-20261014/merge-result.json": "5662958c554071908d65ecbec31364f519982a6dea419e0625ccb0c263810f6e",
+    "outputs/recognition-investigation/strict-replay-sampled-tesseract-20261014/result.json": "769b102c328af814df85be73db894465d988046c6c25dcbe43d404807a40876d",
+    "outputs/recognition-investigation/strict-replay-sampled-tesseract-20261014/baseline/result.json": "ece19c61d46483b41952fb5a2dd8106472504d1e1daf0cc00e4698ae56562a1c",
+    "outputs/recognition-investigation/strict-replay-sampled-tesseract-20261014/candidate/result.json": "976413ae8e0981528b887a28ce1cad1c813d9e8457ef788578b5a607b24ee2dc"
+  },
+  "next_gate": "Full regression; ensure native collection/qualification matches restored OCR runtime before using its cached recognition in full application evaluation.",
+  "restored_environment_full_regression": {
+    "PASS": 3646,
+    "SKIP": 5,
+    "runtime_sec": 2361.57,
+    "log_sha256": "e7d9e08979d318a15036b727b222f714f48da6db993ffc11384a81c0d96e8146",
+    "private_tesseract": "5.3.4",
+    "real_isolated_english_data_test": "PASS",
+    "ruff": "PASS",
+    "mypy": {
+      "status": "PASS",
+      "source_files": 131
+    },
+    "Windows_current_branch_CI": "not_run"
+  }
+}

@@ -44,9 +44,9 @@ def _record_rows(path: Path) -> dict[str, str]:
             raise ValueError(f"duplicate installed-package RECORD row: {name}")
         # Avoid exposing absolute runner paths in public audit artifacts.
         if name.startswith("/") or re.match(r"^[A-Za-z]:/", name):
-            name = "absolute-path-sha256:" + hashlib.sha256(name.encode()).hexdigest()
+            name = "absolute-path-sha256:" + hashlib.sha256(name.encode("utf-8")).hexdigest()
         result[name] = hashlib.sha256(
-            json.dumps(row, ensure_ascii=True, separators=(",", ":")).encode()
+            json.dumps(row, ensure_ascii=True, separators=(",", ":")).encode("utf-8")
         ).hexdigest()
     return result
 

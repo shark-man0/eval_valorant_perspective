@@ -40,6 +40,7 @@ def provider(tmp_path, monkeypatch):
         return native
 
     processor.video.native_window = decode
+    processor.video.native_replay = decode
     processor.analyzer.observe_qualified_native_lifecycle_frames = observe
     return processor, metadata, native, calls
 
@@ -54,17 +55,33 @@ def test_single_epoch_origin_to_eof_and_terminal_verification(tmp_path, monkeypa
     }, 'observe', 'verify', 'terminal']
 
 
+def test_strict_replay_keeps_qualified_provider_and_terminal_verification(tmp_path, monkeypatch):
+    processor, metadata, native, calls = provider(tmp_path, monkeypatch)
+    measured = processor.collect_native_lifecycle(
+        metadata, NativeLifecycleOptions(1234, storage_mode='replay'),
+    )
+    assert measured == native
+    assert calls == ['verify', {
+        'source_video_sha256': native.source_rows[0]['source_video_sha256'],
+        'max_buffer_bytes': 64 * 1024 * 1024,
+    }, 'observe', 'verify', 'terminal']
+
+
 @pytest.mark.parametrize('missing', ['global_qualification', 'scene_source_binding'])
-def test_missing_qualification_rejects_before_decode(tmp_path, monkeypatch, missing):
+@pytest.mark.parametrize('storage', ['png', 'replay'])
+def test_missing_qualification_rejects_before_decode(tmp_path, monkeypatch, missing, storage):
     processor, metadata, _, calls = provider(tmp_path, monkeypatch)
     setattr(processor.analyzer, missing, None)
     with pytest.raises(HudVideoProcessingError, match='qualified'):
-        processor.collect_native_lifecycle(metadata, NativeLifecycleOptions(1234))
+        processor.collect_native_lifecycle(
+            metadata, NativeLifecycleOptions(1234, storage_mode=storage),
+        )
     assert calls == []
 
 
 @pytest.mark.parametrize('tamper', ['coverage', 'pixel'])
-def test_producer_must_cover_exact_decoded_source(tmp_path, monkeypatch, tamper):
+@pytest.mark.parametrize('storage', ['png', 'replay'])
+def test_producer_must_cover_exact_decoded_source(tmp_path, monkeypatch, tamper, storage):
     processor, metadata, native, _ = provider(tmp_path, monkeypatch)
     rows = tuple(dict(row) for row in native.source_rows)
     if tamper == 'coverage':
@@ -75,7 +92,9 @@ def test_producer_must_cover_exact_decoded_source(tmp_path, monkeypatch, tamper)
         native, source_rows=rows,
     )
     with pytest.raises(HudVideoProcessingError, match='coverage|binding'):
-        processor.collect_native_lifecycle(metadata, NativeLifecycleOptions(1234))
+        processor.collect_native_lifecycle(
+            metadata, NativeLifecycleOptions(1234, storage_mode=storage),
+        )
 
 
 def test_cancel_before_decode_and_conflicting_inputs(tmp_path, monkeypatch):
@@ -101,7 +120,10 @@ def test_mandatory_positive_integer_budget(budget):
 
 
 @pytest.mark.parametrize('failure', ['overflow', 'terminal'])
-def test_decoder_failure_never_falls_back_to_sampled_analysis(tmp_path, monkeypatch, failure):
+@pytest.mark.parametrize('storage', ['png', 'replay'])
+def test_decoder_failure_never_falls_back_to_sampled_analysis(
+    tmp_path, monkeypatch, failure, storage,
+):
     processor, metadata, _, calls = provider(tmp_path, monkeypatch)
     original = processor.video.native_window
 
@@ -113,9 +135,11 @@ def test_decoder_failure_never_falls_back_to_sampled_analysis(tmp_path, monkeypa
             yield frames
         raise RuntimeError('terminal source changed')
 
-    processor.video.native_window = decode
+    setattr(processor.video, 'native_window' if storage == 'png' else 'native_replay', decode)
     processor.analyzer.observe_frames = lambda *a, **k: pytest.fail('sampled fallback')
     with pytest.raises(RuntimeError, match='budget exceeded|terminal source changed'):
         processor.process(metadata=metadata, match_id='test', output_dir=tmp_path,
-                          native_lifecycle_options=NativeLifecycleOptions(1234))
+                          native_lifecycle_options=NativeLifecycleOptions(
+                              1234, storage_mode=storage,
+                          ))
     assert ('observe' in calls) == (failure == 'terminal')
