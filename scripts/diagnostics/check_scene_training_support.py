@@ -146,7 +146,7 @@ def main():
               'projected_exclusion_diagnostics': projection_rows,
               'wall_clock_sec': time.monotonic()-started,
               'canonical_current': None, 'canonical_delta': None}
-    args.output.write_text(json.dumps(result, indent=2)+'\n')
+    args.output.write_text(json.dumps(result, indent=2)+'\n', encoding="utf-8")
     print(json.dumps(summary))
     # Distinguish a completed rejection from a successful development screen.
     raise SystemExit(0 if summary['appearance_training_minimum_met'] else 2)

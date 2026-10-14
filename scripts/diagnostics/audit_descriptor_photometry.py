@@ -52,7 +52,7 @@ def main():
     args = parser.parse_args()
     if args.output.exists():
         raise ValueError("refuse to overwrite evidence")
-    declaration = json.loads(args.declaration.read_text())
+    declaration = json.loads(args.declaration.read_text(encoding="utf-8"))
     for path, digest in declaration["bindings"].items():
         if hashlib.sha256(Path(path).read_bytes()).hexdigest() != digest:
             raise ValueError(f"binding changed: {path}")
@@ -62,8 +62,8 @@ def main():
         Path(__file__),
     ]
     bindings = {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}
-    saved = json.loads(args.result.read_text())
-    profile = json.loads(args.profile.read_text())
+    saved = json.loads(args.result.read_text(encoding="utf-8"))
+    profile = json.loads(args.profile.read_text(encoding="utf-8"))
     references = {r["id"]: r for r in profile["references"]}
     start = time.perf_counter()
     rows = []
@@ -107,7 +107,7 @@ def main():
         "rows": rows,
         "wall_clock_sec": time.perf_counter() - start,
     }
-    args.output.write_text(json.dumps(report, indent=2) + "\n")
+    args.output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps([{k: v for k, v in r.items() if k != "measurements"} for r in rows]))
 
 

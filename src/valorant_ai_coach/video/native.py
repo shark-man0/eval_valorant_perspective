@@ -223,7 +223,7 @@ def decode_native_window(
         result = subprocess.run(
             [ffprobe, '-v', 'error', '-threads', '1', '-select_streams', 'v:0', *arguments,
              '-of', 'json', str(video)],
-            capture_output=True, text=True, check=True, timeout=timeout_sec,
+            capture_output=True, text=True, encoding="utf-8", check=True, timeout=timeout_sec,
             env=_subprocess_environment(),
         )
         probe_stderr = result.stderr[-2000:]

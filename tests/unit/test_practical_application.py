@@ -10,7 +10,7 @@ from valorant_ai_coach.ui.backend import BackendFacade
 
 def test_practical_opt_in_persists_and_reaches_composition_root(tmp_path):
     path = tmp_path / 'contract.json'
-    path.write_text('{"assurance_provenance":"synthetic input identity"}')
+    path.write_text('{"assurance_provenance":"synthetic input identity"}', encoding="utf-8")
     selected = AppSettings(data_dir=tmp_path, hud_mode='real',
                            round_boundary_mode='practical',
                            unedited_input_contract_path=str(path), native_png_budget_mb=128)
@@ -28,7 +28,9 @@ def test_practical_opt_in_persists_and_reaches_composition_root(tmp_path):
     checkpoint = {'source_fingerprint': 'unchanged-source', 'config_fingerprint': before}
     pipeline._validate_resume_fingerprints(match, checkpoint, tmp_path / 'source.mp4',
                                            'unchanged-source', before)
-    path.write_text('{"assurance_provenance":"different synthetic input identity"}')
+    path.write_text('{"assurance_provenance":"different synthetic input identity"}',
+        encoding="utf-8",
+    )
     assert pipeline._config_fingerprint() != before
     with pytest.raises(RuntimeError, match='解析設定'):
         pipeline._validate_resume_fingerprints(
@@ -138,9 +140,9 @@ def test_practical_native_collection_uses_shared_decoder_and_terminal_verificati
         import json
 
         path = prefix / 'qualification.json'
-        content = json.loads(path.read_text())
+        content = json.loads(path.read_text(encoding="utf-8"))
         content['profile_fingerprint'] = 'a' * 64 if qualification_case == 'valid' else 'b' * 64
-        path.write_text(json.dumps(content))
+        path.write_text(json.dumps(content), encoding="utf-8")
         processor.analyzer.global_qualification_path = path
     analysis = processor.collect_native_lifecycle(
         metadata, NativeLifecycleOptions(1234, unedited_input_contract_path=contract_path,

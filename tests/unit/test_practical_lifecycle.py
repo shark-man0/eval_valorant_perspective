@@ -228,9 +228,9 @@ def test_processor_prefers_formal_overlay_and_keeps_unqualified_end_provisional(
     tracker.start.contract = contract
     boundaries, diagnostics = practical(rows, tracker)
     qualification_path = producer_root / 'qualification.json'
-    document = json.loads(qualification_path.read_text())
+    document = json.loads(qualification_path.read_text(encoding="utf-8"))
     document['profile_fingerprint'] = 'a' * 64
-    qualification_path.write_text(json.dumps(document))
+    qualification_path.write_text(json.dumps(document), encoding="utf-8")
     qualification = GlobalLifecycleQualification.load(qualification_path, 'a' * 64,
                                                        unedited_input_contract=contract)
     overlay = qualified_overlay(rows, qualification, contract, path)

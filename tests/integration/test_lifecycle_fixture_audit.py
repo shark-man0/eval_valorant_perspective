@@ -11,8 +11,12 @@ from scripts.e2e.audit_lifecycle_fixture import GROUPS, audit, negative_mutation
 
 def inputs(tmp_path, monkeypatch):
     pack = valid_pack(tmp_path, monkeypatch)
-    assertions = json.loads((pack / "tests/generated/e2e_assertions_v3.json").read_text())
-    schema = json.loads((PACK / "schemas/e2e_output_trace_schema_v1.json").read_text())
+    assertions = json.loads((pack / "tests/generated/e2e_assertions_v3.json").read_text(
+        encoding="utf-8",
+    ))
+    schema = json.loads((PACK / "schemas/e2e_output_trace_schema_v1.json").read_text(
+        encoding="utf-8",
+    ))
     return assertions, schema
 
 

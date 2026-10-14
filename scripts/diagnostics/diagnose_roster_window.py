@@ -67,7 +67,7 @@ def main():
     result = subprocess.run(
         ["ffprobe", "-v", "error", "-select_streams", "v:0", "-read_intervals",
          f"{start}%{end}", "-show_frames", "-show_entries", "frame=best_effort_timestamp_time",
-         "-of", "json", str(args.video)], capture_output=True, text=True, check=True, timeout=60,
+         "-of", "json", str(args.video)], capture_output=True, text=True, encoding="utf-8", check=True, timeout=60,
     )
     times = [float(row["best_effort_timestamp_time"])
              for row in json.loads(result.stdout)["frames"]

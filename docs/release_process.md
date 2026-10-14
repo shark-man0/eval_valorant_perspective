@@ -84,6 +84,7 @@ For project version `X.Y.Z`, `release\` contains:
 - `BUILD-INFO.json`
 - `DEPENDENCIES.txt`
 - `RELEASE_NOTES_TEMPLATE.md`
+- `DEPENDENCY-AUDIT.json` (resolved-version vulnerability audit result)
 
 Only the ZIP and installer are required in the checksum file; the metadata files are
 supporting release evidence.
@@ -148,3 +149,20 @@ Retain the workflow run and `BUILD-INFO.json` so an artifact can be traced back 
 
 Code signing, certificate custody, update-channel design, and automatic in-app updates
 are separate future security/release tasks.
+
+
+## Required dependency audit gate (Issue #34)
+
+The release script verifies the real release interpreter with pip check.
+It performs a second, isolated pip-audit 2.10.1 installation under work/
+and audits frozen third-party versions with no dependency re-resolution.
+The editable first-party package is excluded only from the advisory
+query; application tests, dependency checks and release artifacts retain it.
+The release fails on a known vulnerability or an audit service error.
+The version list and JSON audit are retained in release/. Inspect both,
+along with BUILD-INFO build tool versions and ZIP/installer SHA-256 values.
+
+Network and advisory service availability are release prerequisites. This
+gate does not substitute for OS-native wheel hashing, signature validation,
+SBOM/provenance attestation or an independent second-machine reproducibility
+test. No main-branch tag or official release is produced by PR CI.

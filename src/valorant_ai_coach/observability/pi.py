@@ -21,7 +21,7 @@ def raspberry_pi_metrics() -> dict[str, Any]:
     temperature_path = Path("/sys/class/thermal/thermal_zone0/temp")
     with suppress(OSError, ValueError):
         if temperature_path.is_file():
-            raw_temperature = float(temperature_path.read_text().strip())
+            raw_temperature = float(temperature_path.read_text(encoding="ascii").strip())
             result["cpu_temperature_c"] = round(raw_temperature / 1000.0, 2)
             result["available"] = True
 
@@ -32,6 +32,7 @@ def raspberry_pi_metrics() -> dict[str, Any]:
                 [vcgencmd, "get_throttled"],
                 capture_output=True,
                 text=True,
+                encoding="ascii",
                 timeout=2.0,
                 check=False,
             )

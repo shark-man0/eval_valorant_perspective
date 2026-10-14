@@ -162,7 +162,7 @@ def test_child_runtime_oserror_is_2_and_public_output_sanitized(case):
 
     case.command = fail
     assert existing.execute(case) == 2
-    public = (case.root / "e2e_reports/match_001/summary.json").read_text()
+    public = (case.root / "e2e_reports/match_001/summary.json").read_text(encoding="utf-8")
     assert "secret" not in public
 
 
@@ -329,7 +329,9 @@ def test_optional_settings_local_env_cli_and_report_consistency(case, monkeypatc
     case.args.manual_map_id = ""
     monkeypatch.delenv("VALORANT_E2E_MANUAL_MAP_ID", raising=False)
     assert existing.execute(case) == 0
-    summary = json.loads((case.root / "e2e_reports/match_001/summary.json").read_text())
+    summary = json.loads((case.root / "e2e_reports/match_001/summary.json").read_text(
+        encoding="utf-8",
+    ))
     assert summary["metadata"]["manual_map_id"] == "summit"
 
 
@@ -337,8 +339,8 @@ def test_existing_explicit_output_is_not_overwritten(case, monkeypatch):
     case.args.output = str(case.root / "already used")
     path = Path(case.args.output)
     path.mkdir()
-    (path / "sentinel").write_text("original")
+    (path / "sentinel").write_text("original", encoding="utf-8")
     monkeypatch.setattr(runner, "APP_ROOT", case.root)
     assert runner.main(["--video-id", "match_001", "--output", str(path)]) == 2
-    assert (path / "sentinel").read_text() == "original"
+    assert (path / "sentinel").read_text(encoding="utf-8") == "original"
     assert not case.calls

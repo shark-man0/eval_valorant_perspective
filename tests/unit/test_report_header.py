@@ -93,7 +93,9 @@ def make_profile(tmp_path, model, **overrides):
     }
     spec.update(overrides)
     path = tmp_path / "profile.json"
-    path.write_text(json.dumps({"schema_version": "1.0", "report_header_detector": spec}))
+    path.write_text(json.dumps({"schema_version": "1.0", "report_header_detector": spec}),
+        encoding="utf-8",
+    )
     return HudTemplateProfile.load(path)
 
 

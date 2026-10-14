@@ -28,7 +28,7 @@ def make_video(tmp_path):
         ffprobe, '-v', 'error', '-select_streams', 'v:0', '-show_frames',
         '-show_streams', '-show_entries', 'frame=best_effort_timestamp:stream=time_base',
         '-of', 'json', str(path),
-    ], check=True, capture_output=True, text=True)
+    ], check=True, capture_output=True, text=True, encoding="utf-8")
     probed = json.loads(result.stdout)
     # Pytest retains this only on failure. A successful process may still
     # produce an empty fixture or report decoder errors on stderr; retain both
@@ -375,7 +375,7 @@ def test_budgeted_encoder_timeout_terminates_once_and_closes_pipe(tmp_path, monk
         return process
 
     monkeypatch.setattr(subprocess, 'Popen', tracked)
-    with (tmp_path/'timeout.log').open('w') as log, pytest.raises(subprocess.TimeoutExpired):
+    with (tmp_path/'timeout.log').open('wb') as log, pytest.raises(subprocess.TimeoutExpired):
         _decode_budgeted_pngs(
             [sys.executable, '-c', 'import time; time.sleep(60)'],
             tmp_path, log, 1000000, .1,

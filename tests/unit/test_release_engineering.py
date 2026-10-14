@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import re
 import sys
 from pathlib import Path
@@ -71,3 +72,176 @@ def test_release_workflow_is_release_only() -> None:
     assert re.search(r"(?m)^\s{2}push:\s*$", text)
     assert "branches:" not in text
     assert "release create" not in text.lower()
+
+
+def test_build_info_records_resolved_dependency_and_tool_versions(tmp_path: Path) -> None:
+    tools = _load_release_tools()
+    dependencies = tmp_path / "DEPENDENCIES.txt"
+    dependencies.write_text("numpy==2.5.4\n", encoding="utf-8")
+    output = tmp_path / "BUILD-INFO.json"
+    tools.write_build_info(
+        output, commit="a" * 40, python_version="Python 3.12.10",
+        dependency_file=dependencies, build_command="test",
+    )
+    payload = json.loads(output.read_text(encoding="utf-8"))
+    assert payload["commit"] == "a" * 40
+    assert payload["resolved_dependencies"]["sha256"] == tools.sha256_file(dependencies)
+    assert payload["build_tools"]["pip"] is not None
+    assert set(payload["build_tools"]) == {"pip", "setuptools", "wheel", "pyinstaller"}
+
+
+def test_release_script_requires_pip_check_and_isolated_dependency_audit() -> None:
+    script = (ROOT / "scripts/release/build_release.ps1").read_text(encoding="utf-8")
+    assert 'Invoke-Checked $PythonExe @("-m", "pip", "check")' in script
+    assert "work\\dependency-audit-venv" in script
+    assert '"pip-audit==2.10.1"' in script
+    assert '"--no-deps"' in script and '"DEPENDENCY-AUDIT.json"' in script
+    assert 'Where-Object { $_ -notmatch "(?i)^valorant-ai-coach==" }' in script
+
+
+
+def test_independent_windows_snapshot_records_sha_and_versions(tmp_path: Path) -> None:
+    snapshot = ROOT / "scripts" / "release" / "build_snapshot.py"
+    spec = importlib.util.spec_from_file_location("build_snapshot", snapshot)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    root = tmp_path / "payload"
+    root.mkdir()
+    (root / "日本語.txt").write_text("fixture", encoding="utf-8")
+    packages = tmp_path / "installed.txt"
+    packages.write_text("pip==25.0\nnumpy==2.5.4\n", encoding="utf-8")
+    one = tmp_path / "one.json"
+    two = tmp_path / "two.json"
+    result = module.capture_snapshot(root, packages, "a" * 40, one)
+    assert result["files"][0]["path"] == "日本語.txt"
+    assert result["files"][0]["sha256"] == module._sha256(root / "日本語.txt")
+    assert result["dependencies"] == ["numpy==2.5.4", "pip==25.0"]
+    module.capture_snapshot(root, packages, "a" * 40, two)
+    comparison = module.compare_snapshots(one, two, tmp_path / "compare.json")
+    assert comparison["bit_for_bit_equal"] is True
+    assert comparison["reproducible_environment"] is True
+    assert comparison["changed_hashes"] == []
+
+    (root / "日本語.txt").write_text("different", encoding="utf-8")
+    module.capture_snapshot(root, packages, "a" * 40, two)
+    comparison = module.compare_snapshots(one, two, tmp_path / "compare.json")
+    assert comparison["bit_for_bit_equal"] is False
+    assert comparison["changed_hashes"][0]["path"] == "日本語.txt"
+    assert comparison["same_commit"] is True
+
+
+def test_independent_rebuild_workflow_uses_two_windows_runners() -> None:
+    text = (
+        ROOT / ".github" / "workflows" / "release-reproducibility.yml"
+    ).read_text(encoding="utf-8")
+    assert "replica: [a, b]" in text
+    assert "runs-on: windows-latest" in text
+    assert "github.event.pull_request.head.sha || github.sha" in text
+    assert "python -m pip check" in text
+    assert "python -m PyInstaller" in text
+    assert "independent-windows-build-comparison" in text
+
+
+def test_release_build_sets_deterministic_pyinstaller_environment() -> None:
+    script = (ROOT / "scripts" / "release" / "build_release.ps1").read_text(encoding="utf-8")
+    assert "git show -s --format=%ct HEAD" in script
+    assert '$env:PYTHONHASHSEED = "1"' in script
+    assert "$env:SOURCE_DATE_EPOCH = $SourceDateEpoch" in script
+
+
+def test_record_hash_comparison_identifies_changed_csv_rows(tmp_path: Path) -> None:
+    snapshot = ROOT / "scripts" / "release" / "build_snapshot.py"
+    spec = importlib.util.spec_from_file_location("build_snapshot_for_record", snapshot)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    root = tmp_path / "dist"
+    record = root / "_internal" / "numpy-2.5.4.dist-info" / "RECORD"
+    record.parent.mkdir(parents=True)
+    record.write_text("numpy/a.py,sha256=aaa,3\n", encoding="utf-8")
+    requirements = tmp_path / "resolved.txt"
+    requirements.write_text("numpy==2.5.4\n", encoding="utf-8")
+    first, second = tmp_path / "first.json", tmp_path / "second.json"
+    module.capture_snapshot(root, requirements, "a" * 40, first)
+    record.write_text("numpy/a.py,sha256=bbb,3\n", encoding="utf-8")
+    module.capture_snapshot(root, requirements, "a" * 40, second)
+    result = module.compare_snapshots(first, second, tmp_path / "report.json")
+    assert result["bit_for_bit_equal"] is False
+    diff = result["record_row_differences"]["_internal/numpy-2.5.4.dist-info/RECORD"]
+    assert diff["changed_rows"] == ["numpy/a.py"]
+    assert not diff["only_first"] and not diff["only_second"]
+    assert diff["parsed_csv_equivalent"] is False
+
+
+def test_reproducible_controls_apply_before_package_install() -> None:
+    script = (ROOT / "scripts" / "release" / "build_release.ps1").read_text(encoding="utf-8")
+    assert script.index("$env:SOURCE_DATE_EPOCH") < script.index("if (-not $SkipDependencyInstall)")
+    assert '"-m", "PyInstaller"' in script
+    workflow = (ROOT / ".github" / "workflows" / "release-reproducibility.yml").read_text(
+        encoding="utf-8"
+    )
+    assert workflow.index("Pin source timestamp before pip") < workflow.index(
+        "Install the same constrained Windows environment"
+    )
+
+
+
+def test_pip_install_report_hashes_omit_private_download_urls(tmp_path: Path) -> None:
+    snapshot = ROOT / "scripts" / "release" / "build_snapshot.py"
+    spec = importlib.util.spec_from_file_location("build_snapshot_pip", snapshot)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    report = tmp_path / "pip.json"
+    report.write_text(
+        json.dumps({"install": [
+            {"metadata": {"name": "NumPy", "version": "2.5.4"},
+             "download_info": {"url": "https://private.example/?token=hidden",
+                               "archive_info": {"hashes": {"sha256": "a" * 64}}}},
+            {"metadata": {"name": "valorant-ai-coach", "version": "0.1.0"},
+             "download_info": {"url": "file:///private/user/project",
+                               "dir_info": {"editable": True}}},
+        ]}),
+        encoding="utf-8",
+    )
+    evidence = module._install_artifacts(report)
+    assert evidence["hashed"] == [{"name": "numpy", "version": "2.5.4", "sha256": "a" * 64}]
+    assert evidence["unhashed"] == [{"name": "valorant-ai-coach", "version": "0.1.0"}]
+    assert "private.example" not in json.dumps(evidence)
+    assert "private/user" not in json.dumps(evidence)
+
+    folder = tmp_path / "dist"
+    folder.mkdir()
+    (folder / "app.exe").write_bytes(b"app")
+    deps = tmp_path / "dependencies.txt"
+    deps.write_text("numpy==2.5.4\n", encoding="utf-8")
+    first, second = tmp_path / "first.json", tmp_path / "second.json"
+    module.capture_snapshot(folder, deps, "a" * 40, first, report)
+    module.capture_snapshot(folder, deps, "a" * 40, second, report)
+    comparison = module.compare_snapshots(first, second, tmp_path / "comparison.json")
+    assert comparison["bit_for_bit_equal"]
+    assert comparison["reproducible_environment"]
+    document = json.loads(second.read_text(encoding="utf-8"))
+    document["install_artifacts"]["hashed"][0]["sha256"] = "b" * 64
+    second.write_text(json.dumps(document), encoding="utf-8")
+    mismatch = module.compare_snapshots(first, second, tmp_path / "comparison.json")
+    assert "install_artifacts" in mismatch["metadata_drift"]
+    assert mismatch["bit_for_bit_equal"]
+    assert not mismatch["reproducible_environment"]
+
+
+def test_release_uses_current_pinned_pip_in_all_windows_gates() -> None:
+    script = (ROOT / "scripts/release/build_release.ps1").read_text(encoding="utf-8")
+    assert (
+        'Invoke-Checked $PythonExe @("-m", "pip", "install", "--upgrade", "pip==26.2.1")'
+        in script
+    )
+    for workflow_name in ("release-reproducibility.yml", "dependency-audit.yml"):
+        workflow = (ROOT / ".github" / "workflows" / workflow_name).read_text(
+            encoding="utf-8"
+        )
+        assert "python -m pip install --upgrade pip==26.2.1" in workflow

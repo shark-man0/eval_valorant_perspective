@@ -1,0 +1,406 @@
+{
+  "schema_version": 1,
+  "source": "Issue #28 reviewed AST call sites; line-independent exact-expression contracts (2026-10-14)",
+  "notes": "Matched by path + operation + AST expression, never a broad ignore. Changed/new sites reopen.",
+  "sites": [
+    {
+      "path": "scripts/compare_adaptive_regression.py",
+      "operation": "encode",
+      "expression": "json.dumps( value, sort_keys=True, separators=(\",\", \":\"), ensure_ascii=False, allow_nan=False ).encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "scripts/diagnostics/audit_native_png_storage.py",
+      "operation": "subprocess",
+      "expression": "subprocess.run([ffmpeg, '-version'], check=True, capture_output=True, text=True)",
+      "category": "OS依存が仕様",
+      "reason": "FFmpeg -version is human-readable version output; retain the external program's locale."
+    },
+    {
+      "path": "scripts/diagnostics/score_numeric.py",
+      "operation": "encode",
+      "expression": "digit.encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "scripts/diagnostics/score_numeric.py",
+      "operation": "encode",
+      "expression": "role.encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "scripts/e2e/frame_replay.py",
+      "operation": "encode",
+      "expression": "(file_hash(executable) + policy).encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "scripts/e2e/frame_replay.py",
+      "operation": "encode",
+      "expression": "json.dumps( { \"policy\": policy, \"jpeg_quality\": 92, \"max_dimension\": None, \"opencv_build\": cv2.getBuildInformation(), \"opencv_version\": cv2.__version__, \"opencv_native_extensions\": _opencv_native_hashes(cv2), \"video_backend_preferences\": ba",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "scripts/e2e/run_dataset_case.py",
+      "operation": "decode",
+      "expression": "git(\"rev-parse\", \"HEAD\").decode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in bytes.decode() receiver; the default codec is UTF-8 regardless of Windows locale."
+    },
+    {
+      "path": "scripts/e2e/run_dataset_case.py",
+      "operation": "encode",
+      "expression": "json.dumps(current_settings, sort_keys=True).encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "scripts/e2e/run_dataset_case.py",
+      "operation": "encode",
+      "expression": "json.dumps(settings, sort_keys=True).encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "scripts/e2e/run_dataset_case.py",
+      "operation": "encode",
+      "expression": "path.relative_to(pack).as_posix().encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "scripts/e2e/run_dataset_case.py",
+      "operation": "encode",
+      "expression": "result.stdout.encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "scripts/e2e/share_report.py",
+      "operation": "encode",
+      "expression": "json.dumps(hist_key_values, separators=(\",\", \":\")).encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "scripts/e2e/validate_fixture.py",
+      "operation": "encode",
+      "expression": "json.dumps( definition, sort_keys=True, separators=(\",\", \":\")).encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "scripts/fixed_regression_replay.py",
+      "operation": "encode",
+      "expression": "json.dumps(value, sort_keys=True, separators=(\",\", \":\"), allow_nan=False).encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "scripts/fixed_regression_replay.py",
+      "operation": "encode",
+      "expression": "path.as_posix().encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "scripts/fixed_replay_manifest.py",
+      "operation": "encode",
+      "expression": "(encoded + \"\\n\").encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "src/valorant_ai_coach/ai/coach.py",
+      "operation": "encode",
+      "expression": "f\"{identity_text}|{occurrence}\".encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "src/valorant_ai_coach/application/pipeline.py",
+      "operation": "encode",
+      "expression": "f\"{source}|{stat.st_size}|{stat.st_mtime_ns}\".encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "src/valorant_ai_coach/hud/analyzers.py",
+      "operation": "encode",
+      "expression": "(self.fingerprint() + global_recognizer_fingerprint() + context).encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "src/valorant_ai_coach/hud/global_lifecycle.py",
+      "operation": "encode",
+      "expression": "f\"video/{name}\".encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "src/valorant_ai_coach/hud/global_lifecycle.py",
+      "operation": "encode",
+      "expression": "f\"visual/{source.name}\".encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "src/valorant_ai_coach/hud/native_lifecycle.py",
+      "operation": "encode",
+      "expression": "(analyzer.fingerprint() + global_recognizer_fingerprint()).encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "src/valorant_ai_coach/hud/scene_source_binding.py",
+      "operation": "encode",
+      "expression": "json.dumps(payload, separators=(\",\", \":\")).encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "src/valorant_ai_coach/hud/source_continuity.py",
+      "operation": "encode",
+      "expression": "repr(timestamp).encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "src/valorant_ai_coach/observability/environment.py",
+      "operation": "subprocess",
+      "expression": "subprocess.run( [executable, *(args or (\"--version\",))], capture_output=True, text=True, timeout=timeout_sec, check=False, env=_subprocess_environment(), )",
+      "category": "OS依存が仕様",
+      "reason": "External tool version or pip-check human diagnostics use the producer process locale; their output is sanitized."
+    },
+    {
+      "path": "src/valorant_ai_coach/observability/environment.py",
+      "operation": "subprocess",
+      "expression": "subprocess.run( [sys.executable, \"-m\", \"pip\", \"check\"], capture_output=True, text=True, timeout=30.0, check=False, env=_subprocess_environment(), )",
+      "category": "OS依存が仕様",
+      "reason": "External tool version or pip-check human diagnostics use the producer process locale; their output is sanitized."
+    },
+    {
+      "path": "src/valorant_ai_coach/visual/runtime.py",
+      "operation": "encode",
+      "expression": "filename.encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "src/valorant_ai_coach/visual/runtime.py",
+      "operation": "encode",
+      "expression": "path.relative_to(map_root).as_posix().encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "src/valorant_ai_coach/visual/runtime.py",
+      "operation": "encode",
+      "expression": "path.relative_to(root).as_posix().encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "src/valorant_ai_coach/visual/semantic.py",
+      "operation": "encode",
+      "expression": "json.dumps(FACT_SCHEMA, sort_keys=True).encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "src/valorant_ai_coach/visual/semantic.py",
+      "operation": "encode",
+      "expression": "str(frame.time_sec).encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "src/valorant_ai_coach/visual/semantic.py",
+      "operation": "encode",
+      "expression": "str(getattr(self.transport, \"model\", \"test-adapter\")).encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "tests/integration/test_e2e_validation_pack_v3.py",
+      "operation": "subprocess",
+      "expression": "subprocess.run( [sys.executable, str(validator), \"--project-root\", str(PROJECT / \"src\")], capture_output=True, text=True, timeout=120, check=False, )",
+      "category": "OS依存が仕様",
+      "reason": "Child Python validator runs with an inherited locale and emits human-facing status or failure details."
+    },
+    {
+      "path": "tests/integration/test_map_zone_v3.py",
+      "operation": "subprocess",
+      "expression": "subprocess.run( [ sys.executable, str(resource_path(\"config/map_zone_v3/tests/validate_map_zone_patch_v3.py\")), ], capture_output=True, text=True, check=True, )",
+      "category": "OS依存が仕様",
+      "reason": "Child Python validator uses its interpreter's inherited stdout/stderr locale; test checks ASCII success marker."
+    },
+    {
+      "path": "tests/integration/test_tesseract_isolated_data.py",
+      "operation": "subprocess",
+      "expression": "subprocess.run([executable, \"--list-langs\"], capture_output=True, text=True, check=True, timeout=5)",
+      "category": "OS依存が仕様",
+      "reason": "Tesseract --list-langs emits human-oriented diagnostics and installation paths using tool locale."
+    },
+    {
+      "path": "tests/unit/test_boundary_review_batch.py",
+      "operation": "encode",
+      "expression": "f\"frame {time}\".encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "tests/unit/test_boundary_review.py",
+      "operation": "encode",
+      "expression": "f\"source frame {index}\".encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "tests/unit/test_e2e_cross_platform.py",
+      "operation": "subprocess",
+      "expression": "subprocess.run( [sys.executable, \"-c\", code], cwd=runner.APP_ROOT, capture_output=True, text=True, check=False, )",
+      "category": "OS依存が仕様",
+      "reason": "Child Python test process is observed in its actual inherited locale and only its status/ASCII markers are asserted."
+    },
+    {
+      "path": "tests/unit/test_e2e_cross_platform.py",
+      "operation": "subprocess",
+      "expression": "subprocess.run( [sys.executable, str(Path(runner.__file__)), \"--check-environment\"], cwd=runner.APP_ROOT.parent, capture_output=True, text=True, check=False, )",
+      "category": "OS依存が仕様",
+      "reason": "Child Python test process is observed in its actual inherited locale and only its status/ASCII markers are asserted."
+    },
+    {
+      "path": "tests/unit/test_e2e_dataset_runner.py",
+      "operation": "decode",
+      "expression": "before.decode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in bytes.decode() receiver; the default codec is UTF-8 regardless of Windows locale."
+    },
+    {
+      "path": "tests/unit/test_e2e_probe_cache.py",
+      "operation": "encode",
+      "expression": "payload.encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "tests/unit/test_e2e_report_recovery.py",
+      "operation": "encode",
+      "expression": "(json.dumps(summary, ensure_ascii=False, indent=2) + \"\\n\").encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "tests/unit/test_e2e_report_recovery.py",
+      "operation": "encode",
+      "expression": "str(case.root).encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "tests/unit/test_e2e_report_recovery.py",
+      "operation": "encode",
+      "expression": "str(case.video).encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "tests/unit/test_global_round_lifecycle.py",
+      "operation": "encode",
+      "expression": "text.encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "tests/unit/test_glyph_contrast_guard.py",
+      "operation": "encode",
+      "expression": "str(i).encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "tests/unit/test_hud_spectator_texture.py",
+      "operation": "encode",
+      "expression": "(json.dumps(summary, ensure_ascii=False, indent=2) + \"\\n\").encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "tests/unit/test_hud_templates.py",
+      "operation": "encode",
+      "expression": "(\"header\\n\" + row.replace(\"1:40\", \"WORD\")).encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "tests/unit/test_hud_templates.py",
+      "operation": "encode",
+      "expression": "(\"header\\n\" + row).encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "tests/unit/test_hud_templates.py",
+      "operation": "encode",
+      "expression": "(header + _tsv_row(\"A\", \"95\")).encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "tests/unit/test_hud_templates.py",
+      "operation": "encode",
+      "expression": "tsv.encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "tests/unit/test_native_source_input.py",
+      "operation": "subprocess",
+      "expression": "subprocess.run([ ffmpeg, '-hide_banner', '-loglevel', 'info', '-f', 'lavfi', '-i', 'testsrc2=size=64x64:rate=60', '-t', '1', '-vf', 'select=not(eq(mod(n\\\\,3)\\\\,1)),setpts=PTS+0.137/TB', '-fps_mode', 'passthrough', '-c:v', 'mpeg4', '-g', '12",
+      "category": "OS依存が仕様",
+      "reason": "FFmpeg synthetic fixture encoder emits human diagnostic output on stderr, not machine-readable JSON."
+    },
+    {
+      "path": "tests/unit/test_prepare_boundary_points.py",
+      "operation": "encode",
+      "expression": "f\"source image {t}\".encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "tests/unit/test_result_structure_diagnostic.py",
+      "operation": "encode",
+      "expression": "str(i).encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "tests/unit/test_source_review_plan.py",
+      "operation": "encode",
+      "expression": "f\"source frame {index}\".encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "tests/unit/test_spectator_self_consistency.py",
+      "operation": "encode",
+      "expression": "json.dumps(shared, indent=2).encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    },
+    {
+      "path": "tests/unit/test_text_io_encoding_audit.py",
+      "operation": "encode",
+      "expression": "\"日本語\\r\\nsecond\\r\\n\".encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() receiver; the default codec is UTF-8 regardless of Windows locale; Ruff UP012 discourages an explicit utf-8 argument."
+    }
+  ]
+}

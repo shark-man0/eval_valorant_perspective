@@ -191,7 +191,7 @@ def main():
         "canonical_current": None,
         "wall_clock_seconds": time.perf_counter() - started,
     }
-    args.output.write_text(json.dumps(report, indent=2) + "\n")
+    args.output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(
         json.dumps(
             {

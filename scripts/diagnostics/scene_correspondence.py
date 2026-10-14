@@ -209,7 +209,7 @@ def run(args):
     started = time.perf_counter()
     report_hash = sha256(args.source_report)
     script_hash = sha256(Path(__file__))
-    data = json.loads(args.source_report.read_text())
+    data = json.loads(args.source_report.read_text(encoding="utf-8"))
     video_hash = sha256(args.video)
     if video_hash != data["source_video_sha256"]:
         raise ValueError("source video hash mismatch")
@@ -284,7 +284,7 @@ def main():
         parser.error("output already exists; preserve frozen diagnostics")
     result = run(args)
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(result, indent=2) + "\n")
+    args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"source_frames": result["source_frames"], "links": len(result["rows"])}))
 
 

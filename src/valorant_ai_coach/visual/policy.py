@@ -11,14 +11,18 @@ from typing import Any
 from valorant_ai_coach.resources import resource_path
 
 _POLICY = json.loads(
-    resource_path("config/visual_v2/config/visual_confidence_policy_v1.json").read_text()
+    resource_path(
+        "config/visual_v2/config/visual_confidence_policy_v1.json"
+    ).read_text(encoding="utf-8")
 )
 CONFIDENCE_POLICY: dict[str, dict[str, float | int]] = _POLICY["tiers"]
 SEMANTIC_ONLY_PREAIM_MAX_CONFIDENCE = _POLICY["semantic_only_rules"][
     "preaim_moving_case_max_confidence"
 ]
 _SEMANTIC = json.loads(
-    resource_path("config/visual_v2/config/visual_semantic_inference_policy_v2.json").read_text()
+    resource_path(
+        "config/visual_v2/config/visual_semantic_inference_policy_v2.json"
+    ).read_text(encoding="utf-8")
 )
 SEMANTIC_FACT_ACCEPT_MIN = _SEMANTIC["confidence_policy"]["semantic_fact_accept"]
 SEMANTIC_FACT_REVIEW_MIN = _SEMANTIC["confidence_policy"]["semantic_fact_review"]

@@ -113,7 +113,7 @@ def main():
         "decoded": False,
         "classification_labels_assigned": False,
     }
-    (args.output_dir / "predecode-bindings.json").write_text(json.dumps(predecode, indent=2) + "\n")
+    (args.output_dir / "predecode-bindings.json").write_text(json.dumps(predecode, indent=2) + "\n", encoding="utf-8")
     boxes = SCALED_BACKGROUND_BOXES[:5]
     windows, all_hashes, known_overlaps = [], set(), set()
     for index, (start, end) in enumerate(freeze["windows_sec"]):
@@ -168,7 +168,7 @@ def main():
             # Private point locations support subsequent image review; no GT or
             # correctness label is attached to this unreviewed measurement.
             tracks_path = path.with_suffix(".world-tracks.json")
-            tracks_path.write_text(json.dumps(tracks) + "\n")
+            tracks_path.write_text(json.dumps(tracks) + "\n", encoding="utf-8")
             bind(tracks_path)
             previous, previous_tracks, previous_pixel = metrics, tracks, pixel_hash
         windows.append(
@@ -202,9 +202,9 @@ def main():
         "qualification_created": False,
         "runtime_events_created": 0,
     }
-    (args.output_dir / "results.json").write_text(json.dumps(report, indent=2) + "\n")
+    (args.output_dir / "results.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(report, indent=2) + "\n")
+    args.output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(
         json.dumps(
             {

@@ -46,7 +46,7 @@ def variant_profile(tmp_path, panel_images):
     path = tmp_path / "profile.json"
 
     def load():
-        path.write_text(json.dumps(raw))
+        path.write_text(json.dumps(raw), encoding="utf-8")
         return HudTemplateProfile.load(path)
 
     frame = np.full((126, 310, 3), 30, np.uint8)

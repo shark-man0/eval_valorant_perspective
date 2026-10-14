@@ -107,7 +107,7 @@ def main():
                   input_report=str(args.report), input_sha256=hashlib.sha256(content).hexdigest(),
                   diagnostic_script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                   time_base=str(args.time_base), canonical_current=None, canonical_delta=None)
-    args.output.write_text(json.dumps(result, indent=2) + '\n')
+    args.output.write_text(json.dumps(result, indent=2) + '\n', encoding="utf-8")
     print(json.dumps({'conditional_patterns': len(result['conditional_patterns']),
                       'released_events': 0}))
 

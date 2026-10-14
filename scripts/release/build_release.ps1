@@ -160,12 +160,22 @@ try {
         )
     }
 
+    # Stable Windows entrypoint launchers, bytecode and PE headers.
+    # Use the source commit date before pip installs (distlib creates Scripts/*.exe).
+    $SourceDateEpoch = (& git show -s --format=%ct HEAD).Trim()
+    if ($LASTEXITCODE -ne 0 -or $SourceDateEpoch -notmatch '^[0-9]{10,}$') {
+        throw "Could not resolve stable source commit timestamp."
+    }
+    $env:PYTHONHASHSEED = "1"
+    $env:SOURCE_DATE_EPOCH = $SourceDateEpoch
     if (-not $SkipDependencyInstall) {
-        Invoke-Checked $PythonExe @("-m", "pip", "install", "--upgrade", "pip")
+        Invoke-Checked $PythonExe @("-m", "pip", "install", "--upgrade", "pip==26.2.1")
         Invoke-Checked $PythonExe @(
             "-m", "pip", "install", "-c", "constraints-windows.txt", "-e", ".[gui,dev,build]"
         )
     }
+    # Validate the actual interpreter even if dependency installation was skipped.
+    Invoke-Checked $PythonExe @("-m", "pip", "check")
     if (-not $SkipReleaseTests) {
         Invoke-Checked $PythonExe @(
             "-m", "pytest", "tests\unit\test_release_engineering.py", "-q"
@@ -269,6 +279,24 @@ try {
         throw "Could not record the resolved dependency set."
     }
     $dependencyLines | Sort-Object | Set-Content -Encoding UTF8 $Dependencies
+
+    # Install the auditor in an isolated environment: never perturb release dependencies.
+    # Audit the fully resolved, pinned environment; the local editable project
+    # is deliberately excluded because it is not published to PyPI.
+    $AuditRoot = Join-Path $Root "work\dependency-audit-venv"
+    $AuditPython = Join-Path $AuditRoot "Scripts\python.exe"
+    $AuditInput = Join-Path $StageDir "dependency-audit-requirements.txt"
+    Invoke-Checked $PythonExe @("-m", "venv", $AuditRoot)
+    Invoke-Checked $AuditPython @("-m", "pip", "install", "pip-audit==2.10.1")
+    $auditRequirements = @(
+        Get-Content -LiteralPath $Dependencies -Encoding UTF8 |
+            Where-Object { $_ -notmatch "(?i)^valorant-ai-coach==" }
+    )
+    $auditRequirements | Set-Content -LiteralPath $AuditInput -Encoding UTF8
+    Invoke-Checked $AuditPython @(
+        "-m", "pip_audit", "--no-deps", "-r", $AuditInput,
+        "--format", "json", "--output", (Join-Path $ReleaseDir "DEPENDENCY-AUDIT.json")
+    )
 
     $Commit = (& git rev-parse HEAD).Trim()
     if ($LASTEXITCODE -ne 0) {

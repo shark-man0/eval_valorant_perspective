@@ -68,6 +68,7 @@ def _check_output_privacy(output: Path) -> None:
                 check=True,
                 capture_output=True,
                 text=True,
+                encoding="utf-8",
             ).stdout.strip()
         ).resolve()
     except (OSError, subprocess.CalledProcessError):

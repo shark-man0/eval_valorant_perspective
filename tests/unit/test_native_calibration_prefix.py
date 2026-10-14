@@ -18,13 +18,15 @@ from valorant_ai_coach.video.native import NativeSourceFrame
 
 @pytest.fixture
 def case(tmp_path, monkeypatch):
-    raw = json.loads(resource_path('config/hud_layout_1080p_v3.json').read_text())
+    raw = json.loads(resource_path('config/hud_layout_1080p_v3.json').read_text(encoding="utf-8"))
     raw['reference_resolution'] = {'width': 640, 'height': 360, 'aspect_ratio': '16:9'}
     layout = tmp_path / 'layout.json'
-    layout.write_text(json.dumps(raw))
+    layout.write_text(json.dumps(raw), encoding="utf-8")
     layout.with_name('layout.templates.json').write_text(json.dumps({
         'schema_version': '1.0', 'anchors': {}, 'signals': {},
-    }))
+    }),
+        encoding="utf-8",
+    )
     analyzer = RealHudAnalyzer(layout)
 
     def frame(name, ticks, color):
@@ -65,7 +67,9 @@ def case(tmp_path, monkeypatch):
         'assurance_provenance': 'explicit unit fixture, not real source qualification',
         'no_user_edit': True, 'no_intentional_frame_deletion_join_or_reorder': True,
         'no_intentional_speed_change': True, 'scene_preserving_edit_excluded': True,
-    }))
+    }),
+        encoding="utf-8",
+    )
     return analyzer, prefix, frames, contract, read_calls, anchor_calls
 
 
@@ -136,9 +140,9 @@ def test_prefix_needs_explicit_matching_assurance(case):
     with pytest.raises(ValueError, match='contract'):
         analyzer.observe_native_system_frames(frames, native_step_ticks=256,
                                              calibration_prefix=prefix)
-    data = json.loads(contract.read_text())
+    data = json.loads(contract.read_text(encoding="utf-8"))
     data['source_video_sha256'] = 'b'*64
-    contract.write_text(json.dumps(data))
+    contract.write_text(json.dumps(data), encoding="utf-8")
     with pytest.raises(ValueError, match='assurance'):
         run(case)
 
