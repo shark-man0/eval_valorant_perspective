@@ -258,7 +258,8 @@ def test_untrusted_strings_and_existing_history_are_rebuilt(tmp_path):
                     "extra": "LEAK_ME",
                 }
             ]
-        )
+        ),
+        encoding="utf-8",
     )
     export_report(**args)
     serialized = "".join(p.read_text(encoding="utf-8") for p in args["output_dir"].iterdir())
@@ -281,7 +282,7 @@ def test_history_keeps_allowlisted_manual_map_and_rejects_private_values(tmp_pat
     assert all(row["metadata"]["manual_map_id"] == "summit" for row in history)
     history[0]["metadata"]["manual_map_id"] = "private-player-secret"
     history[0]["result"]["detail_truncated"] = True
-    path.write_text(json.dumps(history))
+    path.write_text(json.dumps(history), encoding="utf-8")
     export_report(**args)
     history = json.loads(path.read_text(encoding="utf-8"))
     assert history[0]["metadata"]["manual_map_id"] is None
