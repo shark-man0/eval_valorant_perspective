@@ -16,7 +16,7 @@ def inputs(tmp_path):
                 "frames": [{"source_frame_pts": 1.0, "image": "frame.jpg",
                             "evidence_frame_sha256": batch.sha256_file(image)}]}
     manifest = tmp_path / "evidence.json"
-    manifest.write_text(json.dumps(evidence))
+    manifest.write_text(json.dumps(evidence), encoding="utf-8")
     candidate = {"video_id": "match_x", "source_video_sha256": "a" * 64,
                  "production_input": False, "approved_ground_truth": False,
                  "review_provenance": {"recognizer_outputs_consulted": False},
@@ -28,7 +28,7 @@ def inputs(tmp_path):
                             "evidence": [{"source_frame_pts": 1.0,
                                           "evidence_frame_hash": batch.sha256_file(image)}]}]}
     path = tmp_path / "candidate.json"
-    path.write_text(json.dumps(candidate))
+    path.write_text(json.dumps(candidate), encoding="utf-8")
     return manifest, path, evidence, candidate
 
 
@@ -73,7 +73,7 @@ def test_unsafe_or_unbound_candidates_rejected(tmp_path, fault):
         candidate["items"].append(row)
     else:
         row["evidence"].append(row["evidence"][0])
-    path.write_text(json.dumps(candidate))
+    path.write_text(json.dumps(candidate), encoding="utf-8")
     with pytest.raises(ValueError):
         batch.assemble([path], [manifest])
 
@@ -85,11 +85,11 @@ def test_prefix_manifest_resolution_and_timestamp_only_references(tmp_path):
     evidence["frames"] = [{"source_frame_pts": 0.9, "image": "prefix.jpg",
                            "evidence_frame_sha256": batch.sha256_file(image)}]
     prefix = tmp_path / "prefix.json"
-    prefix.write_text(json.dumps(evidence))
+    prefix.write_text(json.dumps(evidence), encoding="utf-8")
     candidate["prefix_review_evidence_sha256"] = batch.sha256_file(prefix)
     del candidate["items"][0]["evidence"]
     candidate["items"][0]["evidence_pts"] = [0.9, 1.0]
-    path.write_text(json.dumps(candidate))
+    path.write_text(json.dumps(candidate), encoding="utf-8")
     result = batch.assemble([path], [manifest, prefix])
     assert [p["source_frame_pts"] for p in result["items"][0]["evidence"]] == [0.9, 1.0]
 
@@ -105,9 +105,9 @@ def test_bad_source_evidence_rejected(tmp_path, fault):
         evidence["source_hash_verified_after_extraction"] = False
     else:
         evidence["recognizer_outputs_consulted"] = True
-    manifest.write_text(json.dumps(evidence))
+    manifest.write_text(json.dumps(evidence), encoding="utf-8")
     candidate["review_evidence_sha256"] = batch.sha256_file(manifest)
-    path.write_text(json.dumps(candidate))
+    path.write_text(json.dumps(candidate), encoding="utf-8")
     with pytest.raises(ValueError):
         batch.assemble([path], [manifest])
 
@@ -118,7 +118,9 @@ def test_cli_escapes_text_and_refuses_overwrite(tmp_path, monkeypatch):
     monkeypatch.setattr(sys, "argv", ["batch", "--candidate", str(candidate),
                                      "--evidence", str(manifest), "--output", str(output)])
     batch.main()
-    page = (output / "index.html").read_text()
+    page = (output / "index.html").read_text(,
+        encoding="utf-8",
+    )
     assert "&lt;script&gt;" in page and "<script>" not in page
     assert "NOT GT" in page
     with pytest.raises(FileExistsError):

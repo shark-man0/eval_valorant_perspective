@@ -121,3 +121,23 @@ def test_utf8_subprocess_json_survives_cp1252_host() -> None:
         text=True, encoding="utf-8",
     )
     assert result.stdout == "試合と戦術"
+
+
+def test_reviewed_fixture_text_io_is_explicit_utf8() -> None:
+    root = Path(__file__).resolve().parents[2]
+    audited = (
+        "tests/integration/test_fixture_validation.py",
+        "tests/integration/test_finalized_fixture.py",
+        "tests/integration/test_fixture_provenance_guards.py",
+        "tests/unit/test_approved_boundary_ledger.py",
+        "tests/unit/test_hud_auto_profile.py",
+        "tests/unit/test_boundary_review_assembly.py",
+        "tests/unit/test_scene_source_binding.py",
+        "tests/unit/test_hud_temporal_calibration.py",
+    )
+    for filename in audited:
+        source = (root / filename).read_text(encoding="utf-8")
+        sites = scan_source(source, filename)
+        file_text = [s for s in sites if s["operation"] in {"read_text", "write_text"}]
+        assert file_text, filename
+        assert all(s["category"] == "UTF-8明示" for s in file_text), filename

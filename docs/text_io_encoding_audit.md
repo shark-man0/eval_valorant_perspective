@@ -140,3 +140,16 @@ metadata assertions, timing, frame extraction and GT remain identical.
 
 The prior 363-site inventory was taken before both the 16 JSON-writer edits
 and this eight-probe contract fix; CI must provide the new count.
+
+## Reviewed synthetic fixture test text I/O (2026-10-14)
+
+Eight selected test modules were reviewed site-by-site: fixture validation,
+finalization, provenance tamper guards, approved boundary ledgers,
+HUD auto-profile configuration, boundary review assembly, scene-source bindings,
+and temporal calibration. The **17 read_text + 57 write_text** sites use
+application-generated JSON, generated HTML, or ASCII synthetic Python test
+recipes; each now explicitly specifies UTF-8. Only test text boundary
+parameters change, not assertions, synthetic input payloads, frozen ground
+truth, or comparison rules. An AST regression test guards these sites.
+Other test candidates require separate contract review, and the latest CI
+inventory remains authoritative for post-change totals.
