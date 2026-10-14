@@ -375,7 +375,7 @@ def test_budgeted_encoder_timeout_terminates_once_and_closes_pipe(tmp_path, monk
         return process
 
     monkeypatch.setattr(subprocess, 'Popen', tracked)
-    with (tmp_path/'timeout.log').open('w') as log, pytest.raises(subprocess.TimeoutExpired):
+    with (tmp_path/'timeout.log').open('wb') as log, pytest.raises(subprocess.TimeoutExpired):
         _decode_budgeted_pngs(
             [sys.executable, '-c', 'import time; time.sleep(60)'],
             tmp_path, log, 1000000, .1,
