@@ -76,3 +76,20 @@ JSON policy/configuration reads, preserving the same parsed JSON data and
 recognition/aggregation behavior. The Linux sysfs thermal sensor decimal
 text is explicitly ASCII. Git/FFmpeg/Tesseract child output retains its
 producer-dependent decoding contract pending separate review.
+
+## Additional manually checked diagnostic JSON outputs (2026-10-14)
+
+Eight application-generated diagnostic JSON writes in `scripts/diagnostics/`
+are now explicitly UTF-8: source review plan, assured-start evidence,
+client graph history, descriptor competitors, descriptor photometry,
+native adjacent regions, native PNG storage and native seed failure.
+This does not change JSON fields, source-provenance logic or the prior
+newline/BOM contract. A regression test enumerates these writers and checks
+explicit UTF-8 with the AST inventory. This is an independently confirmed
+subset of the unresolved-site list, not a claim that all 441 candidates
+require changes or have been manually classified.
+
+The source package's 131 Python files were also spot-audited for direct
+Path.read_text/write_text/open calls; all observed output writers use
+explicit UTF-8, and observed `rb`/`xb` paths are intentionally binary.
+This limited pass does not cover every AST call category in that package.

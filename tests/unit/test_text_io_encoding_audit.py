@@ -46,3 +46,24 @@ def test_bom_and_crlf_are_not_silently_rewritten(tmp_path: Path) -> None:
     assert path.read_text(encoding="utf-8-sig").splitlines() == ["日本語", "second"]
     assert path.read_bytes() == original
     assert path.read_text(encoding="utf-8").startswith("\ufeff")
+
+
+def test_diagnostic_json_writes_are_explicitly_utf8() -> None:
+    """Protect application-owned diagnostic JSON from Windows locale drift."""
+    root = Path(__file__).resolve().parents[2]
+    audited = (
+        "assemble_source_review_plan.py",
+        "audit_assured_start_evidence.py",
+        "audit_client_graph_history.py",
+        "audit_descriptor_competitors.py",
+        "audit_descriptor_photometry.py",
+        "audit_native_adjacent_regions.py",
+        "audit_native_png_storage.py",
+        "audit_native_seed_failure.py",
+    )
+    for filename in audited:
+        path = root / "scripts" / "diagnostics" / filename
+        findings = scan_source(path.read_text(encoding="utf-8"), str(path))
+        writers = [site for site in findings if site["operation"] == "write_text"]
+        assert writers, filename
+        assert all(site["category"] == "UTF-8明示" for site in writers), filename
