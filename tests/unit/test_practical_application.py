@@ -173,7 +173,7 @@ def test_practical_native_collection_uses_shared_decoder_and_terminal_verificati
                                            profile_fingerprint='a' * 64)
 
 
-def test_strict_rejects_explicit_replay_before_qualification(tmp_path):
+def test_strict_replay_still_rejects_missing_paired_qualification(tmp_path):
     from tests.unit.test_native_event_merge import qualified_processor
     from valorant_ai_coach.application.hud_video_processor import (
         HudVideoProcessingError,
@@ -181,7 +181,7 @@ def test_strict_rejects_explicit_replay_before_qualification(tmp_path):
     )
 
     processor, metadata, _, _ = qualified_processor(tmp_path)
-    with pytest.raises(HudVideoProcessingError, match='explicit practical storage'):
+    with pytest.raises(HudVideoProcessingError, match='paired qualified'):
         processor.collect_native_lifecycle(metadata, NativeLifecycleOptions(1024,
                                                                          storage_mode='replay'))
 

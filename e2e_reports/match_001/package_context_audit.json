@@ -1,0 +1,199 @@
+{
+  "scope": "Current package builder on immutable historical producer output; no old qualification re-signing, recognition replay or current-code accuracy claim",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "historical_recognizer_fingerprint": "fd8b8ff3da3c1c9775604141f61062d39656f59e492610ed482e8530db691817",
+  "current_builder_recognizer_fingerprint": "5b32ea0c5be3d23aadd5e1ef4057619c10c7104d3d210a69d39433bffea6dfc8",
+  "input_path": "outputs/recognition-investigation/qualified-whole-source-lifecycle-20261013/result.json",
+  "input_sha256": "b74c7e4e910816e0a4f4db15abad84a3b702aeb0e00cfd5d5607e31d91e6835f",
+  "reports": {
+    "strict": {
+      "package_count": 2,
+      "unassigned_observation_count": 1966,
+      "unassigned_state_counts": {
+        "unknown": 1387,
+        "buy_menu_open": 579
+      },
+      "duplicate_memberships": 0,
+      "formal_boundary_count": 3,
+      "windows": [
+        {
+          "storage_ordinal": 1,
+          "start_sec": 3.602669270833333,
+          "end_sec": 81.7693359375,
+          "boundary_start_sec": 4.102669270833333,
+          "boundary_end_sec": 74.48600260416667,
+          "complete": true,
+          "observation_count": 4691,
+          "lifecycle": null
+        },
+        {
+          "storage_ordinal": 2,
+          "start_sec": 110.98600260416667,
+          "end_sec": 171.019336,
+          "boundary_start_sec": 111.4193359375,
+          "boundary_end_sec": null,
+          "complete": false,
+          "observation_count": 3602,
+          "lifecycle": null
+        }
+      ],
+      "unassigned_ranges": [
+        {
+          "start_sec": 0.03600260416666667,
+          "end_sec": 3.5860026041666666,
+          "frames": 214
+        },
+        {
+          "start_sec": 81.78600260416667,
+          "end_sec": 110.9693359375,
+          "frames": 1752
+        }
+      ]
+    },
+    "practical": {
+      "package_count": 5,
+      "unassigned_observation_count": 0,
+      "unassigned_state_counts": {},
+      "duplicate_memberships": 0,
+      "formal_boundary_count": 3,
+      "windows": [
+        {
+          "storage_ordinal": 1,
+          "start_sec": 0.03600260416666667,
+          "end_sec": 3.602669270833333,
+          "boundary_start_sec": null,
+          "boundary_end_sec": null,
+          "complete": false,
+          "observation_count": 214,
+          "lifecycle": {
+            "mode": "practical",
+            "observed_round_no": null,
+            "start": {
+              "status": "unknown",
+              "candidate": null,
+              "formal_event_id": null
+            },
+            "end": {
+              "status": "unknown",
+              "candidate": null,
+              "formal_event_id": null
+            }
+          }
+        },
+        {
+          "storage_ordinal": 2,
+          "start_sec": 3.602669270833333,
+          "end_sec": 81.7693359375,
+          "boundary_start_sec": 4.102669270833333,
+          "boundary_end_sec": 74.48600260416667,
+          "complete": true,
+          "observation_count": 4691,
+          "lifecycle": {
+            "mode": "practical",
+            "observed_round_no": null,
+            "start": {
+              "status": "confirmed",
+              "candidate": null,
+              "formal_event_id": "HUD-ROUND_START-4.103"
+            },
+            "end": {
+              "status": "confirmed",
+              "candidate": null,
+              "formal_event_id": "HUD-ROUND_END-74.486"
+            }
+          }
+        },
+        {
+          "storage_ordinal": 3,
+          "start_sec": 81.78600260416667,
+          "end_sec": 81.83600260416667,
+          "boundary_start_sec": null,
+          "boundary_end_sec": null,
+          "complete": false,
+          "observation_count": 3,
+          "lifecycle": {
+            "mode": "practical",
+            "observed_round_no": null,
+            "start": {
+              "status": "unknown",
+              "candidate": null,
+              "formal_event_id": null
+            },
+            "end": {
+              "status": "unknown",
+              "candidate": null,
+              "formal_event_id": null
+            }
+          }
+        },
+        {
+          "storage_ordinal": 4,
+          "start_sec": 81.83600260416667,
+          "end_sec": 110.98600260416667,
+          "boundary_start_sec": null,
+          "boundary_end_sec": null,
+          "complete": false,
+          "observation_count": 1749,
+          "lifecycle": {
+            "mode": "practical",
+            "observed_round_no": null,
+            "start": {
+              "status": "unknown",
+              "candidate": null,
+              "formal_event_id": null
+            },
+            "end": {
+              "status": "unknown",
+              "candidate": null,
+              "formal_event_id": null
+            }
+          }
+        },
+        {
+          "storage_ordinal": 5,
+          "start_sec": 110.98600260416667,
+          "end_sec": 171.019336,
+          "boundary_start_sec": 111.4193359375,
+          "boundary_end_sec": null,
+          "complete": false,
+          "observation_count": 3602,
+          "lifecycle": {
+            "mode": "practical",
+            "observed_round_no": null,
+            "start": {
+              "status": "confirmed",
+              "candidate": null,
+              "formal_event_id": "HUD-ROUND_START-111.419"
+            },
+            "end": {
+              "status": "unknown",
+              "candidate": null,
+              "formal_event_id": null
+            }
+          }
+        }
+      ],
+      "unassigned_ranges": []
+    }
+  },
+  "canonical_full_e2e_executed": false,
+  "production_changed": false,
+  "gt_runtime_input": false,
+  "source_break_times_sec": [
+    81.78600260416667,
+    81.83600260416667
+  ],
+  "runtime_sec": 50.47856436599977,
+  "terminal_hash_verified": true,
+  "git_head": "c11ec6d333957cccb270417bc95a8a57f433e6ad",
+  "interpretation": {
+    "strict_unassigned_fraction": 0.19163661175553173,
+    "buy_menu_frames_unassigned_in_strict": 579,
+    "practical_unknown_fragments": 3,
+    "new_formal_boundary_events": 0,
+    "observed_round_numbers_invented": false,
+    "correct_assignment_of_interround_context_to_r2_proven": false,
+    "adopted_e2e_baseline_unchanged": true,
+    "next_action": "Current-code qualification and full application merge; do not force unknown context intoR2 or change Strict assertion semantics."
+  }
+}

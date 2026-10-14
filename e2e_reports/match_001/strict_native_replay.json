@@ -1,0 +1,48 @@
+{
+  "scope": "Explicit Strict raw replay storage integration; current real-image qualification and source accuracy pending",
+  "base_commit": "c11ec6d333957cccb270417bc95a8a57f433e6ad",
+  "branch": "codex/strict-native-replay-20261013",
+  "recognizer_fingerprint": "96c79de983a298b1f849c742c9653728c527481d929e2991b6e6f918dfe95da5",
+  "production_change": "Remove practical-only storage restriction; same strict provider, source PTS/pixel guards, complete coverage and terminal qualification checks",
+  "default_storage": "png",
+  "new_explicit_cli_options": [
+    "--native-storage replay",
+    "--native-replay-buffer 67108864"
+  ],
+  "legacy_positive_png_budget_still_required": true,
+  "qualified_and_unqualified_paths_kept_separate": true,
+  "tests": {
+    "provider_assured_practical_orchestration": {
+      "PASS": 142,
+      "runtime_sec": 112.63
+    },
+    "native_decoder_merge_cross_platform": {
+      "PASS": 58,
+      "SKIP": 1,
+      "runtime_sec": 26.89
+    },
+    "ruff": "PASS",
+    "mypy": {
+      "status": "PASS",
+      "files": 131
+    },
+    "full_regression_after_change": "not_run"
+  },
+  "old_qualification_rejection": "Invalid or mismatched global lifecycle qualification",
+  "real_video_reexecuted": false,
+  "canonical_e2e_reexecuted": false,
+  "adopted_canonical_baseline": {
+    "PASS": 23,
+    "FAIL": 55,
+    "NE": 4
+  },
+  "evidence_sha256": {
+    "outputs/recognition-investigation/strict-native-replay-20261013/related-tests.log": "d82eb44e57ab4261d23fa7aca856bdb93e8e96a00ce82ebdb9851db8c931d2cd",
+    "outputs/recognition-investigation/strict-native-replay-20261013/decoder-merge-tests.log": "c989f4c4cc3ce803e4b1128a838d3ef9370027a174db58a0fb09ee035274e768"
+  },
+  "remaining_gates": [
+    "Fresh current-code qualification from fixed source images; do not re-sign old counts.",
+    "Real qualified source/native/application merge and continuous validation.",
+    "Sampled/full candidate evaluation and Windows CI on this change."
+  ]
+}

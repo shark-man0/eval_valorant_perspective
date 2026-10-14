@@ -4,11 +4,15 @@ Ground truth is intentionally absent from this module. Round ids follow native
 RoundPackage ordering: package index 1 -> sample_round_1, etc. This is only the
 pack's evaluator naming convention; timestamps and round boundaries come solely
 from the processor's packages and observations.
+
+Native per-field source confidence maps are retained as source_confidence_by_field;
+the reserved scalar source_confidence is their conservative minimum (empty -> 0).
 """
 from __future__ import annotations
 
 import math
 from collections.abc import Mapping
+from copy import deepcopy
 from typing import Any
 
 from valorant_ai_coach.hud.models import (
@@ -37,6 +41,31 @@ def _required_confidence(value: Any, context: str) -> float:
     if confidence is None or not math.isfinite(confidence) or not 0.0 <= confidence <= 1.0:
         raise ValueError(f"{context} is missing a finite confidence in [0, 1]")
     return confidence
+
+
+def _snapshot_confidence_fields(snapshot: Mapping[str, Any]) -> dict[str, Any]:
+    """Adapt native field support to the trace's reserved scalar convention.
+
+    Keep every original field confidence under an explicit map name. The scalar
+    is their conservative minimum, or zero for an empty (unknown) support map.
+    This neither increases a field's confidence nor changes any observed value.
+    Validate all leaves here: relocating the map must not hide invalid support
+    from the canonical evaluator's top-level scalar checks.
+    """
+    if 'source_confidence' not in snapshot:
+        return {}
+    fields = snapshot['source_confidence']
+    if not isinstance(fields, Mapping):
+        raise ValueError('native snapshot source_confidence must be a field map')
+    scores = []
+    for name, value in fields.items():
+        if not isinstance(name, str) or not name:
+            raise ValueError('native snapshot confidence field name must be nonempty text')
+        scores.append(_required_confidence(value, f'snapshot source field {name}'))
+    return {
+        'source_confidence': min(scores) if scores else 0.0,
+        'source_confidence_by_field': deepcopy(dict(fields)),
+    }
 
 
 def _current_visual_snapshot(snapshot: dict, visuals: tuple, resolutions: tuple) -> dict:
@@ -117,9 +146,11 @@ def to_e2e_trace(result: Any) -> dict[str, list[dict[str, Any]]]:
             trace["events"].append(row)
         for snapshot in package.get("state_snapshots", ()):
             timestamp = float(snapshot["time_sec"])
-            # Preserve native RoundPackage fields so the evaluator can catch
-            # ownership contamination. Add aliases without repairing the data.
+            # Preserve observed fields so the evaluator can catch ownership
+            # contamination. Normalize confidence representation without changing
+            # observations; retain the complete native field-support map.
             row: dict[str, Any] = dict(snapshot)
+            row.update(_snapshot_confidence_fields(snapshot))
             row["round_id"] = rid
             row["time_sec"] = timestamp
             if "hp" in snapshot and "player_hp" not in row:
