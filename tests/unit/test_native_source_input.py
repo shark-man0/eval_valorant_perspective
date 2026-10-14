@@ -28,7 +28,7 @@ def make_video(tmp_path):
         ffprobe, '-v', 'error', '-select_streams', 'v:0', '-show_frames',
         '-show_streams', '-show_entries', 'frame=best_effort_timestamp:stream=time_base',
         '-of', 'json', str(path),
-    ], check=True, capture_output=True, text=True)
+    ], check=True, capture_output=True, text=True, encoding="utf-8")
     probed = json.loads(result.stdout)
     # Pytest retains this only on failure. A successful process may still
     # produce an empty fixture or report decoder errors on stderr; retain both

@@ -5,7 +5,7 @@ ROOT=Path(__file__).resolve().parents[1]
 PAT=re.compile(r'_(\d+\.\d+)s\.jpg$')
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument('--source-video',required=True); ap.add_argument('--write',action='store_true'); args=ap.parse_args()
-    out=subprocess.check_output(['ffprobe','-v','error','-select_streams','v:0','-show_packets','-show_entries','packet=pts_time','-of','csv=p=0',args.source_video],text=True)
+    out=subprocess.check_output(['ffprobe','-v','error','-select_streams','v:0','-show_packets','-show_entries','packet=pts_time','-of','csv=p=0',args.source_video],text=True,encoding='utf-8')
     pts=sorted({float(x.split(',')[0]) for x in out.splitlines() if x.strip()})
     entries=[]
     for p in sorted((ROOT/'assets/reference_frames').glob('*.jpg')):

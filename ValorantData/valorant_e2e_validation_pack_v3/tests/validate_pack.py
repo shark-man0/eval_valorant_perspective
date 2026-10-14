@@ -54,12 +54,12 @@ def main():
     for name in ('test_shot_granularity_contract.py','test_map_zone_synthetic.py','test_continuous_combat_contract.py','test_map_alias_overlay.py','test_meta_evaluator.py'): run_py(name)
     if args.source_video:
         p=Path(args.source_video); h=hashlib.sha256(p.read_bytes()).hexdigest(); assert h==profile['sha256'],(h,profile['sha256'])
-        pr=json.loads(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=start_time,duration:stream=index,codec_type,codec_name,start_time,duration,avg_frame_rate,time_base,channels','-of','json',str(p)],text=True))
+        pr=json.loads(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=start_time,duration:stream=index,codec_type,codec_name,start_time,duration,avg_frame_rate,time_base,channels','-of','json',str(p)],text=True,encoding='utf-8'))
         assert abs(float(pr['format']['duration'])-dur)<0.002
         vs=[s for s in pr['streams'] if s['codec_type']=='video'][0]; assert abs(float(vs['start_time'])-profile['video_stream']['start_time_sec'])<0.002
         aud=[s for s in pr['streams'] if s['codec_type']=='audio']; assert len(aud)==profile['audio_streams']['count']; assert all(s['codec_name']==profile['audio_streams']['codec'] for s in aud)
         # Rebuild exact packet-PTS mapping and compare byte-level data structure semantics.
-        out=subprocess.check_output(['ffprobe','-v','error','-select_streams','v:0','-show_packets','-show_entries','packet=pts_time','-of','csv=p=0',str(p)],text=True)
+        out=subprocess.check_output(['ffprobe','-v','error','-select_streams','v:0','-show_packets','-show_entries','packet=pts_time','-of','csv=p=0',str(p)],text=True,encoding='utf-8')
         pts=sorted({float(x.split(',')[0]) for x in out.splitlines() if x.strip()})
         for x in side['entries']:
             near=min(pts,key=lambda t:abs(t-x['requested_sec']))

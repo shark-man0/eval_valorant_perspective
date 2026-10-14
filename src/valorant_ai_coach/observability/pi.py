@@ -32,6 +32,7 @@ def raspberry_pi_metrics() -> dict[str, Any]:
                 [vcgencmd, "get_throttled"],
                 capture_output=True,
                 text=True,
+                encoding="ascii",
                 timeout=2.0,
                 check=False,
             )
