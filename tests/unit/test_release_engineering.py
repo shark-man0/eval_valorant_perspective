@@ -142,3 +142,10 @@ def test_independent_rebuild_workflow_uses_two_windows_runners() -> None:
     assert "python -m pip check" in text
     assert "python -m PyInstaller" in text
     assert "independent-windows-build-comparison" in text
+
+
+def test_release_build_sets_deterministic_pyinstaller_environment() -> None:
+    script = (ROOT / "scripts" / "release" / "build_release.ps1").read_text(encoding="utf-8")
+    assert "git show -s --format=%ct HEAD" in script
+    assert '$env:PYTHONHASHSEED = "1"' in script
+    assert "$env:SOURCE_DATE_EPOCH = $SourceDateEpoch" in script

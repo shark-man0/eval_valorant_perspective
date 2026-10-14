@@ -145,3 +145,22 @@ require separate official release evidence. If the content hashes differ,
 review the named differing files before deciding whether an acceptable
 nondeterminism (timestamps, bytecode, embedding) explains the delta; never
 suppress the mismatch by filtering files from the inventory.
+
+## Confirmed 2-run baseline and deterministic PyInstaller inputs
+
+The initial independent rebuild workflow #38501514340 (commit `a72a702`)
+created 425 files on each of two distinct Windows runners with the same
+resolved Python and build-tool versions. **Five byte hashes differed**:
+`VALORANT-AI-Coach.exe`, `_internal/base_library.zip`, and the three
+`_internal/{jsonschema-4.26.0,keyring-25.7.0,numpy-2.5.4}.dist-info/RECORD`
+files. The comparison was a failure of bit-for-bit identity despite green
+build and smoke-test steps, not a successful reproducibility certification.
+
+PyInstaller 6.22.3 documents both `PYTHONHASHSEED` (hashed collection and
+bytecode stability) and `SOURCE_DATE_EPOCH` (Windows executable PE build
+timestamp). The official release script and independent comparison jobs
+now set hash seed 1 and the actual source commit's Unix timestamp before
+the PyInstaller build. The comparison is rerun without ignoring or deleting
+any of the five differing files; an identical result must be observed
+before reporting byte reproducibility. Remaining differences may arise
+from package RECORD data or build tools and require further investigation.
