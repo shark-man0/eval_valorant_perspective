@@ -164,3 +164,16 @@ the PyInstaller build. The comparison is rerun without ignoring or deleting
 any of the five differing files; an identical result must be observed
 before reporting byte reproducibility. Remaining differences may arise
 from package RECORD data or build tools and require further investigation.
+
+## Isolated remaining RECORD nondeterminism (2026-10-14)
+
+In the independent rerun #38502011265 at commit `1288066`, both
+425-file payloads had identical environment metadata, and the EXE and
+`base_library.zip` became byte-identical after the reproducible-build
+settings. The only remaining mismatches were the `RECORD` files for
+jsonschema 4.26.0, keyring 25.7.0, and NumPy 2.5.4.
+A new evidence-only CSV-row hashing field now allows the next independent
+run to distinguish changed filenames/record entries from differences
+in CSV formatting or row order. No `RECORD` content is omitted from
+bundle hashing or normalized inside the distributed application. Absolute
+runner paths are hashed rather than emitted to public artifacts.

@@ -149,3 +149,28 @@ def test_release_build_sets_deterministic_pyinstaller_environment() -> None:
     assert "git show -s --format=%ct HEAD" in script
     assert '$env:PYTHONHASHSEED = "1"' in script
     assert "$env:SOURCE_DATE_EPOCH = $SourceDateEpoch" in script
+
+
+def test_record_hash_comparison_identifies_changed_csv_rows(tmp_path: Path) -> None:
+    snapshot = ROOT / "scripts" / "release" / "build_snapshot.py"
+    spec = importlib.util.spec_from_file_location("build_snapshot_for_record", snapshot)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    root = tmp_path / "dist"
+    record = root / "_internal" / "numpy-2.5.4.dist-info" / "RECORD"
+    record.parent.mkdir(parents=True)
+    record.write_text("numpy/a.py,sha256=aaa,3\n", encoding="utf-8")
+    requirements = tmp_path / "resolved.txt"
+    requirements.write_text("numpy==2.5.4\n", encoding="utf-8")
+    first, second = tmp_path / "first.json", tmp_path / "second.json"
+    module.capture_snapshot(root, requirements, "a" * 40, first)
+    record.write_text("numpy/a.py,sha256=bbb,3\n", encoding="utf-8")
+    module.capture_snapshot(root, requirements, "a" * 40, second)
+    result = module.compare_snapshots(first, second, tmp_path / "report.json")
+    assert result["bit_for_bit_equal"] is False
+    diff = result["record_row_differences"]["_internal/numpy-2.5.4.dist-info/RECORD"]
+    assert diff["changed_rows"] == ["numpy/a.py"]
+    assert not diff["only_first"] and not diff["only_second"]
+    assert diff["parsed_csv_equivalent"] is False

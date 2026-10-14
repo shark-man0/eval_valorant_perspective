@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
 import importlib.metadata
 import json
@@ -30,6 +31,26 @@ def _write_json(path: Path, document: dict) -> None:
     )
 
 
+def _record_rows(path: Path) -> dict[str, str]:
+    """Hash each RECORD CSV row separately; keep original bytes in the package."""
+    with path.open("r", encoding="utf-8", newline="") as stream:
+        rows = list(csv.reader(stream))
+    result: dict[str, str] = {}
+    for row in rows:
+        if len(row) != 3:
+            raise ValueError(f"malformed installed-package RECORD: {path.name}")
+        name = row[0].replace("\\", "/")
+        if name in result:
+            raise ValueError(f"duplicate installed-package RECORD row: {name}")
+        # Avoid exposing absolute runner paths in public audit artifacts.
+        if name.startswith("/") or re.match(r"^[A-Za-z]:/", name):
+            name = "absolute-path-sha256:" + hashlib.sha256(name.encode()).hexdigest()
+        result[name] = hashlib.sha256(
+            json.dumps(row, ensure_ascii=True, separators=(",", ":")).encode()
+        ).hexdigest()
+    return result
+
+
 def capture_snapshot(
     distribution: Path, dependencies: Path, commit: str, output: Path,
 ) -> dict:
@@ -39,6 +60,7 @@ def capture_snapshot(
     if not distribution.is_dir() or not dependencies.is_file():
         raise ValueError("distribution directory and dependency list are required")
     files = []
+    record_rows = {}
     for path in distribution.rglob("*"):
         if not path.is_file() or path.is_symlink():
             continue
@@ -47,6 +69,8 @@ def capture_snapshot(
             "sha256": _sha256(path),
             "bytes": path.stat().st_size,
         })
+        if path.name == "RECORD" and ".dist-info" in path.parent.name:
+            record_rows[path.relative_to(distribution).as_posix()] = _record_rows(path)
     files.sort(key=lambda item: item["path"])
     if not files:
         raise ValueError("cannot fingerprint an empty distribution")
@@ -68,6 +92,7 @@ def capture_snapshot(
         "build_tools": tools,
         "dependencies": resolved,
         "files": files,
+        "record_rows": record_rows,
     }
     _write_json(output, result)
     return result
@@ -101,6 +126,23 @@ def compare_snapshots(first: Path, second: Path, output: Path) -> dict:
         ],
         "metadata_drift": version_drift,
     }
+    # Diagnose which installed-package RECORD entries changed without re-writing
+    # any hashes, stripping metadata, or publishing absolute runner paths.
+    changed_records = {}
+    for record in changed:
+        if not record.endswith(".dist-info/RECORD"):
+            continue
+        lr = left.get("record_rows", {}).get(record, {})
+        rr = right.get("record_rows", {}).get(record, {})
+        changed_records[record] = {
+            "only_first": sorted(lr.keys() - rr.keys()),
+            "only_second": sorted(rr.keys() - lr.keys()),
+            "changed_rows": sorted(
+                name for name in lr.keys() & rr.keys() if lr[name] != rr[name]
+            ),
+            "parsed_csv_equivalent": lr == rr,
+        }
+    result["record_row_differences"] = changed_records
     result["bit_for_bit_equal"] = bool(
         result["same_commit"] and not result["only_first"]
         and not result["only_second"] and not changed
