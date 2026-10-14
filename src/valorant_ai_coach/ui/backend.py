@@ -186,6 +186,12 @@ class BackendFacade:
         packages = self.services.repository.list_round_packages(match_id)
         round_meta = packages[0].get("round_meta", {}) if packages else {}
         evaluations = tuple(self._evaluation_view(item) for item in stored["evaluations"])
+        display_evaluations = tuple(
+            self._evaluation_view(item)
+            for item in self.services.pipeline.aggregator.select_display_exemplars(
+                stored["evaluations"]
+            )
+        )
         checkpoint = self.services.repository.get_job_checkpoint(match_id)
         diagnostics = (checkpoint or {}).get("checkpoint", {}).get("hud_diagnostics", [])
         return MatchResultView(
@@ -193,6 +199,7 @@ class BackendFacade:
             source_video_path=str(match["source_video_path"]),
             status=str(match["status"]),
             evaluations=evaluations,
+            display_evaluations=display_evaluations,
             good_count=int(stored["good_count"]),
             improve_count=int(stored["improve_count"]),
             unscored_count=int(stored["unscored_count"]),

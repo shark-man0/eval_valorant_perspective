@@ -106,20 +106,68 @@ class EvaluationAggregator:
                         removed_ids.add(id(item))
                 if removed_ids:
                     kept = [item for item in kept if id(item) not in removed_ids]
-        limits: dict[str, int] = {}
-        result: list[dict[str, Any]] = []
-        for item in kept:
-            rule_id = item["primary_rule_id"]
-            maximum = int(
-                self.rules.get(rule_id, {})
-                .get("aggregation_policy", {})
-                .get("max_display_exemplars_per_match", 3)
+        # This is the canonical, *unbounded* set after legitimate deduplication.
+        # UI and clip budgets must never affect what is persisted or counted.
+        return kept
+
+    def select_display_exemplars(
+        self, evaluations: list[dict[str, Any]]
+    ) -> list[dict[str, Any]]:
+        """Select a bounded UI-only sample without mutating the complete set."""
+        return self._select_exemplars(evaluations, clip_only=False, clip_limit=0)
+
+    def select_clip_exemplars(
+        self, evaluations: list[dict[str, Any]], *, max_clips_per_rule: int = 3
+    ) -> list[dict[str, Any]]:
+        """Independent generation budget; never limits the stored evaluations."""
+        if max_clips_per_rule < 0:
+            raise ValueError("max_clips_per_rule must be non-negative")
+        return self._select_exemplars(
+            evaluations, clip_only=True, clip_limit=max_clips_per_rule
+        )
+
+    def _select_exemplars(
+        self, evaluations: list[dict[str, Any]], *, clip_only: bool, clip_limit: int
+    ) -> list[dict[str, Any]]:
+        priorities = {"improve": 0, "good": 1, "unscored": 2}
+        candidates = [
+            index
+            for index, item in enumerate(evaluations)
+            if not clip_only or (
+                item.get("label") in {"good", "improve"}
+                and item.get("clip_id") is not None
+                and item.get("display_clip") is not None
             )
-            if limits.get(rule_id, 0) >= maximum:
+        ]
+        # Give scored/strong evidence precedence over UNSCORED, then preserve
+        # chronology for equally important examples. Stable IDs break ties.
+        candidates.sort(
+            key=lambda index: (
+                priorities.get(str(evaluations[index].get("label")), 3),
+                -float(evaluations[index].get("confidence", 0.0)),
+                self._time(evaluations[index]),
+                str(evaluations[index].get("evaluation_id", "")),
+            )
+        )
+        selected: set[int] = set()
+        used: dict[str, int] = {}
+        for index in candidates:
+            item = evaluations[index]
+            rule_id = str(item["primary_rule_id"])
+            maximum = (
+                clip_limit
+                if clip_only
+                else int(
+                    self.rules.get(rule_id, {})
+                    .get("aggregation_policy", {})
+                    .get("max_display_exemplars_per_match", 3)
+                )
+            )
+            if used.get(rule_id, 0) >= max(0, maximum):
                 continue
-            limits[rule_id] = limits.get(rule_id, 0) + 1
-            result.append(item)
-        return result
+            used[rule_id] = used.get(rule_id, 0) + 1
+            selected.add(index)
+        return [deepcopy(item) for index, item in enumerate(evaluations) if index in selected]
 
     @staticmethod
     def _merge_same_label(target: dict[str, Any], source: dict[str, Any]) -> None:
