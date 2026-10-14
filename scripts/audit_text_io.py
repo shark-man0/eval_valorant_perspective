@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import ast
 import json
+from functools import lru_cache
 import tokenize
 from collections import Counter
 from pathlib import Path
@@ -26,6 +27,23 @@ def _literal(node: ast.expr | None) -> Any:
 
 def _keyword(call: ast.Call, name: str) -> ast.expr | None:
     return next((item.value for item in call.keywords if item.arg == name), None)
+
+
+@lru_cache(maxsize=1)
+def _reviewed_contracts() -> dict[tuple[str, str, str], str]:
+    """Return exact source-site classifications, never a blanket exemption."""
+    path = ROOT / "scripts" / "text_io_reviewed_contracts.json"
+    document = json.loads(path.read_text(encoding="utf-8"))
+    if document["schema_version"] != 1:
+        raise ValueError("Unsupported text-I/O review ledger version")
+    accepted = {"Python既定UTF-8", "OS依存が仕様"}
+    result: dict[tuple[str, str, str], str] = {}
+    for site in document["sites"]:
+        key = (site["path"], site["operation"], site["expression"])
+        if key in result or site["category"] not in accepted or not site["reason"]:
+            raise ValueError(f"Invalid text-I/O site review: {key}")
+        result[key] = site["category"]
+    return result
 
 
 def scan_source(source: str, path: str) -> list[dict[str, Any]]:
@@ -98,12 +116,13 @@ def scan_source(source: str, path: str) -> list[dict[str, Any]]:
                 category = "その他の明示的encoding" if encoding is not None else "要調査"
             else:
                 category = "要調査"
+        expression = " ".join((ast.get_source_segment(source, node) or "").split())[:240]
+        if category == "要調査":
+            category = _reviewed_contracts().get((path, kind, expression), category)
         findings.append({
             "path": path, "line": node.lineno, "operation": kind,
             "category": category, "encoding": encoding,
-            "expression": " ".join(
-                (ast.get_source_segment(source, node) or "").split()
-            )[:240],
+            "expression": expression,
         })
     return sorted(findings, key=lambda item: (item["line"], item["operation"]))
 

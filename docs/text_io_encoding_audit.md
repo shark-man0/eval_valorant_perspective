@@ -166,3 +166,29 @@ Two AST regression checks enumerate all 15 modules and assert that every
 `read_text` has `encoding="utf-8"`. A fresh CI inventory is needed for
 post-change counts; the Linux Qt destructor abort is tracked under #18
 rather than being hidden or treated as an encoding regression.
+
+## Site-specific classification for remaining default-codec/locale calls
+
+Starting from the measured 265 AST candidates on `783d931`, 49
+integration/report JSON readers, 139 additional fixture/validation-pack
+text file boundaries, 16 machine-protocol subprocess decoders, and one
+child-process binary log file have been fixed in subsequent commits.
+The remaining **60** sites comprise 49 default `str.encode()` calls,
+2 default `bytes.decode()` calls and 9 intentionally host-locale subprocess
+human-diagnostic calls. Python's built-in encode/decode defaults are UTF-8
+on all operating systems; unnecessary `encode("utf-8")` can trigger
+Ruff UP012. External FFmpeg/Tesseract/version diagnostics and Python child
+messages may use their producer's locale and should not be forcibly decoded
+as UTF-8. None of these 60 calls requires a runtime change to satisfy the
+present producer contracts.
+
+The 60 sites map to 57 unique file/operation/AST-expression decisions in
+`scripts/text_io_reviewed_contracts.json` (three reviewed expressions
+occur in two locations each). Decisions carry the producer rationale and
+apply only to **exact matching** source expressions, so additions or edits
+become `要調査` again. A regression test checks ledger coverage, stale
+entries, and the repository-wide absence of unresolved candidates. A
+reported count of 0 will mean **all observed static candidates have a
+reasoned classification**, not proof of universal locale compatibility.
+The Windows `PYTHONUTF8=0` test and Windows packaged smoke, Linux pytest
+process exit, plus #18 Qt teardown still require independent acceptance.

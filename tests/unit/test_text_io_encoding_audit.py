@@ -176,3 +176,30 @@ def test_reviewed_report_and_schema_readers_explicit_utf8() -> None:
         readers = [x for x in sites if x["operation"] == "read_text"]
         assert readers, filename
         assert all(x["category"] == "UTF-8明示" for x in readers), filename
+
+
+def test_reviewed_contracts_close_inventory_without_ignoring_new_calls() -> None:
+    from scripts.audit_text_io import scan_repository
+
+    root = Path(__file__).resolve().parents[2]
+    ledger = json.loads(
+        (root / "scripts/text_io_reviewed_contracts.json").read_text(encoding="utf-8")
+    )
+    inventory = scan_repository(root)
+    unresolved = [site for site in inventory["sites"] if site["category"] == "要調査"]
+    assert unresolved == [], unresolved[:20]
+    for decision in ledger["sites"]:
+        matches = [
+            site for site in inventory["sites"]
+            if site["path"] == decision["path"]
+            and site["operation"] == decision["operation"]
+            and site["expression"] == decision["expression"]
+        ]
+        assert matches, decision
+        assert all(s["category"] == decision["category"] for s in matches), decision
+
+
+def test_reviewed_contracts_do_not_suppress_new_receivers() -> None:
+    source = "class Custom: pass\nx = Custom().encode()"
+    assert scan_source(source, "unknown_test.py")[0]["category"] == "要調査"
+    assert scan_source("x = '日本語'.encode()", "unknown_test.py")[0]["category"] == "要調査"
