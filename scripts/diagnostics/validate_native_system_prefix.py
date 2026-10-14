@@ -22,6 +22,8 @@ def main() -> None:
     parser.add_argument('--end', required=True, type=float)
     parser.add_argument('--native-step-ticks', required=True, type=int)
     parser.add_argument('--output', required=True, type=Path)
+    parser.add_argument('--include-ui-measurements', action='store_true',
+                        help='Unqualified scan measurements only; never system evidence/events')
     args = parser.parse_args()
     analyzer = RealHudAnalyzer(args.layout)
     profile_fingerprint = analyzer.fingerprint()
@@ -33,6 +35,7 @@ def main() -> None:
     ) as frames:
         rows = analyzer.observe_native_system_frames(
             frames, native_step_ticks=args.native_step_ticks,
+            include_ui_measurements=args.include_ui_measurements,
         )
         encoded_hashes = [frame.encoded_sha256 for frame in frames]
     # Decoder context verifies terminal video integrity before artifact release.
@@ -57,6 +60,7 @@ def main() -> None:
         'timer_display_accepted': sum(display is not None for display in displays),
         'timer_display_unknown': sum(display is None for display in displays),
         'display_accuracy_reviewed': False,
+        'unqualified_ui_measurements_requested': args.include_ui_measurements,
         'geometry': analyzer.last_calibration_diagnostics,
         'rows': rows,
         'qualification_loaded': analyzer.global_qualification is not None,

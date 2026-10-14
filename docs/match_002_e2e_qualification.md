@@ -1207,3 +1207,50 @@ and actual downstream package/trace/full-E2E proof remain required. Raw assets,
 source paths and exact PTS stay local; only aggregate and hashes are shared.
 Final related tests:111passed. Scoped Ruff, production mypy(132files) and
 git diff --check pass. No current full-suite or formal full-E2E success is claimed.
+
+## Source-native result input comparison (2026-10-14)
+
+Run the same85-frame continuous development window through RealHudAnalyzer with
+the purchase-only diagnostic base and the reviewed WON diagnostic profile.
+Both decoder contexts pass terminal source integrity checks and unchanged
+profile/recognizer fingerprints. Physical video SHA, PTS ticks/timebase and pixel
+hashes match for every paired frame. Source epochs intentionally differ because
+input fingerprints include the selected profile; never join proof chains across
+those profile-specific epochs.
+
+Both runs have28 fresh geometry successes,68 effective successes,40 retained
+frames and17 geometry-invalid frames. Both accept26 timer displays and38 paired
+scores; all85 player states remainunknown. Their System observations are equal.
+This is an input comparison, not evidence of owned-player validity or Round
+event detection. The default diagnostic entrance did not persist unqualified
+UI scans, so its empty qualified evidence/flags could not measure result text.
+Preserve those first receipts rather than misinterpreting them as matcher failure.
+
+Expose the existing Analyzer include_ui_measurements option through an explicit
+CLI switch, defaultfalse. The existing binder saves producer scans in
+system_measurements with scope=unqualified_current_frame and
+qualification_required=true; they never enter system_evidence. Repeat the
+paired window with this option: the base has0 result matches, the WON profile
+has16 in one contiguous native run. Matched NCC min/median/max:
+.943844/.974662/.978336. Phase absence remains0, qualified System evidence rows0,
+qualification loaded/createdfalse and events released0 in both runs.
+
+Only2 of the16 result-matched frames also have an accepted timer display, and
+only2 also have a paired accepted score. Do not infer missing values or treat
+this as a proven score-update/end transition. Input availability and temporal
+qualification still need separate verification, including later confirmation
+frames and distinct display episodes. The target window is development-only
+retrospective input diagnosis, not training material or independent full E2E.
+
+Base UI-measurement receipt SHA:
+`a543ade032fb0ee1a6eed4a19799849961dffb179035ea6ee4c53977538b82eb`.
+WON UI-measurement receipt SHA:
+`7e661d11fead0b00e8edf0f88bc36d0dca5e43e86da3d5739c106403a5f60c83`.
+Elapsed times:51.762seconds(base),52.997seconds(WON). Original measurements
+without UI scans are preserved separately. No GT, Pack, threshold, production
+profile, ownership gate or event policy changed.
+
+Native-input/global-diagnostic/frozen-profile regressions:56passed. Two new CLI
+cases verify defaultfalse, explicittrue and no qualification/event release.
+Scoped Ruff, production mypy(132files), git diff --check pass. Real-frame scans
+prove only measured input acquisition, not lifecycle or full-E2E completion.
