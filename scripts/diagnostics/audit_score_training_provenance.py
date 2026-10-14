@@ -82,7 +82,7 @@ def run():
                   'Natural nominal score-absence negatives remain unproven',
                   'Positive score source holdout remains separate from lifecycle holdout',
               ]}
-    output.write_text(json.dumps(result, indent=2) + '\n')
+    output.write_text(json.dumps(result, indent=2) + '\n', encoding="utf-8")
     print(json.dumps({c['digit']: [len(c['origins']), c['supported_distinct_source_frames'],
                                   round(c['support_fraction'], 4)] for c in classes}))
 

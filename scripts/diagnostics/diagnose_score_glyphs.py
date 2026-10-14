@@ -64,7 +64,10 @@ def run(args):
         'qualification_created': False, 'profile_adopted': False,
         'validation_pack_loaded': False, 'events_emitted': 0,
     }
-    (args.output_dir / 'selection.json').write_text(json.dumps(freeze, indent=2) + '\n')
+    (args.output_dir / 'selection.json').write_text(
+        json.dumps(freeze, indent=2) + '\n',
+        encoding="utf-8",
+    )
     started = time.perf_counter()
     results = []
     for window_index, window in enumerate(native['windows']):
@@ -126,7 +129,10 @@ def main():
     parser.add_argument('--output-dir', type=Path, required=True)
     args = parser.parse_args()
     report = run(args)
-    (args.output_dir / 'results.json').write_text(json.dumps(report, indent=2) + '\n')
+    (args.output_dir / 'results.json').write_text(
+        json.dumps(report, indent=2) + '\n',
+        encoding="utf-8",
+    )
     print(json.dumps({'summary': report['summary'], 'wall_clock_sec': report['wall_clock_sec']}))
 
 

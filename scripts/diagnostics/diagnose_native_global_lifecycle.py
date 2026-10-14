@@ -162,7 +162,10 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "recognizer_fingerprint": code_hash, "windows_sec": args.window,
         "diagnostic_script_sha256": diagnostic_hash,
     }
-    (args.output_dir / "selection.json").write_text(json.dumps(freeze, indent=2) + "\n")
+    (args.output_dir / "selection.json").write_text(
+        json.dumps(freeze, indent=2) + "\n",
+        encoding="utf-8",
+    )
     # A test-only object exercises the contract. It is never installed in the
     # profile and cannot replace independent review/holdout/negative controls.
     qualification = GlobalLifecycleQualification(
@@ -261,7 +264,10 @@ def main() -> None:
     parser.add_argument("--output-dir", required=True, type=Path)
     args = parser.parse_args()
     report = run(args)
-    (args.output_dir / "results.json").write_text(json.dumps(report, indent=2) + "\n")
+    (args.output_dir / "results.json").write_text(
+        json.dumps(report, indent=2) + "\n",
+        encoding="utf-8",
+    )
     for window in report["windows"]:
         print(json.dumps({key: value for key, value in window.items() if key != "rows"}))
     print(json.dumps({"wall_clock_sec": report["wall_clock_sec"]}))
