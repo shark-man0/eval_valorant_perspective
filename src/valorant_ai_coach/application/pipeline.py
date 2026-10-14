@@ -22,6 +22,7 @@ from valorant_ai_coach.video import FrameSample, VideoMetadata
 
 from .frame_planner import FramePlanner, PlannedFrame
 from .hud_video_processor import HudVideoProcessingResult, HudVideoProcessor, NativeLifecycleOptions
+from .match_aggregation_service import aggregate_saved_match
 from .round_analyzer import RoundAnalysis, RoundAnalyzer
 
 LOGGER = logging.getLogger(__name__)
@@ -364,14 +365,13 @@ class MatchAnalysisPipeline:
                 self.repository.save_analysis_result(payload)
 
             checkpoint_state.update({"completed_rounds": sorted(set(completed))})
+            if not resume:
+                checkpoint_state["canonical_evaluation_set"] = "full_post_dedup_v1"
             self.repository.save_job_checkpoint(identifier, "generating_clips", checkpoint_state)
             reusable: dict[tuple[float, float], ClipArtifact] = {}
-            scored = [
-                item
-                for evaluations in by_round.values()
-                for item in evaluations
-                if item["label"] in {"good", "improve"}
-            ]
+            scored = self.aggregator.select_clip_exemplars(
+                [item for evaluations in by_round.values() for item in evaluations]
+            )
             for index, evaluation in enumerate(scored):
                 self._check_cancel(cancel)
                 interval = evaluation["display_clip"]
@@ -916,7 +916,7 @@ class MatchAnalysisPipeline:
     def _aggregate_round_evaluations(
         self, round_results: list[Any]
     ) -> dict[int, list[dict[str, Any]]]:
-        """Display-aggregate every Round's evaluations after the 0.55 confidence floor (D-1b).
+        """Deduplicate the full stored evaluation set after the 0.55 floor (D-1b).
 
         The floor is applied to each evaluation *before* merging, so a weak good/improve becomes
         ``unscored`` on its own and can no longer pull a confident same-rule neighbour below the
@@ -950,8 +950,22 @@ class MatchAnalysisPipeline:
             raise RuntimeError(f"保存済みmatchを読み出せません: {match_id}")
         output = self.data_dir / "matches" / match_id / "analysis.json"
         output.parent.mkdir(parents=True, exist_ok=True)
+        # A malformed or incomplete stored Round must not turn an otherwise
+        # recoverable partial Match into a failed analysis during JSON export.
+        # Match totals are withheld rather than inferred in that case.
+        match_aggregation: dict[str, Any] | None
+        match_aggregation_error: str | None
+        try:
+            match_aggregation = aggregate_saved_match(self.repository, match_id)
+            match_aggregation_error = None
+        except (ValueError, RuntimeError) as exc:
+            LOGGER.warning("Stored Match aggregation unavailable for %s: %s", match_id, exc)
+            match_aggregation = None
+            match_aggregation_error = "保存結果の整合性を検証できません（Match集計を省略）"
         payload = {
             **result,
+            "match_aggregation": match_aggregation,
+            "match_aggregation_error": match_aggregation_error,
             "processing_errors": errors,
             "clip_errors": clip_errors,
         }

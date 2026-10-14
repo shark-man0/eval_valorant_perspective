@@ -20,9 +20,13 @@ from valorant_ai_coach.visual.remote import classify_remote_view
 from valorant_ai_coach.visual.semantic import SemanticBudget
 
 PATCH = "config/visual_v2/"
-CASES = json.loads(resource_path(PATCH + "tests/visual_logic_cases_v2.json").read_text())["cases"]
+CASES = json.loads(resource_path(PATCH + "tests/visual_logic_cases_v2.json").read_text(
+    encoding="utf-8",
+))["cases"]
 MAP = json.loads(
-    resource_path(PATCH + "tests/fixtures/coarse_zone_fixture_test_map.json").read_text()
+    resource_path(PATCH + "tests/fixtures/coarse_zone_fixture_test_map.json").read_text(
+        encoding="utf-8",
+    )
 )
 
 

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Any
 
 from valorant_ai_coach.video import AudioTrackMetadata
 
@@ -98,6 +99,10 @@ class MatchResultView:
     player_agent: str | None = None
     diagnostics: tuple[str, ...] = ()
     round_partitions: tuple[RoundPartitionView, ...] = ()
+    # Complete stored set remains in evaluations; UI cards use only this sample.
+    display_evaluations: tuple[EvaluationView, ...] | None = None
+    match_aggregation: dict[str, Any] | None = None
+    match_aggregation_error: str | None = None
 
 
 __all__ = [

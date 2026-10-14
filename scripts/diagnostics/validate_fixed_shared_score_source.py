@@ -35,7 +35,9 @@ def run():
     sidecar = layout.parent / 'score-rowcontrast-late-result-diagnostic.templates.json'
     analyzer = RealHudAnalyzer(layout, template_profile_path=sidecar)
     profile, code = analyzer.fingerprint(), global_recognizer_fingerprint()
-    old = json.loads((reports / 'frozen_result_late_native_cohort.json').read_text())
+    old = json.loads(
+        (reports / 'frozen_result_late_native_cohort.json').read_text(encoding="utf-8")
+    )
     paths = set(old['input_sha256']) | {str(p) for p in reports.glob('*.json')}
     inputs = {}
     exposed = set()
@@ -63,7 +65,7 @@ def run():
         'exhaustive_exposure_proven': False, 'same_video_correlation': True,
         'profile_fingerprint': profile, 'recognizer_fingerprint': code,
         'input_sha256': inputs, 'predictions_made': False,
-    }, indent=2) + '\n')
+    }, indent=2) + '\n', encoding="utf-8")
     directory.mkdir()
     # Preserve mutable analysis input before future followup writes.
     shutil.copyfile(reports / 'failure_analysis.json',
@@ -106,7 +108,7 @@ def run():
         'qualification_created': False, 'released_events': 0,
         'canonical_current': None, 'canonical_delta': None,
         'wall_clock_sec': time.perf_counter() - start,
-    }, indent=2) + '\n')
+    }, indent=2) + '\n', encoding="utf-8")
     print(json.dumps({'processed_native_frames': len(rows), 'reserved': len(selected),
                       'accepted_scores': {key: sum(row['accepted_shared_scores'][key] is not None
                                                    for row in rows)

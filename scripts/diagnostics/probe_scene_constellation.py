@@ -100,7 +100,7 @@ def main():
         "runtime_proof_authorized": False,
         "new_runtime_events": 0,
     }
-    args.output.write_text(json.dumps(report, indent=2) + "\n")
+    args.output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(results))
 
 

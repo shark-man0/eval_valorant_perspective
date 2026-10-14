@@ -90,15 +90,19 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--frame-input", type=Path, help="PTS-only bounded replay specification")
     parser.add_argument("--cache-dir", type=Path)
     parser.add_argument("--native-png-budget", type=int)
+    parser.add_argument("--native-storage", choices=("png", "replay"), default="png")
+    parser.add_argument("--native-replay-buffer", type=int, default=64 * 1024 * 1024)
     parser.add_argument("--scene-reference-profile", type=Path)
     parser.add_argument("--unedited-input-contract", type=Path)
     args = parser.parse_args(argv)
     native_scope = args.scene_reference_profile or args.unedited_input_contract
-    if (args.native_png_budget is not None or native_scope is not None) and (
+    if (args.native_png_budget is not None or native_scope is not None
+            or args.native_storage != "png") and (
         args.native_png_budget is None or args.native_png_budget <= 0
         or native_scope is None
         or (args.scene_reference_profile is not None and args.unedited_input_contract is not None)
         or args.from_raw or args.frame_input
+        or args.native_replay_buffer <= 0
     ):
         parser.error(
             "native lifecycle requires positive budget, one source contract/profile and full source"
@@ -212,6 +216,8 @@ def main(argv: list[str] | None = None) -> int:
             native_options = (
                 NativeLifecycleOptions(
                     args.native_png_budget,
+                    storage_mode=args.native_storage,
+                    max_replay_buffer_bytes=args.native_replay_buffer,
                     unedited_input_contract_path=(
                         args.unedited_input_contract.expanduser().resolve()
                         if args.unedited_input_contract else None
@@ -221,6 +227,8 @@ def main(argv: list[str] | None = None) -> int:
             )
             if native_options is not None:
                 raw["runtime_mode"]["native_lifecycle"] = {
+                    "storage_mode": native_options.storage_mode,
+                    "max_replay_buffer_bytes": native_options.max_replay_buffer_bytes,
                     "source_scope": "origin_to_eof", "max_png_bytes": native_options.max_png_bytes,
                     "png_prediction": native_options.png_prediction,
                     "source_contract": ("unedited" if args.unedited_input_contract else "scene"),

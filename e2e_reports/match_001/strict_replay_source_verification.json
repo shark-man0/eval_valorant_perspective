@@ -1,0 +1,122 @@
+{
+  "scope": "Fresh current-code reviewed source components and continuous0-6native/application validation; not full E2E, default release, new blind data or full temporal generalization",
+  "git_head": "c11ec6d333957cccb270417bc95a8a57f433e6ad",
+  "recognizer_fingerprint": "96c79de983a298b1f849c742c9653728c527481d929e2991b6e6f918dfe95da5",
+  "profile_fingerprint": "60b029cb987fe0d7447853e3b4cd791d5defb0918dfaa25a401bd45d2b64c813",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "training_holdout_split_retained": true,
+  "new_recognition_executed": true,
+  "timer_counts": {
+    "correct": 25,
+    "unknown": 7,
+    "wrong": 0
+  },
+  "phase_counts": {
+    "training_correct": 3,
+    "holdout_correct": 8,
+    "negative_rejected": 12
+  },
+  "score_field_counts": {
+    "correct": 36,
+    "unknown": 18,
+    "wrong": 0
+  },
+  "result_counts": {
+    "correct": 3,
+    "unknown": 8,
+    "wrong": 0,
+    "negative_false_positive": 0
+  },
+  "offline_six_component_admission": [
+    "purchase_phase",
+    "round_result",
+    "score",
+    "timer",
+    "ui_end_transition",
+    "ui_transition"
+  ],
+  "end_temporal_generalization_proven": false,
+  "start_only_runtime_qualification_sha256": "7776684dc1a81b0df23b1455408632506cb6609fbf509815233e88a26e0cceb5",
+  "r1_start": {
+    "boundary_time_sec": 4.102669270833333,
+    "confirmation_time_sec": 4.202669270833334,
+    "confidence": 0.911719242550644,
+    "actor": "system",
+    "scope": "global_system",
+    "previous_boundary_time_sec": 4.102669270833333,
+    "boundary_time_delta_sec": 0.0
+  },
+  "continuous_scope_sec": [
+    0,
+    6
+  ],
+  "processed_native_frames": 358,
+  "processed_main_frames": 358,
+  "native_producer_runtime_sec": 622.2772417840315,
+  "native_wall_clock_sec": 816.8557981649647,
+  "application_runtime_sec": 533.3418657520087,
+  "application_wall_clock_sec": 727.848146900069,
+  "formal_start_count": 1,
+  "formal_end_count": 0,
+  "qualified_native_output_reuse_in_application": "Only fresh unchanged exact source/code/profile/qualification/input output, all358main decoded pixel matches verified",
+  "owned_fact_promotion_count": 0,
+  "package_count": 1,
+  "package_summary": [
+    {
+      "round_no": 1,
+      "round_window": {
+        "start_sec": 3.602669270833333,
+        "end_sec": 171.019336
+      },
+      "snapshot_count": 0,
+      "observation_quality": {
+        "hud_confidence": 0.0,
+        "visual_confidence": 0.0,
+        "timeline_completeness": 0.0,
+        "missing_intervals": [
+          {
+            "start_sec": 3.602669270833333,
+            "end_sec": 171.019336
+          }
+        ]
+      }
+    }
+  ],
+  "targeted_canonical_acceptance": [
+    {
+      "assertion_id": "GT-R1-ROUND-START",
+      "group": "required_point_events",
+      "index": 0,
+      "status": "pass",
+      "failures": []
+    }
+  ],
+  "source_integrity_and_terminal_hash_checks": true,
+  "source_storage_for_r1_validation": "Existing PNG-backed native window0-6; not a claim that whole-source Strict raw replay collection was exercised on real video",
+  "whole_source_strict_replay_runtime_verified": false,
+  "canonical_full_e2e_executed": false,
+  "adopted_baseline": {
+    "PASS": 23,
+    "FAIL": 55,
+    "NE": 4
+  },
+  "point_truth_accuracy_within_0_1_sec": "not_certified_without_independent_point_truth",
+  "default_qualification_installed": false,
+  "evidence_sha256": {
+    "outputs/recognition-investigation/strict-replay-r1-native-20261013/result.json": "e82c8c9559efa0e73aa2eacd2af1d6a33f0302f373888b95115b95090cf9827a",
+    "outputs/recognition-investigation/strict-replay-r1-application-20261013/result.json": "ec4900db93a5eced9aed7f7c5a53e7d8616584a2468072e3819be58b4ddeba8b",
+    "outputs/recognition-investigation/strict-replay-components-20261013/start/result.json": "0f8ce90beef34d86041555c12b9aa3bb84e12423143ea4ba9a6ce97da29adf50",
+    "outputs/recognition-investigation/strict-replay-components-20261013/score/result.json": "18063a3dd0156f1b28c127cba1009feb5724027865f29cacaba29c04e3dfa1d8",
+    "outputs/recognition-investigation/strict-replay-components-20261013/result/result.json": "7c559f330fcc2c65159223dd75d991523e99574b0a2e5531620a9ccf4928a134",
+    "outputs/recognition-investigation/strict-replay-components-20261013/ui_start/result.json": "b1b6431c0cc0c2250656fc33f6bcde81e8b10d2e34341d25f4e37f58da5b3278",
+    "outputs/recognition-investigation/strict-replay-components-20261013/ui_end/result.json": "da14889428503ded1d3cc7eb5e7490f8368a320f4a3145c13c68c8775a566b96",
+    "outputs/recognition-investigation/strict-replay-components-20261013/end_controls/result.json": "595cae5b4edd4beb99ecb892810ba801e5fa8a2049decce1a8c69e2448a1d4b3",
+    "outputs/recognition-investigation/strict-replay-components-20261013/end_admission/result.json": "808daa69c133fd16550ebdf55028e78752de872c0a5fea7b458778b6eea357c7"
+  },
+  "remaining_gates": [
+    "Complete Strict raw replay application entrance on current source and eligibility for sampled/full.",
+    "Independent temporal generalization, R1end/R2start and full-video negative controls.",
+    "Pre-round unknown context association; never fabricate round ownership.",
+    "Full regression and Windows CI for uncommitted storage integration."
+  ]
+}

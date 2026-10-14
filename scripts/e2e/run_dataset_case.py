@@ -232,6 +232,8 @@ def parser() -> argparse.ArgumentParser:
     p.add_argument("--mode", choices=("targeted", "sampled", "full"), default="full")
     p.add_argument("--frame-suite")
     p.add_argument("--native-png-budget", type=int)
+    p.add_argument("--native-storage", choices=("png", "replay"), default="png")
+    p.add_argument("--native-replay-buffer", type=int, default=64 * 1024 * 1024)
     p.add_argument("--scene-reference-profile")
     p.add_argument("--unedited-input-contract")
     p.add_argument("--category", action="append", default=[])
@@ -249,7 +251,11 @@ def run_case(args, *, root=APP_ROOT, runner=subprocess.run, probe=None) -> int:
     budget = getattr(args, "native_png_budget", None)
     scene = getattr(args, "scene_reference_profile", None)
     assurance = getattr(args, "unedited_input_contract", None)
-    if (budget is not None or scene or assurance) and (
+    storage = getattr(args, "native_storage", "png")
+    buffer = getattr(args, "native_replay_buffer", 64 * 1024 * 1024)
+    if storage not in {"png", "replay"} or type(buffer) is not int or buffer <= 0:
+        raise CaseError("INVALID_NATIVE_STORAGE_OPTIONS")
+    if (budget is not None or scene or assurance or storage != "png") and (
         getattr(args, "mode", "full") != "full"
         or type(budget) is not int or budget <= 0 or not (scene or assurance)
         or bool(scene and assurance)
@@ -428,6 +434,10 @@ def _run_case(args, *, root=APP_ROOT, runner=subprocess.run, probe=None) -> int:
         if getattr(args, "native_png_budget", None) is not None:
             native_settings = {"native_png_budget": args.native_png_budget}
             cmd.extend(["--native-png-budget", str(args.native_png_budget)])
+            storage = getattr(args, "native_storage", "png")
+            buffer = getattr(args, "native_replay_buffer", 64 * 1024 * 1024)
+            native_settings.update(native_storage=storage, native_replay_buffer=buffer)
+            cmd.extend(["--native-storage", storage, "--native-replay-buffer", str(buffer)])
             if getattr(args, "unedited_input_contract", None):
                 from valorant_ai_coach.hud.unedited_input import UneditedInputContract
 
@@ -615,7 +625,9 @@ def _run_case(args, *, root=APP_ROOT, runner=subprocess.run, probe=None) -> int:
         metadata["error_code"] = error
         evaluation = {**evaluation, "pass": False}
         # Exception text and local paths are not suitable for Git reports.
-        (output / "error_code.json").write_text(json.dumps({"error_code": error}) + "\n")
+        (output / "error_code.json").write_text(
+            json.dumps({"error_code": error}) + "\n", encoding="utf-8"
+        )
         print(error, file=sys.stderr)
         code = 2
     save_context(output, metadata, assertions_sha256=assertions_hash, exit_code=code)

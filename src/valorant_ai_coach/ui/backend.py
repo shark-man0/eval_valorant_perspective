@@ -6,6 +6,7 @@ from pathlib import Path
 from threading import Event
 from typing import Any
 
+from valorant_ai_coach.application.match_aggregation_service import aggregate_saved_match
 from valorant_ai_coach.bootstrap import build_services
 from valorant_ai_coach.logging_setup import configure_logging
 from valorant_ai_coach.non_video.features import NonVideoFeatures
@@ -186,13 +187,27 @@ class BackendFacade:
         packages = self.services.repository.list_round_packages(match_id)
         round_meta = packages[0].get("round_meta", {}) if packages else {}
         evaluations = tuple(self._evaluation_view(item) for item in stored["evaluations"])
+        display_evaluations = tuple(
+            self._evaluation_view(item)
+            for item in self.services.pipeline.aggregator.select_display_exemplars(
+                stored["evaluations"]
+            )
+        )
         checkpoint = self.services.repository.get_job_checkpoint(match_id)
         diagnostics = (checkpoint or {}).get("checkpoint", {}).get("hud_diagnostics", [])
+        match_aggregation: dict[str, Any] | None = None
+        match_aggregation_error: str | None = None
+        try:
+            match_aggregation = aggregate_saved_match(self.services.repository, match_id)
+        except (ValueError, RuntimeError) as exc:
+            LOGGER.warning("Stored Match aggregation unavailable for %s: %s", match_id, exc)
+            match_aggregation_error = "保存データの検証に失敗しました（Match集計を非表示）"
         return MatchResultView(
             match_id=match_id,
             source_video_path=str(match["source_video_path"]),
             status=str(match["status"]),
             evaluations=evaluations,
+            display_evaluations=display_evaluations,
             good_count=int(stored["good_count"]),
             improve_count=int(stored["improve_count"]),
             unscored_count=int(stored["unscored_count"]),
@@ -200,6 +215,8 @@ class BackendFacade:
             player_agent=round_meta.get("player_agent"),
             diagnostics=tuple(str(item) for item in diagnostics),
             round_partitions=tuple(self._round_partition_view(package) for package in packages),
+            match_aggregation=match_aggregation,
+            match_aggregation_error=match_aggregation_error,
         )
 
     @staticmethod

@@ -34,7 +34,7 @@ def test_result_grammar_never_repairs_text_or_relaxes_confidence(text, score, ex
                                    {"subregion_norm": [0, 0, 1, float("nan")]}])
 def test_changed_frozen_method_is_rejected(tmp_path, change):
     path = tmp_path / "method.json"
-    path.write_text(json.dumps({**method(), **change}))
+    path.write_text(json.dumps({**method(), **change}), encoding="utf-8")
     with pytest.raises(ValueError):
         diagnostic.load_method(path)
 
@@ -47,7 +47,7 @@ def test_changed_frozen_method_is_rejected(tmp_path, change):
 ])
 def test_rawline_is_a_separate_frozen_method_not_an_override(tmp_path, version, psm, valid):
     path = tmp_path / "rawline.json"
-    path.write_text(json.dumps({**method(), "version": version, "psm": psm}))
+    path.write_text(json.dumps({**method(), "version": version, "psm": psm}), encoding="utf-8")
     if valid:
         assert diagnostic.load_method(path)["psm"] == 13
     else:
@@ -63,10 +63,10 @@ def fixture(tmp_path, monkeypatch, *, mutate_model=False, language="eng", rawlin
     if language == "jpn":
         declaration.update(version="combat_report_text_ocr_diagnostic_v1",
                            language="jpn", roi="combat_report")
-        layout_data = json.loads(layout.read_text())
+        layout_data = json.loads(layout.read_text(encoding="utf-8"))
         layout_data["regions"]["combat_report"] = layout_data["regions"].pop("phase")
-        layout.write_text(json.dumps(layout_data))
-    declared.write_text(json.dumps(declaration))
+        layout.write_text(json.dumps(layout_data), encoding="utf-8")
+    declared.write_text(json.dumps(declaration), encoding="utf-8")
     tessdata = tmp_path / "tessdata"
     tessdata.mkdir()
     model = tessdata / f"{language}.traineddata"
@@ -135,9 +135,9 @@ def test_changed_frame_cannot_be_ocr_evidence(tmp_path, monkeypatch):
 def test_unordered_or_invalid_pts_cannot_be_ocr_evidence(tmp_path, monkeypatch, bad_pts):
     args = fixture(tmp_path, monkeypatch)
     path = args[1] / "results.json"
-    report = json.loads(path.read_text())
+    report = json.loads(path.read_text(encoding="utf-8"))
     report["windows"][0]["rows"][1]["pts_sec"] = bad_pts
-    path.write_text(json.dumps(report))
+    path.write_text(json.dumps(report), encoding="utf-8")
     with pytest.raises(ValueError, match="source PTS"):
         diagnostic.run(*args)
     assert not (args[4] / "results.json").exists()
@@ -146,7 +146,7 @@ def test_unordered_or_invalid_pts_cannot_be_ocr_evidence(tmp_path, monkeypatch, 
 @pytest.mark.parametrize("preprocessing", ["gray_v1", "white210_v1", "white210_horizontal2_v1"])
 def test_declared_preprocessing_preserves_no_event_contract(tmp_path, monkeypatch, preprocessing):
     args = fixture(tmp_path, monkeypatch)
-    args[3].write_text(json.dumps({**method(), "preprocessing": preprocessing}))
+    args[3].write_text(json.dumps({**method(), "preprocessing": preprocessing}), encoding="utf-8")
     result = diagnostic.run(*args)
     assert result["method"]["preprocessing"] == preprocessing
     assert result["events_emitted"] == 0 and not result["qualification_created"]

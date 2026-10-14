@@ -17,7 +17,7 @@ def test_supplied_shot_granularity_in_production_engine():
     fixture = pack / "fixtures/shot_granularity_contract_v1.json"
     if not fixture.is_file():
         pytest.skip("External validation pack not installed")
-    for case in json.loads(fixture.read_text())["cases"]:
+    for case in json.loads(fixture.read_text(encoding="utf-8"))["cases"]:
         samples, proofs = [], {}
         previous = None
         for i, item in enumerate(case["input_samples"]):

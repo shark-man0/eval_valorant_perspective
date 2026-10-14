@@ -98,7 +98,7 @@ def main():
                   capture_output=True, text=True).stdout.splitlines()[0],
               'qualification_created': False, 'production_behavior_changed': False,
               'canonical_current': None, 'canonical_delta': None}
-    args.output.write_text(json.dumps(result, indent=2)+'\n')
+    args.output.write_text(json.dumps(result, indent=2)+'\n', encoding="utf-8")
     print(json.dumps([{'level': r['compression_level'], 'prediction': r['prediction'],
                       'sec': r['encode_wall_sec'],
                       'bytes': r['total_bytes']} for r in runs]))

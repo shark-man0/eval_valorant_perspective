@@ -188,7 +188,9 @@ def test_export_filters_telemetry_and_keeps_old_reports_honest(tmp_path):
         metadata={},
         output_dir=tmp_path,
     )
-    for content in (path.read_text(), (tmp_path / "hud_calibration.json").read_text()):
+    for content in (path.read_text(encoding="utf-8"), (tmp_path / "hud_calibration.json").read_text(
+        encoding="utf-8",
+    )):
         assert all(secret not in content for secret in ("D:\\", "Private", "sk-secret", "token"))
         assert "NaN" not in content and "Infinity" not in content
     assert sanitize_calibration(None) == {"available": False}

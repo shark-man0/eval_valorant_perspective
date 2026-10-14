@@ -310,8 +310,12 @@ def main() -> int:
         implementation.update(path.as_posix().encode())
         implementation.update(path.read_bytes())
     replay["provenance"] = {
-        "analyzer_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
-        "git_is_dirty": bool(subprocess.check_output(["git", "status", "--porcelain"], text=True)),
+        "analyzer_commit": subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], text=True, encoding="ascii",
+        ).strip(),
+        "git_is_dirty": bool(subprocess.check_output(
+            ["git", "status", "--porcelain"], text=True, encoding="utf-8",
+        )),
         "implementation_sha256": implementation.hexdigest(),
         "hud_fingerprint": processor.analyzer.fingerprint(),
         "visual_fingerprint_sha256": stable_hash(processor.visual_analyzer.fingerprint()),

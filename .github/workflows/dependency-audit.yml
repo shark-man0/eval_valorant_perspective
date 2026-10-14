@@ -1,0 +1,61 @@
+name: Dependency vulnerability audit
+
+on:
+  pull_request:
+    paths:
+      - "pyproject.toml"
+      - "constraints-windows.txt"
+      - "scripts/release/**"
+      - ".github/workflows/dependency-audit.yml"
+  workflow_dispatch:
+  schedule:
+    - cron: "25 4 * * 1"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  windows-advisory-audit:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: constraints-windows.txt
+      - name: Pin release pip version
+        run: python -m pip install --upgrade pip==26.2.1
+      - name: Resolve Windows release dependency environment
+        run: python -m pip install -c constraints-windows.txt ".[gui,dev,build]"
+      - name: Verify dependency consistency
+        run: python -m pip check
+      - name: Audit installed pinned third-party versions in an isolated venv
+        shell: pwsh
+        run: |
+          $MainPython = (Get-Command python -ErrorAction Stop).Source
+          $AuditRoot = Join-Path $env:RUNNER_TEMP "isolated-advisory-audit"
+          $AuditInput = Join-Path $env:RUNNER_TEMP "third-party-resolved.txt"
+          $AuditOutput = Join-Path $env:RUNNER_TEMP "dependency-audit.json"
+          $resolved = & $MainPython -m pip list --format=freeze
+          if ($LASTEXITCODE -ne 0) { throw "pip list failed." }
+          $resolved | Where-Object { $_ -notmatch "(?i)^valorant-ai-coach==" } |
+            Set-Content -LiteralPath $AuditInput -Encoding UTF8
+          & $MainPython -m venv $AuditRoot
+          if ($LASTEXITCODE -ne 0) { throw "audit venv creation failed." }
+          $AuditPython = Join-Path $AuditRoot "Scripts\python.exe"
+          & $AuditPython -m pip install pip-audit==2.10.1
+          if ($LASTEXITCODE -ne 0) { throw "isolated pip-audit install failed." }
+          & $AuditPython -m pip_audit --no-deps -r $AuditInput --format json --output $AuditOutput
+          if ($LASTEXITCODE -ne 0) { throw "Dependency advisory audit failed; inspect its report." }
+      - name: Save audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-audit-windows
+          path: ${{ runner.temp }}/dependency-audit.json
+          if-no-files-found: warn

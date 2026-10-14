@@ -512,21 +512,20 @@ def test_good_and_improve_in_the_same_scene_are_both_kept() -> None:
     assert sorted(item["label"] for item in result) == ["good", "improve"]
 
 
-def test_known_limitation_display_limit_counts_per_rule_so_early_good_can_hide_improve() -> None:
-    """Characterisation: ``max_display_exemplars_per_match`` is per rule, not per label.
-
-    Three early GOOD evaluations fill AIM-02's budget (3), so a later IMPROVE of the same
-    rule is dropped from the aggregated result. No label is mixed or invented, but the
-    stored result under-represents IMPROVE. Changing this is a behaviour decision.
-    """
+def test_l5_later_improve_is_stored_but_ui_selects_it_over_early_good() -> None:
+    """Canonical dedup has no UI cap; display sample prefers an IMPROVE exemplar."""
     items = [
         ev("g1", "AIM-02", "good", 100.0, 0.9, ["F1"]),
         ev("g2", "AIM-02", "good", 300.0, 0.9, ["F2"]),
         ev("g3", "AIM-02", "good", 500.0, 0.9, ["F3"]),
         ev("i1", "AIM-02", "improve", 700.0, 0.95, ["F4"]),
     ]
-    result = display_aggregator().aggregate(items)
-    assert [item["evaluation_id"] for item in result] == ["g1", "g2", "g3"]
+    aggregator = display_aggregator()
+    result = aggregator.aggregate(items)
+    assert [item["evaluation_id"] for item in result] == ["g1", "g2", "g3", "i1"]
+    assert [item["evaluation_id"] for item in aggregator.select_display_exemplars(result)] == [
+        "g1", "g2", "i1"
+    ]
 
 
 def test_known_limitation_an_exact_time_and_confidence_tie_keeps_the_first_supplied_id() -> None:
@@ -915,14 +914,8 @@ def test_the_floor_is_idempotent_and_does_not_mutate_its_input() -> None:
     assert MatchAnalysisPipeline._enforce_confidence_policy(once) == once
 
 
-def test_known_limitation_a_demoted_weak_item_still_uses_up_the_per_rule_display_budget() -> None:
-    """L-5 interaction of D-1b (unchanged limitation, recorded).
-
-    The per-rule display limit (``max_display_exemplars_per_match``) counts every kept item of a
-    rule, whatever its label. Before D-1b a weak good merged into a confident neighbour and used
-    one slot; now it is a separate ``unscored`` item and uses its own, so a later scored item of
-    the same rule can be cut sooner. Separating display limits from storage stays a separate task.
-    """
+def test_l5_demoted_item_is_stored_without_displacing_scored_display_items() -> None:
+    """The D-1b UNSCORED conversion does not consume a storage or display slot."""
     rounds = (
         1,
         [
@@ -933,8 +926,10 @@ def test_known_limitation_a_demoted_weak_item_still_uses_up_the_per_rule_display
         ],
     )
     out = pipeline_aggregate(rounds)[1]
-    assert [item["evaluation_id"] for item in out] == ["w", "s1", "s2"]  # s3 is cut
+    assert [item["evaluation_id"] for item in out] == ["w", "s1", "s2", "s3"]
     assert out[0]["label"] == "unscored"
+    shown = display_aggregator().select_display_exemplars(out)
+    assert [item["evaluation_id"] for item in shown] == ["s1", "s2", "s3"]
 
 
 # ================================================================================ 4. match view

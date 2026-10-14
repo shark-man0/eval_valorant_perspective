@@ -1,0 +1,26 @@
+name: Python text I/O review gate
+
+on:
+  pull_request:
+    paths:
+      - "src/**/*.py"
+      - "scripts/**/*.py"
+      - "tests/**/*.py"
+      - "config/**/*.py"
+      - "ValorantData/**/*.py"
+      - ".github/workflows/text-io-review.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  text-io-contract-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Enforce zero unknown I/O contracts
+        run: python scripts/audit_text_io.py --require-classified --summary-json

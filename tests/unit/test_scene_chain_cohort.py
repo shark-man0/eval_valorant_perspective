@@ -27,10 +27,10 @@ def test_native_coverage_rejects_skips_duplicates_and_isolated_frames():
 
 def test_file_binding_detects_mutation_and_requires_explicit_inputs(tmp_path: Path):
     source = tmp_path / "frozen.py"
-    source.write_text("original")
+    source.write_text("original", encoding="utf-8")
     bindings = {str(source): sha256(source)}
     verify_bindings(bindings)
-    source.write_text("changed")
+    source.write_text("changed", encoding="utf-8")
     with pytest.raises(ValueError, match="changed"):
         verify_bindings(bindings)
     with pytest.raises(ValueError, match="nonempty"):
@@ -132,7 +132,7 @@ def test_native_runner_uses_observed_acquisition_and_never_reseeds(
         excluded_png_sha256=[],
     )
     reservation = profile.parent / "reservation.json"
-    reservation.write_text(json.dumps(freeze))
+    reservation.write_text(json.dumps(freeze), encoding="utf-8")
     output = profile.parent / "report.json"
     monkeypatch.setattr(
         sys,
@@ -171,7 +171,7 @@ def test_native_runner_uses_observed_acquisition_and_never_reseeds(
 
     monkeypatch.setattr(runner, "extract_window", extract)
     runner.main()
-    report = json.loads(output.read_text())
+    report = json.loads(output.read_text(encoding="utf-8"))
     window = report["windows"][0]
     assert window["supported_links_descriptive"] == (2 if initial_match else 1 if deferred else 0)
     assert window["known_native_pixel_overlaps"] == 1

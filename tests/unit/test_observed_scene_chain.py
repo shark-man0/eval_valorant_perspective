@@ -79,7 +79,9 @@ def test_continuous_native_motion_binds_actual_previous_pixels_and_pts(source):
         witness["fixed_projection_ncc"] for witness in result["witnesses"]
     )
     assert result["minimum_witness_ncc"] >= 0.90
-    declared_boxes = json.loads(path.read_text())["references"][0]["world_boxes_640x360"]
+    declared_boxes = json.loads(path.read_text(
+        encoding="utf-8",
+    ))["references"][0]["world_boxes_640x360"]
     for witness in result["witnesses"]:
         assert witness["previous_box_640x360"] == declared_boxes[witness["region"]]
     transform = np.asarray(result["previous_to_current_affine_640x360"])

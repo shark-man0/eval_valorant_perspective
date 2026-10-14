@@ -18,7 +18,9 @@ def inputs():
     report = {"kind": "private_v3_source_state_fragments_not_complete_pack",
               "production_input": False, "source_video_sha256": "source",
               "states": states, "negatives": negatives, "evidence_bindings": bindings}
-    negative_schema = json.loads((PACK / "schemas/negative_assertions_schema_v3.json").read_text())
+    negative_schema = json.loads((PACK / "schemas/negative_assertions_schema_v3.json").read_text(
+        encoding="utf-8",
+    ))
     return timeline, report, "source", boundary[5], negative_schema
 
 

@@ -124,14 +124,14 @@ def test_review_cli_uses_native_frame_sample_and_keeps_approval_pending(
         assert not (output / "index.html").exists()
         return
     prepare_boundary_review.main()
-    report = json.loads((output / "review_evidence.json").read_text())
+    report = json.loads((output / "review_evidence.json").read_text(encoding="utf-8"))
     assert report["source_video_sha256"] == digest
     assert report["recognizer_outputs_consulted"] is False
     assert report["independent_review_status"] == "pending"
     assert report["annotations"] == []
     assert report["source_playback_available"] is playback
     assert report["window_continuity_certified"] is False
-    page = (output / "index.html").read_text()
+    page = (output / "index.html").read_text(encoding="utf-8")
     assert ("<video" in page) is playback
     if playback:
         assert source.resolve().as_uri() + "#t=0.000000,91.000000" in page

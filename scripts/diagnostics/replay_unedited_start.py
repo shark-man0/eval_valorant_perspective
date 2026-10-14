@@ -66,7 +66,7 @@ def main() -> None:
         'candidates': candidates, 'released_events': 0, 'qualification_created': False,
         'canonical_current': None, 'canonical_delta': None,
     }
-    args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2)+'\n')
+    args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2)+'\n', encoding="utf-8")
     print(json.dumps({'frames': len(reader['rows']), 'image_overlap_verified': verified,
                       'candidate_count': len(candidates), 'released_events': 0}))
 

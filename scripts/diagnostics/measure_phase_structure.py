@@ -88,7 +88,7 @@ def main():
               'wall_clock_sec': time.monotonic()-started,
               'qualification_created': False, 'canonical_current': None,
               'canonical_delta': None}
-    args.output.write_text(json.dumps(result, indent=2)+'\n')
+    args.output.write_text(json.dumps(result, indent=2)+'\n', encoding="utf-8")
     print(json.dumps({'frames': len(rows), 'runtime_sec': result['wall_clock_sec']}))
 
 
