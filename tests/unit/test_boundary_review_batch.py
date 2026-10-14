@@ -56,7 +56,7 @@ def test_batch_cli_preserves_private_source_integrity_and_never_joins_windows(
     value = plan(((0, 599), (700, 899)))
     if fault == "source":
         value["source_video_sha256"] = "0" * 64
-    plan_path.write_text(json.dumps(value))
+    plan_path.write_text(json.dumps(value), encoding="utf-8")
     chunks = []
     if fault == "read_mutation":
         original_read = type(plan_path).read_text
@@ -64,7 +64,7 @@ def test_batch_cli_preserves_private_source_integrity_and_never_joins_windows(
         def mutating_read(path, *args, **kwargs):
             data = original_read(path, *args, **kwargs)
             if path == plan_path:
-                path.write_text(data + " ")
+                path.write_text(data + " ", encoding="utf-8")
             return data
 
         monkeypatch.setattr(type(plan_path), "read_text", mutating_read)
@@ -85,7 +85,7 @@ def test_batch_cli_preserves_private_source_integrity_and_never_joins_windows(
             if fault == "endpoint" and len(chunks) == 2:
                 result[-1] = FrameSample(899, result[-1].path)
             if fault == "mutation":
-                plan_path.write_text(json.dumps(value) + " ")
+                plan_path.write_text(json.dumps(value) + " ", encoding="utf-8")
             return result
 
     monkeypatch.setattr(review, "VideoService",

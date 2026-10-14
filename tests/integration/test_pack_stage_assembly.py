@@ -74,11 +74,11 @@ def test_original_compiler_and_unknown_runtime_identity_are_preserved(tmp_path, 
 def test_staging_rejects_integrity_failures(tmp_path, monkeypatch, fault):
     timeline, source, output = setup(tmp_path, monkeypatch)
     if fault == "changed_binding":
-        (timeline / "evidence_bindings.json").write_text("{}")
+        (timeline / "evidence_bindings.json").write_text("{}", encoding="utf-8")
     elif fault == "changed_image":
         (timeline / "assets/synthetic.jpg").write_bytes(b"changed")
     elif fault == "missing_pts":
-        (source / "frame_pts_sidecar_v3.json").write_text('{"entries": []}')
+        (source / "frame_pts_sidecar_v3.json").write_text('{"entries": []}', encoding="utf-8")
     else:
         output.mkdir()
     with pytest.raises((ValueError, FileExistsError)):
