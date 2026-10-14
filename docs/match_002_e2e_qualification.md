@@ -806,3 +806,40 @@ qualification. Related discovery/semantic/native/geometry/lifecycle modules:
 144 passed. Ruff, mypy (132 production files) and diff checks pass. All existing
 thresholds, Schemas, canonical Packs and production recognizers remain unchanged
 in this checkpoint; full-match lifecycle is still incomplete.
+
+## Short-caption proposal coverage and pending-review integrity (2026-10-14)
+
+The four-component discovery proposer cannot represent every three-character
+caption. Add an explicit diagnostic-only three-component option, leaving the
+default four-component proposer unchanged. This changes candidate enumeration,
+not the native recognizer, grouped NCC >=0.90, three independent support groups,
+contrast requirements, three distinct training parents, semantic labels or
+qualification/adoption. Synthetic three-component text becomes a proposal;
+two-component text and insufficient training support still reject.
+
+On the same frozen development pool, the explicit option produces the same
+reference/mask/group bytes, training support sets and held predictions as the
+earlier candidates. Both configured ROIs have 7 training row proposals: 2 fail
+the existing training-support requirement, 5 supported proposals reduce to 3
+support clusters. Held acceptance remains 2/1/1. No new result-reference support
+or actual lifecycle gain is established. Do not continue changing this fixed
+cohort's proposal thresholds merely to create a result candidate. The observed
+shape counts cannot establish which unreviewed source frames contain a result.
+
+The new proposal diagnostics distinguish enumeration, rejected support, accepted
+reference proposals, support clusters and returned candidates. They do not
+classify absent purchase/result UI or infer boundaries. Private new receipt SHA:
+`3e382329c79f5f56fd282dcab85419d62198a32304b590fc6b7879f476d402e5`.
+
+The earlier pending human-review receipt/page, every source and review crop,
+and every reference/mask/group hash still match. The original generator bytes
+were separately verified against Git commit `5ba3065`; the modified current
+generator is not presented as the historical implementation. The previously
+requested gallery and its three reference IDs remain valid; no response or
+semantic approval has been received or fabricated. No rereview is requested.
+
+Related discovery/semantic/geometry/native/lifecycle tests: 150 passed. Ruff,
+mypy (132 production files) and diff checks pass. Source/GT/Pack and production
+code remain unchanged. Next distinguish missing representative training support
+from unreviewed semantics, using frozen source-only evidence rather than GT-
+selected frames or another full run with unqualified references.

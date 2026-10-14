@@ -11,6 +11,7 @@ import html
 import json
 import math
 import re
+from collections import Counter
 from pathlib import Path
 
 import cv2
@@ -23,7 +24,9 @@ from valorant_ai_coach.hud.layout import HudLayout
 from valorant_ai_coach.hud.semantic_text import SemanticTextReference
 
 
-def text_rows(gray):
+def text_rows(gray, *, minimum_glyphs: int = 4):
+    if type(minimum_glyphs) is not int or minimum_glyphs not in (3, 4):
+        raise ValueError("explicit three/four-component diagnostic proposal required")
     if gray.dtype != np.uint8 or gray.ndim != 2 or min(gray.shape) < 20:
         raise ValueError("native gray banner ROI required")
     _, _, stats, _ = cv2.connectedComponentsWithStats((gray >= 210).astype(np.uint8), 8)
@@ -33,7 +36,7 @@ def text_rows(gray):
     for _, y, _, h in glyphs:
         group = [b for b in glyphs if abs(b[3] - h) <= .25 * h
                  and abs(b[1] + b[3] / 2 - y - h / 2) <= .20 * h]
-        if len(group) < 4:
+        if len(group) < minimum_glyphs:
             continue
         left, right = min(b[0] for b in group), max(b[0] + b[2] for b in group)
         if right - left < 120:
@@ -44,11 +47,14 @@ def text_rows(gray):
     return sorted(boxes)
 
 
-def propose(crops, hashes):
+def propose(crops, hashes, *, minimum_glyphs: int = 4, diagnostics: dict | None = None):
     """Existing >=.90 grouped NCC, all candidate selection training-only."""
     proposals = []
+    rejections = Counter()
+    row_count = 0
     for crop in crops:
-        for box in text_rows(crop):
+        for box in text_rows(crop, minimum_glyphs=minimum_glyphs):
+            row_count += 1
             x1, y1, x2, y2 = box
             reference = crop[y1:y2, x1:x2]
             mask = cv2.dilate((reference >= 210).astype(np.uint8) * 255,
@@ -59,7 +65,8 @@ def propose(crops, hashes):
             training = [(h, c[y1:y2, x1:x2]) for h, c in zip(hashes, crops, strict=True)]
             try:
                 matcher = SemanticTextReference(reference, mask, groups, training, .90)
-            except ValueError:
+            except ValueError as exc:
+                rejections[str(exc)] += 1
                 continue
             support = tuple(i for i, (_, c) in enumerate(training) if matcher.score(c) >= .90)
             proposals.append((box, reference.copy(), mask, groups, matcher, support))
@@ -69,14 +76,21 @@ def propose(crops, hashes):
         key = proposal[-1]
         if key not in unique:
             unique[key] = proposal
-    return sorted(unique.values(), key=lambda p: (-len(p[-1]), p[0]))[:4]
+    selected = sorted(unique.values(), key=lambda p: (-len(p[-1]), p[0]))[:4]
+    if diagnostics is not None:
+        diagnostics.update(training_row_proposals=row_count, rejections=dict(rejections),
+                           supported_proposals=len(proposals), support_clusters=len(unique),
+                           returned_candidates=len(selected))
+    return selected
 
 
 def discover(pool: Path, layout_path: Path, partition_path: Path, output: Path,
-             reserved: set[str]) -> dict:
+             reserved: set[str], *, minimum_glyphs: int = 4) -> dict:
     _check_output_privacy(output.resolve())
     if output.exists():
         raise FileExistsError("new private discovery directory required")
+    if type(minimum_glyphs) is not int or minimum_glyphs not in (3, 4):
+        raise ValueError("explicit three/four-component diagnostic proposal required")
     selection_path = pool / "review_selection.json"
     selection = json.loads(selection_path.read_text(encoding="utf-8"))
     parent_path = pool / "candidate_report.json"
@@ -117,6 +131,7 @@ def discover(pool: Path, layout_path: Path, partition_path: Path, output: Path,
     output.mkdir(parents=True)
     report = {"kind": "unlabeled_banner_discovery_not_qualification",
               "source_sha256": parent["source_sha256"], "threshold": .90,
+              "minimum_glyphs": minimum_glyphs,
               "training_count": len(training), "held_count": len(held),
               "training_hashes": [r[2]["sha256"] for r in training],
               "held_hashes": [r[2]["sha256"] for r in held],
@@ -126,6 +141,7 @@ def discover(pool: Path, layout_path: Path, partition_path: Path, output: Path,
               "held_scope": "fixed development images, not final evaluation holdout",
               "source_inputs_sha256": {str(p): h for p, h in bindings.items()},
               "roles": {}, "semantic_labels_assigned": False,
+              "proposal_diagnostics": {},
               "independent_semantic_reviewed": False, "review_frames": [],
               "qualification_created": False, "production_adopted": False}
     cards = []
@@ -133,7 +149,10 @@ def discover(pool: Path, layout_path: Path, partition_path: Path, output: Path,
         bounds = layout.normalized_roi(role).pixel_bounds(*layout.reference_resolution)
         x1, y1, x2, y2 = bounds
         crops = [cv2.cvtColor(r[3][y1:y2, x1:x2], cv2.COLOR_BGR2GRAY) for r in training]
-        candidates = propose(crops, report["training_hashes"])
+        diagnostics = {}
+        candidates = propose(crops, report["training_hashes"], minimum_glyphs=minimum_glyphs,
+                             diagnostics=diagnostics)
+        report["proposal_diagnostics"][role] = diagnostics
         rows = []
         for number, (box, reference, mask, groups, matcher, support) in enumerate(candidates, 1):
             name = f"{role}_{number}"
@@ -191,9 +210,11 @@ def main():
     for name in ("pool", "layout", "partition", "output"):
         parser.add_argument("--" + name, type=Path, required=True)
     parser.add_argument("--reserved-source-hash", action="append", default=[])
+    parser.add_argument("--minimum-glyphs", type=int, choices=(3, 4), default=4,
+                        help="Diagnostic proposal only; matcher/qualification gates unchanged")
     args = parser.parse_args()
     result = discover(args.pool, args.layout, args.partition, args.output,
-                      set(args.reserved_source_hash))
+                      set(args.reserved_source_hash), minimum_glyphs=args.minimum_glyphs)
     print(json.dumps({"training": result["training_count"], "held": result["held_count"],
                       "candidates": {k: len(v) for k, v in result["roles"].items()},
                       "production_adopted": False}))

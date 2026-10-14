@@ -28,6 +28,34 @@ def test_training_proposals_never_assign_semantics_or_accept_blank_background():
     assert subject.propose([np.zeros_like(c) for c in crops], hashes) == []
 
 
+def test_short_caption_proposal_does_not_relax_grouped_ncc_or_training_support():
+    crop = np.full((80, 220), 30, np.uint8)
+    for x in (20, 90, 160):
+        cv2.rectangle(crop, (x, 25), (x + 18, 54), 240, -1)
+    assert subject.text_rows(crop) == []
+    assert subject.text_rows(crop, minimum_glyphs=3)
+    hashes = [str(i) * 64 for i in range(1, 4)]
+    candidates = subject.propose([crop] * 3, hashes, minimum_glyphs=3)
+    assert candidates
+    assert all(candidate[4].threshold == .90 for candidate in candidates)
+    assert subject.propose([crop] * 2, hashes[:2], minimum_glyphs=3) == []
+    diagnostics = {}
+    assert subject.propose([crop] * 2, hashes[:2], minimum_glyphs=3,
+                           diagnostics=diagnostics) == []
+    assert diagnostics["training_row_proposals"] == 2
+    assert diagnostics["returned_candidates"] == 0
+    assert diagnostics["rejections"] == {
+        "semantic text requires three distinct source-frame hashes": 2}
+    crop[:, 155:] = 30
+    assert subject.text_rows(crop, minimum_glyphs=3) == []
+
+
+@pytest.mark.parametrize("value", [True, 0, 2, 5, 3.0])
+def test_no_arbitrary_component_floor(value):
+    with pytest.raises(ValueError):
+        subject.text_rows(text(), minimum_glyphs=value)
+
+
 def fixture(tmp_path):
     pool = tmp_path / "pool"
     frames = pool / "pool_frames"
