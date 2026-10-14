@@ -192,3 +192,13 @@ reported count of 0 will mean **all observed static candidates have a
 reasoned classification**, not proof of universal locale compatibility.
 The Windows `PYTHONUTF8=0` test and Windows packaged smoke, Linux pytest
 process exit, plus #18 Qt teardown still require independent acceptance.
+
+## Dedicated static review CI gate
+
+`.github/workflows/text-io-review.yml` runs a lightweight no-dependency
+GitHub Actions check on PR changes across scanned Python source scopes.
+It uses `python scripts/audit_text_io.py --require-classified --summary-json`,
+which exits nonzero and prints a bounded site list when unclassified calls
+remain. This provides prompt and independent evidence for the target zero,
+without hiding failures in the separately tracked Linux Qt teardown/coverage
+suite. Full Linux and Windows CI still remain required for merging.

@@ -203,3 +203,14 @@ def test_reviewed_contracts_do_not_suppress_new_receivers() -> None:
     source = "class Custom: pass\nx = Custom().encode()"
     assert scan_source(source, "unknown_test.py")[0]["category"] == "要調査"
     assert scan_source("x = '日本語'.encode()", "unknown_test.py")[0]["category"] == "要調査"
+
+
+def test_zero_unclassified_cli_switch_is_wired() -> None:
+    script = (Path(__file__).resolve().parents[2] / "scripts/audit_text_io.py").read_text(
+        encoding="utf-8"
+    )
+    assert '"--require-classified"' in script
+    workflow = (
+        Path(__file__).resolve().parents[2] / ".github/workflows/text-io-review.yml"
+    ).read_text(encoding="utf-8")
+    assert "python scripts/audit_text_io.py --require-classified --summary-json" in workflow

@@ -147,12 +147,20 @@ def scan_repository(root: Path = ROOT) -> dict[str, Any]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--require-classified", action="store_true",
+                        help="Fail if any I/O call lacks an explicit reviewed contract")
     parser.add_argument("--summary-json", action="store_true")
     parser.add_argument("--json", action="store_true")
     parser.add_argument("--review-json", action="store_true",
                         help="Emit every unresolved site with AST source expression")
     args = parser.parse_args()
     result = scan_repository()
+    if args.require_classified:
+        pending = [site for site in result["sites"] if site["category"] == "要調査"]
+        if pending:
+            print(json.dumps({"total_unresolved": len(pending),
+                              "sites": pending[:20]}, ensure_ascii=True, indent=2))
+            raise SystemExit(1)
     if args.review_json:
         unknown = [site for site in result["sites"] if site["category"] == "要調査"]
         result = {
