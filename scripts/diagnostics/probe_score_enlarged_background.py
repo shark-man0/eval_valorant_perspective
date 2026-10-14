@@ -88,7 +88,7 @@ def main() -> None:
     report = dict(scope='Frozen score-only nominal ROI diagnostic; no geometry/lifecycle claim',
                   plan_sha256=plan_hash, rows=rows, wall_clock_sec=time.perf_counter()-started,
                   qualification_created=False, canonical_current=None, canonical_delta=None)
-    args.output.write_text(json.dumps(report, indent=2)+'\n')
+    args.output.write_text(json.dumps(report, indent=2)+'\n', encoding="utf-8")
     print(json.dumps({k: v for k, v in report.items() if k != 'rows'}))
 
 

@@ -92,7 +92,7 @@ def run():
         'independent_new_holdout': False, 'qualification_created': False,
         'production_changed': False, 'canonical_current': None, 'canonical_delta': None,
     }
-    output.write_text(json.dumps(result, indent=2) + '\n')
+    output.write_text(json.dumps(result, indent=2) + '\n', encoding="utf-8")
     print(json.dumps({'counts': counts, 'distinct_physical_frames':
                       result['distinct_physical_frames']}))
 

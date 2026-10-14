@@ -88,7 +88,7 @@ def main():
     result['input_sha256'] = {p: hashlib.sha256(raw).hexdigest()
                               for p, raw in originals.items()}
     result['diagnostic_sha256'] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
-    args.output.write_text(json.dumps(result, indent=2)+'\n')
+    args.output.write_text(json.dumps(result, indent=2)+'\n', encoding="utf-8")
     print(json.dumps({'minimum_scores': {
         key: min(min(g[key]) for g in result['groups']) for key in (
             'original_training_scores', 'stable_trim_training_scores',
