@@ -124,3 +124,19 @@ JSON structure, provenance, hash checks, error handling, newline arguments or
 recognition/GT decisions. Static regression tests cover all ten file paths.
 The post-change count must be measured on CI; the current PR is still an
 incremental remediation rather than closure of all Issue #28 contracts.
+
+## FFprobe JSON subprocess contract (2026-10-14)
+
+Eight additional FFprobe subprocess calls (seven source files in `src/`,
+`scripts/diagnostics/` and `scripts/e2e/`) explicitly decode text as
+UTF-8. These calls request `-of json`, a UTF-8 JSON data protocol; their
+Python `text=True` calls previously selected the Windows host code page.
+Binary FFmpeg frame pipes, command stderr redirected to log files, and
+locale-dependent human-readable Git/OS utilities remain unchanged. A synthetic
+subprocess test verifies that Japanese UTF-8 output cannot be decoded as
+cp1252 while explicitly UTF-8 text capture round-trips unchanged. The
+additional change only controls text decoding; native source video identities,
+metadata assertions, timing, frame extraction and GT remain identical.
+
+The prior 363-site inventory was taken before both the 16 JSON-writer edits
+and this eight-probe contract fix; CI must provide the new count.

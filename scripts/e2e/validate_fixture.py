@@ -212,7 +212,7 @@ def validate_source(pack: Path, video_path: Path, ffprobe: str = "ffprobe") -> N
     if before != profile["sha256"]:
         raise ValueError("physical source SHA mismatch")
     result = subprocess.run([ffprobe, "-v", "error", "-show_streams", "-show_format", "-of", "json",
-                             str(video_path)], capture_output=True, text=True, check=True)
+                             str(video_path)], capture_output=True, text=True, encoding="utf-8", check=True)
     metadata = json.loads(result.stdout)
     videos = [s for s in metadata["streams"] if s["codec_type"] == "video"]
     if len(videos) != 1:
@@ -236,7 +236,7 @@ def validate_source(pack: Path, video_path: Path, ffprobe: str = "ffprobe") -> N
             raise ValueError("physical audio transport identity mismatch")
     result = subprocess.run([ffprobe, "-v", "error", "-select_streams", "v:0", "-show_packets",
                              "-show_entries", "packet=pts", "-of", "json", str(video_path)],
-                            capture_output=True, text=True, check=True)
+                            capture_output=True, text=True, encoding="utf-8", check=True)
     ticks = sorted(p["pts"] for p in json.loads(result.stdout)["packets"])
     if (not ticks or len(set(ticks)) != len(ticks)
             or any(type(tick) is not int or tick < 0 for tick in ticks)):

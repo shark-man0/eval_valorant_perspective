@@ -87,7 +87,7 @@ def probe_json(ffprobe: str, video: Path, arguments: list[str]) -> dict[str, Any
     result = subprocess.run(
         [ffprobe, "-v", "error", "-select_streams", "v:0", *arguments,
          "-of", "json", str(video)],
-        capture_output=True, text=True, check=True,
+        capture_output=True, text=True, encoding="utf-8", check=True,
     )
     data: dict[str, Any] = json.loads(result.stdout)
     return data

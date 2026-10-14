@@ -2,6 +2,8 @@
 
 import codecs
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -85,3 +87,37 @@ def test_frame_suite_json_writes_are_explicitly_utf8() -> None:
     writers = [site for site in findings if site["operation"] == "write_text"]
     assert writers
     assert all(site["category"] == "UTF-8明示" for site in writers)
+
+
+def test_ffprobe_json_subprocess_calls_use_explicit_utf8() -> None:
+    root = Path(__file__).resolve().parents[2]
+    audited = (
+        "src/valorant_ai_coach/video/native.py",
+        "src/valorant_ai_coach/video/native_replay.py",
+        "scripts/diagnostics/diagnose_native_global_lifecycle.py",
+        "scripts/diagnostics/diagnose_roster_window.py",
+        "scripts/diagnostics/intake_recording.py",
+        "scripts/e2e/prepare_pack_source.py",
+        "scripts/e2e/validate_fixture.py",
+    )
+    for filename in audited:
+        path = root / filename
+        findings = scan_source(path.read_text(encoding="utf-8"), str(path))
+        text_processes = [
+            site for site in findings
+            if site["operation"] == "subprocess" and site["category"] != "Binary I/O"
+        ]
+        assert text_processes, filename
+        assert all(site["category"] == "UTF-8明示" for site in text_processes), filename
+
+
+def test_utf8_subprocess_json_survives_cp1252_host() -> None:
+    code = "import sys; sys.stdout.buffer.write('日本語'.encode())"
+    raw = subprocess.run([sys.executable, "-c", code], capture_output=True, check=True).stdout
+    with pytest.raises(UnicodeDecodeError):
+        raw.decode("cp1252")
+    result = subprocess.run(
+        [sys.executable, "-c", code], capture_output=True, check=True,
+        text=True, encoding="utf-8",
+    )
+    assert result.stdout == "日本語"
