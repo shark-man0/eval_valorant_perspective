@@ -28,6 +28,25 @@ def digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def recognition_context(raw_path: Path) -> tuple[dict[str, Any], list[Path]]:
+    """Retain original run bindings without claiming to renew qualification."""
+    metadata_path = raw_path.parent / "run_metadata.json"
+    runtime_path = raw_path.parent / "runtime_summary.json"
+    if not metadata_path.exists():
+        return {"status": "unavailable; source qualification must be checked separately"}, []
+    metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+    if metadata.get("input_hashes", {}).get(raw_path.name) != digest(raw_path):
+        raise ValueError("original run metadata does not bind this raw artifact")
+    files = [metadata_path]
+    context = {"status": "original run bindings, not renewed qualification",
+               "run_metadata": metadata}
+    if runtime_path.exists():
+        runtime = json.loads(runtime_path.read_text(encoding="utf-8"))
+        context["original_input_fingerprint"] = runtime.get("input_fingerprint", {})
+        files.append(runtime_path)
+    return context, files
+
+
 def replay(raw: dict[str, Any], targets: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Project only real observations in their existing native package windows.
 
@@ -90,11 +109,12 @@ def main() -> None:
         parser.error("output already exists; preserve earlier evidence")
     if digest(args.raw) != args.raw_sha256:
         parser.error("raw integrity mismatch")
+    context, context_paths = recognition_context(args.raw)
     code_paths = (
         Path(__file__), Path("src/valorant_ai_coach/rounds/builder.py"),
         Path("src/valorant_ai_coach/facts/builder.py"), Path("tests/e2e/trace_adapter.py"),
     )
-    inputs = {str(p): digest(p) for p in (args.raw, args.targets, *code_paths)}
+    inputs = {str(p): digest(p) for p in (args.raw, args.targets, *code_paths, *context_paths)}
     fingerprint = global_recognizer_fingerprint()
     started = time.perf_counter()
     raw = json.loads(args.raw.read_text(encoding="utf-8"))
@@ -109,7 +129,7 @@ def main() -> None:
         raise ValueError("terminal input/code mismatch")
     report = {
         "scope": "Saved-raw transport diagnostic; no new recognition or canonical run",
-        "source_recognition_metadata": raw.get("metadata", {}),
+        "source_recognition_metadata": context,
         "input_sha256": inputs,
         "transport_recognizer_fingerprint": fingerprint,
         "historical_qualification_resigned": False,

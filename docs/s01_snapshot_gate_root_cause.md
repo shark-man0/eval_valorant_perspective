@@ -38,7 +38,7 @@ The table uses the nearest actual main source PTS, selected by time alone. All r
 | GT-R2-SNAP-151 | 151.002669 | 0 / 0 | 0.9614624381065369 | 0.9412204027175903 / 0.9619362354278564 | primary_state, player_alive, view_owner, spectated_name, spectated_hp, spectated_ammo_mag, spectated_ammo_reserve, spectated_weapon, spectated_location_label_raw |
 | GT-R1-SNAP-0415-DERIVED-zone_id | 4.152669 | 0 / 0 | 0.9607433676719666 | 0.9473333954811096 / 0.9943748712539673 | zone_id |
 
-Exact local observations and reader provenance are in the private diagnostic output. The existing source-field audit records each required predicate and source-image review. Sixteen targets require snapshots and one requires a derived zone. The first loss of eligible globals is `_state_snapshots()`; on this branch those fields can reach snapshots, score/timer facts and trace. The secondary predicates still fail. Never use the assertion's expected state to promote the observation.
+Exact local observations and reader provenance are in the private diagnostic output. The private source-field audit records each required predicate and source-image review; only sanitized metrics are published here. Sixteen targets require snapshots and one requires a derived zone. The first loss of eligible globals is `_state_snapshots()`; on this branch those fields can reach snapshots, score/timer facts and trace. The secondary predicates still fail. Never use the assertion's expected state to promote the observation.
 
 ## Hypotheses
 
@@ -67,4 +67,4 @@ Rejected: removing 0.65 globally; replacing aggregate with max reader confidence
 
 ## Remaining work and acceptance
 
-See [transport verification](s01_snapshot_field_transport_verification.md). Completion requires current-branch Linux/Windows CI, coverage >=75%, packaged smoke, persistence checks and source-backed measurement, rather than synthetic PASS alone. No new reader, threshold, qualification pack, GT or assertion change is authorized by this report.
+See [transport verification](s01_snapshot_field_transport_verification.md). Current-branch Linux/Windows CI, coverage >=75%, packaged smoke and SQLite/checkpoint controls passed at the recorded code commit (see verification report). Those checks do not establish independent correctness of every retained source field or qualify missing player/context predicates. No new reader, threshold, qualification pack, GT or assertion change is authorized by this report.

@@ -287,3 +287,23 @@ def test_global_package_sqlite_checkpoint_restore_preserves_field_support(tmp_pa
         'completed_rounds': [package['round_no']],
     }
     assert FactBuilder().enrich(restored)['deterministic_facts'] == enriched['deterministic_facts']
+
+
+def test_replay_source_context_rejects_unbound_original_metadata(tmp_path):
+    import hashlib
+    import json
+
+    from scripts.diagnostics.replay_snapshot_gate import recognition_context
+    raw = tmp_path / 'raw_processing.json'
+    raw.write_text('{}', encoding='utf-8')
+    context, files = recognition_context(raw)
+    assert context['status'].startswith('unavailable') and files == []
+    metadata = tmp_path / 'run_metadata.json'
+    metadata.write_text(json.dumps({'input_hashes': {raw.name: 'invalid'}}), encoding='utf-8')
+    with pytest.raises(ValueError, match='does not bind'):
+        recognition_context(raw)
+    metadata.write_text(json.dumps({'input_hashes': {
+        raw.name: hashlib.sha256(raw.read_bytes()).hexdigest(),
+    }}), encoding='utf-8')
+    context, files = recognition_context(raw)
+    assert files == [metadata] and context['status'].startswith('original run bindings')

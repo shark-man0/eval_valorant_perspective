@@ -1,6 +1,6 @@
 {
   "task": "S-01",
-  "acceptance": "B: global observation and fact transport verified; no fixed-17 assertion gain; CI and persistence acceptance pending",
+  "acceptance": "B: independent global transport measured; fixed-17 canonical gain zero; remaining source-owned/context evidence unqualified",
   "start_main": "7e480c2f2f7f49aea73e1541d065d78881d2f11c",
   "executed_full_commit": "46462336427149764beb8e1fdd94c554e075616e",
   "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
@@ -61,7 +61,9 @@
         "max": 0.9976227879524231,
         "median": 0.9648743867874146
       }
-    }
+    },
+    "qualified_fields_lost_before": 186,
+    "qualified_fields_lost_after": 0
   },
   "targets": [
     {
@@ -972,5 +974,37 @@
       "status": "pass"
     }
   ],
-  "privacy": "No private GT definitions, source frames, profile assets, raw observations or per-frame trace are included."
+  "privacy": "No private GT definitions, source frames, profile assets, raw observations or per-frame trace are included.",
+  "ci": {
+    "tested_commit": "5b441ad35dfa2dadd11b66427d8728784be43e76",
+    "linux": {
+      "run_id": 38692141125,
+      "conclusion": "success",
+      "passed": 3772,
+      "skipped": 7,
+      "coverage_percent": 86.62
+    },
+    "windows": {
+      "run_id": 38692141166,
+      "conclusion": "success",
+      "passed": 3768,
+      "skipped": 11,
+      "coverage_percent": 86.58,
+      "packaged_smoke": "success"
+    },
+    "local_related": {
+      "passed": 104,
+      "wall_sec": 137.43
+    },
+    "scope": "Repository and packaged validation; Windows private real-video recognition not verified",
+    "final_local_focused": {
+      "passed": 28,
+      "wall_sec": 33.41
+    }
+  },
+  "first_blocker_counts": {
+    "historical_aggregate_snapshot_gate": 17,
+    "current_remaining_non_global_evidence": 17
+  },
+  "full_profile_fingerprint": "23fdb3a3cd1202dd0d8bf1b54994cc0e14b2ecc1367dce9dfa829fff883f64da"
 }
