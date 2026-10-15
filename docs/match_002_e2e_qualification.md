@@ -1456,3 +1456,37 @@ of raw local diagnostics. No runtime reader, safety threshold or lifecycle
 qualification policy is changed.
 Final verification:116related tests pass, scoped Ruff and production mypy
 (133files) pass, and git diff --check passes. Full E2E remains unfinished.
+
+## Fixed held result-text review prepared, labels pending
+
+Resume semantic input qualification rather than repeatedly tuning score OCR on
+the same exposed windows. Prepare a prediction-free broad-ROI review from the
+original40-image development held inventory. Select six indices uniformly in
+the original frozen order:0,7,15,23,31,39. Neither measurements, candidate ranks,
+GT boundaries nor expected states select these images. The original discovery
+receipt remains training-only; its separate measured outputs are not read by
+the review preparer. Historical training-code hashes are not rewritten or
+resigned, and no old qualification is inherited by the new review utility.
+
+Verify the original layout/selection hashes, disjoint training/held images,
+complete held source inventory, exact source-bound PTS and frozen development
+partition before rendering. Recheck source/receipt/code bytes afterward. Source
+photos and broad configured result ROI crops remain private; the page exposes
+no candidate crop, score, OCR prediction or expected transcription. The new
+receipt contains six null labels, not inferred semantic truth. Human review is
+requested only for visible text, not event time, source continuity, ownership
+or adoption. Nearby frames in this feature-conditioned pool are not independent
+temporal episodes, and these cases cannot alone qualify UI end transitions.
+
+Blind receipt SHA:
+`a326bb1d721788edcf736744093f68db3d77890cef03b8daa46a7f2db56ebc9c`.
+Blind page SHA:
+`3c0eecb3dec16c5ba37077d6f1ec2bc7c7e793bd3f15ca55212b7ac0c855c28f`.
+No response or semantic labels have been received at this checkpoint. Leave
+them pending instead of interpreting a matcher nonmatch as an absent display.
+No profile, runtime reader or qualification policy is changed.
+
+Regression checks fixed selection, bounds, source/asset mismatch, training/held
+overlap, holdout rejection, prediction-bearing input rejection, unlabelled
+output and unchanged sources. Related tests127pass; scoped Ruff, production
+mypy(133files) and git diff --check pass. Formal full E2E remains unfinished.
