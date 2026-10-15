@@ -36,7 +36,8 @@ def source_sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def check_source(path: Path = VIDEO_PATH) -> None:
+def check_source(path: Path | None = None) -> None:
+    path = VIDEO_PATH if path is None else path
     if path.is_symlink():
         raise SmokePreflightError("VIDEO_SYMLINK_REJECTED")
     if not path.is_file():
