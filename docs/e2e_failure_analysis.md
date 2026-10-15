@@ -2100,3 +2100,18 @@ then death subject/attributes and preparation association; preserve source break
 unknown-owned facts. No production change or newfull E2E. See
 [full current classification and priority](current_failure_classification.md) and
 `e2e_reports/match_001/current_failure_classification.json`.
+
+## S-01 current source-full classification
+
+The latest completed current-code source full remains an unadopted candidate at
+28 PASS / 50 FAIL / 4 NE, preserving all adopted and candidate PASS IDs and all
+20 negatives. The original adopted 23/55/4 matrix is unchanged. After independent
+global snapshot transport, `snapshot_hud_gate` is no longer the first blocker
+for the historical 17. Current exclusive first blockers include 15 snapshot
+current-frame state evidence failures, five player-life evidence failures, seven
+preparation-scope failures and two map-derived resolution failures. Existing
+missing semantic exports remain secondary dependencies; the exclusive table does
+not imply they are implemented. Full current 82-row evidence is in
+[current classification](current_failure_classification.md) and
+`e2e_reports/match_001/s01_current_failure_classification.json`. No new recognition,
+threshold, GT, evaluator or sampler change is made by this reclassification.

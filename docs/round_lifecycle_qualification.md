@@ -1,3 +1,5 @@
+> Historical checkpoint: the conclusions below predate the SHA-bound unedited-input contract and current qualified two-start/one-end source run. Claims that edited-source exclusion or a new unedited recording are prerequisites for match_001 lifecycle are superseded. Preserve actual capture/PTS discontinuity guards. Use [current classification](current_failure_classification.md) and [S-01 verification](s01_snapshot_field_transport_verification.md) for current status; this historical record is retained for provenance.
+
 # Round lifecycle qualification — work in progress
 
 Current policy update (2026-10-09): complete R1-end recognition in this recording
