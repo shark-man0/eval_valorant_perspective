@@ -1,0 +1,34 @@
+{
+  "scope": "Complete path disproves downstream loss inferred from first-stage dedup alone",
+  "initially_suppressed_observations": 357,
+  "recovered_native_and_trace_observations": 357,
+  "recovered_stronger_field_supports": 740,
+  "unrecovered_observations": 0,
+  "production_path": "_merge_visual_snapshots resolution loop calls _state_snapshots([current HUD]) at the same native PTS even when zone is unresolved",
+  "decision": "Do not adopt speculative retention patch for canonical E2E; existing complete production path already preserves every inspected support",
+  "canonical_before": {
+    "pass": 28,
+    "fail": 50,
+    "not_evaluated": 4
+  },
+  "canonical_after": {
+    "pass": 28,
+    "fail": 50,
+    "not_evaluated": 4
+  },
+  "full_restarted": false,
+  "source_raw_sha256": "5bc81be4ed43e45db025548d236c416d24efe35fa2ab95a32260f5a4fa94a6dc",
+  "replay_wall_sec": 168.3614873100305,
+  "replay_peak_rss_mib": 405.546875,
+  "all_legacy_snapshots_exactly_preserved_in_experiment": true,
+  "snapshot_counts_before": [
+    3054,
+    2281
+  ],
+  "snapshot_counts_after": [
+    3054,
+    2281
+  ],
+  "experimental_production_patch_adopted": false,
+  "production_restored_fingerprint": "ad482fe1bae0f2c4401ce0364841f749f63c6e2230ff75c49cf853962c8eb859"
+}
