@@ -1,0 +1,868 @@
+{
+  "scope": "Read-only exact failing predicate inventory of the original unadopted full; not new recognition or a new evaluation run",
+  "current_code_base": "46584ad7fd99d18bbbdbcf0d73a2c0263ccaecce",
+  "original_full_code": "46462336427149764beb8e1fdd94c554e075616e",
+  "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "input_sha256": {
+    "raw_processing.json": "5bc81be4ed43e45db025548d236c416d24efe35fa2ab95a32260f5a4fa94a6dc",
+    "e2e_trace.json": "65aa8a0387cb140adb22fe3f26a9ce60b00d45198d48889d16d4fda349f56958",
+    "evaluation_report.json": "8841332dfcf29f6876efe63dd4c2cb42bdeb2c9d7f1d49e6258fd54997bcb1a1"
+  },
+  "original_status_counts": {
+    "pass": 28,
+    "fail": 50,
+    "not_evaluated": 4
+  },
+  "failing_assertion_count": 50,
+  "distinct_failed_predicate_count": 99,
+  "all_report_failures_accounted_for": true,
+  "not_evaluated_assertion_ids": [
+    "ordering_constraints-000",
+    "ordering_constraints-001",
+    "ordering_constraints-002",
+    "ordering_constraints-003"
+  ],
+  "rows": [
+    {
+      "assertion_id": "GT-R1-DEATH",
+      "evaluator_group": "required_point_events",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "missing_point:GT-R1-DEATH"
+      ],
+      "first_blocker_in_source_classification": "death_event_contract",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R1-ROUND-END",
+      "evaluator_group": "required_point_events",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "missing_point:GT-R1-ROUND-END"
+      ],
+      "first_blocker_in_source_classification": "round_end_time",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R2-DEATH",
+      "evaluator_group": "required_point_events",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "missing_point:GT-R2-DEATH"
+      ],
+      "first_blocker_in_source_classification": "death_event_contract",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R1-BUY-FLAG",
+      "evaluator_group": "required_state_intervals",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "state_coverage:GT-R1-BUY-FLAG"
+      ],
+      "first_blocker_in_source_classification": "preparation_scope",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R1-ASTRAL-1",
+      "evaluator_group": "required_state_intervals",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "state_coverage:GT-R1-ASTRAL-1"
+      ],
+      "first_blocker_in_source_classification": "remote_state",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R1-ASTRAL-2",
+      "evaluator_group": "required_state_intervals",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "state_coverage:GT-R1-ASTRAL-2"
+      ],
+      "first_blocker_in_source_classification": "remote_state",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R1-SMOKE",
+      "evaluator_group": "required_state_intervals",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "state_coverage:GT-R1-SMOKE"
+      ],
+      "first_blocker_in_source_classification": "smoke_state",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R2-BUY-FLAG",
+      "evaluator_group": "required_state_intervals",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "state_coverage:GT-R2-BUY-FLAG"
+      ],
+      "first_blocker_in_source_classification": "preparation_scope",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R2-BUY-MENU-1",
+      "evaluator_group": "required_state_intervals",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "state_coverage:GT-R2-BUY-MENU-1"
+      ],
+      "first_blocker_in_source_classification": "preparation_scope",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R2-BUY-MENU-2",
+      "evaluator_group": "required_state_intervals",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "state_coverage:GT-R2-BUY-MENU-2"
+      ],
+      "first_blocker_in_source_classification": "preparation_scope",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R2-ASTRAL-1",
+      "evaluator_group": "required_state_intervals",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "state_coverage:GT-R2-ASTRAL-1"
+      ],
+      "first_blocker_in_source_classification": "remote_state",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R2-ASTRAL-2",
+      "evaluator_group": "required_state_intervals",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "state_coverage:GT-R2-ASTRAL-2"
+      ],
+      "first_blocker_in_source_classification": "remote_state",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R2-EXPANDED-MAP",
+      "evaluator_group": "required_state_intervals",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "state_coverage:GT-R2-EXPANDED-MAP"
+      ],
+      "first_blocker_in_source_classification": "expanded_map_state",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R2-SPECTATOR",
+      "evaluator_group": "required_state_intervals",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "state_coverage:GT-R2-SPECTATOR"
+      ],
+      "first_blocker_in_source_classification": "spectator_coverage",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "OWN-R1-SELF",
+      "evaluator_group": "required_ownership_intervals",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "ownership_coverage:OWN-R1-SELF"
+      ],
+      "first_blocker_in_source_classification": "self_ownership",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "OWN-R1-SELF-DEAD",
+      "evaluator_group": "required_ownership_intervals",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "ownership_coverage:OWN-R1-SELF-DEAD"
+      ],
+      "first_blocker_in_source_classification": "dead_ownership",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "OWN-R2-SELF",
+      "evaluator_group": "required_ownership_intervals",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "ownership_coverage:OWN-R2-SELF"
+      ],
+      "first_blocker_in_source_classification": "self_ownership",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "OWN-R2-SELF-DEAD",
+      "evaluator_group": "required_ownership_intervals",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "ownership_coverage:OWN-R2-SELF-DEAD"
+      ],
+      "first_blocker_in_source_classification": "dead_ownership",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "OWN-R2-TEAMMATE",
+      "evaluator_group": "required_ownership_intervals",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "ownership_coverage:OWN-R2-TEAMMATE"
+      ],
+      "first_blocker_in_source_classification": "teammate_ownership",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-0035",
+      "evaluator_group": "required_snapshots",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "snapshot:GT-R1-SNAP-0035:primary_state",
+        "snapshot:GT-R1-SNAP-0035:player_alive",
+        "snapshot:GT-R1-SNAP-0035:location_label_raw"
+      ],
+      "first_blocker_in_source_classification": "snapshot_current_state_evidence",
+      "observed_failed_fields": [
+        "primary_state",
+        "player_alive",
+        "location_label_raw"
+      ],
+      "other_dependencies_in_classification": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:location_label_raw"
+      ],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-0415",
+      "evaluator_group": "required_snapshots",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "snapshot:GT-R1-SNAP-0415:primary_state",
+        "snapshot:GT-R1-SNAP-0415:player_alive",
+        "snapshot:GT-R1-SNAP-0415:location_label_raw"
+      ],
+      "first_blocker_in_source_classification": "snapshot_current_state_evidence",
+      "observed_failed_fields": [
+        "primary_state",
+        "player_alive",
+        "location_label_raw"
+      ],
+      "other_dependencies_in_classification": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:location_label_raw"
+      ],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-475",
+      "evaluator_group": "required_snapshots",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "snapshot:GT-R1-SNAP-475:primary_state",
+        "snapshot:GT-R1-SNAP-475:player_alive",
+        "snapshot:GT-R1-SNAP-475:nonself_killfeed_row_visible"
+      ],
+      "first_blocker_in_source_classification": "snapshot_current_state_evidence",
+      "observed_failed_fields": [
+        "primary_state",
+        "player_alive",
+        "nonself_killfeed_row_visible"
+      ],
+      "other_dependencies_in_classification": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:nonself_killfeed_row_visible"
+      ],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-585",
+      "evaluator_group": "required_snapshots",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "snapshot:GT-R1-SNAP-585:primary_state"
+      ],
+      "first_blocker_in_source_classification": "snapshot_current_state_evidence",
+      "observed_failed_fields": [
+        "primary_state"
+      ],
+      "other_dependencies_in_classification": [
+        "failed_field:primary_state"
+      ],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-595",
+      "evaluator_group": "required_snapshots",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "snapshot:GT-R1-SNAP-595:primary_state",
+        "snapshot:GT-R1-SNAP-595:vision_obscured_smoke"
+      ],
+      "first_blocker_in_source_classification": "snapshot_current_state_evidence",
+      "observed_failed_fields": [
+        "primary_state",
+        "vision_obscured_smoke"
+      ],
+      "other_dependencies_in_classification": [
+        "failed_field:primary_state",
+        "failed_field:vision_obscured_smoke"
+      ],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-728",
+      "evaluator_group": "required_snapshots",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "snapshot:GT-R1-SNAP-728:primary_state",
+        "snapshot:GT-R1-SNAP-728:player_alive",
+        "snapshot:GT-R1-SNAP-728:ammo_mag",
+        "snapshot:GT-R1-SNAP-728:ammo_reserve",
+        "snapshot:GT-R1-SNAP-728:reload_animation_visible"
+      ],
+      "first_blocker_in_source_classification": "snapshot_current_state_evidence",
+      "observed_failed_fields": [
+        "primary_state",
+        "player_alive",
+        "ammo_mag",
+        "ammo_reserve",
+        "reload_animation_visible"
+      ],
+      "other_dependencies_in_classification": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:ammo_mag",
+        "failed_field:ammo_reserve",
+        "failed_field:reload_animation_visible"
+      ],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-733",
+      "evaluator_group": "required_snapshots",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "snapshot:GT-R1-SNAP-733:primary_state",
+        "snapshot:GT-R1-SNAP-733:player_alive",
+        "snapshot:GT-R1-SNAP-733:ammo_mag",
+        "snapshot:GT-R1-SNAP-733:ammo_reserve",
+        "snapshot:GT-R1-SNAP-733:reload_animation_visible"
+      ],
+      "first_blocker_in_source_classification": "snapshot_current_state_evidence",
+      "observed_failed_fields": [
+        "primary_state",
+        "player_alive",
+        "ammo_mag",
+        "ammo_reserve",
+        "reload_animation_visible"
+      ],
+      "other_dependencies_in_classification": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:ammo_mag",
+        "failed_field:ammo_reserve",
+        "failed_field:reload_animation_visible"
+      ],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-734",
+      "evaluator_group": "required_snapshots",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "snapshot:GT-R1-SNAP-734:primary_state",
+        "snapshot:GT-R1-SNAP-734:player_alive",
+        "snapshot:GT-R1-SNAP-734:ammo_mag",
+        "snapshot:GT-R1-SNAP-734:ammo_reserve",
+        "snapshot:GT-R1-SNAP-734:reload_animation_visible"
+      ],
+      "first_blocker_in_source_classification": "snapshot_current_state_evidence",
+      "observed_failed_fields": [
+        "primary_state",
+        "player_alive",
+        "ammo_mag",
+        "ammo_reserve",
+        "reload_animation_visible"
+      ],
+      "other_dependencies_in_classification": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:ammo_mag",
+        "failed_field:ammo_reserve",
+        "failed_field:reload_animation_visible"
+      ],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-7425",
+      "evaluator_group": "required_snapshots",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "snapshot:GT-R1-SNAP-7425:primary_state",
+        "snapshot:GT-R1-SNAP-7425:player_alive",
+        "snapshot:GT-R1-SNAP-7425:player_hp",
+        "snapshot:GT-R1-SNAP-7425:muzzle_flash_visible",
+        "snapshot:GT-R1-SNAP-7425:location_label_raw",
+        "snapshot:GT-R1-SNAP-7425:spectator_primary_state"
+      ],
+      "first_blocker_in_source_classification": "snapshot_current_state_evidence",
+      "observed_failed_fields": [
+        "primary_state",
+        "player_alive",
+        "player_hp",
+        "muzzle_flash_visible",
+        "location_label_raw",
+        "spectator_primary_state"
+      ],
+      "other_dependencies_in_classification": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:player_hp",
+        "failed_field:muzzle_flash_visible",
+        "failed_field:location_label_raw",
+        "failed_field:spectator_primary_state"
+      ],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-7438",
+      "evaluator_group": "required_snapshots",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "snapshot:GT-R1-SNAP-7438:primary_state",
+        "snapshot:GT-R1-SNAP-7438:player_alive",
+        "snapshot:GT-R1-SNAP-7438:muzzle_flash_visible"
+      ],
+      "first_blocker_in_source_classification": "snapshot_current_state_evidence",
+      "observed_failed_fields": [
+        "primary_state",
+        "player_alive",
+        "muzzle_flash_visible"
+      ],
+      "other_dependencies_in_classification": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:muzzle_flash_visible"
+      ],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-7440",
+      "evaluator_group": "required_snapshots",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "snapshot:GT-R1-SNAP-7440:player_alive"
+      ],
+      "first_blocker_in_source_classification": "snapshot_player_life_evidence",
+      "observed_failed_fields": [
+        "player_alive"
+      ],
+      "other_dependencies_in_classification": [
+        "failed_field:player_alive"
+      ],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-7445",
+      "evaluator_group": "required_snapshots",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "snapshot:GT-R1-SNAP-7445:player_alive",
+        "snapshot:GT-R1-SNAP-7445:score_enemy"
+      ],
+      "first_blocker_in_source_classification": "snapshot_player_life_evidence",
+      "observed_failed_fields": [
+        "player_alive",
+        "score_enemy"
+      ],
+      "other_dependencies_in_classification": [
+        "failed_field:player_alive",
+        "failed_field:score_enemy"
+      ],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-820",
+      "evaluator_group": "required_snapshots",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "missing_snapshot:GT-R2-SNAP-820"
+      ],
+      "first_blocker_in_source_classification": "preparation_scope",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [
+        "snapshot_hud_gate"
+      ],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-1050",
+      "evaluator_group": "required_snapshots",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "missing_snapshot:GT-R2-SNAP-1050"
+      ],
+      "first_blocker_in_source_classification": "preparation_scope",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [
+        "snapshot_hud_gate"
+      ],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-11145",
+      "evaluator_group": "required_snapshots",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "snapshot:GT-R2-SNAP-11145:player_alive"
+      ],
+      "first_blocker_in_source_classification": "snapshot_player_life_evidence",
+      "observed_failed_fields": [
+        "player_alive"
+      ],
+      "other_dependencies_in_classification": [
+        "failed_field:player_alive"
+      ],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-143",
+      "evaluator_group": "required_snapshots",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "snapshot:GT-R2-SNAP-143:primary_state",
+        "snapshot:GT-R2-SNAP-143:player_alive",
+        "snapshot:GT-R2-SNAP-143:player_hp"
+      ],
+      "first_blocker_in_source_classification": "snapshot_current_state_evidence",
+      "observed_failed_fields": [
+        "primary_state",
+        "player_alive",
+        "player_hp"
+      ],
+      "other_dependencies_in_classification": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:player_hp"
+      ],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-1475",
+      "evaluator_group": "required_snapshots",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "snapshot:GT-R2-SNAP-1475:primary_state",
+        "snapshot:GT-R2-SNAP-1475:player_alive",
+        "snapshot:GT-R2-SNAP-1475:player_hp"
+      ],
+      "first_blocker_in_source_classification": "snapshot_current_state_evidence",
+      "observed_failed_fields": [
+        "primary_state",
+        "player_alive",
+        "player_hp"
+      ],
+      "other_dependencies_in_classification": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:player_hp"
+      ],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-1476",
+      "evaluator_group": "required_snapshots",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "snapshot:GT-R2-SNAP-1476:primary_state",
+        "snapshot:GT-R2-SNAP-1476:player_alive",
+        "snapshot:GT-R2-SNAP-1476:player_hp"
+      ],
+      "first_blocker_in_source_classification": "snapshot_current_state_evidence",
+      "observed_failed_fields": [
+        "primary_state",
+        "player_alive",
+        "player_hp"
+      ],
+      "other_dependencies_in_classification": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:player_hp"
+      ],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-1477",
+      "evaluator_group": "required_snapshots",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "snapshot:GT-R2-SNAP-1477:player_alive"
+      ],
+      "first_blocker_in_source_classification": "snapshot_player_life_evidence",
+      "observed_failed_fields": [
+        "player_alive"
+      ],
+      "other_dependencies_in_classification": [
+        "failed_field:player_alive"
+      ],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-149",
+      "evaluator_group": "required_snapshots",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "snapshot:GT-R2-SNAP-149:primary_state",
+        "snapshot:GT-R2-SNAP-149:player_alive"
+      ],
+      "first_blocker_in_source_classification": "snapshot_current_state_evidence",
+      "observed_failed_fields": [
+        "primary_state",
+        "player_alive"
+      ],
+      "other_dependencies_in_classification": [
+        "failed_field:primary_state",
+        "failed_field:player_alive"
+      ],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-151",
+      "evaluator_group": "required_snapshots",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "snapshot:GT-R2-SNAP-151:primary_state",
+        "snapshot:GT-R2-SNAP-151:player_alive",
+        "snapshot:GT-R2-SNAP-151:view_owner",
+        "snapshot:GT-R2-SNAP-151:spectated_name",
+        "snapshot:GT-R2-SNAP-151:spectated_hp",
+        "snapshot:GT-R2-SNAP-151:spectated_ammo_mag",
+        "snapshot:GT-R2-SNAP-151:spectated_ammo_reserve",
+        "snapshot:GT-R2-SNAP-151:spectated_weapon",
+        "snapshot:GT-R2-SNAP-151:spectated_location_label_raw"
+      ],
+      "first_blocker_in_source_classification": "snapshot_current_state_evidence",
+      "observed_failed_fields": [
+        "primary_state",
+        "player_alive",
+        "view_owner",
+        "spectated_name",
+        "spectated_hp",
+        "spectated_ammo_mag",
+        "spectated_ammo_reserve",
+        "spectated_weapon",
+        "spectated_location_label_raw"
+      ],
+      "other_dependencies_in_classification": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:view_owner",
+        "failed_field:spectated_name",
+        "failed_field:spectated_hp",
+        "failed_field:spectated_ammo_mag",
+        "failed_field:spectated_ammo_reserve",
+        "failed_field:spectated_weapon",
+        "failed_field:spectated_location_label_raw"
+      ],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-170",
+      "evaluator_group": "required_snapshots",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "snapshot:GT-R2-SNAP-170:player_alive",
+        "snapshot:GT-R2-SNAP-170:spectated_name",
+        "snapshot:GT-R2-SNAP-170:spectated_hp",
+        "snapshot:GT-R2-SNAP-170:spectated_ammo_mag",
+        "snapshot:GT-R2-SNAP-170:spectated_ammo_reserve",
+        "snapshot:GT-R2-SNAP-170:spectated_weapon",
+        "snapshot:GT-R2-SNAP-170:muzzle_flash_visible",
+        "snapshot:GT-R2-SNAP-170:spectated_location_label_raw"
+      ],
+      "first_blocker_in_source_classification": "snapshot_player_life_evidence",
+      "observed_failed_fields": [
+        "player_alive",
+        "spectated_name",
+        "spectated_hp",
+        "spectated_ammo_mag",
+        "spectated_ammo_reserve",
+        "spectated_weapon",
+        "muzzle_flash_visible",
+        "spectated_location_label_raw"
+      ],
+      "other_dependencies_in_classification": [
+        "failed_field:player_alive",
+        "failed_field:spectated_name",
+        "failed_field:spectated_hp",
+        "failed_field:spectated_ammo_mag",
+        "failed_field:spectated_ammo_reserve",
+        "failed_field:spectated_weapon",
+        "failed_field:muzzle_flash_visible",
+        "failed_field:spectated_location_label_raw"
+      ],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-0035-DERIVED-zone_id",
+      "evaluator_group": "derived_assertions",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "derived:GT-R1-SNAP-0035-DERIVED-zone_id"
+      ],
+      "first_blocker_in_source_classification": "map_resolution",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [
+        "map_resolution"
+      ],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-0415-DERIVED-zone_id",
+      "evaluator_group": "derived_assertions",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "derived:GT-R1-SNAP-0415-DERIVED-zone_id"
+      ],
+      "first_blocker_in_source_classification": "map_resolution",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [
+        "map_resolution"
+      ],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-820-DERIVED-zone_id",
+      "evaluator_group": "derived_assertions",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "missing_derived_snapshot:GT-R2-SNAP-820-DERIVED-zone_id"
+      ],
+      "first_blocker_in_source_classification": "preparation_scope",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [
+        "snapshot_hud_gate",
+        "map_resolution"
+      ],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R1-MUZZLE-1",
+      "evaluator_group": "required_visual_observations",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "missing_visual_observation:GT-R1-MUZZLE-1"
+      ],
+      "first_blocker_in_source_classification": "owned_visual_evidence",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R1-MUZZLE-2",
+      "evaluator_group": "required_visual_observations",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "missing_visual_observation:GT-R1-MUZZLE-2"
+      ],
+      "first_blocker_in_source_classification": "owned_visual_evidence",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "GT-R1-MUZZLE-3",
+      "evaluator_group": "required_visual_observations",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "missing_visual_observation:GT-R1-MUZZLE-3"
+      ],
+      "first_blocker_in_source_classification": "owned_visual_evidence",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "event_count_constraints-001",
+      "evaluator_group": "event_count_constraints",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "count:sample_round_1:player_death"
+      ],
+      "first_blocker_in_source_classification": "death_event_contract",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "event_count_constraints-003",
+      "evaluator_group": "event_count_constraints",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "count:sample_round_1:shot"
+      ],
+      "first_blocker_in_source_classification": "owned_visual_evidence",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    },
+    {
+      "assertion_id": "event_count_constraints-005",
+      "evaluator_group": "event_count_constraints",
+      "status_in_original_full": "fail",
+      "canonical_failed_predicate_codes": [
+        "count:sample_round_2:player_death"
+      ],
+      "first_blocker_in_source_classification": "death_event_contract",
+      "observed_failed_fields": [],
+      "other_dependencies_in_classification": [],
+      "dependency_scope": "classification dependencies are investigation hypotheses unless also explicitly reported by the canonical evaluator; absence of an exported field does not certify its GT value"
+    }
+  ],
+  "new_full_executed": false,
+  "production_changed": false,
+  "gt_definitions_exported": false
+}
