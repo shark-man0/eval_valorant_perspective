@@ -1408,3 +1408,51 @@ thresholds, original validation packs and qualification requirements are unchang
 Final verification:104related tests pass, scoped Ruff passes, production mypy
 passes for133files, and git diff --check passes. These checks do not establish
 real-video boundary accuracy or full-match E2E completion.
+
+## Single fixed score-padding experiment: rejected
+
+Compare one bounded blank-border preprocessing proposal on the existing24-image
+exposed development numeric review. No targeted end-gap image or final holdout
+is used. The measurement reads only the original unlabelled blind ROI receipt,
+not its separately frozen numeric labels. Verify all ROI hashes, the development
+partition, OCR executable and preprocessing/reader source before and after
+measurement. Keep original pixels and receipts unchanged. Both arms are retained;
+there is no per-frame best-result selection, training, profile adoption or
+qualification. The confidence floor remains.90 and the integer format unchanged.
+
+The fixed proposal adds a dark blank border of half the localized crop height,
+capped at64pixels, before the current grayscale PSM7 digits/colon OCR. Both arms
+use the same unchanged localizer and OCR settings. Compare predictions afterward
+against the existing independent numeric transcription, matching the review
+receipt, source video and individual ROI hashes. Of22visible instances per side,
+baseline/padded correct counts are13/7 for ally score and15/2 for enemy score.
+Both arms have zero wrong accepted values and reject both absent-score cases per
+side. Thus padding alone worsens acquisition and is rejected; do not repeatedly
+tune border sizes on this exposed cohort. These24points are not fresh independent
+qualification or a cross-match result. Baseline is a current diagnostic rerun,
+not a replacement for the immutable historical numeric receipt.
+
+An earlier trial also changed inverse bright-text thresholding and whitelist,
+so it is confounded and cannot establish a padding-only effect. Preserve that
+local record rather than overwriting it or hiding the settings difference. It
+does not authorize selecting either arm or adopting a new production reader.
+Current native settings were inspected explicitly before the corrected single-
+variable comparison. Any future thresholding proposal needs a separately frozen
+experiment and independent prospective review/negative controls.
+
+Corrected measurement receipt:
+`f7c1fdbd0088080c2ee57741b1fd3ffd9dfd5d412610e7f92abe266d311f20b8`.
+Confounded historical measurement receipt:
+`c58dd447192948c97e853eb98d8394aac4a26c51c56762294f590184798642f9`.
+Existing frozen numeric-label receipt:
+`c03adcb752e8ca9764c686df065fa45a5f2c73af8e279eae8fd72a847872074a`.
+Raw strings, images, local paths and numeric labels stay private. No source
+timestamps, GT labels or expectation data enter the production recognizer.
+
+Synthetic regression checks the exact fixed border, unchanged input pixels,
+confidence/format rejection, missing localization, holdout exclusion, labelled
+input rejection, duplicate/hash/source mismatch, bounded summary and preservation
+of raw local diagnostics. No runtime reader, safety threshold or lifecycle
+qualification policy is changed.
+Final verification:116related tests pass, scoped Ruff and production mypy
+(133files) pass, and git diff --check passes. Full E2E remains unfinished.
