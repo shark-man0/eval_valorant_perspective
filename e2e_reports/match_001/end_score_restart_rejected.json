@@ -1,0 +1,212 @@
+{
+  "status": "rejected_before_native_held_evaluation",
+  "scope": "Private offline End-score restart prototype; no production or qualification change",
+  "freeze": {
+    "scope": "Private restart-score prototype, frozen before fresh fixed negatives and unopened held pool; no production or qualification release",
+    "recognizer_fingerprint": "58117f2bfe84f072c37f0989846145d7fad7a3a29d807ba55d9be9a6136a4f68",
+    "profile_fingerprint": "445f61d7440dee58c480253338b19df500c676c519e84810d1f7332c3ea798ee",
+    "prototype_sha256": "42e4cdace9c3798a2325052c78df3d1d059e8b3bc254b2ce3f809b6f4eb26d00",
+    "prototype_plan_sha256": "39b7bb1d09c8f13bd678ff11b6c2a9074ebdc545d22909063d8c5568a441ba90",
+    "horizon_sec": 1,
+    "confidence_threshold": 0.9,
+    "timestamp_rule": "first_observed_score_change",
+    "runtime_default_unchanged": true,
+    "production_adoption_requires_separate_explicit_qualification_component": true,
+    "future_held_pool_sec": [
+      1530,
+      1800
+    ],
+    "held_unopened": true,
+    "enrollment_excludes_all_previously_exposed_events_including_1500_and_1800": true
+  },
+  "prototype_sha256": "42e4cdace9c3798a2325052c78df3d1d059e8b3bc254b2ce3f809b6f4eb26d00",
+  "source_sha256": "06919642d69f68895ac123b505bfd7d3643dd28d903585008fcdc2b7f1b7e3fd",
+  "numeric_development": {
+    "frames": 481,
+    "PNG_bytes": 775118219,
+    "elapsed_producer_sec": 130.78165483300108,
+    "semantic_result_matches": 148,
+    "score_complete_pairs": 436,
+    "diagnostic_End_patterns": [
+      {
+        "kind": "round_end",
+        "time_sec": 522.95,
+        "confidence": 0.9038290977478027,
+        "attributes": {
+          "evidence_provenance": {
+            "scope": "global_system",
+            "producer": "unedited_ui_end_tracker",
+            "temporal_contract": "ui_end_transition_v1",
+            "signals": [
+              "accepted_clock_decrease",
+              "accepted_score_transition",
+              "qualified_stable_round_result"
+            ],
+            "clock_change": {
+              "before": {
+                "tick": 8027392,
+                "pts_sec": 522.6166666666667,
+                "source_pixel_sha256": "4c342bba51b1a4c71c930308b500dedba2fb14888361aa9e57b08d6c36897b1c",
+                "seconds": 58.0,
+                "observed_display": "0:58",
+                "confidence": 0.9621335864067078
+              },
+              "after": {
+                "tick": 8027648,
+                "pts_sec": 522.6333333333333,
+                "source_pixel_sha256": "4bbae83e7c9bf1489f32299ab1883fa25194b16f9e046e6627fe661ac66df1ad",
+                "seconds": 6.0,
+                "observed_display": "0:06",
+                "confidence": 0.9636957049369812
+              }
+            },
+            "score_before": {
+              "first": {
+                "tick": 7959296,
+                "pts_sec": 518.1833333333333,
+                "source_pixel_sha256": "c1e0960a276c23d4c230bb6e24dbecd22d098e96ff9f7312c47269f4fa0f2c1d",
+                "values": [
+                  3,
+                  2
+                ],
+                "confidence": 0.9615519642829895
+              },
+              "last": {
+                "tick": 8032256,
+                "pts_sec": 522.9333333333333,
+                "source_pixel_sha256": "23c476d38c8aa576d9955095945d58ba57e33f78e56b6a54c2e0be5b28f6cf6b",
+                "values": [
+                  3,
+                  2
+                ],
+                "confidence": 0.9607114791870117
+              },
+              "confidence": 0.9492781162261963
+            },
+            "score_after": {
+              "first": {
+                "tick": 8032512,
+                "pts_sec": 522.95,
+                "source_pixel_sha256": "d5389f60bd7006b6c73c1944de6b7fdccdc4cf62e599cf0798572226d71ebb24",
+                "values": [
+                  4,
+                  2
+                ],
+                "confidence": 0.9473182559013367
+              },
+              "last": {
+                "tick": 8034816,
+                "pts_sec": 523.1,
+                "source_pixel_sha256": "b4a6b275e818e35f6cdebf7f8f4280dffde59aac12f4932f62179e3b43b109ee",
+                "values": [
+                  4,
+                  2
+                ],
+                "confidence": 0.9166890978813171
+              },
+              "confidence": 0.9038290977478027
+            },
+            "score_stability": {
+              "tick": 8033280,
+              "pts_sec": 523.0,
+              "source_pixel_sha256": "fb7c02cdb8142da11052f5d8e4ebd9b23f788c1cb76a9dc8a70badbc397f9881"
+            },
+            "result_first": {
+              "tick": 8040704,
+              "pts_sec": 523.4833333333333,
+              "source_pixel_sha256": "e10640f7c495f46d477a89e316a58614238c1a270a98eb9d5705affda5c05faa",
+              "confidence": 0.9827378901224889
+            },
+            "result_confirmation": {
+              "tick": 8041472,
+              "pts_sec": 523.5333333333333,
+              "source_pixel_sha256": "d2eed608dc0dbf175e06043b7a1ee4b432db99ee034301baf6ed99dfc8f3ed6a",
+              "confidence": 0.9796230644506168
+            },
+            "confirmation_pts_sec": 523.5333333333333,
+            "pts_sec": [
+              522.6333333333333,
+              522.95,
+              523.4833333333333,
+              523.5333333333333
+            ],
+            "timestamp_rule": "first_observed_score_change"
+          }
+        }
+      }
+    ],
+    "terminal_integrity_verified": true
+  },
+  "fixed_negative": {
+    "frames": 76,
+    "matches": 0,
+    "diagnostic_End_patterns": 0,
+    "elapsed_sec": 82.76769149996107,
+    "independent_temporal_GT": false
+  },
+  "initial_synthetic_safety_tests_pass": 17,
+  "additional_safety_test_fail": 1,
+  "counterexample": {
+    "synthetic": true,
+    "early_confident_outlier_sec": 0.44,
+    "modeled_actual_change_sec": 0.76,
+    "prototype_End_sec": 0.44,
+    "prototype_confidence": 0.95,
+    "error_sec": -0.32,
+    "baseline_End_count": 0,
+    "GT_supplied_to_tracker": false
+  },
+  "original_R1_End": {
+    "baseline_sec": 74.48600260416667,
+    "prototype_sec": 74.48600260416667,
+    "baseline_confidence": 0.9180924279198346,
+    "prototype_confidence": 0.9028293490409851,
+    "official_GT_unchanged": true,
+    "still_misses_window": true
+  },
+  "production_regression": {
+    "pass": 55,
+    "elapsed_sec": 0.92,
+    "ruff": "pass",
+    "new_guard_test": "test_isolated_score_outlier_cannot_be_attested_by_later_change_after_unknown_gap"
+  },
+  "held_exposure": {
+    "pool_sec": [
+      1530,
+      1800
+    ],
+    "coarse_source_viewed": true,
+    "approximate_refined_images_extracted": true,
+    "native_held_producer_calls": 0,
+    "recognition_or_qualification_results_claimed": false,
+    "excluded_previously_exposed_pre_score_pairs": [
+      [
+        10,
+        6
+      ],
+      [
+        10,
+        10
+      ]
+    ],
+    "future_claim_wholly_unseen": false
+  },
+  "production_changes": false,
+  "qualification_created": false,
+  "full_lifecycle_qualification": false,
+  "private_artifact_sha256": {
+    "restart-candidate-freeze.json": "a32c4257d88d3b1248c458adb748915176deb308370e650517cafb89dfcf68b8",
+    "development-timing/restart-prototype-plan.json": "39b7bb1d09c8f13bd678ff11b6c2a9074ebdc545d22909063d8c5568a441ba90",
+    "development-timing/baseline-timing-audit.json": "85a57d62869b2a27af07282435ab78dd84a727ca8b069e7fd91e1fe108b5c806",
+    "development-timing/numeric-result/result.json": "719fc3afbdea5099badd7bb56c8e8d9fbfe4e2e032b17beed7f89ba5e28ebe51",
+    "restart-fixed-negative/result.json": "bddc744644dc5376eb4f53b69a031c4db6fced02ce28a653175f51b583f33ba1",
+    "restart-prototype-regression.json": "6f4be6ddffd7dca19623f478e68038c533210de0a997e9121a0efc4360954437",
+    "restart-held-discovery/selection.json": "78d11dcdb6430ca25acf5c3ae303d4c1d49ddf9ac19ff4c70ed22392042ce50d",
+    "restart-held-refined/selection.json": "dc6b835120e85e50f7e13c828146d4d8ffaa82fed0f58ca092fc47d7a1e5ec8f"
+  },
+  "test_log_sha256": {
+    "initial": "1c5291f5f3db573d4a149e4e4f1378c195f1aa70c17eef94b57bb26b66330770",
+    "failing_counterexample": "608bf0d7aa937c8b75c6d7acea2902ae23462719827b377ab8aa48bff6f17ad3",
+    "production_guard": "f40e633c3ebb467276a498973ec139d3603bccb8a41facc831b88acb6f2ee1c8"
+  }
+}
