@@ -1,0 +1,32 @@
+{
+  "scope": "Offline scoreboard subject binding trial; no production adoption",
+  "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "source_owner_review": "Yellow outline marks the recording player row; source-specific human semantics review, not reader qualification",
+  "profile_fingerprint": "3bad32a8160e82d35a1f765fe33768667c14d9631db20b5598bbfe1c5c1f6f94",
+  "probe_code_fingerprint": "b8357b2fe9511748611cd60a63dfef2e7eb1068728aafb3814f9d417a70805fd",
+  "production_runtime_fingerprint": "6ea410098baf11bbea9df5301ed901373a025e25023c220e1db6a3c01103a6fc",
+  "private_result_sha256": "fde95a610ddca4d74dea369224a3554472294db3fefb456636dbf11aa2a46692",
+  "structural_ncc_floor": 0.9,
+  "name_reader_confidence_floor": 0.9,
+  "development_marker_frames": 1,
+  "exposed_same_episode_review_marker_frames": 1,
+  "marker_absent_controls": 5,
+  "development_marker_candidates": 1,
+  "review_marker_candidates": 1,
+  "marker_absent_false_candidates": 0,
+  "review_name_matches_independent_victim_crop_text": 1,
+  "review_name_mismatches_independent_victim_crop_text": 0,
+  "new_blind_holdout_frames": 0,
+  "qualified_self_subjects": 0,
+  "formal_death_events": 0,
+  "runtime_sec": 6.259134780964814,
+  "peak_memory": "not measured",
+  "limitations": [
+    "Development and review marker positives are correlated native neighbors in the same previously exposed episode.",
+    "Victim crop text match does not independently qualify victim/killer role or self death.",
+    "All candidate relations remain unknown and reviews remain candidate.",
+    "No independent continuous death-transition or respawn qualification.",
+    "No Full, targeted formal Death E2E, or sampled qualification run; canonical current unmeasured."
+  ],
+  "production_adoption_authorized": false
+}

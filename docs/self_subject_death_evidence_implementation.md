@@ -34,7 +34,7 @@ A private plan was frozen before implementation, preserving the existing five de
 
 Source SHA-256: `71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06`. Every image is checked against its encoded and decoded-pixel hash. Frozen source PTS are retained. The unchanged Tesseract crop/engine settings and 0.90 acceptance floor were used, with decoder binaries, OCR executable/language data and runtime versions fingerprinted. No private images, profiles, subject strings or evaluation labels are published.
 
-Two full-frame images were visually inspected. One shows distinct killer/victim positions and a highlighted scoreboard row; the other shows live-world context without the target killfeed row. The highlighted-row semantics have **not** been independently established as recording-player identity. A matching name or portrait is therefore not promoted to Self. There is no qualified Self/Nonself truth set from which to compute subject precision/recall. Real respawn-role qualification is also missing.
+Two full-frame images were visually inspected. One shows distinct killer/victim positions and a highlighted scoreboard row; the other shows live-world context without the target killfeed row. The recording owner subsequently reviewed the yellow outline as a fixed recording-player row (see the source-scoped trial below). This semantic review does not qualify a detector. A matching name or portrait is therefore not promoted to Self. There is no qualified Self/Nonself truth set from which to compute subject precision/recall. Real respawn-role qualification is also missing.
 
 ## Real-image and continuous results
 
@@ -81,6 +81,28 @@ This Pi has no Git LFS client. For preflight, an existing identical-SHA video wa
 
 ## Remaining evidence and adoption decision
 
-**Do not adopt.** First independently establish the highlighted scoreboard/source-player binding semantics, contrast ordinary selection/spectated-row controls, and bind the observed subject to a separately recognized victim rather than killer. Source-continuous death/respawn evidence and source-disjoint review/negatives must survive frozen qualification. Existing victim-only OCR and report numeric success cannot substitute.
+**Do not adopt.** The recording-owner review now establishes the source-specific marker semantics. Next qualify its detection against ordinary unmarked/foreign rows and spectator controls, and bind the observed subject to a separately recognized victim rather than killer. Source-continuous death/respawn evidence and source-disjoint review/negatives must survive frozen qualification. Existing victim-only OCR and report numeric success cannot substitute.
 
 Use available current-video context first; do not demand another video by default. Preserve all prior exposure and freeze any genuinely unseen review material before fitting. If source-player binding cannot be established from the available images, record that precise limitation and keep unknown. Formal event identity/schema changes require the additional pre-adoption approval specified by the user. HP, Ammo, Weapon, Alive and view owner remain unchanged.
+
+
+## Source-owner scoreboard review and structural trial
+
+The source owner answered that the scoreboard yellow outline fixes the recording player's row; it does not follow a selected or spectated row. This statement is retained as a private source-specific review, bound into the experimental profile fingerprint. It is not a qualification pack, an ownership promotion, or authorization to release a Death event.
+
+`experimental/scoreboard_subject.py` adds an isolated diagnostic reader. Three disjoint border masks exclude the name and value-bearing row interiors. Each structural NCC support must meet the unchanged 0.90 floor before the existing text reader receives the matched row's name crop. Its own source/profile/code fingerprints and decoded-pixel hash must agree. Multiple separated matching rows are rejected. Name confidence must be finite and at least 0.90; malformed or missing confidence remains unaccepted. The output is only `SOURCE_PLAYER_BINDING`, with relation **UNKNOWN** and review **CANDIDATE**, retaining actual PTS, source and ROI. No production import, native Event, owner, Alive, HP, Ammo or Weapon changes are introduced.
+
+The structural reference was frozen from one development native frame before applying it to the separate original review raster. Three original victim-OCR review rasters are not three scoreboard positives: only the first contains the scoreboard. The others are marker-absent controls. The six archived review/control rasters were freshly re-decoded at their original native PTS; all six decoded-pixel hashes matched. Development and positive review images are neighboring frames in the same previously exposed episode. They are **not independent holdout**. No threshold, mask or reference was retuned from the review result.
+
+| Source-image trial | Result |
+|---|---:|
+| Development marker present / candidate emitted | 1 / 1 |
+| Exposed same-episode review marker present / candidate emitted | 1 / 1 |
+| Marker-absent controls / candidates emitted | 5 / 0 |
+| Review row-name match to separately read victim crop text | 1 |
+| Qualified Self / formal Death events | 0 / 0 |
+| New blind holdout frames | 0 |
+
+The three review structural NCC supports were approximately 0.9995, 0.9999 and 0.9826. The name comparison is performed after recognition, without passing expected text or GT to the probe. It is text agreement, not independent qualification of the victim role, ownership or Death time. Exact code/profile/result fingerprints and runtime are in `e2e_reports/match_001/scoreboard_subject_probe.json`; private names, profiles, images and per-frame labels remain unpublished. Peak memory was not measured.
+
+The focused model/reader/isolation suite passes **71 tests**; adding legacy Death identity and text-I/O audit regressions gives **93 PASS**. All 38 dataset contracts, Ruff (the CI source/test/E2E scope plus the diagnostic script) and mypy (136 source files) pass locally. Synthetic controls require all three supports, exclude name pixels from structural scoring, reject ambiguous marked rows, invalid confidence and mismatched source/pixel/profile/code bindings, and preserve UNKNOWN/CANDIDATE. They demonstrate contract behavior, not real-video recognition accuracy. Production qualification and canonical PASS remain unchanged/unmeasured, respectively. Independent role negatives and source-continuous Death/respawn qualification remain the next gate. A short-lived scoreboard view cannot itself establish a death transition or bridge absent subject observations. Updated Linux/Windows CI results are tracked on PR #47 separately from the earlier green commit.
