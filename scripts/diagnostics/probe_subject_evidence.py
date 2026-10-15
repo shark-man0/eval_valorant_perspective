@@ -100,7 +100,8 @@ def main():
                                code, config, deps)
         observation = SubjectObservation(
             f'victim-candidate-{number}', source, SubjectRole.VICTIM, SubjectRelation.UNKNOWN,
-            hashlib.sha256(str(accepted).encode('utf-8')).hexdigest() if accepted is not None else None,
+            (hashlib.sha256(str(accepted).encode('utf-8')).hexdigest()
+             if accepted is not None else None),
             reading.confidence, 'frozen_tesseract_victim_crop_psm7', bounds,
         )
         decision = SubjectDeathProbe(native_step_ticks=256, max_corroboration_sec=1).observe(
