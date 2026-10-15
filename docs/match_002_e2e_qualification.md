@@ -1524,3 +1524,32 @@ Nine new synthetic cases pass; the related package/fact/trace safety suite passe
 verifies downstream handling of supplied safe boundaries, not that current
 video readers detect those boundaries. Independent temporal qualification,
 source-negative coverage, real Round events and formal Full E2E remain pending.
+
+## Further untouched numeric cohort feasibility
+
+Before collecting another numeric cohort, inspect only non-GT source sampling
+metadata from eight existing geometry/numeric/banner diagnostic receipts. There
+are521point entries at480distinct PTS. Retaining the existing two-second exclusion
+radius, their neighbourhoods cover the entire720-second development interval.
+A metadata-only search of60fixed half-second-offset phases for a30-second
+period yields zero eligible points at every phase, below the existing minimum
+of eight. This is sampling feasibility, not pixel or numeric accuracy evidence.
+No source image, OCR output, expected value or final holdout pixel is opened for
+this check. Inventory receipt hash (canonical sorted path-to-SHA mapping):
+`bcf93ecbafe1747cb55219d26e84ea83f38cd167965eb5a46f6384af79782015`.
+
+Do not weaken exclusion/minimum-support settings, discard banner sampling
+history or rename already exposed material as a new independent cohort. This
+does not prove all source frames are duplicates or that no further diagnostic
+experiment is possible. It means the present untouched-cohort protocol cannot
+produce another independent batch within development. Additional footage or an
+explicitly different, honestly scoped experiment would be needed for that route.
+The six-image held result-text review is still available and pending; finish
+that independent annotation before claiming new semantic input qualification.
+
+An initial inspection incorrectly suspected the prospective probe lost its
+template profile after copying the layout. Following the actual variable shows
+the Analyzer still uses the original trial layout/profile; the supposed bug is
+not present. Discard that attempted change and preserve both production and
+diagnostic code unchanged. No historical receipt is altered, no full baseline is
+rerun and no new profile is adopted in this feasibility checkpoint.
