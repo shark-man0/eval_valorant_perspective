@@ -3723,6 +3723,33 @@
     },
     "mypy_source_files": 133,
     "ruff": "pass",
-    "new_followup_ci": "pending"
+    "new_followup_ci": {
+      "source_commit": "4e6e02d86a9e8bb8133292832a838b0e93639cef",
+      "linux": {
+        "url": "https://github.com/shark-man0/eval_valorant_perspective/actions/runs/38734049976",
+        "conclusion": "success",
+        "passed": 3782,
+        "skipped": 7,
+        "coverage_percent": 86.62,
+        "pytest_wall_sec": 912.83
+      },
+      "windows": {
+        "url": "https://github.com/shark-man0/eval_valorant_perspective/actions/runs/38734049969",
+        "conclusion": "success",
+        "passed": 3778,
+        "skipped": 11,
+        "coverage_percent": 86.58,
+        "pytest_wall_sec": 1082.37,
+        "utf8_disabled_tests_passed": 13,
+        "pyinstaller": "success",
+        "packaged_smoke": "success"
+      },
+      "ruff": "success",
+      "mypy": "success",
+      "dataset_cases": 38,
+      "qt_exit_scope": "CI test/build/smoke steps exited normally; not a claim for every GUI workflow",
+      "unchanged_platform_private_input_skips": true
+    },
+    "dataset_cases": 38
   }
 }
