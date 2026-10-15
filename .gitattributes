@@ -1,1 +1,2 @@
 *.sh text eol=lf
+tests/e2e/fixtures/real/match_001.mp4 filter=lfs diff=lfs merge=lfs -text
