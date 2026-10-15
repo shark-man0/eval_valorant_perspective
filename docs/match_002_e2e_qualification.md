@@ -1377,3 +1377,34 @@ events remain0. No qualification is created or profile adopted, and full-match
 E2E completion remains unproven. Detailed source images and observations stay
 local; only aggregate counts and this receipt hash are shared:
 `c8b2158609dbc09518de520ca965dbe420adad9aeaf5c563530d4cd15326ca7e`.
+
+## Reproducible native score-gap classification
+
+Add a bounded diagnostic reducer to the native input CLI. It validates one
+source identity, exact cadence, positive time base and per-frame pixel hashes
+before classifying accepted paired-score availability. The existing production
+score confidence predicate is reused unchanged; a nonnull low-confidence value
+is not accepted. A detected source break resets score history rather than
+joining the surrounding observations. Adjacent changes and changes separated
+by missing readings are counted separately, without releasing an event,
+certifying source continuity or creating qualification. The shared aggregate
+contains no score values, source timestamps, pixel payloads, paths or OCR text.
+Original local receipts are inspected read-only, not rewritten or resigned.
+
+Apply the reducer to both existing continuous development receipts. Each has
+one nonadjacent observed score change across three unavailable frames and zero
+adjacent changes. In the first episode all three gap frames lack the ally score;
+in the second, two lack the ally score and one lacks the enemy score. None of
+these particular change-gap frames is classified as geometry-unavailable.
+This separates numeric acceptance failures from geometry availability without
+claiming the missing glyph value or proving an end boundary. The next reader
+experiment must use independent unlabelled development material and frozen
+review/negative controls, not these targeted gap images or final holdout.
+
+Regression coverage checks missing/low confidence, source-break reset, mixed or
+gapped native provenance, returning to the same score, empty input and absence
+of private payloads. Production recognition policy, profile adoption, safety
+thresholds, original validation packs and qualification requirements are unchanged.
+Final verification:104related tests pass, scoped Ruff passes, production mypy
+passes for133files, and git diff --check passes. These checks do not establish
+real-video boundary accuracy or full-match E2E completion.

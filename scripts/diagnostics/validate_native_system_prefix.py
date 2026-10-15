@@ -8,6 +8,7 @@ import json
 import time
 from pathlib import Path
 
+from scripts.diagnostics.native_score_gaps import summarize_native_score_gaps
 from valorant_ai_coach.hud.analyzers import RealHudAnalyzer
 from valorant_ai_coach.hud.global_lifecycle import global_recognizer_fingerprint
 from valorant_ai_coach.video import VideoService
@@ -62,6 +63,7 @@ def main() -> None:
         'display_accuracy_reviewed': False,
         'unqualified_ui_measurements_requested': args.include_ui_measurements,
         'geometry': analyzer.last_calibration_diagnostics,
+        'score_gap_summary': summarize_native_score_gaps(rows, args.native_step_ticks),
         'rows': rows,
         'qualification_loaded': analyzer.global_qualification is not None,
         'qualification_created': False,
