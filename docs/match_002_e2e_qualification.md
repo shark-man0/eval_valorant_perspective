@@ -1679,3 +1679,71 @@ and overwrite-guard additions remain historical and are not resigned.
 Related native/practical/start/end/package regression tests143pass; scoped Ruff,
 production mypy(133files) and git diff --check pass. Strictly qualified start/end,
 full-match membership and latest-main formal Full E2E remain unfinished.
+
+## Second-start transfer and authorized diagnostic gradient NCC
+
+The unchanged combined profile produces0provisional boundaries in the next
+development start's85-frame native window. Geometry is fresh7/effective31/
+retained24/invalid54; timers30, phase presence0, trackerunobserved85. Source-break
+flags0do not prove continuity. Receipt SHA:
+`d098ced5202a5f21a99a668107b6bcd4ca6867379e00576886889867caa7c246`.
+
+Classify failure only after inference using the independently reviewed start,
+rounded to its native PTS tick. All37frames strictly before that tick lack valid
+UI/geometry admission. Direct comparison with the rounded decimal had included
+the boundary frame and counted38; correct the diagnostic classification, not GT.
+A separate direct phase-template test on the same37source-pixel hashes accepts
+36/37 at the unchanged.90floor (maximum.98635023). Terminal source integrity and
+unchanged profile/recognizer are checked. It does not feed results back into
+runtime calibration, observations or events. Receipt SHA:
+`f9b110842d7a2f7314a27a255050e7cebb8078aa139971f57ab7634909da36c2`.
+
+Extend the continuous window two seconds earlier without stitching contexts.
+The205-frame run still has only7fresh/31effective geometries,0phase matches,
+0candidates and0formal events. All157pre-boundary frames lack valid UI admission.
+Overlapping85physical rasters, accepted values and producer evidence match the
+short run exactly. This excludes a two-second warmup remedy, not all possible
+full-match context effects. Receipt SHA:
+`b1a21a757a98ba2c1e17cceb2bea27bb632b0465bbb206061173877263972b3a`.
+Do not lower phase/OCR thresholds or train on these targeted source images.
+
+The human authorizes a new geometry-only matcher comparison for diagnostics,
+not production registration/adoption. Preserve the reply privately. Existing
+matcher, NCC.90, three-anchor admission, identity separation and final holdout
+remain unchanged; new scores are not equivalent to existing confidence.
+
+The isolated diagnostic computes signed3x3Sobel channels, normalized by local
+gradient magnitude with a fixed16floor, then masked NCC. Erode original support
+by one pixel so every derivative dependency remains inside the geometry mask;
+excluded digits/icons cannot enter via convolution. Require64support pixels,
+reject constant/insufficient support and nonfinite NCC locations. Existing
+templates/masks/search areas and position/size validation are fixed. No runtime
+factory, profile kind, identity evidence or qualification report is introduced.
+
+Freeze algorithm and source hashes before comparison on existing28training and
+24validation development images. Validation has two repeated image hashes;
+retain the frozen inventory and report22unique validation images separately.
+Training/validation images are disjoint. No GT/annotation or final holdout chooses
+parameters, samples or references. Data is exposed development, not new holdout.
+
+Fresh geometry accepts, old/new:training8/20 of28; validation3/12 of24 (also3/12
+of22unique images). Removing one anchor ROI at a time yields0/72accepts for both,
+or0/66unique source/removed-anchor combinations. These are artificial source-
+derived controls, not natural-negative qualification. Increased acceptance is
+not independently proved accuracy and cannot authorize production adoption.
+
+The first frozen attempt stops on missing calibration-call arguments before
+publishing measurements; preserve it. The repaired run evaluates full-frame
+diagnostic geometry, not letterbox/crop detection. Frozen experiment SHA:
+`9dd29492b0f959112a6e2d84ebcddf0766082a451655f54310acc6085020408c`.
+Completed measurement SHA:
+`5b55dda0b9829935176a30941c9866cf1d980cafd9b7cc2e7a8e2507c3b0175c`.
+Later hardening binds original template/mask receipt hashes and recognizer bytes
+on future runs. Original assets are separately verified; historical plans are
+not rewritten to pretend those extra guards ran earlier.
+
+Tests cover signed contrast/orientation, excluded content, constant/noisy/wrong-
+polarity controls, erosion, immutable outputs, duplicate counts, source/reference
+drift and holdout/split exclusion. Related79tests, scoped Ruff, production mypy
+(133files) and git diff --check pass. Natural negative coverage, temporal
+qualification, strictly qualified starts/ends and formal Full E2E remain pending.
