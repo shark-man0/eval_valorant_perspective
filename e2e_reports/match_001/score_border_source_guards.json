@@ -1,0 +1,341 @@
+{
+  "scope": "Post-push exact-code CI and current formal entrance/source guards; no new qualification or default change",
+  "tested_commit": "16ff877d41e74c4dbd324d74c2f9360e797cc48c",
+  "verified_remote_main": "7e480c2f2f7f49aea73e1541d065d78881d2f11c",
+  "CI": [
+    {
+      "platform": "linux",
+      "head_commit": "16ff877d41e74c4dbd324d74c2f9360e797cc48c",
+      "run_id": 38669572489,
+      "url": "https://github.com/shark-man0/eval_valorant_perspective/actions/runs/38669572489",
+      "workflow_conclusion": "success",
+      "test_passed": 3807,
+      "test_skipped": 7,
+      "test_failed": 0,
+      "test_elapsed_sec": 897.82,
+      "coverage_percent_rounded": 86.63,
+      "raw_log_sha256": "0a11329737ae1289298fefd93f098ccba0437a61e3c116d7fed746291c41e8d1",
+      "Ruff": "success",
+      "mypy": "success",
+      "dataset_validation": "success",
+      "packaged_build_and_smoke": "not in Linux workflow"
+    },
+    {
+      "platform": "windows",
+      "head_commit": "16ff877d41e74c4dbd324d74c2f9360e797cc48c",
+      "run_id": 38669572502,
+      "url": "https://github.com/shark-man0/eval_valorant_perspective/actions/runs/38669572502",
+      "workflow_conclusion": "success",
+      "test_passed": 3803,
+      "test_skipped": 11,
+      "test_failed": 0,
+      "test_elapsed_sec": 614.55,
+      "coverage_percent_rounded": 86.59,
+      "raw_log_sha256": "b399fa6541dbda1e4eeedc2910d185211c06f5a88a341cfbebe62d53dde720ee",
+      "Ruff": "success",
+      "mypy": "success",
+      "dataset_validation": "success",
+      "packaged_build_and_smoke": "success"
+    }
+  ],
+  "text_IO_gate": {
+    "head_commit": "16ff877d41e74c4dbd324d74c2f9360e797cc48c",
+    "run_id": 38669572532,
+    "conclusion": "success",
+    "url": "https://github.com/shark-man0/eval_valorant_perspective/actions/runs/38669572532"
+  },
+  "fresh_formal_entrance": {
+    "source-break": {
+      "scope": "Fresh actual source-break replay across two known repeated rasters; bounded regression, no continuity bridge or full-video claim",
+      "window_sec": [
+        81.7,
+        81.9
+      ],
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "recognizer_fingerprint": "ddc5e6c2d012d3b1219f567a532ea193219578e14c18f3954ce51c98bf473264",
+      "profile_fingerprint": "fc3b8dfc4c4e9c72e6bbbaf7c5a90762ad879ea695dff8784997123e1f56f51c",
+      "qualification_sha256": "85caed7d2b4044b910bfa98f573907a0eaa087c488d840090ee40ab288d75ca7",
+      "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+      "script_sha256": "fb761addb7ded1cefc7600db0226b7684ed6eabd118963edcfed1856a9b53589",
+      "png_budget_bytes": 134217728,
+      "source_epochs_spliced": false,
+      "calibration_prefix_supplied": false,
+      "GT_input": false,
+      "full_lifecycle_qualification_established": false,
+      "frames": 12,
+      "elapsed_sec": 5.365003874991089,
+      "retained_png_bytes": 25748283,
+      "peak_process_rss_bytes": 121700352,
+      "source_breaks_sec": [
+        81.78600260416667,
+        81.83600260416667
+      ],
+      "final_continuity_segment": 2,
+      "events": [],
+      "terminal_integrity_verified": true,
+      "owned_facts": 0,
+      "source_epoch": "ba677d8527154d288c1bfb19ae42e4f3",
+      "calibration_counts": {
+        "frames": 12,
+        "fresh_geometry_success": 0,
+        "effective_geometry_success": 0,
+        "retained_geometry_frames": 0,
+        "geometry_invalid_unknown": 12,
+        "geometry_valid_state_unknown": 0,
+        "live_identity_evidence_insufficient": 12,
+        "insufficient_anchors_frames": 12
+      },
+      "anchors": [
+        {
+          "anchor_name": "round_timer",
+          "configured": true,
+          "required": true,
+          "threshold": 0.9,
+          "mask_presence": false,
+          "dimensions": [
+            125,
+            85
+          ],
+          "content_hash": "b479ec4f00a1e271cd559d23c1843ae45da39abc04bdf794bf926bdba394ffbd",
+          "mask_content_hash": null,
+          "asset_readable": true,
+          "accepted_count": 0,
+          "rejected_count": 12,
+          "unscored_count": 0,
+          "missing_during_insufficient_anchors": 12,
+          "accepted_during_geometry_success": 0,
+          "match_confidence": {
+            "min": 0.6726543307304382,
+            "median": 0.7777711451053619,
+            "max": 0.7778557538986206
+          },
+          "geometry_success_rate_when_accepted": null
+        },
+        {
+          "anchor_name": "top_match_bar",
+          "configured": true,
+          "required": true,
+          "threshold": 0.9,
+          "mask_presence": true,
+          "dimensions": [
+            1155,
+            120
+          ],
+          "content_hash": "ebd3300a9936c4d43cfc50d900bafae99aa1660b2945ef451cd34c8728996d24",
+          "mask_content_hash": "da90f88ac86a2155de5771362b81abaaca7b8a5749c360c12cdf6999cbd88503",
+          "asset_readable": true,
+          "accepted_count": 12,
+          "rejected_count": 0,
+          "unscored_count": 0,
+          "missing_during_insufficient_anchors": 0,
+          "accepted_during_geometry_success": 0,
+          "match_confidence": {
+            "min": 0.9977622032165527,
+            "median": 0.9977895021438599,
+            "max": 0.9981397390365601
+          },
+          "geometry_success_rate_when_accepted": 0.0
+        },
+        {
+          "anchor_name": "player_hp_armor",
+          "configured": true,
+          "required": true,
+          "threshold": 0.9,
+          "mask_presence": false,
+          "dimensions": [
+            220,
+            153
+          ],
+          "content_hash": "31d71802e579aabcd257926af9707687b4dfa1bb3faf9e5df410c0d8bf6bf574",
+          "mask_content_hash": null,
+          "asset_readable": true,
+          "accepted_count": 0,
+          "rejected_count": 12,
+          "unscored_count": 0,
+          "missing_during_insufficient_anchors": 12,
+          "accepted_during_geometry_success": 0,
+          "match_confidence": {
+            "min": 0.28666263818740845,
+            "median": 0.28680887818336487,
+            "max": 0.5770863890647888
+          },
+          "geometry_success_rate_when_accepted": null
+        },
+        {
+          "anchor_name": "abilities",
+          "configured": true,
+          "required": true,
+          "threshold": 0.9,
+          "mask_presence": false,
+          "dimensions": [
+            500,
+            223
+          ],
+          "content_hash": "f9faf779c0490d9ef79d3cc7fa3824de0fbcb7cbed4947df3af93f7ce5a3d847",
+          "mask_content_hash": null,
+          "asset_readable": true,
+          "accepted_count": 0,
+          "rejected_count": 12,
+          "unscored_count": 0,
+          "missing_during_insufficient_anchors": 12,
+          "accepted_during_geometry_success": 0,
+          "match_confidence": {
+            "min": 0.05698245018720627,
+            "median": 0.05706692859530449,
+            "max": 0.5452524423599243
+          },
+          "geometry_success_rate_when_accepted": null
+        }
+      ],
+      "result_sha256": "b6b45bd0eca6f81abf38e65d5978f9a068dd250bdb2bef7eafa3c4b4fe27db9f",
+      "native_artifact_sha256": "67e06462e56e526eed6ef9a4f93e3084f739b3a65f2672807a1735892ae51249"
+    },
+    "r2": {
+      "scope": "Fresh bounded R2 actual qualified entrance without source-origin calibration shortcut; historical exposed event, not new independent generalization",
+      "window_sec": [
+        111.0,
+        111.8
+      ],
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "recognizer_fingerprint": "ddc5e6c2d012d3b1219f567a532ea193219578e14c18f3954ce51c98bf473264",
+      "profile_fingerprint": "fc3b8dfc4c4e9c72e6bbbaf7c5a90762ad879ea695dff8784997123e1f56f51c",
+      "qualification_sha256": "85caed7d2b4044b910bfa98f573907a0eaa087c488d840090ee40ab288d75ca7",
+      "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+      "script_sha256": "f3684b83e36dc9c9a0b2642ed481439a79e7ab5a1508704ea909e968ec0ad095",
+      "png_budget_bytes": 134217728,
+      "source_epochs_spliced": false,
+      "calibration_prefix_supplied": false,
+      "GT_input": false,
+      "full_lifecycle_qualification_established": false,
+      "frames": 48,
+      "elapsed_sec": 14.043446208990645,
+      "retained_png_bytes": 70650570,
+      "peak_process_rss_bytes": 122290176,
+      "events": [],
+      "terminal_integrity_verified": true,
+      "owned_facts": 0,
+      "source_epoch": "09a1c69e04f742e2bb13afdf14fdc3cc",
+      "calibration_counts": {
+        "frames": 48,
+        "fresh_geometry_success": 0,
+        "effective_geometry_success": 0,
+        "retained_geometry_frames": 0,
+        "geometry_invalid_unknown": 48,
+        "geometry_valid_state_unknown": 0,
+        "live_identity_evidence_insufficient": 48,
+        "insufficient_anchors_frames": 48
+      },
+      "anchors": [
+        {
+          "anchor_name": "round_timer",
+          "configured": true,
+          "required": true,
+          "threshold": 0.9,
+          "mask_presence": false,
+          "dimensions": [
+            125,
+            85
+          ],
+          "content_hash": "b479ec4f00a1e271cd559d23c1843ae45da39abc04bdf794bf926bdba394ffbd",
+          "mask_content_hash": null,
+          "asset_readable": true,
+          "accepted_count": 0,
+          "rejected_count": 48,
+          "unscored_count": 0,
+          "missing_during_insufficient_anchors": 48,
+          "accepted_during_geometry_success": 0,
+          "match_confidence": {
+            "min": 0.5440614223480225,
+            "median": 0.7276283800601959,
+            "max": 0.857024610042572
+          },
+          "geometry_success_rate_when_accepted": null
+        },
+        {
+          "anchor_name": "top_match_bar",
+          "configured": true,
+          "required": true,
+          "threshold": 0.9,
+          "mask_presence": true,
+          "dimensions": [
+            1155,
+            120
+          ],
+          "content_hash": "ebd3300a9936c4d43cfc50d900bafae99aa1660b2945ef451cd34c8728996d24",
+          "mask_content_hash": "da90f88ac86a2155de5771362b81abaaca7b8a5749c360c12cdf6999cbd88503",
+          "asset_readable": true,
+          "accepted_count": 48,
+          "rejected_count": 0,
+          "unscored_count": 0,
+          "missing_during_insufficient_anchors": 0,
+          "accepted_during_geometry_success": 0,
+          "match_confidence": {
+            "min": 0.9933991432189941,
+            "median": 0.9963719844818115,
+            "max": 0.9975857138633728
+          },
+          "geometry_success_rate_when_accepted": 0.0
+        },
+        {
+          "anchor_name": "player_hp_armor",
+          "configured": true,
+          "required": true,
+          "threshold": 0.9,
+          "mask_presence": false,
+          "dimensions": [
+            220,
+            153
+          ],
+          "content_hash": "31d71802e579aabcd257926af9707687b4dfa1bb3faf9e5df410c0d8bf6bf574",
+          "mask_content_hash": null,
+          "asset_readable": true,
+          "accepted_count": 0,
+          "rejected_count": 48,
+          "unscored_count": 0,
+          "missing_during_insufficient_anchors": 48,
+          "accepted_during_geometry_success": 0,
+          "match_confidence": {
+            "min": 0.47853583097457886,
+            "median": 0.5265423059463501,
+            "max": 0.6632963418960571
+          },
+          "geometry_success_rate_when_accepted": null
+        },
+        {
+          "anchor_name": "abilities",
+          "configured": true,
+          "required": true,
+          "threshold": 0.9,
+          "mask_presence": false,
+          "dimensions": [
+            500,
+            223
+          ],
+          "content_hash": "f9faf779c0490d9ef79d3cc7fa3824de0fbcb7cbed4947df3af93f7ce5a3d847",
+          "mask_content_hash": null,
+          "asset_readable": true,
+          "accepted_count": 0,
+          "rejected_count": 48,
+          "unscored_count": 0,
+          "missing_during_insufficient_anchors": 48,
+          "accepted_during_geometry_success": 0,
+          "match_confidence": {
+            "min": 0.3048456609249115,
+            "median": 0.550631195306778,
+            "max": 0.6041278839111328
+          },
+          "geometry_success_rate_when_accepted": null
+        }
+      ],
+      "result_sha256": "fa0f62daa241f6d9f5153b73234ae7bff10298d7be87cfa041108822e01d13c9",
+      "native_artifact_sha256": "a4ab6e26e81fc535a29cd306196366418bf4906122f48b9d3521ca7fc38395f7"
+    }
+  },
+  "R2_conclusion": "Actual missed detection in this prefix-free entrance/window; not evidence of absent R2. Geometry passes only top_match_bar, fewer than unchanged minimum3 anchors. No forced calibration, cross-epoch lifecycle state or external expected events supplied.",
+  "R2_anchor_thresholds_lowered": false,
+  "qualification_changed": false,
+  "current_End_qualification_established": false,
+  "continuous_lifecycle_established": false,
+  "existing_local_Mac_failures_remain_separate": true,
+  "next_candidate": "Explicit qualified geometry initialization with immutable source-frame binding and terminal validation; transport geometry only, no prefix timer/phase/score, ownership, continuity or lifecycle state. Must be separately implemented, negatively tested and freshly requalified before any formal use."
+}
