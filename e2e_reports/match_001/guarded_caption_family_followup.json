@@ -1,0 +1,236 @@
+{
+  "scope": "Frozen caption-family additional event evidence; no production change, no End/full lifecycle qualification",
+  "validated_code_commit": "938b9c8052627891feafafba8127ef4f6f3de24e",
+  "recognizer_fingerprint": "58117f2bfe84f072c37f0989846145d7fad7a3a29d807ba55d9be9a6136a4f68",
+  "source_sha256": "06919642d69f68895ac123b505bfd7d3643dd28d903585008fcdc2b7f1b7e3fd",
+  "profile_fingerprint": "445f61d7440dee58c480253338b19df500c676c519e84810d1f7332c3ea798ee",
+  "measurements": {
+    "held-CLUTCH-result": {
+      "scope": "Additional held CLUTCH End source, discovered while seeking missing WON; exact source labels must be frozen before predictions",
+      "code": "58117f2bfe84f072c37f0989846145d7fad7a3a29d807ba55d9be9a6136a4f68",
+      "profile": "445f61d7440dee58c480253338b19df500c676c519e84810d1f7332c3ea798ee",
+      "source_sha256": "06919642d69f68895ac123b505bfd7d3643dd28d903585008fcdc2b7f1b7e3fd",
+      "frames": 181,
+      "first_tick": 19038720,
+      "last_tick": 19084800,
+      "elapsed_producer_sec": 51.37287020898657,
+      "peak_process_rss_bytes": 107331584,
+      "PNG_bytes": 321106723,
+      "geometry_counts": {
+        "frames": 181,
+        "fresh_geometry_success": 0,
+        "effective_geometry_success": 181,
+        "retained_geometry_frames": 181,
+        "geometry_invalid_unknown": 0,
+        "geometry_valid_state_unknown": 181,
+        "live_identity_evidence_insufficient": 181,
+        "insufficient_anchors_frames": 181
+      },
+      "semantic_result_matches": 0,
+      "score_complete_pairs": 67,
+      "source_breaks_sec": [],
+      "diagnostic_End_patterns": [],
+      "support_counts": {
+        "timer:unknown": 3,
+        "score_ally:correct": 4,
+        "score_enemy:correct": 4,
+        "result:correct": 2,
+        "timer:correct": 3,
+        "score_ally:unknown": 2,
+        "score_enemy:unknown": 2,
+        "result:unknown": 3
+      },
+      "formal_events": 0,
+      "owned_facts": 0,
+      "raw_rows_sha256": "510f4296d56945919b8151254139d990b1ca52e0ed29b7ee3027ce25616c9ccf",
+      "terminal_integrity_verified": true,
+      "post_case_tuning": false,
+      "full_lifecycle_qualification": false,
+      "new_cross_video_generalization_claimed": false
+    },
+    "held-WON-result": {
+      "scope": "Additional held WON End source in evaluation-only middle extension, candidate unchanged; exact source labels before predictions",
+      "code": "58117f2bfe84f072c37f0989846145d7fad7a3a29d807ba55d9be9a6136a4f68",
+      "profile": "445f61d7440dee58c480253338b19df500c676c519e84810d1f7332c3ea798ee",
+      "source_sha256": "06919642d69f68895ac123b505bfd7d3643dd28d903585008fcdc2b7f1b7e3fd",
+      "frames": 271,
+      "first_tick": 12103680,
+      "last_tick": 12172800,
+      "elapsed_producer_sec": 79.14455920801265,
+      "peak_process_rss_bytes": 110755840,
+      "PNG_bytes": 465610114,
+      "geometry_counts": {
+        "frames": 271,
+        "fresh_geometry_success": 0,
+        "effective_geometry_success": 271,
+        "retained_geometry_frames": 271,
+        "geometry_invalid_unknown": 0,
+        "geometry_valid_state_unknown": 271,
+        "live_identity_evidence_insufficient": 271,
+        "insufficient_anchors_frames": 271
+      },
+      "semantic_result_matches": 171,
+      "score_complete_pairs": 226,
+      "source_breaks_sec": [],
+      "diagnostic_End_patterns": [],
+      "support_counts": {
+        "timer:correct": 6,
+        "score_ally:correct": 6,
+        "score_enemy:unknown": 1,
+        "result:correct": 6,
+        "score_enemy:correct": 5
+      },
+      "formal_events": 0,
+      "owned_facts": 0,
+      "raw_rows_sha256": "eaab85f2d1d1a75e83104756233bbe937244bf9e1812a1bc072e3b2744ca1054",
+      "terminal_integrity_verified": true,
+      "post_case_tuning": false,
+      "full_lifecycle_qualification": false,
+      "new_cross_video_generalization_claimed": false
+    },
+    "development-timing/LOST-result": {
+      "scope": "Development temporal baseline LOST, no independent evaluation claim",
+      "code": "58117f2bfe84f072c37f0989846145d7fad7a3a29d807ba55d9be9a6136a4f68",
+      "profile": "445f61d7440dee58c480253338b19df500c676c519e84810d1f7332c3ea798ee",
+      "source_sha256": "06919642d69f68895ac123b505bfd7d3643dd28d903585008fcdc2b7f1b7e3fd",
+      "independent_human_review_pending": false,
+      "frames": 481,
+      "first_tick": 5437440,
+      "last_tick": 5560320,
+      "elapsed_producer_sec": 135.15135641599772,
+      "peak_process_rss_bytes": 112541696,
+      "PNG_bytes": 770924623,
+      "geometry_counts": {
+        "frames": 481,
+        "fresh_geometry_success": 0,
+        "effective_geometry_success": 481,
+        "retained_geometry_frames": 481,
+        "geometry_invalid_unknown": 0,
+        "geometry_valid_state_unknown": 481,
+        "live_identity_evidence_insufficient": 481,
+        "insufficient_anchors_frames": 481
+      },
+      "semantic_result_matches": 239,
+      "score_complete_pairs": 466,
+      "source_breaks_sec": [],
+      "diagnostic_End_patterns": [],
+      "support_counts": {},
+      "formal_events": 0,
+      "owned_facts": 0,
+      "raw_rows_sha256": "b472769c24afbeb7cced01c1bc0b2f6536878a5cc6bc2381b2278e8fa9738e3a",
+      "terminal_integrity_verified": true,
+      "post_case_tuning": false,
+      "full_lifecycle_qualification": false,
+      "new_cross_video_generalization_claimed": false
+    },
+    "development-timing/WON-result": {
+      "scope": "Development temporal baseline WON, no independent evaluation claim",
+      "code": "58117f2bfe84f072c37f0989846145d7fad7a3a29d807ba55d9be9a6136a4f68",
+      "profile": "445f61d7440dee58c480253338b19df500c676c519e84810d1f7332c3ea798ee",
+      "source_sha256": "06919642d69f68895ac123b505bfd7d3643dd28d903585008fcdc2b7f1b7e3fd",
+      "independent_human_review_pending": false,
+      "frames": 481,
+      "first_tick": 6819840,
+      "last_tick": 6942720,
+      "elapsed_producer_sec": 127.76166879199445,
+      "peak_process_rss_bytes": 109740032,
+      "PNG_bytes": 732890642,
+      "geometry_counts": {
+        "frames": 481,
+        "fresh_geometry_success": 0,
+        "effective_geometry_success": 481,
+        "retained_geometry_frames": 481,
+        "geometry_invalid_unknown": 0,
+        "geometry_valid_state_unknown": 481,
+        "live_identity_evidence_insufficient": 481,
+        "insufficient_anchors_frames": 481
+      },
+      "semantic_result_matches": 308,
+      "score_complete_pairs": 448,
+      "source_breaks_sec": [],
+      "diagnostic_End_patterns": [],
+      "support_counts": {},
+      "formal_events": 0,
+      "owned_facts": 0,
+      "raw_rows_sha256": "67d9c219fcff604e5d25470993d7a3fc1fc3a9be986aa0b65488e1c730968030",
+      "terminal_integrity_verified": true,
+      "post_case_tuning": false,
+      "full_lifecycle_qualification": false,
+      "new_cross_video_generalization_claimed": false
+    }
+  },
+  "private_result_sha256": {
+    "held-CLUTCH-result": "6f4327f33722434c51750d140019c97c6ac7ed159a9f666b4ac7b72bbe99824d",
+    "held-WON-result": "b85c1048644478eca9ce6cfe9237c111b243b036fae543e9349c6a16d606ed32",
+    "development-timing/LOST-result": "380f8df9928ddd7d1bd138781c7c52fd845c6466fb20ab11c2197739af48eb8c",
+    "development-timing/WON-result": "eb52954fb33f8c038a6f34f5906a888bee2c91b5cb72f1e283bd59c111193438"
+  },
+  "allocation_sha256": {
+    "held-tail-discovery/extension-plan.json": "9785e2318745a8968190d26383b9d4f331e47fa01d970e1dd497055dafec504a",
+    "held-mid-discovery/extension-plan.json": "07e5ebabcd47d78e307a388bfce3f1a36ae67bc1377c11707b65c708a62169b5",
+    "development-timing/plan.json": "009d61b811389ea7604664be14849c01af47766c18d3de151164588dc3d75031"
+  },
+  "source_word_review": {
+    "scope": "Literal user reply to two-group caption-word review; not a complete two-group annotation or exact temporal GT",
+    "user_response": "WON",
+    "CLUTCH_group_independently_confirmed": false,
+    "complete_two_group_review": false,
+    "recognizer_or_End_time_approval": false,
+    "WON_source_review_image_sha256": "0228f4765eed49e07cf85ffa1bc80ace372e06838fbda88b4c070dab9748b983",
+    "CLUTCH_source_review_image_sha256": "3fc15ec326454c8b168b2ae4b54e860289f76c8a2cc44bc8bd6a00ebd68f8111"
+  },
+  "source_word_review_sidecar_sha256": "a2c132c50ee78e5a9967da358dda3fbd137390671253ea28165cce113a057549",
+  "WON_abstention_audit_sha256": "1d768c79e81f75b411064c08526aa715ca83b3731d1e4ce2b4a52eaf217d0c98",
+  "WON_abstention": {
+    "clock_drop_sec": 788.3333333333334,
+    "reset_unknown_score_before_stability_sec": 788.6833333333333,
+    "first_accepted_caption_sec": 789.1666666666666,
+    "horizon_alone_is_not_the_cause": true
+  },
+  "future_held_pool_sec": [
+    1530,
+    1800
+  ],
+  "future_held_opened": false,
+  "evaluated_cases_never_recycled_as_blind_for_changed_method": true,
+  "same_video_event_evaluation_only": true,
+  "whole_source_generalization_claimed": false,
+  "temporal_production_change": false,
+  "qualification_bundle_created": false,
+  "formal_End_qualification": false,
+  "CI_validated_commit": "938b9c8052627891feafafba8127ef4f6f3de24e",
+  "CI_jobs": [
+    {
+      "name": "linux-validation",
+      "run": 38554998216,
+      "job": 115822220758,
+      "conclusion": "success"
+    },
+    {
+      "name": "linux-validation",
+      "run": 38554991361,
+      "job": 115822188661,
+      "conclusion": "success"
+    },
+    {
+      "name": "Windows test-and-build",
+      "run": 38554998223,
+      "job": 115822151436,
+      "conclusion": "success"
+    },
+    {
+      "name": "Windows test-and-build",
+      "run": 38554990947,
+      "job": 115822134598,
+      "conclusion": "success"
+    },
+    {
+      "name": "text-io-contract-audit",
+      "run": 38554998220,
+      "job": 115821827011,
+      "conclusion": "success"
+    }
+  ],
+  "checkpoint_is_report_only": true,
+  "checkpoint_CI_not_inherited_as_exact_HEAD_result": true
+}
