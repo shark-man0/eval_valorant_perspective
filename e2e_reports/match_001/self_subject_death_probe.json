@@ -61,5 +61,7 @@
     "lfs_server_fetch_tested": false,
     "recognition_executed": false,
     "source": "existing SHA-identical video in isolated checkout; no LFS client installed"
-  }
+  },
+  "source_execution_commit": "14d5b71e95c89dd9f9e365fc9a4b8b898aa2425d",
+  "post_measurement_change": "Diagnostic CLI now spells out UTF-8 for the same bytes; no reader/model/runtime change. This remains the original source execution, not relabeled new recognition."
 }

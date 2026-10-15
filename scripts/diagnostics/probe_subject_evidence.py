@@ -76,7 +76,7 @@ def main():
         'tesseract_version': subprocess.check_output(
             [str(args.tesseract), '--version'], text=True, encoding='utf-8',
         ),
-    }, sort_keys=True).encode()).hexdigest()
+    }, sort_keys=True).encode('utf-8')).hexdigest()
     args.output.mkdir(parents=True)
     rows = []
     started = time.monotonic()
@@ -100,7 +100,7 @@ def main():
                                code, config, deps)
         observation = SubjectObservation(
             f'victim-candidate-{number}', source, SubjectRole.VICTIM, SubjectRelation.UNKNOWN,
-            hashlib.sha256(str(accepted).encode()).hexdigest() if accepted is not None else None,
+            hashlib.sha256(str(accepted).encode('utf-8')).hexdigest() if accepted is not None else None,
             reading.confidence, 'frozen_tesseract_victim_crop_psm7', bounds,
         )
         decision = SubjectDeathProbe(native_step_ticks=256, max_corroboration_sec=1).observe(
