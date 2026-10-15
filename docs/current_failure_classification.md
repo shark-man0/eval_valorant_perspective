@@ -1,132 +1,87 @@
 # Current full-candidate failure classification
 
-## Problem and evidence
+## Evidence and status
 
-This analysis uses the normally completed Strict native-replay full candidate and its confidence-normalized canonical trace. It is **not an adopted baseline update**. HEAD is `c11ec6d333957cccb270417bc95a8a57f433e6ad` with uncommitted implementation changes. No new video recognition or full E2E ran for this analysis. The unchanged reference evaluator was replayed and its entire failure list matched the saved evaluation exactly.
+This supersedes the historical first-blocker table with the completed current-code full run. It does not adopt the candidate as the baseline. Latest main was fetched: `7e480c2f2f7f49aea73e1541d065d78881d2f11c`. Full source execution: `46462336427149764beb8e1fdd94c554e075616e`; production source is byte-identical to S-01 code `6ecab454e35507f1a1e5c677488bb5ece54a7211`. Recognition/profile/qualification, protected assertion/evaluator and terminal artifact hashes are recorded in the sanitized JSON. No source recognition or full rerun is performed by this analysis. The unchanged canonical evaluator reproduces the entire saved 99-message failure list exactly.
 
-| Metric | Adopted previous | Current candidate | Delta |
+| Metric | Adopted | Previous candidate | Current source full |
 | --- | ---: | ---: | ---: |
-| PASS | 23 | 28 | +5 |
-| FAIL | 55 | 50 | -5 |
-| NOT_EVALUATED | 4 | 4 | 0 |
-| Round starts | 0 | 2 | +2 |
-| Round ends | 0 | 1 | +1 |
-| Native packages | 1 partial | 2 | +1 |
+| PASS | 23 | 28 | 28 |
+| FAIL | 55 | 50 | 50 |
+| NE | 4 | 4 | 4 |
 | Negative failures | 0 | 0 | 0 |
-| Discontinuity violations | 0 | 0 | 0 |
 
-The new PASS IDs are `GT-R1-ROUND-START`, `GT-R2-ROUND-START`, `event_count_constraints-000`, `event_count_constraints-002`, and `event_count_constraints-004`. No formerly passing assertion regressed. Canonical overall pass remains false. Private paths and all relevant raw/trace/assertion/evaluator/builder/adapter hashes are recorded in the JSON. The original adopted 82-row matrix remains unchanged.
+All 82 statuses match the historical candidate; adopted PASS regressions = 0. Five candidate improvements versus adopted baseline remain lifecycle assertions, not S-01 accuracy gains. All 20 negative assertions PASS. Full analyzer exit is 0; evaluator exit 1 means semantic failures remain, not a processing crash.
 
-## Root cause summary
+## Exclusive first observed blockers
 
-Each FAIL is assigned once to its **first observed blocker**, not to a proven sole cause. Secondary predicates remain mandatory. Counts do not measure the independent number of assertions guaranteed to pass after one change.
+One assignment per failing assertion. These are blockers, not proven sole causes; multiple secondary predicates can remain. Every guaranteed single-fix PASS gain is currently zero. Snapshot state labels do not imply a particular recognizer correction is sufficient.
 
-| Root cause | FAIL | Share of 50 | Implementation class | Conditional primary ceiling |
-| --- | ---: | ---: | --- | ---: |
-| snapshot_hud_gate | 17 | 34.0% | upstream dependency | +17 |
-| preparation_scope | 9 | 18.0% | upstream dependency | +9 |
-| death_event_contract | 4 | 8.0% | partial implementation | +4 |
-| remote_state | 4 | 8.0% | recognition failure | +4 |
-| owned_visual_evidence | 4 | 8.0% | upstream dependency | +4 |
-| self_ownership | 2 | 4.0% | upstream dependency | +2 |
-| dead_ownership | 2 | 4.0% | partial implementation | +2 |
-| round_end_time | 1 | 2.0% | partial implementation | +1 |
-| smoke_state | 1 | 2.0% | recognition failure | +1 |
-| expanded_map_state | 1 | 2.0% | partial implementation | +1 |
-| spectator_coverage | 1 | 2.0% | recognition failure | +1 |
-| teammate_ownership | 1 | 2.0% | upstream dependency | +1 |
-| killfeed_export | 1 | 2.0% | missing implementation | +1 |
-| ammo_reload_contract | 1 | 2.0% | partial implementation | +1 |
-| spectator_snapshot_contract | 1 | 2.0% | partial implementation | +1 |
+| First blocker | FAIL | Share of 50 | Implementation/evidence class |
+| --- | ---: | ---: | --- |
+| snapshot_current_state_evidence | 15 | 30.0% | source recognition / qualification |
+| preparation_scope | 7 | 14.0% | upstream dependency |
+| snapshot_player_life_evidence | 5 | 10.0% | source ownership / temporal evidence |
+| death_event_contract | 4 | 8.0% | partial implementation |
+| remote_state | 4 | 8.0% | recognition failure |
+| owned_visual_evidence | 4 | 8.0% | upstream dependency |
+| self_ownership | 2 | 4.0% | upstream dependency |
+| dead_ownership | 2 | 4.0% | partial implementation |
+| map_resolution | 2 | 4.0% | source calibration / assets |
+| round_end_time | 1 | 2.0% | partial implementation |
+| smoke_state | 1 | 2.0% | recognition failure |
+| expanded_map_state | 1 | 2.0% | partial implementation |
+| spectator_coverage | 1 | 2.0% | recognition failure |
+| teammate_ownership | 1 | 2.0% | upstream dependency |
 
-For every single-root fix the presently **proven guaranteed gain is zero**. The ceilings are disjoint membership counts, not forecasts. Summing them would require all source evidence, association, identity, field and temporal predicates to succeed.
+The old `snapshot_hud_gate = 17` classification is historical. Its present first-blocker count is **0**: qualified global-only snapshots now reach trace. The largest remaining cluster is **15 current-frame state-evidence failures (30%)**. Another five matching snapshots lack player life/death evidence, and two derived snapshots lack map resolution. These numbers describe current failing predicates and cannot be added to the old 17 as new failures.
 
-| Implementation class | FAIL | Share |
-| --- | ---: | ---: |
-| partial implementation | 10 | 20.0% |
-| upstream dependency | 33 | 66.0% |
-| recognition failure | 6 | 12.0% |
-| missing implementation | 1 | 2.0% |
+The preparation first-blocker cluster is now **7**, not 9. The R1 prefix snapshot and its derived location now exist in scope and fail state/life/location evidence instead. Active/post-round R2 failures must not be put back into the historical 29-package cluster. Two early R2 snapshots and their derived location remain outside proven Strict scope; Practical unknown fragments already retain the observations.
 
-## Snapshot findings
+## Source and transport audit
 
-The largest first-blocker cluster is `snapshot_hud_gate`: **17/50 (34%)**. Sixteen required snapshots and one derived assertion are inside the correct package, have main frames within their fixed tolerance, but have **zero** such main frames meeting the unchanged HUD confidence 0.65 snapshot gate. This is not evidence of decode omission, sparse snapshot deduplication, an evaluator defect, or a geometry-only cause. All these main frames are classified unknown. The builder has no eligible snapshot to serialize at those times.
+Current raw has zero structured killfeed observations and zero combat-report field-reading observations. The absence of victim/killer/damage proof is not a trace adapter dropping an existing qualified death. Remote/expanded-map/smoke failures are source mode/qualification limitations; continuous spectator and self ownership have incomplete coverage. A visible report can persist after respawn. Global timer/score can never promote self-death, shot, weapon, HP or owner.
 
-Three other required snapshots and two derived assertions have targets outside package preparation: R1 3.5 s and R2 82/105 s. Their local main frames also fail the snapshot gate. Membership correction alone cannot make them pass. The three existing failing snapshots are different: 47.5 s lacks nonself killfeed visibility; 72.8 s lacks ammo and reload semantics; 170 s has spectator state but lacks death, subject identity, numbers, weapon, location and muzzle facts.
+Missing semantic exports remain **secondary** blockers even where the first predicate is state or life evidence: nonself killfeed visibility, reload animation, muzzle visibility and spectated subject fields. Do not interpret their absence from the exclusive root table as implemented features. FactBuilder already uses per-location source support; the distinct builder-level visual cap is retained, not removed.
 
-No `nonself_killfeed_row_visible`, `reload_animation_visible`, `muzzle_flash_visible`, or `spectated_name` semantic export is currently present in the searched production/trace code. Native models/readers for adjacent facts are not equivalent to these contracts. Full output has **zero structured killfeed rows and zero combat-report field-reading observations**. These values must not be supplied from GT.
+The confidence-dedup follow-up independently checked all 357 intermediate suppressed observations and 740 stronger field supports: all already survive final native package and trace. The experimental retention patch was rejected and production restored. See [complete-path audit](s01_snapshot_retention_followup.md). No downstream loss is inferred from an intermediate count.
 
-## Preparation and source boundaries
+## Current measured interval coverage
 
-Strict package windows are R1 `[3.602669, 81.752669]` and R2 `[110.986003, 171.019336]`, with an open R2 end. The **9** preparation blockers comprise two buy-phase intervals, two R2 menu intervals, three required snapshots and two derived snapshots. This replaces the historical 29-row round-package cluster; R2 active/post-death assertions now have a package and fail other predicates.
+| Assertion | Covered fraction |
+| --- | ---: |
+| GT-R1-BUY-FLAG | 0.389593 |
+| GT-R1-ASTRAL-1 | 0.000000 |
+| GT-R1-ASTRAL-2 | 0.000000 |
+| GT-R1-SMOKE | 0.000000 |
+| GT-R1-COMBAT-REPORT | 0.993571 |
+| GT-R2-BUY-FLAG | 0.014082 |
+| GT-R2-BUY-MENU-1 | 0.000000 |
+| GT-R2-BUY-MENU-2 | 0.000000 |
+| GT-R2-ASTRAL-1 | 0.000000 |
+| GT-R2-ASTRAL-2 | 0.000000 |
+| GT-R2-EXPANDED-MAP | 0.000000 |
+| GT-R2-SPECTATOR | 0.291533 |
+| OWN-R1-SELF | 0.089225 |
+| OWN-R1-SELF-DEAD | 0.000000 |
+| OWN-R2-SELF | 0.057927 |
+| OWN-R2-SELF-DEAD | 0.000000 |
+| OWN-R2-TEAMMATE | 0.284423 |
 
-Buy-phase coverage is only **11.7235%** for R1 and **1.4082%** for R2. Both R2 menu intervals have 0% round-scoped coverage. Source breaks at 81.786003 and 81.836003 must remain explicit. The existing Practical unknown-fragment mechanism can preserve the omitted observations but cannot by itself prove their R2 membership or ownership. Do not bridge the break or copy GT IDs.
+Ratios are interval-union coverage over the fixed independent evaluator windows, not recognition accuracy or a reduced threshold. Retain the original requirements. The source SHA-specific unedited contract remains active; real capture duplicates/PTS breaks are still respected. Fresh geometry is 1/6614; effective geometry is 6614/6614. No FAIL is proved solely caused by retained geometry, so no geometry threshold is changed.
 
-## Recognition and ownership
+## Priorities and required evidence
 
-All four Astra intervals, smoke and expanded-map intervals have **0%** matching canonical state coverage. A remote/texture path exists, but qualified interface evidence is insufficient; expanded-map texture is explicitly only a candidate. Spectator coverage is **29.1533%**, below 90%. Self coverage is R1 **8.9225%**, R2 **5.7927%**; teammate coverage is **28.4423%**. Both self-dead intervals are 0% and lack a producer-to-trace ownership path. These are coverage ratios from interval unions, not unknown totals or accuracy measurements.
+1. Current-frame state/identity proof and independently qualified subject/death evidence are the next producers. Four independent identity structures, spectator-safe controls and source continuity remain mandatory. A self-death fix has four direct FAIL targets plus ordering dependencies, but actor/subject/attributes/temporal proof all must hold; no automatic PASS gain is claimed.
+2. The seven preparation blockers require observed uninterrupted same-segment preparation/lifecycle membership. No GT round IDs or source-break bridges.
+3. Remote, smoke, expanded map and spectator need qualified discriminative interfaces/current-frame semantics; previously rejected controls are not retried with looser thresholds. Map assertions additionally need actual source-backed map calibration/assets.
+4. R1 end timing is separate: the observed end remains at 74.486003, about 3 ms beyond the fixed acceptance window. No timestamp fitting, backdating, window change or new end candidate is introduced.
 
-Fresh geometry remains 1 while effective geometry covers all 6614 main frames. This trace does not prove that retained geometry causes any single FAIL. Do not infer causation from those two counts or change its acceptance policy.
+The reviewed local input inventory has only match_001. Existing exposed development frames must not be relabeled as blind holdout. Concrete remaining qualification needs are detailed in [S-01 root cause](s01_snapshot_gate_root_cause.md), [transport verification](s01_snapshot_field_transport_verification.md) and the complete-path follow-up. Linux/Windows CI success validates code/contracts and packaged execution; it does not prove the missing source predicates or Windows real-video accuracy.
 
-## Round / death / visual / map
+## All 82 assertions
 
-R1 round end exists at **74.486003**, after the score change, but misses the fixed strict window ending 74.483 by **0.0030026 s**. Later result corroboration at 75.369336 is retained separately. Clock drop at 74.452669 and an early visually reviewed result flash are diagnostic evidence; neither authorizes choosing the timestamp closest to GT. No R2 end exists.
-
-Death contributes **4 exclusive FAIL**: two required death points and their two count constraints. Existing temporal death code needs report plus independent self-death corroboration; its attributes only emit cause-known semantics, not all required victim/agent/damage facts. A report can remain open after respawn. Fixing attributes without identity/temporal evidence cannot manufacture a death.
-
-All four ordering assertions are NE because one or both required matched points are absent: R1 start→death, start→end, death→end, and R2 start→death. A source-correct R1 end could conditionally yield **+1 FAIL→PASS and +1 NE→PASS** (candidate 30/49/3), but is not yet proven. Source-correct deaths could conditionally yield +4 primary PASS and unlock two orderings with already passing starts; the death→end ordering also needs a matched end. These are separate conditional sets and must not be double-counted.
-
-Three muzzle observations plus one shot count contribute **4** upstream visual FAIL. Their main source windows have no HUD-eligible frames; no accepted player-owned shot/muzzle exists. The one emitted visual event is stationary movement, not a shot. Map-derived assertions remain blocked first by absent snapshots; map resolution is an additional unresolved dependency, not something package splitting solves.
-
-## Actual dependency graph
-
-```mermaid
-flowchart TD
-  Source[Source frames / PTS / explicit breaks] --> Prep[Source-qualified preparation / package membership]
-  Source --> Identity[Four-part current player identity]
-  Source --> Global[Qualified global phase / timer / score]
-  Global --> Lifecycle[Native system lifecycle events]
-  Lifecycle --> Prep
-  Prep --> Snap[Native snapshot availability]
-  Identity --> Gate[HUD snapshot gate / owned evidence]
-  Gate --> Snap
-  Snap --> Trace[Trace field contracts]
-  Map[Map profile / calibration / resolver] --> Trace
-  Subject[Qualified subject / report / death corroboration] --> Death[Native death + semantic attributes]
-  Death --> Dead[Self-dead ownership / alive context]
-  Death --> Ordering[Point matching / counts / ordering]
-  Lifecycle --> Ordering
-  Identity --> Weapon[Owned weapon / ammo / visual evidence]
-  Weapon --> Visual[Muzzle / shot / reload facts]
-  Visual --> Trace
-  Spectator[Qualified spectator + subject readers] --> Trace
-  Spectator --> Owner[Teammate ownership intervals]
-  Trace --> Canonical[Unchanged canonical evaluator]
-  Owner --> Canonical
-  Dead --> Canonical
-  Ordering --> Canonical
-```
-
-## Recommended priority and next implementation task
-
-1. **Snapshot producer evidence audit and source-backed field transport.** Freeze the 17 inside-package targets below. Distinguish qualified global facts from player-owned facts at each actual frame. Investigate whether the existing single HUD gate discards qualified global observations; retain independently qualified facts without marking identity, ownership, alive, ammo or HP valid. Add regression tests for unknown identity and negative controls before any field-specific path. This directly addresses the largest current first blocker; its +17 ceiling is not a promise of 17 PASS because all original owned/state predicates remain required.
-2. **Death/subject/event contract**, reusing the existing prospective report/localization diagnostics. Bind victim, killer and damage to independently established self-death, not the global lifecycle route. Track the four primary death FAIL and two already-started ordering opportunities. Continue to reject persisted-report and spectator/menu negatives. Do not repeat failed bare-string or unqualified portrait experiments.
-3. **Preparation context retention and explicit association.** Preserve prefix/inter-round unknown fragments with the existing Practical mode; establish membership from source lifecycle evidence without crossing the recorded breaks. Track the nine primary blockers plus their snapshot/owned/map secondary dependencies.
-4. **Targeted state coverage and remaining semantic exports**, then map and owned visual pipelines. Qualified spectator continuity is independently needed for its interval and teammate ownership. Unknown reduction is never the selection KPI.
-
-R1 end timing remains a separately bounded semantic investigation. Its possible +2 metric movement is smaller than the above clusters and must not become a repeated GT-fitting exercise. No new timer/score/result threshold candidate is justified by this classification.
-
-## Milestones and verification
-
-First checkpoint: replay all 82 unchanged canonical predicates after each contract-only change and preserve the 28 current candidate passes and all 20 negative passes. Recognition changes require fresh code/profile-bound component validation; do not re-sign prior qualification. Independent numeric review and Linux/Windows integration remain adoption gates.
-
-Conditional timing checkpoint: 30 PASS / 49 FAIL / 3 NE only after independent end-time semantics prove the detected point. Conditional death checkpoint from the current candidate: 34 PASS / 46 FAIL / 2 NE if both full death predicates and the two start→death orderings hold; with a separately correct end, 36 PASS / 45 FAIL / 1 NE, then death→end may additionally evaluate. These are predicate-based scenarios, not adopted results or guarantees. No numeric milestone is assigned to the 17 snapshot targets until required owned/state facts are established.
-
-Analysis checks: unique 82 IDs; exclusive 50 FAIL assignments; status counts 28/50/4; exact unchanged evaluator failure-list equality; all missing snapshot windows have actual main observations and zero gate-eligible main observations; assertion/evaluator hashes recorded. No thresholds, GT, ownership, sampler, event behavior, confidence or validation semantics were modified. No new full E2E; no push. Full regression after the earlier trace-confidence change and current-branch Windows CI remain unverified.
-
-## 82 assertion matrix
-
-| Assertion | Adopted previous | Current | First blocker |
+| Assertion | Adopted | Current | First blocker / dependency |
 | --- | --- | --- | --- |
 | GT-R1-ROUND-START | fail | pass | — |
 | GT-R1-DEATH | fail | fail | death_event_contract |
@@ -154,31 +109,31 @@ Analysis checks: unique 82 IDs; exclusive 50 FAIL assignments; status counts 28/
 | OWN-R2-SELF | fail | fail | self_ownership |
 | OWN-R2-SELF-DEAD | fail | fail | dead_ownership |
 | OWN-R2-TEAMMATE | fail | fail | teammate_ownership |
-| GT-R1-SNAP-0035 | fail | fail | preparation_scope |
-| GT-R1-SNAP-0415 | fail | fail | snapshot_hud_gate |
-| GT-R1-SNAP-475 | fail | fail | killfeed_export |
-| GT-R1-SNAP-585 | fail | fail | snapshot_hud_gate |
-| GT-R1-SNAP-595 | fail | fail | snapshot_hud_gate |
+| GT-R1-SNAP-0035 | fail | fail | snapshot_current_state_evidence |
+| GT-R1-SNAP-0415 | fail | fail | snapshot_current_state_evidence |
+| GT-R1-SNAP-475 | fail | fail | snapshot_current_state_evidence |
+| GT-R1-SNAP-585 | fail | fail | snapshot_current_state_evidence |
+| GT-R1-SNAP-595 | fail | fail | snapshot_current_state_evidence |
 | GT-R1-SNAP-705 | pass | pass | — |
-| GT-R1-SNAP-728 | fail | fail | ammo_reload_contract |
-| GT-R1-SNAP-733 | fail | fail | snapshot_hud_gate |
-| GT-R1-SNAP-734 | fail | fail | snapshot_hud_gate |
-| GT-R1-SNAP-7425 | fail | fail | snapshot_hud_gate |
-| GT-R1-SNAP-7438 | fail | fail | snapshot_hud_gate |
-| GT-R1-SNAP-7440 | fail | fail | snapshot_hud_gate |
-| GT-R1-SNAP-7445 | fail | fail | snapshot_hud_gate |
+| GT-R1-SNAP-728 | fail | fail | snapshot_current_state_evidence |
+| GT-R1-SNAP-733 | fail | fail | snapshot_current_state_evidence |
+| GT-R1-SNAP-734 | fail | fail | snapshot_current_state_evidence |
+| GT-R1-SNAP-7425 | fail | fail | snapshot_current_state_evidence |
+| GT-R1-SNAP-7438 | fail | fail | snapshot_current_state_evidence |
+| GT-R1-SNAP-7440 | fail | fail | snapshot_player_life_evidence |
+| GT-R1-SNAP-7445 | fail | fail | snapshot_player_life_evidence |
 | GT-R2-SNAP-820 | fail | fail | preparation_scope |
 | GT-R2-SNAP-1050 | fail | fail | preparation_scope |
-| GT-R2-SNAP-11145 | fail | fail | snapshot_hud_gate |
-| GT-R2-SNAP-143 | fail | fail | snapshot_hud_gate |
-| GT-R2-SNAP-1475 | fail | fail | snapshot_hud_gate |
-| GT-R2-SNAP-1476 | fail | fail | snapshot_hud_gate |
-| GT-R2-SNAP-1477 | fail | fail | snapshot_hud_gate |
-| GT-R2-SNAP-149 | fail | fail | snapshot_hud_gate |
-| GT-R2-SNAP-151 | fail | fail | snapshot_hud_gate |
-| GT-R2-SNAP-170 | fail | fail | spectator_snapshot_contract |
-| GT-R1-SNAP-0035-DERIVED-zone_id | fail | fail | preparation_scope |
-| GT-R1-SNAP-0415-DERIVED-zone_id | fail | fail | snapshot_hud_gate |
+| GT-R2-SNAP-11145 | fail | fail | snapshot_player_life_evidence |
+| GT-R2-SNAP-143 | fail | fail | snapshot_current_state_evidence |
+| GT-R2-SNAP-1475 | fail | fail | snapshot_current_state_evidence |
+| GT-R2-SNAP-1476 | fail | fail | snapshot_current_state_evidence |
+| GT-R2-SNAP-1477 | fail | fail | snapshot_player_life_evidence |
+| GT-R2-SNAP-149 | fail | fail | snapshot_current_state_evidence |
+| GT-R2-SNAP-151 | fail | fail | snapshot_current_state_evidence |
+| GT-R2-SNAP-170 | fail | fail | snapshot_player_life_evidence |
+| GT-R1-SNAP-0035-DERIVED-zone_id | fail | fail | map_resolution |
+| GT-R1-SNAP-0415-DERIVED-zone_id | fail | fail | map_resolution |
 | GT-R2-SNAP-820-DERIVED-zone_id | fail | fail | preparation_scope |
 | GT-R1-MUZZLE-1 | fail | fail | owned_visual_evidence |
 | GT-R1-MUZZLE-2 | fail | fail | owned_visual_evidence |
@@ -211,12 +166,6 @@ Analysis checks: unique 82 IDs; exclusive 50 FAIL assignments; status counts 28/
 | NEG-SAME-ZONE-CALLOUT-CHANGE | pass | pass | — |
 | NEG-CONTENT-JUMP-SPAN | pass | pass | — |
 
-Machine-readable definitions, actual values/coverage/PTS, reasons, secondary dependencies and hashes: [current_failure_classification.json](../e2e_reports/match_001/current_failure_classification.json).
+Machine report: [s01_current_failure_classification.json](../e2e_reports/match_001/s01_current_failure_classification.json). It contains measured source-frame/snapshot/event counts and failure field names, without private GT definitions or expected values. Historical evidence remains in original local artifacts; it has not been re-signed as current recognition.
 
-Pre-push verification: 212 related tests PASS in 170.65 seconds; Ruff PASS; mypy 131 source files PASS. The adopted 82-row matrix is exactly equal to HEAD. No full E2E was repeated for publication. Remote main advanced to becc9eb (L5 storage/display separation); integration validation is recorded below when completed.
-
-Main integration: remote becc9eb merged without conflicts in f0430017029aae39a3fd0ec8c15566e7e1a962e4. Post-merge L5 storage/display, practical evaluation/resume, non-vision safety and HUD integration tests: 367 PASS in 178.17 seconds. Ruff and mypy 131 files PASS; dataset validation 38 cases PASS. Current-commit Windows CI is not yet verified. No full E2E was repeated for this merge.
-
-Further concurrent main integration: 055bc63 merged without conflicts in 2009d8e. Match aggregation, UTF-8 and release reproducibility updates were retained. The related run passed 245 tests and failed one static UTF-8 audit because release snapshot changes added two implicit encode calls. Explicit utf-8 preserves their existing byte semantics; the audit and release tests then pass (27 tests, 10.82 seconds), with zero unclassified sites, Ruff PASS and mypy 132 files PASS.
-
-The decoder/visual UTF-8 changes alter the broad recognizer fingerprint to 886a3bca458de9d19517a1e640b3a25c44a79adfe5ea281a7c83b39e8c8ab165. The actual qualification loader correctly rejects the old 96c79de-bound audit. Historical candidate counts remain pre-merge evidence, not a newly verified current-main recognition result. No report was re-signed, no default experimental profile installed, and no new full E2E ran for publication. Current-commit Linux/Windows CI results remain pending.
+This analysis changes documentation and sanitized diagnostic data only. Production source, qualification assets, thresholds, GT, schema, assertions, full sampler and adopted baseline remain unchanged.

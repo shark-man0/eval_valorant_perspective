@@ -9,6 +9,6 @@
   "fps": 60.0,
   "audio_tracks": 3,
   "validation_pack": "valorant_e2e_validation_pack_v3",
-  "validation_pack_sha256": "7f0b7798857670f08074adbeea73d24176967ad5bf1f2f7300d2c2f792cf956f",
+  "validation_pack_sha256": "71b8021e21d4796a32e7c09327c38ec83cb4645ad6d3f78a1823ecb53970359d",
   "assertions_sha256": "c5e242b611ce227d1d2633e5e24c00dfe65168d8124ab58fbdea84b1d7f0d820"
 }
