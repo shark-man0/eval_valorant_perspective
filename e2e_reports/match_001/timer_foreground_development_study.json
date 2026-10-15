@@ -1,0 +1,103 @@
+{
+  "scope": "Original development timer foreground investigation; rejected prototype; not independent qualification",
+  "source_sha256": "06919642d69f68895ac123b505bfd7d3643dd28d903585008fcdc2b7f1b7e3fd",
+  "windows_sec": [
+    [
+      354,
+      362
+    ],
+    [
+      444,
+      452
+    ],
+    [
+      518,
+      526
+    ]
+  ],
+  "baseline": {
+    "scope": "Timer diagnosis on original development intervals only; no held image or tracker call",
+    "windows": [
+      "LOST",
+      "WON",
+      "numeric"
+    ],
+    "code": "414f9d9d3f1841cfe50fdf9732bb78e1bfa35aa4382eb7c0d90d194ed81155fa",
+    "profile": "ca8aa2a0325afd5f5bcf6d6d8eaddab94ea764ecdcbacecc6104ca3b2f0895f9",
+    "production_changed": false,
+    "thresholds_changed": false,
+    "frames": 1443,
+    "counts": {
+      "LOST:strict_timer_foreground_touches_roi_border": 199,
+      "LOST:accepted": 275,
+      "LOST:strict_timer_expected_exactly_two_separator_dots": 3,
+      "LOST:strict_timer_glyph_below_0_90": 4,
+      "WON:strict_timer_foreground_touches_roi_border": 455,
+      "WON:accepted": 26,
+      "numeric:accepted": 378,
+      "numeric:strict_timer_glyph_below_0_90": 24,
+      "numeric:strict_timer_foreground_touches_roi_border": 59,
+      "numeric:strict_timer_expected_exactly_two_separator_dots": 20
+    },
+    "elapsed_sec": 29.189919625001494
+  },
+  "prototype": {
+    "scope": "Original development only, one fixed foreground hypothesis, no retry/temporal repair",
+    "code": "414f9d9d3f1841cfe50fdf9732bb78e1bfa35aa4382eb7c0d90d194ed81155fa",
+    "profile": "ca8aa2a0325afd5f5bcf6d6d8eaddab94ea764ecdcbacecc6104ca3b2f0895f9",
+    "hypothesis": "Replace timer Otsu with white200 and max side-eight-pixel median rowcontrast12, same fixed score convention. Keep all digit/separator/border/NCC/margin checks. No parameter sweep.",
+    "prototype_sha256": "cccddbdb8862bcbf8c7672042fdfd92b572600ac5402ac45830b6745a342e0ba",
+    "windows": [
+      "LOST",
+      "WON",
+      "numeric"
+    ],
+    "held_opened": false,
+    "formal_qualification": false,
+    "frames": 1443,
+    "counts": {
+      "LOST:still_unknown": 203,
+      "LOST:prior_accept_now_unknown": 7,
+      "LOST:prior_accept_same_value_confidence_changed": 268,
+      "LOST:new_accept": 3,
+      "WON:still_unknown": 455,
+      "WON:prior_accept_same_value_confidence_changed": 26,
+      "numeric:prior_accept_same_value_confidence_changed": 322,
+      "numeric:prior_accept_now_unknown": 56,
+      "numeric:still_unknown": 71,
+      "numeric:new_accept": 32
+    },
+    "elapsed_sec": 29.16063708299771,
+    "new_accepts_not_assumed_correct": true,
+    "production_changed": false
+  },
+  "paired_delta_counts": {
+    "still_unknown": 729,
+    "prior_accept_now_unknown": 63,
+    "prior_accept_same_value_confidence_changed": 616,
+    "new_accept": 35
+  },
+  "lost_accept_reasons": {
+    "strict_timer_foreground_touches_roi_border": 1,
+    "strict_timer_expected_exactly_two_separator_dots": 7,
+    "strict_timer_glyph_below_0_90": 55
+  },
+  "baseline_accepted": 679,
+  "prototype_accepted": 651,
+  "production_changed": false,
+  "new_held_opened": false,
+  "thresholds_changed": false,
+  "qualification_issued": false,
+  "decision": "Reject fixed white200/max-side-median rowcontrast12 timer preprocessing because prior accepted availability regresses; no retries, parameter scan or horizon change",
+  "posthoc_review_scope": "First, middle and last of each window/delta group: 12 source/mask frames. No full changed-field accuracy claim.",
+  "private_evidence_sha256": {
+    "timer-rejection-development/plan.json": "c7c26d89570241107e70d93349af659aba92c2cae1b2b2406d34b76793c386ec",
+    "timer-rejection-development/rows.json": "d48019b56889553b590054f8290a6ff5640e24d6ed73e4405a3e4583b373e81e",
+    "timer-rejection-development/result.json": "30aebac4c2910d6f355f66d364b947cef201b5818c32b5fc1637baa4ca7c11c2",
+    "timer-rowcontrast-prototype/plan.json": "1e2b28eea9148bad46eb3cd27643266833b83833a41fdc7ad196050287d4fc36",
+    "timer-rowcontrast-prototype/prototype.py": "cccddbdb8862bcbf8c7672042fdfd92b572600ac5402ac45830b6745a342e0ba",
+    "timer-rowcontrast-prototype/rows.json": "813dd72e232121f024f6b13d8996d3ea2723d165748e9be716e2aa429358eb4b",
+    "timer-rowcontrast-prototype/result.json": "cab20c56c377e60d5b678a244a297a14b0b3af38183f648dc40d8227adb2cf51",
+    "timer-rowcontrast-prototype/review-selection.json": "544eb64a822548bc6a09d3b5b2b7724d5172995972d93d3718f510380c73bc3e"
+  }
+}
