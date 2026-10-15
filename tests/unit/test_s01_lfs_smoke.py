@@ -104,7 +104,10 @@ def test_missing_or_symlink_video_rejected(inputs, tmp_path, capsys):
 
     other = tmp_path / "other.mp4"
     other.write_bytes(b"real-video-test-double")
-    video.symlink_to(other)
+    try:
+        video.symlink_to(other)
+    except OSError:
+        pytest.skip("symlinks require additional privileges on this runner")
     assert smoke.main(invocation(pack, layout, "--preflight-only")) == 2
     assert "VIDEO_SYMLINK_REJECTED" in capsys.readouterr().err
 
