@@ -1,0 +1,31 @@
+# Explicit separated-speck score mode
+
+The score reader can reject complete centered digits because small foreground components sit above or below their baseline inside the configured ROI. Add explicit `white200_rowcontrast_separated_specks_v1`. It extends the existing border-only cleanup to qualifying interior components; the default and all earlier modes retain their behavior. No default profile or admission is installed.
+
+The same rules require one or two complete, centered, aligned core glyphs. A removable component must be vertically separated by glyph-height/8, have width/height at most glyph-height/3 and area at most one sixth of the smallest core. Core clipping, off-center surviving digits, connected fragments, nearby/in-band noise and larger components retain the structural rejection. Every accepted digit still competes against0–9 at NCC0.90 and margin0.04. Gaussian3x3 remains required. There are no preferred digits, expected scores, time/round hints, retries, temporal repair, clock changes, timestamp changes or End-horizon changes.
+
+## Actual source verification
+
+The fixed private prototype is evaluated on the original development pool and exposed scene controls before implementation. Actual implemented readers then repeat2,886 development and152 control field calls, verifying current source pixels and terminal identities. All3,038 values and confidences exactly match that frozen prototype. The2,780 prior development accepts and114 prior control accepts are unchanged; seven development and six exposed-control unknowns become readable. Assistant source review agrees with all13 recoveries. These are exposed development/control comparisons, not independent accuracy or a formal false-positive rate.
+
+The historical1920s control contains actual score11→12 and Spike→0:06; retain its correction as mixed-scene evidence, not a clean End-negative. The new mode is not run on an existing held event to claim new blind success. No independent score/End admission is issued for the additional-source profile.
+
+Recognizer fingerprint `414f9d9d3f1841cfe50fdf9732bb78e1bfa35aa4382eb7c0d90d194ed81155fa`; additional-source candidate profile `ca8aa2a0325afd5f5bcf6d6d8eaddab94ea764ecdcbacecc6104ca3b2f0895f9`. The additional profile is private and explicitly opts in. Original-source profile `fc3b8dfc…` keeps the preceding border-only mode.
+
+## Changed-code revalidation
+
+The actual qualification loader rejects the previous19a2cced… Start bundle on changed code. Analyzer initialization alone is not an admission check: an initial harness assertion incorrectly treated construction as loading; the corrected check invokes `GlobalLifecycleQualification.load` and records actual rejection.
+
+Fresh original-profile static calls retain phase3 training/8 held/12 negative; timer25 correct/7 unknown; score36 correct/18 unknown/0 wrong; result3 correct/8 unknown/3 negative reject. Original labels, splits and exposure remain unchanged. Fresh369 native frames/eight windows retain the original results, including R1 End74.48600260416667s, confirmation75.3693359375s and its unchanged3.003ms GT miss. These fixed profiles have not enabled the new mode, so this verifies compatibility, not new-mode qualification.
+
+The current static/native measurements and original source reviews support a freshly rebuilt **Start-only** bundle `08a261f9b1796568f394760a4f6bb31d700d3620407181dd5fef5179feddf6e9`, UI supports9 training/7 original held-review/90 negative. This is actual measured revalidation, not a fingerprint-only rewrite or new blind cohort. It admits timer/purchase_phase/ui_transition only and remains private/offline.
+
+R1 current native358 frames produces Start4.102669270833333s, confirmation4.202669270833334s, confidence0.9117099378029602, and one partial Package/Trace event. R1 ordinary fixed-frame application39 frames preserves exact attributes and canonical R1-start PASS. R2 current native48 frames and ordinary application51 frames including actual source-origin context preserve Start111.4193359375s, confirmation111.48600260416667s, confidence0.931477963924408 and exact native attributes through Package/Trace. All produce zero snapshots/player-owned facts. R2 remains local sample_round_1, so canonical R2-start FAIL is retained. The cold R2-only application condition is not fixed or claimed successful. Source-origin ordinary observations are distinct from the native geometry-only reference; the unsampled interval is not continuity proof.
+
+R1 producer123.459s,total159.426s,PNG607,990,858 bytes,RSS125,960,192 bytes. R1 application11.139s,total16.915s. R2 producer16.180s,application17.253s,total41.477s,PNG76,624,131 bytes,RSS139,329,536 bytes. Concurrent test/decoder activity prevents controlled performance claims. Complete run hashes and source identities are in `e2e_reports/match_001/score_separated_speck_mode.json`. Private producer input lineage is keyed by relative path because different directories contain files named rows.json; an earlier private summary used basenames, while its terminal check still verified every complete path. The aggregate retains distinct hashes for both inputs without rerunning recognition.
+
+## Tests and remaining gates
+
+New synthetic controls33 PASS; related score/End tests163 PASS. Full local regression3866 PASS/4 existing spectator FAIL/9 SKIP,475.19s,coverage86.66797%,exit1. Existing failures are listed by full test ID in the aggregate. Dataset38 PASS, Ruff/mypy134 files/UTF-8 classification audit PASS. No Qt shutdown abort is observed. Legacy source formatting is preserved; the new test file is formatted. No Linux/Windows success is claimed for this unpushed implementation: the network action previously failed automatic approval review due to its usage limit.
+
+A newly supplied unused/unedited source is separately hashed and prospectively partitioned before its images are viewed. Its development geometry must be fixed before opening evaluation candidates; source labels must precede predictions. Any new outcome remains separate from the exposed13-field source review. Formal End, independent temporal and negative annotations, complete same-epoch Start→End, full R2 application sampling and match-wide membership remain unproven. Full E2E is not rerun; canonical23 PASS/55 FAIL/4 NOT_EVALUATED is unchanged. Keep PR draft and Issue16 open.

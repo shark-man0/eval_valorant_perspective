@@ -1,0 +1,487 @@
+{
+  "scope": "Explicit optional score mode implementation and actual regression; no new blind qualification or default profile change",
+  "mode": "white200_rowcontrast_separated_specks_v1",
+  "recognizer_fingerprint": "414f9d9d3f1841cfe50fdf9732bb78e1bfa35aa4382eb7c0d90d194ed81155fa",
+  "original_profile_fingerprint": "fc3b8dfc4c4e9c72e6bbbaf7c5a90762ad879ea695dff8784997123e1f56f51c",
+  "additional_source_profile_fingerprint": "ca8aa2a0325afd5f5bcf6d6d8eaddab94ea764ecdcbacecc6104ca3b2f0895f9",
+  "original_source_Start_only_bundle_sha256": "08a261f9b1796568f394760a4f6bb31d700d3620407181dd5fef5179feddf6e9",
+  "prior_Start_only_bundle_rejected": true,
+  "production_reader_measurements": {
+    "scope": "Actual opt-in production reader versus frozen prototype; exposed development/control images only",
+    "code": "414f9d9d3f1841cfe50fdf9732bb78e1bfa35aa4382eb7c0d90d194ed81155fa",
+    "profile": "ca8aa2a0325afd5f5bcf6d6d8eaddab94ea764ecdcbacecc6104ca3b2f0895f9",
+    "baseline_profile": "6411f7d326f71076efa54bb431a8efc501d01678fccd19a1f3a07a62c2146c80",
+    "prototype_sha256": "71538662df0e0405bf23c4ba0ed04f822b3034736548554bc2d585c4427db774",
+    "development_field_calls": 2886,
+    "control_windows_sec": [
+      [
+        1800,
+        1800.3
+      ],
+      [
+        1830,
+        1830.3
+      ],
+      [
+        1860,
+        1860.3
+      ],
+      [
+        1920,
+        1920.3
+      ]
+    ],
+    "independent_holdout": false,
+    "qualification_supplied": false,
+    "formal_events_not_evaluated": true,
+    "max_PNG_bytes_per_window": 67108864,
+    "counts": {
+      "development_exact_prototype_matches": 2886,
+      "development_accepted": 2787,
+      "development_unknown": 99,
+      "control_exact_prototype_matches": 152,
+      "control_accepted": 120,
+      "control_unknown": 32
+    },
+    "elapsed_sec": 75.33382783300476,
+    "terminal_integrity_verified": true,
+    "all_actual_predictions_equal_prototype": true,
+    "source_sha256": "06919642d69f68895ac123b505bfd7d3643dd28d903585008fcdc2b7f1b7e3fd",
+    "raw_rows_sha256": "265f6c7abf63b19bf0aef58db8666ac2e0b010b6f7587fff792eca44a3f7b0e8",
+    "input_hashes": {
+      "result.json": "395265656a5c954e30f3bfa4fcb7a43223b37b0405d37f76dbbf6363ed7ff060",
+      "new-accepts.json": "c82f800551d1e75e3eba6d5526f32e492d29cb392fd844ed09ae82106174fb58",
+      "rows.json": "9a299ac3865fe36b8590b1f2d31502520870898d50c05858fd6989cc4db68018"
+    },
+    "new_held_opened": false,
+    "formal_qualification_established": false
+  },
+  "complete_private_input_lineage": {
+    "separated-score-specks-prototype/result.json": "395265656a5c954e30f3bfa4fcb7a43223b37b0405d37f76dbbf6363ed7ff060",
+    "separated-score-specks-prototype/new-accepts.json": "c82f800551d1e75e3eba6d5526f32e492d29cb392fd844ed09ae82106174fb58",
+    "separated-score-specks-prototype/source-controls/rows.json": "3254e1cd5a81ba9e1217d6b25d44b83455fdd31665c0f77d2e7586ffaee5009e",
+    "score-rejection-development/rows.json": "9a299ac3865fe36b8590b1f2d31502520870898d50c05858fd6989cc4db68018"
+  },
+  "source_reviewed_extra_development_fields": 7,
+  "source_reviewed_extra_exposed_control_fields": 6,
+  "reviews_are_independent_holdout": false,
+  "old_accepted_value_and_confidence_changes": 0,
+  "unchanged_original_static_counts": {
+    "phase": {
+      "training_correct": 3,
+      "holdout_correct": 8,
+      "negative_rejected": 12
+    },
+    "timer": {
+      "correct": 25,
+      "unknown": 7
+    },
+    "score_fields": {
+      "unknown": 18,
+      "correct": 36
+    },
+    "score_pairs": {
+      "unknown": 18,
+      "correct": 9
+    },
+    "result": {
+      "unknown": 8,
+      "correct": 3,
+      "negative_rejected": 3
+    }
+  },
+  "native_fixed_regression": {
+    "windows": 8,
+    "frames": 369,
+    "elapsed_sec": 166.48561591701582,
+    "R1_End_score_counts": {
+      "correct": 119,
+      "unknown": 97
+    },
+    "R1_End_patterns": [
+      {
+        "kind": "round_end",
+        "time_sec": 74.48600260416667,
+        "confidence": 0.9180924279198346,
+        "attributes": {
+          "evidence_provenance": {
+            "scope": "global_system",
+            "producer": "unedited_ui_end_tracker",
+            "temporal_contract": "ui_end_transition_v1",
+            "signals": [
+              "accepted_clock_decrease",
+              "accepted_score_transition",
+              "qualified_stable_round_result"
+            ],
+            "clock_change": {
+              "before": {
+                "tick": 1143081,
+                "pts_sec": 74.4193359375,
+                "source_pixel_sha256": "6b65dab7101d04de13fb724709c50ed1e5e8cccc17bc3ac876bce9dc816e5129",
+                "seconds": 29.0,
+                "observed_display": "0:29",
+                "confidence": 0.957414984703064
+              },
+              "after": {
+                "tick": 1143593,
+                "pts_sec": 74.45266927083334,
+                "source_pixel_sha256": "d9dc36d0a230a7097f15adf0f88494e483252a5cefdb872f644ca3f1b29dfb2b",
+                "seconds": 6.0,
+                "observed_display": "0:06",
+                "confidence": 0.9431883096694946
+              }
+            },
+            "score_before": {
+              "first": {
+                "tick": 1142569,
+                "pts_sec": 74.38600260416666,
+                "source_pixel_sha256": "86319f90b568d60dd14ae7ff90f475125495a6126a66a2d4de9c5a847914eb47",
+                "values": [
+                  0,
+                  1
+                ],
+                "confidence": 0.953471302986145
+              },
+              "last": {
+                "tick": 1143849,
+                "pts_sec": 74.4693359375,
+                "source_pixel_sha256": "681b65ff52d1ee3d035df727ef594cd5f9a6934c220af47752e8c1f35f58f941",
+                "values": [
+                  0,
+                  1
+                ],
+                "confidence": 0.9631998538970947
+              },
+              "confidence": 0.9360365271568298
+            },
+            "score_after": {
+              "first": {
+                "tick": 1144105,
+                "pts_sec": 74.48600260416667,
+                "source_pixel_sha256": "d3710135732bc7fbdc7751261d10501b4ff2aed1b98e4c1fcb6967ebca8b6484",
+                "values": [
+                  0,
+                  2
+                ],
+                "confidence": 0.955163300037384
+              },
+              "last": {
+                "tick": 1146153,
+                "pts_sec": 74.6193359375,
+                "source_pixel_sha256": "61b520185697eb63acc425e8d519ef5a61baf33c9a111347a03de21edd276f96",
+                "values": [
+                  0,
+                  2
+                ],
+                "confidence": 0.9469125866889954
+              },
+              "confidence": 0.9339092373847961
+            },
+            "score_stability": {
+              "tick": 1144873,
+              "pts_sec": 74.53600260416667,
+              "source_pixel_sha256": "ab42273ab00f82572e12bcaf4841b2ea4769d8fc310104db36d2bd43325f8385"
+            },
+            "result_first": {
+              "tick": 1156905,
+              "pts_sec": 75.3193359375,
+              "source_pixel_sha256": "cea073f010f0afd572056e1e92197b8be89be5cfc80a83639ecc401b65fe52ab",
+              "confidence": 0.9183886669772947
+            },
+            "result_confirmation": {
+              "tick": 1157673,
+              "pts_sec": 75.3693359375,
+              "source_pixel_sha256": "5d2175f476f66e86ebbe74c9783534c6abd01c8a16362db2273a3954f6692e2d",
+              "confidence": 0.9182506499587921
+            },
+            "confirmation_pts_sec": 75.3693359375,
+            "pts_sec": [
+              74.45266927083334,
+              74.48600260416667,
+              75.3193359375,
+              75.3693359375
+            ],
+            "timestamp_rule": "first_observed_score_change"
+          }
+        }
+      }
+    ],
+    "original_negative_diagnostic_Ends": 0,
+    "terminal_integrity_verified": true
+  },
+  "Start_admission": {
+    "scope": "Fresh current-code bounded Start-only revalidation; original exposure retained, not blind qualification",
+    "recognizer_fingerprint": "414f9d9d3f1841cfe50fdf9732bb78e1bfa35aa4382eb7c0d90d194ed81155fa",
+    "profile_fingerprint": "fc3b8dfc4c4e9c72e6bbbaf7c5a90762ad879ea695dff8784997123e1f56f51c",
+    "bundle_sha256": "08a261f9b1796568f394760a4f6bb31d700d3620407181dd5fef5179feddf6e9",
+    "stale_previous_bundle_rejected": true,
+    "actual_loader_admitted_components": [
+      "purchase_phase",
+      "timer",
+      "ui_transition"
+    ],
+    "static_replay_sha256": "ff12a9d805b6541aba12ee12fe12214fddce6c0694ad3d830b1cce7ebb1ecbdb",
+    "native_window_replay_sha256": "6b1cd15bab5897e77d96102075a41c6104aeb773d2058fffc84e2094a318acef",
+    "ui_support_counts": {
+      "training": 9,
+      "holdout": 7,
+      "negative": 90
+    },
+    "runtime_default_installed": false,
+    "full_lifecycle_qualification_established": false
+  },
+  "R1_native": {
+    "scope": "Bounded current-code/source production-entrance and native-to-package/trace verification under explicit reviewed start-only offline admission; no default or full lifecycle release",
+    "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "profile_fingerprint": "fc3b8dfc4c4e9c72e6bbbaf7c5a90762ad879ea695dff8784997123e1f56f51c",
+    "recognizer_fingerprint": "414f9d9d3f1841cfe50fdf9732bb78e1bfa35aa4382eb7c0d90d194ed81155fa",
+    "candidate_bundle_sha256": "08a261f9b1796568f394760a4f6bb31d700d3620407181dd5fef5179feddf6e9",
+    "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+    "window_sec": [
+      0,
+      6
+    ],
+    "png_budget_bytes": 1073741824,
+    "original_exposure_retained": true,
+    "new_blind_cohort": false,
+    "full_lifecycle_qualification_established": false,
+    "production_GT_input": false,
+    "external_system_proofs_supplied": false,
+    "runtime_default_installed": false,
+    "processed_frames": 358,
+    "first_tick": 553,
+    "last_tick": 91945,
+    "producer_elapsed_sec": 123.45871870801784,
+    "elapsed_sec": 159.42622129200026,
+    "retained_png_bytes": 607990858,
+    "peak_process_rss_bytes": 125960192,
+    "round_packages": 1,
+    "trace_total_events": 1,
+    "trace_round_starts": 1,
+    "trace_round_ends": 0,
+    "trace_snapshots": 0,
+    "package_windows": [
+      {
+        "start_sec": 3.602669270833333,
+        "end_sec": 171.019336
+      }
+    ],
+    "source_to_native_to_trace_attrs_equal": true,
+    "player_owned_facts": 0,
+    "terminal_integrity_verified": true,
+    "canonical_evaluation_executed": false,
+    "application_HUD_visual_fusion_exercised": false
+  },
+  "R1_application": {
+    "scope": "Actual fixed-frame application merge; exact current native output reuse, not fresh recognition, full sampler or temporal qualification",
+    "window_sec": [
+      [
+        0,
+        0.08
+      ],
+      [
+        3.9,
+        4.5
+      ]
+    ],
+    "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "recognizer_fingerprint": "414f9d9d3f1841cfe50fdf9732bb78e1bfa35aa4382eb7c0d90d194ed81155fa",
+    "profile_fingerprint": "fc3b8dfc4c4e9c72e6bbbaf7c5a90762ad879ea695dff8784997123e1f56f51c",
+    "qualification_sha256": "08a261f9b1796568f394760a4f6bb31d700d3620407181dd5fef5179feddf6e9",
+    "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+    "native_artifact_sha256": "b6c0d8af77d80ef66067d9d109db7216b6c815af9ee1650c54b3e7e1d9e6bad3",
+    "default_installed": false,
+    "GT_input": false,
+    "full_lifecycle_qualification_established": false,
+    "frames": 39,
+    "elapsed_sec": 16.915206415986177,
+    "application_processing_sec": 11.138963541015983,
+    "retained_png_bytes": 45491368,
+    "peak_process_rss_bytes": 148471808,
+    "round_packages": 1,
+    "trace_events": 1,
+    "trace_snapshots": 0,
+    "owned_facts": 0,
+    "native_to_trace_equal": true,
+    "terminal_integrity_verified": true,
+    "package_windows": [
+      {
+        "start_sec": 3.602669270833333,
+        "end_sec": 171.019336
+      }
+    ],
+    "full_sampler_exercised": false,
+    "full_E2E_executed": false
+  },
+  "R2_application_context": {
+    "scope": "Original exposed R2: qualified native fragment plus ordinary application with actual earlier context frames; not cold-fragment success or match-wide continuity",
+    "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "recognizer_fingerprint": "414f9d9d3f1841cfe50fdf9732bb78e1bfa35aa4382eb7c0d90d194ed81155fa",
+    "profile_fingerprint": "fc3b8dfc4c4e9c72e6bbbaf7c5a90762ad879ea695dff8784997123e1f56f51c",
+    "qualification_sha256": "08a261f9b1796568f394760a4f6bb31d700d3620407181dd5fef5179feddf6e9",
+    "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+    "window_sec": [
+      111.0,
+      111.8
+    ],
+    "prefix_window_sec": [
+      0,
+      0.08
+    ],
+    "prefix_role": "geometry_only_reference_v1",
+    "application_context_windows_sec": [
+      [
+        0,
+        0.08
+      ],
+      [
+        111,
+        111.8
+      ]
+    ],
+    "application_origin_frames_are_real_sampled_observations": true,
+    "application_gap_is_continuity_proof": false,
+    "original_cold_fragment_failure_preserved": true,
+    "prefix_epoch_is_continuity_proof": false,
+    "GT_production_input": false,
+    "default_prefix_enabled": false,
+    "new_blind_cohort": false,
+    "full_lifecycle_qualification_established": false,
+    "png_budget_bytes": 134217728,
+    "frames": 48,
+    "application_sampled_frames": 51,
+    "application_origin_frames": 3,
+    "application_gap_sec": 110.93333333333334,
+    "prefix_frame_count_used": 1,
+    "prefix_is_observation": false,
+    "producer_elapsed_sec": 16.17988766700728,
+    "application_processing_sec": 17.25290037499508,
+    "elapsed_sec": 41.476622292015236,
+    "retained_png_bytes": 76624131,
+    "peak_process_rss_bytes": 139329536,
+    "native_packages": 1,
+    "native_package_windows": [
+      {
+        "start_sec": 111.0693359375,
+        "end_sec": 171.019336
+      }
+    ],
+    "application_error": null,
+    "application_packages": 1,
+    "application_package_windows": [
+      {
+        "start_sec": 111.0693359375,
+        "end_sec": 171.019336
+      }
+    ],
+    "native_to_application_trace_attrs_equal": true,
+    "native_and_application_trace_events": [
+      1,
+      1
+    ],
+    "trace_snapshots": [
+      0,
+      0
+    ],
+    "owned_facts": 0,
+    "native_geometry_counts": {
+      "frames": 48,
+      "fresh_geometry_success": 0,
+      "effective_geometry_success": 48,
+      "retained_geometry_frames": 48,
+      "geometry_invalid_unknown": 0,
+      "geometry_valid_state_unknown": 48,
+      "live_identity_evidence_insufficient": 47,
+      "insufficient_anchors_frames": 48
+    },
+    "terminal_integrity_verified": true,
+    "match_wide_R2_package_numbering_proven": false,
+    "full_E2E_executed": false,
+    "prior_run_application_calibration_failure_preserved": true,
+    "intentional_measurement_replay_reason": "Distinct application input condition includes source origin frames as ordinary measured observations, as in the R1 application test. Does not claim the cold fragment now succeeds or bridge the unsampled interval."
+  },
+  "canonical_target_results": {
+    "R1_native": [
+      {
+        "assertion_id": "GT-R1-ROUND-START",
+        "group": "required_point_events",
+        "index": 0,
+        "status": "pass",
+        "failures": []
+      }
+    ],
+    "R1_application": [
+      {
+        "assertion_id": "GT-R1-ROUND-START",
+        "group": "required_point_events",
+        "index": 0,
+        "status": "pass",
+        "failures": []
+      }
+    ],
+    "R2_application": [
+      {
+        "assertion_id": "GT-R2-ROUND-START",
+        "group": "required_point_events",
+        "index": 3,
+        "status": "fail",
+        "failures": [
+          "missing_point:GT-R2-ROUND-START"
+        ]
+      }
+    ]
+  },
+  "verification": {
+    "new_unit_tests_passed": 33,
+    "related_tests_passed": 163,
+    "full_local": {
+      "passed": 3866,
+      "failed": 4,
+      "skipped": 9,
+      "elapsed_sec": 475.19,
+      "exit_code": 1,
+      "existing_failures": [
+        "tests/unit/test_spectator_absence_guard.py::test_global_scene_detail_cannot_override_current_local_icon_evidence[crop1-True]",
+        "tests/unit/test_spectator_icon.py::test_abstract_icon_is_detected_across_small_rendering_shifts",
+        "tests/unit/test_spectator_icon.py::test_profile_uses_only_configured_icon_roi_and_obscuring_context",
+        "tests/unit/test_spectator_icon.py::test_short_menu_close_x_vetoes_icon_without_menu_grid_candidate"
+      ],
+      "coverage_percent": 86.66797027766914
+    },
+    "dataset_cases_passed": 38,
+    "ruff": "PASS",
+    "mypy_source_files": 134,
+    "text_IO_unclassified_sites": 0,
+    "full_log_sha256": "e86dc96ed97513cc9072e8422daf59fd03156797fd9c2e790cd395407aab81ec"
+  },
+  "fixed_negative_label_correction_preserved": {
+    "window_sec": [
+      1920,
+      1920.3
+    ],
+    "previously_exposed": true,
+    "source_observation": "Ally11 at1920.116667s; ally12 at1920.216667s and1920.283333s; center Spike changes to0:06. Enemy10.",
+    "human_independent_temporal_GT": false,
+    "pure_End_negative": false,
+    "old_raw_predictions_preserved": true,
+    "historical_zero_End_counts_are_not_false_positive_rates": true,
+    "future_blind_reuse_for_changed_method": false
+  },
+  "code_thresholds_unchanged": {
+    "NCC": 0.9,
+    "class_margin": 0.04,
+    "competing_classes": "0123456789",
+    "End_horizon_sec": 1
+  },
+  "profile_or_admission_installed_by_default": false,
+  "additional_source_score_or_End_qualification": false,
+  "whole_lifecycle_qualification": false,
+  "full_E2E_executed": false,
+  "canonical_baseline_unchanged": {
+    "PASS": 23,
+    "FAIL": 55,
+    "NOT_EVALUATED": 4
+  },
+  "Linux_Windows_CI_current_commit_verified": false,
+  "network_limitation": "Earlier CI network action rejected before execution by automatic approval review usage limit; current changes not pushed"
+}

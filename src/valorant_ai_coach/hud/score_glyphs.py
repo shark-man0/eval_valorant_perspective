@@ -11,12 +11,15 @@ from .readers import ReaderResult
 from .timer_glyphs import ImageU8, StrictTimerGlyphReader
 
 
-def _remove_isolated_border_specks(mask: ImageU8) -> ImageU8:
-    """Remove small off-baseline border components beside complete score glyphs.
+def _remove_isolated_border_specks(
+    mask: ImageU8, *, include_interior: bool = False,
+) -> ImageU8:
+    """Remove small off-baseline components beside complete score glyphs.
 
     Work on the existing binary mask, before any digit classification. Clipped
     core glyphs, off-center surviving digits and nearby fragments remain intact
-    so the existing structural rejection still applies. No retry or value hint.
+    so the existing structural rejection still applies. Interior components
+    require a separate explicit mode. No retry or value hint.
     """
     count, labels, stats, _ = cv2.connectedComponentsWithStats(mask, connectivity=8)
     if count <= 1:
@@ -53,7 +56,7 @@ def _remove_isolated_border_specks(mask: ImageU8) -> ImageU8:
     remove = []
     for part in parts:
         index, _, y, w, h, area = part
-        if index in core_ids or not touches_border(part):
+        if index in core_ids or (not include_interior and not touches_border(part)):
             continue
         separated = y + h <= top - glyph_height / 8 or y >= bottom + glyph_height / 8
         if (separated and h <= glyph_height / 3 and w <= glyph_height / 3
@@ -82,10 +85,12 @@ class StrictScoreGlyphReader(StrictTimerGlyphReader):
         if not isinstance(foreground_preprocessing, str) or foreground_preprocessing not in {
             "otsu_v1", "white200_v1", "white200_rowcontrast_v1",
             "white200_rowcontrast_border_specks_v1",
+            "white200_rowcontrast_separated_specks_v1",
         }:
             raise ValueError("unsupported strict score foreground preprocessing")
         if (foreground_preprocessing in {
             "white200_rowcontrast_v1", "white200_rowcontrast_border_specks_v1",
+            "white200_rowcontrast_separated_specks_v1",
         }
                 and comparison_preprocessing != "gaussian3x3_v1"):
             raise ValueError("rowcontrast score preprocessing requires gaussian3x3_v1")
@@ -159,12 +164,14 @@ class StrictScoreGlyphReader(StrictTimerGlyphReader):
         """Single foreground stage; default production preprocessing is unchanged."""
         if self.foreground_preprocessing in {
             "white200_v1", "white200_rowcontrast_v1", "white200_rowcontrast_border_specks_v1",
+            "white200_rowcontrast_separated_specks_v1",
         }:
             _, mask = cv2.threshold(enlarged, 200, 255, cv2.THRESH_BINARY)
         else:
             _, mask = cv2.threshold(enlarged, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
         if self.foreground_preprocessing in {
             "white200_rowcontrast_v1", "white200_rowcontrast_border_specks_v1",
+            "white200_rowcontrast_separated_specks_v1",
         }:
             # Opt-in value-invariant background support in the already enlarged
             # domain. No resampling, retry or preferred digit class follows.
@@ -174,6 +181,10 @@ class StrictScoreGlyphReader(StrictTimerGlyphReader):
             mask = np.where(enlarged.astype(np.float32) - background >= 12, mask, 0)
         if self.foreground_preprocessing == "white200_rowcontrast_border_specks_v1":
             mask = _remove_isolated_border_specks(np.asarray(mask, dtype=np.uint8))
+        elif self.foreground_preprocessing == "white200_rowcontrast_separated_specks_v1":
+            mask = _remove_isolated_border_specks(
+                np.asarray(mask, dtype=np.uint8), include_interior=True,
+            )
         return np.asarray(mask, dtype=np.uint8)
 
 
