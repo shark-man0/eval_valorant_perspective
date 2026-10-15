@@ -1553,3 +1553,41 @@ the Analyzer still uses the original trial layout/profile; the supposed bug is
 not present. Discard that attempted change and preserve both production and
 diagnostic code unchanged. No historical receipt is altered, no full baseline is
 rerun and no new profile is adopted in this feasibility checkpoint.
+
+## Six held result-text transcriptions received and compared
+
+The trusted human reply supplies explicit visible text for all six frozen review
+images, resolving the pending transcription only. Preserve its literal response
+privately, bound to the unchanged review/page, source video, historical matcher
+measurement and previously reviewed reference receipt. Verify source images and
+ROI hashes before freezing the response; never promote this text confirmation
+to boundary timing, continuity, player ownership or adoption approval.
+Human transcription receipt SHA:
+`9669d9ec6109704ace3987ec5777440a1f4e229f82d009d3846b1d64910106e9`.
+
+Compare all six original candidates in their frozen order, without rerunning
+OCR/Analyzer, changing the.90 floor, selecting a new candidate or editing old
+outputs. The first previously selected reference matches all three reviewed
+examples of its text family and does not accept the three opposite-family
+examples. Candidates3,4,5,6 have the same3positive/3opposite-family outcome;
+candidate2has2positive matches and1miss, with0opposite-family accepts. Keep that
+miss visible. Unknown matcher presence remains null on nonmatch, never a proved
+absence. The comparator separately scores unknown human labels as unscored and
+rejects altered floors, invalid scores and inconsistent presence measurements.
+Comparison receipt SHA:
+`291b564fe1eec9f892b405ebc8cf932e8f743adafeaff4d6182cee50f5ad7ed4`.
+
+These six images all contain result text. Opposite-family negatives assess
+text-family confusion, not false acceptance on normal gameplay, purchase menus,
+maps or absent result displays. Nearby source frames also do not establish
+independent temporal episodes. Therefore this result does not complete result
+input qualification, UI end qualification or real Round lifecycle E2E. No
+combined reference ensemble or new runtime profile is created from the held
+comparison. Remaining work includes real non-result controls and independently
+qualified temporal/source evidence, as well as numeric/geometry acquisition gaps.
+
+Regression checks positive misses, opposite-family accepts, unknown labels,
+null nonmatch, unchanged floor, image/page/measurement/reference binding drift,
+read-only inputs and bounded aggregate output. Related tests92pass, scoped Ruff,
+production mypy(133files) and git diff --check pass. Transcriptions and images
+stay local; Git receives only the comparator, tests, hashes and aggregate summary.
