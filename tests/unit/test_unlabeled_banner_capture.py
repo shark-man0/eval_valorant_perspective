@@ -33,12 +33,12 @@ def fixture(tmp_path, monkeypatch):
     partition.write_text(json.dumps({"kind": "development_holdout_partition_not_gt",
         "source_video_sha256": source,
         "development": {"start_sec_inclusive": 0, "end_sec_exclusive": 30},
-        "holdout": {"start_sec_inclusive": 30, "end_sec_exclusive": 40}}))
+        "holdout": {"start_sec_inclusive": 30, "end_sec_exclusive": 40}}), encoding="utf-8")
     history = tmp_path / "history"
     history.mkdir()
     (history / "candidate_report.json").write_text(json.dumps({"source_sha256": source,
         "validation_frames": [{"source_frame_pts": 1.375, "sha256": "c" * 64}],
-        "expected_events": "poison_not_sampling_input"}))
+        "expected_events": "poison_not_sampling_input"}), encoding="utf-8")
     path = tmp_path / "plan.json"
     plan = subject.freeze(video, source, partition, [history], path)
     return video, path, plan
@@ -84,7 +84,7 @@ def test_changed_source_or_sampling_contract_rejects_before_capture(tmp_path, mo
         monkeypatch.setattr(subject, "decoder_fingerprints", lambda *_: ("d" * 64, "e" * 64))
     else:
         plan["times"][0] = 3.5 if fault == "time" else 31
-        path.write_text(json.dumps(plan))
+        path.write_text(json.dumps(plan), encoding="utf-8")
     with pytest.raises(ValueError):
         subject.capture(path, tmp_path / "rejected")
     assert not (tmp_path / "rejected").exists()

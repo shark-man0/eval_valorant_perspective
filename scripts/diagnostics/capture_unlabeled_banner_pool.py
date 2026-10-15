@@ -36,12 +36,12 @@ def freeze(video, source_sha, partition, histories, output):
     _check_output_privacy(output.resolve())
     if output.exists():
         raise FileExistsError("new frozen source plan required")
-    end = json.loads(partition.read_text())["development"]["end_sec_exclusive"]
+    end = json.loads(partition.read_text(encoding="utf-8"))["development"]["end_sec_exclusive"]
     verify_partition(partition, source_sha, end)
     previous, reserved, inputs = [], set(), [partition, Path(__file__)]
     for directory in histories:
         path = directory / "candidate_report.json"
-        raw = json.loads(path.read_text())
+        raw = json.loads(path.read_text(encoding="utf-8"))
         if raw.get("source_sha256") != source_sha:
             raise ValueError("same-source sampling history required")
         inputs.append(path)
@@ -49,7 +49,7 @@ def freeze(video, source_sha, partition, histories, output):
         pool = directory / "review_selection.json"
         if pool.exists():
             inputs.append(pool)
-            rows += json.loads(pool.read_text())["pool_records"]
+            rows += json.loads(pool.read_text(encoding="utf-8"))["pool_records"]
         for row in rows:
             previous.append(row["source_frame_pts"])
             reserved.add(row["sha256"])
@@ -76,7 +76,7 @@ def capture(plan_path, output):
     if output.exists():
         raise FileExistsError("capture once into a new source directory")
     plan_hash = sha256_file(plan_path)
-    plan = json.loads(plan_path.read_text())
+    plan = json.loads(plan_path.read_text(encoding="utf-8"))
     if plan.get("kind") != "source_only_banner_pool_plan":
         raise ValueError("frozen source-only plan required")
     video, partition = Path(plan["source_path"]), Path(plan["partition_path"])
@@ -122,14 +122,16 @@ def capture(plan_path, output):
     excluded = [i for i, r in enumerate(records) if r["sha256"] in plan["reserved_source_hashes"]]
     selection = {"pool_records": records, "selected_pool_indices": excluded,
                  "method": "fixed_source_only_no_model_selection", "plan_sha256": plan_hash}
-    (output / "review_selection.json").write_text(json.dumps(selection, indent=2) + "\n")
+    (output / "review_selection.json").write_text(
+        json.dumps(selection, indent=2) + "\n", encoding="utf-8")
     report = {"source_sha256": plan["source_sha256"], "plan_sha256": plan_hash,
               "validation_frames": records, "source_only": True,
               "prior_source_hash_overlap": len(excluded),
               "distinct_source_hashes": len({r["sha256"] for r in records}),
               "wall_clock_sec": perf_counter() - started, "ocr_calls": 0,
               "analyzer_calls": 0, "events_generated": 0, "qualification_created": False}
-    (output / "candidate_report.json").write_text(json.dumps(report, indent=2) + "\n")
+    (output / "candidate_report.json").write_text(
+        json.dumps(report, indent=2) + "\n", encoding="utf-8")
     return report
 
 

@@ -18,15 +18,16 @@ def fixture(root):
         "roi_coordinate_system": "normalized_0_to_1",
         "reference_resolution": {"width": 160, "height": 100},
         "regions": {name: {"x": 0, "y": 0, "width": 1, "height": 1}
-                    for name in layout().regions}}))
+                    for name in layout().regions}}), encoding="utf-8")
     images = root / "validation_frames"
     images.mkdir()
     image = images / "synthetic.jpg"
     assert cv2.imwrite(str(image), changing_brightness()[15])
     (root / "candidate_report.json").write_text(json.dumps({
-        "validation_frames": [{"sha256": sha256_file(image)}]}))
+        "validation_frames": [{"sha256": sha256_file(image)}]}), encoding="utf-8")
     (root / "candidate_fingerprint.json").write_text(json.dumps({
-        path.name: sha256_file(path) for path in root.iterdir() if path.is_file()}))
+        path.name: sha256_file(path) for path in root.iterdir() if path.is_file()}),
+        encoding="utf-8")
     return root
 
 

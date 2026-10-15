@@ -65,7 +65,7 @@ def freeze(video, root, layout_path, partition_path, source_sha, output, top, he
     _check_output_privacy(output.resolve())
     if output.exists():
         raise FileExistsError("new diagnostic plan required")
-    end = json.loads(partition_path.read_text())["development"]["end_sec_exclusive"]
+    end = json.loads(partition_path.read_text(encoding="utf-8"))["development"]["end_sec_exclusive"]
     verify_partition(partition_path, source_sha, end)
     if sha256_file(video) != source_sha:
         raise ValueError("source SHA mismatch")
@@ -91,7 +91,7 @@ def freeze(video, root, layout_path, partition_path, source_sha, output, top, he
             or any(sha256_file(Path(p)) != h for p, h in inputs.items())):
         raise ValueError("inputs changed during plan creation")
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(plan, indent=2) + "\n")
+    output.write_text(json.dumps(plan, indent=2) + "\n", encoding="utf-8")
     return plan
 
 
@@ -100,7 +100,7 @@ def capture(plan_path, output):
     if output.exists():
         raise FileExistsError("new diagnostic capture directory required")
     plan_hash = sha256_file(plan_path)
-    plan = json.loads(plan_path.read_text())
+    plan = json.loads(plan_path.read_text(encoding="utf-8"))
     if plan.get("kind") != "feature_selected_banner_recapture_not_qualification":
         raise ValueError("explicit frozen feature-selection plan required")
     video = Path(plan["source_path"])
@@ -154,7 +154,7 @@ def capture(plan_path, output):
               "probe_cache_stats": dict(getattr(cached, "stats", {})),
               "qualification_created": False, "events_generated": 0}
     for name, obj in (("review_selection.json", selection), ("candidate_report.json", report)):
-        (output / name).write_text(json.dumps(obj, indent=2) + "\n")
+        (output / name).write_text(json.dumps(obj, indent=2) + "\n", encoding="utf-8")
     return report
 
 

@@ -1293,3 +1293,64 @@ source. Related source-assurance/UI-start/UI-end/native-input/CLI cases:86passed
 Scoped Ruff, production mypy(132files), git diff --check pass. Existing
 match_001 source contract/GT/Pack remain unchanged. No production profile is
 adopted and formal lifecycle/full-E2E completion remains unproven.
+
+## Continuous input gate diagnosis and latest-main integration
+
+Replace isolated prefix/follow-up comparisons with one continuous169-frame
+development decode. It has one source epoch and exact256-tick cadence, with
+34 fresh geometry successes,152 effective successes and118 retained frames.
+Accepted inputs:67 timer displays,90 paired scores,100 result matches and23
+joint timer/paired-score/result observations. All169 player states remainunknown,
+qualified evidence rows0 and generated events0. This is source-bound input
+availability, not an end decision or independent temporal qualification.
+Pre-integration receipt SHA:
+`75538c101bd06d360871246f76adc098c4370f3c6c7837656c877b0d3d242bab`.
+
+The two different accepted score pairs are separated by three unread frames;
+there is no adjacent accepted old/new pair change in this window. All three gap
+frames have valid geometry, an accepted timer and enemy score, but no accepted
+ally score. Native reinspection localizes the ally numeric ROI in all three.
+The existing OCR emits a value at confidence.82476738, which the unchanged
+configured.90 floor rejects. This identifies a conservative numeric acceptance
+gap, not a proven invisible score, geometry failure or source discontinuity.
+Do not lower the floor, bridge the gap or infer a missing value to manufacture
+the current end contract's adjacent-score evidence. Source pixels from this
+targeted diagnosis are not training material. Partial failed inspection artifacts
+are preserved separately from the completed three-frame inspection; images and
+raw OCR remain local.
+
+Fetch and inspect latest main `edc3b684aadac25b076665dcbb55bda254d335f3`.
+Integrate it into the work branch without conflict (merge2081977), preserving
+the upstream strict native replay, Trace confidence representation, aggregation
+and Windows I/O changes. No direct main push or profile adoption is implied.
+The recognizer fingerprint changes from the historical
+`a1806645ccd1ce844fa1c971577abfbccef74375c082fbfd48fe733c1e68d467`
+to `87f4bcea8b1699dbad965b634b06ebd4095dbb4519bd55ac4b8495b1d486e008`.
+Historical receipts/qualifications must not be resigned or presented as current.
+
+Repeat the same continuous input window with the integrated implementation.
+The physical source identities and System observations match the historical
+run exactly, including all availability counts and unknown states. Terminal
+source/profile/recognizer checks pass, qualification remainsfalse and events0.
+New receipt SHA:
+`224756172471226092f802894a259d5b5c108d22e57f4dafe8112fd00628efb9`.
+Elapsed87.033seconds versus92.927seconds historically; this is not a controlled
+performance benchmark or new full-match E2E result.
+
+The new I/O audit identifies70 previously implicit text operations in this
+branch's diagnostic JSON/response handling and synthetic fixtures. Review those
+protocols and declare UTF-8 explicitly, preserving binary operations, recognition
+policy and all thresholds. Remove unrelated formatter-only changes after AST
+equivalence checks and wrap only affected long calls. The final audit inventories
+597Python files/1,805I/O sites with0unclassified sites. Old diagnostic-code hashes
+remain historical; immutable plans are not rewritten to hide code changes.
+
+Related post-integration tests cover source-native/UI contracts, frozen references,
+numeric-review guards, encoding inventory and both confidence policies. Production
+mypy checks133files. Ruff's CI scope (src/tests/scripts/e2e) and changed diagnostic
+files pass; unrestricted root Ruff also visits original supplied packs and has
+remaining errors there and in other unchanged diagnostics. Do not modify original
+packs to force that broader check green. Latest-main formal full E2E and
+independently qualified Round events/package affiliation remain unfinished.
+Final checkpoint verification:273related tests pass, CI-scope/changed-file Ruff,
+mypy(133production files), zero-unclassified I/O audit and git diff --check pass.

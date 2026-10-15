@@ -215,7 +215,8 @@ def measure(plan_path: Path, output: Path) -> dict:
         indices, selection = select_low_contrast(images, records, HudLayout.load(layout))
         selection.update(plan_sha256=plan_hash, pool_records=records,
                          selection_frozen_before_numeric_measurement=True)
-        (output / "review_selection.json").write_text(json.dumps(selection, indent=2) + "\n")
+        (output / "review_selection.json").write_text(
+            json.dumps(selection, indent=2) + "\n", encoding="utf-8")
         selection_hash = sha256_file(output / "review_selection.json")
         pool_paths = sorted(directory.glob("*.jpg"))
         (output / "validation_frames").mkdir()
@@ -273,7 +274,8 @@ def measure(plan_path: Path, output: Path) -> dict:
     raw_path.write_text(json.dumps({"production_adopted": False,
         "observations": measured.observations, "hud_events": [],
         "producer_diagnostics": scans,
-        "localized_numeric_diagnostics_not_analyzer_input": localized}, indent=2) + "\n")
+        "localized_numeric_diagnostics_not_analyzer_input": localized}, indent=2) + "\n",
+        encoding="utf-8")
     summary = {"kind": "prospective_numeric_point_probe_not_lifecycle_e2e",
                "source_sha256": plan["source_sha256"], "plan_sha256": plan_hash,
                "runtime_code_fingerprint": plan["runtime_code_fingerprint"],
@@ -292,7 +294,8 @@ def measure(plan_path: Path, output: Path) -> dict:
                    r["region"] == name and r["meets_ocr_floor_and_format"] for r in localized)
                    for name in FIELDS}, "event_count": 0, "source_review_pending": True}
     verify()
-    (output / "probe_summary.json").write_text(json.dumps(summary, indent=2) + "\n")
+    (output / "probe_summary.json").write_text(
+        json.dumps(summary, indent=2) + "\n", encoding="utf-8")
     prepare(output, output, output / "blind_review")
     return summary
 

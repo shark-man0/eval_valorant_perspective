@@ -23,7 +23,7 @@ def measure(report_path, pool, layout_path, output, role="round_end_banner"):
     _check_output_privacy(output.resolve())
     if output.exists():
         raise FileExistsError("new private measurement receipt required")
-    report = json.loads(report_path.read_text())
+    report = json.loads(report_path.read_text(encoding="utf-8"))
     if (report.get("kind") != "unlabeled_banner_discovery_not_qualification"
             or report.get("training_candidate_audit") is not True
             or report.get("held_predictions_measured") is not False
@@ -103,7 +103,7 @@ def measure(report_path, pool, layout_path, output, role="round_end_banner"):
         "semantic_labels_assigned": False, "independent_temporal_cohort": False,
         "events_generated": 0, "qualification_created": False, "production_adopted": False}
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(result, indent=2) + "\n")
+    output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     return result
 
 

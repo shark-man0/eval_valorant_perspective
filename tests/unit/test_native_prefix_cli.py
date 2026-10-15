@@ -37,7 +37,7 @@ def test_cli_explicit_unqualified_ui_option_never_qualifies_or_releases_events(
     monkeypatch.setattr(sys, "argv", args)
     subject.main()
     assert calls == [{"native_step_ticks": 256, "include_ui_measurements": include_ui}]
-    report = json.loads(output.read_text())
+    report = json.loads(output.read_text(encoding="utf-8"))
     assert report["unqualified_ui_measurements_requested"] is include_ui
     assert report["qualification_loaded"] is False
     assert report["qualification_created"] is False

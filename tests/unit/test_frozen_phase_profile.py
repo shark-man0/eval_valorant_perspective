@@ -88,9 +88,9 @@ def test_frozen_profile_preserves_base_and_moves_as_one_directory(tmp_path):
 
 def test_result_profile_uses_only_explicit_result_signal_without_ownership(tmp_path):
     layout, reference, archive, image = inputs(tmp_path)
-    raw = json.loads(layout.read_text())
+    raw = json.loads(layout.read_text(encoding="utf-8"))
     raw["regions"]["round_end_banner"] = raw["regions"]["center_phase_banner"].copy()
-    layout.write_text(json.dumps(raw))
+    layout.write_text(json.dumps(raw), encoding="utf-8")
     generated = build_profile(layout, reference, archive, tmp_path / "result",
                               signal="round_end_template")
     profile = HudTemplateProfile.load(generated.with_suffix(".templates.json"))

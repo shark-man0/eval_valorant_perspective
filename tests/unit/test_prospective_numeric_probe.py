@@ -51,13 +51,13 @@ def frozen(tmp_path):
         "source_sha256": source, "candidate_assets_frozen_before_validation": True,
         "production_adopted": False, "identity_assets_generated": False,
         "training_frames": [{"source_frame_pts": 10, "sha256": "1" * 64}],
-        "validation_frames": []}))
+        "validation_frames": []}), encoding="utf-8")
     plan_path = tmp_path / "plan.json"
     partition = tmp_path / "partition.json"
     partition.write_text(json.dumps({"kind": "development_holdout_partition_not_gt",
         "source_video_sha256": source,
         "development": {"start_sec_inclusive": 0, "end_sec_exclusive": 720},
-        "holdout": {"start_sec_inclusive": 720, "end_sec_exclusive": 1000}}))
+        "holdout": {"start_sec_inclusive": 720, "end_sec_exclusive": 1000}}), encoding="utf-8")
     plan = freeze_plan(video, source, trial, [history], 720, plan_path, partition=partition)
     return plan, plan_path, video, trial, history
 
@@ -90,7 +90,7 @@ def test_measure_rejects_drift_before_decoding(tmp_path, changed):
 def test_validation_pack_cannot_be_used_as_sampling_history(tmp_path):
     _, _, video, trial, history = frozen(tmp_path)
     history.write_text(json.dumps({"source_sha256": sha256_file(video),
-                                   "expected_states": ["live_first_person"]}))
+                                   "expected_states": ["live_first_person"]}), encoding="utf-8")
     with pytest.raises(ValueError, match="diagnostics permitted"):
         freeze_plan(video, sha256_file(video), trial, [history], 720, tmp_path / "invalid.json",
                     partition=tmp_path / "partition.json")
@@ -110,7 +110,7 @@ def test_partition_drift_or_toolchain_drift_rejected_before_decode(tmp_path, mon
         monkeypatch.setattr(subject, "toolchain_fingerprints", lambda: {"synthetic": "changed"})
     else:
         partition = tmp_path / "partition.json"
-        partition.write_text(partition.read_text() + " ")
+        partition.write_text(partition.read_text(encoding="utf-8") + " ", encoding="utf-8")
     with pytest.raises(ValueError, match="inputs changed"):
         measure(plan_path, tmp_path / "probe")
     assert not (tmp_path / "probe").exists()
@@ -118,9 +118,9 @@ def test_partition_drift_or_toolchain_drift_rejected_before_decode(tmp_path, mon
 
 def test_unversioned_completed_plan_must_not_be_upgraded_in_place(tmp_path):
     _, plan_path, _, _, _ = frozen(tmp_path)
-    data = json.loads(plan_path.read_text())
+    data = json.loads(plan_path.read_text(encoding="utf-8"))
     del data["schema_version"]
-    plan_path.write_text(json.dumps(data))
+    plan_path.write_text(json.dumps(data), encoding="utf-8")
     with pytest.raises(ValueError, match="do not rewrite v1"):
         measure(plan_path, tmp_path / "probe")
 
@@ -131,7 +131,7 @@ def test_other_source_or_gt_cannot_replace_partition(tmp_path):
     with pytest.raises(ValueError, match="non-GT partition"):
         verify_partition(partition, "0" * 64, 720)
     partition.write_text(json.dumps({"kind": "ground_truth", "source_video_sha256":
-                                    sha256_file(video)}))
+                                    sha256_file(video)}), encoding="utf-8")
     with pytest.raises(ValueError, match="non-GT partition"):
         verify_partition(partition, sha256_file(video), 720)
 
@@ -160,11 +160,11 @@ def test_previous_numeric_cohort_is_excluded_without_reading_its_labels(tmp_path
     prior.mkdir()
     report = prior / "candidate_report.json"
     report.write_text(json.dumps({"source_sha256": sha256_file(video), "training_performed": False,
-        "validation_frames": [{"source_frame_pts": 16.75, "sha256": "2" * 64}]}))
+        "validation_frames": [{"source_frame_pts": 16.75, "sha256": "2" * 64}]}), encoding="utf-8")
     (prior / "probe_summary.json").write_text(json.dumps({
         "kind": "prospective_numeric_point_probe_not_lifecycle_e2e",
         "source_sha256": sha256_file(video), "production_adopted": False,
-        "candidate_report_sha256": sha256_file(report)}))
+        "candidate_report_sha256": sha256_file(report)}), encoding="utf-8")
     result = freeze_plan(video, sha256_file(video), trial, [history], 720,
                          tmp_path / "new.json", partition=tmp_path / "partition.json",
                          prior_numeric_probes=[prior])

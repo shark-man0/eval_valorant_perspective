@@ -53,7 +53,7 @@ def plan_fixture(tmp_path, monkeypatch):
     partition.write_text(json.dumps({"kind": "development_holdout_partition_not_gt",
         "source_video_sha256": source,
         "development": {"start_sec_inclusive": 0, "end_sec_exclusive": 30},
-        "holdout": {"start_sec_inclusive": 30, "end_sec_exclusive": 40}}))
+        "holdout": {"start_sec_inclusive": 30, "end_sec_exclusive": 40}}), encoding="utf-8")
     path = tmp_path / "plan.json"
     plan = {"kind": "feature_selected_banner_recapture_not_qualification",
         "source_path": str(video), "source_sha256": source, "partition_path": str(partition),
@@ -61,7 +61,7 @@ def plan_fixture(tmp_path, monkeypatch):
         "development_end_sec": 30, "requests": [{"requested_sec": i} for i in (1, 2, 3)],
         "inputs_sha256": {str(partition): sha256_file(partition)},
         "decoder_fingerprints": ["a" * 64, "b" * 64]}
-    path.write_text(json.dumps(plan))
+    path.write_text(json.dumps(plan), encoding="utf-8")
     return path, plan
 
 

@@ -37,13 +37,13 @@ def test_false_acceptance_flags_cannot_bypass_frozen_floor_or_format(row):
 
 def bundle(tmp_path, *, duplicate=False, missing=False, repeat=False, conflicting=False):
     candidate, probe = inputs(tmp_path)
-    report = json.loads((candidate / "candidate_report.json").read_text())
+    report = json.loads((candidate / "candidate_report.json").read_text(encoding="utf-8"))
     if repeat:
         report["validation_frames"].append({**report["validation_frames"][0],
                                             "source_frame_pts": 2.0})
         image = candidate / "validation_frames/synthetic.jpg"
         (image.parent / "synthetic_repeat.jpg").write_bytes(image.read_bytes())
-        (candidate / "candidate_report.json").write_text(json.dumps(report))
+        (candidate / "candidate_report.json").write_text(json.dumps(report), encoding="utf-8")
     source_hash = report["validation_frames"][0]["sha256"]
     rows = [{**accepted("1:40" if name == "round_timer" else "1"),
              "sample_index": 0, "region": name, "source_image_sha256": source_hash,
@@ -58,18 +58,20 @@ def bundle(tmp_path, *, duplicate=False, missing=False, repeat=False, conflictin
         rows.pop()
     raw = probe / "observations.json"
     raw.write_text(json.dumps({"production_adopted": False,
-                              "localized_numeric_diagnostics_not_analyzer_input": rows}))
+                              "localized_numeric_diagnostics_not_analyzer_input": rows}),
+                   encoding="utf-8")
     summary = probe / "probe_summary.json"
-    data = json.loads(summary.read_text())
+    data = json.loads(summary.read_text(encoding="utf-8"))
     data.update(production_adopted=False, observations_sha256=sha256_file(raw),
                 frames=2 if repeat else 1,
                 candidate_report_sha256=sha256_file(candidate / "candidate_report.json"))
-    summary.write_text(json.dumps(data))
+    summary.write_text(json.dumps(data), encoding="utf-8")
     review = tmp_path / "review"
     prepare(candidate, probe, review)
     response = tmp_path / "synthetic_response.csv"
     response.write_text("1,1:40,absent,2\n" + (
-        ("2,1:40,absent,3\n" if conflicting else "2,1:40,absent,2\n") if repeat else ""))
+        ("2,1:40,absent,3\n" if conflicting else "2,1:40,absent,2\n") if repeat else ""),
+        encoding="utf-8")
     labels = tmp_path / "labels.json"
     freeze(review, response, "synthetic-not-human-review", labels)
     return review, labels, response, probe
@@ -88,7 +90,7 @@ def test_comparison_bound_to_original_assets_keeps_raw_and_labels_private(tmp_pa
     assert result["point_counts_by_runtime_geometry"]["valid"]["round_timer"]["correct_value"] == 1
     assert result["production_qualified"] is False
     assert sha256_file(raw) == before
-    text = output.read_text()
+    text = output.read_text(encoding="utf-8")
     for private in ("raw_ocr_text", "source_frame_pts", "bounds_in_roi", "1:40", str(tmp_path)):
         assert private not in text
     with pytest.raises(FileExistsError):
@@ -106,14 +108,14 @@ def test_incomplete_or_duplicate_diagnostics_cannot_report_success(tmp_path, dup
 def test_changed_frozen_inputs_rejected(tmp_path, target):
     review, labels, response, probe = bundle(tmp_path)
     if target == "labels":
-        data = json.loads(labels.read_text())
+        data = json.loads(labels.read_text(encoding="utf-8"))
         data["frames"][0]["labels"]["ally_score"] = {"kind": "value", "display": "1"}
-        labels.write_text(json.dumps(data))
+        labels.write_text(json.dumps(data), encoding="utf-8")
     elif target == "raw":
         raw = probe / "observations.json"
-        raw.write_text(raw.read_text() + " ")
+        raw.write_text(raw.read_text(encoding="utf-8") + " ", encoding="utf-8")
     elif target == "response":
-        response.write_text("1,1:40,1,2\n")
+        response.write_text("1,1:40,1,2\n", encoding="utf-8")
     else:
         (review / "frame_01_round_timer.png").write_bytes(b"tampered")
     with pytest.raises(ValueError):

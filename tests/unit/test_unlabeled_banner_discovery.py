@@ -112,7 +112,7 @@ def test_held_pixels_do_not_change_candidates(tmp_path, monkeypatch):
     pool, layout, partition, _ = fixture(tmp_path)
     before = subject.discover(pool, layout, partition, tmp_path / "before", set())
     selection_path = pool / "review_selection.json"
-    selection = json.loads(selection_path.read_text())
+    selection = json.loads(selection_path.read_text(encoding="utf-8"))
     # Fixed splitting follows source indices 1,2,... after reserved index0.
     for i in (2, 4, 6, 8):
         path = pool / "pool_frames" / f"frame_{i:02d}.jpg"
@@ -163,7 +163,7 @@ def test_changed_images_and_holdout_are_rejected_before_output(tmp_path, monkeyp
     monkeypatch.setattr(subject, "_check_output_privacy", lambda *_: None)
     pool, layout, partition, _ = fixture(tmp_path)
     path = pool / "review_selection.json"
-    raw = json.loads(path.read_text())
+    raw = json.loads(path.read_text(encoding="utf-8"))
     if fault == "hash":
         raw["pool_records"][0]["sha256"] = "b" * 64
     else:

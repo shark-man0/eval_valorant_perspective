@@ -42,7 +42,7 @@ def test_changed_or_already_reviewed_inputs_reject_before_receipt(
         tmp_path, monkeypatch, fault):
     pool, layout, path, frozen = prepare(tmp_path, monkeypatch)
     if fault == "layout":
-        layout.write_text('{}')
+        layout.write_text('{}', encoding="utf-8")
     elif fault == "asset":
         name = next(iter(frozen["roles"]["round_end_banner"][0]["asset_hashes"]))
         (path.parent / name).write_bytes(b"changed asset")
@@ -50,10 +50,10 @@ def test_changed_or_already_reviewed_inputs_reject_before_receipt(
         next((pool / "pool_frames").glob('*.jpg')).write_bytes(b"changed source")
     elif fault == "label":
         frozen["roles"]["round_end_banner"][0]["semantic_label"] = "unapproved"
-        path.write_text(json.dumps(frozen))
+        path.write_text(json.dumps(frozen), encoding="utf-8")
     else:
         frozen["held_predictions_measured"] = True
-        path.write_text(json.dumps(frozen))
+        path.write_text(json.dumps(frozen), encoding="utf-8")
     output = tmp_path / "rejected.json"
     with pytest.raises(ValueError):
         subject.measure(path, pool, layout, output)

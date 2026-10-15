@@ -19,8 +19,8 @@ from valorant_ai_coach.hud.templates import HudTemplateProfile
 
 
 def challenge(candidate: Path) -> dict:
-    report = json.loads((candidate / "candidate_report.json").read_text())
-    frozen = json.loads((candidate / "candidate_fingerprint.json").read_text())
+    report = json.loads((candidate / "candidate_report.json").read_text(encoding="utf-8"))
+    frozen = json.loads((candidate / "candidate_fingerprint.json").read_text(encoding="utf-8"))
     for name, digest in frozen.items():
         path = (candidate / name).resolve()
         if not path.is_relative_to(candidate.resolve()) or sha256_file(path) != digest:

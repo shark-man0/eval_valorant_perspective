@@ -23,16 +23,17 @@ def source_pool(tmp_path):
     records.append({**records[2], "source_frame_pts": 3})
     selection = probe / "review_selection.json"
     selection.write_text(json.dumps({"pool_records": records,
-                                    "selection_frozen_before_numeric_measurement": True}))
+                                    "selection_frozen_before_numeric_measurement": True}),
+                         encoding="utf-8")
     report = probe / "candidate_report.json"
     report.write_text(json.dumps({"source_sha256": "1" * 64,
-                                 "validation_frames": [records[0]]}))
+                                 "validation_frames": [records[0]]}), encoding="utf-8")
     summary = probe / "probe_summary.json"
     summary.write_text(json.dumps({"kind": "prospective_numeric_point_probe_not_lifecycle_e2e",
         "production_adopted": False, "selection_sha256": sha256_file(selection),
         "candidate_report_sha256": sha256_file(report), "source_sha256": "1" * 64,
         "pool_frame_count": 4, "ocr_prediction": "MUST_NOT_SHOW_OCR",
-        "confidence": "MUST_NOT_SHOW_CONFIDENCE"}))
+        "confidence": "MUST_NOT_SHOW_CONFIDENCE"}), encoding="utf-8")
     return candidate, probe
 
 
@@ -58,7 +59,7 @@ def test_changed_or_incomplete_pool_is_rejected_without_model_run(tmp_path, chan
         (probe / "pool_frames/frame_01.jpg").write_bytes(b"tampered")
     elif change == "selection":
         path = probe / "review_selection.json"
-        path.write_text(path.read_text() + " ")
+        path.write_text(path.read_text(encoding="utf-8") + " ", encoding="utf-8")
     else:
         (probe / "pool_frames/frame_01.jpg").unlink()
     with pytest.raises(ValueError):
