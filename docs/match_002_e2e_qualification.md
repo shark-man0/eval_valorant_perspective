@@ -1591,3 +1591,37 @@ null nonmatch, unchanged floor, image/page/measurement/reference binding drift,
 read-only inputs and bounded aggregate output. Related tests92pass, scoped Ruff,
 production mypy(133files) and git diff --check pass. Transcriptions and images
 stay local; Git receives only the comparator, tests, hashes and aggregate summary.
+
+## Frozen WON reference on existing reviewed other-text source controls
+
+Use the six already transcribed phase/menu source images as a separate static
+control measurement for the current frozen WON signal. No new annotations are
+inferred from model predictions. Verify the original review/page/measurement
+hashes and literal transcription bindings. All six source images are distinct
+and none is a training image of the result reference. The source JPEG and broad
+review PNG hashes match; the preview pixels equal the current broad phase ROI.
+The result ROI is not identical to that broad ROI, but is fully enclosed by it.
+This explicit containment prevents reusing a review of an unrelated image area.
+
+Call the existing HudTemplateProfile.detect_signals on each full-size source
+image, retaining semantic diagnostics for the configured round_end_template.
+Do not invoke the Analyzer, create events, override geometry or assert runtime
+absence. At the unchanged.90 threshold, all six WON measurements score0 with
+null presence, and none is accepted. The original frozen profile fingerprint
+remains `b751fb55c8f7995107c5554787f41daf63f9634dc60dd9935db3ea03e324efe5`;
+recognizer remains
+`87f4bcea8b1699dbad965b634b06ebd4095dbb4519bd55ac4b8495b1d486e008`.
+Profile/assets, recognizer and source/preview bytes match before and after.
+Private detailed receipt SHA:
+`2eb340e679ce882496904b591a9ab62c1da440769d01111a881cdd794a4827f7`.
+
+This is zero false acceptance on these six source-derived, previously selected
+other-text controls only. They were selected earlier using a different phase
+reference's match/nonmatch strata, not random gameplay sampling. Their review
+supports visible-text classification, not source continuity, runtime phase/result
+absence or event timing. The full source video is not decoded or reanalysed for
+this image-only check. Normal gameplay, map, remote and varied visual-condition
+coverage and independent temporal end qualification remain unproven. No runtime
+policy, template, threshold, qualification report or production setting changes.
+Related semantic/reference/review regressions79pass; scoped Ruff, production
+mypy(133files) and git diff --check pass. Full E2E remains unfinished.
