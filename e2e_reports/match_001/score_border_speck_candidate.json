@@ -1,0 +1,753 @@
+{
+  "schema_version": 1,
+  "scope": "Opt-in border-speck score reader; bounded partial requalification checkpoint, not formal End or full lifecycle release",
+  "judgment": "B: bounded partial qualification",
+  "main_integrated": "7e480c2f2f7f49aea73e1541d065d78881d2f11c",
+  "main_merge_commit": "56c42b7",
+  "freeze": {
+    "scope": "Frozen opt-in score border-speck candidate before fixed negatives; no formal qualification",
+    "recognizer_fingerprint": "ddc5e6c2d012d3b1219f567a532ea193219578e14c18f3954ce51c98bf473264",
+    "profile_fingerprint": "6411f7d326f71076efa54bb431a8efc501d01678fccd19a1f3a07a62c2146c80",
+    "original_source_newmode_profile": "fc3b8dfc4c4e9c72e6bbbaf7c5a90762ad879ea695dff8784997123e1f56f51c",
+    "foreground_preprocessing": "white200_rowcontrast_border_specks_v1",
+    "training_pool_sec": [
+      300,
+      600
+    ],
+    "development_calls": 2886,
+    "development_original_accepts_unchanged": 2777,
+    "development_new_accepts_source_reviewed": 3,
+    "private_prototype_sha256": "272614a37d71daf7d4dd0eeaf77657eb358740f59f9f8c288fda3943f14bbced",
+    "temporal_policy": "unchanged original strict tracker, no missing-score bridge",
+    "NCC": 0.9,
+    "margin": 0.04,
+    "horizon_sec": 1,
+    "qualification_created": false,
+    "old_bundles_expected_stale": true
+  },
+  "implementation": {
+    "foreground_preprocessing": "white200_rowcontrast_border_specks_v1",
+    "default_changed": false,
+    "all_ten_glyph_competitors_retained": true,
+    "NCC": 0.9,
+    "class_margin": 0.04,
+    "same_frame_only": true,
+    "temporal_policy_changed": false,
+    "End_horizon_sec": 1,
+    "GT_changed": false,
+    "timestamp_backdating": false,
+    "ownership_relaxed": false,
+    "profile_assets_retrained": false
+  },
+  "development": {
+    "field_calls": 2886,
+    "previous_accepts_exactly_preserved": 2777,
+    "still_unknown": 106,
+    "new_accepts": 3,
+    "new_accepts_source_correct": 3,
+    "source_labeler": "assistant visual transcription, development only",
+    "new_accept_values": [
+      "2",
+      "4",
+      "4"
+    ],
+    "no_independent_qualification": true
+  },
+  "static_candidate_counts": {
+    "phase": {
+      "training_correct": 3,
+      "holdout_correct": 8,
+      "negative_rejected": 12
+    },
+    "timer": {
+      "correct": 25,
+      "unknown": 7
+    },
+    "score_fields": {
+      "unknown": 18,
+      "correct": 36
+    },
+    "score_pairs": {
+      "unknown": 18,
+      "correct": 9
+    },
+    "result": {
+      "unknown": 8,
+      "correct": 3,
+      "negative_rejected": 3
+    }
+  },
+  "static_timer_type_FP": 0,
+  "static_score_negative_field_FP": 0,
+  "native_fixed_window_comparison": {
+    "baseline": {
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "profile_fingerprint": "60b029cb987fe0d7447853e3b4cd791d5defb0918dfaa25a401bd45d2b64c813",
+      "recognizer_fingerprint": "ddc5e6c2d012d3b1219f567a532ea193219578e14c18f3954ce51c98bf473264",
+      "elapsed_sec": 188.0490131250117,
+      "terminal_integrity_verified": true,
+      "windows": [
+        {
+          "name": "r1_ui_development",
+          "split": "training",
+          "processed_frames": 36,
+          "timer_source_comparison": {
+            "correct": 36
+          },
+          "score_field_source_comparison": {},
+          "formal_events": 0,
+          "player_owned_facts": 0,
+          "diagnostic_patterns": [
+            {
+              "kind": "round_start",
+              "time_sec": 4.102669270833333,
+              "confidence": 0.9541926383972168,
+              "confirmation_pts_sec": 4.202669270833334
+            }
+          ]
+        },
+        {
+          "name": "r2_ui_development",
+          "split": "holdout_review",
+          "processed_frames": 36,
+          "timer_source_comparison": {
+            "unknown": 6,
+            "correct": 30
+          },
+          "score_field_source_comparison": {},
+          "formal_events": 0,
+          "player_owned_facts": 0,
+          "diagnostic_patterns": [
+            {
+              "kind": "round_start",
+              "time_sec": 111.4193359375,
+              "confidence": 0.931477963924408,
+              "confirmation_pts_sec": 111.48600260416667
+            }
+          ]
+        },
+        {
+          "name": "active_control",
+          "split": "negative_review",
+          "processed_frames": 30,
+          "timer_source_comparison": {
+            "correct": 26,
+            "unknown": 4
+          },
+          "score_field_source_comparison": {},
+          "formal_events": 0,
+          "player_owned_facts": 0,
+          "diagnostic_patterns": []
+        },
+        {
+          "name": "menu_control",
+          "split": "negative_review",
+          "processed_frames": 30,
+          "timer_source_comparison": {
+            "correct": 30
+          },
+          "score_field_source_comparison": {},
+          "formal_events": 0,
+          "player_owned_facts": 0,
+          "diagnostic_patterns": []
+        },
+        {
+          "name": "spectator_control",
+          "split": "negative_review",
+          "processed_frames": 30,
+          "timer_source_comparison": {
+            "unknown": 19,
+            "correct": 11
+          },
+          "score_field_source_comparison": {},
+          "formal_events": 0,
+          "player_owned_facts": 0,
+          "diagnostic_patterns": []
+        },
+        {
+          "name": "r1_end_continuous_result_inputs",
+          "split": "known_end_review",
+          "processed_frames": 108,
+          "timer_source_comparison": {
+            "correct": 17,
+            "unknown": 91
+          },
+          "score_field_source_comparison": {
+            "correct": 115,
+            "unknown": 101
+          },
+          "formal_events": 0,
+          "player_owned_facts": 0,
+          "diagnostic_patterns": [
+            {
+              "kind": "round_end",
+              "time_sec": 74.48600260416667,
+              "confidence": 0.9180924279198346,
+              "confirmation_pts_sec": 75.3693359375
+            }
+          ]
+        },
+        {
+          "name": "numeric_end_menu_entry_control",
+          "split": "negative_review",
+          "processed_frames": 27,
+          "timer_source_comparison": {},
+          "score_field_source_comparison": {},
+          "formal_events": 0,
+          "player_owned_facts": 0,
+          "diagnostic_patterns": []
+        },
+        {
+          "name": "pending_end_new_active_inputs",
+          "split": "negative_review",
+          "processed_frames": 72,
+          "timer_source_comparison": {},
+          "score_field_source_comparison": {},
+          "formal_events": 0,
+          "player_owned_facts": 0,
+          "diagnostic_patterns": []
+        }
+      ]
+    },
+    "candidate": {
+      "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+      "profile_fingerprint": "fc3b8dfc4c4e9c72e6bbbaf7c5a90762ad879ea695dff8784997123e1f56f51c",
+      "recognizer_fingerprint": "ddc5e6c2d012d3b1219f567a532ea193219578e14c18f3954ce51c98bf473264",
+      "elapsed_sec": 188.3907771250233,
+      "terminal_integrity_verified": true,
+      "windows": [
+        {
+          "name": "r1_ui_development",
+          "split": "training",
+          "processed_frames": 36,
+          "timer_source_comparison": {
+            "correct": 36
+          },
+          "score_field_source_comparison": {},
+          "formal_events": 0,
+          "player_owned_facts": 0,
+          "diagnostic_patterns": [
+            {
+              "kind": "round_start",
+              "time_sec": 4.102669270833333,
+              "confidence": 0.9541926383972168,
+              "confirmation_pts_sec": 4.202669270833334
+            }
+          ]
+        },
+        {
+          "name": "r2_ui_development",
+          "split": "holdout_review",
+          "processed_frames": 36,
+          "timer_source_comparison": {
+            "unknown": 6,
+            "correct": 30
+          },
+          "score_field_source_comparison": {},
+          "formal_events": 0,
+          "player_owned_facts": 0,
+          "diagnostic_patterns": [
+            {
+              "kind": "round_start",
+              "time_sec": 111.4193359375,
+              "confidence": 0.931477963924408,
+              "confirmation_pts_sec": 111.48600260416667
+            }
+          ]
+        },
+        {
+          "name": "active_control",
+          "split": "negative_review",
+          "processed_frames": 30,
+          "timer_source_comparison": {
+            "correct": 26,
+            "unknown": 4
+          },
+          "score_field_source_comparison": {},
+          "formal_events": 0,
+          "player_owned_facts": 0,
+          "diagnostic_patterns": []
+        },
+        {
+          "name": "menu_control",
+          "split": "negative_review",
+          "processed_frames": 30,
+          "timer_source_comparison": {
+            "correct": 30
+          },
+          "score_field_source_comparison": {},
+          "formal_events": 0,
+          "player_owned_facts": 0,
+          "diagnostic_patterns": []
+        },
+        {
+          "name": "spectator_control",
+          "split": "negative_review",
+          "processed_frames": 30,
+          "timer_source_comparison": {
+            "unknown": 19,
+            "correct": 11
+          },
+          "score_field_source_comparison": {},
+          "formal_events": 0,
+          "player_owned_facts": 0,
+          "diagnostic_patterns": []
+        },
+        {
+          "name": "r1_end_continuous_result_inputs",
+          "split": "known_end_review",
+          "processed_frames": 108,
+          "timer_source_comparison": {
+            "correct": 17,
+            "unknown": 91
+          },
+          "score_field_source_comparison": {
+            "correct": 119,
+            "unknown": 97
+          },
+          "formal_events": 0,
+          "player_owned_facts": 0,
+          "diagnostic_patterns": [
+            {
+              "kind": "round_end",
+              "time_sec": 74.48600260416667,
+              "confidence": 0.9180924279198346,
+              "confirmation_pts_sec": 75.3693359375
+            }
+          ]
+        },
+        {
+          "name": "numeric_end_menu_entry_control",
+          "split": "negative_review",
+          "processed_frames": 27,
+          "timer_source_comparison": {},
+          "score_field_source_comparison": {},
+          "formal_events": 0,
+          "player_owned_facts": 0,
+          "diagnostic_patterns": []
+        },
+        {
+          "name": "pending_end_new_active_inputs",
+          "split": "negative_review",
+          "processed_frames": 72,
+          "timer_source_comparison": {},
+          "score_field_source_comparison": {},
+          "formal_events": 0,
+          "player_owned_facts": 0,
+          "diagnostic_patterns": []
+        }
+      ]
+    }
+  },
+  "known_R1_End_GT_upper_bound_sec": 74.483,
+  "known_R1_End_diagnostic_sec": 74.48600260416667,
+  "known_R1_End_upper_bound_miss_ms": 3.002604166667311,
+  "Start_admission": {
+    "recognizer_fingerprint": "ddc5e6c2d012d3b1219f567a532ea193219578e14c18f3954ce51c98bf473264",
+    "profile_fingerprint": "fc3b8dfc4c4e9c72e6bbbaf7c5a90762ad879ea695dff8784997123e1f56f51c",
+    "bundle_sha256": "85caed7d2b4044b910bfa98f573907a0eaa087c488d840090ee40ab288d75ca7",
+    "stale_previous_bundle_rejected": true,
+    "actual_loader_admitted_components": [
+      "purchase_phase",
+      "timer",
+      "ui_transition"
+    ],
+    "ui_support_counts": {
+      "training": 9,
+      "holdout": 7,
+      "negative": 90
+    }
+  },
+  "native_Start": {
+    "scope": "Bounded current-code/source production-entrance and native-to-package/trace verification under explicit reviewed start-only offline admission; no default or full lifecycle release",
+    "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "profile_fingerprint": "fc3b8dfc4c4e9c72e6bbbaf7c5a90762ad879ea695dff8784997123e1f56f51c",
+    "recognizer_fingerprint": "ddc5e6c2d012d3b1219f567a532ea193219578e14c18f3954ce51c98bf473264",
+    "candidate_bundle_sha256": "85caed7d2b4044b910bfa98f573907a0eaa087c488d840090ee40ab288d75ca7",
+    "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+    "window_sec": [
+      0,
+      6
+    ],
+    "png_budget_bytes": 1073741824,
+    "original_exposure_retained": true,
+    "new_blind_cohort": false,
+    "full_lifecycle_qualification_established": false,
+    "script_sha256": "4eeaea697bc7f97a0f69153303f0d8e19457c590402dd5c724886863e8132c16",
+    "production_GT_input": false,
+    "external_system_proofs_supplied": false,
+    "runtime_default_installed": false,
+    "processed_frames": 358,
+    "first_tick": 553,
+    "last_tick": 91945,
+    "producer_elapsed_sec": 112.20460587495472,
+    "elapsed_sec": 148.7946191660012,
+    "retained_png_bytes": 607990858,
+    "peak_process_rss_bytes": 133169152,
+    "round_packages": 1,
+    "trace_total_events": 1,
+    "trace_round_starts": 1,
+    "trace_round_ends": 0,
+    "trace_snapshots": 0,
+    "source_to_native_to_trace_attrs_equal": true,
+    "player_owned_facts": 0,
+    "terminal_integrity_verified": true,
+    "canonical_evaluation_executed": false,
+    "application_HUD_visual_fusion_exercised": false
+  },
+  "application_Start": {
+    "scope": "Actual fixed-frame application merge; exact current native output reuse, not fresh recognition, full sampler or temporal qualification",
+    "window_sec": [
+      [
+        0,
+        0.08
+      ],
+      [
+        3.9,
+        4.5
+      ]
+    ],
+    "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "recognizer_fingerprint": "ddc5e6c2d012d3b1219f567a532ea193219578e14c18f3954ce51c98bf473264",
+    "profile_fingerprint": "fc3b8dfc4c4e9c72e6bbbaf7c5a90762ad879ea695dff8784997123e1f56f51c",
+    "qualification_sha256": "85caed7d2b4044b910bfa98f573907a0eaa087c488d840090ee40ab288d75ca7",
+    "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+    "native_artifact_sha256": "edb6c845e01e7c0481b3f19197e5c62e9313c561879fbae8d8fe6e4f81ce6235",
+    "script_sha256": "4a279f9ae865241bfdbacc3db1c7ccbc0d97a2711a015c8d46e53eb7613a0947",
+    "default_installed": false,
+    "GT_input": false,
+    "full_lifecycle_qualification_established": false,
+    "frames": 39,
+    "elapsed_sec": 15.708920541976113,
+    "application_processing_sec": 10.408914499974344,
+    "retained_png_bytes": 45491368,
+    "peak_process_rss_bytes": 148799488,
+    "round_packages": 1,
+    "trace_events": 1,
+    "trace_snapshots": 0,
+    "owned_facts": 0,
+    "native_to_trace_equal": true,
+    "terminal_integrity_verified": true,
+    "full_sampler_exercised": false,
+    "full_E2E_executed": false
+  },
+  "canonical_Start_checks": {
+    "native": {
+      "scope": "Evaluation after production; only R1 Start assertion is claimed, remaining fragment outcomes private",
+      "target_outcome": [
+        {
+          "assertion_id": "GT-R1-ROUND-START",
+          "group": "required_point_events",
+          "index": 0,
+          "status": "pass",
+          "failures": []
+        }
+      ],
+      "assertions_sha256": "c5e242b611ce227d1d2633e5e24c00dfe65168d8124ab58fbdea84b1d7f0d820",
+      "trace_sha256": "36a5ff41d48f034e45cea6cec6efbf91f1c6cfd7972d85f94b2e5a83c9d07bdf",
+      "full_E2E_executed": false,
+      "canonical_baseline_updated": false,
+      "production_GT_input": false
+    },
+    "application": {
+      "scope": "Evaluation after production; only R1 Start assertion is claimed, remaining fragment outcomes private",
+      "target_outcome": [
+        {
+          "assertion_id": "GT-R1-ROUND-START",
+          "group": "required_point_events",
+          "index": 0,
+          "status": "pass",
+          "failures": []
+        }
+      ],
+      "assertions_sha256": "c5e242b611ce227d1d2633e5e24c00dfe65168d8124ab58fbdea84b1d7f0d820",
+      "trace_sha256": "7143f91814376243fce931add7a3365c90644a6e4925ae1a1b9e91b3d1adfe65",
+      "full_E2E_executed": false,
+      "canonical_baseline_updated": false,
+      "production_GT_input": false
+    }
+  },
+  "fixed_negative_regression": {
+    "scope": "Fresh fixed-negative regression of explicit score border-speck mode, no independent temporal GT or formal qualification",
+    "candidate_freeze": {
+      "scope": "Frozen opt-in score border-speck candidate before fixed negatives; no formal qualification",
+      "recognizer_fingerprint": "ddc5e6c2d012d3b1219f567a532ea193219578e14c18f3954ce51c98bf473264",
+      "profile_fingerprint": "6411f7d326f71076efa54bb431a8efc501d01678fccd19a1f3a07a62c2146c80",
+      "original_source_newmode_profile": "fc3b8dfc4c4e9c72e6bbbaf7c5a90762ad879ea695dff8784997123e1f56f51c",
+      "foreground_preprocessing": "white200_rowcontrast_border_specks_v1",
+      "training_pool_sec": [
+        300,
+        600
+      ],
+      "development_calls": 2886,
+      "development_original_accepts_unchanged": 2777,
+      "development_new_accepts_source_reviewed": 3,
+      "private_prototype_sha256": "272614a37d71daf7d4dd0eeaf77657eb358740f59f9f8c288fda3943f14bbced",
+      "temporal_policy": "unchanged original strict tracker, no missing-score bridge",
+      "NCC": 0.9,
+      "margin": 0.04,
+      "horizon_sec": 1,
+      "qualification_created": false,
+      "old_bundles_expected_stale": true
+    },
+    "elapsed_sec": 69.61676687502768,
+    "terminal_integrity_verified": true,
+    "total_frames": 76,
+    "result_matches": 0,
+    "End_patterns": 0,
+    "player_owned_facts": 0,
+    "held_pool_opened": false,
+    "human_temporal_GT_confirmed": false
+  },
+  "exposed_WON_regression": {
+    "scope": "Previously exposed WON event regression only: actual opt-in reader and unchanged strict End tracker, no new blind qualification",
+    "code": "ddc5e6c2d012d3b1219f567a532ea193219578e14c18f3954ce51c98bf473264",
+    "profile": "6411f7d326f71076efa54bb431a8efc501d01678fccd19a1f3a07a62c2146c80",
+    "source_sha256": "06919642d69f68895ac123b505bfd7d3643dd28d903585008fcdc2b7f1b7e3fd",
+    "source_labeler": "Assistant visual source transcription before reader calls; additional held WON event, no source-derived exact End annotation",
+    "independent_human_review_pending": true,
+    "frames": 271,
+    "first_tick": 12103680,
+    "last_tick": 12172800,
+    "elapsed_producer_sec": 84.88734529097565,
+    "peak_process_rss_bytes": 110919680,
+    "PNG_bytes": 465610114,
+    "geometry_counts": {
+      "frames": 271,
+      "fresh_geometry_success": 0,
+      "effective_geometry_success": 271,
+      "retained_geometry_frames": 271,
+      "geometry_invalid_unknown": 0,
+      "geometry_valid_state_unknown": 271,
+      "live_identity_evidence_insufficient": 271,
+      "insufficient_anchors_frames": 271
+    },
+    "semantic_result_matches": 171,
+    "score_complete_pairs": 230,
+    "source_breaks_sec": [],
+    "support_counts": {
+      "timer:correct": 6,
+      "score_ally:correct": 6,
+      "score_enemy:unknown": 1,
+      "result:correct": 6,
+      "score_enemy:correct": 5
+    },
+    "formal_events": 0,
+    "owned_facts": 0,
+    "input_hashes": {
+      "source-labels.json": "35f71df10bdc72e3b273aff14f93ab507f80e7420adfec826c56b8694d51a047",
+      "source-manifest.json": "5f4233b3f235b5e7282ebc2c302baba9a779434a5c907bc2f5e77931b982c9d9",
+      "selection.json": "50e1501622d9883b023eb1f219da4b8c597f8785ca168866c0c53192c541863c",
+      "unedited-input.json": "99871590f3dec8ab1ca9310841363a456b4faad86dfbf9873f2f6d33bb9fe34e"
+    },
+    "raw_rows_sha256": "a8ac5276241f05d54a9114f393b4891d4240eaf56ea7ce5ee4ab82e56d63f7df",
+    "terminal_integrity_verified": true,
+    "post_case_tuning": false,
+    "full_lifecycle_qualification": false,
+    "new_cross_video_generalization_claimed": false,
+    "diagnostic_patterns": [
+      {
+        "kind": "round_end",
+        "time_sec": 788.6333333333333,
+        "confidence": 0.9150651693344116,
+        "confirmation_pts_sec": 789.2166666666667
+      }
+    ]
+  },
+  "new_held_event": {
+    "scope": "Distinct same-recording event-image evaluation after mask freeze; assistant source-only labels before predictions, no independent human exact temporal GT",
+    "window_sec": [
+      694,
+      701
+    ],
+    "frames": 421,
+    "labels_frozen_before_reader": true,
+    "whole_video_unseen": false,
+    "original_pool_sec": [
+      615,
+      715
+    ],
+    "excluded_exposed_endpoint_episodes_sec": [
+      600,
+      720
+    ],
+    "geometry_prefix_scope": "Earlier decoder-owned frame300, geometry only; not an active Start or temporal bridge",
+    "baseline": {
+      "scope": "Legacy mask control on identical frozen held native frames/labels, same current code",
+      "code": "ddc5e6c2d012d3b1219f567a532ea193219578e14c18f3954ce51c98bf473264",
+      "profile": "445f61d7440dee58c480253338b19df500c676c519e84810d1f7332c3ea798ee",
+      "source_sha256": "06919642d69f68895ac123b505bfd7d3643dd28d903585008fcdc2b7f1b7e3fd",
+      "source_labeler": "Assistant source-image transcription frozen before any held reader call; same-recording event, human temporal review absent",
+      "independent_human_review_pending": true,
+      "frames": 421,
+      "first_tick": 10659840,
+      "last_tick": 10767360,
+      "elapsed_producer_sec": 118.02464412502013,
+      "peak_process_rss_bytes": 112410624,
+      "PNG_bytes": 784418882,
+      "geometry_counts": {
+        "frames": 421,
+        "fresh_geometry_success": 0,
+        "effective_geometry_success": 421,
+        "retained_geometry_frames": 421,
+        "geometry_invalid_unknown": 0,
+        "geometry_valid_state_unknown": 421,
+        "live_identity_evidence_insufficient": 421,
+        "insufficient_anchors_frames": 421
+      },
+      "semantic_result_matches": 22,
+      "score_complete_pairs": 95,
+      "source_breaks_sec": [],
+      "diagnostic_End_patterns": [],
+      "support_counts": {
+        "score_ally:correct": 3,
+        "score_enemy:correct": 6,
+        "result:correct": 4,
+        "score_ally:unknown": 3
+      },
+      "formal_events": 0,
+      "owned_facts": 0,
+      "input_hashes": {
+        "source-labels.json": "1bed63d769f4f16cdfc6d026300ee4ec8d246528a827ab2566550baff7961baa",
+        "source-manifest.json": "dfe375e5adacf950f4b16c48458d7d3a3616e6445f9956e7b0b87dedd4af0ce9",
+        "selection.json": "f46a7b8e8e8d7d9a6c7db1368a89c2cbbc8a145d0d304b6d53c511338bf7e268",
+        "unedited-input.json": "99871590f3dec8ab1ca9310841363a456b4faad86dfbf9873f2f6d33bb9fe34e"
+      },
+      "raw_rows_sha256": "92ea17f8ed455cebee4f45b9767e0d8122227b240473a8f9a839b077e14dbefc",
+      "terminal_integrity_verified": true,
+      "post_case_tuning": false,
+      "full_lifecycle_qualification": false,
+      "new_cross_video_generalization_claimed": false
+    },
+    "candidate": {
+      "scope": "New event-image holdout score5–2→6–2, after fixed border-score reader freeze; previously observed endpoint600/720 episodes excluded",
+      "code": "ddc5e6c2d012d3b1219f567a532ea193219578e14c18f3954ce51c98bf473264",
+      "profile": "6411f7d326f71076efa54bb431a8efc501d01678fccd19a1f3a07a62c2146c80",
+      "source_sha256": "06919642d69f68895ac123b505bfd7d3643dd28d903585008fcdc2b7f1b7e3fd",
+      "source_labeler": "Assistant source-image transcription frozen before any held reader call; same-recording event, human temporal review absent",
+      "independent_human_review_pending": true,
+      "frames": 421,
+      "first_tick": 10659840,
+      "last_tick": 10767360,
+      "elapsed_producer_sec": 118.02437591698254,
+      "peak_process_rss_bytes": 113754112,
+      "PNG_bytes": 784418882,
+      "geometry_counts": {
+        "frames": 421,
+        "fresh_geometry_success": 0,
+        "effective_geometry_success": 421,
+        "retained_geometry_frames": 421,
+        "geometry_invalid_unknown": 0,
+        "geometry_valid_state_unknown": 421,
+        "live_identity_evidence_insufficient": 421,
+        "insufficient_anchors_frames": 421
+      },
+      "semantic_result_matches": 22,
+      "score_complete_pairs": 95,
+      "source_breaks_sec": [],
+      "diagnostic_End_patterns": [],
+      "support_counts": {
+        "score_ally:correct": 3,
+        "score_enemy:correct": 6,
+        "result:correct": 4,
+        "score_ally:unknown": 3
+      },
+      "formal_events": 0,
+      "owned_facts": 0,
+      "input_hashes": {
+        "source-labels.json": "1bed63d769f4f16cdfc6d026300ee4ec8d246528a827ab2566550baff7961baa",
+        "source-manifest.json": "dfe375e5adacf950f4b16c48458d7d3a3616e6445f9956e7b0b87dedd4af0ce9",
+        "selection.json": "7ec0bfb3199e202dd98e3fcbc1ab8a44968bf256bb4530afff044f417aae8305",
+        "unedited-input.json": "99871590f3dec8ab1ca9310841363a456b4faad86dfbf9873f2f6d33bb9fe34e"
+      },
+      "raw_rows_sha256": "8b81b868f0c842c21c32d1e42735be01c6e6866958af3685191f042c55a5d4bc",
+      "terminal_integrity_verified": true,
+      "post_case_tuning": false,
+      "full_lifecycle_qualification": false,
+      "new_cross_video_generalization_claimed": false
+    },
+    "changed_score_fields": 0,
+    "new_accepts_unlabelled_truth_assumed": false,
+    "clock_controls": {
+      "baseline": {
+        "selected_non_countdown_type_controls": 6,
+        "countdown_false_accepts": 0,
+        "scope": "Assistant source-labelled Spike icon / retained decimal controls; not a whole-window temporal truth claim"
+      },
+      "candidate": {
+        "selected_non_countdown_type_controls": 6,
+        "countdown_false_accepts": 0,
+        "scope": "Assistant source-labelled Spike icon / retained decimal controls; not a whole-window temporal truth claim"
+      }
+    },
+    "source_labels_sha256": "1bed63d769f4f16cdfc6d026300ee4ec8d246528a827ab2566550baff7961baa",
+    "no_post_held_tuning": true,
+    "formal_End_GT": false,
+    "unsupported_End_condition": "Spike icon before defuse and retained decimal22.37 afterwards; numeric countdown transition unavailable"
+  },
+  "verification": {
+    "new_synthetic_tests_pass": 37,
+    "related_score_End_tests_pass": 131,
+    "dataset_pass": 38,
+    "ruff": "PASS",
+    "mypy_source_files": 133,
+    "mypy": "PASS",
+    "UTF8_audit_unresolved": 0,
+    "full_suite": {
+      "passed": 3801,
+      "failed": 4,
+      "skipped": 9,
+      "elapsed_sec": 476.53,
+      "coverage_percent": 86.62060301507537,
+      "exit_code": 1,
+      "failures": [
+        "test_spectator_absence_guard.py::test_global_scene_detail_cannot_override_current_local_icon_evidence[crop1-True]",
+        "test_spectator_icon.py::test_abstract_icon_is_detected_across_small_rendering_shifts",
+        "test_spectator_icon.py::test_profile_uses_only_configured_icon_roi_and_obscuring_context",
+        "test_spectator_icon.py::test_short_menu_close_x_vetoes_icon_without_menu_grid_candidate"
+      ],
+      "Qt_shutdown_abort_observed": false
+    },
+    "current_commit_CI": "pending; predecessor CI not transferred"
+  },
+  "formal_End_admitted": false,
+  "runtime_default_bundle_installed": false,
+  "full_lifecycle_qualified": false,
+  "full_E2E_rerun": false,
+  "adopted_canonical_baseline_unchanged": {
+    "PASS": 23,
+    "FAIL": 55,
+    "NOT_EVALUATED": 4
+  },
+  "remaining": [
+    "Independent exact temporal End annotation and negative review",
+    "Delayed caption / Spike-icon / decimal-clock path development and independent qualification",
+    "Continuous same-epoch active Start→End",
+    "R1/R2 full Package/Trace membership and R2-to-EOF no-false-End proof",
+    "Exact-commit CI"
+  ],
+  "artifact_sha256": {
+    "work/new-source-development/border-score-freeze.json": "458629f81904594a4561dc37dfd63932fe49e73f2a67998cffea7d4bb334dfb6",
+    "work/new-source-development/border-speck-development/result.json": "d46f5bc8c4ef33f880badad587f3ca90faf7448fe16b3e4f3f30e358a051a37e",
+    "work/new-source-development/border-speck-development/source-review.json": "cebb8cdae40c5e7e48a68a9760c41829c54a7e548c654b3b84519f61dffa3af0",
+    "work/border-mode-start-admission/review.json": "69c1cc15bb19d90e3d8d6faba8b01b093c50e6de1726339b900a8ae84c53a1ca",
+    "work/border-mode-start-admission/start-only.json": "85caed7d2b4044b910bfa98f573907a0eaa087c488d840090ee40ab288d75ca7",
+    "work/border-mode-native-start/result.json": "2db1cbd2fcae95df21b12914fa5166d11c9d50aaa07de9ddfd7488a246e18424",
+    "work/border-mode-native-start/targeted-canonical-summary.json": "2b952c96232d02163f8c87887cdc9fa126cd5825cb5afaabd942769876582a33",
+    "work/border-mode-application-start/result.json": "71c0b33f97a565c55a3caac1e9777be0e4e778e838328ff4e0e08bebca839abe",
+    "work/border-mode-application-start/targeted-canonical-summary.json": "f617809ca4c558b0f687edeae7371971e11e7b3f1dc4cd124618e78bc557b77f",
+    "work/border-code-old-component-replay/result.json": "868dc266a69b3e0d4e0a242a0167861c293049abbee66921c59e33d87c8f4250",
+    "work/border-mode-component-replay/result.json": "11f4a5ad95b15f5d1f730c5f33f8ba5801390f946c0525364bf62244cd1803bb",
+    "work/border-code-fresh-window-replay/result.json": "611db3e1f15d11d45aeabe58f7e1a721cec96775cced5b388e45a4637d63fb3d",
+    "work/border-mode-fresh-window-replay/result.json": "e36ba6a85a4b6bf4382aa253ca2aac5830f83739c9d31411dfd647ccb9635beb",
+    "work/new-source-development/border-score-fixed-negative/result.json": "3752e2cf98a351922de1268af870bec366ef6bfd3c60e6f3b0ecd63086c35333",
+    "work/new-source-development/border-score-exposed-WON-result/result.json": "629805ae2bcec64a34132f124c1380f509177182d3a825404e98ad08b96203ab",
+    "work/new-source-development/border-score-held-discovery/selection.json": "4f68f444bf49165356bd7e2f17cdd27e9e32b6a43f2f78c1fc63681ae11d81a4",
+    "work/new-source-development/border-score-held-native/source-manifest.json": "dfe375e5adacf950f4b16c48458d7d3a3616e6445f9956e7b0b87dedd4af0ce9",
+    "work/new-source-development/border-score-held-native/source-labels.json": "1bed63d769f4f16cdfc6d026300ee4ec8d246528a827ab2566550baff7961baa",
+    "work/new-source-development/border-score-held-native/selection.json": "7ec0bfb3199e202dd98e3fcbc1ab8a44968bf256bb4530afff044f417aae8305",
+    "work/new-source-development/border-score-held-result/result.json": "b9a710a1e4e922ed0c258b5552a4c237eb9395cf42de9d6a4b38ea4d1462df1b",
+    "work/new-source-development/border-score-held-baseline-result/result.json": "bb28242e0467c94d4a8b20f21dbaaa41446381e078e4b015995a5afaeb3e06ce",
+    "work/border-score-full-regression.log": "a75cc1f93af084cc212992ce54c113c67fbc5700c9c98815de097e67c7f8da17"
+  }
+}

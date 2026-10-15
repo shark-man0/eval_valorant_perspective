@@ -11,6 +11,61 @@ from .readers import ReaderResult
 from .timer_glyphs import ImageU8, StrictTimerGlyphReader
 
 
+def _remove_isolated_border_specks(mask: ImageU8) -> ImageU8:
+    """Remove small off-baseline border components beside complete score glyphs.
+
+    Work on the existing binary mask, before any digit classification. Clipped
+    core glyphs, off-center surviving digits and nearby fragments remain intact
+    so the existing structural rejection still applies. No retry or value hint.
+    """
+    count, labels, stats, _ = cv2.connectedComponentsWithStats(mask, connectivity=8)
+    if count <= 1:
+        return mask
+    height, width = mask.shape
+    parts = [
+        (index, int(x), int(y), int(w), int(h), int(area))
+        for index, (x, y, w, h, area) in enumerate(stats[1:count], 1)
+    ]
+    maximum_height = max(part[4] for part in parts)
+    core = [part for part in parts if part[4] >= maximum_height / 2]
+    if len(core) not in (1, 2):
+        return mask
+
+    def touches_border(part: tuple[int, int, int, int, int, int]) -> bool:
+        _, x, y, w, h, _ = part
+        return x == 0 or y == 0 or x + w == width or y + h == height
+
+    if any(touches_border(part) for part in core):
+        return mask
+    heights = [part[4] for part in core]
+    glyph_height = float(np.median(heights))
+    top = min(part[2] for part in core)
+    bottom = max(part[2] + part[4] for part in core)
+    if (min(heights) < .8 * max(heights)
+            or max(part[2] for part in core) - top > .15 * max(heights)):
+        return mask
+    left = min(part[1] for part in core)
+    right = max(part[1] + part[3] for part in core)
+    if abs((left + right) / 2 - width / 2) > glyph_height / 10:
+        return mask
+    core_ids = {part[0] for part in core}
+    minimum_area = min(part[5] for part in core)
+    remove = []
+    for part in parts:
+        index, _, y, w, h, area = part
+        if index in core_ids or not touches_border(part):
+            continue
+        separated = y + h <= top - glyph_height / 8 or y >= bottom + glyph_height / 8
+        if (separated and h <= glyph_height / 3 and w <= glyph_height / 3
+                and area <= minimum_area / 6):
+            remove.append(index)
+    if not remove:
+        return mask
+    result = mask.copy()
+    result[np.isin(labels, remove)] = 0
+    return result
+
+
 class StrictScoreGlyphReader(StrictTimerGlyphReader):
     """Reuse the ten-class template contract, with a separate score grammar.
 
@@ -26,9 +81,12 @@ class StrictScoreGlyphReader(StrictTimerGlyphReader):
     ) -> None:
         if not isinstance(foreground_preprocessing, str) or foreground_preprocessing not in {
             "otsu_v1", "white200_v1", "white200_rowcontrast_v1",
+            "white200_rowcontrast_border_specks_v1",
         }:
             raise ValueError("unsupported strict score foreground preprocessing")
-        if (foreground_preprocessing == "white200_rowcontrast_v1"
+        if (foreground_preprocessing in {
+            "white200_rowcontrast_v1", "white200_rowcontrast_border_specks_v1",
+        }
                 and comparison_preprocessing != "gaussian3x3_v1"):
             raise ValueError("rowcontrast score preprocessing requires gaussian3x3_v1")
         super().__init__(templates, comparison_preprocessing=comparison_preprocessing)
@@ -99,17 +157,23 @@ class StrictScoreGlyphReader(StrictTimerGlyphReader):
 
     def _foreground_mask(self, enlarged: ImageU8) -> ImageU8:
         """Single foreground stage; default production preprocessing is unchanged."""
-        if self.foreground_preprocessing in {"white200_v1", "white200_rowcontrast_v1"}:
+        if self.foreground_preprocessing in {
+            "white200_v1", "white200_rowcontrast_v1", "white200_rowcontrast_border_specks_v1",
+        }:
             _, mask = cv2.threshold(enlarged, 200, 255, cv2.THRESH_BINARY)
         else:
             _, mask = cv2.threshold(enlarged, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-        if self.foreground_preprocessing == "white200_rowcontrast_v1":
+        if self.foreground_preprocessing in {
+            "white200_rowcontrast_v1", "white200_rowcontrast_border_specks_v1",
+        }:
             # Opt-in value-invariant background support in the already enlarged
             # domain. No resampling, retry or preferred digit class follows.
             left = np.median(enlarged[:, :8], axis=1)
             right = np.median(enlarged[:, -8:], axis=1)
             background = np.maximum(left, right)[:, None]
             mask = np.where(enlarged.astype(np.float32) - background >= 12, mask, 0)
+        if self.foreground_preprocessing == "white200_rowcontrast_border_specks_v1":
+            mask = _remove_isolated_border_specks(np.asarray(mask, dtype=np.uint8))
         return np.asarray(mask, dtype=np.uint8)
 
 
