@@ -3,10 +3,10 @@
   "base_commit": "612a4f0b6b0be82e2fa15f1a427a85e6b3b6f4bd",
   "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
   "runtime_fingerprint": "6ea410098baf11bbea9df5301ed901373a025e25023c220e1db6a3c01103a6fc",
-  "probe_fingerprint": "8e91568a3c0594020f95799066398aca57e267c2cfa407513acf732ba4487873",
+  "probe_fingerprint": "411167fc4660ecbb7cd4c932118cd18897a55711a6cca2c3fa0202387be39636",
   "dependencies_fingerprint": "3de20daba24b4724cd175b8bcc704e2d8ace32f64fffca48823206c58d79f3a6",
   "frozen_plan_sha256": "fc2d3931f0fcc5d9af9638ac38483edd958729871c9285ef9dbdb05437066d3e",
-  "private_result_sha256": "f581a23b4ec3d1adab8217a467ec3f5dc58fb842fc95ab63a7d3a97c9f05c0ac",
+  "private_result_sha256": "c7f89d0fa7d9495cd91a4523a9535cb086b6e6e5a825b6a161073d0413e7d0ec",
   "victim_ocr_counts": {
     "correct": 3,
     "negative_rejected": 3
@@ -44,13 +44,13 @@
   "hud_measurement_reuse_scope": "Existing unchanged-code measurements, freshly verified native pixels/PTS; not new HUD recognition",
   "new_blind_holdout": false,
   "terminal_hashes_verified": true,
-  "wall_sec": 101.16930903599132,
+  "wall_sec": 101.37241951201577,
   "peak_memory": "not_measured",
   "new_canonical_full": false,
   "new_canonical_counts": null,
   "subject_precision_recall": "not_measured_no_independently_qualified_subject_truth",
   "real_respawn_qualification": "missing",
-  "focused_tests_passed": 54,
+  "focused_tests_passed": 55,
   "local_ruff": "pass",
   "local_mypy_files": 135,
   "lfs_smoke_verification": {

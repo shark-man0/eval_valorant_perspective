@@ -217,3 +217,12 @@ def test_other_subject_respawn_cannot_rearm_a_latched_episode():
                             evidence(3, SubjectRole.VICTIM)]))
     decision = probe.observe(frame(4, [evidence(4, SubjectRole.DEATH_TRANSITION)]))
     assert decision.status == 'duplicate'
+
+
+def test_current_role_contradiction_invalidates_earlier_self_support():
+    probe = seeded_probe()
+    probe.observe(frame(1, [evidence(1, SubjectRole.VICTIM,
+                                    relation=SubjectRelation.NONSELF)]))
+    decision = probe.observe(frame(2, [evidence(2, SubjectRole.DEATH_TRANSITION)]))
+    assert decision.status == 'unknown'
+    assert 'missing_source_player_binding' in decision.blockers

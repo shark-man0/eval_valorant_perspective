@@ -241,7 +241,10 @@ class SubjectDeathProbe:
             old = self.pending.get(observation.role)
             if (old is not None and old.subject_token is not None
                     and observation.subject_token is not None
-                    and old.subject_token != observation.subject_token):
+                    and (old.subject_token != observation.subject_token
+                         or old.relation != SubjectRelation.UNKNOWN
+                         and observation.relation != SubjectRelation.UNKNOWN
+                         and old.relation != observation.relation)):
                 self.pending.clear()
                 return DeathProbeDecision("unknown", ("conflicting_subjects",), source)
             # Keep the first observed support/time, not a later confirmation PTS.
