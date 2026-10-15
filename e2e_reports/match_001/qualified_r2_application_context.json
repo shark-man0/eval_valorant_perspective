@@ -1,0 +1,150 @@
+{
+  "scope": "Original exposed R2: qualified native fragment plus ordinary application with actual earlier context frames; not cold-fragment success or match-wide continuity",
+  "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "recognizer_fingerprint": "d14e4b78b3e1fae4df0d154d21067b452796794a9c954992cf7f2ebb12a6d091",
+  "profile_fingerprint": "fc3b8dfc4c4e9c72e6bbbaf7c5a90762ad879ea695dff8784997123e1f56f51c",
+  "qualification_sha256": "19a2ccedcafb8af48d14edcaf1e072fd0619eb9ed2f799874d033ab028948212",
+  "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+  "window_sec": [
+    111.0,
+    111.8
+  ],
+  "prefix_window_sec": [
+    0,
+    0.08
+  ],
+  "prefix_role": "geometry_only_reference_v1",
+  "application_context_windows_sec": [
+    [
+      0,
+      0.08
+    ],
+    [
+      111,
+      111.8
+    ]
+  ],
+  "application_origin_frames_are_real_sampled_observations": true,
+  "application_gap_is_continuity_proof": false,
+  "original_cold_fragment_failure_preserved": true,
+  "prefix_epoch_is_continuity_proof": false,
+  "GT_production_input": false,
+  "default_prefix_enabled": false,
+  "new_blind_cohort": false,
+  "full_lifecycle_qualification_established": false,
+  "png_budget_bytes": 134217728,
+  "frames": 48,
+  "application_sampled_frames": 51,
+  "application_origin_frames": 3,
+  "application_gap_sec": 110.93333333333334,
+  "prefix_frame_count_used": 1,
+  "prefix_is_observation": false,
+  "producer_elapsed_sec": 14.526280458027031,
+  "application_processing_sec": 14.600782291963696,
+  "elapsed_sec": 35.41652062500361,
+  "retained_png_bytes": 76624131,
+  "peak_process_rss_bytes": 146636800,
+  "native_packages": 1,
+  "native_package_windows": [
+    {
+      "start_sec": 111.0693359375,
+      "end_sec": 171.019336
+    }
+  ],
+  "native_package_quality": [
+    {
+      "hud_confidence": 0.0,
+      "visual_confidence": 0.0,
+      "timeline_completeness": 0.0,
+      "missing_intervals": [
+        {
+          "start_sec": 111.0693359375,
+          "end_sec": 171.019336
+        }
+      ]
+    }
+  ],
+  "application_error": null,
+  "application_packages": 1,
+  "application_package_windows": [
+    {
+      "start_sec": 111.0693359375,
+      "end_sec": 171.019336
+    }
+  ],
+  "application_package_quality": [
+    {
+      "hud_confidence": 0.0,
+      "visual_confidence": 0.0,
+      "timeline_completeness": 0.0,
+      "missing_intervals": [
+        {
+          "start_sec": 111.0693359375,
+          "end_sec": 171.019336
+        }
+      ]
+    }
+  ],
+  "native_to_application_trace_attrs_equal": true,
+  "native_and_application_trace_events": [
+    1,
+    1
+  ],
+  "trace_snapshots": [
+    0,
+    0
+  ],
+  "owned_facts": 0,
+  "native_geometry_counts": {
+    "frames": 48,
+    "fresh_geometry_success": 0,
+    "effective_geometry_success": 48,
+    "retained_geometry_frames": 48,
+    "geometry_invalid_unknown": 0,
+    "geometry_valid_state_unknown": 48,
+    "live_identity_evidence_insufficient": 47,
+    "insufficient_anchors_frames": 48
+  },
+  "terminal_integrity_verified": true,
+  "match_wide_R2_package_numbering_proven": false,
+  "full_E2E_executed": false,
+  "prior_run_application_calibration_failure_preserved": true,
+  "intentional_measurement_replay_reason": "Distinct application input condition includes source origin frames as ordinary measured observations, as in the R1 application test. Does not claim the cold fragment now succeeds or bridge the unsampled interval.",
+  "implementation_commit": "abeb0118f4700b91e939e9ee27b0e9c72a103593",
+  "report_only_checkpoint": true,
+  "application_trace_sha256": "843d194c307a41199b7662a09fa28f785cecbba1b49758362e7f0c2f5613fcdc",
+  "application_packages_sha256": "42fa9ffea238de3f827331ea0ecb6505abfec18fab44023b6c87752cf3337a39",
+  "application_observations_sha256": "fc6eeecc267175b1c067b2964589d0a069f4582d4b15ee651ecfb986c1ff28d2",
+  "native_output_sha256": "0021c8c7f6ce82964b294bb1f471ebd35b1332c05e4dfb295daf8ee187bf2ec1",
+  "raw_result_sha256": "ddaf76f4c74f321989c91f6ddacdc4f88deb49229c3fff95ff24c8ebd89dc608",
+  "selection_sha256": "3f149795924a926a7370aac247852e5ffe9a742fafd2e822e7a3cd17a4dedc20",
+  "harness_sha256": "dfc3d6db47679849e953e456d46aada76617c74ecd1e41ce5a0f475f05de091c",
+  "canonical_target_outcome": [
+    {
+      "assertion_id": "GT-R2-ROUND-START",
+      "group": "required_point_events",
+      "index": 3,
+      "status": "fail",
+      "failures": [
+        "missing_point:GT-R2-ROUND-START"
+      ]
+    }
+  ],
+  "canonical_evaluation_sha256": "6225b7cd4e56b9e8eaa9469e1fc45f8d2fc110c8c678dd5373f8c13c8371a115",
+  "round_id": "sample_round_1",
+  "application_all_primary_state_unknown": true,
+  "application_first_sample_sec": 0.03600260416666667,
+  "application_last_origin_sample_sec": 0.0693359375,
+  "application_first_R2_sample_sec": 111.00266927083334,
+  "full_default_sampler_exercised": false,
+  "cold_fragment_calibration_fixed": false,
+  "cross_gap_continuity_attested": false,
+  "full_lifecycle_qualified": false,
+  "canonical_baseline_unchanged": {
+    "PASS": 23,
+    "FAIL": 55,
+    "NOT_EVALUATED": 4
+  },
+  "method_or_GT_modified": false,
+  "current_code_CI_rechecked": false
+}
