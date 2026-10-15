@@ -1,0 +1,3755 @@
+{
+  "analysis_scope": "S-01 semantic evidence follow-up; safety repair and native diagnostics, not completed E2E accuracy improvement",
+  "judgement": "B",
+  "main_sha": "7e480c2f2f7f49aea73e1541d065d78881d2f11c",
+  "base_s01_sha": "a067f341a9c743c78c875bd81379c1243c2c1a49",
+  "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "profile_fingerprint": "60b029cb987fe0d7447853e3b4cd791d5defb0918dfaa25a401bd45d2b64c813",
+  "previous_recognizer_fingerprint": "ad482fe1bae0f2c4401ce0364841f749f63c6e2230ff75c49cf853962c8eb859",
+  "current_recognizer_fingerprint": "6ea410098baf11bbea9df5301ed901373a025e25023c220e1db6a3c01103a6fc",
+  "adopted_counts": {
+    "pass": 23,
+    "fail": 55,
+    "not_evaluated": 4
+  },
+  "unadopted_original_full_counts": {
+    "pass": 28,
+    "fail": 50,
+    "not_evaluated": 4
+  },
+  "new_canonical_counts": null,
+  "new_full_executed": false,
+  "new_pass_ids": [],
+  "new_pass_ids_scope": "none demonstrated; new full not measured",
+  "original_full_hashes": {
+    "raw_processing.json": "5bc81be4ed43e45db025548d236c416d24efe35fa2ab95a32260f5a4fa94a6dc",
+    "e2e_trace.json": "65aa8a0387cb140adb22fe3f26a9ce60b00d45198d48889d16d4fda349f56958",
+    "evaluation_report.json": "8841332dfcf29f6876efe63dd4c2cb42bdeb2c9d7f1d49e6258fd54997bcb1a1"
+  },
+  "private_diagnostic_hashes": {
+    "isolated-native/result.json": "548418a0ece25d9599d471290a96de4ce0b4e7172fd16c3c8613b0c41731e330",
+    "post-guard-isolated/result.json": "6e030badae94f3a4e46277a17530da0cec06f4f94a23545eef6728c515478e51",
+    "identity-matcher-metrics.json": "247ba7d7f9e274068bed98da041fb59ef7c78b93c59ed995488f8dd6797d0a7f",
+    "continuous-measured/result.json": "2907efdc45f87e7e5fd1a6db7dd24c0b80f7bde833da48f6d196b0962b26e489"
+  },
+  "isolated_before_after_identical_rows": 24,
+  "measured_assertions": [
+    {
+      "assertion_or_control_id": "GT-R1-SNAP-0035",
+      "source_pts_sec": 3.502669270833333,
+      "source_pts_ticks": 53801,
+      "source_time_base": "1/15360",
+      "source_pixel_sha256": "428502f36748cc5bfb7385e1afee99e9a60a83dd1a7f365e0792358a53caa9e4",
+      "geometry_calibrated": true,
+      "primary_state": "unknown",
+      "state_confidence": 0.0,
+      "identity": {
+        "live": false,
+        "positive_count": 1,
+        "reason": "structure_evidence_insufficient"
+      },
+      "identity_structures": {
+        "hp_hud_structure": {
+          "score": 0.9109195402298851,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        },
+        "ability_bar_structure": {
+          "score": 0.5472972972972973,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        },
+        "weapon_ammo_structure": {
+          "score": 0.0,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        }
+      },
+      "spectator": {
+        "spectator_detector_checked": true,
+        "spectator_panel_present": false,
+        "spectator_panel_absent": true,
+        "spectator_detector_reason": "panel_structure_excluded"
+      },
+      "combat_report_visible": false,
+      "player_specific_hud_valid": false,
+      "player_world_view_trustworthy": false,
+      "raw_reader_presence": [
+        "round_timer",
+        "ally_score",
+        "enemy_score",
+        "player_hp_armor"
+      ],
+      "reader_confidence": {
+        "round_timer": 0.9596002101898193,
+        "ally_score": 0.9340658187866211,
+        "enemy_score": 0.9912848472595215,
+        "player_hp_armor": 0.9510792499999999
+      },
+      "measurement_scope": "isolated native frame, geometry-only input-contract prefix; no temporal qualification or formal events",
+      "before_after_identity_diagnostic_equal": true,
+      "new_blind_holdout": false,
+      "first_blocker": "snapshot_current_state_evidence",
+      "failed_snapshot_fields": [
+        "primary_state",
+        "player_alive",
+        "location_label_raw"
+      ],
+      "secondary_blockers": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:location_label_raw"
+      ],
+      "historical_full": {
+        "code_commit": "46462336427149764beb8e1fdd94c554e075616e",
+        "hud_aggregate_confidence": 0.0,
+        "primary_state": "unknown",
+        "player_specific_hud_valid": false,
+        "package_round_no": 1,
+        "package_window": {
+          "start_sec": 2.502669,
+          "end_sec": 81.752669
+        },
+        "native_snapshot_count_at_pts": 1,
+        "trace_snapshot_count_at_pts": 1,
+        "snapshot_field_presence": {
+          "time_sec": true,
+          "spectator_primary_state": false,
+          "score_ally": true,
+          "score_enemy": true,
+          "ally_alive": false,
+          "enemy_alive": false,
+          "hp": false,
+          "armor": false,
+          "weapon": false,
+          "spike_state": false,
+          "utility_available_count": false,
+          "round_time_remaining_sec": true,
+          "round_time_remaining_display": true,
+          "round_time_remaining_display_provenance": true
+        },
+        "snapshot_field_confidence": {
+          "score_ally": 0.930188000202179,
+          "score_enemy": 0.9912848472595215,
+          "round_time_remaining_sec": 0.9611700177192688
+        },
+        "trace_primary_state": "unknown",
+        "trace_owner": "unknown",
+        "trace_player_alive_present": false,
+        "fact_keys_at_pts": [
+          "round_time_remaining_sec"
+        ],
+        "fact_confidence_at_pts": {
+          "round_time_remaining_sec": 0.9611700177192688
+        },
+        "stage_scope": "original hash-verified full artifacts, not new guard-code recognition or evaluation"
+      },
+      "first_loss_stage": "live_identity / state classification or missing dedicated life producer; owned numeric masking is intentional",
+      "transport_status": "snapshot and trace present; qualified global fields retained; no missing qualified owned evidence demonstrated"
+    },
+    {
+      "assertion_or_control_id": "GT-R1-SNAP-0415",
+      "source_pts_sec": 4.152669270833333,
+      "source_pts_ticks": 63785,
+      "source_time_base": "1/15360",
+      "source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0",
+      "geometry_calibrated": true,
+      "primary_state": "unknown",
+      "state_confidence": 0.0,
+      "identity": {
+        "live": false,
+        "positive_count": 2,
+        "reason": "structure_evidence_insufficient"
+      },
+      "identity_structures": {
+        "hp_hud_structure": {
+          "score": 0.9694915254237289,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        },
+        "ability_bar_structure": {
+          "score": 0.9681818181818181,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        },
+        "weapon_ammo_structure": {
+          "score": 0.0,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        }
+      },
+      "spectator": {
+        "spectator_detector_checked": true,
+        "spectator_panel_present": false,
+        "spectator_panel_absent": true,
+        "spectator_detector_reason": "panel_structure_excluded"
+      },
+      "combat_report_visible": false,
+      "player_specific_hud_valid": false,
+      "player_world_view_trustworthy": false,
+      "raw_reader_presence": [
+        "round_timer",
+        "ally_score",
+        "enemy_score",
+        "player_hp_armor"
+      ],
+      "reader_confidence": {
+        "round_timer": 0.9597947001457214,
+        "ally_score": 0.9471440315246582,
+        "enemy_score": 0.992636501789093,
+        "player_hp_armor": 0.95908958
+      },
+      "measurement_scope": "isolated native frame, geometry-only input-contract prefix; no temporal qualification or formal events",
+      "before_after_identity_diagnostic_equal": true,
+      "new_blind_holdout": false,
+      "first_blocker": "snapshot_current_state_evidence",
+      "failed_snapshot_fields": [
+        "primary_state",
+        "player_alive",
+        "location_label_raw"
+      ],
+      "secondary_blockers": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:location_label_raw"
+      ],
+      "historical_full": {
+        "code_commit": "46462336427149764beb8e1fdd94c554e075616e",
+        "hud_aggregate_confidence": 0.0,
+        "primary_state": "unknown",
+        "player_specific_hud_valid": false,
+        "package_round_no": 1,
+        "package_window": {
+          "start_sec": 2.502669,
+          "end_sec": 81.752669
+        },
+        "native_snapshot_count_at_pts": 1,
+        "trace_snapshot_count_at_pts": 1,
+        "snapshot_field_presence": {
+          "time_sec": true,
+          "spectator_primary_state": false,
+          "score_ally": true,
+          "score_enemy": true,
+          "ally_alive": false,
+          "enemy_alive": false,
+          "hp": false,
+          "armor": false,
+          "weapon": false,
+          "spike_state": false,
+          "utility_available_count": false,
+          "round_time_remaining_sec": true,
+          "round_time_remaining_display": true,
+          "round_time_remaining_display_provenance": true
+        },
+        "snapshot_field_confidence": {
+          "score_ally": 0.9473333954811096,
+          "score_enemy": 0.9943748712539673,
+          "round_time_remaining_sec": 0.9607433676719666
+        },
+        "trace_primary_state": "unknown",
+        "trace_owner": "unknown",
+        "trace_player_alive_present": false,
+        "fact_keys_at_pts": [
+          "round_time_remaining_sec"
+        ],
+        "fact_confidence_at_pts": {
+          "round_time_remaining_sec": 0.9607433676719666
+        },
+        "stage_scope": "original hash-verified full artifacts, not new guard-code recognition or evaluation"
+      },
+      "first_loss_stage": "live_identity / state classification or missing dedicated life producer; owned numeric masking is intentional",
+      "transport_status": "snapshot and trace present; qualified global fields retained; no missing qualified owned evidence demonstrated"
+    },
+    {
+      "assertion_or_control_id": "GT-R1-SNAP-475",
+      "source_pts_sec": 47.50266927083333,
+      "source_pts_ticks": 729641,
+      "source_time_base": "1/15360",
+      "source_pixel_sha256": "32395aefdb46b0009ebc4ff8784c0b9457ab2a0af7a477005885c41f7860f04a",
+      "geometry_calibrated": true,
+      "primary_state": "unknown",
+      "state_confidence": 0.0,
+      "identity": {
+        "live": false,
+        "positive_count": 2,
+        "reason": "structure_evidence_insufficient"
+      },
+      "identity_structures": {
+        "hp_hud_structure": {
+          "score": 0.9957983193277311,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        },
+        "ability_bar_structure": {
+          "score": 0.40963855421686746,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        },
+        "weapon_ammo_structure": {
+          "score": 0.9472475476791659,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        }
+      },
+      "spectator": {
+        "spectator_detector_checked": true,
+        "spectator_panel_present": false,
+        "spectator_panel_absent": true,
+        "spectator_detector_reason": "panel_structure_excluded"
+      },
+      "combat_report_visible": false,
+      "player_specific_hud_valid": false,
+      "player_world_view_trustworthy": false,
+      "raw_reader_presence": [
+        "round_timer",
+        "ally_score",
+        "enemy_score",
+        "player_hp_armor"
+      ],
+      "reader_confidence": {
+        "round_timer": 0.9400578737258911,
+        "ally_score": 0.9492469429969788,
+        "enemy_score": 0.9828252196311951,
+        "player_hp_armor": 0.9590843200000001
+      },
+      "measurement_scope": "isolated native frame, geometry-only input-contract prefix; no temporal qualification or formal events",
+      "before_after_identity_diagnostic_equal": true,
+      "new_blind_holdout": false,
+      "first_blocker": "snapshot_current_state_evidence",
+      "failed_snapshot_fields": [
+        "primary_state",
+        "player_alive",
+        "nonself_killfeed_row_visible"
+      ],
+      "secondary_blockers": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:nonself_killfeed_row_visible"
+      ],
+      "historical_full": {
+        "code_commit": "46462336427149764beb8e1fdd94c554e075616e",
+        "hud_aggregate_confidence": 0.0,
+        "primary_state": "unknown",
+        "player_specific_hud_valid": false,
+        "package_round_no": 1,
+        "package_window": {
+          "start_sec": 2.502669,
+          "end_sec": 81.752669
+        },
+        "native_snapshot_count_at_pts": 1,
+        "trace_snapshot_count_at_pts": 1,
+        "snapshot_field_presence": {
+          "time_sec": true,
+          "spectator_primary_state": false,
+          "score_ally": true,
+          "score_enemy": true,
+          "ally_alive": false,
+          "enemy_alive": false,
+          "hp": false,
+          "armor": false,
+          "weapon": false,
+          "spike_state": false,
+          "utility_available_count": false,
+          "round_time_remaining_sec": true,
+          "round_time_remaining_display": true,
+          "round_time_remaining_display_provenance": true
+        },
+        "snapshot_field_confidence": {
+          "score_ally": 0.9483387470245361,
+          "score_enemy": 0.9729374647140503,
+          "round_time_remaining_sec": 0.9412397742271423
+        },
+        "trace_primary_state": "unknown",
+        "trace_owner": "unknown",
+        "trace_player_alive_present": false,
+        "fact_keys_at_pts": [
+          "round_time_remaining_sec"
+        ],
+        "fact_confidence_at_pts": {
+          "round_time_remaining_sec": 0.9412397742271423
+        },
+        "stage_scope": "original hash-verified full artifacts, not new guard-code recognition or evaluation"
+      },
+      "first_loss_stage": "live_identity / state classification or missing dedicated life producer; owned numeric masking is intentional",
+      "transport_status": "snapshot and trace present; qualified global fields retained; no missing qualified owned evidence demonstrated"
+    },
+    {
+      "assertion_or_control_id": "GT-R1-SNAP-585",
+      "source_pts_sec": 58.50266927083333,
+      "source_pts_ticks": 898601,
+      "source_time_base": "1/15360",
+      "source_pixel_sha256": "391911f0caf8d0d2b7d64a0dbf4c9bb48772ffa396cf04f9375a443f3574511d",
+      "geometry_calibrated": true,
+      "primary_state": "unknown",
+      "state_confidence": 0.0,
+      "identity": {
+        "live": false,
+        "positive_count": 1,
+        "reason": "structure_evidence_insufficient"
+      },
+      "identity_structures": {
+        "hp_hud_structure": {
+          "score": 0.5192307692307693,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        },
+        "ability_bar_structure": {
+          "score": 0.9952038369304557,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        },
+        "weapon_ammo_structure": {
+          "score": 0.7117832275911818,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        }
+      },
+      "spectator": {
+        "spectator_detector_checked": true,
+        "spectator_panel_present": false,
+        "spectator_panel_absent": true,
+        "spectator_detector_reason": "panel_structure_excluded"
+      },
+      "combat_report_visible": false,
+      "player_specific_hud_valid": false,
+      "player_world_view_trustworthy": false,
+      "raw_reader_presence": [
+        "round_timer",
+        "ally_score",
+        "enemy_score",
+        "player_hp_armor"
+      ],
+      "reader_confidence": {
+        "round_timer": 0.9298065900802612,
+        "ally_score": 0.9492233991622925,
+        "enemy_score": 0.9699148535728455,
+        "player_hp_armor": 0.96192604
+      },
+      "measurement_scope": "isolated native frame, geometry-only input-contract prefix; no temporal qualification or formal events",
+      "before_after_identity_diagnostic_equal": true,
+      "new_blind_holdout": false,
+      "first_blocker": "snapshot_current_state_evidence",
+      "failed_snapshot_fields": [
+        "primary_state"
+      ],
+      "secondary_blockers": [
+        "failed_field:primary_state"
+      ],
+      "historical_full": {
+        "code_commit": "46462336427149764beb8e1fdd94c554e075616e",
+        "hud_aggregate_confidence": 0.0,
+        "primary_state": "unknown",
+        "player_specific_hud_valid": false,
+        "package_round_no": 1,
+        "package_window": {
+          "start_sec": 2.502669,
+          "end_sec": 81.752669
+        },
+        "native_snapshot_count_at_pts": 1,
+        "trace_snapshot_count_at_pts": 1,
+        "snapshot_field_presence": {
+          "time_sec": true,
+          "spectator_primary_state": false,
+          "score_ally": true,
+          "score_enemy": true,
+          "ally_alive": false,
+          "enemy_alive": false,
+          "hp": false,
+          "armor": false,
+          "weapon": false,
+          "spike_state": false,
+          "utility_available_count": false,
+          "round_time_remaining_sec": true,
+          "round_time_remaining_display": true,
+          "round_time_remaining_display_provenance": true
+        },
+        "snapshot_field_confidence": {
+          "score_ally": 0.9456049203872681,
+          "score_enemy": 0.9710036516189575,
+          "round_time_remaining_sec": 0.9316428303718567
+        },
+        "trace_primary_state": "unknown",
+        "trace_owner": "unknown",
+        "trace_player_alive_present": false,
+        "fact_keys_at_pts": [
+          "round_time_remaining_sec"
+        ],
+        "fact_confidence_at_pts": {
+          "round_time_remaining_sec": 0.9316428303718567
+        },
+        "stage_scope": "original hash-verified full artifacts, not new guard-code recognition or evaluation"
+      },
+      "first_loss_stage": "live_identity / state classification or missing dedicated life producer; owned numeric masking is intentional",
+      "transport_status": "snapshot and trace present; qualified global fields retained; no missing qualified owned evidence demonstrated"
+    },
+    {
+      "assertion_or_control_id": "GT-R1-SNAP-595",
+      "source_pts_sec": 59.50266927083333,
+      "source_pts_ticks": 913961,
+      "source_time_base": "1/15360",
+      "source_pixel_sha256": "9b862e4d3d562f8a3e2b10e191f5edf503a2a68e2673e9a921704c37722d3afa",
+      "geometry_calibrated": true,
+      "primary_state": "unknown",
+      "state_confidence": 0.0,
+      "identity": {
+        "live": false,
+        "positive_count": 1,
+        "reason": "structure_evidence_insufficient"
+      },
+      "identity_structures": {
+        "hp_hud_structure": {
+          "score": 0.9661016949152542,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        },
+        "ability_bar_structure": {
+          "score": 0.8784,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        },
+        "weapon_ammo_structure": {
+          "score": 0.0,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        }
+      },
+      "spectator": {
+        "spectator_detector_checked": true,
+        "spectator_panel_present": false,
+        "spectator_panel_absent": true,
+        "spectator_detector_reason": "panel_structure_excluded"
+      },
+      "combat_report_visible": false,
+      "player_specific_hud_valid": false,
+      "player_world_view_trustworthy": false,
+      "raw_reader_presence": [
+        "round_timer",
+        "ally_score",
+        "enemy_score",
+        "player_hp_armor"
+      ],
+      "reader_confidence": {
+        "round_timer": 0.9351649284362793,
+        "ally_score": 0.9551342725753784,
+        "enemy_score": 0.9662814140319824,
+        "player_hp_armor": 0.9558912700000001
+      },
+      "measurement_scope": "isolated native frame, geometry-only input-contract prefix; no temporal qualification or formal events",
+      "before_after_identity_diagnostic_equal": true,
+      "new_blind_holdout": false,
+      "first_blocker": "snapshot_current_state_evidence",
+      "failed_snapshot_fields": [
+        "primary_state",
+        "vision_obscured_smoke"
+      ],
+      "secondary_blockers": [
+        "failed_field:primary_state",
+        "failed_field:vision_obscured_smoke"
+      ],
+      "historical_full": {
+        "code_commit": "46462336427149764beb8e1fdd94c554e075616e",
+        "hud_aggregate_confidence": 0.0,
+        "primary_state": "unknown",
+        "player_specific_hud_valid": false,
+        "package_round_no": 1,
+        "package_window": {
+          "start_sec": 2.502669,
+          "end_sec": 81.752669
+        },
+        "native_snapshot_count_at_pts": 1,
+        "trace_snapshot_count_at_pts": 1,
+        "snapshot_field_presence": {
+          "time_sec": true,
+          "spectator_primary_state": false,
+          "score_ally": true,
+          "score_enemy": true,
+          "ally_alive": false,
+          "enemy_alive": false,
+          "hp": false,
+          "armor": false,
+          "weapon": false,
+          "spike_state": false,
+          "utility_available_count": false,
+          "round_time_remaining_sec": true,
+          "round_time_remaining_display": true,
+          "round_time_remaining_display_provenance": true
+        },
+        "snapshot_field_confidence": {
+          "score_ally": 0.9547474384307861,
+          "score_enemy": 0.9662814140319824,
+          "round_time_remaining_sec": 0.9351649284362793
+        },
+        "trace_primary_state": "unknown",
+        "trace_owner": "unknown",
+        "trace_player_alive_present": false,
+        "fact_keys_at_pts": [
+          "round_time_remaining_sec"
+        ],
+        "fact_confidence_at_pts": {
+          "round_time_remaining_sec": 0.9351649284362793
+        },
+        "stage_scope": "original hash-verified full artifacts, not new guard-code recognition or evaluation"
+      },
+      "first_loss_stage": "live_identity / state classification or missing dedicated life producer; owned numeric masking is intentional",
+      "transport_status": "snapshot and trace present; qualified global fields retained; no missing qualified owned evidence demonstrated"
+    },
+    {
+      "assertion_or_control_id": "GT-R1-SNAP-728",
+      "source_pts_sec": 72.80266927083333,
+      "source_pts_ticks": 1118249,
+      "source_time_base": "1/15360",
+      "source_pixel_sha256": "b158883600df67c01bb9f6bf25c3c2cb980a8efff27c07b1ed91939e71bca25e",
+      "geometry_calibrated": true,
+      "primary_state": "unknown",
+      "state_confidence": 0.0,
+      "identity": {
+        "live": false,
+        "positive_count": 2,
+        "reason": "spectator_exclusion_unverified"
+      },
+      "identity_structures": {
+        "hp_hud_structure": {
+          "score": 0.9814126394052045,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        },
+        "ability_bar_structure": {
+          "score": 0.607940446650124,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        },
+        "weapon_ammo_structure": {
+          "score": 0.9870575619356667,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        }
+      },
+      "spectator": {
+        "spectator_detector_checked": false,
+        "spectator_panel_present": null,
+        "spectator_panel_absent": false,
+        "spectator_detector_reason": "panel_structure_ambiguous"
+      },
+      "combat_report_visible": false,
+      "player_specific_hud_valid": false,
+      "player_world_view_trustworthy": false,
+      "raw_reader_presence": [
+        "round_timer",
+        "ally_score",
+        "enemy_score",
+        "player_hp_armor"
+      ],
+      "reader_confidence": {
+        "round_timer": 0.9632264375686646,
+        "ally_score": 0.9318478107452393,
+        "enemy_score": 0.9662814140319824,
+        "player_hp_armor": 0.95463692
+      },
+      "measurement_scope": "isolated native frame, geometry-only input-contract prefix; no temporal qualification or formal events",
+      "before_after_identity_diagnostic_equal": true,
+      "new_blind_holdout": false,
+      "first_blocker": "snapshot_current_state_evidence",
+      "failed_snapshot_fields": [
+        "primary_state",
+        "player_alive",
+        "ammo_mag",
+        "ammo_reserve",
+        "reload_animation_visible"
+      ],
+      "secondary_blockers": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:ammo_mag",
+        "failed_field:ammo_reserve",
+        "failed_field:reload_animation_visible"
+      ],
+      "historical_full": {
+        "code_commit": "46462336427149764beb8e1fdd94c554e075616e",
+        "hud_aggregate_confidence": 0.0,
+        "primary_state": "unknown",
+        "player_specific_hud_valid": false,
+        "package_round_no": 1,
+        "package_window": {
+          "start_sec": 2.502669,
+          "end_sec": 81.752669
+        },
+        "native_snapshot_count_at_pts": 1,
+        "trace_snapshot_count_at_pts": 1,
+        "snapshot_field_presence": {
+          "time_sec": true,
+          "spectator_primary_state": false,
+          "score_ally": true,
+          "score_enemy": true,
+          "ally_alive": false,
+          "enemy_alive": false,
+          "hp": false,
+          "armor": false,
+          "weapon": false,
+          "spike_state": false,
+          "utility_available_count": false,
+          "round_time_remaining_sec": true,
+          "round_time_remaining_display": true,
+          "round_time_remaining_display_provenance": true
+        },
+        "snapshot_field_confidence": {
+          "score_ally": 0.9318251609802246,
+          "score_enemy": 0.9934855103492737,
+          "round_time_remaining_sec": 0.960500180721283
+        },
+        "trace_primary_state": "unknown",
+        "trace_owner": "unknown",
+        "trace_player_alive_present": false,
+        "fact_keys_at_pts": [
+          "round_time_remaining_sec"
+        ],
+        "fact_confidence_at_pts": {
+          "round_time_remaining_sec": 0.960500180721283
+        },
+        "stage_scope": "original hash-verified full artifacts, not new guard-code recognition or evaluation"
+      },
+      "first_loss_stage": "live_identity / state classification or missing dedicated life producer; owned numeric masking is intentional",
+      "transport_status": "snapshot and trace present; qualified global fields retained; no missing qualified owned evidence demonstrated"
+    },
+    {
+      "assertion_or_control_id": "GT-R1-SNAP-733",
+      "source_pts_sec": 73.30266927083333,
+      "source_pts_ticks": 1125929,
+      "source_time_base": "1/15360",
+      "source_pixel_sha256": "ce7b643b6989dded4b4ef29eb14a27a07701963fa73bf11db475a9647500d38e",
+      "geometry_calibrated": true,
+      "primary_state": "unknown",
+      "state_confidence": 0.0,
+      "identity": {
+        "live": false,
+        "positive_count": 3,
+        "reason": "spectator_exclusion_unverified"
+      },
+      "identity_structures": {
+        "hp_hud_structure": {
+          "score": 0.9277456647398844,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        },
+        "ability_bar_structure": {
+          "score": 0.9255583126550868,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        },
+        "weapon_ammo_structure": {
+          "score": 0.9842572829123419,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        }
+      },
+      "spectator": {
+        "spectator_detector_checked": false,
+        "spectator_panel_present": null,
+        "spectator_panel_absent": false,
+        "spectator_detector_reason": "panel_structure_mismatch"
+      },
+      "combat_report_visible": false,
+      "player_specific_hud_valid": false,
+      "player_world_view_trustworthy": false,
+      "raw_reader_presence": [
+        "round_timer",
+        "ally_score",
+        "enemy_score",
+        "player_hp_armor"
+      ],
+      "reader_confidence": {
+        "round_timer": 0.9414150714874268,
+        "ally_score": 0.9315125942230225,
+        "enemy_score": 0.9662814140319824,
+        "player_hp_armor": 0.95560867
+      },
+      "measurement_scope": "isolated native frame, geometry-only input-contract prefix; no temporal qualification or formal events",
+      "before_after_identity_diagnostic_equal": true,
+      "new_blind_holdout": false,
+      "first_blocker": "snapshot_current_state_evidence",
+      "failed_snapshot_fields": [
+        "primary_state",
+        "player_alive",
+        "ammo_mag",
+        "ammo_reserve",
+        "reload_animation_visible"
+      ],
+      "secondary_blockers": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:ammo_mag",
+        "failed_field:ammo_reserve",
+        "failed_field:reload_animation_visible"
+      ],
+      "historical_full": {
+        "code_commit": "46462336427149764beb8e1fdd94c554e075616e",
+        "hud_aggregate_confidence": 0.0,
+        "primary_state": "unknown",
+        "player_specific_hud_valid": false,
+        "package_round_no": 1,
+        "package_window": {
+          "start_sec": 2.502669,
+          "end_sec": 81.752669
+        },
+        "native_snapshot_count_at_pts": 1,
+        "trace_snapshot_count_at_pts": 1,
+        "snapshot_field_presence": {
+          "time_sec": true,
+          "spectator_primary_state": false,
+          "score_ally": false,
+          "score_enemy": true,
+          "ally_alive": false,
+          "enemy_alive": false,
+          "hp": false,
+          "armor": false,
+          "weapon": false,
+          "spike_state": false,
+          "utility_available_count": false,
+          "round_time_remaining_sec": true,
+          "round_time_remaining_display": true,
+          "round_time_remaining_display_provenance": true
+        },
+        "snapshot_field_confidence": {
+          "score_enemy": 0.9689244031906128,
+          "round_time_remaining_sec": 0.9414150714874268
+        },
+        "trace_primary_state": "unknown",
+        "trace_owner": "unknown",
+        "trace_player_alive_present": false,
+        "fact_keys_at_pts": [
+          "round_time_remaining_sec"
+        ],
+        "fact_confidence_at_pts": {
+          "round_time_remaining_sec": 0.9414150714874268
+        },
+        "stage_scope": "original hash-verified full artifacts, not new guard-code recognition or evaluation"
+      },
+      "first_loss_stage": "live_identity / state classification or missing dedicated life producer; owned numeric masking is intentional",
+      "transport_status": "snapshot and trace present; qualified global fields retained; no missing qualified owned evidence demonstrated"
+    },
+    {
+      "assertion_or_control_id": "GT-R1-SNAP-734",
+      "source_pts_sec": 73.40266927083333,
+      "source_pts_ticks": 1127465,
+      "source_time_base": "1/15360",
+      "source_pixel_sha256": "ca040be25fc0cda4e3b47ff342f6171ce0c66285e39f1ec8a58b7a4cabc45807",
+      "geometry_calibrated": true,
+      "primary_state": "unknown",
+      "state_confidence": 0.0,
+      "identity": {
+        "live": false,
+        "positive_count": 2,
+        "reason": "structure_evidence_insufficient"
+      },
+      "identity_structures": {
+        "hp_hud_structure": {
+          "score": 0.9885931558935361,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        },
+        "ability_bar_structure": {
+          "score": 0.141439205955335,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        },
+        "weapon_ammo_structure": {
+          "score": 0.9726731108537915,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        }
+      },
+      "spectator": {
+        "spectator_detector_checked": true,
+        "spectator_panel_present": false,
+        "spectator_panel_absent": true,
+        "spectator_detector_reason": "panel_structure_excluded"
+      },
+      "combat_report_visible": false,
+      "player_specific_hud_valid": false,
+      "player_world_view_trustworthy": false,
+      "raw_reader_presence": [
+        "round_timer",
+        "ally_score",
+        "enemy_score",
+        "player_hp_armor"
+      ],
+      "reader_confidence": {
+        "round_timer": 0.9517302513122559,
+        "ally_score": 0.9527857899665833,
+        "enemy_score": 0.9662814140319824,
+        "player_hp_armor": 0.95318192
+      },
+      "measurement_scope": "isolated native frame, geometry-only input-contract prefix; no temporal qualification or formal events",
+      "before_after_identity_diagnostic_equal": true,
+      "new_blind_holdout": false,
+      "first_blocker": "snapshot_current_state_evidence",
+      "failed_snapshot_fields": [
+        "primary_state",
+        "player_alive",
+        "ammo_mag",
+        "ammo_reserve",
+        "reload_animation_visible"
+      ],
+      "secondary_blockers": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:ammo_mag",
+        "failed_field:ammo_reserve",
+        "failed_field:reload_animation_visible"
+      ],
+      "historical_full": {
+        "code_commit": "46462336427149764beb8e1fdd94c554e075616e",
+        "hud_aggregate_confidence": 0.0,
+        "primary_state": "unknown",
+        "player_specific_hud_valid": false,
+        "package_round_no": 1,
+        "package_window": {
+          "start_sec": 2.502669,
+          "end_sec": 81.752669
+        },
+        "native_snapshot_count_at_pts": 1,
+        "trace_snapshot_count_at_pts": 1,
+        "snapshot_field_presence": {
+          "time_sec": true,
+          "spectator_primary_state": false,
+          "score_ally": true,
+          "score_enemy": true,
+          "ally_alive": false,
+          "enemy_alive": false,
+          "hp": false,
+          "armor": false,
+          "weapon": false,
+          "spike_state": false,
+          "utility_available_count": false,
+          "round_time_remaining_sec": true,
+          "round_time_remaining_display": true,
+          "round_time_remaining_display_provenance": true
+        },
+        "snapshot_field_confidence": {
+          "score_ally": 0.9510979056358337,
+          "score_enemy": 0.9646438360214233,
+          "round_time_remaining_sec": 0.9533022046089172
+        },
+        "trace_primary_state": "unknown",
+        "trace_owner": "unknown",
+        "trace_player_alive_present": false,
+        "fact_keys_at_pts": [
+          "round_time_remaining_sec"
+        ],
+        "fact_confidence_at_pts": {
+          "round_time_remaining_sec": 0.9533022046089172
+        },
+        "stage_scope": "original hash-verified full artifacts, not new guard-code recognition or evaluation"
+      },
+      "first_loss_stage": "live_identity / state classification or missing dedicated life producer; owned numeric masking is intentional",
+      "transport_status": "snapshot and trace present; qualified global fields retained; no missing qualified owned evidence demonstrated"
+    },
+    {
+      "assertion_or_control_id": "GT-R1-SNAP-7425",
+      "source_pts_sec": 74.25266927083334,
+      "source_pts_ticks": 1140521,
+      "source_time_base": "1/15360",
+      "source_pixel_sha256": "45530006dae1e7361f3cb1c413904d34b765f7d86928bf9eca9667d888ef18ce",
+      "geometry_calibrated": true,
+      "primary_state": "unknown",
+      "state_confidence": 0.0,
+      "identity": {
+        "live": false,
+        "positive_count": 2,
+        "reason": "structure_evidence_insufficient"
+      },
+      "identity_structures": {
+        "hp_hud_structure": {
+          "score": 0.9363057324840764,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        },
+        "ability_bar_structure": {
+          "score": 0.5822603719599427,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        },
+        "weapon_ammo_structure": {
+          "score": 0.9815461401038231,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        }
+      },
+      "spectator": {
+        "spectator_detector_checked": true,
+        "spectator_panel_present": false,
+        "spectator_panel_absent": true,
+        "spectator_detector_reason": "panel_structure_excluded"
+      },
+      "combat_report_visible": false,
+      "player_specific_hud_valid": false,
+      "player_world_view_trustworthy": false,
+      "raw_reader_presence": [
+        "round_timer",
+        "ally_score",
+        "enemy_score",
+        "player_hp_armor"
+      ],
+      "reader_confidence": {
+        "round_timer": 0.9466763138771057,
+        "ally_score": 0.9436745047569275,
+        "enemy_score": 0.9662814140319824,
+        "player_hp_armor": 0.9624185199999999
+      },
+      "measurement_scope": "isolated native frame, geometry-only input-contract prefix; no temporal qualification or formal events",
+      "before_after_identity_diagnostic_equal": true,
+      "new_blind_holdout": false,
+      "first_blocker": "snapshot_current_state_evidence",
+      "failed_snapshot_fields": [
+        "primary_state",
+        "player_alive",
+        "player_hp",
+        "muzzle_flash_visible",
+        "location_label_raw",
+        "spectator_primary_state"
+      ],
+      "secondary_blockers": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:player_hp",
+        "failed_field:muzzle_flash_visible",
+        "failed_field:location_label_raw",
+        "failed_field:spectator_primary_state"
+      ],
+      "historical_full": {
+        "code_commit": "46462336427149764beb8e1fdd94c554e075616e",
+        "hud_aggregate_confidence": 0.0,
+        "primary_state": "unknown",
+        "player_specific_hud_valid": false,
+        "package_round_no": 1,
+        "package_window": {
+          "start_sec": 2.502669,
+          "end_sec": 81.752669
+        },
+        "native_snapshot_count_at_pts": 1,
+        "trace_snapshot_count_at_pts": 1,
+        "snapshot_field_presence": {
+          "time_sec": true,
+          "spectator_primary_state": false,
+          "score_ally": true,
+          "score_enemy": true,
+          "ally_alive": false,
+          "enemy_alive": false,
+          "hp": false,
+          "armor": false,
+          "weapon": false,
+          "spike_state": false,
+          "utility_available_count": false,
+          "round_time_remaining_sec": true,
+          "round_time_remaining_display": true,
+          "round_time_remaining_display_provenance": true
+        },
+        "snapshot_field_confidence": {
+          "score_ally": 0.9489420056343079,
+          "score_enemy": 0.9662814140319824,
+          "round_time_remaining_sec": 0.9462669491767883
+        },
+        "trace_primary_state": "unknown",
+        "trace_owner": "unknown",
+        "trace_player_alive_present": false,
+        "fact_keys_at_pts": [
+          "round_time_remaining_sec"
+        ],
+        "fact_confidence_at_pts": {
+          "round_time_remaining_sec": 0.9462669491767883
+        },
+        "stage_scope": "original hash-verified full artifacts, not new guard-code recognition or evaluation"
+      },
+      "first_loss_stage": "live_identity / state classification or missing dedicated life producer; owned numeric masking is intentional",
+      "transport_status": "snapshot and trace present; qualified global fields retained; no missing qualified owned evidence demonstrated"
+    },
+    {
+      "assertion_or_control_id": "GT-R1-SNAP-7438",
+      "source_pts_sec": 74.38600260416666,
+      "source_pts_ticks": 1142569,
+      "source_time_base": "1/15360",
+      "source_pixel_sha256": "58811513cf01e7366559a3a2fc1b612de669f4c7aea91a4079bf618c65fb1484",
+      "geometry_calibrated": true,
+      "primary_state": "unknown",
+      "state_confidence": 0.0,
+      "identity": {
+        "live": false,
+        "positive_count": 2,
+        "reason": "structure_evidence_insufficient"
+      },
+      "identity_structures": {
+        "hp_hud_structure": {
+          "score": 0.9924528301886792,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        },
+        "ability_bar_structure": {
+          "score": 0.7642679900744417,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        },
+        "weapon_ammo_structure": {
+          "score": 0.9656152168190806,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        }
+      },
+      "spectator": {
+        "spectator_detector_checked": true,
+        "spectator_panel_present": false,
+        "spectator_panel_absent": true,
+        "spectator_detector_reason": "panel_structure_excluded"
+      },
+      "combat_report_visible": false,
+      "player_specific_hud_valid": false,
+      "player_world_view_trustworthy": false,
+      "raw_reader_presence": [
+        "round_timer",
+        "ally_score",
+        "enemy_score",
+        "player_hp_armor"
+      ],
+      "reader_confidence": {
+        "round_timer": 0.9570176601409912,
+        "ally_score": 0.9545881152153015,
+        "enemy_score": 0.9662814140319824,
+        "player_hp_armor": 0.96544968
+      },
+      "measurement_scope": "isolated native frame, geometry-only input-contract prefix; no temporal qualification or formal events",
+      "before_after_identity_diagnostic_equal": true,
+      "new_blind_holdout": false,
+      "first_blocker": "snapshot_current_state_evidence",
+      "failed_snapshot_fields": [
+        "primary_state",
+        "player_alive",
+        "muzzle_flash_visible"
+      ],
+      "secondary_blockers": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:muzzle_flash_visible"
+      ],
+      "historical_full": {
+        "code_commit": "46462336427149764beb8e1fdd94c554e075616e",
+        "hud_aggregate_confidence": 0.0,
+        "primary_state": "unknown",
+        "player_specific_hud_valid": false,
+        "package_round_no": 1,
+        "package_window": {
+          "start_sec": 2.502669,
+          "end_sec": 81.752669
+        },
+        "native_snapshot_count_at_pts": 1,
+        "trace_snapshot_count_at_pts": 1,
+        "snapshot_field_presence": {
+          "time_sec": true,
+          "spectator_primary_state": false,
+          "score_ally": true,
+          "score_enemy": true,
+          "ally_alive": false,
+          "enemy_alive": false,
+          "hp": false,
+          "armor": false,
+          "weapon": false,
+          "spike_state": false,
+          "utility_available_count": false,
+          "round_time_remaining_sec": true,
+          "round_time_remaining_display": true,
+          "round_time_remaining_display_provenance": true
+        },
+        "snapshot_field_confidence": {
+          "score_ally": 0.9510506391525269,
+          "score_enemy": 0.9662814140319824,
+          "round_time_remaining_sec": 0.9610928297042847
+        },
+        "trace_primary_state": "unknown",
+        "trace_owner": "unknown",
+        "trace_player_alive_present": false,
+        "fact_keys_at_pts": [
+          "round_time_remaining_sec"
+        ],
+        "fact_confidence_at_pts": {
+          "round_time_remaining_sec": 0.9610928297042847
+        },
+        "stage_scope": "original hash-verified full artifacts, not new guard-code recognition or evaluation"
+      },
+      "first_loss_stage": "live_identity / state classification or missing dedicated life producer; owned numeric masking is intentional",
+      "transport_status": "snapshot and trace present; qualified global fields retained; no missing qualified owned evidence demonstrated"
+    },
+    {
+      "assertion_or_control_id": "GT-R1-SNAP-7440",
+      "source_pts_sec": 74.40266927083333,
+      "source_pts_ticks": 1142825,
+      "source_time_base": "1/15360",
+      "source_pixel_sha256": "f7f7b7f9753cc2c56773813df3bb0884898e5fc333435b664d0615c13cae9138",
+      "geometry_calibrated": true,
+      "primary_state": "unknown",
+      "state_confidence": 0.0,
+      "identity": {
+        "live": false,
+        "positive_count": 0,
+        "reason": "spectator_exclusion_unverified"
+      },
+      "identity_structures": {
+        "hp_hud_structure": {
+          "score": 0.0,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        },
+        "ability_bar_structure": {
+          "score": 0.0,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        },
+        "weapon_ammo_structure": {
+          "score": 0.0,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        }
+      },
+      "spectator": {
+        "spectator_detector_checked": false,
+        "spectator_panel_present": null,
+        "spectator_panel_absent": false,
+        "spectator_detector_reason": "panel_structure_ambiguous"
+      },
+      "combat_report_visible": true,
+      "player_specific_hud_valid": false,
+      "player_world_view_trustworthy": false,
+      "raw_reader_presence": [
+        "ally_score",
+        "enemy_score"
+      ],
+      "reader_confidence": {
+        "ally_score": 0.9325459599494934,
+        "enemy_score": 0.96949303150177
+      },
+      "measurement_scope": "isolated native frame, geometry-only input-contract prefix; no temporal qualification or formal events",
+      "before_after_identity_diagnostic_equal": true,
+      "new_blind_holdout": false,
+      "first_blocker": "snapshot_player_life_evidence",
+      "failed_snapshot_fields": [
+        "player_alive"
+      ],
+      "secondary_blockers": [
+        "failed_field:player_alive"
+      ],
+      "historical_full": {
+        "code_commit": "46462336427149764beb8e1fdd94c554e075616e",
+        "hud_aggregate_confidence": 0.0,
+        "primary_state": "unknown",
+        "player_specific_hud_valid": false,
+        "package_round_no": 1,
+        "package_window": {
+          "start_sec": 2.502669,
+          "end_sec": 81.752669
+        },
+        "native_snapshot_count_at_pts": 1,
+        "trace_snapshot_count_at_pts": 1,
+        "snapshot_field_presence": {
+          "time_sec": true,
+          "spectator_primary_state": false,
+          "score_ally": true,
+          "score_enemy": true,
+          "ally_alive": false,
+          "enemy_alive": false,
+          "hp": false,
+          "armor": false,
+          "weapon": false,
+          "spike_state": false,
+          "utility_available_count": false,
+          "round_time_remaining_sec": false
+        },
+        "snapshot_field_confidence": {
+          "score_ally": 0.9400646090507507,
+          "score_enemy": 0.96949303150177
+        },
+        "trace_primary_state": "unknown",
+        "trace_owner": "unknown",
+        "trace_player_alive_present": false,
+        "fact_keys_at_pts": [],
+        "fact_confidence_at_pts": {},
+        "stage_scope": "original hash-verified full artifacts, not new guard-code recognition or evaluation"
+      },
+      "first_loss_stage": "live_identity / state classification or missing dedicated life producer; owned numeric masking is intentional",
+      "transport_status": "snapshot and trace present; qualified global fields retained; no missing qualified owned evidence demonstrated"
+    },
+    {
+      "assertion_or_control_id": "GT-R1-SNAP-7445",
+      "source_pts_sec": 74.45266927083334,
+      "source_pts_ticks": 1143593,
+      "source_time_base": "1/15360",
+      "source_pixel_sha256": "af7f8635c45a202f1099c8520d361e9cdaf828dc9a70a8fb30fcadfc1a55b4cb",
+      "geometry_calibrated": true,
+      "primary_state": "unknown",
+      "state_confidence": 0.0,
+      "identity": {
+        "live": false,
+        "positive_count": 0,
+        "reason": "spectator_exclusion_unverified"
+      },
+      "identity_structures": {
+        "hp_hud_structure": {
+          "score": 0.1206896551724138,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        },
+        "ability_bar_structure": {
+          "score": 0.0048,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        },
+        "weapon_ammo_structure": {
+          "score": 0.0,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        }
+      },
+      "spectator": {
+        "spectator_detector_checked": false,
+        "spectator_panel_present": null,
+        "spectator_panel_absent": false,
+        "spectator_detector_reason": "panel_structure_ambiguous"
+      },
+      "combat_report_visible": true,
+      "player_specific_hud_valid": false,
+      "player_world_view_trustworthy": false,
+      "raw_reader_presence": [
+        "round_timer",
+        "ally_score",
+        "enemy_score"
+      ],
+      "reader_confidence": {
+        "round_timer": 0.9442667961120605,
+        "ally_score": 0.9318736791610718,
+        "enemy_score": 0.9578378200531006
+      },
+      "measurement_scope": "isolated native frame, geometry-only input-contract prefix; no temporal qualification or formal events",
+      "before_after_identity_diagnostic_equal": true,
+      "new_blind_holdout": false,
+      "first_blocker": "snapshot_player_life_evidence",
+      "failed_snapshot_fields": [
+        "player_alive",
+        "score_enemy"
+      ],
+      "secondary_blockers": [
+        "failed_field:player_alive",
+        "failed_field:score_enemy"
+      ],
+      "historical_full": {
+        "code_commit": "46462336427149764beb8e1fdd94c554e075616e",
+        "hud_aggregate_confidence": 0.0,
+        "primary_state": "unknown",
+        "player_specific_hud_valid": false,
+        "package_round_no": 1,
+        "package_window": {
+          "start_sec": 2.502669,
+          "end_sec": 81.752669
+        },
+        "native_snapshot_count_at_pts": 1,
+        "trace_snapshot_count_at_pts": 1,
+        "snapshot_field_presence": {
+          "time_sec": true,
+          "spectator_primary_state": false,
+          "score_ally": true,
+          "score_enemy": true,
+          "ally_alive": false,
+          "enemy_alive": false,
+          "hp": false,
+          "armor": false,
+          "weapon": false,
+          "spike_state": false,
+          "utility_available_count": false,
+          "round_time_remaining_sec": true,
+          "round_time_remaining_display": true,
+          "round_time_remaining_display_provenance": true
+        },
+        "snapshot_field_confidence": {
+          "score_ally": 0.937731146812439,
+          "score_enemy": 0.964837908744812,
+          "round_time_remaining_sec": 0.9411492943763733
+        },
+        "trace_primary_state": "unknown",
+        "trace_owner": "unknown",
+        "trace_player_alive_present": false,
+        "fact_keys_at_pts": [
+          "round_time_remaining_sec"
+        ],
+        "fact_confidence_at_pts": {
+          "round_time_remaining_sec": 0.9411492943763733
+        },
+        "stage_scope": "original hash-verified full artifacts, not new guard-code recognition or evaluation"
+      },
+      "first_loss_stage": "live_identity / state classification or missing dedicated life producer; owned numeric masking is intentional",
+      "transport_status": "snapshot and trace present; qualified global fields retained; no missing qualified owned evidence demonstrated"
+    },
+    {
+      "assertion_or_control_id": "GT-R2-SNAP-11145",
+      "source_pts_sec": 111.45266927083334,
+      "source_pts_ticks": 1711913,
+      "source_time_base": "1/15360",
+      "source_pixel_sha256": "cecdb6d7f617319fc343d599491ca74730a482c3c1825304af4bf27cfe3b40fe",
+      "geometry_calibrated": true,
+      "primary_state": "unknown",
+      "state_confidence": 0.0,
+      "identity": {
+        "live": false,
+        "positive_count": 2,
+        "reason": "structure_evidence_insufficient"
+      },
+      "identity_structures": {
+        "hp_hud_structure": {
+          "score": 1.0,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        },
+        "ability_bar_structure": {
+          "score": 0.9929078014184397,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        },
+        "weapon_ammo_structure": {
+          "score": 0.0,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        }
+      },
+      "spectator": {
+        "spectator_detector_checked": true,
+        "spectator_panel_present": false,
+        "spectator_panel_absent": true,
+        "spectator_detector_reason": "panel_structure_excluded"
+      },
+      "combat_report_visible": false,
+      "player_specific_hud_valid": false,
+      "player_world_view_trustworthy": false,
+      "raw_reader_presence": [
+        "round_timer",
+        "ally_score",
+        "enemy_score",
+        "player_hp_armor"
+      ],
+      "reader_confidence": {
+        "round_timer": 0.931477963924408,
+        "ally_score": 0.9481105208396912,
+        "enemy_score": 0.9599514603614807,
+        "player_hp_armor": 0.95735985
+      },
+      "measurement_scope": "isolated native frame, geometry-only input-contract prefix; no temporal qualification or formal events",
+      "before_after_identity_diagnostic_equal": true,
+      "new_blind_holdout": false,
+      "first_blocker": "snapshot_player_life_evidence",
+      "failed_snapshot_fields": [
+        "player_alive"
+      ],
+      "secondary_blockers": [
+        "failed_field:player_alive"
+      ],
+      "historical_full": {
+        "code_commit": "46462336427149764beb8e1fdd94c554e075616e",
+        "hud_aggregate_confidence": 0.0,
+        "primary_state": "unknown",
+        "player_specific_hud_valid": false,
+        "package_round_no": 2,
+        "package_window": {
+          "start_sec": 110.98600260416667,
+          "end_sec": 171.019336
+        },
+        "native_snapshot_count_at_pts": 1,
+        "trace_snapshot_count_at_pts": 1,
+        "snapshot_field_presence": {
+          "time_sec": true,
+          "spectator_primary_state": false,
+          "score_ally": true,
+          "score_enemy": true,
+          "ally_alive": false,
+          "enemy_alive": false,
+          "hp": false,
+          "armor": false,
+          "weapon": false,
+          "spike_state": false,
+          "utility_available_count": false,
+          "round_time_remaining_sec": true,
+          "round_time_remaining_display": true,
+          "round_time_remaining_display_provenance": true
+        },
+        "snapshot_field_confidence": {
+          "score_ally": 0.9515504240989685,
+          "score_enemy": 0.9599531292915344,
+          "round_time_remaining_sec": 0.9361436367034912
+        },
+        "trace_primary_state": "unknown",
+        "trace_owner": "unknown",
+        "trace_player_alive_present": false,
+        "fact_keys_at_pts": [
+          "round_time_remaining_sec"
+        ],
+        "fact_confidence_at_pts": {
+          "round_time_remaining_sec": 0.9361436367034912
+        },
+        "stage_scope": "original hash-verified full artifacts, not new guard-code recognition or evaluation"
+      },
+      "first_loss_stage": "live_identity / state classification or missing dedicated life producer; owned numeric masking is intentional",
+      "transport_status": "snapshot and trace present; qualified global fields retained; no missing qualified owned evidence demonstrated"
+    },
+    {
+      "assertion_or_control_id": "GT-R2-SNAP-143",
+      "source_pts_sec": 143.00266927083334,
+      "source_pts_ticks": 2196521,
+      "source_time_base": "1/15360",
+      "source_pixel_sha256": "f67f565db577d949369ae80b21e0805eeea98d00bc986b61be5886e482bf4a81",
+      "geometry_calibrated": true,
+      "primary_state": "unknown",
+      "state_confidence": 0.0,
+      "identity": {
+        "live": false,
+        "positive_count": 2,
+        "reason": "spectator_exclusion_unverified"
+      },
+      "identity_structures": {
+        "hp_hud_structure": {
+          "score": 0.9758620689655172,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        },
+        "ability_bar_structure": {
+          "score": 0.5622775800711743,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        },
+        "weapon_ammo_structure": {
+          "score": 0.9944362874670128,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        }
+      },
+      "spectator": {
+        "spectator_detector_checked": false,
+        "spectator_panel_present": null,
+        "spectator_panel_absent": false,
+        "spectator_detector_reason": "panel_structure_ambiguous"
+      },
+      "combat_report_visible": false,
+      "player_specific_hud_valid": false,
+      "player_world_view_trustworthy": false,
+      "raw_reader_presence": [
+        "enemy_score",
+        "player_hp_armor"
+      ],
+      "reader_confidence": {
+        "enemy_score": 0.9539228081703186,
+        "player_hp_armor": 0.9565831
+      },
+      "measurement_scope": "isolated native frame, geometry-only input-contract prefix; no temporal qualification or formal events",
+      "before_after_identity_diagnostic_equal": true,
+      "new_blind_holdout": false,
+      "first_blocker": "snapshot_current_state_evidence",
+      "failed_snapshot_fields": [
+        "primary_state",
+        "player_alive",
+        "player_hp"
+      ],
+      "secondary_blockers": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:player_hp"
+      ],
+      "historical_full": {
+        "code_commit": "46462336427149764beb8e1fdd94c554e075616e",
+        "hud_aggregate_confidence": 0.0,
+        "primary_state": "unknown",
+        "player_specific_hud_valid": false,
+        "package_round_no": 2,
+        "package_window": {
+          "start_sec": 110.98600260416667,
+          "end_sec": 171.019336
+        },
+        "native_snapshot_count_at_pts": 1,
+        "trace_snapshot_count_at_pts": 1,
+        "snapshot_field_presence": {
+          "time_sec": true,
+          "spectator_primary_state": false,
+          "score_ally": false,
+          "score_enemy": true,
+          "ally_alive": false,
+          "enemy_alive": false,
+          "hp": false,
+          "armor": false,
+          "weapon": false,
+          "spike_state": false,
+          "utility_available_count": false,
+          "round_time_remaining_sec": false
+        },
+        "snapshot_field_confidence": {
+          "score_enemy": 0.965490996837616
+        },
+        "trace_primary_state": "unknown",
+        "trace_owner": "unknown",
+        "trace_player_alive_present": false,
+        "fact_keys_at_pts": [],
+        "fact_confidence_at_pts": {},
+        "stage_scope": "original hash-verified full artifacts, not new guard-code recognition or evaluation"
+      },
+      "first_loss_stage": "live_identity / state classification or missing dedicated life producer; owned numeric masking is intentional",
+      "transport_status": "snapshot and trace present; qualified global fields retained; no missing qualified owned evidence demonstrated"
+    },
+    {
+      "assertion_or_control_id": "GT-R2-SNAP-1475",
+      "source_pts_sec": 147.50266927083334,
+      "source_pts_ticks": 2265641,
+      "source_time_base": "1/15360",
+      "source_pixel_sha256": "3253558581af959f6b04dfefa1f4b8edef17f17ddf8cc408a94a5c8a2388921e",
+      "geometry_calibrated": true,
+      "primary_state": "unknown",
+      "state_confidence": 0.0,
+      "identity": {
+        "live": false,
+        "positive_count": 2,
+        "reason": "spectator_exclusion_unverified"
+      },
+      "identity_structures": {
+        "hp_hud_structure": {
+          "score": 0.9607843137254902,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        },
+        "ability_bar_structure": {
+          "score": 0.8711864406779661,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        },
+        "weapon_ammo_structure": {
+          "score": 0.9918119967190792,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        }
+      },
+      "spectator": {
+        "spectator_detector_checked": false,
+        "spectator_panel_present": null,
+        "spectator_panel_absent": false,
+        "spectator_detector_reason": "panel_structure_ambiguous"
+      },
+      "combat_report_visible": false,
+      "player_specific_hud_valid": false,
+      "player_world_view_trustworthy": false,
+      "raw_reader_presence": [
+        "enemy_score",
+        "player_hp_armor"
+      ],
+      "reader_confidence": {
+        "enemy_score": 0.9430704116821289,
+        "player_hp_armor": 0.95857376
+      },
+      "measurement_scope": "isolated native frame, geometry-only input-contract prefix; no temporal qualification or formal events",
+      "before_after_identity_diagnostic_equal": true,
+      "new_blind_holdout": false,
+      "first_blocker": "snapshot_current_state_evidence",
+      "failed_snapshot_fields": [
+        "primary_state",
+        "player_alive",
+        "player_hp"
+      ],
+      "secondary_blockers": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:player_hp"
+      ],
+      "historical_full": {
+        "code_commit": "46462336427149764beb8e1fdd94c554e075616e",
+        "hud_aggregate_confidence": 0.0,
+        "primary_state": "unknown",
+        "player_specific_hud_valid": false,
+        "package_round_no": 2,
+        "package_window": {
+          "start_sec": 110.98600260416667,
+          "end_sec": 171.019336
+        },
+        "native_snapshot_count_at_pts": 1,
+        "trace_snapshot_count_at_pts": 1,
+        "snapshot_field_presence": {
+          "time_sec": true,
+          "spectator_primary_state": false,
+          "score_ally": false,
+          "score_enemy": true,
+          "ally_alive": false,
+          "enemy_alive": false,
+          "hp": false,
+          "armor": false,
+          "weapon": false,
+          "spike_state": false,
+          "utility_available_count": false,
+          "round_time_remaining_sec": false
+        },
+        "snapshot_field_confidence": {
+          "score_enemy": 0.9498803615570068
+        },
+        "trace_primary_state": "unknown",
+        "trace_owner": "unknown",
+        "trace_player_alive_present": false,
+        "fact_keys_at_pts": [],
+        "fact_confidence_at_pts": {},
+        "stage_scope": "original hash-verified full artifacts, not new guard-code recognition or evaluation"
+      },
+      "first_loss_stage": "live_identity / state classification or missing dedicated life producer; owned numeric masking is intentional",
+      "transport_status": "snapshot and trace present; qualified global fields retained; no missing qualified owned evidence demonstrated"
+    },
+    {
+      "assertion_or_control_id": "GT-R2-SNAP-1476",
+      "source_pts_sec": 147.60266927083333,
+      "source_pts_ticks": 2267177,
+      "source_time_base": "1/15360",
+      "source_pixel_sha256": "8802e924059080cfb6d3d8286f3a674117ec92287095be93a52d58e473fe0610",
+      "geometry_calibrated": true,
+      "primary_state": "unknown",
+      "state_confidence": 0.0,
+      "identity": {
+        "live": false,
+        "positive_count": 3,
+        "reason": "spectator_exclusion_unverified"
+      },
+      "identity_structures": {
+        "hp_hud_structure": {
+          "score": 0.9489795918367347,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        },
+        "ability_bar_structure": {
+          "score": 0.9976019184652278,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        },
+        "weapon_ammo_structure": {
+          "score": 0.98979128690488,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        }
+      },
+      "spectator": {
+        "spectator_detector_checked": false,
+        "spectator_panel_present": null,
+        "spectator_panel_absent": false,
+        "spectator_detector_reason": "panel_structure_ambiguous"
+      },
+      "combat_report_visible": false,
+      "player_specific_hud_valid": false,
+      "player_world_view_trustworthy": false,
+      "raw_reader_presence": [
+        "enemy_score",
+        "player_hp_armor"
+      ],
+      "reader_confidence": {
+        "enemy_score": 0.9481062889099121,
+        "player_hp_armor": 0.9673564899999999
+      },
+      "measurement_scope": "isolated native frame, geometry-only input-contract prefix; no temporal qualification or formal events",
+      "before_after_identity_diagnostic_equal": true,
+      "new_blind_holdout": false,
+      "first_blocker": "snapshot_current_state_evidence",
+      "failed_snapshot_fields": [
+        "primary_state",
+        "player_alive",
+        "player_hp"
+      ],
+      "secondary_blockers": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:player_hp"
+      ],
+      "historical_full": {
+        "code_commit": "46462336427149764beb8e1fdd94c554e075616e",
+        "hud_aggregate_confidence": 0.0,
+        "primary_state": "unknown",
+        "player_specific_hud_valid": false,
+        "package_round_no": 2,
+        "package_window": {
+          "start_sec": 110.98600260416667,
+          "end_sec": 171.019336
+        },
+        "native_snapshot_count_at_pts": 1,
+        "trace_snapshot_count_at_pts": 1,
+        "snapshot_field_presence": {
+          "time_sec": true,
+          "spectator_primary_state": false,
+          "score_ally": false,
+          "score_enemy": true,
+          "ally_alive": false,
+          "enemy_alive": false,
+          "hp": false,
+          "armor": false,
+          "weapon": false,
+          "spike_state": false,
+          "utility_available_count": false,
+          "round_time_remaining_sec": false
+        },
+        "snapshot_field_confidence": {
+          "score_enemy": 0.9453411102294922
+        },
+        "trace_primary_state": "unknown",
+        "trace_owner": "unknown",
+        "trace_player_alive_present": false,
+        "fact_keys_at_pts": [],
+        "fact_confidence_at_pts": {},
+        "stage_scope": "original hash-verified full artifacts, not new guard-code recognition or evaluation"
+      },
+      "first_loss_stage": "live_identity / state classification or missing dedicated life producer; owned numeric masking is intentional",
+      "transport_status": "snapshot and trace present; qualified global fields retained; no missing qualified owned evidence demonstrated"
+    },
+    {
+      "assertion_or_control_id": "GT-R2-SNAP-1477",
+      "source_pts_sec": 147.7193359375,
+      "source_pts_ticks": 2268969,
+      "source_time_base": "1/15360",
+      "source_pixel_sha256": "98ac64fc60efbdc2577ecc5ec0bfed9dc26a7a0ea487eb071970e0c75c90a99e",
+      "geometry_calibrated": true,
+      "primary_state": "unknown",
+      "state_confidence": 0.0,
+      "identity": {
+        "live": false,
+        "positive_count": 0,
+        "reason": "spectator_exclusion_unverified"
+      },
+      "identity_structures": {
+        "hp_hud_structure": {
+          "score": 0.0,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        },
+        "ability_bar_structure": {
+          "score": 0.0,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        },
+        "weapon_ammo_structure": {
+          "score": 0.0,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        }
+      },
+      "spectator": {
+        "spectator_detector_checked": false,
+        "spectator_panel_present": null,
+        "spectator_panel_absent": false,
+        "spectator_detector_reason": "panel_structure_ambiguous"
+      },
+      "combat_report_visible": true,
+      "player_specific_hud_valid": false,
+      "player_world_view_trustworthy": false,
+      "raw_reader_presence": [
+        "round_timer",
+        "enemy_score"
+      ],
+      "reader_confidence": {
+        "round_timer": 0.9615601301193237,
+        "enemy_score": 0.9127172827720642
+      },
+      "measurement_scope": "isolated native frame, geometry-only input-contract prefix; no temporal qualification or formal events",
+      "before_after_identity_diagnostic_equal": true,
+      "new_blind_holdout": false,
+      "first_blocker": "snapshot_player_life_evidence",
+      "failed_snapshot_fields": [
+        "player_alive"
+      ],
+      "secondary_blockers": [
+        "failed_field:player_alive"
+      ],
+      "historical_full": {
+        "code_commit": "46462336427149764beb8e1fdd94c554e075616e",
+        "hud_aggregate_confidence": 0.0,
+        "primary_state": "unknown",
+        "player_specific_hud_valid": false,
+        "package_round_no": 2,
+        "package_window": {
+          "start_sec": 110.98600260416667,
+          "end_sec": 171.019336
+        },
+        "native_snapshot_count_at_pts": 1,
+        "trace_snapshot_count_at_pts": 1,
+        "snapshot_field_presence": {
+          "time_sec": true,
+          "spectator_primary_state": false,
+          "score_ally": false,
+          "score_enemy": true,
+          "ally_alive": false,
+          "enemy_alive": false,
+          "hp": false,
+          "armor": false,
+          "weapon": false,
+          "spike_state": false,
+          "utility_available_count": false,
+          "round_time_remaining_sec": true,
+          "round_time_remaining_display": true,
+          "round_time_remaining_display_provenance": true
+        },
+        "snapshot_field_confidence": {
+          "score_enemy": 0.9661900401115417,
+          "round_time_remaining_sec": 0.960155725479126
+        },
+        "trace_primary_state": "unknown",
+        "trace_owner": "unknown",
+        "trace_player_alive_present": false,
+        "fact_keys_at_pts": [
+          "round_time_remaining_sec"
+        ],
+        "fact_confidence_at_pts": {
+          "round_time_remaining_sec": 0.960155725479126
+        },
+        "stage_scope": "original hash-verified full artifacts, not new guard-code recognition or evaluation"
+      },
+      "first_loss_stage": "live_identity / state classification or missing dedicated life producer; owned numeric masking is intentional",
+      "transport_status": "snapshot and trace present; qualified global fields retained; no missing qualified owned evidence demonstrated"
+    },
+    {
+      "assertion_or_control_id": "GT-R2-SNAP-149",
+      "source_pts_sec": 149.00266927083334,
+      "source_pts_ticks": 2288681,
+      "source_time_base": "1/15360",
+      "source_pixel_sha256": "c2decd6ec1376be8d1e6b4888127091f05031fc87e1cadf46967cd9a4a25670c",
+      "geometry_calibrated": true,
+      "primary_state": "unknown",
+      "state_confidence": 0.0,
+      "identity": {
+        "live": false,
+        "positive_count": 0,
+        "reason": "competing_view_evidence"
+      },
+      "identity_structures": {
+        "hp_hud_structure": {
+          "score": 0.0,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        },
+        "ability_bar_structure": {
+          "score": 0.0,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        },
+        "weapon_ammo_structure": {
+          "score": 0.0,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        }
+      },
+      "spectator": {
+        "spectator_detector_checked": true,
+        "spectator_panel_present": false,
+        "spectator_panel_absent": true,
+        "spectator_detector_reason": "panel_structure_excluded"
+      },
+      "combat_report_visible": true,
+      "player_specific_hud_valid": false,
+      "player_world_view_trustworthy": false,
+      "raw_reader_presence": [
+        "round_timer",
+        "ally_score",
+        "enemy_score"
+      ],
+      "reader_confidence": {
+        "round_timer": 0.9621202349662781,
+        "ally_score": 0.9540424942970276,
+        "enemy_score": 0.9654204249382019
+      },
+      "measurement_scope": "isolated native frame, geometry-only input-contract prefix; no temporal qualification or formal events",
+      "before_after_identity_diagnostic_equal": true,
+      "new_blind_holdout": false,
+      "first_blocker": "snapshot_current_state_evidence",
+      "failed_snapshot_fields": [
+        "primary_state",
+        "player_alive"
+      ],
+      "secondary_blockers": [
+        "failed_field:primary_state",
+        "failed_field:player_alive"
+      ],
+      "historical_full": {
+        "code_commit": "46462336427149764beb8e1fdd94c554e075616e",
+        "hud_aggregate_confidence": 0.0,
+        "primary_state": "unknown",
+        "player_specific_hud_valid": false,
+        "package_round_no": 2,
+        "package_window": {
+          "start_sec": 110.98600260416667,
+          "end_sec": 171.019336
+        },
+        "native_snapshot_count_at_pts": 1,
+        "trace_snapshot_count_at_pts": 1,
+        "snapshot_field_presence": {
+          "time_sec": true,
+          "spectator_primary_state": false,
+          "score_ally": true,
+          "score_enemy": true,
+          "ally_alive": false,
+          "enemy_alive": false,
+          "hp": false,
+          "armor": false,
+          "weapon": false,
+          "spike_state": false,
+          "utility_available_count": false,
+          "round_time_remaining_sec": true,
+          "round_time_remaining_display": true,
+          "round_time_remaining_display_provenance": true
+        },
+        "snapshot_field_confidence": {
+          "score_ally": 0.9538372755050659,
+          "score_enemy": 0.9664362072944641,
+          "round_time_remaining_sec": 0.9601021409034729
+        },
+        "trace_primary_state": "unknown",
+        "trace_owner": "unknown",
+        "trace_player_alive_present": false,
+        "fact_keys_at_pts": [
+          "round_time_remaining_sec"
+        ],
+        "fact_confidence_at_pts": {
+          "round_time_remaining_sec": 0.9601021409034729
+        },
+        "stage_scope": "original hash-verified full artifacts, not new guard-code recognition or evaluation"
+      },
+      "first_loss_stage": "live_identity / state classification or missing dedicated life producer; owned numeric masking is intentional",
+      "transport_status": "snapshot and trace present; qualified global fields retained; no missing qualified owned evidence demonstrated"
+    },
+    {
+      "assertion_or_control_id": "GT-R2-SNAP-151",
+      "source_pts_sec": 151.00266927083334,
+      "source_pts_ticks": 2319401,
+      "source_time_base": "1/15360",
+      "source_pixel_sha256": "2490a8618a707e72aece1399665795109686ebfc508737d733c14bab16dc37f0",
+      "geometry_calibrated": true,
+      "primary_state": "unknown",
+      "state_confidence": 0.0,
+      "identity": {
+        "live": false,
+        "positive_count": 2,
+        "reason": "spectator_exclusion_unverified"
+      },
+      "identity_structures": {
+        "hp_hud_structure": {
+          "score": 0.993103448275862,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        },
+        "ability_bar_structure": {
+          "score": 0.11662531017369727,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        },
+        "weapon_ammo_structure": {
+          "score": 0.9941717459497323,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        }
+      },
+      "spectator": {
+        "spectator_detector_checked": false,
+        "spectator_panel_present": null,
+        "spectator_panel_absent": false,
+        "spectator_detector_reason": "panel_structure_ambiguous"
+      },
+      "combat_report_visible": true,
+      "player_specific_hud_valid": false,
+      "player_world_view_trustworthy": false,
+      "raw_reader_presence": [
+        "round_timer",
+        "ally_score",
+        "enemy_score",
+        "player_hp_armor"
+      ],
+      "reader_confidence": {
+        "round_timer": 0.9614624381065369,
+        "ally_score": 0.9404208660125732,
+        "enemy_score": 0.9615501761436462,
+        "player_hp_armor": 0.95722336
+      },
+      "measurement_scope": "isolated native frame, geometry-only input-contract prefix; no temporal qualification or formal events",
+      "before_after_identity_diagnostic_equal": true,
+      "new_blind_holdout": false,
+      "first_blocker": "snapshot_current_state_evidence",
+      "failed_snapshot_fields": [
+        "primary_state",
+        "player_alive",
+        "view_owner",
+        "spectated_name",
+        "spectated_hp",
+        "spectated_ammo_mag",
+        "spectated_ammo_reserve",
+        "spectated_weapon",
+        "spectated_location_label_raw"
+      ],
+      "secondary_blockers": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:view_owner",
+        "failed_field:spectated_name",
+        "failed_field:spectated_hp",
+        "failed_field:spectated_ammo_mag",
+        "failed_field:spectated_ammo_reserve",
+        "failed_field:spectated_weapon",
+        "failed_field:spectated_location_label_raw"
+      ],
+      "historical_full": {
+        "code_commit": "46462336427149764beb8e1fdd94c554e075616e",
+        "hud_aggregate_confidence": 0.0,
+        "primary_state": "unknown",
+        "player_specific_hud_valid": false,
+        "package_round_no": 2,
+        "package_window": {
+          "start_sec": 110.98600260416667,
+          "end_sec": 171.019336
+        },
+        "native_snapshot_count_at_pts": 1,
+        "trace_snapshot_count_at_pts": 1,
+        "snapshot_field_presence": {
+          "time_sec": true,
+          "spectator_primary_state": false,
+          "score_ally": true,
+          "score_enemy": true,
+          "ally_alive": false,
+          "enemy_alive": false,
+          "hp": false,
+          "armor": false,
+          "weapon": false,
+          "spike_state": false,
+          "utility_available_count": false,
+          "round_time_remaining_sec": true,
+          "round_time_remaining_display": true,
+          "round_time_remaining_display_provenance": true
+        },
+        "snapshot_field_confidence": {
+          "score_ally": 0.9412204027175903,
+          "score_enemy": 0.9619362354278564,
+          "round_time_remaining_sec": 0.9614624381065369
+        },
+        "trace_primary_state": "unknown",
+        "trace_owner": "unknown",
+        "trace_player_alive_present": false,
+        "fact_keys_at_pts": [
+          "round_time_remaining_sec"
+        ],
+        "fact_confidence_at_pts": {
+          "round_time_remaining_sec": 0.9614624381065369
+        },
+        "stage_scope": "original hash-verified full artifacts, not new guard-code recognition or evaluation"
+      },
+      "first_loss_stage": "live_identity / state classification or missing dedicated life producer; owned numeric masking is intentional",
+      "transport_status": "snapshot and trace present; qualified global fields retained; no missing qualified owned evidence demonstrated"
+    },
+    {
+      "assertion_or_control_id": "GT-R2-SNAP-170",
+      "source_pts_sec": 170.00266927083334,
+      "source_pts_ticks": 2611241,
+      "source_time_base": "1/15360",
+      "source_pixel_sha256": "394152195dfdb479b0c3aff529eace85d3ba614addfd16749ef1a905aa5d9442",
+      "geometry_calibrated": true,
+      "primary_state": "spectator_first_person",
+      "state_confidence": 0.9,
+      "identity": {
+        "live": false,
+        "positive_count": 2,
+        "reason": "spectator_exclusion_unverified"
+      },
+      "identity_structures": {
+        "hp_hud_structure": {
+          "score": 1.0,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        },
+        "ability_bar_structure": {
+          "score": 0.022332506203473945,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        },
+        "weapon_ammo_structure": {
+          "score": 0.9971388736565804,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        }
+      },
+      "spectator": {
+        "spectator_detector_checked": true,
+        "spectator_panel_present": true,
+        "spectator_panel_absent": false,
+        "spectator_detector_reason": "panel_structure_present"
+      },
+      "combat_report_visible": true,
+      "player_specific_hud_valid": false,
+      "player_world_view_trustworthy": false,
+      "raw_reader_presence": [
+        "ally_score",
+        "enemy_score",
+        "player_hp_armor"
+      ],
+      "reader_confidence": {
+        "ally_score": 0.9266570806503296,
+        "enemy_score": 0.9344070553779602,
+        "player_hp_armor": 0.95955544
+      },
+      "measurement_scope": "isolated native frame, geometry-only input-contract prefix; no temporal qualification or formal events",
+      "before_after_identity_diagnostic_equal": true,
+      "new_blind_holdout": false,
+      "first_blocker": "snapshot_player_life_evidence",
+      "failed_snapshot_fields": [
+        "player_alive",
+        "spectated_name",
+        "spectated_hp",
+        "spectated_ammo_mag",
+        "spectated_ammo_reserve",
+        "spectated_weapon",
+        "muzzle_flash_visible",
+        "spectated_location_label_raw"
+      ],
+      "secondary_blockers": [
+        "failed_field:player_alive",
+        "failed_field:spectated_name",
+        "failed_field:spectated_hp",
+        "failed_field:spectated_ammo_mag",
+        "failed_field:spectated_ammo_reserve",
+        "failed_field:spectated_weapon",
+        "failed_field:muzzle_flash_visible",
+        "failed_field:spectated_location_label_raw"
+      ],
+      "historical_full": {
+        "code_commit": "46462336427149764beb8e1fdd94c554e075616e",
+        "hud_aggregate_confidence": 0.9,
+        "primary_state": "spectator_first_person",
+        "player_specific_hud_valid": false,
+        "package_round_no": 2,
+        "package_window": {
+          "start_sec": 110.98600260416667,
+          "end_sec": 171.019336
+        },
+        "native_snapshot_count_at_pts": 1,
+        "trace_snapshot_count_at_pts": 1,
+        "snapshot_field_presence": {
+          "time_sec": true,
+          "spectator_primary_state": true,
+          "score_ally": true,
+          "score_enemy": false,
+          "ally_alive": false,
+          "enemy_alive": false,
+          "hp": false,
+          "armor": false,
+          "weapon": false,
+          "spike_state": false,
+          "round_time_remaining_sec": false,
+          "utility_available_count": false
+        },
+        "snapshot_field_confidence": {
+          "spike_state": 0.9,
+          "score_ally": 0.9513108730316162
+        },
+        "trace_primary_state": "spectator_first_person",
+        "trace_owner": "teammate_spectated",
+        "trace_player_alive_present": false,
+        "fact_keys_at_pts": [],
+        "fact_confidence_at_pts": {},
+        "stage_scope": "original hash-verified full artifacts, not new guard-code recognition or evaluation"
+      },
+      "first_loss_stage": "live_identity / state classification or missing dedicated life producer; owned numeric masking is intentional",
+      "transport_status": "snapshot and trace present; qualified global fields retained; no missing qualified owned evidence demonstrated"
+    },
+    {
+      "assertion_or_control_id": "fixed_menu_control",
+      "source_pts_sec": 83.4193359375,
+      "source_pts_ticks": 1281321,
+      "source_time_base": "1/15360",
+      "source_pixel_sha256": "d00c418b1271cbbb5ca6fe0ae60b378e2f040a7676eaae2c5ab23a56fc33d266",
+      "geometry_calibrated": true,
+      "primary_state": "buy_menu_open",
+      "state_confidence": 0.88,
+      "identity": {
+        "live": false,
+        "positive_count": 0,
+        "reason": "spectator_exclusion_unverified"
+      },
+      "identity_structures": {
+        "hp_hud_structure": {
+          "score": 0.0,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        },
+        "ability_bar_structure": {
+          "score": 0.0,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        },
+        "weapon_ammo_structure": {
+          "score": 0.0,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        }
+      },
+      "spectator": {
+        "spectator_detector_checked": false,
+        "spectator_panel_present": null,
+        "spectator_panel_absent": false,
+        "spectator_detector_reason": "panel_structure_ambiguous"
+      },
+      "combat_report_visible": true,
+      "player_specific_hud_valid": false,
+      "player_world_view_trustworthy": false,
+      "raw_reader_presence": [
+        "round_timer",
+        "ally_score",
+        "enemy_score"
+      ],
+      "reader_confidence": {
+        "round_timer": 0.9470402002334595,
+        "ally_score": 0.936551034450531,
+        "enemy_score": 0.9541935324668884
+      },
+      "measurement_scope": "isolated native frame, geometry-only input-contract prefix; no temporal qualification or formal events",
+      "before_after_identity_diagnostic_equal": true,
+      "new_blind_holdout": false
+    },
+    {
+      "assertion_or_control_id": "fixed_spectator_control",
+      "source_pts_sec": 157.30266927083332,
+      "source_pts_ticks": 2416169,
+      "source_time_base": "1/15360",
+      "source_pixel_sha256": "2f07c3e1e01e2a658eac6f00f9d24f49d77b4d6406cdaab56697f0e966b5831e",
+      "geometry_calibrated": true,
+      "primary_state": "unknown",
+      "state_confidence": 0.0,
+      "identity": {
+        "live": false,
+        "positive_count": 2,
+        "reason": "spectator_exclusion_unverified"
+      },
+      "identity_structures": {
+        "hp_hud_structure": {
+          "score": 0.9833333333333333,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        },
+        "ability_bar_structure": {
+          "score": 0.019851116625310174,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        },
+        "weapon_ammo_structure": {
+          "score": 0.9982262665164576,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        }
+      },
+      "spectator": {
+        "spectator_detector_checked": false,
+        "spectator_panel_present": null,
+        "spectator_panel_absent": false,
+        "spectator_detector_reason": "panel_structure_ambiguous"
+      },
+      "combat_report_visible": true,
+      "player_specific_hud_valid": false,
+      "player_world_view_trustworthy": false,
+      "raw_reader_presence": [
+        "round_timer",
+        "ally_score",
+        "enemy_score",
+        "player_hp_armor"
+      ],
+      "reader_confidence": {
+        "round_timer": 0.9250880479812622,
+        "ally_score": 0.950456976890564,
+        "enemy_score": 0.9694598913192749,
+        "player_hp_armor": 0.9625490600000001
+      },
+      "measurement_scope": "isolated native frame, geometry-only input-contract prefix; no temporal qualification or formal events",
+      "before_after_identity_diagnostic_equal": true,
+      "new_blind_holdout": false
+    },
+    {
+      "assertion_or_control_id": "fixed_live_witness",
+      "source_pts_sec": 141.93600260416667,
+      "source_pts_ticks": 2180137,
+      "source_time_base": "1/15360",
+      "source_pixel_sha256": "4a3986633c237c63506a4a8468f98a51523451bb070b11225f4ba5fee0c02ce2",
+      "geometry_calibrated": true,
+      "primary_state": "unknown",
+      "state_confidence": 0.0,
+      "identity": {
+        "live": false,
+        "positive_count": 3,
+        "reason": "spectator_exclusion_unverified"
+      },
+      "identity_structures": {
+        "hp_hud_structure": {
+          "score": 0.9929078014184397,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        },
+        "ability_bar_structure": {
+          "score": 0.988479262672811,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        },
+        "weapon_ammo_structure": {
+          "score": 0.9965290554417061,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        }
+      },
+      "spectator": {
+        "spectator_detector_checked": false,
+        "spectator_panel_present": null,
+        "spectator_panel_absent": false,
+        "spectator_detector_reason": "panel_structure_ambiguous"
+      },
+      "combat_report_visible": false,
+      "player_specific_hud_valid": false,
+      "player_world_view_trustworthy": false,
+      "raw_reader_presence": [
+        "round_timer",
+        "enemy_score",
+        "player_hp_armor"
+      ],
+      "reader_confidence": {
+        "round_timer": 0.9471505284309387,
+        "enemy_score": 0.9582359790802002,
+        "player_hp_armor": 0.9588076
+      },
+      "measurement_scope": "isolated native frame, geometry-only input-contract prefix; no temporal qualification or formal events",
+      "before_after_identity_diagnostic_equal": true,
+      "new_blind_holdout": false
+    },
+    {
+      "assertion_or_control_id": "fixed_report_control",
+      "source_pts_sec": 104.2193359375,
+      "source_pts_ticks": 1600809,
+      "source_time_base": "1/15360",
+      "source_pixel_sha256": "56f6dd1f07d40501ec1541aa73df7150445d77ff2fe6102b40da4a7c8227f312",
+      "geometry_calibrated": true,
+      "primary_state": "unknown",
+      "state_confidence": 0.0,
+      "identity": {
+        "live": false,
+        "positive_count": 1,
+        "reason": "competing_view_evidence"
+      },
+      "identity_structures": {
+        "hp_hud_structure": {
+          "score": 0.9530685920577617,
+          "threshold": 0.9,
+          "accepted": true,
+          "reason": "accepted"
+        },
+        "ability_bar_structure": {
+          "score": 0.5136476426799007,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        },
+        "weapon_ammo_structure": {
+          "score": 0.0,
+          "threshold": 0.9,
+          "accepted": false,
+          "reason": "below_unchanged_threshold"
+        }
+      },
+      "spectator": {
+        "spectator_detector_checked": true,
+        "spectator_panel_present": false,
+        "spectator_panel_absent": true,
+        "spectator_detector_reason": "panel_structure_excluded"
+      },
+      "combat_report_visible": true,
+      "player_specific_hud_valid": false,
+      "player_world_view_trustworthy": false,
+      "raw_reader_presence": [
+        "round_timer",
+        "ally_score",
+        "enemy_score",
+        "player_hp_armor"
+      ],
+      "reader_confidence": {
+        "round_timer": 0.9545486569404602,
+        "ally_score": 0.9182298183441162,
+        "enemy_score": 0.9574103951454163,
+        "player_hp_armor": 0.95475136
+      },
+      "measurement_scope": "isolated native frame, geometry-only input-contract prefix; no temporal qualification or formal events",
+      "before_after_identity_diagnostic_equal": true,
+      "new_blind_holdout": false
+    }
+  ],
+  "root_cause_counts_original_candidate": {
+    "death_event_contract": 4,
+    "round_end_time": 1,
+    "preparation_scope": 7,
+    "remote_state": 4,
+    "smoke_state": 1,
+    "expanded_map_state": 1,
+    "spectator_coverage": 1,
+    "self_ownership": 2,
+    "dead_ownership": 2,
+    "teammate_ownership": 1,
+    "snapshot_current_state_evidence": 15,
+    "snapshot_player_life_evidence": 5,
+    "map_resolution": 2,
+    "owned_visual_evidence": 4
+  },
+  "failure_matrix": [
+    {
+      "assertion_id": "GT-R1-DEATH",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "death_event_contract",
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "original trace/evaluator inspected; missing predicate not proved to be transport loss",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Source-bound self subject, victim/killer roles where available, report lifecycle and independent temporal corroboration; candidate only until qualification.",
+      "implementation_status": "partial implementation",
+      "corresponding_safety_fix": "legacy death caller now enforces existing current-frame owner predicate",
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "GT-R1-ROUND-END",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "round_end_time",
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "original trace/evaluator inspected; missing predicate not proved to be transport loss",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Independent meaning of clock/score/result timing; no GT backdating or acceptance-window changes. PR42 remains separate.",
+      "implementation_status": "partial implementation",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "GT-R2-DEATH",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "death_event_contract",
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "original trace/evaluator inspected; missing predicate not proved to be transport loss",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Source-bound self subject, victim/killer roles where available, report lifecycle and independent temporal corroboration; candidate only until qualification.",
+      "implementation_status": "partial implementation",
+      "corresponding_safety_fix": "legacy death caller now enforces existing current-frame owner predicate",
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "GT-R1-BUY-FLAG",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "preparation_scope",
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "target outside proven Strict preparation scope; Practical unknown fragments retained",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Continuous same-segment qualified preparation evidence overlapping native lifecycle; preserve source breaks and unknown fragments.",
+      "implementation_status": "upstream dependency",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "GT-R1-ASTRAL-1",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "remote_state",
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "original trace/evaluator inspected; missing predicate not proved to be transport loss",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Discriminative current-frame remote interface and independent negative/holdout qualification; no threshold-only retry.",
+      "implementation_status": "recognition failure",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "GT-R1-ASTRAL-2",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "remote_state",
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "original trace/evaluator inspected; missing predicate not proved to be transport loss",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Discriminative current-frame remote interface and independent negative/holdout qualification; no threshold-only retry.",
+      "implementation_status": "recognition failure",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "GT-R1-SMOKE",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "smoke_state",
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "original trace/evaluator inspected; missing predicate not proved to be transport loss",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Discriminative smoke semantics with independent occlusion/flash/remote controls.",
+      "implementation_status": "recognition failure",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "GT-R2-BUY-FLAG",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "preparation_scope",
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "target outside proven Strict preparation scope; Practical unknown fragments retained",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Continuous same-segment qualified preparation evidence overlapping native lifecycle; preserve source breaks and unknown fragments.",
+      "implementation_status": "upstream dependency",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "GT-R2-BUY-MENU-1",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "preparation_scope",
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "target outside proven Strict preparation scope; Practical unknown fragments retained",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Continuous same-segment qualified preparation evidence overlapping native lifecycle; preserve source breaks and unknown fragments.",
+      "implementation_status": "upstream dependency",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "GT-R2-BUY-MENU-2",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "preparation_scope",
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "target outside proven Strict preparation scope; Practical unknown fragments retained",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Continuous same-segment qualified preparation evidence overlapping native lifecycle; preserve source breaks and unknown fragments.",
+      "implementation_status": "upstream dependency",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "GT-R2-ASTRAL-1",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "remote_state",
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "original trace/evaluator inspected; missing predicate not proved to be transport loss",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Discriminative current-frame remote interface and independent negative/holdout qualification; no threshold-only retry.",
+      "implementation_status": "recognition failure",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "GT-R2-ASTRAL-2",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "remote_state",
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "original trace/evaluator inspected; missing predicate not proved to be transport loss",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Discriminative current-frame remote interface and independent negative/holdout qualification; no threshold-only retry.",
+      "implementation_status": "recognition failure",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "GT-R2-EXPANDED-MAP",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "expanded_map_state",
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "original trace/evaluator inspected; missing predicate not proved to be transport loss",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Qualified tactical-map structure and temporal state evidence.",
+      "implementation_status": "partial implementation",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "GT-R2-SPECTATOR",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "spectator_coverage",
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "original trace/evaluator inspected; missing predicate not proved to be transport loss",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Discriminative panel/subject evidence throughout the required interval, retaining unknown for ambiguous frames.",
+      "implementation_status": "recognition failure",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "OWN-R1-SELF",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "self_ownership",
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "original trace/evaluator inspected; missing predicate not proved to be transport loss",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "All current-frame independent identity structures, spectator exclusion and world-view validity over source-continuous intervals.",
+      "implementation_status": "upstream dependency",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "OWN-R1-SELF-DEAD",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "dead_ownership",
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "original trace/evaluator inspected; missing predicate not proved to be transport loss",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Independently established self subject/death; no inference from persistent report or spectator.",
+      "implementation_status": "partial implementation",
+      "corresponding_safety_fix": "legacy death caller now enforces existing current-frame owner predicate",
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "OWN-R2-SELF",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "self_ownership",
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "original trace/evaluator inspected; missing predicate not proved to be transport loss",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "All current-frame independent identity structures, spectator exclusion and world-view validity over source-continuous intervals.",
+      "implementation_status": "upstream dependency",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "OWN-R2-SELF-DEAD",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "dead_ownership",
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "original trace/evaluator inspected; missing predicate not proved to be transport loss",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Independently established self subject/death; no inference from persistent report or spectator.",
+      "implementation_status": "partial implementation",
+      "corresponding_safety_fix": "legacy death caller now enforces existing current-frame owner predicate",
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "OWN-R2-TEAMMATE",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "teammate_ownership",
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "original trace/evaluator inspected; missing predicate not proved to be transport loss",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Qualified spectator subject and team affiliation with continuous coverage.",
+      "implementation_status": "upstream dependency",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-0035",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:location_label_raw"
+      ],
+      "failed_fields": [
+        "primary_state",
+        "player_alive",
+        "location_label_raw"
+      ],
+      "source_evidence": "fresh native measurements at the selected actual source PTS",
+      "recognition_output": "unqualified current state/life; numeric candidates and component scores measured",
+      "transport_output": "snapshot and trace present at selected PTS",
+      "qualification": "owned current-frame identity not qualified; positive spectator at 170 is not self life proof",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Qualified current-frame HP/ability/weapon structure plus discriminative spectator exclusion and competing-view controls; failed semantic fields still require dedicated producers.",
+      "implementation_status": "source recognition / qualification",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0,
+      "measured_source_pts_sec": 3.502669270833333,
+      "source_pixel_sha256": "428502f36748cc5bfb7385e1afee99e9a60a83dd1a7f365e0792358a53caa9e4"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-0415",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:location_label_raw"
+      ],
+      "failed_fields": [
+        "primary_state",
+        "player_alive",
+        "location_label_raw"
+      ],
+      "source_evidence": "fresh native measurements at the selected actual source PTS",
+      "recognition_output": "unqualified current state/life; numeric candidates and component scores measured",
+      "transport_output": "snapshot and trace present at selected PTS",
+      "qualification": "owned current-frame identity not qualified; positive spectator at 170 is not self life proof",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Qualified current-frame HP/ability/weapon structure plus discriminative spectator exclusion and competing-view controls; failed semantic fields still require dedicated producers.",
+      "implementation_status": "source recognition / qualification",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0,
+      "measured_source_pts_sec": 4.152669270833333,
+      "source_pixel_sha256": "6abf3b28bd5e6614f43fb58a5f17bb68bbd949f604ca67e061a1e4dad5b53ac0"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-475",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:nonself_killfeed_row_visible"
+      ],
+      "failed_fields": [
+        "primary_state",
+        "player_alive",
+        "nonself_killfeed_row_visible"
+      ],
+      "source_evidence": "fresh native measurements at the selected actual source PTS",
+      "recognition_output": "unqualified current state/life; numeric candidates and component scores measured",
+      "transport_output": "snapshot and trace present at selected PTS",
+      "qualification": "owned current-frame identity not qualified; positive spectator at 170 is not self life proof",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Qualified current-frame HP/ability/weapon structure plus discriminative spectator exclusion and competing-view controls; failed semantic fields still require dedicated producers.",
+      "implementation_status": "source recognition / qualification",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0,
+      "measured_source_pts_sec": 47.50266927083333,
+      "source_pixel_sha256": "32395aefdb46b0009ebc4ff8784c0b9457ab2a0af7a477005885c41f7860f04a"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-585",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "failed_field:primary_state"
+      ],
+      "failed_fields": [
+        "primary_state"
+      ],
+      "source_evidence": "fresh native measurements at the selected actual source PTS",
+      "recognition_output": "unqualified current state/life; numeric candidates and component scores measured",
+      "transport_output": "snapshot and trace present at selected PTS",
+      "qualification": "owned current-frame identity not qualified; positive spectator at 170 is not self life proof",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Qualified current-frame HP/ability/weapon structure plus discriminative spectator exclusion and competing-view controls; failed semantic fields still require dedicated producers.",
+      "implementation_status": "source recognition / qualification",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0,
+      "measured_source_pts_sec": 58.50266927083333,
+      "source_pixel_sha256": "391911f0caf8d0d2b7d64a0dbf4c9bb48772ffa396cf04f9375a443f3574511d"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-595",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "failed_field:primary_state",
+        "failed_field:vision_obscured_smoke"
+      ],
+      "failed_fields": [
+        "primary_state",
+        "vision_obscured_smoke"
+      ],
+      "source_evidence": "fresh native measurements at the selected actual source PTS",
+      "recognition_output": "unqualified current state/life; numeric candidates and component scores measured",
+      "transport_output": "snapshot and trace present at selected PTS",
+      "qualification": "owned current-frame identity not qualified; positive spectator at 170 is not self life proof",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Qualified current-frame HP/ability/weapon structure plus discriminative spectator exclusion and competing-view controls; failed semantic fields still require dedicated producers.",
+      "implementation_status": "source recognition / qualification",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0,
+      "measured_source_pts_sec": 59.50266927083333,
+      "source_pixel_sha256": "9b862e4d3d562f8a3e2b10e191f5edf503a2a68e2673e9a921704c37722d3afa"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-728",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:ammo_mag",
+        "failed_field:ammo_reserve",
+        "failed_field:reload_animation_visible"
+      ],
+      "failed_fields": [
+        "primary_state",
+        "player_alive",
+        "ammo_mag",
+        "ammo_reserve",
+        "reload_animation_visible"
+      ],
+      "source_evidence": "fresh native measurements at the selected actual source PTS",
+      "recognition_output": "unqualified current state/life; numeric candidates and component scores measured",
+      "transport_output": "snapshot and trace present at selected PTS",
+      "qualification": "owned current-frame identity not qualified; positive spectator at 170 is not self life proof",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Qualified current-frame HP/ability/weapon structure plus discriminative spectator exclusion and competing-view controls; failed semantic fields still require dedicated producers.",
+      "implementation_status": "source recognition / qualification",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0,
+      "measured_source_pts_sec": 72.80266927083333,
+      "source_pixel_sha256": "b158883600df67c01bb9f6bf25c3c2cb980a8efff27c07b1ed91939e71bca25e"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-733",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:ammo_mag",
+        "failed_field:ammo_reserve",
+        "failed_field:reload_animation_visible"
+      ],
+      "failed_fields": [
+        "primary_state",
+        "player_alive",
+        "ammo_mag",
+        "ammo_reserve",
+        "reload_animation_visible"
+      ],
+      "source_evidence": "fresh native measurements at the selected actual source PTS",
+      "recognition_output": "unqualified current state/life; numeric candidates and component scores measured",
+      "transport_output": "snapshot and trace present at selected PTS",
+      "qualification": "owned current-frame identity not qualified; positive spectator at 170 is not self life proof",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Qualified current-frame HP/ability/weapon structure plus discriminative spectator exclusion and competing-view controls; failed semantic fields still require dedicated producers.",
+      "implementation_status": "source recognition / qualification",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0,
+      "measured_source_pts_sec": 73.30266927083333,
+      "source_pixel_sha256": "ce7b643b6989dded4b4ef29eb14a27a07701963fa73bf11db475a9647500d38e"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-734",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:ammo_mag",
+        "failed_field:ammo_reserve",
+        "failed_field:reload_animation_visible"
+      ],
+      "failed_fields": [
+        "primary_state",
+        "player_alive",
+        "ammo_mag",
+        "ammo_reserve",
+        "reload_animation_visible"
+      ],
+      "source_evidence": "fresh native measurements at the selected actual source PTS",
+      "recognition_output": "unqualified current state/life; numeric candidates and component scores measured",
+      "transport_output": "snapshot and trace present at selected PTS",
+      "qualification": "owned current-frame identity not qualified; positive spectator at 170 is not self life proof",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Qualified current-frame HP/ability/weapon structure plus discriminative spectator exclusion and competing-view controls; failed semantic fields still require dedicated producers.",
+      "implementation_status": "source recognition / qualification",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0,
+      "measured_source_pts_sec": 73.40266927083333,
+      "source_pixel_sha256": "ca040be25fc0cda4e3b47ff342f6171ce0c66285e39f1ec8a58b7a4cabc45807"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-7425",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:player_hp",
+        "failed_field:muzzle_flash_visible",
+        "failed_field:location_label_raw",
+        "failed_field:spectator_primary_state"
+      ],
+      "failed_fields": [
+        "primary_state",
+        "player_alive",
+        "player_hp",
+        "muzzle_flash_visible",
+        "location_label_raw",
+        "spectator_primary_state"
+      ],
+      "source_evidence": "fresh native measurements at the selected actual source PTS",
+      "recognition_output": "unqualified current state/life; numeric candidates and component scores measured",
+      "transport_output": "snapshot and trace present at selected PTS",
+      "qualification": "owned current-frame identity not qualified; positive spectator at 170 is not self life proof",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Qualified current-frame HP/ability/weapon structure plus discriminative spectator exclusion and competing-view controls; failed semantic fields still require dedicated producers.",
+      "implementation_status": "source recognition / qualification",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0,
+      "measured_source_pts_sec": 74.25266927083334,
+      "source_pixel_sha256": "45530006dae1e7361f3cb1c413904d34b765f7d86928bf9eca9667d888ef18ce"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-7438",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:muzzle_flash_visible"
+      ],
+      "failed_fields": [
+        "primary_state",
+        "player_alive",
+        "muzzle_flash_visible"
+      ],
+      "source_evidence": "fresh native measurements at the selected actual source PTS",
+      "recognition_output": "unqualified current state/life; numeric candidates and component scores measured",
+      "transport_output": "snapshot and trace present at selected PTS",
+      "qualification": "owned current-frame identity not qualified; positive spectator at 170 is not self life proof",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Qualified current-frame HP/ability/weapon structure plus discriminative spectator exclusion and competing-view controls; failed semantic fields still require dedicated producers.",
+      "implementation_status": "source recognition / qualification",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0,
+      "measured_source_pts_sec": 74.38600260416666,
+      "source_pixel_sha256": "58811513cf01e7366559a3a2fc1b612de669f4c7aea91a4079bf618c65fb1484"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-7440",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "snapshot_player_life_evidence",
+      "secondary_blockers": [
+        "failed_field:player_alive"
+      ],
+      "failed_fields": [
+        "player_alive"
+      ],
+      "source_evidence": "fresh native measurements at the selected actual source PTS",
+      "recognition_output": "unqualified current state/life; numeric candidates and component scores measured",
+      "transport_output": "snapshot and trace present at selected PTS",
+      "qualification": "owned current-frame identity not qualified; positive spectator at 170 is not self life proof",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Independent subject-bound alive/death evidence; timer, report presence and spectator are insufficient.",
+      "implementation_status": "source ownership / temporal evidence",
+      "corresponding_safety_fix": "legacy death caller now enforces existing current-frame owner predicate",
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0,
+      "measured_source_pts_sec": 74.40266927083333,
+      "source_pixel_sha256": "f7f7b7f9753cc2c56773813df3bb0884898e5fc333435b664d0615c13cae9138"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-7445",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "snapshot_player_life_evidence",
+      "secondary_blockers": [
+        "failed_field:player_alive",
+        "failed_field:score_enemy"
+      ],
+      "failed_fields": [
+        "player_alive",
+        "score_enemy"
+      ],
+      "source_evidence": "fresh native measurements at the selected actual source PTS",
+      "recognition_output": "unqualified current state/life; numeric candidates and component scores measured",
+      "transport_output": "snapshot and trace present at selected PTS",
+      "qualification": "owned current-frame identity not qualified; positive spectator at 170 is not self life proof",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Independent subject-bound alive/death evidence; timer, report presence and spectator are insufficient.",
+      "implementation_status": "source ownership / temporal evidence",
+      "corresponding_safety_fix": "legacy death caller now enforces existing current-frame owner predicate",
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0,
+      "measured_source_pts_sec": 74.45266927083334,
+      "source_pixel_sha256": "af7f8635c45a202f1099c8520d361e9cdaf828dc9a70a8fb30fcadfc1a55b4cb"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-820",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "preparation_scope",
+      "secondary_blockers": [
+        "snapshot_hud_gate"
+      ],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "target outside proven Strict preparation scope; Practical unknown fragments retained",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Continuous same-segment qualified preparation evidence overlapping native lifecycle; preserve source breaks and unknown fragments.",
+      "implementation_status": "upstream dependency",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-1050",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "preparation_scope",
+      "secondary_blockers": [
+        "snapshot_hud_gate"
+      ],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "target outside proven Strict preparation scope; Practical unknown fragments retained",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Continuous same-segment qualified preparation evidence overlapping native lifecycle; preserve source breaks and unknown fragments.",
+      "implementation_status": "upstream dependency",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-11145",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "snapshot_player_life_evidence",
+      "secondary_blockers": [
+        "failed_field:player_alive"
+      ],
+      "failed_fields": [
+        "player_alive"
+      ],
+      "source_evidence": "fresh native measurements at the selected actual source PTS",
+      "recognition_output": "unqualified current state/life; numeric candidates and component scores measured",
+      "transport_output": "snapshot and trace present at selected PTS",
+      "qualification": "owned current-frame identity not qualified; positive spectator at 170 is not self life proof",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Independent subject-bound alive/death evidence; timer, report presence and spectator are insufficient.",
+      "implementation_status": "source ownership / temporal evidence",
+      "corresponding_safety_fix": "legacy death caller now enforces existing current-frame owner predicate",
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0,
+      "measured_source_pts_sec": 111.45266927083334,
+      "source_pixel_sha256": "cecdb6d7f617319fc343d599491ca74730a482c3c1825304af4bf27cfe3b40fe"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-143",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:player_hp"
+      ],
+      "failed_fields": [
+        "primary_state",
+        "player_alive",
+        "player_hp"
+      ],
+      "source_evidence": "fresh native measurements at the selected actual source PTS",
+      "recognition_output": "unqualified current state/life; numeric candidates and component scores measured",
+      "transport_output": "snapshot and trace present at selected PTS",
+      "qualification": "owned current-frame identity not qualified; positive spectator at 170 is not self life proof",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Qualified current-frame HP/ability/weapon structure plus discriminative spectator exclusion and competing-view controls; failed semantic fields still require dedicated producers.",
+      "implementation_status": "source recognition / qualification",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0,
+      "measured_source_pts_sec": 143.00266927083334,
+      "source_pixel_sha256": "f67f565db577d949369ae80b21e0805eeea98d00bc986b61be5886e482bf4a81"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-1475",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:player_hp"
+      ],
+      "failed_fields": [
+        "primary_state",
+        "player_alive",
+        "player_hp"
+      ],
+      "source_evidence": "fresh native measurements at the selected actual source PTS",
+      "recognition_output": "unqualified current state/life; numeric candidates and component scores measured",
+      "transport_output": "snapshot and trace present at selected PTS",
+      "qualification": "owned current-frame identity not qualified; positive spectator at 170 is not self life proof",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Qualified current-frame HP/ability/weapon structure plus discriminative spectator exclusion and competing-view controls; failed semantic fields still require dedicated producers.",
+      "implementation_status": "source recognition / qualification",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0,
+      "measured_source_pts_sec": 147.50266927083334,
+      "source_pixel_sha256": "3253558581af959f6b04dfefa1f4b8edef17f17ddf8cc408a94a5c8a2388921e"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-1476",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:player_hp"
+      ],
+      "failed_fields": [
+        "primary_state",
+        "player_alive",
+        "player_hp"
+      ],
+      "source_evidence": "fresh native measurements at the selected actual source PTS",
+      "recognition_output": "unqualified current state/life; numeric candidates and component scores measured",
+      "transport_output": "snapshot and trace present at selected PTS",
+      "qualification": "owned current-frame identity not qualified; positive spectator at 170 is not self life proof",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Qualified current-frame HP/ability/weapon structure plus discriminative spectator exclusion and competing-view controls; failed semantic fields still require dedicated producers.",
+      "implementation_status": "source recognition / qualification",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0,
+      "measured_source_pts_sec": 147.60266927083333,
+      "source_pixel_sha256": "8802e924059080cfb6d3d8286f3a674117ec92287095be93a52d58e473fe0610"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-1477",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "snapshot_player_life_evidence",
+      "secondary_blockers": [
+        "failed_field:player_alive"
+      ],
+      "failed_fields": [
+        "player_alive"
+      ],
+      "source_evidence": "fresh native measurements at the selected actual source PTS",
+      "recognition_output": "unqualified current state/life; numeric candidates and component scores measured",
+      "transport_output": "snapshot and trace present at selected PTS",
+      "qualification": "owned current-frame identity not qualified; positive spectator at 170 is not self life proof",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Independent subject-bound alive/death evidence; timer, report presence and spectator are insufficient.",
+      "implementation_status": "source ownership / temporal evidence",
+      "corresponding_safety_fix": "legacy death caller now enforces existing current-frame owner predicate",
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0,
+      "measured_source_pts_sec": 147.7193359375,
+      "source_pixel_sha256": "98ac64fc60efbdc2577ecc5ec0bfed9dc26a7a0ea487eb071970e0c75c90a99e"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-149",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "failed_field:primary_state",
+        "failed_field:player_alive"
+      ],
+      "failed_fields": [
+        "primary_state",
+        "player_alive"
+      ],
+      "source_evidence": "fresh native measurements at the selected actual source PTS",
+      "recognition_output": "unqualified current state/life; numeric candidates and component scores measured",
+      "transport_output": "snapshot and trace present at selected PTS",
+      "qualification": "owned current-frame identity not qualified; positive spectator at 170 is not self life proof",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Qualified current-frame HP/ability/weapon structure plus discriminative spectator exclusion and competing-view controls; failed semantic fields still require dedicated producers.",
+      "implementation_status": "source recognition / qualification",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0,
+      "measured_source_pts_sec": 149.00266927083334,
+      "source_pixel_sha256": "c2decd6ec1376be8d1e6b4888127091f05031fc87e1cadf46967cd9a4a25670c"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-151",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "failed_field:primary_state",
+        "failed_field:player_alive",
+        "failed_field:view_owner",
+        "failed_field:spectated_name",
+        "failed_field:spectated_hp",
+        "failed_field:spectated_ammo_mag",
+        "failed_field:spectated_ammo_reserve",
+        "failed_field:spectated_weapon",
+        "failed_field:spectated_location_label_raw"
+      ],
+      "failed_fields": [
+        "primary_state",
+        "player_alive",
+        "view_owner",
+        "spectated_name",
+        "spectated_hp",
+        "spectated_ammo_mag",
+        "spectated_ammo_reserve",
+        "spectated_weapon",
+        "spectated_location_label_raw"
+      ],
+      "source_evidence": "fresh native measurements at the selected actual source PTS",
+      "recognition_output": "unqualified current state/life; numeric candidates and component scores measured",
+      "transport_output": "snapshot and trace present at selected PTS",
+      "qualification": "owned current-frame identity not qualified; positive spectator at 170 is not self life proof",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Qualified current-frame HP/ability/weapon structure plus discriminative spectator exclusion and competing-view controls; failed semantic fields still require dedicated producers.",
+      "implementation_status": "source recognition / qualification",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0,
+      "measured_source_pts_sec": 151.00266927083334,
+      "source_pixel_sha256": "2490a8618a707e72aece1399665795109686ebfc508737d733c14bab16dc37f0"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-170",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "snapshot_player_life_evidence",
+      "secondary_blockers": [
+        "failed_field:player_alive",
+        "failed_field:spectated_name",
+        "failed_field:spectated_hp",
+        "failed_field:spectated_ammo_mag",
+        "failed_field:spectated_ammo_reserve",
+        "failed_field:spectated_weapon",
+        "failed_field:muzzle_flash_visible",
+        "failed_field:spectated_location_label_raw"
+      ],
+      "failed_fields": [
+        "player_alive",
+        "spectated_name",
+        "spectated_hp",
+        "spectated_ammo_mag",
+        "spectated_ammo_reserve",
+        "spectated_weapon",
+        "muzzle_flash_visible",
+        "spectated_location_label_raw"
+      ],
+      "source_evidence": "fresh native measurements at the selected actual source PTS",
+      "recognition_output": "unqualified current state/life; numeric candidates and component scores measured",
+      "transport_output": "snapshot and trace present at selected PTS",
+      "qualification": "owned current-frame identity not qualified; positive spectator at 170 is not self life proof",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Independent subject-bound alive/death evidence; timer, report presence and spectator are insufficient.",
+      "implementation_status": "source ownership / temporal evidence",
+      "corresponding_safety_fix": "legacy death caller now enforces existing current-frame owner predicate",
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0,
+      "measured_source_pts_sec": 170.00266927083334,
+      "source_pixel_sha256": "394152195dfdb479b0c3aff529eace85d3ba614addfd16749ef1a905aa5d9442"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-0035-DERIVED-zone_id",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "map_resolution",
+      "secondary_blockers": [
+        "map_resolution"
+      ],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "original trace/evaluator inspected; missing predicate not proved to be transport loss",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Actual map resolver calibration/assets and source-specific field provenance; global snapshot transport does not resolve map.",
+      "implementation_status": "source calibration / assets",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-0415-DERIVED-zone_id",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "map_resolution",
+      "secondary_blockers": [
+        "map_resolution"
+      ],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "original trace/evaluator inspected; missing predicate not proved to be transport loss",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Actual map resolver calibration/assets and source-specific field provenance; global snapshot transport does not resolve map.",
+      "implementation_status": "source calibration / assets",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-820-DERIVED-zone_id",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "preparation_scope",
+      "secondary_blockers": [
+        "snapshot_hud_gate",
+        "map_resolution"
+      ],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "target outside proven Strict preparation scope; Practical unknown fragments retained",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Continuous same-segment qualified preparation evidence overlapping native lifecycle; preserve source breaks and unknown fragments.",
+      "implementation_status": "upstream dependency",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "GT-R1-MUZZLE-1",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "owned_visual_evidence",
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "original trace/evaluator inspected; missing predicate not proved to be transport loss",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Current owner plus source-bound visual action semantics and continuous corroboration; do not attribute spectator muzzle to self.",
+      "implementation_status": "upstream dependency",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "GT-R1-MUZZLE-2",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "owned_visual_evidence",
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "original trace/evaluator inspected; missing predicate not proved to be transport loss",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Current owner plus source-bound visual action semantics and continuous corroboration; do not attribute spectator muzzle to self.",
+      "implementation_status": "upstream dependency",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "GT-R1-MUZZLE-3",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "owned_visual_evidence",
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "original trace/evaluator inspected; missing predicate not proved to be transport loss",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Current owner plus source-bound visual action semantics and continuous corroboration; do not attribute spectator muzzle to self.",
+      "implementation_status": "upstream dependency",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "event_count_constraints-001",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "death_event_contract",
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "original trace/evaluator inspected; missing predicate not proved to be transport loss",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Source-bound self subject, victim/killer roles where available, report lifecycle and independent temporal corroboration; candidate only until qualification.",
+      "implementation_status": "partial implementation",
+      "corresponding_safety_fix": "legacy death caller now enforces existing current-frame owner predicate",
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "event_count_constraints-003",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "owned_visual_evidence",
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "original trace/evaluator inspected; missing predicate not proved to be transport loss",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Current owner plus source-bound visual action semantics and continuous corroboration; do not attribute spectator muzzle to self.",
+      "implementation_status": "upstream dependency",
+      "corresponding_safety_fix": null,
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    },
+    {
+      "assertion_id": "event_count_constraints-005",
+      "status_in_original_candidate": "fail",
+      "first_blocker": "death_event_contract",
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "source_evidence": "original full raw/trace available; no new per-assertion image measurement in this follow-up",
+      "recognition_output": "see original classification; no qualified missing predicate established",
+      "transport_output": "original trace/evaluator inspected; missing predicate not proved to be transport loss",
+      "qualification": "required positive predicate not qualified by this follow-up",
+      "fixability": "no safe positive promotion from available measurements",
+      "required_next_evidence": "Source-bound self subject, victim/killer roles where available, report lifecycle and independent temporal corroboration; candidate only until qualification.",
+      "implementation_status": "partial implementation",
+      "corresponding_safety_fix": "legacy death caller now enforces existing current-frame owner predicate",
+      "status": "investigated; first blocker remains; no new canonical run",
+      "guaranteed_pass_gain": 0
+    }
+  ],
+  "bounded_continuous_safety_comparison": [
+    {
+      "window_name": "report_appearance",
+      "processed_native_frames": 24,
+      "first_source_pts_sec": 74.25266927083334,
+      "last_source_pts_sec": 74.63600260416666,
+      "old_unowned_player_death_count": 0,
+      "new_unowned_player_death_count": 0
+    },
+    {
+      "window_name": "second_report_appearance",
+      "processed_native_frames": 30,
+      "first_source_pts_sec": 147.35266927083333,
+      "last_source_pts_sec": 147.83600260416668,
+      "old_unowned_player_death_count": 0,
+      "new_unowned_player_death_count": 0
+    },
+    {
+      "window_name": "persistent_report_control",
+      "processed_native_frames": 24,
+      "first_source_pts_sec": 104.00266927083334,
+      "last_source_pts_sec": 104.38600260416666,
+      "old_unowned_player_death_count": 0,
+      "new_unowned_player_death_count": 0
+    },
+    {
+      "window_name": "spectator_report_control",
+      "processed_native_frames": 24,
+      "first_source_pts_sec": 169.80266927083332,
+      "last_source_pts_sec": 170.18600260416667,
+      "old_unowned_player_death_count": 1,
+      "new_unowned_player_death_count": 0
+    }
+  ],
+  "continuous_scope": "fresh current-code source measurements; offline comparison of old/new event producers, no formal qualification or canonical event release",
+  "runtime_sec": {
+    "before_isolated_24": 429.2979959199438,
+    "after_isolated_24": 427.7702074779663,
+    "continuous_102": 323.0162731569726,
+    "fresh_component_suite": 993.745534984977
+  },
+  "memory_usage": "not measured",
+  "private_diagnostic_storage_bytes": 108068022,
+  "qualification_scope": "fresh frozen-source component admission only; no new blind cohort, no installed default or positive self-death qualification",
+  "public_report_contains_gt_definitions": false,
+  "fresh_component_review": {
+    "recognizer_fingerprint": "6ea410098baf11bbea9df5301ed901373a025e25023c220e1db6a3c01103a6fc",
+    "profile_fingerprint": "60b029cb987fe0d7447853e3b4cd791d5defb0918dfaa25a401bd45d2b64c813",
+    "candidate_sha256": "17b356ec5968aea589421b471b5e31317585f368259b6448b06a46a9d754bbaa",
+    "loader_admitted_components": [
+      "purchase_phase",
+      "round_result",
+      "score",
+      "timer",
+      "ui_end_transition",
+      "ui_transition"
+    ],
+    "loader_rejection": null,
+    "physical_overlap": {
+      "whole_prefix_with_global_training": [],
+      "negative_with_global_training": [],
+      "negative_with_prefix": []
+    },
+    "temporal_case_counts": {
+      "known_end_episode": 1,
+      "reviewed_pattern_decisions": 1,
+      "new_blind_end_episodes": 0,
+      "negative_windows": 2
+    },
+    "independent_temporal_generalization_proven": false,
+    "development_exposure_retained": true,
+    "formal_events_released": 0,
+    "default_installed": false,
+    "canonical_full_e2e_executed": false,
+    "driver_result_sha256": "f5f87c3a9f861ba1b957ce7ddf92e264154451a3561c33a9fdc3c6f286a28632"
+  },
+  "local_regression": {
+    "targeted_death_report_ownership": {
+      "passed": 79,
+      "wall_sec": 20.98
+    },
+    "transport_package_practical_integration": {
+      "passed": 127,
+      "wall_sec": 123.4
+    },
+    "mypy_source_files": 133,
+    "ruff": "pass",
+    "new_followup_ci": {
+      "source_commit": "4e6e02d86a9e8bb8133292832a838b0e93639cef",
+      "linux": {
+        "url": "https://github.com/shark-man0/eval_valorant_perspective/actions/runs/38734049976",
+        "conclusion": "success",
+        "passed": 3782,
+        "skipped": 7,
+        "coverage_percent": 86.62,
+        "pytest_wall_sec": 912.83
+      },
+      "windows": {
+        "url": "https://github.com/shark-man0/eval_valorant_perspective/actions/runs/38734049969",
+        "conclusion": "success",
+        "passed": 3778,
+        "skipped": 11,
+        "coverage_percent": 86.58,
+        "pytest_wall_sec": 1082.37,
+        "utf8_disabled_tests_passed": 13,
+        "pyinstaller": "success",
+        "packaged_smoke": "success"
+      },
+      "ruff": "success",
+      "mypy": "success",
+      "dataset_cases": 38,
+      "qt_exit_scope": "CI test/build/smoke steps exited normally; not a claim for every GUI workflow",
+      "unchanged_platform_private_input_skips": true
+    },
+    "dataset_cases": 38
+  }
+}
