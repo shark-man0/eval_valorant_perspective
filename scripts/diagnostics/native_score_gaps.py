@@ -70,7 +70,7 @@ def summarize_native_score_gaps(rows: list[dict], step: int) -> dict:
         values = observation["values"]
         quality = observation["quality"]
         confidence = quality.get("roi_confidence", {})
-        ui = row.get("system_measurements", {}).get("native_ui", {})
+        ui = row.get("system_measurements", {}).get("native_ui", row.get("system_evidence", {}))
         if ui.get("content_jump") is True or ui.get("discontinuity") is True:
             counts["source_break_resets"] += 1
             previous_pair = None

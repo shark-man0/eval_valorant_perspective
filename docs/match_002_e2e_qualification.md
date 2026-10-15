@@ -1625,3 +1625,57 @@ coverage and independent temporal end qualification remain unproven. No runtime
 policy, template, threshold, qualification report or production setting changes.
 Related semantic/reference/review regressions79pass; scoped Ruff, production
 mypy(133files) and git diff --check pass. Full E2E remains unfinished.
+
+## Current native first-start inputs and producer-owned provisional boundary
+
+Revisit the first development start with the integrated recognizer and combined
+unadopted phase/result profile. The historical85-frame receipt had no raw UI
+measurement envelope and predates main integration; do not infer temporal
+availability from its isolated positive counts. The new continuous native pass
+has85frames, one source epoch and exact256-tick cadence. Geometry is fresh4,
+effective56, retained52 and invalid29. There are42accepted timer displays,
+13raw phase matches,12joint phase/timer observations and11timer observations
+with a confirmed phase flag. UI scan validity continues through the immediate
+phase disappearance; the first following frame lacks a timer but later frames
+have accepted timers. Input availability is not universally missing here.
+Unqualified input receipt SHA:
+`c851bef6ef59cea7052ea9f3169debf669fd1a91c7c3e8d3372885d12b5af037`.
+
+Extend the diagnostic CLI with an explicit --practical-input-contract option,
+mutually exclusive with the raw measurement option. It invokes the existing
+collect_practical_lifecycle producer directly on decoder-owned native frames,
+using the registered source assurance contract. Do not manufacture assured
+evidence from saved measurement dictionaries or bypass reader qualification.
+The existing production practical tracker supplies provisional boundaries; the
+diagnostic rejects a confirmed overlay and never releases formal events.
+
+The real source pass produces one provisional start candidate, with later
+confirmation, at the independently approved start timestamp. All85physical
+source identities and System observations match the preceding measurement pass
+exactly. Tracker states include preparation, transient UI transition and active
+candidate; detected source-break flags are0, not proof of source continuity.
+Qualification is not loaded or created, and formal events remain0. The profile
+and recognizer fingerprints remain unchanged and the decoder performs terminal
+source integrity checks. Private producer receipt SHA:
+`086b3b38e9e9b1ec608604d62b2f39d7f840a2abea922d5271d21aec088e1794`.
+
+Pass those actual provisional boundaries/observations through the existing
+practical RoundPackageBuilder, FactBuilder, Schema validation and Trace adapter
+without invented HUD events. Both diagnostic fragments remain incomplete; the
+accepted current-point timer facts number42, snapshots0, player HP facts0 and
+formal boundary events0 in both packages and Trace. One start status is
+provisional and all end statuses remain unknown. The builder includes
+preparation context and an unobserved tail up to video duration; these prefix-
+only diagnostic windows are not measured gameplay endpoints or a full-match
+Round count. No private GT is used to partition them. This exercises the real
+candidate transport, not strict boundary qualification or formal E2E success.
+
+The CLI now refuses to overwrite any existing receipt. Default raw measurement
+behavior remains unchanged. The score-gap reducer also resets conservatively
+on producer-owned practical source-break fields when no measurement envelope
+is present. No reader floor, temporal predicate, qualification policy or
+production default is changed. Receipts generated before the final CLI metadata
+and overwrite-guard additions remain historical and are not resigned.
+Related native/practical/start/end/package regression tests143pass; scoped Ruff,
+production mypy(133files) and git diff --check pass. Strictly qualified start/end,
+full-match membership and latest-main formal Full E2E remain unfinished.

@@ -77,3 +77,13 @@ def test_empty_entrance_is_not_positive_evidence():
     result = summarize_native_score_gaps([], 256)
     assert all(value == 0 for value in result['counts'].values())
     assert result['continuity_proven'] is False
+
+
+def test_producer_practical_break_resets_gap_without_measurement_envelope():
+    data = rows([(0, 0), (None, 0), (1, 0)])
+    for row in data:
+        del row['system_measurements']
+    data[1]['system_evidence'] = {'discontinuity': True}
+    result = summarize_native_score_gaps(data, 256)
+    assert result['counts']['source_break_resets'] == 1
+    assert result['counts']['nonadjacent_score_changes'] == 0
