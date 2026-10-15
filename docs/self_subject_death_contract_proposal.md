@@ -1,6 +1,9 @@
 # Proposal: source-qualified self-subject Death evidence
 
-Status: **proposal requiring approval; no implementation or production authority**.
+Status: development and source qualification conditionally approved on 2026-10-16.
+Production adoption and unqualified event release remain unapproved. The original
+proposal below is retained; see `self_subject_death_evidence_implementation.md`
+for the separate experimental implementation and its unresolved qualification.
 Base: `46584ad7fd99d18bbbdbcf0d73a2c0263ccaecce` (PR #46); fetched main remains `7e480c2f2f7f49aea73e1541d065d78881d2f11c`.
 PR #44 transport and PR #46 ownership restriction are preserved unchanged. PR #42 is not modified.
 
