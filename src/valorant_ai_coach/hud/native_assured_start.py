@@ -16,6 +16,10 @@ from valorant_ai_coach.video.native import NativeSourceFrame
 
 from .global_lifecycle import GlobalLifecycleQualification, global_recognizer_fingerprint
 from .models import empty_hud_values
+from .native_geometry_initialization import (
+    NativeGeometryInitialization,
+    attest_geometry_initialization,
+)
 from .native_lifecycle import NativeLifecycleAnalysis
 from .native_system_input import GLOBAL_VALUES, collect_native_system_observations
 from .temporal import _event
@@ -158,6 +162,7 @@ def collect_qualified_assured_start(
     analyzer: RealHudAnalyzer, frames: Sequence[NativeSourceFrame], *,
     native_step_ticks: int, input_contract_path: Path,
     video_metadata: VideoMetadata | None = None,
+    calibration_prefix: NativeSourceFrame | None = None,
 ) -> NativeLifecycleAnalysis:
     if not frames:
         raise ValueError('native frames required')
@@ -166,20 +171,42 @@ def collect_qualified_assured_start(
     )
     qualification = current_assured_qualification(analyzer, contract)
     code = global_recognizer_fingerprint()
+    initialization = None
+    if calibration_prefix is not None:
+        if analyzer.template_profile is None or analyzer.layout.layout_format != 'v3':
+            raise ValueError('qualified geometry initialization requires configured v3 profile')
+        initialization = NativeGeometryInitialization.bind(
+            calibration_prefix, frames[0], qualification, contract, analyzer.fingerprint(),
+        )
     scans: list[dict[str, Any]] = []
 
+    def fingerprint() -> str:
+        if initialization is None:
+            return analyzer.fingerprint()
+        initialization.verify(
+            current_assured_qualification(analyzer, contract), contract,
+            producer_fingerprint=analyzer.fingerprint(),
+        )
+        return initialization.observation_fingerprint
+
     def observe(source: Sequence[NativeSourceFrame]) -> Sequence[dict[str, Any]]:
-        measured = analyzer.observe_frames(source, video_metadata, _build_events=False)
+        options: dict[str, Any] = {} if initialization is None else {
+            '_native_calibration_prefix': calibration_prefix,
+            '_native_input_contract': contract,
+        }
+        measured = analyzer.observe_frames(source, video_metadata, _build_events=False, **options)
         scans.extend(measured.native_ui_measurements)
         return measured.observations
 
     systems = collect_native_system_observations(
         frames, native_step_ticks=native_step_ticks, observe=observe,
-        fingerprint=analyzer.fingerprint,
+        fingerprint=fingerprint,
     )
     if len(scans) != len(systems):
         raise ValueError('native phase scan coverage mismatch')
-    rows = tuple({**deepcopy(row), 'system_evidence': {
+    rows = tuple({**deepcopy(row), **({
+        'geometry_initialization_sha256': initialization.observation_fingerprint,
+    } if initialization is not None else {}), 'system_evidence': {
         'assured_phase_scan_valid': scan.get('phase_scan_valid') is True,
         **({'assured_phase_present': scan['phase_present'],
             'assured_phase_confidence': scan['phase_confidence']}
@@ -198,7 +225,9 @@ def collect_qualified_assured_start(
                                          source_video_sha256=contract.source_video_sha256)
             != contract):
         raise ValueError('terminal assured lifecycle inputs changed')
+    events = attest_geometry_initialization(events, initialization, rows, qualification, contract)
     return NativeLifecycleAnalysis(
         rows, tuple(r['system_observation'] for r in rows), events, diagnostics,
         qualification, contract, Path(input_contract_path),
+        initialization,
     )
