@@ -107,6 +107,61 @@ def _shared_timer_facts(observations: Sequence[dict[str, Any]]) -> list[dict[str
     return facts
 
 
+def _global_snapshot(observation: dict[str, Any]) -> dict[str, Any] | None:
+    """Retain current value-reader evidence without admitting a player snapshot.
+
+    The aggregate HUD gate remains unchanged. This separate path accepts only
+    explicitly unowned, unknown observations with calibrated, unobscured global
+    values at the existing .90 reader floor. Every owned/context field stays
+    unknown, even if an invalid input contains a player value.
+    """
+    values = observation.get("values") or {}
+    quality = observation.get("quality") or {}
+    if (
+        observation.get("primary_state") != "unknown"
+        or values.get("player_specific_hud_valid") is not False
+        or "calibration_required" in (quality.get("notes") or ())
+        or quality.get("occluded_rois")
+    ):
+        return None
+    scores = shared_score_evidence(observation)
+    timer = timer_display_evidence(values)
+    roi = quality.get("roi_confidence") or {}
+    timer_confidence = _source_confidence(roi.get("round_timer_value"))
+    if timer is not None and (
+        timer["provenance"]["confidence"] < .90 or timer_confidence < .90
+    ):
+        timer = None
+    if timer is None and all(value is None for value in scores.values()):
+        return None
+    snapshot: dict[str, Any] = {
+        "time_sec": observation["time_sec"],
+        "spectator_primary_state": None,
+        **scores,
+        "ally_alive": None, "enemy_alive": None,
+        "hp": None, "armor": None, "weapon": None,
+        "spike_state": "unknown", "utility_available_count": None,
+        "round_time_remaining_sec": values["round_time_remaining_sec"] if timer else None,
+        "player_location": {"zone_id": None, "zone_name": None},
+        "known_enemy_locations": [],
+        "spatial_context": {
+            "cover_available": None, "escape_route_available": None,
+            "line_of_sight_state": "unknown", "exposed_directions_count": None,
+            "view_target_zone_id": None,
+        },
+        "source_confidence": {
+            key: roi[f"{key}_value"] for key, value in scores.items() if value is not None
+        },
+    }
+    if timer is not None:
+        snapshot["round_time_remaining_display"] = timer["display"]
+        snapshot["round_time_remaining_display_provenance"] = timer["provenance"]
+        snapshot["source_confidence"]["round_time_remaining_sec"] = min(
+            timer_confidence, timer["provenance"]["confidence"]
+        )
+    return snapshot
+
+
 def _owned_hp_facts(observations: Sequence[dict[str, Any]]) -> list[dict[str, Any]]:
     """Preserve accepted current-frame HP readings for the identified player."""
     facts: list[dict[str, Any]] = []
@@ -542,6 +597,12 @@ class RoundPackageBuilder:
             index = bisect_right(hud_times, timestamp) - 1
             if index < 0 or timestamp - hud_times[index] > 0.5:
                 continue
+            # Field-only global retention must not widen the legacy admission
+            # for player spatial facts or resolver association.
+            if _bounded_confidence(
+                (hud[index].get("quality") or {}).get("hud_confidence")
+            ) < .65:
+                continue
             base = self._state_snapshots([hud[index]])
             if not base:
                 continue
@@ -559,6 +620,10 @@ class RoundPackageBuilder:
             timestamp = self._time(resolution)
             index = bisect_right(hud_times, timestamp) - 1
             if index < 0 or timestamp - hud_times[index] > 0.5:
+                continue
+            if _bounded_confidence(
+                (hud[index].get("quality") or {}).get("hud_confidence")
+            ) < .65:
                 continue
             base = self._state_snapshots([hud[index]])
             if not base:
@@ -1060,6 +1125,7 @@ class RoundPackageBuilder:
         floor_sec: float | None = None,
         start_event: dict[str, Any] | None = None,
     ) -> float | None:
+        native_preparation: tuple[float, float] | None = None
         # Native system phase observations have their own source PTS and must
         # not be retimestamped onto sampled player observations. A verified
         # native boundary carries its segment-local preparation interval.
@@ -1084,7 +1150,8 @@ class RoundPackageBuilder:
                 and event_start - preparation[1] <= MAX_SAMPLE_GAP_SEC
                 and (floor_sec is None or preparation[0] > floor_sec)
             ):
-                return float(preparation[0])
+                native_preparation = (float(preparation[0]), float(preparation[1]))
+        native_start = native_preparation[0] if native_preparation else None
         before = [
             item
             for item in observations
@@ -1092,7 +1159,7 @@ class RoundPackageBuilder:
             and (floor_sec is None or self._time(item) > floor_sec)
         ]
         if not before or event_start - self._time(before[-1]) > 1.0:
-            return None
+            return native_start
         chain: list[dict[str, Any]] = [before[-1]]
         for item in reversed(before[:-1]):
             if self._time(chain[0]) - self._time(item) > 1.0:
@@ -1104,7 +1171,7 @@ class RoundPackageBuilder:
             if self._is_preparation_observation(item)
         ]
         if not prep_indices:
-            return None
+            return native_start
         # Choose the beginning of the latest contiguous preparation episode,
         # rather than an earlier round's prep or the final repeated sample.
         prep_index = prep_indices[-1]
@@ -1114,8 +1181,18 @@ class RoundPackageBuilder:
             self._time(right) - self._time(left) > 1.0
             for left, right in zip(chain[prep_index:], chain[prep_index + 1 :], strict=False)
         ):
-            return None
-        return self._time(chain[prep_index])
+            return native_start
+        observed_start = self._time(chain[prep_index])
+        if native_preparation is None:
+            return observed_start
+        # The short native proof is boundary corroboration, not a cap on all
+        # already observed preparation context. Extend only the same contiguous
+        # episode: its qualified samples must overlap the native proof interval.
+        # Unknown gaps and earlier preparation episodes are never joined here.
+        if any(native_preparation[0] <= self._time(item) <= native_preparation[1]
+               for item in chain[prep_index:prep_indices[-1] + 1]):
+            return min(native_preparation[0], observed_start)
+        return native_start
 
     def _observed_context_end(
         self, observations: Sequence[dict[str, Any]], event_end: float, limit: float
@@ -1139,11 +1216,18 @@ class RoundPackageBuilder:
         snapshots: list[dict[str, Any]] = []
         last_key: tuple[Any, ...] | None = None
         last_time = -math.inf
+        global_times: set[float] = set()
         for observation in observations:
             values = observation.get("values", {})
             if not isinstance(values, dict):
                 continue
             if _bounded_confidence((observation.get("quality") or {}).get("hud_confidence")) < 0.65:
+                global_snapshot = _global_snapshot(observation)
+                if global_snapshot is not None:
+                    timestamp = float(global_snapshot["time_sec"])
+                    if timestamp not in global_times:
+                        snapshots.append(global_snapshot)
+                        global_times.add(timestamp)
                 continue
             player_valid = bool(values.get("player_specific_hud_valid", True))
             abilities = values.get("ability_slots", [])

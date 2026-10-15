@@ -1,0 +1,976 @@
+{
+  "task": "S-01",
+  "acceptance": "B: global observation and fact transport verified; no fixed-17 assertion gain; CI and persistence acceptance pending",
+  "start_main": "7e480c2f2f7f49aea73e1541d065d78881d2f11c",
+  "executed_full_commit": "46462336427149764beb8e1fdd94c554e075616e",
+  "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "full_input_hashes": {
+    "raw_processing.json": "5bc81be4ed43e45db025548d236c416d24efe35fa2ab95a32260f5a4fa94a6dc",
+    "e2e_trace.json": "65aa8a0387cb140adb22fe3f26a9ce60b00d45198d48889d16d4fda349f56958",
+    "evaluation_report.json": "8841332dfcf29f6876efe63dd4c2cb42bdeb2c9d7f1d49e6258fd54997bcb1a1"
+  },
+  "replay_sha256": "422bf827ad909c8d14cc8bfe2eede747877bfb7252c46894e80fbb626b5dad23",
+  "recognizer_fingerprint": "ad482fe1bae0f2c4401ce0364841f749f63c6e2230ff75c49cf853962c8eb859",
+  "qualification_sha256": "46d75286f7f525ae4dd687012f62d9bc289b72b32b0125ba70480f992d63b2a4",
+  "adopted_baseline": {
+    "pass": 23,
+    "fail": 55,
+    "not_evaluated": 4
+  },
+  "historical_candidate": {
+    "pass": 28,
+    "fail": 50,
+    "not_evaluated": 4
+  },
+  "fresh_full": {
+    "pass": 28,
+    "fail": 50,
+    "not_evaluated": 4
+  },
+  "candidate_status_changes": [],
+  "regressed_pass_ids": [],
+  "negative_violations": 0,
+  "negative_assertions_checked": 20,
+  "targeted": {
+    "unique_snapshots": 75,
+    "unique_qualified_fields": 186,
+    "by_field": {
+      "score_ally": 56,
+      "score_enemy": 73,
+      "round_time_remaining_sec": 57
+    },
+    "snapshot_to_trace_fields_retained": 186,
+    "snapshot_to_fact_fields_retained": 186,
+    "owned_promotions": 0,
+    "wall_sec": 58.26835307898,
+    "peak_process_rss_mib": 196.1796875,
+    "private_output_bytes": 649408,
+    "confidence_distribution": {
+      "round_time_remaining_sec": {
+        "min": 0.9316428303718567,
+        "max": 0.9711967706680298,
+        "median": 0.9505745768547058
+      },
+      "score_ally": {
+        "min": 0.9287377595901489,
+        "max": 0.9655932188034058,
+        "median": 0.9457771182060242
+      },
+      "score_enemy": {
+        "min": 0.9453411102294922,
+        "max": 0.9976227879524231,
+        "median": 0.9648743867874146
+      }
+    }
+  },
+  "targets": [
+    {
+      "assertion_id": "GT-R1-SNAP-0415",
+      "source_pts_sec": 4.152669,
+      "primary_state": "unknown",
+      "player_owned": false,
+      "aggregate_confidence": 0.0,
+      "state_confidence": 0.0,
+      "producer_accepted_field_confidence": {
+        "score_ally": 0.9473333954811096,
+        "score_enemy": 0.9943748712539673,
+        "round_timer": 0.9607433676719666
+      },
+      "first_loss_before": "RoundPackageBuilder._state_snapshots aggregate gate",
+      "first_blocker_after": "required non-global field evidence",
+      "remaining_fields": [
+        "primary_state",
+        "player_alive",
+        "location_label_raw"
+      ],
+      "observations": 4,
+      "before_snapshots": 0,
+      "after_snapshots": 4,
+      "after_facts": 12,
+      "after_trace_snapshots": 4,
+      "canonical_before": "fail",
+      "canonical_after": "fail"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-585",
+      "source_pts_sec": 58.502669,
+      "primary_state": "unknown",
+      "player_owned": false,
+      "aggregate_confidence": 0.0,
+      "state_confidence": 0.0,
+      "producer_accepted_field_confidence": {
+        "score_ally": 0.9456049203872681,
+        "score_enemy": 0.9710036516189575,
+        "round_timer": 0.9316428303718567
+      },
+      "first_loss_before": "RoundPackageBuilder._state_snapshots aggregate gate",
+      "first_blocker_after": "required non-global field evidence",
+      "remaining_fields": [
+        "primary_state",
+        "vision_obscured_smoke"
+      ],
+      "observations": 6,
+      "before_snapshots": 0,
+      "after_snapshots": 6,
+      "after_facts": 18,
+      "after_trace_snapshots": 6,
+      "canonical_before": "fail",
+      "canonical_after": "fail"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-595",
+      "source_pts_sec": 59.502669,
+      "primary_state": "unknown",
+      "player_owned": false,
+      "aggregate_confidence": 0.0,
+      "state_confidence": 0.0,
+      "producer_accepted_field_confidence": {
+        "score_ally": 0.9547474384307861,
+        "score_enemy": 0.9662814140319824,
+        "round_timer": 0.9351649284362793
+      },
+      "first_loss_before": "RoundPackageBuilder._state_snapshots aggregate gate",
+      "first_blocker_after": "required non-global field evidence",
+      "remaining_fields": [
+        "primary_state",
+        "vision_obscured_smoke",
+        "remote_control_subtype"
+      ],
+      "observations": 11,
+      "before_snapshots": 0,
+      "after_snapshots": 10,
+      "after_facts": 23,
+      "after_trace_snapshots": 10,
+      "canonical_before": "fail",
+      "canonical_after": "fail"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-733",
+      "source_pts_sec": 73.302669,
+      "primary_state": "unknown",
+      "player_owned": false,
+      "aggregate_confidence": 0.0,
+      "state_confidence": 0.0,
+      "producer_accepted_field_confidence": {
+        "score_ally": 0.0,
+        "score_enemy": 0.9689244031906128,
+        "round_timer": 0.9414150714874268
+      },
+      "first_loss_before": "RoundPackageBuilder._state_snapshots aggregate gate",
+      "first_blocker_after": "required non-global field evidence",
+      "remaining_fields": [
+        "primary_state",
+        "player_alive",
+        "ammo_mag",
+        "ammo_reserve",
+        "reload_animation_visible"
+      ],
+      "observations": 7,
+      "before_snapshots": 0,
+      "after_snapshots": 7,
+      "after_facts": 17,
+      "after_trace_snapshots": 7,
+      "canonical_before": "fail",
+      "canonical_after": "fail"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-734",
+      "source_pts_sec": 73.402669,
+      "primary_state": "unknown",
+      "player_owned": false,
+      "aggregate_confidence": 0.0,
+      "state_confidence": 0.0,
+      "producer_accepted_field_confidence": {
+        "score_ally": 0.9510979056358337,
+        "score_enemy": 0.9646438360214233,
+        "round_timer": 0.9533022046089172
+      },
+      "first_loss_before": "RoundPackageBuilder._state_snapshots aggregate gate",
+      "first_blocker_after": "required non-global field evidence",
+      "remaining_fields": [
+        "primary_state",
+        "player_alive",
+        "ammo_mag",
+        "ammo_reserve",
+        "reload_animation_visible"
+      ],
+      "observations": 7,
+      "before_snapshots": 0,
+      "after_snapshots": 7,
+      "after_facts": 18,
+      "after_trace_snapshots": 7,
+      "canonical_before": "fail",
+      "canonical_after": "fail"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-7425",
+      "source_pts_sec": 74.252669,
+      "primary_state": "unknown",
+      "player_owned": false,
+      "aggregate_confidence": 0.0,
+      "state_confidence": 0.0,
+      "producer_accepted_field_confidence": {
+        "score_ally": 0.9489420056343079,
+        "score_enemy": 0.9662814140319824,
+        "round_timer": 0.9462669491767883
+      },
+      "first_loss_before": "RoundPackageBuilder._state_snapshots aggregate gate",
+      "first_blocker_after": "required non-global field evidence",
+      "remaining_fields": [
+        "primary_state",
+        "player_alive",
+        "player_hp",
+        "muzzle_flash_visible",
+        "location_label_raw",
+        "spectator_primary_state"
+      ],
+      "observations": 5,
+      "before_snapshots": 0,
+      "after_snapshots": 5,
+      "after_facts": 15,
+      "after_trace_snapshots": 5,
+      "canonical_before": "fail",
+      "canonical_after": "fail"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-7438",
+      "source_pts_sec": 74.386003,
+      "primary_state": "unknown",
+      "player_owned": false,
+      "aggregate_confidence": 0.0,
+      "state_confidence": 0.0,
+      "producer_accepted_field_confidence": {
+        "score_ally": 0.9510506391525269,
+        "score_enemy": 0.9662814140319824,
+        "round_timer": 0.9610928297042847
+      },
+      "first_loss_before": "RoundPackageBuilder._state_snapshots aggregate gate",
+      "first_blocker_after": "required non-global field evidence",
+      "remaining_fields": [
+        "primary_state",
+        "player_alive",
+        "muzzle_flash_visible"
+      ],
+      "observations": 3,
+      "before_snapshots": 0,
+      "after_snapshots": 3,
+      "after_facts": 7,
+      "after_trace_snapshots": 3,
+      "canonical_before": "fail",
+      "canonical_after": "fail"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-7440",
+      "source_pts_sec": 74.402669,
+      "primary_state": "unknown",
+      "player_owned": false,
+      "aggregate_confidence": 0.0,
+      "state_confidence": 0.0,
+      "producer_accepted_field_confidence": {
+        "score_ally": 0.9400646090507507,
+        "score_enemy": 0.96949303150177,
+        "round_timer": 0.0
+      },
+      "first_loss_before": "RoundPackageBuilder._state_snapshots aggregate gate",
+      "first_blocker_after": "required non-global field evidence",
+      "remaining_fields": [
+        "player_alive"
+      ],
+      "observations": 3,
+      "before_snapshots": 0,
+      "after_snapshots": 3,
+      "after_facts": 8,
+      "after_trace_snapshots": 3,
+      "canonical_before": "fail",
+      "canonical_after": "fail"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-7445",
+      "source_pts_sec": 74.452669,
+      "primary_state": "unknown",
+      "player_owned": false,
+      "aggregate_confidence": 0.0,
+      "state_confidence": 0.0,
+      "producer_accepted_field_confidence": {
+        "score_ally": 0.937731146812439,
+        "score_enemy": 0.964837908744812,
+        "round_timer": 0.9411492943763733
+      },
+      "first_loss_before": "RoundPackageBuilder._state_snapshots aggregate gate",
+      "first_blocker_after": "required non-global field evidence",
+      "remaining_fields": [
+        "player_alive"
+      ],
+      "observations": 2,
+      "before_snapshots": 0,
+      "after_snapshots": 2,
+      "after_facts": 6,
+      "after_trace_snapshots": 2,
+      "canonical_before": "fail",
+      "canonical_after": "fail"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-11145",
+      "source_pts_sec": 111.452669,
+      "primary_state": "unknown",
+      "player_owned": false,
+      "aggregate_confidence": 0.0,
+      "state_confidence": 0.0,
+      "producer_accepted_field_confidence": {
+        "score_ally": 0.9515504240989685,
+        "score_enemy": 0.9599531292915344,
+        "round_timer": 0.9361436367034912
+      },
+      "first_loss_before": "RoundPackageBuilder._state_snapshots aggregate gate",
+      "first_blocker_after": "required non-global field evidence",
+      "remaining_fields": [
+        "player_alive"
+      ],
+      "observations": 5,
+      "before_snapshots": 0,
+      "after_snapshots": 5,
+      "after_facts": 15,
+      "after_trace_snapshots": 5,
+      "canonical_before": "fail",
+      "canonical_after": "fail"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-143",
+      "source_pts_sec": 143.002669,
+      "primary_state": "unknown",
+      "player_owned": false,
+      "aggregate_confidence": 0.0,
+      "state_confidence": 0.0,
+      "producer_accepted_field_confidence": {
+        "score_ally": 0.0,
+        "score_enemy": 0.965490996837616,
+        "round_timer": 0.0
+      },
+      "first_loss_before": "RoundPackageBuilder._state_snapshots aggregate gate",
+      "first_blocker_after": "required non-global field evidence",
+      "remaining_fields": [
+        "primary_state",
+        "player_alive",
+        "player_hp"
+      ],
+      "observations": 6,
+      "before_snapshots": 0,
+      "after_snapshots": 6,
+      "after_facts": 6,
+      "after_trace_snapshots": 6,
+      "canonical_before": "fail",
+      "canonical_after": "fail"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-1475",
+      "source_pts_sec": 147.502669,
+      "primary_state": "unknown",
+      "player_owned": false,
+      "aggregate_confidence": 0.0,
+      "state_confidence": 0.0,
+      "producer_accepted_field_confidence": {
+        "score_ally": 0.0,
+        "score_enemy": 0.9498803615570068,
+        "round_timer": 0.0
+      },
+      "first_loss_before": "RoundPackageBuilder._state_snapshots aggregate gate",
+      "first_blocker_after": "required non-global field evidence",
+      "remaining_fields": [
+        "primary_state",
+        "player_alive",
+        "player_hp"
+      ],
+      "observations": 2,
+      "before_snapshots": 0,
+      "after_snapshots": 2,
+      "after_facts": 2,
+      "after_trace_snapshots": 2,
+      "canonical_before": "fail",
+      "canonical_after": "fail"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-1476",
+      "source_pts_sec": 147.602669,
+      "primary_state": "unknown",
+      "player_owned": false,
+      "aggregate_confidence": 0.0,
+      "state_confidence": 0.0,
+      "producer_accepted_field_confidence": {
+        "score_ally": 0.0,
+        "score_enemy": 0.9453411102294922,
+        "round_timer": 0.0
+      },
+      "first_loss_before": "RoundPackageBuilder._state_snapshots aggregate gate",
+      "first_blocker_after": "required non-global field evidence",
+      "remaining_fields": [
+        "primary_state",
+        "player_alive",
+        "player_hp"
+      ],
+      "observations": 4,
+      "before_snapshots": 0,
+      "after_snapshots": 4,
+      "after_facts": 7,
+      "after_trace_snapshots": 4,
+      "canonical_before": "fail",
+      "canonical_after": "fail"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-1477",
+      "source_pts_sec": 147.719336,
+      "primary_state": "unknown",
+      "player_owned": false,
+      "aggregate_confidence": 0.0,
+      "state_confidence": 0.0,
+      "producer_accepted_field_confidence": {
+        "score_ally": 0.0,
+        "score_enemy": 0.9661900401115417,
+        "round_timer": 0.960155725479126
+      },
+      "first_loss_before": "RoundPackageBuilder._state_snapshots aggregate gate",
+      "first_blocker_after": "required non-global field evidence",
+      "remaining_fields": [
+        "player_alive"
+      ],
+      "observations": 2,
+      "before_snapshots": 0,
+      "after_snapshots": 2,
+      "after_facts": 4,
+      "after_trace_snapshots": 2,
+      "canonical_before": "fail",
+      "canonical_after": "fail"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-149",
+      "source_pts_sec": 149.002669,
+      "primary_state": "unknown",
+      "player_owned": false,
+      "aggregate_confidence": 0.0,
+      "state_confidence": 0.0,
+      "producer_accepted_field_confidence": {
+        "score_ally": 0.9538372755050659,
+        "score_enemy": 0.9664362072944641,
+        "round_timer": 0.9601021409034729
+      },
+      "first_loss_before": "RoundPackageBuilder._state_snapshots aggregate gate",
+      "first_blocker_after": "required non-global field evidence",
+      "remaining_fields": [
+        "primary_state",
+        "player_alive"
+      ],
+      "observations": 2,
+      "before_snapshots": 0,
+      "after_snapshots": 2,
+      "after_facts": 6,
+      "after_trace_snapshots": 2,
+      "canonical_before": "fail",
+      "canonical_after": "fail"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-151",
+      "source_pts_sec": 151.002669,
+      "primary_state": "unknown",
+      "player_owned": false,
+      "aggregate_confidence": 0.0,
+      "state_confidence": 0.0,
+      "producer_accepted_field_confidence": {
+        "score_ally": 0.9412204027175903,
+        "score_enemy": 0.9619362354278564,
+        "round_timer": 0.9614624381065369
+      },
+      "first_loss_before": "RoundPackageBuilder._state_snapshots aggregate gate",
+      "first_blocker_after": "required non-global field evidence",
+      "remaining_fields": [
+        "primary_state",
+        "player_alive",
+        "view_owner",
+        "spectated_name",
+        "spectated_hp",
+        "spectated_ammo_mag",
+        "spectated_ammo_reserve",
+        "spectated_weapon",
+        "spectated_location_label_raw"
+      ],
+      "observations": 11,
+      "before_snapshots": 0,
+      "after_snapshots": 11,
+      "after_facts": 33,
+      "after_trace_snapshots": 11,
+      "canonical_before": "fail",
+      "canonical_after": "fail"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-0415-DERIVED-zone_id",
+      "source_pts_sec": 4.152669,
+      "primary_state": "unknown",
+      "player_owned": false,
+      "aggregate_confidence": 0.0,
+      "state_confidence": 0.0,
+      "producer_accepted_field_confidence": {
+        "score_ally": 0.9473333954811096,
+        "score_enemy": 0.9943748712539673,
+        "round_timer": 0.9607433676719666
+      },
+      "first_loss_before": "RoundPackageBuilder._state_snapshots aggregate gate",
+      "first_blocker_after": "required non-global field evidence",
+      "remaining_fields": [
+        "zone_id"
+      ],
+      "observations": 4,
+      "before_snapshots": 0,
+      "after_snapshots": 4,
+      "after_facts": 12,
+      "after_trace_snapshots": 4,
+      "canonical_before": "fail",
+      "canonical_after": "fail"
+    }
+  ],
+  "full_runtime": {
+    "wall_sec": 37848.921751271,
+    "main_frames": 6614,
+    "fps": 0.17474738232874218,
+    "stages": {
+      "decode": {
+        "calls": 16,
+        "total_sec": 731.1677989009768,
+        "average_sec": 45.69798743131105,
+        "wall_share": 0.019318061521169317
+      },
+      "evaluator": {
+        "calls": 1,
+        "total_sec": 14.486230187001638,
+        "average_sec": 14.486230187001638,
+        "wall_share": 0.00038273825294680096
+      },
+      "event_fusion": {
+        "calls": 1,
+        "total_sec": 0.00015529594384133816,
+        "average_sec": 0.00015529594384133816,
+        "wall_share": 4.103048030321318e-09
+      },
+      "hud_event_detection": {
+        "calls": 2,
+        "total_sec": 0.5532192839309573,
+        "average_sec": 0.27660964196547866,
+        "wall_share": 1.461651371646749e-05
+      },
+      "hud_geometry": {
+        "calls": 35805,
+        "total_sec": 11811.971425987547,
+        "average_sec": 0.32989726088500343,
+        "wall_share": 0.31208211170747263
+      },
+      "hud_identity": {
+        "calls": 71604,
+        "total_sec": 1538.1694890067447,
+        "average_sec": 0.021481614002105257,
+        "wall_share": 0.040639717535813066
+      },
+      "hud_menu": {
+        "calls": 35802,
+        "total_sec": 54.71074321412016,
+        "average_sec": 0.0015281476792950157,
+        "wall_share": 0.0014455033507601287
+      },
+      "hud_numeric_ocr": {
+        "calls": 17901,
+        "total_sec": 7014.728047185577,
+        "average_sec": 0.391862356694351,
+        "wall_share": 0.1853349507096597
+      },
+      "hud_signal_templates": {
+        "calls": 35802,
+        "total_sec": 172.4394677154487,
+        "average_sec": 0.004816475831390668,
+        "wall_share": 0.004555994193141262
+      },
+      "hud_spectator": {
+        "calls": 17901,
+        "total_sec": 7126.818918027682,
+        "average_sec": 0.39812406670173073,
+        "wall_share": 0.1882964847681125
+      },
+      "metadata_open": {
+        "calls": 1,
+        "total_sec": 0.29618368099909276,
+        "average_sec": 0.29618368099909276,
+        "wall_share": 7.825419253565569e-06
+      },
+      "native_frame_decode": {
+        "calls": 1,
+        "total_sec": 889.3747062929906,
+        "average_sec": 889.3747062929906,
+        "wall_share": 0.023498019630192626
+      },
+      "native_lifecycle": {
+        "calls": 1,
+        "total_sec": 5221.008444595849,
+        "average_sec": 5221.008444595849,
+        "wall_share": 0.13794338657535266
+      },
+      "report_generation": {
+        "calls": 1,
+        "total_sec": 10.91829444700852,
+        "average_sec": 10.91829444700852,
+        "wall_share": 0.00028847042245376184
+      },
+      "round_package_build": {
+        "calls": 1,
+        "total_sec": 48.346356707043014,
+        "average_sec": 48.346356707043014,
+        "wall_share": 0.0012773509645732377
+      },
+      "trace_serialization": {
+        "calls": 1,
+        "total_sec": 14.347560117952526,
+        "average_sec": 14.347560117952526,
+        "wall_share": 0.0003790744743599128
+      },
+      "visual_analysis": {
+        "calls": 1,
+        "total_sec": 816.3207552079111,
+        "average_sec": 816.3207552079111,
+        "wall_share": 0.021567873467372906
+      },
+      "visual_trigger_scan": {
+        "calls": 1,
+        "total_sec": 126.65826275292784,
+        "average_sec": 126.65826275292784,
+        "wall_share": 0.003346416671663164
+      }
+    },
+    "peak_rss": "not measured by common runner",
+    "artifact_bytes": 2620135102
+  },
+  "full_assertion_status": [
+    {
+      "id": "GT-R1-ROUND-START",
+      "status": "pass"
+    },
+    {
+      "id": "GT-R1-DEATH",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R1-ROUND-END",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R2-ROUND-START",
+      "status": "pass"
+    },
+    {
+      "id": "GT-R2-DEATH",
+      "status": "fail"
+    },
+    {
+      "id": "ordering_constraints-000",
+      "status": "not_evaluated"
+    },
+    {
+      "id": "ordering_constraints-001",
+      "status": "not_evaluated"
+    },
+    {
+      "id": "ordering_constraints-002",
+      "status": "not_evaluated"
+    },
+    {
+      "id": "ordering_constraints-003",
+      "status": "not_evaluated"
+    },
+    {
+      "id": "GT-R1-BUY-FLAG",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R1-ASTRAL-1",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R1-ASTRAL-2",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R1-SMOKE",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R1-COMBAT-REPORT",
+      "status": "pass"
+    },
+    {
+      "id": "GT-R2-BUY-FLAG",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R2-BUY-MENU-1",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R2-BUY-MENU-2",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R2-ASTRAL-1",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R2-ASTRAL-2",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R2-EXPANDED-MAP",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R2-SPECTATOR",
+      "status": "fail"
+    },
+    {
+      "id": "OWN-R1-SELF",
+      "status": "fail"
+    },
+    {
+      "id": "OWN-R1-SELF-DEAD",
+      "status": "fail"
+    },
+    {
+      "id": "OWN-R2-SELF",
+      "status": "fail"
+    },
+    {
+      "id": "OWN-R2-SELF-DEAD",
+      "status": "fail"
+    },
+    {
+      "id": "OWN-R2-TEAMMATE",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R1-SNAP-0035",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R1-SNAP-0415",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R1-SNAP-475",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R1-SNAP-585",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R1-SNAP-595",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R1-SNAP-705",
+      "status": "pass"
+    },
+    {
+      "id": "GT-R1-SNAP-728",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R1-SNAP-733",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R1-SNAP-734",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R1-SNAP-7425",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R1-SNAP-7438",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R1-SNAP-7440",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R1-SNAP-7445",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R2-SNAP-820",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R2-SNAP-1050",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R2-SNAP-11145",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R2-SNAP-143",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R2-SNAP-1475",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R2-SNAP-1476",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R2-SNAP-1477",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R2-SNAP-149",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R2-SNAP-151",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R2-SNAP-170",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R1-SNAP-0035-DERIVED-zone_id",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R1-SNAP-0415-DERIVED-zone_id",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R2-SNAP-820-DERIVED-zone_id",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R1-MUZZLE-1",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R1-MUZZLE-2",
+      "status": "fail"
+    },
+    {
+      "id": "GT-R1-MUZZLE-3",
+      "status": "fail"
+    },
+    {
+      "id": "event_count_constraints-000",
+      "status": "pass"
+    },
+    {
+      "id": "event_count_constraints-001",
+      "status": "fail"
+    },
+    {
+      "id": "event_count_constraints-002",
+      "status": "pass"
+    },
+    {
+      "id": "event_count_constraints-003",
+      "status": "fail"
+    },
+    {
+      "id": "event_count_constraints-004",
+      "status": "pass"
+    },
+    {
+      "id": "event_count_constraints-005",
+      "status": "fail"
+    },
+    {
+      "id": "event_count_constraints-006",
+      "status": "pass"
+    },
+    {
+      "id": "NEG-REMOTE-R1A",
+      "status": "pass"
+    },
+    {
+      "id": "NEG-REMOTE-R1B",
+      "status": "pass"
+    },
+    {
+      "id": "NEG-REMOTE-R2A",
+      "status": "pass"
+    },
+    {
+      "id": "NEG-REMOTE-R2B",
+      "status": "pass"
+    },
+    {
+      "id": "NEG-ASTRAL-NOT-SMOKE",
+      "status": "pass"
+    },
+    {
+      "id": "NEG-SMOKE-NOT-ASTRAL",
+      "status": "pass"
+    },
+    {
+      "id": "NEG-SMOKE-WORLD-SPOT",
+      "status": "pass"
+    },
+    {
+      "id": "NEG-NONSELF-KILLFEED",
+      "status": "pass"
+    },
+    {
+      "id": "NEG-RELOAD-NOT-SHOT",
+      "status": "pass"
+    },
+    {
+      "id": "NEG-BUY-MENU-1",
+      "status": "pass"
+    },
+    {
+      "id": "NEG-BUY-MENU-2",
+      "status": "pass"
+    },
+    {
+      "id": "NEG-SPECTATOR-COUNT-TEXT",
+      "status": "pass"
+    },
+    {
+      "id": "NEG-DEAD-PLAYER-MECHANICS",
+      "status": "pass"
+    },
+    {
+      "id": "NEG-EXPANDED-MAP-MECHANICS",
+      "status": "pass"
+    },
+    {
+      "id": "NEG-SPECTATOR-POISON-151",
+      "status": "pass"
+    },
+    {
+      "id": "NEG-SPECTATOR-POISON-170",
+      "status": "pass"
+    },
+    {
+      "id": "NEG-STALE-COMBAT-REPORT",
+      "status": "pass"
+    },
+    {
+      "id": "NEG-R2-NO-ROUND-END",
+      "status": "pass"
+    },
+    {
+      "id": "NEG-SAME-ZONE-CALLOUT-CHANGE",
+      "status": "pass"
+    },
+    {
+      "id": "NEG-CONTENT-JUMP-SPAN",
+      "status": "pass"
+    }
+  ],
+  "privacy": "No private GT definitions, source frames, profile assets, raw observations or per-frame trace are included."
+}
