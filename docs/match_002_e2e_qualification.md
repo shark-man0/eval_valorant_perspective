@@ -1354,3 +1354,26 @@ packs to force that broader check green. Latest-main formal full E2E and
 independently qualified Round events/package affiliation remain unfinished.
 Final checkpoint verification:273related tests pass, CI-scope/changed-file Ruff,
 mypy(133production files), zero-unclassified I/O audit and git diff --check pass.
+
+## Second development result episode: unchanged-policy input measurement
+
+Measure a different development result episode using the same diagnostic-only
+WON profile and integrated recognizer, without changing confidence floors,
+reference selection, end-transition policy or production defaults. The continuous
+native decode contains169frames in one source epoch at exact256-tick cadence.
+Geometry succeeds freshly67times and effectively157times, including90retained
+frames;12frames remain geometry-invalid. Accepted inputs include91timer displays,
+71paired scores,13result matches and1joint timer/paired-score/result observation.
+There are two distinct accepted score pairs but zero adjacent accepted score
+changes. Eight score runs last at least four frames, with a longest run of eight.
+
+Thus this second episode also does not supply the unchanged end contract's
+adjacent-score transition. This is evidence about input availability, not proof
+that all result episodes fail, that a particular missing glyph is unreadable or
+that the end policy should be relaxed. Do not bridge missing reads, reuse these
+targeted source pixels for training or count separate episodes as one continuous
+proof. All169player states remainunknown; qualified evidence rows and generated
+events remain0. No qualification is created or profile adopted, and full-match
+E2E completion remains unproven. Detailed source images and observations stay
+local; only aggregate counts and this receipt hash are shared:
+`c8b2158609dbc09518de520ca965dbe420adad9aeaf5c563530d4cd15326ca7e`.
