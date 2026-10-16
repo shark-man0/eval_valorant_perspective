@@ -29,6 +29,7 @@ from .native_scene_input import observe_native_scene_window
 from .native_system_input import (
     bind_native_ui_measurements,
     calibration_prefix_provenance,
+    sampled_calibration_prefix_provenance,
     collect_native_system_observations,
 )
 from .readers import (
@@ -466,9 +467,17 @@ class RealHudAnalyzer:
                     or _native_input_contract is None
                     or _native_input_contract.source_video_sha256 != frames[0].source_video_sha256):
                 raise ValueError('native calibration prefix is measurement-only without overrides')
-            prefix_provenance = calibration_prefix_provenance(
-                _native_calibration_prefix, frames[0],
-            )
+            current = frames[0]
+            if isinstance(current, NativeSourceFrame):
+                prefix_provenance = calibration_prefix_provenance(
+                    _native_calibration_prefix, current,
+                )
+            elif isinstance(current, FrameSample):
+                prefix_provenance = sampled_calibration_prefix_provenance(
+                    _native_calibration_prefix, current,
+                )
+            else:
+                raise ValueError('native geometry prefix requires source-bound current frame')
             prefix_provenance['input_contract_sha256'] = _native_input_contract.fingerprint
         if self.scene_source_binding is not None:
             self.scene_source_binding.verify()
@@ -985,6 +994,15 @@ class RealHudAnalyzer:
         if prefix_provenance is not None:
             assert _native_calibration_prefix is not None
             _native_calibration_prefix.read_image()
+            if isinstance(frames[0], FrameSample):
+                # Catch source image tampering even when a reference was only
+                # used for geometry and no formal Event was emitted.
+                rechecked = sampled_calibration_prefix_provenance(
+                    _native_calibration_prefix, frames[0],
+                )
+                if any(prefix_provenance.get(key) != value
+                       for key, value in rechecked.items()):
+                    raise HudAnalysisError('sampled geometry source changed')
             self.last_calibration_diagnostics['native_calibration_prefix'] = prefix_provenance
         return HudFrameAnalysis(
             observations=tuple(observations),
