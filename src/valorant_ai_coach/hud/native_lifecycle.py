@@ -23,6 +23,7 @@ from .global_lifecycle import (
     GlobalRoundLifecycle,
     global_recognizer_fingerprint,
 )
+from .native_geometry_initialization import NativeGeometryInitialization
 from .native_system_input import collect_native_system_observations
 from .round_lifecycle import SEMANTIC_PHASE_CONFIDENCE_KEY
 from .temporal import _event
@@ -41,6 +42,7 @@ class NativeLifecycleAnalysis:
     qualification: GlobalLifecycleQualification | None = None
     unedited_input_contract: UneditedInputContract | None = None
     input_contract_path: Path | None = None
+    geometry_initialization: NativeGeometryInitialization | None = None
 
 
 def _accepted(value: Any) -> float:

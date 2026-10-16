@@ -405,12 +405,14 @@ class RealHudAnalyzer:
     def observe_qualified_unedited_native_start_frames(
         self, frames: Sequence[NativeSourceFrame], *, native_step_ticks: int,
         input_contract_path: Path, video_metadata: VideoMetadata | None = None,
+        calibration_prefix: NativeSourceFrame | None = None,
     ) -> NativeLifecycleAnalysis:
         from .native_assured_start import collect_qualified_assured_start
 
         return collect_qualified_assured_start(
             self, frames, native_step_ticks=native_step_ticks,
             input_contract_path=input_contract_path, video_metadata=video_metadata,
+            calibration_prefix=calibration_prefix,
         )
 
     def observe_qualified_native_lifecycle_frames(

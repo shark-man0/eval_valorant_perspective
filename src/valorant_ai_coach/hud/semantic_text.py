@@ -141,6 +141,45 @@ class SemanticTextReference:
         }
 
 
+class SemanticTextFamily:
+    """Match one complete guarded caption, never combine groups across captions."""
+
+    def __init__(self, references: Mapping[str, SemanticTextReference]) -> None:
+        if not 2 <= len(references) <= 8 or any(
+            not isinstance(label, str) or not label.strip() for label in references
+        ):
+            raise ValueError("semantic family requires two to eight named captions")
+        self.references = dict(references)
+        first = next(iter(self.references.values()))
+        if any(
+            ref.reference.shape != first.reference.shape
+            or ref.threshold != first.threshold
+            or ref.contrast_guard is None
+            for ref in self.references.values()
+        ):
+            raise ValueError("semantic family requires equal shapes/thresholds and glyph guards")
+        self.reference = first.reference
+        self.threshold = first.threshold
+
+    def score(self, image: ImageU8) -> float:
+        return max(ref.score(image) for ref in self.references.values())
+
+    def measure(self, image: ImageU8) -> dict[str, Any]:
+        variants = {label: ref.measure(image) for label, ref in self.references.items()}
+        winner = max(variants, key=lambda label: variants[label]["score"])
+        score = variants[winner]["score"]
+        return {
+            "matcher": MATCHER,
+            "threshold": self.threshold,
+            "score": score,
+            "presence": True if score >= self.threshold else None,
+            "matched_caption": winner if score >= self.threshold else None,
+            "variants": variants,
+            "absence_checked": False,
+            "runtime_transition_authorized": False,
+        }
+
+
 class SemanticPhaseContext:
     """Corroborate explicit purchase text without claiming player ownership.
 

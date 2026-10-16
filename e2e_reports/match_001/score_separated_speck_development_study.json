@@ -1,0 +1,84 @@
+{
+  "scope": "Development study; no production change or new qualification",
+  "code": "d14e4b78b3e1fae4df0d154d21067b452796794a9c954992cf7f2ebb12a6d091",
+  "profile": "6411f7d326f71076efa54bb431a8efc501d01678fccd19a1f3a07a62c2146c80",
+  "development_field_calls": 2886,
+  "baseline_rejection_counts": {
+    "accepted": 2780,
+    "strict_score_expected_one_or_two_digits": 52,
+    "strict_score_foreground_touches_roi_border": 29,
+    "strict_score_digit_layout_inconsistent": 23,
+    "strict_score_glyph_below_0_90": 2
+  },
+  "prototype_rule": "Allow the existing small, vertically separated component cleanup in ROI interior as well as border. Same complete centered core/alignment/distance/size/area rules. All remaining structural checks and ten-class NCC thresholds unchanged. No retry or temporal input.",
+  "prototype_source_sha256": "71538662df0e0405bf23c4ba0ed04f822b3034736548554bc2d585c4427db774",
+  "prototype_counts": {
+    "previous_accepted_identical": 2780,
+    "still_unknown": 99,
+    "newly_accepted": 7
+  },
+  "assistant_source_review_new_accepts": {
+    "correct": 7,
+    "wrong": 0,
+    "independent_review": false,
+    "artifact_sha256": "c3fd4f71827e8dab18e3c2aa2cbcb75d6f8267c76cd46db67be76a637b005250"
+  },
+  "synthetic_controls": {
+    "clean_or_noise_equivalence": 13,
+    "partial_leading_digit_rejections": 4,
+    "total": 17,
+    "artifact_sha256": "075e0eda8e2eba3841d3087f6598295379af362ed8dd578f3a07bf294003e7c9"
+  },
+  "development_inventory_elapsed_sec": 29.49494974996196,
+  "prototype_elapsed_sec": 30.15959312504856,
+  "early_caption_source_review": {
+    "scope": "Assistant source-only training review, sampled every0.2s355.6–359.4; not exhaustive temporal labels",
+    "sheet_sha256": "a7ce227be66afcdb653134946d6701b933072ed9b31dd627ba6c60f1386cc668",
+    "observations": "Lines/partial animated glyphs precede complete white LOST. No complete early-caption training label is asserted for those partial frames.",
+    "early_partial_caption_adopted": false
+  },
+  "known_held_miss_remains": true,
+  "post_failure_new_held_opened": false,
+  "production_changed": false,
+  "prototype_promoted": false,
+  "formal_events_generated": false,
+  "full_lifecycle_qualified": false,
+  "harness_failures": {
+    "first": "ReaderResult diagnostic field was incorrectly named provenance; failed before any complete inventory. Corrected to sources.",
+    "second": "Montage canvas was smaller than the actual enlarged crop; failed before complete inventory. Increased canvas only.",
+    "effect_on_algorithm": "None; failed directories and logs retained separately.",
+    "source_control_review": "First source review montage canvas was too narrow; retry changed only canvas width and verified six exact source pixels."
+  },
+  "decision": "Keep as private development candidate; seven current-frame recoveries do not establish End timing or safety over backgrounds. Require adversarial source negatives, current native method verification and a different independently reviewed event before promotion.",
+  "exposed_mixed_scene_controls": {
+    "frames": 76,
+    "field_calls": 152,
+    "counts": {
+      "new_accepts_require_review": 6,
+      "previous_accepted_identical": 114,
+      "still_unknown": 32
+    },
+    "new_accepts_assistant_source_review_correct": 6,
+    "new_accepts_assistant_source_review_wrong": 0,
+    "exact_source_pixel_reproduction_count": 6,
+    "terminal_integrity_verified": true,
+    "elapsed_sec": 41.72559375001583,
+    "result_sha256": "2c023cb22d30ec2b5925d643fb48eddfae0120999fd960dbae1913feaec96523",
+    "source_review_sha256": "5f90ef94c303789c713e92288410c920ee25fa1b516cd5de2c8cd5f2d1b4db6d",
+    "independent_accuracy_or_false_positive_rate_claimed": false,
+    "End_patterns_evaluated": false
+  },
+  "negative_label_correction": {
+    "window_sec": [
+      1920,
+      1920.3
+    ],
+    "previously_exposed": true,
+    "source_observation": "Ally11 at1920.116667s; ally12 at1920.216667s and1920.283333s; center Spike changes to0:06. Enemy10.",
+    "human_independent_temporal_GT": false,
+    "pure_End_negative": false,
+    "old_raw_predictions_preserved": true,
+    "historical_zero_End_counts_are_not_false_positive_rates": true,
+    "future_blind_reuse_for_changed_method": false
+  }
+}

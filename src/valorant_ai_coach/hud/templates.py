@@ -36,7 +36,7 @@ from .readers import HudReader, ReaderResult
 from .report_header import ReportFieldLocator, ReportHeader, report_header_evidence
 from .score_glyphs import StrictScoreGlyphReader, UnavailableStrictScoreGlyphReader
 from .semantic_text import MATCHER as SEMANTIC_TEXT_MATCHER
-from .semantic_text import SIGNAL_ROIS, SemanticTextReference
+from .semantic_text import SIGNAL_ROIS, SemanticTextFamily, SemanticTextReference
 from .spectator import PanelReference, detect_panel
 from .spectator_icon import detect_icon, menu_overlay_candidate
 from .timer_glyphs import StrictTimerGlyphReader, UnavailableStrictTimerGlyphReader
@@ -99,7 +99,7 @@ class HudTemplateProfile:
         self._signal_templates: dict[str, tuple[str, LoadedTemplate]] = {}
         self._signal_bounds: dict[str, tuple[float, float, float, float]] = {}
         self._signal_masks: dict[str, ImageU8] = {}
-        self._semantic_text: dict[str, SemanticTextReference] = {}
+        self._semantic_text: dict[str, SemanticTextReference | SemanticTextFamily] = {}
         self._edge_signals: set[str] = set()
         self._value_regions: dict[str, ImageU8] = {}
         self._consensus_allowed: dict[str, ImageU8] = {}
@@ -107,6 +107,10 @@ class HudTemplateProfile:
             try:
                 if not isinstance(spec, Mapping) or not isinstance(spec.get("roi"), str):
                     raise ValueError("signal requires roi and template")
+                if "variants" in spec and (
+                    name != "round_end_template" or spec.get("matcher") != SEMANTIC_TEXT_MATCHER
+                ):
+                    raise ValueError("caption variants require the semantic Round result role")
                 if (
                     spec.get("matcher") in ("oriented_edges_v1", MATCHER, WEAPON_MATCHER)
                     and "mask" not in spec
@@ -163,7 +167,7 @@ class HudTemplateProfile:
                         ):
                             raise ValueError('invalid semantic contrast guard specification')
                         guard = GlyphContrastGuard(gray_asset(raw_guard['template']))
-                    self._semantic_text[str(name)] = SemanticTextReference(
+                    semantic_model = SemanticTextReference(
                         template.image,
                         gray_asset(str(spec["mask"])),
                         gray_asset(str(spec["support_regions"])),
@@ -174,6 +178,54 @@ class HudTemplateProfile:
                         template.threshold,
                         contrast_guard=guard,
                     )
+                    if "variants" in spec:
+                        variants = spec["variants"]
+                        if not isinstance(variants, list) or not 1 <= len(variants) <= 7:
+                            raise ValueError("semantic variants require one to seven entries")
+                        references = {"primary": semantic_model}
+                        required = {
+                            "label", "template", "mask", "support_regions", "training",
+                            "contrast_guard",
+                        }
+                        for variant in variants:
+                            if not isinstance(variant, Mapping) or set(variant) != required:
+                                raise ValueError("invalid semantic caption variant")
+                            label = variant["label"]
+                            if (not isinstance(label, str) or not label.strip()
+                                    or label != label.strip() or label in references):
+                                raise ValueError("semantic caption labels must be distinct")
+                            if any(not isinstance(variant[key], str)
+                                   for key in ("template", "mask", "support_regions")):
+                                raise ValueError("semantic caption assets require paths")
+                            training = variant["training"]
+                            if not isinstance(training, list) or any(
+                                not isinstance(row, Mapping)
+                                or set(row) != {"template", "frame_sha256"}
+                                or not isinstance(row["template"], str)
+                                or not isinstance(row["frame_sha256"], str)
+                                for row in training
+                            ):
+                                raise ValueError("semantic caption requires source-backed training")
+                            variant_guard = variant["contrast_guard"]
+                            if (not isinstance(variant_guard, Mapping)
+                                    or set(variant_guard) != {"method", "template"}
+                                    or variant_guard["method"] != "glyph_local_contrast_v1"
+                                    or not isinstance(variant_guard["template"], str)):
+                                raise ValueError("semantic variant requires a glyph contrast guard")
+                            from .glyph_contrast import GlyphContrastGuard
+
+                            references[label] = SemanticTextReference(
+                                gray_asset(variant["template"]), gray_asset(variant["mask"]),
+                                gray_asset(variant["support_regions"]),
+                                [(row["frame_sha256"], gray_asset(row["template"]))
+                                 for row in training], template.threshold,
+                                contrast_guard=GlyphContrastGuard(
+                                    gray_asset(variant_guard["template"]),
+                                ),
+                            )
+                        self._semantic_text[str(name)] = SemanticTextFamily(references)
+                    else:
+                        self._semantic_text[str(name)] = semantic_model
                 elif "mask" in spec:
                     value_matcher = spec.get("matcher") in (MATCHER, WEAPON_MATCHER)
                     if spec.get("matcher") == WEAPON_MATCHER and name != "weapon_ammo_structure":

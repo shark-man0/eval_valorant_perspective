@@ -16,6 +16,7 @@ from valorant_ai_coach.video import FrameSample
 
 from .global_lifecycle import GlobalLifecycleQualification, GlobalRoundLifecycle
 from .models import timer_display_evidence
+from .native_geometry_initialization import attest_geometry_initialization
 from .native_lifecycle import NativeLifecycleAnalysis
 from .temporal import _event
 
@@ -142,6 +143,9 @@ def validated_native_boundaries(
         if tuple(r['system_observation'] for r in analysis.source_rows) != analysis.observations:
             raise ValueError('native observation transport mismatch')
         events, diagnostics = replay_assured_starts(analysis.source_rows, qualification, contract)
+        events = attest_geometry_initialization(
+            events, analysis.geometry_initialization, analysis.source_rows, qualification, contract,
+        )
         if events != analysis.hud_events:
             raise ValueError('assured boundary differs from qualified lifecycle replay')
         if continuity_breaks is not None:
@@ -161,7 +165,7 @@ def validated_native_boundaries(
         return deepcopy(events)
     if continuity_breaks:
         raise ValueError('unexpected source breaks for paired native lifecycle')
-    if analysis.input_contract_path is not None:
+    if analysis.input_contract_path is not None or analysis.geometry_initialization is not None:
         raise ValueError('unexpected native input contract path')
     if not {'scene_continuity', 'ui_transition'} <= qualification.components:
         raise ValueError('paired native lifecycle qualification required')

@@ -1,0 +1,269 @@
+{
+  "scope": "Paired fixed-method independent source-event evaluation; human display-point/caption review precedes prediction, assistant support labels frozen before prediction",
+  "source_sha256": "f5a3d2e78f183ffbcdb066ddd21574c2d38846d73b067204145ebaee7cd59c69",
+  "code": "414f9d9d3f1841cfe50fdf9732bb78e1bfa35aa4382eb7c0d90d194ed81155fa",
+  "candidate_profile": "b217885c5d656221495e7f801c583245123b9ed0fb66546a464a0fc7f7f7b4b0",
+  "baseline_profile": "d7fabd3ec4f9a9a77021eed733f1d7379004e2e928d1e0f7933bb689e4eda4d0",
+  "totals": {
+    "physical_frames": 1113,
+    "support:score_ally:unknown": 4,
+    "support:score_enemy:correct": 18,
+    "support:result:correct": 17,
+    "support:noncountdown:rejected": 12,
+    "support:score_ally:correct": 14,
+    "support:result:unknown": 1,
+    "prior_accepted_value_confidence_identical": 2065,
+    "still_unknown": 152,
+    "newly_accepted_fields": 9,
+    "support:timer:correct": 5,
+    "support:timer:unknown": 1
+  },
+  "all_prior_accepts_unchanged": true,
+  "all_timer_phase_result_predictions_identical": true,
+  "terminal_integrity_verified": true,
+  "post_case_tuning": false,
+  "formal_events": 0,
+  "owned_facts": 0,
+  "full_lifecycle_qualified": false,
+  "implementation_commit": "eaafd6b3545d33039265ccb4f36d70cb52489637",
+  "source_provenance": "User supplied this recording in direct response to a request for an unused, unedited recording; no original labels supplied.",
+  "cases": [
+    {
+      "case": "E1",
+      "frames": 331,
+      "field_delta_counts": {
+        "prior_accepted_value_confidence_identical": 514,
+        "still_unknown": 140,
+        "newly_accepted_fields": 8
+      },
+      "complete_score_pairs": {
+        "baseline": 183,
+        "candidate": 191
+      },
+      "support_counts": {
+        "score_ally:unknown": 4,
+        "score_enemy:correct": 6,
+        "result:correct": 5,
+        "noncountdown:rejected": 6,
+        "score_ally:correct": 2,
+        "result:unknown": 1
+      },
+      "diagnostic_End_counts": {
+        "baseline": 0,
+        "candidate": 0
+      },
+      "End_display_point_evaluation": {
+        "baseline": "missing_boundary",
+        "candidate": "missing_boundary"
+      },
+      "producer_elapsed_sec": {
+        "baseline": 95.89307041699067,
+        "candidate": 93.25563395803329
+      },
+      "semantic_result_matches": {
+        "baseline": 72,
+        "candidate": 72
+      },
+      "report_sha256": {
+        "baseline": "acbf4d16cdf5a3fb5bea8ecd0e443a2ee557a0008c92e5d772fc2e8cc71adc60",
+        "candidate": "1b7c13a597e9faa98e80dd96b2136040dfcdb003da46755735b658bf342ff663"
+      },
+      "raw_rows_sha256": {
+        "baseline": "df4027a6165c221b5a16f6b0800530f9228c85807d3af4645549896b821e3675",
+        "candidate": "ae3280be927812ace1034038ac6ec2d5f97105a313dfbcd5cae2064d48fb1f8a"
+      },
+      "first_new_score_delay_ms": {
+        "baseline": 0.0,
+        "candidate": 0.0
+      },
+      "geometry": {
+        "baseline": {
+          "frames": 331,
+          "fresh_geometry_success": 0,
+          "effective_geometry_success": 331,
+          "retained_geometry_frames": 331,
+          "geometry_invalid_unknown": 0,
+          "geometry_valid_state_unknown": 331,
+          "live_identity_evidence_insufficient": 331,
+          "insufficient_anchors_frames": 331
+        },
+        "candidate": {
+          "frames": 331,
+          "fresh_geometry_success": 0,
+          "effective_geometry_success": 331,
+          "retained_geometry_frames": 331,
+          "geometry_invalid_unknown": 0,
+          "geometry_valid_state_unknown": 331,
+          "live_identity_evidence_insufficient": 331,
+          "insufficient_anchors_frames": 331
+        }
+      }
+    },
+    {
+      "case": "E2",
+      "frames": 391,
+      "field_delta_counts": {
+        "prior_accepted_value_confidence_identical": 782
+      },
+      "complete_score_pairs": {
+        "baseline": 391,
+        "candidate": 391
+      },
+      "support_counts": {
+        "score_ally:correct": 6,
+        "score_enemy:correct": 6,
+        "result:correct": 6,
+        "noncountdown:rejected": 6
+      },
+      "diagnostic_End_counts": {
+        "baseline": 0,
+        "candidate": 0
+      },
+      "End_display_point_evaluation": {
+        "baseline": "missing_boundary",
+        "candidate": "missing_boundary"
+      },
+      "producer_elapsed_sec": {
+        "baseline": 129.64493541698903,
+        "candidate": 122.60743600002024
+      },
+      "semantic_result_matches": {
+        "baseline": 182,
+        "candidate": 182
+      },
+      "report_sha256": {
+        "baseline": "75f4a16db03e1e220696adf7ca2fc384047c1cec7b4cca9c26f26afe1270c455",
+        "candidate": "b880ceaec5c5160d99d0775258d667e293556eef03f99607397f6b75fa3b39ad"
+      },
+      "raw_rows_sha256": {
+        "baseline": "02f16a2c6e48b08dd647a87b443270da71c9bf885330683948f09305ab3b42cc",
+        "candidate": "366d389060e660990fd1744bd781fe5604bf2fcc6a87a72263bd0112eb56f239"
+      },
+      "first_new_score_delay_ms": {
+        "baseline": 0.0,
+        "candidate": 0.0
+      },
+      "geometry": {
+        "baseline": {
+          "frames": 391,
+          "fresh_geometry_success": 0,
+          "effective_geometry_success": 391,
+          "retained_geometry_frames": 391,
+          "geometry_invalid_unknown": 0,
+          "geometry_valid_state_unknown": 391,
+          "live_identity_evidence_insufficient": 391,
+          "insufficient_anchors_frames": 391
+        },
+        "candidate": {
+          "frames": 391,
+          "fresh_geometry_success": 0,
+          "effective_geometry_success": 391,
+          "retained_geometry_frames": 391,
+          "geometry_invalid_unknown": 0,
+          "geometry_valid_state_unknown": 391,
+          "live_identity_evidence_insufficient": 391,
+          "insufficient_anchors_frames": 391
+        }
+      }
+    },
+    {
+      "case": "E3",
+      "frames": 391,
+      "field_delta_counts": {
+        "prior_accepted_value_confidence_identical": 769,
+        "still_unknown": 12,
+        "newly_accepted_fields": 1
+      },
+      "complete_score_pairs": {
+        "baseline": 379,
+        "candidate": 380
+      },
+      "support_counts": {
+        "score_ally:correct": 6,
+        "score_enemy:correct": 6,
+        "result:correct": 6,
+        "timer:correct": 5,
+        "timer:unknown": 1
+      },
+      "diagnostic_End_counts": {
+        "baseline": 0,
+        "candidate": 0
+      },
+      "End_display_point_evaluation": {
+        "baseline": "missing_boundary",
+        "candidate": "missing_boundary"
+      },
+      "producer_elapsed_sec": {
+        "baseline": 113.86129108298337,
+        "candidate": 109.44294937496306
+      },
+      "semantic_result_matches": {
+        "baseline": 263,
+        "candidate": 263
+      },
+      "report_sha256": {
+        "baseline": "5f8f54c1a730067f9e42b0debfa04fef4314f6fa06583026a1c00b740ae717ec",
+        "candidate": "a218bc9986e1c6e2d3a82a22f2eff04395c89d9d8c00911d5208f4a0384c749c"
+      },
+      "raw_rows_sha256": {
+        "baseline": "1150311bf5601e58f8ea50d60959b9af3840c1489b3ab31d558c618492fda0a8",
+        "candidate": "b5fd8ae6eb389739bb62bb74fb1eb04665319c089014e1ef0f1b8edef5a2ad0b"
+      },
+      "first_new_score_delay_ms": {
+        "baseline": 50.0,
+        "candidate": 50.0
+      },
+      "geometry": {
+        "baseline": {
+          "frames": 391,
+          "fresh_geometry_success": 0,
+          "effective_geometry_success": 391,
+          "retained_geometry_frames": 391,
+          "geometry_invalid_unknown": 0,
+          "geometry_valid_state_unknown": 391,
+          "live_identity_evidence_insufficient": 391,
+          "insufficient_anchors_frames": 391
+        },
+        "candidate": {
+          "frames": 391,
+          "fresh_geometry_success": 0,
+          "effective_geometry_success": 391,
+          "retained_geometry_frames": 391,
+          "geometry_invalid_unknown": 0,
+          "geometry_valid_state_unknown": 391,
+          "live_identity_evidence_insufficient": 391,
+          "insufficient_anchors_frames": 391
+        }
+      }
+    }
+  ],
+  "private_evidence_sha256": {
+    "receipt.json": "1238f985500a72e9b0e91107aa11fbbff9d0cf24271f5d09319e7205b1df8d8c",
+    "split-plan.json": "f91bbb0135b4d71b23778ebec4abe918f29665f73c415ee098438f5c57eb40c6",
+    "unedited-input.json": "fab276045c07207d36642ee1146176cc69975c8d667d78eba209942dd0b3b492",
+    "candidate-freeze.json": "2ab10c406a3129b7c08221143798515d06e35e2f09d73a310d7fbdc8309c6a54",
+    "baseline-comparison-freeze.json": "7146d6224a27a79a73a48ab33e89f63dc223eb5a1f67ca1d5c30db823bc0b87b",
+    "human-review-request-bound.json": "006079164f15be7fe489bac9b092ea1ab949b50490fd8254311c63ccc1210017",
+    "human-review-response.json": "3f89a6f55f647449eaded8218017eaaa13a4c17b178ca17c1d41e04314d3e568",
+    "preprediction-integrity.json": "a6fd1050e17dee70703e3e48e893993ad9915996ad3942028702478fb62b83c1",
+    "comparison.json": "0d1f54996664821e1b480a2587840479f7bbf061223dde6d0500565d70d92f96",
+    "posthoc-new-score-review.json": "b746bdbf813eb485721c0b28c5d2a644c6c6d9eeb02012e65625e89cfa0705bb"
+  },
+  "PNG_bytes": 1931834233,
+  "enrollment": "All three source-discovered increment episodes retained, including two noncountdown End episodes; no independent pure End-negative cohort.",
+  "human_review": "Human first-new-score-frame and LOST caption review recorded before either prediction; assistant support labels frozen separately before prediction. Display points are not internal game End GT.",
+  "geometry_scope": "Actual earlier source frame initializes geometry only; every evaluated frame uses retained geometry. No Start, values, identity, epoch continuity or formal admission supplied by reference.",
+  "posthoc_changed_field_review": {
+    "count": 9,
+    "assistant_source_agreement": 9,
+    "independent_human_review": false,
+    "prospective_accuracy_counts_expanded": false
+  },
+  "remaining_gates": [
+    "Formal End qualification",
+    "Independent temporal and End-negative annotations",
+    "Complete same-epoch Start to End",
+    "Full ordinary R2 sampling and round membership",
+    "Current Linux and Windows CI"
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "scope": "Development-only matching-preprocessing template bank; rejected for End timing regression",
+  "source_sha256": "06919642d69f68895ac123b505bfd7d3643dd28d903585008fcdc2b7f1b7e3fd",
+  "result": {
+    "code": "414f9d9d3f1841cfe50fdf9732bb78e1bfa35aa4382eb7c0d90d194ed81155fa",
+    "profile": "ca8aa2a0325afd5f5bcf6d6d8eaddab94ea764ecdcbacecc6104ca3b2f0895f9",
+    "training_labels_sha256": "56da00ba91be4690c08bee749e3df1747f9dccf75fa3285407a2606b0cef12db",
+    "prototype_sha256": "cccddbdb8862bcbf8c7672042fdfd92b572600ac5402ac45830b6745a342e0ba",
+    "bank_lineage_sha256": "d9a6e7171e543e247d20da7c05812fd433b88f441a5595a2a8ef1cef49864399",
+    "added_count_per_digit": {
+      "0": 58,
+      "6": 5,
+      "5": 10,
+      "4": 5,
+      "3": 4,
+      "2": 5,
+      "1": 13,
+      "9": 3,
+      "8": 2
+    },
+    "original_references_retained": true,
+    "new_independent_qualification": false,
+    "counts": {
+      "training:still_unknown": 36,
+      "remaining_development:still_unknown": 672,
+      "remaining_development:lost_accept": 7,
+      "training:lost_accept": 1,
+      "remaining_development:retained_accept": 641,
+      "training:retained_accept": 30,
+      "remaining_development:new_accept": 51,
+      "training:new_accept": 5
+    },
+    "labelled_training_support": {
+      "correct": 69,
+      "unknown": 3
+    },
+    "physical_frames": 1443,
+    "training_frames": 72,
+    "remaining_development_frames": 1371,
+    "elapsed_sec": 32.05130950000603,
+    "production_changed": false,
+    "remaining_development_is_not_independent_holdout": true,
+    "new_accepts_unreviewed": true
+  },
+  "labelled_training_support_separated": {
+    "noncountdown:correct": 34,
+    "countdown:unknown": 3,
+    "countdown:correct": 35
+  },
+  "posthoc_changed_source_review": {
+    "new_accepts_correct": 56,
+    "lost_baseline_correct_accepts": 8,
+    "all_changed_fields_reviewed": 64,
+    "independent_human_review": false,
+    "qualification_accuracy_expanded": false
+  },
+  "baseline_accepted": 679,
+  "prototype_accepted": 727,
+  "timing_comparison": {
+    "scope": "Saved static timer and actual fixed development score reader outputs, not a new tracker/native pipeline run or internal End GT",
+    "LOST_first_accepted_0_06_sec": {
+      "baseline": 357.21666666666664,
+      "prototype": 357.43333333333334
+    },
+    "LOST_first_accepted_updated_enemy_score_sec": 357.26666666666665,
+    "LOST_timer_delay_ms": 216.6666666667,
+    "numeric_first_accepted_0_06_sec": {
+      "baseline": 522.6333333333333,
+      "prototype": 522.6333333333333
+    }
+  },
+  "decision": "Do not adopt: eight correct accepts lost; first new clock delayed beyond score update in development End context; missing new-preprocessing digit7 support and only two digit8 frames. Availability gain is not End qualification.",
+  "production_changed": false,
+  "formal_qualification_issued": false,
+  "new_held_opened": false,
+  "private_evidence_sha256": {
+    "plan.json": "2045b6a8f466592f5df919b3f2f1365fe05e8935ec5163140a69c26e9ad3d2f4",
+    "training-source-grid.json": "f868e5ec0a67b503100fc224c9c969ff8765ed282b4d33e9dd7746e343b23a6e",
+    "source-labels.json": "56da00ba91be4690c08bee749e3df1747f9dccf75fa3285407a2606b0cef12db",
+    "freeze.json": "888cd349ce49d8b0d487a7b41a30d4d033b19fed3de3b64a1a5c8b814e9831cb",
+    "bank-lineage.json": "d9a6e7171e543e247d20da7c05812fd433b88f441a5595a2a8ef1cef49864399",
+    "extractor.py": "b97d441fafdc3367c4802b3bd789914e365dff21965c1e11523d55b99911ff27",
+    "rows.json": "0cedfeaf6eaa2ea050faed5100fd7ae425d8040800dee470cb21688363f66cc0",
+    "result.json": "14c648ab45aa1ed0d864ea8b8d0fe874b40c6a6d069329588466abf68cb077d8",
+    "changed-source-review-selection.json": "72962c7f0805cc35724bb2ab9869e269bf2b53a1ce12070ce10960b70245d2fc",
+    "posthoc-changed-source-review.json": "4a014e8ffc3855158fa4612c663c3ecf5520366e8e8bebdc9e331adf6fd39f36"
+  }
+}

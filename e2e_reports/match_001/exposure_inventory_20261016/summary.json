@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "scope": "Known saved source identities, not exhaustive visual exposure",
+  "source_records": 4518,
+  "input_artifacts": 38,
+  "unique_source_pts": 4432,
+  "source_counts": {
+    "supplemental_010246": 3361,
+    "supplemental_001927": 1157
+  },
+  "exhaustive_exposure_proven": false,
+  "unlisted_frames_certified_unviewed": false,
+  "independent_holdout_certified": false,
+  "exact_first_view_times_available": false,
+  "source_images_labels_profiles_included": false,
+  "match_002_image_exposure_assessed": false,
+  "files_sha256": {
+    "artifact_index.json": "edcdf955fe845d736ef70dc256d7b9a2712d4406b6e8c4e682e7e566223aa01a",
+    "discovery_requests.json": "d785dcda089596488aa18f28361c926174159cdccd0faf5e4b8c973159336741",
+    "frames.jsonl": "a1c1475c19f7a4d2dffa26ec7b99267b166563294015118f0e1006e830d02995",
+    "historical_split_plans.json": "3cbda99c500965e3e07aa027a5a1a4a79f22288996358d01bfef08f5325aa3df",
+    "method_snapshots.json": "a252db4d965444928cd44cea4a8357b018a0bef92483671d3e4aab68f40a2615",
+    "sources.json": "0334a821e8ad4594fd51ce652a8e838550eb47fb1da03a0f98ba2eb8b419693e"
+  }
+}

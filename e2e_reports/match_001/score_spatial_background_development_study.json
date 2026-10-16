@@ -1,0 +1,57 @@
+{
+  "scope": "Existing development only; no held, no timer change, no tracker call",
+  "code": "414f9d9d3f1841cfe50fdf9732bb78e1bfa35aa4382eb7c0d90d194ed81155fa",
+  "base_profile": "ca8aa2a0325afd5f5bcf6d6d8eaddab94ea764ecdcbacecc6104ca3b2f0895f9",
+  "hypothesis": "Replace max left/right side-eight-pixel median row background with linear interpolation between median pixel centers3.5 and width-4.5, clamped outside. Keep white200, contrast12, separated-speck cleanup and all digit/structure/NCC/margin checks. Single fixed parameterization, no scan or retry.",
+  "prototype_sha256": "8bfa7bb723a703863722f9b70f4bde1eec1faa4300f055c80be66b3fd2539dfb",
+  "windows": [
+    "LOST",
+    "WON",
+    "numeric"
+  ],
+  "input_sha256": {
+    "work/new-source-development/development-timing/LOST/source-manifest.json": "1ff551423ed5d745110e4374465a4f827349e52890a3dfff1795b34f85afe6c7",
+    "work/new-source-development/development-timing/WON/source-manifest.json": "bcf755598738f5140bec365b285b66a040441f59fe071ba0ab11d63dd74857f5",
+    "work/new-source-development/development-timing/numeric/source-manifest.json": "c784554ea5af2bc7fd88a0162c6e76806954b44dfb3e2d8004b7ac79b6e8d3dc",
+    "work/new-source-development/production-separated-score/rows.json": "265f6c7abf63b19bf0aef58db8666ac2e0b010b6f7587fff792eca44a3f7b0e8"
+  },
+  "new_held_opened": false,
+  "formal_qualification": false,
+  "calls": 2886,
+  "counts": {
+    "LOST:prior_accept_identical": 950,
+    "LOST:still_unknown": 11,
+    "LOST:prior_accept_same_value_changed_confidence": 1,
+    "WON:prior_accept_identical": 929,
+    "WON:lost_accept": 1,
+    "WON:still_unknown": 32,
+    "numeric:still_unknown": 56,
+    "numeric:prior_accept_identical": 894,
+    "numeric:lost_accept": 7,
+    "numeric:prior_accept_same_value_changed_confidence": 5
+  },
+  "elapsed_sec": 29.997293833992444,
+  "terminal_integrity_verified": true,
+  "production_changed": false,
+  "changed_field_source_review_pending": false,
+  "paired_delta_counts": {
+    "prior_accept_identical": 2773,
+    "still_unknown": 99,
+    "prior_accept_same_value_changed_confidence": 6,
+    "lost_accept": 8
+  },
+  "lost_accept_reasons": {
+    "strict_score_digit_layout_inconsistent": 6,
+    "strict_score_expected_one_or_two_digits": 2
+  },
+  "decision": "Reject: zero new accepts, eight prior accepts lost, original transition score unknowns remain",
+  "changed_field_source_review_performed": false,
+  "source_correctness_of_changed_fields_not_claimed": true,
+  "formal_qualification_issued": false,
+  "private_evidence_sha256": {
+    "plan.json": "9a75eb54487edcaf085c3b16136e3b339a547083e281fd4ab76bb8a8c9a78f67",
+    "prototype.py": "8bfa7bb723a703863722f9b70f4bde1eec1faa4300f055c80be66b3fd2539dfb",
+    "rows.json": "cb764ef02c300a1509c9d859904393d7ec6be4c3d1822d68d430ce42bc96279a",
+    "result.json": "bd709108131a8272e685dd34a6187e44b3dab6583d099730ddba01d4157e786a"
+  }
+}

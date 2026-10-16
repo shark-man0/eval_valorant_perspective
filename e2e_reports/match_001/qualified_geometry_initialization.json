@@ -1,0 +1,774 @@
+{
+  "schema_version": 1,
+  "scope": "Explicit qualified geometry-only initialization, bounded actual Start/Package/Trace and unchanged application-calibration guard; not full lifecycle qualification",
+  "judgment": "B: bounded partial qualification",
+  "worktree_base_commit": "0ff58e74271284ed742eccc21b31da4ce1fe3eb8",
+  "main_integrated": "7e480c2f2f7f49aea73e1541d065d78881d2f11c",
+  "freeze": {
+    "scope": "Geometry-only qualified initialization frozen before fresh regression; no new blind recognition accuracy claim",
+    "recognizer_fingerprint": "d14e4b78b3e1fae4df0d154d21067b452796794a9c954992cf7f2ebb12a6d091",
+    "profile_fingerprint": "fc3b8dfc4c4e9c72e6bbbaf7c5a90762ad879ea695dff8784997123e1f56f51c",
+    "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+    "training_scope": "Generic synthetic geometry and transport tests; original prefix is geometry only",
+    "old_source_case_exposure_retained": true,
+    "thresholds_changed": false,
+    "lifecycle_state_imported": false,
+    "default_enabled": false
+  },
+  "API": {
+    "entry": "RealHudAnalyzer.observe_qualified_unedited_native_start_frames",
+    "optional_parameter": "calibration_prefix: NativeSourceFrame | None",
+    "default_enabled": false,
+    "reference_lifetime": "Image remains available through Package/Trace publication",
+    "reference_scope": "geometry_only_reference_v1",
+    "prefix_values_phase_events_ownership_or_continuity_imported": false,
+    "current_geometry_contradiction_veto_preserved": true,
+    "minimum_anchors": 3,
+    "anchor_threshold": 0.9,
+    "End_horizon_sec": 1,
+    "GT_or_timestamps_changed": false
+  },
+  "Start_admission": {
+    "scope": "Fresh current-code bounded Start-only revalidation; original exposure retained, not blind qualification",
+    "recognizer_fingerprint": "d14e4b78b3e1fae4df0d154d21067b452796794a9c954992cf7f2ebb12a6d091",
+    "profile_fingerprint": "fc3b8dfc4c4e9c72e6bbbaf7c5a90762ad879ea695dff8784997123e1f56f51c",
+    "bundle_sha256": "19a2ccedcafb8af48d14edcaf1e072fd0619eb9ed2f799874d033ab028948212",
+    "stale_previous_bundle_rejected": true,
+    "actual_loader_admitted_components": [
+      "purchase_phase",
+      "timer",
+      "ui_transition"
+    ],
+    "static_replay_sha256": "ddfe984a8b772a48d8f73eca4e1ab709a4a910b134abd89f8c9fbce66f5018df",
+    "native_window_replay_sha256": "fcd3b0fa710d6a8de2e63b678c15a6dd6d8eaed319aa540a0579694b42162bc8",
+    "ui_support_counts": {
+      "training": 9,
+      "holdout": 7,
+      "negative": 90
+    },
+    "runtime_default_installed": false,
+    "full_lifecycle_qualification_established": false
+  },
+  "previous_ddc5_Start_bundle_actually_rejected": {
+    "sha256": "85caed7d2b4044b910bfa98f573907a0eaa087c488d840090ee40ab288d75ca7",
+    "error": "Invalid or mismatched global lifecycle qualification"
+  },
+  "static_counts": {
+    "phase": {
+      "training_correct": 3,
+      "holdout_correct": 8,
+      "negative_rejected": 12
+    },
+    "timer": {
+      "correct": 25,
+      "unknown": 7
+    },
+    "score_fields": {
+      "unknown": 18,
+      "correct": 36
+    },
+    "score_pairs": {
+      "unknown": 18,
+      "correct": 9
+    },
+    "result": {
+      "unknown": 8,
+      "correct": 3,
+      "negative_rejected": 3
+    }
+  },
+  "fresh_fixed_native": {
+    "frames": 369,
+    "elapsed_sec": 159.5313953749719,
+    "windows": [
+      {
+        "name": "r1_ui_development",
+        "split": "training",
+        "processed_frames": 36,
+        "timer_source_comparison": {
+          "correct": 36
+        },
+        "score_field_source_comparison": {},
+        "formal_events": 0,
+        "player_owned_facts": 0,
+        "diagnostic_patterns": [
+          {
+            "kind": "round_start",
+            "time_sec": 4.102669270833333,
+            "confidence": 0.9541926383972168,
+            "confirmation_sec": 4.202669270833334
+          }
+        ]
+      },
+      {
+        "name": "r2_ui_development",
+        "split": "holdout_review",
+        "processed_frames": 36,
+        "timer_source_comparison": {
+          "unknown": 6,
+          "correct": 30
+        },
+        "score_field_source_comparison": {},
+        "formal_events": 0,
+        "player_owned_facts": 0,
+        "diagnostic_patterns": [
+          {
+            "kind": "round_start",
+            "time_sec": 111.4193359375,
+            "confidence": 0.931477963924408,
+            "confirmation_sec": 111.48600260416667
+          }
+        ]
+      },
+      {
+        "name": "active_control",
+        "split": "negative_review",
+        "processed_frames": 30,
+        "timer_source_comparison": {
+          "correct": 26,
+          "unknown": 4
+        },
+        "score_field_source_comparison": {},
+        "formal_events": 0,
+        "player_owned_facts": 0,
+        "diagnostic_patterns": []
+      },
+      {
+        "name": "menu_control",
+        "split": "negative_review",
+        "processed_frames": 30,
+        "timer_source_comparison": {
+          "correct": 30
+        },
+        "score_field_source_comparison": {},
+        "formal_events": 0,
+        "player_owned_facts": 0,
+        "diagnostic_patterns": []
+      },
+      {
+        "name": "spectator_control",
+        "split": "negative_review",
+        "processed_frames": 30,
+        "timer_source_comparison": {
+          "unknown": 19,
+          "correct": 11
+        },
+        "score_field_source_comparison": {},
+        "formal_events": 0,
+        "player_owned_facts": 0,
+        "diagnostic_patterns": []
+      },
+      {
+        "name": "r1_end_continuous_result_inputs",
+        "split": "known_end_review",
+        "processed_frames": 108,
+        "timer_source_comparison": {
+          "correct": 17,
+          "unknown": 91
+        },
+        "score_field_source_comparison": {
+          "correct": 119,
+          "unknown": 97
+        },
+        "formal_events": 0,
+        "player_owned_facts": 0,
+        "diagnostic_patterns": [
+          {
+            "kind": "round_end",
+            "time_sec": 74.48600260416667,
+            "confidence": 0.9180924279198346,
+            "confirmation_sec": 75.3693359375
+          }
+        ]
+      },
+      {
+        "name": "numeric_end_menu_entry_control",
+        "split": "negative_review",
+        "processed_frames": 27,
+        "timer_source_comparison": {},
+        "score_field_source_comparison": {},
+        "formal_events": 0,
+        "player_owned_facts": 0,
+        "diagnostic_patterns": []
+      },
+      {
+        "name": "pending_end_new_active_inputs",
+        "split": "negative_review",
+        "processed_frames": 72,
+        "timer_source_comparison": {},
+        "score_field_source_comparison": {},
+        "formal_events": 0,
+        "player_owned_facts": 0,
+        "diagnostic_patterns": []
+      }
+    ],
+    "terminal_integrity_verified": true
+  },
+  "R1_native_Start": {
+    "scope": "Bounded current-code/source production-entrance and native-to-package/trace verification under explicit reviewed start-only offline admission; no default or full lifecycle release",
+    "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "profile_fingerprint": "fc3b8dfc4c4e9c72e6bbbaf7c5a90762ad879ea695dff8784997123e1f56f51c",
+    "recognizer_fingerprint": "d14e4b78b3e1fae4df0d154d21067b452796794a9c954992cf7f2ebb12a6d091",
+    "candidate_bundle_sha256": "19a2ccedcafb8af48d14edcaf1e072fd0619eb9ed2f799874d033ab028948212",
+    "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+    "window_sec": [
+      0,
+      6
+    ],
+    "png_budget_bytes": 1073741824,
+    "original_exposure_retained": true,
+    "new_blind_cohort": false,
+    "full_lifecycle_qualification_established": false,
+    "script_sha256": "2e7ea35b387aedf401208ef76c1bfe497acd46217298cd6db74211e4da681c76",
+    "production_GT_input": false,
+    "external_system_proofs_supplied": false,
+    "runtime_default_installed": false,
+    "processed_frames": 358,
+    "first_tick": 553,
+    "last_tick": 91945,
+    "producer_elapsed_sec": 120.85063370800344,
+    "elapsed_sec": 155.5944624170079,
+    "retained_png_bytes": 607990858,
+    "peak_process_rss_bytes": 134234112,
+    "round_packages": 1,
+    "trace_total_events": 1,
+    "trace_round_starts": 1,
+    "trace_round_ends": 0,
+    "trace_snapshots": 0,
+    "package_windows": [
+      {
+        "start_sec": 3.602669270833333,
+        "end_sec": 171.019336
+      }
+    ],
+    "package_quality": [
+      {
+        "hud_confidence": 0.0,
+        "visual_confidence": 0.0,
+        "timeline_completeness": 0.0,
+        "missing_intervals": [
+          {
+            "start_sec": 3.602669270833333,
+            "end_sec": 171.019336
+          }
+        ]
+      }
+    ],
+    "source_to_native_to_trace_attrs_equal": true,
+    "player_owned_facts": 0,
+    "terminal_integrity_verified": true,
+    "canonical_evaluation_executed": false,
+    "application_HUD_visual_fusion_exercised": false
+  },
+  "R1_application_Start": {
+    "scope": "Actual fixed-frame application merge; exact current native output reuse, not fresh recognition, full sampler or temporal qualification",
+    "window_sec": [
+      [
+        0,
+        0.08
+      ],
+      [
+        3.9,
+        4.5
+      ]
+    ],
+    "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "recognizer_fingerprint": "d14e4b78b3e1fae4df0d154d21067b452796794a9c954992cf7f2ebb12a6d091",
+    "profile_fingerprint": "fc3b8dfc4c4e9c72e6bbbaf7c5a90762ad879ea695dff8784997123e1f56f51c",
+    "qualification_sha256": "19a2ccedcafb8af48d14edcaf1e072fd0619eb9ed2f799874d033ab028948212",
+    "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+    "native_artifact_sha256": "8a6e8a3eb63c080ff9b5ed09925c47fbf9c47d3bb3922dedca433a3346724b18",
+    "script_sha256": "aee2f8b16a63e57f26f8401ff1a4b78e4b7565ec8ec76c1644a759873c95259b",
+    "default_installed": false,
+    "GT_input": false,
+    "full_lifecycle_qualification_established": false,
+    "frames": 39,
+    "elapsed_sec": 16.012139500002377,
+    "application_processing_sec": 10.447427667037118,
+    "retained_png_bytes": 45491368,
+    "peak_process_rss_bytes": 147931136,
+    "round_packages": 1,
+    "trace_events": 1,
+    "trace_snapshots": 0,
+    "owned_facts": 0,
+    "native_to_trace_equal": true,
+    "terminal_integrity_verified": true,
+    "package_windows": [
+      {
+        "start_sec": 3.602669270833333,
+        "end_sec": 171.019336
+      }
+    ],
+    "package_quality": [
+      {
+        "hud_confidence": 0.0,
+        "visual_confidence": 0.0,
+        "timeline_completeness": 0.0,
+        "missing_intervals": [
+          {
+            "start_sec": 3.602669270833333,
+            "end_sec": 171.019336
+          }
+        ]
+      }
+    ],
+    "full_sampler_exercised": false,
+    "full_E2E_executed": false
+  },
+  "R1_canonical_checks": {
+    "native": {
+      "scope": "Evaluation after production; only R1 Start assertion is claimed, remaining fragment outcomes private",
+      "target_outcome": [
+        {
+          "assertion_id": "GT-R1-ROUND-START",
+          "group": "required_point_events",
+          "index": 0,
+          "status": "pass",
+          "failures": []
+        }
+      ],
+      "assertions_sha256": "c5e242b611ce227d1d2633e5e24c00dfe65168d8124ab58fbdea84b1d7f0d820",
+      "trace_sha256": "af45d08a0c33d1d28710ec8c01e6bf6574a0ff9efff425e587e1139ddf8529d2",
+      "full_E2E_executed": false,
+      "canonical_baseline_updated": false,
+      "production_GT_input": false
+    },
+    "application": {
+      "scope": "Evaluation after production; only R1 Start assertion is claimed, remaining fragment outcomes private",
+      "target_outcome": [
+        {
+          "assertion_id": "GT-R1-ROUND-START",
+          "group": "required_point_events",
+          "index": 0,
+          "status": "pass",
+          "failures": []
+        }
+      ],
+      "assertions_sha256": "c5e242b611ce227d1d2633e5e24c00dfe65168d8124ab58fbdea84b1d7f0d820",
+      "trace_sha256": "6d0119e57500db3259f339887bcae055153d3cd95d9d6b5ef6847d6c57754c32",
+      "full_E2E_executed": false,
+      "canonical_baseline_updated": false,
+      "production_GT_input": false
+    }
+  },
+  "R2_initialized_native_and_application_attempt": {
+    "scope": "Original exposed R2 case: fresh qualified explicit geometry initialization; source-origin reference carries no lifecycle or continuity; local Package numbering only",
+    "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "recognizer_fingerprint": "d14e4b78b3e1fae4df0d154d21067b452796794a9c954992cf7f2ebb12a6d091",
+    "profile_fingerprint": "fc3b8dfc4c4e9c72e6bbbaf7c5a90762ad879ea695dff8784997123e1f56f51c",
+    "qualification_sha256": "19a2ccedcafb8af48d14edcaf1e072fd0619eb9ed2f799874d033ab028948212",
+    "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+    "window_sec": [
+      111.0,
+      111.8
+    ],
+    "prefix_window_sec": [
+      0,
+      0.08
+    ],
+    "prefix_role": "geometry_only_reference_v1",
+    "prefix_epoch_is_continuity_proof": false,
+    "GT_production_input": false,
+    "default_prefix_enabled": false,
+    "new_blind_cohort": false,
+    "full_lifecycle_qualification_established": false,
+    "script_sha256": "0d036ae56d65a03fdb35aa541568754277ab99364f36c822839afd6414aea3c0",
+    "png_budget_bytes": 134217728,
+    "frames": 48,
+    "prefix_frame_count_used": 1,
+    "prefix_is_observation": false,
+    "producer_elapsed_sec": 16.338676291052252,
+    "application_processing_sec": 5.572679208999034,
+    "elapsed_sec": 28.692990874988027,
+    "retained_png_bytes": 76624131,
+    "peak_process_rss_bytes": 147193856,
+    "events": [
+      {
+        "type": "round_start",
+        "actor": "system",
+        "time_sec": 111.4193359375,
+        "confidence": 0.931477963924408,
+        "confirmation_pts_sec": 111.48600260416667,
+        "continuity_segment": 0,
+        "geometry_initialization": {
+          "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+          "producer_fingerprint": "1b350e5fbc5b9089cd7ce54b340c97f035ba1658b77c7f174735d75da584632d",
+          "profile_fingerprint": "fc3b8dfc4c4e9c72e6bbbaf7c5a90762ad879ea695dff8784997123e1f56f51c",
+          "qualification_sha256": "19a2ccedcafb8af48d14edcaf1e072fd0619eb9ed2f799874d033ab028948212",
+          "recognizer_fingerprint": "d14e4b78b3e1fae4df0d154d21067b452796794a9c954992cf7f2ebb12a6d091",
+          "reference": {
+            "encoded_sha256": "4e8c917681f720e2735ebb50188e5cf8907d924e37670b466c9aa56782025fbb",
+            "height": 1080,
+            "scope": "calibration_only",
+            "source_epoch": "848404199cf9468bba154dca93e394ca",
+            "source_pixel_sha256": "291edad6c48766070b70b8cef3ff52cb13b9f1ec40813f74a3c24b68c7ccd923",
+            "source_pts_ticks": 553,
+            "source_time_base": "1/15360",
+            "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+            "width": 1920
+          },
+          "scope": "geometry_only_reference_v1",
+          "window_first": {
+            "source_epoch": "102bc335d8af45468d36f85ae23ece05",
+            "source_pixel_sha256": "645fbb078e404e8bf34a6ac06a2839b7a372e453829017618d8641b59e79cf9b",
+            "source_pts_sec": 111.00266927083334,
+            "source_pts_ticks": 1705001,
+            "source_time_base": "1/15360",
+            "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06"
+          }
+        },
+        "full_attributes_sha256": "89082c9f8f2a44482f55c95b83702d0a6ad54d03b6f3c8f13b0403d05bb99fb6"
+      }
+    ],
+    "native_packages": 1,
+    "native_package_windows": [
+      {
+        "start_sec": 111.0693359375,
+        "end_sec": 171.019336
+      }
+    ],
+    "native_package_quality": [
+      {
+        "hud_confidence": 0.0,
+        "visual_confidence": 0.0,
+        "timeline_completeness": 0.0,
+        "missing_intervals": [
+          {
+            "start_sec": 111.0693359375,
+            "end_sec": 171.019336
+          }
+        ]
+      }
+    ],
+    "application_error": "HUD calibration_required: insufficient_anchors",
+    "application_packages": null,
+    "application_package_windows": null,
+    "application_package_quality": null,
+    "native_to_application_trace_attrs_equal": false,
+    "native_and_application_trace_events": [
+      1,
+      null
+    ],
+    "trace_snapshots": [
+      0,
+      null
+    ],
+    "owned_facts": 0,
+    "native_geometry_counts": {
+      "frames": 48,
+      "fresh_geometry_success": 0,
+      "effective_geometry_success": 48,
+      "retained_geometry_frames": 48,
+      "geometry_invalid_unknown": 0,
+      "geometry_valid_state_unknown": 48,
+      "live_identity_evidence_insufficient": 47,
+      "insufficient_anchors_frames": 48
+    },
+    "terminal_integrity_verified": true,
+    "match_wide_R2_package_numbering_proven": false,
+    "full_E2E_executed": false,
+    "prior_run_application_calibration_failure_preserved": true,
+    "intentional_measurement_replay_reason": "Initial harness exported native artifacts only after application success; application failed and those native measurements were not retained. This fresh replay saves them before application; old lost metrics are not fabricated."
+  },
+  "R2_canonical_local_fragment": {
+    "scope": "Evaluation after production; R2 local fragment evaluated without relabelling package round ID; outcome retained, remaining fragment outcomes private",
+    "target_outcome": [
+      {
+        "assertion_id": "GT-R2-ROUND-START",
+        "group": "required_point_events",
+        "index": 3,
+        "status": "fail",
+        "failures": [
+          "missing_point:GT-R2-ROUND-START"
+        ]
+      }
+    ],
+    "assertions_sha256": "c5e242b611ce227d1d2633e5e24c00dfe65168d8124ab58fbdea84b1d7f0d820",
+    "trace_sha256": "c615c361d82d6d5f673cd5cd7b5d9a59e23bfbc197bcfa0a12bdd5c6a0694bc2",
+    "full_E2E_executed": false,
+    "canonical_baseline_updated": false,
+    "production_GT_input": false
+  },
+  "R2_canonical_numbering": {
+    "actual_local_round_id": "sample_round_1",
+    "canonical_expected_round_id": "sample_round_2",
+    "renumbered_to_force_PASS": false,
+    "complete_match_membership_proven": false
+  },
+  "initial_R2_attempt": {
+    "status": "application rejected cold sampled HUD calibration",
+    "native_measurements_retained": false,
+    "elapsed_and_peak_memory": "unmeasured",
+    "fresh_replay_declared": true,
+    "export_scope_repaired_before_replay": true,
+    "blind_event_count_added_by_replay": 0
+  },
+  "source_guards": {
+    "scope": "Current actual formal entrance negative/cut regressions; original exposed windows and manual negative review, no fresh blind cohort or EOF claim",
+    "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "recognizer_fingerprint": "d14e4b78b3e1fae4df0d154d21067b452796794a9c954992cf7f2ebb12a6d091",
+    "profile_fingerprint": "fc3b8dfc4c4e9c72e6bbbaf7c5a90762ad879ea695dff8784997123e1f56f51c",
+    "qualification_sha256": "19a2ccedcafb8af48d14edcaf1e072fd0619eb9ed2f799874d033ab028948212",
+    "input_contract_sha256": "8f26e53ddf2c11c30e8d4651e3f93a66f48de7793036588ee10514925f6e8a87",
+    "script_sha256": "a8bd8d97ecbb50078d5a92340dca89bea6a4cdac9e602493426644e1bae1cf22",
+    "cases": [
+      {
+        "case": "cut_cold",
+        "window_sec": [
+          81.7,
+          81.9
+        ],
+        "geometry_initialization": false,
+        "frames": 12,
+        "producer_elapsed_sec": 2.8790497080190107,
+        "retained_png_bytes": 29199373,
+        "source_epoch": "a4c217de132642549318101919b148fd",
+        "source_breaks_sec": [
+          81.78600260416667,
+          81.83600260416667
+        ],
+        "final_continuity_segment": 2,
+        "events": 0,
+        "owned_facts": 0,
+        "geometry_counts": {
+          "frames": 12,
+          "fresh_geometry_success": 0,
+          "effective_geometry_success": 0,
+          "retained_geometry_frames": 0,
+          "geometry_invalid_unknown": 12,
+          "geometry_valid_state_unknown": 0,
+          "live_identity_evidence_insufficient": 12,
+          "insufficient_anchors_frames": 12
+        },
+        "native_artifact_sha256": "4bb5d97237b2104df86d305e7d97b221bc6464a02a117187605f244e6da6ab8f"
+      },
+      {
+        "case": "cut_initialized",
+        "window_sec": [
+          81.7,
+          81.9
+        ],
+        "geometry_initialization": true,
+        "frames": 12,
+        "producer_elapsed_sec": 4.88646529201651,
+        "retained_png_bytes": 29199373,
+        "source_epoch": "9a4a367a27454d2d8b7f7c9d3c27bfc2",
+        "source_breaks_sec": [
+          81.78600260416667,
+          81.83600260416667
+        ],
+        "final_continuity_segment": 2,
+        "events": 0,
+        "owned_facts": 0,
+        "geometry_counts": {
+          "frames": 12,
+          "fresh_geometry_success": 0,
+          "effective_geometry_success": 12,
+          "retained_geometry_frames": 12,
+          "geometry_invalid_unknown": 0,
+          "geometry_valid_state_unknown": 12,
+          "live_identity_evidence_insufficient": 12,
+          "insufficient_anchors_frames": 12
+        },
+        "native_artifact_sha256": "4c78fa7a01fcdc889bc4b4247a276d6e7d4a1d18bf2ff0b725c2712fb5e39ab6"
+      },
+      {
+        "case": "R2_cold",
+        "window_sec": [
+          111.0,
+          111.8
+        ],
+        "geometry_initialization": false,
+        "frames": 48,
+        "producer_elapsed_sec": 9.795197792002,
+        "retained_png_bytes": 89917982,
+        "source_epoch": "e08c42bbaf6a44a3bddd304e176920a2",
+        "source_breaks_sec": [],
+        "final_continuity_segment": 0,
+        "events": 0,
+        "owned_facts": 0,
+        "geometry_counts": {
+          "frames": 48,
+          "fresh_geometry_success": 0,
+          "effective_geometry_success": 0,
+          "retained_geometry_frames": 0,
+          "geometry_invalid_unknown": 48,
+          "geometry_valid_state_unknown": 0,
+          "live_identity_evidence_insufficient": 48,
+          "insufficient_anchors_frames": 48
+        },
+        "native_artifact_sha256": "87076e5c28266a00bee16972fc7778b99c0591ee9cd1cec9fa7937820a1e9295"
+      },
+      {
+        "case": "active_negative",
+        "window_sec": [
+          8,
+          8.5
+        ],
+        "geometry_initialization": true,
+        "frames": 30,
+        "producer_elapsed_sec": 11.527884833980352,
+        "retained_png_bytes": 67286094,
+        "source_epoch": "ec6d997563254f5bacc5f1aa7538c7b9",
+        "source_breaks_sec": [],
+        "final_continuity_segment": 0,
+        "events": 0,
+        "owned_facts": 0,
+        "geometry_counts": {
+          "frames": 30,
+          "fresh_geometry_success": 0,
+          "effective_geometry_success": 30,
+          "retained_geometry_frames": 30,
+          "geometry_invalid_unknown": 0,
+          "geometry_valid_state_unknown": 28,
+          "live_identity_evidence_insufficient": 28,
+          "insufficient_anchors_frames": 30
+        },
+        "native_artifact_sha256": "7c91afabddae97d8d389f2137b9e967bbbb7ddd341496b543c5e8a3cc8501185"
+      },
+      {
+        "case": "menu_negative",
+        "window_sec": [
+          85,
+          85.5
+        ],
+        "geometry_initialization": true,
+        "frames": 30,
+        "producer_elapsed_sec": 13.08811945799971,
+        "retained_png_bytes": 51426932,
+        "source_epoch": "894f4e3d22b04f8c91b95c507e3d2fb3",
+        "source_breaks_sec": [],
+        "final_continuity_segment": 0,
+        "events": 0,
+        "owned_facts": 0,
+        "geometry_counts": {
+          "frames": 30,
+          "fresh_geometry_success": 0,
+          "effective_geometry_success": 30,
+          "retained_geometry_frames": 30,
+          "geometry_invalid_unknown": 0,
+          "geometry_valid_state_unknown": 0,
+          "live_identity_evidence_insufficient": 30,
+          "insufficient_anchors_frames": 30
+        },
+        "native_artifact_sha256": "438cb748a4eabb4f22954b4799eb8b1022a8ee54d02f30aa90c737af8ced24f0"
+      },
+      {
+        "case": "spectator_negative",
+        "window_sec": [
+          160,
+          160.5
+        ],
+        "geometry_initialization": true,
+        "frames": 30,
+        "producer_elapsed_sec": 12.533566666999832,
+        "retained_png_bytes": 75358931,
+        "source_epoch": "4d8001036a58499ab1a1b5f0499d6227",
+        "source_breaks_sec": [],
+        "final_continuity_segment": 0,
+        "events": 0,
+        "owned_facts": 0,
+        "geometry_counts": {
+          "frames": 30,
+          "fresh_geometry_success": 0,
+          "effective_geometry_success": 30,
+          "retained_geometry_frames": 30,
+          "geometry_invalid_unknown": 0,
+          "geometry_valid_state_unknown": 0,
+          "live_identity_evidence_insufficient": 30,
+          "insufficient_anchors_frames": 30
+        },
+        "native_artifact_sha256": "0e3f5bfca93baf489b483932c5fa5b537bb0705a0d98a0b89f3e2c3d5f0ec183"
+      }
+    ],
+    "png_budget_per_case_bytes": 134217728,
+    "cross_epoch_lifecycle_state": false,
+    "total_frames": 162,
+    "elapsed_sec": 82.2769720829674,
+    "peak_process_rss_bytes": 127729664,
+    "terminal_integrity_verified": true,
+    "full_EOF_absence_proven": false
+  },
+  "negative_scope": "Three original fixed Start-negative windows,90 frames; additional cold R2 and repeated-raster checks. Start-only admission cannot certify qualified End false-positive rates. No EOF claim.",
+  "decoder_settings": {
+    "ffmpeg": "local current ffmpeg",
+    "ffprobe": "local current ffprobe",
+    "fixed_windows_R1_native_and_R2_replay_png_prediction": "up",
+    "source_guard_png_prediction": "none (default)",
+    "pixel_identity_and_encoded_hashes_recorded_separately": true,
+    "controlled_runtime_or_storage_improvement_claimed": false
+  },
+  "verification": {
+    "new_synthetic_tests_pass": 32,
+    "Ruff": "PASS",
+    "mypy": "PASS",
+    "mypy_source_files": 134,
+    "dataset_cases_pass": 38,
+    "UTF8_unresolved": 0,
+    "full_suite": {
+      "passed": 3833,
+      "failed": 4,
+      "skipped": 9,
+      "elapsed_sec": 460.16,
+      "coverage_percent": 86.66588437768912,
+      "exit_code": 1,
+      "failures": [
+        "test_spectator_absence_guard.py::test_global_scene_detail_cannot_override_current_local_icon_evidence[crop1-True]",
+        "test_spectator_icon.py::test_abstract_icon_is_detected_across_small_rendering_shifts",
+        "test_spectator_icon.py::test_profile_uses_only_configured_icon_roi_and_obscuring_context",
+        "test_spectator_icon.py::test_short_menu_close_x_vetoes_icon_without_menu_grid_candidate"
+      ],
+      "Qt_shutdown_abort_observed": false
+    },
+    "current_implementation_commit_CI": "pending after push",
+    "preceding_code_CI_not_transferred": true
+  },
+  "remaining": [
+    "Formal End and independent exact temporal/negative evidence",
+    "Real R2 sampled-application HUD calibration",
+    "Same-epoch active Start→End",
+    "Match-wide Package/preparation membership and Trace including R2 numbering",
+    "R2-to-EOF no-false-End evidence",
+    "Exact-commit Linux/Windows CI"
+  ],
+  "qualification_default_installed": false,
+  "whole_lifecycle_qualified": false,
+  "full_E2E_rerun": false,
+  "adopted_canonical_baseline": {
+    "PASS": 23,
+    "FAIL": 55,
+    "NOT_EVALUATED": 4
+  },
+  "source_file_sha256": {
+    "src/valorant_ai_coach/hud/analyzers.py": "b8d8d1ee991c797cb24ccb3f5128f383945eae030f74dc8fe4bfd2df28a18fc5",
+    "src/valorant_ai_coach/hud/native_assured_start.py": "efef962812f2f1848a317dba7449e5a88b81710f2ae0abafb2f152069d9b1fe4",
+    "src/valorant_ai_coach/hud/native_event_merge.py": "5d712e56dfa7ea008f6ac941725f4f085b23c8791b53a5ab2435c40be30d493e",
+    "src/valorant_ai_coach/hud/native_lifecycle.py": "c049408cd1c62e3fbb340ef63752015fe95080616d761c210b6f0c31ea23ec86",
+    "src/valorant_ai_coach/hud/native_geometry_initialization.py": "92070259d5149bf7fd2e04bb6e54aa49695cfa0d381f59eed57539eda2ec16eb",
+    "tests/unit/test_qualified_geometry_initialization.py": "fdebc468ba0f3224f8a17ffc9264cf6e204a4e31b3fb7a0e2bd46c8354955de1"
+  },
+  "private_artifact_sha256": {
+    "work/qualified-geometry-freeze.json": "275e39c1e096c5d23652fd2119c8266cb82cad58fd63c39434b47a696cc7aae0",
+    "work/qualified-geometry-component-replay/result.json": "ddfe984a8b772a48d8f73eca4e1ab709a4a910b134abd89f8c9fbce66f5018df",
+    "work/qualified-geometry-fresh-window-replay/result.json": "fcd3b0fa710d6a8de2e63b678c15a6dd6d8eaed319aa540a0579694b42162bc8",
+    "work/qualified-geometry-start-admission/start-only.json": "19a2ccedcafb8af48d14edcaf1e072fd0619eb9ed2f799874d033ab028948212",
+    "work/qualified-geometry-start-admission/review.json": "af81806ade3c8bfce127a60d9632e655311436fe8d6238e6dfb9926ef3044e64",
+    "work/qualified-geometry-native-start/result.json": "71010db32f5f8412a1127fe25433790eec4a1f3ecd0f5c18f61b191b6ecf7495",
+    "work/qualified-geometry-native-start/targeted-canonical-summary.json": "bee5710202bb6b10e9713a915fa0f96a1b218662b073976a34ca4e18a69192d1",
+    "work/qualified-geometry-application-start/result.json": "4a13dc9b642c226343fb478b6a009525af07900839e0c5e79887871e89a8ed27",
+    "work/qualified-geometry-application-start/targeted-canonical-summary.json": "09659fc98bdacefa2595b241a662df018870dcbc24dfb1215cef9cd51c4ec9d5",
+    "work/qualified-geometry-r2/selection.json": "8318657af6e9f3bff60681a5f3f94a1889b8f1d104ca8a4c4608b47d5747ebdd",
+    "work/qualified-geometry-r2.log": "e530e6597199652741434eaed261b28f3517bba7456551c61bd151b9dae2efd4",
+    "work/qualified-geometry-r2-replay/result.json": "d382375978f46edf030e900e847fdf9c287aa28166f0b4f5b555cdf7cdb4efa8",
+    "work/qualified-geometry-r2-replay/native.json": "4f5305c544ce75a622b6830c13b89f03cf59b561c91e57af46fe2bb1ade465b1",
+    "work/qualified-geometry-r2-replay/trace.json": "c615c361d82d6d5f673cd5cd7b5d9a59e23bfbc197bcfa0a12bdd5c6a0694bc2",
+    "work/qualified-geometry-r2-replay/packages.json": "d46dda0c25c42fcf2771d29a87883820e4fef55154f84003d31065b244d14db5",
+    "work/qualified-geometry-r2-replay/targeted-canonical-summary.json": "8b212ea9029ba7ed0d1539a147564ceacc2187b5802891b982dff89311236f17",
+    "work/qualified-geometry-source-guards/result.json": "65a2c3d3a5f5209b4d318875fcf65e679e56eb018482a4ea9fddbb3fd91aff53",
+    "work/qualified-geometry-new-tests-v4.log": "86887915363323f19550616d1b790bce299bdf4832c396c98955596f9e701665",
+    "work/qualified-geometry-full-regression.log": "0e721b41cca9b2f201db0afc2f7eb108d5d65871bd901912484a03b8498122f7",
+    "work/qualified-geometry-coverage.json": "da88467624874a28c44dc2ecdf69310e287f07a606d9412ab698f5310167a046",
+    "work/qualified-geometry-text-io-review.json": "bc20e03b53a15093cbe25805c2b0e1e177eb464d30eeae726443b5f14b495f0d"
+  }
+}

@@ -1,0 +1,128 @@
+[
+  {
+    "artifact_id": "6a40925f07ec2f41b0c4",
+    "source_id": "supplemental_010246",
+    "requested_times_sec": [
+      615,
+      625,
+      635,
+      645,
+      655,
+      665,
+      675,
+      685,
+      695,
+      705,
+      715
+    ],
+    "actual_decoded_pts_or_visual_view_not_proven_by_request": true
+  },
+  {
+    "artifact_id": "8ca0b246149b17e32bea",
+    "source_id": "supplemental_010246",
+    "requested_times_sec": [
+      1200,
+      1215,
+      1230,
+      1245,
+      1260,
+      1275,
+      1290,
+      1305,
+      1320,
+      1335,
+      1350,
+      1365,
+      1380,
+      1395,
+      1410,
+      1425,
+      1440,
+      1455,
+      1470,
+      1485,
+      1500
+    ],
+    "actual_decoded_pts_or_visual_view_not_proven_by_request": true
+  },
+  {
+    "artifact_id": "0d12eff23ec863477ee3",
+    "source_id": "supplemental_010246",
+    "requested_times_sec": [
+      1800,
+      1830,
+      1860,
+      1890,
+      1920,
+      1950,
+      1980,
+      2010,
+      2040,
+      2070,
+      2100
+    ],
+    "actual_decoded_pts_or_visual_view_not_proven_by_request": true
+  },
+  {
+    "artifact_id": "75458a0e210ba9729ce7",
+    "source_id": "supplemental_010246",
+    "requested_times_sec": [
+      1505,
+      1507,
+      1509,
+      1511,
+      1513,
+      1515,
+      1517,
+      1519,
+      1521,
+      1523,
+      1525
+    ],
+    "actual_decoded_pts_or_visual_view_not_proven_by_request": true
+  },
+  {
+    "artifact_id": "5f2802536f821acc78b0",
+    "source_id": "supplemental_010246",
+    "requested_times_sec": [
+      1530,
+      1545,
+      1560,
+      1575,
+      1590,
+      1605,
+      1620,
+      1635,
+      1650,
+      1665,
+      1680,
+      1695,
+      1710,
+      1725,
+      1740,
+      1755,
+      1770,
+      1785,
+      1800
+    ],
+    "actual_decoded_pts_or_visual_view_not_proven_by_request": true
+  },
+  {
+    "artifact_id": "6e2b09c2b9714a6256e8",
+    "source_id": "supplemental_001927",
+    "requested_times_sec": [
+      600,
+      630,
+      660,
+      690,
+      720,
+      750,
+      780,
+      810,
+      840,
+      870,
+      900
+    ],
+    "actual_decoded_pts_or_visual_view_not_proven_by_request": true
+  }
+]
