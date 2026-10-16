@@ -461,6 +461,8 @@ class RealHudAnalyzer:
             raise ValueError("additional_signalsの件数はframesと一致する必要があります")
         prefix_provenance: dict[str, Any] | None = None
         if _native_calibration_prefix is not None:
+            if _native_input_contract is None:
+                raise ValueError('native calibration prefix requires explicit source contract')
             if (_build_events or not frames or anchor_detections is not None
                     or additional_signals is not None or self.template_profile is None
                     or letterboxed is not None or crop_applied is not None
