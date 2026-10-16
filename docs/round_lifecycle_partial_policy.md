@@ -24,6 +24,12 @@ is not a reason to stop independently safe R2 work. OCR candidate iteration is
 deprioritized. Thresholds, confidence policies, schemas, Validation Pack,
 assertions and negative safety contracts remain unchanged.
 
+**Production default (2026-10-16):** use a complete unedited and uncut
+recording covering game start through game end. `match_001` is an exceptional
+partial development source, not the normal production input. Qualification of
+full-match completeness belongs with unedited full-match inputs such as
+`match_002`; the clip's EOF must not be treated as a completed match/round.
+
 ## Runtime contract
 
 - Missing R1 end evidence produces **no round_end** and no inferred win/loss.
