@@ -155,8 +155,6 @@ class HudVideoProcessor:
         native_lifecycle_options: NativeLifecycleOptions | None = None,
         boundary_mode: str = "strict",
         practical_lifecycle: PracticalLifecycleAnalysis | None = None,
-        sampled_calibration_prefix: NativeSourceFrame | None = None,
-        sampled_input_contract_path: Path | None = None,
     ) -> HudVideoProcessingResult:
         practical_state = self._practical_boundaries(
             metadata, boundary_mode, practical_lifecycle,
@@ -325,6 +323,8 @@ class HudVideoProcessor:
         native_lifecycle: NativeLifecycleAnalysis | None = None,
         boundary_mode: str = "strict",
         practical_lifecycle: PracticalLifecycleAnalysis | None = None,
+        sampled_calibration_prefix: NativeSourceFrame | None = None,
+        sampled_input_contract_path: Path | None = None,
     ) -> HudVideoProcessingResult:
         practical_state = self._practical_boundaries(metadata, boundary_mode, practical_lifecycle)
         native_lifecycle = self._confirmed_overlay(native_lifecycle, practical_lifecycle)
