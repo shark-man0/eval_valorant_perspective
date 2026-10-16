@@ -7,6 +7,9 @@
 > the original recording has not been trimmed to select this interval.
 > Any abrupt visual transition inside the clip is not itself evidence of
 > editing. Native integrity and independent source-evidence checks remain.
+> **Production default:** an unedited, uncut **full-match** video from game
+> start through game end. The Outplayed-extracted `match_001` is a development
+> and diagnostic partial-input fixture, not a production full-match example.
 > See `docs/match001_visual_review_100ms_20261016.md`.
 
 ## Problem
