@@ -1908,3 +1908,47 @@ These are repository/synthetic regression results on macOS, not a formal
 real-video Full E2E run. Keep the larger lifecycle goal incomplete, keep the
 gradient matcher unadopted, and await the outstanding independent source-
 geometry review before treating those images as positive/negative controls.
+
+## Mixed control comparison ready; independent review remains the blocker
+
+Add an evaluation-only CLI, `scripts.diagnostics.compare_geometry_controls`,
+for the prepared external source-control review. Inputs are candidate, complete
+source pool, review directory, explicit human label receipt, partition and new
+private output path. It requires three unchanged .90 geometry anchors, verifies
+frozen assets and review/page/source/guide hashes, bounds all frames to the
+development partition, and rejects candidate-image overlap, omitted labels,
+missing human-reply binding, contradictory duplicate labels and source drift.
+JSON cannot authenticate its own author; the separate trusted human reply is
+still necessary. No label file is generated from model predictions or defaults.
+
+Measure every source image with both fixed matchers, including unknown and
+unreviewed images, before reducing results against labels. Labels do not enter
+matcher arguments, training or sample selection. Only three visible fixed
+anchors establish a positive. Explicit absence of any required anchor establishes
+a negative under the fixed three-of-three contract. Unknown and unreviewed
+remain unscored. Qualitative misalignment alone also remains unscored: it does
+not prove an offset beyond the existing numerical layout tolerance. Do not
+invent a new spatial assertion from that label. Report frame counts and unique
+image counts separately; neither is an independent-episode count.
+
+The output contains bounded aggregate counts, hashes and fixed algorithm/profile
+identifiers, not paths, image data, timestamps or transcribed source labels. It
+always declares no identity evidence, events, qualification or adoption. Synthetic
+tests cover mixed outcomes, both false accepts and misses, immutable inputs,
+matching unknown/unreviewed images, changing only labels without changing matcher
+inputs, review drift, holdout, overlap and cross-source rejection. Related49tests
+pass; scoped Ruff, mypy(134files), CLI help and git diff --check pass. Production
+code/fingerprint is unchanged from the preceding numerical fix. The earlier full
+suite4056pass result predates this evaluation-only tool; it is not a new full run.
+
+Do not execute real-image comparison yet: the independent13-image geometry
+review has no reply/label receipt. Its page and review hashes remain exactly
+the previously recorded values. Fetch origin/main again: no newer changes than
+the integrated `7e480c2`. No test/decoder process remains running. The same
+independent-review blocker has persisted across three consecutive goal turns;
+safe regression repairs and the needed comparison tooling are now complete.
+Further qualifying/adopting this matcher requires that human evidence and,
+separately, adoption authorization. Repeating unchanged inference, extending
+OCR searches or assuming labels would not resolve the blocker. The overall
+real-video Round lifecycle goal is incomplete and requires user input to resume
+the next qualification step; do not silently claim completion or relax safety.
