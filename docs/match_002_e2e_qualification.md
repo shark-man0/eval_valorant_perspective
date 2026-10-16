@@ -1847,3 +1847,44 @@ After integration, geometry, startup, GUI smoke and Qt shutdown process tests
 82pass in20.43seconds; scoped Ruff, mypy(134sourcefiles) and git diff --check
 pass. No full-suite or full-match E2E result is implied. Independent geometry
 control labels are requested but not yet received; no negatives are inferred.
+
+## Full regression exposed an orientation-bin precision bug
+
+Run the complete repository test suite with the CI coverage command on the
+integrated main/work checkpoint, without changing assertions or thresholds.
+On macOS/Python3.12.15, OpenCV4.14.0 and NumPy2.5.3, the result is4050passed,
+4failed,5skipped in429.47seconds; coverage86.65% exceeds the unchanged75%floor.
+Private JUnit artifact: `main_7e480c2_integrated_v1.xml`. The four failures all
+involve the unchanged abstract spectator-icon positive fixture. The detector
+and failing tests are identical to origin/main; they are not introduced by the
+geometry diagnostic or Qt merge. Do not report the full suite as passing.
+
+Reproduce the reason without changing the fixture: native icon measurements
+meet mean/contrast/sharpness, density, cell count and localized-group predicates,
+but the orientation histogram has only7populated bins. A negative-X Sobel vector
+has angle pi. Float32 radian-to-degree conversion moves it to approximately
+179.99998degrees, incorrectly assigning that entire cardinal direction to the
+preceding half-open histogram bin. Native histogram fractions include .157567
+in[135,180) and .049758 in[180,225); shifted fixtures show the same issue. This
+is a numerical boundary error, not evidence that a detector threshold should
+be lowered or that the fixture's expectation should be weakened.
+
+Compute arctan2/degrees in float64 in the presence detector and its existing
+absence-only crosscheck. Keep Sobel, Canny, histogram boundaries,5%population,
+eight-bin requirement, presence/absence thresholds, obscuration guards, identity
+policy and all old fixtures/assertions unchanged. Do not round, snap or smooth
+angles. Native bin fractions become .087077 and .120249 at the affected bins;
+all8directions are represented. New synthetic tests verify all8exact canonical
+vectors, signed-zero negative-X consistency, and distinct directions immediately
+on either side of180degrees, without mutating inputs. Spectator icon, absence
+guard and generation tests53pass after the fix; scoped Ruff, mypy(134files)
+and git diff --check pass. An initial targeted invocation named a nonexistent
+test path and collected no tests; only the corrected invocation counts.
+
+This production numerical correction changes the global recognizer fingerprint
+to `7c3654fc4f34b46633c01d61017458c959e5b5cae13b4d5915937f16c2467381`.
+Historical profiles, measurements and qualification receipts remain bound to
+their original recognizer version; do not rewrite or resign them to inherit a
+new qualification. The geometry gradient matcher remains diagnostic-only and
+unchanged. This synthetic regression fix proves no real-video identity or
+Round lifecycle improvement; source-control geometry labels are still pending.
