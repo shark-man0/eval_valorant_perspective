@@ -14,6 +14,7 @@ from fractions import Fraction
 from typing import Any
 
 from valorant_ai_coach.video.native import NativeSourceFrame
+from valorant_ai_coach.video.service import FrameSample
 
 from .models import HudObservationV2, empty_hud_values
 from .semantic_text import CONFIDENCE_KEY as PHASE_CONFIDENCE_KEY
@@ -89,6 +90,50 @@ def calibration_prefix_provenance(
         'source_pixel_sha256': prefix.pixel_sha256,
         'encoded_sha256': prefix.encoded_sha256,
         'width': prefix.width, 'height': prefix.height,
+    }
+
+
+def sampled_calibration_prefix_provenance(
+    prefix: NativeSourceFrame, first: FrameSample,
+) -> dict[str, Any]:
+    """Geometry-only proof for a current *sampled* frame and earlier native reference.
+
+    Native PTS, exact source hash and encoded sampled pixels are required. The
+    sampled frame cannot inherit the reference's timer, state or source epoch.
+    """
+    if (
+        not isinstance(prefix, NativeSourceFrame)
+        or not isinstance(first, FrameSample)
+        or first.source_video_sha256 != prefix.source_video_sha256
+        or type(first.source_pts_ticks) is not int
+        or first.source_pts_ticks <= prefix.pts_ticks
+        or first.source_time_base != str(prefix.time_base)
+        or not isinstance(first.source_image_sha256, str)
+        or re.fullmatch(r'[0-9a-f]{64}', first.source_image_sha256) is None
+    ):
+        raise ValueError('sampled geometry prefix requires same source and earlier native PTS')
+    if not first.path.is_file() or first.path.is_symlink():
+        raise ValueError('sampled geometry input must be an existing regular frame')
+    import hashlib
+
+    with first.path.open('rb') as frame_data:
+        image_sha = hashlib.sha256(frame_data.read()).hexdigest()
+    if image_sha != first.source_image_sha256:
+        raise ValueError('sampled geometry input pixel source binding mismatch')
+    prefix.read_image()
+    return {
+        **{
+            'scope': 'sampled_calibration_only',
+            'source_video_sha256': prefix.source_video_sha256,
+            'source_pts_ticks': prefix.pts_ticks,
+            'source_time_base': str(prefix.time_base),
+            'source_pixel_sha256': prefix.pixel_sha256,
+            'encoded_sha256': prefix.encoded_sha256,
+            'width': prefix.width,
+            'height': prefix.height,
+        },
+        'sampled_source_pts_ticks': first.source_pts_ticks,
+        'sampled_encoded_sha256': image_sha,
     }
 
 
