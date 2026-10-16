@@ -144,3 +144,62 @@ sampled and Full results for this reader are **not measured**; no Strict delta
 is claimed. No new Full was run because qualification and formal producer wiring
 are incomplete. Detailed private pixels, names, timestamp labels, profiles,
 failure records and manifests remain outside Git.
+
+## Shared replay and exposure audit follow-up
+
+The common `scripts/diagnostics/replay_self_death_images.py` runner recomputes
+image recognition from verified lossless decoded inputs. It separates the
+runtime fingerprint from dataset hashes, rejects unexpected profile keys
+(including expected labels), verifies every encoded/pixel binding, resets at
+each independent window and checks terminal source/dependency/input hashes.
+Positive and negative windows use the same executable fingerprint. Cached
+recognition outputs are not accepted as decoded inputs. Peak RSS covers the
+Python process, not child decoder/OCR processes.
+
+The original source-2 frozen profile produced one diagnostic prediction in its
+positive window and zero in two report-persistence/spectator/preparation
+controls: 315 frames, 274.51 seconds of recognition, 430.65 seconds wall time,
+about 95 MiB Python peak RSS. No frame was blocked by source validation. These
+are bounded diagnostic results, not whole-match precision or qualification.
+
+That profile initially found no marker on source 1. A shared exterior mask was
+then derived from the existing source-2 development images and eight previously
+exposed source-1 images. Those images are training inputs. Reference values,
+NCC 0.90 and the independent color/geometry requirements remain unchanged.
+The shared profile found one source-1 R2 prediction in the 96-frame regression
+set; the shorter R1 window did not provide sufficient continuous corroboration.
+An extended 75-frame R1 replay produced one prediction, preserving the observed
+onset despite confirmation 0.400 seconds later. The extended replay took 76.14
+seconds recognition / 83.10 seconds wall time, about 95 MiB Python peak RSS.
+Both source-1 report/spectator controls retained zero predictions. These exposed
+development/regression results do not independently qualify the changed mask.
+Formal events remain zero; canonical targeted/sampled/Full deltas are unmeasured.
+
+The one-second candidate horizon now compares rational source PTS directly.
+Converting an onset through a decimal float could incorrectly expire the exact
+one-second endpoint. Tests accept that endpoint and reject the next native
+frame; neither the horizon nor the confirmation-duration threshold is widened.
+
+The user supplied `codex/round-boundary-requalification` as the exposure-ledger
+reference. Read-only inspection at `e9e9e15aa54b0d4792a27869d8c8447a4e0e4bfc`
+verified all six recorded file hashes in
+`e2e_reports/match_001/exposure_inventory_20261016/summary.json`. Its 4,518 records
+cover two supplemental sources, **not match_002**. The README and summary
+explicitly state that match_002 image exposure was not assessed and unlisted
+frames are not certified unviewed. Consequently no prospective match_002 window
+is declared a new blind holdout from absence in this ledger. PR #42 was not
+modified. Complete event-level exposure verification remains a release gate.
+
+Local follow-up: 152 relevant unit/integration tests passed in 17.75 seconds;
+Ruff passed for the CI scope (`src tests scripts/e2e`) plus the new runner;
+mypy passed 142 files including the runner. A broader `ruff check .` also scans
+legacy/private validation and configuration scripts and reports existing
+out-of-scope errors; those files were not changed. Remote checks for `14894b8`
+passed Linux and Windows push CI. Its Windows PR job failed before testing
+because the Chocolatey FFmpeg download returned HTTP 503; this is not a Windows
+PR-test pass. These remote results do not certify subsequent local changes.
+
+Remaining work is independent subject/role/transition qualification, followed
+by the approved formal producer connection and same-contract canonical
+evaluation. Positive diagnostic predictions are not substituted for these
+steps. No new Full E2E was run.

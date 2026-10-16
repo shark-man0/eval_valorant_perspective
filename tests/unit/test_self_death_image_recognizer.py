@@ -139,6 +139,20 @@ def test_report_dropout_cannot_reuse_the_old_episode():
                for t in range(3, 10))
 
 
+@pytest.mark.parametrize('confirmation_tick,expected', [(61, 'prediction'), (62, 'unknown')])
+def test_onset_expiry_uses_exact_native_time_not_float_reconstruction(confirmation_tick, expected):
+    recognizer, base, header = setup()
+    observe(recognizer, base, header, 0, report=False, marker=False)
+    observe(recognizer, base, header, 1)
+    for tick in range(2, confirmation_tick+1):
+        result = observe(recognizer, base, header, tick, marker=tick >= confirmation_tick-3)
+    assert result.status == expected
+    if expected == 'prediction':
+        assert result.onset_time_sec == 1/60
+        assert result.confirmation_time_sec == 61/60
+    assert result.formal_events == ()
+
+
 @pytest.mark.parametrize('failure', ['gap', 'reordered', 'segment', 'dependencies', 'code'])
 def test_source_changes_drop_pending_without_joining(failure):
     recognizer, base, header = setup()

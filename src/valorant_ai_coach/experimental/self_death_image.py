@@ -29,6 +29,17 @@ from .report_victim_episode import DualDeathCandidate, ReportVictimEpisodeProbe
 from .subject_death import SourceBinding, _hash
 
 
+def image_runtime_fingerprint() -> str:
+    """Common image-runtime binding, independent of dataset or output paths."""
+    import valorant_ai_coach.video.native as native
+    from valorant_ai_coach.hud.global_lifecycle import global_recognizer_fingerprint
+
+    assert native.__file__ is not None
+    digest = hashlib.sha256(global_recognizer_fingerprint().encode('ascii'))
+    digest.update(Path(native.__file__).read_bytes().replace(b'\r\n', b'\n'))
+    return digest.hexdigest()
+
+
 @dataclass(frozen=True)
 class SelfDeathImageReading:
     status: Literal['unknown', 'pending', 'prediction', 'duplicate']
@@ -100,6 +111,7 @@ class SelfDeathImageRecognizer:
         self.marker_predecessor: SourceBinding | None = None
         self.report_predecessor: SourceBinding | None = None
         self.pending: DualDeathCandidate | None = None
+        self.candidate_onset_source: SourceBinding | None = None
         self.stable: list[tuple[SourceBinding, float]] = []
         self.evidence: list[SourceBinding] = []
         self.onset_evidence: tuple[SourceBinding, ...] = ()
@@ -134,6 +146,7 @@ class SelfDeathImageRecognizer:
         if not valid or broken:
             self.blocked = True
             self.pending = None
+            self.candidate_onset_source = None
             self.marker_onset = None
             self.marker_predecessor = None
             self.report_predecessor = None
@@ -145,6 +158,7 @@ class SelfDeathImageRecognizer:
             self.episode = ReportVictimEpisodeProbe(report_floor=.90, victim_floor=.90)
             self.blocked, self.emitted = False, False
             self.pending = None
+            self.candidate_onset_source = None
             self.marker_onset = None
             self.marker_predecessor = None
             self.report_predecessor = None
@@ -186,8 +200,10 @@ class SelfDeathImageRecognizer:
         if episode.status == 'unqualified_candidate':
             marker = self.marker_onset
             # Both rising edges must actually have been observed in this segment.
-            if marker is not None and 0 <= source.time-marker.time <= Fraction(1):
+            if (marker is not None and self.episode.pending_onset is not None
+                    and 0 <= source.time-marker.time <= Fraction(1)):
                 self.pending = episode
+                self.candidate_onset_source = self.episode.pending_onset
                 self.evidence = [s for s in (self.report_predecessor,
                     self.episode.pending_onset, self.marker_predecessor, marker) if s is not None]
                 self.onset_evidence = tuple(self.evidence)
@@ -196,8 +212,10 @@ class SelfDeathImageRecognizer:
                                          source, report, subjects)
         onset = self.pending.onset_time_sec
         assert onset is not None
-        if report < .90 or source.time-Fraction(str(onset)) > 1:
+        assert self.candidate_onset_source is not None
+        if report < .90 or source.time-self.candidate_onset_source.time > 1:
             self.pending = None
+            self.candidate_onset_source = None
             self.stable.clear()
             self.evidence.clear()
             self.onset_evidence = ()
