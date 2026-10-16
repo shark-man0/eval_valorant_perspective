@@ -87,3 +87,63 @@ victim-position + source-owner marker detectors; 2) qualify report onset
 under persistent-report and spectator controls; 3) connect only qualifying
 candidates to the formal Death event path through reviewed schema/ownership
 policies; 4) validate output and failure delta against unchanged fixed GT.
+
+## Additional 171-second optical scan and onset probe (2026-10-16)
+
+The source video was re-verified (SHA-256 and size above). All **10,259
+native frames** were decoded in chronological order; **1,710** evenly spaced
+frames (one per six source frames, nominal 10fps) were compared using bounded
+`cv2.TM_CCOEFF_NORMED` within two fixed source image regions. These are
+**development-only templates selected from an already exposed R1 death**:
+Japanese self-referential report-header text and the current source-player's
+killfeed victim-name text. No unseen holdout or general-purpose model is
+claimed; video/name/template/threshold choices would not generalize to other
+recordings. No production recognizer was invoked.
+
+The independent image similarity cutoffs were **0.90 report** and
+**0.80 victim**, the latter solely a **diagnostic comparison threshold**, not
+the existing >=0.90 production confidence/evidence floor. All comparisons
+used the fixed same-recording development crops. The full machine-readable
+provenance, crop coordinates, aggregation and negative observations are in
+`e2e_reports/match_001/report_victim_source_similarity_development_20261016.json`.
+
+| Measured result | Frames/intervals |
+| --- | --- |
+| Total sampled | 1,710 |
+| Report text similarity accepted | 466 frames |
+| Both report and victim-name similarity accepted | 86 frames |
+| Report text accepted without both-signal support | 380 frames |
+| Distinct death-shaped co-occurrence **episodes** | 74.5–79.4 s; 147.7–152.6 s |
+| Distinct raw runs *within* first episode | 74.5–75.1, 75.8, 76.3–79.4 s |
+| Strong report-only controls | 0.1–1.0 s, 91.5–107.9 s, 169–170.9 s |
+
+The last row is particularly important: **a report text matcher by itself
+would be severely unsafe**. Re-opened/persistent report images can appear
+without a current victim-name killfeed. Even the paired signal persists for
+many seconds, so each match must not emit another Death.
+
+An independent first-appearance scan identified the report-text rising edge
+at **74.4 s**, paired to victim evidence at **74.5 s**. The second rising edge
+and paired evidence coincide at **147.7 s**. Intermediate rising edges inside
+the long first report occurrence show why the candidate must stay latched
+until an **actual qualified new-round event** re-arms it. This preserves
+onset and confirmation separately at 0.1-second observation resolution;
+neither time is backdated to a GT label.
+
+`experimental/report_victim_episode.py` and its negative tests implement
+this *non-releasing* temporal idea: it needs a locally observed report
+transition and victim similarity within one second. It never emits formal
+Death, grants SELF, or promotes an unqualified image score. Missing evidence,
+clip-start persistent reports, duplicate frames/source changes, stale onset
+and re-opened panel remain rejected or unknown. Only a *producer-qualified*
+new-round signal is allowed to rearm the diagnostic latch; callers must never
+pass a GT boundary, source video hard-coded time or raw clock reset.
+
+**Measured formal-Death improvement: 0; measured canonical FAIL improvement:
+0; newly qualified Self subjects: 0**. These are useful positive/negative
+observations and a tested state-machine hypothesis, not yet a safe runtime
+recognizer. To actually reduce the canonical Death FAILs, qualify an
+independently measured victim-role + fixed self-report semantic interface,
+test unseen nonself-victim/other-language/spectator/persistent-report
+controls, integrate a source-assured report-onset detector, preserve current
+ownership safety and then run targeted/sampled/canonical comparison.
