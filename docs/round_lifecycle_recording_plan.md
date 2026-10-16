@@ -3,9 +3,13 @@
 ## Dataset roles
 
 - `match_001`: keep the existing video, manifest, Validation Pack and reports.
-  The user identifies it as an Outplayed-cut clip; the unedited original may no
-  longer exist. Use it for discontinuity, incomplete-package and negative-safety
-  regression. Do not optimize OCR/thresholds to force its missing boundaries.
+  **2026-10-16 clarification**: it was extracted from a longer recording using
+  Outplayed, but the content **inside the selected clip is not edited**. The
+  source interval is partial and does not include a complete match; neither
+  cut boundaries nor unexpected frame changes may be promoted to game events.
+  Preserve source-integrity checks, partial-round and negative-safety regression.
+  Do not optimize OCR/thresholds to force missing boundaries. See
+  `docs/match001_visual_review_100ms_20261016.md`.
 - `match_002`: received on 2026-10-09; user confirms an unedited full match. Use it
   for main real-source lifecycle qualification only after independent dataset
   registration and validation preparation. Source intake is complete; matching
@@ -15,6 +19,21 @@
 Existing schemas, thresholds, assertions and negative safety contracts stay
 unchanged. match_001 evaluator failures remain failures under its existing pack;
 changing the task's acceptance scope does not rewrite evaluator outcomes.
+
+## Production input policy — user clarification 2026-10-16
+
+- **Production default**: a single unedited, **uncut full match recording from
+  the beginning of the game to its conclusion**. Full-match analysis must
+  not assume that an Outplayed-trimmed clip satisfies this condition.
+- **Development/diagnostic exception**: `match_001` was extracted via Outplayed
+  without editing its interior; it remains a valid source-bound partial-input
+  regression specimen, not a representative production full-match input.
+- `match_002` is the already received unedited full-match candidate for
+  independent validation. Source integrity, completeness and actual event
+  detection still require verification; the user's assurance does not
+  substitute for a passed canonical E2E run.
+- A clip may end in an active round. End-of-file must not create a round_end,
+  winner, or final match outcome without positive observed evidence.
 
 ## Source intake result
 

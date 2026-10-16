@@ -2,9 +2,14 @@
 
 ## Current task policy (2026-10-09)
 
-The latest recording policy is authoritative: `match_001` is an Outplayed-cut
-clip and remains a discontinuity/partial-round/negative-safety regression source.
-Main real-video lifecycle qualification waits for the new unedited full match
+2026-10-16 clarification (supersedes the interpretation of the 2026-10-09
+policy): `match_001` was **extracted using Outplayed**, but no edits were made
+**within the chosen segment**. It remains a partial recording and a source-
+integrity/partial-round/negative-safety regression source. The observed abrupt
+81.9-second visual transition is *not* evidence of human editing. See
+`docs/match001_visual_review_100ms_20261016.md`. Historical discussions of
+possible cuts refer to uncertain source continuity, not an established manual
+edit within this clip. Main real-video lifecycle qualification uses the unedited full match
 `match_002` and its independent validation preparation. The video was received
 on 2026-10-09 with user confirmation of no editing; source intake is complete,
 but pack/manifest registration and lifecycle evaluation remain pending. See
@@ -18,6 +23,12 @@ section in `round_lifecycle_qualification.md` describes the old task scope; it
 is not a reason to stop independently safe R2 work. OCR candidate iteration is
 deprioritized. Thresholds, confidence policies, schemas, Validation Pack,
 assertions and negative safety contracts remain unchanged.
+
+**Production default (2026-10-16):** use a complete unedited and uncut
+recording covering game start through game end. `match_001` is an exceptional
+partial development source, not the normal production input. Qualification of
+full-match completeness belongs with unedited full-match inputs such as
+`match_002`; the clip's EOF must not be treated as a completed match/round.
 
 ## Runtime contract
 

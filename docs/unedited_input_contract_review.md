@@ -1,5 +1,17 @@
 # Unedited input contract review
 
+> **User clarification — 2026-10-16:** `match_001` is a clip extracted
+> from a longer recording using Outplayed; **the selected interval contains
+> no user edits**. In this contract “unedited” refers to the integrity of the
+> supplied interval and does not assert that the clip is a full match or that
+> the original recording has not been trimmed to select this interval.
+> Any abrupt visual transition inside the clip is not itself evidence of
+> editing. Native integrity and independent source-evidence checks remain.
+> **Production default:** an unedited, uncut **full-match** video from game
+> start through game end. The Outplayed-extracted `match_001` is a development
+> and diagnostic partial-input fixture, not a production full-match example.
+> See `docs/match001_visual_review_100ms_20261016.md`.
+
 ## Problem
 
 The user guarantees that the current validation video has no intentional edits,

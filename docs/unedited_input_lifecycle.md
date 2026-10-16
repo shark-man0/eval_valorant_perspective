@@ -1,5 +1,14 @@
 # Unedited input contract and R1 UI transition
 
+> **2026-10-16 scope clarification:** `match_001` was selected/extracted
+> with Outplayed from a longer recording; no changes were made **within**
+> the extracted video. This is compatible with the existing SHA-bound
+> `UneditedInputContract`, but does not imply a complete match or certify
+> absence of capture anomalies. **Normal production input is an unedited,
+> uncut full-match recording covering game start through game end.** This
+> `match_001` clip is an exceptional development/diagnostic fixture. See
+> `docs/match001_visual_review_100ms_20261016.md`.
+
 ## Verification checkpoint — 2026-10-10
 
 The source-assurance/start and native assured-pipeline suites were checked again:

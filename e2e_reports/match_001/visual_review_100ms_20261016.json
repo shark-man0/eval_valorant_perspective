@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "report_id": "match001_visual_review_100ms_20261016",
+  "status": "visual_review_only_not_canonical_gt",
+  "source": {
+    "file_name": "Valorant_09-25-2026_0-37-29-379.mp4",
+    "video_id": "match_001",
+    "sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "size_bytes": 267056165,
+    "duration_sec": 171.019336,
+    "dimensions": [
+      1920,
+      1080
+    ],
+    "fps": 60,
+    "video_frames": 10259,
+    "capture_contract": {
+      "method": "Outplayed extraction of a segment from a longer recording",
+      "within_segment_user_edits": false,
+      "assurance_origin": "Explicit user clarification on 2026-10-16",
+      "applies_to_source_sha_only": true,
+      "input_policy": "Production default: unedited, uncut full-match recording from game start to game end. match_001 is a development/diagnostic Outplayed-extracted clip with no edits within its selected interval.",
+      "caveat": "Extracted segment boundaries are not necessarily match or round boundaries",
+      "production_default": {
+        "recording_scope": "full_match_game_start_to_game_end",
+        "unedited": true,
+        "uncut": true
+      },
+      "current_source_role": "partial_development_and_regression_fixture_not_default_production_input"
+    }
+  },
+  "method": {
+    "kind": "human_visual_review_of_selected_decoded_frames",
+    "overview_sampling_approx_fps": 1,
+    "focus_sampling_approx_fps": 5,
+    "dense_windows_seconds": [
+      [
+        3.75,
+        4.4
+      ],
+      [
+        74.1,
+        75
+      ],
+      [
+        81.5,
+        82.3
+      ],
+      [
+        111.1,
+        111.8
+      ],
+      [
+        147.4,
+        148.3
+      ]
+    ],
+    "all_frames_manually_labeled": false
+  },
+  "observations": [
+    {
+      "event": "recorded_R1_start",
+      "time_display_sec": 4.1,
+      "type": "strong_visual_candidate",
+      "evidence": [
+        {
+          "pts_sec": 4.002669,
+          "description": "purchase phase and 0:00 visible"
+        },
+        {
+          "pts_sec": 4.102669,
+          "description": "purchase phase banner disappears; 0:00 transient remains"
+        },
+        {
+          "pts_sec": 4.152669,
+          "description": "active timer 1:39"
+        }
+      ]
+    },
+    {
+      "event": "recorded_R1_end",
+      "time_display_sec": 74.5,
+      "type": "strong_visual_candidate",
+      "evidence": [
+        {
+          "pts_sec": 74.402669,
+          "description": "death and combat report transition"
+        },
+        {
+          "pts_sec": 74.436003,
+          "description": "TEAM ACE appears; HUD timer about 0:29"
+        },
+        {
+          "pts_sec": 74.452669,
+          "description": "post-round 0:06 and score 0-1"
+        },
+        {
+          "pts_sec": 74.486003,
+          "description": "score 0-2"
+        }
+      ]
+    },
+    {
+      "event": "recorded_R2_start",
+      "time_display_sec": 111.4,
+      "type": "strong_visual_candidate",
+      "evidence": [
+        {
+          "pts_sec": 111.402669,
+          "description": "purchase phase; timer 0:00"
+        },
+        {
+          "pts_sec": 111.452669,
+          "description": "purchase phase disappears; timer 1:40"
+        },
+        {
+          "pts_sec": 111.502669,
+          "description": "timer 1:39"
+        }
+      ]
+    },
+    {
+      "event": "recorded_R2_end",
+      "time_display_sec": null,
+      "type": "not_observed",
+      "evidence": []
+    }
+  ],
+  "negative_controls": [
+    {
+      "time_sec": 81.9,
+      "observation": "abrupt image change and repeated rasters with monotonic PTS",
+      "interpretation": "not evidence of user editing; source integrity and temporal evidence still require checks"
+    },
+    {
+      "time_sec": 147.7,
+      "observation": "player death followed by continuing ally spectator gameplay",
+      "interpretation": "not round_end"
+    },
+    {
+      "time_sec": 171.019336,
+      "observation": "source clip ends during active round",
+      "interpretation": "clip EOF does not imply round_end"
+    }
+  ],
+  "time_evaluation_proposal": {
+    "target_tolerance_sec": 0.1,
+    "status": "proposal_only_not_implemented",
+    "canonical_time_rule_modified": false,
+    "native_experimental_end_sec": 74.486003,
+    "old_gt_end_window_upper_bound_sec": 74.483,
+    "old_rejection_gap_sec": 0.003003,
+    "proposed_time_condition_result": "within_0.1_sec_only",
+    "warning": "Independent timing acceptance does not imply detector qualification or canonical E2E PASS"
+  },
+  "baseline": {
+    "canonical_full": {
+      "pass": 23,
+      "fail": 55,
+      "not_evaluated": 4
+    },
+    "experimental_native_only": {
+      "pass": 27,
+      "fail": 51,
+      "not_evaluated": 4
+    },
+    "canonical_changed_by_this_review": false
+  }
+}
