@@ -1,0 +1,149 @@
+{
+  "scope": "Chromatic Spike foreground correction, private development method only",
+  "source_sha256": "06919642d69f68895ac123b505bfd7d3643dd28d903585008fcdc2b7f1b7e3fd",
+  "grid": {
+    "scope": "Development-only clock type prototype, no production/numeric-time output or event path",
+    "code": "414f9d9d3f1841cfe50fdf9732bb78e1bfa35aa4382eb7c0d90d194ed81155fa",
+    "base_profile": "ca8aa2a0325afd5f5bcf6d6d8eaddab94ea764ecdcbacecc6104ca3b2f0895f9",
+    "prototype_sha256": "99a36c8a17f6fd71826412f12591f23c7e37d4ea75fa2cbd0ef73f4c311600b6",
+    "source_label_sha256": "56da00ba91be4690c08bee749e3df1747f9dccf75fa3285407a2606b0cef12db",
+    "training": [
+      {
+        "tick": 5437440,
+        "pixel_sha256": "a3246919c1968ba77824da02f19fdf86132ffc4603e6495e71d7298430111256",
+        "mask_sha256": "c3732e6bed1e336d548d26c30179530a38d9c784c3be0eddd0f0c2cb67a7d357"
+      },
+      {
+        "tick": 5441280,
+        "pixel_sha256": "cda7b4020da6acb6784143d4b26d8697bb5f67cf2f206b2cc3cb5fb055911bed",
+        "mask_sha256": "ac9e0974459a084620ef6f9d8523538958a960cf93c6c841202c26bfab519063"
+      },
+      {
+        "tick": 5445120,
+        "pixel_sha256": "51228492d6c43e52cfa81d218940eb57934cf214ed12d05a2403b65af1250188",
+        "mask_sha256": "70e5da30ee748f400766d0b1483460fae78d434d300f97227f938b602584e52f"
+      }
+    ],
+    "roi_xyxy": [
+      900,
+      15,
+      1020,
+      85
+    ],
+    "spike_foreground": "Positive R-max(B,G)>=100 only, remove absolute R>=200 gate. Source WON red max191 below gate, preserving color contrast rather than white-luminance assumption; NCC0.90 and fixed three training source frames unchanged.",
+    "decimal_calibration": "Training-only nominal glyph band inside original fixed crop, local x12:108 y12:53, source x912:1008 y27:68. White200 removes the panel; lower HUD strokes excluded. Derived from first source-labelled decimal frame, not evaluation images.",
+    "decimal_grammar": "Exactly DD.DD, all ten digit classes, NCC0.90/margin0.04, no seconds conversion; positive red icon templates independently compete, conflict rejects",
+    "source_windows_sec": [
+      [
+        354,
+        362
+      ],
+      [
+        444,
+        452
+      ],
+      [
+        518,
+        526
+      ]
+    ],
+    "new_held_opened": false,
+    "formal_qualification": false,
+    "physical_frames": 72,
+    "counts": {
+      "spike:correct": 11,
+      "None:correct": 38,
+      "decimal:correct": 23
+    },
+    "elapsed_sec": 1.6150364589993842,
+    "production_changed": false,
+    "qualification_issued": false,
+    "all_frames_are_exposed_development": true
+  },
+  "full_development": {
+    "scope": "Static clock-type development predictions; only72 fixed grid source labels, remaining predictions are not assumed correct",
+    "prototype_sha256": "99a36c8a17f6fd71826412f12591f23c7e37d4ea75fa2cbd0ef73f4c311600b6",
+    "code": "414f9d9d3f1841cfe50fdf9732bb78e1bfa35aa4382eb7c0d90d194ed81155fa",
+    "base_profile": "ca8aa2a0325afd5f5bcf6d6d8eaddab94ea764ecdcbacecc6104ca3b2f0895f9",
+    "input_sha256": {
+      "work/new-source-development/clock-type-chromatic-development/prototype.py": "99a36c8a17f6fd71826412f12591f23c7e37d4ea75fa2cbd0ef73f4c311600b6",
+      "work/new-source-development/clock-type-chromatic-development/plan.json": "025db385f3836517c44ec3f4f473998af19edfe394148c73dfd31c5e99bf6bb9",
+      "work/new-source-development/clock-type-chromatic-development/labelled-grid-rows.json": "22b746d9528e507fd73bd5d760d287ff481149084d5946c6adc56e10f4b3ddde",
+      "work/new-source-development/development-timing/LOST/source-manifest.json": "1ff551423ed5d745110e4374465a4f827349e52890a3dfff1795b34f85afe6c7",
+      "work/new-source-development/development-timing/WON/source-manifest.json": "bcf755598738f5140bec365b285b66a040441f59fe071ba0ab11d63dd74857f5",
+      "work/new-source-development/development-timing/numeric/source-manifest.json": "c784554ea5af2bc7fd88a0162c6e76806954b44dfb3e2d8004b7ac79b6e8d3dc"
+    },
+    "physical_frames": 1443,
+    "counts": {
+      "LOST:spike": 191,
+      "LOST:None": 290,
+      "WON:spike": 11,
+      "WON:None": 38,
+      "WON:decimal": 432,
+      "numeric:None": 481
+    },
+    "all72_grid_predictions_reproduced": true,
+    "elapsed_sec": 29.433874166978057,
+    "production_changed": false,
+    "formal_events": 0,
+    "owned_facts": 0,
+    "new_held_opened": false
+  },
+  "synthetic_controls": {
+    "scope": "Development synthetic malformed/type controls derived from one exposed physical source, not independent natural negatives or End-negative events",
+    "prototype_sha256": "99a36c8a17f6fd71826412f12591f23c7e37d4ea75fa2cbd0ef73f4c311600b6",
+    "source_pixel_sha256": "ff684040dd88eb4f795e104e9d3648018b3d00141451f4270d9eae700f945a8f",
+    "rejected": 12,
+    "false_accepts": 0,
+    "decimal_prediction_literals": {
+      "25.28": 432
+    },
+    "all_prediction_fields_exclude_timer_seconds": true,
+    "formal_qualification": false
+  },
+  "background_controls": {
+    "scope": "Source-reviewed off-HUD development background controls;36 crops from3 physical frames, not nominal type absence or independent End-negative events",
+    "source_review_labels_sha256": "6e76641fb626e4f1e21fd7807801142b73bfc181bbe71bfba50aa5bb743c4877",
+    "prototype_sha256": "99a36c8a17f6fd71826412f12591f23c7e37d4ea75fa2cbd0ef73f4c311600b6",
+    "rejected": 36,
+    "false_accepts": 0,
+    "formal_qualification": false
+  },
+  "root_cause": {
+    "WON_first_frame_ROI_max_red_including_nonred_HUD": 239,
+    "max_red_among_pixels_with_R_minus_max_BG_at_least100": 179,
+    "positive_chromatic_pixels": 1584,
+    "positive_chromatic_pixels_surviving_absolute_red200": 0,
+    "old_Spike_NCC_to_all_three_references": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "source_ordering": {
+    "scope": "Actual saved component observations only; not internal End GT or full native replay",
+    "last_positive_Spike_tick": 6822400,
+    "first_accepted_updated_ally_score_tick": 6822656,
+    "first_positive_decimal_tick": 6822912,
+    "time_base": "1/15360",
+    "native_step_ticks": 256,
+    "existing_clock_before_score_contract_satisfied": false
+  },
+  "production_changed": false,
+  "formal_End_detected": false,
+  "formal_qualification_issued": false,
+  "new_held_opened": false,
+  "private_evidence_sha256": {
+    "clock-type-chromatic-development/prototype.py": "99a36c8a17f6fd71826412f12591f23c7e37d4ea75fa2cbd0ef73f4c311600b6",
+    "clock-type-chromatic-development/plan.json": "025db385f3836517c44ec3f4f473998af19edfe394148c73dfd31c5e99bf6bb9",
+    "clock-type-chromatic-development/plan-description-erratum.json": "c4dd0001addf4afbb33fa5ee7bec365777cd8cf841239c666b5aee0973676608",
+    "clock-type-chromatic-development/labelled-grid-rows.json": "22b746d9528e507fd73bd5d760d287ff481149084d5946c6adc56e10f4b3ddde",
+    "clock-type-chromatic-development/labelled-grid-result.json": "6371267514996fb75c64256a62eb3620766c5e35b6b97dcf289324625b37f688",
+    "clock-type-chromatic-development/full-development-rows.json": "397830334454c7734082043d2e8d3566c7b3b403f20b8d7b30342db978d5afb0",
+    "clock-type-chromatic-development/full-development-result.json": "097c87a1ebd9a4fad6d3c4dc323c8546fb1dc987124a7cadd36be30d0f8ee01f",
+    "clock-type-chromatic-development/synthetic-controls.json": "8358bc6c301d8fb271668206cf89fc120ba6479e48d761ec1ae03ff1e92d1c28",
+    "clock-type-chromatic-development/background-controls/plan.json": "6ead08109a81f53548886b5720ae4c01d43124145edb253c99832d1d83ac3986",
+    "clock-type-chromatic-development/background-controls/labels.json": "6e76641fb626e4f1e21fd7807801142b73bfc181bbe71bfba50aa5bb743c4877",
+    "clock-type-chromatic-development/background-controls/result.json": "686ed69cd7efd2f887af96e4e08d73a9e13f578aab3a8d0e925ddd7e03e47185"
+  }
+}
