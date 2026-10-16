@@ -2062,3 +2062,36 @@ experiment, geometric-content review and negative checks before adoption.
 Reference/profile/code integrity remains unchanged; no new matcher or mask is
 implemented here. The control-comparison tests19pass after the complete review;
 no production source changed and no new full-suite run is implied.
+
+## Read-only support-capacity preflight; redesign authorization still pending
+
+The requested new mask-generation experiment has not been authorized by an
+explicit human reply; an automatic goal continuation is not that authorization.
+Do not generate a new mask/profile or implement another matcher. Revalidate only
+the existing training inventory, exclusion policy, assets and geometric capacity.
+
+All28distinct training image hashes and native dimensions match their preserved
+receipt, with PTS within the existing training partition. No validation/control
+pixels or final holdout are read. The original exclusion policy and reader config
+still match their input hashes. Every current mask is a subset of the permitted
+region derived by the unchanged content-exclusion code; no content violation is
+found. Verify all source/profile/code hashes again after this read-only check.
+
+For radius2support, the current/maximum-permitted populations are timer8/1408,
+HP220/239 and abilities239/26792. Thus the timer shortage is not forced by the
+configured exclusion area's size. But the maximum counts include unproven pixels
+and potentially changing background: they are only spatial upper bounds, never
+stable-UI evidence or replacement masks. Do not widen support to this area by
+default. Establishing additional fixed structure would require training-only
+evidence and review, not a lower64pixel minimum or use of excluded digits/icons.
+
+Private frozen-check SHA:
+`0819938c0017eef44289c53ae392da214b77bbad1dfa322ac946da0a6a990420`;
+capacity receipt SHA:
+`7586ce05663e98333e134b4bf0ba60942f4eb275a7043e0bad8e41d2b4c3b5f2`.
+No candidate assets, identity evidence, events, qualification or adoption are
+created. Proposed next scope remains one separately specified training-only
+support/mask experiment, with fixed .90NCC/three-anchor/content exclusions and
+minimum support, no GT/control fitting and no production adoption. Await the
+requested human direction instead of repeating unchanged E2E or expanding OCR
+tuning while the authorization is unresolved.
