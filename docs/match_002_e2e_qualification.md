@@ -1888,3 +1888,23 @@ their original recognizer version; do not rewrite or resign them to inherit a
 new qualification. The geometry gradient matcher remains diagnostic-only and
 unchanged. This synthetic regression fix proves no real-video identity or
 Round lifecycle improvement; source-control geometry labels are still pending.
+
+Re-run the complete CI-style coverage command at code commit `351b75c`, with
+no source/test edits during execution:4056passed,5skipped,0failed,0errors,
+430.04seconds and86.66%coverage (unchanged75%minimum), exit0. Existing4failures
+are resolved and the2new numerical regression tests pass; existing expectations
+are intact. JUnit counts include skips:4061total. The5skips are the opt-in
+real-video-anchor integration test (not configured for this invocation), one
+host-native Windows path test and three PowerShell-dependent tests. They do not
+mean that the separately received match_002 source video is missing, nor prove
+Windows or actual-video anchor accuracy. Final scoped Ruff, mypy(134files),
+dataset contract38cases and git diff --check also pass.
+
+Preserve both private JUnit artifacts. Before-fix JUnit SHA:
+`7154d1962882dc8bde73c4f9a49fcf20309835dbf2cc3d1c58e041171229d62d`.
+After-fix JUnit SHA:
+`7449f79dce56a9c1b670a69a19643e87bc06c313058f538b6c82c73a27ceb63e`.
+These are repository/synthetic regression results on macOS, not a formal
+real-video Full E2E run. Keep the larger lifecycle goal incomplete, keep the
+gradient matcher unadopted, and await the outstanding independent source-
+geometry review before treating those images as positive/negative controls.
