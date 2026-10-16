@@ -203,3 +203,46 @@ Remaining work is independent subject/role/transition qualification, followed
 by the approved formal producer connection and same-contract canonical
 evaluation. Positive diagnostic predictions are not substituted for these
 steps. No new Full E2E was run.
+
+## Prospective shared-mask episode: positive not detected
+
+After freezing the shared mask and runtime, another source-2 episode was decoded
+without changing any recognizer input. Before inspecting predictions, six native
+source images were reviewed: a live first-person view takes damage, collapses,
+acquires a new red killfeed row with the highlighted recording player on the
+victim side and opens the self-referential report. The scoreboard appears later.
+This establishes one positive episode, independently of the reader output. It
+does not certify global historical exposure or an exact event timestamp.
+
+The same-code run processed that 151-frame window and the two existing negative
+windows (134 frames). Result: **0/1 positive episodes predicted**, zero predictions
+in both controls, zero source-blocked frames and zero formal events. In the
+positive window the report matched on 97 frames and 94 highlighted-marker
+candidates were retained, but every role remained unknown with
+`weapon_separator_unavailable`. The actual pistol silhouette measures 28 by 20
+pixels (aspect 1.4); the frozen wide-glyph detector requires width at least 32
+and aspect at least 2. The failure is therefore a supported-icon coverage gap,
+not evidence that the yellow-marker or report reader never sees the scene.
+The victim-name area also has a performance overlay, so successful name OCR
+must not be assumed from marker presence.
+
+The 285-frame recognition took 230.36 seconds, 381.37 seconds including all
+outer checks, with 99,803,136 bytes Python peak RSS. Terminal source, input and
+dependency hashes passed. The newly decoded cache used 259,905,413 bytes and
+took 376.62 seconds to acquire; acquisition is separate from reader execution.
+No recognition output was reused as a new-code result.
+
+The failed validation episode remains excluded from fitting. Broadening the
+existing glyph bounds until this image passes is not the chosen remedy. The
+next role-reader implementation needs separately trained compact-icon evidence
+or an independently validated row-structure witness, plus event-level tests
+that include recorder-as-killer and nonself victims. The two bounded controls
+are useful regressions, not complete long-duration false-positive qualification.
+Current canonical targeted/sampled/Full results remain unmeasured; no PASS gain
+or formal adoption is claimed. Linux PR and push CI for `e1907aa` passed;
+Windows PR run `38896852236` also finished successfully, including its
+test-and-build job. These remote results cover the source changes at `e1907aa`.
+The source owner subsequently reported that no additional match_002 exposure
+ledger is likely available. Historical exposure therefore remains unknown;
+prospective validation may establish separation from this implementation's
+fitting inputs, but cannot certify globally unseen images.
