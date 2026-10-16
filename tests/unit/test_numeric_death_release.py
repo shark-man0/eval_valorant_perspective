@@ -35,7 +35,7 @@ def approved_release(tmp_path):
         'source_player_subject_token': 'b'*64,
     }
     path = tmp_path/'synthetic-release.json'
-    path.write_text(json.dumps(report))
+    path.write_text(json.dumps(report), encoding='utf-8')
     digest = hashlib.sha256(path.read_bytes()).hexdigest()
     return ApprovedNumericDeathRelease.load(path, approved_report_sha256=digest), path
 
@@ -43,7 +43,7 @@ def approved_release(tmp_path):
 def proof():
     chain = []
     for tick in range(7):
-        binding = source(tick, pixel_sha256=hashlib.sha256(str(tick).encode()).hexdigest())
+        binding = source(tick, pixel_sha256=hashlib.sha256(str(tick).encode('utf-8')).hexdigest())
         observations = []
         if tick == 1:
             observations.append(evidence(tick, SubjectRole.DEATH_TRANSITION,
@@ -188,7 +188,7 @@ def test_semantic_or_independence_mismatch_is_not_approved_by_certificate(
                                    'extra_gt'])
 def test_unapproved_altered_or_incomplete_report_cannot_authorize(approved_release, failure):
     approval, path = approved_release
-    data = json.loads(path.read_text())
+    data = json.loads(path.read_text(encoding='utf-8'))
     digest = approval.report_sha256
     if failure == 'source':
         data['source_sha256'] = 'not a source hash'
@@ -200,7 +200,7 @@ def test_unapproved_altered_or_incomplete_report_cannot_authorize(approved_relea
         del data['component_reviews']['negative_controls']
     else:
         data['expected_timestamp'] = 1.0
-    path.write_text(json.dumps(data))
+    path.write_text(json.dumps(data), encoding='utf-8')
     if failure != 'digest':
         digest = hashlib.sha256(path.read_bytes()).hexdigest()
     with pytest.raises(ValueError):
@@ -215,6 +215,34 @@ def test_mismatched_or_invalid_resume_cannot_reuse_release_state(approved_releas
     consumer = NumericSelfDeathEventConsumer(approved_release[0])
     with pytest.raises(ValueError):
         consumer.restore({**consumer.checkpoint(), **change})
+
+
+def test_downstream_fact_scope_change_invalidates_release_approval(approved_release, monkeypatch):
+    from pathlib import Path
+
+    original = Path.read_bytes
+
+    def changed(path):
+        data = original(path)
+        return data+b'\n# simulated Fact policy change\n' if (
+            path.name == 'builder.py' and path.parent.name == 'facts') else data
+
+    monkeypatch.setattr(Path, 'read_bytes', changed)
+    decision, chain = proof()
+    consumer = NumericSelfDeathEventConsumer(approved_release[0])
+    assert consumer.consume(decision, chain) is None
+    assert consumer.last_blocker == 'release_consumer_fingerprint_mismatch'
+
+
+def test_legacy_death_event_normalization_stays_compatible():
+    from valorant_ai_coach.facts.builder import FactBuilder
+
+    facts = FactBuilder().build({'events': [{'event_id': 'synthetic-legacy', 'time_sec': 1.0,
+        'type': 'player_death', 'actor': 'player', 'attributes': {'cause_known': False},
+        'confidence': .95}], 'state_snapshots': []})
+    assert next(f for f in facts if f.key == 'player_died').confidence == .95
+    first = next(f for f in facts if f.key == 'first_death_by_player')
+    assert first.value is True and first.confidence == .9
 
 
 def test_approved_synthetic_event_reaches_original_round_fact_and_trace_without_hud_promotion(
@@ -264,6 +292,7 @@ def test_approved_synthetic_event_reaches_original_round_fact_and_trace_without_
     died = next(f for f in facts if f.key == 'player_died')
     assert died.value is True and died.confidence == .91 and died.time_sec == 1/60
     assert died.provenance_event_ids == (death['event_id'],)
+    assert not any(f.key == 'first_death_by_player' for f in facts)
     assert not any(f.key in {'hp', 'armor', 'weapon', 'player_alive'} for f in facts)
     trace = to_e2e_trace(SimpleNamespace(round_packages=packages, observations=observations))
     traced = [e for e in trace['events'] if e['type'] == 'player_death']

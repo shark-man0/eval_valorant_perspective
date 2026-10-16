@@ -32,7 +32,15 @@ _COMPONENTS = frozenset({'source_player_binding', 'victim_role', 'report_transit
 
 
 def release_fingerprint() -> str:
-    return hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n', b'\n')).hexdigest()
+    digest = hashlib.sha256()
+    source = Path(__file__)
+    for label, path in (
+        ('numeric_death_release.py', source),
+        ('facts/builder.py', source.parent.parent/'facts'/'builder.py'),
+    ):
+        digest.update(label.encode('utf-8'))
+        digest.update(path.read_bytes().replace(b'\r\n', b'\n'))
+    return digest.hexdigest()
 
 
 @dataclass(frozen=True)
@@ -218,7 +226,7 @@ class NumericSelfDeathEventConsumer:
             return None
         identity = (source.video_sha256, witnesses[0].subject_token,
                     onset.pts_ticks, onset.time_base_num, onset.time_base_den)
-        event_id = 'SELF-DEATH-' + hashlib.sha256(json.dumps(identity).encode()).hexdigest()
+        event_id = 'SELF-DEATH-' + hashlib.sha256(json.dumps(identity).encode('utf-8')).hexdigest()
         if event_id in self.released:
             reject('episode_already_released')
             return None
@@ -228,6 +236,7 @@ class NumericSelfDeathEventConsumer:
             'cause_known': False,
             'evidence_provenance': {
                 'subject_policy': 'independently_qualified_numeric_self_v1',
+                'elimination_coverage': 'self_death_only',
                 'native_event_id': event_id,
                 'release_report_sha256': approval.report_sha256,
                 'adoption_review_sha256': approval.adoption_review_sha256,

@@ -37,7 +37,8 @@ The certificate binds:
 
 - source SHA and the recording-player subject token;
 - original image recognizer, profile and dependency fingerprints;
-- native cadence and the release consumer's own source fingerprint;
+- native cadence and a release fingerprint covering the consumer and downstream
+  FactBuilder source;
 - split-independence review and production-adoption review hashes;
 - recording-player binding, victim role, report transition, native temporal
   continuity and negative-control qualification review hashes.
@@ -97,11 +98,23 @@ trace adapter does not export that native top-level property. Fact event-ID
 references can therefore be traced to the retained source event without changing
 the adapter's public output shape.
 
-The integration test uses the unchanged RoundPackageBuilder, FactBuilder, trace
+The integration test uses the existing RoundPackageBuilder, FactBuilder, trace
 adapter and SQLite repository. A synthetic confirmation after the first round
 end still associates the earlier onset with that first round, not the next.
 Fact confidence/provenance and all event attributes survive storage and trace;
 HUD ownership remains unknown. No public schema or database migration is needed.
+
+A downstream regression was reproduced before enabling any real event: the
+existing normalizer inferred `first_death_by_player=True` from a single Death
+event and no earlier *detected* elimination. This new producer observes only
+Self Death, so it cannot establish a complete elimination timeline. It now
+declares `elimination_coverage=self_death_only` in provenance. FactBuilder retains
+the verified `player_died` Fact and its confidence/event reference, but withholds
+the ordering Fact for this explicitly limited scope. All source events remain
+available. Legacy events without this new scope keep their previous behavior;
+their ordering semantics are not newly qualified by this change. The release
+fingerprint includes this downstream guard, so changing it invalidates an
+approval. The regression fails before the guard and passes afterward.
 
 The consumer's JSON checkpoint retains released event IDs, exact approval digest
 and consumer fingerprint. Repeated episodes and re-decoded source epochs keep
@@ -112,11 +125,15 @@ work; a JSON round-trip test is not a claim of full application resume coverage.
 
 ## Verification and limits
 
-Local results: **249 related tests passed in 40.50 seconds**, including 39 new
+Local results: **251 related tests passed in 40.72 seconds**, including 41 new
 authorization, current-frame corroboration, source-break/respawn, confidence,
 role-independence, duplicate/resume and Package/Fact/Trace/SQLite contract tests.
-Ruff passes the existing CI scope plus the image replay runner; mypy passes all
-144 checked files. Remote CI is pending for this change.
+Another 82 Fact/HP/shared-timer/source-confidence **unit tests** passed in 32.73
+seconds; these are not the canonical 82 assertions. Ruff passes the existing CI
+scope plus the image replay runner; mypy passes all 144 checked files. The
+text-I/O gate initially caught five implicit encodings; those operations now
+explicitly use UTF-8 and the local audit reports zero unresolved contracts.
+Remote CI is pending for the corrected change.
 
 All positive integration cases here are synthetic. Existing real-source
 recognition results retain their original fingerprints and unqualified status.
