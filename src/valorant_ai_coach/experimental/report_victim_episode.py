@@ -115,6 +115,9 @@ class ReportVictimEpisodeProbe:
 
         # Preserve the observed onset separately from the later text witness.
         # The sampled scan is not a native-timing qualification.
+        # Guarding the paired witness also narrows the optional score types.
+        if report_score is None or victim_score is None:
+            return DualDeathCandidate("unknown", source, "paired_signal_missing")
         self.latched = True
         return DualDeathCandidate(
             "unqualified_candidate", source,
