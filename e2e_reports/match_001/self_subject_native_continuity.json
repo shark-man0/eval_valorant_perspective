@@ -1,0 +1,89 @@
+{
+  "kind": "unqualified_native_subject_link_diagnostic_v1",
+  "start_main_sha": "7e480c2f2f7f49aea73e1541d065d78881d2f11c",
+  "start_branch_sha": "3e27b0f",
+  "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "native_recognition_frames": 96,
+  "raw_reader_code_fingerprint": "268c07a5362cfe7135217b7e45aef3a9fed24be51a738cd34d793329ad83c270",
+  "runtime_fingerprint": "6ea410098baf11bbea9df5301ed901373a025e25023c220e1db6a3c01103a6fc",
+  "scoreboard_profile_fingerprint": "3bad32a8160e82d35a1f765fe33768667c14d9631db20b5598bbfe1c5c1f6f94",
+  "raw_result_sha256": "376cbda87fa08c881a753e845e7138d9dd3d480e48cffa8128340197da19d127",
+  "postprocessing_source_sha256": "94cb6281494287b0de4afca8c14fafda2a614070f7ca9db3d22411b3ba789755",
+  "link_module_sha256": "97f7a6346eb1005c2b8960bfbcdfcb3334c64d2f91361567aa339dc73d4ebf24",
+  "private_postprocessing_result_sha256": "69dd89d30de3323986d73a6235c68b01211524d5246d52db0b5ab66a43aa80e1",
+  "source_review_verification": {
+    "status": "failed_closed_first_pixel_mismatch",
+    "first_frame_index": 4434,
+    "expected_opencv": "4.13.0",
+    "actual_opencv": "4.14.0",
+    "root_cause": "unverified; version difference is not proof of cause",
+    "original_expected_hashes_modified": false
+  },
+  "windows": [
+    {
+      "scope": "first_episode_exposed",
+      "native_frames": 24,
+      "decode_breaks": 0,
+      "owner_candidates": 0,
+      "accepted_victim_crop_text": 7,
+      "unqualified_pair_counts": {},
+      "formal_events": 0
+    },
+    {
+      "scope": "second_episode_exposed",
+      "native_frames": 48,
+      "decode_breaks": 0,
+      "owner_candidates": 7,
+      "accepted_victim_crop_text": 30,
+      "unqualified_pair_counts": {
+        "unqualified_self_victim_candidate": 204,
+        "unknown": 6
+      },
+      "formal_events": 0
+    },
+    {
+      "scope": "persistent_report_control",
+      "native_frames": 12,
+      "decode_breaks": 0,
+      "owner_candidates": 0,
+      "accepted_victim_crop_text": 0,
+      "unqualified_pair_counts": {},
+      "formal_events": 0
+    },
+    {
+      "scope": "spectator_report_control",
+      "native_frames": 12,
+      "decode_breaks": 0,
+      "owner_candidates": 0,
+      "accepted_victim_crop_text": 0,
+      "unqualified_pair_counts": {},
+      "formal_events": 0
+    }
+  ],
+  "reader_replay_runtime_sec": 204.32426114403643,
+  "peak_memory": "not measured",
+  "terminal_source_and_asset_hash_checks_passed": true,
+  "independent_blind_holdout_frames": 0,
+  "qualified_self_subjects": 0,
+  "formal_death_events": 0,
+  "new_full_e2e_executed": false,
+  "new_canonical_pass_fail_ne": "unmeasured",
+  "adopted_full_baseline": {
+    "pass": 23,
+    "fail": 55,
+    "ne": 4
+  },
+  "archived_unadopted_full": {
+    "pass": 28,
+    "fail": 50,
+    "ne": 4
+  },
+  "limitations": [
+    "204 matches are correlated observation pairs within one episode, not 204 events.",
+    "Accepted crop text does not qualify autonomous victim/killer role detection.",
+    "Native cadence and pixel-chain hashes are not independent content-continuity qualification.",
+    "All selected image contexts were already exposed. Existing producer qualification and production adoption remain absent.",
+    "R1 crop-name agreement with later R2 source-player marker is not used across source segments."
+  ],
+  "integrated_upstream_sha": "a20e0b5408ad3ea7ed2727f8df0b3d106deacf38"
+}
