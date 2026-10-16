@@ -281,9 +281,18 @@ class HudVideoProcessor:
         native_lifecycle: NativeLifecycleAnalysis | None = None,
         boundary_mode: str = "strict",
         practical_lifecycle: PracticalLifecycleAnalysis | None = None,
+        sampled_calibration_prefix: NativeSourceFrame | None = None,
+        sampled_input_contract_path: Path | None = None,
     ) -> HudVideoProcessingResult:
-        """Run the production final-processing stages over an exact ordered frame set."""
+        """Run final processing, optionally carrying verified geometry-only calibration."""
         self._validate_fixed_frames(frames)
+        if (sampled_calibration_prefix is None) != (sampled_input_contract_path is None):
+            raise HudVideoProcessingError('sampled geometry requires prefix and source contract')
+        if sampled_calibration_prefix is not None and (
+            native_lifecycle is None or boundary_mode != 'strict'
+            or practical_lifecycle is not None
+        ):
+            raise HudVideoProcessingError('sampled geometry requires qualified strict native result')
         progress = progress_cb or (lambda _value, _message: None)
         visual_cancel = getattr(self.visual_analyzer, "set_cancel_event", None)
         if callable(visual_cancel):
@@ -298,6 +307,8 @@ class HudVideoProcessor:
             native_lifecycle=native_lifecycle,
             boundary_mode=boundary_mode,
             practical_lifecycle=practical_lifecycle,
+            sampled_calibration_prefix=sampled_calibration_prefix,
+            sampled_input_contract_path=sampled_input_contract_path,
         )
 
     def _process_frames(
@@ -312,6 +323,8 @@ class HudVideoProcessor:
         native_lifecycle: NativeLifecycleAnalysis | None = None,
         boundary_mode: str = "strict",
         practical_lifecycle: PracticalLifecycleAnalysis | None = None,
+        sampled_calibration_prefix: NativeSourceFrame | None = None,
+        sampled_input_contract_path: Path | None = None,
     ) -> HudVideoProcessingResult:
         practical_state = self._practical_boundaries(metadata, boundary_mode, practical_lifecycle)
         native_lifecycle = self._confirmed_overlay(native_lifecycle, practical_lifecycle)
@@ -325,12 +338,51 @@ class HudVideoProcessor:
             + practical_state[1]
         )))
         self._check_cancel(cancel_event)
+        # Local R2 sampled-application entrance: only native-source geometry is
+        # reusable. An existing qualified native lifecycle must still establish
+        # all boundaries; no prefix phase, timer, score or identity is imported.
+        geometry_arguments: dict[str, Any] = {}
+        if sampled_calibration_prefix is not None:
+            if (sampled_input_contract_path is None or native_lifecycle is None
+                    or boundary_mode != 'strict' or practical_lifecycle is not None
+                    or not combined
+                    or any(combined[0].time_sec <= cut <= combined[-1].time_sec
+                           for cut in source_breaks)):
+                raise HudVideoProcessingError('unsupported local source break for sampled geometry')
+            digest = hashlib.sha256()
+            with metadata.path.open('rb') as source_data:
+                for block in iter(lambda: source_data.read(1024 * 1024), b''):
+                    digest.update(block)
+            contract = UneditedInputContract.load(
+                sampled_input_contract_path, source_video_sha256=digest.hexdigest(),
+            )
+            if contract.source_video_sha256 != sampled_calibration_prefix.source_video_sha256:
+                raise HudVideoProcessingError('sampled geometry source contract mismatch')
+            if any(not isinstance(frame, FrameSample)
+                   or frame.source_video_sha256 != contract.source_video_sha256
+                   or frame.source_pts_ticks is None
+                   or frame.source_image_sha256 is None
+                   for frame in combined):
+                raise HudVideoProcessingError('source-bound sampled frames required')
+            geometry_arguments = {
+                '_native_calibration_prefix': sampled_calibration_prefix,
+                '_native_input_contract': contract,
+                '_build_events': False,
+            }
         progress(0.72, "HUD時系列とイベントを確定しています")
         final = self.analyzer.observe_frames(
             combined, video_metadata=metadata, cancel_event=cancel_event,
-            **self._hud_break_inputs(combined, source_breaks),
+            # Local native fragments do not inherit older source breaks as a
+            # first-frame discontinuity. Internal cuts were rejected above.
+            **self._hud_break_inputs(
+                combined, () if sampled_calibration_prefix is not None else source_breaks,
+            ),
+            **geometry_arguments,
         )
         self._check_cancel(cancel_event)
+        if sampled_calibration_prefix is not None:
+            sampled_calibration_prefix.read_image()
+            validate_sampled_source_images(combined)
         self._raise_if_calibration_required(final)
         observations = self._observations(final)
         self._validate_observations(observations)
