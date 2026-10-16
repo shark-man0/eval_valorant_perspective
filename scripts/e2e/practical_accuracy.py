@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import math
 import re
+from decimal import Decimal
 from typing import Any
 
 from valorant_ai_coach.rounds.boundaries import BoundaryObservation
@@ -96,11 +97,12 @@ def evaluate_matched_boundary(
         result.update(status="FAIL", reason="boundary_kind_mismatch")
     else:
         assert prediction.boundary_time_sec is not None
-        error = abs(prediction.boundary_time_sec - truth_time_sec)
-        # Absorb floating subtraction error only, never round a predicted time.
-        within = error <= PRACTICAL_TIME_TOLERANCE_SEC or math.isclose(
-            error, PRACTICAL_TIME_TOLERANCE_SEC, rel_tol=0, abs_tol=1e-12,
-        )
+        # Compare serialized decimal timestamps without a widening epsilon.
+        # PTS is retained unchanged; this arithmetic is evaluator-only.
+        decimal_error = abs(Decimal(str(prediction.boundary_time_sec))
+                            - Decimal(str(truth_time_sec)))
+        error = float(decimal_error)
+        within = decimal_error <= Decimal('0.1')
         result.update(status="PASS" if within else "FAIL", absolute_error_sec=error,
                       reason="within_practical_tolerance" if within else "time_error")
     return result
@@ -167,6 +169,7 @@ def evaluate_boundary_set(
     counts['FAIL' if exhaustive else 'NE'] += len(unused)
     return {
         'evaluation_kind': 'practical_boundary_accuracy',
+        'time_comparison_version': 'decimal-timestamp-0.1-v1',
         'time_tolerance_sec': PRACTICAL_TIME_TOLERANCE_SEC,
         'association_radius_sec': association_radius_sec,
         'complete_boundary_review_requested': complete_review,
