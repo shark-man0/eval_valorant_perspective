@@ -5,5 +5,5 @@
   "no_intentional_frame_deletion_join_or_reorder": true,
   "no_intentional_speed_change": true,
   "scene_preserving_edit_excluded": true,
-  "assurance_provenance": "User instruction: 追加前提: 入力動画の無編集保証; applies only to the current validation video. Recording frame loss, PTS anomalies, UI transitions, occlusion and recognition errors remain possible."
+  "assurance_provenance": "Explicit user clarification (2026-10-16): video is an Outplayed-extracted segment from a longer source, with no user editing (frame deletion/join/reorder, speed change or scene-preserving editing) WITHIN the selected segment. Clip begins/ends mid-match; image changes or duplicate frames are not assumed to be manual edits. Assurance applies to this exact SHA only. User policy: future development and production inputs are likewise unedited within their supplied ranges; each distinct source still requires its own source-binding/provenance."
 }
