@@ -551,3 +551,75 @@ Local validation for the bank loader: 210 related native/subject tests passed
 in 37.71 seconds; Ruff passed the CI scope plus the runner, and mypy passed
 143 files. Five added tests verify reference preservation, immutability and
 fingerprint coverage, and reject gapped/noncanonical/unexpected bank keys.
+
+## Exposure follow-up and fresh numerical-bank negative controls
+
+The owner reports that additional source-2 exposure records probably do not
+exist. Its global image-use history therefore remains **unknown**, rather than
+being certified unused. The supplemental-source ledger does not cover this
+video. Previously adjusted episodes remain development/regression cases;
+discovery-conditioned, frozen checks are distinguished from blind holdout.
+No recognizer qualification is inferred from missing records.
+
+The restored numerical bank has now undergone its own fresh extended source-1
+negative replay. The three unchanged, explicit native windows contain 1,519
+frames: 108 nonself, 150 stale-Report and 1,261 long post-death/spectator frames.
+All three produce zero predictions and zero source-blocked frames. The long
+control contains 118 accepted numeric victim readings without generating a new
+death. This tests the temporal/self-Report requirements in the presence of an
+old, recognizable killfeed. All terminal hashes pass. Recognition plus native
+streaming took 1,932.62 seconds; complete wall time, including whole-source
+preverification, was 2,832.51 seconds. Python peak RSS was 128,733,184 bytes.
+These are fresh results for the new profile, not transferred old-profile grants.
+
+A separate fixed-reference weapon discovery examined 2,245 source-2 keyframes
+in 248.51 seconds with terminal hashes passing. The predefined selection of
+match groups after the reserved cutoff yielded **zero** groups. That selection
+rule and empty result are retained. Discovery is neither continuous temporal
+validation nor an absence/recall measurement.
+
+A subsequent, explicitly discovery-conditioned component check froze two
+earlier, previously non-native-reviewed windows before full-image inspection.
+It excludes the compact-reference training episode and a known development
+window. It is not inserted into the original empty cohort, and is not called
+blind. Review shows a spectated nonself player's death with a preexisting
+self-Report in one window, and nonself killfeed victims while the recording
+player remains alive in the other. Player names and images remain private.
+
+The first acquisition rejected a decimal endpoint mismatch: the probe expected
+49 frames but FFmpeg's time filter omitted the first one. The failure was kept;
+no incomplete input reached recognition. A recorded acquisition amendment
+expanded each envelope by 0.01 seconds, preserving all original target frames.
+Both verified windows contain 49 consecutive native frames. Neither the
+production decoder nor full sampler was changed to accept missing frames.
+
+| Source-2 component/control result | Window A | Window B |
+| --- | ---: | ---: |
+| Native frames | 49 | 49 |
+| Frames with fixed separator NCC >= 0.90 | 14 | 49 |
+| Accepted separator NCC range | 0.92255–0.99593 | 0.99439–0.99685 |
+| Self Death predictions | 0 | 0 |
+| Source-blocked frames | 0 | 0 |
+| Formal events | 0 | 0 |
+
+The isolated separator measurements do not confer subject/role authority. The
+actual unchanged image recognizer was separately replayed on all 98 frames;
+its zero predictions agree with these bounded nonself controls. Recognition
+took 85.76 seconds, replay wall 223.43 seconds and acquisition 529.72 seconds;
+Python peak replay RSS was 100,253,696 bytes. All input/terminal hashes passed.
+Four exact source review images, complete frame metadata and results are
+retained privately. Multiple frames are not counted as independent episodes.
+
+The current source revision `6621a9f` passed all five remote push/PR checks:
+Linux validation twice, Windows test/build twice and text-I/O audit. The latest
+local source validation remains 210 relevant tests, Ruff and mypy (143 files).
+This follow-up changes documentation only; it does not claim a new test run.
+
+**Remaining release gates:** an independent, adequately reviewed positive
+subject/role/temporal qualification cohort for the exact frozen reader/profile,
+then a gated formal producer and native Package/Trace connection, followed by
+canonical targeted and sampled regression. These additional checks supply
+numeric component support and nonself controls, not an independent numerical-
+role Self Death positive episode or a qualification grant. Formal output remains
+disabled. No new Full E2E was run; no canonical assertion gain is claimed. The
+adopted 23/55/4 and archived unadopted Strict 28/50/4 results remain separate.
