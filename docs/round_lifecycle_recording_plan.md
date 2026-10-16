@@ -20,6 +20,21 @@ Existing schemas, thresholds, assertions and negative safety contracts stay
 unchanged. match_001 evaluator failures remain failures under its existing pack;
 changing the task's acceptance scope does not rewrite evaluator outcomes.
 
+## Production input policy — user clarification 2026-10-16
+
+- **Production default**: a single unedited, **uncut full match recording from
+  the beginning of the game to its conclusion**. Full-match analysis must
+  not assume that an Outplayed-trimmed clip satisfies this condition.
+- **Development/diagnostic exception**: `match_001` was extracted via Outplayed
+  without editing its interior; it remains a valid source-bound partial-input
+  regression specimen, not a representative production full-match input.
+- `match_002` is the already received unedited full-match candidate for
+  independent validation. Source integrity, completeness and actual event
+  detection still require verification; the user's assurance does not
+  substitute for a passed canonical E2E run.
+- A clip may end in an active round. End-of-file must not create a round_end,
+  winner, or final match outcome without positive observed evidence.
+
 ## Source intake result
 
 SHA-256: `55d909c2d6a5f38575d1cb6c249ddfa7e2a48b96535841317adcae704c6f63b6`.
