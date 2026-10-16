@@ -67,7 +67,9 @@ class KillfeedSubjectProfile:
                 or np.any((self.yellow_mask > 0) & ~occupied)):
             raise ValueError('highlight color must be supported by the structural border')
         h, w = self.marker_reference.shape
-        if self.separator_method not in {'template_ncc', 'white_glyph_geometry'}:
+        if self.separator_method not in {
+            'template_ncc', 'white_glyph_geometry', 'white_glyph_geometry_with_templates',
+        }:
             raise ValueError('explicit supported separator method required')
         if type(self.name_gap_inset) is not int or not 0 <= self.name_gap_inset < w//2:
             raise ValueError('source-calibrated name gap inset required')
@@ -129,6 +131,7 @@ class KillfeedSubjectReading:
     reason: str
     weapon_support: float | None = None
     weapon_geometry: WeaponGlyphGeometry | None = None
+    weapon_plate_fraction: float | None = None
 
     @property
     def qualified(self) -> bool:
@@ -213,6 +216,24 @@ def _weapon_glyphs(image: Any, region: Box) -> list[WeaponGlyphGeometry]:
     return result
 
 
+def _template_plate_fraction(image: Any, box: Box) -> float:
+    """Independent current-image color support around a padded icon reference.
+
+    References in the explicit mixed method include three rows of plain plate
+    above and below the icon. A gray portrait/text match supplies no team plate.
+    This measured fraction is not an NCC score or a qualification grant.
+    """
+    left, top, right, bottom = box
+    if bottom-top < 6:
+        return 0.0
+    crop = cv2.cvtColor(image[top:bottom, left:right], cv2.COLOR_BGR2HSV)
+    margins = np.concatenate((crop[:3].reshape(-1, 3), crop[-3:].reshape(-1, 3)))
+    saturated = (margins[:, 1] >= 60) & (margins[:, 2] >= 60)
+    red = float((saturated & ((margins[:, 0] <= 12) | (margins[:, 0] >= 170))).mean())
+    green = float((saturated & (margins[:, 0] >= 40) & (margins[:, 0] <= 100)).mean())
+    return max(red, green)
+
+
 class KillfeedSubjectReader:
     """Locate highlighted portrait and independent weapon separator in one row.
 
@@ -263,14 +284,21 @@ class KillfeedSubjectReader:
             region = (p.search_roi[0], max(p.search_roi[1], y1-4),
                       p.search_roi[2], min(p.search_roi[3], y2+4))
             weapons: list[tuple[Box, tuple[float, ...]]] = []
+            mixed = p.separator_method == 'white_glyph_geometry_with_templates'
             geometry = (_weapon_glyphs(image, region)
-                        if p.separator_method == 'white_glyph_geometry' else [])
-            if p.separator_method == 'template_ncc':
+                        if p.separator_method == 'white_glyph_geometry' or mixed else [])
+            plates: dict[Box, float] = {}
+            if p.separator_method == 'template_ncc' or mixed:
                 for reference in (p.weapon_reference, *p.additional_weapon_references):
-                    weapons.extend(_matches(gray, reference,
-                                            (np.full_like(reference, 255),), region))
-            else:
-                weapons = [(g.roi, ()) for g in geometry]
+                    for candidate in _matches(gray, reference,
+                                              (np.full_like(reference, 255),), region):
+                        if mixed:
+                            plate = _template_plate_fraction(image, candidate[0])
+                            if plate < .90:
+                                continue
+                            plates[candidate[0]] = plate
+                        weapons.append(candidate)
+            weapons.extend((g.roi, ()) for g in geometry)
             # Multiple references for the same physical separator are one
             # witness, never independent corroboration or increased confidence.
             unique: list[tuple[Box, tuple[float, ...]]] = []
@@ -313,5 +341,6 @@ class KillfeedSubjectReader:
                 source, role, box, weapon, name_box if left < right else None,
                 support, fraction, text, confidence, 'unqualified_source_player_role_candidate',
                 min(weapon_scores) if weapon_scores else None,
-                next((g for g in geometry if g.roi == weapon), None)))
+                next((g for g in geometry if g.roi == weapon), None),
+                plates.get(weapon)))
         return tuple(result)

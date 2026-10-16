@@ -246,3 +246,77 @@ The source owner subsequently reported that no additional match_002 exposure
 ledger is likely available. Historical exposure therefore remains unknown;
 prospective validation may establish separation from this implementation's
 fitting inputs, but cannot certify globally unseen images.
+
+## Compact separator implementation and measured recognition improvement
+
+The rejected purchase-menu illustration probe scored NCC 0.88773 and was not
+adopted. Its image is not in the resulting reference bank. A bounded development
+keyframe search instead acquired a real compact pistol glyph in a **nonself**
+killfeed row, outside the prospective validation episode. A native decode of the
+same rational PTS reproduced the discovery crop exactly. The unchanged original
+pixels, source/encoded/pixel hashes and training ROI are frozen privately.
+The discovery requested a wider interval than FFmpeg actually delivered with
+`copyts`; the actual PTS coverage was recorded separately. Its unobserved suffix
+is not claimed as inspected or as negative evidence.
+
+The experimental profile now has an explicit
+`white_glyph_geometry_with_templates` option. Existing modes retain their
+selection rules. The new option combines the existing wide-glyph geometry with
+source-derived grayscale templates at **NCC >=0.90**, and additionally requires
+**>=0.90 measured single-color team plate support** in the template's padded
+top/bottom strips. Template NCC and plate fraction are retained separately.
+Geometry has no invented NCC. References for the same physical glyph collapse
+to one witness; distinct competing separators remain unknown. No player HUD
+identity, Fact ownership, public Schema, GT or formal event gate changes.
+
+| Same prospective inputs | Previous | Current | Delta |
+| --- | ---: | ---: | ---: |
+| Positive episode predictions | 0 | 1 | +1 |
+| Accepted victim-role readings | 0 | 94 | +94 |
+| Predictions in two negative windows | 0 | 0 | 0 |
+| Source-blocked frames | 0 | 0 | 0 |
+| Formal events | 0 | 0 | 0 |
+| Recognition seconds, 285 frames | 230.36 | 268.01 | +37.65 |
+| Wall seconds including outer checks | 381.37 | 418.42 | +37.05 |
+
+The recognition-time increase is 16.34%; this is a coverage improvement, not a
+speed improvement. The newly detected episode retains its observed onset and
+confirms 0.100 seconds later. Its measured compact-template NCC is 0.97515,
+plate fraction 1.0; overall measured support remains the lower independent
+marker support, 0.90219. The previously failed validation image was not fitted
+into the reference. Because the implementation was motivated by that failure,
+the successful rerun is an explicit regression result, not a new blind test.
+
+Current-code source-1 replay preserved one R1 and one R2 prediction and zero in
+its two report/spectator negative windows. The shorter R1 window still cannot
+establish corroboration; the extended window does. Processing all 171 rows
+(including overlapping R1 diagnostic windows) took 173.50 seconds recognition,
+182.69 seconds wall time, with 99,557,376 bytes Python peak RSS.
+
+A separate, unchanged-profile run on six previously acquired source-2 episode
+windows produced exactly one prediction per episode, including a recorder-as-
+killer row preceding the actual victim row. It processed 1,146 native frames in
+1,208.71 seconds recognition / 1,407.05 seconds wall time; Python peak RSS was
+102,797,312 bytes. No source-blocked frame or duplicate prediction occurred in
+those bounded windows. These known episodes are exposed regression inputs,
+not a newly independent cohort. Their gains cannot all be attributed to the
+compact template: the shared marker mask and prior wide-geometry fixes also
+changed relative to historical failed runs.
+
+Across these runs, nine reviewed positive episodes yielded nine predictions;
+four bounded report/spectator/preparation negative windows yielded none. The
+1,602 processed rows include overlapping R1 diagnostics and are not 1,602
+independent images or events. All terminal hashes passed. This still does not
+establish full-match false-positive rate, unseen-subject coverage, long-duration
+rearm/respawn behavior or formal subject/transition qualification.
+
+Local validation: **159 related unit/integration tests passed in 17.42 seconds**;
+CI-scope Ruff plus the shared runner passed; mypy passed 142 files. Seven added
+synthetic cases cover compact victim/killer roles, red/green plates, exact gray
+matches without a valid color plate, distinct-separator ambiguity and same-glyph
+deduplication. These synthetic results are not real-video accuracy measurements.
+Remote CI for this new implementation is not yet verified. Canonical targeted,
+sampled and Full results remain unmeasured; formal output is still disabled.
+No new Full E2E was run. Next: qualify subject/role/transition evidence and its
+continuous negative scope, then connect only qualified evidence to the approved
+formal Event/Package/Trace path and measure canonical changes.

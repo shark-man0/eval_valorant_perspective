@@ -190,6 +190,8 @@ class SelfDeathImageRecognizer:
                 measured = (*victim.marker_support, victim.yellow_fraction)
                 if victim.weapon_support is not None:
                     measured = (*measured, victim.weapon_support)
+                if victim.weapon_plate_fraction is not None:
+                    measured = (*measured, victim.weapon_plate_fraction)
                 support = min(measured)
         if report >= .90 and not self.episode.last_report_positive:
             self.report_predecessor = previous

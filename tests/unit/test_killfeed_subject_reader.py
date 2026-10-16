@@ -252,3 +252,60 @@ def test_non_yellow_world_luminance_cannot_change_highlight_shape_support():
     after = reader.read(image, source(reader, image))[0]
     assert after.marker_support == before.marker_support
     assert after.role == before.role == 'victim'
+
+
+def compact_fixture(*, killer=False, plate=(40, 60, 200)):
+    old, ocr, image = fixture(killer=killer)
+    image[16:44, 95:169] = plate
+    image[20:26, 104:132] = 255
+    image[26:40, 104:112] = 255
+    reference = cv2.cvtColor(image[17:43, 101:135], cv2.COLOR_BGR2GRAY).copy()
+    profile = replace(old.profile, separator_method='white_glyph_geometry_with_templates',
+                      weapon_reference=reference)
+    return KillfeedSubjectReader(profile, ocr, runtime_fingerprint=HASH), image
+
+
+@pytest.mark.parametrize('killer', [False, True])
+@pytest.mark.parametrize('plate', [(40, 60, 200), (100, 180, 70)])
+def test_compact_template_requires_independent_plate_and_preserves_role(killer, plate):
+    reader, image = compact_fixture(killer=killer, plate=plate)
+    rows = reader.read(image, source(reader, image))
+    assert len(rows) == 1 and rows[0].role == ('killer' if killer else 'victim')
+    assert rows[0].weapon_support >= .90
+    assert rows[0].weapon_plate_fraction >= .90
+    assert rows[0].weapon_geometry is None
+    assert rows[0].qualified is False and rows[0].formal_events == ()
+    geometry_only = KillfeedSubjectReader(
+        replace(reader.profile, separator_method='white_glyph_geometry'), NameReader(),
+        runtime_fingerprint=HASH,
+    )
+    assert geometry_only.read(image, source(geometry_only, image))[0].role == 'unknown'
+
+
+def test_compact_template_grayscale_match_without_team_plate_is_rejected():
+    reader, image = compact_fixture(plate=(100, 100, 100))
+    # The actual grayscale NCC is exact, but its independent plate witness fails.
+    assert reader.read(image, source(reader, image))[0].role == 'unknown'
+
+
+def test_mixed_method_keeps_wide_geometry_and_compact_template_competition_unknown():
+    reader, image = compact_fixture()
+    image[18:48, 0:74] = (40, 60, 200)
+    image[25:30, 4:68] = 255
+    image[30:40, 22:30] = 255
+    row = reader.read(image, source(reader, image))[0]
+    assert row.role == 'unknown' and row.weapon_roi is None
+    assert row.formal_events == ()
+
+
+def test_mixed_method_does_not_double_count_same_physical_wide_separator():
+    reader, image = glyph_fixture()
+    reference = cv2.cvtColor(image[22:43, 97:167], cv2.COLOR_BGR2GRAY).copy()
+    mixed = KillfeedSubjectReader(replace(reader.profile,
+        separator_method='white_glyph_geometry_with_templates', weapon_reference=reference),
+        NameReader(), runtime_fingerprint=HASH)
+    rows = mixed.read(image, source(mixed, image))
+    assert len(rows) == 1 and rows[0].role == 'victim'
+    assert rows[0].weapon_support >= .90
+    assert rows[0].weapon_plate_fraction >= .90
+    assert rows[0].formal_events == ()
