@@ -345,8 +345,10 @@ class HudVideoProcessor:
         if sampled_calibration_prefix is not None:
             if (sampled_input_contract_path is None or native_lifecycle is None
                     or boundary_mode != 'strict' or practical_lifecycle is not None
-                    or source_breaks or not combined):
-                raise HudVideoProcessingError('unsupported source or break for sampled geometry')
+                    or not combined
+                    or any(combined[0].time_sec <= cut <= combined[-1].time_sec
+                           for cut in source_breaks)):
+                raise HudVideoProcessingError('unsupported local source break for sampled geometry')
             digest = hashlib.sha256()
             with metadata.path.open('rb') as source_data:
                 for block in iter(lambda: source_data.read(1024 * 1024), b''):
