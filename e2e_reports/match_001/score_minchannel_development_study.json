@@ -1,0 +1,135 @@
+{
+  "scope": "Existing development only; no held, no timer change, no tracker call",
+  "code": "414f9d9d3f1841cfe50fdf9732bb78e1bfa35aa4382eb7c0d90d194ed81155fa",
+  "base_profile": "ca8aa2a0325afd5f5bcf6d6d8eaddab94ea764ecdcbacecc6104ca3b2f0895f9",
+  "hypothesis": "Use minimum B/G/R channel instead of luminance before existing cubic enlargement and white200/rowcontrast12/separated-speck mask; this requires all channels to be bright. Same fixed digit bank, structure, NCC0.90 and margin0.04. No saturation threshold, retries, parameter scan, timer or temporal changes.",
+  "prototype_sha256": "cf586ad4611c4ecdea60028c44708fc87670882d7019f9900a9599036db82d9d",
+  "windows": [
+    "LOST",
+    "WON",
+    "numeric"
+  ],
+  "input_sha256": {
+    "work/new-source-development/development-timing/LOST/source-manifest.json": "1ff551423ed5d745110e4374465a4f827349e52890a3dfff1795b34f85afe6c7",
+    "work/new-source-development/development-timing/WON/source-manifest.json": "bcf755598738f5140bec365b285b66a040441f59fe071ba0ab11d63dd74857f5",
+    "work/new-source-development/development-timing/numeric/source-manifest.json": "c784554ea5af2bc7fd88a0162c6e76806954b44dfb3e2d8004b7ac79b6e8d3dc",
+    "work/new-source-development/production-separated-score/rows.json": "265f6c7abf63b19bf0aef58db8666ac2e0b010b6f7587fff792eca44a3f7b0e8"
+  },
+  "new_held_opened": false,
+  "formal_qualification": false,
+  "calls": 2886,
+  "counts": {
+    "LOST:prior_accept_same_value_changed_confidence": 713,
+    "LOST:prior_accept_identical": 237,
+    "LOST:new_accept": 2,
+    "LOST:still_unknown": 9,
+    "LOST:lost_accept": 1,
+    "WON:prior_accept_identical": 389,
+    "WON:prior_accept_same_value_changed_confidence": 540,
+    "WON:lost_accept": 1,
+    "WON:still_unknown": 30,
+    "WON:new_accept": 2,
+    "numeric:still_unknown": 20,
+    "numeric:prior_accept_same_value_changed_confidence": 856,
+    "numeric:new_accept": 36,
+    "numeric:prior_accept_identical": 47,
+    "numeric:lost_accept": 3
+  },
+  "elapsed_sec": 30.63479699997697,
+  "terminal_integrity_verified": true,
+  "production_changed": false,
+  "changed_field_source_review_pending": false,
+  "paired_delta_counts": {
+    "prior_accept_same_value_changed_confidence": 2109,
+    "prior_accept_identical": 673,
+    "new_accept": 40,
+    "still_unknown": 59,
+    "lost_accept": 5
+  },
+  "posthoc_changed_source_review": {
+    "scope": "Assistant source-only all45 changed development fields, after prediction; not independent holdout",
+    "new_accepts_source_agreement": 40,
+    "lost_accepts_baseline_source_agreement": 5,
+    "formal_accuracy_expanded": false
+  },
+  "component_diagnosis": {
+    "scope": "Saved unqualified component-composition diagnosis, not current native producer or qualification; historical UI/state/geometry plus current static timer and paired static score on identical source pixels",
+    "historical_UI_code": "58117f2bfe84f072c37f0989846145d7fad7a3a29d807ba55d9be9a6136a4f68",
+    "current_static_component_code": "414f9d9d3f1841cfe50fdf9732bb78e1bfa35aa4382eb7c0d90d194ed81155fa",
+    "input_sha256": {
+      "work/new-source-development/score-minchannel-development/rows.json": "ec83761c8edcbc4b86de1d6d8c7cd62979f9f6943caf78959a193aac6de6829a",
+      "work/new-source-development/production-separated-score/rows.json": "265f6c7abf63b19bf0aef58db8666ac2e0b010b6f7587fff792eca44a3f7b0e8",
+      "work/new-source-development/timer-rejection-development/rows.json": "d48019b56889553b590054f8290a6ff5640e24d6ed73e4405a3e4583b373e81e",
+      "work/new-source-development/development-timing/LOST-result/raw-rows.json": "b472769c24afbeb7cced01c1bc0b2f6536878a5cc6bc2381b2278e8fa9738e3a",
+      "work/new-source-development/development-timing/WON-result/raw-rows.json": "67d9c219fcff604e5d25470993d7a3fc1fc3a9be986aa0b65488e1c730968030",
+      "work/new-source-development/development-timing/numeric-result/raw-rows.json": "6ddaecfc6f80ff64466c2aa041d1cc7d6377221e2a04e182bc22851cefb5e0d5"
+    },
+    "results": [
+      {
+        "window": "LOST",
+        "kind": "baseline",
+        "frames": 481,
+        "ever_pending": false,
+        "diagnostic_End_count": 0,
+        "source_breaks": 0
+      },
+      {
+        "window": "LOST",
+        "kind": "minchannel",
+        "frames": 481,
+        "ever_pending": false,
+        "diagnostic_End_count": 0,
+        "source_breaks": 0
+      },
+      {
+        "window": "WON",
+        "kind": "baseline",
+        "frames": 481,
+        "ever_pending": false,
+        "diagnostic_End_count": 0,
+        "source_breaks": 0
+      },
+      {
+        "window": "WON",
+        "kind": "minchannel",
+        "frames": 481,
+        "ever_pending": false,
+        "diagnostic_End_count": 0,
+        "source_breaks": 0
+      },
+      {
+        "window": "numeric",
+        "kind": "baseline",
+        "frames": 481,
+        "ever_pending": true,
+        "diagnostic_End_count": 1,
+        "source_breaks": 0
+      },
+      {
+        "window": "numeric",
+        "kind": "minchannel",
+        "frames": 481,
+        "ever_pending": true,
+        "diagnostic_End_count": 1,
+        "source_breaks": 0
+      }
+    ],
+    "formal_events": 0,
+    "owned_facts": 0,
+    "qualification_issued": false,
+    "full_native_replay_claimed": false,
+    "source_epoch_splice": false,
+    "current_values_repaired_or_filled": false
+  },
+  "decision": "Do not adopt as an End fix: five source-correct accepts lost and no End-pattern improvement in unqualified component composition; clock-type coverage gap remains",
+  "formal_qualification_issued": false,
+  "private_evidence_sha256": {
+    "plan.json": "4bea3e415ef796a43d520e4af2bffb90f1c97786918b69c118afc66ef810779f",
+    "prototype.py": "cf586ad4611c4ecdea60028c44708fc87670882d7019f9900a9599036db82d9d",
+    "rows.json": "ec83761c8edcbc4b86de1d6d8c7cd62979f9f6943caf78959a193aac6de6829a",
+    "result.json": "71d2ab306d306225c73b947a2ac646116558b9e6c35664f45a4b7057c8054e10",
+    "changed-source-review-selection.json": "6017f3370c0d2328c865fc80e026ffd67082379dbd216e69f3df4502cce1d037",
+    "posthoc-changed-source-review.json": "038ca3fd3e6aa91d5b0f6a6e35519b9d7fda09d276a66b643df7b7ff9b4fc0e9",
+    "component-diagnosis.json": "b058eccb091aa391573c92139216cec45f0fc868b9b9bb7c5edf4c727226531c"
+  }
+}
