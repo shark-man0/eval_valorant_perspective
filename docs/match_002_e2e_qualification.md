@@ -1801,3 +1801,37 @@ Measurement SHA:
 Related geometry/native-prefix tests52pass, scoped Ruff, production mypy
 (133files) and git diff --check pass. These checks and diagnostic acceptance
 counts do not complete qualified real-video Round lifecycle or formal Full E2E.
+
+## Separate blind source-geometry controls review
+
+Extend the private geometry-review preparer to consume a complete external
+development image inventory, independently of the frozen reference candidate.
+Require the same source SHA, a valid frozen development/holdout partition,
+bounded inventory, image hash/dimension verification and no image-hash overlap
+with the candidate's training/validation sets. Bind both inventories and the
+partition; check them again before releasing the review receipt. Existing
+candidate-only review remains available and no historical receipt is rewritten.
+
+Use all13images from the existing numeric contrast-selected development cohort,
+not a subset selected by the gradient matcher's output. All13are distinct and
+none overlap candidate images by hash. This is previously exposed development,
+not an untouched holdout or independent episodes. Prior numeric labels do not
+become geometry labels. No matcher, OCR, prediction, fitting, video decoding,
+qualification or production adoption is run during review preparation.
+
+The review shows unchanged reference/mask assets, configured guides and neutral
+numbered copies of each original image. Copies preserve source bytes and avoid
+revealing the earlier cohort's semantic directory name. Instructions explicitly
+distinguish fixed geometry from variable digits/icons and allow visible, absent,
+misaligned, unknown and unreviewed responses. No expected state or match score
+is displayed. Ask the human to review geometry only; identity, event timing,
+continuity and adoption remain outside scope. Labels are still unreviewed.
+
+Private review receipt SHA:
+`8fb52c4385e68330fb1962b0f8f9838d4a1fe27a85f396f6589d50d828f53f9d`.
+Private page SHA:
+`fce9bd6dc9a019370bdc052671ed64a3d762f8004d8a49824704d65785dc182a`.
+Do not infer negative qualification from preparing a review or sending a request.
+Tests cover non-disclosure, unchanged source copies, hash/partition bindings,
+source mismatch, overlap, changed pixels and holdout rejection. The scoped
+geometry test run42passes before integrating the newly fetched main.
