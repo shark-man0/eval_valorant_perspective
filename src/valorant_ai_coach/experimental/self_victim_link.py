@@ -60,14 +60,15 @@ def link_source_player_to_victim(
     if victim.role != SubjectRole.VICTIM:
         return SelfVictimLink("unknown", ("not_victim_role",), owner, victim)
     if (owner.method != "scoreboard_border_and_name_candidate"
-            or victim.method not in {"killfeed_victim_text", "combat_report_victim_text"}):
+            or victim.method != "killfeed_victim_text"):
         return SelfVictimLink("unknown", ("unqualified_role_method",), owner, victim)
     if owner.source.context != victim.source.context:
         return SelfVictimLink("unknown", ("source_context_mismatch",), owner, victim)
     if (not 0 <= abs(owner.source.time - victim.source.time)
             <= Fraction(str(max_age_sec))):
         return SelfVictimLink("unknown", ("stale_or_ambiguous_source_time",), owner, victim)
-    if owner.source.pixel_sha256 == victim.source.pixel_sha256:
+    if (owner.source.time == victim.source.time
+            or owner.source.pixel_sha256 == victim.source.pixel_sha256):
         return SelfVictimLink("unknown", ("no_independent_source_frames",), owner, victim)
     ax1, ay1, ax2, ay2 = owner.roi
     bx1, by1, bx2, by2 = victim.roi
