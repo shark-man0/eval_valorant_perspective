@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "kind": "source_bound_human_visual_role_review_not_a_qualification",
+  "source": {
+    "video_id": "match_001",
+    "sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "size_bytes": 267056165,
+    "width": 1920,
+    "height": 1080,
+    "fps": 60,
+    "format": "H264",
+    "origin_note": "Outplayed-extracted segment; no edits inside chosen segment, per user",
+    "decoder": "OpenCV 4.13.0 VideoCapture CAP_PROP_POS_FRAMES, BGR frame pixel sha256; timestamps from CAP_PROP_POS_MSEC and not native assertion PTS"
+  },
+  "process": {
+    "review_date": "2026-10-16",
+    "video_sha_verified": true,
+    "frames_reviewed": 17,
+    "frame_selection": "already-exposed death and persistent-report neighborhoods; not independent blind holdout",
+    "gt_or_expected_values_passed_to_any_detector": false,
+    "production_recognition_run": false
+  },
+  "frames": [
+    {
+      "frame_index": 4434,
+      "cv2_time_sec": 73.9,
+      "bgr_pixel_sha256": "64ef6958546bdba7da2481172c28b90e603ba09ebd50a0f3af730506b814a4e9",
+      "visual_review_category": "report_absent_before_r1_death"
+    },
+    {
+      "frame_index": 4455,
+      "cv2_time_sec": 74.25,
+      "bgr_pixel_sha256": "007465767e9af0ac4eb0fd393f01d75274997e602cca02ad7b2aac47da29c056",
+      "visual_review_category": "report_absent_before_r1_death"
+    },
+    {
+      "frame_index": 4460,
+      "cv2_time_sec": 74.333333,
+      "bgr_pixel_sha256": "b75f1ea708002c6735ecc950e55830a7ae15101b3ac1f2bd6ac6aca50d4def27",
+      "visual_review_category": "report_absent_before_r1_death"
+    },
+    {
+      "frame_index": 4463,
+      "cv2_time_sec": 74.383333,
+      "bgr_pixel_sha256": "d2f3fc60706db3f8c86049f7ee1790701f6877924ab54c042a93b488510cce38",
+      "visual_review_category": "report_appears_r1"
+    },
+    {
+      "frame_index": 4466,
+      "cv2_time_sec": 74.433333,
+      "bgr_pixel_sha256": "249101d8bda6283ccb2b0bb4a070d4fd732839c6a2e10378b53d1aa8d1cbc73e",
+      "visual_review_category": "self_report_and_killfeed_r1"
+    },
+    {
+      "frame_index": 4469,
+      "cv2_time_sec": 74.483333,
+      "bgr_pixel_sha256": "d7d9753978ec013ebbc0533a1b514177f8e6a9d9e848d1791381f2391fa96bd2",
+      "visual_review_category": "persistent_report_r1"
+    },
+    {
+      "frame_index": 4500,
+      "cv2_time_sec": 75,
+      "bgr_pixel_sha256": "4da1e5518d52586db6c0efe71961b6d5d13a6fd9c6300b154834301c47261de9",
+      "visual_review_category": "persistent_report_r1"
+    },
+    {
+      "frame_index": 6252,
+      "cv2_time_sec": 104.2,
+      "bgr_pixel_sha256": "f5e036c261051c6fe7bf9e1d8594b8ff898e63eb447b7283b3215c9691119fe9",
+      "visual_review_category": "persistent_report_after_round_change"
+    },
+    {
+      "frame_index": 8850,
+      "cv2_time_sec": 147.5,
+      "bgr_pixel_sha256": "3971ca23d906ee328653efe5bd699123d28d66bb8e078132c60c74307719764d",
+      "visual_review_category": "report_absent_before_r2_death"
+    },
+    {
+      "frame_index": 8856,
+      "cv2_time_sec": 147.6,
+      "bgr_pixel_sha256": "f5f574fba19248462276115749bd664de20d1e23c024c44ce86b81cc7180fa23",
+      "visual_review_category": "report_absent_before_r2_death"
+    },
+    {
+      "frame_index": 8862,
+      "cv2_time_sec": 147.7,
+      "bgr_pixel_sha256": "c1038440bcca5f05b9959d85f61af9935124ad6092e438f481039d93c6d5e079",
+      "visual_review_category": "self_report_and_killfeed_appear_r2"
+    },
+    {
+      "frame_index": 8868,
+      "cv2_time_sec": 147.8,
+      "bgr_pixel_sha256": "9b47d42cc3fd40dbef0e2b7bc24c49721059f2682c7f92ef3ed3b517bd92d73e",
+      "visual_review_category": "self_report_and_killfeed_r2"
+    },
+    {
+      "frame_index": 8889,
+      "cv2_time_sec": 148.15,
+      "bgr_pixel_sha256": "45511d5b574dfd632e5ab5e508b6619f29b499ac34cb8b10752edd58542fab29",
+      "visual_review_category": "persistent_report_r2"
+    },
+    {
+      "frame_index": 8940,
+      "cv2_time_sec": 149,
+      "bgr_pixel_sha256": "52a34cc20388c8ab6cdf71cfbd1ea98a236e42822bd5dda93a12144102d3c9cd",
+      "visual_review_category": "persistent_report_r2"
+    },
+    {
+      "frame_index": 9000,
+      "cv2_time_sec": 150,
+      "bgr_pixel_sha256": "4cad8539af17fb14d9e598c81c1e0520c28db9164d51c31c7005505d42b30c0b",
+      "visual_review_category": "spectator_with_persistent_report"
+    },
+    {
+      "frame_index": 10190,
+      "cv2_time_sec": 169.833333,
+      "bgr_pixel_sha256": "89845e3b71c10f95bc62322967fd2c5444ef3d07cfac2d35a87051ea0ddae980",
+      "visual_review_category": "spectator_with_persistent_report"
+    },
+    {
+      "frame_index": 10200,
+      "cv2_time_sec": 170,
+      "bgr_pixel_sha256": "7769e799b78c4d1727460af30824eac88d15514992ee94ed1ffa4f6c106d3358",
+      "visual_review_category": "spectator_with_persistent_report"
+    }
+  ],
+  "conclusions": [
+    {
+      "observation": "Report heading describes the enemy who killed the local source player; this is semantically different from generic report presence.",
+      "role": "positive_self_context_semantics",
+      "status": "source_reviewed_not_recognizer_qualified"
+    },
+    {
+      "observation": "In both death episodes a killer/victim killfeed row is visible and victim text corresponds to the recording player; victim/killer role positions are distinguishable.",
+      "role": "victim_not_killer",
+      "status": "source_reviewed_not_recognizer_qualified"
+    },
+    {
+      "observation": "Report becomes visible following immediate preceding non-report frames around 74.38 and 147.70 seconds (cv2 presentation offsets).",
+      "role": "temporal_first_appearance",
+      "status": "source_reviewed_not_recognizer_qualified"
+    },
+    {
+      "observation": "Report persists during later non-death gameplay at about 104.2 and spectated context about 150–170 seconds.",
+      "role": "strong_negative_control",
+      "status": "report_presence_must_not_emit_new_death"
+    },
+    {
+      "observation": "The yellow-marked scoreboard source row is not independently qualified as a detector in this review.",
+      "role": "unresolved_subject_source_binding",
+      "status": "unknown"
+    }
+  ],
+  "runtime": {
+    "formal_death_events_emitted": 0,
+    "qualified_self_subjects": 0,
+    "strict_fail_reduction_measured": 0,
+    "independent_holdout_count": 0
+  }
+}
