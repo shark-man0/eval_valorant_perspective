@@ -69,6 +69,8 @@ def test_source_review_does_not_promote_to_qualification() -> None:
         ("foreign_segment", "source_context_mismatch"),
         ("stale", "stale_or_ambiguous_source_time"),
         ("same_frame_pixels", "no_independent_source_frames"),
+        ("same_native_pts", "no_independent_source_frames"),
+        ("wrong_role_source", "unqualified_role_method"),
         ("overlap", "overlapping_evidence_rois"),
         ("weak_confidence", "text_or_marker_support_insufficient"),
         ("wrong_reader", "unqualified_role_method"),
@@ -85,6 +87,8 @@ def test_never_joins_ambiguous_or_unowned_evidence(mutation, reason) -> None:
         "same_frame_pixels": {
             "source": replace(victim.source, pixel_sha256=owner.source.pixel_sha256)
         },
+        "same_native_pts": {"source": replace(victim.source, pts_ticks=100)},
+        "wrong_role_source": {"method": "combat_report_victim_text"},
         "overlap": {"roi": owner.roi},
         "weak_confidence": {"confidence": .89},
         "wrong_reader": {"method": "combat_report_killer_text"},
