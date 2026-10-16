@@ -214,3 +214,14 @@ def test_malformed_source_hashes_are_rejected(invalid):
         evaluation_source_binding({'source_video_sha256': invalid, 'boundaries': []}, {})
     with pytest.raises(ValueError, match='source SHA256'):
         evaluation_source_binding({'boundaries': []}, {'source_video_sha256': invalid})
+
+
+@pytest.mark.parametrize('offset,status', [(0, 'PASS'), (.05, 'PASS'), (.1, 'PASS'),
+                                         (.101, 'FAIL'), (.1000000000005, 'FAIL')])
+def test_point_policy_has_no_widening_epsilon(offset, status):
+    from decimal import Decimal
+
+    actual = float(Decimal('4') + Decimal(str(offset)))
+    result = evaluate_matched_boundary(predicted(actual), truth_kind='round_start',
+                                      truth_time_sec=4)
+    assert result['status'] == status

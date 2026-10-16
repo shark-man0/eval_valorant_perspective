@@ -43,7 +43,7 @@ def confidence_diagnostics(trace, failures):
     return dict(counts)
 
 
-def evaluate_trace(pack, trace):
+def evaluate_trace(pack, trace, *, boundary_timing_profile=None):
     """Reuse the canonical evaluator, including isolated assertion outcomes for reports."""
     schema = json.loads(
         (pack / "schemas/e2e_output_trace_schema_v1.json").read_text(encoding="utf-8")
@@ -52,6 +52,16 @@ def evaluate_trace(pack, trace):
     assertions = json.loads(
         (pack / "tests/generated/e2e_assertions_v3.json").read_text(encoding="utf-8")
     )
+    timing_audit = None
+    if boundary_timing_profile is not None:
+        from scripts.e2e.boundary_time_policy import POLICY_VERSION, apply_policy
+
+        if boundary_timing_profile != POLICY_VERSION:
+            raise ValueError("unsupported boundary timing profile")
+        timeline = json.loads(
+            (pack / "ground_truth/timeline_ground_truth_v3.json").read_text(encoding="utf-8")
+        )
+        assertions, timing_audit = apply_policy(assertions, timeline)
     spec = importlib.util.spec_from_file_location(
         "validation_reference_evaluator", pack / "tests/reference_evaluator.py"
     )
@@ -101,7 +111,7 @@ def evaluate_trace(pack, trace):
                     "failures": errors,
                 }
             )
-    return {
+    report = {
         "pass": not failures,
         "schema_valid": True,
         "trace_counts": {k: len(v) for k, v in trace.items()},
@@ -116,6 +126,12 @@ def evaluate_trace(pack, trace):
             "empty outputs can satisfy prohibitions."
         ),
     }
+    if timing_audit is not None:
+        report["boundary_timing_policy"] = {
+            "version": boundary_timing_profile, "windows": timing_audit,
+            "scope": "Evaluation timing only; not qualification or recognition improvement",
+        }
+    return report
 
 
 def main():

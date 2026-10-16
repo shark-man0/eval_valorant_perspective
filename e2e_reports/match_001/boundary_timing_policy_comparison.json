@@ -1,0 +1,108 @@
+{
+  "version": "boundary-timing-comparison-v1",
+  "timing_policy": "round-boundary-bracket-0.1-v1",
+  "start_main_sha": "7e480c2f2f7f49aea73e1541d065d78881d2f11c",
+  "scope": "Evaluation-only comparison of an archived unadopted native Full candidate; not current-main video recognition",
+  "adopted_full_baseline": {
+    "pass": 23,
+    "fail": 55,
+    "not_evaluated": 4
+  },
+  "archived_trace_comparison": {
+    "previous": {
+      "pass": 28,
+      "fail": 50,
+      "not_evaluated": 4
+    },
+    "current": {
+      "pass": 30,
+      "fail": 49,
+      "not_evaluated": 3
+    },
+    "delta": {
+      "pass": 2,
+      "fail": -1,
+      "not_evaluated": -1
+    }
+  },
+  "changed_assertions": [
+    {
+      "assertion_id": "GT-R1-ROUND-END",
+      "group": "required_point_events",
+      "previous": "fail",
+      "current": "pass"
+    },
+    {
+      "assertion_id": "ordering_constraints-001",
+      "group": "ordering_constraints",
+      "previous": "not_evaluated",
+      "current": "pass"
+    }
+  ],
+  "canonical_default_assertion_results_identical": true,
+  "canonical_default_failure_codes_identical": true,
+  "boundary_counts": {
+    "round_start": 2,
+    "round_end": 1,
+    "duplicate_exact_boundary_records": 0
+  },
+  "negative_violations": {
+    "previous": 0,
+    "current": 0,
+    "delta": 0
+  },
+  "discontinuity_violations": {
+    "previous": 0,
+    "current": 0,
+    "delta": 0
+  },
+  "evaluation_runtime_sec": {
+    "canonical": 11.050815569935367,
+    "practical": 12.841355644981377
+  },
+  "frozen_input_hashes": [
+    {
+      "role": "e2e_trace.json",
+      "sha256": "65aa8a0387cb140adb22fe3f26a9ce60b00d45198d48889d16d4fda349f56958"
+    },
+    {
+      "role": "tests/reference_evaluator.py",
+      "sha256": "9384bcc0aab792123c724a11004e5e17bfc3360592236c1307223f192cf93f80"
+    },
+    {
+      "role": "tests/generated/e2e_assertions_v3.json",
+      "sha256": "c5e242b611ce227d1d2633e5e24c00dfe65168d8124ab58fbdea84b1d7f0d820"
+    },
+    {
+      "role": "ground_truth/timeline_ground_truth_v3.json",
+      "sha256": "afcb25b3aa976bb8b16114215da719d1a705190a244785939816831179bb83dd"
+    },
+    {
+      "role": "ground_truth/evaluation_policy_v3.json",
+      "sha256": "8ba93643f117d816a6af4a7626e97caf977a59c26822822ff5401f2f3b5f8198"
+    },
+    {
+      "role": "schemas/e2e_output_trace_schema_v1.json",
+      "sha256": "acf56ac2a15b00accb6916a12705ab3e606af16b10d13f7368230e2075a989c6"
+    },
+    {
+      "role": "compare_boundary_timing.py",
+      "sha256": "c8a8deccc46f8b81a8d11ee27a3a11c2956791f2a94e641ce5bf037b7752bada"
+    },
+    {
+      "role": "boundary_time_policy.py",
+      "sha256": "fc39f2843270c341c97b2c6097eef27218ce4243f2b68f103786fcde4fd5d4ae"
+    },
+    {
+      "role": "evaluate_saved_trace.py",
+      "sha256": "55053e087a5a2f5d5d64d3a2c97234e5b2872f65ca069675c0fe35c9dd1e6498"
+    }
+  ],
+  "private_comparison_sha256": "df62cc469b134b0d76332041ec6a23bf97253bf492865b9bac608947634b7af2",
+  "recognizer_changed": false,
+  "sampler_changed": false,
+  "validation_pack_modified": false,
+  "new_full_e2e_executed": false,
+  "production_adoption": false,
+  "limitation": "No new source/continuous recognition, match_002 or qualification. All gains are evaluation-policy only. Raw GT and private trace stay local."
+}
