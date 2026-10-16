@@ -1835,3 +1835,15 @@ Do not infer negative qualification from preparing a review or sending a request
 Tests cover non-disclosure, unchanged source copies, hash/partition bindings,
 source mismatch, overlap, changed pixels and holdout rejection. The scoped
 geometry test run42passes before integrating the newly fetched main.
+
+Fetch origin/main and inspect the new Qt shutdown lifecycle change before
+merging it into the work branch. Integrated main is
+`7e480c2` (merge checkpoint `ec90051`); this is main-to-work integration, not
+work-to-main adoption. The fetched changes touch GUI ownership/teardown and
+related tests/docs, not HUD/Visual recognition or the frozen profiles. The
+global recognizer fingerprint remains
+`87f4bcea8b1699dbad965b634b06ebd4095dbb4519bd55ac4b8495b1d486e008`.
+After integration, geometry, startup, GUI smoke and Qt shutdown process tests
+82pass in20.43seconds; scoped Ruff, mypy(134sourcefiles) and git diff --check
+pass. No full-suite or full-match E2E result is implied. Independent geometry
+control labels are requested but not yet received; no negatives are inferred.
