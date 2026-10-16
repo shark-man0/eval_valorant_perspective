@@ -61,6 +61,32 @@ def test_recording_player_as_killer_cannot_generate_a_death_prediction():
     assert any(s.role == 'killer' for r in rows for s in r.subjects)
 
 
+def test_older_self_killer_row_does_not_veto_new_independent_self_victim_row():
+    killer, ocr, killer_image = fixture(killer=True)
+    _, _, victim_image = fixture()
+    profile = replace(killer.profile, frame_shape=(120, 240), search_roi=(0, 0, 240, 80))
+    header = np.random.default_rng(24).integers(20, 220, (12, 50), dtype=np.uint8)
+    recognizer = SelfDeathImageRecognizer(profile, ocr, header, (0, 80, 80, 118),
+        runtime_fingerprint=HASH, dependencies_fingerprint=HASH, native_step_ticks=1)
+    rows = []
+    for tick in range(6):
+        image = np.zeros((120, 240, 3), dtype=np.uint8)
+        image[:80] = killer_image
+        if tick:
+            image[50:70] = victim_image[20:40]
+            image[90:102, 10:60] = np.repeat(header[:, :, None], 3, axis=2)
+        image[119, 239] = tick
+        source = SourceBinding(HASH, tick, 1, 60, 'segment',
+            hashlib.sha256(image.tobytes()).hexdigest(), recognizer.code_fingerprint,
+            recognizer.profile_fingerprint, HASH)
+        rows.append(recognizer.observe(image, source))
+    assert {s.role for s in rows[-1].subjects} == {'killer', 'victim'}
+    assert sum(r.status == 'prediction' for r in rows) == 1
+    result = next(r for r in rows if r.status == 'prediction')
+    assert result.onset_time_sec == 1/60
+    assert result.formal_events == () and result.qualified is False
+
+
 def test_single_frame_flash_and_interrupted_corroboration_are_not_predictions():
     recognizer, base, header = setup()
     observe(recognizer, base, header, 0, report=False, marker=False)

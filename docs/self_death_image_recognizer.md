@@ -36,8 +36,8 @@ prefix at NCC >= 0.90. It requires observed fresh report and self-victim edges
 in the same source segment, followed by distinct native frames spanning at
 least 0.05 seconds. A victim reader dropout restarts the entire corroboration
 run within the original one-second onset expiry. It does not erase the earlier
-independent report edge or lower a threshold. A report dropout, contrary killer
-evidence, invalid binding, PTS gap/reordering, repeated pixel raster or changed
+independent report edge or lower a threshold. A report dropout,
+invalid binding, PTS gap/reordering, repeated pixel raster or changed
 source context prevents confirmation. Only a genuine producer-qualified new
 round may rearm a completed episode. Report toggling cannot rearm it.
 
@@ -114,6 +114,65 @@ development using these images must mark this first episode as exposed; it
 cannot be reused as fresh blind holdout. Other untouched episodes require a
 new frozen partition before further development.
 
+### Follow-up development and reserved native episode
+
+The results above belong to commit `a587560` and its frozen private inputs.
+They are not re-signed for subsequent source changes. That commit's Linux CI
+run 38851424124 and Windows CI run 38851423766 passed, including coverage >=75%,
+Ruff, mypy and the Windows packaged application smoke test. Text I/O checks also
+passed. Those CI results do not certify the later changes or real-image accuracy.
+
+The experimental profile now optionally accepts additional weapon references;
+default callers retain their previous configuration. Multiple templates matching
+the same physical glyph are deduplicated and contribute one measured support,
+never an increased confidence or extra independent witness. Distinct competing
+separators still produce unknown. Existing public Schemas are unchanged.
+
+A second temporal fix prevents an older self-killer row from vetoing a fresh
+self-victim row elsewhere in the feed. A recording player can eliminate an
+opponent and then die while that earlier row persists. Killer-only input still
+cannot generate a Death prediction; a separate fresh victim edge and report
+onset with complete corroboration remain necessary. A synthetic two-row
+regression exercises that distinction.
+
+The first match_002 episode is now explicitly development data. A private
+source-bound outline profile and extra weapon reference constructed there
+produce one development prediction, measured support 0.91930, in 157.57 seconds.
+No source labels, names, GT or expected timestamps enter runtime. This is not
+an independent success and does not erase the earlier false negative.
+
+Before using any later full frames, the code/reference inputs and a native
+second-half interval were frozen. Header crops from that interval had already
+been used for discovery, which is documented exposure; this is a held-out
+native episode test, not a blind full-match recall benchmark. Source image
+review before reading classifier predictions established one self-death,
+followed by persistent report/map overlay and a teammate spectator transition.
+No exact Death time label was injected.
+
+| Reserved native episode | Result |
+| --- | ---: |
+| All native frames decoded and evaluated | 241 |
+| Manually observed self-death episodes | 1 |
+| Predictions / formal events | 0 / 0 |
+| Frames with report support >=0.90 | 199 |
+| Accepted subject outline proposals | 0 |
+| Encoded input bytes | 399,669,910 |
+| Cache generation time | 468.16 s |
+| Recognizer time excluding outer source checks | 259.95 s |
+
+This test fails **before weapon/role corroboration**: the frozen outline profile
+does not transfer to that episode. The first independent test also exhibited
+unqualified, potentially spurious outline proposals; specificity and sensitivity
+both need qualification. No threshold was lowered and no reference was adjusted
+to pass this reserved result. Both frozen failures remain local, with verified
+terminal hashes. Formal subject qualification and Strict E2E improvement are
+still unachieved. Another profile variant cannot inherit the earlier CI or
+recognition results without rerunning the applicable checks.
+
+Follow-up local regression: **162 passed in 8.62 seconds** (36 image/temporal
+controls); full configured Ruff scope passed and mypy passed all 141 source
+files. Follow-up remote results must be checked at the corresponding PR head.
+
 Two discovery attempts terminated with OOM at final source hashing: the private
 script incorrectly read the 3.4 GB video into one bytes object. Kernel logs
 confirmed approximately 3 GB Python RSS. Streaming hash verification corrected
@@ -122,7 +181,7 @@ was not a recognizer or production decoder change.
 
 ## Tests and release gates
 
-Related local unit regression: **159 passed**, including **33** new image and
+Initial local unit regression: **159 passed**, including **33** new image and
 temporal controls. Controls exercise own-killer rejection, no separator,
 partial names and invalid confidence, world luminance independence, initial
 persistent report, interrupted corroboration, report reappearance, source

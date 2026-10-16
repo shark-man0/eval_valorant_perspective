@@ -36,6 +36,7 @@ class KillfeedSubjectProfile:
     weapon_reference: Any
     headshot_reference: Any
     name_y_offsets: tuple[int, int] = (9, 31)
+    additional_weapon_references: tuple[Any, ...] = ()
 
     def __post_init__(self) -> None:
         _hash(self.source_sha256)
@@ -63,7 +64,8 @@ class KillfeedSubjectProfile:
                 or not 0 <= self.name_y_offsets[0] < self.name_y_offsets[1] <= h):
             raise ValueError('name crop must remain inside the row height')
         for array in (self.marker_reference, *self.marker_masks, self.yellow_mask,
-                      self.weapon_reference, self.headshot_reference):
+                      self.weapon_reference, self.headshot_reference,
+                      *self.additional_weapon_references):
             if array.ndim != 2 or array.dtype != np.uint8 or float(array.std()) < 5:
                 raise ValueError('contrasting uint8 structural raster required')
             array.setflags(write=False)
@@ -78,7 +80,8 @@ class KillfeedSubjectProfile:
             'marker_feature': 'hsv_yellow_outline_v1',
         }, sort_keys=True).encode('utf-8'))
         for array in (self.marker_reference, *self.marker_masks, self.yellow_mask,
-                      self.weapon_reference, self.headshot_reference):
+                      self.weapon_reference, self.headshot_reference,
+                      *self.additional_weapon_references):
             digest.update(str(array.shape).encode('ascii'))
             digest.update(array.tobytes())
         return digest.hexdigest()
@@ -191,8 +194,16 @@ class KillfeedSubjectReader:
                 continue
             region = (p.search_roi[0], max(p.search_roi[1], y1-4),
                       p.search_roi[2], min(p.search_roi[3], y2+4))
-            weapon_mask = np.full_like(p.weapon_reference, 255)
-            weapons = _matches(gray, p.weapon_reference, (weapon_mask,), region)
+            weapons: list[tuple[Box, tuple[float, ...]]] = []
+            for reference in (p.weapon_reference, *p.additional_weapon_references):
+                weapons.extend(_matches(gray, reference, (np.full_like(reference, 255),), region))
+            # Multiple references for the same physical separator are one
+            # witness, never independent corroboration or increased confidence.
+            unique: list[tuple[Box, tuple[float, ...]]] = []
+            for candidate in sorted(weapons, key=lambda item: -min(item[1])):
+                if not any(_iou(candidate[0], old[0]) > .5 for old in unique):
+                    unique.append(candidate)
+            weapons = unique
             valid = [(b, s) for b, s in weapons if b[2] <= x1-4 or b[0] >= x2+4]
             if len(valid) != 1:
                 result.append(KillfeedSubjectReading(source, 'unknown', box, None, None,

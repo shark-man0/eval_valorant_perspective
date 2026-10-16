@@ -79,6 +79,29 @@ def test_missing_separator_retains_marker_but_never_assigns_victim():
     assert rows[0].name_text is None
 
 
+def test_alternate_weapon_reference_is_source_bound_and_not_extra_corroboration():
+    old, ocr, image = fixture()
+    alternate = np.random.default_rng(84).integers(20, 220, (16, 24), dtype=np.uint8)
+    profile = replace(old.profile, additional_weapon_references=(alternate,))
+    reader = KillfeedSubjectReader(profile, ocr, runtime_fingerprint=HASH)
+    assert profile.fingerprint() != old.profile.fingerprint()
+    image[22:38, 100:124] = np.repeat(alternate[:, :, None], 3, axis=2)
+    assert old.read(image, source(old, image))[0].role == 'unknown'
+    rows = reader.read(image, source(reader, image))
+    assert len(rows) == 1 and rows[0].role == 'victim'
+    assert rows[0].weapon_support == pytest.approx(1)
+    assert rows[0].formal_events == ()
+
+
+def test_duplicate_weapon_templates_do_not_create_multiple_separator_witnesses():
+    old, ocr, image = fixture()
+    profile = replace(old.profile, additional_weapon_references=(old.profile.weapon_reference,))
+    reader = KillfeedSubjectReader(profile, ocr, runtime_fingerprint=HASH)
+    rows = reader.read(image, source(reader, image))
+    assert len(rows) == 1 and rows[0].role == 'victim'
+    assert rows[0].weapon_support == pytest.approx(1)
+
+
 def test_weapons_on_both_sides_are_ambiguous():
     reader, _, image = fixture()
     image[22:38, 214:238] = np.repeat(reader.profile.weapon_reference[:, :, None], 3, axis=2)

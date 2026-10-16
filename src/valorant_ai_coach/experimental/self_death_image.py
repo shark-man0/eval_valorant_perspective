@@ -191,8 +191,7 @@ class SelfDeathImageRecognizer:
                                          source, report, subjects)
         onset = self.pending.onset_time_sec
         assert onset is not None
-        if (report < .90 or source.time-Fraction(str(onset)) > 1
-                or any(s.role == 'killer' for s in subjects)):
+        if report < .90 or source.time-Fraction(str(onset)) > 1:
             self.pending = None
             self.stable.clear()
             self.evidence.clear()
