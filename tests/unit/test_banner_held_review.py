@@ -83,7 +83,9 @@ def test_invalid_review_inputs_fail_without_assigning_labels(inputs, change):
     elif change == 'predictions':
         report['held_predictions_measured'] = True
     elif change == 'asset':
-        path = next(p for p in report['source_inputs_sha256'] if '/pool_frames/' in p)
+        asset = report_path.parent / 'pool_frames' / 'frame_0.jpg'
+        path = str(asset)
+        assert asset.is_file() and path in report['source_inputs_sha256']
         report['source_inputs_sha256'][path] = 'e' * 64
     else:
         selection = json.loads(selection_path.read_text(encoding='utf-8'))

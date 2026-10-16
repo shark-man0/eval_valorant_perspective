@@ -2095,3 +2095,32 @@ support/mask experiment, with fixed .90NCC/three-anchor/content exclusions and
 minimum support, no GT/control fitting and no production adoption. Await the
 requested human direction instead of repeating unchanged E2E or expanding OCR
 tuning while the authorization is unresolved.
+
+## Windows CI exposed a test-fixture path separator failure
+
+While the new mask-generation scope awaits explicit human direction, fetch
+origin/main again: no newer commits. Inspect already completed remote CI, not
+just local test reports. Basic CI at `cf67ebb` succeeds. Windows run
+[38853787803](https://github.com/shark-man0/eval_valorant_perspective/actions/runs/38853787803)
+at `eea73e9` fails with1failed/4068passed/11skipped in1111.78seconds. No source,
+test, config, diagnostic or workflow change separates that tested code from
+the pre-fix current HEAD; intervening changes are documentation only. Later
+Windows runs were cancelled by subsequent pushes; cancelled is not success.
+
+The failure is `test_banner_held_review`'s invalid-asset setup, before it calls
+the implementation: a lookup for the literal `/pool_frames/` substring misses
+Windows backslash paths and raises `StopIteration`. The intended test corrupts
+one expected source-image hash and asserts that review preparation raises
+`ValueError` without creating output. Determine that source through the fixture's
+native `Path` composition instead, and additionally assert that the image exists
+and belongs to the bound input inventory. Keep the corrupt hash, rejection
+assertion and no-output assertion unchanged. Do not skip the test or weaken
+production validation to hide this platform-specific setup failure.
+
+Related banner/control tests30pass on macOS after the test-only correction;
+scoped Ruff, mypy(134files) and git diff --check pass. No production recognizer,
+threshold, mask, profile, fixture pixels or expected detection result changes.
+Push this fix once for Windows verification, then observe that exact run without
+repeated documentation pushes cancelling it. The new Windows outcome and exe
+build are not yet verified; remote unit/build CI is not real-video Full E2E.
+Mask redesign and adoption remain outside this correction and unapproved.
