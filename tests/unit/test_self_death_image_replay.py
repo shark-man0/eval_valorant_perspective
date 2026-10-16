@@ -254,3 +254,53 @@ def test_native_source_window_replay_matches_png_pixels_without_sampling_or_cont
             == proof['native_pts_pixel_sequence_sha256'])
     assert all(w['formal_events'] == [] and w['qualified'] is False
                for w in (*cached, *native, *split))
+
+
+def bank_profile_file(tmp_path, extras):
+    model, _, header = detector()
+    p = model.reader.profile
+    arrays = {'reference': p.marker_reference, 'gold_mask': p.yellow_mask,
+              'weapon_reference': p.weapon_reference, 'headshot_reference': p.headshot_reference,
+              'report_header_reference': header, **extras}
+    arrays.update({f'mask{i}': mask for i, mask in enumerate(p.marker_masks)})
+    assets = tmp_path/'bank.npz'
+    np.savez_compressed(assets, **arrays)
+    data = {'schema_version': 'self_death_image_profile_v1', 'source_sha256': HASH,
+            'owner_marker_review_sha256': HASH, 'frame_shape': list(p.frame_shape),
+            'search_roi': list(p.search_roi), 'name_y_offsets': list(p.name_y_offsets),
+            'assets_file': assets.name,
+            'assets_sha256': hashlib.sha256(assets.read_bytes()).hexdigest(),
+            'separator_method': p.separator_method, 'name_gap_inset': p.name_gap_inset,
+            'marker_feature_kind': p.marker_feature_kind,
+            'report_header_search_roi': list(model.report_search_roi)}
+    path = tmp_path/'bank.json'
+    path.write_text(json.dumps(data), encoding='utf-8')
+    return path, p
+
+
+def test_profile_preserves_legacy_and_numbered_weapon_references_in_fingerprint(tmp_path):
+    arrays = [np.random.default_rng(seed).integers(20, 220, (12, 20), dtype=np.uint8)
+              for seed in [125, 126, 127]]
+    path, original = bank_profile_file(tmp_path, {
+        'additional_weapon_reference': arrays[0],
+        'additional_weapon_reference_000': arrays[1],
+        'additional_weapon_reference_001': arrays[2],
+    })
+    loaded, _, _, _ = load_profile(path)
+    assert len(loaded.additional_weapon_references) == 3
+    assert all(np.array_equal(a, b)
+               for a, b in zip(loaded.additional_weapon_references, arrays, strict=True))
+    assert loaded.fingerprint() == replace(original,
+        additional_weapon_references=tuple(arrays)).fingerprint()
+    assert loaded.fingerprint() != original.fingerprint()
+    assert all(not array.flags.writeable for array in loaded.additional_weapon_references)
+
+
+@pytest.mark.parametrize('key', ['additional_weapon_reference_001',
+                                'additional_weapon_reference_1',
+                                'additional_weapon_reference_expected_subject', 'unknown_asset'])
+def test_profile_rejects_incomplete_or_noncanonical_bank_names(tmp_path, key):
+    array = np.random.default_rng(128).integers(20, 220, (12, 20), dtype=np.uint8)
+    path, _ = bank_profile_file(tmp_path, {key: array})
+    with pytest.raises(ValueError):
+        load_profile(path)

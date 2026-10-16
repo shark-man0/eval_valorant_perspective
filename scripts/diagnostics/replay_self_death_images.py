@@ -77,8 +77,12 @@ def load_profile(path: Path) -> tuple[KillfeedSubjectProfile, Any, tuple[int, in
     }
     if version == 'self_death_image_profile_v2':
         required_arrays |= presence_arrays
+    bank_prefix = 'additional_weapon_reference_'
+    numbered = sorted(key for key in arrays if key.startswith(bank_prefix))
+    if numbered != [f'{bank_prefix}{index:03d}' for index in range(len(numbered))]:
+        raise ValueError('numbered weapon references must be contiguous canonical indices')
     if (not required_arrays <= arrays.keys()
-            or arrays.keys()-required_arrays-{'additional_weapon_reference'}):
+            or arrays.keys()-required_arrays-{'additional_weapon_reference'}-set(numbered)):
         raise ValueError('unexpected runtime profile arrays')
     if version == 'self_death_image_profile_v2':
         _report_presence_model(data, arrays)
@@ -87,7 +91,9 @@ def load_profile(path: Path) -> tuple[KillfeedSubjectProfile, Any, tuple[int, in
         tuple(data['search_roi']), arrays['reference'],
         (arrays['mask0'], arrays['mask1'], arrays['mask2']), arrays['gold_mask'],
         arrays['weapon_reference'], arrays['headshot_reference'], tuple(data['name_y_offsets']),
-        (arrays['additional_weapon_reference'],) if 'additional_weapon_reference' in arrays else (),
+        tuple(arrays[key] for key in (
+            (['additional_weapon_reference'] if 'additional_weapon_reference' in arrays else [])
+            + numbered)),
         data['separator_method'], data['name_gap_inset'], data['marker_feature_kind'],
     )
     return (profile, arrays['report_header_reference'],

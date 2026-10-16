@@ -509,3 +509,45 @@ predictions and zero source-blocked frames. The original frozen cohort and its
 selection correction are preserved; this new result is not inserted into the
 old cohort retroactively. Six exact full-resolution review frames and all
 metadata/results were retained before evicting its temporary RAM PNG cache.
+
+## Existing numerical reference restored without a contract change
+
+An existing frozen source-1 separator reference matches the R1/R2 confirmation
+images at NCC 0.98248 / 0.99311. It was present in an earlier alternate bank but
+was no longer materialized after the compact-icon profile replaced the single
+alternate entry. The image reader already accepts multiple references; the
+diagnostic NPZ loader accepted only one. This is a configuration transport gap,
+not a reason to fabricate geometric confidence or change its meaning.
+
+The loader now preserves the legacy `additional_weapon_reference` and an
+ordered, contiguous `additional_weapon_reference_000`, `_001`, ... bank. All
+arrays enter the existing profile fingerprint and are immutable. Noncanonical,
+gapped and unexpected keys reject. Legacy v1/v2 profiles retain their behavior.
+The existing reader's same-physical-glyph deduplication still prevents multiple
+references from becoming extra corroboration or raising confidence by voting.
+
+No reference was refitted and no NCC threshold changed. A newly fingerprinted
+profile retains the frozen source-1 reference alongside the existing compact
+reference. Fresh recognition of all 171 source-1 regression rows keeps one R1
+and one R2 prediction, unchanged onset/confirmation times and zero in both short
+negative controls. Actual victim NCC is now 0.98248 / 0.99311, plate support 1.0;
+aggregate support remains 0.91341 / 0.90382, never raised by the added reference.
+Recognition took 197.56 seconds, wall 206.12 seconds, Python peak RSS 95,084,544
+bytes. All terminal hashes passed. The old geometry outputs were not re-signed.
+
+Typed transport of those two fresh predictions preserves the genuine numeric
+victim witnesses. Relation/review remain UNKNOWN/CANDIDATE and formal events
+remain zero. This supplies a route under the existing numeric-role contract;
+the structural-predicate proposal is no longer a prerequisite for these two
+targets. Three isolated source-2 role probes still have geometry-only support;
+they are not silently promoted by the restored source-1 template.
+
+The changed profile needs its own source-backed qualification and extended
+negative verification before formal output. Previous profile-specific grants
+or long-control results are not transferred automatically. No canonical PASS
+gain, completed qualification or production adoption is claimed.
+
+Local validation for the bank loader: 210 related native/subject tests passed
+in 37.71 seconds; Ruff passed the CI scope plus the runner, and mypy passed
+143 files. Five added tests verify reference preservation, immutability and
+fingerprint coverage, and reject gapped/noncanonical/unexpected bank keys.

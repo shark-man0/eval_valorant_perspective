@@ -4,6 +4,14 @@ Status: **proposal; no formal output or production adoption**. This document
 requests a specific confidence/qualification contract decision, not approval
 to treat the current diagnostic predictions as qualified events.
 
+Follow-up: the existing source-1 NCC reference was omitted from a later
+single-alternate profile bank. Preserving that frozen reference alongside the
+compact reference restores actual numeric victim support for R1/R2 without
+this proposed contract change. Their qualification can proceed under the
+existing numeric contract. The decision below remains relevant to other
+geometry-only cases; it is not a prerequisite for the numeric path. The new
+profile still needs its own qualification and negative regression.
+
 ## Evidence and the remaining contract gap
 
 The current image reader can detect the recording-player highlight, distinguish
