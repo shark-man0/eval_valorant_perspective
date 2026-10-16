@@ -53,8 +53,9 @@ def test_sampled_provenance_blocks_unbound_inputs(case, wrong) -> None:
     elif wrong == "future":
         prefix = replace(prefix, pts_ticks=frames[0].pts_ticks)
     elif wrong == "timebase":
-        current = replace(current, source_time_base="1/1000",
-                          source_pts_ticks=round(current.time_sec * 1000))
+        # A mathematically equal but noncanonical timebase still represents
+        # a different supplied source metadata contract.
+        current = replace(current, source_time_base="2/30720")
     elif wrong == "sample_bytes":
         current.path.write_bytes(current.path.read_bytes() + b"mutated")
     else:
