@@ -1,8 +1,8 @@
-"""Opt-in native-event consumer of independently qualified numeric Self proof.
+"""Candidate-evaluation consumer of independently qualified numeric Self proof.
 
-No production caller or adoption approval is installed. An operator-approved
-report digest is required separately from the report file; loading a prediction
-or hashing its file is not qualification or authority. This module cannot turn
+No production caller is installed. A reviewed qualification report is bound by
+an expected digest separately from the file; loading a prediction or hashing
+its file is not qualification. This module cannot turn
 UNKNOWN/CANDIDATE observations into reviewed Self evidence.
 """
 from __future__ import annotations
@@ -29,6 +29,20 @@ _ROLES = frozenset({SubjectRole.SOURCE_PLAYER_BINDING, SubjectRole.VICTIM,
                     SubjectRole.DEATH_TRANSITION})
 _COMPONENTS = frozenset({'source_player_binding', 'victim_role', 'report_transition',
                          'native_temporal_continuity', 'negative_controls'})
+_NUMERIC_METHODS = frozenset({
+    (SubjectRole.SOURCE_PLAYER_BINDING, 'killfeed_highlight_shape_color_v1'),
+    (SubjectRole.VICTIM, 'killfeed_weapon_template_ncc_v1'),
+    (SubjectRole.DEATH_TRANSITION, 'fresh_self_referential_report_caption_ncc_v1'),
+})
+_REPORT_METHODS = frozenset({'self_referential_report_caption_ncc_v1',
+                             'independent_report_header_ncc_v1'})
+_EVALUATION_SCOPE = 'qualified_candidate_evaluation'
+
+
+def _supported_method(role: SubjectRole, method: str) -> bool:
+    if role == SubjectRole.REPORT:
+        return method in _REPORT_METHODS
+    return (role, method) in _NUMERIC_METHODS
 
 
 def release_fingerprint() -> str:
@@ -44,13 +58,14 @@ def release_fingerprint() -> str:
 
 
 @dataclass(frozen=True)
-class ApprovedNumericDeathRelease:
-    """Externally reviewed, exact-fingerprint authorization; not a metrics judge.
+class QualifiedNumericDeathContract:
+    """Reviewed, exact-fingerprint candidate qualification; not a metrics judge.
 
-    Offline qualification, split independence and production adoption must be
-    reviewed before a digest is supplied by trusted deployment configuration.
-    The detector/GT/input file cannot supply its own approved digest. No such
-    approval or qualification report is included with this implementation.
+    Offline qualification and split independence must be verified before trusted
+    candidate-run configuration supplies a report digest. This implements the
+    user's existing authorization to evaluate independently qualified candidates;
+    it does not request fresh production approval before candidate E2E. No real
+    qualification report is included. The file cannot qualify itself by hash.
     """
 
     report_sha256: str
@@ -60,39 +75,42 @@ class ApprovedNumericDeathRelease:
     dependencies_fingerprint: str
     native_step_ticks: int
     split_review_sha256: str
-    adoption_review_sha256: str
+    qualification_review_sha256: str
     component_reviews: tuple[tuple[str, str], ...]
     release_code_fingerprint: str
     source_player_subject_token: str
 
     @classmethod
-    def load(cls, path: Path, *, approved_report_sha256: str) -> ApprovedNumericDeathRelease:
-        _hash(approved_report_sha256)
+    def load(cls, path: Path, *, expected_report_sha256: str) -> QualifiedNumericDeathContract:
+        _hash(expected_report_sha256)
         content = path.read_bytes()
-        if hashlib.sha256(content).hexdigest() != approved_report_sha256:
-            raise ValueError('independently approved release report digest required')
+        if hashlib.sha256(content).hexdigest() != expected_report_sha256:
+            raise ValueError('expected reviewed qualification report digest required')
         data = json.loads(content)
         keys = {'schema_version', 'source_sha256', 'code_fingerprint', 'profile_fingerprint',
                 'dependencies_fingerprint', 'native_step_ticks', 'split_review_sha256',
-                'adoption_review_sha256', 'component_reviews', 'release_fingerprint',
-                'source_player_subject_token'}
+                'qualification_review_sha256', 'component_reviews', 'release_fingerprint',
+                'source_player_subject_token', 'evaluation_scope'}
         if (not isinstance(data, dict) or set(data) != keys
-                or data['schema_version'] != 'numeric_self_death_release_v1'
+                or data['schema_version'] != 'numeric_self_death_qualification_v1'
+                or data['evaluation_scope'] != _EVALUATION_SCOPE
                 or data['release_fingerprint'] != release_fingerprint()
                 or type(data['native_step_ticks']) is not int or data['native_step_ticks'] < 1
                 or not isinstance(data['component_reviews'], dict)
                 or set(data['component_reviews']) != _COMPONENTS):
             raise ValueError('complete current numeric release contract required')
         for key in ('source_sha256', 'code_fingerprint', 'profile_fingerprint',
-                    'dependencies_fingerprint', 'split_review_sha256', 'adoption_review_sha256'):
+                    'dependencies_fingerprint', 'split_review_sha256',
+                    'qualification_review_sha256'):
             _hash(data[key])
         for review in data['component_reviews'].values():
             _hash(review)
         _hash(data['source_player_subject_token'])
-        return cls(approved_report_sha256, data['source_sha256'], data['code_fingerprint'],
+        return cls(expected_report_sha256, data['source_sha256'], data['code_fingerprint'],
                    data['profile_fingerprint'], data['dependencies_fingerprint'],
                    data['native_step_ticks'], data['split_review_sha256'],
-                   data['adoption_review_sha256'], tuple(sorted(data['component_reviews'].items())),
+                   data['qualification_review_sha256'],
+                   tuple(sorted(data['component_reviews'].items())),
                    data['release_fingerprint'], data['source_player_subject_token'])
 
 
@@ -101,13 +119,16 @@ class NumericSelfDeathEventConsumer:
 
     Native adjacency and retained continuity hashes are required, but are not
     themselves semantic continuity qualification. That producer and negative
-    controls must be included in the independently approved report. Default
-    construction has no authority and emits nothing. The original observations
+    controls must be included in the independently reviewed report. Default
+    construction has no qualification and emits nothing. The original observations
     and HUD identity/owned fields are never mutated.
     """
 
-    def __init__(self, approval: ApprovedNumericDeathRelease | None = None) -> None:
-        self.approval = approval
+    def __init__(self, qualification: QualifiedNumericDeathContract | None = None) -> None:
+        if (qualification is not None
+                and not isinstance(qualification, QualifiedNumericDeathContract)):
+            raise ValueError('typed reviewed numeric qualification required; no Boolean override')
+        self.qualification = qualification
         self.released: set[str] = set()
         self.last_blocker: str | None = None
 
@@ -116,18 +137,18 @@ class NumericSelfDeathEventConsumer:
         def reject(reason: str) -> None:
             self.last_blocker = reason
 
-        approval = self.approval
-        if approval is None:
-            reject('independent_qualification_and_adoption_approval_missing')
+        qualification = self.qualification
+        if qualification is None:
+            reject('independent_numeric_qualification_missing')
             return None
-        if approval.release_code_fingerprint != release_fingerprint():
+        if qualification.release_code_fingerprint != release_fingerprint():
             reject('release_consumer_fingerprint_mismatch')
             return None
         source = decision.source
-        if (source.video_sha256 != approval.source_sha256
-                or source.code_fingerprint != approval.code_fingerprint
-                or source.profile_fingerprint != approval.profile_fingerprint
-                or source.dependencies_fingerprint != approval.dependencies_fingerprint):
+        if (source.video_sha256 != qualification.source_sha256
+                or source.code_fingerprint != qualification.code_fingerprint
+                or source.profile_fingerprint != qualification.profile_fingerprint
+                or source.dependencies_fingerprint != qualification.dependencies_fingerprint):
             reject('source_or_fingerprint_mismatch')
             return None
         if (decision.status != 'candidate' or len(decision.evidence) != 3
@@ -143,11 +164,12 @@ class NumericSelfDeathEventConsumer:
             or w.relation != SubjectRelation.SELF
             or w.review_status != ReviewStatus.SOURCE_REVIEWED
             or w.subject_token is None or w.review_sha256 is None
-            or w.confidence is None or w.confidence < .90 for w in witnesses
+            or w.confidence is None or w.confidence < .90
+            or not _supported_method(w.role, w.method) for w in witnesses
         ):
             reject('independent_reviewed_numeric_self_roles_required')
             return None
-        if {w.subject_token for w in witnesses} != {approval.source_player_subject_token}:
+        if {w.subject_token for w in witnesses} != {qualification.source_player_subject_token}:
             reject('conflicting_subjects')
             return None
         for a, b in combinations(witnesses, 2):
@@ -175,7 +197,8 @@ class NumericSelfDeathEventConsumer:
             reject('complete_same_segment_source_chain_required')
             return None
         for previous, current in zip(frames, frames[1:], strict=False):
-            if (current.source.pts_ticks-previous.source.pts_ticks != approval.native_step_ticks
+            if (current.source.pts_ticks-previous.source.pts_ticks
+                    != qualification.native_step_ticks
                     or current.previous_pts_ticks != previous.source.pts_ticks
                     or current.continuity_proof_sha256 is None
                     or current.source.pixel_sha256 == previous.source.pixel_sha256):
@@ -203,7 +226,8 @@ class NumericSelfDeathEventConsumer:
                 matches = [o for o in frame.observations if o.role == role]
                 if (len(matches) != 1 or matches[0].review_status != ReviewStatus.SOURCE_REVIEWED
                         or matches[0].review_sha256 is None or matches[0].confidence is None
-                        or matches[0].confidence < .90):
+                        or matches[0].confidence < .90
+                        or not _supported_method(role, matches[0].method)):
                     break
                 if role != SubjectRole.REPORT and (
                     matches[0].relation != SubjectRelation.SELF or matches[0].subject_token != token
@@ -236,10 +260,11 @@ class NumericSelfDeathEventConsumer:
             'cause_known': False,
             'evidence_provenance': {
                 'subject_policy': 'independently_qualified_numeric_self_v1',
+                'evaluation_scope': _EVALUATION_SCOPE,
                 'elimination_coverage': 'self_death_only',
                 'native_event_id': event_id,
-                'release_report_sha256': approval.report_sha256,
-                'adoption_review_sha256': approval.adoption_review_sha256,
+                'qualification_report_sha256': qualification.report_sha256,
+                'qualification_review_sha256': qualification.qualification_review_sha256,
                 'onset_source': asdict(onset), 'confirmation_source': asdict(source),
                 'subject_evidence': [asdict(w) for w in witnesses],
                 'source_chain': [asdict(f.source) for f in frames],
@@ -255,8 +280,9 @@ class NumericSelfDeathEventConsumer:
         return event
 
     def checkpoint(self) -> dict[str, Any]:
+        report_sha = self.qualification.report_sha256 if self.qualification else None
         return {'schema_version': 1, 'release_fingerprint': release_fingerprint(),
-                'approval_sha256': self.approval.report_sha256 if self.approval else None,
+                'qualification_sha256': report_sha,
                 'released_event_ids': sorted(self.released)}
 
     def restore(self, state: dict[str, Any]) -> None:
@@ -264,7 +290,7 @@ class NumericSelfDeathEventConsumer:
         if (not isinstance(state, dict) or set(state) != set(expected)
                 or type(state['schema_version']) is not int or state['schema_version'] != 1
                 or state['release_fingerprint'] != expected['release_fingerprint']
-                or state['approval_sha256'] != expected['approval_sha256']
+                or state['qualification_sha256'] != expected['qualification_sha256']
                 or not isinstance(state['released_event_ids'], list)
                 or any(not isinstance(v, str) or not v.startswith('SELF-DEATH-')
                        or len(v) != 75 for v in state['released_event_ids'])

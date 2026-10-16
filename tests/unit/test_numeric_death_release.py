@@ -7,8 +7,8 @@ import pytest
 
 from tests.unit.test_subject_death_probe import evidence, frame, source
 from valorant_ai_coach.experimental.numeric_death_release import (
-    ApprovedNumericDeathRelease,
     NumericSelfDeathEventConsumer,
+    QualifiedNumericDeathContract,
     release_fingerprint,
 )
 from valorant_ai_coach.experimental.subject_death import (
@@ -20,37 +20,45 @@ from valorant_ai_coach.experimental.subject_death import (
 
 
 @pytest.fixture
-def approved_release(tmp_path):
+def qualified_release(tmp_path):
     # Entire certificate and all evidence below are explicitly synthetic.
-    # No real report/adoption digest is shipped with the implementation.
+    # No real qualification report is shipped with the implementation.
     report = {
-        'schema_version': 'numeric_self_death_release_v1', 'source_sha256': 'a'*64,
+        'schema_version': 'numeric_self_death_qualification_v1', 'source_sha256': 'a'*64,
         'code_fingerprint': 'a'*64, 'profile_fingerprint': 'a'*64,
         'dependencies_fingerprint': 'a'*64, 'native_step_ticks': 1,
-        'split_review_sha256': 'c'*64, 'adoption_review_sha256': 'd'*64,
+        'split_review_sha256': 'c'*64, 'qualification_review_sha256': 'd'*64,
         'component_reviews': {name: 'e'*64 for name in (
             'source_player_binding', 'victim_role', 'report_transition',
             'native_temporal_continuity', 'negative_controls')},
         'release_fingerprint': release_fingerprint(),
         'source_player_subject_token': 'b'*64,
+        'evaluation_scope': 'qualified_candidate_evaluation',
     }
     path = tmp_path/'synthetic-release.json'
     path.write_text(json.dumps(report), encoding='utf-8')
     digest = hashlib.sha256(path.read_bytes()).hexdigest()
-    return ApprovedNumericDeathRelease.load(path, approved_report_sha256=digest), path
+    return QualifiedNumericDeathContract.load(path, expected_report_sha256=digest), path
 
 
 def proof():
+    methods = {
+        SubjectRole.SOURCE_PLAYER_BINDING: 'killfeed_highlight_shape_color_v1',
+        SubjectRole.VICTIM: 'killfeed_weapon_template_ncc_v1',
+        SubjectRole.DEATH_TRANSITION: 'fresh_self_referential_report_caption_ncc_v1',
+        SubjectRole.REPORT: 'self_referential_report_caption_ncc_v1',
+    }
     chain = []
     for tick in range(7):
         binding = source(tick, pixel_sha256=hashlib.sha256(str(tick).encode('utf-8')).hexdigest())
         observations = []
         if tick == 1:
             observations.append(evidence(tick, SubjectRole.DEATH_TRANSITION,
-                                         source=binding, confidence=.91))
+                source=binding, confidence=.91, method=methods[SubjectRole.DEATH_TRANSITION]))
         if tick >= 2:
-            observations.extend(evidence(tick, role, source=binding) for role in (
-                SubjectRole.SOURCE_PLAYER_BINDING, SubjectRole.VICTIM, SubjectRole.REPORT))
+            observations.extend(
+                evidence(tick, role, source=binding, method=methods[role]) for role in (
+                    SubjectRole.SOURCE_PLAYER_BINDING, SubjectRole.VICTIM, SubjectRole.REPORT))
         chain.append(frame(tick, observations, source=binding))
     witnesses = (chain[-1].observations[0], chain[-1].observations[1],
                  chain[1].observations[0])
@@ -60,12 +68,12 @@ def proof():
     return decision, tuple(chain)
 
 
-def test_no_approval_or_unknown_subject_cannot_release_even_a_high_scoring_prediction(
-    approved_release,
+def test_no_qualification_or_unknown_subject_cannot_release_even_a_high_scoring_prediction(
+    qualified_release,
 ):
     decision, chain = proof()
     assert NumericSelfDeathEventConsumer().consume(decision, chain) is None
-    consumer = NumericSelfDeathEventConsumer(approved_release[0])
+    consumer = NumericSelfDeathEventConsumer(qualified_release[0])
     for change in ({'relation': SubjectRelation.UNKNOWN}, {'review_status': ReviewStatus.CANDIDATE},
                    {'confidence': None}, {'confidence': .89}):
         changed = replace(decision.evidence[0], **change)
@@ -75,11 +83,11 @@ def test_no_approval_or_unknown_subject_cannot_release_even_a_high_scoring_predi
 
 
 def test_numeric_release_keeps_onset_actor_all_sources_and_conservative_confidence(
-    approved_release,
+    qualified_release,
 ):
     decision, chain = proof()
     original = decision.to_dict()
-    consumer = NumericSelfDeathEventConsumer(approved_release[0])
+    consumer = NumericSelfDeathEventConsumer(qualified_release[0])
     result = consumer.consume(decision, chain)
     assert result is not None and result['type'] == 'player_death' and result['actor'] == 'player'
     assert result['time_sec'] == 1/60 and result['confidence'] == .91
@@ -97,7 +105,7 @@ def test_numeric_release_keeps_onset_actor_all_sources_and_conservative_confiden
                                    'context', 'missing_witness', 'corroboration_gap',
                                    'corroboration_low', 'respawn', 'bad_fingerprint'])
 def test_source_corroboration_conflicts_and_missing_numeric_support_reject(
-    approved_release, failure,
+    qualified_release, failure,
 ):
     decision, original = proof()
     chain = list(original)
@@ -125,17 +133,17 @@ def test_source_corroboration_conflicts_and_missing_numeric_support_reject(
             evidence(3, SubjectRole.RESPAWN, source=chain[3].source)))
     else:
         decision = replace(decision, source=replace(decision.source, code_fingerprint='f'*64))
-    consumer = NumericSelfDeathEventConsumer(approved_release[0])
+    consumer = NumericSelfDeathEventConsumer(qualified_release[0])
     assert consumer.consume(decision, tuple(chain)) is None
     assert consumer.last_blocker and not consumer.released
 
 
-def test_event_identity_ignores_decode_session_and_resume_suppresses_duplicates(approved_release):
+def test_event_identity_ignores_decode_session_and_resume_suppresses_duplicates(qualified_release):
     decision, chain = proof()
-    consumer = NumericSelfDeathEventConsumer(approved_release[0])
+    consumer = NumericSelfDeathEventConsumer(qualified_release[0])
     result = consumer.consume(decision, chain)
     assert result is not None and consumer.consume(decision, chain) is None
-    restored = NumericSelfDeathEventConsumer(approved_release[0])
+    restored = NumericSelfDeathEventConsumer(qualified_release[0])
     restored.restore(json.loads(json.dumps(consumer.checkpoint())))
     assert restored.consume(decision, chain) is None
     changed_chain = tuple(replace(f, source=replace(f.source, segment_id='fresh-decode'),
@@ -144,25 +152,27 @@ def test_event_identity_ignores_decode_session_and_resume_suppresses_duplicates(
     changed = replace(decision, source=changed_chain[-1].source,
         evidence=(changed_chain[-1].observations[0], changed_chain[-1].observations[1],
                   changed_chain[1].observations[0]))
-    other = NumericSelfDeathEventConsumer(approved_release[0]).consume(changed, changed_chain)
+    other = NumericSelfDeathEventConsumer(qualified_release[0]).consume(changed, changed_chain)
     assert other is not None and other['event_id'] == result['event_id']
     assert restored.consume(changed, changed_chain) is None
 
 
 @pytest.mark.parametrize('bad', [None, True, '0.95', float('nan'), float('inf'), .89, 1.01])
-def test_invalid_parent_confidence_cannot_be_replaced_by_high_witness_scores(approved_release, bad):
+def test_invalid_parent_confidence_cannot_be_replaced_by_high_witness_scores(
+    qualified_release, bad,
+):
     decision, chain = proof()
-    assert NumericSelfDeathEventConsumer(approved_release[0]).consume(
+    assert NumericSelfDeathEventConsumer(qualified_release[0]).consume(
         replace(decision, confidence=bad), chain) is None
 
 
 @pytest.mark.parametrize('failure', ['timestamp', 'killer', 'overlap', 'method', 'unknown_blocker',
                                    'other_self_token', 'releasing_code'])
 def test_semantic_or_independence_mismatch_is_not_approved_by_certificate(
-    approved_release, failure,
+    qualified_release, failure,
 ):
     decision, chain = proof()
-    approval = approved_release[0]
+    qualification = qualified_release[0]
     if failure == 'timestamp':
         decision = replace(decision, boundary_time_sec=decision.confirmation_time_sec)
     elif failure == 'unknown_blocker':
@@ -171,7 +181,7 @@ def test_semantic_or_independence_mismatch_is_not_approved_by_certificate(
         decision = replace(decision, evidence=tuple(
             replace(w, subject_token='c'*64) for w in decision.evidence))
     elif failure == 'releasing_code':
-        approval = replace(approval, release_code_fingerprint='f'*64)
+        qualification = replace(qualification, release_code_fingerprint='f'*64)
     else:
         changed = decision.evidence[1]
         if failure == 'killer':
@@ -181,15 +191,15 @@ def test_semantic_or_independence_mismatch_is_not_approved_by_certificate(
         else:
             changed = replace(changed, method=decision.evidence[0].method)
         decision = replace(decision, evidence=(decision.evidence[0], changed, decision.evidence[2]))
-    assert NumericSelfDeathEventConsumer(approval).consume(decision, chain) is None
+    assert NumericSelfDeathEventConsumer(qualification).consume(decision, chain) is None
 
 
 @pytest.mark.parametrize('failure', ['digest', 'source', 'producer', 'bool_step', 'missing_control',
-                                   'extra_gt'])
-def test_unapproved_altered_or_incomplete_report_cannot_authorize(approved_release, failure):
-    approval, path = approved_release
+                                   'extra_gt', 'production_scope'])
+def test_unapproved_altered_or_incomplete_report_cannot_authorize(qualified_release, failure):
+    qualification, path = qualified_release
     data = json.loads(path.read_text(encoding='utf-8'))
-    digest = approval.report_sha256
+    digest = qualification.report_sha256
     if failure == 'source':
         data['source_sha256'] = 'not a source hash'
     elif failure == 'producer':
@@ -198,26 +208,36 @@ def test_unapproved_altered_or_incomplete_report_cannot_authorize(approved_relea
         data['native_step_ticks'] = True
     elif failure == 'missing_control':
         del data['component_reviews']['negative_controls']
+    elif failure == 'production_scope':
+        data['evaluation_scope'] = 'production'
     else:
         data['expected_timestamp'] = 1.0
     path.write_text(json.dumps(data), encoding='utf-8')
     if failure != 'digest':
         digest = hashlib.sha256(path.read_bytes()).hexdigest()
     with pytest.raises(ValueError):
-        ApprovedNumericDeathRelease.load(path, approved_report_sha256=digest)
+        QualifiedNumericDeathContract.load(path, expected_report_sha256=digest)
 
 
 @pytest.mark.parametrize('change', [
-    {'approval_sha256': 'f'*64}, {'release_fingerprint': 'f'*64}, {'schema_version': True},
+    {'qualification_sha256': 'f'*64}, {'release_fingerprint': 'f'*64}, {'schema_version': True},
     {'released_event_ids': [[]]}, {'released_event_ids': ['SELF-DEATH-'+'z'*64]},
 ])
-def test_mismatched_or_invalid_resume_cannot_reuse_release_state(approved_release, change):
-    consumer = NumericSelfDeathEventConsumer(approved_release[0])
+def test_mismatched_or_invalid_resume_cannot_reuse_release_state(qualified_release, change):
+    consumer = NumericSelfDeathEventConsumer(qualified_release[0])
     with pytest.raises(ValueError):
         consumer.restore({**consumer.checkpoint(), **change})
 
 
-def test_downstream_fact_scope_change_invalidates_release_approval(approved_release, monkeypatch):
+@pytest.mark.parametrize('value', [True, False])
+def test_boolean_flag_cannot_replace_independent_qualification(value):
+    with pytest.raises(ValueError, match='no Boolean override'):
+        NumericSelfDeathEventConsumer(value)
+
+
+def test_downstream_fact_scope_change_invalidates_release_qualification(
+    qualified_release, monkeypatch,
+):
     from pathlib import Path
 
     original = Path.read_bytes
@@ -229,7 +249,7 @@ def test_downstream_fact_scope_change_invalidates_release_approval(approved_rele
 
     monkeypatch.setattr(Path, 'read_bytes', changed)
     decision, chain = proof()
-    consumer = NumericSelfDeathEventConsumer(approved_release[0])
+    consumer = NumericSelfDeathEventConsumer(qualified_release[0])
     assert consumer.consume(decision, chain) is None
     assert consumer.last_blocker == 'release_consumer_fingerprint_mismatch'
 
@@ -245,8 +265,45 @@ def test_legacy_death_event_normalization_stays_compatible():
     assert first.value is True and first.confidence == .9
 
 
+@pytest.mark.parametrize('role,method', [
+    (SubjectRole.VICTIM, 'killfeed_weapon_glyph_geometry_v2'),
+    (SubjectRole.DEATH_TRANSITION, 'independent_report_header_ncc_v1'),
+    (SubjectRole.SOURCE_PLAYER_BINDING, 'global_timer_value_ncc_v1'),
+])
+def test_ineligible_method_cannot_become_numeric_self_proof_with_a_high_score(
+    qualified_release, role, method,
+):
+    decision, original = proof()
+    chain = tuple(replace(f, observations=tuple(
+        replace(o, method=method, confidence=.99) if o.role == role else o
+        for o in f.observations)) for f in original)
+    decision = replace(decision, evidence=(chain[-1].observations[0],
+        chain[-1].observations[1], chain[1].observations[0]))
+    assert NumericSelfDeathEventConsumer(qualified_release[0]).consume(decision, chain) is None
+
+
+def test_independent_header_only_corroborates_a_separate_self_referential_onset(qualified_release):
+    decision, original = proof()
+    chain = tuple(replace(f, observations=tuple(
+        replace(o, method='independent_report_header_ncc_v1', relation=SubjectRelation.UNKNOWN,
+                subject_token=None) if o.role == SubjectRole.REPORT else o
+        for o in f.observations)) for f in original)
+    event = NumericSelfDeathEventConsumer(qualified_release[0]).consume(decision, chain)
+    assert event is not None and event['time_sec'] == 1/60 and event['confidence'] == .91
+
+
+def test_each_corroborating_victim_requires_its_own_numeric_method(qualified_release):
+    decision, original = proof()
+    chain = list(original)
+    chain[4] = replace(chain[4], observations=tuple(
+        replace(o, method='killfeed_weapon_glyph_geometry_v2', confidence=.99)
+        if o.role == SubjectRole.VICTIM else o for o in chain[4].observations))
+    consumer = NumericSelfDeathEventConsumer(qualified_release[0])
+    assert consumer.consume(decision, tuple(chain)) is None
+
+
 def test_approved_synthetic_event_reaches_original_round_fact_and_trace_without_hud_promotion(
-    approved_release, tmp_path,
+    qualified_release, tmp_path,
 ):
     from copy import deepcopy
     from pathlib import Path
@@ -262,7 +319,7 @@ def test_approved_synthetic_event_reaches_original_round_fact_and_trace_without_
     from valorant_ai_coach.video import VideoMetadata
 
     decision, chain = proof()
-    death = NumericSelfDeathEventConsumer(approved_release[0]).consume(decision, chain)
+    death = NumericSelfDeathEventConsumer(qualified_release[0]).consume(decision, chain)
     assert death is not None
     observations = [observation(tick/60, hud_confidence=0.0) for tick in range(7)]
     for row in observations:

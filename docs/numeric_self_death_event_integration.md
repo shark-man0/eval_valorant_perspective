@@ -1,170 +1,142 @@
-# Numeric Self Death: gated native event integration prototype
+# Numeric Self Death: qualified-candidate event integration prototype
 
-Status: **experimental integration; no installed qualification/adoption report,
-production caller or real-video PASS gain**. This continues the approved
-independent Self Subject design using numeric support for all three required
-roles. It does not implement the pending structural-role proposal.
+Status: **experimental integration; real-source qualification and native
+application wiring remain incomplete. No real-video PASS gain is claimed.**
+The existing goal authorizes candidate E2E after independent qualification.
+This implementation does not add a production-adoption permission requirement
+before candidate evaluation. Main adoption remains a separate review decision.
 
 Start recognition branch: `cfac17ac532b04367dda7f680517493bc1b4a69b`.
 Fetched main: `7e480c2f2f7f49aea73e1541d065d78881d2f11c`.
-PR #44/#46 and the legacy HUD ownership guard are unchanged. PR #54's decoder
-fix remains separate; none of its changed fingerprints is substituted into old
-recognition records.
+PR #44/#46, legacy HUD ownership guards and PR #54's separate decoder fix are
+preserved. No old recognition fingerprint or qualification is rewritten.
 
-## Missing connection addressed
+## Connection and qualification boundary
 
-The image recognizer predicts the known two source-1 episodes, and frozen
-transport preserves their numeric witnesses. Those observations remain
-UNKNOWN/CANDIDATE, and no qualification or production adoption is installed.
-The old probe deliberately cannot construct native events.
+`experimental/numeric_death_release.py` adds a default-disabled consumer for
+independently qualified numeric Self proof. Current real-source observations
+remain UNKNOWN/CANDIDATE and are insufficient for this consumer. It does not
+upgrade their identity, review state or confidence. No real qualification
+certificate or native application caller is installed.
 
-`experimental/numeric_death_release.py` adds a separate consumer for the later
-qualified numeric path. Its default construction emits nothing. It does not
-upgrade the image reader, observations, subject token or review state. In
-particular, the current frozen UNKNOWN/CANDIDATE output is insufficient even
-if a consumer is configured with an approval object.
-
-This is a connection prototype for qualification-ready evidence. It is not
-completion of the recognizer or of its native application entrance.
-
-## Authority and qualification boundary
-
-`ApprovedNumericDeathRelease.load()` requires an **externally approved exact
-report digest**, supplied independently of the file. It rejects altered files,
-unknown fields (including GT/expected-time fields), incomplete review scope,
-non-hash bindings, invalid cadence and a mismatched release-consumer fingerprint.
-The certificate binds:
+`QualifiedNumericDeathContract.load()` binds a reviewed qualification artifact
+using its expected SHA supplied by trusted candidate-run configuration. It
+rejects changed files, unknown/GT fields, incomplete component scope, invalid
+hashes/cadence and mismatched consumer fingerprints. The private artifact binds:
 
 - source SHA and the recording-player subject token;
-- original image recognizer, profile and dependency fingerprints;
-- native cadence and a release fingerprint covering the consumer and downstream
-  FactBuilder source;
-- split-independence review and production-adoption review hashes;
+- original recognizer, profile and dependency fingerprints;
+- native cadence and consumer plus downstream FactBuilder source;
+- split-independence and qualification-review hashes;
 - recording-player binding, victim role, report transition, native temporal
-  continuity and negative-control qualification review hashes.
+  continuity and negative-control qualification review hashes;
+- the exclusive `qualified_candidate_evaluation` scope; production scope rejects.
 
-**The loader verifies an authorization artifact; it is not an image-accuracy or
-split-independence evaluator.** Referenced evidence and actual outcomes must be
-independently reviewed before deployment configuration supplies an approved
-digest. A digest computed automatically from an unreviewed report is not
-approval. No production CLI, configuration, valid real-source certificate or
-automatic digest approval is introduced here. Tests create explicitly synthetic
-certificates solely to exercise the integration contract.
+**The loader is an integrity/qualification-artifact boundary, not an image
+accuracy or split-independence evaluator.** Actual evidence, metrics and exposure
+must be verified before accepting a report. Computing a digest of an unreviewed
+file does not qualify it. Tests use explicitly synthetic reports, never a real
+qualification grant. A Boolean switch cannot replace the typed qualification.
+No existing Qualification Pack, public native schema or database schema changes.
 
-No existing Qualification Pack is edited or reinterpreted. The certificate is a
-new private experimental deployment artifact, not a public HUD/Package schema
-migration. Real adoption remains subject to qualification and approval.
+## Numeric method and temporal contract
 
-## Numeric and temporal requirements
+All three original source roles must already be reviewed SELF observations of
+one source-bound recording-player token, each with finite measured support
+>= 0.90 and the supported method:
 
-The consumer requires the existing three distinct, disjoint source roles:
-source-player binding, victim and death transition. They must already be
-reviewed SELF observations of the certificate's single recording-player token,
-with actual finite numeric support >= 0.90. Unknown, nonself, candidate-review,
-geometric-only, conflicting, overlapping and same-method witnesses reject.
+| Role | Accepted method |
+| --- | --- |
+| Recording-player binding | `killfeed_highlight_shape_color_v1` |
+| Victim position | `killfeed_weapon_template_ncc_v1` |
+| Original death transition | `fresh_self_referential_report_caption_ncc_v1` |
 
-All source contexts/fingerprints must match. Every intervening native frame must
-be present, ordered, nonduplicated and in the same segment; explicit source
-breaks, missing continuity provenance and respawn conflict reject. Continuity
-hashes retain provenance; their mere existence does not qualify their semantic
-contents. The approved qualification must cover the actual native continuity
-producer. Future native wiring must supply its genuine records, not arbitrary
-booleans, fabricated proof hashes or diagnostic packets relabeled qualified.
+The admitted method pairs are immutable and covered by the consumer fingerprint.
+An accidentally high score on geometric output, a global timer or a generic
+Report header cannot substitute for these methods. Three synthetic misuse cases
+failed before this method guard and reject afterward. Numeric thresholds are
+unchanged; no score is manufactured for geometry. Source-2 geometry-only cases
+still cannot enter this numeric consumer. The structural-role proposal remains
+separate and is not a prerequisite for the existing numeric route.
 
-Confirmation additionally requires current reviewed marker, numeric victim and
-Report support in **every** final corroborating frame: at least three frames
-spanning at least 0.05 seconds, within the existing one-second onset horizon.
-Dropout restarts the complete run. Generic current Report presence cannot
-substitute for the separate original self-referential death-transition witness.
+Witness methods and ROIs must be independent. Every intervening native frame
+must be ordered, nonduplicated, same-segment and retain continuity provenance;
+breaks, gaps, missing proof or respawn conflict reject. A proof hash alone does
+not qualify semantic continuity: the actual native producer must have independent
+qualification and future wiring must supply its genuine records.
 
-Event confidence is the minimum of the parent support, original onset/role
-witnesses and all contributing current-frame supports. Geometry has no invented
-numeric score. No acceptance threshold or existing probe behavior changes.
+Every final corroborating frame needs current reviewed marker, numeric victim
+and Report support: at least three frames spanning at least 0.05 seconds within
+the existing one-second onset horizon. Dropout restarts the complete run.
+Qualified independent header presence can corroborate current Report presence
+but cannot open the separate self-referential onset. Global Report presence
+need not claim player identity. Confidence is the minimum of original onset,
+roles, parent support and every contributing current-frame support.
 
-## Native event, association, persistence and downstream safety
+## Native event, Fact, association, trace and storage
 
-Only an accepted proof constructs the existing six-field native event shape:
-`player_death`, actor `player`, actual original onset time, deterministic event
-ID, measured confidence and attributes. Later confirmation is separate in
-provenance. IDs use physical source/subject/onset PTS and time base, excluding
-decoder-session IDs, GT and inferred round numbers.
+An accepted proof produces the existing six-field `player_death` shape with
+actor `player`, original onset PTS/time base, measured confidence and deterministic
+identity. Confirmation remains separate in provenance. IDs exclude GT, round
+numbers and decoder-session randomness. Existing attributes retain qualification
+scope/references, all source bindings, original witnesses and corroboration.
+Native event ID is also retained in provenance because the current trace adapter
+does not export that top-level native field.
 
-Existing attributes retain onset/confirmation bindings, original role witnesses,
-the complete source chain, corroboration evidence and review digests. No unknown
-victim name, killer agent or damage is filled. This event identifies its subject;
-it does not set live HUD identity, owner, state, HP, Armor, Weapon, Ammo or Alive.
-The stable native event ID is also retained in provenance, since the existing
-trace adapter does not export that native top-level property. Fact event-ID
-references can therefore be traced to the retained source event without changing
-the adapter's public output shape.
+The integration test exercises the existing RoundPackageBuilder, FactBuilder,
+trace adapter and SQLite repository. Confirmation after one round ends still
+associates its earlier onset with that round. Source proof, attributes, confidence
+and Fact event references survive storage and trace. Unknown victim name, killer
+agent and damage are not filled. HUD identity/owner, HP, Armor, Ammo, Weapon and
+Alive are not promoted by the event.
 
-The integration test uses the existing RoundPackageBuilder, FactBuilder, trace
-adapter and SQLite repository. A synthetic confirmation after the first round
-end still associates the earlier onset with that first round, not the next.
-Fact confidence/provenance and all event attributes survive storage and trace;
-HUD ownership remains unknown. No public schema or database migration is needed.
+A reproduced downstream issue inferred `first_death_by_player=True` from one
+Death and no earlier *detected* elimination. This producer observes Self Death
+only; it cannot establish complete elimination coverage. It declares
+`elimination_coverage=self_death_only`. FactBuilder retains `player_died` with its
+original confidence/provenance and withholds the unsupported ordering Fact for
+that explicitly limited scope. All source events remain available. Legacy event
+normalization stays compatible; its ordering semantics are not newly qualified.
+The release fingerprint includes this guard and invalidates if it changes.
 
-A downstream regression was reproduced before enabling any real event: the
-existing normalizer inferred `first_death_by_player=True` from a single Death
-event and no earlier *detected* elimination. This new producer observes only
-Self Death, so it cannot establish a complete elimination timeline. It now
-declares `elimination_coverage=self_death_only` in provenance. FactBuilder retains
-the verified `player_died` Fact and its confidence/event reference, but withholds
-the ordering Fact for this explicitly limited scope. All source events remain
-available. Legacy events without this new scope keep their previous behavior;
-their ordering semantics are not newly qualified by this change. The release
-fingerprint includes this downstream guard, so changing it invalidates an
-approval. The regression fails before the guard and passes afterward.
+JSON checkpoints bind qualification digest and consumer fingerprint and preserve
+released IDs. Repeated episodes and new decode epochs retain the same identity;
+resume suppresses duplicates. Mismatched/malformed state rejects atomically.
+Application-level resume integration remains future work; this contract test is
+not a claim of complete application resume coverage.
 
-The consumer's JSON checkpoint retains released event IDs, exact approval digest
-and consumer fingerprint. Repeated episodes and re-decoded source epochs keep
-the same event identity; resume suppresses duplicates. Mismatched certificates,
-source-code fingerprints and malformed state reject before replacing state.
-Connecting this checkpoint to the application resume lifecycle is still future
-work; a JSON round-trip test is not a claim of full application resume coverage.
+## Verification and remaining goal
 
-## Verification and limits
+Final local validation: 259 related tests passed in41.77sec (including49 new
+consumer tests);82 additional Fact/HP/timer/confidence unit tests passed
+in32.73sec. Those82 unit cases are not the canonical82assertions. Ruff, mypy
+(144files) and the zero-unresolved text-I/O audit pass. Results are recorded
+alongside the source revision in
+[PR #53](https://github.com/shark-man0/eval_valorant_perspective/pull/53), including
+Ruff, mypy, zero-unresolved text-I/O audit and Linux/Windows CI. Source `8f24020`
+previously passed all five remote checks: Linux 4,055 passed/7 skipped (87.03%
+coverage), Windows 4,051 passed/11 skipped (86.99%), UTF-8-disabled 13 passed,
+packaging/smoke successful. Subsequent method/scope changes have separate CI;
+those prior results are not silently assigned to different source bytes.
 
-Local results: **251 related tests passed in 40.72 seconds**, including 41 new
-authorization, current-frame corroboration, source-break/respawn, confidence,
-role-independence, duplicate/resume and Package/Fact/Trace/SQLite contract tests.
-Another 82 Fact/HP/shared-timer/source-confidence **unit tests** passed in 32.73
-seconds; these are not the canonical 82 assertions. Ruff passes the existing CI
-scope plus the image replay runner; mypy passes all 144 checked files. The
-text-I/O gate initially caught five implicit encodings; those operations now
-explicitly use UTF-8 and the local audit reports zero unresolved contracts.
-Remote CI is pending for the corrected change.
-
-All positive integration cases here are synthetic. Existing real-source
-recognition results retain their original fingerprints and unqualified status.
-No new canonical targeted/sampled/Full evaluation is claimed; no Full was run.
+The original image-runtime fingerprint remains unchanged. A transport-only check
+binds both original real-source prediction artifacts and keeps their
+UNKNOWN/CANDIDATE state, zero formal events and original fingerprints. It is not
+a new recognition run. Positive integration tests are synthetic. No new
+canonical targeted/sampled/Full result or PASS increase is claimed.
 
 | Result | Previous | Current |
 | --- | --- | --- |
 | Adopted Full | 23 / 55 / 4 | No new run |
 | Archived unadopted Strict Full | 28 / 50 / 4 | No new run |
 | Independent real-source numeric qualification | Incomplete | Incomplete |
-| Installed real-source adoption approval | None | None |
-| Native Event/Fact/Package/Trace/SQLite connection | Missing consumer | Synthetic contract verified |
-| New real-video PASS assertions | Unproven | Unmeasured |
+| Event/Fact/Package/Trace/SQLite connection | Missing consumer | Synthetic contract verified |
+| Actual canonical PASS gain | Unproven | Unmeasured |
 
-## Remaining work toward the actual goal
-
-1. Complete independently reviewed source-positive/negative qualification for
-   the frozen numeric reader/profile. Exposed development episodes do not become
-   new blind holdout. The source-2 geometry-only cases cannot satisfy this
-   numeric consumer; the separate structural-role decision remains separate.
-2. Produce genuinely qualified current-frame Self observations and continuity
-   records from the native analyzer entrance. Do not promote saved diagnostic
-   packets or copy unknown observations into reviewed SELF.
-3. Only after qualification and adoption review, configure an approved report
-   digest and wire the opt-in native consumer/checkpoint entrance. Preserve the
-   default legacy path, terminal integrity checks and exclusion policies.
-4. Run canonical targeted evaluation and fixed sampled regression under the
-   same evaluation contract. The first conditional targets are death-count
-   constraints; point assertions still need actual missing semantic fields.
-5. Run Full only for an independently qualified positive hypothesis that
-   survives those checks. Publish measured gains/regressions, not projections.
-
-The goal remains incomplete: a verified transport contract is not independently
-qualified recognition, formal production adoption or Strict E2E FAIL reduction.
+Remaining work: complete source-backed independent numeric qualification;
+produce genuinely qualified current-frame Self observations and continuity
+records at the native entrance; wire candidate-mode processing and application
+resume; then run same-contract canonical targeted and fixed sampled regression.
+Point Death predicates still need actual missing victim/killer/damage fields.
+Full requires an independently qualified positive hypothesis surviving these
+checks. Main adoption is not automatic. The goal remains incomplete.
