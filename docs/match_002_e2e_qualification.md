@@ -1747,3 +1747,57 @@ polarity controls, erosion, immutable outputs, duplicate counts, source/referenc
 drift and holdout/split exclusion. Related79tests, scoped Ruff, production mypy
 (133files) and git diff --check pass. Natural negative coverage, temporal
 qualification, strictly qualified starts/ends and formal Full E2E remain pending.
+
+## Fixed gradient matcher: anchor failure decomposition
+
+Add an aggregate reducer to the diagnostic only. It separates below-floor and
+unscorable matches, reports min/median/max scores and failed-anchor combinations,
+and distinguishes frame counts from unique source/control cases. Above-floor
+scores with rejected layout geometry are counted separately, not called valid
+calibration. Inconsistent duplicate measurements and invalid/nonfinite scores
+raise errors. Aggregates omit source paths, images, timestamps and annotations.
+No matcher parameter, production reader, admission policy or profile is changed.
+
+Reduce the preserved historical measurement without rewriting it. In24validation
+entries, timer accepts12, HP23 and abilities24; all anchors produce finite scores.
+Failures are timer alone11 and timer+HP1. All12entries with three accepted scores
+also satisfy layout position/scale validation. For22unique images, timer accepts12,
+HP21, abilities22; timer alone fails9 and timer+HP1. Duplicate entries are not
+independent negative cases. The new retrospective aggregate receipt SHA is
+`9805ad02a1ce8285cf37f780c2fd03f5b69effc8c0b1827c678e766f003c3fa9`.
+It is a score breakdown, not another recognition run or qualification result.
+
+Existing independent numeric visibility reviews establish whether digits are
+visible, not whether fixed geometry is absent. A reviewed recording-pause state
+likewise does not establish that HUD geometry disappears. Do not relabel these
+as natural geometry negatives to manufacture qualification. Natural-negative
+coverage remains outstanding; no runtime adoption is authorized by these counts.
+
+Apply the identical fixed diagnostic matcher to the previously exposed205-frame
+native second-start context. Freeze inputs before decoding, verify all205PTS and
+pixel hashes against the preserved practical diagnostic, and check source video
+integrity on decoder entry/exit. No GT or final holdout enters matching. All205
+rasters are distinct. Fresh geometry accepts old7/new83; no all-score-accepted
+case fails the position/scale guard. Anchor accepts are timer177, HP107,
+abilities205. Failed combinations are HP94, timer24, HP+timer4. In this different
+context HP is the main bottleneck; the validation-set timer bottleneck alone
+cannot characterize transfer. No threshold or mask is adjusted after observing
+these results. Wall time38.925seconds, including source-integrity/decoder work.
+
+For post-inference diagnosis only, use the already reviewed boundary's native
+tick to divide the unchanged result: pre-boundary157frames old0/new54 fresh,
+post-boundary48frames old7/new29. This evaluation-side split does not train,
+select or modify any matcher input and does not assert event timing accuracy.
+There is no geometry retention, OCR, identity, lifecycle or event admission in
+this isolated comparison. It creates0events and no qualification/adoption.
+The initial preflight passed the window end to a partition verifier that
+requires the frozen development limit; it rejected before creating an artifact.
+Correct the invocation, separately bound the window to development, and retain
+the unchanged partition policy. Successful frozen-plan SHA:
+`652e90f955c841be2e05aa02ad813a9669cf501497454efdeda8362c8f46e196`.
+Measurement SHA:
+`0feb8bda314e29154f87c6693738c4b66d350c77ea573c250fce9d7262d08abb`.
+
+Related geometry/native-prefix tests52pass, scoped Ruff, production mypy
+(133files) and git diff --check pass. These checks and diagnostic acceptance
+counts do not complete qualified real-video Round lifecycle or formal Full E2E.

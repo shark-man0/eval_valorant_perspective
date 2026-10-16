@@ -4,7 +4,10 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
+from collections import Counter
 from pathlib import Path
+from statistics import median
 
 import cv2
 import numpy as np
@@ -23,6 +26,71 @@ ALGORITHM = {
     'reference_selection': 'unchanged_existing_candidate',
     'negative_control': 'single_anchor_roi_blacked_per_validation_image',
 }
+
+
+def summarize_anchor_scores(rows, anchor_names):
+    """Bounded score diagnostics, not accuracy, confidence or qualification.
+
+    Retain repeated source entries in frame counts, but never count them as
+    independent images. Controls are distinct by source AND removed anchor.
+    No paths, pixels, timestamps or labels are copied to the aggregate.
+    """
+    names = tuple(sorted(anchor_names))
+    result = {}
+    for split in ('training', 'validation', 'transformed_control'):
+        selected = [row for row in rows if row['split'] == split]
+        unique = {}
+        for row in selected:
+            scores = row['gradient_scores']
+            if set(scores) != set(names):
+                raise ValueError('complete fixed anchor inventory required')
+            for match in scores.values():
+                if match is not None:
+                    score = match['score']
+                    if (isinstance(score, bool) or not isinstance(score, (int, float))
+                            or not math.isfinite(score) or not 0 <= score <= 1):
+                        raise ValueError('finite bounded diagnostic score required')
+            key = (row['source_image_sha256'], row.get('removed_anchor'))
+            previous = unique.get(key)
+            if previous is not None and any(previous[field] != row[field] for field in (
+                    'gradient_scores', 'raw_fresh_geometry', 'gradient_fresh_geometry')):
+                raise ValueError('inconsistent duplicate measurement')
+            unique[key] = row
+
+        def aggregate(cases):
+            combinations = Counter()
+            anchors = {}
+            for row in cases:
+                failed = tuple(name for name in names if row['gradient_scores'][name] is None
+                               or row['gradient_scores'][name]['score'] < .90)
+                combinations[failed] += 1
+            for name in names:
+                values = [row['gradient_scores'][name]['score'] for row in cases
+                          if row['gradient_scores'][name] is not None]
+                anchors[name] = {
+                    'accepted': sum(value >= .90 for value in values),
+                    'below_threshold': sum(value < .90 for value in values),
+                    'unscorable': len(cases) - len(values),
+                    'score_min': min(values) if values else None,
+                    'score_median': median(values) if values else None,
+                    'score_max': max(values) if values else None,
+                }
+            return {
+                'case_count': len(cases), 'anchors': anchors,
+                'failed_anchor_combinations': [
+                    {'anchors': list(combo), 'count': count}
+                    for combo, count in sorted(combinations.items())],
+                # An above-floor score alone does not establish valid geometry.
+                'all_scores_accepted_but_geometry_rejected': sum(
+                    not row['gradient_fresh_geometry'] and all(
+                        row['gradient_scores'][name] is not None
+                        and row['gradient_scores'][name]['score'] >= .90 for name in names)
+                    for row in cases),
+            }
+
+        result[split] = {'frames': aggregate(selected),
+                         'unique_cases': aggregate(list(unique.values()))}
+    return result
 
 
 def gradients(gray):
@@ -171,6 +239,7 @@ def run(candidate: Path, partition_path: Path, output: Path):
         raise ValueError('experiment inputs changed')
     result = {'scope': 'exposed_development_geometry_comparison_not_qualification',
               'frozen_experiment_sha256': plan_hash, 'rows': rows,
+              'anchor_diagnostics': summarize_anchor_scores(rows, profile.raw['anchors']),
               'summary': {split: {key: sum(row['split'] == split and row[key] for row in rows)
                                   for key in ('raw_fresh_geometry', 'gradient_fresh_geometry')}
                           for split in ('training', 'validation', 'transformed_control')},

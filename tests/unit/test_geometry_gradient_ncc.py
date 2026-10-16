@@ -144,3 +144,54 @@ def test_invalid_source_or_reference_fails_before_experiment(candidate, change):
     with pytest.raises(ValueError):
         subject.run(root, partition, output)
     assert not output.exists()
+
+
+def diagnostic_row(digest='a', removed=None, **scores):
+    return {
+        'split': 'validation' if removed is None else 'transformed_control',
+        'source_image_sha256': digest, 'removed_anchor': removed,
+        'raw_fresh_geometry': False, 'gradient_fresh_geometry': False,
+        'gradient_scores': {name: None if value is None else {'score': value}
+                            for name, value in scores.items()},
+    }
+
+
+def test_anchor_summary_separates_missing_low_score_and_duplicate_cases():
+    row = diagnostic_row(timer=.89, hp=.90, abilities=None)
+    summary = subject.summarize_anchor_scores([row, row.copy()], ['timer', 'hp', 'abilities'])
+    frames = summary['validation']['frames']
+    assert frames['case_count'] == 2
+    assert summary['validation']['unique_cases']['case_count'] == 1
+    assert frames['anchors']['timer']['below_threshold'] == 2
+    assert frames['anchors']['hp']['accepted'] == 2
+    assert frames['anchors']['abilities']['unscorable'] == 2
+    assert frames['anchors']['abilities']['score_median'] is None
+    assert frames['failed_anchor_combinations'] == [
+        {'anchors': ['abilities', 'timer'], 'count': 2}]
+    # Neither source identifiers nor detailed arrays leak into the aggregate.
+    assert 'source_image_sha256' not in json.dumps(summary)
+    assert summary['training']['frames']['case_count'] == 0
+
+
+def test_anchor_summary_distinguishes_controls_and_geometry_gate():
+    rows = [diagnostic_row(removed=name, timer=.91, hp=.95, abilities=.99)
+            for name in ('timer', 'hp')]
+    summary = subject.summarize_anchor_scores(rows, ['timer', 'hp', 'abilities'])
+    unique = summary['transformed_control']['unique_cases']
+    assert unique['case_count'] == 2
+    assert unique['all_scores_accepted_but_geometry_rejected'] == 2
+    assert unique['anchors']['hp']['score_median'] == .95
+
+
+@pytest.mark.parametrize('value', [float('nan'), float('inf'), -.1, 1.1, True])
+def test_anchor_summary_rejects_invalid_scores(value):
+    with pytest.raises(ValueError, match='finite bounded'):
+        subject.summarize_anchor_scores([diagnostic_row(timer=value)], ['timer'])
+
+
+def test_anchor_summary_rejects_inconsistent_duplicates_and_missing_anchors():
+    row = diagnostic_row(timer=.8)
+    with pytest.raises(ValueError, match='inconsistent duplicate'):
+        subject.summarize_anchor_scores([row, diagnostic_row(timer=.95)], ['timer'])
+    with pytest.raises(ValueError, match='complete fixed anchor'):
+        subject.summarize_anchor_scores([row], ['timer', 'hp'])
