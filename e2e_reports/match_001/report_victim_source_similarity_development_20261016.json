@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "analysis_kind": "development_source_specific_visual_similarity_noncanonical",
+  "source": {
+    "video_id": "match_001",
+    "sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "size_bytes": 267056165,
+    "frames_decoded": 10259,
+    "frames_sampled": 1710,
+    "nominal_sample_rate_fps": 10,
+    "provenance": "User supplied Outplayed-extracted 171s clip with no editing inside selected interval."
+  },
+  "method": {
+    "development_reference_pts_sec": 74.44,
+    "development_source_exposed_before_this_experiment": true,
+    "report_header_source_roi_xyxy": [
+      1630,
+      345,
+      1735,
+      376
+    ],
+    "victim_text_source_roi_xyxy": [
+      1766,
+      107,
+      1830,
+      126
+    ],
+    "report_search_padding_xy": [
+      10,
+      25
+    ],
+    "victim_search_padding_xy": [
+      10,
+      7
+    ],
+    "matcher": "cv2.TM_CCOEFF_NORMED",
+    "report_similarity_cutoff": 0.9,
+    "victim_similarity_cutoff": 0.8,
+    "sampled_every_n_frames": 6,
+    "release_contract": "none",
+    "notes": "Source-specific image templates include fixed Japanese text and this recording player's visible name, cannot generalize by themselves. 0.80 is diagnostic similarity, not production confidence or recognition qualification. Development and evaluation episodes are not a blind/source-disjoint holdout."
+  },
+  "measured": {
+    "header_only_or_header_plus_victim_frames": 466,
+    "jointly_matched_frames": 86,
+    "report_only_frames": 380,
+    "joint_raw_temporal_runs_seconds": [
+      [
+        74.5,
+        75.1,
+        6
+      ],
+      [
+        75.8,
+        75.8,
+        1
+      ],
+      [
+        76.3,
+        79.4,
+        29
+      ],
+      [
+        147.7,
+        152.6,
+        50
+      ]
+    ],
+    "grouped_episodic_support": [
+      {
+        "range_sec": [
+          74.5,
+          79.4
+        ],
+        "total_hits": 36,
+        "classification": "first_recorded_death_episode_with_persistent_display"
+      },
+      {
+        "range_sec": [
+          147.7,
+          152.6
+        ],
+        "total_hits": 50,
+        "classification": "second_recorded_death_episode_with_persistent_display"
+      }
+    ],
+    "negatives": [
+      {
+        "range_sec": [
+          0.1,
+          1
+        ],
+        "reason": "header present but victim similarity absent"
+      },
+      {
+        "range_sec": [
+          91.5,
+          107.9
+        ],
+        "reason": "old persistent/reopened header only, no victim similarity"
+      },
+      {
+        "range_sec": [
+          169,
+          170.9
+        ],
+        "reason": "spectator persistent header only, no victim similarity"
+      }
+    ],
+    "new_production_death_events": 0,
+    "canonical_fail_reduction": 0,
+    "full_e2e_rerun": false,
+    "interpretation": "Two self-death-shaped co-occurrence clusters are source-supported, but output is not a qualified self-victim reader; formal events remain forbidden."
+  },
+  "caveats": [
+    "Single source recording and source-specific OCR string/reference; not usable as a generic runtime classifier.",
+    "A 10fps similarity scan can miss narrow first appearances; use full native PTS for production event timing.",
+    "Joint positive is not automatically a new death; repeated frames/panels within an episode demand latching and qualified lifecycle rearm.",
+    "Scores are visual similarity, not confidence of independent player subject/victim roles.",
+    "No independent source- or episode-blind qualification and no formal recognition accuracy gain are established."
+  ]
+}
