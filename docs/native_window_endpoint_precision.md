@@ -69,7 +69,19 @@ python3 -m mypy src
 ```
 
 Local results: 54 tests passed in 43.22 seconds; Ruff passed; mypy passed all
-133 source files. Remote Linux/Windows validation is pending for this branch.
+133 source files. Remote checks verified source commit
+`212dee0656e52191f0cbb3947e77f390594862c3`:
+
+- Linux PR run `38954537575`: 3,741 passed, 7 skipped; coverage 86.60%; Ruff
+  and mypy passed.
+- Windows PR run `38954537622`: 3,737 passed, 11 skipped; coverage 86.54%;
+  UTF-8-disabled checks 13 passed; Ruff, mypy, packaging and packaged smoke
+  passed. Both run APIs report the exact source commit above and success.
+
+The native endpoint regression tests execute with the installed FFmpeg on both
+platforms; no existing failing assertion was skipped or weakened. These results
+cover the code/test revision named above; this later report-only update does
+not claim a different source revision was tested.
 
 ## Remaining S-01 work
 
