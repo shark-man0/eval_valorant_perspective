@@ -1988,3 +1988,77 @@ identity decision, event, qualification or adoption is changed. One correctly
 rejected natural image does not complete general negative qualification or
 formal real-video E2E. Await the timer-scope reply; do not label the exception
 by inference or use it to train/select the matcher.
+
+## Source-control geometry review completed; no recall gain on this cohort
+
+Receive explicit clarification that only timer digits were absent and that all
+remaining fixed shapes were visible at the guides. This resolves the review
+scope, not a recognition threshold. Preserve both partial receipts; write a new
+complete evaluation-only label receipt, bound to the same unchanged page/images.
+It contains12positive images and1negative image, all distinct source hashes.
+Private complete-label receipt SHA:
+`98fe41ca4aac9688bf8d373dea18a32c6d72b01611d50620f7654fc531c42551`.
+
+Evaluate the complete fixed inventory with unchanged matchers and .90/three-
+anchor layout guards at the current recognizer fingerprint. Raw and gradient
+each accept3/12positives and miss9/12. Both reject the1negative;0false accepts,
+0unknown/unreviewed labels remain. Comparison SHA:
+`18d1b1c92fd2a4cd4a825cfb5ea34a78e7693e41831cc7e3471ed986d45908e9`.
+These are exposed development controls previously selected for numeric contrast,
+not an untouched holdout, random-population accuracy estimate or cross-match
+generalization. One correctly rejected natural negative is limited coverage.
+
+Freeze a separate anchor-level breakdown on all13images; do not select frames
+or tune after reading the labels. Of12positives, both accept2, raw-only accepts1,
+gradient-only accepts1 and both reject8. Equal aggregate counts therefore do
+not mean identical decisions, nor justify OR-combining the matchers. Gradient
+misses are timer alone7 and HP alone2; all12ability anchors pass. The negative
+fails all3anchors for both matchers. The fixed shapes are human-confirmed even
+where timer digits disappear: do not relabel these geometry misses as correct
+abstention due to absent digits. Frozen breakdown SHA:
+`c8845e811a2ac6b43bdf11729ad9710828e96e2b3d807f59ccf27c2e48751455`;
+measurement SHA:
+`69fc7c42be221c383cc9ebe8cd42020afde222c3f37458bbf8520d21af300deb`.
+
+The static control result does not replicate the acceptance increase in the
+earlier205-frame diagnostic window or24-entry validation set. Report all of
+them separately; do not select the favorable cohort to claim qualification.
+No production matcher, reference, mask, threshold, identity policy, event or
+qualification is changed. Human review is now complete for this page, but
+current evidence does not justify production adoption or formal Full E2E success.
+Further work should diagnose reference/feature stability using training-only
+material; do not fit these reviewed controls, lower thresholds or bridge the
+geometry admission gate to force lifecycle events.
+
+## Training-reference rendering stress exposes a diagnostic limitation
+
+Before any preprocessing/mask change, freeze a bounded synthetic challenge on
+all3unchanged training reference assets only. Use translations of0,.25,.5,.75,1
+pixels in both axes, crossed with no JPEG roundtrip or quality95/90;15cases per
+anchor. Pad by8pixels with replicated borders and use fixed linear interpolation.
+No reviewed control image, boundary GT or final holdout supplies pixels or
+parameters. This tests feature sensitivity, not real-video recognition accuracy.
+
+At the unchanged.90score floor, raw masked NCC passes12/15cases for each anchor;
+gradient NCC passes timer9/15, HP6/15 and abilities6/15. Even without JPEG,
+gradient fails timer at .5/.75pixel translation, and HP/abilities at .25/.5/.75.
+Keep this unfavorable result: signed-gradient NCC is not inherently more robust
+to rendering changes. These controlled perturbations expose a failure mode,
+not proof that the real-video misses are caused by fractional translation.
+Frozen stress-plan SHA:
+`8b1a83598adf8a125d987fdbe6cedd1219c1476cb88a2ccd974b17ba6452f08b`;
+measurement SHA:
+`ef5e842fef33244686f499c485f421505c5a86c796440d890edc2a552608a48c`.
+
+A3x3prefilter followed by3x3Sobel would depend on a radius2neighborhood, so it
+cannot safely reuse the current radius1support erosion without introducing
+excluded digit/icon pixels. Inspect existing masks without changing them:
+original/radius1/radius2support populations are timer387/139/8,
+HP1640/872/220 and abilities1023/597/239. Timer's radius2support is below the
+unchanged64pixel diagnostic minimum. Do not blindly add smoothing, relax the
+minimum, expand into excluded content or register this matcher as a remedy.
+Any new support/mask candidate requires a separately specified training-only
+experiment, geometric-content review and negative checks before adoption.
+Reference/profile/code integrity remains unchanged; no new matcher or mask is
+implemented here. The control-comparison tests19pass after the complete review;
+no production source changed and no new full-suite run is implied.
