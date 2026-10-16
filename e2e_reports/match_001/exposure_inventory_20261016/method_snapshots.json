@@ -1,0 +1,47 @@
+[
+  {
+    "artifact_id": "43132863c629590782f4",
+    "source_id": "supplemental_010246",
+    "status": "historical_method_snapshot_not_current_admission",
+    "recognizer_fingerprint": "ddc5e6c2d012d3b1219f567a532ea193219578e14c18f3954ce51c98bf473264",
+    "profile_fingerprint": "6411f7d326f71076efa54bb431a8efc501d01678fccd19a1f3a07a62c2146c80"
+  },
+  {
+    "artifact_id": "d61d4f3a31718526f739",
+    "source_id": "supplemental_010246",
+    "status": "historical_method_snapshot_not_current_admission",
+    "recognizer_fingerprint": "7897d6bcb9600c6541b48a26c94cd4e22bd9a3a692269366a0b3e2d5610e4dbc",
+    "profile_fingerprint": "445f61d7440dee58c480253338b19df500c676c519e84810d1f7332c3ea798ee"
+  },
+  {
+    "artifact_id": "6f2d4463093f670889f8",
+    "source_id": "supplemental_010246",
+    "status": "historical_method_snapshot_not_current_admission",
+    "recognizer_fingerprint": "58117f2bfe84f072c37f0989846145d7fad7a3a29d807ba55d9be9a6136a4f68",
+    "profile_fingerprint": "445f61d7440dee58c480253338b19df500c676c519e84810d1f7332c3ea798ee"
+  },
+  {
+    "artifact_id": "36f37d3f54799da74ff7",
+    "source_id": "supplemental_010246",
+    "status": "historical_method_snapshot_not_current_admission",
+    "code": "414f9d9d3f1841cfe50fdf9732bb78e1bfa35aa4382eb7c0d90d194ed81155fa",
+    "profile": "ca8aa2a0325afd5f5bcf6d6d8eaddab94ea764ecdcbacecc6104ca3b2f0895f9"
+  },
+  {
+    "artifact_id": "3ad825b71377bffccdd9",
+    "source_id": "supplemental_001927",
+    "status": "historical_method_snapshot_not_current_admission",
+    "code": "414f9d9d3f1841cfe50fdf9732bb78e1bfa35aa4382eb7c0d90d194ed81155fa",
+    "candidate_profile": "b217885c5d656221495e7f801c583245123b9ed0fb66546a464a0fc7f7f7b4b0",
+    "baseline_profile": "d7fabd3ec4f9a9a77021eed733f1d7379004e2e928d1e0f7933bb689e4eda4d0"
+  },
+  {
+    "artifact_id": "41de6be2b6f6169b3ff2",
+    "source_id": "supplemental_001927",
+    "status": "historical_method_snapshot_not_current_admission",
+    "code_fingerprint": "414f9d9d3f1841cfe50fdf9732bb78e1bfa35aa4382eb7c0d90d194ed81155fa",
+    "profile_fingerprint": "b217885c5d656221495e7f801c583245123b9ed0fb66546a464a0fc7f7f7b4b0",
+    "parent_profile_fingerprint": "ca8aa2a0325afd5f5bcf6d6d8eaddab94ea764ecdcbacecc6104ca3b2f0895f9",
+    "method_commit": "eaafd6b3545d33039265ccb4f36d70cb52489637"
+  }
+]

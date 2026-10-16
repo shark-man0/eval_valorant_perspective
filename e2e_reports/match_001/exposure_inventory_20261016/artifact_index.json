@@ -1,0 +1,306 @@
+[
+  {
+    "id": "64a6f1e37c8ff059f1e7",
+    "record_file": "work/new-source-development/border-score-exposed-WON-input/source-manifest.json",
+    "sha256": "5f4233b3f235b5e7282ebc2c302baba9a779434a5c907bc2f5e77931b982c9d9",
+    "source_id": "supplemental_010246",
+    "purpose": "saved_source_manifest",
+    "frame_records": 271
+  },
+  {
+    "id": "43132863c629590782f4",
+    "record_file": "work/new-source-development/border-score-freeze.json",
+    "sha256": "458629f81904594a4561dc37dfd63932fe49e73f2a67998cffea7d4bb334dfb6",
+    "source_id": "supplemental_010246",
+    "purpose": "saved_source_manifest",
+    "frame_records": 0
+  },
+  {
+    "id": "688b62fbc30f3a240e41",
+    "record_file": "work/new-source-development/border-score-held-baseline-input/source-manifest.json",
+    "sha256": "dfe375e5adacf950f4b16c48458d7d3a3616e6445f9956e7b0b87dedd4af0ce9",
+    "source_id": "supplemental_010246",
+    "purpose": "historical_evaluation",
+    "frame_records": 421
+  },
+  {
+    "id": "6a40925f07ec2f41b0c4",
+    "record_file": "work/new-source-development/border-score-held-discovery/selection.json",
+    "sha256": "4f68f444bf49165356bd7e2f17cdd27e9e32b6a43f2f78c1fc63681ae11d81a4",
+    "source_id": "supplemental_010246",
+    "purpose": "source_discovery",
+    "frame_records": 0
+  },
+  {
+    "id": "d4e6594b4cce2bf2f0a5",
+    "record_file": "work/new-source-development/border-score-held-native/source-manifest.json",
+    "sha256": "dfe375e5adacf950f4b16c48458d7d3a3616e6445f9956e7b0b87dedd4af0ce9",
+    "source_id": "supplemental_010246",
+    "purpose": "historical_evaluation",
+    "frame_records": 421
+  },
+  {
+    "id": "d61d4f3a31718526f739",
+    "record_file": "work/new-source-development/candidate-freeze.json",
+    "sha256": "80e805b7cd21c004ba2539c3fb15ab72a9a69ace19e415189040314b4ffb0aca",
+    "source_id": "supplemental_010246",
+    "purpose": "saved_source_manifest",
+    "frame_records": 0
+  },
+  {
+    "id": "fe03b38456cba85568f8",
+    "record_file": "work/new-source-development/current-numeric-training-input/source-manifest.json",
+    "sha256": "c784554ea5af2bc7fd88a0162c6e76806954b44dfb3e2d8004b7ac79b6e8d3dc",
+    "source_id": "supplemental_010246",
+    "purpose": "development",
+    "frame_records": 481
+  },
+  {
+    "id": "e976daad0ed03e02c842",
+    "record_file": "work/new-source-development/development-timing/LOST/source-manifest.json",
+    "sha256": "1ff551423ed5d745110e4374465a4f827349e52890a3dfff1795b34f85afe6c7",
+    "source_id": "supplemental_010246",
+    "purpose": "development",
+    "frame_records": 481
+  },
+  {
+    "id": "a14d8c6d7ed719dab8b2",
+    "record_file": "work/new-source-development/development-timing/WON/source-manifest.json",
+    "sha256": "bcf755598738f5140bec365b285b66a040441f59fe071ba0ab11d63dd74857f5",
+    "source_id": "supplemental_010246",
+    "purpose": "development",
+    "frame_records": 481
+  },
+  {
+    "id": "b0708d7c0bbde7b573fe",
+    "record_file": "work/new-source-development/development-timing/numeric/source-manifest.json",
+    "sha256": "c784554ea5af2bc7fd88a0162c6e76806954b44dfb3e2d8004b7ac79b6e8d3dc",
+    "source_id": "supplemental_010246",
+    "purpose": "development",
+    "frame_records": 481
+  },
+  {
+    "id": "0a6abd45266933ccafb8",
+    "record_file": "work/new-source-development/early-geometry-preflight/result.json",
+    "sha256": "f9f7ac91c31f84f710e5323c29245cb4784f09e511fcddfe7dfe04de653a2053",
+    "source_id": "supplemental_010246",
+    "purpose": "geometry_check",
+    "frame_records": 6
+  },
+  {
+    "id": "230116d03772f884de7a",
+    "record_file": "work/new-source-development/fixed-training/source-manifest.json",
+    "sha256": "2ce9774a46de7343de6bda42c9f2da17d8cbde05e942e6cdb83590aa3b0a54a1",
+    "source_id": "supplemental_010246",
+    "purpose": "development",
+    "frame_records": 15
+  },
+  {
+    "id": "e9b4ac0f7e580408e975",
+    "record_file": "work/new-source-development/held-CLUTCH-native/source-manifest.json",
+    "sha256": "7491b3dbc0fb94592f62dc31c483df586949ee087d969f52a4aac44eca304d2c",
+    "source_id": "supplemental_010246",
+    "purpose": "historical_evaluation",
+    "frame_records": 181
+  },
+  {
+    "id": "138c29862aa6a370089e",
+    "record_file": "work/new-source-development/held-WON-discovery/selection.json",
+    "sha256": "488ded57d05c86418dda7747064a2204309a56e84a6e100958278bf1a4fdd145",
+    "source_id": "supplemental_010246",
+    "purpose": "source_discovery",
+    "frame_records": 0
+  },
+  {
+    "id": "2144b7fdc67f1e164ef4",
+    "record_file": "work/new-source-development/held-WON-native/source-manifest.json",
+    "sha256": "5f4233b3f235b5e7282ebc2c302baba9a779434a5c907bc2f5e77931b982c9d9",
+    "source_id": "supplemental_010246",
+    "purpose": "historical_evaluation",
+    "frame_records": 271
+  },
+  {
+    "id": "8ca0b246149b17e32bea",
+    "record_file": "work/new-source-development/held-discovery/selection.json",
+    "sha256": "9aa86cad72ffb718a71a956e63020e5cad8aed31c059c27fb7727349be37b160",
+    "source_id": "supplemental_010246",
+    "purpose": "source_discovery",
+    "frame_records": 0
+  },
+  {
+    "id": "7bdd4f2f17b935e6e7f0",
+    "record_file": "work/new-source-development/held-native/A/source-frames.json",
+    "sha256": "ccf7e4630d781b0258001ec5f1f5e5b3bbee84da8a8ca4c58707dc2a6a387253",
+    "source_id": "supplemental_010246",
+    "purpose": "historical_evaluation",
+    "frame_records": 343
+  },
+  {
+    "id": "05f5baec7a741d3fca87",
+    "record_file": "work/new-source-development/held-native/B/source-frames.json",
+    "sha256": "e30cd56ff442fc0743328bb7d5e784f951c3dcd864bcb0ce24f6ea9ba53b4bab",
+    "source_id": "supplemental_010246",
+    "purpose": "historical_evaluation",
+    "frame_records": 145
+  },
+  {
+    "id": "0c0230429bc594cde747",
+    "record_file": "work/new-source-development/held-native/source-manifest.json",
+    "sha256": "24390b8c58827a88ec407c1e5e7ec3c71adb52dd6f4b4d635bbcd51322723531",
+    "source_id": "supplemental_010246",
+    "purpose": "historical_evaluation",
+    "frame_records": 488
+  },
+  {
+    "id": "0d12eff23ec863477ee3",
+    "record_file": "work/new-source-development/negative-discovery/selection.json",
+    "sha256": "b43107602b42e9089dbefb66eadeff1695a720dac303476fe59e159753d9a0a3",
+    "source_id": "supplemental_010246",
+    "purpose": "source_discovery",
+    "frame_records": 0
+  },
+  {
+    "id": "75458a0e210ba9729ce7",
+    "record_file": "work/new-source-development/next-End-discovery/selection.json",
+    "sha256": "a2f25af5e0a349d576663fe6e778a9579b8f96db84cf0debc9817911dd28b957",
+    "source_id": "supplemental_010246",
+    "purpose": "source_discovery",
+    "frame_records": 0
+  },
+  {
+    "id": "b8872d0144b8b976db7c",
+    "record_file": "work/new-source-development/next-End-native/source-manifest.json",
+    "sha256": "ae1b9dae9873f685eaf54478e46e3235b682bde29bd1f3b838aaa51c8b70863f",
+    "source_id": "supplemental_010246",
+    "purpose": "historical_evaluation",
+    "frame_records": 301
+  },
+  {
+    "id": "6f2d4463093f670889f8",
+    "record_file": "work/new-source-development/restart-candidate-freeze.json",
+    "sha256": "a32c4257d88d3b1248c458adb748915176deb308370e650517cafb89dfcf68b8",
+    "source_id": "supplemental_010246",
+    "purpose": "saved_source_manifest",
+    "frame_records": 0
+  },
+  {
+    "id": "5f2802536f821acc78b0",
+    "record_file": "work/new-source-development/restart-held-discovery/selection.json",
+    "sha256": "78d11dcdb6430ca25acf5c3ae303d4c1d49ddf9ac19ff4c70ed22392042ce50d",
+    "source_id": "supplemental_010246",
+    "purpose": "source_discovery",
+    "frame_records": 0
+  },
+  {
+    "id": "5992e6f857ddde735541",
+    "record_file": "work/new-source-development/split-plan.json",
+    "sha256": "ff449e2aca51edf9150800bdd0f290f4a3516b747beb1dd8793156e2b74daf91",
+    "source_id": "supplemental_010246",
+    "purpose": "saved_source_manifest",
+    "frame_records": 0
+  },
+  {
+    "id": "36f37d3f54799da74ff7",
+    "record_file": "work/new-source-development/timer-consistent-bank-development/freeze.json",
+    "sha256": "888cd349ce49d8b0d487a7b41a30d4d033b19fed3de3b64a1a5c8b814e9831cb",
+    "source_id": "supplemental_010246",
+    "purpose": "saved_source_manifest",
+    "frame_records": 0
+  },
+  {
+    "id": "2ccf3ec44a3671841cae",
+    "record_file": "work/new-source-development/timer-consistent-bank-development/training-source-grid.json",
+    "sha256": "f868e5ec0a67b503100fc224c9c969ff8765ed282b4d33e9dd7746e343b23a6e",
+    "source_id": "supplemental_010246",
+    "purpose": "development",
+    "frame_records": 72
+  },
+  {
+    "id": "468f1f41c447cc11b6df",
+    "record_file": "work/new-source-review/native-end-01/source-frames.json",
+    "sha256": "3b10d27e30ff1cf3bb64c24387da1018a7c0b241cb679d3018c2c0a8d1561771",
+    "source_id": "supplemental_010246",
+    "purpose": "saved_source_manifest",
+    "frame_records": 163
+  },
+  {
+    "id": "3ad825b71377bffccdd9",
+    "record_file": "work/independent-source-001927/baseline-comparison-freeze.json",
+    "sha256": "7146d6224a27a79a73a48ab33e89f63dc223eb5a1f67ca1d5c30db823bc0b87b",
+    "source_id": "supplemental_001927",
+    "purpose": "saved_source_manifest",
+    "frame_records": 0
+  },
+  {
+    "id": "41de6be2b6f6169b3ff2",
+    "record_file": "work/independent-source-001927/candidate-freeze.json",
+    "sha256": "2ab10c406a3129b7c08221143798515d06e35e2f09d73a310d7fbdc8309c6a54",
+    "source_id": "supplemental_001927",
+    "purpose": "saved_source_manifest",
+    "frame_records": 0
+  },
+  {
+    "id": "6e2b09c2b9714a6256e8",
+    "record_file": "work/independent-source-001927/evaluation-discovery/selection.json",
+    "sha256": "69e86a9310afeda9cc776a0bc94873e0f862c8fe8e5fa189f4c91b6dc60bbee8",
+    "source_id": "supplemental_001927",
+    "purpose": "source_discovery",
+    "frame_records": 0
+  },
+  {
+    "id": "8e75fa6e9da77afd71f0",
+    "record_file": "work/independent-source-001927/evaluation-discovery/source-manifest.json",
+    "sha256": "4652d4a5c73d115fea6c2d0e55c675a3293606d139f50f0121203b8da499d3a9",
+    "source_id": "supplemental_001927",
+    "purpose": "source_discovery",
+    "frame_records": 11
+  },
+  {
+    "id": "511e625eba525e8f3714",
+    "record_file": "work/independent-source-001927/evaluation-refinement/source-manifest.json",
+    "sha256": "51705cd5b257539383695563f56889dc3e4b2f4874773e7746115429cd77f1f7",
+    "source_id": "supplemental_001927",
+    "purpose": "source_discovery",
+    "frame_records": 27
+  },
+  {
+    "id": "5107beac41786526316a",
+    "record_file": "work/independent-source-001927/geometry-preflight/result.json",
+    "sha256": "62b73d9f4a779c94ec94af31b33ab50314ef7aae7fd6994e3fa2249d8ebad792",
+    "source_id": "supplemental_001927",
+    "purpose": "geometry_check",
+    "frame_records": 6
+  },
+  {
+    "id": "6573e6d72b42ef1599f1",
+    "record_file": "work/independent-source-001927/native-cases/E1/source-manifest.json",
+    "sha256": "04aa1190f1cf02cd2245dca1ea6aec4775bf78ed113a51c6c53ae04c89901470",
+    "source_id": "supplemental_001927",
+    "purpose": "historical_evaluation",
+    "frame_records": 331
+  },
+  {
+    "id": "96f35e30cb675f4d325c",
+    "record_file": "work/independent-source-001927/native-cases/E2/source-manifest.json",
+    "sha256": "6bb83d3348af429179a1d28bfe4d014f98c77aa69ac2f5710476d37cd3b0ddfb",
+    "source_id": "supplemental_001927",
+    "purpose": "historical_evaluation",
+    "frame_records": 391
+  },
+  {
+    "id": "1538b225f43b1e5cadf9",
+    "record_file": "work/independent-source-001927/native-cases/E3/source-manifest.json",
+    "sha256": "bc20c77ec71735e8210734bc63714eda480aa39fd40009ce71dc2efa59fe0f1d",
+    "source_id": "supplemental_001927",
+    "purpose": "historical_evaluation",
+    "frame_records": 391
+  },
+  {
+    "id": "d46037745cc681f3a152",
+    "record_file": "work/independent-source-001927/split-plan.json",
+    "sha256": "f91bbb0135b4d71b23778ebec4abe918f29665f73c415ee098438f5c57eb40c6",
+    "source_id": "supplemental_001927",
+    "purpose": "saved_source_manifest",
+    "frame_records": 0
+  }
+]

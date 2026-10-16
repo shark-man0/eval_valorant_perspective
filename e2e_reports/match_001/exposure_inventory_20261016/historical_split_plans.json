@@ -1,0 +1,80 @@
+[
+  {
+    "artifact_id": "5992e6f857ddde735541",
+    "source_id": "supplemental_010246",
+    "status": "historical_plan_not_current_exposure_certification",
+    "pools": {
+      "development": [
+        300,
+        600
+      ],
+      "held_event_review": [
+        1200,
+        1500
+      ],
+      "negative_candidate_review": [
+        1800,
+        2100
+      ]
+    },
+    "excluded_previously_viewed_sec": [
+      0,
+      180
+    ]
+  },
+  {
+    "artifact_id": "d46037745cc681f3a152",
+    "source_id": "supplemental_001927",
+    "status": "historical_plan_not_current_exposure_certification",
+    "partitions": {
+      "development_geometry_only": [
+        0,
+        180
+      ],
+      "unused_buffer_before_evaluation": [
+        180,
+        540
+      ],
+      "independent_event_candidate_pool": [
+        540,
+        1440
+      ],
+      "unused_buffer_after_evaluation": [
+        1440,
+        1620
+      ],
+      "scene_control_candidate_pool": [
+        1620,
+        2100
+      ],
+      "unused_tail": [
+        2100,
+        2167.338
+      ]
+    },
+    "geometry_preflight_times_sec": [
+      0,
+      30,
+      60,
+      90,
+      120,
+      150
+    ],
+    "initial_evaluation_source_discovery_times_sec": [
+      600,
+      630,
+      660,
+      690,
+      720,
+      750,
+      780,
+      810,
+      840,
+      870,
+      900
+    ],
+    "recorded_at_utc": "2026-10-15T09:22:19.659203+00:00",
+    "code_fingerprint": "414f9d9d3f1841cfe50fdf9732bb78e1bfa35aa4382eb7c0d90d194ed81155fa",
+    "initial_profile_fingerprint": "ca8aa2a0325afd5f5bcf6d6d8eaddab94ea764ecdcbacecc6104ca3b2f0895f9"
+  }
+]
