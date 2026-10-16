@@ -88,7 +88,7 @@ def link_source_player_to_victim(
         o.review_status == ReviewStatus.SOURCE_REVIEWED
         for o in (owner, victim)
     )
-    blockers = (
+    blockers: tuple[str, ...] = (
         "semantic_role_qualification_missing",
         "death_transition_corroboration_missing",
         "production_adoption_not_authorized",
