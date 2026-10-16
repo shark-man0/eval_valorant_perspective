@@ -423,3 +423,89 @@ They are not pooled as independent successes of one qualified model. Formal
 subject/role/transition qualification, the omitted-group check, nonself controls
 and the approved Event/Package/Trace connection still require work. Canonical
 targeted/sampled/Full deltas remain unmeasured and no new Full E2E was run.
+
+## Long native negative controls and typed witness transport
+
+The common diagnostic runner now accepts mutually exclusive decoded caches or
+explicit `--native-window START:END` inputs. Direct source mode reuses the
+existing `VideoService.native_replay` implementation and its bounded raw buffer.
+It verifies the **whole source** pixel/PTS sequence before exposing handles,
+recognizes every native frame inside each explicit window, resets diagnostic
+context between disjoint windows and verifies the source again at completion.
+It introduces no FPS conversion or Full sampler change. Cache mode and its CLI
+remain supported. Invalid, unordered, overlapping and empty windows reject.
+
+Whole-source preverification is expensive. Prefer existing verified caches for
+short windows on long videos. This new mode makes long controls feasible when
+retaining PNGs would exceed storage; it is not a universally faster decoder.
+Its summary separates preverification, recognition/streaming and terminal
+verification. Streaming time includes the underlying verified decoder pass,
+so it must not be reported as pure recognizer CPU time.
+
+Frozen source-1 validation covered a nonself killfeed window, stale-report
+reappearance during preparation, and a cold start in the long post-death/
+spectator interval. The outcomes are:
+
+| Control | Native frames | New death predictions | Source-blocked frames |
+| --- | ---: | ---: | ---: |
+| Nonself killfeed | 108 | 0 | 0 |
+| Stale report reappearance | 150 | 0 | 0 |
+| Long post-death/spectator persistence | 1,261 | 0 | 0 |
+| Total | 1,519 | 0 | 0 |
+
+The last control retains 118 actual victim-role readings from the old killfeed;
+they still do not open a new death episode. These long controls extend earlier
+12-frame checks, whose overlapping images are not counted as independent
+additional negatives. Original labels and canonical assertions are unchanged.
+
+The decoder verified 10,259 source frames, with a 67,108,864-byte raw-buffer
+budget and no PNG retention. Preverification took 900.22 seconds; recognition
+and verified streaming took 1,926.59 seconds; terminal verification took 1.89
+seconds. Total wall time was **2,834.48 seconds (47.24 minutes)**, slightly above
+the pre-run 20–45 minute estimate. Python peak RSS was 128,876,544 bytes; that
+does not include decoder/OCR child processes or claim total system memory.
+All terminal hashes passed. No Full E2E was started or repeated.
+
+`experimental/subject_witness_transport.py` now converts frozen image
+predictions into the already-existing typed subject observations. It preserves
+the original source/PTS/pixel/code/profile/dependency bindings, looks up the
+actual recorded onset frame and its support, and never borrows confirmation
+confidence for an earlier timestamp. Geometric victim roles keep confidence
+null; plate fraction does not become NCC. Unknown relation, candidate review
+state, missing qualification and zero formal authority remain explicit.
+The transport aggregate cannot exceed the original aggregate or any available
+contributing numeric witness. Missing/conflicting/invalid source evidence is
+an error, never a default value or a neighboring-frame repair.
+
+A transport-only real-output audit verifies frozen result hashes, current
+physical source hashes, original profile/assets, reader/dependency fingerprints
+and the original runner bytes reconstructed from Git. No recognition is rerun
+or re-signed. Five existing predictions export 15 typed observations; all five
+victim numeric confidences remain absent. Every result stays UNKNOWN/CANDIDATE
+and formal events remain zero. The archived recognition fingerprints are kept
+separate from the new transport-module fingerprint.
+
+The structural role cannot pass the old probe's all-roles numeric-confidence
+gate without a genuine numeric witness. A concrete separate-predicate proposal
+is in `self_death_structural_role_release_proposal.md`. It requests a contract
+decision before implementing a formal consumer; it does not grant qualification
+or production adoption. Qualification controls and canonical comparison remain
+required after that decision. Current Strict PASS gain is still unmeasured.
+
+Validation for this stage: the final related native/subject suite passed
+205 tests in 38.65 seconds, including missing-confirmation rejection.
+Ruff passed the CI scope plus the
+runner; mypy passed 143 files. Real FFmpeg tests verify raw/PNG pixel and PTS
+agreement, full frame coverage inside windows, bounded-buffer operation and
+independent state between disjoint windows. Remote Linux and Windows push/PR
+CI for the preceding `d01888f` source revision all passed; the new revision's
+remote result is not yet verified. No existing test was skipped or relaxed to
+make a recognition failure pass.
+
+The omitted-group follow-up is now complete as a separate prospective test.
+Source review before prediction identifies a living player closing the purchase
+menu while an old Report reappears. All 181 native frames produced zero death
+predictions and zero source-blocked frames. The original frozen cohort and its
+selection correction are preserved; this new result is not inserted into the
+old cohort retroactively. Six exact full-resolution review frames and all
+metadata/results were retained before evicting its temporary RAM PNG cache.

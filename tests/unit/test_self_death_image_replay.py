@@ -176,3 +176,81 @@ def test_v2_presence_assets_round_trip_without_changing_v1_profile_contract(tmp_
     path.write_text(json.dumps(data), encoding='utf-8')
     with pytest.raises(ValueError, match='only the versioned'):
         load_report_presence(path)
+
+
+@pytest.mark.parametrize('text', ['nan:2', '0:inf', '-1:2', '2:1', '1:1', '1:2:3', '0:1/0'])
+def test_native_window_parser_rejects_invalid_or_nonfinite_ranges(text):
+    import argparse
+
+    from scripts.diagnostics.replay_self_death_images import parse_native_window
+
+    with pytest.raises(argparse.ArgumentTypeError):
+        parse_native_window(text)
+
+
+def test_native_window_parser_preserves_rational_seconds():
+    from fractions import Fraction
+
+    from scripts.diagnostics.replay_self_death_images import parse_native_window
+
+    assert parse_native_window('0.1:1/3') == (Fraction(1, 10), Fraction(1, 3))
+
+
+@pytest.mark.parametrize('ranges', [[(1, 1)], [(2, 1)], [(2, 3), (0, 1)], [(0, 2), (2, 3)]])
+def test_invalid_native_window_sequences_fail_before_decoder_work(tmp_path, monkeypatch, ranges):
+    from fractions import Fraction
+
+    from scripts.diagnostics.replay_self_death_images import replay_source_windows
+    from valorant_ai_coach.video import VideoService
+
+    monkeypatch.setattr(VideoService, 'native_replay',
+                        lambda *a, **k: pytest.fail('decoder called'))
+    model, _, _ = detector()
+    with pytest.raises(ValueError, match='ordered, disjoint'):
+        replay_source_windows(tmp_path/'unused.mov',
+            [(Fraction(a), Fraction(b)) for a, b in ranges], model, HASH)
+
+
+def test_native_source_window_replay_matches_png_pixels_without_sampling_or_context_join(tmp_path):
+    import shutil
+    import subprocess
+    from fractions import Fraction
+
+    from scripts.diagnostics.replay_self_death_images import replay_source_windows, sha
+
+    ffmpeg = shutil.which('ffmpeg')
+    if ffmpeg is None or shutil.which('ffprobe') is None:
+        pytest.skip('FFmpeg/ffprobe required for native source integration')
+    model, base, header = detector()
+    manifest = cache(tmp_path, 'source-frames', base, header, persistent=False)
+    video = tmp_path/'verified-source.mov'
+    subprocess.run([ffmpeg, '-v', 'error', '-framerate', '60', '-i',
+                    str(manifest.parent/'%d.png'), '-c:v', 'qtrle', '-pix_fmt', 'rgb24',
+                    '-video_track_timescale', '60', str(video)],
+                   check=True, capture_output=True, timeout=30)
+    profile = replace(model.reader.profile, source_sha256=sha(video))
+    model = SelfDeathImageRecognizer(profile, model.reader.reader, model.report_reference,
+        model.report_search_roi, runtime_fingerprint=image_runtime_fingerprint(),
+        dependencies_fingerprint=HASH, native_step_ticks=1)
+    data = json.loads(manifest.read_text(encoding='utf-8'))
+    data['source_sha256'] = profile.source_sha256
+    manifest.write_text(json.dumps(data), encoding='utf-8')
+    cached = replay_cache(manifest, model, HASH)
+    native, proof = replay_source_windows(video, [(Fraction(0), Fraction(5, 60))], model, HASH,
+                                         max_buffer_bytes=240*80*3*3)
+    assert cached[0]['prediction_count'] == native[0]['prediction_count'] == 1
+    assert native[0]['source_blocked_frames'] == 0
+    assert [x['status'] for x in native[0]['rows']] == [x['status'] for x in cached[0]['rows']]
+    assert [x['source']['pixel_sha256'] for x in native[0]['rows']] == [
+        x['pixel_sha256'] for x in data['windows'][0]['rows']]
+    assert [x['source']['pts_ticks'] for x in native[0]['rows']] == list(range(6))
+    assert proof['whole_source_verified_frames'] == 6 and proof['source_terminal_verified'] is True
+    assert proof['max_buffer_bytes'] == 240*80*3*3
+    split, split_proof = replay_source_windows(video, [
+        (Fraction(0), Fraction(2, 60)), (Fraction(4, 60), Fraction(5, 60))], model, HASH)
+    assert [x['prediction_count'] for x in split] == [0, 0]
+    assert [[r['source']['pts_ticks'] for r in w['rows']] for w in split] == [[0, 1, 2], [4, 5]]
+    assert (split_proof['native_pts_pixel_sequence_sha256']
+            == proof['native_pts_pixel_sequence_sha256'])
+    assert all(w['formal_events'] == [] and w['qualified'] is False
+               for w in (*cached, *native, *split))

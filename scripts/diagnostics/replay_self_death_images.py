@@ -12,6 +12,7 @@ import platform
 import shutil
 import subprocess
 import time
+from collections.abc import Iterable
 from dataclasses import asdict
 from fractions import Fraction
 from pathlib import Path
@@ -130,17 +131,7 @@ def replay_cache(
         raise ValueError('verified source-bound decoded-input cache required')
     windows = []
     for group in data['windows']:
-        # A bounded window is its own observation context, never an assumed
-        # native Round or a continuation across a missing source interval.
-        detector = SelfDeathImageRecognizer(
-            recognizer.reader.profile, recognizer.reader.reader, recognizer.report_reference,
-            recognizer.report_search_roi, runtime_fingerprint=runtime_fingerprint(),
-            dependencies_fingerprint=dependencies, native_step_ticks=recognizer.native_step_ticks,
-            report_presence_header=recognizer.report_presence_header,
-        )
-        if detector.code_fingerprint != recognizer.code_fingerprint:
-            raise ValueError('recognizer code changed between native windows')
-        rows = []
+        frames = []
         for record in group['rows']:
             for field, minimum in (('pts_ticks', 0), ('time_base_num', 1),
                                    ('time_base_den', 1), ('width', 1), ('height', 1)):
@@ -149,32 +140,109 @@ def replay_cache(
             path = Path(record['path'])
             if not path.is_absolute():
                 path = manifest_path.parent/path
-            frame = NativeSourceFrame(
+            frames.append(NativeSourceFrame(
                 path, record['pts_ticks'],
                 Fraction(record['time_base_num'], record['time_base_den']),
                 record['source_epoch'], data['source_sha256'], record['encoded_sha256'],
                 record['pixel_sha256'], record['width'], record['height'],
-            )
-            image = frame.read_image()
-            source = SourceBinding(
-                frame.source_video_sha256, frame.pts_ticks, frame.time_base.numerator,
-                frame.time_base.denominator, frame.source_epoch, frame.pixel_sha256,
-                detector.code_fingerprint, detector.profile_fingerprint, dependencies,
-            )
-            reading = detector.observe(image, source)
-            if reading.qualified or reading.formal_events:
-                raise RuntimeError('diagnostic reader unexpectedly released an event')
-            rows.append(asdict(reading))
-        if len(rows) < 2:
-            raise ValueError('native replay requires at least two source frames per window')
-        windows.append({'window': group['window'], 'frames': len(rows), 'rows': rows,
-                        'prediction_count': sum(row['status'] == 'prediction' for row in rows),
-                        'source_blocked_frames': sum(
-                            row['reason'] == 'source_invalid_or_discontinuous' for row in rows),
-                        'qualified': False, 'formal_events': []})
+            ))
+        windows.append(_observe_native_frames(frames, group['window'], recognizer, dependencies))
     if sum(window['frames'] for window in windows) != data['frames']:
         raise ValueError('cache frame count mismatch')
     return windows
+
+
+def _observe_native_frames(
+    frames: Iterable[NativeSourceFrame], window: list[float],
+    recognizer: SelfDeathImageRecognizer, dependencies: str,
+) -> dict[str, Any]:
+    # Each explicit window is its own observation context, never an assumed
+    # native Round or a continuation across an unobserved source interval.
+    detector = SelfDeathImageRecognizer(
+        recognizer.reader.profile, recognizer.reader.reader, recognizer.report_reference,
+        recognizer.report_search_roi, runtime_fingerprint=runtime_fingerprint(),
+        dependencies_fingerprint=dependencies, native_step_ticks=recognizer.native_step_ticks,
+        report_presence_header=recognizer.report_presence_header,
+    )
+    if detector.code_fingerprint != recognizer.code_fingerprint:
+        raise ValueError('recognizer code changed between native windows')
+    rows = []
+    for frame in frames:
+        image = frame.read_image()
+        source = SourceBinding(
+            frame.source_video_sha256, frame.pts_ticks, frame.time_base.numerator,
+            frame.time_base.denominator, frame.source_epoch, frame.pixel_sha256,
+            detector.code_fingerprint, detector.profile_fingerprint, dependencies,
+        )
+        reading = detector.observe(image, source)
+        if reading.qualified or reading.formal_events:
+            raise RuntimeError('diagnostic reader unexpectedly released an event')
+        rows.append(asdict(reading))
+    if len(rows) < 2:
+        raise ValueError('native replay requires at least two source frames per window')
+    return {'window': window, 'frames': len(rows), 'rows': rows,
+            'prediction_count': sum(row['status'] == 'prediction' for row in rows),
+            'source_blocked_frames': sum(
+                row['reason'] == 'source_invalid_or_discontinuous' for row in rows),
+            'qualified': False, 'formal_events': []}
+
+
+def parse_native_window(text: str) -> tuple[Fraction, Fraction]:
+    try:
+        begin, end = (Fraction(value) for value in text.split(':'))
+    except (ValueError, ZeroDivisionError) as error:
+        message = 'native window requires finite START:END seconds'
+        raise argparse.ArgumentTypeError(message) from error
+    if not 0 <= begin < end:
+        raise argparse.ArgumentTypeError('native window requires 0 <= START < END')
+    return begin, end
+
+
+def replay_source_windows(
+    source_path: Path, requested: list[tuple[Fraction, Fraction]],
+    recognizer: SelfDeathImageRecognizer, dependencies: str, *,
+    max_buffer_bytes: int = 64*1024*1024,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Reuse whole-source pixel/PTS verification, recognize explicit windows only.
+
+    All native decoder frames are verified, so this mode is best suited to
+    short source files or long bounded controls. It never changes full sampling.
+    For long videos and short windows prefer already verified decoded caches.
+    """
+    if (not requested or any(not 0 <= begin < end for begin, end in requested)
+            or any(a[1] >= b[0] for a, b in zip(requested, requested[1:], strict=False))):
+        raise ValueError('native windows must be ordered, disjoint and nonempty')
+    started = time.monotonic()
+    recognition_sec = 0.0
+    windows = []
+    with VideoService().native_replay(
+        source_path, source_video_sha256=recognizer.reader.profile.source_sha256,
+        max_buffer_bytes=max_buffer_bytes,
+    ) as frames:
+        preverification_sec = time.monotonic()-started
+        digest = hashlib.sha256()
+        for frame in frames:
+            digest.update(json.dumps((frame.pts_ticks, frame.time_base.numerator,
+                                      frame.time_base.denominator, frame.pixel_sha256),
+                                     separators=(',', ':')).encode('ascii'))
+        for begin, end in requested:
+            selected = (frame for frame in frames
+                        if begin <= frame.pts_ticks*frame.time_base <= end)
+            observed_started = time.monotonic()
+            windows.append(_observe_native_frames(
+                selected, [float(begin), float(end)], recognizer, dependencies,
+            ))
+            recognition_sec += time.monotonic()-observed_started
+        terminal_started = time.monotonic()
+    proof = {'storage_mode': 'bounded_whole_source_native_replay',
+             'whole_source_verified_frames': len(frames),
+             'native_pts_pixel_sequence_sha256': digest.hexdigest(),
+             'max_buffer_bytes': max_buffer_bytes,
+             'preverification_sec': preverification_sec,
+             'recognition_and_streaming_sec': recognition_sec,
+             'terminal_verification_sec': time.monotonic()-terminal_started,
+             'source_terminal_verified': True}
+    return windows, proof
 
 
 def _peak_rss_bytes() -> int | None:
@@ -191,7 +259,11 @@ def main() -> int:
     for name in ('source', 'profile', 'owner-review', 'tesseract', 'engine-binary',
                  'tessdata', 'output'):
         parser.add_argument('--'+name, type=Path, required=True)
-    parser.add_argument('--cache-manifest', type=Path, action='append', required=True)
+    source_inputs = parser.add_mutually_exclusive_group(required=True)
+    source_inputs.add_argument('--cache-manifest', type=Path, action='append')
+    source_inputs.add_argument('--native-window', type=parse_native_window, action='append',
+                              help='START:END, whole-source decoding is verified before selection')
+    parser.add_argument('--native-max-buffer-bytes', type=int, default=64*1024*1024)
     parser.add_argument('--dependency-root', type=Path, action='append', default=[])
     parser.add_argument('--native-step-ticks', type=int, required=True)
     args = parser.parse_args()
@@ -207,10 +279,15 @@ def main() -> int:
     metadata = VideoService().probe(args.source)
     if (metadata.height, metadata.width) != profile.frame_shape:
         raise ValueError('profile/source geometry mismatch')
+    if args.native_window and any(
+        end > Fraction(str(metadata.duration_sec)) for _, end in args.native_window
+    ):
+        raise ValueError('requested native window exceeds source duration')
+    manifests = args.cache_manifest or []
     inputs = {str(path.resolve()): sha(path) for path in (
-        args.profile, assets, args.owner_review, Path(__file__), *args.cache_manifest,
+        args.profile, assets, args.owner_review, Path(__file__), *manifests,
     )}
-    for manifest in args.cache_manifest:
+    for manifest in manifests:
         for group in _json(manifest)['windows']:
             for record in group['rows']:
                 path = Path(record['path'])
@@ -250,10 +327,18 @@ def main() -> int:
         report_presence_header=presence_header,
     )
     image_started = time.monotonic()
-    windows = []
-    for manifest in args.cache_manifest:
-        windows.extend(replay_cache(manifest, detector, deps))
-    recognition_sec = time.monotonic()-image_started
+    windows: list[dict[str, Any]] = []
+    native_proof: dict[str, Any] | None = None
+    if args.native_window:
+        windows, native_proof = replay_source_windows(
+            args.source, args.native_window, detector, deps,
+            max_buffer_bytes=args.native_max_buffer_bytes,
+        )
+    else:
+        for manifest in manifests:
+            windows.extend(replay_cache(manifest, detector, deps))
+    recognition_sec = (native_proof['recognition_and_streaming_sec'] if native_proof is not None
+                       else time.monotonic()-image_started)
     terminal_detector = SelfDeathImageRecognizer(
         profile, reader, report, search, runtime_fingerprint=runtime_fingerprint(),
         dependencies_fingerprint=deps, native_step_ticks=args.native_step_ticks,
@@ -267,7 +352,9 @@ def main() -> int:
     frames = sum(window['frames'] for window in windows)
     result = {
         'scope': 'Non-releasing native image replay; not canonical E2E or qualification.',
-        'mode': 'self_death_native_replay', 'source_sha256': profile.source_sha256,
+        'mode': ('self_death_source_native_window' if native_proof is not None
+                 else 'self_death_native_replay'),
+        'source_sha256': profile.source_sha256, 'native_decoding': native_proof,
         'input_hashes': inputs, 'dependencies': dependencies, 'runtime_fingerprint': runtime,
         'code_fingerprint': detector.code_fingerprint, 'profile_fingerprint': profile.fingerprint(),
         'dependencies_fingerprint': deps, 'native_step_ticks': args.native_step_ticks,
