@@ -5,5 +5,5 @@
   "no_intentional_frame_deletion_join_or_reorder": true,
   "no_intentional_speed_change": true,
   "scene_preserving_edit_excluded": true,
-  "assurance_provenance": "Explicit user clarification (2026-10-16): video is an Outplayed-extracted segment from a longer source, with no user editing (frame deletion/join/reorder, speed change or scene-preserving editing) WITHIN the selected segment. Clip begins/ends mid-match; image changes or duplicate frames are not assumed to be manual edits. Assurance applies to this exact SHA only. User policy: future development and production inputs are likewise unedited within their supplied ranges; each distinct source still requires its own source-binding/provenance."
+  "assurance_provenance": "User clarifications 2026-10-16: match_001 is an Outplayed-extracted segment of a longer recording, with no user editing (deletion/join/reorder, speed or scene-preserving changes) inside the selected interval. The video begins/ends mid-match; observed visual changes or repeated frames do not imply manual edits. This assertion applies to this SHA only. Production default uses unedited AND uncut full-match recordings covering game start through game end; match_001 is a development/diagnostic partial-source exception. Each additional source requires its own integrity/provenance check."
 }
