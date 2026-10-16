@@ -37,10 +37,17 @@ class KillfeedSubjectProfile:
     headshot_reference: Any
     name_y_offsets: tuple[int, int] = (9, 31)
     additional_weapon_references: tuple[Any, ...] = ()
+    separator_method: str = 'template_ncc'
+    name_gap_inset: int = 0
+    marker_feature_kind: str = 'hsv_yellow_outline_v1'
 
     def __post_init__(self) -> None:
         _hash(self.source_sha256)
         _hash(self.owner_marker_review_sha256)
+        if self.marker_feature_kind not in {
+            'hsv_yellow_outline_v1', 'hsv_strong_yellow_outline_v1',
+        }:
+            raise ValueError('supported source highlight feature required')
         x1, y1, x2, y2 = self.search_roi
         if (any(type(v) is not int for v in (*self.frame_shape, *self.search_roi))
                 or not 0 <= x1 < x2 <= self.frame_shape[1]
@@ -60,6 +67,10 @@ class KillfeedSubjectProfile:
                 or np.any((self.yellow_mask > 0) & ~occupied)):
             raise ValueError('highlight color must be supported by the structural border')
         h, w = self.marker_reference.shape
+        if self.separator_method not in {'template_ncc', 'white_glyph_geometry'}:
+            raise ValueError('explicit supported separator method required')
+        if type(self.name_gap_inset) is not int or not 0 <= self.name_gap_inset < w//2:
+            raise ValueError('source-calibrated name gap inset required')
         if (any(type(v) is not int for v in self.name_y_offsets)
                 or not 0 <= self.name_y_offsets[0] < self.name_y_offsets[1] <= h):
             raise ValueError('name crop must remain inside the row height')
@@ -73,18 +84,35 @@ class KillfeedSubjectProfile:
             raise ValueError('marker exceeds source search region')
 
     def fingerprint(self) -> str:
-        digest = hashlib.sha256(json.dumps({
+        metadata: dict[str, object] = {
             'source': self.source_sha256, 'review': self.owner_marker_review_sha256,
             'frame_shape': self.frame_shape, 'search': self.search_roi,
             'name_y_offsets': self.name_y_offsets,
-            'marker_feature': 'hsv_yellow_outline_v1',
-        }, sort_keys=True).encode('utf-8'))
+            'marker_feature': self.marker_feature_kind,
+        }
+        if self.separator_method != 'template_ncc' or self.name_gap_inset:
+            metadata.update(separator_method=self.separator_method,
+                            name_gap_inset=self.name_gap_inset,
+                            geometry_version='white_connected_glyph_plate_v2')
+        digest = hashlib.sha256(json.dumps(metadata, sort_keys=True).encode('utf-8'))
         for array in (self.marker_reference, *self.marker_masks, self.yellow_mask,
                       self.weapon_reference, self.headshot_reference,
                       *self.additional_weapon_references):
             digest.update(str(array.shape).encode('ascii'))
             digest.update(array.tobytes())
         return digest.hexdigest()
+
+
+@dataclass(frozen=True)
+class WeaponGlyphGeometry:
+    """Measured shape, not an NCC score or a qualification/confidence grant."""
+
+    roi: Box
+    white_pixels: int
+    bounding_box_area: int
+    maximum_scanline_pixels: int
+    plate_family: Literal['red', 'green']
+    plate_fraction: float
 
 
 @dataclass(frozen=True)
@@ -100,6 +128,7 @@ class KillfeedSubjectReading:
     name_confidence: float | None
     reason: str
     weapon_support: float | None = None
+    weapon_geometry: WeaponGlyphGeometry | None = None
 
     @property
     def qualified(self) -> bool:
@@ -147,6 +176,43 @@ def _matches(gray: Any, reference: Any, masks: tuple[Any, ...],
     return accepted
 
 
+def _weapon_glyphs(image: Any, region: Box) -> list[WeaponGlyphGeometry]:
+    """Experimental pictogram geometry, independently qualified before release.
+
+    Text components and thin decorations cannot substitute for a wide, two
+    dimensional connected pictogram. Ambiguous candidates stay unknown at the
+    caller. Bounds are frozen development geometry, not confidence values.
+    """
+    left, top, right, bottom = region
+    hsv = cv2.cvtColor(image[top:bottom, left:right], cv2.COLOR_BGR2HSV)
+    white = ((hsv[:, :, 1] < 50) & (hsv[:, :, 2] > 200)).astype(np.uint8)
+    count, labels, stats, _ = cv2.connectedComponentsWithStats(white, connectivity=8)
+    result = []
+    for index in range(1, count):
+        x, y, w, h, area = (int(v) for v in stats[index])
+        if (not 32 <= w <= 100 or not 8 <= h <= 26 or not 2 <= w/h <= 6
+                or area < 64 or not .12 <= area/(w*h) <= .75
+                or x == 0 or y == 0 or x+w == right-left or y+h == bottom-top):
+            continue
+        component = labels[y:y+h, x:x+w] == index
+        scanline = int(component.sum(axis=1).max())
+        if x < 3 or y < 3 or x+w+3 > right-left or y+h+3 > bottom-top:
+            continue
+        # A portrait's white hat/hair is not a weapon pictogram. Require the
+        # single-color team plate immediately above and below the component.
+        margins = np.concatenate((hsv[y-3:y, x:x+w].reshape(-1, 3),
+                                  hsv[y+h:y+h+3, x:x+w].reshape(-1, 3)))
+        saturated = (margins[:, 1] >= 60) & (margins[:, 2] >= 60)
+        red = float((saturated & ((margins[:, 0] <= 12) | (margins[:, 0] >= 170))).mean())
+        green = float((saturated & (margins[:, 0] >= 40) & (margins[:, 0] <= 100)).mean())
+        plate = max(red, green)
+        if scanline/w >= .45 and plate >= .90:
+            result.append(WeaponGlyphGeometry((left+x, top+y, left+x+w, top+y+h),
+                                              area, w*h, scanline,
+                                              'red' if red >= green else 'green', plate))
+    return result
+
+
 class KillfeedSubjectReader:
     """Locate highlighted portrait and independent weapon separator in one row.
 
@@ -172,9 +238,11 @@ class KillfeedSubjectReader:
             return ()
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+        strong = p.marker_feature_kind == 'hsv_strong_yellow_outline_v1'
         marker_feature = (((hsv_image[:, :, 0] >= 18) & (hsv_image[:, :, 0] <= 40)
-                           & (hsv_image[:, :, 1] >= 60)
-                           & (hsv_image[:, :, 2] >= 150)).astype(np.uint8) * 255)
+                           & (hsv_image[:, :, 1] >= (90 if strong else 60))
+                           & (hsv_image[:, :, 2] >= (200 if strong else 150))
+                           ).astype(np.uint8) * 255)
         markers = _matches(marker_feature, p.marker_reference, p.marker_masks, p.search_roi)
         mirrored = _matches(marker_feature, np.fliplr(p.marker_reference).copy(),
                             tuple(np.fliplr(m).copy() for m in p.marker_masks), p.search_roi)
@@ -195,12 +263,18 @@ class KillfeedSubjectReader:
             region = (p.search_roi[0], max(p.search_roi[1], y1-4),
                       p.search_roi[2], min(p.search_roi[3], y2+4))
             weapons: list[tuple[Box, tuple[float, ...]]] = []
-            for reference in (p.weapon_reference, *p.additional_weapon_references):
-                weapons.extend(_matches(gray, reference, (np.full_like(reference, 255),), region))
+            geometry = (_weapon_glyphs(image, region)
+                        if p.separator_method == 'white_glyph_geometry' else [])
+            if p.separator_method == 'template_ncc':
+                for reference in (p.weapon_reference, *p.additional_weapon_references):
+                    weapons.extend(_matches(gray, reference,
+                                            (np.full_like(reference, 255),), region))
+            else:
+                weapons = [(g.roi, ()) for g in geometry]
             # Multiple references for the same physical separator are one
             # witness, never independent corroboration or increased confidence.
             unique: list[tuple[Box, tuple[float, ...]]] = []
-            for candidate in sorted(weapons, key=lambda item: -min(item[1])):
+            for candidate in sorted(weapons, key=lambda item: -min(item[1], default=0)):
                 if not any(_iou(candidate[0], old[0]) > .5 for old in unique):
                     unique.append(candidate)
             weapons = unique
@@ -212,7 +286,8 @@ class KillfeedSubjectReader:
             weapon, weapon_scores = valid[0]
             role: Literal['killer', 'victim', 'unknown'] = (
                 'victim' if weapon[2] < x1 else 'killer')
-            left, right = (weapon[2]+4, x1-1) if role == 'victim' else (x2+1, weapon[0]-4)
+            left, right = ((weapon[2]+4, x1+p.name_gap_inset-1) if role == 'victim'
+                           else (x2-p.name_gap_inset+1, weapon[0]-4))
             # Headshot glyphs are role evidence, not a part of the player's name.
             if role == 'victim' and right-left >= p.headshot_reference.shape[1]:
                 heads = _matches(gray, p.headshot_reference,
@@ -237,5 +312,6 @@ class KillfeedSubjectReader:
             result.append(KillfeedSubjectReading(
                 source, role, box, weapon, name_box if left < right else None,
                 support, fraction, text, confidence, 'unqualified_source_player_role_candidate',
-                min(weapon_scores)))
+                min(weapon_scores) if weapon_scores else None,
+                next((g for g in geometry if g.roi == weapon), None)))
         return tuple(result)

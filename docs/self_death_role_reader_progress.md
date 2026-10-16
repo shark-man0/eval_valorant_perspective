@@ -1,0 +1,146 @@
+# Self Death role reader: first unused-native episode success
+
+This continues PR #53. Starting main is
+`7e480c2f2f7f49aea73e1541d065d78881d2f11c`; the previous branch head is
+`cc3fa0453f00aa1a733ad0011ea3d3e378803892`. The previous turn made concrete
+implementation and source-measurement progress. This is another partial
+milestone, **not completed qualification, production adoption or Strict E2E
+improvement**. Production HUD ownership and formal Event release stay unchanged.
+
+## Causes reproduced
+
+The full-outline reference does not transfer reliably. A source diagnostic on
+a failed episode measured top/middle/bottom NCC 0.664/0.975/0.726. The exterior
+chevron was recognizable while thin horizontal strokes were affected by
+antialiasing and background. A three-pixel filtered feature was implemented,
+tested and independently rejected: a new 181-frame interval produced no subject
+proposals, even though the report appeared on 94 frames. That feature was
+removed; its exact source bytes were retained privately and checked against the
+failed run's recorded hash. No failed run was overwritten or re-signed.
+
+Three nonoverlapping exterior-tag supports, excluding portrait/name/numeric
+pixels and fragile horizontal strokes, then detected the source-player tag on
+32 frames of a different unused episode. The single trained weapon glyph still
+could not establish killer/victim roles. Merely extending the template bank
+does not solve weapon coverage.
+
+An experimental connected-white-pictogram path identified victim roles on 17
+frames and accepted names on all 17, but still produced no episode prediction.
+Diagnosis found two distinct causes: the killer's white portrait/hat could also
+pass isolated shape checks, and warm scenery contaminated the permissive yellow
+shape feature. Victim witnesses became available only after the original onset
+expired. The one-second expiry and full native corroboration were not relaxed.
+
+## Opt-in experimental changes
+
+The default `template_ncc` path retains its previous configuration and gates.
+The new `white_glyph_geometry` option measures a connected white pictogram with
+explicit size, aspect, density and scanline constraints, plus a consistent red
+or green team plate immediately above and below it. A portrait's white hat or
+hair does not qualify just because it is a wide white component. Multiple
+distinct separators remain ambiguous. Geometry retains its ROI, pixel counts,
+area, scanline support and plate measurements; **it is not assigned a fabricated
+NCC or confidence of one**. Its classification is still unqualified.
+
+A separate explicit `hsv_strong_yellow_outline_v1` shape option uses the stronger
+S>=90/V>=200 criterion already frozen for training color-core construction.
+The original feature uses S>=60/V>=150. This is a new, stricter, fingerprinted
+feature, not transferred qualification or a lowered acceptance gate. Hue bounds,
+NCC >=0.90 on each of three disjoint supports, measured color support >=0.90,
+OCR >=0.90, source guards, onset expiry and native corroboration remain intact.
+Training rejected a support with zero contrast rather than forcing a profile
+through validation. The valid profile's supports contain 96/94/94 pixels; its
+color witness contains 50 consistently observed pixels.
+
+Names are cropped from the measured separator-to-portrait gap. A fingerprinted
+source-calibrated inset prevents the portrait border from contaminating OCR.
+One training-source diagnostic changed raw OCR support from 0.55309 with edge
+ink to 0.92281 without it, without changing OCR code or its acceptance gate.
+No expected name, GT, timestamp or Round number is supplied to the reader.
+
+These features belong to the separate experimental subject route. They do not
+change live HUD identity, view ownership, HP, weapon, ammo, Alive/dead snapshots,
+legacy Death guards, qualification packs, public Schemas or assertion semantics.
+Image predictions still report `qualified=False` and `formal_events=[]`.
+
+## Source partition and measurements
+
+All reference pixels for the new profile come from the same 51 frames in the
+first, explicitly exposed `match_002` development episode. Failed later episodes
+remain failed records, never become fresh holdout, and are not copied into the
+reference. Their diagnostics inform the documented failure analysis. Code and
+profile inputs are frozen before each new native source interval is decoded.
+
+Previously performed report-only keyframe discovery is disclosed exposure. It
+selects intervals independently of GT, but a discovery-selected source test is
+not a blind full-match recall benchmark. Full native frames and semantic roles
+in each selected test were previously unused; source roles were reviewed before
+reading predictions. Native replays evaluate every frame without changing Full
+E2E sampling. Exact native PTS, encoded/pixel hashes, source segment and actual
+code/profile/dependency fingerprints are retained. Terminal hashes passed.
+
+| Configuration / scope | Frames | Episode predictions | Additional evidence |
+| --- | ---: | ---: | --- |
+| Exterior tag + template separator, unused episode | 181 | 0 | 32 tag observations, role unknown |
+| Exterior tag + shape-only glyph, next unused episode | 181 | 0 | 17 victim readings, portrait ambiguity and late witnesses |
+| Plate-bound glyph + strong tag, exposed development | 91 | 1 | 74 victim readings, 51 accepted names |
+| Same frozen plate-bound/strong reader, next unused episode | 181 | **1** | 47 victim readings, 12 accepted names |
+
+The last test's source review identifies one self-death and a preceding nonself
+victim entry. The recording-player tag is on the victim; the other Omen is the
+killer without that tag. The report, collapse and later persistent report are
+consistent with one episode. The prediction retains the original report onset;
+confirmation follows 0.100 seconds later. Minimum measured visual support is
+0.93612. A **post-run**, source-backed exact text audit found 12/12 accepted name
+readings match the visible source text, zero other accepted strings. This is not
+claimed as blind text-label qualification. No actual name is published here.
+
+The last native replay took **234.44 seconds**, excluding outer source checks.
+Its immutable decoded input cache contains 363,791,854 bytes; generation took
+402.29 seconds. Acquisition used bounded RAM temporary storage, with a
+550,000,000-byte PNG budget, then copied hash-verified immutable inputs to disk.
+All source hashes use streaming reads; no multi-gigabyte bytes allocation is
+used. Actual reader peak RSS is not yet measured. Earlier discovery resource
+measurements are not substituted for reader memory measurements.
+
+The unused-episode success is meaningful positive recognition progress. It does
+not establish long-duration duplicate suppression, report reopening/respawn,
+spectator safety, all weapons, all agents, whole-match false-positive rate or
+formal event timing. Earlier failures are part of the record, not hidden by the
+one successful episode. Synthetic controls and this one real episode cannot
+stand in for the remaining independent negative suite.
+
+## Tests and remaining release gates
+
+Current local regression: **174 passed in 9.57 seconds**, including 48 image and
+temporal controls. Configured Ruff passed; mypy passed all 141 source files.
+Controls include both marker sides, text/line/block/color/portrait-context
+rejection, multiple glyph ambiguity, source changes, defaults/fingerprints,
+warm background exclusion, partial/invalid name confidence, temporal restart,
+initial persistent report and duplicate suppression. Source profile/feature
+changes require their own qualification despite green tests.
+
+Remote CI for `cc3fa04` passed on Linux and Windows, including packaged smoke;
+that result does not automatically cover the new source changes. New PR-head
+results must be checked separately.
+
+Next: frozen source-negative windows for persistent/reopened report and spectator
+or respawn context, plus current-code regression on `match_001`. Complete the
+subject/role/temporal qualification evidence before constructing formal events.
+The typed subject contract requires separate subject, victim and transition
+witnesses; a diagnostic prediction alone does not fulfill it. Public event
+identity/schema adoption still follows the approved compatibility review.
+
+The unchanged canonical assertion inspection also confirms that the two point
+Death predicates require victim name, killer agent and received damage. Even a
+qualified Death without these attributes cannot pass those predicates. The two
+per-Round Death count predicates are separate, conditional improvement targets;
+correct native Round association is also required. Missing killer/damage fields
+will remain missing rather than borrowing values from GT.
+
+Adopted Full remains **23/55/4**, archived unadopted Strict candidate **28/50/4**,
+and the distinct timing-policy comparison **30/49/3**. Current canonical targeted,
+sampled and Full results for this reader are **not measured**; no Strict delta
+is claimed. No new Full was run because qualification and formal producer wiring
+are incomplete. Detailed private pixels, names, timestamp labels, profiles,
+failure records and manifests remain outside Git.

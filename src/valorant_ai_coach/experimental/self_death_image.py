@@ -170,8 +170,13 @@ class SelfDeathImageRecognizer:
         support = None
         if visible:
             victim = victims[0]
-            assert victim.weapon_support is not None
-            support = min(*victim.marker_support, victim.yellow_fraction, victim.weapon_support)
+            # Geometry is a separately retained predicate, never fabricated
+            # NCC or a confidence of one. Predictions remain unqualified.
+            if victim.weapon_support is not None or victim.weapon_geometry is not None:
+                measured = (*victim.marker_support, victim.yellow_fraction)
+                if victim.weapon_support is not None:
+                    measured = (*measured, victim.weapon_support)
+                support = min(measured)
         if report >= .90 and not self.episode.last_report_positive:
             self.report_predecessor = previous
         episode = self.episode.observe(source, report_score=report, victim_score=support)

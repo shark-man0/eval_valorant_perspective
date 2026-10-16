@@ -102,6 +102,86 @@ def test_duplicate_weapon_templates_do_not_create_multiple_separator_witnesses()
     assert rows[0].weapon_support == pytest.approx(1)
 
 
+def glyph_fixture(*, killer=False):
+    old, ocr, image = fixture(killer=killer)
+    image[18:46, 95:169] = (40, 60, 200)
+    image[25:30, 100:164] = 255
+    image[30:40, 118:126] = 255
+    profile = replace(old.profile, separator_method='white_glyph_geometry')
+    return KillfeedSubjectReader(profile, ocr, runtime_fingerprint=HASH), image
+
+
+@pytest.mark.parametrize('killer', [False, True])
+def test_structural_glyph_role_has_measured_geometry_and_no_invented_ncc(killer):
+    reader, image = glyph_fixture(killer=killer)
+    rows = reader.read(image, source(reader, image))
+    assert len(rows) == 1 and rows[0].role == ('killer' if killer else 'victim')
+    geometry = rows[0].weapon_geometry
+    assert geometry is not None
+    assert geometry.roi == (100, 25, 164, 40)
+    assert geometry.white_pixels == 64*5+8*10
+    assert geometry.maximum_scanline_pixels == 64
+    assert geometry.plate_family == 'red' and geometry.plate_fraction == 1
+    assert rows[0].weapon_support is None
+    assert rows[0].qualified is False and rows[0].formal_events == ()
+
+
+@pytest.mark.parametrize('control', ['letters', 'line', 'block', 'colored', 'ambiguous',
+                                   'portrait_context'])
+def test_glyph_negative_controls_abstain(control):
+    reader, image = glyph_fixture()
+    if control not in {'ambiguous', 'portrait_context'}:
+        image[22:44, 95:169] = (40, 60, 200)
+    if control == 'letters':
+        cv2.putText(image, 'IIIIIIII', (100, 36), cv2.FONT_HERSHEY_SIMPLEX, .4,
+                    (255, 255, 255), 1)
+    elif control == 'line':
+        image[25:27, 100:164] = 255
+    elif control == 'block':
+        image[25:42, 100:164] = 255
+    elif control == 'colored':
+        image[25:30, 100:164] = (0, 0, 255)
+        image[30:40, 118:126] = (0, 0, 255)
+    elif control == 'ambiguous':
+        image[18:46, 0:74] = (40, 60, 200)
+        image[25:30, 4:68] = 255
+        image[30:40, 22:30] = 255
+    else:
+        image[18:25, 95:169] = (180, 30, 20)
+        image[42:46, 95:169] = (180, 30, 20)
+    rows = reader.read(image, source(reader, image))
+    assert len(rows) == 1 and rows[0].role == 'unknown'
+    assert rows[0].weapon_geometry is None and rows[0].weapon_support is None
+
+
+def test_glyph_method_and_name_calibration_are_explicit_fingerprinted_inputs():
+    old, _, _ = fixture()
+    changed = replace(old.profile, separator_method='white_glyph_geometry', name_gap_inset=3)
+    assert changed.fingerprint() != old.profile.fingerprint()
+    with pytest.raises(ValueError, match='separator'):
+        replace(old.profile, separator_method='unreviewed')
+    for inset in [True, -1, 20, 1.5]:
+        with pytest.raises(ValueError, match='inset'):
+            replace(old.profile, name_gap_inset=inset)
+
+
+def test_strong_feature_keeps_dim_warm_background_out_of_outline_shape():
+    old, ocr, image = fixture()
+    profile = replace(old.profile, marker_feature_kind='hsv_strong_yellow_outline_v1')
+    assert profile.fingerprint() != old.profile.fingerprint()
+    warm = cv2.cvtColor(np.array([[[28, 140, 180]]], dtype=np.uint8), cv2.COLOR_HSV2BGR)[0, 0]
+    crop = image[20:40, 180:210]
+    crop[old.profile.marker_reference == 0] = warm
+    reader = KillfeedSubjectReader(profile, ocr, runtime_fingerprint=HASH)
+    rows = reader.read(image, source(reader, image))
+    assert len(rows) == 1 and rows[0].role == 'victim'
+    assert min(rows[0].marker_support) >= .90
+    assert rows[0].yellow_fraction == 1
+    assert rows[0].formal_events == ()
+    with pytest.raises(ValueError, match='highlight feature'):
+        replace(old.profile, marker_feature_kind='unreviewed')
+
+
 def test_weapons_on_both_sides_are_ambiguous():
     reader, _, image = fixture()
     image[22:38, 214:238] = np.repeat(reader.profile.weapon_reference[:, :, None], 3, axis=2)

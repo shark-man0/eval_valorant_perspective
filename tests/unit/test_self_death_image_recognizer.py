@@ -5,7 +5,7 @@ from dataclasses import replace
 import numpy as np
 import pytest
 
-from tests.unit.test_killfeed_subject_reader import HASH, fixture
+from tests.unit.test_killfeed_subject_reader import HASH, fixture, glyph_fixture
 from valorant_ai_coach.experimental.self_death_image import SelfDeathImageRecognizer
 from valorant_ai_coach.experimental.subject_death import SourceBinding
 
@@ -51,6 +51,27 @@ def test_two_independent_onsets_and_native_corroboration_keep_original_time():
 def test_initial_persistent_report_and_marker_are_not_a_new_death():
     recognizer, base, header = setup()
     assert all(observe(recognizer, base, header, t).status == 'unknown' for t in range(8))
+
+
+@pytest.mark.parametrize('killer', [False, True])
+def test_geometry_episode_requires_victim_and_keeps_geometry_distinct_from_ncc(killer):
+    reader, base = glyph_fixture(killer=killer)
+    header = np.random.default_rng(24).integers(20, 220, (12, 50), dtype=np.uint8)
+    recognizer = SelfDeathImageRecognizer(reader.profile, reader.reader, header, (0, 45, 80, 78),
+        runtime_fingerprint=HASH, dependencies_fingerprint=HASH, native_step_ticks=1)
+    observe(recognizer, base, header, 0, report=False, marker=False)
+    rows = [observe(recognizer, base, header, tick) for tick in range(1, 6)]
+    assert sum(r.status == 'prediction' for r in rows) == (0 if killer else 1)
+    for row in rows:
+        assert row.qualified is False and row.formal_events == ()
+        for subject in row.subjects:
+            assert subject.weapon_geometry is not None
+            assert subject.weapon_support is None
+    if not killer:
+        result = next(r for r in rows if r.status == 'prediction')
+        assert result.onset_time_sec == 1/60
+        assert result.support <= min(result.report_support,
+                                    *result.subjects[0].marker_support)
 
 
 def test_recording_player_as_killer_cannot_generate_a_death_prediction():
