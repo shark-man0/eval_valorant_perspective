@@ -33,6 +33,7 @@ def test_smoke_flag_builds_and_closes_window_without_event_loop(
 ) -> None:
     application: FakeApplication | None = None
     window_closed = False
+    window_released = False
 
     def build_application(arguments: list[str]) -> FakeApplication:
         nonlocal application
@@ -59,6 +60,10 @@ def test_smoke_flag_builds_and_closes_window_without_event_loop(
             nonlocal window_closed
             window_closed = True
 
+        def deleteLater(self) -> None:  # noqa: N802 - Qt-compatible fake
+            nonlocal window_released
+            window_released = True
+
     monkeypatch.setattr(app_main, "QApplication", build_application)
     monkeypatch.setattr(app_main, "SettingsStore", FakeStore)
     monkeypatch.setattr(app_main, "BackendFacade", lambda _store: object())
@@ -72,3 +77,6 @@ def test_smoke_flag_builds_and_closes_window_without_event_loop(
     assert application.arguments == ["valorant-ai-coach"]
     assert application.processed is True
     assert window_closed is True
+    # The window must be deleted while the application is alive, never left to the
+    # interpreter's finalisation (see valorant_ai_coach.ui.lifecycle).
+    assert window_released is True

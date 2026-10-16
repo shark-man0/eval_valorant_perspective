@@ -1,6 +1,67 @@
+import sys
+
 import cv2
 import numpy as np
 import pytest
+from _pytest.reports import TestReport
+
+
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    """Remember each phase's report so the Qt guard knows whether the test body passed."""
+    outcome = yield
+    setattr(item, f"_report_{call.when}", outcome.get_result())
+
+
+@pytest.hookimpl(wrapper=True)
+def pytest_runtest_protocol(item, nextitem):
+    """Fail a passing test that leaves a top-level Qt widget alive after it is torn down.
+
+    A widget such as ``MainWindow`` is kept alive by its own signal closures, so it is not
+    freed when the test function returns.  If it is still alive at interpreter shutdown,
+    PySide6 deletes its C++ tree while visiting the child wrappers, which corrupts the heap
+    and aborts the process *after* every test has passed (exit code 134 / 139).  Tests must
+    delete what they create while the QApplication is alive.
+
+    The check runs after pytest has released the test's fixtures and arguments, so plain
+    Python-owned widgets that are freed by reference counting at that point (for example
+    parentless helper widgets held by a fixture object) are not reported; only widgets that
+    genuinely survive are.  Whatever is found is deleted here, then reported as an error.
+    """
+    result = yield
+    widgets = sys.modules.get("PySide6.QtWidgets")
+    if widgets is None or widgets.QApplication.instance() is None:
+        return result
+    import shiboken6
+    from PySide6.QtCore import QCoreApplication, QEvent
+
+    from valorant_ai_coach.ui.lifecycle import release_qobject_tree
+
+    # Let ``deleteLater()`` calls made by the test finish; whatever remains is really alive.
+    QCoreApplication.sendPostedEvents(None, QEvent.Type.DeferredDelete)
+    leaked = [w for w in widgets.QApplication.topLevelWidgets() if shiboken6.isValid(w)]
+    names = sorted(type(widget).__name__ for widget in leaked)
+    for widget in leaked:
+        if shiboken6.isValid(widget):
+            release_qobject_tree(widget)
+    call = getattr(item, "_report_call", None)
+    if names and call is not None and call.passed:
+        message = (
+            f"test left top-level Qt widgets alive: {names}; delete them before the test "
+            "ends (deleteLater + DeferredDelete) so they are not destroyed during "
+            "interpreter shutdown"
+        )
+        item.ihook.pytest_runtest_logreport(
+            report=TestReport(
+                nodeid=item.nodeid,
+                location=item.location,
+                keywords={name: 1 for name in item.keywords},
+                outcome="failed",
+                longrepr=message,
+                when="teardown",
+            )
+        )
+    return result
 
 
 @pytest.fixture
