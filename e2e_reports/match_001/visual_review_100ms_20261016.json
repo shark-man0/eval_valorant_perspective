@@ -19,8 +19,14 @@
       "within_segment_user_edits": false,
       "assurance_origin": "Explicit user clarification on 2026-10-16",
       "applies_to_source_sha_only": true,
-      "input_policy": "All future development and production videos are unedited in their supplied time span",
-      "caveat": "Extracted segment boundaries are not necessarily match or round boundaries"
+      "input_policy": "Production default: unedited, uncut full-match recording from game start to game end. match_001 is a development/diagnostic Outplayed-extracted clip with no edits within its selected interval.",
+      "caveat": "Extracted segment boundaries are not necessarily match or round boundaries",
+      "production_default": {
+        "recording_scope": "full_match_game_start_to_game_end",
+        "unedited": true,
+        "uncut": true
+      },
+      "current_source_role": "partial_development_and_regression_fixture_not_default_production_input"
     }
   },
   "method": {
