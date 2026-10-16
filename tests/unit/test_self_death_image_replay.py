@@ -130,3 +130,49 @@ def test_runtime_profile_accepts_only_reader_configuration_not_evaluation_labels
     path.write_text(json.dumps(data), encoding='utf-8')
     with pytest.raises(ValueError, match='only'):
         load_profile(path)
+
+
+def test_v2_presence_assets_round_trip_without_changing_v1_profile_contract(tmp_path):
+    from scripts.diagnostics.replay_self_death_images import load_report_presence
+    from tests.unit.test_self_death_image_recognizer import setup_with_presence
+
+    model, _, caption = setup_with_presence()
+    p, presence = model.reader.profile, model.report_presence_header
+    arrays = {'reference': p.marker_reference, 'gold_mask': p.yellow_mask,
+              'weapon_reference': p.weapon_reference, 'headshot_reference': p.headshot_reference,
+              'report_header_reference': caption,
+              'report_presence_reference': presence.reference,
+              'report_presence_mask': presence.mask, 'report_presence_regions': presence.regions}
+    arrays.update({f'mask{i}': mask for i, mask in enumerate(p.marker_masks)})
+    assets = tmp_path/'v2-assets.npz'
+    np.savez_compressed(assets, **arrays)
+    data = {'schema_version': 'self_death_image_profile_v2', 'source_sha256': HASH,
+            'owner_marker_review_sha256': HASH, 'frame_shape': list(p.frame_shape),
+            'search_roi': list(p.search_roi), 'name_y_offsets': list(p.name_y_offsets),
+            'assets_file': assets.name,
+            'assets_sha256': hashlib.sha256(assets.read_bytes()).hexdigest(),
+            'separator_method': p.separator_method, 'name_gap_inset': p.name_gap_inset,
+            'marker_feature_kind': p.marker_feature_kind,
+            'report_header_search_roi': list(model.report_search_roi),
+            'report_presence_header': {'input_shape': list(presence.input_shape),
+                                      'reference_x': presence.reference_x,
+                                      'threshold': presence.threshold}}
+    path = tmp_path/'v2.json'
+    path.write_text(json.dumps(data), encoding='utf-8')
+    loaded, _, _, _ = load_profile(path)
+    assert loaded.fingerprint() == p.fingerprint()
+    reloaded = load_report_presence(path)
+    assert np.array_equal(reloaded.reference, presence.reference)
+    assert reloaded.input_shape == presence.input_shape
+    # Source-reviewed report presence alone confers no subject/event authority.
+    assert reloaded.threshold == .90
+    for bad in [.89, True, float('nan'), '0.99']:
+        data['report_presence_header']['threshold'] = bad
+        path.write_text(json.dumps(data), encoding='utf-8')
+        with pytest.raises(ValueError, match='Report header'):
+            load_report_presence(path)
+    data['report_presence_header']['threshold'] = .90
+    data['expected_subject'] = 'not a runtime input'
+    path.write_text(json.dumps(data), encoding='utf-8')
+    with pytest.raises(ValueError, match='only the versioned'):
+        load_report_presence(path)

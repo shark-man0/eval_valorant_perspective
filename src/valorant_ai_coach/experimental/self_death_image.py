@@ -16,6 +16,7 @@ import cv2
 import numpy as np
 
 from valorant_ai_coach.hud.readers import HudReader
+from valorant_ai_coach.hud.report_header import ReportHeader, report_header_evidence
 
 from . import report_victim_episode, subject_death
 from .killfeed_subject import (
@@ -51,6 +52,7 @@ class SelfDeathImageReading:
     confirmation_time_sec: float | None = None
     support: float | None = None
     evidence_sources: tuple[SourceBinding, ...] = ()
+    report_presence_support: float | None = None
 
     @property
     def qualified(self) -> bool:
@@ -73,7 +75,8 @@ class SelfDeathImageRecognizer:
     def __init__(self, profile: KillfeedSubjectProfile, name_reader: HudReader[str],
                  report_reference: Any, report_search_roi: Box, *,
                  runtime_fingerprint: str, dependencies_fingerprint: str,
-                 native_step_ticks: int) -> None:
+                 native_step_ticks: int,
+                 report_presence_header: ReportHeader | None = None) -> None:
         _hash(runtime_fingerprint)
         _hash(dependencies_fingerprint)
         self.dependencies_fingerprint = dependencies_fingerprint
@@ -92,6 +95,7 @@ class SelfDeathImageRecognizer:
         report_reference.setflags(write=False)
         self.report_reference = report_reference
         self.report_search_roi = report_search_roi
+        self.report_presence_header = report_presence_header
         self.native_step_ticks = native_step_ticks
         digest = hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n', b'\n'))
         for module in (report_victim_episode, subject_death):
@@ -102,6 +106,22 @@ class SelfDeathImageRecognizer:
         digest.update(report_reference.tobytes())
         digest.update(json.dumps(report_search_roi).encode('utf-8'))
         digest.update(str(native_step_ticks).encode('ascii'))
+        if report_presence_header is not None:
+            from valorant_ai_coach.hud import report_header
+
+            report_presence_header.validate()
+            if report_presence_header.input_shape != (y2-y1, x2-x1):
+                raise ValueError('Report presence geometry must match the source search ROI')
+            assert report_header.__file__ is not None
+            digest.update(Path(report_header.__file__).read_bytes().replace(b'\r\n', b'\n'))
+            for array in (report_presence_header.reference, report_presence_header.mask,
+                          report_presence_header.regions):
+                array.setflags(write=False)
+                digest.update(str(array.shape).encode('ascii'))
+                digest.update(array.tobytes())
+            settings = (report_presence_header.input_shape, report_presence_header.reference_x,
+                        report_presence_header.threshold)
+            digest.update(json.dumps(settings).encode('utf-8'))
         self.reader = KillfeedSubjectReader(profile, name_reader,
                                             runtime_fingerprint=digest.hexdigest())
         self.episode = ReportVictimEpisodeProbe(report_floor=.90, victim_floor=.90)
@@ -175,6 +195,13 @@ class SelfDeathImageRecognizer:
         captions = _matches(gray, self.report_reference,
                             (np.full_like(self.report_reference, 255),), self.report_search_roi)
         report = min(captions[0][1]) if len(captions) == 1 else 0.0
+        presence: float | None = None
+        if (self.report_presence_header is not None and self.pending is not None
+                and not self.emitted and report < .90):
+            x1, y1, x2, y2 = self.report_search_roi
+            proof = report_header_evidence(image[y1:y2, x1:x2], self.report_presence_header)
+            if proof['present'] is True:
+                presence = float(proof['score'])
         victims = [s for s in subjects if s.role == 'victim']
         visible = len(victims) == 1
         if visible and self.previous_victim_visible is False:
@@ -198,7 +225,7 @@ class SelfDeathImageRecognizer:
         episode = self.episode.observe(source, report_score=report, victim_score=support)
         if self.emitted:
             return SelfDeathImageReading('duplicate', 'episode_already_predicted', source,
-                                         report, subjects)
+                                         report, subjects, report_presence_support=presence)
         if episode.status == 'unqualified_candidate':
             marker = self.marker_onset
             # Both rising edges must actually have been observed in this segment.
@@ -211,18 +238,25 @@ class SelfDeathImageRecognizer:
                 self.onset_evidence = tuple(self.evidence)
         if self.pending is None:
             return SelfDeathImageReading('unknown', 'fresh_report_and_self_victim_unproved',
-                                         source, report, subjects)
+                                         source, report, subjects, report_presence_support=presence)
         onset = self.pending.onset_time_sec
         assert onset is not None
         assert self.candidate_onset_source is not None
-        if report < .90 or source.time-self.candidate_onset_source.time > 1:
+        # A generic Report header cannot open a self-referential onset. Once
+        # that onset actually exists, independent current-image header support
+        # may corroborate presence while the caption itself is occluded. Never
+        # overwrite its raw caption score or bridge missing support from both.
+        current_report = report if report >= .90 else presence
+        if current_report is None or current_report < .90 or (
+            source.time-self.candidate_onset_source.time > 1
+        ):
             self.pending = None
             self.candidate_onset_source = None
             self.stable.clear()
             self.evidence.clear()
             self.onset_evidence = ()
             return SelfDeathImageReading('unknown', 'corroboration_interrupted_or_expired',
-                                         source, report, subjects)
+                                         source, report, subjects, report_presence_support=presence)
         if support is None:
             # A reader dropout invalidates the corroboration run, not the
             # independently observed report edge. A later run must still meet
@@ -230,15 +264,18 @@ class SelfDeathImageRecognizer:
             self.stable.clear()
             self.evidence = list(self.onset_evidence)
             return SelfDeathImageReading('unknown', 'victim_corroboration_restart_required',
-                                         source, report, subjects, onset_time_sec=onset)
-        self.stable.append((source, min(report, support)))
+                                         source, report, subjects, onset_time_sec=onset,
+                                         report_presence_support=presence)
+        self.stable.append((source, min(current_report, support)))
         self.evidence.append(source)
         if len(self.stable) < 3 or source.time-self.stable[0][0].time < Fraction(1, 20):
             return SelfDeathImageReading('pending', 'native_corroboration_pending', source,
-                                         report, subjects, onset_time_sec=onset)
+                                         report, subjects, onset_time_sec=onset,
+                                         report_presence_support=presence)
         self.emitted = True
         return SelfDeathImageReading(
             'prediction', 'qualification_and_production_adoption_pending', source,
             report, subjects, onset, float(source.time), min(s for _, s in self.stable),
             tuple(dict.fromkeys(self.evidence)),
+            report_presence_support=presence,
         )

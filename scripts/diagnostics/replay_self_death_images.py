@@ -26,6 +26,7 @@ from valorant_ai_coach.experimental.self_death_image import (
     image_runtime_fingerprint,
 )
 from valorant_ai_coach.experimental.subject_death import SourceBinding
+from valorant_ai_coach.hud.report_header import ReportHeader
 from valorant_ai_coach.hud.templates import TesseractTextReader
 from valorant_ai_coach.video import VideoService
 from valorant_ai_coach.video.native import NativeSourceFrame
@@ -57,7 +58,11 @@ def load_profile(path: Path) -> tuple[KillfeedSubjectProfile, Any, tuple[int, in
                 'frame_shape', 'search_roi', 'name_y_offsets', 'assets_file', 'assets_sha256',
                 'separator_method', 'name_gap_inset', 'marker_feature_kind',
                 'report_header_search_roi'}
-    if set(data) != required or data['schema_version'] != 'self_death_image_profile_v1':
+    version = data.get('schema_version')
+    expected = required | ({'report_presence_header'}
+                           if version == 'self_death_image_profile_v2' else set())
+    if (set(data) != expected
+            or version not in {'self_death_image_profile_v1', 'self_death_image_profile_v2'}):
         raise ValueError('runtime profile must contain only the versioned reader configuration')
     assets = (path.parent/data['assets_file']).resolve()
     if sha(assets) != data['assets_sha256']:
@@ -66,9 +71,16 @@ def load_profile(path: Path) -> tuple[KillfeedSubjectProfile, Any, tuple[int, in
         arrays = {key: raw[key] for key in raw.files}
     required_arrays = {'reference', 'mask0', 'mask1', 'mask2', 'gold_mask',
                        'weapon_reference', 'headshot_reference', 'report_header_reference'}
+    presence_arrays = {
+        'report_presence_reference', 'report_presence_mask', 'report_presence_regions',
+    }
+    if version == 'self_death_image_profile_v2':
+        required_arrays |= presence_arrays
     if (not required_arrays <= arrays.keys()
             or arrays.keys()-required_arrays-{'additional_weapon_reference'}):
         raise ValueError('unexpected runtime profile arrays')
+    if version == 'self_death_image_profile_v2':
+        _report_presence_model(data, arrays)
     profile = KillfeedSubjectProfile(
         data['source_sha256'], data['owner_marker_review_sha256'], tuple(data['frame_shape']),
         tuple(data['search_roi']), arrays['reference'],
@@ -79,6 +91,32 @@ def load_profile(path: Path) -> tuple[KillfeedSubjectProfile, Any, tuple[int, in
     )
     return (profile, arrays['report_header_reference'],
             tuple(data['report_header_search_roi']), assets)
+
+
+def _report_presence_model(data: dict[str, Any], arrays: dict[str, Any]) -> ReportHeader:
+    spec = data['report_presence_header']
+    if not isinstance(spec, dict) or set(spec) != {'input_shape', 'reference_x', 'threshold'}:
+        raise ValueError('explicit Report presence configuration required')
+    model = ReportHeader(
+        arrays['report_presence_reference'], arrays['report_presence_mask'],
+        arrays['report_presence_regions'], tuple(spec['input_shape']),
+        spec['reference_x'], spec['threshold'],
+    )
+    model.validate()
+    return model
+
+
+def load_report_presence(path: Path) -> ReportHeader | None:
+    """Optional v2 witness, never a replacement self-subject onset reader."""
+    _, _, _, assets = load_profile(path)
+    data = _json(path)
+    if data['schema_version'] == 'self_death_image_profile_v1':
+        return None
+    if sha(assets) != data['assets_sha256']:
+        raise ValueError('profile asset hash mismatch')
+    with np.load(assets, allow_pickle=False) as raw:
+        arrays = {key: raw[key] for key in raw.files}
+    return _report_presence_model(data, arrays)
 
 
 def replay_cache(
@@ -98,6 +136,7 @@ def replay_cache(
             recognizer.reader.profile, recognizer.reader.reader, recognizer.report_reference,
             recognizer.report_search_roi, runtime_fingerprint=runtime_fingerprint(),
             dependencies_fingerprint=dependencies, native_step_ticks=recognizer.native_step_ticks,
+            report_presence_header=recognizer.report_presence_header,
         )
         if detector.code_fingerprint != recognizer.code_fingerprint:
             raise ValueError('recognizer code changed between native windows')
@@ -160,6 +199,7 @@ def main() -> int:
         parser.error('preserve old results: output must not exist')
     started = time.monotonic()
     profile, report, search, assets = load_profile(args.profile)
+    presence_header = load_report_presence(args.profile)
     if sha(args.source) != profile.source_sha256:
         raise ValueError('source video hash mismatch')
     if sha(args.owner_review) != profile.owner_marker_review_sha256:
@@ -207,6 +247,7 @@ def main() -> int:
     detector = SelfDeathImageRecognizer(
         profile, reader, report, search, runtime_fingerprint=runtime,
         dependencies_fingerprint=deps, native_step_ticks=args.native_step_ticks,
+        report_presence_header=presence_header,
     )
     image_started = time.monotonic()
     windows = []
@@ -216,6 +257,7 @@ def main() -> int:
     terminal_detector = SelfDeathImageRecognizer(
         profile, reader, report, search, runtime_fingerprint=runtime_fingerprint(),
         dependencies_fingerprint=deps, native_step_ticks=args.native_step_ticks,
+        report_presence_header=presence_header,
     )
     if (sha(args.source) != profile.source_sha256 or runtime_fingerprint() != runtime
             or terminal_detector.code_fingerprint != detector.code_fingerprint

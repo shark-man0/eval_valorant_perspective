@@ -8,6 +8,7 @@ import pytest
 from tests.unit.test_killfeed_subject_reader import HASH, fixture, glyph_fixture
 from valorant_ai_coach.experimental.self_death_image import SelfDeathImageRecognizer
 from valorant_ai_coach.experimental.subject_death import SourceBinding
+from valorant_ai_coach.hud.report_header import ReportHeader
 
 
 def setup(*, killer=False):
@@ -18,12 +19,17 @@ def setup(*, killer=False):
     return recognizer, base, header
 
 
-def observe(recognizer, base, header, tick, *, report=True, marker=True, **source_changes):
+def observe(recognizer, base, header, tick, *, report=True, marker=True,
+            presence=False, **source_changes):
     image = base.copy()
     if not marker:
         image[20:40, :90] = image[20:40, 170:220] = 0
     if report:
         image[50:62, 10:60] = np.repeat(header[:, :, None], 3, axis=2)
+    if presence:
+        model = recognizer.report_presence_header
+        assert model is not None
+        image[65:75, 8:68] = np.repeat(model.reference[:, :, None], 3, axis=2)
     image[79, 239] = tick  # native frames are physically distinct
     source = SourceBinding(HASH, tick, 1, 60, 'segment',
         hashlib.sha256(image.tobytes()).hexdigest(), recognizer.code_fingerprint,
@@ -174,3 +180,98 @@ def test_report_toggle_does_not_rearm_after_prediction():
     assert sum(r.status == 'prediction' for r in rows) == 1
     assert observe(recognizer, base, header, 6, report=False, marker=False).status == 'duplicate'
     assert observe(recognizer, base, header, 7).status == 'duplicate'
+
+
+def setup_with_presence():
+    previous, base, caption = setup()
+    reference = np.random.default_rng(72).integers(20, 220, (10, 60), dtype=np.uint8)
+    regions = np.zeros_like(reference)
+    regions[:, :18] = 1
+    regions[:, 40:58] = 2
+    mask = (regions > 0).astype(np.uint8)*255
+    model = ReportHeader(reference, mask, regions, (33, 80), .1, .90)
+    recognizer = SelfDeathImageRecognizer(previous.reader.profile, previous.reader.reader,
+        caption, previous.report_search_roi, runtime_fingerprint=HASH,
+        dependencies_fingerprint=HASH, native_step_ticks=1, report_presence_header=model)
+    assert recognizer.code_fingerprint != previous.code_fingerprint
+    return recognizer, base, caption
+
+
+def test_independent_present_header_can_corroborate_after_actual_self_caption_onset():
+    recognizer, base, header = setup_with_presence()
+    observe(recognizer, base, header, 0, report=False, marker=False)
+    assert observe(recognizer, base, header, 1, presence=True).status == 'pending'
+    # Caption is unrecognized, but a different current-image header is positive.
+    rows = [observe(recognizer, base, header, tick, report=False, presence=True)
+            for tick in range(2, 5)]
+    result = rows[-1]
+    assert result.status == 'prediction'
+    assert result.onset_time_sec == 1/60 and result.confirmation_time_sec == 4/60
+    assert result.report_support == 0
+    assert result.report_presence_support >= .90 and result.support >= .90
+    assert {s.pts_ticks for s in result.evidence_sources} >= {0, 1, 2, 3, 4}
+    assert result.qualified is False and result.formal_events == ()
+
+
+def test_generic_header_never_substitutes_for_self_referential_onset():
+    recognizer, base, header = setup_with_presence()
+    observe(recognizer, base, header, 0, report=False, marker=False)
+    rows = [observe(recognizer, base, header, tick, report=False, presence=True)
+            for tick in range(1, 8)]
+    # The generic witness is not evaluated until a real self-caption onset exists.
+    assert all(row.status == 'unknown' and row.report_presence_support is None for row in rows)
+    assert recognizer.pending is None
+
+
+def test_missing_both_report_witnesses_still_clears_pending_without_recovery():
+    recognizer, base, header = setup_with_presence()
+    observe(recognizer, base, header, 0, report=False, marker=False)
+    observe(recognizer, base, header, 1, presence=True)
+    assert observe(recognizer, base, header, 2, report=False).status == 'unknown'
+    rows = [observe(recognizer, base, header, tick, presence=True) for tick in range(3, 9)]
+    assert all(row.status == 'unknown' for row in rows)
+    assert recognizer.pending is None
+
+
+def test_presence_witness_does_not_extend_original_deadline():
+    recognizer, base, header = setup_with_presence()
+    observe(recognizer, base, header, 0, report=False, marker=False)
+    observe(recognizer, base, header, 1, presence=True)
+    for tick in range(2, 63):
+        result = observe(recognizer, base, header, tick, report=False, presence=True,
+                         marker=tick >= 59)
+    assert result.status == 'unknown' and recognizer.pending is None
+
+
+def test_presence_model_requires_source_search_geometry_and_binds_actual_assets():
+    recognizer, _, header = setup_with_presence()
+    with pytest.raises(ValueError, match='presence geometry'):
+        SelfDeathImageRecognizer(recognizer.reader.profile, recognizer.reader.reader,
+            header, (0, 44, 80, 78), runtime_fingerprint=HASH,
+            dependencies_fingerprint=HASH, native_step_ticks=1,
+            report_presence_header=recognizer.report_presence_header)
+    with pytest.raises(ValueError):
+        recognizer.report_presence_header.mask[0, 0] = 0
+
+
+@pytest.mark.parametrize('failure', ['gap', 'segment', 'code'])
+def test_positive_presence_witness_cannot_override_source_continuity_failure(failure):
+    recognizer, base, header = setup_with_presence()
+    observe(recognizer, base, header, 0, report=False, marker=False)
+    observe(recognizer, base, header, 1, presence=True)
+    tick = 3 if failure == 'gap' else 2
+    changes = ({'segment_id': 'other'} if failure == 'segment' else
+               {'code_fingerprint': 'b'*64} if failure == 'code' else {})
+    result = observe(recognizer, base, header, tick, report=False, presence=True, **changes)
+    assert result.status == 'unknown' and recognizer.pending is None
+    assert result.formal_events == () and result.qualified is False
+
+
+def test_positive_presence_witness_does_not_rearm_an_emitted_episode():
+    recognizer, base, header = setup_with_presence()
+    observe(recognizer, base, header, 0, report=False, marker=False)
+    rows = [observe(recognizer, base, header, tick, presence=True) for tick in range(1, 5)]
+    assert sum(row.status == 'prediction' for row in rows) == 1
+    for tick in range(5, 10):
+        row = observe(recognizer, base, header, tick, report=False, presence=True)
+        assert row.status == 'duplicate' and row.formal_events == ()

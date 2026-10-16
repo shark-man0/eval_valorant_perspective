@@ -320,3 +320,106 @@ sampled and Full results remain unmeasured; formal output is still disabled.
 No new Full E2E was run. Next: qualify subject/role/transition evidence and its
 continuous negative scope, then connect only qualified evidence to the approved
 formal Event/Package/Trace path and measure canonical changes.
+
+## Variable-height Report and independent presence corroboration
+
+Another frozen native source-2 interval, not previously used for fitting, was
+reviewed before reading predictions. A suspected report reopening was actually
+a new self death; the unchanged compact-profile reader predicted it once.
+A separately reviewed purchase-phase interval showed a living player and a
+stale report reappearing after menu closure. That reader predicted zero deaths,
+despite 47 report-positive frames. Neither interval is globally certified blind:
+earlier report-crop discovery and unknown external exposure remain disclosed.
+
+Development-image inspection then identified a search-geometry defect: the
+self-referential caption moves vertically with variable Report height. The
+old caption search rectangle excluded one already-development example. The
+experimental configuration now uses the existing layout's complete
+`rois.combat_report` rectangle. No anchor, acceptance threshold or caption
+reference changes. A new report-only discovery used that frozen rectangle;
+discovery is not a source of negative labels or qualified events.
+
+Three additional native intervals were frozen before full-image review. All
+three show a new self death; one also shows the recorder as killer before a
+separate victim row. The original plan incorrectly described these as the
+first three new discovery groups: one intervening group was inadvertently
+omitted. The actual three windows were frozen before review, but are not an
+exhaustive first-three cohort. The original plan/results remain unchanged;
+a correction records the omission and reserves it for later validation. No
+new blind/exhaustive-recall claim is made from this selection.
+
+With the full Report search and existing code, **2/3** episodes yielded one
+prediction each. The third retained a correct victim row but lost the whole
+pending episode after two unrecognized caption frames, despite later stable
+support. Crucially, those two actual images still match the existing independent
+static Report Header at NCC **0.99001 / 0.99028**. This is measured current-frame
+presence from a different header, not an assumed continuation through absence.
+
+An optional `report_presence_header` now reuses that existing two-support
+`ReportHeader` reader. Its references and masks are unchanged; its previous
+exclusion qualification is **not** transferred to Death. The original
+self-referential caption must still establish the initial observed onset.
+Only while that candidate is pending may the independent generic header
+corroborate current Report presence when the caption is unrecognized. If
+both witnesses are missing/unqualified, the old pending-clear behavior remains.
+The original one-second horizon, native contiguous confirmation duration,
+subject/victim requirements and source-break guards remain unchanged.
+
+`report_support` retains the actual caption score. A separately measured
+`report_presence_support` records the optional witness; `null` means it was
+not measured/accepted and is not evidence of absence. The reader evaluates
+this witness only when it can affect corroboration, never to open an onset or
+rearm an emitted episode. Main-header scores are not assigned to the caption,
+victim, player HUD or ownership. The component arrays, settings and code enter
+the effective runtime fingerprint.
+
+The shared runner accepts experimental standalone profile **v2** with explicit
+presence metadata and its three arrays. Strict v1 configuration remains valid
+with no companion witness. Unknown/expected-label keys, incomplete assets and
+invalid confidence settings are rejected. This does not modify public HUD or
+Round Package Schema v2/v3, SQLite data, validation packs or canonical assertions.
+
+| Same 677 input rows | Full search only | Presence witness | Lazy presence witness |
+| --- | ---: | ---: | ---: |
+| Reviewed positive episodes predicted | 2/3 | 3/3 | 3/3 |
+| Predictions in two bounded negative windows | 0 | 0 | 0 |
+| Source-blocked frames | 0 | 0 | 0 |
+| Formal events | 0 | 0 | 0 |
+| Recognition seconds | 752.96 | 815.62 | 753.21 |
+| Wall seconds | 903.84 | 966.26 | 905.26 |
+
+The lazy run preserves every prediction onset, confirmation time, measured
+support, status and reason from the eager run. Only two frames needed the
+auxiliary witness; unused optional scores remain absent. The recovered episode
+confirms 0.267 seconds after the original onset; no boundary is moved to the
+confirmation time. The former failed episode is now a regression case, not a
+new independent qualification success after the fix.
+
+Current-code source-1 regression again preserves exactly one R1 and one R2
+prediction, zero in both report/spectator controls, and the original onsets and
+confirmation times. Its 171 processed rows took 203.03 seconds recognition /
+216.32 seconds wall time. All terminal hashes passed. These old source-1 images
+are exposed development/regression material, not independent holdout.
+
+Local checks: **169 related unit/integration tests passed in 24.34 seconds**,
+including unchanged report-dropout rejection without a separate positive
+witness. Additional controls reject generic-header-only starts, unknown support
+from both readers, expired candidates, source gaps/context/code changes and
+rearming after emission. Ruff and mypy are recorded separately for this source
+revision; current remote CI is not yet verified.
+
+Temporary RAM decode caches avoid permanent image accumulation. Original
+sources, original manifests, exact decoder/PTS/pixel/encoded bindings and
+recognition results remain retained. Forty full-resolution review/corroboration
+frames were preserved before evicting 976,724,147 temporary encoded bytes.
+This preserved subset is explicitly **not** a continuous replay input; future
+full-window replay requires a new source decode with its own decoder epoch.
+Six exact review images and original metadata/results were similarly retained
+for the new menu/reappearance control before temporary-cache eviction.
+
+The original compact model's nine-episode results, the frozen full-search
+2/3 result and the revised corroboration 3/3 result retain separate fingerprints.
+They are not pooled as independent successes of one qualified model. Formal
+subject/role/transition qualification, the omitted-group check, nonself controls
+and the approved Event/Package/Trace connection still require work. Canonical
+targeted/sampled/Full deltas remain unmeasured and no new Full E2E was run.
