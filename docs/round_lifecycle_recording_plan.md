@@ -3,9 +3,13 @@
 ## Dataset roles
 
 - `match_001`: keep the existing video, manifest, Validation Pack and reports.
-  The user identifies it as an Outplayed-cut clip; the unedited original may no
-  longer exist. Use it for discontinuity, incomplete-package and negative-safety
-  regression. Do not optimize OCR/thresholds to force its missing boundaries.
+  **2026-10-16 clarification**: it was extracted from a longer recording using
+  Outplayed, but the content **inside the selected clip is not edited**. The
+  source interval is partial and does not include a complete match; neither
+  cut boundaries nor unexpected frame changes may be promoted to game events.
+  Preserve source-integrity checks, partial-round and negative-safety regression.
+  Do not optimize OCR/thresholds to force missing boundaries. See
+  `docs/match001_visual_review_100ms_20261016.md`.
 - `match_002`: received on 2026-10-09; user confirms an unedited full match. Use it
   for main real-source lifecycle qualification only after independent dataset
   registration and validation preparation. Source intake is complete; matching
