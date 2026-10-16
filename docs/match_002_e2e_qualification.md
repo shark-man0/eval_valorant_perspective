@@ -1952,3 +1952,39 @@ separately, adoption authorization. Repeating unchanged inference, extending
 OCR searches or assuming labels would not resolve the blocker. The overall
 real-video Round lifecycle goal is incomplete and requires user input to resume
 the next qualification step; do not silently claim completion or relax safety.
+
+## Partial source-control reply and timer scope clarification
+
+Receive an explicit human absence label for one image. Preserve the trusted
+reply and bind it to the unchanged private page/review/source hashes. Initially
+leave the other12images unreviewed rather than assuming the whole page was
+checked. Evaluation-only comparison at the current recognizer fingerprint
+rejects the one known negative with both raw and gradient matchers:0false
+accepts;12unreviewed images unscored. No fitting or profile change occurs.
+Private partial-label receipt SHA:
+`64c46d9c6223874f87c5825099373989afb8fe4083adaea9f3fa6a0e2c99d8de`;
+comparison SHA:
+`3c13583303be9f7030a38c0428a7007a36978662850bb3e5771d6cd194f9547a`.
+
+The human subsequently confirms all13images were reviewed, while noting that
+Spike-related timer absence was ignored. This is not an unreviewed-image
+condition anymore. Keep the explicit negative; record the remaining HP/ability
+geometry labels, but conservatively withhold timer fixed-shape labels until
+the exception's scope is clarified. Digit disappearance is not fixed-geometry
+absence; conversely ignored absence cannot automatically prove fixed-geometry
+visibility. Ask only whether the exception concerns digits or the fixed shapes,
+without requesting another HP/ability review or exposing match predictions.
+
+Preserve a new receipt rather than overwriting the first one. Current comparison
+counts remain one known negative correctly rejected by both matchers,0false
+accepts,0reviewed positive cases, and12unknown/unscored cases (not12unreviewed
+ones). Matching still runs on the same full inventory, independently of labels;
+only evaluation eligibility changes. New partial-label receipt SHA:
+`137579122f6f0cc6d42ac96bbcdae9f2b83dc3f1943b21ea53018a6c67e378cc`;
+comparison SHA:
+`45761ec4da99ae964c286a019bfe06d80a2d15d47129d01c6a2ea6030041416e`.
+Source/reference integrity checks pass. No production code, threshold, mask,
+identity decision, event, qualification or adoption is changed. One correctly
+rejected natural image does not complete general negative qualification or
+formal real-video E2E. Await the timer-scope reply; do not label the exception
+by inference or use it to train/select the matcher.
