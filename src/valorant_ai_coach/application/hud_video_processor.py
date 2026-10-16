@@ -372,7 +372,11 @@ class HudVideoProcessor:
         progress(0.72, "HUD時系列とイベントを確定しています")
         final = self.analyzer.observe_frames(
             combined, video_metadata=metadata, cancel_event=cancel_event,
-            **self._hud_break_inputs(combined, source_breaks),
+            # Local native fragments do not inherit older source breaks as a
+            # first-frame discontinuity. Internal cuts were rejected above.
+            **self._hud_break_inputs(
+                combined, () if sampled_calibration_prefix is not None else source_breaks,
+            ),
             **geometry_arguments,
         )
         self._check_cancel(cancel_event)
