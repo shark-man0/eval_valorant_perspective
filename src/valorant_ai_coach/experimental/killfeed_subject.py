@@ -40,12 +40,14 @@ class KillfeedSubjectProfile:
     separator_method: str = 'template_ncc'
     name_gap_inset: int = 0
     marker_feature_kind: str = 'hsv_yellow_outline_v1'
+    ability_separator_references: tuple[Any, ...] = ()
 
     def __post_init__(self) -> None:
         _hash(self.source_sha256)
         _hash(self.owner_marker_review_sha256)
         if self.marker_feature_kind not in {
             'hsv_yellow_outline_v1', 'hsv_strong_yellow_outline_v1',
+            'grayscale_yellow_outline_v1',
         }:
             raise ValueError('supported source highlight feature required')
         x1, y1, x2, y2 = self.search_roi
@@ -54,7 +56,8 @@ class KillfeedSubjectProfile:
                 or not 0 <= y1 < y2 <= self.frame_shape[0]):
             raise ValueError('source-bound search geometry required')
         occupied = np.zeros(self.marker_reference.shape, dtype=bool)
-        if not set(np.unique(self.marker_reference)) <= {0, 255}:
+        if (self.marker_feature_kind != 'grayscale_yellow_outline_v1'
+                and not set(np.unique(self.marker_reference)) <= {0, 255}):
             raise ValueError('binary highlight-shape reference required')
         for mask in self.marker_masks:
             if (mask.shape != self.marker_reference.shape or np.count_nonzero(mask) < 32
@@ -78,7 +81,7 @@ class KillfeedSubjectProfile:
             raise ValueError('name crop must remain inside the row height')
         for array in (self.marker_reference, *self.marker_masks, self.yellow_mask,
                       self.weapon_reference, self.headshot_reference,
-                      *self.additional_weapon_references):
+                      *self.additional_weapon_references, *self.ability_separator_references):
             if array.ndim != 2 or array.dtype != np.uint8 or float(array.std()) < 5:
                 raise ValueError('contrasting uint8 structural raster required')
             array.setflags(write=False)
@@ -96,10 +99,12 @@ class KillfeedSubjectProfile:
             metadata.update(separator_method=self.separator_method,
                             name_gap_inset=self.name_gap_inset,
                             geometry_version='white_connected_glyph_plate_v2')
+        if self.ability_separator_references:
+            metadata['ability_separator_bank_version'] = 'padded_ability_ncc_v1'
         digest = hashlib.sha256(json.dumps(metadata, sort_keys=True).encode('utf-8'))
         for array in (self.marker_reference, *self.marker_masks, self.yellow_mask,
                       self.weapon_reference, self.headshot_reference,
-                      *self.additional_weapon_references):
+                      *self.additional_weapon_references, *self.ability_separator_references):
             digest.update(str(array.shape).encode('ascii'))
             digest.update(array.tobytes())
         return digest.hexdigest()
@@ -132,6 +137,9 @@ class KillfeedSubjectReading:
     weapon_support: float | None = None
     weapon_geometry: WeaponGlyphGeometry | None = None
     weapon_plate_fraction: float | None = None
+    ability_roi: Box | None = None
+    ability_support: float | None = None
+    ability_plate_fraction: float | None = None
 
     @property
     def qualified(self) -> bool:
@@ -260,10 +268,15 @@ class KillfeedSubjectReader:
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         strong = p.marker_feature_kind == 'hsv_strong_yellow_outline_v1'
-        marker_feature = (((hsv_image[:, :, 0] >= 18) & (hsv_image[:, :, 0] <= 40)
-                           & (hsv_image[:, :, 1] >= (90 if strong else 60))
-                           & (hsv_image[:, :, 2] >= (200 if strong else 150))
-                           ).astype(np.uint8) * 255)
+        # An explicitly calibrated luminance reference measures border shape
+        # directly instead of measuring a thresholded color raster. It still
+        # needs all three NCC supports and the independent current-image color
+        # gate below. No fallback or qualification transfers between features.
+        marker_feature = (gray if p.marker_feature_kind == 'grayscale_yellow_outline_v1'
+                          else (((hsv_image[:, :, 0] >= 18) & (hsv_image[:, :, 0] <= 40)
+                                 & (hsv_image[:, :, 1] >= (90 if strong else 60))
+                                 & (hsv_image[:, :, 2] >= (200 if strong else 150))
+                                 ).astype(np.uint8) * 255))
         markers = _matches(marker_feature, p.marker_reference, p.marker_masks, p.search_roi)
         mirrored = _matches(marker_feature, np.fliplr(p.marker_reference).copy(),
                             tuple(np.fliplr(m).copy() for m in p.marker_masks), p.search_roi)
@@ -306,12 +319,32 @@ class KillfeedSubjectReader:
                 if not any(_iou(candidate[0], old[0]) > .5 for old in unique):
                     unique.append(candidate)
             weapons = unique
-            valid = [(b, s) for b, s in weapons if b[2] <= x1-4 or b[0] >= x2+4]
+            abilities: list[tuple[Box, tuple[float, ...]]] = []
+            ability_plates: dict[Box, float] = {}
+            for reference in p.ability_separator_references:
+                for candidate in _matches(gray, reference, (np.full_like(reference, 255),),
+                                          region):
+                    plate = _template_plate_fraction(image, candidate[0])
+                    if plate >= .90:
+                        ability_plates[candidate[0]] = plate
+                        abilities.append(candidate)
+            unique_abilities: list[tuple[Box, tuple[float, ...]]] = []
+            for candidate in sorted(abilities, key=lambda item: -min(item[1])):
+                if not any(_iou(candidate[0], old[0]) > .5 for old in unique_abilities):
+                    unique_abilities.append(candidate)
+            # Conflicting weapon/ability matches remain separate and ambiguous;
+            # an ability NCC must never be reported as a weapon measurement.
+            valid = [(b, s, 'weapon') for b, s in weapons
+                     if b[2] <= x1-4 or b[0] >= x2+4]
+            valid += [(b, s, 'ability') for b, s in unique_abilities
+                      if b[2] <= x1-4 or b[0] >= x2+4]
             if len(valid) != 1:
                 result.append(KillfeedSubjectReading(source, 'unknown', box, None, None,
-                              support, fraction, None, None, 'weapon_separator_unavailable'))
+                              support, fraction, None, None,
+                              'separator_unavailable' if p.ability_separator_references
+                              else 'weapon_separator_unavailable'))
                 continue
-            weapon, weapon_scores = valid[0]
+            weapon, weapon_scores, kind = valid[0]
             role: Literal['killer', 'victim', 'unknown'] = (
                 'victim' if weapon[2] < x1 else 'killer')
             left, right = ((weapon[2]+4, x1+p.name_gap_inset-1) if role == 'victim'
@@ -338,9 +371,14 @@ class KillfeedSubjectReader:
                     text = reading.value
                     confidence = float(reading.confidence)
             result.append(KillfeedSubjectReading(
-                source, role, box, weapon, name_box if left < right else None,
+                source, role, box, weapon if kind == 'weapon' else None,
+                name_box if left < right else None,
                 support, fraction, text, confidence, 'unqualified_source_player_role_candidate',
-                min(weapon_scores) if weapon_scores else None,
-                next((g for g in geometry if g.roi == weapon), None),
-                plates.get(weapon)))
+                min(weapon_scores) if kind == 'weapon' and weapon_scores else None,
+                next((g for g in geometry if g.roi == weapon), None)
+                if kind == 'weapon' else None,
+                plates.get(weapon) if kind == 'weapon' else None,
+                ability_roi=weapon if kind == 'ability' else None,
+                ability_support=min(weapon_scores) if kind == 'ability' else None,
+                ability_plate_fraction=ability_plates.get(weapon) if kind == 'ability' else None))
         return tuple(result)

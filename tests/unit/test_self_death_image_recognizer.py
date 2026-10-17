@@ -5,7 +5,7 @@ from dataclasses import replace
 import numpy as np
 import pytest
 
-from tests.unit.test_killfeed_subject_reader import HASH, fixture, glyph_fixture
+from tests.unit.test_killfeed_subject_reader import HASH, ability_fixture, fixture, glyph_fixture
 from valorant_ai_coach.experimental.self_death_image import SelfDeathImageRecognizer
 from valorant_ai_coach.experimental.subject_death import SourceBinding
 from valorant_ai_coach.hud.report_header import ReportHeader
@@ -57,6 +57,25 @@ def test_two_independent_onsets_and_native_corroboration_keep_original_time():
 def test_initial_persistent_report_and_marker_are_not_a_new_death():
     recognizer, base, header = setup()
     assert all(observe(recognizer, base, header, t).status == 'unknown' for t in range(8))
+
+
+@pytest.mark.parametrize('killer', [False, True])
+def test_ability_episode_requires_victim_role_and_native_confirmation(killer):
+    reader, base = ability_fixture(killer=killer)
+    header = np.random.default_rng(24).integers(20, 220, (12, 50), dtype=np.uint8)
+    model = SelfDeathImageRecognizer(reader.profile, reader.reader, header, (0, 45, 80, 78),
+        runtime_fingerprint=HASH, dependencies_fingerprint=HASH, native_step_ticks=1)
+    observe(model, base, header, 0, report=False, marker=False)
+    rows = [observe(model, base, header, tick) for tick in range(1, 6)]
+    assert sum(r.status == 'prediction' for r in rows) == (0 if killer else 1)
+    assert all(r.qualified is False and r.formal_events == () for r in rows)
+    if not killer:
+        result = next(r for r in rows if r.status == 'prediction')
+        assert result.onset_time_sec == 1/60
+        assert result.confirmation_time_sec > result.onset_time_sec
+        assert result.subjects[0].weapon_support is None
+        assert result.support <= result.subjects[0].ability_support
+        assert observe(model, base, header, 6).status == 'duplicate'
 
 
 @pytest.mark.parametrize('killer', [False, True])

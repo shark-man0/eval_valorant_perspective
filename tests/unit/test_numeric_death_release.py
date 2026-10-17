@@ -267,6 +267,7 @@ def test_legacy_death_event_normalization_stays_compatible():
 
 @pytest.mark.parametrize('role,method', [
     (SubjectRole.VICTIM, 'killfeed_weapon_glyph_geometry_v2'),
+    (SubjectRole.VICTIM, 'killfeed_ability_template_ncc_v1'),
     (SubjectRole.DEATH_TRANSITION, 'independent_report_header_ncc_v1'),
     (SubjectRole.SOURCE_PLAYER_BINDING, 'global_timer_value_ncc_v1'),
 ])

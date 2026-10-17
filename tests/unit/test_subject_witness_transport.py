@@ -48,6 +48,28 @@ def test_geometric_role_never_inherits_plate_fraction_as_numeric_confidence():
     assert role.source == result.source
 
 
+def test_ability_candidate_preserves_its_method_without_claiming_weapon_or_self():
+    rows = readings()
+    victim = rows[-1]['subjects'][0]
+    victim.update(ability_roi=victim['weapon_roi'], ability_support=.92,
+                  ability_plate_fraction=.95, weapon_roi=None, weapon_support=None)
+    result = transport_prediction(rows, 5, report_roi=(0, 45, 80, 78))
+    role = next(w for w in result.evidence if w.role == SubjectRole.VICTIM)
+    assert role.method == 'killfeed_ability_template_ncc_v1'
+    assert role.confidence == .92
+    assert role.relation == SubjectRelation.UNKNOWN
+    assert role.review_status == ReviewStatus.CANDIDATE
+    assert result.to_dict()['qualified'] is False and result.to_dict()['formal_events'] == []
+
+
+def test_ability_candidate_cannot_relabel_conflicting_weapon_measurement():
+    rows = readings()
+    rows[-1]['subjects'][0].update(ability_roi=[1, 1, 10, 10], ability_support=.99,
+                                  ability_plate_fraction=.99)
+    with pytest.raises(ValueError, match='cannot be relabeled'):
+        transport_prediction(rows, 5, report_roi=(0, 45, 80, 78))
+
+
 @pytest.mark.parametrize('failure', ['missing_onset', 'changed_pixels', 'cross_context',
                                    'bad_onset', 'nonself_role', 'other_subject_source',
                                    'missing_confirmation'])

@@ -227,12 +227,17 @@ class SelfDeathImageRecognizer:
             victim = victims[0]
             # Geometry is a separately retained predicate, never fabricated
             # NCC or a confidence of one. Predictions remain unqualified.
-            if victim.weapon_support is not None or victim.weapon_geometry is not None:
+            if (victim.weapon_support is not None or victim.weapon_geometry is not None
+                    or victim.ability_support is not None):
                 measured = (*victim.marker_support, victim.yellow_fraction)
                 if victim.weapon_support is not None:
                     measured = (*measured, victim.weapon_support)
                 if victim.weapon_plate_fraction is not None:
                     measured = (*measured, victim.weapon_plate_fraction)
+                if victim.ability_support is not None:
+                    measured = (*measured, victim.ability_support)
+                if victim.ability_plate_fraction is not None:
+                    measured = (*measured, victim.ability_plate_fraction)
                 support = min(measured)
         if report >= .90 and not self.episode.last_report_positive:
             self.report_predecessor = previous

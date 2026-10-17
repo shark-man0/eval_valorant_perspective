@@ -4,6 +4,11 @@ Status: **measured development false negative, not a qualified positive result**
 Source code: `93b2a7a77aac20ae83aa9bb6da9fde630239a008`; fetched main
 `7e480c2f2f7f49aea73e1541d065d78881d2f11c`.
 
+Subsequent [luminance-binding and explicit ability-separator work](self_death_luminance_ability_recognition.md)
+recognizes this exposed development episode as one unqualified diagnostic
+candidate. The historical failure measurements below remain unchanged; they
+are not the result of that newer feature/profile or independent qualification.
+
 ## Fixed discovery and source review
 
 The unchanged static caption reference was scanned within the frozen v3 search

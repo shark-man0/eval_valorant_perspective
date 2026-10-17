@@ -106,14 +106,25 @@ def transport_prediction(
     marker_score = min(*(_score(v) for v in marker_scores), _score(victim['yellow_fraction']))
     if marker_score < .90:
         raise ValueError('accepted marker support required')
-    weapon_roi = _box(victim['weapon_roi'])
     weapon_score = victim.get('weapon_support')
-    if weapon_score is not None:
+    if victim.get('ability_roi') is not None:
+        if (victim.get('weapon_roi') is not None or weapon_score is not None
+                or victim.get('weapon_geometry') is not None):
+            raise ValueError('weapon and ability role evidence cannot be relabeled or combined')
+        weapon_roi = _box(victim['ability_roi'])
+        weapon_score = min(_score(victim.get('ability_support')),
+                           _score(victim.get('ability_plate_fraction')))
+        if weapon_score < .90:
+            raise ValueError('accepted independent ability NCC and plate required')
+        method = 'killfeed_ability_template_ncc_v1'
+    elif weapon_score is not None:
+        weapon_roi = _box(victim['weapon_roi'])
         weapon_score = _score(weapon_score)
         if weapon_score < .90:
             raise ValueError('accepted independent weapon NCC required')
         method = 'killfeed_weapon_template_ncc_v1'
     else:
+        weapon_roi = _box(victim['weapon_roi'])
         geometry = victim.get('weapon_geometry')
         if not isinstance(geometry, dict) or _box(geometry['roi']) != weapon_roi:
             raise ValueError('recorded geometric role witness required when NCC is absent')

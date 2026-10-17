@@ -62,12 +62,13 @@ def load_profile(path: Path) -> tuple[KillfeedSubjectProfile, Any, tuple[int, in
     version = data.get('schema_version')
     expected = required | ({'report_presence_header'} if version in {
         'self_death_image_profile_v2', 'self_death_image_profile_v3',
+        'self_death_image_profile_v4',
     } else set())
-    if version == 'self_death_image_profile_v3':
+    if version in {'self_death_image_profile_v3', 'self_death_image_profile_v4'}:
         expected |= {'report_presence_search_roi'}
     if (set(data) != expected
             or version not in {'self_death_image_profile_v1', 'self_death_image_profile_v2',
-                               'self_death_image_profile_v3'}):
+                               'self_death_image_profile_v3', 'self_death_image_profile_v4'}):
         raise ValueError('runtime profile must contain only the versioned reader configuration')
     assets = (path.parent/data['assets_file']).resolve()
     if sha(assets) != data['assets_sha256']:
@@ -79,16 +80,27 @@ def load_profile(path: Path) -> tuple[KillfeedSubjectProfile, Any, tuple[int, in
     presence_arrays = {
         'report_presence_reference', 'report_presence_mask', 'report_presence_regions',
     }
-    if version in {'self_death_image_profile_v2', 'self_death_image_profile_v3'}:
+    if version in {'self_death_image_profile_v2', 'self_death_image_profile_v3',
+                   'self_death_image_profile_v4'}:
         required_arrays |= presence_arrays
     bank_prefix = 'additional_weapon_reference_'
     numbered = sorted(key for key in arrays if key.startswith(bank_prefix))
     if numbered != [f'{bank_prefix}{index:03d}' for index in range(len(numbered))]:
         raise ValueError('numbered weapon references must be contiguous canonical indices')
+    ability_prefix = 'ability_separator_reference_'
+    abilities = sorted(key for key in arrays if key.startswith(ability_prefix))
+    if version == 'self_death_image_profile_v4':
+        if (not abilities
+                or abilities != [f'{ability_prefix}{i:03d}' for i in range(len(abilities))]):
+            raise ValueError('v4 requires a contiguous explicit ability separator bank')
+    elif abilities:
+        raise ValueError('ability separator references require the v4 profile contract')
     if (not required_arrays <= arrays.keys()
-            or arrays.keys()-required_arrays-{'additional_weapon_reference'}-set(numbered)):
+            or arrays.keys()-required_arrays-{'additional_weapon_reference'}-set(numbered)
+            - set(abilities)):
         raise ValueError('unexpected runtime profile arrays')
-    if version in {'self_death_image_profile_v2', 'self_death_image_profile_v3'}:
+    if version in {'self_death_image_profile_v2', 'self_death_image_profile_v3',
+                   'self_death_image_profile_v4'}:
         _report_presence_model(data, arrays)
     profile = KillfeedSubjectProfile(
         data['source_sha256'], data['owner_marker_review_sha256'], tuple(data['frame_shape']),
@@ -99,8 +111,9 @@ def load_profile(path: Path) -> tuple[KillfeedSubjectProfile, Any, tuple[int, in
             (['additional_weapon_reference'] if 'additional_weapon_reference' in arrays else [])
             + numbered)),
         data['separator_method'], data['name_gap_inset'], data['marker_feature_kind'],
+        tuple(arrays[key] for key in abilities),
     )
-    if version == 'self_death_image_profile_v3':
+    if version in {'self_death_image_profile_v3', 'self_death_image_profile_v4'}:
         region = _presence_search_roi(data)
         model = _report_presence_model(data, arrays)
         if model.input_shape != (region[3]-region[1], region[2]-region[0]):
@@ -150,7 +163,8 @@ def load_report_presence_search_roi(path: Path) -> tuple[int, int, int, int] | N
     load_profile(path)
     data = _json(path)
     return (_presence_search_roi(data)
-            if data['schema_version'] == 'self_death_image_profile_v3' else None)
+            if data['schema_version'] in {'self_death_image_profile_v3',
+                                          'self_death_image_profile_v4'} else None)
 
 
 def _cache_groups(data: dict[str, Any]) -> list[dict[str, Any]]:

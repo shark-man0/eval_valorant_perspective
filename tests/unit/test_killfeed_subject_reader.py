@@ -182,6 +182,124 @@ def test_strong_feature_keeps_dim_warm_background_out_of_outline_shape():
         replace(old.profile, marker_feature_kind='unreviewed')
 
 
+def luminance_fixture(*, killer=False):
+    old, ocr, image = fixture(killer=killer)
+    marker = image[20:40, 20:50] if killer else image[20:40, 180:210]
+    reference = cv2.cvtColor(np.fliplr(marker) if killer else marker, cv2.COLOR_BGR2GRAY)
+    profile = replace(old.profile, marker_reference=reference,
+                      marker_feature_kind='grayscale_yellow_outline_v1')
+    return KillfeedSubjectReader(profile, ocr, runtime_fingerprint=HASH), image
+
+
+@pytest.mark.parametrize('killer', [False, True])
+def test_luminance_feature_requires_explicit_profile_and_retains_measured_role(killer):
+    reader, image = luminance_fixture(killer=killer)
+    crop = image[20:40, 20:50] if killer else image[20:40, 180:210]
+    # Same outline, different luminance: binary strong-color shape is absent,
+    # but NCC of actual luminance still measures the same structure.
+    crop[np.any(crop > 0, axis=2)] = (30, 170, 190)
+    rows = reader.read(image, source(reader, image))
+    assert len(rows) == 1
+    assert rows[0].role == ('killer' if killer else 'victim')
+    assert min(rows[0].marker_support) == pytest.approx(1)
+    assert rows[0].yellow_fraction == 1
+    assert rows[0].source == source(reader, image)
+    assert rows[0].qualified is False and rows[0].formal_events == ()
+    old, ocr, _ = fixture(killer=killer)
+    strong = KillfeedSubjectReader(
+        replace(old.profile, marker_feature_kind='hsv_strong_yellow_outline_v1'),
+        ocr, runtime_fingerprint=HASH)
+    assert strong.read(image, source(strong, image)) == ()
+
+
+def test_luminance_profile_does_not_reuse_binary_profile_or_binding():
+    reader, image = luminance_fixture()
+    old, _, _ = fixture()
+    assert reader.profile.fingerprint() != old.profile.fingerprint()
+    assert reader.read(image, source(old, image)) == ()
+    with pytest.raises(ValueError, match='binary'):
+        replace(reader.profile, marker_feature_kind='hsv_strong_yellow_outline_v1')
+
+
+@pytest.mark.parametrize('mask_index', [0, 1, 2])
+def test_luminance_feature_still_requires_each_independent_support(mask_index):
+    reader, image = luminance_fixture()
+    crop = image[20:40, 180:210]
+    crop[reader.profile.marker_masks[mask_index] > 0] = 0
+    assert reader.read(image, source(reader, image)) == ()
+
+
+def test_luminance_structure_without_yellow_color_cannot_identify_source_player():
+    reader, image = luminance_fixture()
+    crop = image[20:40, 180:210]
+    gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY)
+    crop[:] = gray[:, :, None]
+    assert reader.read(image, source(reader, image)) == ()
+
+
+def test_luminance_marker_without_separator_does_not_infer_victim():
+    reader, image = luminance_fixture()
+    image[22:38, 100:124] = 0
+    rows = reader.read(image, source(reader, image))
+    assert len(rows) == 1 and rows[0].role == 'unknown'
+    assert rows[0].weapon_support is None
+    assert rows[0].formal_events == ()
+
+
+def ability_fixture(*, killer=False):
+    old, ocr, image = fixture(killer=killer)
+    image[22:38, 100:124] = 0
+    image[22:41, 100:122] = (40, 60, 200)
+    image[26:32, 108:114] = 255
+    image[32:38, 104:118] = 255
+    reference = cv2.cvtColor(image[22:41, 100:122], cv2.COLOR_BGR2GRAY)
+    profile = replace(old.profile, ability_separator_references=(reference,))
+    return KillfeedSubjectReader(profile, ocr, runtime_fingerprint=HASH), image
+
+
+@pytest.mark.parametrize('killer', [False, True])
+def test_ability_separator_role_retains_its_own_ncc_and_never_claims_weapon(killer):
+    reader, image = ability_fixture(killer=killer)
+    rows = reader.read(image, source(reader, image))
+    assert len(rows) == 1 and rows[0].role == ('killer' if killer else 'victim')
+    assert rows[0].ability_roi == (100, 22, 122, 41)
+    assert rows[0].ability_support == pytest.approx(1)
+    assert rows[0].ability_plate_fraction == 1
+    assert rows[0].weapon_roi is None and rows[0].weapon_support is None
+    assert rows[0].weapon_geometry is None and rows[0].weapon_plate_fraction is None
+    assert rows[0].qualified is False and rows[0].formal_events == ()
+
+
+def test_ability_bank_is_fingerprinted_and_duplicate_templates_are_one_witness():
+    reader, image = ability_fixture()
+    old, _, _ = fixture()
+    assert reader.profile.fingerprint() != old.profile.fingerprint()
+    profile = replace(reader.profile,
+                      ability_separator_references=reader.profile.ability_separator_references*2)
+    duplicate = KillfeedSubjectReader(profile, reader.reader, runtime_fingerprint=HASH)
+    assert len(duplicate.read(image, source(duplicate, image))) == 1
+
+
+def test_ability_role_requires_actual_plate_not_gray_icon_similarity_only():
+    reader, image = ability_fixture()
+    region = image[22:41, 100:122]
+    gray = cv2.cvtColor(region, cv2.COLOR_BGR2GRAY)
+    region[:] = gray[:, :, None]
+    rows = reader.read(image, source(reader, image))
+    assert len(rows) == 1 and rows[0].role == 'unknown'
+    assert rows[0].ability_roi is None
+
+
+def test_conflicting_weapon_and_ability_templates_cannot_choose_a_role():
+    reader, image = ability_fixture()
+    profile = replace(reader.profile,
+                      additional_weapon_references=reader.profile.ability_separator_references)
+    model = KillfeedSubjectReader(profile, reader.reader, runtime_fingerprint=HASH)
+    rows = model.read(image, source(model, image))
+    assert len(rows) == 1 and rows[0].role == 'unknown'
+    assert rows[0].ability_support is None and rows[0].weapon_support is None
+
+
 def test_weapons_on_both_sides_are_ambiguous():
     reader, _, image = fixture()
     image[22:38, 214:238] = np.repeat(reader.profile.weapon_reference[:, :, None], 3, axis=2)

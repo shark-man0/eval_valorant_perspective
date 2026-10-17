@@ -405,3 +405,41 @@ def test_v3_invalid_presence_roi_cannot_reinterpret_old_calibration(tmp_path, ro
     path.write_text(json.dumps(data), encoding='utf-8')
     with pytest.raises(ValueError, match='presence'):
         load_profile(path)
+
+
+def v4_profile_file(tmp_path):
+    path = v3_profile_file(tmp_path)
+    data = json.loads(path.read_text(encoding='utf-8'))
+    assets = path.parent/data['assets_file']
+    with np.load(assets, allow_pickle=False) as source:
+        arrays = {k: source[k].copy() for k in source.files}
+    arrays['ability_separator_reference_000'] = np.random.default_rng(234).integers(
+        20, 220, (19, 22), dtype=np.uint8)
+    np.savez_compressed(assets, **arrays)
+    data.update(schema_version='self_death_image_profile_v4',
+                assets_sha256=hashlib.sha256(assets.read_bytes()).hexdigest())
+    path.write_text(json.dumps(data), encoding='utf-8')
+    return path
+
+
+def test_v4_explicit_ability_bank_preserves_separate_presence_calibration(tmp_path):
+    from scripts.diagnostics.replay_self_death_images import load_report_presence_search_roi
+
+    path = v4_profile_file(tmp_path)
+    profile, _, _, _ = load_profile(path)
+    assert len(profile.ability_separator_references) == 1
+    assert load_report_presence_search_roi(path) == (0, 45, 80, 78)
+    data = json.loads(path.read_text(encoding='utf-8'))
+    data['schema_version'] = 'self_death_image_profile_v3'
+    path.write_text(json.dumps(data), encoding='utf-8')
+    with pytest.raises(ValueError, match='v4 profile contract'):
+        load_profile(path)
+
+
+def test_v4_requires_ability_bank_instead_of_silently_using_weapon_references(tmp_path):
+    path = v3_profile_file(tmp_path)
+    data = json.loads(path.read_text(encoding='utf-8'))
+    data['schema_version'] = 'self_death_image_profile_v4'
+    path.write_text(json.dumps(data), encoding='utf-8')
+    with pytest.raises(ValueError, match='explicit ability separator bank'):
+        load_profile(path)
