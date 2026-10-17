@@ -112,8 +112,13 @@ Image recognizer/profile/dependency fingerprints remain identical to the
 expanded-bank positive replay. The preflight change does not alter successful
 recognition behavior and is covered by the existing positive equivalence tests.
 
-Next: inspect the remaining discovery groups under a newly frozen selection,
-without template tuning or assuming they contain positive deaths. Independently
+Follow-up: the remaining five groups' first keyframes were inspected under a
+frozen selection, without template tuning. They did not establish a new
+independently qualified death episode. One exposed a real caption-search
+exclusion, now addressed by separating caption localization and presence
+calibration. See [evidence and regression](self_death_report_search_geometry.md).
+
+Next: independently
 qualify actual subject/temporal positives before supplying a real qualified
 frame producer at the session entrance, application wiring and canonical
 targeted/sample evaluation. Additional video remains optional, with contents

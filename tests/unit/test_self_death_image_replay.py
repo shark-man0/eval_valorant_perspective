@@ -351,3 +351,57 @@ def test_profile_rejects_incomplete_or_noncanonical_bank_names(tmp_path, key):
     path, _ = bank_profile_file(tmp_path, {key: array})
     with pytest.raises(ValueError):
         load_profile(path)
+
+
+def v3_profile_file(tmp_path):
+    from tests.unit.test_self_death_image_recognizer import setup_with_presence
+
+    original, _, _ = setup_with_presence()
+    presence = original.report_presence_header
+    path, _ = bank_profile_file(tmp_path, {})
+    data = json.loads(path.read_text(encoding='utf-8'))
+    assets = path.parent/data['assets_file']
+    with np.load(assets, allow_pickle=False) as source:
+        arrays = {k: source[k].copy() for k in source.files}
+    arrays.update(report_presence_reference=presence.reference,
+                  report_presence_mask=presence.mask, report_presence_regions=presence.regions)
+    np.savez_compressed(assets, **arrays)
+    data.update(schema_version='self_death_image_profile_v3',
+        report_header_search_roi=[0, 0, 80, 78], report_presence_search_roi=[0, 45, 80, 78],
+        report_presence_header={'input_shape': list(presence.input_shape),
+                                'reference_x': presence.reference_x, 'threshold': .90},
+        assets_sha256=hashlib.sha256(assets.read_bytes()).hexdigest())
+    path.write_text(json.dumps(data), encoding='utf-8')
+    return path
+
+
+def test_v3_separate_presence_roi_survives_loader_and_native_window_clone(tmp_path):
+    from scripts.diagnostics.replay_self_death_images import (
+        load_report_presence,
+        load_report_presence_search_roi,
+    )
+
+    path = v3_profile_file(tmp_path)
+    profile, caption, search, _ = load_profile(path)
+    original, base, header = detector()
+    assert np.array_equal(caption, header)
+    roi = load_report_presence_search_roi(path)
+    assert roi == (0, 45, 80, 78) and search == (0, 0, 80, 78)
+    model = SelfDeathImageRecognizer(profile, original.reader.reader, caption, search,
+        runtime_fingerprint=image_runtime_fingerprint(), dependencies_fingerprint=HASH,
+        native_step_ticks=1, report_presence_header=load_report_presence(path),
+        report_presence_search_roi=roi)
+    manifest = cache(tmp_path, 'v3-cache', base, header, persistent=False)
+    result = replay_cache(manifest, model, HASH)
+    assert result[0]['prediction_count'] == 1
+    assert {r['source']['code_fingerprint'] for r in result[0]['rows']} == {model.code_fingerprint}
+
+
+@pytest.mark.parametrize('roi', [None, [0, 45, 80, 77], [False, 45, 80, 78], [-1, 45, 79, 78]])
+def test_v3_invalid_presence_roi_cannot_reinterpret_old_calibration(tmp_path, roi):
+    path = v3_profile_file(tmp_path)
+    data = json.loads(path.read_text(encoding='utf-8'))
+    data['report_presence_search_roi'] = roi
+    path.write_text(json.dumps(data), encoding='utf-8')
+    with pytest.raises(ValueError, match='presence'):
+        load_profile(path)

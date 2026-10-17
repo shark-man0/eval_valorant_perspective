@@ -83,6 +83,14 @@ def transport_prediction(
         raise ValueError('unambiguous recorded onset/confirmation bindings required')
     onset = onsets[0]
     onset_support = _score(by_source[onset]['report_support'])
+    # New readings retain the actual matched caption pixels. Older artifacts
+    # retain their explicitly supplied search ROI; never invent a match box.
+    onset_row = by_source[onset]
+    onset_roi = (_box(onset_row['report_match_roi'])
+                 if 'report_match_roi' in onset_row else report_roi)
+    if not (report_roi[0] <= onset_roi[0] < onset_roi[2] <= report_roi[2]
+            and report_roi[1] <= onset_roi[1] < onset_roi[3] <= report_roi[3]):
+        raise ValueError('recorded caption match must lie within the configured source search')
     aggregate = _score(prediction['support'])
     if onset_support < .90 or aggregate < .90:
         raise ValueError('accepted original self-caption and prediction support required')
@@ -115,7 +123,7 @@ def transport_prediction(
                  'killfeed_highlight_shape_color_v1', _box(victim['marker_roi'])),
         _witness(source, SubjectRole.VICTIM, weapon_score, method, weapon_roi),
         _witness(onset, SubjectRole.DEATH_TRANSITION, onset_support,
-                 'fresh_self_referential_report_caption_ncc_v1', report_roi),
+                 'fresh_self_referential_report_caption_ncc_v1', onset_roi),
     )
     blockers = ['subject_role_transition_not_qualified', 'production_adoption_not_authorized']
     if weapon_score is None:

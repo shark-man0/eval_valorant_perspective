@@ -60,11 +60,11 @@ def provider_for(recognizer, *, damage=None):
                     'killfeed_weapon_template_ncc_v1', victim.weapon_roi)
         if reading.report_support is not None and reading.report_support >= .90:
             add(SubjectRole.REPORT, reading.report_support,
-                'self_referential_report_caption_ncc_v1', recognizer.report_search_roi)
+                'self_referential_report_caption_ncc_v1', reading.report_match_roi)
             if (recognizer.episode.pending_onset == reading.source
                     and recognizer.report_predecessor is not None):
                 add(SubjectRole.DEATH_TRANSITION, reading.report_support,
-                    'fresh_self_referential_report_caption_ncc_v1', recognizer.report_search_roi)
+                    'fresh_self_referential_report_caption_ncc_v1', reading.report_match_roi)
         tick = reading.source.pts_ticks
         frame = ProbeFrame(reading.source, tuple(observations), tick-1 if tick else None,
                            HASH if tick else None)

@@ -121,3 +121,9 @@ recognition, supply the genuine reviewed frame producer at this entrance, wire
 candidate orchestration and application resume, then run same-contract targeted
 and fixed sampled canonical comparisons. The adapter does not remove these
 requirements and development images cannot become fresh blind holdout.
+
+The [Report-search follow-up](self_death_report_search_geometry.md) adds precise
+caption-match ROI provenance and separates optional generic-header calibration
+from caption localization. The session checks each role against its actual
+measurement rectangle. These changed reader/session bytes require fresh
+qualification; no old real-source grant is transferred.

@@ -275,3 +275,57 @@ def test_positive_presence_witness_does_not_rearm_an_emitted_episode():
     for tick in range(5, 10):
         row = observe(recognizer, base, header, tick, report=False, presence=True)
         assert row.status == 'duplicate' and row.formal_events == ()
+
+
+def test_caption_can_move_above_presence_calibration_without_moving_that_calibration():
+    original, base, caption = setup_with_presence()
+    separate = SelfDeathImageRecognizer(original.reader.profile, original.reader.reader,
+        caption, (0, 0, 80, 78), runtime_fingerprint=HASH,
+        dependencies_fingerprint=HASH, native_step_ticks=1,
+        report_presence_header=original.report_presence_header,
+        report_presence_search_roi=original.report_search_roi)
+    assert separate.code_fingerprint != original.code_fingerprint
+
+    def run(model):
+        results = []
+        for tick in range(6):
+            image = base.copy()
+            if tick == 0:
+                image[20:40, :90] = image[20:40, 170:220] = 0
+            if tick == 1:
+                image[5:17, 10:60] = np.repeat(caption[:, :, None], 3, axis=2)
+            elif tick > 1:
+                image[65:75, 8:68] = np.repeat(
+                    model.report_presence_header.reference[:, :, None], 3, axis=2)
+            image[79, 239] = tick
+            binding = SourceBinding(HASH, tick, 1, 60, 'moved-caption',
+                hashlib.sha256(image.tobytes()).hexdigest(), model.code_fingerprint,
+                model.profile_fingerprint, HASH)
+            results.append(model.observe(image, binding))
+        return results
+
+    before, after = run(original), run(separate)
+    assert not any(r.status == 'prediction' for r in before)
+    assert sum(r.status == 'prediction' for r in after) == 1
+    assert after[1].report_match_roi == (10, 5, 60, 17)
+    assert after[4].status == 'prediction' and after[4].onset_time_sec == 1/60
+    assert after[4].report_support == 0 and after[4].report_match_roi is None
+    assert after[4].report_presence_support >= .90
+    assert all(not r.qualified and r.formal_events == () for r in after)
+
+
+def test_duplicate_captions_in_wider_search_stay_ambiguous():
+    original, base, caption = setup_with_presence()
+    model = SelfDeathImageRecognizer(original.reader.profile, original.reader.reader,
+        caption, (0, 0, 80, 78), runtime_fingerprint=HASH,
+        dependencies_fingerprint=HASH, native_step_ticks=1,
+        report_presence_header=original.report_presence_header,
+        report_presence_search_roi=original.report_search_roi)
+    image = base.copy()
+    image[5:17, 10:60] = image[25:37, 10:60] = np.repeat(caption[:, :, None], 3, axis=2)
+    source = SourceBinding(HASH, 0, 1, 60, 'ambiguous-caption',
+        hashlib.sha256(image.tobytes()).hexdigest(), model.code_fingerprint,
+        model.profile_fingerprint, HASH)
+    result = model.observe(image, source)
+    assert result.report_support == 0 and result.report_match_roi is None
+    assert result.status == 'unknown' and result.formal_events == ()

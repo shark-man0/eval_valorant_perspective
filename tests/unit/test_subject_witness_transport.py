@@ -27,6 +27,7 @@ def test_original_onset_confidence_and_physical_binding_are_not_replaced_by_conf
     transition = next(w for w in result.evidence if w.role == SubjectRole.DEATH_TRANSITION)
     assert transition.source.pts_ticks == 1 and transition.confidence == .91
     assert asdict(transition.source) == rows[1]['source']
+    assert transition.roi == tuple(rows[1]['report_match_roi'])
     assert result.source.pts_ticks == 5 and result.confidence <= .91
     assert result.boundary_time_sec == 1/60 and result.confirmation_time_sec == 5/60
     assert all(w.review_status == ReviewStatus.CANDIDATE
@@ -83,3 +84,20 @@ def test_only_an_actual_prediction_can_be_transported():
     rows = readings()
     with pytest.raises(ValueError, match='actually recorded'):
         transport_prediction(rows, 0, report_roi=(0, 45, 80, 78))
+
+
+def test_legacy_artifact_without_match_roi_keeps_its_explicit_search_box():
+    rows = readings()
+    for row in rows:
+        row.pop('report_match_roi')
+    result = transport_prediction(rows, 5, report_roi=(0, 45, 80, 78))
+    transition = next(w for w in result.evidence if w.role == SubjectRole.DEATH_TRANSITION)
+    assert transition.roi == (0, 45, 80, 78)
+
+
+@pytest.mark.parametrize('roi', [None, [0, 0, 10, 10], [0, 45, 90, 78]])
+def test_missing_or_out_of_search_precise_caption_box_is_not_repaired(roi):
+    rows = readings()
+    rows[1]['report_match_roi'] = roi
+    with pytest.raises(ValueError):
+        transport_prediction(rows, 5, report_roi=(0, 45, 80, 78))

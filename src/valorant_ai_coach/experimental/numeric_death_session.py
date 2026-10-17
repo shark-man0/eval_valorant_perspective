@@ -127,7 +127,7 @@ class NumericDeathImageSession:
         victim = victims[0] if len(victims) == 1 else None
         for observation in frame.observations:
             maximum: float | None = None
-            roi = self.recognizer.report_search_roi
+            roi: tuple[int, int, int, int] | None = self.recognizer.report_search_roi
             if observation.role == SubjectRole.SOURCE_PLAYER_BINDING:
                 if victim is not None:
                     maximum = min(*victim.marker_support, victim.yellow_fraction)
@@ -142,12 +142,16 @@ class NumericDeathImageSession:
                 if (self.recognizer.episode.pending_onset == frame.source
                         and self.recognizer.report_predecessor is not None):
                     maximum = reading.report_support
+                roi = reading.report_match_roi
                 method = 'fresh_self_referential_report_caption_ncc_v1'
             elif observation.role == SubjectRole.REPORT:
                 if observation.method == 'self_referential_report_caption_ncc_v1':
                     maximum = reading.report_support
+                    roi = reading.report_match_roi
                 elif observation.method == 'independent_report_header_ncc_v1':
                     maximum = reading.report_presence_support
+                    roi = (self.recognizer.report_presence_search_roi
+                           or self.recognizer.report_search_roi)
                 method = observation.method
             elif observation.role in {SubjectRole.RESPAWN, SubjectRole.SPECTATOR}:
                 # These independently supplied vetoes cannot contribute positive

@@ -53,6 +53,7 @@ class SelfDeathImageReading:
     support: float | None = None
     evidence_sources: tuple[SourceBinding, ...] = ()
     report_presence_support: float | None = None
+    report_match_roi: Box | None = None
 
     @property
     def qualified(self) -> bool:
@@ -76,7 +77,8 @@ class SelfDeathImageRecognizer:
                  report_reference: Any, report_search_roi: Box, *,
                  runtime_fingerprint: str, dependencies_fingerprint: str,
                  native_step_ticks: int,
-                 report_presence_header: ReportHeader | None = None) -> None:
+                 report_presence_header: ReportHeader | None = None,
+                 report_presence_search_roi: Box | None = None) -> None:
         _hash(runtime_fingerprint)
         _hash(dependencies_fingerprint)
         self.dependencies_fingerprint = dependencies_fingerprint
@@ -96,6 +98,9 @@ class SelfDeathImageRecognizer:
         self.report_reference = report_reference
         self.report_search_roi = report_search_roi
         self.report_presence_header = report_presence_header
+        self.report_presence_search_roi = report_presence_search_roi
+        if report_presence_search_roi is not None and report_presence_header is None:
+            raise ValueError('independent presence geometry needs its own header model')
         self.native_step_ticks = native_step_ticks
         digest = hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n', b'\n'))
         for module in (report_victim_episode, subject_death):
@@ -110,8 +115,16 @@ class SelfDeathImageRecognizer:
             from valorant_ai_coach.hud import report_header
 
             report_presence_header.validate()
-            if report_presence_header.input_shape != (y2-y1, x2-x1):
+            presence_roi = report_presence_search_roi or report_search_roi
+            px1, py1, px2, py2 = presence_roi
+            if (any(type(v) is not int for v in presence_roi)
+                    or not 0 <= px1 < px2 <= profile.frame_shape[1]
+                    or not 0 <= py1 < py2 <= profile.frame_shape[0]):
+                raise ValueError('source-bound Report presence geometry required')
+            if report_presence_header.input_shape != (py2-py1, px2-px1):
                 raise ValueError('Report presence geometry must match the source search ROI')
+            if report_presence_search_roi is not None:
+                digest.update(json.dumps(report_presence_search_roi).encode('utf-8'))
             assert report_header.__file__ is not None
             digest.update(Path(report_header.__file__).read_bytes().replace(b'\r\n', b'\n'))
             for array in (report_presence_header.reference, report_presence_header.mask,
@@ -195,10 +208,11 @@ class SelfDeathImageRecognizer:
         captions = _matches(gray, self.report_reference,
                             (np.full_like(self.report_reference, 255),), self.report_search_roi)
         report = min(captions[0][1]) if len(captions) == 1 else 0.0
+        report_roi = captions[0][0] if len(captions) == 1 else None
         presence: float | None = None
         if (self.report_presence_header is not None and self.pending is not None
                 and not self.emitted and report < .90):
-            x1, y1, x2, y2 = self.report_search_roi
+            x1, y1, x2, y2 = self.report_presence_search_roi or self.report_search_roi
             proof = report_header_evidence(image[y1:y2, x1:x2], self.report_presence_header)
             if proof['present'] is True:
                 presence = float(proof['score'])
@@ -225,7 +239,8 @@ class SelfDeathImageRecognizer:
         episode = self.episode.observe(source, report_score=report, victim_score=support)
         if self.emitted:
             return SelfDeathImageReading('duplicate', 'episode_already_predicted', source,
-                                         report, subjects, report_presence_support=presence)
+                                         report, subjects, report_presence_support=presence,
+                                         report_match_roi=report_roi)
         if episode.status == 'unqualified_candidate':
             marker = self.marker_onset
             # Both rising edges must actually have been observed in this segment.
@@ -238,7 +253,8 @@ class SelfDeathImageRecognizer:
                 self.onset_evidence = tuple(self.evidence)
         if self.pending is None:
             return SelfDeathImageReading('unknown', 'fresh_report_and_self_victim_unproved',
-                                         source, report, subjects, report_presence_support=presence)
+                                         source, report, subjects, report_presence_support=presence,
+                                         report_match_roi=report_roi)
         onset = self.pending.onset_time_sec
         assert onset is not None
         assert self.candidate_onset_source is not None
@@ -256,7 +272,8 @@ class SelfDeathImageRecognizer:
             self.evidence.clear()
             self.onset_evidence = ()
             return SelfDeathImageReading('unknown', 'corroboration_interrupted_or_expired',
-                                         source, report, subjects, report_presence_support=presence)
+                                         source, report, subjects, report_presence_support=presence,
+                                         report_match_roi=report_roi)
         if support is None:
             # A reader dropout invalidates the corroboration run, not the
             # independently observed report edge. A later run must still meet
@@ -265,17 +282,20 @@ class SelfDeathImageRecognizer:
             self.evidence = list(self.onset_evidence)
             return SelfDeathImageReading('unknown', 'victim_corroboration_restart_required',
                                          source, report, subjects, onset_time_sec=onset,
-                                         report_presence_support=presence)
+                                         report_presence_support=presence,
+                                         report_match_roi=report_roi)
         self.stable.append((source, min(current_report, support)))
         self.evidence.append(source)
         if len(self.stable) < 3 or source.time-self.stable[0][0].time < Fraction(1, 20):
             return SelfDeathImageReading('pending', 'native_corroboration_pending', source,
                                          report, subjects, onset_time_sec=onset,
-                                         report_presence_support=presence)
+                                         report_presence_support=presence,
+                                         report_match_roi=report_roi)
         self.emitted = True
         return SelfDeathImageReading(
             'prediction', 'qualification_and_production_adoption_pending', source,
             report, subjects, onset, float(source.time), min(s for _, s in self.stable),
             tuple(dict.fromkeys(self.evidence)),
             report_presence_support=presence,
+            report_match_roi=report_roi,
         )

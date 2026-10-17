@@ -60,10 +60,14 @@ def load_profile(path: Path) -> tuple[KillfeedSubjectProfile, Any, tuple[int, in
                 'separator_method', 'name_gap_inset', 'marker_feature_kind',
                 'report_header_search_roi'}
     version = data.get('schema_version')
-    expected = required | ({'report_presence_header'}
-                           if version == 'self_death_image_profile_v2' else set())
+    expected = required | ({'report_presence_header'} if version in {
+        'self_death_image_profile_v2', 'self_death_image_profile_v3',
+    } else set())
+    if version == 'self_death_image_profile_v3':
+        expected |= {'report_presence_search_roi'}
     if (set(data) != expected
-            or version not in {'self_death_image_profile_v1', 'self_death_image_profile_v2'}):
+            or version not in {'self_death_image_profile_v1', 'self_death_image_profile_v2',
+                               'self_death_image_profile_v3'}):
         raise ValueError('runtime profile must contain only the versioned reader configuration')
     assets = (path.parent/data['assets_file']).resolve()
     if sha(assets) != data['assets_sha256']:
@@ -75,7 +79,7 @@ def load_profile(path: Path) -> tuple[KillfeedSubjectProfile, Any, tuple[int, in
     presence_arrays = {
         'report_presence_reference', 'report_presence_mask', 'report_presence_regions',
     }
-    if version == 'self_death_image_profile_v2':
+    if version in {'self_death_image_profile_v2', 'self_death_image_profile_v3'}:
         required_arrays |= presence_arrays
     bank_prefix = 'additional_weapon_reference_'
     numbered = sorted(key for key in arrays if key.startswith(bank_prefix))
@@ -84,7 +88,7 @@ def load_profile(path: Path) -> tuple[KillfeedSubjectProfile, Any, tuple[int, in
     if (not required_arrays <= arrays.keys()
             or arrays.keys()-required_arrays-{'additional_weapon_reference'}-set(numbered)):
         raise ValueError('unexpected runtime profile arrays')
-    if version == 'self_death_image_profile_v2':
+    if version in {'self_death_image_profile_v2', 'self_death_image_profile_v3'}:
         _report_presence_model(data, arrays)
     profile = KillfeedSubjectProfile(
         data['source_sha256'], data['owner_marker_review_sha256'], tuple(data['frame_shape']),
@@ -96,6 +100,11 @@ def load_profile(path: Path) -> tuple[KillfeedSubjectProfile, Any, tuple[int, in
             + numbered)),
         data['separator_method'], data['name_gap_inset'], data['marker_feature_kind'],
     )
+    if version == 'self_death_image_profile_v3':
+        region = _presence_search_roi(data)
+        model = _report_presence_model(data, arrays)
+        if model.input_shape != (region[3]-region[1], region[2]-region[0]):
+            raise ValueError('Report presence geometry must match its calibrated search ROI')
     return (profile, arrays['report_header_reference'],
             tuple(data['report_header_search_roi']), assets)
 
@@ -124,6 +133,24 @@ def load_report_presence(path: Path) -> ReportHeader | None:
     with np.load(assets, allow_pickle=False) as raw:
         arrays = {key: raw[key] for key in raw.files}
     return _report_presence_model(data, arrays)
+
+
+def _presence_search_roi(data: dict[str, Any]) -> tuple[int, int, int, int]:
+    region = data['report_presence_search_roi']
+    if (not isinstance(region, list) or len(region) != 4
+            or any(type(v) is not int for v in region)
+            or not 0 <= region[0] < region[2] <= data['frame_shape'][1]
+            or not 0 <= region[1] < region[3] <= data['frame_shape'][0]):
+        raise ValueError('source-bound Report presence search ROI required')
+    return region[0], region[1], region[2], region[3]
+
+
+def load_report_presence_search_roi(path: Path) -> tuple[int, int, int, int] | None:
+    """v3 separates caption localization from the unchanged presence calibration."""
+    load_profile(path)
+    data = _json(path)
+    return (_presence_search_roi(data)
+            if data['schema_version'] == 'self_death_image_profile_v3' else None)
 
 
 def _cache_groups(data: dict[str, Any]) -> list[dict[str, Any]]:
@@ -183,6 +210,7 @@ def _observe_native_frames(
         recognizer.report_search_roi, runtime_fingerprint=runtime_fingerprint(),
         dependencies_fingerprint=dependencies, native_step_ticks=recognizer.native_step_ticks,
         report_presence_header=recognizer.report_presence_header,
+        report_presence_search_roi=recognizer.report_presence_search_roi,
     )
     if detector.code_fingerprint != recognizer.code_fingerprint:
         raise ValueError('recognizer code changed between native windows')
@@ -295,6 +323,7 @@ def main() -> int:
         _cache_groups(_json(manifest))
     profile, report, search, assets = load_profile(args.profile)
     presence_header = load_report_presence(args.profile)
+    presence_roi = load_report_presence_search_roi(args.profile)
     if sha(args.source) != profile.source_sha256:
         raise ValueError('source video hash mismatch')
     if sha(args.owner_review) != profile.owner_marker_review_sha256:
@@ -347,6 +376,7 @@ def main() -> int:
         profile, reader, report, search, runtime_fingerprint=runtime,
         dependencies_fingerprint=deps, native_step_ticks=args.native_step_ticks,
         report_presence_header=presence_header,
+        report_presence_search_roi=presence_roi,
     )
     image_started = time.monotonic()
     windows: list[dict[str, Any]] = []
@@ -365,6 +395,7 @@ def main() -> int:
         profile, reader, report, search, runtime_fingerprint=runtime_fingerprint(),
         dependencies_fingerprint=deps, native_step_ticks=args.native_step_ticks,
         report_presence_header=presence_header,
+        report_presence_search_roi=presence_roi,
     )
     if (sha(args.source) != profile.source_sha256 or runtime_fingerprint() != runtime
             or terminal_detector.code_fingerprint != detector.code_fingerprint
