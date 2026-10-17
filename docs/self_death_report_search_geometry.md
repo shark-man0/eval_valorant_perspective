@@ -134,3 +134,9 @@ Only then is a new same-contract canonical targeted/sampled comparison valid.
 No additional video is made a prerequisite by this fix, and no Full E2E was run.
 Adopted 23/55/4, archived Strict candidate 28/50/4 and the separate timing-policy
 comparison remain distinct historical results. The overall goal is incomplete.
+
+Follow-up: [continuous ability-episode measurements](self_death_ability_episode_measurement.md)
+confirm a real missed self death despite recovered caption support. The current
+reader lacks the ability separator, and existing accepted marker readings also
+cannot complete corroboration within the unchanged horizon. No threshold,
+reference or horizon adjustment was made to force that episode to pass.
