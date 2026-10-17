@@ -125,3 +125,60 @@ This experiment changes the next action from investigating a transport loss
 to qualifying improved reference coverage. It is not Strict E2E FAIL reduction
 or completion of the Self Death goal. Production code and test files are
 unchanged; the prior code CI results remain historical results at `556dbac`.
+
+## Frozen continuous follow-up
+
+With the same reference bank and no intervening tuning, a second previously
+exposed episode was rerun over 181 native frames. It produced one diagnostic
+candidate, 60 frames with actual numeric victim support, no source-blocked
+frames and no formal events. Its confirmation-frame weapon NCC was 0.994402.
+Recognition took 193.978 seconds; wall time was 339.352 seconds and peak RSS
+94,064,640 bytes. This extends the single-frame match to a continuous episode;
+it remains a known regression case, not independent qualification.
+
+The identical expanded asset bank was then bound to the existing match_001
+source profile and freshly evaluated over all 171 cached inputs of the original
+positive/short-negative suite. All input source PTS/pixel hashes and both
+candidate onset/confirmation pairs were compared with the original frozen
+result and matched exactly. The two genuine episodes each retained one
+diagnostic prediction, while both stale-report/spectator controls retained none.
+The initial short R1 window still has no prediction because it ends before
+corroboration; the extended window supplies the single R1 candidate. They are
+not counted as separate episodes.
+
+| Follow-up measure | Previous result | Expanded bank | Delta |
+| --- | ---: | ---: | ---: |
+| match_001 cached input rows, including overlap | 171 | 171 | 0 |
+| match_001 diagnostic episode predictions | 2 | 2 | 0 |
+| match_001 short-negative predictions | 0 | 0 | 0 |
+| match_001 source-blocked frames | 0 | 0 | 0 |
+| match_001 formal Death events | 0 | 0 | 0 |
+
+The match_001 run took 197.561 seconds for recognition, 206.004 seconds wall
+time, and peak RSS 94,420,992 bytes. Timing deltas against its archived run are
+not claimed: that older result used four OpenCV threads and a different
+dependency fingerprint. The newly generated results use the one-thread
+fingerprint recorded above and pass terminal source/dependency/config hashes.
+
+Private follow-up evidence:
+
+- `source2-rifle-coverage-development-v1-extended-plan.json`: frozen input and
+  profile hashes, expected positive/negative counts and stop conditions.
+- `source2-rifle-coverage-development-v1-second-continuous.json`, SHA-256
+  `c7e56c60547ae94887172921a5834be21b110a24c8c22aa08a3311f053b4fb3e`.
+- `source2-rifle-coverage-development-v1-match001.json`, SHA-256
+  `ac09ffdd6ab993ebe283c782da8ab8609f9b7409c8ba5e8859e11da3aef12548`.
+
+The second-source continuous episodes together contain 143 numeric victim
+support frames (83 plus 60), which are correlated evidence for two known
+episodes, not 143 independent successes. No expanded-bank full-length negative
+suite, blind-positive qualification, new canonical evaluation or formal release
+is claimed. No additional videos were transferred or decoded-frame caches
+created for this follow-up.
+
+At documentation commit `406ea1bb4225c65ebe819ba3b616c91d28e8bae6`, both Linux
+checks, both Windows test-and-build checks and the text-I/O audit subsequently
+completed successfully. The follow-up changes only this report; it does not
+claim those checks ran on a later documentation commit or qualify the private
+reference assets. No production-code change required a new local pytest,
+Ruff or mypy run in this follow-up.
