@@ -262,6 +262,13 @@ class FactBuilder:
                     )
             elif event_type == "player_death":
                 add("player_died", True, confidence, "event_normalization", timestamp, provenance)
+                death_proof = attributes.get("evidence_provenance")
+                if (isinstance(death_proof, dict)
+                        and death_proof.get("elimination_coverage") == "self_death_only"):
+                    # A qualified self Death proves this episode, not that no
+                    # other player died earlier. Retain the event without
+                    # inferring elimination order from an incomplete producer.
+                    continue
                 earlier_eliminations = [
                     candidate
                     for candidate in events[:index]

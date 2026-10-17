@@ -1,0 +1,625 @@
+# Self Death role reader: first unused-native episode success
+
+This continues PR #53. Starting main is
+`7e480c2f2f7f49aea73e1541d065d78881d2f11c`; the previous branch head is
+`cc3fa0453f00aa1a733ad0011ea3d3e378803892`. The previous turn made concrete
+implementation and source-measurement progress. This is another partial
+milestone, **not completed qualification, production adoption or Strict E2E
+improvement**. Production HUD ownership and formal Event release stay unchanged.
+
+## Causes reproduced
+
+The full-outline reference does not transfer reliably. A source diagnostic on
+a failed episode measured top/middle/bottom NCC 0.664/0.975/0.726. The exterior
+chevron was recognizable while thin horizontal strokes were affected by
+antialiasing and background. A three-pixel filtered feature was implemented,
+tested and independently rejected: a new 181-frame interval produced no subject
+proposals, even though the report appeared on 94 frames. That feature was
+removed; its exact source bytes were retained privately and checked against the
+failed run's recorded hash. No failed run was overwritten or re-signed.
+
+Three nonoverlapping exterior-tag supports, excluding portrait/name/numeric
+pixels and fragile horizontal strokes, then detected the source-player tag on
+32 frames of a different unused episode. The single trained weapon glyph still
+could not establish killer/victim roles. Merely extending the template bank
+does not solve weapon coverage.
+
+An experimental connected-white-pictogram path identified victim roles on 17
+frames and accepted names on all 17, but still produced no episode prediction.
+Diagnosis found two distinct causes: the killer's white portrait/hat could also
+pass isolated shape checks, and warm scenery contaminated the permissive yellow
+shape feature. Victim witnesses became available only after the original onset
+expired. The one-second expiry and full native corroboration were not relaxed.
+
+## Opt-in experimental changes
+
+The default `template_ncc` path retains its previous configuration and gates.
+The new `white_glyph_geometry` option measures a connected white pictogram with
+explicit size, aspect, density and scanline constraints, plus a consistent red
+or green team plate immediately above and below it. A portrait's white hat or
+hair does not qualify just because it is a wide white component. Multiple
+distinct separators remain ambiguous. Geometry retains its ROI, pixel counts,
+area, scanline support and plate measurements; **it is not assigned a fabricated
+NCC or confidence of one**. Its classification is still unqualified.
+
+A separate explicit `hsv_strong_yellow_outline_v1` shape option uses the stronger
+S>=90/V>=200 criterion already frozen for training color-core construction.
+The original feature uses S>=60/V>=150. This is a new, stricter, fingerprinted
+feature, not transferred qualification or a lowered acceptance gate. Hue bounds,
+NCC >=0.90 on each of three disjoint supports, measured color support >=0.90,
+OCR >=0.90, source guards, onset expiry and native corroboration remain intact.
+Training rejected a support with zero contrast rather than forcing a profile
+through validation. The valid profile's supports contain 96/94/94 pixels; its
+color witness contains 50 consistently observed pixels.
+
+Names are cropped from the measured separator-to-portrait gap. A fingerprinted
+source-calibrated inset prevents the portrait border from contaminating OCR.
+One training-source diagnostic changed raw OCR support from 0.55309 with edge
+ink to 0.92281 without it, without changing OCR code or its acceptance gate.
+No expected name, GT, timestamp or Round number is supplied to the reader.
+
+These features belong to the separate experimental subject route. They do not
+change live HUD identity, view ownership, HP, weapon, ammo, Alive/dead snapshots,
+legacy Death guards, qualification packs, public Schemas or assertion semantics.
+Image predictions still report `qualified=False` and `formal_events=[]`.
+
+## Source partition and measurements
+
+All reference pixels for the new profile come from the same 51 frames in the
+first, explicitly exposed `match_002` development episode. Failed later episodes
+remain failed records, never become fresh holdout, and are not copied into the
+reference. Their diagnostics inform the documented failure analysis. Code and
+profile inputs are frozen before each new native source interval is decoded.
+
+Previously performed report-only keyframe discovery is disclosed exposure. It
+selects intervals independently of GT, but a discovery-selected source test is
+not a blind full-match recall benchmark. Full native frames and semantic roles
+in each selected test were previously unused; source roles were reviewed before
+reading predictions. Native replays evaluate every frame without changing Full
+E2E sampling. Exact native PTS, encoded/pixel hashes, source segment and actual
+code/profile/dependency fingerprints are retained. Terminal hashes passed.
+
+| Configuration / scope | Frames | Episode predictions | Additional evidence |
+| --- | ---: | ---: | --- |
+| Exterior tag + template separator, unused episode | 181 | 0 | 32 tag observations, role unknown |
+| Exterior tag + shape-only glyph, next unused episode | 181 | 0 | 17 victim readings, portrait ambiguity and late witnesses |
+| Plate-bound glyph + strong tag, exposed development | 91 | 1 | 74 victim readings, 51 accepted names |
+| Same frozen plate-bound/strong reader, next unused episode | 181 | **1** | 47 victim readings, 12 accepted names |
+
+The last test's source review identifies one self-death and a preceding nonself
+victim entry. The recording-player tag is on the victim; the other Omen is the
+killer without that tag. The report, collapse and later persistent report are
+consistent with one episode. The prediction retains the original report onset;
+confirmation follows 0.100 seconds later. Minimum measured visual support is
+0.93612. A **post-run**, source-backed exact text audit found 12/12 accepted name
+readings match the visible source text, zero other accepted strings. This is not
+claimed as blind text-label qualification. No actual name is published here.
+
+The last native replay took **234.44 seconds**, excluding outer source checks.
+Its immutable decoded input cache contains 363,791,854 bytes; generation took
+402.29 seconds. Acquisition used bounded RAM temporary storage, with a
+550,000,000-byte PNG budget, then copied hash-verified immutable inputs to disk.
+All source hashes use streaming reads; no multi-gigabyte bytes allocation is
+used. Actual reader peak RSS is not yet measured. Earlier discovery resource
+measurements are not substituted for reader memory measurements.
+
+The unused-episode success is meaningful positive recognition progress. It does
+not establish long-duration duplicate suppression, report reopening/respawn,
+spectator safety, all weapons, all agents, whole-match false-positive rate or
+formal event timing. Earlier failures are part of the record, not hidden by the
+one successful episode. Synthetic controls and this one real episode cannot
+stand in for the remaining independent negative suite.
+
+## Tests and remaining release gates
+
+Current local regression: **174 passed in 9.57 seconds**, including 48 image and
+temporal controls. Configured Ruff passed; mypy passed all 141 source files.
+Controls include both marker sides, text/line/block/color/portrait-context
+rejection, multiple glyph ambiguity, source changes, defaults/fingerprints,
+warm background exclusion, partial/invalid name confidence, temporal restart,
+initial persistent report and duplicate suppression. Source profile/feature
+changes require their own qualification despite green tests.
+
+Remote CI for `cc3fa04` passed on Linux and Windows, including packaged smoke;
+that result does not automatically cover the new source changes. New PR-head
+results must be checked separately.
+
+Next: frozen source-negative windows for persistent/reopened report and spectator
+or respawn context, plus current-code regression on `match_001`. Complete the
+subject/role/temporal qualification evidence before constructing formal events.
+The typed subject contract requires separate subject, victim and transition
+witnesses; a diagnostic prediction alone does not fulfill it. Public event
+identity/schema adoption still follows the approved compatibility review.
+
+The unchanged canonical assertion inspection also confirms that the two point
+Death predicates require victim name, killer agent and received damage. Even a
+qualified Death without these attributes cannot pass those predicates. The two
+per-Round Death count predicates are separate, conditional improvement targets;
+correct native Round association is also required. Missing killer/damage fields
+will remain missing rather than borrowing values from GT.
+
+Adopted Full remains **23/55/4**, archived unadopted Strict candidate **28/50/4**,
+and the distinct timing-policy comparison **30/49/3**. Current canonical targeted,
+sampled and Full results for this reader are **not measured**; no Strict delta
+is claimed. No new Full was run because qualification and formal producer wiring
+are incomplete. Detailed private pixels, names, timestamp labels, profiles,
+failure records and manifests remain outside Git.
+
+## Shared replay and exposure audit follow-up
+
+The common `scripts/diagnostics/replay_self_death_images.py` runner recomputes
+image recognition from verified lossless decoded inputs. It separates the
+runtime fingerprint from dataset hashes, rejects unexpected profile keys
+(including expected labels), verifies every encoded/pixel binding, resets at
+each independent window and checks terminal source/dependency/input hashes.
+Positive and negative windows use the same executable fingerprint. Cached
+recognition outputs are not accepted as decoded inputs. Peak RSS covers the
+Python process, not child decoder/OCR processes.
+
+The original source-2 frozen profile produced one diagnostic prediction in its
+positive window and zero in two report-persistence/spectator/preparation
+controls: 315 frames, 274.51 seconds of recognition, 430.65 seconds wall time,
+about 95 MiB Python peak RSS. No frame was blocked by source validation. These
+are bounded diagnostic results, not whole-match precision or qualification.
+
+That profile initially found no marker on source 1. A shared exterior mask was
+then derived from the existing source-2 development images and eight previously
+exposed source-1 images. Those images are training inputs. Reference values,
+NCC 0.90 and the independent color/geometry requirements remain unchanged.
+The shared profile found one source-1 R2 prediction in the 96-frame regression
+set; the shorter R1 window did not provide sufficient continuous corroboration.
+An extended 75-frame R1 replay produced one prediction, preserving the observed
+onset despite confirmation 0.400 seconds later. The extended replay took 76.14
+seconds recognition / 83.10 seconds wall time, about 95 MiB Python peak RSS.
+Both source-1 report/spectator controls retained zero predictions. These exposed
+development/regression results do not independently qualify the changed mask.
+Formal events remain zero; canonical targeted/sampled/Full deltas are unmeasured.
+
+The one-second candidate horizon now compares rational source PTS directly.
+Converting an onset through a decimal float could incorrectly expire the exact
+one-second endpoint. Tests accept that endpoint and reject the next native
+frame; neither the horizon nor the confirmation-duration threshold is widened.
+
+The user supplied `codex/round-boundary-requalification` as the exposure-ledger
+reference. Read-only inspection at `e9e9e15aa54b0d4792a27869d8c8447a4e0e4bfc`
+verified all six recorded file hashes in
+`e2e_reports/match_001/exposure_inventory_20261016/summary.json`. Its 4,518 records
+cover two supplemental sources, **not match_002**. The README and summary
+explicitly state that match_002 image exposure was not assessed and unlisted
+frames are not certified unviewed. Consequently no prospective match_002 window
+is declared a new blind holdout from absence in this ledger. PR #42 was not
+modified. Complete event-level exposure verification remains a release gate.
+
+Local follow-up: 152 relevant unit/integration tests passed in 17.75 seconds;
+Ruff passed for the CI scope (`src tests scripts/e2e`) plus the new runner;
+mypy passed 142 files including the runner. A broader `ruff check .` also scans
+legacy/private validation and configuration scripts and reports existing
+out-of-scope errors; those files were not changed. Remote checks for `14894b8`
+passed Linux and Windows push CI. Its Windows PR job failed before testing
+because the Chocolatey FFmpeg download returned HTTP 503; this is not a Windows
+PR-test pass. These remote results do not certify subsequent local changes.
+
+Remaining work is independent subject/role/transition qualification, followed
+by the approved formal producer connection and same-contract canonical
+evaluation. Positive diagnostic predictions are not substituted for these
+steps. No new Full E2E was run.
+
+## Prospective shared-mask episode: positive not detected
+
+After freezing the shared mask and runtime, another source-2 episode was decoded
+without changing any recognizer input. Before inspecting predictions, six native
+source images were reviewed: a live first-person view takes damage, collapses,
+acquires a new red killfeed row with the highlighted recording player on the
+victim side and opens the self-referential report. The scoreboard appears later.
+This establishes one positive episode, independently of the reader output. It
+does not certify global historical exposure or an exact event timestamp.
+
+The same-code run processed that 151-frame window and the two existing negative
+windows (134 frames). Result: **0/1 positive episodes predicted**, zero predictions
+in both controls, zero source-blocked frames and zero formal events. In the
+positive window the report matched on 97 frames and 94 highlighted-marker
+candidates were retained, but every role remained unknown with
+`weapon_separator_unavailable`. The actual pistol silhouette measures 28 by 20
+pixels (aspect 1.4); the frozen wide-glyph detector requires width at least 32
+and aspect at least 2. The failure is therefore a supported-icon coverage gap,
+not evidence that the yellow-marker or report reader never sees the scene.
+The victim-name area also has a performance overlay, so successful name OCR
+must not be assumed from marker presence.
+
+The 285-frame recognition took 230.36 seconds, 381.37 seconds including all
+outer checks, with 99,803,136 bytes Python peak RSS. Terminal source, input and
+dependency hashes passed. The newly decoded cache used 259,905,413 bytes and
+took 376.62 seconds to acquire; acquisition is separate from reader execution.
+No recognition output was reused as a new-code result.
+
+The failed validation episode remains excluded from fitting. Broadening the
+existing glyph bounds until this image passes is not the chosen remedy. The
+next role-reader implementation needs separately trained compact-icon evidence
+or an independently validated row-structure witness, plus event-level tests
+that include recorder-as-killer and nonself victims. The two bounded controls
+are useful regressions, not complete long-duration false-positive qualification.
+Current canonical targeted/sampled/Full results remain unmeasured; no PASS gain
+or formal adoption is claimed. Linux PR and push CI for `e1907aa` passed;
+Windows PR run `38896852236` also finished successfully, including its
+test-and-build job. These remote results cover the source changes at `e1907aa`.
+The source owner subsequently reported that no additional match_002 exposure
+ledger is likely available. Historical exposure therefore remains unknown;
+prospective validation may establish separation from this implementation's
+fitting inputs, but cannot certify globally unseen images.
+
+## Compact separator implementation and measured recognition improvement
+
+The rejected purchase-menu illustration probe scored NCC 0.88773 and was not
+adopted. Its image is not in the resulting reference bank. A bounded development
+keyframe search instead acquired a real compact pistol glyph in a **nonself**
+killfeed row, outside the prospective validation episode. A native decode of the
+same rational PTS reproduced the discovery crop exactly. The unchanged original
+pixels, source/encoded/pixel hashes and training ROI are frozen privately.
+The discovery requested a wider interval than FFmpeg actually delivered with
+`copyts`; the actual PTS coverage was recorded separately. Its unobserved suffix
+is not claimed as inspected or as negative evidence.
+
+The experimental profile now has an explicit
+`white_glyph_geometry_with_templates` option. Existing modes retain their
+selection rules. The new option combines the existing wide-glyph geometry with
+source-derived grayscale templates at **NCC >=0.90**, and additionally requires
+**>=0.90 measured single-color team plate support** in the template's padded
+top/bottom strips. Template NCC and plate fraction are retained separately.
+Geometry has no invented NCC. References for the same physical glyph collapse
+to one witness; distinct competing separators remain unknown. No player HUD
+identity, Fact ownership, public Schema, GT or formal event gate changes.
+
+| Same prospective inputs | Previous | Current | Delta |
+| --- | ---: | ---: | ---: |
+| Positive episode predictions | 0 | 1 | +1 |
+| Accepted victim-role readings | 0 | 94 | +94 |
+| Predictions in two negative windows | 0 | 0 | 0 |
+| Source-blocked frames | 0 | 0 | 0 |
+| Formal events | 0 | 0 | 0 |
+| Recognition seconds, 285 frames | 230.36 | 268.01 | +37.65 |
+| Wall seconds including outer checks | 381.37 | 418.42 | +37.05 |
+
+The recognition-time increase is 16.34%; this is a coverage improvement, not a
+speed improvement. The newly detected episode retains its observed onset and
+confirms 0.100 seconds later. Its measured compact-template NCC is 0.97515,
+plate fraction 1.0; overall measured support remains the lower independent
+marker support, 0.90219. The previously failed validation image was not fitted
+into the reference. Because the implementation was motivated by that failure,
+the successful rerun is an explicit regression result, not a new blind test.
+
+Current-code source-1 replay preserved one R1 and one R2 prediction and zero in
+its two report/spectator negative windows. The shorter R1 window still cannot
+establish corroboration; the extended window does. Processing all 171 rows
+(including overlapping R1 diagnostic windows) took 173.50 seconds recognition,
+182.69 seconds wall time, with 99,557,376 bytes Python peak RSS.
+
+A separate, unchanged-profile run on six previously acquired source-2 episode
+windows produced exactly one prediction per episode, including a recorder-as-
+killer row preceding the actual victim row. It processed 1,146 native frames in
+1,208.71 seconds recognition / 1,407.05 seconds wall time; Python peak RSS was
+102,797,312 bytes. No source-blocked frame or duplicate prediction occurred in
+those bounded windows. These known episodes are exposed regression inputs,
+not a newly independent cohort. Their gains cannot all be attributed to the
+compact template: the shared marker mask and prior wide-geometry fixes also
+changed relative to historical failed runs.
+
+Across these runs, nine reviewed positive episodes yielded nine predictions;
+four bounded report/spectator/preparation negative windows yielded none. The
+1,602 processed rows include overlapping R1 diagnostics and are not 1,602
+independent images or events. All terminal hashes passed. This still does not
+establish full-match false-positive rate, unseen-subject coverage, long-duration
+rearm/respawn behavior or formal subject/transition qualification.
+
+Local validation: **159 related unit/integration tests passed in 17.42 seconds**;
+CI-scope Ruff plus the shared runner passed; mypy passed 142 files. Seven added
+synthetic cases cover compact victim/killer roles, red/green plates, exact gray
+matches without a valid color plate, distinct-separator ambiguity and same-glyph
+deduplication. These synthetic results are not real-video accuracy measurements.
+Remote CI for this new implementation is not yet verified. Canonical targeted,
+sampled and Full results remain unmeasured; formal output is still disabled.
+No new Full E2E was run. Next: qualify subject/role/transition evidence and its
+continuous negative scope, then connect only qualified evidence to the approved
+formal Event/Package/Trace path and measure canonical changes.
+
+## Variable-height Report and independent presence corroboration
+
+Another frozen native source-2 interval, not previously used for fitting, was
+reviewed before reading predictions. A suspected report reopening was actually
+a new self death; the unchanged compact-profile reader predicted it once.
+A separately reviewed purchase-phase interval showed a living player and a
+stale report reappearing after menu closure. That reader predicted zero deaths,
+despite 47 report-positive frames. Neither interval is globally certified blind:
+earlier report-crop discovery and unknown external exposure remain disclosed.
+
+Development-image inspection then identified a search-geometry defect: the
+self-referential caption moves vertically with variable Report height. The
+old caption search rectangle excluded one already-development example. The
+experimental configuration now uses the existing layout's complete
+`rois.combat_report` rectangle. No anchor, acceptance threshold or caption
+reference changes. A new report-only discovery used that frozen rectangle;
+discovery is not a source of negative labels or qualified events.
+
+Three additional native intervals were frozen before full-image review. All
+three show a new self death; one also shows the recorder as killer before a
+separate victim row. The original plan incorrectly described these as the
+first three new discovery groups: one intervening group was inadvertently
+omitted. The actual three windows were frozen before review, but are not an
+exhaustive first-three cohort. The original plan/results remain unchanged;
+a correction records the omission and reserves it for later validation. No
+new blind/exhaustive-recall claim is made from this selection.
+
+With the full Report search and existing code, **2/3** episodes yielded one
+prediction each. The third retained a correct victim row but lost the whole
+pending episode after two unrecognized caption frames, despite later stable
+support. Crucially, those two actual images still match the existing independent
+static Report Header at NCC **0.99001 / 0.99028**. This is measured current-frame
+presence from a different header, not an assumed continuation through absence.
+
+An optional `report_presence_header` now reuses that existing two-support
+`ReportHeader` reader. Its references and masks are unchanged; its previous
+exclusion qualification is **not** transferred to Death. The original
+self-referential caption must still establish the initial observed onset.
+Only while that candidate is pending may the independent generic header
+corroborate current Report presence when the caption is unrecognized. If
+both witnesses are missing/unqualified, the old pending-clear behavior remains.
+The original one-second horizon, native contiguous confirmation duration,
+subject/victim requirements and source-break guards remain unchanged.
+
+`report_support` retains the actual caption score. A separately measured
+`report_presence_support` records the optional witness; `null` means it was
+not measured/accepted and is not evidence of absence. The reader evaluates
+this witness only when it can affect corroboration, never to open an onset or
+rearm an emitted episode. Main-header scores are not assigned to the caption,
+victim, player HUD or ownership. The component arrays, settings and code enter
+the effective runtime fingerprint.
+
+The shared runner accepts experimental standalone profile **v2** with explicit
+presence metadata and its three arrays. Strict v1 configuration remains valid
+with no companion witness. Unknown/expected-label keys, incomplete assets and
+invalid confidence settings are rejected. This does not modify public HUD or
+Round Package Schema v2/v3, SQLite data, validation packs or canonical assertions.
+
+| Same 677 input rows | Full search only | Presence witness | Lazy presence witness |
+| --- | ---: | ---: | ---: |
+| Reviewed positive episodes predicted | 2/3 | 3/3 | 3/3 |
+| Predictions in two bounded negative windows | 0 | 0 | 0 |
+| Source-blocked frames | 0 | 0 | 0 |
+| Formal events | 0 | 0 | 0 |
+| Recognition seconds | 752.96 | 815.62 | 753.21 |
+| Wall seconds | 903.84 | 966.26 | 905.26 |
+
+The lazy run preserves every prediction onset, confirmation time, measured
+support, status and reason from the eager run. Only two frames needed the
+auxiliary witness; unused optional scores remain absent. The recovered episode
+confirms 0.267 seconds after the original onset; no boundary is moved to the
+confirmation time. The former failed episode is now a regression case, not a
+new independent qualification success after the fix.
+
+Current-code source-1 regression again preserves exactly one R1 and one R2
+prediction, zero in both report/spectator controls, and the original onsets and
+confirmation times. Its 171 processed rows took 203.03 seconds recognition /
+216.32 seconds wall time. All terminal hashes passed. These old source-1 images
+are exposed development/regression material, not independent holdout.
+
+Local checks: **169 related unit/integration tests passed in 24.34 seconds**,
+including unchanged report-dropout rejection without a separate positive
+witness. Additional controls reject generic-header-only starts, unknown support
+from both readers, expired candidates, source gaps/context/code changes and
+rearming after emission. Ruff and mypy are recorded separately for this source
+revision; current remote CI is not yet verified.
+
+Temporary RAM decode caches avoid permanent image accumulation. Original
+sources, original manifests, exact decoder/PTS/pixel/encoded bindings and
+recognition results remain retained. Forty full-resolution review/corroboration
+frames were preserved before evicting 976,724,147 temporary encoded bytes.
+This preserved subset is explicitly **not** a continuous replay input; future
+full-window replay requires a new source decode with its own decoder epoch.
+Six exact review images and original metadata/results were similarly retained
+for the new menu/reappearance control before temporary-cache eviction.
+
+The original compact model's nine-episode results, the frozen full-search
+2/3 result and the revised corroboration 3/3 result retain separate fingerprints.
+They are not pooled as independent successes of one qualified model. Formal
+subject/role/transition qualification, the omitted-group check, nonself controls
+and the approved Event/Package/Trace connection still require work. Canonical
+targeted/sampled/Full deltas remain unmeasured and no new Full E2E was run.
+
+## Long native negative controls and typed witness transport
+
+The common diagnostic runner now accepts mutually exclusive decoded caches or
+explicit `--native-window START:END` inputs. Direct source mode reuses the
+existing `VideoService.native_replay` implementation and its bounded raw buffer.
+It verifies the **whole source** pixel/PTS sequence before exposing handles,
+recognizes every native frame inside each explicit window, resets diagnostic
+context between disjoint windows and verifies the source again at completion.
+It introduces no FPS conversion or Full sampler change. Cache mode and its CLI
+remain supported. Invalid, unordered, overlapping and empty windows reject.
+
+Whole-source preverification is expensive. Prefer existing verified caches for
+short windows on long videos. This new mode makes long controls feasible when
+retaining PNGs would exceed storage; it is not a universally faster decoder.
+Its summary separates preverification, recognition/streaming and terminal
+verification. Streaming time includes the underlying verified decoder pass,
+so it must not be reported as pure recognizer CPU time.
+
+Frozen source-1 validation covered a nonself killfeed window, stale-report
+reappearance during preparation, and a cold start in the long post-death/
+spectator interval. The outcomes are:
+
+| Control | Native frames | New death predictions | Source-blocked frames |
+| --- | ---: | ---: | ---: |
+| Nonself killfeed | 108 | 0 | 0 |
+| Stale report reappearance | 150 | 0 | 0 |
+| Long post-death/spectator persistence | 1,261 | 0 | 0 |
+| Total | 1,519 | 0 | 0 |
+
+The last control retains 118 actual victim-role readings from the old killfeed;
+they still do not open a new death episode. These long controls extend earlier
+12-frame checks, whose overlapping images are not counted as independent
+additional negatives. Original labels and canonical assertions are unchanged.
+
+The decoder verified 10,259 source frames, with a 67,108,864-byte raw-buffer
+budget and no PNG retention. Preverification took 900.22 seconds; recognition
+and verified streaming took 1,926.59 seconds; terminal verification took 1.89
+seconds. Total wall time was **2,834.48 seconds (47.24 minutes)**, slightly above
+the pre-run 20–45 minute estimate. Python peak RSS was 128,876,544 bytes; that
+does not include decoder/OCR child processes or claim total system memory.
+All terminal hashes passed. No Full E2E was started or repeated.
+
+`experimental/subject_witness_transport.py` now converts frozen image
+predictions into the already-existing typed subject observations. It preserves
+the original source/PTS/pixel/code/profile/dependency bindings, looks up the
+actual recorded onset frame and its support, and never borrows confirmation
+confidence for an earlier timestamp. Geometric victim roles keep confidence
+null; plate fraction does not become NCC. Unknown relation, candidate review
+state, missing qualification and zero formal authority remain explicit.
+The transport aggregate cannot exceed the original aggregate or any available
+contributing numeric witness. Missing/conflicting/invalid source evidence is
+an error, never a default value or a neighboring-frame repair.
+
+A transport-only real-output audit verifies frozen result hashes, current
+physical source hashes, original profile/assets, reader/dependency fingerprints
+and the original runner bytes reconstructed from Git. No recognition is rerun
+or re-signed. Five existing predictions export 15 typed observations; all five
+victim numeric confidences remain absent. Every result stays UNKNOWN/CANDIDATE
+and formal events remain zero. The archived recognition fingerprints are kept
+separate from the new transport-module fingerprint.
+
+The structural role cannot pass the old probe's all-roles numeric-confidence
+gate without a genuine numeric witness. A concrete separate-predicate proposal
+is in `self_death_structural_role_release_proposal.md`. It requests a contract
+decision before implementing a formal consumer; it does not grant qualification
+or production adoption. Qualification controls and canonical comparison remain
+required after that decision. Current Strict PASS gain is still unmeasured.
+
+Validation for this stage: the final related native/subject suite passed
+205 tests in 38.65 seconds, including missing-confirmation rejection.
+Ruff passed the CI scope plus the
+runner; mypy passed 143 files. Real FFmpeg tests verify raw/PNG pixel and PTS
+agreement, full frame coverage inside windows, bounded-buffer operation and
+independent state between disjoint windows. Remote Linux and Windows push/PR
+CI for the preceding `d01888f` source revision all passed; the new revision's
+remote result is not yet verified. No existing test was skipped or relaxed to
+make a recognition failure pass.
+
+The omitted-group follow-up is now complete as a separate prospective test.
+Source review before prediction identifies a living player closing the purchase
+menu while an old Report reappears. All 181 native frames produced zero death
+predictions and zero source-blocked frames. The original frozen cohort and its
+selection correction are preserved; this new result is not inserted into the
+old cohort retroactively. Six exact full-resolution review frames and all
+metadata/results were retained before evicting its temporary RAM PNG cache.
+
+## Existing numerical reference restored without a contract change
+
+An existing frozen source-1 separator reference matches the R1/R2 confirmation
+images at NCC 0.98248 / 0.99311. It was present in an earlier alternate bank but
+was no longer materialized after the compact-icon profile replaced the single
+alternate entry. The image reader already accepts multiple references; the
+diagnostic NPZ loader accepted only one. This is a configuration transport gap,
+not a reason to fabricate geometric confidence or change its meaning.
+
+The loader now preserves the legacy `additional_weapon_reference` and an
+ordered, contiguous `additional_weapon_reference_000`, `_001`, ... bank. All
+arrays enter the existing profile fingerprint and are immutable. Noncanonical,
+gapped and unexpected keys reject. Legacy v1/v2 profiles retain their behavior.
+The existing reader's same-physical-glyph deduplication still prevents multiple
+references from becoming extra corroboration or raising confidence by voting.
+
+No reference was refitted and no NCC threshold changed. A newly fingerprinted
+profile retains the frozen source-1 reference alongside the existing compact
+reference. Fresh recognition of all 171 source-1 regression rows keeps one R1
+and one R2 prediction, unchanged onset/confirmation times and zero in both short
+negative controls. Actual victim NCC is now 0.98248 / 0.99311, plate support 1.0;
+aggregate support remains 0.91341 / 0.90382, never raised by the added reference.
+Recognition took 197.56 seconds, wall 206.12 seconds, Python peak RSS 95,084,544
+bytes. All terminal hashes passed. The old geometry outputs were not re-signed.
+
+Typed transport of those two fresh predictions preserves the genuine numeric
+victim witnesses. Relation/review remain UNKNOWN/CANDIDATE and formal events
+remain zero. This supplies a route under the existing numeric-role contract;
+the structural-predicate proposal is no longer a prerequisite for these two
+targets. Three isolated source-2 role probes still have geometry-only support;
+they are not silently promoted by the restored source-1 template.
+
+The changed profile needs its own source-backed qualification and extended
+negative verification before formal output. Previous profile-specific grants
+or long-control results are not transferred automatically. No canonical PASS
+gain, completed qualification or production adoption is claimed.
+
+Local validation for the bank loader: 210 related native/subject tests passed
+in 37.71 seconds; Ruff passed the CI scope plus the runner, and mypy passed
+143 files. Five added tests verify reference preservation, immutability and
+fingerprint coverage, and reject gapped/noncanonical/unexpected bank keys.
+
+## Exposure follow-up and fresh numerical-bank negative controls
+
+The owner reports that additional source-2 exposure records probably do not
+exist. Its global image-use history therefore remains **unknown**, rather than
+being certified unused. The supplemental-source ledger does not cover this
+video. Previously adjusted episodes remain development/regression cases;
+discovery-conditioned, frozen checks are distinguished from blind holdout.
+No recognizer qualification is inferred from missing records.
+
+The restored numerical bank has now undergone its own fresh extended source-1
+negative replay. The three unchanged, explicit native windows contain 1,519
+frames: 108 nonself, 150 stale-Report and 1,261 long post-death/spectator frames.
+All three produce zero predictions and zero source-blocked frames. The long
+control contains 118 accepted numeric victim readings without generating a new
+death. This tests the temporal/self-Report requirements in the presence of an
+old, recognizable killfeed. All terminal hashes pass. Recognition plus native
+streaming took 1,932.62 seconds; complete wall time, including whole-source
+preverification, was 2,832.51 seconds. Python peak RSS was 128,733,184 bytes.
+These are fresh results for the new profile, not transferred old-profile grants.
+
+A separate fixed-reference weapon discovery examined 2,245 source-2 keyframes
+in 248.51 seconds with terminal hashes passing. The predefined selection of
+match groups after the reserved cutoff yielded **zero** groups. That selection
+rule and empty result are retained. Discovery is neither continuous temporal
+validation nor an absence/recall measurement.
+
+A subsequent, explicitly discovery-conditioned component check froze two
+earlier, previously non-native-reviewed windows before full-image inspection.
+It excludes the compact-reference training episode and a known development
+window. It is not inserted into the original empty cohort, and is not called
+blind. Review shows a spectated nonself player's death with a preexisting
+self-Report in one window, and nonself killfeed victims while the recording
+player remains alive in the other. Player names and images remain private.
+
+The first acquisition rejected a decimal endpoint mismatch: the probe expected
+49 frames but FFmpeg's time filter omitted the first one. The failure was kept;
+no incomplete input reached recognition. A recorded acquisition amendment
+expanded each envelope by 0.01 seconds, preserving all original target frames.
+Both verified windows contain 49 consecutive native frames. Neither the
+production decoder nor full sampler was changed to accept missing frames.
+
+| Source-2 component/control result | Window A | Window B |
+| --- | ---: | ---: |
+| Native frames | 49 | 49 |
+| Frames with fixed separator NCC >= 0.90 | 14 | 49 |
+| Accepted separator NCC range | 0.92255–0.99593 | 0.99439–0.99685 |
+| Self Death predictions | 0 | 0 |
+| Source-blocked frames | 0 | 0 |
+| Formal events | 0 | 0 |
+
+The isolated separator measurements do not confer subject/role authority. The
+actual unchanged image recognizer was separately replayed on all 98 frames;
+its zero predictions agree with these bounded nonself controls. Recognition
+took 85.76 seconds, replay wall 223.43 seconds and acquisition 529.72 seconds;
+Python peak replay RSS was 100,253,696 bytes. All input/terminal hashes passed.
+Four exact source review images, complete frame metadata and results are
+retained privately. Multiple frames are not counted as independent episodes.
+
+The current source revision `6621a9f` passed all five remote push/PR checks:
+Linux validation twice, Windows test/build twice and text-I/O audit. The latest
+local source validation remains 210 relevant tests, Ruff and mypy (143 files).
+This follow-up changes documentation only; it does not claim a new test run.
+
+**Remaining release gates:** an independent, adequately reviewed positive
+subject/role/temporal qualification cohort for the exact frozen reader/profile,
+then a gated formal producer and native Package/Trace connection, followed by
+canonical targeted and sampled regression. These additional checks supply
+numeric component support and nonself controls, not an independent numerical-
+role Self Death positive episode or a qualification grant. Formal output remains
+disabled. No new Full E2E was run; no canonical assertion gain is claimed. The
+adopted 23/55/4 and archived unadopted Strict 28/50/4 results remain separate.

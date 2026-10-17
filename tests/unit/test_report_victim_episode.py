@@ -1,4 +1,4 @@
-"""Controls for visual co-occurrence candidates; no formal event authority."""
+"""Synthetic fail-closed controls for experimental report/victim onset timing."""
 
 from dataclasses import replace
 
@@ -18,87 +18,111 @@ def source(tick: int, *, segment: str = "video-segment") -> SourceBinding:
     )
 
 
-def test_two_death_episodes_only_with_independently_qualified_rearm() -> None:
+def test_two_episodes_preserve_first_onset_not_later_confirmed_frame() -> None:
     probe = ReportVictimEpisodeProbe()
-    rows = [
-        (source(100), .99, .12, False, "unknown"),
-        (source(101), .97, .83, False, "unqualified_candidate"),
-        (source(102), .95, .94, False, "duplicate"),
-        (source(130), .97, None, False, "duplicate"),
-        (source(300), .99, .88, False, "duplicate"),
-        (source(500), .02, .12, True, "unknown"),
-        (source(501), .97, None, False, "unknown"),
-        (source(502), .98, .81, False, "unqualified_candidate"),
-        (source(510), .98, .90, False, "duplicate"),
+    observations = [
+        (99, .02, .02, False, "unknown"),
+        (100, .98, .10, False, "unknown"),
+        (101, .96, .88, False, "unqualified_candidate"),
+        (102, .96, .94, False, "duplicate"),
+        (190, .03, .01, False, "duplicate"),
+        (300, .98, .88, False, "duplicate"),
+        (500, .02, .02, True, "unknown"),
+        (501, .97, None, False, "unknown"),
+        (502, .98, .81, False, "unqualified_candidate"),
+        (510, .98, .90, False, "duplicate"),
     ]
-    for frame, report, victim, start, status in rows:
-        result = probe.observe(frame, report_score=report, victim_score=victim,
-                               qualified_new_round=start)
+    decisions = []
+    for tick, report, victim, start, status in observations:
+        result = probe.observe(source(tick), report_score=report,
+                               victim_score=victim, qualified_new_round=start)
         assert result.status == status
         assert result.qualified is False and result.formal_events == ()
+        if result.status == "unqualified_candidate":
+            decisions.append(result)
+    assert [(x.onset_time_sec, x.confirmation_time_sec) for x in decisions] == [
+        (100 / 60, 101 / 60), (501 / 60, 502 / 60),
+    ]
 
 
-def test_persistent_report_after_disappearance_never_rearms_itself() -> None:
+def test_persistent_report_toggle_without_new_round_never_rearms() -> None:
     probe = ReportVictimEpisodeProbe()
-    assert probe.observe(source(0), report_score=.95,
-                         victim_score=.85).status == "unqualified_candidate"
-    for tick in (1, 60, 90, 120, 360):
-        # Report toggle and persistent scoreboard/panel cause no new Death.
-        result = probe.observe(source(tick), report_score=.99,
-                               victim_score=.99)
+    probe.observe(source(0), report_score=.02, victim_score=.02)
+    result = probe.observe(source(1), report_score=.95, victim_score=.85)
+    assert result.status == "unqualified_candidate"
+    for tick, report in [(2, .99), (60, .01), (90, .99), (120, .03), (360, .99)]:
+        result = probe.observe(source(tick), report_score=report, victim_score=.99)
         assert result.status == "duplicate"
         assert result.formal_events == ()
 
 
-def test_report_only_killfeed_only_and_missing_data_are_unknown() -> None:
+def test_header_only_victim_only_stale_and_clipped_onset_do_not_emit() -> None:
     probe = ReportVictimEpisodeProbe()
-    for tick, a, b in [
-        (0, .99, None), (1, .98, .12), (2, None, .99),
-        (3, .89, .99), (4, .99, .79), (5, -1, .99),
+    for tick, report, victim in [
+        (0, .99, .99),  # Clip may start with previous report: no prior absence
+        (1, .02, .02),
+        (2, .98, .12),
+        (3, .98, .99),  # after an observed appearance this is allowed
     ]:
-        result = probe.observe(source(tick), report_score=a, victim_score=b)
-        assert result.status == "unknown"
-    assert probe.observe(source(6), report_score=.90,
-                         victim_score=.80).status == "unqualified_candidate"
+        result = probe.observe(source(tick), report_score=report,
+                               victim_score=victim)
+        if tick == 3:
+            assert result.status == "unqualified_candidate"
+        else:
+            assert result.status == "unknown"
 
 
-def test_source_break_and_repeated_raster_do_not_auto_rearm() -> None:
+def test_stale_report_onset_rejected_even_with_later_victim() -> None:
     probe = ReportVictimEpisodeProbe()
+    probe.observe(source(0), report_score=.03, victim_score=.02)
+    probe.observe(source(1), report_score=.99, victim_score=None)
+    assert probe.observe(source(70), report_score=.99,
+                         victim_score=.99).status == "unknown"
+
+
+def test_source_change_blocks_until_qualified_new_round() -> None:
+    probe = ReportVictimEpisodeProbe()
+    probe.observe(source(9), report_score=.02, victim_score=.02)
     assert probe.observe(source(10), report_score=.99,
                          victim_score=.99).status == "unqualified_candidate"
-    broken = source(11, segment="source-cut")
-    result = probe.observe(broken, report_score=.99, victim_score=.99)
-    assert result.status == "unknown"
-    result = probe.observe(source(12, segment="source-cut"),
-                           report_score=.99, victim_score=.99)
-    assert result.status == "unknown"
-    assert probe.observe(source(13, segment="source-cut"), report_score=.99,
-                         victim_score=.99, qualified_new_round=True
-                         ).status == "unqualified_candidate"
-    repeated = replace(source(14, segment="source-cut"),
-                       pixel_sha256=source(13, segment="source-cut").pixel_sha256)
+    assert probe.observe(source(11, segment="source-cut"), report_score=.99,
+                         victim_score=.99).status == "unknown"
+    assert probe.observe(source(12, segment="source-cut"), report_score=.99,
+                         victim_score=.99).status == "unknown"
+    assert probe.observe(source(13, segment="source-cut"), report_score=.02,
+                         victim_score=.02, qualified_new_round=True).status == "unknown"
+    assert probe.observe(source(14, segment="source-cut"), report_score=.99,
+                         victim_score=.99).status == "unqualified_candidate"
+    repeated = replace(source(15, segment="source-cut"),
+                       pixel_sha256=source(14, segment="source-cut").pixel_sha256)
     assert probe.observe(repeated, report_score=.99,
                          victim_score=.99).status == "unknown"
+
+
+def test_report_and_victim_thresholds_are_diagnostic_not_qualifying() -> None:
+    probe = ReportVictimEpisodeProbe()
+    probe.observe(source(0), report_score=.10, victim_score=.10)
+    result = probe.observe(source(1), report_score=.90, victim_score=.80)
+    assert result.status == "unqualified_candidate"
+    assert result.qualified is False and result.formal_events == ()
 
 
 @pytest.mark.parametrize("value", [True, False, float("nan"), float("inf"), 2, -2, "0.95"])
 def test_invalid_similarity_values_rejected(value) -> None:
     probe = ReportVictimEpisodeProbe()
     with pytest.raises(ValueError, match="measured image-similarity"):
-        probe.observe(source(100), report_score=value, victim_score=.98)  # type: ignore[arg-type]
+        probe.observe(source(100), report_score=value,
+                      victim_score=.98)  # type: ignore[arg-type]
 
 
-def test_wrong_lifecycle_signal_rejected() -> None:
+def test_non_boolean_lifecycle_signal_rejected() -> None:
     probe = ReportVictimEpisodeProbe()
     with pytest.raises(ValueError, match="typed lifecycle"):
         probe.observe(source(10), report_score=.98, victim_score=.98,
                       qualified_new_round=1)  # type: ignore[arg-type]
 
 
-@pytest.mark.parametrize("bad", [0, 1.01, float("nan"), float("inf"), True, .90])
+@pytest.mark.parametrize("bad", [0, -1, 1.01, float("nan"), float("inf"), True, "0.9"])
 def test_invalid_score_floor_rejected(bad) -> None:
-    if type(bad) is float and bad == .90:
-        ReportVictimEpisodeProbe(report_floor=bad)
-        return
     with pytest.raises(ValueError, match="comparison floor"):
         ReportVictimEpisodeProbe(victim_floor=bad)  # type: ignore[arg-type]
