@@ -182,3 +182,59 @@ completed successfully. The follow-up changes only this report; it does not
 claim those checks ran on a later documentation commit or qualify the private
 reference assets. No production-code change required a new local pytest,
 Ruff or mypy run in this follow-up.
+
+## Expanded-bank long negative regression
+
+A subsequent frozen run completed all three longer source-native controls with
+the expanded match_001 profile. This closes the outstanding *expanded-bank
+negative-suite* check above; it does not close independent positive qualification.
+The recognizer, reference arrays and thresholds were not adjusted again.
+
+| Frozen control | Native frames | Previous predictions | Current predictions | Current source-blocked frames |
+| --- | ---: | ---: | ---: | ---: |
+| Nonself killfeed | 108 | 0 | 0 | 0 |
+| Old Report / reappearance context | 150 | 0 | 0 | 0 |
+| Cold postdeath / spectator context | 1,261 | 0 | 0 | 0 |
+| Total | 1,519 | 0 | 0 | 0 |
+
+The postdeath interval contains 118 frames with actual numeric victim support
+from the remaining killfeed. They did not open a fresh death episode. This
+distinguishes negative-control success from simply failing to read the icon.
+The three intervals contain no new formal Event, qualification grant or player
+ownership promotion.
+
+The run processed all frames at the native cadence, with a bounded 64 MiB raw
+buffer and no retained PNG cache. Complete-source preverification covered
+10,259 frames; its native PTS/pixel sequence digest was identical to the earlier
+bank's run. Every selected negative PTS/pixel hash was also compared and matched.
+Source/config/dependency terminal checks passed. Total wall time was
+2,818.003 seconds (46.97 minutes), including 895.747 seconds preverification and
+1,914.543 seconds recognition/streaming; peak RSS was 126,615,552 bytes. Timing
+delta against the older four-thread run is not claimed.
+
+Private records:
+
+- `source2-rifle-coverage-development-v1-long-negative-plan.json`: frozen
+  hypothesis, input/profile/asset digests, expected counts and stop conditions.
+- `source2-rifle-coverage-development-v1-long-negatives.json`, SHA-256
+  `7751b7036b304975e27544ad8f52a055eb4732a38bc1e99fc65227880dbd86f8`.
+
+Its code/profile/dependency fingerprints exactly match the expanded-bank
+match_001 positive replay above. This is a newly recognized fixed negative
+regression, not a Full E2E, exhaustive negative qualification, blind-positive
+qualification or new canonical result. No further profile changes are justified
+by these passing controls alone.
+
+The code-path audit also distinguishes two remaining tasks: the experimental
+Event consumer already enforces qualified numeric witnesses, complete source
+chains and safe downstream Fact/Package/Trace transport, but the independently
+qualified image producer and its native runtime caller are not yet connected.
+Neither input hashing nor a generic continuity hash can fill that semantic
+qualification gap. Default output remains empty. Completing this connection
+and independently qualifying real positive/negative evidence remain necessary
+before a new targeted canonical comparison; existing user authorization permits
+that qualified candidate evaluation without another production-adoption gate.
+
+All Linux/Windows checks and the text-I/O audit also completed successfully at
+`705ffa0c6b6b42a166343cee9fb7cee5defe7916`. No new local code-test run is claimed
+for this documentation-only follow-up.
