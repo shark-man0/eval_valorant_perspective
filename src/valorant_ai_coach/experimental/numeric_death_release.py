@@ -50,6 +50,7 @@ def release_fingerprint() -> str:
     source = Path(__file__)
     for label, path in (
         ('numeric_death_release.py', source),
+        ('numeric_death_session.py', source.with_name('numeric_death_session.py')),
         ('facts/builder.py', source.parent.parent/'facts'/'builder.py'),
     ):
         digest.update(label.encode('utf-8'))

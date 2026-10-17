@@ -140,3 +140,10 @@ resume; then run same-contract canonical targeted and fixed sampled regression.
 Point Death predicates still need actual missing victim/killer/damage fields.
 Full requires an independently qualified positive hypothesis surviving these
 checks. Main adoption is not automatic. The goal remains incomplete.
+
+Follow-up: the [image session adapter](numeric_self_death_image_session.md) now
+joins actual image predictions with original, separately reviewed frame
+witnesses and this consumer. Its source is also bound by the release fingerprint.
+It does not provide the missing independently qualified subject/continuity
+producer or enable an application caller; real-source default output remains
+empty. Original recognizer/profile fingerprints are preserved.
