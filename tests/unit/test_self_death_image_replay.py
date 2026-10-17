@@ -92,6 +92,53 @@ def test_cache_contract_errors_cannot_be_scored_as_valid_replay(tmp_path, change
         replay_cache(manifest, model, HASH)
 
 
+@pytest.mark.parametrize('count', ['missing', None, True, '6', -1, 5, 7])
+def test_invalid_total_count_rejects_before_any_image_recognition(tmp_path, monkeypatch, count):
+    model, base, header = detector()
+    manifest = cache(tmp_path, 'bad-count', base, header, persistent=False)
+    data = json.loads(manifest.read_text(encoding='utf-8'))
+    if count == 'missing':
+        del data['frames']
+    else:
+        data['frames'] = count
+    manifest.write_text(json.dumps(data), encoding='utf-8')
+    monkeypatch.setattr('scripts.diagnostics.replay_self_death_images._observe_native_frames',
+                        lambda *a, **k: pytest.fail('recognition began before count validation'))
+    with pytest.raises(ValueError, match='cache frame count mismatch'):
+        replay_cache(manifest, model, HASH)
+
+
+@pytest.mark.parametrize('groups', [None, {}, [None], [{'rows': None}]])
+def test_invalid_window_rows_reject_before_any_image_recognition(tmp_path, monkeypatch, groups):
+    model, base, header = detector()
+    manifest = cache(tmp_path, 'bad-groups', base, header, persistent=False)
+    data = json.loads(manifest.read_text(encoding='utf-8'))
+    data['windows'] = groups
+    manifest.write_text(json.dumps(data), encoding='utf-8')
+    monkeypatch.setattr('scripts.diagnostics.replay_self_death_images._observe_native_frames',
+                        lambda *a, **k: pytest.fail('recognition began before row validation'))
+    with pytest.raises(ValueError, match='cache windows'):
+        replay_cache(manifest, model, HASH)
+
+
+def test_cli_bad_count_rejects_before_profile_source_or_dependency_work(tmp_path, monkeypatch):
+    from scripts.diagnostics.replay_self_death_images import main
+
+    manifest = tmp_path/'missing-count.json'
+    manifest.write_text(json.dumps({'windows': [{'rows': []}]}), encoding='utf-8')
+    arguments = ['replay', '--cache-manifest', str(manifest), '--native-step-ticks', '1']
+    for name in ('source', 'profile', 'owner-review', 'tesseract', 'engine-binary', 'tessdata',
+                 'output'):
+        arguments.extend(['--'+name, str(tmp_path/('unused-'+name))])
+    monkeypatch.setattr('sys.argv', arguments)
+    monkeypatch.setattr('scripts.diagnostics.replay_self_death_images.load_profile',
+                        lambda *a: pytest.fail('profile work began before cache count validation'))
+    monkeypatch.setattr('scripts.diagnostics.replay_self_death_images.sha',
+                        lambda *a: pytest.fail('hashing began before cache count validation'))
+    with pytest.raises(ValueError, match='cache frame count mismatch'):
+        main()
+
+
 @pytest.mark.parametrize('field,value', [
     ('time_base_num', True), ('time_base_den', 60.0), ('pts_ticks', False), ('width', '240'),
 ])

@@ -126,6 +126,19 @@ def load_report_presence(path: Path) -> ReportHeader | None:
     return _report_presence_model(data, arrays)
 
 
+def _cache_groups(data: dict[str, Any]) -> list[dict[str, Any]]:
+    """Validate cheap cache cardinality before hashing video or recognizing pixels."""
+    groups = data.get('windows')
+    if (not isinstance(groups, list)
+            or any(not isinstance(group, dict) or not isinstance(group.get('rows'), list)
+                   for group in groups)):
+        raise ValueError('cache windows with explicit frame rows required')
+    if (type(data.get('frames')) is not int or data['frames'] < 0
+            or sum(len(group['rows']) for group in groups) != data['frames']):
+        raise ValueError('cache frame count mismatch')
+    return groups
+
+
 def replay_cache(
     manifest_path: Path, recognizer: SelfDeathImageRecognizer, dependencies: str,
 ) -> list[dict[str, Any]]:
@@ -135,8 +148,9 @@ def replay_cache(
             or data.get('source_sha256') != recognizer.reader.profile.source_sha256
             or data.get('terminal_source_hash_verified') is not True):
         raise ValueError('verified source-bound decoded-input cache required')
+    groups = _cache_groups(data)
     windows = []
-    for group in data['windows']:
+    for group in groups:
         frames = []
         for record in group['rows']:
             for field, minimum in (('pts_ticks', 0), ('time_base_num', 1),
@@ -276,6 +290,9 @@ def main() -> int:
     if args.output.exists():
         parser.error('preserve old results: output must not exist')
     started = time.monotonic()
+    manifests = args.cache_manifest or []
+    for manifest in manifests:
+        _cache_groups(_json(manifest))
     profile, report, search, assets = load_profile(args.profile)
     presence_header = load_report_presence(args.profile)
     if sha(args.source) != profile.source_sha256:
@@ -289,7 +306,6 @@ def main() -> int:
         end > Fraction(str(metadata.duration_sec)) for _, end in args.native_window
     ):
         raise ValueError('requested native window exceeds source duration')
-    manifests = args.cache_manifest or []
     inputs = {str(path.resolve()): sha(path) for path in (
         args.profile, assets, args.owner_review, Path(__file__), *manifests,
     )}
