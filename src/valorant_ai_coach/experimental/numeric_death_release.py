@@ -52,6 +52,7 @@ def release_fingerprint() -> str:
         ('numeric_death_release.py', source),
         ('numeric_death_session.py', source.with_name('numeric_death_session.py')),
         ('death_episode_fields.py', source.with_name('death_episode_fields.py')),
+        ('report_fatal_row.py', source.with_name('report_fatal_row.py')),
         ('facts/builder.py', source.parent.parent/'facts'/'builder.py'),
     ):
         digest.update(label.encode('utf-8'))

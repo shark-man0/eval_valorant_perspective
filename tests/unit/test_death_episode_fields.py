@@ -209,3 +209,53 @@ def test_serialized_reader_round_trip_preserves_all_original_sources():
         import json
 
         assert load_reading(json.loads(json.dumps(asdict(row)))) == row
+
+
+def test_fatal_row_witness_retains_its_producer_and_caps_only_association():
+    from valorant_ai_coach.experimental.report_fatal_row import FatalReportRowReading
+
+    rows = readings()
+    original = report(rows[3])
+    damage_roi = (40, 61, 72, 71)
+    marker = FatalReportRowReading(
+        replace(original.source, code_fingerprint='d'*64), original.source,
+        'unqualified_fatal_damage_row', (45, 72, 65, 76), damage_roi, .92, .96, .92)
+    collector = DeathEpisodeFieldCollector(1)
+    results = [collector.observe(r, original if i == 3 else None, marker if i == 3 else None)
+               for i, r in enumerate(rows)]
+    result = next(r for r in results if r is not None)
+    damage = next(f for f in result.fields if f.name == 'damage_received')
+    assert damage.fatal_row == marker and damage.source == original.source
+    assert damage.source_confidence == .95 and damage.association_support == .92
+    assert not marker.qualified and not result.qualified
+    assert all(f.fatal_row is None for f in result.fields if f.name != 'damage_received')
+
+
+def test_fatal_row_from_another_frame_never_joins():
+    from valorant_ai_coach.experimental.report_fatal_row import FatalReportRowReading
+
+    rows = readings()
+    original = report(rows[3])
+    marker = FatalReportRowReading(replace(original.source, pts_ticks=999), original.source,
+                                  'unqualified_fatal_damage_row')
+    collector = DeathEpisodeFieldCollector(1)
+    results = [collector.observe(r, original if i == 3 else None, marker if i == 3 else None)
+               for i, r in enumerate(rows)]
+    assert all(r is None for r in results)
+    assert collector.last_blocker == 'fatal_row_source_mismatch'
+
+
+@pytest.mark.parametrize('bad', [float('nan'), float('inf'), True, '.99', None, .89])
+def test_invalid_fatal_label_support_does_not_qualify_damage(bad):
+    from valorant_ai_coach.experimental.report_fatal_row import FatalReportRowReading
+
+    rows = readings()
+    original = report(rows[3])
+    marker = FatalReportRowReading(original.source, original.source,
+        'unqualified_fatal_damage_row', (45, 72, 65, 76), (40, 61, 72, 71), bad, .99, .99)
+    collector = DeathEpisodeFieldCollector(1)
+    results = [collector.observe(r, original if i == 3 else None, marker if i == 3 else None)
+               for i, r in enumerate(rows)]
+    result = next(r for r in results if r is not None)
+    damage = next(f for f in result.fields if f.name == 'damage_received')
+    assert damage.fatal_row is None and damage.source_confidence == .95

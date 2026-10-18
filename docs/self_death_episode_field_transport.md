@@ -149,6 +149,9 @@ The next implementation must bind the Report's semantic subject/row and killer
 role to the episode using actual image evidence, then connect only independently
 qualified attributes to formal release. Presence of the Report, a portrait or
 damage alone remains insufficient, including the persistent-Report controls.
+The subsequent current-image fatal-row implementation is documented in
+[self_death_report_fatal_row.md](self_death_report_fatal_row.md); its annotations
+remain unqualified and do not enable formal attributes.
 Source-2's unsupported damage and portrait class remain absent under the
 unchanged reader. No fields are fabricated to complete either episode.
 

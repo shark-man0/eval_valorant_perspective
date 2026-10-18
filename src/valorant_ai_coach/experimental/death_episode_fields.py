@@ -8,14 +8,17 @@ from __future__ import annotations
 
 import copy
 import math
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from fractions import Fraction
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from valorant_ai_coach.hud.models import _validate_report_readings
 
 from .self_death_image import SelfDeathImageReading
 from .subject_death import SourceBinding
+
+if TYPE_CHECKING:
+    from .report_fatal_row import FatalReportRowReading
 
 
 def _accepted(value: Any) -> bool:
@@ -42,6 +45,7 @@ class EpisodeField:
     association_support: float
     # Original marker/role/Report observations, including their own producer.
     image_witness: SelfDeathImageReading
+    fatal_row: FatalReportRowReading | None = None
 
 
 @dataclass(frozen=True)
@@ -136,7 +140,8 @@ class DeathEpisodeFieldCollector:
         self.report_context: tuple[Any, ...] | None = None
 
     def observe(self, image: SelfDeathImageReading,
-                report: ReportCandidateFrame | None = None) -> DeathEpisodeFields | None:
+                report: ReportCandidateFrame | None = None,
+                fatal_row: FatalReportRowReading | None = None) -> DeathEpisodeFields | None:
         def reject(reason: str) -> None:
             self.failed = True
             self.frames.clear()
@@ -164,6 +169,12 @@ class DeathEpisodeFieldCollector:
                 reject('episode_report_source_or_producer_mismatch')
                 return None
             self.report_context = report.source.context
+        if fatal_row is not None and (
+            report is None or fatal_row.fields_source != report.source
+            or _physical(fatal_row.source) != _physical(source)
+        ):
+            reject('fatal_row_source_mismatch')
+            return None
         if len(victims) == 1 and _accepted(current_report):
             victim = victims[0]
             if victim.weapon_roi is not None:
@@ -188,7 +199,22 @@ class DeathEpisodeFieldCollector:
                         min(support, victim.name_confidence), image))
                 if report is not None:
                     try:
-                        fields.extend(report.fields_for(image, support))
+                        for field in report.fields_for(image, support):
+                            if (field.name == 'damage_received' and fatal_row is not None
+                                    and fatal_row.reason == 'unqualified_fatal_damage_row'
+                                    and fatal_row.damage_roi == field.roi
+                                    and _accepted(fatal_row.association_support)
+                                    and _accepted(fatal_row.marker_support)
+                                    and _accepted(fatal_row.header_support)):
+                                assert fatal_row.association_support is not None
+                                assert fatal_row.marker_support is not None
+                                assert fatal_row.header_support is not None
+                                field = replace(field, fatal_row=fatal_row,
+                                    association_support=min(field.association_support,
+                                                            fatal_row.association_support,
+                                                            fatal_row.marker_support,
+                                                            fatal_row.header_support))
+                            fields.append(field)
                     except (ValueError, TypeError, KeyError):
                         reject('episode_report_payload_invalid')
                         return None
