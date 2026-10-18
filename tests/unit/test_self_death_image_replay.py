@@ -258,18 +258,32 @@ def test_invalid_native_window_sequences_fail_before_decoder_work(tmp_path, monk
             [(Fraction(a), Fraction(b)) for a, b in ranges], model, HASH)
 
 
-def test_native_source_window_replay_matches_png_pixels_without_sampling_or_context_join(tmp_path):
+@pytest.mark.parametrize('mode', ['whole_source', 'bounded'])
+def test_native_source_window_replay_matches_png_pixels_without_sampling_or_context_join(
+    tmp_path, monkeypatch, mode,
+):
     import shutil
     import subprocess
     from fractions import Fraction
 
-    from scripts.diagnostics.replay_self_death_images import replay_source_windows, sha
+    from scripts.diagnostics.replay_self_death_images import (
+        replay_bounded_source_windows,
+        replay_source_windows,
+        sha,
+    )
 
     ffmpeg = shutil.which('ffmpeg')
     if ffmpeg is None or shutil.which('ffprobe') is None:
         pytest.skip('FFmpeg/ffprobe required for native source integration')
     model, base, header = detector()
     manifest = cache(tmp_path, 'source-frames', base, header, persistent=False)
+    if mode == 'bounded':
+        # Interior endpoints must have probe coverage after the requested
+        # interval; the final two physical frames are deliberately unrecognized.
+        for tick in (6, 7):
+            image = base.copy()
+            image[79, 239] = tick
+            assert cv2.imwrite(str(manifest.parent/f'{tick}.png'), image)
     video = tmp_path/'verified-source.mov'
     subprocess.run([ffmpeg, '-v', 'error', '-framerate', '60', '-i',
                     str(manifest.parent/'%d.png'), '-c:v', 'qtrle', '-pix_fmt', 'rgb24',
@@ -283,24 +297,114 @@ def test_native_source_window_replay_matches_png_pixels_without_sampling_or_cont
     data['source_sha256'] = profile.source_sha256
     manifest.write_text(json.dumps(data), encoding='utf-8')
     cached = replay_cache(manifest, model, HASH)
-    native, proof = replay_source_windows(video, [(Fraction(0), Fraction(5, 60))], model, HASH,
-                                         max_buffer_bytes=240*80*3*3)
+    run = replay_source_windows if mode == 'whole_source' else replay_bounded_source_windows
+    options = ({'max_buffer_bytes': 240*80*3*3} if mode == 'whole_source'
+               else {'max_png_bytes': 240*80*3*3})
+    if mode == 'bounded':
+        from scripts.diagnostics import replay_self_death_images as replay_module
+        from valorant_ai_coach.video import VideoService
+
+        monkeypatch.setattr(VideoService, 'native_replay',
+                            lambda *a, **k: pytest.fail('whole-source decoder called'))
+        native_paths = []
+        original_observe = replay_module._observe_native_frames
+
+        def capture_paths(frames, *args):
+            assert all(not p.exists() for p in native_paths)
+            native_paths.extend(frame.path for frame in frames)
+            return original_observe(frames, *args)
+
+        monkeypatch.setattr(replay_module, '_observe_native_frames', capture_paths)
+    native, proof = run(video, [(Fraction(0), Fraction(5, 60))], model, HASH, **options)
     assert cached[0]['prediction_count'] == native[0]['prediction_count'] == 1
     assert native[0]['source_blocked_frames'] == 0
     assert [x['status'] for x in native[0]['rows']] == [x['status'] for x in cached[0]['rows']]
     assert [x['source']['pixel_sha256'] for x in native[0]['rows']] == [
         x['pixel_sha256'] for x in data['windows'][0]['rows']]
     assert [x['source']['pts_ticks'] for x in native[0]['rows']] == list(range(6))
-    assert proof['whole_source_verified_frames'] == 6 and proof['source_terminal_verified'] is True
-    assert proof['max_buffer_bytes'] == 240*80*3*3
-    split, split_proof = replay_source_windows(video, [
+    assert proof['source_terminal_verified'] is True
+    if mode == 'whole_source':
+        assert proof['whole_source_verified_frames'] == 6
+        assert proof['max_buffer_bytes'] == 240*80*3*3
+    else:
+        assert proof['verified_native_frames'] == 6
+        assert proof['max_window_png_bytes'] == 240*80*3*3
+        assert proof['peak_retained_png_bytes'] <= 240*80*3*3
+        assert proof['whole_source_pts_pixels_verified'] is False
+        assert proof['cross_window_continuity_asserted'] is False
+    split, split_proof = run(video, [
         (Fraction(0), Fraction(2, 60)), (Fraction(4, 60), Fraction(5, 60))], model, HASH)
     assert [x['prediction_count'] for x in split] == [0, 0]
     assert [[r['source']['pts_ticks'] for r in w['rows']] for w in split] == [[0, 1, 2], [4, 5]]
-    assert (split_proof['native_pts_pixel_sequence_sha256']
-            == proof['native_pts_pixel_sequence_sha256'])
+    if mode == 'whole_source':
+        assert (split_proof['native_pts_pixel_sequence_sha256']
+                == proof['native_pts_pixel_sequence_sha256'])
+    else:
+        assert split_proof['verified_native_frames'] == 5
+        assert split[0]['rows'][0]['source']['segment_id'] != (
+            split[1]['rows'][0]['source']['segment_id'])
+        # Distinct rational limits can round to the same float. The excluded
+        # origin frame must not reach recognition even in that case.
+        epsilon = Fraction(1, 10**30)
+        for begin, expected_ticks in ((epsilon, list(range(1, 6))),
+                                      (Fraction(1, 60)+epsilon, list(range(2, 6)))):
+            exact, exact_proof = run(video, [(begin, Fraction(5, 60))], model, HASH)
+            assert [r['source']['pts_ticks'] for r in exact[0]['rows']] == expected_ticks
+            assert exact_proof['windows'][0]['processed_native_frames'] == len(expected_ticks)
+        with pytest.raises(VideoProbeError, match='PNG storage budget'):
+            run(video, [(Fraction(0), Fraction(5, 60))], model, HASH, max_png_bytes=1)
+        assert all(not p.exists() for p in native_paths)
+
+        def change_source(frames, *args):
+            output = capture_paths(frames, *args)
+            with video.open('ab') as stream:
+                stream.write(b'changed original source during recognition')
+            return output
+
+        monkeypatch.setattr(replay_module, '_observe_native_frames', change_source)
+        with pytest.raises(VideoProbeError, match='source video changed during consumption'):
+            run(video, [(Fraction(0), Fraction(5, 60))], model, HASH)
+        assert all(not p.exists() for p in native_paths)
     assert all(w['formal_events'] == [] and w['qualified'] is False
                for w in (*cached, *native, *split))
+
+
+@pytest.mark.parametrize('ranges,budget', [
+    ([], 100), ([(1, 1)], 100), ([(2, 1)], 100), ([(0, 2), (1, 3)], 100),
+    ([(2, 3), (0, 1)], 100), ([(0, 2), (2, 3)], 100),
+    ([(0, 1)], 0), ([(0, 1)], True), ([(0, 1)], float('inf')),
+])
+def test_invalid_bounded_windows_fail_before_decoder_work(tmp_path, monkeypatch, ranges, budget):
+    from fractions import Fraction
+
+    from scripts.diagnostics.replay_self_death_images import replay_bounded_source_windows
+    from valorant_ai_coach.video import VideoService
+
+    model, _, _ = detector()
+    monkeypatch.setattr(VideoService, 'native_window',
+                        lambda *a, **k: pytest.fail('decoder called'))
+    with pytest.raises(ValueError, match='bounded native windows'):
+        replay_bounded_source_windows(tmp_path/'unused.mov',
+            [(Fraction(a), Fraction(b)) for a, b in ranges], model, HASH, max_png_bytes=budget)
+
+
+def test_cli_overlapping_bounded_windows_reject_before_profile_or_source_hashing(
+    tmp_path, monkeypatch,
+):
+    from scripts.diagnostics.replay_self_death_images import main
+
+    arguments = ['replay', '--bounded-native-window', '0:2',
+                 '--bounded-native-window', '1:3', '--native-step-ticks', '1']
+    for name in ('source', 'profile', 'owner-review', 'tesseract', 'engine-binary', 'tessdata',
+                 'output'):
+        arguments.extend(['--'+name, str(tmp_path/('unused-'+name))])
+    monkeypatch.setattr('sys.argv', arguments)
+    monkeypatch.setattr('scripts.diagnostics.replay_self_death_images.load_profile',
+                        lambda *a: pytest.fail('profile work began before window validation'))
+    monkeypatch.setattr('scripts.diagnostics.replay_self_death_images.sha',
+                        lambda *a: pytest.fail('hashing began before window validation'))
+    with pytest.raises(ValueError, match='bounded native windows'):
+        main()
 
 
 def bank_profile_file(tmp_path, extras):

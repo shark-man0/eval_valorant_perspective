@@ -22,6 +22,13 @@ review supports the original onset in one known episode; menu closure in its
 negative control is explicitly not proof of Report absence. No real certificate
 or formal Death is installed by these changes.
 
+The [bounded qualification workflow](self_death_bounded_qualification_workflow.md)
+adds a diagnostic-only native-window decoder option using the existing verified
+decoder and a temporary PNG cap. Fresh decoding of 84 known source frames
+matches the prior same-image-producer results, including both diagnostic deaths
+and the persistent-Report control. It does not qualify Subject/absence or
+produce a canonical PASS; independent qualification remains outstanding.
+
 ## Connection audit
 
 | Stage | Implemented | Actual-image measurement | Independent qualification | Formal application connection / first blocker |

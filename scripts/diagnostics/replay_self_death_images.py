@@ -8,6 +8,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import platform
 import shutil
 import subprocess
@@ -307,6 +308,97 @@ def replay_source_windows(
     return windows, proof
 
 
+def _validate_bounded_windows(
+    requested: list[tuple[Fraction, Fraction]], max_png_bytes: int,
+) -> None:
+    if (type(max_png_bytes) is not int or max_png_bytes <= 0 or not requested
+            or any(not isinstance(begin, Fraction) or not isinstance(end, Fraction)
+                   or not 0 <= begin < end for begin, end in requested)
+            or any(a[1] >= b[0] for a, b in zip(requested, requested[1:], strict=False))):
+        raise ValueError('ordered disjoint bounded native windows and positive PNG budget required')
+
+
+def replay_bounded_source_windows(
+    source_path: Path, requested: list[tuple[Fraction, Fraction]],
+    recognizer: SelfDeathImageRecognizer, dependencies: str, *,
+    max_png_bytes: int = 256*1024*1024,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Verify/decode only explicit intervals using the existing native decoder.
+
+    Original video bytes are hash-checked, but PTS/pixel coverage outside these
+    intervals is not decoded or asserted. Each interval is a separate detector
+    context, with its original decoder epoch and a hard temporary PNG limit.
+    No temporal state or proof is carried across omitted source intervals.
+    """
+    _validate_bounded_windows(requested, max_png_bytes)
+    service = VideoService()
+    observed, proofs = [], []
+    decode_sec = recognition_sec = terminal_sec = 0.0
+    peak_bytes = 0
+    for begin, end in requested:
+        started = time.monotonic()
+        decode_begin = max(0.0, math.nextafter(float(begin), -math.inf))
+        if 'e' in str(decode_begin).lower():
+            # FFmpeg's seek-duration parser does not accept scientific
+            # notation. Seek farther outward only for that representation;
+            # the exact rational PTS filter below still defines recognition.
+            decode_begin = math.floor(decode_begin)
+        decode_end = math.nextafter(float(end), math.inf)
+        with service.native_window(
+            source_path, start_sec=decode_begin, end_sec=decode_end,
+            source_video_sha256=recognizer.reader.profile.source_sha256,
+            png_prediction='up', max_png_bytes=max_png_bytes,
+        ) as frames:
+            decode_sec += time.monotonic()-started
+            retained_bytes = sum(frame.path.stat().st_size for frame in frames)
+            if retained_bytes > max_png_bytes:
+                raise ValueError('native decoder exceeded bounded PNG storage limit')
+            peak_bytes = max(peak_bytes, retained_bytes)
+            digest = hashlib.sha256()
+            for frame in frames:
+                digest.update(json.dumps((frame.pts_ticks, frame.time_base.numerator,
+                                          frame.time_base.denominator, frame.pixel_sha256),
+                                         separators=(',', ':')).encode('ascii'))
+            # The shared decoder uses floating-point filter endpoints. Expand
+            # only to adjacent representable floats, then select original PTS
+            # with exact rational arithmetic; no boundary timestamp is rounded.
+            selected = tuple(frame for frame in frames
+                             if begin <= frame.pts_ticks*frame.time_base <= end)
+            started = time.monotonic()
+            window = _observe_native_frames(
+                selected, [float(begin), float(end)], recognizer, dependencies)
+            recognition_sec += time.monotonic()-started
+            if window['frames'] != len(selected):
+                raise ValueError('bounded native replay omitted decoded source frames')
+            proof = {
+                'window': [float(begin), float(end)], 'verified_native_frames': len(frames),
+                'requested_window_rational': [str(begin), str(end)],
+                'decode_window_sec': [decode_begin, decode_end],
+                'processed_native_frames': len(selected),
+                'native_pts_pixel_sequence_sha256': digest.hexdigest(),
+                'retained_png_bytes': retained_bytes,
+                'source_epochs': sorted({frame.source_epoch for frame in frames}),
+                'native_pts_coverage_scope': 'bounded_decode_exact_requested_pts_selection',
+            }
+            started = time.monotonic()
+        # Native context completion verifies source integrity and removes its
+        # temporary pixels before the next interval is opened.
+        terminal_sec += time.monotonic()-started
+        proof['source_terminal_verified'] = True
+        proofs.append(proof)
+        observed.append(window)
+    return observed, {
+        'storage_mode': 'bounded_native_windows', 'windows': proofs,
+        'verified_native_frames': sum(p['verified_native_frames'] for p in proofs),
+        'max_window_png_bytes': max_png_bytes, 'peak_retained_png_bytes': peak_bytes,
+        'decode_verification_sec': decode_sec,
+        'recognition_and_streaming_sec': recognition_sec,
+        'terminal_verification_sec': terminal_sec,
+        'source_terminal_verified': True, 'whole_source_pts_pixels_verified': False,
+        'cross_window_continuity_asserted': False,
+    }
+
+
 def _peak_rss_bytes() -> int | None:
     try:
         import resource
@@ -325,10 +417,18 @@ def main() -> int:
     source_inputs.add_argument('--cache-manifest', type=Path, action='append')
     source_inputs.add_argument('--native-window', type=parse_native_window, action='append',
                               help='START:END, whole-source decoding is verified before selection')
+    source_inputs.add_argument('--bounded-native-window', type=parse_native_window, action='append',
+                              help='START:END, verify all native frames only inside this interval')
     parser.add_argument('--native-max-buffer-bytes', type=int, default=64*1024*1024)
+    parser.add_argument('--native-max-window-png-bytes', type=int, default=256*1024*1024,
+                        help='hard temporary PNG limit per bounded interval')
     parser.add_argument('--dependency-root', type=Path, action='append', default=[])
     parser.add_argument('--native-step-ticks', type=int, required=True)
     args = parser.parse_args()
+    if args.native_max_window_png_bytes <= 0:
+        parser.error('native-max-window-png-bytes must be positive')
+    if args.bounded_native_window:
+        _validate_bounded_windows(args.bounded_native_window, args.native_max_window_png_bytes)
     if args.output.exists():
         parser.error('preserve old results: output must not exist')
     started = time.monotonic()
@@ -345,8 +445,9 @@ def main() -> int:
     metadata = VideoService().probe(args.source)
     if (metadata.height, metadata.width) != profile.frame_shape:
         raise ValueError('profile/source geometry mismatch')
-    if args.native_window and any(
-        end > Fraction(str(metadata.duration_sec)) for _, end in args.native_window
+    requested = args.native_window or args.bounded_native_window or []
+    if requested and any(
+        end > Fraction(str(metadata.duration_sec)) for _, end in requested
     ):
         raise ValueError('requested native window exceeds source duration')
     inputs = {str(path.resolve()): sha(path) for path in (
@@ -400,6 +501,11 @@ def main() -> int:
             args.source, args.native_window, detector, deps,
             max_buffer_bytes=args.native_max_buffer_bytes,
         )
+    elif args.bounded_native_window:
+        windows, native_proof = replay_bounded_source_windows(
+            args.source, args.bounded_native_window, detector, deps,
+            max_png_bytes=args.native_max_window_png_bytes,
+        )
     else:
         for manifest in manifests:
             windows.extend(replay_cache(manifest, detector, deps))
@@ -419,7 +525,8 @@ def main() -> int:
     frames = sum(window['frames'] for window in windows)
     result = {
         'scope': 'Non-releasing native image replay; not canonical E2E or qualification.',
-        'mode': ('self_death_source_native_window' if native_proof is not None
+        'mode': ('self_death_bounded_native_windows' if args.bounded_native_window
+                 else 'self_death_source_native_window' if native_proof is not None
                  else 'self_death_native_replay'),
         'source_sha256': profile.source_sha256, 'native_decoding': native_proof,
         'input_hashes': inputs, 'dependencies': dependencies, 'runtime_fingerprint': runtime,

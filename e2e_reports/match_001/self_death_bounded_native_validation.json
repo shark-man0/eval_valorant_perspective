@@ -1,0 +1,93 @@
+{
+  "status": "B",
+  "kind": "bounded_native_diagnostic_equivalence_not_qualification_or_canonical_e2e",
+  "start_main_sha": "7e480c2f2f7f49aea73e1541d065d78881d2f11c",
+  "start_branch_sha": "053dcc1ced18807a88dc9e503e336c3158b24f38",
+  "production_recognition_threshold_owner_sampler_or_evaluator_changed": false,
+  "new_flag": "--bounded-native-window",
+  "legacy_whole_source_window_mode_retained": true,
+  "temporary_storage_cap_flag": "--native-max-window-png-bytes",
+  "source_video_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "new_video_transferred": false,
+  "actual_decoded_frames": 84,
+  "matching_pts_pixels_status_times_support": true,
+  "same_image_code_profile_dependencies": true,
+  "case_results": [
+    {
+      "case": "known_r1_death",
+      "frames": 24,
+      "candidate_previous": 1,
+      "candidate_current": 1,
+      "candidate_delta": 0,
+      "source_blocked_frames": 0
+    },
+    {
+      "case": "persistent_report_control",
+      "frames": 12,
+      "candidate_previous": 0,
+      "candidate_current": 0,
+      "candidate_delta": 0,
+      "source_blocked_frames": 0
+    },
+    {
+      "case": "known_r2_death",
+      "frames": 48,
+      "candidate_previous": 1,
+      "candidate_current": 1,
+      "candidate_delta": 0,
+      "source_blocked_frames": 0
+    }
+  ],
+  "performance": {
+    "wall_sec": 182.47525659995154,
+    "recognition_sec": 95.25673020305112,
+    "peak_rss_bytes": 100872192,
+    "peak_window_png_bytes": 85502305,
+    "max_window_png_bytes": 268435456
+  },
+  "whole_source_pts_pixels_verified": false,
+  "cross_window_continuity_asserted": false,
+  "terminal_hashes_passed": true,
+  "independent_qualification_granted": false,
+  "formal_events": {
+    "previous": 0,
+    "current": 0,
+    "delta": 0
+  },
+  "canonical": {
+    "historical_adopted": {
+      "pass": 23,
+      "fail": 55,
+      "not_evaluated": 4
+    },
+    "archived_unadopted_strict": {
+      "pass": 28,
+      "fail": 50,
+      "not_evaluated": 4
+    },
+    "new_targeted": "not_measured",
+    "new_sampled": "not_measured",
+    "new_full": "not_run",
+    "current_negative_violations": "not_measured",
+    "current_discontinuity_assertion_violations": "not_measured",
+    "new_pass_ids": []
+  },
+  "qualification_decision": {
+    "source_player_binding": "Component evidence exists; current whole-model independent qualification incomplete.",
+    "numeric_victim_role": "Conditional reference000 positives do not become independently held-out whole Subject episodes.",
+    "report_transition_absence": "Known positive timing supported; absence versus menu occlusion/reappearance qualification incomplete.",
+    "native_source": "Existing qualified admission available, no Self authority granted by source assurance.",
+    "attributes": "Internal class scope implemented; no real semantic grant, independent Fade positive absent.",
+    "formal_app_connection": "Synthetic native transport tested; real release and same-contract canonical evaluation still gated."
+  },
+  "measured_runner_sha256": "f012d1e350f582d319cfc365687b158b21d74fe3bdc593b625ef55dfaf865b32",
+  "measurement_note": "Exact executed preflight-refactor working-tree runner preserved privately by hash; final additional edit moves the same validation before expensive CLI work. Image recognizer/profile/dependency fingerprints unchanged.",
+  "private_evidence_sha256": {
+    "plan.json": "68bf57bdf0291d9661d34b34503c0742100b9803f74cf997ee0fc8b07d4d9c75",
+    "execution.json": "112f0be09a86a0fcb2a1e98bb520c4202afd32f518461eba1960dfd5b8ec4df7",
+    "equivalence-receipt.json": "9f3e06d25199a0179d4af9f227c183c7c92898b2855570c8e9cf73f541fa9c07",
+    "source1-bounded-replay.json": "db6f869fe5bb4d4c63f5bee148f4629c8ec22822e19b884234d3d52f08e01f78",
+    "measured_runner.py": "f012d1e350f582d319cfc365687b158b21d74fe3bdc593b625ef55dfaf865b32"
+  },
+  "remote_execution": "Original-video host/path requested; no connection information or external run result received."
+}
