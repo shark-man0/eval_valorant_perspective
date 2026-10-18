@@ -14,7 +14,7 @@ baseline, not a current-reader result.
 | --- | --- | --- | --- | --- |
 | Source image / native PTS | Yes, existing decoder and SHA/pixel bindings | Yes | No new whole-source assurance grant | Existing entrance; historical source exposure remains explicit |
 | Recorder marker / killer-victim role | Yes, `killfeed_subject.py` | Yes, including the new case below | Incomplete | Candidate reader; geometric role cannot substitute for numeric NCC |
-| Subject evidence | Existing typed models | Numeric image witnesses retained | Incomplete | No genuinely qualified image-to-`ProbeFrame` provider installed |
+| Subject evidence | Typed models and [source-backed provider](numeric_self_death_subject_provider.md) | Numeric image witnesses retained; provider positive tested synthetically | Incomplete | Provider implemented for qualified native scene input; no real qualification installed |
 | Episode evidence | Existing fresh Report + victim onset and native corroboration | Yes | Incomplete | Diagnostic only; persistent Report cannot open an episode |
 | Fatal row / received damage / portrait | Existing independent readers and episode collector | Existing source-backed measurements | Incomplete | Candidate fields do not establish semantic Event attributes |
 | Qualified Death decision | Existing exact-fingerprint numeric qualification loader and consumer | No qualified real decision | Missing real certificate | Default emits nothing; synthetic decisions are contract tests only |
