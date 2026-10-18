@@ -78,7 +78,7 @@ Stages, limited to this family:
 4. If source-backed feasibility exists, verify whether suitable independently preallocated positive/negative temporal data actually exist. A pool name or a new video filename is insufficient.
 5. **If independent temporal evidence and complete release prerequisites are missing, stop as unqualified.** Do not acquire/reanalyse hundreds of frames to manufacture apparent qualification. No production default, Formal End release or new Full E2E.
 
-The limited experiment/conclusion is the remaining convergence step. The former indefinite “End must PASS” objective is replaced by a bounded accept/defer/reject decision. PR #55 can be assessed independently of this research.
+The limited experiment is finished in `clock_type_end_contract_study.md` / `e2e_reports/match_001/clock_type_end_contract_study.json`:34 synthetic/adapter checks pass;1443 saved source rows produce no proposed pattern because actual active Start is missing. Caption absence/global context also remain unproven. No prerequisite is fabricated. **DEFER / UNQUALIFIED / EXPERIMENT STOPPED**; no production hookup or additional source search. This resolves the bounded decision, not Formal End. PR #55 is independent of the research.
 
 ## Independent evidence currently missing
 

@@ -51,13 +51,13 @@ Main and PR #42 are run in separate fresh Python processes, same local interpret
 
 Environment: Python3.12.15, macOS27.0.1 arm64, OpenCV4.14.0, NumPy2.5.4. Fixtures are generated synthetic crops, not private images. This establishes preexisting failures in this matched isolated local scope; it does not prove the cause is the OS or exclude every possible full-suite ordering interaction. Do not dismiss them as harmless or broadly alter spectator recognition here. Linux/Windows exact-HEAD CI is an independent gate.
 
-## CI and remaining acceptance
+## CI and acceptance evidence
 
 At5cc8b01, both Linux checks and text-I/O gate pass. Windows PR run39120228954 succeeds, explicitly including UTF-8-disabled tests, PyInstaller and packaged smoke. The additional push-triggered Windows run39120230846 also completed successfully, including PyInstaller and packaged smoke. All five audited checks at5cc8b01 are successful. The previous e9e9e15 failures came from two exporter `.encode()` call sites;5cc8b01 fixes explicit UTF-8 and Windows artifact-ID separators. Exported seven JSON/JSONL files remain byte-identical;23 focused tests/Ruff/audit pass. No production recognizer change is included in that fix.
 
 PR #55 has its own HEAD4f43d74 and CI must be checked separately. No prior #42 green result certifies it automatically. Full local coverage3866 PASS/4 FAIL/9 SKIP is historical implementation evidence; the matched comparison above is the fresh spectator audit, not a new full regression. Canonical baseline stays23 PASS/55 FAIL/4 NE. Full E2E belongs #20 and is not run.
 
-Remaining convergence work: one isolated clock-type temporal study with synthetic/saved-row tests, exact E-1/E-2/E-3 failure audit, final own-HEAD CI checks and data requirements. No further foreground/template experiments are authorized in this goal. If independent temporal positives/negatives are unavailable, stop the experiment as unqualified and retain the safe integration candidate.
+The single isolated study is finished: see `clock_type_end_contract_study.md` and its hash-bound JSON. 34 study/adapter cases pass;156 relevant lifecycle/source cases pass. Saved1443 rows preserve original unknowns/epochs and abstain without actual active Start. Conclusion: **DEFER, unqualified, experiment stopped**. Production fingerprint414f9d9d… is unchanged. No further foreground/template experiments or Full E2E occur. Final acceptance still requires checking the exact final report/study commit CI and PR #55 Windows packaging/smoke; current live results must be read from each PR, not inherited from5cc8b01. `round_boundary_convergence_result.md` records all14 final-report items.
 
 ## Complete changed-file inventory at audited HEAD
 
@@ -132,3 +132,7 @@ A = contract/tool/test candidate; B = explicit opt-in conditional recognizer; C 
 | `tests/unit/test_score_separated_specks.py` | B |
 | `tests/unit/test_semantic_text_family.py` | B |
 | `tests/unit/test_unedited_ui_end.py` | A |
+
+## Convergence additions after the implementation inventory
+
+The original67-file inventory above remains tied to5cc8b01. Commit47118c2 adds this audit, its JSON and the blocker plan. The final convergence commit adds `clock_type_end_study.py`, `replay_clock_type_end_study.py`, their two unit test modules, study Markdown/JSON and `round_boundary_convergence_result.md` (category C research/evidence only). These additions contain no production changes. Current diff/current HEAD are identified by the PR commit containing these files, avoiding a self-referential commit hash. Final exact-HEAD CI evidence belongs to that revision, not its parent.

@@ -624,5 +624,18 @@
   },
   "saved_End_source_rows_verified": {
     "work/new-source-development/next-End-result/raw-rows.json": "e9eb43e4b2f1b2ab17443fe00ba09ac18f1142e6a1bd5791a99366381830445b"
+  },
+  "convergence_update": {
+    "parent_report_checkpoint": "47118c2980b9fb9d130dabc7696b4ba261a9df1d",
+    "decision": "DEFER_UNQUALIFIED_EXPERIMENT_STOPPED",
+    "study_report": "clock_type_end_contract_study.json",
+    "study_tests_pass": 34,
+    "related_unit_tests_pass": 156,
+    "study_plus_text_io_pass": 47,
+    "production_fingerprint": "414f9d9d3f1841cfe50fdf9732bb78e1bfa35aa4382eb7c0d90d194ed81155fa",
+    "production_changed": false,
+    "full_E2E_run": false,
+    "final_exact_HEAD_CI": "required; terminal evidence recorded in PR and external execution report after this commit",
+    "additional_files_category": "C isolated research/tests and evidence only; see readiness Markdown additions"
   }
 }
