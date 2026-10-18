@@ -96,16 +96,16 @@ def assured_context(tmp_path, qualified_release, **kwargs):
     model, q, frames, lifecycle = context(tmp_path, qualified_release, **kwargs)
     path, contract = make_contract(tmp_path, HASH)
     report_path = tmp_path/'qualification.json'
-    data = json.loads(report_path.read_text())
+    data = json.loads(report_path.read_text(encoding='utf-8'))
     for name in ('scene_continuity', 'continuity'):
         data['components'].pop(name)
-    report_path.write_text(json.dumps(data))
+    report_path.write_text(json.dumps(data), encoding='utf-8')
     native_q = GlobalLifecycleQualification.load(report_path,
         lifecycle.qualification.profile_fingerprint, unedited_input_contract=contract)
     _, certificate = qualified_release
-    numeric_data = json.loads(certificate.read_text())
+    numeric_data = json.loads(certificate.read_text(encoding='utf-8'))
     numeric_data['component_reviews']['native_temporal_continuity'] = native_q.report_sha256
-    certificate.write_text(json.dumps(numeric_data))
+    certificate.write_text(json.dumps(numeric_data), encoding='utf-8')
     q = QualifiedNumericDeathContract.load(certificate,
         expected_report_sha256=hashlib.sha256(certificate.read_bytes()).hexdigest())
     rows = tuple({**row, 'system_evidence': {'assured_phase_scan_valid': False},
@@ -131,7 +131,8 @@ def test_explicit_assured_source_needs_no_scene_score_or_accepted_timer_for_subj
     export = provider.continuity_provenance()
     proof_hash = session.frames[3].continuity_proof_sha256
     proof = export['source_assured_proofs'][proof_hash]
-    assert proof_hash == hashlib.sha256(json.dumps(proof, sort_keys=True).encode()).hexdigest()
+    original_bytes = json.dumps(proof, sort_keys=True).encode('utf-8')
+    assert proof_hash == hashlib.sha256(original_bytes).hexdigest()
     assert proof['scope'] == 'source_assured_native' and 'confidence' not in proof
     assert export['input_contract_sha256'] == lifecycle.unedited_input_contract.fingerprint
     assert proof['source']['source_pixel_sha256'] == frames[3].pixel_sha256
@@ -159,13 +160,13 @@ def test_assured_entrance_rejects_invalid_source_or_owned_data(
     elif change == 'path_missing':
         lifecycle = replace(lifecycle, input_contract_path=None)
     elif change == 'foreign_contract':
-        data = json.loads(lifecycle.input_contract_path.read_text())
+        data = json.loads(lifecycle.input_contract_path.read_text(encoding='utf-8'))
         data['source_video_sha256'] = 'b'*64
-        lifecycle.input_contract_path.write_text(json.dumps(data))
+        lifecycle.input_contract_path.write_text(json.dumps(data), encoding='utf-8')
     elif change == 'changed_contract':
-        data = json.loads(lifecycle.input_contract_path.read_text())
+        data = json.loads(lifecycle.input_contract_path.read_text(encoding='utf-8'))
         data['assurance_provenance'] += ' changed'
-        lifecycle.input_contract_path.write_text(json.dumps(data))
+        lifecycle.input_contract_path.write_text(json.dumps(data), encoding='utf-8')
     elif change == 'foreign_qualification':
         lifecycle = replace(lifecycle, qualification=replace(lifecycle.qualification,
                                                            report_sha256='b'*64))
@@ -213,9 +214,9 @@ def test_assured_source_break_or_revocation_cannot_release_death(
     if change == 'contract_removed':
         lifecycle.input_contract_path.unlink()
     elif change == 'contract_changed':
-        data = json.loads(lifecycle.input_contract_path.read_text())
+        data = json.loads(lifecycle.input_contract_path.read_text(encoding='utf-8'))
         data['assurance_provenance'] += ' revoked'
-        lifecycle.input_contract_path.write_text(json.dumps(data))
+        lifecycle.input_contract_path.write_text(json.dumps(data), encoding='utf-8')
     session = NumericDeathImageSession(model, NumericSelfDeathEventConsumer(q), provider)
     for native in frames:
         source = SourceBinding(HASH, native.pts_ticks, 1, 60, 'segment', native.pixel_sha256,

@@ -367,7 +367,21 @@
       "ruff": "pass",
       "mypy_source_files": 148,
       "mypy": "pass",
-      "ci": "pending_new_commit"
+      "ci": "pending_new_commit",
+      "initial_ci": {
+        "commit": "15dced63fdfe3d5a83411350ea7397977e487dab",
+        "conclusion": "failure",
+        "cause": "11 missing explicit UTF-8 calls in newly added test helpers; unchanged I/O guard correctly rejected them",
+        "linux_other_passed": 4279,
+        "windows_other_passed": 4275,
+        "guard_changed": false
+      },
+      "utf8_fix_regression": {
+        "passed": 68,
+        "runtime_sec": 34.53,
+        "unclassified_io_calls": 0,
+        "production_bytes_changed": false
+      }
     }
   }
 }

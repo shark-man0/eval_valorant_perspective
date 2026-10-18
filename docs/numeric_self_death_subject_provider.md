@@ -209,3 +209,11 @@ files**. An initial new repeated-pixel negative expected the provider to reject,
 but the owning image session had already rejected the frame before invoking
 it. The test now checks that earlier fail-closed rejection and no Event; no
 runtime guard was relaxed. Current-source remote CI is recorded separately.
+
+CI at `15dced6` correctly failed its unchanged text-I/O contract audit because
+new test helpers omitted explicit UTF-8 on 11 text/hash calls. Linux otherwise
+passed 4,279 tests; Windows otherwise passed 4,275 tests. Those runs are failures,
+not green CI. The helpers now specify UTF-8; no audit classification, exception,
+assertion, production behavior or release fingerprint was changed. The focused
+provider and encoding-audit suite passed **68 tests in 34.53 seconds**, and the
+repository audit reports zero unclassified calls. Final-commit CI is separate.
