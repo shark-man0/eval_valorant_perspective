@@ -1,0 +1,628 @@
+{
+  "scope": "Convergence audit of existing PR42 implementation, not new recognition or formal qualification",
+  "audit_date_jst": "2026-10-18",
+  "audited_head": "5cc8b01b77f656312e5f4885011aafdcd206aba0",
+  "main": "7e480c2f2f7f49aea73e1541d065d78881d2f11c",
+  "files": [
+    {
+      "path": "docs/clock_type_chromatic_development.md",
+      "category": "C",
+      "interpretation": "Historical/rejected/development or failed-evaluation evidence; never current release proof"
+    },
+    {
+      "path": "docs/clock_type_development_feasibility.md",
+      "category": "C",
+      "interpretation": "Historical/rejected/development or failed-evaluation evidence; never current release proof"
+    },
+    {
+      "path": "docs/current_code_independent_End_display.md",
+      "category": "C",
+      "interpretation": "Historical/rejected/development or failed-evaluation evidence; never current release proof"
+    },
+    {
+      "path": "docs/current_main_round_application_followup.md",
+      "category": "evidence",
+      "interpretation": "Version-bound measurements or contract documentation; preserve original fingerprints and scope"
+    },
+    {
+      "path": "docs/current_main_round_boundary_requalification.md",
+      "category": "evidence",
+      "interpretation": "Version-bound measurements or contract documentation; preserve original fingerprints and scope"
+    },
+    {
+      "path": "docs/end_score_restart_rejected.md",
+      "category": "C",
+      "interpretation": "Historical/rejected/development or failed-evaluation evidence; never current release proof"
+    },
+    {
+      "path": "docs/guarded_caption_family_candidate.md",
+      "category": "evidence",
+      "interpretation": "Version-bound measurements or contract documentation; preserve original fingerprints and scope"
+    },
+    {
+      "path": "docs/guarded_caption_family_followup.md",
+      "category": "evidence",
+      "interpretation": "Version-bound measurements or contract documentation; preserve original fingerprints and scope"
+    },
+    {
+      "path": "docs/independent_source_001927_evaluation.md",
+      "category": "C",
+      "interpretation": "Historical/rejected/development or failed-evaluation evidence; never current release proof"
+    },
+    {
+      "path": "docs/qualified_geometry_initialization.md",
+      "category": "evidence",
+      "interpretation": "Version-bound measurements or contract documentation; preserve original fingerprints and scope"
+    },
+    {
+      "path": "docs/qualified_r2_application_context.md",
+      "category": "evidence",
+      "interpretation": "Version-bound measurements or contract documentation; preserve original fingerprints and scope"
+    },
+    {
+      "path": "docs/round_boundary_requalification_preflight.md",
+      "category": "evidence",
+      "interpretation": "Version-bound measurements or contract documentation; preserve original fingerprints and scope"
+    },
+    {
+      "path": "docs/score_border_source_guards.md",
+      "category": "evidence",
+      "interpretation": "Version-bound measurements or contract documentation; preserve original fingerprints and scope"
+    },
+    {
+      "path": "docs/score_border_speck_candidate.md",
+      "category": "evidence",
+      "interpretation": "Version-bound measurements or contract documentation; preserve original fingerprints and scope"
+    },
+    {
+      "path": "docs/score_minchannel_development_study.md",
+      "category": "C",
+      "interpretation": "Historical/rejected/development or failed-evaluation evidence; never current release proof"
+    },
+    {
+      "path": "docs/score_separated_speck_development_study.md",
+      "category": "C",
+      "interpretation": "Historical/rejected/development or failed-evaluation evidence; never current release proof"
+    },
+    {
+      "path": "docs/score_separated_speck_mode.md",
+      "category": "evidence",
+      "interpretation": "Version-bound measurements or contract documentation; preserve original fingerprints and scope"
+    },
+    {
+      "path": "docs/score_spatial_background_development_study.md",
+      "category": "C",
+      "interpretation": "Historical/rejected/development or failed-evaluation evidence; never current release proof"
+    },
+    {
+      "path": "docs/timer_consistent_bank_development_study.md",
+      "category": "C",
+      "interpretation": "Historical/rejected/development or failed-evaluation evidence; never current release proof"
+    },
+    {
+      "path": "docs/timer_foreground_development_study.md",
+      "category": "C",
+      "interpretation": "Historical/rejected/development or failed-evaluation evidence; never current release proof"
+    },
+    {
+      "path": "docs/unused_source_round_end_assessment.md",
+      "category": "C",
+      "interpretation": "Historical/rejected/development or failed-evaluation evidence; never current release proof"
+    },
+    {
+      "path": "e2e_reports/match_001/clock_type_chromatic_development.json",
+      "category": "C",
+      "interpretation": "Historical/rejected/development or failed-evaluation evidence; never current release proof"
+    },
+    {
+      "path": "e2e_reports/match_001/clock_type_development_feasibility.json",
+      "category": "C",
+      "interpretation": "Historical/rejected/development or failed-evaluation evidence; never current release proof"
+    },
+    {
+      "path": "e2e_reports/match_001/current_code_independent_End_display.json",
+      "category": "C",
+      "interpretation": "Historical/rejected/development or failed-evaluation evidence; never current release proof"
+    },
+    {
+      "path": "e2e_reports/match_001/current_main_round_application_followup.json",
+      "category": "evidence",
+      "interpretation": "Version-bound measurements or contract documentation; preserve original fingerprints and scope"
+    },
+    {
+      "path": "e2e_reports/match_001/current_main_round_boundary_requalification.json",
+      "category": "evidence",
+      "interpretation": "Version-bound measurements or contract documentation; preserve original fingerprints and scope"
+    },
+    {
+      "path": "e2e_reports/match_001/end_score_restart_rejected.json",
+      "category": "C",
+      "interpretation": "Historical/rejected/development or failed-evaluation evidence; never current release proof"
+    },
+    {
+      "path": "e2e_reports/match_001/exposure_inventory_20261016/README.md",
+      "category": "A-record",
+      "interpretation": "User-authorized sanitized metadata snapshot; nonexhaustive exposure, no blind certification"
+    },
+    {
+      "path": "e2e_reports/match_001/exposure_inventory_20261016/artifact_index.json",
+      "category": "A-record",
+      "interpretation": "User-authorized sanitized metadata snapshot; nonexhaustive exposure, no blind certification"
+    },
+    {
+      "path": "e2e_reports/match_001/exposure_inventory_20261016/discovery_requests.json",
+      "category": "A-record",
+      "interpretation": "User-authorized sanitized metadata snapshot; nonexhaustive exposure, no blind certification"
+    },
+    {
+      "path": "e2e_reports/match_001/exposure_inventory_20261016/frames.jsonl",
+      "category": "A-record",
+      "interpretation": "User-authorized sanitized metadata snapshot; nonexhaustive exposure, no blind certification"
+    },
+    {
+      "path": "e2e_reports/match_001/exposure_inventory_20261016/historical_split_plans.json",
+      "category": "A-record",
+      "interpretation": "User-authorized sanitized metadata snapshot; nonexhaustive exposure, no blind certification"
+    },
+    {
+      "path": "e2e_reports/match_001/exposure_inventory_20261016/method_snapshots.json",
+      "category": "A-record",
+      "interpretation": "User-authorized sanitized metadata snapshot; nonexhaustive exposure, no blind certification"
+    },
+    {
+      "path": "e2e_reports/match_001/exposure_inventory_20261016/sources.json",
+      "category": "A-record",
+      "interpretation": "User-authorized sanitized metadata snapshot; nonexhaustive exposure, no blind certification"
+    },
+    {
+      "path": "e2e_reports/match_001/exposure_inventory_20261016/summary.json",
+      "category": "A-record",
+      "interpretation": "User-authorized sanitized metadata snapshot; nonexhaustive exposure, no blind certification"
+    },
+    {
+      "path": "e2e_reports/match_001/guarded_caption_family_candidate.json",
+      "category": "evidence",
+      "interpretation": "Version-bound measurements or contract documentation; preserve original fingerprints and scope"
+    },
+    {
+      "path": "e2e_reports/match_001/guarded_caption_family_followup.json",
+      "category": "evidence",
+      "interpretation": "Version-bound measurements or contract documentation; preserve original fingerprints and scope"
+    },
+    {
+      "path": "e2e_reports/match_001/independent_source_001927_evaluation.json",
+      "category": "C",
+      "interpretation": "Historical/rejected/development or failed-evaluation evidence; never current release proof"
+    },
+    {
+      "path": "e2e_reports/match_001/qualified_geometry_initialization.json",
+      "category": "evidence",
+      "interpretation": "Version-bound measurements or contract documentation; preserve original fingerprints and scope"
+    },
+    {
+      "path": "e2e_reports/match_001/qualified_r2_application_context.json",
+      "category": "evidence",
+      "interpretation": "Version-bound measurements or contract documentation; preserve original fingerprints and scope"
+    },
+    {
+      "path": "e2e_reports/match_001/round_boundary_requalification_preflight.json",
+      "category": "evidence",
+      "interpretation": "Version-bound measurements or contract documentation; preserve original fingerprints and scope"
+    },
+    {
+      "path": "e2e_reports/match_001/score_border_source_guards.json",
+      "category": "evidence",
+      "interpretation": "Version-bound measurements or contract documentation; preserve original fingerprints and scope"
+    },
+    {
+      "path": "e2e_reports/match_001/score_border_speck_candidate.json",
+      "category": "evidence",
+      "interpretation": "Version-bound measurements or contract documentation; preserve original fingerprints and scope"
+    },
+    {
+      "path": "e2e_reports/match_001/score_minchannel_development_study.json",
+      "category": "C",
+      "interpretation": "Historical/rejected/development or failed-evaluation evidence; never current release proof"
+    },
+    {
+      "path": "e2e_reports/match_001/score_separated_speck_development_study.json",
+      "category": "C",
+      "interpretation": "Historical/rejected/development or failed-evaluation evidence; never current release proof"
+    },
+    {
+      "path": "e2e_reports/match_001/score_separated_speck_mode.json",
+      "category": "evidence",
+      "interpretation": "Version-bound measurements or contract documentation; preserve original fingerprints and scope"
+    },
+    {
+      "path": "e2e_reports/match_001/score_spatial_background_development_study.json",
+      "category": "C",
+      "interpretation": "Historical/rejected/development or failed-evaluation evidence; never current release proof"
+    },
+    {
+      "path": "e2e_reports/match_001/timer_consistent_bank_development_study.json",
+      "category": "C",
+      "interpretation": "Historical/rejected/development or failed-evaluation evidence; never current release proof"
+    },
+    {
+      "path": "e2e_reports/match_001/timer_foreground_development_study.json",
+      "category": "C",
+      "interpretation": "Historical/rejected/development or failed-evaluation evidence; never current release proof"
+    },
+    {
+      "path": "e2e_reports/match_001/unused_source_round_end_assessment.json",
+      "category": "C",
+      "interpretation": "Historical/rejected/development or failed-evaluation evidence; never current release proof"
+    },
+    {
+      "path": "scripts/diagnostics/export_pts_exposure_inventory.py",
+      "category": "A",
+      "interpretation": "Read-only preflight/metadata export; no production admission"
+    },
+    {
+      "path": "scripts/e2e/preflight_round_source.py",
+      "category": "A",
+      "interpretation": "Read-only preflight/metadata export; no production admission"
+    },
+    {
+      "path": "src/valorant_ai_coach/hud/analyzers.py",
+      "category": "A",
+      "interpretation": "Native geometry-only source/admission/transport contract; optional deployment still needs current private proof"
+    },
+    {
+      "path": "src/valorant_ai_coach/hud/native_assured_start.py",
+      "category": "A",
+      "interpretation": "Native geometry-only source/admission/transport contract; optional deployment still needs current private proof"
+    },
+    {
+      "path": "src/valorant_ai_coach/hud/native_event_merge.py",
+      "category": "A",
+      "interpretation": "Native geometry-only source/admission/transport contract; optional deployment still needs current private proof"
+    },
+    {
+      "path": "src/valorant_ai_coach/hud/native_geometry_initialization.py",
+      "category": "A",
+      "interpretation": "Native geometry-only source/admission/transport contract; optional deployment still needs current private proof"
+    },
+    {
+      "path": "src/valorant_ai_coach/hud/native_lifecycle.py",
+      "category": "A",
+      "interpretation": "Native geometry-only source/admission/transport contract; optional deployment still needs current private proof"
+    },
+    {
+      "path": "src/valorant_ai_coach/hud/score_glyphs.py",
+      "category": "B",
+      "interpretation": "Explicit opt-in reader/profile extensions; independent End qualification absent"
+    },
+    {
+      "path": "src/valorant_ai_coach/hud/semantic_text.py",
+      "category": "B",
+      "interpretation": "Explicit opt-in reader/profile extensions; independent End qualification absent"
+    },
+    {
+      "path": "src/valorant_ai_coach/hud/templates.py",
+      "category": "B",
+      "interpretation": "Explicit opt-in reader/profile extensions; independent End qualification absent"
+    },
+    {
+      "path": "tests/unit/test_export_pts_exposure_inventory.py",
+      "category": "A",
+      "interpretation": "Synthetic contract regression; does not qualify private real data"
+    },
+    {
+      "path": "tests/unit/test_qualified_geometry_initialization.py",
+      "category": "A",
+      "interpretation": "Synthetic contract regression; does not qualify private real data"
+    },
+    {
+      "path": "tests/unit/test_round_source_preflight.py",
+      "category": "A",
+      "interpretation": "Synthetic contract regression; does not qualify private real data"
+    },
+    {
+      "path": "tests/unit/test_score_border_specks.py",
+      "category": "B",
+      "interpretation": "Synthetic contract regression; does not qualify private real data"
+    },
+    {
+      "path": "tests/unit/test_score_separated_specks.py",
+      "category": "B",
+      "interpretation": "Synthetic contract regression; does not qualify private real data"
+    },
+    {
+      "path": "tests/unit/test_semantic_text_family.py",
+      "category": "B",
+      "interpretation": "Synthetic contract regression; does not qualify private real data"
+    },
+    {
+      "path": "tests/unit/test_unedited_ui_end.py",
+      "category": "A",
+      "interpretation": "Synthetic contract regression; does not qualify private real data"
+    }
+  ],
+  "spectator_matched_comparison": {
+    "scope": "Matched isolated two-module comparison, not a complete test-order or OS matrix audit",
+    "python": "3.12.15 (main, Sep 30 2026, 22:04:19) [Clang 21.0.0 (clang-2100.3.34.2)]",
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "opencv": "4.14.0",
+    "numpy": "2.5.4",
+    "environment": {
+      "PYTHONPATH": "src:.",
+      "private_assets_used": false,
+      "same_interpreter_and_libraries": true
+    },
+    "main_archive_verified_commit": "7e480c2f2f7f49aea73e1541d065d78881d2f11c",
+    "results": {
+      "branch": {
+        "exit_code": 1,
+        "tests": 50,
+        "failed": [
+          {
+            "test": "tests.unit.test_spectator_absence_guard::test_global_scene_detail_cannot_override_current_local_icon_evidence[crop1-True]",
+            "message": "assert None is True"
+          },
+          {
+            "test": "tests.unit.test_spectator_icon::test_abstract_icon_is_detected_across_small_rendering_shifts",
+            "message": "assert False is True"
+          },
+          {
+            "test": "tests.unit.test_spectator_icon::test_profile_uses_only_configured_icon_roi_and_obscuring_context",
+            "message": "assert None is True"
+          },
+          {
+            "test": "tests.unit.test_spectator_icon::test_short_menu_close_x_vetoes_icon_without_menu_grid_candidate",
+            "message": "assert None is True"
+          }
+        ],
+        "passed": 46,
+        "commit": "5cc8b01b77f656312e5f4885011aafdcd206aba0"
+      },
+      "main": {
+        "exit_code": 1,
+        "tests": 50,
+        "failed": [
+          {
+            "test": "tests.unit.test_spectator_absence_guard::test_global_scene_detail_cannot_override_current_local_icon_evidence[crop1-True]",
+            "message": "assert None is True"
+          },
+          {
+            "test": "tests.unit.test_spectator_icon::test_abstract_icon_is_detected_across_small_rendering_shifts",
+            "message": "assert False is True"
+          },
+          {
+            "test": "tests.unit.test_spectator_icon::test_profile_uses_only_configured_icon_roi_and_obscuring_context",
+            "message": "assert None is True"
+          },
+          {
+            "test": "tests.unit.test_spectator_icon::test_short_menu_close_x_vetoes_icon_without_menu_grid_candidate",
+            "message": "assert None is True"
+          }
+        ],
+        "passed": 46,
+        "commit": "7e480c2f2f7f49aea73e1541d065d78881d2f11c"
+      }
+    },
+    "same_failures_and_assertion_messages": true,
+    "source_files_identical": {
+      "tests/unit/test_spectator_absence_guard.py": true,
+      "tests/unit/test_spectator_icon.py": true
+    }
+  },
+  "related_PR_snapshots": [
+    {
+      "number": 42,
+      "title": "Round boundary requalification and guarded result caption families",
+      "state": "OPEN",
+      "isDraft": true,
+      "baseRefName": "main",
+      "baseRefOid": "7e480c2f2f7f49aea73e1541d065d78881d2f11c",
+      "headRefName": "codex/round-boundary-requalification",
+      "headRefOid": "5cc8b01b77f656312e5f4885011aafdcd206aba0"
+    },
+    {
+      "number": 51,
+      "title": "S-01: source-bound sampled HUD geometry initialization for R2 application",
+      "state": "OPEN",
+      "isDraft": true,
+      "baseRefName": "codex/round-boundary-requalification",
+      "baseRefOid": "abeb0118f4700b91e939e9ee27b0e9c72a103593",
+      "headRefName": "feat/s01-r2-sampled-geometry-proof",
+      "headRefOid": "5347f9a010e429d693e55966810ee83778676966"
+    },
+    {
+      "number": 48,
+      "title": "Add versioned \u00b10.1s round boundary timing evaluation",
+      "state": "OPEN",
+      "isDraft": false,
+      "baseRefName": "main",
+      "baseRefOid": "7e480c2f2f7f49aea73e1541d065d78881d2f11c",
+      "headRefName": "codex/round-boundary-time-tolerance",
+      "headRefOid": "99d9d4dc47b4a2ee6f1fab0ff33ac7f75753df64"
+    },
+    {
+      "number": 54,
+      "title": "Fix exact PTS endpoints in native targeted acquisition",
+      "state": "OPEN",
+      "isDraft": true,
+      "baseRefName": "main",
+      "baseRefOid": "7e480c2f2f7f49aea73e1541d065d78881d2f11c",
+      "headRefName": "codex/native-window-integer-pts",
+      "headRefOid": "cf4f712ce146ec575720596b157fbf979280eedc"
+    }
+  ],
+  "safe_extraction": {
+    "PR": 55,
+    "branch": "codex/round-boundary-safe-preflight",
+    "source_commit": "4f43d74a71d40e8e3dddc498c3a79b9d01bd1a08",
+    "base": "7e480c2f2f7f49aea73e1541d065d78881d2f11c",
+    "changed_files": 3,
+    "related_tests_pass": 174,
+    "text_io_tests_pass": 13,
+    "production_recognizer_changes": false,
+    "CI_snapshot": {
+      "headRefOid": "4f43d74a71d40e8e3dddc498c3a79b9d01bd1a08",
+      "statusCheckRollup": [
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/shark-man0/eval_valorant_perspective/actions/runs/39121275427/job/117657217756",
+          "name": "linux-validation",
+          "startedAt": "2026-10-18T10:57:18Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Basic CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/shark-man0/eval_valorant_perspective/actions/runs/39121195101/job/117656980831",
+          "name": "linux-validation",
+          "startedAt": "2026-10-18T10:56:04Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Basic CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/shark-man0/eval_valorant_perspective/actions/runs/39121275392/job/117657217504",
+          "name": "test-and-build",
+          "startedAt": "2026-10-18T10:57:18Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Windows verification"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "0001-01-01T00:00:00Z",
+          "conclusion": "",
+          "detailsUrl": "https://github.com/shark-man0/eval_valorant_perspective/actions/runs/39121195077/job/117656980740",
+          "name": "test-and-build",
+          "startedAt": "2026-10-18T10:56:04Z",
+          "status": "IN_PROGRESS",
+          "workflowName": "Windows verification"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-18T10:57:27Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/shark-man0/eval_valorant_perspective/actions/runs/39121275437/job/117657217683",
+          "name": "text-io-contract-audit",
+          "startedAt": "2026-10-18T10:57:18Z",
+          "status": "COMPLETED",
+          "workflowName": "Python text I/O review gate"
+        }
+      ]
+    }
+  },
+  "canonical_baseline": {
+    "PASS": 23,
+    "FAIL": 55,
+    "NE": 4
+  },
+  "full_E2E_run": false,
+  "main_modified": false,
+  "limited_hypothesis": "Only explicit positive clock types as a separate nonproduction temporal contract; no reader retuning",
+  "CI_at_audited_head": {
+    "headRefOid": "5cc8b01b77f656312e5f4885011aafdcd206aba0",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-18T10:50:14Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/shark-man0/eval_valorant_perspective/actions/runs/39120230843/job/117654167306",
+        "name": "linux-validation",
+        "startedAt": "2026-10-18T10:41:16Z",
+        "status": "COMPLETED",
+        "workflowName": "Basic CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-18T10:50:15Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/shark-man0/eval_valorant_perspective/actions/runs/39120228565/job/117654160201",
+        "name": "linux-validation",
+        "startedAt": "2026-10-18T10:41:14Z",
+        "status": "COMPLETED",
+        "workflowName": "Basic CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-18T10:41:26Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/shark-man0/eval_valorant_perspective/actions/runs/39120230864/job/117654167262",
+        "name": "text-io-contract-audit",
+        "startedAt": "2026-10-18T10:41:16Z",
+        "status": "COMPLETED",
+        "workflowName": "Python text I/O review gate"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-18T10:58:51Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/shark-man0/eval_valorant_perspective/actions/runs/39120230846/job/117654167325",
+        "name": "test-and-build",
+        "startedAt": "2026-10-18T10:41:16Z",
+        "status": "COMPLETED",
+        "workflowName": "Windows verification"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-18T10:54:33Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/shark-man0/eval_valorant_perspective/actions/runs/39120228954/job/117654161558",
+        "name": "test-and-build",
+        "startedAt": "2026-10-18T10:41:14Z",
+        "status": "COMPLETED",
+        "workflowName": "Windows verification"
+      }
+    ]
+  },
+  "windows_packaging_steps": {
+    "push": {
+      "head": "5cc8b01b77f656312e5f4885011aafdcd206aba0",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Verify UTF-8 contracts with Windows UTF-8 mode disabled",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run python -m PyInstaller --noconfirm --clean VALORANT-AI-Coach.spec",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Smoke-test packaged application",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    "pull_request": {
+      "head": "5cc8b01b77f656312e5f4885011aafdcd206aba0",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Verify UTF-8 contracts with Windows UTF-8 mode disabled",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run python -m PyInstaller --noconfirm --clean VALORANT-AI-Coach.spec",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Smoke-test packaged application",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  },
+  "saved_End_source_rows_verified": {
+    "work/new-source-development/next-End-result/raw-rows.json": "e9eb43e4b2f1b2ab17443fe00ba09ac18f1142e6a1bd5791a99366381830445b"
+  }
+}
