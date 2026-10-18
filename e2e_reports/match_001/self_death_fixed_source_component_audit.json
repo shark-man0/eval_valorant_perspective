@@ -1,0 +1,195 @@
+{
+  "status": "B",
+  "kind": "frozen_source_component_audit_not_death_qualification",
+  "start_main_sha": "7e480c2f2f7f49aea73e1541d065d78881d2f11c",
+  "start_branch_sha": "fe772dbe321231d5b53378821a945965e1c82d68",
+  "production_reader_changed": false,
+  "threshold_profile_asset_qualification_changed": false,
+  "input_contract": "Two existing local recordings retained; only existing second recording images were measured here. No new video transferred. Isolated native keyframes are static component inputs, never temporal proof or a changed full sampler.",
+  "source_sha256": "55d909c2d6a5f38575d1cb6c249ddfa7e2a48b96535841317adcae704c6f63b6",
+  "role_audit": {
+    "frames": 192,
+    "reviewed_self_rows": 15,
+    "missed_self_markers": 4,
+    "missed_known_roles": 4,
+    "reviewed_no_self_frames": 176,
+    "true_negative_frames": 176,
+    "unresolved_truth_frames": 2,
+    "correct_self_markers": 11,
+    "correct_roles": 11,
+    "correct_victim": 5,
+    "correct_own_names": 10,
+    "correct_killer": 6,
+    "numeric_victim_rows": 2,
+    "false_self_markers": 0,
+    "false_known_roles": 0,
+    "wrong_roles": 0,
+    "unreviewed_output_rows": 0,
+    "wrong_own_names": 0,
+    "role_abstentions": 0,
+    "distinct_source_pixels": 191,
+    "repeated_pixel_frames": 1
+  },
+  "exposure_strata": {
+    "no_known_episode_record_not_blind": {
+      "frames": 121,
+      "reviewed_self_rows": 5,
+      "missed_self_markers": 3,
+      "missed_known_roles": 3,
+      "reviewed_no_self_frames": 115,
+      "true_negative_frames": 115,
+      "unresolved_truth_frames": 1,
+      "correct_self_markers": 2,
+      "correct_roles": 2,
+      "correct_killer": 2,
+      "correct_own_names": 2
+    },
+    "known_episode_or_context": {
+      "frames": 71,
+      "reviewed_self_rows": 10,
+      "missed_self_markers": 1,
+      "missed_known_roles": 1,
+      "reviewed_no_self_frames": 61,
+      "true_negative_frames": 61,
+      "unresolved_truth_frames": 1,
+      "correct_self_markers": 9,
+      "correct_roles": 9,
+      "correct_victim": 5,
+      "correct_own_names": 8,
+      "correct_killer": 4,
+      "numeric_victim_rows": 2
+    }
+  },
+  "blind_holdout": false,
+  "independent_qualification_granted": false,
+  "role_limitations": [
+    "All five source-reviewed victim frames belong to already known episodes; not five independent new deaths.",
+    "Two newly tested successful Self Killer contexts do not qualify Self Victim or death.",
+    "Prior caption-crop exposure and unknown historical global geometry exposure remain explicit.",
+    "Geometric-only victim role cannot satisfy the numeric release contract.",
+    "Two partial-row truth cases remain unresolved; not counted as successful negatives.",
+    "Two different PTS contain identical full source pixels; static set does not establish the duration or cause of the repetition."
+  ],
+  "separator_component": {
+    "scope": "Static separator component assay only, not a Subject/Death qualification.",
+    "initial_automatic_audit_wrong_slot_kind_matches": 1,
+    "annotation_corrections_after_measurement": 1,
+    "source_verified_counts_after_disclosed_correction": {
+      "frames": 24,
+      "source_weapon_rows": 12,
+      "source_ability_rows": 3,
+      "source_unresolved_rows": 1,
+      "accepted_matches": 9,
+      "accepted_weapon_rows": 9,
+      "wrong_kind_matches": 0,
+      "missed_weapon_rows": 3,
+      "unresolved_matches": 0,
+      "new_reference_matches": 3
+    },
+    "qualification_granted": false,
+    "formal_events": 0,
+    "input_sha256": {
+      "source-review-before-matching.json": "b27199b682bbdca6ace29c90bc7ca61ecfbf278b33858045e27e7fb9ca500129",
+      "plan.json": "58b9cf9ad2aa38d23a5b543c09e12e293485a83b88cc1964b214052a736173c1",
+      "result.json": "23f331402d23576f66d2bba98bba21997c5fa7d0120915c9b5205a834e7f32f4",
+      "review-correction.json": "14e291a31463448fd75c90751c924e2cdccadbab29d29edb9e6f58d023fd27c5"
+    },
+    "wall_sec": 14.970177696086466,
+    "peak_rss_bytes": 97816576
+  },
+  "report_fields": {
+    "frames": 7,
+    "source_positive_report_frames": 5,
+    "correct_received_damage": 5,
+    "wrong_received_damage": 0,
+    "accepted_fatal_row_associations": 4,
+    "fatal_row_misses": 1,
+    "correct_supported_killer_portraits": 1,
+    "wrong_killer_portraits": 0,
+    "unsupported_portraits_unknown": 4,
+    "independent_fade_positive": 0,
+    "negative_no_report_frames": 2,
+    "negative_accepted_report_fields": 0,
+    "qualification_granted": false,
+    "limitation": "Single supported Raze portrait does not qualify an all-classes attribute contract. One label NCC .86814773 fails the unchanged .90 threshold despite correct search location. No new reference fitted."
+  },
+  "resources": {
+    "native_keyframe_acquisition": {
+      "wall_sec": 418.077950397972,
+      "peak_rss_bytes": 80756736,
+      "encoded_bytes": 259400435
+    },
+    "role_reader": {
+      "wall_sec": 210.9931830840651,
+      "peak_rss_bytes": 96210944
+    },
+    "separator_component": {
+      "wall_sec": 14.970177696086466,
+      "peak_rss_bytes": 97816576
+    },
+    "report_component": {
+      "wall_sec": 7.252473065862432,
+      "peak_rss_bytes": 89731072
+    }
+  },
+  "formal_death_events": {
+    "previous": 0,
+    "current": 0,
+    "delta": 0
+  },
+  "canonical": {
+    "adopted_historical": {
+      "pass": 23,
+      "fail": 55,
+      "not_evaluated": 4
+    },
+    "archived_unadopted_strict": {
+      "pass": 28,
+      "fail": 50,
+      "not_evaluated": 4
+    },
+    "new_targeted": "not_measured",
+    "new_sampled": "not_measured",
+    "new_full": "not_run",
+    "new_pass_ids": [],
+    "regression_ids": "not_measured",
+    "current_negative_violations": "not_measured",
+    "current_discontinuity_assertion_violations": "not_measured"
+  },
+  "private_artifact_sha256": {
+    "plan.json": "6e64ab81b881f171e8ebe851aaa7681c70becc8c696158f2bcb8caa011f90d57",
+    "manifest.json": "a7b3a4f4ae6471f6c7a4d300c1d2c78799192bf0fa438d590a9a77543ae2fa30",
+    "source-labels-before-recognition.json": "b0a3c66cf519f0f5f41e7f9d2d46ecd0a6045f147b7606aa0ae21d359f6367ed",
+    "recognition-plan.json": "464a8634084bd91c8227cbdeb39e2b8239b635fd40248dd19a65897de59298b0",
+    "recognition-result.json": "130c69704e07f9454494db5d1a5c308003b12a6f111795706d2dfb814517e0cf",
+    "static-role-audit-with-decode-binding.json": "bdbcd2223fe8cc9de0318fad63bd6d62920e851e1c921cfbf8d86fd8fbb5496e",
+    "abstention-diagnostic.json": "b5a9fbf1f6b9b056d27e70b8bfb8ae59605d8cd4055f79d44543e05a2f8e57cb",
+    "report-fields-source-review.json": "4fe6b71b4f21779f31fa56fc1a1e88fdfcc357513d631ef21a1d4b2fb559f703",
+    "report-fields-plan.json": "79695769166f6c4783dbf017bedefb851efc2dfa9d424d31bfdfcfdce8f46e81",
+    "report-fields-result.json": "001aa320f4c56f57bf0b6a42800f34a2e351be75845bcacacdd605805f88f2cd",
+    "fatal-label-miss-diagnostic.json": "2602f654130106642b9fd700a1b1c82e8fafe118433622c116da40633061cd4f",
+    "separator-primitive/source-review-before-matching.json": "b27199b682bbdca6ace29c90bc7ca61ecfbf278b33858045e27e7fb9ca500129",
+    "separator-primitive/plan.json": "58b9cf9ad2aa38d23a5b543c09e12e293485a83b88cc1964b214052a736173c1",
+    "separator-primitive/result.json": "23f331402d23576f66d2bba98bba21997c5fa7d0120915c9b5205a834e7f32f4",
+    "separator-primitive/review-correction.json": "14e291a31463448fd75c90751c924e2cdccadbab29d29edb9e6f58d023fd27c5",
+    "separator-primitive/aggregate.json": "feed39bf72e17cdd063dfb1e03b306f888134063bf6be1746561d349d23d518b",
+    "component-fitting-closure.json": "1170bc04ce69676d3efb60fa34e2ba02d481f0f6cf85a1876406b911a4d13b73"
+  },
+  "next_qualification_blockers": [
+    "Independent current-profile source-player and numeric victim-role component review, with exposure closure; existing measured killer/weapon positives are insufficient by themselves.",
+    "Independent source-continuous fresh death, persistent/reopened Report, respawn/spectator/repeat negative episode review and exact original onset semantics.",
+    "Independent supported killer-class and fatal-row semantic coverage. No partial class grant under current all-component attribute certificate.",
+    "No genuine real event or attribute qualification installed. Formal native/Package/Trace and same-contract canonical evaluation remain unverified."
+  ],
+  "marker_component_fitting_closure": {
+    "pre_case005_freeze_head": "4e1fbe3de124adc1c2f7c849924dbe537aa6c88c",
+    "checks": {
+      "marker_reader_prefix_byte_identical_since_case005_freeze": true,
+      "matches_helper_byte_identical": true,
+      "iou_helper_byte_identical": true,
+      "all_marker_arrays_unchanged": true,
+      "marker_profile_settings_unchanged": true
+    },
+    "scope": "Only marker byte/asset equivalence is verified. Case005 later influenced weapon/name development; it cannot qualify the whole reader. Unknown broad exposure remains explicit."
+  }
+}

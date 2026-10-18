@@ -8,6 +8,13 @@ Draft, with no main merge. The earlier
 [convergence report](e2e_validation_convergence.md) remains the historical E2E
 baseline, not a current-reader result.
 
+Latest static source measurements are recorded separately in the
+[fixed component audit](self_death_fixed_source_component_audit.md): 192 images,
+11 correct Self/role rows, four missed Self rows, zero observed false Self/role
+outputs, and five correct Report damage readings. Independent Victim/temporal
+qualification and formal Death remain incomplete; this is not a new canonical
+E2E result or a replacement for the exposure limitations below.
+
 ## Connection audit
 
 | Stage | Implemented | Actual-image measurement | Independent qualification | Formal application connection / first blocker |
