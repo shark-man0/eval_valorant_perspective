@@ -270,6 +270,6 @@ that source commit, separately from later documentation-only changes.
 The canonical comparison remains unmeasured for this code. Adopted 23/55/4,
 archived Strict 28/50/4 and the separate timing-policy comparison are unchanged
 historical records. No new PASS or regression assertion ID is claimed, and no
-Full E2E was started. The actual reader improvement demonstrated here is
-positive recognition across further source contexts; completing independent
+Full E2E was started. The additional evidence demonstrated here is
+frozen-reader positive recognition across further source contexts; completing independent
 Subject/temporal/attribute qualification is still required before release.
