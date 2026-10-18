@@ -303,8 +303,9 @@ def test_each_corroborating_victim_requires_its_own_numeric_method(qualified_rel
     assert consumer.consume(decision, tuple(chain)) is None
 
 
+@pytest.mark.parametrize('with_attributes', [False, True])
 def test_approved_synthetic_event_reaches_original_round_fact_and_trace_without_hud_promotion(
-    qualified_release, tmp_path,
+    qualified_release, tmp_path, with_attributes,
 ):
     from copy import deepcopy
     from pathlib import Path
@@ -320,7 +321,16 @@ def test_approved_synthetic_event_reaches_original_round_fact_and_trace_without_
     from valorant_ai_coach.video import VideoMetadata
 
     decision, chain = proof()
-    death = NumericSelfDeathEventConsumer(qualified_release[0]).consume(decision, chain)
+    attribute_qualification = None
+    fields = None
+    if with_attributes:
+        from tests.unit.test_qualified_death_attributes import attribute_contract, episode_fields
+
+        attribute_qualification = attribute_contract(tmp_path, qualified_release[0])
+        fields = episode_fields(chain)
+    death = NumericSelfDeathEventConsumer(qualified_release[0],
+        attribute_qualification=attribute_qualification).consume(decision, chain,
+                                                               episode_fields=fields)
     assert death is not None
     observations = [observation(tick/60, hud_confidence=0.0) for tick in range(7)]
     for row in observations:
@@ -357,6 +367,10 @@ def test_approved_synthetic_event_reaches_original_round_fact_and_trace_without_
     assert len(traced) == 1 and traced[0]['round_id'] == 'sample_round_1'
     assert traced[0]['actor'] == 'player' and traced[0]['time_sec'] == 1/60
     assert traced[0]['attributes'] == death['attributes'] and traced[0]['confidence'] == .91
+    if with_attributes:
+        assert traced[0]['attributes']['victim_name'] == 'Recorder'
+        assert traced[0]['attributes']['killer_agent'] == 'agent-class'
+        assert traced[0]['attributes']['combat_report_damage_received'] == 150
     assert all(row['owner'] == 'unknown' for row in trace['ownership_intervals'])
     assert observations == original
     store = SQLiteRepository(tmp_path/'events.sqlite')

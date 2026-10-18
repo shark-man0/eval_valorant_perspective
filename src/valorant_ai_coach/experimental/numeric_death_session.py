@@ -141,7 +141,7 @@ class NumericDeathImageSession:
             'recognizer_qualification_missing', 'production_adoption_not_authorized',
         ), source, reading.onset_time_sec, reading.confirmation_time_sec,
             reading.support, tuple(witnesses))
-        event = self.consumer.consume(decision, tuple(self.frames))
+        event = self.consumer.consume(decision, tuple(self.frames), episode_fields=episode_fields)
         return NumericDeathSessionReading(reading, event, self.consumer.last_blocker,
                                          episode_fields, self.field_collector.last_blocker,
                                          report_row)

@@ -16,6 +16,8 @@ from itertools import combinations
 from pathlib import Path
 from typing import Any
 
+from .death_episode_fields import DeathEpisodeFields
+from .qualified_death_attributes import QualifiedDeathAttributeContract
 from .subject_death import (
     DeathProbeDecision,
     ProbeFrame,
@@ -53,6 +55,7 @@ def release_fingerprint() -> str:
         ('numeric_death_session.py', source.with_name('numeric_death_session.py')),
         ('death_episode_fields.py', source.with_name('death_episode_fields.py')),
         ('report_fatal_row.py', source.with_name('report_fatal_row.py')),
+        ('qualified_death_attributes.py', source.with_name('qualified_death_attributes.py')),
         ('facts/builder.py', source.parent.parent/'facts'/'builder.py'),
     ):
         digest.update(label.encode('utf-8'))
@@ -127,16 +130,24 @@ class NumericSelfDeathEventConsumer:
     and HUD identity/owned fields are never mutated.
     """
 
-    def __init__(self, qualification: QualifiedNumericDeathContract | None = None) -> None:
+    def __init__(self, qualification: QualifiedNumericDeathContract | None = None, *,
+                 attribute_qualification: QualifiedDeathAttributeContract | None = None) -> None:
         if (qualification is not None
                 and not isinstance(qualification, QualifiedNumericDeathContract)):
             raise ValueError('typed reviewed numeric qualification required; no Boolean override')
         self.qualification = qualification
+        if (attribute_qualification is not None
+                and not isinstance(attribute_qualification, QualifiedDeathAttributeContract)):
+            raise ValueError('typed reviewed attribute qualification required')
+        self.attribute_qualification = attribute_qualification
+        self.attribute_blockers: tuple[str, ...] = ()
         self.released: set[str] = set()
         self.last_blocker: str | None = None
 
     def consume(self, decision: DeathProbeDecision,
-                frames: tuple[ProbeFrame, ...]) -> dict[str, Any] | None:
+                frames: tuple[ProbeFrame, ...], *,
+                episode_fields: DeathEpisodeFields | None = None) -> dict[str, Any] | None:
+        self.attribute_blockers = ()
         def reject(reason: str) -> None:
             self.last_blocker = reason
 
@@ -223,29 +234,11 @@ class NumericSelfDeathEventConsumer:
         for frame in reversed(frames):
             if frame.source.time < onset.time:
                 break
-            selected = []
-            for role in (SubjectRole.SOURCE_PLAYER_BINDING, SubjectRole.VICTIM,
-                         SubjectRole.REPORT):
-                matches = [o for o in frame.observations if o.role == role]
-                if (len(matches) != 1 or matches[0].review_status != ReviewStatus.SOURCE_REVIEWED
-                        or matches[0].review_sha256 is None or matches[0].confidence is None
-                        or matches[0].confidence < .90
-                        or not _supported_method(role, matches[0].method)):
-                    break
-                if role != SubjectRole.REPORT and (
-                    matches[0].relation != SubjectRelation.SELF or matches[0].subject_token != token
-                ):
-                    break
-                selected.append(matches[0])
-            if len(selected) != 3:
-                break
-            if any(a.method == b.method or not (
-                a.roi[2] <= b.roi[0] or b.roi[2] <= a.roi[0]
-                or a.roi[3] <= b.roi[1] or b.roi[3] <= a.roi[1]
-            ) for a, b in combinations(selected, 2)):
+            scores = _current_self_support(frame, token)
+            if scores is None:
                 break
             tail.append(frame)
-            tail_scores.extend(float(o.confidence) for o in selected if o.confidence is not None)
+            tail_scores.extend(scores)
             if len(tail) >= 3 and source.time-frame.source.time >= Fraction(1, 20):
                 break
         if len(tail) < 3 or source.time-tail[-1].source.time < Fraction(1, 20):
@@ -259,7 +252,7 @@ class NumericSelfDeathEventConsumer:
             return None
         confidence = min(parent_score, *tail_scores,
                          *(float(w.confidence) for w in witnesses if w.confidence is not None))
-        attributes = {
+        attributes: dict[str, Any] = {
             'cause_known': False,
             'evidence_provenance': {
                 'subject_policy': 'independently_qualified_numeric_self_v1',
@@ -278,15 +271,33 @@ class NumericSelfDeathEventConsumer:
         event = {'event_id': event_id, 'time_sec': float(onset.time),
                  'type': 'player_death', 'actor': 'player',
                  'attributes': attributes, 'confidence': confidence}
+        attribute_qualification = self.attribute_qualification
+        if attribute_qualification is None:
+            self.attribute_blockers = ('independent_attribute_qualification_missing',)
+        elif (attribute_qualification.event_qualification_sha256 != qualification.report_sha256
+              or attribute_qualification.release_code_fingerprint != release_fingerprint()):
+            self.attribute_blockers = ('attribute_qualification_binding_mismatch',)
+        else:
+            qualified_sources = {f.source: min(scores) for f in frames
+                if (scores := _current_self_support(f, token)) is not None}
+            fields, field_provenance, self.attribute_blockers = attribute_qualification.project(
+                episode_fields, onset=onset, confirmation=source,
+                qualified_sources=qualified_sources)
+            attributes.update(fields)
+            if field_provenance:
+                attributes['evidence_provenance']['qualified_attributes'] = field_provenance
         self.released.add(event_id)
         self.last_blocker = None
         return event
 
     def checkpoint(self) -> dict[str, Any]:
         report_sha = self.qualification.report_sha256 if self.qualification else None
-        return {'schema_version': 1, 'release_fingerprint': release_fingerprint(),
-                'qualification_sha256': report_sha,
-                'released_event_ids': sorted(self.released)}
+        state = {'schema_version': 1, 'release_fingerprint': release_fingerprint(),
+                 'qualification_sha256': report_sha,
+                 'released_event_ids': sorted(self.released)}
+        if self.attribute_qualification is not None:
+            state['attribute_qualification_sha256'] = self.attribute_qualification.report_sha256
+        return state
 
     def restore(self, state: dict[str, Any]) -> None:
         expected = self.checkpoint()
@@ -294,6 +305,8 @@ class NumericSelfDeathEventConsumer:
                 or type(state['schema_version']) is not int or state['schema_version'] != 1
                 or state['release_fingerprint'] != expected['release_fingerprint']
                 or state['qualification_sha256'] != expected['qualification_sha256']
+                or state.get('attribute_qualification_sha256')
+                != expected.get('attribute_qualification_sha256')
                 or not isinstance(state['released_event_ids'], list)
                 or any(not isinstance(v, str) or not v.startswith('SELF-DEATH-')
                        or len(v) != 75 for v in state['released_event_ids'])
@@ -302,3 +315,26 @@ class NumericSelfDeathEventConsumer:
         for identity in state['released_event_ids']:
             _hash(identity.removeprefix('SELF-DEATH-'))
         self.released = set(state['released_event_ids'])
+
+
+def _current_self_support(frame: ProbeFrame, token: str | None) -> tuple[float, ...] | None:
+    """The unchanged numeric current-frame predicate, also required for fields."""
+    selected = []
+    for role in (SubjectRole.SOURCE_PLAYER_BINDING, SubjectRole.VICTIM, SubjectRole.REPORT):
+        matches = [o for o in frame.observations if o.role == role]
+        if (len(matches) != 1 or matches[0].review_status != ReviewStatus.SOURCE_REVIEWED
+                or matches[0].review_sha256 is None or matches[0].confidence is None
+                or matches[0].confidence < .90
+                or not _supported_method(role, matches[0].method)):
+            return None
+        if role != SubjectRole.REPORT and (
+            matches[0].relation != SubjectRelation.SELF or matches[0].subject_token != token
+        ):
+            return None
+        selected.append(matches[0])
+    if any(a.method == b.method or not (
+        a.roi[2] <= b.roi[0] or b.roi[2] <= a.roi[0]
+        or a.roi[3] <= b.roi[1] or b.roi[3] <= a.roi[1]
+    ) for a, b in combinations(selected, 2)):
+        return None
+    return tuple(float(o.confidence) for o in selected if o.confidence is not None)

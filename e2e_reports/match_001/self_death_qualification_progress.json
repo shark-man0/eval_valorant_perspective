@@ -1,0 +1,98 @@
+{
+  "schema_version": "self_death_qualification_progress_v1",
+  "status": "B_not_independently_qualified",
+  "start_main_sha": "7e480c2f2f7f49aea73e1541d065d78881d2f11c",
+  "start_branch_sha": "dbedfa3bba100ada6c6f91b2912cfb48fe22c32a",
+  "case": "source2-role-case-001",
+  "source_sha256": "55d909c2d6a5f38575d1cb6c249ddfa7e2a48b96535841317adcae704c6f63b6",
+  "source_window_sec": [
+    367.75,
+    369.25
+  ],
+  "source_review_before_replay": true,
+  "labels_passed_to_reader": false,
+  "profile_or_threshold_adjusted_for_case": false,
+  "exposure": {
+    "selection": "previous caption-only keyframe localization",
+    "role_test": "frozen reader, prospective source role review",
+    "historical_geometry_exposure": "unknown",
+    "blind_holdout": false,
+    "independent_qualification_granted": false
+  },
+  "input_sha256": {
+    "plan": "76a89ba26d26f40bbeeedb2796cfe495b7cca8e499480562d405d438f36972e7",
+    "source_review": "730f2bffac991629a6295a7c3412881502ea6dbb4ced3f28a4d2b60c9224571e",
+    "replay_plan": "2d751b22757bc8645f387702ae3c97fa64ba7829fe9b448a35f461232efdf751",
+    "manifest": "71d01d6b01c3a038ab757f7c2fd7ba396e0b6875e898079a6b8fef9b91749f10",
+    "result": "4c7a253a82f5f538b3cc8df5e8300d1c5de897f7c020fadc9aa6049d8fc445b0",
+    "execution": "1f1c76a6da65d28a7e17f4fe4cbe177dcbe56951e22cc0a618a4db87526ba85d"
+  },
+  "reader_fingerprints": {
+    "runtime_fingerprint": "0ffe0bf9e5e1b26baad437a8dac235fd3ec453fae8262847ea6a0e0aff304832",
+    "code_fingerprint": "d2d658e852843e391cb331c681030b864c28071df0d27b1a7a77c965737a596f",
+    "profile_fingerprint": "90545251b18b2957aa58d80eee0aa76e3975cd13fe385edfed97c50567f1963c",
+    "dependencies_fingerprint": "7cba12efbb0610a5b6447b0c096d107b465aae4c96951b66701cbee323320534"
+  },
+  "measurement": {
+    "processed_frames": 91,
+    "reader_status_counts": {
+      "unknown": 53,
+      "pending": 4,
+      "prediction": 1,
+      "duplicate": 33
+    },
+    "victim_role_frames": 36,
+    "killer_role_frames": 0,
+    "accepted_victim_name_frames": 32,
+    "reviewed_positive_episodes": 1,
+    "matched_diagnostic_predictions": 1,
+    "missed_reviewed_positive_episodes": 0,
+    "extra_episode_predictions": 0,
+    "formal_events": 0,
+    "source_blocked_frames": 0,
+    "wall_sec": 269.37603557901457,
+    "recognition_sec": 95.93839729810134,
+    "peak_rss_bytes": 97525760,
+    "terminal_hashes_passed": true
+  },
+  "predictions": [
+    {
+      "onset_time_sec": 368.55,
+      "confirmation_time_sec": 368.7,
+      "support": 0.9476055432784747,
+      "victim_numeric_weapon_ncc_present": false,
+      "victim_geometric_separator_present": true
+    }
+  ],
+  "temporal_reference": {
+    "independent_review_bracket_sec": [
+      368.5,
+      369.25
+    ],
+    "exact_boundary_labeled": false,
+    "plus_minus_0_1_accuracy_verified": false
+  },
+  "qualification_blockers": [
+    "historical_geometry_exposure_unknown_not_blind",
+    "new_case_geometric_role_has_no_numeric_ncc",
+    "no_independent_semantic_attribute_certificate",
+    "no_qualified_image_witness_provider",
+    "complete_self_nonself_role_and_respawn_controls_not_qualified"
+  ],
+  "canonical": {
+    "adopted_full": {
+      "pass": 23,
+      "fail": 55,
+      "not_evaluated": 4
+    },
+    "archived_unadopted_strict": {
+      "pass": 28,
+      "fail": 50,
+      "not_evaluated": 4
+    },
+    "new_targeted": null,
+    "new_sampled": null,
+    "new_full": null,
+    "recognition_pass_gain": null
+  }
+}
