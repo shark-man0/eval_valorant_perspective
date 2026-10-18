@@ -273,3 +273,42 @@ historical records. No new PASS or regression assertion ID is claimed, and no
 Full E2E was started. The additional evidence demonstrated here is
 frozen-reader positive recognition across further source contexts; completing independent
 Subject/temporal/attribute qualification is still required before release.
+
+### New persistent-Report negative and Report attribute checks
+
+An additional frozen 103.500–105.000-second native window shows the living
+recording player closing the purchase menu after respawn. The previous death's
+self-referential Report reappears, without a new killfeed or death transition.
+Source frames were reviewed before replay. All **91 frames remain unknown,
+with zero death predictions, zero recorder-role readings and zero source-blocked
+frames**, despite 85 accepted self-caption frames. Thus Report appearance alone
+does not identify a victim or create a new death in this window. This is one
+new caption-conditioned negative context, not a full-match false-positive rate
+or an independent blind cohort. Wall/recognition time was 229.156/77.574 seconds,
+peak Python RSS 93,511,680 bytes; terminal hashes passed. Native acquisition took
+267.710 seconds and retained 174,838,427 PNG bytes without copying the video.
+
+The unchanged older `NumericFieldsReader`/Report locator and fatal-row model were
+also applied directly to seven pre-reviewed source frames from cases 001–003.
+All four visible Report frames, representing **three distinct death episodes**,
+supplied the correct observed damage and the fatal-row witness. The three
+no-Report controls supplied no accepted fields. Fatal-label NCC was
+0.978281–0.981296. All original source, ROI, value confidence, native PTS/pixels,
+producer/profile/dependency bindings are retained privately; no expected value
+was passed to a runtime reader or used to fit/select references.
+
+The frozen portrait bank supplies zero accepted classes for these unsupported
+portraits. Their actual killer-agent attributes remain unknown. Report and
+fatal-row candidates stay unqualified; correct digit reading does not establish
+Self, a new death or killer semantics. The seven-frame run took 4.822 seconds.
+An initial private diagnostic incorrectly tried to build a candidate with empty
+fields; the unchanged schema rejected it. That failed attempt is retained.
+The corrected diagnostic records missing fields as absent and changes no reader,
+schema, threshold or production behavior.
+
+The latest local new-window evidence therefore consists of three reviewed
+positive episodes with three diagnostic predictions, one menu/respawn/old-Report
+negative with zero predictions, and the bounded Report-field checks above.
+Only case 002 supplies numeric victim support under the existing release
+contract. The independent Role review request remains pending. Qualification,
+enabled real-provider output and canonical improvement remain incomplete.

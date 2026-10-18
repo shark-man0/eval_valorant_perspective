@@ -214,5 +214,60 @@
     "new_canonical_targeted": null,
     "new_canonical_sampled": null,
     "new_canonical_full": null
+  },
+  "additional_measurements": {
+    "scope": "unchanged frozen readers; nonblind source review; no independent qualification or formal event",
+    "input_sha256": {
+      "role-case-004-plan.json": "a6ba0da33a9562048937c03426fea4e7870997c4c27819499cba56214c92ebe7",
+      "role-case-004-manifest.json": "26eda9073266ef7528b47f642c2f20bc9501d43971c901aad221ec79a98952d7",
+      "role-case-004-source-review-before-replay.json": "d06790995235b3e92366a0f4781698c13c9ffe9945df24c05c9464fe2d61c276",
+      "role-case-004-replay-plan.json": "c47b88125a9b5af2a2d95f47fc847ea9bde97d94f8b33e0b470bffcc9f9eb416",
+      "role-case-004-image-replay.json": "42594b7d7c5ec56b7dab6038acf522912d9ad9dfcc30c5a95e160f0b3a4ed68e",
+      "role-case-004-replay-execution.json": "6b5caa7782ac7296051ba469aefe5aeaa5e88ad75bf4c046e745011492d7a7a6",
+      "prospective-report-fields-v2-plan.json": "277d95c6d906d3197a8a3f2c88d3419108abeccd28184e016386742b8b352f69",
+      "prospective-report-fields-v2-result.json": "e01dfbbf1423db29fbc53e5a5463d60a8ac81cdcfbc948417d2b19b9f3a62496"
+    },
+    "persistent_report_negative": {
+      "case": "role-case-004",
+      "window_sec": [
+        103.5,
+        105.0
+      ],
+      "frames": 91,
+      "status_counts": {
+        "unknown": 91
+      },
+      "report_positive_frames": 85,
+      "recorder_marker_role_frames": 0,
+      "death_predictions": 0,
+      "source_blocked_frames": 0,
+      "formal_events": 0,
+      "wall_sec": 229.15582951600663,
+      "recognition_sec": 77.57361178309657,
+      "peak_rss_bytes": 93511680,
+      "terminal_hashes_passed": true,
+      "source_review": "living player closes buy menu after respawn; previous death Report reappears during purchase phase; no new death"
+    },
+    "report_fields": {
+      "frames": 7,
+      "unique_positive_episodes": 3,
+      "positive_report_frames": 4,
+      "correct_damage_frames": 4,
+      "wrong_accepted_damage_frames": 0,
+      "missing_report_control_frames": 3,
+      "missing_report_controls_with_fields": 0,
+      "supported_fatal_rows": 4,
+      "fatal_marker_ncc_min": 0.9782808151031774,
+      "fatal_marker_ncc_max": 0.9812955890083032,
+      "accepted_portrait_classes": 0,
+      "unsupported_portrait_classes_remain_unknown": true,
+      "wall_sec": 4.822278104024008,
+      "terminal_hashes_passed": true,
+      "qualified": false,
+      "formal_events": 0,
+      "initial_probe_attempt": "private caller rejected empty candidate payload; preserved failed plan/log, then represented missing fields as absent. No producer or schema acceptance changed."
+    },
+    "human_role_review": "requested_pending",
+    "canonical_results": null
   }
 }
