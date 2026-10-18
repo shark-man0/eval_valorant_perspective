@@ -13,6 +13,11 @@ from dataclasses import dataclass
 from fractions import Fraction
 from typing import Any
 
+from .death_episode_fields import (
+    DeathEpisodeFieldCollector,
+    DeathEpisodeFields,
+    ReportCandidateFrame,
+)
 from .numeric_death_release import NumericSelfDeathEventConsumer
 from .self_death_image import SelfDeathImageReading, SelfDeathImageRecognizer
 from .subject_death import DeathProbeDecision, ProbeFrame, SourceBinding, SubjectRole
@@ -23,6 +28,8 @@ class NumericDeathSessionReading:
     image_reading: SelfDeathImageReading
     event: dict[str, Any] | None
     blocker: str | None
+    episode_fields: DeathEpisodeFields | None = None
+    field_blocker: str | None = None
 
 
 class NumericDeathImageSession:
@@ -37,10 +44,14 @@ class NumericDeathImageSession:
     def __init__(
         self, recognizer: SelfDeathImageRecognizer, consumer: NumericSelfDeathEventConsumer,
         frame_provider: Callable[[SelfDeathImageReading], ProbeFrame] | None = None,
+        *,
+        report_provider: Callable[[Any, SourceBinding], ReportCandidateFrame | None] | None = None,
     ) -> None:
         self.recognizer = recognizer
         self.consumer = consumer
         self.frame_provider = frame_provider
+        self.report_provider = report_provider
+        self.field_collector = DeathEpisodeFieldCollector(recognizer.native_step_ticks)
         self.frames: list[ProbeFrame] = []
         self.failed = False
 
@@ -51,12 +62,16 @@ class NumericDeathImageSession:
         if qualified_new_round:
             self.frames.clear()
             self.failed = False
+            self.field_collector.reset()
+        report = self.report_provider(image, source) if self.report_provider is not None else None
+        episode_fields = self.field_collector.observe(reading, report)
 
         def reject(reason: str, *, poison: bool = False) -> NumericDeathSessionReading:
             if poison:
                 self.failed = True
                 self.frames.clear()
-            return NumericDeathSessionReading(reading, None, reason)
+            return NumericDeathSessionReading(reading, None, reason, episode_fields,
+                                             self.field_collector.last_blocker)
 
         if reading.reason == 'source_invalid_or_discontinuous':
             return reject(reading.reason, poison=True)
@@ -119,7 +134,8 @@ class NumericDeathImageSession:
         ), source, reading.onset_time_sec, reading.confirmation_time_sec,
             reading.support, tuple(witnesses))
         event = self.consumer.consume(decision, tuple(self.frames))
-        return NumericDeathSessionReading(reading, event, self.consumer.last_blocker)
+        return NumericDeathSessionReading(reading, event, self.consumer.last_blocker,
+                                         episode_fields, self.field_collector.last_blocker)
 
     def _measurements_match(self, reading: SelfDeathImageReading, frame: ProbeFrame) -> bool:
         """A reviewed tag cannot invent support/ROI absent from this source image."""

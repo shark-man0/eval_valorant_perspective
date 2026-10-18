@@ -120,11 +120,14 @@ Canonical targeted/sampled/Full values are not remeasured; historical baselines
 remain distinct. No new production logic, formal output, PASS gain, main merge
 or goal completion is claimed by this investigation.
 
-The next independent source review must cover both detection and semantic-role
-association. Supplemental-original contents, file size and storage location
-have been requested before choosing at most one transfer. Existing development
-images cannot be renamed a new blind holdout; previous auxiliary Round-work
-exposure must also be disclosed.
+Independent source review must cover both detection and semantic-role
+association. Additional video transfer is not available within the device's
+storage constraints and is not a prerequisite for all remaining implementation.
+Continue with existing source/cache observations and keep independent
+qualification limitations explicit. Existing development images cannot be
+renamed a new blind holdout. The episode transport implementation and measured
+reuse of these fields are recorded in
+[self_death_episode_field_transport.md](self_death_episode_field_transport.md).
 
 Private reproduction records: `s01_reuse_report_field_probe_v2.py`,
 `reused-report-fields-v2-plan.json`, `reused-report-fields-v2-result.json`,
