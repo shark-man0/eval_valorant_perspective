@@ -52,11 +52,11 @@ class QualifiedDeathAttributeContract:
 
     @classmethod
     def load(cls, path: Path, *, expected_report_sha256: str,
-             expected_event_qualification_sha256: str) -> QualifiedDeathAttributeContract:
+             parent_qualification_sha256: str) -> QualifiedDeathAttributeContract:
         from .numeric_death_release import release_fingerprint
 
         _hash(expected_report_sha256)
-        _hash(expected_event_qualification_sha256)
+        _hash(parent_qualification_sha256)
         content = path.read_bytes()
         if hashlib.sha256(content).hexdigest() != expected_report_sha256:
             raise ValueError('externally reviewed attribute report digest required')
@@ -67,7 +67,7 @@ class QualifiedDeathAttributeContract:
         if (not isinstance(data, dict) or set(data) != keys
                 or data['schema_version'] != 'numeric_self_death_attributes_v1'
                 or data['evaluation_scope'] != 'qualified_candidate_evaluation'
-                or data['event_qualification_sha256'] != expected_event_qualification_sha256
+                or data['event_qualification_sha256'] != parent_qualification_sha256
                 or data['release_fingerprint'] != release_fingerprint()
                 or not isinstance(data['component_reviews'], dict)
                 or set(data['component_reviews']) != set(_FIELDS)):
@@ -80,7 +80,7 @@ class QualifiedDeathAttributeContract:
                 raise ValueError('original code/profile/dependencies required')
             for value in data[name]:
                 _hash(value)
-        return cls(expected_report_sha256, expected_event_qualification_sha256,
+        return cls(expected_report_sha256, parent_qualification_sha256,
                    data['release_fingerprint'], data['split_review_sha256'],
                    tuple(sorted(data['component_reviews'].items())),
                    tuple(data['report_producer']), tuple(data['fatal_row_producer']))

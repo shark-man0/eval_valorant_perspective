@@ -39,7 +39,7 @@ def attribute_contract(tmp_path, event_qualification, **changes):
     path.write_text(json.dumps(data), encoding='utf-8')
     return QualifiedDeathAttributeContract.load(path,
         expected_report_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
-        expected_event_qualification_sha256=event_qualification.report_sha256)
+        parent_qualification_sha256=event_qualification.report_sha256)
 
 
 def episode_fields(chain):

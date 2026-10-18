@@ -192,3 +192,14 @@ unknown own-source identity, changed certificates/code, dedup/checkpoint and
 native Package/Fact/Trace/SQLite preservation with no HUD ownership promotion.
 Before this change, Linux/Windows/text-I/O checks at starting head `dbedfa3`
 were successful. Those checks are not assigned to new release bytes.
+
+
+CI at the initial attribute commit `f1aa1f5` found one existing production
+leakage-check failure on both operating systems: a digest parameter name
+contained the reserved token `expected_event`. No GT value was read, but the
+unchanged guard correctly blocked the new spelling. The parameter is now
+`parent_qualification_sha256`; the certificate payload and runtime acceptance
+are unchanged. The guard/test was not weakened. That first run otherwise had
+4,224 passing Linux tests (87.14% coverage) and 4,220 passing Windows tests;
+its failure is retained, not reported as successful CI. Current-source CI must
+pass separately.
