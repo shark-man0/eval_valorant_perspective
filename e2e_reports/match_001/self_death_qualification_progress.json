@@ -94,5 +94,125 @@
     "new_sampled": null,
     "new_full": null,
     "recognition_pass_gain": null
+  },
+  "followup": {
+    "source_commit": "80eeca2be377fd2503983939fd2481091b644e2d",
+    "same_frozen_profile_and_reader": true,
+    "scope": "prospective, caption-conditioned, historical geometry exposure unknown; not blind or independent qualification",
+    "source_review_before_replay": true,
+    "human_role_review": "requested_pending",
+    "input_sha256": {
+      "role-cases-002-003-plan.json": "3fb0920b83a402a43e76a3a9e680e7e934f84772b67e8d168b4cb0feeeb53120",
+      "role-cases-002-003-manifest.json": "8f64797796fa9bd6ca77f269a4ba0fade40d065dec597e5f2f9bd634246d4d29",
+      "role-cases-002-003-source-review-before-replay.json": "181697165d1f9268d617a3d3652a0d5ad7be90b1ff88160b5354af49dc5436b7",
+      "role-cases-002-003-replay-plan.json": "be737dd79500ab8d68c9c3947e78c812e8cd21dcf531cda40e771aa7b14c8ed8",
+      "role-cases-002-003-image-replay.json": "31789bda8c17bc227118558f669d12fae80cac5c67c87310831fe84600f25dc7",
+      "role-cases-002-003-replay-execution.json": "332b7f8c00f53a4da00408d6d12825158178c663cd0e788cc000f0b8df5c2a83"
+    },
+    "cases": [
+      {
+        "case": "role-case-002",
+        "window_sec": [
+          68.75,
+          71.25
+        ],
+        "frames": 151,
+        "status_counts": {
+          "unknown": 32,
+          "pending": 3,
+          "prediction": 1,
+          "duplicate": 115
+        },
+        "role_frames": {
+          "killer": 149,
+          "victim": 119
+        },
+        "accepted_name_frames_by_role": {
+          "killer": 132
+        },
+        "numeric_victim_frames": 119,
+        "diagnostic_predictions": 1,
+        "reviewed_death_episodes": 1,
+        "extra_episode_predictions": 0,
+        "onset_time_sec": 69.21666666666667,
+        "confirmation_time_sec": 69.33333333333333,
+        "support": 0.9663394894660889,
+        "confirmation_victim_weapon_ncc": 0.9979852205834615,
+        "accepted_victim_names_inside_episode": 0,
+        "source_blocked_frames": 0,
+        "formal_events": 0
+      },
+      {
+        "case": "role-case-003",
+        "window_sec": [
+          511.5,
+          513.5
+        ],
+        "frames": 121,
+        "status_counts": {
+          "unknown": 70,
+          "pending": 3,
+          "prediction": 1,
+          "duplicate": 47
+        },
+        "role_frames": {
+          "victim": 50
+        },
+        "accepted_name_frames_by_role": {
+          "victim": 29
+        },
+        "numeric_victim_frames": 0,
+        "diagnostic_predictions": 1,
+        "reviewed_death_episodes": 1,
+        "extra_episode_predictions": 0,
+        "onset_time_sec": 512.6166666666667,
+        "confirmation_time_sec": 512.7166666666667,
+        "support": 0.9726836910517878,
+        "confirmation_victim_weapon_ncc": null,
+        "accepted_victim_names_inside_episode": 3,
+        "source_blocked_frames": 0,
+        "formal_events": 0
+      }
+    ],
+    "processed_frames": 272,
+    "recognition_sec": 382.54969952092506,
+    "wall_sec": 532.1301498878747,
+    "peak_rss_bytes": 91693056,
+    "terminal_hashes_passed": true,
+    "acquisition": {
+      "frames": 272,
+      "encoded_bytes": 415368960,
+      "wall_sec": 569.3292121370323,
+      "new_source_video_transfer": false,
+      "cache_hard_links": true
+    },
+    "ci": {
+      "source_commit": "80eeca2be377fd2503983939fd2481091b644e2d",
+      "linux": {
+        "run_id": 39126894210,
+        "status": "success",
+        "passed": 4259,
+        "skipped": 7,
+        "coverage_percent": 87.17
+      },
+      "windows": {
+        "run_id": 39126894225,
+        "status": "success",
+        "packaged_smoke": "success"
+      },
+      "push_runs": [
+        39126891319,
+        39126891341
+      ],
+      "push_status": "success",
+      "text_io": {
+        "run_id": 39126894216,
+        "status": "success"
+      }
+    },
+    "qualified_real_subject_provider_events": 0,
+    "new_canonical_targeted": null,
+    "new_canonical_sampled": null,
+    "new_canonical_full": null
   }
 }

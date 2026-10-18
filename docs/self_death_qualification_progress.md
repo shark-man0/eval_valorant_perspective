@@ -203,3 +203,73 @@ are unchanged. The guard/test was not weakened. That first run otherwise had
 4,224 passing Linux tests (87.14% coverage) and 4,220 passing Windows tests;
 its failure is retained, not reported as successful CI. Current-source CI must
 pass separately.
+
+## Additional frozen source role/temporal cases
+
+Source commit `80eeca2be377fd2503983939fd2481091b644e2d` adds the independently
+gated numeric Subject provider described above. No real qualification is
+installed. With the same unchanged v4 image reader/profile, two further local
+source windows were frozen, decoded and visually reviewed before replay.
+Their selection remains caption-conditioned and historical geometry exposure
+unknown; they are not blind or independently qualified test cohorts.
+No reference, ROI, threshold, role predicate or temporal horizon was adjusted.
+
+| Case | Native frames | Diagnostic deaths / reviewed episodes | Onset → confirmation | Numeric victim frames | Formal Death |
+| --- | ---: | ---: | --- | ---: | ---: |
+| 002: recorder kills, then dies; two recorder rows coexist | 151 | 1 / 1 | 69.216667 → 69.333333 | 119 | 0 |
+| 003: enemy and recorder share an agent class, different roles | 121 | 1 / 1 | 512.616667 → 512.716667 | 0 | 0 |
+
+Case 002 supplies 149 recorder-killer row readings and 119 recorder-victim
+readings; they coexist after the actual death. At confirmation the victim's
+independent weapon NCC is **0.997985**, plate support 1.0 and candidate support
+0.966339. At the pre-reviewed live frame, only the recorder-killer row is
+accepted and the result is unknown. After the actual death, the new victim row
+and fresh Report produce one candidate despite the old killer row. This checks
+that an old Self Killer row neither becomes a Self Death nor vetoes a new,
+independently observed victim row. Counts are correlated frame observations,
+not hundreds of independent role/death successes.
+
+There are **zero accepted victim names** in case 002: all 132 accepted strings
+belong to its killer row. The episode collector must not borrow those names,
+even though the source recorder is the same person. Count eligibility and
+point-event semantic attributes remain separate. This is a concrete missing
+victim OCR observation, not an attribute transport loss or a permission to
+copy the other role's string.
+
+Case 003 begins with a visually reviewed Nonself killfeed row while the recorder
+is alive; both reviewed live frames yield no recorder Subject reading and no
+prediction. The later actual death supplies 50 victim-role readings and one
+candidate, support 0.972684. Its separator remains geometric, with no numeric
+weapon NCC. Twenty-nine accepted victim-name readings include three between
+onset and confirmation; their presence does not qualify the role or authorize
+a formal Event. Sharing an agent portrait class does not establish identity.
+
+Both windows have zero extra episode predictions and zero source-blocked
+frames. The 115/47 latched duplicate statuses suppress repeated issuance.
+Acquisition processed all 272 native frames without skipping, taking 569.329 s
+and retaining 415,368,960 bytes of lossless PNGs through same-filesystem hard
+links. No source video was transferred or copied. Recognition took 382.550 s,
+replay wall 532.130 s, and Python peak RSS 91,693,056 bytes. Terminal source,
+profile, dependency, encoded-frame and pixel hash checks passed.
+
+Together with case 001, these new prospective windows contain three visually
+reviewed episodes and three diagnostic predictions; only one has numeric
+victim support suitable for the existing numeric contract. **All three remain
+unqualified and formal output is zero.** No exact independent boundary label,
+±0.1-second accuracy, full-match recall or whole-match false-positive rate is
+claimed. A human Role review of cases 002/003 has been requested and is pending;
+that review alone cannot grant full qualification or resolve exposure gaps.
+
+At code `80eeca2`, Linux PR CI passed **4,259 tests**, 7 existing skips and
+**87.17% coverage**. Windows PR verification passed dataset validation, pytest
+coverage, UTF-8-disabled checks, Ruff, mypy and packaged smoke. Both push
+workflows and text-I/O gate passed. Exact run IDs, source/input hashes and
+per-case counts are retained in the aggregate JSON. These CI results apply to
+that source commit, separately from later documentation-only changes.
+
+The canonical comparison remains unmeasured for this code. Adopted 23/55/4,
+archived Strict 28/50/4 and the separate timing-policy comparison are unchanged
+historical records. No new PASS or regression assertion ID is claimed, and no
+Full E2E was started. The actual reader improvement demonstrated here is
+positive recognition across further source contexts; completing independent
+Subject/temporal/attribute qualification is still required before release.
