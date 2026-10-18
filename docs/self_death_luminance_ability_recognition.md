@@ -138,6 +138,86 @@ on all previous sources or grant the old qualification to new executable bytes.
 
 ## Tests and remaining acceptance work
 
+### Frozen cross-context and cross-source regression
+
+After the feature and ability bank were committed at `6eafb85`, the exact same
+references were tested on two other already exposed source-2 episodes and the
+source-1 legacy windows. No further reference, mask, threshold or temporal
+parameter was adjusted. Source-1's diagnostic profile explicitly binds its own
+video SHA and restores both Report rectangles to that source's original search
+geometry; all other original configuration and asset arrays remain identical
+outside the selected marker feature/reference and added ability bank.
+Changing source binding is not qualification transfer.
+
+| Regression cohort | Native frames | Unique known episodes detected | New control predictions |
+| --- | ---: | ---: | ---: |
+| Other source-2 episodes | 362 | 2 / 2 | no control windows in this cohort |
+| Source-1 legacy windows | 171 | 2 / 2 | 0 |
+
+The source-1 cohort deliberately includes two overlapping R1 windows. It yields
+three per-window predictions but only **two distinct death episodes**. Treating
+these as three true positives would double-count R1. The short 24-frame R1
+window, previously too short to confirm a candidate with the binary profile,
+now confirms one; the longer R1 window confirms the same original onset. These
+are independent recognizer contexts, not a claim of three events in one match.
+
+The source-2 known onsets and confirmation times remain unchanged. Source-1
+onset PTS also remain unchanged: confirmation delay is now 0.1 seconds for both
+episodes, compared with 0.4 seconds for the prior longer R1 replay and about
+0.1167 seconds for R2. Nothing backdates an event or moves an onset toward GT.
+Source-1's unique recording-marker role readings remain numeric, with no ability
+score borrowed into its weapon measurements. These results show transfer of the
+frozen reference across exposed contexts, **not independent or blind holdout**.
+
+Source-2 wall/recognition time was 552.089 / 392.973 seconds and peak Python RSS
+97,071,104 bytes. Source-1 was 227.771 / 199.465 seconds and 98,729,984 bytes.
+Every source/config/encoded/pixel terminal check passed; no source-blocked frame
+or formal Event was produced. Both used the previously recorded four-thread
+dependency fingerprint; no parallel full-video jobs or new sampling was used.
+
+Private records: `luminance-ability-cross-context-plan.json`,
+`luminance-ability-cross-context-source2-manifest.json`,
+`luminance-ability-cross-source1-profile-v4.json`,
+`luminance-ability-cross-context-{source1,source2}-replay.json` and
+`luminance-ability-cross-context-execution.json`.
+
+### Canonical Death predicates still need more than a released event
+
+Read-only inspection of the unchanged private assertion definitions and
+reference evaluator confirms two different requirements:
+
+- `event_count_constraints-001` and `event_count_constraints-005` count
+  `player_death` events with the required actor and native Round association.
+  They do not require the three point-event semantic attributes below.
+- `GT-R1-DEATH` and `GT-R2-DEATH` additionally require the exact independently
+  read `victim_name`, `killer_agent` and `combat_report_damage_received`, as well
+  as type, actor, Round association and the original acceptance window.
+
+The scoped numeric release producer deliberately emits no guessed victim name,
+killer agent or damage. Consequently, independently qualifying and integrating
+the present detector alone cannot establish those two point assertions. At
+most the two count assertions are direct candidates for improvement, conditional
+on qualification, actual release, correct native package membership, exactly one
+event per episode and no regression elsewhere. This is a dependency analysis,
+not a measured or guaranteed PASS gain. No event or Round ID was copied from GT
+to demonstrate it.
+
+At source-1 confirmation, the raw accepted victim-name reader is present for R1
+(confidence 0.909972) but absent for R2. R1's accepted string is retained in the
+raw reading; it is not automatically a qualified Event attribute, and no name
+is propagated from R1 to R2. Killer-agent and received-damage extraction remain
+separate producer work. This distinguishes missing semantic observation from
+intentional lack of formal adoption; simply releasing every candidate would
+not complete all four Death-related assertions.
+
+The next qualification input must supply positive and negative source episodes
+that were not used to develop this Self Death recognizer. The existing two
+recordings' reused development images cannot become a new blind holdout.
+One of the previously identified supplemental originals may provide suitable
+source-held-out evidence, but its contents and size must be checked before a
+transfer; its prior Round-calibration exposure must still be disclosed. No
+supplemental source is assumed to contain a death or to be automatically blind.
+
 Local related unit/integration suite: **231 passed in 63.30 seconds**. Ruff
 passes for the repository CI scope (`src tests scripts/e2e`) plus the changed
 diagnostic runner. mypy passes for 145 source files including that runner.
