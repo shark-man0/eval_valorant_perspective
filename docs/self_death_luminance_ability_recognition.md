@@ -205,8 +205,10 @@ to demonstrate it.
 At source-1 confirmation, the raw accepted victim-name reader is present for R1
 (confidence 0.909972) but absent for R2. R1's accepted string is retained in the
 raw reading; it is not automatically a qualified Event attribute, and no name
-is propagated from R1 to R2. Killer-agent and received-damage extraction remain
-separate producer work. This distinguishes missing semantic observation from
+is propagated from R1 to R2. Subsequent [existing-reader measurements](self_death_existing_report_fields.md)
+find accepted damage/portrait candidates for both episodes and accepted R2
+names at other source frames. Qualified semantic association and formal
+attribute emission remain separate producer work. This distinguishes missing semantic observation from
 intentional lack of formal adoption; simply releasing every candidate would
 not complete all four Death-related assertions.
 
