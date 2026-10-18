@@ -86,16 +86,16 @@ The fresh row measurements were transported through the original 171-frame
 source-1 image replay. Existing names/portrait candidates are not renamed as
 qualified Self or killer attributes.
 
-Final fresh 13-frame measurement plus archived episode transport took 3.029
-seconds and saved 168,355 bytes. Original input, executable, profile/assets,
+Final fresh 13-frame measurement plus archived episode transport took 3.176
+seconds and saved 168,356 bytes. Original input, executable, profile/assets,
 dependency and pixel bindings were checked; terminal input hashes passed. No
 additional video transfer or Full E2E was performed.
 
 Private reproduction records are `report-fatal-row-development-plan.json`,
 `report-fatal-row-development-result.json`,
-`report-fatal-row-reader-v2-plan.json`,
-`report-fatal-row-reader-v2-result.json`, and
-`s01_report_fatal_row_reader_replay_v2.py`. Reference pixels, names, values and
+`report-fatal-row-reader-v3-plan.json`,
+`report-fatal-row-reader-v3-result.json`, and
+`s01_report_fatal_row_reader_replay_v3.py`. Reference pixels, names, values and
 raw images stay private. The reference is not installed into an application
 profile or published as a qualified asset.
 
@@ -110,6 +110,14 @@ calibration and invalid label support, plus the existing image session, numeric
 release and episode-field regression suites. Synthetic tests do not prove real
 recognizer qualification. Linux/Windows CI for the preceding `ecff680` remained
 in progress at the last check; this new source has not yet completed remote CI.
+
+The text-I/O gate at `f28a540` rejected two implicit `encode()` calls in
+fingerprint construction. They now explicitly use UTF-8 for JSON and ASCII for
+the hexadecimal digest. The local mandatory audit reports zero unknown I/O
+contracts; 28 focused row-reader/encoding tests passed in 10.67 seconds, with
+Ruff/mypy still passing. The actual pixels were remeasured under the resulting
+new code fingerprint (v3 above), retaining seven row associations and three
+episode annotations. No old observation was re-signed.
 
 Adopted Full remains 23/55/4; archived unadopted Strict remains 28/50/4; the
 different timing-policy comparison remains 30/49/3. New canonical results and

@@ -95,13 +95,13 @@ class FatalReportRowReader:
                     'header_reference_sha256': hashlib.sha256(
                         locator.header.reference.tobytes()).hexdigest()}
         self.profile_fingerprint = hashlib.sha256(json.dumps(
-            metadata, sort_keys=True).encode()).hexdigest()
+            metadata, sort_keys=True).encode('utf-8')).hexdigest()
         self.code_fingerprint = hashlib.sha256(
             Path(__file__).read_bytes().replace(b'\r\n', b'\n')
             + Path(__file__).with_name('killfeed_subject.py').read_bytes().replace(b'\r\n', b'\n')
             + Path(__file__).with_name('death_episode_fields.py').read_bytes().replace(
                 b'\r\n', b'\n')
-            + field_producer[0].encode()).hexdigest()
+            + field_producer[0].encode('ascii')).hexdigest()
 
     def read(self, image: Any, fields: ReportCandidateFrame) -> FatalReportRowReading:
         original = fields.source
