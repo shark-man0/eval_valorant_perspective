@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 
@@ -76,6 +77,13 @@ def test_snapshot_never_certifies_unviewed_or_holdout_and_is_immutable(tmp_path:
     output = tmp_path / "exported"
     summary = export(tmp_path, output)
     assert summary["source_records"] == summary["unique_source_pts"] == 1
+    artifacts = json.loads((output / "artifact_index.json").read_text(encoding="utf-8"))
+    manifest = next(x for x in artifacts if x["record_file"].endswith("source-manifest.json"))
+    # The same logical path must hash identically on Windows and POSIX hosts.
+    expected = hashlib.sha256(b"work/independent-source-001927/source-manifest.json").hexdigest()[
+        :20
+    ]
+    assert manifest["id"] == expected
     assert summary["unlisted_frames_certified_unviewed"] is False
     assert summary["independent_holdout_certified"] is False
     snapshots = (output / "historical_split_plans.json").read_text(encoding="utf-8")

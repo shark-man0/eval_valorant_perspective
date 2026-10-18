@@ -114,7 +114,7 @@ def export(repo: Path, output: Path) -> dict[str, Any]:
             snapshots[path] = digest(raw)
             data = json.loads(raw)
             rel = path.relative_to(repo)
-            aid = digest(str(rel).encode())[:20]
+            aid = digest(rel.as_posix().encode("utf-8"))[:20]
             artifact = {
                 "id": aid,
                 "record_file": rel.as_posix(),
@@ -193,7 +193,7 @@ def export(repo: Path, output: Path) -> dict[str, Any]:
                         "encoded_sha256",
                     ]
                 }
-                key = digest(json.dumps([source_id, key_fields], sort_keys=True).encode())
+                key = digest(json.dumps([source_id, key_fields], sort_keys=True).encode("utf-8"))
                 if key not in frames:
                     frames[key] = {
                         "id": key,
