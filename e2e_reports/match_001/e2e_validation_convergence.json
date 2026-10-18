@@ -1,0 +1,2491 @@
+{
+  "scope": "Current saved-trace reevaluation of an archived unadopted Full; not current-reader recognition or baseline adoption",
+  "source_run_state": "complete_archived_candidate",
+  "running_local_e2e_count_at_initial_inspection": 0,
+  "current_branch": "codex/self-death-positive-recognition",
+  "analysis_start_sha": "a9eca7b32e38262b041e3fbdd82f39dd87fc91d3",
+  "fetched_main_sha": "7e480c2f2f7f49aea73e1541d065d78881d2f11c",
+  "source_full_metadata": {
+    "manual_map_id": null,
+    "video_id": "match_001",
+    "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+    "analyzer_commit": "46462336427149764beb8e1fdd94c554e075616e",
+    "git_is_dirty": true,
+    "executed_at": "2026-10-14T17:37:30.531948+00:00",
+    "validation_pack": "valorant_e2e_validation_pack_v3",
+    "validation_pack_sha256": "71b8021e21d4796a32e7c09327c38ec83cb4645ad6d3f78a1823ecb53970359d",
+    "git_dirty_fingerprint": "1bc979b334189f4f5c5f5964bcadac89de185533949df69be9002ed8fd4d49a8",
+    "settings_fingerprint": "23fdb3a3cd1202dd0d8bf1b54994cc0e14b2ecc1367dce9dfa829fff883f64da",
+    "error_code": null,
+    "evidence_files": []
+  },
+  "source_full_runtime_mode": {
+    "hud_mode": "real",
+    "visual_semantic_enabled": false,
+    "coach_mode": "mock",
+    "ground_truth_loaded": false,
+    "require_detected_rounds": false,
+    "native_lifecycle": {
+      "storage_mode": "replay",
+      "max_replay_buffer_bytes": 67108864,
+      "source_scope": "origin_to_eof",
+      "max_png_bytes": 8589934592,
+      "png_prediction": "up",
+      "source_contract": "unedited"
+    }
+  },
+  "source_sha256": "71d58558559d6f578433ce9f234bf176f76fd5a86657dbfe3eba1e7d36136b06",
+  "recorded_code_fingerprint": "68512af8e83031e2c278a0ac217f7a35ff029cadc4facc2d04767bf2958b700d",
+  "current_code_fingerprint": "7048da0a2238ed0c5d8cd2ad00845141976f1681c3f05034b5404f79ad08e4df",
+  "recorded_runner_profile_fingerprint": "23fdb3a3cd1202dd0d8bf1b54994cc0e14b2ecc1367dce9dfa829fff883f64da",
+  "verified_asset_profile_fingerprint": "60b029cb987fe0d7447853e3b4cd791d5defb0918dfaa25a401bd45d2b64c813",
+  "asset_count": 57,
+  "qualification_sha256": "46d75286f7f525ae4dd687012f62d9bc289b72b32b0125ba70480f992d63b2a4",
+  "qualification_code_fingerprint": "ad482fe1bae0f2c4401ce0364841f749f63c6e2230ff75c49cf853962c8eb859",
+  "current_global_code_fingerprint": "6ea410098baf11bbea9df5301ed901373a025e25023c220e1db6a3c01103a6fc",
+  "qualification_valid_for_current_code": false,
+  "pack_sha256": "71b8021e21d4796a32e7c09327c38ec83cb4645ad6d3f78a1823ecb53970359d",
+  "assertions_sha256": "c5e242b611ce227d1d2633e5e24c00dfe65168d8124ab58fbdea84b1d7f0d820",
+  "verified_input_hashes": {
+    "archived_run/raw_processing.json": "5bc81be4ed43e45db025548d236c416d24efe35fa2ab95a32260f5a4fa94a6dc",
+    "archived_run/e2e_trace.json": "65aa8a0387cb140adb22fe3f26a9ce60b00d45198d48889d16d4fda349f56958",
+    "archived_run/evaluation_report.json": "8841332dfcf29f6876efe63dd4c2cb42bdeb2c9d7f1d49e6258fd54997bcb1a1",
+    "archived_run/runtime_summary.json": "54d67277ea2c6c1678ea40896d530990f05e59dd8bb79da63657c137fa9b92b9",
+    "archived_run/stage_timings.json": "25d0e4515ec4d62b4aa6617aef9ed75f9e2c06b811c20ba47b441d1bc1a83027",
+    "archived_run/run_metadata.json": "6daf3430b26e7da64227213e9cb5cbdeaa66a29924f38c020a4f10e5ed3e365e",
+    "archived_run/command_results.json": "e0643033d636abbfa91235c7d1c7e02666125afab339b596f1eab6c22b3149b7",
+    "validation_pack/tests/reference_evaluator.py": "9384bcc0aab792123c724a11004e5e17bfc3360592236c1307223f192cf93f80",
+    "validation_pack/tests/generated/e2e_assertions_v3.json": "c5e242b611ce227d1d2633e5e24c00dfe65168d8124ab58fbdea84b1d7f0d820",
+    "validation_pack/schemas/e2e_output_trace_schema_v1.json": "acf56ac2a15b00accb6916a12705ab3e606af16b10d13f7368230e2075a989c6",
+    "private_profile_input_010": "baa99f1c1f0b4b7b959ec80242a58996a85c6f018bbc0895b3ca728dcaa5f3f8",
+    "private_profile_input_011": "46d75286f7f525ae4dd687012f62d9bc289b72b32b0125ba70480f992d63b2a4",
+    "private_profile_input_012": "4d075e8b85a3d1f6fa990d8a2f3500aaca7cd6430460917371e838946cf96d03",
+    "private_profile_input_013": "da90f88ac86a2155de5771362b81abaaca7b8a5749c360c12cdf6999cbd88503",
+    "private_profile_input_014": "ebd3300a9936c4d43cfc50d900bafae99aa1660b2945ef451cd34c8728996d24",
+    "private_profile_input_015": "0eab312ce7da75a103573bf55c661c2a044cfb8b555ffc1aee53d2a8070cbb84",
+    "private_profile_input_016": "58d4d598c3e1c85ef9173967cd08ac6def5873f5515356c3b2feb5edaeb617c9",
+    "private_profile_input_017": "15d86e5069ab97efc179d31515197d81ff008556b53643867d96c853be884cb4",
+    "private_profile_input_018": "eeee571ff3ea9080adeab4dd6b33e2e1b19f023bd58bc30fa5e7c8e8f29a5764",
+    "private_profile_input_019": "7f075fe95d12dbbb220912f4b532ba547b962ac82a95e9fc63d95757272d3593",
+    "private_profile_input_020": "79d981bc54a72eb708e98c7dab00aec9a4bd46c76e6920eb56e6872f157f6408",
+    "private_profile_input_021": "5da0756c76e4c0eae0de37a86a10062f086a6641b05e2d2e0180d75ef2107ba7",
+    "private_profile_input_022": "e5ae5b116966cbaf302274cfa7f5943423deb0c9194c1d9498b536f3c1c2dc31",
+    "private_profile_input_023": "297e4260c30603fde2eea698ad1165fd85f1f6e466e92ddd93f8c1c09a11a72c",
+    "private_profile_input_024": "31d71802e579aabcd257926af9707687b4dfa1bb3faf9e5df410c0d8bf6bf574",
+    "private_profile_input_025": "3e58637b7b8275ffdfaea8da6015b8cc428201b39bd1febc609f92ee0325cc53",
+    "private_profile_input_026": "9c9bc886844b2ba3c0e3b1dc55cd7a2d0f87262e00e4288ce6b89ec0a67fdeb1",
+    "private_profile_input_027": "a31e5fc2f8b994705747ed7f4c7658c7437e7b4aa4f8fff9fd117829460d34b3",
+    "private_profile_input_028": "b479ec4f00a1e271cd559d23c1843ae45da39abc04bdf794bf926bdba394ffbd",
+    "private_profile_input_029": "b54b6d20128a15fab7da46dcc6273f3787f76b5138ecc01c4830f5b819bfcd2d",
+    "private_profile_input_030": "e97bad5ced263c9ceb05fd2dde6814d2a9c86b732ddbb7266766fe94e0632877",
+    "private_profile_input_031": "ec702596da2d901fbad2c7156532d955664b9aa738efca597850a4eff0f49c23",
+    "private_profile_input_032": "f9faf779c0490d9ef79d3cc7fa3824de0fbcb7cbed4947df3af93f7ce5a3d847",
+    "private_profile_input_033": "b6001667d595586cfad265e3c516c0366d6f5f3ab106958f882626ca9a2eefa0",
+    "private_profile_input_034": "c7cd80cab8ac165de0bf67d68949624abfd1dcece8879d45f56c3c05fada1d76",
+    "private_profile_input_035": "396c45514417ac6f58ae040ceacd82abd896cf47312b77fe10de1790cfaa615e",
+    "private_profile_input_036": "7d748cca84e0cd2ce2f62cb922b475297494a83d31b8509bedab8d3671eec30a",
+    "private_profile_input_037": "b24bb9f55e7dafe704aae825727ab21d5d96295b1c1dc149cb80e403f368d6c9",
+    "private_profile_input_038": "a65535e336ae35a88b6c50e64a382c023573407d2297016c6f6bc3c80246a0f4",
+    "private_profile_input_039": "373035ec316679a1502e644078d09546fbfcdb943a24a36643568b734eedd48c",
+    "private_profile_input_040": "258cc58a5657174616830ad296ee8a97deafebca2eac90eb7348c7fbe2663426",
+    "private_profile_input_041": "d8f7431b44e0ac623422495f727d4b40a2113cee62e6e808e923d9eefc17f8a8",
+    "private_profile_input_042": "28814a2f93f43519d52bd802cafedefd6facfc8fa15160b291b90dc92235aa08",
+    "private_profile_input_043": "7f8cf978b2295a1628c762e1ee41b112da3e26e89e73da0a5c76f33bdf183fd1",
+    "private_profile_input_044": "a359d2cc897dd0addffb169db2ece39437372ea5778a7dade902eee6162c24dd",
+    "private_profile_input_045": "9b1eef2d740cf51b7480f1fcc10e20bd463d44a507011cab6824155f2404cb3c",
+    "private_profile_input_046": "9f1929e7ebc54a00d29d1a18cca82a93a340f569f8f6bf9e19b0e04f5f2ad378",
+    "private_profile_input_047": "862328825993c16543864df11aa5ac629227bf6adbd670a21e2197a0f050e2e8",
+    "private_profile_input_048": "48a0cc7e4a93150ecf1e823a8b1cc47555e137e2b33ee65f96eb32e91d169359",
+    "private_profile_input_049": "467c1af084afc770748f46ef8fbb8e9a1a8274b983d9ac3fbeb8bc0a13f753bd",
+    "private_profile_input_050": "803e16d9676fc2901418313163abdbbd82517b41d71fce08940e884f9f9fedfe",
+    "private_profile_input_051": "eb8eab77ad1ecc5ff5d8bd0abeb87c370e76534f7c1fcb927ffef9ece97e161a",
+    "private_profile_input_052": "44900c700e1ccca75d6f01ad2d95643826673b6b1e7897c0722b176017909f05",
+    "private_profile_input_053": "2d7bfb464960fe6e031ea64e7ebd7bba26c4b2932db2bea01ab43eb0454c2ede",
+    "private_profile_input_054": "d941b6b2626dd0aeebf1dbec9f60903627d517b930a076f7839a49be94daf9a9",
+    "private_profile_input_055": "f171b3f36369c0582417fb920266c8097325596f247ed4867b5681cd720ee99c",
+    "private_profile_input_056": "dfa06c49dc916e778c8b472eed6ba05214c8627843c38ffcc7e240648a74a29d",
+    "private_profile_input_057": "304459289001a2ebda8a5864abaa3061e7a08ec291851beaf048bfb3336ce7af",
+    "private_profile_input_058": "2d23443d293f7065263ab3a55ff5d26f23fa67db271c10643a5a8de1b6beecd3",
+    "private_profile_input_059": "5de56e92ed0b63b2b6d8186d41f87c360fe7448fe54631eec425c7fe7f69c038",
+    "private_profile_input_060": "601e57a3cdb8cc96a80ba1fa0090673fdc157e8fc729471483342a59a6e4ab45",
+    "private_profile_input_061": "9d3e1a8f0a492179b1e41043dce7649cc36c26dcea83efe69d8a08088f358da0",
+    "private_profile_input_062": "ee22e20d6473c1708ce0b6a7f309bc22568966271e158eab0fb6e871f7183477",
+    "private_profile_input_063": "5ac534136243c34b8adba641b84490a777dc179e52f431b16122c2070b677734",
+    "private_profile_input_064": "59cdd0993fe7595e0c62157583b2fe96dede31e4a1a89d52ad2790b8117a159c",
+    "private_profile_input_065": "ca2072c97b90da225cb93c7bcc58475332ed89b9cf0a3c00610beef3340e098f",
+    "private_profile_input_066": "f31a1175575e4cc6484e73d543b942c38f5e32bf500423968cdf69fc991f4dae",
+    "private_profile_input_067": "466ab009974a1f11a0763262ce10c2ce93962d2c3a4f5d6db5dcd77057e80a94",
+    "private_profile_input_068": "f01f3ee9d375b2ec929f27555b66fb69d8a49f87c35dd234944fd5879cfb1ffa",
+    "private_profile_input_069": "1b219b606e7924e144d89eade5c3e771c248de9a15a2a196b5b6019eb2b212ea"
+  },
+  "adopted_baseline": {
+    "pass": 23,
+    "fail": 55,
+    "not_evaluated": 4
+  },
+  "archived_candidate_and_reevaluation": {
+    "pass": 28,
+    "fail": 50,
+    "not_evaluated": 4
+  },
+  "status_changes_vs_saved_candidate": [],
+  "status_changes_vs_adopted": [
+    "GT-R1-ROUND-START",
+    "GT-R2-ROUND-START",
+    "event_count_constraints-000",
+    "event_count_constraints-002",
+    "event_count_constraints-004"
+  ],
+  "first_blocker_counts": {
+    "death_event_contract": 4,
+    "round_end_time": 1,
+    "preparation_scope": 7,
+    "remote_state": 4,
+    "smoke_state": 1,
+    "expanded_map_state": 1,
+    "spectator_coverage": 1,
+    "self_ownership": 2,
+    "dead_ownership": 2,
+    "teammate_ownership": 1,
+    "snapshot_current_state_evidence": 15,
+    "snapshot_player_life_evidence": 5,
+    "map_resolution": 2,
+    "owned_visual_evidence": 4
+  },
+  "secondary_blocker_counts_nonexclusive": {
+    "event_attribute:killer_agent": 2,
+    "event_attribute:victim_name": 2,
+    "native_temporal_transition": 4,
+    "one_event_per_episode": 4,
+    "qualified_subject": 4,
+    "lifecycle_membership": 4,
+    "event_attribute:combat_report_damage_received": 2,
+    "source_backed_timing_and_event_meaning": 1,
+    "source_continuity_and_interval_edges": 16,
+    "qualified_current_subject": 5,
+    "current_or_qualified_temporal_life": 5,
+    "field:player_alive": 13,
+    "field:location_label_raw": 3,
+    "field:nonself_killfeed_row_visible": 1,
+    "field:vision_obscured_smoke": 1,
+    "field:ammo_mag": 3,
+    "field:reload_animation_visible": 3,
+    "field:ammo_reserve": 3,
+    "field:spectator_primary_state": 1,
+    "field:muzzle_flash_visible": 3,
+    "field:player_hp": 4,
+    "field:score_enemy": 1,
+    "required_fields_not_evaluable_until_membership": 3,
+    "current_frame_state": 3,
+    "player_ownership_and_life": 3,
+    "field:spectated_hp": 2,
+    "field:view_owner": 1,
+    "field:spectated_location_label_raw": 2,
+    "field:spectated_weapon": 2,
+    "field:spectated_ammo_mag": 2,
+    "field:spectated_ammo_reserve": 2,
+    "field:spectated_name": 2,
+    "field:zone_id": 2,
+    "map_resolution": 1,
+    "source_bound_event_export": 3,
+    "current_self_owner": 4,
+    "qualified_visual_action": 4,
+    "event_count_scope": 1,
+    "native_event_export": 1
+  },
+  "distinct_failed_predicates": 99,
+  "negative_assertions_passed": 20,
+  "negative_violations": 0,
+  "discontinuity_assertion_violations": 0,
+  "false_owner_death_boundary_scope": "No violations of the fixed canonical negatives; no independent general false-positive rate is inferred",
+  "events_by_type": {
+    "round_start": 2,
+    "state_snapshot": 211,
+    "round_end": 1,
+    "movement_state": 1
+  },
+  "trace_counts": {
+    "events": 215,
+    "state_intervals": 195,
+    "ownership_intervals": 5423,
+    "snapshots": 5335,
+    "visual_observations": 4,
+    "temporal_features": 0
+  },
+  "packages": [
+    {
+      "round_index": 1,
+      "time_range": {
+        "start_sec": 2.502669,
+        "end_sec": 81.752669
+      },
+      "events": 115,
+      "snapshots": 3054,
+      "facts": 2765,
+      "fact_keys": {
+        "round_time_remaining_sec": 2459,
+        "hp": 306
+      }
+    },
+    {
+      "round_index": 2,
+      "time_range": {
+        "start_sec": 110.98600260416667,
+        "end_sec": 171.019336
+      },
+      "events": 100,
+      "snapshots": 2281,
+      "facts": 1648,
+      "fact_keys": {
+        "round_time_remaining_sec": 1458,
+        "hp": 190
+      }
+    }
+  ],
+  "fresh_geometry_counts": {
+    "frames": 6614,
+    "fresh_geometry_success": 1,
+    "effective_geometry_success": 6614,
+    "retained_geometry_frames": 6613,
+    "geometry_invalid_unknown": 0,
+    "geometry_valid_state_unknown": 5588,
+    "live_identity_evidence_insufficient": 5473,
+    "insufficient_anchors_frames": 6613
+  },
+  "full_wall_sec": 37848.921751271,
+  "full_frame_count": 6614,
+  "full_fps": 0.17474738232874218,
+  "full_stage_timings": {
+    "wall_sec": 37812.31527744001,
+    "stages": {
+      "decode": {
+        "calls": 16,
+        "total_sec": 731.1677989009768,
+        "average_sec": 45.69798743131105,
+        "wall_share": 0.019336763526279332
+      },
+      "evaluator": {
+        "calls": 0,
+        "total_sec": 0.0,
+        "average_sec": 0.0,
+        "wall_share": 0.0
+      },
+      "event_fusion": {
+        "calls": 1,
+        "total_sec": 0.00015529594384133816,
+        "average_sec": 0.00015529594384133816,
+        "wall_share": 4.1070202314216e-09
+      },
+      "hud_event_detection": {
+        "calls": 2,
+        "total_sec": 0.5532192839309573,
+        "average_sec": 0.27660964196547866,
+        "wall_share": 1.463066410696689e-05
+      },
+      "hud_geometry": {
+        "calls": 35805,
+        "total_sec": 11811.971425987547,
+        "average_sec": 0.32989726088500343,
+        "wall_share": 0.3123842414652385
+      },
+      "hud_identity": {
+        "calls": 71604,
+        "total_sec": 1538.1694890067447,
+        "average_sec": 0.021481614002105257,
+        "wall_share": 0.040679061245542505
+      },
+      "hud_menu": {
+        "calls": 35802,
+        "total_sec": 54.71074321412016,
+        "average_sec": 0.0015281476792950157,
+        "wall_share": 0.001446902756752435
+      },
+      "hud_numeric_ocr": {
+        "calls": 17901,
+        "total_sec": 7014.728047185577,
+        "average_sec": 0.391862356694351,
+        "wall_share": 0.18551437529589151
+      },
+      "hud_signal_templates": {
+        "calls": 35802,
+        "total_sec": 172.4394677154487,
+        "average_sec": 0.004816475831390668,
+        "wall_share": 0.004560404895870828
+      },
+      "hud_spectator": {
+        "calls": 17901,
+        "total_sec": 7126.818918027682,
+        "average_sec": 0.39812406670173073,
+        "wall_share": 0.18847877644455593
+      },
+      "metadata_open": {
+        "calls": 1,
+        "total_sec": 0.29618368099909276,
+        "average_sec": 0.29618368099909276,
+        "wall_share": 7.83299511881001e-06
+      },
+      "native_frame_decode": {
+        "calls": 1,
+        "total_sec": 889.3747062929906,
+        "average_sec": 889.3747062929906,
+        "wall_share": 0.02352076829380556
+      },
+      "native_lifecycle": {
+        "calls": 1,
+        "total_sec": 5221.008444595849,
+        "average_sec": 5221.008444595849,
+        "wall_share": 0.13807693092284312
+      },
+      "report_generation": {
+        "calls": 0,
+        "total_sec": 0.0,
+        "average_sec": 0.0,
+        "wall_share": 0.0
+      },
+      "round_package_build": {
+        "calls": 1,
+        "total_sec": 48.346356707043014,
+        "average_sec": 48.346356707043014,
+        "wall_share": 0.001278587580588802
+      },
+      "trace_serialization": {
+        "calls": 1,
+        "total_sec": 14.347560117952526,
+        "average_sec": 14.347560117952526,
+        "wall_share": 0.00037944146008199404
+      },
+      "visual_analysis": {
+        "calls": 1,
+        "total_sec": 816.3207552079111,
+        "average_sec": 816.3207552079111,
+        "wall_share": 0.021588753537526786
+      },
+      "visual_trigger_scan": {
+        "calls": 1,
+        "total_sec": 126.65826275292784,
+        "average_sec": 126.65826275292784,
+        "wall_share": 0.003349656370513129
+      }
+    }
+  },
+  "full_process_cpu_sec": null,
+  "full_peak_rss_bytes": null,
+  "full_decoded_frame_count_across_all_passes": null,
+  "full_disk_bytes": 2620135102,
+  "jpeg_duplication": {
+    "scope": "terminal archive JPEG byte-identity audit, not an independent PTS or semantic continuity proof",
+    "jpeg_files": 7160,
+    "unique_filename_times": 6614,
+    "duplicate_groups": 545,
+    "byte_identical_groups": 545,
+    "extra_files": 546,
+    "identical_extra_bytes": 196243386,
+    "wall_sec": 13.283739069942385,
+    "files_deleted": 0
+  },
+  "evaluation_only_execution": {
+    "started_unix": 1792307368.0514245,
+    "finished_unix": 1792307379.760594,
+    "exit_code": 1,
+    "wall_sec": 11.709168176865205,
+    "child_cpu_sec": 11.641205999999999,
+    "child_peak_rss_bytes": 47775744,
+    "source": "archived trace, unchanged canonical evaluator; no recognition/full rerun",
+    "branch_head": "a9eca7b32e38262b041e3fbdd82f39dd87fc91d3"
+  },
+  "current_analysis_environment": {
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "os": "Linux-6.8.0-1065-raspi-aarch64-with-glibc2.39",
+    "opencv": "4.14.0",
+    "numpy": "2.5.3"
+  },
+  "original_full_environment_scope": "Not fully recoverable from terminal metadata; historical runtime documentation is not a fresh dependency-file binding",
+  "excluded_preflight_run": {
+    "state": "invalid_preflight_no_raw_or_trace",
+    "code": "MANIFEST_METADATA_OR_PACK_MISMATCH",
+    "exit_code": 2
+  },
+  "new_full_runs": 0,
+  "new_recognition_runs_for_convergence": 0,
+  "production_changed_for_convergence": false,
+  "public_contains_gt_definitions": false,
+  "assertions": [
+    {
+      "assertion_id": "GT-R1-ROUND-START",
+      "status": "pass",
+      "group": "required_point_events",
+      "first_blocker": null,
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "canonical_predicate_pass",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "same_type_actor_round_event_count": 1,
+        "required_fact": "round_start"
+      },
+      "minimum_reproducer": "source-continuous native window; fixed pack only after qualification"
+    },
+    {
+      "assertion_id": "GT-R1-DEATH",
+      "status": "fail",
+      "group": "required_point_events",
+      "first_blocker": "death_event_contract",
+      "secondary_blockers": [
+        "qualified_subject",
+        "native_temporal_transition",
+        "one_event_per_episode",
+        "lifecycle_membership",
+        "event_attribute:victim_name",
+        "event_attribute:killer_agent",
+        "event_attribute:combat_report_damage_received"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [
+        "missing_point:GT-R1-DEATH"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "same_type_actor_round_event_count": 0,
+        "required_fact": "player_death"
+      },
+      "minimum_reproducer": "source-continuous native window; fixed pack only after qualification",
+      "code_target": "hud/temporal.py::_player_death_event; experimental/numeric_death_session.py; experimental/numeric_death_release.py",
+      "next_required_evidence": "Same-segment native marker/victim/fresh-report onset and corroboration, independently fixed positive/nonself/killer/persistent/respawn negatives. Point events also need victim/killer/damage attributes; counts need type/actor/round/count.",
+      "fixability": "Image/name/Report/fatal-row candidates exist in exposed local caches; independent qualification and formal release remain incomplete.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R1-ROUND-END",
+      "status": "fail",
+      "group": "required_point_events",
+      "first_blocker": "round_end_time",
+      "secondary_blockers": [
+        "source_backed_timing_and_event_meaning"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [
+        "missing_point:GT-R1-ROUND-END"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "same_type_actor_round_event_count": 1,
+        "required_fact": "round_end"
+      },
+      "minimum_reproducer": "source-continuous native window; fixed pack only after qualification",
+      "code_target": "hud/round_lifecycle.py; hud/global_lifecycle.py; canonical required-point matcher",
+      "next_required_evidence": "Independent current-frame meaning of score/result/timer transition and original onset. Preserve the observed timestamp; compare separately under any authorized timing policy.",
+      "fixability": "Existing event is outside fixed strict acceptance. No threshold/time fitting or new Full is justified just by the millisecond mismatch.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R2-ROUND-START",
+      "status": "pass",
+      "group": "required_point_events",
+      "first_blocker": null,
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "canonical_predicate_pass",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "same_type_actor_round_event_count": 1,
+        "required_fact": "round_start"
+      },
+      "minimum_reproducer": "source-continuous native window; fixed pack only after qualification"
+    },
+    {
+      "assertion_id": "GT-R2-DEATH",
+      "status": "fail",
+      "group": "required_point_events",
+      "first_blocker": "death_event_contract",
+      "secondary_blockers": [
+        "qualified_subject",
+        "native_temporal_transition",
+        "one_event_per_episode",
+        "lifecycle_membership",
+        "event_attribute:victim_name",
+        "event_attribute:killer_agent",
+        "event_attribute:combat_report_damage_received"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [
+        "missing_point:GT-R2-DEATH"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "same_type_actor_round_event_count": 0,
+        "required_fact": "player_death"
+      },
+      "minimum_reproducer": "source-continuous native window; fixed pack only after qualification",
+      "code_target": "hud/temporal.py::_player_death_event; experimental/numeric_death_session.py; experimental/numeric_death_release.py",
+      "next_required_evidence": "Same-segment native marker/victim/fresh-report onset and corroboration, independently fixed positive/nonself/killer/persistent/respawn negatives. Point events also need victim/killer/damage attributes; counts need type/actor/round/count.",
+      "fixability": "Image/name/Report/fatal-row candidates exist in exposed local caches; independent qualification and formal release remain incomplete.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "ordering_constraints-000",
+      "status": "not_evaluated",
+      "group": "ordering_constraints",
+      "first_blocker": null,
+      "secondary_blockers": [
+        "matched_point:GT-R1-ROUND-START",
+        "matched_point:GT-R1-DEATH"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "unmatched_point_dependencies",
+      "adopted_status": "not_evaluated",
+      "observed_summary": {
+        "before": "GT-R1-ROUND-START",
+        "after": "GT-R1-DEATH"
+      },
+      "minimum_reproducer": "unchanged evaluator over qualified matched events",
+      "next_required_evidence": "Both independently matched required point events under the unchanged canonical evaluator; do not manufacture a dependency.",
+      "code_target": "tests/e2e/evaluate_saved_trace.py; canonical point dependencies"
+    },
+    {
+      "assertion_id": "ordering_constraints-001",
+      "status": "not_evaluated",
+      "group": "ordering_constraints",
+      "first_blocker": null,
+      "secondary_blockers": [
+        "matched_point:GT-R1-ROUND-START",
+        "matched_point:GT-R1-ROUND-END"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "unmatched_point_dependencies",
+      "adopted_status": "not_evaluated",
+      "observed_summary": {
+        "before": "GT-R1-ROUND-START",
+        "after": "GT-R1-ROUND-END"
+      },
+      "minimum_reproducer": "unchanged evaluator over qualified matched events",
+      "next_required_evidence": "Both independently matched required point events under the unchanged canonical evaluator; do not manufacture a dependency.",
+      "code_target": "tests/e2e/evaluate_saved_trace.py; canonical point dependencies"
+    },
+    {
+      "assertion_id": "ordering_constraints-002",
+      "status": "not_evaluated",
+      "group": "ordering_constraints",
+      "first_blocker": null,
+      "secondary_blockers": [
+        "matched_point:GT-R1-DEATH",
+        "matched_point:GT-R1-ROUND-END"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "unmatched_point_dependencies",
+      "adopted_status": "not_evaluated",
+      "observed_summary": {
+        "before": "GT-R1-DEATH",
+        "after": "GT-R1-ROUND-END"
+      },
+      "minimum_reproducer": "unchanged evaluator over qualified matched events",
+      "next_required_evidence": "Both independently matched required point events under the unchanged canonical evaluator; do not manufacture a dependency.",
+      "code_target": "tests/e2e/evaluate_saved_trace.py; canonical point dependencies"
+    },
+    {
+      "assertion_id": "ordering_constraints-003",
+      "status": "not_evaluated",
+      "group": "ordering_constraints",
+      "first_blocker": null,
+      "secondary_blockers": [
+        "matched_point:GT-R2-ROUND-START",
+        "matched_point:GT-R2-DEATH"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "unmatched_point_dependencies",
+      "adopted_status": "not_evaluated",
+      "observed_summary": {
+        "before": "GT-R2-ROUND-START",
+        "after": "GT-R2-DEATH"
+      },
+      "minimum_reproducer": "unchanged evaluator over qualified matched events",
+      "next_required_evidence": "Both independently matched required point events under the unchanged canonical evaluator; do not manufacture a dependency.",
+      "code_target": "tests/e2e/evaluate_saved_trace.py; canonical point dependencies"
+    },
+    {
+      "assertion_id": "GT-R1-BUY-FLAG",
+      "status": "fail",
+      "group": "required_state_intervals",
+      "first_blocker": "preparation_scope",
+      "secondary_blockers": [
+        "source_continuity_and_interval_edges"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [
+        "state_coverage:GT-R1-BUY-FLAG"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "coverage_fraction": 0.3895929268292682,
+        "required_fact": "buy_phase_banner"
+      },
+      "minimum_reproducer": "continuous source coverage; isolated points insufficient",
+      "code_target": "rounds/builder.py::_preparation_context_start; _round_windows; _retain_unassigned_observations",
+      "next_required_evidence": "Qualified uninterrupted preparation-to-native-start evidence in the same source segment. Preserve both source breaks and the unknown fragments; no GT round ID assignment.",
+      "fixability": "Observation retention already exists; no proved same-segment association loss is fixed by guessing membership.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R1-ASTRAL-1",
+      "status": "fail",
+      "group": "required_state_intervals",
+      "first_blocker": "remote_state",
+      "secondary_blockers": [
+        "source_continuity_and_interval_edges"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [
+        "state_coverage:GT-R1-ASTRAL-1"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "coverage_fraction": 0.0,
+        "required_fact": "remote_control_view"
+      },
+      "minimum_reproducer": "continuous source coverage; isolated points insufficient",
+      "code_target": "hud/classifier.py::HudStateClassifier.classify; visual/remote.py::classify_remote_view",
+      "next_required_evidence": "Discriminative remote/ability interface positive and nonremote/menu/spectator negatives at original source PTS, then continuous coverage. Previously rejected shared textures are not new evidence.",
+      "fixability": "Current texture candidate cannot be promoted; a qualified interface producer is required.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R1-ASTRAL-2",
+      "status": "fail",
+      "group": "required_state_intervals",
+      "first_blocker": "remote_state",
+      "secondary_blockers": [
+        "source_continuity_and_interval_edges"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [
+        "state_coverage:GT-R1-ASTRAL-2"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "coverage_fraction": 0.0,
+        "required_fact": "remote_control_view"
+      },
+      "minimum_reproducer": "continuous source coverage; isolated points insufficient",
+      "code_target": "hud/classifier.py::HudStateClassifier.classify; visual/remote.py::classify_remote_view",
+      "next_required_evidence": "Discriminative remote/ability interface positive and nonremote/menu/spectator negatives at original source PTS, then continuous coverage. Previously rejected shared textures are not new evidence.",
+      "fixability": "Current texture candidate cannot be promoted; a qualified interface producer is required.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R1-SMOKE",
+      "status": "fail",
+      "group": "required_state_intervals",
+      "first_blocker": "smoke_state",
+      "secondary_blockers": [
+        "source_continuity_and_interval_edges"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [
+        "state_coverage:GT-R1-SMOKE"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "coverage_fraction": 0.0,
+        "required_fact": "vision_obscured_smoke"
+      },
+      "minimum_reproducer": "continuous source coverage; isolated points insufficient",
+      "code_target": "hud/readers.py; hud/classifier.py",
+      "next_required_evidence": "Source-backed smoke-obscuration positive versus remote/Astra/world-spot negatives, current geometry/visibility and continuous interval edges.",
+      "fixability": "A field/state recognizer exists but the canonical state coverage is insufficient.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R1-COMBAT-REPORT",
+      "status": "pass",
+      "group": "required_state_intervals",
+      "first_blocker": null,
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "canonical_predicate_pass",
+      "adopted_status": "pass",
+      "observed_summary": {
+        "coverage_fraction": 0.993571071428572,
+        "required_fact": "combat_report_visible"
+      },
+      "minimum_reproducer": "continuous source coverage; isolated points insufficient"
+    },
+    {
+      "assertion_id": "GT-R2-BUY-FLAG",
+      "status": "fail",
+      "group": "required_state_intervals",
+      "first_blocker": "preparation_scope",
+      "secondary_blockers": [
+        "source_continuity_and_interval_edges"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [
+        "state_coverage:GT-R2-BUY-FLAG"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "coverage_fraction": 0.014081530612245203,
+        "required_fact": "buy_phase_banner"
+      },
+      "minimum_reproducer": "continuous source coverage; isolated points insufficient",
+      "code_target": "rounds/builder.py::_preparation_context_start; _round_windows; _retain_unassigned_observations",
+      "next_required_evidence": "Qualified uninterrupted preparation-to-native-start evidence in the same source segment. Preserve both source breaks and the unknown fragments; no GT round ID assignment.",
+      "fixability": "Observation retention already exists; no proved same-segment association loss is fixed by guessing membership.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R2-BUY-MENU-1",
+      "status": "fail",
+      "group": "required_state_intervals",
+      "first_blocker": "preparation_scope",
+      "secondary_blockers": [
+        "source_continuity_and_interval_edges"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [
+        "state_coverage:GT-R2-BUY-MENU-1"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "coverage_fraction": 0.0,
+        "required_fact": "buy_menu_open"
+      },
+      "minimum_reproducer": "continuous source coverage; isolated points insufficient",
+      "code_target": "rounds/builder.py::_preparation_context_start; _round_windows; _retain_unassigned_observations",
+      "next_required_evidence": "Qualified uninterrupted preparation-to-native-start evidence in the same source segment. Preserve both source breaks and the unknown fragments; no GT round ID assignment.",
+      "fixability": "Observation retention already exists; no proved same-segment association loss is fixed by guessing membership.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R2-BUY-MENU-2",
+      "status": "fail",
+      "group": "required_state_intervals",
+      "first_blocker": "preparation_scope",
+      "secondary_blockers": [
+        "source_continuity_and_interval_edges"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [
+        "state_coverage:GT-R2-BUY-MENU-2"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "coverage_fraction": 0.0,
+        "required_fact": "buy_menu_open"
+      },
+      "minimum_reproducer": "continuous source coverage; isolated points insufficient",
+      "code_target": "rounds/builder.py::_preparation_context_start; _round_windows; _retain_unassigned_observations",
+      "next_required_evidence": "Qualified uninterrupted preparation-to-native-start evidence in the same source segment. Preserve both source breaks and the unknown fragments; no GT round ID assignment.",
+      "fixability": "Observation retention already exists; no proved same-segment association loss is fixed by guessing membership.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R2-ASTRAL-1",
+      "status": "fail",
+      "group": "required_state_intervals",
+      "first_blocker": "remote_state",
+      "secondary_blockers": [
+        "source_continuity_and_interval_edges"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [
+        "state_coverage:GT-R2-ASTRAL-1"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "coverage_fraction": 0.0,
+        "required_fact": "remote_control_view"
+      },
+      "minimum_reproducer": "continuous source coverage; isolated points insufficient",
+      "code_target": "hud/classifier.py::HudStateClassifier.classify; visual/remote.py::classify_remote_view",
+      "next_required_evidence": "Discriminative remote/ability interface positive and nonremote/menu/spectator negatives at original source PTS, then continuous coverage. Previously rejected shared textures are not new evidence.",
+      "fixability": "Current texture candidate cannot be promoted; a qualified interface producer is required.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R2-ASTRAL-2",
+      "status": "fail",
+      "group": "required_state_intervals",
+      "first_blocker": "remote_state",
+      "secondary_blockers": [
+        "source_continuity_and_interval_edges"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [
+        "state_coverage:GT-R2-ASTRAL-2"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "coverage_fraction": 0.0,
+        "required_fact": "remote_control_view"
+      },
+      "minimum_reproducer": "continuous source coverage; isolated points insufficient",
+      "code_target": "hud/classifier.py::HudStateClassifier.classify; visual/remote.py::classify_remote_view",
+      "next_required_evidence": "Discriminative remote/ability interface positive and nonremote/menu/spectator negatives at original source PTS, then continuous coverage. Previously rejected shared textures are not new evidence.",
+      "fixability": "Current texture candidate cannot be promoted; a qualified interface producer is required.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R2-EXPANDED-MAP",
+      "status": "fail",
+      "group": "required_state_intervals",
+      "first_blocker": "expanded_map_state",
+      "secondary_blockers": [
+        "source_continuity_and_interval_edges"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [
+        "state_coverage:GT-R2-EXPANDED-MAP"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "coverage_fraction": 0.0,
+        "required_fact": "expanded_tactical_map"
+      },
+      "minimum_reproducer": "continuous source coverage; isolated points insufficient",
+      "code_target": "hud/readers.py; hud/classifier.py",
+      "next_required_evidence": "Actual map UI identity/layout support and negatives for similar world texture, source-bound interval evidence.",
+      "fixability": "Current texture result is a candidate, not qualified tactical-map state.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R2-SPECTATOR",
+      "status": "fail",
+      "group": "required_state_intervals",
+      "first_blocker": "spectator_coverage",
+      "secondary_blockers": [
+        "source_continuity_and_interval_edges"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [
+        "state_coverage:GT-R2-SPECTATOR"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "coverage_fraction": 0.2915332500000048,
+        "required_fact": "spectator_first_person"
+      },
+      "minimum_reproducer": "continuous source coverage; isolated points insufficient",
+      "code_target": "hud/templates.py::detect_signals; hud/spectator.py; hud/temporal.py",
+      "next_required_evidence": "Independent current spectator panel/icon readings over the continuous source interval with report/menu/remote negative controls.",
+      "fixability": "Partial coverage is measured; an isolated successful panel cannot establish the whole interval.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "OWN-R1-SELF",
+      "status": "fail",
+      "group": "required_ownership_intervals",
+      "first_blocker": "self_ownership",
+      "secondary_blockers": [
+        "source_continuity_and_interval_edges",
+        "qualified_current_subject",
+        "current_or_qualified_temporal_life"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [
+        "ownership_coverage:OWN-R1-SELF"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "coverage_fraction": 0.08922486371024703,
+        "required_fact": "self"
+      },
+      "minimum_reproducer": "continuous subject/owner evidence; no global-value promotion",
+      "code_target": "hud/identity.py::live_identity; tests/e2e/trace_adapter.py::to_e2e_trace",
+      "next_required_evidence": "Recording-player current view binding, all independent HUD identity structures and required continuous Self interval.",
+      "fixability": "Do not reuse global lifecycle or Death-only subject proof as general player-owned identity.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "OWN-R1-SELF-DEAD",
+      "status": "fail",
+      "group": "required_ownership_intervals",
+      "first_blocker": "dead_ownership",
+      "secondary_blockers": [
+        "source_continuity_and_interval_edges",
+        "qualified_current_subject",
+        "current_or_qualified_temporal_life"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [
+        "ownership_coverage:OWN-R1-SELF-DEAD"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "coverage_fraction": 0.0,
+        "required_fact": "self_dead_ui"
+      },
+      "minimum_reproducer": "continuous subject/owner evidence; no global-value promotion",
+      "code_target": "hud/temporal.py::_player_death_event; tests/e2e/trace_adapter.py::to_e2e_trace",
+      "next_required_evidence": "Separately approved current/temporal self-dead life proof, onset, persistence limits, contradiction/reset/respawn and source continuity.",
+      "fixability": "Event subject qualification and self_dead_ui snapshot ownership are distinct contracts.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "OWN-R2-SELF",
+      "status": "fail",
+      "group": "required_ownership_intervals",
+      "first_blocker": "self_ownership",
+      "secondary_blockers": [
+        "source_continuity_and_interval_edges",
+        "qualified_current_subject",
+        "current_or_qualified_temporal_life"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [
+        "ownership_coverage:OWN-R2-SELF"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "coverage_fraction": 0.05792681402438981,
+        "required_fact": "self"
+      },
+      "minimum_reproducer": "continuous subject/owner evidence; no global-value promotion",
+      "code_target": "hud/identity.py::live_identity; tests/e2e/trace_adapter.py::to_e2e_trace",
+      "next_required_evidence": "Recording-player current view binding, all independent HUD identity structures and required continuous Self interval.",
+      "fixability": "Do not reuse global lifecycle or Death-only subject proof as general player-owned identity.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "OWN-R2-SELF-DEAD",
+      "status": "fail",
+      "group": "required_ownership_intervals",
+      "first_blocker": "dead_ownership",
+      "secondary_blockers": [
+        "source_continuity_and_interval_edges",
+        "qualified_current_subject",
+        "current_or_qualified_temporal_life"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [
+        "ownership_coverage:OWN-R2-SELF-DEAD"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "coverage_fraction": 0.0,
+        "required_fact": "self_dead_ui"
+      },
+      "minimum_reproducer": "continuous subject/owner evidence; no global-value promotion",
+      "code_target": "hud/temporal.py::_player_death_event; tests/e2e/trace_adapter.py::to_e2e_trace",
+      "next_required_evidence": "Separately approved current/temporal self-dead life proof, onset, persistence limits, contradiction/reset/respawn and source continuity.",
+      "fixability": "Event subject qualification and self_dead_ui snapshot ownership are distinct contracts.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "OWN-R2-TEAMMATE",
+      "status": "fail",
+      "group": "required_ownership_intervals",
+      "first_blocker": "teammate_ownership",
+      "secondary_blockers": [
+        "source_continuity_and_interval_edges",
+        "qualified_current_subject",
+        "current_or_qualified_temporal_life"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [
+        "ownership_coverage:OWN-R2-TEAMMATE"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "coverage_fraction": 0.2844226829268339,
+        "required_fact": "teammate_spectated"
+      },
+      "minimum_reproducer": "continuous subject/owner evidence; no global-value promotion",
+      "code_target": "hud/spectator.py; tests/e2e/trace_adapter.py::to_e2e_trace",
+      "next_required_evidence": "Qualified spectator state and observed spectated subject over the full interval; do not infer a teammate owner from a generic panel alone.",
+      "fixability": "Continuous spectator/subject coverage is incomplete.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-0035",
+      "status": "fail",
+      "group": "required_snapshots",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "field:player_alive",
+        "field:location_label_raw"
+      ],
+      "failed_fields": [
+        "primary_state",
+        "player_alive",
+        "location_label_raw"
+      ],
+      "evaluator_failures": [
+        "snapshot:GT-R1-SNAP-0035:primary_state",
+        "snapshot:GT-R1-SNAP-0035:player_alive",
+        "snapshot:GT-R1-SNAP-0035:location_label_raw"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "matching_snapshots": 4,
+        "source_observations": 4,
+        "current_states": {
+          "unknown": 4
+        },
+        "hud_gate_eligible": 0,
+        "package_contains_target": true
+      },
+      "minimum_reproducer": "fixed point reader/provenance replay, then snapshot/trace contract",
+      "code_target": "hud/analyzers.py::observe_frames; hud/identity.py::live_identity",
+      "next_required_evidence": "Independent current-frame HP/Ability/Weapon structural evidence plus spectator exclusion at the original source PTS; inspect competing menu/remote/report evidence. A global timer/score reading does not establish Self.",
+      "fixability": "Recognized global fields are retained; the required state is not established. A specific reader/qualification correction must be proved before promotion.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-0415",
+      "status": "fail",
+      "group": "required_snapshots",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "field:player_alive",
+        "field:location_label_raw"
+      ],
+      "failed_fields": [
+        "primary_state",
+        "player_alive",
+        "location_label_raw"
+      ],
+      "evaluator_failures": [
+        "snapshot:GT-R1-SNAP-0415:primary_state",
+        "snapshot:GT-R1-SNAP-0415:player_alive",
+        "snapshot:GT-R1-SNAP-0415:location_label_raw"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "matching_snapshots": 4,
+        "source_observations": 4,
+        "current_states": {
+          "unknown": 4
+        },
+        "hud_gate_eligible": 0,
+        "package_contains_target": true
+      },
+      "minimum_reproducer": "fixed point reader/provenance replay, then snapshot/trace contract",
+      "code_target": "hud/analyzers.py::observe_frames; hud/identity.py::live_identity",
+      "next_required_evidence": "Independent current-frame HP/Ability/Weapon structural evidence plus spectator exclusion at the original source PTS; inspect competing menu/remote/report evidence. A global timer/score reading does not establish Self.",
+      "fixability": "Recognized global fields are retained; the required state is not established. A specific reader/qualification correction must be proved before promotion.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-475",
+      "status": "fail",
+      "group": "required_snapshots",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "field:player_alive",
+        "field:nonself_killfeed_row_visible"
+      ],
+      "failed_fields": [
+        "primary_state",
+        "player_alive",
+        "nonself_killfeed_row_visible"
+      ],
+      "evaluator_failures": [
+        "snapshot:GT-R1-SNAP-475:primary_state",
+        "snapshot:GT-R1-SNAP-475:player_alive",
+        "snapshot:GT-R1-SNAP-475:nonself_killfeed_row_visible"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "matching_snapshots": 11,
+        "source_observations": 11,
+        "current_states": {
+          "live_first_person": 6,
+          "unknown": 5
+        },
+        "hud_gate_eligible": 6,
+        "package_contains_target": true
+      },
+      "minimum_reproducer": "fixed point reader/provenance replay, then snapshot/trace contract",
+      "code_target": "hud/analyzers.py::observe_frames; hud/identity.py::live_identity",
+      "next_required_evidence": "Independent current-frame HP/Ability/Weapon structural evidence plus spectator exclusion at the original source PTS; inspect competing menu/remote/report evidence. A global timer/score reading does not establish Self.",
+      "fixability": "Recognized global fields are retained; the required state is not established. A specific reader/qualification correction must be proved before promotion.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-585",
+      "status": "fail",
+      "group": "required_snapshots",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [],
+      "failed_fields": [
+        "primary_state"
+      ],
+      "evaluator_failures": [
+        "snapshot:GT-R1-SNAP-585:primary_state"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "matching_snapshots": 6,
+        "source_observations": 6,
+        "current_states": {
+          "unknown": 6
+        },
+        "hud_gate_eligible": 0,
+        "package_contains_target": true
+      },
+      "minimum_reproducer": "fixed point reader/provenance replay, then snapshot/trace contract",
+      "code_target": "hud/analyzers.py::observe_frames; hud/identity.py::live_identity",
+      "next_required_evidence": "Independent current-frame HP/Ability/Weapon structural evidence plus spectator exclusion at the original source PTS; inspect competing menu/remote/report evidence. A global timer/score reading does not establish Self.",
+      "fixability": "Recognized global fields are retained; the required state is not established. A specific reader/qualification correction must be proved before promotion.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-595",
+      "status": "fail",
+      "group": "required_snapshots",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "field:vision_obscured_smoke"
+      ],
+      "failed_fields": [
+        "primary_state",
+        "vision_obscured_smoke"
+      ],
+      "evaluator_failures": [
+        "snapshot:GT-R1-SNAP-595:primary_state",
+        "snapshot:GT-R1-SNAP-595:vision_obscured_smoke"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "matching_snapshots": 10,
+        "source_observations": 11,
+        "current_states": {
+          "unknown": 11
+        },
+        "hud_gate_eligible": 0,
+        "package_contains_target": true
+      },
+      "minimum_reproducer": "fixed point reader/provenance replay, then snapshot/trace contract",
+      "code_target": "hud/analyzers.py::observe_frames; hud/identity.py::live_identity",
+      "next_required_evidence": "Independent current-frame HP/Ability/Weapon structural evidence plus spectator exclusion at the original source PTS; inspect competing menu/remote/report evidence. A global timer/score reading does not establish Self.",
+      "fixability": "Recognized global fields are retained; the required state is not established. A specific reader/qualification correction must be proved before promotion.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-705",
+      "status": "pass",
+      "group": "required_snapshots",
+      "first_blocker": null,
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "canonical_predicate_pass",
+      "adopted_status": "pass",
+      "observed_summary": {
+        "matching_snapshots": 10,
+        "source_observations": 10,
+        "current_states": {
+          "live_first_person": 10
+        },
+        "hud_gate_eligible": 10,
+        "package_contains_target": true
+      },
+      "minimum_reproducer": "fixed point reader/provenance replay, then snapshot/trace contract"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-728",
+      "status": "fail",
+      "group": "required_snapshots",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "field:player_alive",
+        "field:ammo_mag",
+        "field:ammo_reserve",
+        "field:reload_animation_visible"
+      ],
+      "failed_fields": [
+        "primary_state",
+        "player_alive",
+        "ammo_mag",
+        "ammo_reserve",
+        "reload_animation_visible"
+      ],
+      "evaluator_failures": [
+        "snapshot:GT-R1-SNAP-728:primary_state",
+        "snapshot:GT-R1-SNAP-728:player_alive",
+        "snapshot:GT-R1-SNAP-728:ammo_mag",
+        "snapshot:GT-R1-SNAP-728:ammo_reserve",
+        "snapshot:GT-R1-SNAP-728:reload_animation_visible"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "matching_snapshots": 6,
+        "source_observations": 6,
+        "current_states": {
+          "unknown": 5,
+          "live_first_person": 1
+        },
+        "hud_gate_eligible": 1,
+        "package_contains_target": true
+      },
+      "minimum_reproducer": "fixed point reader/provenance replay, then snapshot/trace contract",
+      "code_target": "hud/analyzers.py::observe_frames; hud/identity.py::live_identity",
+      "next_required_evidence": "Independent current-frame HP/Ability/Weapon structural evidence plus spectator exclusion at the original source PTS; inspect competing menu/remote/report evidence. A global timer/score reading does not establish Self.",
+      "fixability": "Recognized global fields are retained; the required state is not established. A specific reader/qualification correction must be proved before promotion.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-733",
+      "status": "fail",
+      "group": "required_snapshots",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "field:player_alive",
+        "field:ammo_mag",
+        "field:ammo_reserve",
+        "field:reload_animation_visible"
+      ],
+      "failed_fields": [
+        "primary_state",
+        "player_alive",
+        "ammo_mag",
+        "ammo_reserve",
+        "reload_animation_visible"
+      ],
+      "evaluator_failures": [
+        "snapshot:GT-R1-SNAP-733:primary_state",
+        "snapshot:GT-R1-SNAP-733:player_alive",
+        "snapshot:GT-R1-SNAP-733:ammo_mag",
+        "snapshot:GT-R1-SNAP-733:ammo_reserve",
+        "snapshot:GT-R1-SNAP-733:reload_animation_visible"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "matching_snapshots": 7,
+        "source_observations": 7,
+        "current_states": {
+          "unknown": 7
+        },
+        "hud_gate_eligible": 0,
+        "package_contains_target": true
+      },
+      "minimum_reproducer": "fixed point reader/provenance replay, then snapshot/trace contract",
+      "code_target": "hud/analyzers.py::observe_frames; hud/identity.py::live_identity",
+      "next_required_evidence": "Independent current-frame HP/Ability/Weapon structural evidence plus spectator exclusion at the original source PTS; inspect competing menu/remote/report evidence. A global timer/score reading does not establish Self.",
+      "fixability": "Recognized global fields are retained; the required state is not established. A specific reader/qualification correction must be proved before promotion.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-734",
+      "status": "fail",
+      "group": "required_snapshots",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "field:player_alive",
+        "field:ammo_mag",
+        "field:ammo_reserve",
+        "field:reload_animation_visible"
+      ],
+      "failed_fields": [
+        "primary_state",
+        "player_alive",
+        "ammo_mag",
+        "ammo_reserve",
+        "reload_animation_visible"
+      ],
+      "evaluator_failures": [
+        "snapshot:GT-R1-SNAP-734:primary_state",
+        "snapshot:GT-R1-SNAP-734:player_alive",
+        "snapshot:GT-R1-SNAP-734:ammo_mag",
+        "snapshot:GT-R1-SNAP-734:ammo_reserve",
+        "snapshot:GT-R1-SNAP-734:reload_animation_visible"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "matching_snapshots": 7,
+        "source_observations": 7,
+        "current_states": {
+          "unknown": 7
+        },
+        "hud_gate_eligible": 0,
+        "package_contains_target": true
+      },
+      "minimum_reproducer": "fixed point reader/provenance replay, then snapshot/trace contract",
+      "code_target": "hud/analyzers.py::observe_frames; hud/identity.py::live_identity",
+      "next_required_evidence": "Independent current-frame HP/Ability/Weapon structural evidence plus spectator exclusion at the original source PTS; inspect competing menu/remote/report evidence. A global timer/score reading does not establish Self.",
+      "fixability": "Recognized global fields are retained; the required state is not established. A specific reader/qualification correction must be proved before promotion.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-7425",
+      "status": "fail",
+      "group": "required_snapshots",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "field:player_alive",
+        "field:player_hp",
+        "field:muzzle_flash_visible",
+        "field:location_label_raw",
+        "field:spectator_primary_state"
+      ],
+      "failed_fields": [
+        "primary_state",
+        "player_alive",
+        "player_hp",
+        "muzzle_flash_visible",
+        "location_label_raw",
+        "spectator_primary_state"
+      ],
+      "evaluator_failures": [
+        "snapshot:GT-R1-SNAP-7425:primary_state",
+        "snapshot:GT-R1-SNAP-7425:player_alive",
+        "snapshot:GT-R1-SNAP-7425:player_hp",
+        "snapshot:GT-R1-SNAP-7425:muzzle_flash_visible",
+        "snapshot:GT-R1-SNAP-7425:location_label_raw",
+        "snapshot:GT-R1-SNAP-7425:spectator_primary_state"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "matching_snapshots": 5,
+        "source_observations": 5,
+        "current_states": {
+          "unknown": 5
+        },
+        "hud_gate_eligible": 0,
+        "package_contains_target": true
+      },
+      "minimum_reproducer": "fixed point reader/provenance replay, then snapshot/trace contract",
+      "code_target": "hud/analyzers.py::observe_frames; hud/identity.py::live_identity",
+      "next_required_evidence": "Independent current-frame HP/Ability/Weapon structural evidence plus spectator exclusion at the original source PTS; inspect competing menu/remote/report evidence. A global timer/score reading does not establish Self.",
+      "fixability": "Recognized global fields are retained; the required state is not established. A specific reader/qualification correction must be proved before promotion.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-7438",
+      "status": "fail",
+      "group": "required_snapshots",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "field:player_alive",
+        "field:muzzle_flash_visible"
+      ],
+      "failed_fields": [
+        "primary_state",
+        "player_alive",
+        "muzzle_flash_visible"
+      ],
+      "evaluator_failures": [
+        "snapshot:GT-R1-SNAP-7438:primary_state",
+        "snapshot:GT-R1-SNAP-7438:player_alive",
+        "snapshot:GT-R1-SNAP-7438:muzzle_flash_visible"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "matching_snapshots": 3,
+        "source_observations": 3,
+        "current_states": {
+          "unknown": 3
+        },
+        "hud_gate_eligible": 0,
+        "package_contains_target": true
+      },
+      "minimum_reproducer": "fixed point reader/provenance replay, then snapshot/trace contract",
+      "code_target": "hud/analyzers.py::observe_frames; hud/identity.py::live_identity",
+      "next_required_evidence": "Independent current-frame HP/Ability/Weapon structural evidence plus spectator exclusion at the original source PTS; inspect competing menu/remote/report evidence. A global timer/score reading does not establish Self.",
+      "fixability": "Recognized global fields are retained; the required state is not established. A specific reader/qualification correction must be proved before promotion.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-7440",
+      "status": "fail",
+      "group": "required_snapshots",
+      "first_blocker": "snapshot_player_life_evidence",
+      "secondary_blockers": [],
+      "failed_fields": [
+        "player_alive"
+      ],
+      "evaluator_failures": [
+        "snapshot:GT-R1-SNAP-7440:player_alive"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "matching_snapshots": 3,
+        "source_observations": 3,
+        "current_states": {
+          "unknown": 3
+        },
+        "hud_gate_eligible": 0,
+        "package_contains_target": true
+      },
+      "minimum_reproducer": "fixed point reader/provenance replay, then snapshot/trace contract",
+      "code_target": "rounds/builder.py::_state_snapshots; tests/e2e/trace_adapter.py::to_e2e_trace",
+      "next_required_evidence": "Current qualified owned HP/life or separately qualified subject-bound death/life proof, with source continuity and respawn controls. Report presence alone is insufficient.",
+      "fixability": "Life is the direct missing predicate; new subject-only Death scope does not automatically grant snapshot alive/dead.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-7445",
+      "status": "fail",
+      "group": "required_snapshots",
+      "first_blocker": "snapshot_player_life_evidence",
+      "secondary_blockers": [
+        "field:score_enemy"
+      ],
+      "failed_fields": [
+        "player_alive",
+        "score_enemy"
+      ],
+      "evaluator_failures": [
+        "snapshot:GT-R1-SNAP-7445:player_alive",
+        "snapshot:GT-R1-SNAP-7445:score_enemy"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "matching_snapshots": 2,
+        "source_observations": 2,
+        "current_states": {
+          "unknown": 2
+        },
+        "hud_gate_eligible": 0,
+        "package_contains_target": true
+      },
+      "minimum_reproducer": "fixed point reader/provenance replay, then snapshot/trace contract",
+      "code_target": "rounds/builder.py::_state_snapshots; tests/e2e/trace_adapter.py::to_e2e_trace",
+      "next_required_evidence": "Current qualified owned HP/life or separately qualified subject-bound death/life proof, with source continuity and respawn controls. Report presence alone is insufficient.",
+      "fixability": "Life is the direct missing predicate; new subject-only Death scope does not automatically grant snapshot alive/dead.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-820",
+      "status": "fail",
+      "group": "required_snapshots",
+      "first_blocker": "preparation_scope",
+      "secondary_blockers": [
+        "current_frame_state",
+        "player_ownership_and_life",
+        "required_fields_not_evaluable_until_membership"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [
+        "missing_snapshot:GT-R2-SNAP-820"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "matching_snapshots": 0,
+        "source_observations": 5,
+        "current_states": {
+          "unknown": 5
+        },
+        "hud_gate_eligible": 0,
+        "package_contains_target": false
+      },
+      "minimum_reproducer": "fixed point reader/provenance replay, then snapshot/trace contract",
+      "code_target": "rounds/builder.py::_preparation_context_start; _round_windows; _retain_unassigned_observations",
+      "next_required_evidence": "Qualified uninterrupted preparation-to-native-start evidence in the same source segment. Preserve both source breaks and the unknown fragments; no GT round ID assignment.",
+      "fixability": "Observation retention already exists; no proved same-segment association loss is fixed by guessing membership.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-1050",
+      "status": "fail",
+      "group": "required_snapshots",
+      "first_blocker": "preparation_scope",
+      "secondary_blockers": [
+        "current_frame_state",
+        "player_ownership_and_life",
+        "required_fields_not_evaluable_until_membership"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [
+        "missing_snapshot:GT-R2-SNAP-1050"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "matching_snapshots": 0,
+        "source_observations": 12,
+        "current_states": {
+          "unknown": 12
+        },
+        "hud_gate_eligible": 0,
+        "package_contains_target": false
+      },
+      "minimum_reproducer": "fixed point reader/provenance replay, then snapshot/trace contract",
+      "code_target": "rounds/builder.py::_preparation_context_start; _round_windows; _retain_unassigned_observations",
+      "next_required_evidence": "Qualified uninterrupted preparation-to-native-start evidence in the same source segment. Preserve both source breaks and the unknown fragments; no GT round ID assignment.",
+      "fixability": "Observation retention already exists; no proved same-segment association loss is fixed by guessing membership.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-11145",
+      "status": "fail",
+      "group": "required_snapshots",
+      "first_blocker": "snapshot_player_life_evidence",
+      "secondary_blockers": [],
+      "failed_fields": [
+        "player_alive"
+      ],
+      "evaluator_failures": [
+        "snapshot:GT-R2-SNAP-11145:player_alive"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "matching_snapshots": 5,
+        "source_observations": 5,
+        "current_states": {
+          "unknown": 5
+        },
+        "hud_gate_eligible": 0,
+        "package_contains_target": true
+      },
+      "minimum_reproducer": "fixed point reader/provenance replay, then snapshot/trace contract",
+      "code_target": "rounds/builder.py::_state_snapshots; tests/e2e/trace_adapter.py::to_e2e_trace",
+      "next_required_evidence": "Current qualified owned HP/life or separately qualified subject-bound death/life proof, with source continuity and respawn controls. Report presence alone is insufficient.",
+      "fixability": "Life is the direct missing predicate; new subject-only Death scope does not automatically grant snapshot alive/dead.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-143",
+      "status": "fail",
+      "group": "required_snapshots",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "field:player_alive",
+        "field:player_hp"
+      ],
+      "failed_fields": [
+        "primary_state",
+        "player_alive",
+        "player_hp"
+      ],
+      "evaluator_failures": [
+        "snapshot:GT-R2-SNAP-143:primary_state",
+        "snapshot:GT-R2-SNAP-143:player_alive",
+        "snapshot:GT-R2-SNAP-143:player_hp"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "matching_snapshots": 6,
+        "source_observations": 6,
+        "current_states": {
+          "unknown": 6
+        },
+        "hud_gate_eligible": 0,
+        "package_contains_target": true
+      },
+      "minimum_reproducer": "fixed point reader/provenance replay, then snapshot/trace contract",
+      "code_target": "hud/analyzers.py::observe_frames; hud/identity.py::live_identity",
+      "next_required_evidence": "Independent current-frame HP/Ability/Weapon structural evidence plus spectator exclusion at the original source PTS; inspect competing menu/remote/report evidence. A global timer/score reading does not establish Self.",
+      "fixability": "Recognized global fields are retained; the required state is not established. A specific reader/qualification correction must be proved before promotion.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-1475",
+      "status": "fail",
+      "group": "required_snapshots",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "field:player_alive",
+        "field:player_hp"
+      ],
+      "failed_fields": [
+        "primary_state",
+        "player_alive",
+        "player_hp"
+      ],
+      "evaluator_failures": [
+        "snapshot:GT-R2-SNAP-1475:primary_state",
+        "snapshot:GT-R2-SNAP-1475:player_alive",
+        "snapshot:GT-R2-SNAP-1475:player_hp"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "matching_snapshots": 2,
+        "source_observations": 2,
+        "current_states": {
+          "unknown": 2
+        },
+        "hud_gate_eligible": 0,
+        "package_contains_target": true
+      },
+      "minimum_reproducer": "fixed point reader/provenance replay, then snapshot/trace contract",
+      "code_target": "hud/analyzers.py::observe_frames; hud/identity.py::live_identity",
+      "next_required_evidence": "Independent current-frame HP/Ability/Weapon structural evidence plus spectator exclusion at the original source PTS; inspect competing menu/remote/report evidence. A global timer/score reading does not establish Self.",
+      "fixability": "Recognized global fields are retained; the required state is not established. A specific reader/qualification correction must be proved before promotion.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-1476",
+      "status": "fail",
+      "group": "required_snapshots",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "field:player_alive",
+        "field:player_hp"
+      ],
+      "failed_fields": [
+        "primary_state",
+        "player_alive",
+        "player_hp"
+      ],
+      "evaluator_failures": [
+        "snapshot:GT-R2-SNAP-1476:primary_state",
+        "snapshot:GT-R2-SNAP-1476:player_alive",
+        "snapshot:GT-R2-SNAP-1476:player_hp"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "matching_snapshots": 4,
+        "source_observations": 4,
+        "current_states": {
+          "unknown": 4
+        },
+        "hud_gate_eligible": 0,
+        "package_contains_target": true
+      },
+      "minimum_reproducer": "fixed point reader/provenance replay, then snapshot/trace contract",
+      "code_target": "hud/analyzers.py::observe_frames; hud/identity.py::live_identity",
+      "next_required_evidence": "Independent current-frame HP/Ability/Weapon structural evidence plus spectator exclusion at the original source PTS; inspect competing menu/remote/report evidence. A global timer/score reading does not establish Self.",
+      "fixability": "Recognized global fields are retained; the required state is not established. A specific reader/qualification correction must be proved before promotion.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-1477",
+      "status": "fail",
+      "group": "required_snapshots",
+      "first_blocker": "snapshot_player_life_evidence",
+      "secondary_blockers": [],
+      "failed_fields": [
+        "player_alive"
+      ],
+      "evaluator_failures": [
+        "snapshot:GT-R2-SNAP-1477:player_alive"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "matching_snapshots": 2,
+        "source_observations": 2,
+        "current_states": {
+          "unknown": 2
+        },
+        "hud_gate_eligible": 0,
+        "package_contains_target": true
+      },
+      "minimum_reproducer": "fixed point reader/provenance replay, then snapshot/trace contract",
+      "code_target": "rounds/builder.py::_state_snapshots; tests/e2e/trace_adapter.py::to_e2e_trace",
+      "next_required_evidence": "Current qualified owned HP/life or separately qualified subject-bound death/life proof, with source continuity and respawn controls. Report presence alone is insufficient.",
+      "fixability": "Life is the direct missing predicate; new subject-only Death scope does not automatically grant snapshot alive/dead.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-149",
+      "status": "fail",
+      "group": "required_snapshots",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "field:player_alive"
+      ],
+      "failed_fields": [
+        "primary_state",
+        "player_alive"
+      ],
+      "evaluator_failures": [
+        "snapshot:GT-R2-SNAP-149:primary_state",
+        "snapshot:GT-R2-SNAP-149:player_alive"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "matching_snapshots": 2,
+        "source_observations": 2,
+        "current_states": {
+          "unknown": 2
+        },
+        "hud_gate_eligible": 0,
+        "package_contains_target": true
+      },
+      "minimum_reproducer": "fixed point reader/provenance replay, then snapshot/trace contract",
+      "code_target": "hud/analyzers.py::observe_frames; hud/identity.py::live_identity",
+      "next_required_evidence": "Independent current-frame HP/Ability/Weapon structural evidence plus spectator exclusion at the original source PTS; inspect competing menu/remote/report evidence. A global timer/score reading does not establish Self.",
+      "fixability": "Recognized global fields are retained; the required state is not established. A specific reader/qualification correction must be proved before promotion.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-151",
+      "status": "fail",
+      "group": "required_snapshots",
+      "first_blocker": "snapshot_current_state_evidence",
+      "secondary_blockers": [
+        "field:player_alive",
+        "field:view_owner",
+        "field:spectated_name",
+        "field:spectated_hp",
+        "field:spectated_ammo_mag",
+        "field:spectated_ammo_reserve",
+        "field:spectated_weapon",
+        "field:spectated_location_label_raw"
+      ],
+      "failed_fields": [
+        "primary_state",
+        "player_alive",
+        "view_owner",
+        "spectated_name",
+        "spectated_hp",
+        "spectated_ammo_mag",
+        "spectated_ammo_reserve",
+        "spectated_weapon",
+        "spectated_location_label_raw"
+      ],
+      "evaluator_failures": [
+        "snapshot:GT-R2-SNAP-151:primary_state",
+        "snapshot:GT-R2-SNAP-151:player_alive",
+        "snapshot:GT-R2-SNAP-151:view_owner",
+        "snapshot:GT-R2-SNAP-151:spectated_name",
+        "snapshot:GT-R2-SNAP-151:spectated_hp",
+        "snapshot:GT-R2-SNAP-151:spectated_ammo_mag",
+        "snapshot:GT-R2-SNAP-151:spectated_ammo_reserve",
+        "snapshot:GT-R2-SNAP-151:spectated_weapon",
+        "snapshot:GT-R2-SNAP-151:spectated_location_label_raw"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "matching_snapshots": 11,
+        "source_observations": 11,
+        "current_states": {
+          "unknown": 11
+        },
+        "hud_gate_eligible": 0,
+        "package_contains_target": true
+      },
+      "minimum_reproducer": "fixed point reader/provenance replay, then snapshot/trace contract",
+      "code_target": "hud/analyzers.py::observe_frames; hud/identity.py::live_identity",
+      "next_required_evidence": "Independent current-frame HP/Ability/Weapon structural evidence plus spectator exclusion at the original source PTS; inspect competing menu/remote/report evidence. A global timer/score reading does not establish Self.",
+      "fixability": "Recognized global fields are retained; the required state is not established. A specific reader/qualification correction must be proved before promotion.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-170",
+      "status": "fail",
+      "group": "required_snapshots",
+      "first_blocker": "snapshot_player_life_evidence",
+      "secondary_blockers": [
+        "field:spectated_name",
+        "field:spectated_hp",
+        "field:spectated_ammo_mag",
+        "field:spectated_ammo_reserve",
+        "field:spectated_weapon",
+        "field:muzzle_flash_visible",
+        "field:spectated_location_label_raw"
+      ],
+      "failed_fields": [
+        "player_alive",
+        "spectated_name",
+        "spectated_hp",
+        "spectated_ammo_mag",
+        "spectated_ammo_reserve",
+        "spectated_weapon",
+        "muzzle_flash_visible",
+        "spectated_location_label_raw"
+      ],
+      "evaluator_failures": [
+        "snapshot:GT-R2-SNAP-170:player_alive",
+        "snapshot:GT-R2-SNAP-170:spectated_name",
+        "snapshot:GT-R2-SNAP-170:spectated_hp",
+        "snapshot:GT-R2-SNAP-170:spectated_ammo_mag",
+        "snapshot:GT-R2-SNAP-170:spectated_ammo_reserve",
+        "snapshot:GT-R2-SNAP-170:spectated_weapon",
+        "snapshot:GT-R2-SNAP-170:muzzle_flash_visible",
+        "snapshot:GT-R2-SNAP-170:spectated_location_label_raw"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "matching_snapshots": 12,
+        "source_observations": 12,
+        "current_states": {
+          "unknown": 3,
+          "spectator_first_person": 9
+        },
+        "hud_gate_eligible": 9,
+        "package_contains_target": true
+      },
+      "minimum_reproducer": "fixed point reader/provenance replay, then snapshot/trace contract",
+      "code_target": "rounds/builder.py::_state_snapshots; tests/e2e/trace_adapter.py::to_e2e_trace",
+      "next_required_evidence": "Current qualified owned HP/life or separately qualified subject-bound death/life proof, with source continuity and respawn controls. Report presence alone is insufficient.",
+      "fixability": "Life is the direct missing predicate; new subject-only Death scope does not automatically grant snapshot alive/dead.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-0035-DERIVED-zone_id",
+      "status": "fail",
+      "group": "derived_assertions",
+      "first_blocker": "map_resolution",
+      "secondary_blockers": [
+        "field:zone_id"
+      ],
+      "failed_fields": [
+        "zone_id"
+      ],
+      "evaluator_failures": [
+        "derived:GT-R1-SNAP-0035-DERIVED-zone_id"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "matching_snapshots": 4,
+        "source_observations": 4,
+        "current_states": {
+          "unknown": 4
+        },
+        "hud_gate_eligible": 0,
+        "package_contains_target": true
+      },
+      "minimum_reproducer": "snapshot/field transport fixture + source-backed map calibration",
+      "code_target": "maps/resolver.py::ZoneResolver.resolve; maps/calibration.py::MinimapCalibrator.analyze; visual/map_pipeline.py::MapTimeline.resolve",
+      "next_required_evidence": "Actual source/map-specific geometry calibration and resolver assets with field provenance, not copied GT zone values.",
+      "fixability": "All stored resolution rows remain calibration_required/unknown scope; a map name is not a resolved zone.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R1-SNAP-0415-DERIVED-zone_id",
+      "status": "fail",
+      "group": "derived_assertions",
+      "first_blocker": "map_resolution",
+      "secondary_blockers": [
+        "field:zone_id"
+      ],
+      "failed_fields": [
+        "zone_id"
+      ],
+      "evaluator_failures": [
+        "derived:GT-R1-SNAP-0415-DERIVED-zone_id"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "matching_snapshots": 4,
+        "source_observations": 4,
+        "current_states": {
+          "unknown": 4
+        },
+        "hud_gate_eligible": 0,
+        "package_contains_target": true
+      },
+      "minimum_reproducer": "snapshot/field transport fixture + source-backed map calibration",
+      "code_target": "maps/resolver.py::ZoneResolver.resolve; maps/calibration.py::MinimapCalibrator.analyze; visual/map_pipeline.py::MapTimeline.resolve",
+      "next_required_evidence": "Actual source/map-specific geometry calibration and resolver assets with field provenance, not copied GT zone values.",
+      "fixability": "All stored resolution rows remain calibration_required/unknown scope; a map name is not a resolved zone.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R2-SNAP-820-DERIVED-zone_id",
+      "status": "fail",
+      "group": "derived_assertions",
+      "first_blocker": "preparation_scope",
+      "secondary_blockers": [
+        "current_frame_state",
+        "player_ownership_and_life",
+        "required_fields_not_evaluable_until_membership",
+        "map_resolution"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [
+        "missing_derived_snapshot:GT-R2-SNAP-820-DERIVED-zone_id"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "matching_snapshots": 0,
+        "source_observations": 5,
+        "current_states": {
+          "unknown": 5
+        },
+        "hud_gate_eligible": 0,
+        "package_contains_target": false
+      },
+      "minimum_reproducer": "snapshot/field transport fixture + source-backed map calibration",
+      "code_target": "rounds/builder.py::_preparation_context_start; _round_windows; _retain_unassigned_observations",
+      "next_required_evidence": "Qualified uninterrupted preparation-to-native-start evidence in the same source segment. Preserve both source breaks and the unknown fragments; no GT round ID assignment.",
+      "fixability": "Observation retention already exists; no proved same-segment association loss is fixed by guessing membership.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R1-MUZZLE-1",
+      "status": "fail",
+      "group": "required_visual_observations",
+      "first_blocker": "owned_visual_evidence",
+      "secondary_blockers": [
+        "current_self_owner",
+        "qualified_visual_action",
+        "source_bound_event_export"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [
+        "missing_visual_observation:GT-R1-MUZZLE-1"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {},
+      "minimum_reproducer": "source-continuous owned visual window",
+      "code_target": "visual/runtime.py::RealVisualAnalyzer.analyze; visual/core.py::VisualEventEngine.process; tests/e2e/trace_adapter.py::to_e2e_trace",
+      "next_required_evidence": "Current Self ownership and source-bound weapon/action evidence over the native micro-window; reload, remote, spectator and nonself muzzle negatives.",
+      "fixability": "No accepted player shot/muzzle meets the predicate; the visual movement event is not firing.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R1-MUZZLE-2",
+      "status": "fail",
+      "group": "required_visual_observations",
+      "first_blocker": "owned_visual_evidence",
+      "secondary_blockers": [
+        "current_self_owner",
+        "qualified_visual_action",
+        "source_bound_event_export"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [
+        "missing_visual_observation:GT-R1-MUZZLE-2"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {},
+      "minimum_reproducer": "source-continuous owned visual window",
+      "code_target": "visual/runtime.py::RealVisualAnalyzer.analyze; visual/core.py::VisualEventEngine.process; tests/e2e/trace_adapter.py::to_e2e_trace",
+      "next_required_evidence": "Current Self ownership and source-bound weapon/action evidence over the native micro-window; reload, remote, spectator and nonself muzzle negatives.",
+      "fixability": "No accepted player shot/muzzle meets the predicate; the visual movement event is not firing.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "GT-R1-MUZZLE-3",
+      "status": "fail",
+      "group": "required_visual_observations",
+      "first_blocker": "owned_visual_evidence",
+      "secondary_blockers": [
+        "current_self_owner",
+        "qualified_visual_action",
+        "source_bound_event_export"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [
+        "missing_visual_observation:GT-R1-MUZZLE-3"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {},
+      "minimum_reproducer": "source-continuous owned visual window",
+      "code_target": "visual/runtime.py::RealVisualAnalyzer.analyze; visual/core.py::VisualEventEngine.process; tests/e2e/trace_adapter.py::to_e2e_trace",
+      "next_required_evidence": "Current Self ownership and source-bound weapon/action evidence over the native micro-window; reload, remote, spectator and nonself muzzle negatives.",
+      "fixability": "No accepted player shot/muzzle meets the predicate; the visual movement event is not firing.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "event_count_constraints-000",
+      "status": "pass",
+      "group": "event_count_constraints",
+      "first_blocker": null,
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "canonical_predicate_pass",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "same_type_actor_round_event_count": 1,
+        "required_fact": "round_start"
+      },
+      "minimum_reproducer": "qualified continuous events + native package + canonical saved-trace evaluation"
+    },
+    {
+      "assertion_id": "event_count_constraints-001",
+      "status": "fail",
+      "group": "event_count_constraints",
+      "first_blocker": "death_event_contract",
+      "secondary_blockers": [
+        "qualified_subject",
+        "native_temporal_transition",
+        "one_event_per_episode",
+        "lifecycle_membership"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [
+        "count:sample_round_1:player_death"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "same_type_actor_round_event_count": 0,
+        "required_fact": "player_death"
+      },
+      "minimum_reproducer": "qualified continuous events + native package + canonical saved-trace evaluation",
+      "code_target": "hud/temporal.py::_player_death_event; experimental/numeric_death_session.py; experimental/numeric_death_release.py",
+      "next_required_evidence": "Same-segment native marker/victim/fresh-report onset and corroboration, independently fixed positive/nonself/killer/persistent/respawn negatives. Point events also need victim/killer/damage attributes; counts need type/actor/round/count.",
+      "fixability": "Image/name/Report/fatal-row candidates exist in exposed local caches; independent qualification and formal release remain incomplete.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "event_count_constraints-002",
+      "status": "pass",
+      "group": "event_count_constraints",
+      "first_blocker": null,
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "canonical_predicate_pass",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "same_type_actor_round_event_count": 1,
+        "required_fact": "round_end"
+      },
+      "minimum_reproducer": "qualified continuous events + native package + canonical saved-trace evaluation"
+    },
+    {
+      "assertion_id": "event_count_constraints-003",
+      "status": "fail",
+      "group": "event_count_constraints",
+      "first_blocker": "owned_visual_evidence",
+      "secondary_blockers": [
+        "current_self_owner",
+        "qualified_visual_action",
+        "native_event_export",
+        "event_count_scope"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [
+        "count:sample_round_1:shot"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "same_type_actor_round_event_count": 0,
+        "required_fact": "shot"
+      },
+      "minimum_reproducer": "qualified continuous events + native package + canonical saved-trace evaluation",
+      "code_target": "visual/runtime.py::RealVisualAnalyzer.analyze; visual/core.py::VisualEventEngine.process; tests/e2e/trace_adapter.py::to_e2e_trace",
+      "next_required_evidence": "Current Self ownership and source-bound weapon/action evidence over the native micro-window; reload, remote, spectator and nonself muzzle negatives.",
+      "fixability": "No accepted player shot/muzzle meets the predicate; the visual movement event is not firing.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "event_count_constraints-004",
+      "status": "pass",
+      "group": "event_count_constraints",
+      "first_blocker": null,
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "canonical_predicate_pass",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "same_type_actor_round_event_count": 1,
+        "required_fact": "round_start"
+      },
+      "minimum_reproducer": "qualified continuous events + native package + canonical saved-trace evaluation"
+    },
+    {
+      "assertion_id": "event_count_constraints-005",
+      "status": "fail",
+      "group": "event_count_constraints",
+      "first_blocker": "death_event_contract",
+      "secondary_blockers": [
+        "qualified_subject",
+        "native_temporal_transition",
+        "one_event_per_episode",
+        "lifecycle_membership"
+      ],
+      "failed_fields": [],
+      "evaluator_failures": [
+        "count:sample_round_2:player_death"
+      ],
+      "certainty": "confirmed_observed_blocker_not_sole_cause",
+      "adopted_status": "fail",
+      "observed_summary": {
+        "same_type_actor_round_event_count": 0,
+        "required_fact": "player_death"
+      },
+      "minimum_reproducer": "qualified continuous events + native package + canonical saved-trace evaluation",
+      "code_target": "hud/temporal.py::_player_death_event; experimental/numeric_death_session.py; experimental/numeric_death_release.py",
+      "next_required_evidence": "Same-segment native marker/victim/fresh-report onset and corroboration, independently fixed positive/nonself/killer/persistent/respawn negatives. Point events also need victim/killer/damage attributes; counts need type/actor/round/count.",
+      "fixability": "Image/name/Report/fatal-row candidates exist in exposed local caches; independent qualification and formal release remain incomplete.",
+      "root_cause_certainty": "Direct evaluator/source blocker confirmed; causal sufficiency of a proposed fix remains unverified"
+    },
+    {
+      "assertion_id": "event_count_constraints-006",
+      "status": "pass",
+      "group": "event_count_constraints",
+      "first_blocker": null,
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "canonical_predicate_pass",
+      "adopted_status": "pass",
+      "observed_summary": {
+        "same_type_actor_round_event_count": 0,
+        "required_fact": "round_end"
+      },
+      "minimum_reproducer": "qualified continuous events + native package + canonical saved-trace evaluation"
+    },
+    {
+      "assertion_id": "NEG-REMOTE-R1A",
+      "status": "pass",
+      "group": "negative_assertions",
+      "first_blocker": null,
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "canonical_predicate_pass",
+      "adopted_status": "pass",
+      "observed_summary": {},
+      "minimum_reproducer": "unchanged canonical negative plus component controls"
+    },
+    {
+      "assertion_id": "NEG-REMOTE-R1B",
+      "status": "pass",
+      "group": "negative_assertions",
+      "first_blocker": null,
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "canonical_predicate_pass",
+      "adopted_status": "pass",
+      "observed_summary": {},
+      "minimum_reproducer": "unchanged canonical negative plus component controls"
+    },
+    {
+      "assertion_id": "NEG-REMOTE-R2A",
+      "status": "pass",
+      "group": "negative_assertions",
+      "first_blocker": null,
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "canonical_predicate_pass",
+      "adopted_status": "pass",
+      "observed_summary": {},
+      "minimum_reproducer": "unchanged canonical negative plus component controls"
+    },
+    {
+      "assertion_id": "NEG-REMOTE-R2B",
+      "status": "pass",
+      "group": "negative_assertions",
+      "first_blocker": null,
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "canonical_predicate_pass",
+      "adopted_status": "pass",
+      "observed_summary": {},
+      "minimum_reproducer": "unchanged canonical negative plus component controls"
+    },
+    {
+      "assertion_id": "NEG-ASTRAL-NOT-SMOKE",
+      "status": "pass",
+      "group": "negative_assertions",
+      "first_blocker": null,
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "canonical_predicate_pass",
+      "adopted_status": "pass",
+      "observed_summary": {},
+      "minimum_reproducer": "unchanged canonical negative plus component controls"
+    },
+    {
+      "assertion_id": "NEG-SMOKE-NOT-ASTRAL",
+      "status": "pass",
+      "group": "negative_assertions",
+      "first_blocker": null,
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "canonical_predicate_pass",
+      "adopted_status": "pass",
+      "observed_summary": {},
+      "minimum_reproducer": "unchanged canonical negative plus component controls"
+    },
+    {
+      "assertion_id": "NEG-SMOKE-WORLD-SPOT",
+      "status": "pass",
+      "group": "negative_assertions",
+      "first_blocker": null,
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "canonical_predicate_pass",
+      "adopted_status": "pass",
+      "observed_summary": {},
+      "minimum_reproducer": "unchanged canonical negative plus component controls"
+    },
+    {
+      "assertion_id": "NEG-NONSELF-KILLFEED",
+      "status": "pass",
+      "group": "negative_assertions",
+      "first_blocker": null,
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "canonical_predicate_pass",
+      "adopted_status": "pass",
+      "observed_summary": {},
+      "minimum_reproducer": "unchanged canonical negative plus component controls"
+    },
+    {
+      "assertion_id": "NEG-RELOAD-NOT-SHOT",
+      "status": "pass",
+      "group": "negative_assertions",
+      "first_blocker": null,
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "canonical_predicate_pass",
+      "adopted_status": "pass",
+      "observed_summary": {},
+      "minimum_reproducer": "unchanged canonical negative plus component controls"
+    },
+    {
+      "assertion_id": "NEG-BUY-MENU-1",
+      "status": "pass",
+      "group": "negative_assertions",
+      "first_blocker": null,
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "canonical_predicate_pass",
+      "adopted_status": "pass",
+      "observed_summary": {},
+      "minimum_reproducer": "unchanged canonical negative plus component controls"
+    },
+    {
+      "assertion_id": "NEG-BUY-MENU-2",
+      "status": "pass",
+      "group": "negative_assertions",
+      "first_blocker": null,
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "canonical_predicate_pass",
+      "adopted_status": "pass",
+      "observed_summary": {},
+      "minimum_reproducer": "unchanged canonical negative plus component controls"
+    },
+    {
+      "assertion_id": "NEG-SPECTATOR-COUNT-TEXT",
+      "status": "pass",
+      "group": "negative_assertions",
+      "first_blocker": null,
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "canonical_predicate_pass",
+      "adopted_status": "pass",
+      "observed_summary": {},
+      "minimum_reproducer": "unchanged canonical negative plus component controls"
+    },
+    {
+      "assertion_id": "NEG-DEAD-PLAYER-MECHANICS",
+      "status": "pass",
+      "group": "negative_assertions",
+      "first_blocker": null,
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "canonical_predicate_pass",
+      "adopted_status": "pass",
+      "observed_summary": {},
+      "minimum_reproducer": "unchanged canonical negative plus component controls"
+    },
+    {
+      "assertion_id": "NEG-EXPANDED-MAP-MECHANICS",
+      "status": "pass",
+      "group": "negative_assertions",
+      "first_blocker": null,
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "canonical_predicate_pass",
+      "adopted_status": "pass",
+      "observed_summary": {},
+      "minimum_reproducer": "unchanged canonical negative plus component controls"
+    },
+    {
+      "assertion_id": "NEG-SPECTATOR-POISON-151",
+      "status": "pass",
+      "group": "negative_assertions",
+      "first_blocker": null,
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "canonical_predicate_pass",
+      "adopted_status": "pass",
+      "observed_summary": {},
+      "minimum_reproducer": "unchanged canonical negative plus component controls"
+    },
+    {
+      "assertion_id": "NEG-SPECTATOR-POISON-170",
+      "status": "pass",
+      "group": "negative_assertions",
+      "first_blocker": null,
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "canonical_predicate_pass",
+      "adopted_status": "pass",
+      "observed_summary": {},
+      "minimum_reproducer": "unchanged canonical negative plus component controls"
+    },
+    {
+      "assertion_id": "NEG-STALE-COMBAT-REPORT",
+      "status": "pass",
+      "group": "negative_assertions",
+      "first_blocker": null,
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "canonical_predicate_pass",
+      "adopted_status": "pass",
+      "observed_summary": {},
+      "minimum_reproducer": "unchanged canonical negative plus component controls"
+    },
+    {
+      "assertion_id": "NEG-R2-NO-ROUND-END",
+      "status": "pass",
+      "group": "negative_assertions",
+      "first_blocker": null,
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "canonical_predicate_pass",
+      "adopted_status": "pass",
+      "observed_summary": {},
+      "minimum_reproducer": "unchanged canonical negative plus component controls"
+    },
+    {
+      "assertion_id": "NEG-SAME-ZONE-CALLOUT-CHANGE",
+      "status": "pass",
+      "group": "negative_assertions",
+      "first_blocker": null,
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "canonical_predicate_pass",
+      "adopted_status": "pass",
+      "observed_summary": {},
+      "minimum_reproducer": "unchanged canonical negative plus component controls"
+    },
+    {
+      "assertion_id": "NEG-CONTENT-JUMP-SPAN",
+      "status": "pass",
+      "group": "negative_assertions",
+      "first_blocker": null,
+      "secondary_blockers": [],
+      "failed_fields": [],
+      "evaluator_failures": [],
+      "certainty": "canonical_predicate_pass",
+      "adopted_status": "pass",
+      "observed_summary": {},
+      "minimum_reproducer": "unchanged canonical negative plus component controls"
+    }
+  ],
+  "audit_wall_sec": 10.99885280802846,
+  "private_input_hashes_artifact": "verified_input_hashes.private.json",
+  "phase0": {
+    "running_local_e2e_count": 0,
+    "command": null,
+    "mode": null,
+    "started_at": null,
+    "current_stage": null,
+    "active_e2e_not_present": true,
+    "processes_canceled": 0,
+    "new_full_runs": 0,
+    "artifacts_preserved": true,
+    "inspection_scope": "one process inventory at task start; no periodic process/log polling"
+  },
+  "validity": {
+    "archived_terminal_artifacts_valid": true,
+    "canonical_trace_reproducible": true,
+    "usable_for_archived_failure_analysis": true,
+    "adopt_as_current_main_full": false,
+    "qualification_current_code_match": false,
+    "limits": [
+      "Original Full ran with a recorded dirty-tree fingerprint",
+      "Original complete Python/OS/dependency-file and CPU/RSS measurements are not stored in these terminal artifacts",
+      "Current reader/application code differs from archived run and cannot inherit its qualification",
+      "No current-main or current-branch full recognition is claimed"
+    ]
+  },
+  "fact_counts_by_key": {
+    "round_time_remaining_sec": 3917,
+    "hp": 496
+  },
+  "zone_resolution": {
+    "rows": 6614,
+    "zone_id_nonnull": 0,
+    "resolution_scopes": {
+      "unknown": 6614
+    },
+    "calibration_statuses": {
+      "calibration_required": 6614
+    }
+  },
+  "ci_source_sha": "a9eca7b32e38262b041e3fbdd82f39dd87fc91d3",
+  "ci_terminal_runs": [
+    {
+      "id": 39090194078,
+      "conclusion": "success"
+    },
+    {
+      "id": 39090194026,
+      "conclusion": "success"
+    },
+    {
+      "id": 39090193988,
+      "conclusion": "success"
+    },
+    {
+      "id": 39090191348,
+      "conclusion": "success"
+    },
+    {
+      "id": 39090191373,
+      "conclusion": "success"
+    }
+  ],
+  "main_diff_at_analysis_start": {
+    "changed_files": 77,
+    "insertions": 19346,
+    "deletions": 142,
+    "scope": "HEAD range only; documentation/report changes made by this convergence task are not included"
+  }
+}

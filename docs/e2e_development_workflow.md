@@ -14,17 +14,23 @@ fullのサンプリング、実PTSの扱い、連続性、NCC 0.90などの閾�
 
 部分評価はisolated pointの評価です。各queryは実画像のcalibration prefixと現在フレームを使い、独立した時系列コンテキストでproduction analyzerを実行します。過去のアンカー検出結果やidentity判定を注入しません。HP / Ability / Weapon-Ammo / spectator exclusionの条件を維持します。prefixの観測値・イベントは評価対象に含めません。
 
-部分評価では連続するイベント、round boundary、map trajectoryを検証したとは扱いません。traceの時間区間やイベントを疎な点から作らず、full packの評価も実行しません。現在のCLIは固定PTS方式です。連続区間に依存する変更は、部分評価の結果だけでは採用せずfullの検証を必要とします。
+部分評価では連続するイベント、round boundary、map trajectoryを検証したとは扱いません。traceの時間区間やイベントを疎な点から作らず、full packの評価も実行しません。現在のCLIは固定PTS方式です。連続区間に依存する変更は、既存のsource-bound native window / verified cache replayで連続性を先に確認し、資格付けされた採用候補だけを最終fullへ進めます。
 
 ## 推奨手順
 
 1. 変更箇所のunit testを実行する。
-2. 関連カテゴリのtargeted E2Eを実行する。
-3. 改善候補だけを固定sampled E2Eでbaselineと比較する。
-4. production全体への影響がある変更、または採用候補に全回帰テストを実行する。
-5. 最終候補だけにfull E2Eを実行する。
+2. 対応するcontract / integration testを実行する。
+3. 固定されたsource-backed fixtureで正例・負例を確認する。
+4. 関連カテゴリのtargeted E2Eまたは既存Targeted Replayを実行する。
+5. 改善候補だけを固定sampled回帰でbaselineと比較する。
+6. Round / Death / temporalの変更では、source-boundな連続区間と負例を確認する。必要ならこの確認をtargetedより先に行う。孤立点の成功はtemporal qualificationにならない。
+7. 採用候補に必要な全回帰テストを通し、明確な新しい仮説を検証する場合だけ正式Full E2Eを実行する。
 
-全candidateに4・5を必須にしません。targeted／sampledで改善がなく、または新たな回帰があるcandidateはそこで止めます。件数だけでなく `evaluation_report.json` のPTS・fieldごとのFAILも比較してください。既存FAILがあるbaselineでは、exit code 1だけから「新たな回帰」と断定しません。
+全candidateに全回帰・Fullを必須にしません。targeted／sampledで改善がなく、または新たな回帰があるcandidateはそこで止めます。件数だけでなく `evaluation_report.json` のPTS・fieldごとのFAILも比較してください。既存FAILがあるbaselineでは、exit code 1だけから「新たな回帰」と断定しません。
+
+Transport / Fact / Package / Traceだけの変更では、元source・code・profile・qualification・依存関係とterminal hashが確認できる保存済みrawを優先します。既存の `tests/e2e/evaluate_saved_trace.py` は動画再認識なしでcanonical 82 assertionを再評価できます。認識器を変更した場合は古いrawを新コードの結果として再署名せず、該当画像・連続区間を新しく認識します。認識結果をキャッシュする許可ではありません。
+
+Fullへ進む前に、新しい仮説、期待する観測差分、既存成果物では検証できない理由、固定fingerprint、独立qualification、負例、時間・保存容量の見積り、排他実行と成果物保全方法を記録します。条件を満たさない場合は不足項目を記録して区切ります。現状の有効性・82件の再分類・Issue #29への性能改修候補は [E2E検証の収束レポート](e2e_validation_convergence.md) を参照してください。
 
 以下はこのPiで検証したprofile13を使う具体例です。candidate評価では `--hud-layout` を候補の完全なprofileに置き換え、layout、templates sidecar、参照画像、maskを一式で用意します。`.env.local` のprofileは変更していません。Pythonは3.12を使用します。Windowsでは先頭の `python3` を `py -3.12` に置き換え、動画・pack・profileの所在を明示してください。Windows実機での実行は今回未検証です。
 
