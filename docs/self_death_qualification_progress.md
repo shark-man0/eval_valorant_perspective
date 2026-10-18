@@ -15,6 +15,13 @@ outputs, and five correct Report damage readings. Independent Victim/temporal
 qualification and formal Death remain incomplete; this is not a new canonical
 E2E result or a replacement for the exposure limitations below.
 
+The follow-up [scoped attribute/timing report](self_death_scoped_attributes_and_timing.md)
+adds an opt-in internal v2 certificate with an exact reviewed killer-class scope,
+while preserving v1 and all Subject/fatal-row checks. A native source timing
+review supports the original onset in one known episode; menu closure in its
+negative control is explicitly not proof of Report absence. No real certificate
+or formal Death is installed by these changes.
+
 ## Connection audit
 
 | Stage | Implemented | Actual-image measurement | Independent qualification | Formal application connection / first blocker |

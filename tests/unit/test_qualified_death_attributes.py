@@ -286,9 +286,149 @@ def test_attribute_consumer_code_change_invalidates_numeric_qualification(
 
 @pytest.mark.parametrize('changes', [
     {'schema_version': 'unreviewed'}, {'evaluation_scope': 'production'},
+    {'schema_version': []}, {'schema_version': {}},
     {'component_reviews': {}}, {'report_producer': []},
     {'event_qualification_sha256': '1'*64}, {'release_fingerprint': '1'*64},
 ])
 def test_incomplete_or_wrong_release_certificate_cannot_load(qualified_release, tmp_path, changes):
     with pytest.raises(ValueError):
         attribute_contract(tmp_path, qualified_release[0], **changes)
+
+
+@pytest.mark.parametrize('observed, allowed, emitted', [
+    ('agent-class', ['agent-class'], True),
+    ('unreviewed-class', ['agent-class'], False),
+    ('agent-class', ['other-class', 'agent-class'], True),
+    ('Agent-class', ['agent-class'], False),
+])
+def test_scoped_review_cannot_qualify_an_unreviewed_portrait_class(
+    qualified_release, tmp_path, observed, allowed, emitted,
+):
+    grant, _ = qualified_release
+    contract = attribute_contract(tmp_path, grant,
+        schema_version='numeric_self_death_attributes_v2', qualified_killer_agent_labels=allowed)
+    assert contract.killer_agent_labels == tuple(sorted(allowed))
+    consumer = NumericSelfDeathEventConsumer(grant, attribute_qualification=contract)
+    decision, chain = release_tests.proof()
+    episode = episode_fields(chain)
+    episode = replace(episode, fields=tuple(replace(f, value=observed, display=observed)
+        if f.name == 'report_portrait_label' else f for f in episode.fields))
+    event = consumer.consume(decision, chain, episode_fields=episode)
+    assert event is not None and event['confidence'] == .91
+    assert event['attributes']['victim_name'] == 'Recorder'
+    assert event['attributes']['combat_report_damage_received'] == 150
+    assert ('killer_agent' in event['attributes']) is emitted
+    if emitted:
+        assert event['attributes']['killer_agent'] == observed
+        proof = event['attributes']['evidence_provenance']['qualified_attributes']['killer_agent']
+        assert proof['qualification_report_sha256'] == contract.report_sha256
+        assert proof['observations'][0]['source']['pts_ticks'] == 3
+        assert not consumer.attribute_blockers
+    else:
+        assert consumer.attribute_blockers == ('killer_agent:portrait_class_not_qualified',)
+
+
+@pytest.mark.parametrize('labels', [
+    None, [], ['agent-class', 'agent-class'], [''], [' agent-class'], ['agent-class '],
+    [True], [1], {'agent-class': True}, 'agent-class',
+])
+def test_scoped_portrait_qualification_requires_exact_nonempty_classes(
+    qualified_release, tmp_path, labels,
+):
+    with pytest.raises(ValueError, match='reviewed killer-agent labels'):
+        attribute_contract(tmp_path, qualified_release[0],
+            schema_version='numeric_self_death_attributes_v2',
+            qualified_killer_agent_labels=labels)
+
+
+def test_class_scope_cannot_be_silently_ignored_by_the_legacy_certificate(
+    qualified_release, tmp_path,
+):
+    with pytest.raises(ValueError):
+        attribute_contract(tmp_path, qualified_release[0],
+                           qualified_killer_agent_labels=['agent-class'])
+    with pytest.raises(ValueError):
+        attribute_contract(tmp_path, qualified_release[0],
+                           schema_version='numeric_self_death_attributes_v2')
+    legacy = attribute_contract(tmp_path, qualified_release[0])
+    assert legacy.killer_agent_labels is None
+
+
+def test_scoped_portrait_still_requires_the_same_frame_fatal_row(
+    qualified_release, tmp_path,
+):
+    grant, _ = qualified_release
+    contract = attribute_contract(tmp_path, grant,
+        schema_version='numeric_self_death_attributes_v2',
+        qualified_killer_agent_labels=['agent-class'])
+    consumer = NumericSelfDeathEventConsumer(grant, attribute_qualification=contract)
+    decision, chain = release_tests.proof()
+    episode = episode_fields(chain)
+    episode = replace(episode, fields=tuple(replace(f, fatal_row=None)
+        if f.name == 'damage_received' else f for f in episode.fields))
+    event = consumer.consume(decision, chain, episode_fields=episode)
+    assert event is not None and event['attributes']['victim_name'] == 'Recorder'
+    assert 'killer_agent' not in event['attributes']
+    assert 'combat_report_damage_received' not in event['attributes']
+
+
+def test_changed_class_scope_cannot_restore_a_previous_attribute_checkpoint(
+    qualified_release, tmp_path,
+):
+    grant, _ = qualified_release
+    first = attribute_contract(tmp_path, grant,
+        schema_version='numeric_self_death_attributes_v2',
+        qualified_killer_agent_labels=['agent-class'])
+    second = attribute_contract(tmp_path, grant,
+        schema_version='numeric_self_death_attributes_v2',
+        qualified_killer_agent_labels=['other-class'])
+    assert first.report_sha256 != second.report_sha256
+    old = NumericSelfDeathEventConsumer(grant, attribute_qualification=first)
+    current = NumericSelfDeathEventConsumer(grant, attribute_qualification=second)
+    with pytest.raises(ValueError):
+        current.restore(old.checkpoint())
+
+
+def test_scoped_attributes_cannot_authorize_an_unknown_subject(qualified_release, tmp_path):
+    contract = attribute_contract(tmp_path, qualified_release[0],
+        schema_version='numeric_self_death_attributes_v2',
+        qualified_killer_agent_labels=['agent-class'])
+    consumer = NumericSelfDeathEventConsumer(attribute_qualification=contract)
+    decision, chain = release_tests.proof()
+    assert consumer.consume(decision, chain, episode_fields=episode_fields(chain)) is None
+    assert consumer.last_blocker == 'independent_numeric_qualification_missing'
+
+
+def test_class_scope_does_not_hide_a_conflicting_portrait_to_choose_the_allowed_one(
+    qualified_release, tmp_path,
+):
+    grant, _ = qualified_release
+    contract = attribute_contract(tmp_path, grant,
+        schema_version='numeric_self_death_attributes_v2',
+        qualified_killer_agent_labels=['agent-class'])
+    consumer = NumericSelfDeathEventConsumer(grant, attribute_qualification=contract)
+    decision, chain = release_tests.proof()
+    episode = episode_fields(chain)
+    other = replace(episode.fields[-1], value='unreviewed-class', display='unreviewed-class')
+    episode = replace(episode, fields=(*episode.fields, other))
+    event = consumer.consume(decision, chain, episode_fields=episode)
+    assert event is not None and 'killer_agent' not in event['attributes']
+    assert consumer.attribute_blockers == ('killer_agent:missing_unqualified_or_conflicting',)
+    assert event['attributes']['combat_report_damage_received'] == 150
+
+
+def test_extending_scope_in_the_file_cannot_reuse_the_original_review_digest(
+    qualified_release, tmp_path,
+):
+    grant, _ = qualified_release
+    contract = attribute_contract(tmp_path, grant,
+        schema_version='numeric_self_death_attributes_v2',
+        qualified_killer_agent_labels=['agent-class'])
+    path = tmp_path/'synthetic-attribute-review.json'
+    data = json.loads(path.read_text(encoding='utf-8'))
+    data['qualified_killer_agent_labels'].append('unreviewed-class')
+    path.write_text(json.dumps(data), encoding='utf-8')
+    with pytest.raises(ValueError, match='externally reviewed attribute report digest'):
+        QualifiedDeathAttributeContract.load(path,
+            expected_report_sha256=contract.report_sha256,
+            parent_qualification_sha256=grant.report_sha256)

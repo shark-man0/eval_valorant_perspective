@@ -111,8 +111,10 @@ headerによる平行移動後の正しい領域内にbest matchがあり、NCC�
 元referenceに名前やdamage数字が混入したという仮説も、参照画像の目視では支持されない。
 
 正しく読めたportraitはRazeの1例で、Fadeの独立正例は今回得られていない。
-現 `QualifiedDeathAttributeContract` は3属性の意味reviewとproducer全体を束縛し、
-クラス別の許可リストを持たない。**この1例から全対応クラスの資格を発行しない。**
+この測定時のv1 `QualifiedDeathAttributeContract` は3属性の意味reviewとproducer全体を束縛し、
+クラス別の許可リストを持たなかった。**この1例から全対応クラスの資格を発行しない。**
+後続の[内部v2契約](self_death_scoped_attributes_and_timing.md)で範囲を制限できるようにしたが、
+実資格や正式Eventが成立したわけではなく、本測定を後からqualifiedへ変更しない。
 count資格と3属性を要求するpoint資格は分離したままにする。
 
 ## 再現用の評価器

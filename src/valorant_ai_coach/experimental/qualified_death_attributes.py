@@ -49,6 +49,10 @@ class QualifiedDeathAttributeContract:
     component_reviews: tuple[tuple[str, str], ...]
     report_producer: tuple[str, str, str]
     fatal_row_producer: tuple[str, str, str]
+    # v1 reviews cover the entire producer vocabulary. A v2 review may grant
+    # only explicitly qualified exact labels; it cannot generalize a successful
+    # portrait class to a different, independently untested class.
+    killer_agent_labels: tuple[str, ...] | None = None
 
     @classmethod
     def load(cls, path: Path, *, expected_report_sha256: str,
@@ -64,8 +68,13 @@ class QualifiedDeathAttributeContract:
         keys = {'schema_version', 'evaluation_scope', 'event_qualification_sha256',
                 'release_fingerprint', 'split_review_sha256', 'component_reviews',
                 'report_producer', 'fatal_row_producer'}
+        scoped = isinstance(data, dict) and data.get('schema_version') == (
+            'numeric_self_death_attributes_v2')
+        if scoped:
+            keys.add('qualified_killer_agent_labels')
         if (not isinstance(data, dict) or set(data) != keys
-                or data['schema_version'] != 'numeric_self_death_attributes_v1'
+                or data['schema_version'] not in (
+                    'numeric_self_death_attributes_v1', 'numeric_self_death_attributes_v2')
                 or data['evaluation_scope'] != 'qualified_candidate_evaluation'
                 or data['event_qualification_sha256'] != parent_qualification_sha256
                 or data['release_fingerprint'] != release_fingerprint()
@@ -80,10 +89,18 @@ class QualifiedDeathAttributeContract:
                 raise ValueError('original code/profile/dependencies required')
             for value in data[name]:
                 _hash(value)
+        labels: tuple[str, ...] | None = None
+        if scoped:
+            values = data['qualified_killer_agent_labels']
+            if (not isinstance(values, list) or not values
+                    or any(type(v) is not str or not v or v.strip() != v for v in values)
+                    or len(set(values)) != len(values)):
+                raise ValueError('nonempty unique exact reviewed killer-agent labels required')
+            labels = tuple(sorted(values))
         return cls(expected_report_sha256, parent_qualification_sha256,
                    data['release_fingerprint'], data['split_review_sha256'],
                    tuple(sorted(data['component_reviews'].items())),
-                   tuple(data['report_producer']), tuple(data['fatal_row_producer']))
+                   tuple(data['report_producer']), tuple(data['fatal_row_producer']), labels)
 
     def project(self, episode: DeathEpisodeFields | None, *,
                 onset: SourceBinding, confirmation: SourceBinding,
@@ -112,6 +129,10 @@ class QualifiedDeathAttributeContract:
             if attribute == 'victim_name':
                 valid = all(self._name_supported(f) for f in candidates)
             elif attribute == 'killer_agent':
+                if (self.killer_agent_labels is not None
+                        and any(f.value not in self.killer_agent_labels for f in candidates)):
+                    blockers.append(attribute + ':portrait_class_not_qualified')
+                    continue
                 # A class at an arbitrary Report location is insufficient. The
                 # reviewed semantic producer must also identify the same-frame
                 # fatal damage row; separate semantic qualification is mandatory.

@@ -1,0 +1,94 @@
+{
+  "status": "B",
+  "kind": "scoped_experimental_attribute_contract_and_retrospective_native_timing_audit",
+  "start_main_sha": "7e480c2f2f7f49aea73e1541d065d78881d2f11c",
+  "start_branch_sha": "d5c90242aa705cc27de5c486ebf246acfc9e84f3",
+  "public_schema_changed": false,
+  "identity_owner_threshold_sampler_gt_changed": false,
+  "image_and_temporal_reader_changed": false,
+  "internal_certificate": {
+    "legacy_version": "numeric_self_death_attributes_v1",
+    "new_opt_in_version": "numeric_self_death_attributes_v2",
+    "new_required_key": "qualified_killer_agent_labels",
+    "exact_nonempty_unique_output_labels": true,
+    "all_previous_subject_source_and_semantic_reviews_required": true,
+    "real_certificate_created": false,
+    "default_enabled": false
+  },
+  "release_fingerprint": {
+    "previous": "086045f114b08bbb946f57571686c1f1b33192aa1a751305b66d1d8b76593fe4",
+    "current": "d0f9d8bf5fa024c84ab85ea3ca080358210bafa754fd3aaceee5f664a70a5490",
+    "old_certificates_automatically_migrated": false
+  },
+  "global_recognizer_fingerprint": "6ea410098baf11bbea9df5301ed901373a025e25023c220e1db6a3c01103a6fc",
+  "source_evidence": {
+    "local_recordings_only": true,
+    "new_video_transferred": false,
+    "new_native_decode_required": false,
+    "source_bound_reviewed_frames": 10,
+    "original_continuous_window_frames": {
+      "known_positive": 151,
+      "report_reappearance_control": 121
+    },
+    "new_blind_holdout": false,
+    "retrospective_exact_boundary_review": true,
+    "visible_presentation_bracket_width_sec": 0.016666666666666666,
+    "onset_after_visual_interval_bounds_sec": {
+      "minimum": 0.016666666666666666,
+      "maximum": 0.03333333333333333
+    },
+    "exact_ground_truth_point_available": false,
+    "server_death_time_claimed": false,
+    "confirmation_after_original_onset_sec": 0.3,
+    "saved_variants_predictions_each": {
+      "positive": 1,
+      "negative": 0
+    },
+    "report_absence_qualification_granted": false,
+    "current_profile_subject_qualification_granted": false,
+    "temporal_code_byte_unchanged_since_pre_case005_freeze": {
+      "self_death_image.py": {
+        "code_sha256": "0c37b1c6eb8268aa50d8fd9991ab2c9bc5e66842e11d5e07cf6f411f74600e97",
+        "unchanged_since_pre_case005_freeze": true
+      },
+      "report_victim_episode.py": {
+        "code_sha256": "09ad2983bc229faf79ffdf284682c4b1b5ebca86acbba274928791b81bcc3d8f",
+        "unchanged_since_pre_case005_freeze": true
+      }
+    }
+  },
+  "formal_death_events": {
+    "previous": 0,
+    "current": 0,
+    "delta": 0
+  },
+  "canonical": {
+    "historical_adopted": {
+      "pass": 23,
+      "fail": 55,
+      "not_evaluated": 4
+    },
+    "archived_unadopted_strict": {
+      "pass": 28,
+      "fail": 50,
+      "not_evaluated": 4
+    },
+    "new_targeted": "not_measured",
+    "new_sampled": "not_measured",
+    "new_full": "not_run",
+    "new_pass_ids": [],
+    "current_pass_to_fail": "not_measured",
+    "current_negative_violations": "not_measured",
+    "current_discontinuity_assertion_violations": "not_measured"
+  },
+  "private_evidence_sha256": {
+    "selected-before-review.json": "fd679f65cf992935a578e4dd82c6030ed39f4e58be329a6c237dbad3fad92480",
+    "native-meaning-review.json": "23547f4d16b5c54fd14d2becd9ec64f7fce0c76db3b54e44f1f954ba26bbc08c",
+    "timing-and-closure-audit.json": "6b47919dc7481391e0fb59426c88be9c1e3b7fb95cdb3c8c9ed0a5f6e6d52662"
+  },
+  "remaining_blockers": [
+    "Independent current-profile Self Victim, report transition/absence and negative episode qualification.",
+    "Current-vocabulary killer classes require separate source-backed evidence; no unreviewed class may inherit another class qualification.",
+    "No real externally reviewed certificate, enabled native application integration or same-contract targeted canonical run."
+  ]
+}

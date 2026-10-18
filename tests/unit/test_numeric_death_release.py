@@ -303,7 +303,7 @@ def test_each_corroborating_victim_requires_its_own_numeric_method(qualified_rel
     assert consumer.consume(decision, tuple(chain)) is None
 
 
-@pytest.mark.parametrize('with_attributes', [False, True])
+@pytest.mark.parametrize('with_attributes', [False, True, 'scoped', 'scoped_unknown'])
 def test_approved_synthetic_event_reaches_original_round_fact_and_trace_without_hud_promotion(
     qualified_release, tmp_path, with_attributes,
 ):
@@ -326,7 +326,11 @@ def test_approved_synthetic_event_reaches_original_round_fact_and_trace_without_
     if with_attributes:
         from tests.unit.test_qualified_death_attributes import attribute_contract, episode_fields
 
-        attribute_qualification = attribute_contract(tmp_path, qualified_release[0])
+        label = 'other-class' if with_attributes == 'scoped_unknown' else 'agent-class'
+        class_scope = ({'schema_version': 'numeric_self_death_attributes_v2',
+                        'qualified_killer_agent_labels': [label]}
+                       if isinstance(with_attributes, str) else {})
+        attribute_qualification = attribute_contract(tmp_path, qualified_release[0], **class_scope)
         fields = episode_fields(chain)
     death = NumericSelfDeathEventConsumer(qualified_release[0],
         attribute_qualification=attribute_qualification).consume(decision, chain,
@@ -369,7 +373,10 @@ def test_approved_synthetic_event_reaches_original_round_fact_and_trace_without_
     assert traced[0]['attributes'] == death['attributes'] and traced[0]['confidence'] == .91
     if with_attributes:
         assert traced[0]['attributes']['victim_name'] == 'Recorder'
-        assert traced[0]['attributes']['killer_agent'] == 'agent-class'
+        if with_attributes == 'scoped_unknown':
+            assert 'killer_agent' not in traced[0]['attributes']
+        else:
+            assert traced[0]['attributes']['killer_agent'] == 'agent-class'
         assert traced[0]['attributes']['combat_report_damage_received'] == 150
     assert all(row['owner'] == 'unknown' for row in trace['ownership_intervals'])
     assert observations == original
