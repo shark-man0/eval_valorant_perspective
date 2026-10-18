@@ -12,6 +12,7 @@ from tests.unit import test_numeric_death_release as release_tests
 from tests.unit.test_numeric_death_session import qualification_for
 from tests.unit.test_qualified_ui_transition import scene_qualification
 from tests.unit.test_self_death_image_recognizer import HASH, setup
+from tests.unit.test_unedited_ui_start import make_contract
 from valorant_ai_coach.experimental.numeric_death_release import (
     NumericSelfDeathEventConsumer,
     QualifiedNumericDeathContract,
@@ -19,6 +20,8 @@ from valorant_ai_coach.experimental.numeric_death_release import (
 from valorant_ai_coach.experimental.numeric_death_session import NumericDeathImageSession
 from valorant_ai_coach.experimental.numeric_subject_provider import QualifiedNumericImageProvider
 from valorant_ai_coach.experimental.subject_death import SourceBinding, SubjectRole
+from valorant_ai_coach.hud.global_lifecycle import GlobalLifecycleQualification
+from valorant_ai_coach.hud.models import HudObservationV2, empty_hud_values
 from valorant_ai_coach.hud.native_lifecycle import NativeLifecycleAnalysis
 from valorant_ai_coach.video.native import NativeSourceFrame
 
@@ -75,9 +78,9 @@ def context(tmp_path, qualified_release, *, killer=False, persistent=False):
     return model, qualification, tuple(frames), lifecycle
 
 
-def run(model, qualification, frames, lifecycle):
+def run(model, qualification, frames, lifecycle, *, source_mode='scene'):
     provider = QualifiedNumericImageProvider(model, qualification, frames=frames,
-                                            lifecycle=lifecycle)
+                                            lifecycle=lifecycle, source_mode=source_mode)
     session = NumericDeathImageSession(model, NumericSelfDeathEventConsumer(qualification),
                                       provider)
     readings = []
@@ -86,6 +89,154 @@ def run(model, qualification, frames, lifecycle):
             model.code_fingerprint, model.profile_fingerprint, model.dependencies_fingerprint)
         readings.append(session.observe(native.read_image(), source))
     return provider, session, readings
+
+
+def assured_context(tmp_path, qualified_release, **kwargs):
+    """Synthetic source contract and reviews; never qualify an actual video."""
+    model, q, frames, lifecycle = context(tmp_path, qualified_release, **kwargs)
+    path, contract = make_contract(tmp_path, HASH)
+    report_path = tmp_path/'qualification.json'
+    data = json.loads(report_path.read_text())
+    for name in ('scene_continuity', 'continuity'):
+        data['components'].pop(name)
+    report_path.write_text(json.dumps(data))
+    native_q = GlobalLifecycleQualification.load(report_path,
+        lifecycle.qualification.profile_fingerprint, unedited_input_contract=contract)
+    _, certificate = qualified_release
+    numeric_data = json.loads(certificate.read_text())
+    numeric_data['component_reviews']['native_temporal_continuity'] = native_q.report_sha256
+    certificate.write_text(json.dumps(numeric_data))
+    q = QualifiedNumericDeathContract.load(certificate,
+        expected_report_sha256=hashlib.sha256(certificate.read_bytes()).hexdigest())
+    rows = tuple({**row, 'system_evidence': {'assured_phase_scan_valid': False},
+        'system_observation': HudObservationV2(frame.time_sec, index, 'unknown',
+            values=empty_hud_values()).to_dict()}
+        for index, (row, frame) in enumerate(zip(lifecycle.source_rows, frames, strict=True)))
+    return model, q, frames, replace(lifecycle, source_rows=rows, qualification=native_q,
+        unedited_input_contract=contract, input_contract_path=path)
+
+
+def test_explicit_assured_source_needs_no_scene_score_or_accepted_timer_for_subject(
+    tmp_path, qualified_release,
+):
+    args = assured_context(tmp_path, qualified_release)
+    model, q, frames, lifecycle = args
+    assert 'scene_continuity' not in lifecycle.qualification.components
+    with pytest.raises(ValueError, match='qualified native source'):
+        run(*args)  # No implicit fallback from the default scene entrance.
+    provider, session, rows = run(*args, source_mode='source_assured')
+    events = [r.event for r in rows if r.event is not None]
+    assert len(events) == 1 and events[0]['time_sec'] == 1/60
+    assert not provider.failed and not session.failed
+    export = provider.continuity_provenance()
+    proof_hash = session.frames[3].continuity_proof_sha256
+    proof = export['source_assured_proofs'][proof_hash]
+    assert proof_hash == hashlib.sha256(json.dumps(proof, sort_keys=True).encode()).hexdigest()
+    assert proof['scope'] == 'source_assured_native' and 'confidence' not in proof
+    assert export['input_contract_sha256'] == lifecycle.unedited_input_contract.fingerprint
+    assert proof['source']['source_pixel_sha256'] == frames[3].pixel_sha256
+    assert proof['previous_source']['source_pts_ticks'] == frames[2].pts_ticks
+    assert proof['source_evidence'] == {'assured_phase_scan_valid': False}
+    assert export['source_qualification_sha256'] == dict(q.component_reviews)[
+        'native_temporal_continuity']
+    assert all(row['system_observation']['primary_state'] == 'unknown'
+               and row['system_observation']['values']['hp'] is None
+               and row['system_observation']['values']['round_time_remaining_sec'] is None
+               for row in lifecycle.source_rows)
+    assert all(not r.image_reading.qualified for r in rows)
+    assert events[0]['confidence'] <= min(o.confidence for o in session.frames[3].observations)
+
+
+@pytest.mark.parametrize('change', ['contract_missing', 'path_missing', 'foreign_contract',
+    'changed_contract', 'foreign_qualification', 'missing_component', 'cadence', 'epoch',
+    'owner', 'owned_values', 'frame_index', 'source_time', 'invalid_break_flag'])
+def test_assured_entrance_rejects_invalid_source_or_owned_data(
+    tmp_path, qualified_release, change,
+):
+    model, q, frames, lifecycle = assured_context(tmp_path, qualified_release)
+    if change == 'contract_missing':
+        lifecycle = replace(lifecycle, unedited_input_contract=None)
+    elif change == 'path_missing':
+        lifecycle = replace(lifecycle, input_contract_path=None)
+    elif change == 'foreign_contract':
+        data = json.loads(lifecycle.input_contract_path.read_text())
+        data['source_video_sha256'] = 'b'*64
+        lifecycle.input_contract_path.write_text(json.dumps(data))
+    elif change == 'changed_contract':
+        data = json.loads(lifecycle.input_contract_path.read_text())
+        data['assurance_provenance'] += ' changed'
+        lifecycle.input_contract_path.write_text(json.dumps(data))
+    elif change == 'foreign_qualification':
+        lifecycle = replace(lifecycle, qualification=replace(lifecycle.qualification,
+                                                           report_sha256='b'*64))
+    elif change == 'missing_component':
+        lifecycle = replace(lifecycle, qualification=replace(lifecycle.qualification,
+            components=lifecycle.qualification.components - {'ui_transition'}))
+    elif change == 'cadence':
+        frames = (*frames[:3], *frames[4:])
+        lifecycle = replace(lifecycle, source_rows=(*lifecycle.source_rows[:3],
+                                                   *lifecycle.source_rows[4:]))
+    else:
+        row = lifecycle.source_rows[3]
+        if change == 'epoch':
+            frames = (*frames[:3], replace(frames[3], source_epoch='foreign'), *frames[4:])
+            row['source_epoch'] = 'foreign'
+        elif change == 'owner':
+            row['system_observation']['view_context']['is_player_world_view_trustworthy'] = True
+        elif change == 'owned_values':
+            row['system_observation']['values']['hp'] = 100
+        elif change == 'frame_index':
+            row['system_observation']['frame_index'] = 2
+        elif change == 'source_time':
+            row['system_observation']['time_sec'] = 100
+        else:
+            row['system_evidence']['discontinuity'] = 1
+    with pytest.raises(ValueError):
+        run(model, q, frames, lifecycle, source_mode='source_assured')
+
+
+@pytest.mark.parametrize('change', ['content_jump', 'discontinuity', 'contract_removed',
+                                  'contract_changed', 'repeated_pixels'])
+def test_assured_source_break_or_revocation_cannot_release_death(
+    tmp_path, qualified_release, change,
+):
+    model, q, frames, lifecycle = assured_context(tmp_path, qualified_release)
+    if change in {'content_jump', 'discontinuity'}:
+        lifecycle.source_rows[3]['system_evidence'][change] = True
+    elif change == 'repeated_pixels':
+        frames[3].path.write_bytes(frames[2].path.read_bytes())
+        frames = (*frames[:3], replace(frames[3], encoded_sha256=frames[2].encoded_sha256,
+                                      pixel_sha256=frames[2].pixel_sha256), *frames[4:])
+        lifecycle.source_rows[3]['source_pixel_sha256'] = frames[2].pixel_sha256
+    provider = QualifiedNumericImageProvider(model, q, frames=frames, lifecycle=lifecycle,
+                                            source_mode='source_assured')
+    if change == 'contract_removed':
+        lifecycle.input_contract_path.unlink()
+    elif change == 'contract_changed':
+        data = json.loads(lifecycle.input_contract_path.read_text())
+        data['assurance_provenance'] += ' revoked'
+        lifecycle.input_contract_path.write_text(json.dumps(data))
+    session = NumericDeathImageSession(model, NumericSelfDeathEventConsumer(q), provider)
+    for native in frames:
+        source = SourceBinding(HASH, native.pts_ticks, 1, 60, 'segment', native.pixel_sha256,
+            model.code_fingerprint, model.profile_fingerprint, model.dependencies_fingerprint)
+        assert session.observe(native.read_image(), source).event is None
+    assert session.failed
+    if change == 'repeated_pixels':
+        # The owning image session checks pixels before invoking the provider.
+        assert provider.index == 3
+    else:
+        assert provider.failed
+
+
+@pytest.mark.parametrize('killer,persistent', [(True, False), (False, True)])
+def test_assured_source_is_neither_self_binding_nor_death_transition(
+    tmp_path, qualified_release, killer, persistent,
+):
+    args = assured_context(tmp_path, qualified_release, killer=killer, persistent=persistent)
+    provider, session, rows = run(*args, source_mode='source_assured')
+    assert not provider.failed and not session.failed
+    assert not any(row.event is not None for row in rows)
 
 
 def test_numeric_image_producer_reaches_event_without_hand_assembled_subject_labels(

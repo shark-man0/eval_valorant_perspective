@@ -14,7 +14,7 @@ baseline, not a current-reader result.
 | --- | --- | --- | --- | --- |
 | Source image / native PTS | Yes, existing decoder and SHA/pixel bindings | Yes | No new whole-source assurance grant | Existing entrance; historical source exposure remains explicit |
 | Recorder marker / killer-victim role | Yes, `killfeed_subject.py` | Yes, including the new case below | Incomplete | Candidate reader; geometric role cannot substitute for numeric NCC |
-| Subject evidence | Typed models and [source-backed provider](numeric_self_death_subject_provider.md) | Numeric image witnesses retained; provider positive tested synthetically | Incomplete | Provider implemented for qualified native scene input; no real qualification installed |
+| Subject evidence | Typed models and [source-backed provider](numeric_self_death_subject_provider.md) | Numeric image witnesses retained; provider positive tested synthetically | Incomplete | Provider supports qualified scene or explicit source-assured input; no real Subject qualification installed |
 | Episode evidence | Existing fresh Report + victim onset and native corroboration | Yes | Incomplete | Diagnostic only; persistent Report cannot open an episode |
 | Fatal row / received damage / portrait | Existing independent readers and episode collector | Existing source-backed measurements | Incomplete | Candidate fields do not establish semantic Event attributes |
 | Qualified Death decision | Existing exact-fingerprint numeric qualification loader and consumer | No qualified real decision | Missing real certificate | Default emits nothing; synthetic decisions are contract tests only |
@@ -312,3 +312,47 @@ negative with zero predictions, and the bounded Report-field checks above.
 Only case 002 supplies numeric victim support under the existing release
 contract. The independent Role review request remains pending. Qualification,
 enabled real-provider output and canonical improvement remain incomplete.
+
+
+## Source entrance correction and bounded actual replay
+
+The initial numeric Subject provider unnecessarily required the scene-only
+entrance. Existing actual native lifecycle processing also has an explicit
+SHA-bound source-assurance entrance. Both the archived Full and an already
+reviewed current-code start bundle use that route without a scene component.
+The provider now accepts it only through explicit `source_assured` mode,
+reusing the original input-contract loader and source-row validator. The scene
+mode stays default; source assurance never grants Self identity, role evidence,
+reader confidence, Death qualification or player-owned HUD state. No threshold,
+global policy, Qualification Pack, Schema or default application changed.
+Details and source fingerprints are in
+[numeric_self_death_subject_provider.md](numeric_self_death_subject_provider.md).
+
+Actual current-code source replay admitted **96/96 native rows** in two exposed
+death windows and two persistent-Report/spectator windows, in **144.259 s**, with
+peak Python RSS **98,381,824 bytes**. All primary states stayed unknown, accepted
+timers were zero, owned-state promotions were zero and formal Death Events were
+zero. No new Subject certificate was generated, the old Full qualification was
+not re-signed, and terminal source/PNG/pixel/code/profile/review hashes passed.
+This is evidence about the native source entrance, not a real qualified
+Subject-provider or canonical run. The provider's 55 unit cases pass with
+explicit synthetic qualification; those positive Events are not real accuracy
+measurements.
+
+The broad image-runtime fingerprint includes HUD/global modules. That binding
+requires review after code changes, but does not by itself prove that native
+killfeed marker or separator parameters were fitted on past geometry images.
+The Subject reader reads native pixels and its own frozen ROIs/assets directly;
+it does not call HUD geometry or infer Self from a global timer/score. Therefore
+historical geometry exposure must be assessed per component. It must neither
+be called blind holdout nor treated as automatic proof that all independent
+Subject validation is impossible. The existing caption-conditioned prospective
+case selection, original fitting frames and unresolved component-specific
+review limitations remain disclosed. No independent qualification is granted
+by this clarification.
+
+**Current verdict remains B.** Self/role/episode and semantic-attribute
+qualification, a genuine qualified-provider positive, and same-contract targeted
+canonical improvement remain incomplete. New canonical PASS/FAIL/NE and deltas
+remain unmeasured; adopted 23/55/4 and archived Strict 28/50/4 are historical,
+separate records. Full E2E was not launched.

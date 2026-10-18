@@ -1,7 +1,7 @@
 """Qualified image measurements to event-subject proof, without HUD identity.
 
-This producer requires both independently qualified numeric recognition and the
-existing qualified native scene entrance. No certificate/default caller is
+This producer requires independently qualified numeric recognition and an
+existing qualified native source entrance. No certificate/default caller is
 installed. It creates new producer observations; it never relabels archived
 UNKNOWN/CANDIDATE records or uses evaluation labels as runtime input.
 """
@@ -12,13 +12,16 @@ import json
 from copy import deepcopy
 from dataclasses import dataclass
 from fractions import Fraction
+from typing import Literal
 
 from valorant_ai_coach.hud.global_lifecycle import (
     _scene_attested,
     global_recognizer_fingerprint,
 )
+from valorant_ai_coach.hud.native_assured_start import SOURCE_KEYS, validate_assured_row
 from valorant_ai_coach.hud.native_lifecycle import NativeLifecycleAnalysis
 from valorant_ai_coach.hud.round_lifecycle import is_discontinuous
+from valorant_ai_coach.hud.unedited_input import UneditedInputContract
 from valorant_ai_coach.video.native import NativeSourceFrame
 from valorant_ai_coach.video.service import VideoProbeError
 
@@ -48,13 +51,14 @@ class QualifiedNumericImageProvider:
     Component review hashes refer to independently reviewed producer semantics,
     not a claim that each runtime frame was manually labeled. Known Subject
     observations are created only under that exact external qualification.
-    Native scene proof supplies continuity only, never Self, HP or Alive.
+    Native source admission supplies continuity only, never Self, HP or Alive.
     """
 
     def __init__(self, recognizer: SelfDeathImageRecognizer,
                  qualification: QualifiedNumericDeathContract, *,
                  frames: tuple[NativeSourceFrame, ...],
-                 lifecycle: NativeLifecycleAnalysis) -> None:
+                 lifecycle: NativeLifecycleAnalysis,
+                 source_mode: Literal['scene', 'source_assured'] = 'scene') -> None:
         if (not isinstance(qualification, QualifiedNumericDeathContract)
                 or qualification.release_code_fingerprint != release_fingerprint()
                 or qualification.code_fingerprint != recognizer.code_fingerprint
@@ -63,20 +67,36 @@ class QualifiedNumericImageProvider:
                 or qualification.native_step_ticks != recognizer.native_step_ticks
                 or qualification.source_sha256 != recognizer.reader.profile.source_sha256):
             raise ValueError('exact independently reviewed numeric producer required')
+        if source_mode not in {'scene', 'source_assured'}:
+            raise ValueError('explicit supported native source mode required')
         scene = lifecycle.qualification
-        if (scene is None or 'scene_continuity' not in scene.components
+        required = ({'scene_continuity'} if source_mode == 'scene'
+                    else {'timer', 'purchase_phase', 'ui_transition'})
+        if (scene is None or not required <= scene.components
                 or scene.recognizer_fingerprint != global_recognizer_fingerprint()
                 or dict(qualification.component_reviews).get('native_temporal_continuity')
                 != scene.report_sha256
                 or not isinstance(frames, tuple) or not frames
                 or any(not isinstance(f, NativeSourceFrame) for f in frames)
                 or len(frames) != len(lifecycle.source_rows)):
-            raise ValueError('current qualified native scene coverage required')
+            raise ValueError('current qualified native source coverage required')
         self.recognizer, self.qualification = recognizer, qualification
         self.scene_qualification = scene
+        self.source_mode = source_mode
+        self.input_contract_path = (lifecycle.input_contract_path
+                                    if source_mode == 'source_assured' else None)
+        self.input_contract: UneditedInputContract | None = None
+        if source_mode == 'source_assured':
+            if (self.input_contract_path is None
+                    or not isinstance(lifecycle.unedited_input_contract, UneditedInputContract)):
+                raise ValueError('source-assured mode needs the original explicit input contract')
+            self.input_contract = UneditedInputContract.load(self.input_contract_path,
+                source_video_sha256=qualification.source_sha256)
+            if self.input_contract != lifecycle.unedited_input_contract:
+                raise ValueError('native source assurance has changed')
         witnesses = []
-        for native, original in zip(frames, lifecycle.source_rows, strict=True):
-            row = deepcopy(original)
+        rows = deepcopy(lifecycle.source_rows)
+        for index, (native, row) in enumerate(zip(frames, rows, strict=True)):
             binding = {
                 'source_video_sha256': native.source_video_sha256,
                 'source_epoch': native.source_epoch, 'source_pts_ticks': native.pts_ticks,
@@ -86,8 +106,23 @@ class QualifiedNumericImageProvider:
             if (not isinstance(native, NativeSourceFrame)
                     or any(row.get(key) != value for key, value in binding.items())
                     or native.source_video_sha256 != qualification.source_sha256):
-                raise ValueError('native scene and image source bindings must agree')
+                raise ValueError('native producer and image source bindings must agree')
             proof = row.get('system_evidence', {}).get('global_scene_continuity')
+            if self.input_contract is not None:
+                validate_assured_row(row, first=rows[0],
+                    prior=rows[index-1] if index else None,
+                    index=index, step=qualification.native_step_ticks,
+                    qualification=scene, contract=self.input_contract)
+                proof = ({'scope': 'source_assured_native',
+                    'input_contract_sha256': self.input_contract.fingerprint,
+                    'qualification_sha256': scene.report_sha256,
+                    'recognizer_fingerprint': scene.recognizer_fingerprint,
+                    'profile_fingerprint': scene.profile_fingerprint,
+                    'source': binding,
+                    'previous_source': {key: rows[index-1][key]
+                                        for key in SOURCE_KEYS},
+                    'source_evidence': row['system_evidence'],
+                } if index else None)
             witnesses.append(_NativeWitness(native, json.dumps(proof, sort_keys=True,
                 allow_nan=False) if proof is not None else None,
                 is_discontinuous(None, row.get('system_observation', {}),
@@ -109,6 +144,13 @@ class QualifiedNumericImageProvider:
 
         if self.failed:
             return reject('qualified_provider_requires_new_source_session')
+        if self.input_contract_path is not None:
+            try:
+                if UneditedInputContract.load(self.input_contract_path,
+                    source_video_sha256=self.qualification.source_sha256) != self.input_contract:
+                    return reject('source_assurance_changed_or_missing')
+            except (ValueError, OSError):
+                return reject('source_assurance_changed_or_missing')
         if self.index >= len(self._witnesses):
             return reject('native_source_coverage_exhausted')
         witness = self._witnesses[self.index]
@@ -144,30 +186,19 @@ class QualifiedNumericImageProvider:
                     or source.pixel_sha256 == previous.pixel_sha256 or witness.proof_json is None):
                 return reject('native_source_gap_repeat_or_missing_scene_proof')
             proof = json.loads(witness.proof_json)
-            token = proof.get('segment') if isinstance(proof, dict) else None
-            if (not isinstance(proof, dict) or not isinstance(token, str) or not token.strip()
-                    or not _accepted(proof.get('confidence'))
-                    or proof.get('qualification_sha256') != self.scene_qualification.report_sha256
-                    or not _scene_attested(proof, {'time_sec': float(previous.time)},
-                                           self.scene_qualification)
-                    or proof.get('source_video_sha256') != source.video_sha256
-                    or proof.get('source_epoch') != source.segment_id
-                    or type(proof.get('source_pts_ticks')) is not int
-                    or proof.get('source_pts_ticks') != source.pts_ticks
-                    or proof.get('source_time_base') != str(Fraction(source.time_base_num,
-                                                                   source.time_base_den))
-                    or proof.get('source_pts_sec') != float(source.time)
-                    or proof.get('source_pixel_sha256') != source.pixel_sha256
-                    or type(proof.get('previous_source_pts_ticks')) is not int
-                    or proof.get('previous_source_pts_ticks') != previous.pts_ticks
-                    or proof.get('previous_source_pixel_sha256') != previous.pixel_sha256
-                    or self.scene_segment is not None and token != self.scene_segment):
-                return reject('qualified_scene_pair_missing_conflicting_or_discontinuous')
-            if proof['confidence'] > min(proof['witness_ncc']):
-                return reject('scene_confidence_exceeds_original_witness_support')
-            source_support = float(proof['confidence'])
-            self.scene_segment = token
-            proof_hash = hashlib.sha256(witness.proof_json.encode('utf-8')).hexdigest()
+            if not isinstance(proof, dict):
+                return reject('qualified_source_proof_invalid')
+            if self.source_mode == 'source_assured':
+                # This is the existing explicit source-assurance/native-cadence
+                # route, not a failed scene match or a Boolean fallback. The
+                # original producer row passed validate_assured_row above.
+                # Assurance supplies no numeric confidence and no Self identity.
+                proof_hash = hashlib.sha256(witness.proof_json.encode('utf-8')).hexdigest()
+            else:
+                source_support, self.scene_segment = self._scene_support(proof, source, previous)
+                if source_support is None:
+                    return reject('qualified_scene_pair_missing_conflicting_or_discontinuous')
+                proof_hash = hashlib.sha256(witness.proof_json.encode('utf-8')).hexdigest()
         observations = []
         reviews = dict(qualification.component_reviews)
 
@@ -239,6 +270,42 @@ class QualifiedNumericImageProvider:
             assert witness.proof_json is not None
             digest = hashlib.sha256(witness.proof_json.encode('utf-8')).hexdigest()
             proofs[digest] = json.loads(witness.proof_json)
+        if self.input_contract is not None:
+            return {'source_qualification_sha256': self.scene_qualification.report_sha256,
+                    'input_contract_sha256': self.input_contract.fingerprint,
+                    'numeric_qualification_sha256': self.qualification.report_sha256,
+                    'source_assured_proofs': proofs}
         return {'scene_qualification_sha256': self.scene_qualification.report_sha256,
                 'numeric_qualification_sha256': self.qualification.report_sha256,
                 'scene_proofs': proofs}
+
+    def _scene_support(self, proof: dict[str, object], source: SourceBinding,
+                       previous: SourceBinding) -> tuple[float | None, str | None]:
+        token = proof.get('segment')
+        if (not isinstance(token, str) or not token.strip()
+                or not _accepted(proof.get('confidence'))
+                or proof.get('qualification_sha256') != self.scene_qualification.report_sha256
+                or not _scene_attested(proof, {'time_sec': float(previous.time)},
+                                       self.scene_qualification)
+                or proof.get('source_video_sha256') != source.video_sha256
+                or proof.get('source_epoch') != source.segment_id
+                or type(proof.get('source_pts_ticks')) is not int
+                or proof.get('source_pts_ticks') != source.pts_ticks
+                or proof.get('source_time_base') != str(Fraction(source.time_base_num,
+                                                               source.time_base_den))
+                or proof.get('source_pts_sec') != float(source.time)
+                or proof.get('source_pixel_sha256') != source.pixel_sha256
+                or type(proof.get('previous_source_pts_ticks')) is not int
+                or proof.get('previous_source_pts_ticks') != previous.pts_ticks
+                or proof.get('previous_source_pixel_sha256') != previous.pixel_sha256
+                or self.scene_segment is not None and token != self.scene_segment):
+            return None, self.scene_segment
+        # _scene_attested validates the numeric leaves before these operations.
+        measured = proof['confidence']
+        assert isinstance(measured, (int, float))
+        confidence = float(measured)
+        scores = proof['witness_ncc']
+        assert isinstance(scores, list)
+        if confidence > min(scores):
+            return None, self.scene_segment
+        return confidence, token

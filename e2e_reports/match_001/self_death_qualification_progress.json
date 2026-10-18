@@ -269,5 +269,105 @@
     },
     "human_role_review": "requested_pending",
     "canonical_results": null
+  },
+  "source_assured_native_entrance": {
+    "start_branch_sha": "9c0a16b5aeb3c46be9253043ef1d88e0f2eb8ea3",
+    "start_main_sha": "7e480c2f2f7f49aea73e1541d065d78881d2f11c",
+    "scope": "Existing current-code SHA-bound source entrance on exposed fixed windows; neither new Subject qualification nor a real qualified-provider Event run",
+    "default_source_mode": "scene",
+    "opt_in_source_mode": "source_assured",
+    "native_qualification_sha256": "edab227573de5293eb75b79f33483ab4cc9641ef21bcbb162065cb901bd83172",
+    "global_recognizer_fingerprint": "6ea410098baf11bbea9df5301ed901373a025e25023c220e1db6a3c01103a6fc",
+    "native_profile_fingerprint": "60b029cb987fe0d7447853e3b4cd791d5defb0918dfaa25a401bd45d2b64c813",
+    "private_result_sha256": "50297d7e25405f43de00051896d497e41820d79a753688414daabd7b3835c406",
+    "windows": [
+      {
+        "processed_frames": 24,
+        "wall_sec": 40.69578056409955,
+        "source_rows_admitted": 24,
+        "scene_component_present": false,
+        "phase_scan_valid": 0,
+        "explicit_breaks": 0,
+        "unknown_primary_state": 24,
+        "accepted_timers": 0,
+        "player_owned_promotions": 0,
+        "native_system_events": [],
+        "formal_death_events": 0,
+        "subject_qualification_present": false
+      },
+      {
+        "processed_frames": 48,
+        "wall_sec": 64.3808617729228,
+        "source_rows_admitted": 48,
+        "scene_component_present": false,
+        "phase_scan_valid": 0,
+        "explicit_breaks": 0,
+        "unknown_primary_state": 48,
+        "accepted_timers": 0,
+        "player_owned_promotions": 0,
+        "native_system_events": [],
+        "formal_death_events": 0,
+        "subject_qualification_present": false
+      },
+      {
+        "processed_frames": 12,
+        "wall_sec": 17.23721597203985,
+        "source_rows_admitted": 12,
+        "scene_component_present": false,
+        "phase_scan_valid": 0,
+        "explicit_breaks": 0,
+        "unknown_primary_state": 12,
+        "accepted_timers": 0,
+        "player_owned_promotions": 0,
+        "native_system_events": [],
+        "formal_death_events": 0,
+        "subject_qualification_present": false
+      },
+      {
+        "processed_frames": 12,
+        "wall_sec": 17.93249542405829,
+        "source_rows_admitted": 12,
+        "scene_component_present": false,
+        "phase_scan_valid": 0,
+        "explicit_breaks": 0,
+        "unknown_primary_state": 12,
+        "accepted_timers": 0,
+        "player_owned_promotions": 0,
+        "native_system_events": [],
+        "formal_death_events": 0,
+        "subject_qualification_present": false
+      }
+    ],
+    "processed_frames": 96,
+    "source_rows_admitted": 96,
+    "wall_sec": 144.2593895329628,
+    "peak_rss_bytes": 98381824,
+    "terminal_hashes_verified": true,
+    "old_qualification_resigned": false,
+    "subject_qualification_created": false,
+    "formal_death_events": 0,
+    "owned_state_promotions": 0,
+    "full_e2e_executed": false,
+    "targeted_canonical_e2e_executed": false,
+    "canonical_current": "not_measured",
+    "provider_unit_tests": {
+      "passed": 55,
+      "runtime_sec": 24.37,
+      "scope": "Synthetic qualifications and real small PNG rasters; not real-video recognition accuracy"
+    },
+    "remaining_gates": [
+      "Component-specific independent Subject and victim-role qualification with original exposure retained",
+      "Independent fresh-episode/time and negative qualification, separate from native source admission",
+      "Separate semantic attribute qualification",
+      "Real qualified-provider targeted canonical run, then fixed sampled regression"
+    ],
+    "related_regression": {
+      "passed": 353,
+      "runtime_sec": 154.55,
+      "ruff": "pass",
+      "mypy_source_files": 148,
+      "mypy": "pass",
+      "ci": "pending_new_commit"
+    }
   }
 }
