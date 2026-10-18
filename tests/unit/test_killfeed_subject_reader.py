@@ -427,3 +427,30 @@ def test_mixed_method_does_not_double_count_same_physical_wide_separator():
     assert rows[0].weapon_support >= .90
     assert rows[0].weapon_plate_fraction >= .90
     assert rows[0].formal_events == ()
+
+
+@pytest.mark.parametrize('killer', [False, True])
+def test_padded_numeric_witness_does_not_move_own_name_or_clip_headshot(killer):
+    geometry, image = glyph_fixture(killer=killer)
+    plate = image[18:46, 95:169].copy()
+    image[18:46, 95:169] = 0
+    image[18:46, 75:149] = plate
+    if not killer:
+        image[24:36, 148:160] = geometry.profile.headshot_reference[:, :, None]
+    expected = geometry.read(image, source(geometry, image))[0]
+    assert expected.weapon_roi == (80, 25, 144, 40)
+    assert expected.weapon_support is None
+    reference = cv2.cvtColor(image[22:43, 77:147], cv2.COLOR_BGR2GRAY).copy()
+    mixed = KillfeedSubjectReader(replace(geometry.profile,
+        separator_method='white_glyph_geometry_with_templates', weapon_reference=reference),
+        NameReader(), runtime_fingerprint=HASH)
+    row = mixed.read(image, source(mixed, image))[0]
+    assert row.role == expected.role == ('killer' if killer else 'victim')
+    assert row.name_roi == expected.name_roi
+    assert row.name_roi == ((51, 23, 76, 37) if killer else (164, 23, 179, 37))
+    assert row.name_text == expected.name_text == 'observed-name'
+    assert row.weapon_roi == (77, 22, 147, 43)  # Retain the actual NCC canvas.
+    assert row.weapon_support == pytest.approx(1)
+    assert row.weapon_plate_fraction == 1
+    assert row.weapon_geometry is None  # Geometry never substitutes for numeric proof.
+    assert row.qualified is False and row.formal_events == ()

@@ -356,3 +356,29 @@ qualification, a genuine qualified-provider positive, and same-contract targeted
 canonical improvement remain incomplete. New canonical PASS/FAIL/NE and deltas
 remain unmeasured; adopted 23/55/4 and archived Strict 28/50/4 are historical,
 separate records. Full E2E was not launched.
+
+
+## Actual own-name crop defect fixed
+
+A concrete reader defect was found after a private, source-backed weapon-class
+reference expansion: padded NCC bounds clipped the headshot search and let that
+symbol enter name OCR. The reader now keeps its original numeric role witness
+while using a unique contained current-image pictogram for name layout. No
+threshold, qualification, identity or ownership policy changed. Details,
+intermediate failure and exact source evidence are in
+[self_death_name_roi_transport.md](self_death_name_roi_transport.md).
+
+Actual re-recognition covered 544 source-2 and 171 source-1 native frames.
+Correct own-victim names in the coexisting killer/victim case increased **0→74**
+from that victim's own row. Another source episode gained **0→74 numeric victim
+readings** with the private development reference; the crop fix restored its
+54 correct names and removed the intermediate symbol-prefix errors. Source-1
+fixed output counts and onset/confirmation values are unchanged, and the living
+Report-reappearance negative still has zero predictions. Formal Events remain
+zero. The new development profile is not installed or independently qualified.
+
+Related tests: **345 passed**, Ruff and mypy (148 files) passed, text-I/O audit
+has zero unclassified calls. The preceding source-entrance commit `4e1fbe3`
+passed all five Linux/Windows/text-I/O CI runs including packaged smoke; new
+reader CI is separate. Real qualified-provider/canonical runs remain pending,
+so verdict stays B and this is not canonical FAIL reduction or Goal completion.

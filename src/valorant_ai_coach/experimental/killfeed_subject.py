@@ -347,8 +347,21 @@ class KillfeedSubjectReader:
             weapon, weapon_scores, kind = valid[0]
             role: Literal['killer', 'victim', 'unknown'] = (
                 'victim' if weapon[2] < x1 else 'killer')
-            left, right = ((weapon[2]+4, x1+p.name_gap_inset-1) if role == 'victim'
-                           else (x2-p.name_gap_inset+1, weapon[0]-4))
+            # A padded NCC canvas is the numeric role witness, not the ink
+            # boundary. Reuse only a unique contained current-image pictogram
+            # for name layout; keep the original NCC ROI/score for role proof.
+            # Otherwise padding can clip the headshot search and feed that
+            # symbol into OCR as if it were part of the name.
+            name_separator = weapon
+            if mixed and kind == 'weapon' and weapon_scores:
+                contained = [g.roi for g in geometry
+                             if weapon[0] <= g.roi[0] and weapon[1] <= g.roi[1]
+                             and g.roi[2] <= weapon[2] and g.roi[3] <= weapon[3]
+                             and _iou(weapon, g.roi) > .5]
+                if len(contained) == 1:
+                    name_separator = contained[0]
+            left, right = ((name_separator[2]+4, x1+p.name_gap_inset-1) if role == 'victim'
+                           else (x2-p.name_gap_inset+1, name_separator[0]-4))
             # Headshot glyphs are role evidence, not a part of the player's name.
             if role == 'victim' and right-left >= p.headshot_reference.shape[1]:
                 heads = _matches(gray, p.headshot_reference,

@@ -381,7 +381,428 @@
         "runtime_sec": 34.53,
         "unclassified_io_calls": 0,
         "production_bytes_changed": false
+      },
+      "ci_at_fix_commit": {
+        "commit": "4e1fbe3de124adc1c2f7c849924dbe537aa6c88c",
+        "all_successful": true,
+        "runs": [
+          39141918071,
+          39141918147,
+          39141918041,
+          39141914858,
+          39141914850
+        ],
+        "windows_packaged_smoke": "pass",
+        "text_io_audit": "pass"
       }
     }
+  },
+  "name_layout_fix": {
+    "scope": "Current native image recognition, no semantic qualification/formal Event or canonical E2E. Prototype asset bank is private and unadopted.",
+    "start_branch_sha": "9c0a16b5aeb3c46be9253043ef1d88e0f2eb8ea3",
+    "start_main_sha": "7e480c2f2f7f49aea73e1541d065d78881d2f11c",
+    "previous_green_commit": "4e1fbe3de124adc1c2f7c849924dbe537aa6c88c",
+    "changed_code_sha256": "ba7bd734d1b91708e11777e888b8a85aacbb1320dd6a60f56a0b4df5683c81e0",
+    "source2_comparison": [
+      {
+        "previous": {
+          "window_sec": [
+            1880.0,
+            1882.5
+          ],
+          "native_frames": 151,
+          "victim_row_readings": 76,
+          "numeric_victim_readings": 0,
+          "accepted_victim_names": 54,
+          "name_strings_distinct": 1,
+          "status_counts": {
+            "unknown": 70,
+            "pending": 5,
+            "prediction": 1,
+            "duplicate": 75
+          },
+          "predictions": [
+            {
+              "onset_time_sec": 1880.95,
+              "confirmation_time_sec": 1881.25,
+              "support": 0.9235275564232327
+            }
+          ],
+          "source_blocked_frames": 0,
+          "formal_events": 0
+        },
+        "current": {
+          "window_sec": [
+            1880.0,
+            1882.5
+          ],
+          "native_frames": 151,
+          "victim_row_readings": 76,
+          "numeric_victim_readings": 74,
+          "accepted_victim_names": 54,
+          "name_strings_distinct": 1,
+          "status_counts": {
+            "unknown": 70,
+            "pending": 5,
+            "prediction": 1,
+            "duplicate": 75
+          },
+          "predictions": [
+            {
+              "onset_time_sec": 1880.95,
+              "confirmation_time_sec": 1881.25,
+              "support": 0.9235275564232327
+            }
+          ],
+          "source_blocked_frames": 0,
+          "formal_events": 0
+        },
+        "delta": {
+          "victim_row_readings": 0,
+          "numeric_victim_readings": 74,
+          "accepted_victim_names": 0,
+          "formal_events": 0
+        }
+      },
+      {
+        "previous": {
+          "window_sec": [
+            1988.0,
+            1990.0
+          ],
+          "native_frames": 121,
+          "victim_row_readings": 0,
+          "numeric_victim_readings": 0,
+          "accepted_victim_names": 0,
+          "name_strings_distinct": 0,
+          "status_counts": {
+            "unknown": 121
+          },
+          "predictions": [],
+          "source_blocked_frames": 0,
+          "formal_events": 0
+        },
+        "current": {
+          "window_sec": [
+            1988.0,
+            1990.0
+          ],
+          "native_frames": 121,
+          "victim_row_readings": 0,
+          "numeric_victim_readings": 0,
+          "accepted_victim_names": 0,
+          "name_strings_distinct": 0,
+          "status_counts": {
+            "unknown": 121
+          },
+          "predictions": [],
+          "source_blocked_frames": 0,
+          "formal_events": 0
+        },
+        "delta": {
+          "victim_row_readings": 0,
+          "numeric_victim_readings": 0,
+          "accepted_victim_names": 0,
+          "formal_events": 0
+        }
+      },
+      {
+        "previous": {
+          "window_sec": [
+            68.75,
+            71.25
+          ],
+          "native_frames": 151,
+          "victim_row_readings": 119,
+          "numeric_victim_readings": 119,
+          "accepted_victim_names": 0,
+          "name_strings_distinct": 0,
+          "status_counts": {
+            "unknown": 32,
+            "pending": 3,
+            "prediction": 1,
+            "duplicate": 115
+          },
+          "predictions": [
+            {
+              "onset_time_sec": 69.21666666666667,
+              "confirmation_time_sec": 69.33333333333333,
+              "support": 0.9663394894660889
+            }
+          ],
+          "source_blocked_frames": 0,
+          "formal_events": 0
+        },
+        "current": {
+          "window_sec": [
+            68.75,
+            71.25
+          ],
+          "native_frames": 151,
+          "victim_row_readings": 119,
+          "numeric_victim_readings": 119,
+          "accepted_victim_names": 74,
+          "name_strings_distinct": 1,
+          "status_counts": {
+            "unknown": 32,
+            "pending": 3,
+            "prediction": 1,
+            "duplicate": 115
+          },
+          "predictions": [
+            {
+              "onset_time_sec": 69.21666666666667,
+              "confirmation_time_sec": 69.33333333333333,
+              "support": 0.9663394894660889
+            }
+          ],
+          "source_blocked_frames": 0,
+          "formal_events": 0
+        },
+        "delta": {
+          "victim_row_readings": 0,
+          "numeric_victim_readings": 0,
+          "accepted_victim_names": 74,
+          "formal_events": 0
+        }
+      },
+      {
+        "previous": {
+          "window_sec": [
+            511.5,
+            513.5
+          ],
+          "native_frames": 121,
+          "victim_row_readings": 50,
+          "numeric_victim_readings": 0,
+          "accepted_victim_names": 29,
+          "name_strings_distinct": 1,
+          "status_counts": {
+            "unknown": 70,
+            "pending": 3,
+            "prediction": 1,
+            "duplicate": 47
+          },
+          "predictions": [
+            {
+              "onset_time_sec": 512.6166666666667,
+              "confirmation_time_sec": 512.7166666666667,
+              "support": 0.9726836910517878
+            }
+          ],
+          "source_blocked_frames": 0,
+          "formal_events": 0
+        },
+        "current": {
+          "window_sec": [
+            511.5,
+            513.5
+          ],
+          "native_frames": 121,
+          "victim_row_readings": 50,
+          "numeric_victim_readings": 0,
+          "accepted_victim_names": 29,
+          "name_strings_distinct": 1,
+          "status_counts": {
+            "unknown": 70,
+            "pending": 3,
+            "prediction": 1,
+            "duplicate": 47
+          },
+          "predictions": [
+            {
+              "onset_time_sec": 512.6166666666667,
+              "confirmation_time_sec": 512.7166666666667,
+              "support": 0.9726836910517878
+            }
+          ],
+          "source_blocked_frames": 0,
+          "formal_events": 0
+        },
+        "delta": {
+          "victim_row_readings": 0,
+          "numeric_victim_readings": 0,
+          "accepted_victim_names": 0,
+          "formal_events": 0
+        }
+      }
+    ],
+    "source1_fixed_regression_identical": true,
+    "source1_metrics": [
+      {
+        "window_sec": [
+          74.25,
+          74.65
+        ],
+        "native_frames": 24,
+        "victim_row_readings": 11,
+        "numeric_victim_readings": 11,
+        "accepted_victim_names": 11,
+        "name_strings_distinct": 1,
+        "status_counts": {
+          "unknown": 13,
+          "pending": 3,
+          "prediction": 1,
+          "duplicate": 7
+        },
+        "predictions": [
+          {
+            "onset_time_sec": 74.4193359375,
+            "confirmation_time_sec": 74.5193359375,
+            "support": 0.9384451720359794
+          }
+        ],
+        "source_blocked_frames": 0,
+        "formal_events": 0
+      },
+      {
+        "window_sec": [
+          147.5,
+          148.3
+        ],
+        "native_frames": 48,
+        "victim_row_readings": 34,
+        "numeric_victim_readings": 34,
+        "accepted_victim_names": 32,
+        "name_strings_distinct": 1,
+        "status_counts": {
+          "unknown": 14,
+          "pending": 3,
+          "prediction": 1,
+          "duplicate": 30
+        },
+        "predictions": [
+          {
+            "onset_time_sec": 147.68600260416667,
+            "confirmation_time_sec": 147.78600260416667,
+            "support": 0.9263891616996351
+          }
+        ],
+        "source_blocked_frames": 0,
+        "formal_events": 0
+      },
+      {
+        "window_sec": [
+          104.1,
+          104.3
+        ],
+        "native_frames": 12,
+        "victim_row_readings": 0,
+        "numeric_victim_readings": 0,
+        "accepted_victim_names": 0,
+        "name_strings_distinct": 0,
+        "status_counts": {
+          "unknown": 12
+        },
+        "predictions": [],
+        "source_blocked_frames": 0,
+        "formal_events": 0
+      },
+      {
+        "window_sec": [
+          169.9,
+          170.1
+        ],
+        "native_frames": 12,
+        "victim_row_readings": 0,
+        "numeric_victim_readings": 0,
+        "accepted_victim_names": 0,
+        "name_strings_distinct": 0,
+        "status_counts": {
+          "unknown": 12
+        },
+        "predictions": [],
+        "source_blocked_frames": 0,
+        "formal_events": 0
+      },
+      {
+        "window_sec": [
+          74.25,
+          75.5
+        ],
+        "native_frames": 75,
+        "victim_row_readings": 49,
+        "numeric_victim_readings": 47,
+        "accepted_victim_names": 37,
+        "name_strings_distinct": 1,
+        "status_counts": {
+          "unknown": 13,
+          "pending": 3,
+          "prediction": 1,
+          "duplicate": 58
+        },
+        "predictions": [
+          {
+            "onset_time_sec": 74.4193359375,
+            "confirmation_time_sec": 74.5193359375,
+            "support": 0.9384451720359794
+          }
+        ],
+        "source_blocked_frames": 0,
+        "formal_events": 0
+      }
+    ],
+    "intermediate_unadopted_regression": {
+      "numeric_victim_frames": 74,
+      "accepted_names": 6,
+      "incorrect_symbol_prefixed_names": 4,
+      "qualification_granted": false
+    },
+    "final_source2_name_correctness": {
+      "accepted_correct_readings": 157,
+      "accepted_wrong_readings": 0,
+      "scope": "Only the three visually reviewed recorder-victim episodes in these exposed fixed windows; not whole-match accuracy"
+    },
+    "runs": {
+      "source1": {
+        "processed_frames": 171,
+        "recognition_sec": 199.69950981391594,
+        "wall_sec": 227.9783971158322,
+        "python_peak_rss_bytes": 97226752,
+        "terminal_hashes_passed": true,
+        "code_fingerprint": "cca7b926f09008276523ce4eb1eaeeb76d94741d4f67fa83c595a1bb9d609c0d",
+        "profile_fingerprint": "395d97dfef4bcbc9d4fbbc122392d9cf4525a105a638e2168c69e146925a8ddc",
+        "dependencies_fingerprint": "7cba12efbb0610a5b6447b0c096d107b465aae4c96951b66701cbee323320534"
+      },
+      "source2": {
+        "processed_frames": 544,
+        "recognition_sec": 662.6776330291759,
+        "wall_sec": 827.4728273609653,
+        "python_peak_rss_bytes": 96768000,
+        "terminal_hashes_passed": true,
+        "code_fingerprint": "0a364221d56f2ab4009305342c95bbc678428ce16eb60a9705a07c05ed70b3bd",
+        "profile_fingerprint": "898c8fdbd198ea96fd22f0d3b55bc3fe8a3d4134eb0927e98dd0e09954f73a2f",
+        "dependencies_fingerprint": "7cba12efbb0610a5b6447b0c096d107b465aae4c96951b66701cbee323320534"
+      }
+    },
+    "private_result_sha256": {
+      "source1": "2a3917a91d8ee65d95dc993de057d442651add39c3fec37da6952c9fd69205fd",
+      "source2": "d1751e906d6018535df096e46ead963361c3e59da2117587050dc7b6f7abf43b",
+      "prototype_freeze": "c85371694476390aa1dfa3b1be0804ea21dcd91f20473107cee4a40dae0ad203",
+      "source_review": "19b88f305effaf4e1a846682612e4796a7c64cb00a340378d8bf10ea1afcac23"
+    },
+    "asset_scope": {
+      "one_new_reference_from_exposed_development_case001": true,
+      "development_source_pts_ticks": 5661952,
+      "holdout_pixel_fitting": false,
+      "original_arrays_unchanged": true,
+      "thresholds_changed": false,
+      "blind_claimed": false,
+      "default_profile_installed": false,
+      "case005_name_layout_exposure": "Now development/regression for name-layout implementation. Cannot qualify that new layout as independent holdout."
+    },
+    "related_tests": {
+      "passed": 345,
+      "wall_sec": 94.11,
+      "ruff": "pass",
+      "mypy": "pass",
+      "mypy_files": 148,
+      "unclassified_text_io": 0
+    },
+    "formal_events": 0,
+    "current_canonical_e2e": "not_measured",
+    "new_full_e2e": false,
+    "qualification_granted": false,
+    "ci_current_code": "pending"
   }
 }
