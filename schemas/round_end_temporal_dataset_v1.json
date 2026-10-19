@@ -91,6 +91,24 @@
             "type": "string",
             "minLength": 1
           }
+        },
+        "profile_path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "template_profile_path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "assets_manifest_path": {
+          "type": [
+            "string",
+            "null"
+          ]
         }
       },
       "required": [
@@ -101,7 +119,10 @@
         "evaluation_policy_sha256",
         "developer_id",
         "frozen_order",
-        "reference_parent_keys"
+        "reference_parent_keys",
+        "profile_path",
+        "template_profile_path",
+        "assets_manifest_path"
       ],
       "additionalProperties": false
     },
