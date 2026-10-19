@@ -110,7 +110,10 @@ Linux／Piでは `PYTHONPATH=.:src python3 -m scripts.diagnostics.replay_self_de
 
 development／holdout／negativeをepisode単位で事前固定し、認識後に都合のよい画像だけを選ばない。
 元の動画を移す代わりに、元環境でこの固定検証を実施できる。
-接続先・原動画保存先は現時点で未提示で、他環境での実行結果はまだない。
+後続の引き渡し確認では、実行ホストはMac、Git経由で結果を渡せると確認された。
+原動画保存先とProfile／Assetの所在は未確認で、Macでの実行結果はまだない。
+独立episodeの監査、人間review、Mac手順、公開可能な結果の範囲は
+[qualification handoff](self_death_qualification_handoff.md) を参照する。
 異なるOSのdependency fingerprintも記録し、Windowsの結果をPiの資格へ自動流用しない。
 
 ## テストと残る作業

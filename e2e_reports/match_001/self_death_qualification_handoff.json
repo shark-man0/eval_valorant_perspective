@@ -1,0 +1,258 @@
+{
+  "kind": "self_death_independent_qualification_handoff",
+  "handoff_version": 1,
+  "start_main_sha": "7e480c2f2f7f49aea73e1541d065d78881d2f11c",
+  "start_branch_sha": "ca4b975a439fbf028e646125e3f27b0acd60ad87",
+  "stacked_base_sha": "ffdf41fd1ea8b1239891e7476512693056106962",
+  "pr": 53,
+  "pr52_merged": false,
+  "draft_to_remain": true,
+  "main_merge_authorized": false,
+  "recognition_verdict": "B",
+  "goal_scope": "Prepare independent qualification and a blocked handoff; not completed recognition or accuracy improvement.",
+  "remote_host": {
+    "os": "Mac",
+    "result_exchange": "Git with sanitized aggregate only",
+    "source_path_confirmed": false,
+    "profile_assets_available_confirmed": false,
+    "unreviewed_episode_existence": "likely_per_owner_not_verified",
+    "execution_performed": false
+  },
+  "exposure": {
+    "allowed_statuses": [
+      "TRAINING",
+      "DEVELOPMENT",
+      "EXPOSED_REGRESSION",
+      "PROSPECTIVE_HELD_OUT",
+      "UNKNOWN_EXPOSURE"
+    ],
+    "source2_contexts": [
+      {
+        "id": "M2-C01",
+        "alias": "role-case-002",
+        "status": "TRAINING"
+      },
+      {
+        "id": "M2-C02",
+        "alias": "compact-fit",
+        "status": "TRAINING"
+      },
+      {
+        "id": "M2-C03",
+        "alias": "role-case-001",
+        "status": "TRAINING"
+      },
+      {
+        "id": "M2-C04",
+        "alias": "role-case-003",
+        "status": "EXPOSED_REGRESSION"
+      },
+      {
+        "id": "M2-C05",
+        "alias": "transition-fit",
+        "status": "TRAINING"
+      },
+      {
+        "id": "M2-C06",
+        "alias": "panel-a",
+        "status": "EXPOSED_REGRESSION"
+      },
+      {
+        "id": "M2-C07",
+        "alias": "cross-context-a",
+        "status": "EXPOSED_REGRESSION"
+      },
+      {
+        "id": "M2-C08",
+        "alias": "reserved",
+        "status": "EXPOSED_REGRESSION"
+      },
+      {
+        "id": "M2-C09",
+        "alias": "shared-prospective",
+        "status": "EXPOSED_REGRESSION"
+      },
+      {
+        "id": "M2-C10",
+        "alias": "panel-b",
+        "status": "EXPOSED_REGRESSION"
+      },
+      {
+        "id": "M2-C11",
+        "alias": "panel-c",
+        "status": "EXPOSED_REGRESSION"
+      },
+      {
+        "id": "M2-C12",
+        "alias": "next",
+        "status": "EXPOSED_REGRESSION"
+      },
+      {
+        "id": "M2-C13",
+        "alias": "role-case-005",
+        "status": "DEVELOPMENT"
+      },
+      {
+        "id": "M2-C14",
+        "alias": "cross-context-b",
+        "status": "EXPOSED_REGRESSION"
+      },
+      {
+        "id": "M2-C15",
+        "alias": "marker-ability-fit",
+        "status": "TRAINING"
+      }
+    ],
+    "context_count_is_not_death_positive_count": true,
+    "prospective_held_out_confirmed_current_whole_model_episodes": 0,
+    "source2_full_keyframe_discovery_exposed": true,
+    "broad_geometry_history": "unknown",
+    "unlisted_episode_is_blind": false,
+    "private_ledger_sha256": "238a0192a1870dcc20afed8aa8e20768df16bfd64afa506310a87f686d468d23",
+    "native_manifest_documents_audited": 29,
+    "manifest_windows_are_not_independent_episodes": true
+  },
+  "qualification": {
+    "source_player_binding": "incomplete",
+    "self_victim_role": "incomplete",
+    "new_death_report_transition_and_absence": "incomplete",
+    "victim_name": "source_backed_readings_no_real_semantic_grant",
+    "killer_agent": "class_scoped_internal_contract_no_real_semantic_grant",
+    "received_damage_fatal_row": "source_backed_readings_no_real_semantic_grant",
+    "count_separate_from_point_attributes": true
+  },
+  "levels": {
+    "1": "Known local source acquisition verified; Mac not run.",
+    "2": "Known local diagnostic predictions verified; Mac not run.",
+    "3": "Independent Subject/role/Report qualification incomplete.",
+    "4": "Real release conditions unmet; disabled.",
+    "5": "Synthetic transport only; real qualified passage unverified.",
+    "6": "Current same-contract canonical improvement unmeasured."
+  },
+  "classification_relative_to_pr52": {
+    "diagnostic_tests_reports_or_workflow": [
+      "docs/e2e_development_workflow.md",
+      "docs/e2e_validation_convergence.md",
+      "docs/numeric_self_death_event_integration.md",
+      "docs/numeric_self_death_image_session.md",
+      "docs/numeric_self_death_subject_provider.md",
+      "docs/s01_self_death_visual_evidence_followup.md",
+      "docs/self_death_ability_episode_measurement.md",
+      "docs/self_death_bounded_qualification_workflow.md",
+      "docs/self_death_discovery_controls.md",
+      "docs/self_death_episode_field_transport.md",
+      "docs/self_death_existing_report_fields.md",
+      "docs/self_death_fixed_source_component_audit.md",
+      "docs/self_death_image_recognizer.md",
+      "docs/self_death_luminance_ability_recognition.md",
+      "docs/self_death_name_roi_transport.md",
+      "docs/self_death_qualification_progress.md",
+      "docs/self_death_report_fatal_row.md",
+      "docs/self_death_report_search_geometry.md",
+      "docs/self_death_rifle_reference_coverage.md",
+      "docs/self_death_role_reader_progress.md",
+      "docs/self_death_scoped_attributes_and_timing.md",
+      "docs/self_death_structural_role_release_proposal.md",
+      "e2e_reports/match_001/e2e_validation_convergence.json",
+      "e2e_reports/match_001/report_victim_source_similarity_development_20261016.json",
+      "e2e_reports/match_001/self_death_bounded_native_validation.json",
+      "e2e_reports/match_001/self_death_fixed_source_component_audit.json",
+      "e2e_reports/match_001/self_death_qualification_progress.json",
+      "e2e_reports/match_001/self_death_scoped_attributes_and_timing.json",
+      "scripts/diagnostics/evaluate_self_subject_roles.py",
+      "scripts/diagnostics/replay_death_episode_fields.py",
+      "scripts/diagnostics/replay_self_death_images.py",
+      "tests/unit/test_death_episode_fields.py",
+      "tests/unit/test_killfeed_subject_reader.py",
+      "tests/unit/test_numeric_death_release.py",
+      "tests/unit/test_numeric_death_session.py",
+      "tests/unit/test_numeric_subject_provider.py",
+      "tests/unit/test_qualified_death_attributes.py",
+      "tests/unit/test_report_fatal_row.py",
+      "tests/unit/test_report_victim_episode.py",
+      "tests/unit/test_self_death_image_recognizer.py",
+      "tests/unit/test_self_death_image_replay.py",
+      "tests/unit/test_self_subject_role_audit.py",
+      "tests/unit/test_subject_witness_transport.py"
+    ],
+    "qualification_pending": [
+      "src/valorant_ai_coach/experimental/death_episode_fields.py",
+      "src/valorant_ai_coach/experimental/numeric_death_release.py",
+      "src/valorant_ai_coach/experimental/numeric_death_session.py",
+      "src/valorant_ai_coach/experimental/numeric_subject_provider.py",
+      "src/valorant_ai_coach/experimental/qualified_death_attributes.py",
+      "src/valorant_ai_coach/experimental/subject_witness_transport.py"
+    ],
+    "experimental_recognizer": [
+      "src/valorant_ai_coach/experimental/killfeed_subject.py",
+      "src/valorant_ai_coach/experimental/report_fatal_row.py",
+      "src/valorant_ai_coach/experimental/report_victim_episode.py",
+      "src/valorant_ai_coach/experimental/self_death_image.py"
+    ],
+    "safe_implementation_fix": [
+      "src/valorant_ai_coach/facts/builder.py"
+    ]
+  },
+  "prototype_scope": "Private development references/profiles remain unadopted and are not published.",
+  "bounded_replay_separation": {
+    "existing_native_decoder_already_in_main": true,
+    "decoder_main_diff": false,
+    "runner_and_reader_present_in_main": false,
+    "runner_and_reader_present_in_pr52": false,
+    "direct_cherry_pick_to_main_ready": false,
+    "separation_proposal": "Review minimal reader/runner dependency base first, then a small stacked bounded-runner/tests PR. Do not rewrite current stack or other branches."
+  },
+  "validation": {
+    "prior_code_ci_head": "ca4b975a439fbf028e646125e3f27b0acd60ad87",
+    "linux_pass": 4357,
+    "linux_skipped": 7,
+    "coverage_percent": 87.22,
+    "windows_packaged_smoke": "success",
+    "current_handoff_document_checks": {
+      "bash_blocks_parsed": 4,
+      "python_review_snippet_parsed": true,
+      "native_api_signature_and_frame_fields_checked": true,
+      "relative_links_checked": 3,
+      "private_ledger_and_original_evidence_digests_verified": true,
+      "production_bytes_unchanged_from_start": true,
+      "mac_execution": "not_performed"
+    },
+    "new_recognition_run": false,
+    "mac_execution": "not_performed"
+  },
+  "canonical": {
+    "adopted": [
+      23,
+      55,
+      4
+    ],
+    "archived_unadopted_strict": [
+      28,
+      50,
+      4
+    ],
+    "different_timing_policy_comparison": [
+      30,
+      49,
+      3
+    ],
+    "current_targeted": null,
+    "current_sampled": null,
+    "current_full": null,
+    "current_negative_assertion_delta": null,
+    "current_discontinuity_assertion_delta": null,
+    "new_formal_death_events": 0,
+    "new_canonical_improvement_claimed": false
+  },
+  "completion_checks": {
+    "qualification_evidence_specified": true,
+    "independent_self_victim_shortage_disclosed": true,
+    "report_visibility_persistence_reappearance_conditions_defined": true,
+    "count_and_attributes_separated": true,
+    "existing_exposure_audited": true,
+    "original_host_workflow_documented_actual_mac_execution_pending": true,
+    "missing_input_conditions_specified": true,
+    "pr53_dependencies_and_integration_categories_documented": true,
+    "formal_death_and_canonical_improvement_not_claimed": true
+  }
+}
