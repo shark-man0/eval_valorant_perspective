@@ -1,6 +1,6 @@
 {
   "version": "round-end-temporal-v1",
-  "dataset_sha256": "f500cd6d98e4b746db888a8edc0426927d606fc89c5547a5d112d4ae11d23725",
+  "dataset_sha256": "3070d8a80bccbdad2242b0af15e7365368a5f99cbdcf51cc512f7f9704dab172",
   "readiness": "BLOCKED",
   "blockers": [
     "exposure_history_incomplete",
@@ -10,16 +10,16 @@
     "reference_lineage_incomplete"
   ],
   "source_count": 4,
-  "event_record_count": 18,
+  "event_record_count": 17,
   "verified_physical_event_count": 8,
-  "unresolved_event_identity_count": 10,
+  "unresolved_event_identity_count": 9,
   "split_counts": {
     "development": 12,
-    "unknown": 6
+    "unknown": 5
   },
   "annotation_status_counts": {
     "historical_source_review": 6,
-    "candidate": 12
+    "candidate": 11
   },
   "negative_physical_event_counts": {
     "countdown": 0,
@@ -54,7 +54,7 @@
   "formal_End_qualified": false,
   "recognition_executed": false,
   "mechanical_consistency_only": true,
-  "freeze_sha256": "da957bacae7f934d593e5a997fde8b670841a17562dd54b274afdbdc5216b319",
+  "freeze_sha256": "07272f80f71c24ff04cd2f5312a4243cfa764d74f8ef70467bf4de466bcd81a8",
   "schema_sha256": "9de08fe84bb03e334cd956c5227433b3a09ae4f0fdb6c98b08dbbb209bb37544",
   "contract_sha256": "fd55a0e06c9d7984484978bf2efc6bc4822a454d15e3709514e89629ea47631f"
 }

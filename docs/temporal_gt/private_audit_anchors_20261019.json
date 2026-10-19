@@ -19,6 +19,8 @@
     "discovered_candidates.json": "ef92c564669f6d30b7468948bd31b14d2c6a1a51a672121d8bead1a902361ba9",
     "dataset_current_v1.freeze.json": "0d1b39cc9975e1d2fc53b13671a2ce2c31fe7e698f3148aea2d67be947024706",
     "dataset_current_v2.freeze.json": "da957bacae7f934d593e5a997fde8b670841a17562dd54b274afdbdc5216b319",
+    "dataset_current_v3.freeze.json": "07272f80f71c24ff04cd2f5312a4243cfa764d74f8ef70467bf4de466bcd81a8",
+    "sealed_source_metadata_correction_v3.json": "b9b3487d1bbf2c45688fd3cd43ff74a38ca1d04c40e8c5d3284c3e15d0a60267",
     "history_episode_reconciliation_v2.json": "420e1741312487e1fcbdd37fc867a37dbe1f0231986a43d24954d797ff494f12",
     "historical_caption_reply.json": "744072f554bb501adf2f9c8f482b78304c2db6736bf95655bd186377f03471b5",
     "coarse_plan.json": "6e86fd4c4dfd82dc23487c90d6c9536044dd30cd2a09c293de62583d9bf63005",
