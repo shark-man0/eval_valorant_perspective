@@ -10,6 +10,17 @@ import cv2
 import numpy as np
 
 
+def _orientation_degrees(gx: np.ndarray, gy: np.ndarray) -> np.ndarray:
+    """Preserve canonical directions at histogram boundaries.
+
+    Float32 radian-to-degree conversion can turn exactly pi (negative-X
+    gradient) into 179.99998 degrees, moving an entire cardinal direction into
+    the preceding bin. Compute angles in float64; do not round, snap, smooth or
+    relax the existing bin population/presence conditions.
+    """
+    return np.mod(np.degrees(np.arctan2(gy.astype(np.float64), gx.astype(np.float64))), 360)
+
+
 def _absence_has_unresolved_structure(
     gray: np.ndarray, mean: float, contrast: float, localized: int, bins: int
 ) -> bool:
@@ -29,7 +40,7 @@ def _absence_has_unresolved_structure(
         return False
     gx = cv2.Sobel(normalized, cv2.CV_32F, 1, 0)
     gy = cv2.Sobel(normalized, cv2.CV_32F, 0, 1)
-    angle = np.mod(np.degrees(np.arctan2(gy, gx)), 360)[occupied]
+    angle = _orientation_degrees(gx, gy)[occupied]
     for phase in (0, 22.5):
         hist = np.histogram(np.mod(angle + phase, 360), bins=np.linspace(0, 360, 9))[0]
         if int(sum(hist / max(1, int(hist.sum())) >= 0.05)) == 8:
@@ -89,7 +100,7 @@ def detect_icon(
     if acutance < 0.12:
         result["reason"] = "icon_roi_unobservable"
         return result
-    angle = np.mod(np.degrees(np.arctan2(gy, gx)), 360)
+    angle = _orientation_degrees(gx, gy)
     hist = np.histogram(angle[occupied], bins=np.linspace(0, 360, 9))[0]
     distribution = hist / max(1, int(hist.sum()))
     _, _, groups, _ = cv2.connectedComponentsWithStats(edges)
