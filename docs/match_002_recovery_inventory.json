@@ -1,0 +1,970 @@
+{
+  "schema_version": 1,
+  "research_branch": "work/match002-geometry-qualification",
+  "research_head": "1f3edf094634037747928021c0ca9169f02928f8",
+  "classification_main": "c688206ef4b62c8f206687a1e434fe84833105df",
+  "validation_main_on_resume": "9daf08e6304f6e8368566bccf7e0386987f1eb3e",
+  "merge_base": "7e480c2f2f7f49aea73e1541d065d78881d2f11c",
+  "research_unique_commits": 54,
+  "changed_files": 70,
+  "counts": {
+    "D": 10,
+    "B": 44,
+    "A": 14,
+    "C": 2
+  },
+  "qualification_adopted": false,
+  "private_pack_opened": false,
+  "records": [
+    {
+      "path": "config/geometry_candidate_exclusions_v1.json",
+      "source_commit": "3df4d727577eddfe3143728bab270a750b24c268",
+      "dependencies": [],
+      "class": "D",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Exclusion v1 is superseded by experimental v2; neither becomes a default profile.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "config/geometry_candidate_exclusions_v2.json",
+      "source_commit": "778813cb8f7dcbdf8dfe7997a28c36457720636e",
+      "dependencies": [],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Geometry experiment/associated test not qualified; retaining its coupled candidate/matcher graph avoids production or maintenance leakage.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "datasets/input_contracts/match_002.unedited.json",
+      "source_commit": "7e12aa906da2404d2c93c222d9d201f581e8c5d3",
+      "dependencies": [],
+      "class": "A",
+      "disposition": "validation_recovery_PR",
+      "reason": "Explicit source-specific no-user-edit assurance, not continuity/ownership/qualification.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "docs/match_002_e2e_qualification.md",
+      "source_commit": "1f3edf094634037747928021c0ca9169f02928f8",
+      "dependencies": [],
+      "class": "D",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Historical development snapshots; replaced for handoff by bounded convergence summary, not a fresh canonical result.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "e2e_reports/match_002/README.md",
+      "source_commit": "df572cfae7ecc6e359909077034ac39507bd69e3",
+      "dependencies": [],
+      "class": "D",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Historical development snapshots; replaced for handoff by bounded convergence summary, not a fresh canonical result.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "e2e_reports/match_002/history.json",
+      "source_commit": "df572cfae7ecc6e359909077034ac39507bd69e3",
+      "dependencies": [],
+      "class": "D",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Historical development snapshots; replaced for handoff by bounded convergence summary, not a fresh canonical result.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "e2e_reports/match_002/hud_calibration.json",
+      "source_commit": "df572cfae7ecc6e359909077034ac39507bd69e3",
+      "dependencies": [],
+      "class": "D",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Historical development snapshots; replaced for handoff by bounded convergence summary, not a fresh canonical result.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "e2e_reports/match_002/summary.json",
+      "source_commit": "df572cfae7ecc6e359909077034ac39507bd69e3",
+      "dependencies": [],
+      "class": "D",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Historical development snapshots; replaced for handoff by bounded convergence summary, not a fresh canonical result.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "scripts/diagnostics/build_frozen_phase_profile.py",
+      "source_commit": "25c0bf7399dd3c79e6e1479378fadb398a2c7144",
+      "dependencies": [
+        "valorant_ai_coach.hud.calibrate_profile",
+        "valorant_ai_coach.hud.calibrate_temporal",
+        "valorant_ai_coach.hud.layout",
+        "valorant_ai_coach.hud.semantic_text",
+        "valorant_ai_coach.hud.templates"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Banner discovery/reference/recapture experiment and associated tests; meanings and temporal qualification remain incomplete.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "scripts/diagnostics/build_geometry_candidate.py",
+      "source_commit": "778813cb8f7dcbdf8dfe7997a28c36457720636e",
+      "dependencies": [
+        "scripts.diagnostics.diagnose_geometry_edges",
+        "scripts.diagnostics.geometry_enclosure_mask",
+        "scripts.e2e.frame_replay",
+        "scripts.e2e.probe_cache",
+        "scripts.e2e.run_dataset_case",
+        "valorant_ai_coach.hud.calibrate_temporal",
+        "valorant_ai_coach.hud.layout",
+        "valorant_ai_coach.hud.templates",
+        "valorant_ai_coach.video"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Geometry experiment/associated test not qualified; retaining its coupled candidate/matcher graph avoids production or maintenance leakage.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "scripts/diagnostics/capture_unlabeled_banner_pool.py",
+      "source_commit": "33f3b346941b64ef9f242d29846b090622608c51",
+      "dependencies": [
+        "scripts.diagnostics.prospective_numeric_probe",
+        "scripts.e2e.frame_replay",
+        "scripts.e2e.probe_cache",
+        "scripts.e2e.run_dataset_case",
+        "valorant_ai_coach.hud.calibrate_temporal",
+        "valorant_ai_coach.video"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Coupled collection/reader experiment depends on retained research graph; minimal independent review subset recovered separately.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "scripts/diagnostics/challenge_geometry_candidate.py",
+      "source_commit": "33f3b346941b64ef9f242d29846b090622608c51",
+      "dependencies": [
+        "scripts.diagnostics.diagnose_geometry_edges",
+        "scripts.e2e.run_dataset_case",
+        "valorant_ai_coach.hud.calibrate_temporal",
+        "valorant_ai_coach.hud.layout",
+        "valorant_ai_coach.hud.templates"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Geometry experiment/associated test not qualified; retaining its coupled candidate/matcher graph avoids production or maintenance leakage.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "scripts/diagnostics/compare_geometry_controls.py",
+      "source_commit": "eea73e9458f0ccd5202fba7f08f9cf6f92c2435d",
+      "dependencies": [
+        "scripts.diagnostics.diagnose_geometry_gradient_ncc",
+        "scripts.diagnostics.prospective_numeric_probe",
+        "scripts.e2e.run_dataset_case",
+        "valorant_ai_coach.hud.calibrate_temporal",
+        "valorant_ai_coach.hud.global_lifecycle",
+        "valorant_ai_coach.hud.layout",
+        "valorant_ai_coach.hud.templates"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Geometry experiment/associated test not qualified; retaining its coupled candidate/matcher graph avoids production or maintenance leakage.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "scripts/diagnostics/compare_held_banner_text.py",
+      "source_commit": "837f71286c7e4f70753dd1300d78d3e9484b4b55",
+      "dependencies": [
+        "scripts.e2e.run_dataset_case",
+        "valorant_ai_coach.hud.calibrate_temporal"
+      ],
+      "class": "A",
+      "disposition": "validation_recovery_PR",
+      "reason": "Read-only exact-input review/gap aggregation; no reference selection, event generation or production wiring.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "scripts/diagnostics/compare_numeric_review.py",
+      "source_commit": "f2978a0e5c06f156801247dc0a62b35f2e7287d6",
+      "dependencies": [
+        "scripts.diagnostics.freeze_numeric_review",
+        "scripts.e2e.run_dataset_case",
+        "valorant_ai_coach.hud.calibrate_temporal"
+      ],
+      "class": "A",
+      "disposition": "validation_recovery_PR",
+      "reason": "Read-only exact-input review/gap aggregation; no reference selection, event generation or production wiring.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "scripts/diagnostics/diagnose_geometry_gradient_ncc.py",
+      "source_commit": "aeec9572aa07fd4f76022767d9412f164a18b4c1",
+      "dependencies": [
+        "scripts.diagnostics.prospective_numeric_probe",
+        "scripts.e2e.run_dataset_case",
+        "valorant_ai_coach.hud.calibrate_temporal",
+        "valorant_ai_coach.hud.global_lifecycle",
+        "valorant_ai_coach.hud.layout",
+        "valorant_ai_coach.hud.templates"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Geometry experiment/associated test not qualified; retaining its coupled candidate/matcher graph avoids production or maintenance leakage.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "scripts/diagnostics/discover_banner_references.py",
+      "source_commit": "587dd4b79cf2b577a29b24c9631edebe3624c9ac",
+      "dependencies": [
+        "scripts.diagnostics.prospective_numeric_probe",
+        "scripts.e2e.run_dataset_case",
+        "valorant_ai_coach.hud.calibrate_temporal",
+        "valorant_ai_coach.hud.layout",
+        "valorant_ai_coach.hud.semantic_text"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Banner discovery/reference/recapture experiment and associated tests; meanings and temporal qualification remain incomplete.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "scripts/diagnostics/freeze_numeric_review.py",
+      "source_commit": "f2978a0e5c06f156801247dc0a62b35f2e7287d6",
+      "dependencies": [
+        "scripts.e2e.run_dataset_case",
+        "valorant_ai_coach.hud.calibrate_temporal"
+      ],
+      "class": "A",
+      "disposition": "validation_recovery_PR",
+      "reason": "Read-only exact-input review/gap aggregation; no reference selection, event generation or production wiring.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "scripts/diagnostics/geometry_enclosure_mask.py",
+      "source_commit": "778813cb8f7dcbdf8dfe7997a28c36457720636e",
+      "dependencies": [],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Geometry experiment/associated test not qualified; retaining its coupled candidate/matcher graph avoids production or maintenance leakage.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "scripts/diagnostics/localized_digits_reader.py",
+      "source_commit": "f2978a0e5c06f156801247dc0a62b35f2e7287d6",
+      "dependencies": [
+        "scripts.diagnostics.numeric_text_localization",
+        "valorant_ai_coach.hud.readers"
+      ],
+      "class": "D",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Superseded diagnostic reader prototype; its replacement is also unqualified, neither is adopted.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "scripts/diagnostics/measure_banner_candidates.py",
+      "source_commit": "33f3b346941b64ef9f242d29846b090622608c51",
+      "dependencies": [
+        "scripts.e2e.run_dataset_case",
+        "valorant_ai_coach.hud.calibrate_temporal",
+        "valorant_ai_coach.hud.layout",
+        "valorant_ai_coach.hud.semantic_text",
+        "valorant_ai_coach.hud.weapon_identity"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Banner discovery/reference/recapture experiment and associated tests; meanings and temporal qualification remain incomplete.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "scripts/diagnostics/measure_score_padding.py",
+      "source_commit": "40cdd40f8828de7696c7dae4594df48a1aaa7b3c",
+      "dependencies": [
+        "scripts.diagnostics",
+        "scripts.diagnostics.numeric_text_localization",
+        "scripts.e2e.run_dataset_case",
+        "valorant_ai_coach.hud",
+        "valorant_ai_coach.hud.calibrate_temporal",
+        "valorant_ai_coach.hud.templates"
+      ],
+      "class": "D",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Rejected padding experiment; preserve unfavorable history, do not ship as a supported method.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "scripts/diagnostics/native_score_gaps.py",
+      "source_commit": "ab5c44103b86ca9d9a0179ca82e985dbdff560c2",
+      "dependencies": [
+        "valorant_ai_coach.hud.global_lifecycle"
+      ],
+      "class": "A",
+      "disposition": "validation_recovery_PR",
+      "reason": "Read-only exact-input review/gap aggregation; no reference selection, event generation or production wiring.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "scripts/diagnostics/numeric_text_localization.py",
+      "source_commit": "e8f7338d86861f4864311230bd80df275489e79f",
+      "dependencies": [],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Coupled collection/reader experiment depends on retained research graph; minimal independent review subset recovered separately.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "scripts/diagnostics/prepare_banner_held_review.py",
+      "source_commit": "727f3b8bde377fe234c919a782892beca28f208f",
+      "dependencies": [
+        "scripts.diagnostics.prospective_numeric_probe",
+        "scripts.e2e.run_dataset_case",
+        "valorant_ai_coach.hud.calibrate_temporal",
+        "valorant_ai_coach.hud.layout"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Banner discovery/reference/recapture experiment and associated tests; meanings and temporal qualification remain incomplete.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "scripts/diagnostics/prepare_geometry_review.py",
+      "source_commit": "b9ac905588d66bd1b9a55a857fa809ec72a48711",
+      "dependencies": [
+        "scripts.diagnostics.prospective_numeric_probe",
+        "scripts.e2e.run_dataset_case",
+        "valorant_ai_coach.hud.calibrate_temporal",
+        "valorant_ai_coach.hud.layout"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Geometry experiment/associated test not qualified; retaining its coupled candidate/matcher graph avoids production or maintenance leakage.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "scripts/diagnostics/prepare_numeric_review.py",
+      "source_commit": "e8f7338d86861f4864311230bd80df275489e79f",
+      "dependencies": [
+        "scripts.e2e.run_dataset_case",
+        "valorant_ai_coach.hud.calibrate_temporal",
+        "valorant_ai_coach.hud.layout"
+      ],
+      "class": "B",
+      "disposition": "validation_recovery_PR",
+      "reason": "Explicit private-only source review; no decoder/recognizer, no inferred labels, no production imports.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "scripts/diagnostics/prepare_pool_presence_review.py",
+      "source_commit": "8f913cd044b06d9a0253dd59b19cf48feae200fd",
+      "dependencies": [
+        "scripts.e2e.run_dataset_case",
+        "valorant_ai_coach.hud.calibrate_temporal",
+        "valorant_ai_coach.hud.layout"
+      ],
+      "class": "B",
+      "disposition": "validation_recovery_PR",
+      "reason": "Explicit private-only source review; no decoder/recognizer, no inferred labels, no production imports.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "scripts/diagnostics/probe_geometry_analyzer.py",
+      "source_commit": "7f5b14f66fcadd6680c2e8e6df90972d8f6f8292",
+      "dependencies": [
+        "scripts.diagnostics",
+        "scripts.diagnostics.summarize_geometry_review",
+        "scripts.e2e.run_dataset_case",
+        "scripts.e2e.run_metrics",
+        "valorant_ai_coach.hud.analyzers",
+        "valorant_ai_coach.hud.calibrate_temporal",
+        "valorant_ai_coach.hud.templates",
+        "valorant_ai_coach.schema_validation",
+        "valorant_ai_coach.video"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Geometry experiment/associated test not qualified; retaining its coupled candidate/matcher graph avoids production or maintenance leakage.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "scripts/diagnostics/probe_numeric_reader_connection.py",
+      "source_commit": "9e1d9df1f2a08e760b673fa12af141dccf1a3f77",
+      "dependencies": [
+        "scripts.diagnostics",
+        "scripts.e2e.run_dataset_case",
+        "scripts.e2e.run_metrics",
+        "valorant_ai_coach.hud.analyzers",
+        "valorant_ai_coach.hud.calibrate_temporal",
+        "valorant_ai_coach.hud.numeric_regions",
+        "valorant_ai_coach.hud.templates",
+        "valorant_ai_coach.schema_validation",
+        "valorant_ai_coach.video"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Coupled collection/reader experiment depends on retained research graph; minimal independent review subset recovered separately.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "scripts/diagnostics/prospective_numeric_probe.py",
+      "source_commit": "33f3b346941b64ef9f242d29846b090622608c51",
+      "dependencies": [
+        "scripts.diagnostics",
+        "scripts.diagnostics.build_geometry_candidate",
+        "scripts.diagnostics.freeze_numeric_review",
+        "scripts.diagnostics.prepare_numeric_review",
+        "scripts.e2e.frame_replay",
+        "scripts.e2e.probe_cache",
+        "scripts.e2e.run_dataset_case",
+        "scripts.e2e.run_metrics",
+        "valorant_ai_coach.hud.analyzers",
+        "valorant_ai_coach.hud.calibrate_temporal",
+        "valorant_ai_coach.hud.layout",
+        "valorant_ai_coach.hud.templates",
+        "valorant_ai_coach.schema_validation",
+        "valorant_ai_coach.video"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Coupled collection/reader experiment depends on retained research graph; minimal independent review subset recovered separately.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "scripts/diagnostics/recapture_banner_features.py",
+      "source_commit": "33f3b346941b64ef9f242d29846b090622608c51",
+      "dependencies": [
+        "scripts.diagnostics.discover_banner_references",
+        "scripts.diagnostics.prospective_numeric_probe",
+        "scripts.e2e.frame_replay",
+        "scripts.e2e.probe_cache",
+        "scripts.e2e.run_dataset_case",
+        "valorant_ai_coach.hud.calibrate_temporal",
+        "valorant_ai_coach.hud.layout",
+        "valorant_ai_coach.video"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Banner discovery/reference/recapture experiment and associated tests; meanings and temporal qualification remain incomplete.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "scripts/diagnostics/summarize_geometry_review.py",
+      "source_commit": "778813cb8f7dcbdf8dfe7997a28c36457720636e",
+      "dependencies": [
+        "scripts.diagnostics.diagnose_geometry_edges",
+        "scripts.diagnostics.geometry_edge_similarity",
+        "scripts.e2e.run_dataset_case",
+        "valorant_ai_coach.hud.calibrate_temporal",
+        "valorant_ai_coach.hud.layout",
+        "valorant_ai_coach.hud.templates"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Geometry experiment/associated test not qualified; retaining its coupled candidate/matcher graph avoids production or maintenance leakage.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "scripts/diagnostics/validate_native_system_prefix.py",
+      "source_commit": "ab5c44103b86ca9d9a0179ca82e985dbdff560c2",
+      "dependencies": [
+        "scripts.diagnostics.native_score_gaps",
+        "valorant_ai_coach.hud.analyzers",
+        "valorant_ai_coach.hud.global_lifecycle",
+        "valorant_ai_coach.hud.practical_lifecycle",
+        "valorant_ai_coach.video"
+      ],
+      "class": "B",
+      "disposition": "recover_A_overwrite_guard_only_preserve_B_modes",
+      "change_parts": [
+        {
+          "class": "A",
+          "scope": "Reject an existing output before constructing Analyzer/decoder; wrap the existing UTF-8 write for scoped Ruff without changing bytes.",
+          "disposition": "validation_recovery_PR"
+        },
+        {
+          "class": "B",
+          "scope": "New practical/UI modes, imports, boundary and gap reporting.",
+          "disposition": "preserve_on_research_branch"
+        }
+      ],
+      "reason": "Keep practical/provisional source experiments separate from other active source/application PRs.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "scripts/diagnostics/verify_score_absence.py",
+      "source_commit": "ff970854c6a5c99896cffd48e5aa2693d31e8028",
+      "dependencies": [
+        "scripts.diagnostics",
+        "scripts.diagnostics.prospective_numeric_probe",
+        "scripts.e2e.run_dataset_case",
+        "scripts.e2e.run_metrics",
+        "valorant_ai_coach.hud.calibrate_temporal",
+        "valorant_ai_coach.hud.layout",
+        "valorant_ai_coach.hud.templates"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Coupled collection/reader experiment depends on retained research graph; minimal independent review subset recovered separately.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "src/valorant_ai_coach/hud/numeric_regions.py",
+      "source_commit": "9e1d9df1f2a08e760b673fa12af141dccf1a3f77",
+      "dependencies": [],
+      "class": "C",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Unqualified numeric-reader production extension; runtime configuration must not adopt it.",
+      "production_effect": "Runtime reader extension excluded."
+    },
+    {
+      "path": "src/valorant_ai_coach/hud/spectator_icon.py",
+      "source_commit": "351b75cc845bc7027b42338a9fd637f90cd9bec1",
+      "dependencies": [],
+      "class": "A",
+      "disposition": "PR57",
+      "reason": "Numerical precision correction and regression only; unchanged detection gates, no qualification claim.",
+      "production_effect": "Corrects floating-point bin assignment only."
+    },
+    {
+      "path": "src/valorant_ai_coach/hud/templates.py",
+      "source_commit": "9e1d9df1f2a08e760b673fa12af141dccf1a3f77",
+      "dependencies": [
+        "valorant_ai_coach.diagnostics.runtime_timing",
+        "valorant_ai_coach.resources"
+      ],
+      "class": "C",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Unqualified numeric-reader production extension; runtime configuration must not adopt it.",
+      "production_effect": "Runtime reader extension excluded."
+    },
+    {
+      "path": "tests/integration/test_incomplete_round_fact_trace.py",
+      "adaptation": "PR59 adopted independent timer-only snapshots for unknown identity with zero aggregate HUD confidence. Update the ported test to that main contract, additionally assert null player fields, unknown owner, timer-only source confidence, and .89 rejection/.90 admission. Spectator/remote assertions remain unchanged; no production edits.",
+      "source_commit": "9862fbf86b715730b873e5359cbfc2d6fa2fbd56",
+      "dependencies": [
+        "valorant_ai_coach.events",
+        "valorant_ai_coach.facts",
+        "valorant_ai_coach.hud.models",
+        "valorant_ai_coach.resources",
+        "valorant_ai_coach.rounds",
+        "valorant_ai_coach.schema_validation",
+        "valorant_ai_coach.video"
+      ],
+      "class": "A",
+      "disposition": "validation_recovery_PR",
+      "reason": "Synthetic package/fact/trace membership and unknown-ownership regression; no recognizer qualification.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_banner_candidate_measurement.py",
+      "source_commit": "33f3b346941b64ef9f242d29846b090622608c51",
+      "dependencies": [
+        "scripts.diagnostics"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Banner discovery/reference/recapture experiment and associated tests; meanings and temporal qualification remain incomplete.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_banner_feature_recapture.py",
+      "source_commit": "33f3b346941b64ef9f242d29846b090622608c51",
+      "dependencies": [
+        "scripts.diagnostics",
+        "scripts.e2e.run_dataset_case",
+        "valorant_ai_coach.video.service"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Banner discovery/reference/recapture experiment and associated tests; meanings and temporal qualification remain incomplete.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_banner_held_review.py",
+      "source_commit": "1f3edf094634037747928021c0ca9169f02928f8",
+      "dependencies": [
+        "scripts.diagnostics",
+        "scripts.diagnostics.prepare_banner_held_review",
+        "scripts.e2e.run_dataset_case"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Banner discovery/reference/recapture experiment and associated tests; meanings and temporal qualification remain incomplete.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_frozen_phase_profile.py",
+      "source_commit": "33f3b346941b64ef9f242d29846b090622608c51",
+      "dependencies": [
+        "scripts.diagnostics.build_frozen_phase_profile",
+        "scripts.diagnostics.diagnose_round_lifecycle",
+        "valorant_ai_coach.hud.layout",
+        "valorant_ai_coach.hud.readers",
+        "valorant_ai_coach.hud.templates",
+        "valorant_ai_coach.hud.timer_glyphs"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Banner discovery/reference/recapture experiment and associated tests; meanings and temporal qualification remain incomplete.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_geometry_analyzer_probe.py",
+      "source_commit": "7f5b14f66fcadd6680c2e8e6df90972d8f6f8292",
+      "dependencies": [
+        "scripts.diagnostics",
+        "scripts.diagnostics.probe_geometry_analyzer",
+        "scripts.e2e.run_dataset_case",
+        "test_geometry_candidate_challenge",
+        "test_round_package_builder",
+        "valorant_ai_coach.hud.readers",
+        "valorant_ai_coach.hud.templates"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Geometry experiment/associated test not qualified; retaining its coupled candidate/matcher graph avoids production or maintenance leakage.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_geometry_blind_review.py",
+      "source_commit": "b9ac905588d66bd1b9a55a857fa809ec72a48711",
+      "dependencies": [
+        "scripts.diagnostics.prepare_geometry_review",
+        "scripts.e2e.run_dataset_case",
+        "test_geometry_candidate_challenge"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Geometry experiment/associated test not qualified; retaining its coupled candidate/matcher graph avoids production or maintenance leakage.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_geometry_candidate.py",
+      "source_commit": "2081977eddfc9bb320894c63efa383fdfbaf45e9",
+      "dependencies": [
+        "scripts.diagnostics.build_geometry_candidate",
+        "scripts.diagnostics.diagnose_geometry_edges",
+        "test_geometry_edge_experiment",
+        "valorant_ai_coach.hud.calibrate_temporal",
+        "valorant_ai_coach.hud.layout",
+        "valorant_ai_coach.hud.templates"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Geometry experiment/associated test not qualified; retaining its coupled candidate/matcher graph avoids production or maintenance leakage.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_geometry_candidate_challenge.py",
+      "source_commit": "33f3b346941b64ef9f242d29846b090622608c51",
+      "dependencies": [
+        "scripts.diagnostics",
+        "scripts.diagnostics.build_geometry_candidate",
+        "scripts.e2e.run_dataset_case",
+        "test_geometry_candidate",
+        "test_geometry_edge_experiment"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Geometry experiment/associated test not qualified; retaining its coupled candidate/matcher graph avoids production or maintenance leakage.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_geometry_control_comparison.py",
+      "source_commit": "eea73e9458f0ccd5202fba7f08f9cf6f92c2435d",
+      "dependencies": [
+        "scripts.diagnostics",
+        "scripts.diagnostics.prepare_geometry_review",
+        "scripts.e2e.run_dataset_case",
+        "test_geometry_blind_review"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Geometry experiment/associated test not qualified; retaining its coupled candidate/matcher graph avoids production or maintenance leakage.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_geometry_enclosure_mask.py",
+      "source_commit": "778813cb8f7dcbdf8dfe7997a28c36457720636e",
+      "dependencies": [
+        "scripts.diagnostics.diagnose_geometry_edges",
+        "scripts.diagnostics.geometry_enclosure_mask"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Geometry experiment/associated test not qualified; retaining its coupled candidate/matcher graph avoids production or maintenance leakage.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_geometry_gradient_ncc.py",
+      "source_commit": "aeec9572aa07fd4f76022767d9412f164a18b4c1",
+      "dependencies": [
+        "scripts.diagnostics",
+        "scripts.diagnostics.diagnose_geometry_gradient_ncc",
+        "scripts.e2e.run_dataset_case",
+        "test_geometry_candidate_challenge",
+        "test_geometry_edge_experiment"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Geometry experiment/associated test not qualified; retaining its coupled candidate/matcher graph avoids production or maintenance leakage.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_geometry_review_summary.py",
+      "source_commit": "778813cb8f7dcbdf8dfe7997a28c36457720636e",
+      "dependencies": [
+        "scripts.diagnostics.prepare_geometry_review",
+        "scripts.diagnostics.summarize_geometry_review",
+        "scripts.e2e.run_dataset_case",
+        "test_geometry_candidate_challenge"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Geometry experiment/associated test not qualified; retaining its coupled candidate/matcher graph avoids production or maintenance leakage.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_held_banner_text_comparison.py",
+      "source_commit": "837f71286c7e4f70753dd1300d78d3e9484b4b55",
+      "dependencies": [
+        "scripts.diagnostics",
+        "scripts.diagnostics.compare_held_banner_text",
+        "scripts.e2e.run_dataset_case"
+      ],
+      "class": "A",
+      "disposition": "validation_recovery_PR",
+      "reason": "Read-only exact-input review/gap aggregation; no reference selection, event generation or production wiring.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_localized_digits_reader.py",
+      "source_commit": "ff970854c6a5c99896cffd48e5aa2693d31e8028",
+      "dependencies": [
+        "scripts.diagnostics",
+        "valorant_ai_coach.hud.readers",
+        "valorant_ai_coach.hud.templates"
+      ],
+      "class": "D",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Superseded diagnostic reader prototype; its replacement is also unqualified, neither is adopted.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_map_runner_contract.py",
+      "source_commit": "8f5552a9c35a7b713fc20e6e8e49c39c448f82da",
+      "dependencies": [
+        "valorant_ai_coach.maps.calibration",
+        "valorant_ai_coach.visual.map_pipeline"
+      ],
+      "class": "A",
+      "disposition": "validation_recovery_PR",
+      "reason": "Isolate test repository lock in tmp_path; preserve all existing settings assertions.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_match002_source_assurance.py",
+      "source_commit": "7e12aa906da2404d2c93c222d9d201f581e8c5d3",
+      "dependencies": [
+        "valorant_ai_coach.hud.unedited_input"
+      ],
+      "class": "A",
+      "disposition": "validation_recovery_PR",
+      "reason": "Explicit source-specific no-user-edit assurance, not continuity/ownership/qualification.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_native_numeric_profile_probe.py",
+      "source_commit": "9e1d9df1f2a08e760b673fa12af141dccf1a3f77",
+      "dependencies": [
+        "scripts.diagnostics.probe_numeric_reader_connection",
+        "valorant_ai_coach.hud.numeric_regions",
+        "valorant_ai_coach.hud.templates"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Coupled collection/reader experiment depends on retained research graph; minimal independent review subset recovered separately.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_native_numeric_regions.py",
+      "source_commit": "9e1d9df1f2a08e760b673fa12af141dccf1a3f77",
+      "dependencies": [
+        "scripts.diagnostics.numeric_text_localization",
+        "valorant_ai_coach.hud",
+        "valorant_ai_coach.hud.readers",
+        "valorant_ai_coach.hud.templates"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Coupled collection/reader experiment depends on retained research graph; minimal independent review subset recovered separately.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_native_prefix_cli.py",
+      "source_commit": "ab5c44103b86ca9d9a0179ca82e985dbdff560c2",
+      "dependencies": [
+        "scripts.diagnostics"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Keep practical/provisional source experiments separate from other active source/application PRs.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_native_score_gaps.py",
+      "source_commit": "ab5c44103b86ca9d9a0179ca82e985dbdff560c2",
+      "dependencies": [
+        "scripts.diagnostics.native_score_gaps"
+      ],
+      "class": "A",
+      "disposition": "validation_recovery_PR",
+      "reason": "Read-only exact-input review/gap aggregation; no reference selection, event generation or production wiring.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_numeric_blind_review.py",
+      "source_commit": "e8f7338d86861f4864311230bd80df275489e79f",
+      "dependencies": [
+        "scripts.diagnostics.prepare_numeric_review",
+        "scripts.e2e.run_dataset_case",
+        "test_geometry_candidate_challenge"
+      ],
+      "class": "B",
+      "disposition": "validation_recovery_PR",
+      "reason": "Explicit private-only source review; no decoder/recognizer, no inferred labels, no production imports.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_numeric_review_comparison.py",
+      "source_commit": "33f3b346941b64ef9f242d29846b090622608c51",
+      "dependencies": [
+        "scripts.diagnostics.compare_numeric_review",
+        "scripts.diagnostics.freeze_numeric_review",
+        "scripts.diagnostics.prepare_numeric_review",
+        "scripts.e2e.run_dataset_case",
+        "test_numeric_blind_review"
+      ],
+      "class": "A",
+      "disposition": "validation_recovery_PR",
+      "reason": "Read-only exact-input review/gap aggregation; no reference selection, event generation or production wiring.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_numeric_review_freeze.py",
+      "source_commit": "ff970854c6a5c99896cffd48e5aa2693d31e8028",
+      "dependencies": [
+        "scripts.diagnostics.freeze_numeric_review",
+        "scripts.diagnostics.prepare_numeric_review",
+        "scripts.e2e.run_dataset_case",
+        "test_numeric_blind_review"
+      ],
+      "class": "A",
+      "disposition": "validation_recovery_PR",
+      "reason": "Read-only exact-input review/gap aggregation; no reference selection, event generation or production wiring.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_numeric_text_localization.py",
+      "source_commit": "e8f7338d86861f4864311230bd80df275489e79f",
+      "dependencies": [
+        "scripts.diagnostics.numeric_text_localization"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Coupled collection/reader experiment depends on retained research graph; minimal independent review subset recovered separately.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_pool_presence_review.py",
+      "source_commit": "33f3b346941b64ef9f242d29846b090622608c51",
+      "dependencies": [
+        "scripts.diagnostics.prepare_pool_presence_review",
+        "scripts.e2e.run_dataset_case",
+        "test_numeric_blind_review"
+      ],
+      "class": "B",
+      "disposition": "validation_recovery_PR",
+      "reason": "Explicit private-only source review; no decoder/recognizer, no inferred labels, no production imports.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_prospective_numeric_probe.py",
+      "source_commit": "33f3b346941b64ef9f242d29846b090622608c51",
+      "dependencies": [
+        "scripts.diagnostics",
+        "scripts.diagnostics.prospective_numeric_probe",
+        "scripts.e2e.run_dataset_case",
+        "test_geometry_candidate_challenge",
+        "valorant_ai_coach.hud.layout"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Coupled collection/reader experiment depends on retained research graph; minimal independent review subset recovered separately.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_score_absence_controls.py",
+      "source_commit": "33f3b346941b64ef9f242d29846b090622608c51",
+      "dependencies": [
+        "scripts.diagnostics",
+        "scripts.diagnostics.prepare_pool_presence_review",
+        "scripts.e2e.run_dataset_case",
+        "scripts.e2e.run_metrics",
+        "test_pool_presence_review",
+        "valorant_ai_coach.hud.readers",
+        "valorant_ai_coach.hud.templates"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Coupled collection/reader experiment depends on retained research graph; minimal independent review subset recovered separately.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_score_padding.py",
+      "source_commit": "40cdd40f8828de7696c7dae4594df48a1aaa7b3c",
+      "dependencies": [
+        "scripts.diagnostics"
+      ],
+      "class": "D",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Rejected padding experiment; preserve unfavorable history, do not ship as a supported method.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_spectator_icon.py",
+      "source_commit": "351b75cc845bc7027b42338a9fd637f90cd9bec1",
+      "dependencies": [
+        "valorant_ai_coach.hud.identity",
+        "valorant_ai_coach.hud.layout",
+        "valorant_ai_coach.hud.spectator_icon",
+        "valorant_ai_coach.hud.templates"
+      ],
+      "class": "A",
+      "disposition": "PR57",
+      "reason": "Numerical precision correction and regression only; unchanged detection gates, no qualification claim.",
+      "production_effect": "Corrects floating-point bin assignment only."
+    },
+    {
+      "path": "tests/unit/test_unlabeled_banner_capture.py",
+      "source_commit": "33f3b346941b64ef9f242d29846b090622608c51",
+      "dependencies": [
+        "scripts.diagnostics",
+        "scripts.e2e.run_dataset_case"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Banner discovery/reference/recapture experiment and associated tests; meanings and temporal qualification remain incomplete.",
+      "production_effect": "No production adoption."
+    },
+    {
+      "path": "tests/unit/test_unlabeled_banner_discovery.py",
+      "source_commit": "33f3b346941b64ef9f242d29846b090622608c51",
+      "dependencies": [
+        "scripts.diagnostics",
+        "scripts.e2e.run_dataset_case"
+      ],
+      "class": "B",
+      "disposition": "preserve_on_research_branch",
+      "reason": "Banner discovery/reference/recapture experiment and associated tests; meanings and temporal qualification remain incomplete.",
+      "production_effect": "No production adoption."
+    }
+  ]
+}

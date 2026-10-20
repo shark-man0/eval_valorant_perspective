@@ -23,6 +23,8 @@ def main() -> None:
     parser.add_argument('--native-step-ticks', required=True, type=int)
     parser.add_argument('--output', required=True, type=Path)
     args = parser.parse_args()
+    if args.output.exists():
+        raise FileExistsError('preserve existing native diagnostic receipts; choose a new output')
     analyzer = RealHudAnalyzer(args.layout)
     profile_fingerprint = analyzer.fingerprint()
     recognizer_fingerprint = global_recognizer_fingerprint()
@@ -65,7 +67,9 @@ def main() -> None:
         'canonical_current': None, 'canonical_delta': None,
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding="utf-8")
+    args.output.write_text(
+        json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding="utf-8"
+    )
     print(json.dumps({key: report[key] for key in (
         'processed_frames', 'wall_clock_sec', 'timer_display_accepted',
         'timer_display_unknown', 'events_released',
