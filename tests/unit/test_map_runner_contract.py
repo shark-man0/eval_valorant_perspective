@@ -84,6 +84,9 @@ def test_real_video_runner_passes_manual_map_and_build_into_app_settings(tmp_pat
     assert spec is not None and spec.loader is not None
     run_real_video = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(run_real_video)
+    # This settings-only test must acquire a real lock in its own repository,
+    # not interfere with a native video run in the developer's checkout.
+    monkeypatch.setattr(run_real_video, "APP_ROOT", tmp_path)
 
     received = {}
 
