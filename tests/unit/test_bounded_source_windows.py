@@ -4,6 +4,7 @@ from __future__ import annotations
 import hashlib
 import shutil
 import subprocess
+import sys
 import tempfile
 from argparse import ArgumentTypeError
 from contextlib import contextmanager
@@ -53,6 +54,59 @@ def test_rational_endpoint_selects_exact_pts_after_float_expansion(source) -> No
     assert report["recognition_executed"] is False
     assert len(window["native_pts_pixel_sequence_sha256"]) == 64
     assert str(video) not in str(report)
+
+
+def test_sub_float_tick_boundaries_exclude_both_endpoint_frames(source) -> None:
+    video, digest, service = source
+    epsilon = Fraction(1, 10**30)
+    # FFV1 in this Matroska fixture has frames at .333, .500, .667 and .833.
+    # Both bounds round back onto an existing PTS when converted to float.
+    report = inspect_windows(
+        video, digest, [(Fraction(333, 1000) + epsilon, Fraction(833, 1000) - epsilon)],
+        max_png_bytes=1_000_000, service=service,
+    )
+    window = report["windows"][0]
+    first_tick, first_base = window["selected_first_pts"]
+    last_tick, last_base = window["selected_last_pts"]
+    assert Fraction(first_tick) * Fraction(first_base) == Fraction(1, 2)
+    assert Fraction(last_tick) * Fraction(last_base) == Fraction(667, 1000)
+    assert window["selected_native_frames"] == 2
+
+
+def test_cli_rejects_public_output_before_inspecting_source(monkeypatch, tmp_path) -> None:
+    from scripts.diagnostics import inspect_bounded_source_windows as tool
+
+    def reject(path):
+        raise ValueError("output is not private")
+
+    monkeypatch.setattr(tool, "_check_output_privacy", reject)
+    monkeypatch.setattr(sys, "argv", [
+        "inspect", "--video", str(tmp_path / "missing.mkv"),
+        "--source-sha256", "a" * 64, "--window", "0:1", "--max-png-bytes", "1000",
+        "--output", str(tmp_path / "public.json"),
+    ])
+    with pytest.raises(ValueError, match="not private"):
+        tool.main()
+
+
+def test_cli_preserves_file_created_while_inspection_runs(monkeypatch, tmp_path) -> None:
+    from scripts.diagnostics import inspect_bounded_source_windows as tool
+
+    output = tmp_path / "receipt.json"
+
+    def inspect(*args, **kwargs):
+        output.write_text("preserve this earlier run", encoding="utf-8")
+        return {"scope": "test", "windows": []}
+
+    monkeypatch.setattr(tool, "inspect_windows", inspect)
+    monkeypatch.setattr(sys, "argv", [
+        "inspect", "--video", str(tmp_path / "missing.mkv"),
+        "--source-sha256", "a" * 64, "--window", "0:1", "--max-png-bytes", "1000",
+        "--output", str(output),
+    ])
+    with pytest.raises(FileExistsError):
+        tool.main()
+    assert output.read_text(encoding="utf-8") == "preserve this earlier run"
 
 
 def test_windows_are_separate_epochs_and_terminally_verified(source) -> None:

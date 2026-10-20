@@ -16,6 +16,7 @@ from fractions import Fraction
 from pathlib import Path
 from typing import Any
 
+from valorant_ai_coach.hud.calibrate_temporal import _check_output_privacy
 from valorant_ai_coach.video import VideoService
 from valorant_ai_coach.video import native as native_module
 from valorant_ai_coach.video import service as service_module
@@ -206,12 +207,15 @@ def main() -> None:
     validate_windows(args.window, args.max_png_bytes)
     if args.output.exists():
         raise ValueError("output receipt already exists")
+    _check_output_privacy(args.output.resolve())
     report = inspect_windows(
         args.video, args.source_sha256, args.window,
         max_png_bytes=args.max_png_bytes, timeout_sec=args.timeout_sec,
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    with args.output.open("x", encoding="utf-8") as stream:
+        json.dump(report, stream, indent=2)
+        stream.write("\n")
     print(json.dumps({"scope": report["scope"], "windows": len(report["windows"]),
                       "source_terminal_verified": True,
                       "whole_source_pts_pixels_verified": False}))

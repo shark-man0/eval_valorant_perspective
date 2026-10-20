@@ -76,7 +76,8 @@ annotation dataset are recovered. No public schema/migration change is needed.
 | Source SHA / native PTS / decoded pixel hashes | Reuse main | Existing native API, source preflight and pixel archive diagnostics; no duplicate decoder. |
 | Source-only review / provenance | Reuse main | Existing overview/review-plan tools and temporal annotation contract; hash identity is not semantic proof. |
 | Snapshot saved-raw projection | Recover | Independent of experimental readers; narrow transport regression only. |
-| Bounded native image-reader replay (`ca4b975`) | Keep research-only | Memory-bounded decoding uses main API, but runner imports experimental killfeed/image/subject classes. Porting it would require the prohibited reader stack or a new generic runner design. |
+| Bounded native image-reader replay (`ca4b975`) | Keep recognition runner research-only | The original runner imports experimental killfeed/image/subject classes. None of those readers or their observations is recovered. |
+| Exact rational-window source evidence from `ca4b975` | Recover source-only diagnostic | The narrow input proof is separable: reuse main's decoder, select exact rational PTS after outward float expansion, enforce each window's PNG cap and record independent epochs. See [bounded source inspection](bounded_source_windows.md). No recognizer, Profile, GT or qualification authority is needed. |
 | Typed native subject chain / episode deduplication | Keep research-only | Depends on #47/#50 subject models; useful tests remain preserved, not production authority. |
 | Numeric release, SelfVictim, killer agent, damage, fatal row | Do not adopt | No independently qualified whole-model positive/negative episode corpus. |
 | Experimental extra Snapshot-retention patch | Do not revive | Prior investigation showed support already reached final Package/Trace. |
