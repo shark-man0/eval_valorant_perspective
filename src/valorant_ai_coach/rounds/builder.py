@@ -107,6 +107,61 @@ def _shared_timer_facts(observations: Sequence[dict[str, Any]]) -> list[dict[str
     return facts
 
 
+def _global_snapshot(observation: dict[str, Any]) -> dict[str, Any] | None:
+    """Retain current value-reader evidence without admitting a player snapshot.
+
+    The aggregate HUD gate remains unchanged. This separate path accepts only
+    explicitly unowned, unknown observations with calibrated, unobscured global
+    values at the existing .90 reader floor. Every owned/context field stays
+    unknown, even if an invalid input contains a player value.
+    """
+    values = observation.get("values") or {}
+    quality = observation.get("quality") or {}
+    if (
+        observation.get("primary_state") != "unknown"
+        or values.get("player_specific_hud_valid") is not False
+        or "calibration_required" in (quality.get("notes") or ())
+        or quality.get("occluded_rois")
+    ):
+        return None
+    scores = shared_score_evidence(observation)
+    timer = timer_display_evidence(values)
+    roi = quality.get("roi_confidence") or {}
+    timer_confidence = _source_confidence(roi.get("round_timer_value"))
+    if timer is not None and (
+        timer["provenance"]["confidence"] < .90 or timer_confidence < .90
+    ):
+        timer = None
+    if timer is None and all(value is None for value in scores.values()):
+        return None
+    snapshot: dict[str, Any] = {
+        "time_sec": observation["time_sec"],
+        "spectator_primary_state": None,
+        **scores,
+        "ally_alive": None, "enemy_alive": None,
+        "hp": None, "armor": None, "weapon": None,
+        "spike_state": "unknown", "utility_available_count": None,
+        "round_time_remaining_sec": values["round_time_remaining_sec"] if timer else None,
+        "player_location": {"zone_id": None, "zone_name": None},
+        "known_enemy_locations": [],
+        "spatial_context": {
+            "cover_available": None, "escape_route_available": None,
+            "line_of_sight_state": "unknown", "exposed_directions_count": None,
+            "view_target_zone_id": None,
+        },
+        "source_confidence": {
+            key: roi[f"{key}_value"] for key, value in scores.items() if value is not None
+        },
+    }
+    if timer is not None:
+        snapshot["round_time_remaining_display"] = timer["display"]
+        snapshot["round_time_remaining_display_provenance"] = timer["provenance"]
+        snapshot["source_confidence"]["round_time_remaining_sec"] = min(
+            timer_confidence, timer["provenance"]["confidence"]
+        )
+    return snapshot
+
+
 def _owned_hp_facts(observations: Sequence[dict[str, Any]]) -> list[dict[str, Any]]:
     """Preserve accepted current-frame HP readings for the identified player."""
     facts: list[dict[str, Any]] = []
@@ -542,6 +597,12 @@ class RoundPackageBuilder:
             index = bisect_right(hud_times, timestamp) - 1
             if index < 0 or timestamp - hud_times[index] > 0.5:
                 continue
+            # Field-only global retention must not widen the legacy admission
+            # for player spatial facts or resolver association.
+            if _bounded_confidence(
+                (hud[index].get("quality") or {}).get("hud_confidence")
+            ) < .65:
+                continue
             base = self._state_snapshots([hud[index]])
             if not base:
                 continue
@@ -559,6 +620,10 @@ class RoundPackageBuilder:
             timestamp = self._time(resolution)
             index = bisect_right(hud_times, timestamp) - 1
             if index < 0 or timestamp - hud_times[index] > 0.5:
+                continue
+            if _bounded_confidence(
+                (hud[index].get("quality") or {}).get("hud_confidence")
+            ) < .65:
                 continue
             base = self._state_snapshots([hud[index]])
             if not base:
@@ -1139,11 +1204,18 @@ class RoundPackageBuilder:
         snapshots: list[dict[str, Any]] = []
         last_key: tuple[Any, ...] | None = None
         last_time = -math.inf
+        global_times: set[float] = set()
         for observation in observations:
             values = observation.get("values", {})
             if not isinstance(values, dict):
                 continue
             if _bounded_confidence((observation.get("quality") or {}).get("hud_confidence")) < 0.65:
+                global_snapshot = _global_snapshot(observation)
+                if global_snapshot is not None:
+                    timestamp = float(global_snapshot["time_sec"])
+                    if timestamp not in global_times:
+                        snapshots.append(global_snapshot)
+                        global_times.add(timestamp)
                 continue
             player_valid = bool(values.get("player_specific_hud_valid", True))
             abilities = values.get("ability_slots", [])

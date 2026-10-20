@@ -453,6 +453,13 @@ class FactBuilder:
                     provenance,
                 )
 
+        # Append global score facts after existing facts to preserve legacy IDs.
+        # Team scores never imply player identity, alive status or a transition.
+        for snapshot in round_package.get("state_snapshots", []):
+            timestamp = float(snapshot["time_sec"])
+            for field in ("score_ally", "score_enemy"):
+                add(field, snapshot.get(field), self._source_confidence(snapshot, field),
+                    "hud", timestamp)
         return generated
 
     def enrich(self, round_package: dict[str, Any]) -> dict[str, Any]:
