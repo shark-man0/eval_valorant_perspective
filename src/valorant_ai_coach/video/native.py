@@ -237,6 +237,13 @@ def decode_native_window(
     width, height = int(stream['width']), int(stream['height'])
     if time_base <= 0 or width <= 0 or height <= 0:
         raise VideoProbeError('native source geometry/timebase unavailable')
+    # Select on source integer PTS on both sides of the decoder boundary.
+    # FFmpeg's t=pts*time_base may round an exact decimal endpoint below the
+    # requested start (e.g. 3391488/15360 == 220.8), dropping a real frame.
+    start_time = Fraction(str(start_sec))
+    end_time = Fraction(str(end_sec)) if end_sec is not None else None
+    first_tick = math.ceil(start_time / time_base)
+    last_tick = math.floor(end_time / time_base) if end_time is not None else None
     probe_start = '' if start_sec <= 1.0 else str(start_sec - 1.0)
     # EOF needs no interval: ffprobe's default reads the entire physical source.
     # Some FFmpeg versions leave read-interval offset fields uninitialized when
@@ -251,8 +258,8 @@ def decode_native_window(
     ])['frames']
     probed = tuple(int(frame['best_effort_timestamp']) for frame in frames)
     if (
-        not probed or (start_sec != 0 and float(probed[0] * time_base) > start_sec)
-        or (end_sec is not None and float(probed[-1] * time_base) <= end_sec)
+        not probed or (start_sec != 0 and probed[0] * time_base > start_time)
+        or (end_time is not None and probed[-1] * time_base <= end_time)
         or any(b <= a for a, b in zip(probed, probed[1:], strict=False))
     ):
         bad_pair = next(((a, b) for a, b in zip(probed, probed[1:], strict=False)
@@ -266,16 +273,16 @@ def decode_native_window(
         )
     if start_sec == 0 and probed[0] < 0:
         raise VideoProbeError('negative native source origin requires explicit support')
-    expected = tuple(t for t in probed if float(t * time_base) >= start_sec
-                     and (end_sec is None or float(t * time_base) <= end_sec))
+    expected = tuple(t for t in probed if t >= first_tick
+                     and (last_tick is None or t <= last_tick))
     if len(expected) < 2:
         raise VideoProbeError('native window requires at least two source frames')
     with TemporaryDirectory(prefix='valorant-native-') as temporary:
         directory = Path(temporary)
         log_path = directory / 'decode.log'
-        filters = (f'select=gte(t\\,{start_sec}),showinfo' if end_sec is None else
+        filters = (f'select=gte(pts\\,{first_tick}),showinfo' if end_sec is None else
                    f'trim=end={end_sec + 1.0},'
-                   f'select=between(t\\,{start_sec}\\,{end_sec}),showinfo')
+                   f'select=between(pts\\,{first_tick}\\,{last_tick}),showinfo')
         with log_path.open('w', encoding='utf-8') as log:
             command = [
                 ffmpeg, '-hide_banner', '-loglevel', 'info', '-threads', '1',

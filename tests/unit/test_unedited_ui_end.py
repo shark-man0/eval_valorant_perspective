@@ -80,6 +80,20 @@ def test_existing_qualification_cannot_enable_delayed_result_path(tmp_path):
     assert [d.kind for d in replay(rows, tracker)] == ['round_start']
 
 
+def test_isolated_score_outlier_cannot_be_attested_by_later_change_after_unknown_gap(tmp_path):
+    rows, tracker = fixture(tmp_path)
+    # Synthetic OCR: a single early +1 outlier at .44, followed by abstention.
+    # The actual source change is modeled at .76. Later score/result support
+    # cannot establish which value was visible during the intervening gap.
+    for row in rows[23:38]:
+        row['system_observation']['values']['score_enemy'] = None
+    original = deepcopy(rows)
+    decisions = replay(rows, tracker)
+    assert [d.kind for d in decisions] == ['round_start']
+    assert tracker.start.started
+    assert rows == original
+
+
 def test_rearm_next_start_with_no_inferred_second_end(tmp_path):
     rows, tracker = fixture(tmp_path, next_round=True)
     decisions = replay(rows, tracker)
