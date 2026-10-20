@@ -9,10 +9,35 @@ import pytest
 
 from valorant_ai_coach.hud.identity import live_identity
 from valorant_ai_coach.hud.layout import HudLayout, NormalizedRoi
-from valorant_ai_coach.hud.spectator_icon import detect_icon
+from valorant_ai_coach.hud.spectator_icon import _orientation_degrees, detect_icon
 from valorant_ai_coach.hud.templates import HudTemplateProfile
 
 HEIGHT, WIDTH = 83, 75
+
+
+def test_exact_gradient_directions_stay_in_their_histogram_bins() -> None:
+    gx = np.array([1, 1, 0, -1, -1, -1, 0, 1], dtype=np.float32)
+    gy = np.array([0, 1, 1, 1, 0, -1, -1, -1], dtype=np.float32)
+    angles = _orientation_degrees(gx, gy)
+    np.testing.assert_array_equal(angles, np.arange(0, 360, 45))
+    bins = np.histogram(angles, bins=np.linspace(0, 360, 9))[0]
+    np.testing.assert_array_equal(bins, np.ones(8, dtype=int))
+    # Both signs of zero on the negative X axis represent the same direction.
+    np.testing.assert_array_equal(
+        _orientation_degrees(np.array([-1, -1], np.float32),
+                             np.array([0., -0.], np.float32)), [180., 180.])
+
+
+def test_near_boundary_directions_are_not_snapped_or_smoothed() -> None:
+    gx = np.array([-1., -1.], dtype=np.float32)
+    gy = np.array([.00001, -.00001], dtype=np.float32)
+    before_x, before_y = gx.copy(), gy.copy()
+    angles = _orientation_degrees(gx, gy)
+    assert angles[0] < 180 < angles[1]
+    assert np.floor(angles[0] / 45) == 3
+    assert np.floor(angles[1] / 45) == 4
+    np.testing.assert_array_equal(gx, before_x)
+    np.testing.assert_array_equal(gy, before_y)
 
 
 def _abstract_icon() -> np.ndarray:
