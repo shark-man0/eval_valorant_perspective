@@ -1,5 +1,15 @@
 # Unedited input contract and R1 UI transition
 
+> Source provenance clarification (2026-10-20, recovered from PR #49):
+> `match_001` is an Outplayed-extracted interval with no editing within that
+> interval according to the user. It is a partial clip, not an uncut full match.
+> Abrupt visual changes/repeated frames do not establish manual editing, and
+> source integrity, current ownership and lifecycle qualification gates remain
+> required. EOF is not a round/match end. See
+> [the historical visual review](match001_visual_review_100ms_20261016.md) and
+> [the current phase handoff](research_phase_convergence.md). Later sections
+> retain their dated historical status; current match_002 recovery is PR #60.
+
 ## Verification checkpoint — 2026-10-10
 
 The source-assurance/start and native assured-pipeline suites were checked again:

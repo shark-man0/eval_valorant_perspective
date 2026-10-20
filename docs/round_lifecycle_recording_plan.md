@@ -1,10 +1,20 @@
 # Round lifecycle recording plan — 2026-10-09
 
+> Source provenance clarification (2026-10-20, recovered from PR #49):
+> `match_001` is an Outplayed-extracted interval with no editing within that
+> interval according to the user. It is a partial clip, not an uncut full match.
+> Abrupt visual changes/repeated frames do not establish manual editing, and
+> source integrity, current ownership and lifecycle qualification gates remain
+> required. EOF is not a round/match end. See
+> [the historical visual review](match001_visual_review_100ms_20261016.md) and
+> [the current phase handoff](research_phase_convergence.md). Later sections
+> retain their dated historical status; current match_002 recovery is PR #60.
+
 ## Dataset roles
 
 - `match_001`: keep the existing video, manifest, Validation Pack and reports.
-  The user identifies it as an Outplayed-cut clip; the unedited original may no
-  longer exist. Use it for discontinuity, incomplete-package and negative-safety
+  The user confirms it is an Outplayed-extracted partial clip with no edits
+  within the selected interval. Use it for discontinuity, incomplete-package and negative-safety
   regression. Do not optimize OCR/thresholds to force its missing boundaries.
 - `match_002`: received on 2026-10-09; user confirms an unedited full match. Use it
   for main real-source lifecycle qualification only after independent dataset
