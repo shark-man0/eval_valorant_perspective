@@ -69,8 +69,13 @@ jobs:
           python -m pytest tests/unit/test_text_io_encoding_audit.py -q
       - name: Inventory Python text I/O (observational)
         run: python scripts/audit_text_io.py --summary-json
-      - run: python -m ruff check src tests scripts/e2e
-      - run: python -m mypy src/valorant_ai_coach
+      - run: python -m ruff check src tests scripts/e2e scripts/temporal_gt
+      - name: Type-check production and offline temporal data contracts
+        env:
+          MYPYPATH: src
+        run: |
+          python -m mypy src/valorant_ai_coach
+          python -m mypy --explicit-package-bases -m scripts.temporal_gt.contract -m scripts.temporal_gt.validate_dataset
       - run: python -m PyInstaller --noconfirm --clean VALORANT-AI-Coach.spec
       - name: Smoke-test packaged application
         shell: pwsh

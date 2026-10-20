@@ -1,0 +1,15 @@
+{
+  "version": "source-review-scope-counts-20261020",
+  "new_enrolled_candidates": 5,
+  "new_independent_display_score_brackets": 2,
+  "new_negative": 0,
+  "new_unknown": 3,
+  "exact_adjacent_transition_brackets": 0,
+  "complete_word_visibility_witnesses": 1,
+  "whole_episode_complete_caption_onset_GT": 0,
+  "full_temporal_End_GT": 0,
+  "bracket_scope": "Conservative reviewer-confirmed old/new witnesses; exact last-old and whole-episode first onset are not inferred.",
+  "formal_End_qualified": false,
+  "recognition_executed": false,
+  "cross_video_generalization_claimed": false
+}

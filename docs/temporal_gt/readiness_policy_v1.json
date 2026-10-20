@@ -1,0 +1,20 @@
+{
+  "version": "round-end-temporal-readiness-v1",
+  "scope": "independent observable display End episode data readiness only",
+  "formal_End_release": false,
+  "internal_game_End_from_video": false,
+  "boundary_rule": "actual last-readable-old / first-readable-new integer source PTS bracket",
+  "confirmation_is_boundary": false,
+  "midpoint_truth": false,
+  "canonical_GT_modified": false,
+  "timing_policy_48_imported": false,
+  "production_End_horizon_sec_unchanged": 1,
+  "minimum_distinct_Spike_Decimal_replications": 2,
+  "replication_is_statistical_accuracy_guarantee": false,
+  "required_natural_negative_classes": ["countdown", "score_only", "clock_only", "spike_only", "decimal_only", "partial_caption", "stale_caption", "buy", "menu", "spectator", "source_break", "pts_gap", "repeated_raster"],
+  "unknown_is_negative": false,
+  "acceptance_before_prediction": true,
+  "metrics_for_future_qualification": ["TP", "FP", "FN_missing_boundary", "unknown", "NE_predeclared_unscorable", "annotated_coverage", "boundary_bracket_error", "confirmation_latency"],
+  "stop_conditions": ["source_or_hash_mismatch", "exposure_or_reference_leak", "unapproved_opening", "missing_independent_review", "method_change_after_freeze", "incomplete_required_coverage"],
+  "performance_thresholds_for_future_qualification": "Must be separately preregistered for the intended operational scope; this data-readiness tool does not assert recognizer accuracy or execute evaluation."
+}
