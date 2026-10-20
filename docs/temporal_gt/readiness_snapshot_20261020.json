@@ -1,0 +1,66 @@
+{
+  "version": "round-end-temporal-v1",
+  "dataset_sha256": "b5c765c5c81ac7a5407da4eaeb74338b29dd3dc92f10aa7b9951d3b06bb1096c",
+  "readiness": "BLOCKED",
+  "blockers": [
+    "annotation_coverage_incomplete",
+    "annotation_target_is_not_temporal_episode",
+    "exposure_history_incomplete",
+    "fewer_than_two_spike_decimal_replications",
+    "full_temporal_brackets_incomplete",
+    "natural_negative_coverage_incomplete",
+    "reference_lineage_incomplete",
+    "source_continuity_unproven",
+    "temporal_context_incomplete"
+  ],
+  "source_count": 4,
+  "event_record_count": 17,
+  "verified_physical_event_count": 10,
+  "unresolved_event_identity_count": 7,
+  "split_counts": {
+    "development": 12,
+    "holdout_positive": 2,
+    "unknown": 3
+  },
+  "annotation_status_counts": {
+    "historical_source_review": 6,
+    "candidate": 9,
+    "independently_reviewed": 2
+  },
+  "negative_physical_event_counts": {
+    "countdown": 0,
+    "score_only": 0,
+    "clock_only": 0,
+    "spike_only": 0,
+    "decimal_only": 0,
+    "partial_caption": 0,
+    "stale_caption": 0,
+    "buy": 0,
+    "menu": 0,
+    "spectator": 0,
+    "source_break": 0,
+    "pts_gap": 0,
+    "repeated_raster": 0
+  },
+  "missing_negative_classes": [
+    "countdown",
+    "score_only",
+    "clock_only",
+    "spike_only",
+    "decimal_only",
+    "partial_caption",
+    "stale_caption",
+    "buy",
+    "menu",
+    "spectator",
+    "source_break",
+    "pts_gap",
+    "repeated_raster"
+  ],
+  "formal_End_qualified": false,
+  "recognition_executed": false,
+  "mechanical_consistency_only": true,
+  "freeze_sha256": "fd96234b94cf05adf22650096797eb67329c7f70699d5e76245fa7998278167f",
+  "schema_sha256": "9de08fe84bb03e334cd956c5227433b3a09ae4f0fdb6c98b08dbbb209bb37544",
+  "contract_sha256": "fd55a0e06c9d7984484978bf2efc6bc4822a454d15e3709514e89629ea47631f"
+}

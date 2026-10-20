@@ -1,5 +1,7 @@
 # Round End temporal data audit — 2026-10-19
 
+Historical snapshot. See the [completed source-review and final readiness report](final_readiness_20261020.md) for the 2026-10-20 update.
+
 Status: **BLOCKED for independent qualification**. This is a data preparation snapshot, with two fresh source-only bracket reviews being prepared. Formal End remains unqualified. No recognition, threshold fitting, production changes or Full E2E was performed.
 
 ## Available history and privacy

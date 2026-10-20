@@ -1,0 +1,18 @@
+{
+  "version": "private-temporal-audit-anchors-20261020",
+  "private_contents_published": false,
+  "recognition_executed": false,
+  "formal_End_qualified": false,
+  "previous_public_anchor_index_sha256": "03518a4ee2ae4639868d5cd69a3104f8478d9cbb1ae787b0087fa2eac024a6fa",
+  "anchors": {
+    "dataset_current_v3.freeze.json": "07272f80f71c24ff04cd2f5312a4243cfa764d74f8ef70467bf4de466bcd81a8",
+    "human_review_request_v1.json": "a0b1a958661838b43e61f5a7dbad6870770ad1f01b3e0118ad8125d1f6eb1a77",
+    "human_review_response_20261020.json": "a82ef2ac92cb048c42480e89af676bce1271e9a80b0d0aed416df6f56de9a5bc",
+    "dataset_current_v4.json": "70601963cdc488d0037c7ffb4d5acc370d32049dbec255704896235327f144e9",
+    "candidate_v4_validation_rejection.json": "f3f3a83679ee94907bd03dd1490118994e196d0c38cc1fc6e45b0a2ded62797e",
+    "sparse_exposure_correction_v5.json": "843448c60b8c8b653158768da2d7010af77612822fdc1b780b79e913550c5ef6",
+    "dataset_current_v5.freeze.json": "23b795197326f789fd158c100bcc56d0d909a3a225511dfec685fa4262e33338",
+    "caption_witness_scope_v6.json": "1b3835c1880c4f2ce3212046431eb606e7c22f8f82d92b6ec4534912fb8305c9",
+    "dataset_current_v6.freeze.json": "fd96234b94cf05adf22650096797eb67329c7f70699d5e76245fa7998278167f"
+  }
+}
