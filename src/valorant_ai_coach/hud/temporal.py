@@ -241,7 +241,7 @@ class HudDirectEventBuilder:
             # A combat report can remain open after respawn; it is not a new death.
             death_event = (
                 None
-                if pre_round or is_start
+                if pre_round or is_start or not current_player_hud_valid
                 else _player_death_event(timestamp, confidence, values, evidence)
             )
             if death_event is not None and not death_latched and _event_acceptable(death_event):
