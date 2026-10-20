@@ -3,6 +3,7 @@
   "research_branch": "work/match002-geometry-qualification",
   "research_head": "1f3edf094634037747928021c0ca9169f02928f8",
   "classification_main": "c688206ef4b62c8f206687a1e434fe84833105df",
+  "validation_main_on_resume": "9daf08e6304f6e8368566bccf7e0386987f1eb3e",
   "merge_base": "7e480c2f2f7f49aea73e1541d065d78881d2f11c",
   "research_unique_commits": 54,
   "changed_files": 70,
@@ -535,6 +536,7 @@
     },
     {
       "path": "tests/integration/test_incomplete_round_fact_trace.py",
+      "adaptation": "PR59 adopted independent timer-only snapshots for unknown identity with zero aggregate HUD confidence. Update the ported test to that main contract, additionally assert null player fields, unknown owner, timer-only source confidence, and .89 rejection/.90 admission. Spectator/remote assertions remain unchanged; no production edits.",
       "source_commit": "9862fbf86b715730b873e5359cbfc2d6fa2fbd56",
       "dependencies": [
         "valorant_ai_coach.events",

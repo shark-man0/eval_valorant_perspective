@@ -83,13 +83,17 @@ def test_missing_end_keeps_next_start_facts_snapshots_and_trace_in_next_round(
         assert len({f['fact_id'] for f in package['deterministic_facts']}) == len(
             package['deterministic_facts'])
         assert not {f['key'] for f in package['deterministic_facts']} & {'hp', 'player_died'}
-        # Aggregate HUD quality gates snapshots, but not direct accepted timer
-        # facts. Neither kind of support establishes player ownership.
+        # PR59 already adopted independent global-field snapshots for unknown
+        # identity. Spectator/remote retain the existing aggregate-only path.
+        # Neither path establishes player ownership.
         assert {snapshot['time_sec'] for snapshot in package['state_snapshots']} == (
-            times if hud_confidence else set())
+            times if hud_confidence or state == 'unknown' else set())
         assert all(snapshot['hp'] is None and snapshot['weapon'] is None
                    and snapshot.get('ammo_current') is None
                    for snapshot in package['state_snapshots'])
+        if state == 'unknown' and not hud_confidence:
+            assert all(snapshot['source_confidence'] == {'round_time_remaining_sec': .95}
+                       for snapshot in package['state_snapshots'])
     trace = load_adapter().to_e2e_trace(SimpleNamespace(
         round_packages=enriched, observations=observations,
     ))
@@ -101,12 +105,14 @@ def test_missing_end_keeps_next_start_facts_snapshots_and_trace_in_next_round(
     ]
     assert all(e['actor'] == 'system' for e in boundaries)
     assert [e['attributes'] for e in boundaries] == [e['attributes'] for e in events]
-    assert len(trace['snapshots']) == (6 if hud_confidence else 0)
+    assert len(trace['snapshots']) == (6 if hud_confidence or state == 'unknown' else 0)
     for snapshot in trace['snapshots']:
         assert snapshot['round_id'] == (
             'sample_round_1' if snapshot['time_sec'] < 5 else 'sample_round_2')
         assert snapshot['player_hp'] is None and snapshot.get('ammo_mag') is None
         assert snapshot['source_confidence_by_field']['round_time_remaining_sec'] == .95
+        if state == 'unknown':
+            assert snapshot['view_owner'] == 'unknown'
     assert observations == original
 
 
@@ -117,3 +123,24 @@ def test_unowned_player_values_are_rejected_before_downstream_processing(field, 
     values[field] = value
     with pytest.raises(ValueError, match='player_specific_hud_valid=false'):
         HudObservationV2(2, 120, 'unknown', values=values, quality=empty_hud_quality())
+
+
+@pytest.mark.parametrize('confidence,expected_count', [(.89, 0), (.90, 1)])
+def test_independent_global_snapshot_keeps_existing_field_confidence_floor(
+        confidence, expected_count):
+    values = empty_hud_values()
+    values.update(round_time_remaining_sec=90, round_time_remaining_display='1:30',
+                  round_time_remaining_display_provenance={
+                      'reader': 'round_timer', 'sources': ['synthetic-reader'],
+                      'confidence': confidence, 'cross_checked': False,
+                  })
+    quality = empty_hud_quality()
+    quality['roi_confidence'] = {'round_timer_value': confidence}
+    observation = HudObservationV2(2, 120, 'unknown', values=values, quality=quality).to_dict()
+    builder = RoundPackageBuilder(
+        contract=EventSourceContract.load(resource_path('config/event_source_contract_v1.json')),
+        validator=SchemaValidator(),
+    )
+    snapshots = builder._state_snapshots([observation])
+    assert len(snapshots) == expected_count
+    assert all(snapshot['hp'] is None and snapshot['weapon'] is None for snapshot in snapshots)

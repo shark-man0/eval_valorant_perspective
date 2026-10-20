@@ -9,6 +9,8 @@ CI待ちの記述を成功へ読み替えない。
 - 研究ブランチ: `work/match002-geometry-qualification`。
 - 保存HEAD: `1f3edf094634037747928021c0ca9169f02928f8`。remoteと一致し、削除・resetしない。
 - 分類時main: `c688206ef4b62c8f206687a1e434fe84833105df`。
+- 再開時main: `9daf08e6304f6e8368566bccf7e0386987f1eb3e`。PR #58/#59の安全修正を
+  両統合branchへ反映し、旧HEADのCIを新HEADへ付け替えず再検証する。
 - merge-base: `7e480c2f2f7f49aea73e1541d065d78881d2f11c`。
 - 研究側固有54commit・70ファイル。全体mergeはしない。
 - 研究側に未コミットのconvergence報告書があった。破棄せず、日付付き歴史資料として
@@ -93,6 +95,13 @@ reviewテストの旧fixtureだけはGeometry candidate builderへの依存を�
 ローカルの関連検証は初回88 PASS。上書き拒否の追加分とLinux/Windows必須CIは、
 回収PRの実HEADで別に確認する。
 
+最新main追従時、旧incomplete-Roundテストの「HUD aggregateが0ならsnapshotがない」
+という期待1件がPR #59の採用済みglobal-field contractと不整合だった。
+productionを変更せず、unknownで独立したtimer証拠がある場合はglobal-only snapshotを
+保持する既存main仕様へ移植テストを更新した。本人値null・owner unknown・timerだけの
+field confidenceを追加assertし、.89拒否/.90受理の2回帰例も追加。
+spectator/remoteの既存期待、Schema・membership・confidenceのassertionは維持する。
+
 ## CLIの再利用範囲
 
 以下は保存済みのprivateな開発資料を手元で扱うための入口。新動画からの自動認識や
@@ -127,8 +136,10 @@ python -m scripts.diagnostics.compare_held_banner_text --help
   その将来回収時にはこの修正も必ず一緒に移す。成功済み旧Windows CIを新PRへ流用しない。
 - PR #55のsource integrity preflightとPR #56のtemporal-data契約はmainに統合済み。
   D相当として重複実装しない。70差分の外にある既統合UTF-8/portable-path修正も再移植しない。
-- open PR #42（reader/geometry initialization）、#51（sampled binding/application）、
-  #54（native endpoint）、#44（snapshot transport）とは別責務。owner branchを変更しない。
+- PR #58/#59でself-death safetyと独立global field transportはmainへ回収済み。
+  open PR #42（reader/geometry initialization）、#51（sampled binding/application）、
+  #54（native endpoint）とは別責務。#44の回収済みtransportは重複実装しない。
+  owner branchを変更しない。
   数値修正で資格fingerprintが変わることは各branchのrequalification時に考慮が必要。
 
 ## データ・認識安全性の受入確認
