@@ -77,7 +77,7 @@ jobs:
           python -m mypy src/valorant_ai_coach
           python -m mypy --explicit-package-bases -m scripts.temporal_gt.contract -m scripts.temporal_gt.validate_dataset
           python -m mypy --follow-imports=silent --explicit-package-bases scripts/diagnostics/register_private_sources.py
-          python -m mypy --follow-imports=silent --explicit-package-bases scripts/temporal_gt/review_session.py scripts/temporal_gt/review_ui.py scripts/temporal_gt/packet_timing.py
+          python -m mypy --follow-imports=silent --explicit-package-bases scripts/temporal_gt/review_session.py scripts/temporal_gt/review_ui.py scripts/temporal_gt/packet_timing.py scripts/temporal_gt/review_windows.py
       - run: python -m PyInstaller --noconfirm --clean VALORANT-AI-Coach.spec
       - name: Smoke-test packaged application
         shell: pwsh
