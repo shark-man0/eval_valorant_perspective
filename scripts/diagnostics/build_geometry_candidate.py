@@ -11,6 +11,7 @@ import json
 import math
 import shutil
 from pathlib import Path
+from typing import Any
 
 import cv2
 import numpy as np
@@ -25,10 +26,10 @@ from scripts.e2e.run_dataset_case import sha256_file
 from valorant_ai_coach.hud.calibrate_temporal import ANCHORS, _check_output_privacy
 from valorant_ai_coach.hud.layout import HudLayout
 from valorant_ai_coach.hud.templates import HudTemplateProfile
-from valorant_ai_coach.video import VideoService
+from valorant_ai_coach.video import VideoMetadata, VideoService
 
 
-def sampling_plan(end: float, previous: list[float]) -> dict:
+def sampling_plan(end: float, previous: list[float]) -> dict[str, Any]:
     if (type(end) not in (int, float) or not math.isfinite(end) or end <= 0
             or any(type(t) not in (int, float) or not math.isfinite(t) or t < 0
                    for t in previous)):
@@ -44,7 +45,8 @@ def sampling_plan(end: float, previous: list[float]) -> dict:
             "previous_geometry_pts": sorted(set(previous)), **roles}
 
 
-def read_frames(service, video: Path, times: list[float], directory: Path, metadata) -> tuple:
+def read_frames(service: VideoService, video: Path, times: list[float], directory: Path,
+                metadata: VideoMetadata) -> tuple[list[np.ndarray], list[dict[str, Any]]]:
     frames = service.extract_frames(video, times, directory, metadata=metadata,
                                     max_frames=len(times), max_dimension=None)
     if len(frames) != len(times):
@@ -64,19 +66,23 @@ def read_frames(service, video: Path, times: list[float], directory: Path, metad
     return images, records
 
 
-def build(training: list[np.ndarray], layout: HudLayout, base: dict, output: Path) -> dict:
-    specs, diagnostics = {}, {}
+def build(training: list[np.ndarray], layout: HudLayout, base: dict[str, Any], output: Path, *,
+          template_strategy: str = "median") -> dict[str, Any]:
+    if template_strategy not in {"median", "training_medoid"}:
+        raise ValueError("unsupported diagnostic template strategy")
+    specs: dict[str, Any] = {}
+    diagnostics: dict[str, Any] = {}
     height, width = training[0].shape[:2]
     if layout.reference_resolution != (width, height):
         raise ValueError("candidate reference resolution mismatch")
     for name in ANCHORS:
         x1, y1, x2, y2 = layout.normalized_roi(name).pixel_bounds(width, height)
         crops = [image[y1:y2, x1:x2] for image in training]
-        candidate = edge_candidate(crops)
         threshold = base.get("anchors", {}).get(name, {}).get("threshold", .90)
         if type(threshold) not in (float, int) or not math.isfinite(threshold) or not .90 <= (
                 threshold) <= 1:
             raise ValueError("existing NCC threshold must remain >=0.90")
+        candidate = edge_candidate(crops, template_strategy=template_strategy, threshold=threshold)
         if candidate is None:
             diagnostics[name] = {"status": "training_structure_insufficient"}
             continue
@@ -108,6 +114,8 @@ def main() -> None:
     for name in ("video", "layout", "approval", "output"):
         parser.add_argument(f"--{name}", type=Path, required=True)
     parser.add_argument("--source-sha256", required=True)
+    parser.add_argument("--template-strategy", choices=("median", "training_medoid"),
+                        default="median")
     parser.add_argument("--development-end", type=float, required=True)
     parser.add_argument("--prior-diagnostics", type=Path, action="append", required=True)
     args = parser.parse_args()
@@ -122,7 +130,7 @@ def main() -> None:
             or approval.get("threshold_change_authorized") is not False
             or approval.get("identity_reuse_authorized") is not False):
         raise ValueError("scoped experimental candidate approval required")
-    previous = []
+    previous: list[float] = []
     inputs = [args.layout, args.layout.with_suffix(".templates.json"), args.approval,
               Path(__file__), Path(__file__).with_name("diagnose_geometry_edges.py"),
               *args.prior_diagnostics]
@@ -146,7 +154,7 @@ def main() -> None:
     (output / "plan.json").write_text(json.dumps(plan, indent=2) + "\n", encoding="utf-8")
     training, training_records = read_frames(
         service, args.video, plan["training"], output / "training_frames", metadata)
-    diagnostics = build(training, layout, base, output)
+    diagnostics = build(training, layout, base, output, template_strategy=args.template_strategy)
     shutil.copyfile(args.layout, output / "hud_layout.json")
     frozen = {p.name: sha256_file(p) for p in output.glob("*.png")}
     frozen.update({name: sha256_file(output / name)
@@ -178,7 +186,8 @@ def main() -> None:
               "source_hash_verified_after_processing": True,
               "candidate_assets_frozen_before_validation": True,
               "training_frames": training_records, "validation_frames": validation_records,
-              "anchors": diagnostics, "validation_geometry_replay": replay,
+              "anchors": diagnostics, "template_strategy": args.template_strategy,
+              "validation_geometry_replay": replay,
               "real_source_transform_controls": controls,
               "independent_unmodified_geometry_labels": "not_reviewed",
               "real_video_negative_qualification": "not_completed",
