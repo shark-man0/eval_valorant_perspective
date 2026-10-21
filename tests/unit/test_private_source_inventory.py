@@ -15,7 +15,7 @@ def sources(tmp_path, monkeypatch):
     source = tmp_path / "inputs"
     source.mkdir()
     for i in range(9):
-        (source / f"private-name-{i}.mp4").write_bytes(f"source-{i}".encode("utf-8"))
+        (source / f"private-name-{i}.mp4").write_bytes(f"source-{i}".encode("ascii"))
     monkeypatch.setattr(inventory, "decode_source", lambda *args: None)
 
     def inspect(video, video_id, *args, **kwargs):
