@@ -51,13 +51,16 @@ def response(session, index=1, status="COMPLETE"):
     return value
 
 
-def record(session, tmp_path, value, name="first"):
+def record(session, tmp_path, value, name="first", newline="\n"):
     path = tmp_path / "human.json"
-    path.write_text(json.dumps(value, indent=3), encoding="utf-8")
+    path.write_bytes(json.dumps(value, indent=3).replace("\n", newline).encode("ascii"))
     return windows.record(session, path, name)
 
 
-def test_all_windows_require_explicit_human_coverage_and_cues_never_become_gt(session, tmp_path):
+@pytest.mark.parametrize("newline", ["\n", "\r\n"])
+def test_all_windows_require_explicit_human_coverage_and_cues_never_become_gt(
+    session, tmp_path, newline
+):
     for i in range(1, 4):
         value = response(session, i)
         value["cues"] = [
@@ -68,8 +71,8 @@ def test_all_windows_require_explicit_human_coverage_and_cues_never_become_gt(se
             }
         ]
         if i == 1:
-            first_raw = json.dumps(value, indent=3).encode("ascii")
-        report = record(session, tmp_path, value, f"review_{i}")
+            first_raw = json.dumps(value, indent=3).replace("\n", newline).encode("ascii")
+        report = record(session, tmp_path, value, f"review_{i}", newline)
         assert report["complete_windows"] == i
         assert report["full_match_review_complete"] == (i == 3)
     assert report["cues_are_gt"] is False and report["source_continuity"] == "UNVERIFIED"
