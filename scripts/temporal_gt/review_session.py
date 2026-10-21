@@ -149,10 +149,22 @@ def load_plan(session: Path) -> dict[str, Any]:
     return plan
 
 
-def append_exposure(session: Path, kind: str, evidence: Path, notes: str) -> int:
+def append_exposure(
+    session: Path, kind: str, evidence: Path, notes: str, *, source_id: str | None = None
+) -> int:
     plan = load_plan(session)
     require(kind in EXPOSURE_TYPES, "exposure_kind")
     batch = Path(plan["batch"])
+    source_id = plan["video_id"] if source_id is None else source_id
+    rows = read_json(batch / "manifest.json")["records"]
+    require(
+        any(
+            r["video_id"] == source_id and r["status"] == "accepted"
+            and r["split"] == "DEVELOPMENT" and r["exposure"] == "DEVELOPMENT"
+            for r in rows
+        ),
+        "development_exposure_only",
+    )
     lock = batch / ".review-exposure-lock"
     lock.mkdir(mode=0o700)
     try:
@@ -170,7 +182,7 @@ def append_exposure(session: Path, kind: str, evidence: Path, notes: str) -> int
             )
         order = len(previous) + 1
         event = {
-            "source_id": plan["video_id"],
+            "source_id": source_id,
             "event_id": None,
             "window": None,
             "kind": kind,
