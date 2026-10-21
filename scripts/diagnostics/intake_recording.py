@@ -70,6 +70,8 @@ def inspect_recording(
             [ffprobe, "-v", "error", *args, "-of", "json", str(video)],
             capture_output=True, check=True, text=True, encoding="utf-8",
         )
+        if result.stderr.strip():
+            raise ValueError("source probe reported errors")
         return json.loads(result.stdout)
 
     data = probe("-show_entries", entries)
@@ -77,9 +79,18 @@ def inspect_recording(
     if len(videos) != 1:
         raise ValueError("exactly one video stream required")
     stream = videos[0]
-    fps = float(Fraction(stream["avg_frame_rate"]))
-    tick = float(Fraction(stream["time_base"]))
-    packets = probe("-select_streams", "v:0", "-show_packets", "-show_entries", "packet=pts_time")
+    duration = float(data["format"]["duration"])
+    if (not math.isfinite(duration) or duration <= 0 or stream["width"] <= 0
+            or stream["height"] <= 0 or int(data["format"]["size"]) != video.stat().st_size):
+        raise ValueError("invalid source metadata")
+    try:
+        fps = float(Fraction(stream["avg_frame_rate"]))
+        tick = float(Fraction(stream["time_base"]))
+    except (ValueError, ZeroDivisionError, TypeError):
+        raise ValueError("invalid native timing metadata") from None
+    packets = probe(
+        "-select_streams", "v:0", "-show_packets", "-show_entries", "packet=pts,pts_time",
+    )
     timeline = timeline_summary(packets["packets"], fps, tick)
     after = sha256_file(video)
     if before != after:
@@ -88,10 +99,15 @@ def inspect_recording(
         "schema_version": 1, "kind": "source_intake_not_registered_dataset",
         "video_id": video_id, "source_sha256": before,
         "source_hash_verified_after_probe": True,
-        "duration_sec": float(data["format"]["duration"]),
+        "duration_sec": duration,
         "size_bytes": int(data["format"]["size"]),
         "width": stream["width"], "height": stream["height"],
         "fps": fps, "video_codec": stream["codec_name"],
+        "native_time_base": stream["time_base"],
+        "native_avg_frame_rate": stream["avg_frame_rate"],
+        "native_first_packet_pts": min(
+            (int(p["pts"]) for p in packets["packets"] if "pts" in p), default=None,
+        ),
         "audio_tracks": [
             {key: audio[key] for key in ("index", "codec_name", "sample_rate", "channels")
              if key in audio}

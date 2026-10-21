@@ -230,6 +230,10 @@ Portable ZIP、通常ユーザー権限のInstaller、SHA-256、Release候補の
 
 ## 研究・E2E向け: Windows実動画E2EとMacへの結果共有
 
+新規の個人録画を非公開で受け入れる場合は、先に
+[Source-only受入・分割固定手順](docs/private_video_dataset_pipeline.md)を使用してください。
+これは認識実行やValidation Pack付きの正式E2E登録とは別の手順です。
+
 動画はWindowsローカルだけに置き、既存E2Eの結果を軽量JSONとして共有できます。
 初回にValidation Packを別途展開し、`VALORANT_E2E_PACK`を設定してください。
 
