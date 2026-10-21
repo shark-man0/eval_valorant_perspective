@@ -317,3 +317,22 @@ def test_concurrent_acquisition_cannot_race_session_budget(session, monkeypatch)
     with pytest.raises(FileExistsError):
         review.acquire(session, "concurrent", "0", "0.2")
     assert not (session / "concurrent").exists()
+
+
+def test_alias_cannot_recount_a_death_in_another_session(session, tmp_path):
+    first = acquire(session)
+    raw = tmp_path / "human.json"
+    raw.write_text(json.dumps(human_response(first, "death", "positive")), encoding="utf-8")
+    review.record_response(session, "pilot", raw)
+    plan = review.load_plan(session)
+    second = session.parent / "second_session"
+    review.create_session(
+        session.parent, second, plan["inventory_sha256"], plan["allocation_sha256"]
+    )
+    acq = acquire(second)
+    response = human_response(acq, "death", "positive")
+    response["death"]["physical_event_key"] = "different-alias"
+    raw.write_text(json.dumps(response), encoding="utf-8")
+    with pytest.raises(ContractError, match="overlapping_physical"):
+        review.record_response(second, "pilot", raw)
+    assert not (second / "pilot/human_response.json").exists()

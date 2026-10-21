@@ -43,9 +43,9 @@
 <label><input id="simple_unique" type="checkbox"> この出来事／区間を別のレビューでまだ登録していない（positive/negativeに必要）</label>
 <label><input id="human" type="checkbox"> 私本人がこの映像を見て回答した</label>
 <label><input id="blind" type="checkbox"> 自動判定の予測・候補を見ずに回答した</label>
-<details><summary>詳しい観測項目（任意・専門項目）</summary><label><input id="expert" type="checkbox"> 以下の専門項目を使って保存する（通常は不要）</label><div id="domains"></div></details><p>physical_event_keyは同じ物理イベントに同じ値を再利用します。別クリップでも二重計上しません。
-positive/negativeには本人による物理ID確認が必要です。negativeには取得区間全体の確認が必要です。</p>
-<button type="submit">人間の観測JSONを保存（まだGT登録はしません）</button><p id="result"></p></form>
+<details><summary>詳しい観測項目（任意・専門項目）</summary><label><input id="expert" type="checkbox"> 以下の専門項目を使って保存する（通常は不要）</label><div id="domains"></div></details><p>同じ出来事を2回数えないため、前に登録していないか確認します。
+「分からない」は理由だけ記録できます。</p>
+<button type="submit">回答ファイルを保存（検証前の記録）</button><p id="result"></p></form>
 <p>保存したJSONはrecord CLIで既存Temporal GTと照合します。独立資格や正式E2E登録は成立しません。</p>
 <script>const DATA=__PAYLOAD__;
 const response=DATA.response,frames=DATA.frames,$=id=>document.getElementById(id);$('source').src=DATA.video_uri;

@@ -549,28 +549,15 @@ def _record_response(session: Path, acquisition_id: str, response_path: Path) ->
                             ),
                             "duplicate_physical_event_requires_amendment",
                         )
+                        if domain == "death" and a["verdict"] == b["verdict"] == "positive":
+                            require(
+                                a["first_confirmed_dead_tick"] < b["last_confirmed_alive_tick"]
+                                or b["first_confirmed_dead_tick"] < a["last_confirmed_alive_tick"],
+                                "overlapping_physical_death_brackets",
+                            )
     folder = session / valid_id(acquisition_id)
     target = folder / "human_response.json"
     require(not target.exists(), "human_response_already_recorded")
-    # Reject aliases before changing the journal or storing an accepted response.
-    for receipt_path in session.glob("*/human_receipt.json"):
-        prior = read_json(receipt_path.parent / "human_response.json")
-        for domain in ("round", "death"):
-            a, b = prior[domain], response[domain]
-            if not a["reviewed"] or not b["reviewed"]:
-                continue
-            require(
-                not (
-                    a["physical_event_key"] and a["physical_event_key"] == b["physical_event_key"]
-                ),
-                "duplicate_physical_event_requires_amendment",
-            )
-            if domain == "death" and a["verdict"] == b["verdict"] == "positive":
-                require(
-                    a["first_confirmed_dead_tick"] < b["last_confirmed_alive_tick"]
-                    or b["first_confirmed_dead_tick"] < a["last_confirmed_alive_tick"],
-                    "overlapping_physical_death_brackets",
-                )
     raw = folder / "human_response.raw.json"
     with raw.open("xb") as out:
         out.write(raw_bytes)
