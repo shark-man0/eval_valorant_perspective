@@ -116,3 +116,18 @@ def test_probe_error_stderr_rejects_even_on_zero_exit(tmp_path, monkeypatch):
                         subprocess.CompletedProcess(command, 0, "{}", "damaged packet"))
     with pytest.raises(ValueError, match="source probe reported errors"):
         inspect_recording(video, "synthetic")
+
+
+@pytest.mark.parametrize("fps,tick", [("0/0", "1/15360"), ("60/1", "0/0"), (None, "1/1")])
+def test_undefined_native_timing_is_a_rejectable_metadata_error(tmp_path, monkeypatch, fps, tick):
+    video = tmp_path / "synthetic.mp4"
+    video.write_bytes(b"source")
+    data = {
+        "format": {"duration": "1", "size": "6"},
+        "streams": [{"codec_type": "video", "codec_name": "h264", "width": 1920,
+                     "height": 1080, "avg_frame_rate": fps, "time_base": tick}],
+    }
+    monkeypatch.setattr(subprocess, "run", lambda command, **kwargs:
+                        subprocess.CompletedProcess(command, 0, json.dumps(data), ""))
+    with pytest.raises(ValueError, match="invalid native timing metadata"):
+        inspect_recording(video, "synthetic")

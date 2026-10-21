@@ -83,8 +83,11 @@ def inspect_recording(
     if (not math.isfinite(duration) or duration <= 0 or stream["width"] <= 0
             or stream["height"] <= 0 or int(data["format"]["size"]) != video.stat().st_size):
         raise ValueError("invalid source metadata")
-    fps = float(Fraction(stream["avg_frame_rate"]))
-    tick = float(Fraction(stream["time_base"]))
+    try:
+        fps = float(Fraction(stream["avg_frame_rate"]))
+        tick = float(Fraction(stream["time_base"]))
+    except (ValueError, ZeroDivisionError, TypeError):
+        raise ValueError("invalid native timing metadata") from None
     packets = probe(
         "-select_streams", "v:0", "-show_packets", "-show_entries", "packet=pts,pts_time",
     )
