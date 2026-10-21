@@ -58,3 +58,30 @@ def test_invalid_threshold_is_not_silently_relaxed(tmp_path, threshold):
     with pytest.raises(ValueError, match="NCC threshold"):
         build(changing_brightness(), layout(), {
             "anchors": {"round_timer": {"threshold": threshold}}}, tmp_path)
+
+
+def test_observed_reference_export_is_opt_in_and_geometry_only(tmp_path):
+    training = changing_brightness()
+    report = build(training, layout(), {'anchors': {}, 'signals': {'identity': True}},
+                   tmp_path, template_strategy='training_medoid')
+    raw = json.loads((tmp_path / 'hud_layout.templates.json').read_text(encoding='utf-8'))
+    assert raw['signals'] == {} and raw['readers'] == {}
+    assert len(raw['anchors']) == 4
+    for row in report.values():
+        assert row['template_strategy'] == 'training_medoid'
+        assert row['selection_scores_exclude_self'] is True
+        assert row['threshold'] == .90
+
+
+@pytest.mark.parametrize('strategy', ['median', 'training_medoid'])
+def test_flat_reference_rejected_for_each_export_strategy(tmp_path, strategy):
+    report = build([np.full((100, 160, 3), 70, np.uint8)] * 16, layout(), {}, tmp_path,
+                   template_strategy=strategy)
+    assert all(row['status'] == 'training_structure_insufficient' for row in report.values())
+    assert not list(tmp_path.glob('*.png'))
+
+
+def test_export_strategy_rejected_before_writing_assets(tmp_path):
+    with pytest.raises(ValueError, match='strategy'):
+        build(changing_brightness(), layout(), {}, tmp_path, template_strategy='relax_threshold')
+    assert not list(tmp_path.iterdir())

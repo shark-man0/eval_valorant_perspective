@@ -47,12 +47,14 @@ def test_holdout_cannot_select_or_modify_template_pixels():
         assert np.array_equal(left, right)
 
 
-def test_flat_and_unrelated_scene_noise_do_not_generate_candidate():
-    assert experiment.edge_candidate([np.full((100, 160, 3), 70, np.uint8)] * 16) is None
+@pytest.mark.parametrize("strategy", ["median", "training_medoid"])
+def test_flat_and_unrelated_scene_noise_do_not_generate_candidate(strategy):
+    assert experiment.edge_candidate([np.full((100, 160, 3), 70, np.uint8)] * 16,
+                                     template_strategy=strategy) is None
     rng = np.random.default_rng(12)
     noise = [rng.integers(0, 255, (100, 160, 3), dtype=np.uint8) for _ in range(16)]
-    assert experiment.edge_candidate(noise) is None
-    assert experiment.edge_candidate(changing_brightness()[:7]) is None
+    assert experiment.edge_candidate(noise, template_strategy=strategy) is None
+    assert experiment.edge_candidate(changing_brightness()[:7], template_strategy=strategy) is None
 
 
 def test_medoid_is_an_observed_training_frame_and_selection_excludes_self():
@@ -206,3 +208,57 @@ def test_runtime_geometry_replay_needs_three_fresh_inliers_and_rejects_negatives
     assert len(replay["frames"][0]["accepted_anchors"]) == 3
     assert replay["fresh_geometry_success_count"] == 0
     assert "insufficient_anchor_inliers" in replay["frames"][0]["reasons"]
+
+
+def test_observed_reference_survives_contrast_reversal_that_erases_median():
+    # Static HUD edges over different scene contrast: the pixel median is flat,
+    # although each observed image contains the same spatial structure.
+    base = np.full((100, 160, 3), 40, np.uint8)
+    cv2.rectangle(base, (15, 15), (140, 80), (215,) * 3, 3)
+    cv2.line(base, (25, 30), (120, 65), (215,) * 3, 3)
+    frames = [base.copy() if i % 4 < 2 else 255 - base for i in range(32)]
+    before, _ = experiment.compare(frames, .90)
+    assert before['experiment']['status'] == 'training_structure_insufficient'
+    after, assets = experiment.compare(frames, .90, template_strategy='training_medoid')
+    assert assets is not None
+    assert after['experiment']['status'] == 'raw_ncc_supported'
+    assert after['experiment']['training_accept_count'] == 8
+    assert after['experiment']['holdout_accept_count'] == 8
+    assert after['experiment']['median_template_contrast_std'] == 0
+    assert after['experiment']['selected_contrast_std'] > 1
+    assert np.array_equal(assets[0], cv2.cvtColor(base, cv2.COLOR_BGR2GRAY))
+    assert after['production_qualified'] is False
+
+
+@pytest.mark.parametrize('fault', ['wrong_source_sha', 'source_changed', 'profile_changed'])
+def test_cli_rejects_source_and_profile_binding_mismatch(tmp_path, monkeypatch, fault):
+    source = tmp_path / 'source.mp4'
+    source.write_bytes(b'private source')
+    digest = hashlib.sha256(source.read_bytes()).hexdigest()
+    layout = tmp_path / 'layout.json'
+    _layout(layout)
+    profile = layout.with_suffix('.templates.json')
+    profile.write_text(json.dumps({'schema_version': '1.0', 'anchors': {}, 'readers': {}}),
+                       encoding='utf-8')
+    output = tmp_path / 'diagnostic'
+
+    class Service(FakeVideoService):
+        def extract_frames(self, *args, **kwargs):
+            frames = super().extract_frames(*args, **kwargs)
+            if fault == 'source_changed':
+                source.write_bytes(b'changed source')
+            if fault == 'profile_changed':
+                profile.write_text('{}', encoding='utf-8')
+            return frames
+
+    monkeypatch.setattr(experiment, 'CachedVideoService', lambda *args: Service(_frames(count=32)))
+    monkeypatch.setattr(experiment, 'decoder_fingerprints', lambda _: ('probe', 'frame'))
+    monkeypatch.setattr(sys, 'argv', [
+        'diagnose', '--video', str(source), '--layout', str(layout), '--output', str(output),
+        '--sampling-window', '2', '4', '--source-sha256',
+        '0' * 64 if fault == 'wrong_source_sha' else digest,
+        '--template-strategy', 'training_medoid',
+    ])
+    with pytest.raises(ValueError, match='source|configuration'):
+        experiment.main()
+    assert not (output / 'diagnostics.json').exists()

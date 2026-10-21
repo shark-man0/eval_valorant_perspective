@@ -11,6 +11,7 @@ import argparse
 import json
 import math
 from pathlib import Path
+from typing import Any
 
 import cv2
 import numpy as np
@@ -32,12 +33,18 @@ from valorant_ai_coach.hud.templates import HudTemplateProfile
 from valorant_ai_coach.video import VideoService
 
 
-def summary(values: list[float]) -> dict:
+def summary(values: list[float]) -> dict[str, Any]:
     return {"min": min(values), "median": float(np.median(values)), "max": max(values)}
 
 
-def edge_candidate(images: list[np.ndarray]) -> tuple[np.ndarray, np.ndarray, dict] | None:
+def edge_candidate(
+    images: list[np.ndarray], *, template_strategy: str = "median", threshold: float = .90,
+) -> tuple[np.ndarray, np.ndarray, dict[str, Any]] | None:
     """Frozen experimental proposal; no holdout pixels or state labels accepted."""
+    if template_strategy not in {"median", "training_medoid"}:
+        raise ValueError("unsupported diagnostic template strategy")
+    if not math.isfinite(threshold) or not .90 <= threshold <= 1:
+        raise ValueError("diagnostic NCC threshold must remain >=0.90")
     if len(images) < 8 or any(image.shape != images[0].shape for image in images):
         return None
     gray = [cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) for image in images]
@@ -62,13 +69,22 @@ def edge_candidate(images: list[np.ndarray]) -> tuple[np.ndarray, np.ndarray, di
     # Include both sides of an edge for informative raw-pixel NCC contrast.
     mask = cv2.dilate(core.astype(np.uint8), np.ones((3, 3), np.uint8)) * 255
     template = np.median(np.stack(gray), axis=0).astype(np.uint8)
+    median_contrast = float(template[mask > 0].std()) if np.any(mask) else 0.0
+    selection: dict[str, Any] = {}
+    if np.count_nonzero(mask) >= 64 and template_strategy == "training_medoid":
+        # Select before the contrast gate: a median of reversed contrasts can
+        # erase every edge despite informative observed training references.
+        template, selection = training_medoid(images, mask, threshold)
     values = template[mask > 0]
     if values.size < 64 or float(values.std()) < 1:
         return None
     diagnostics = {
+        **selection,
+        "template_strategy": template_strategy,
+        "median_template_contrast_std": median_contrast,
         "edge_count": int(np.count_nonzero(hits)),
         "persistent_edge_count": int(np.count_nonzero(persistence >= .65)),
-        "stable_edge_ratio": float(np.count_nonzero(core) / max(np.count_nonzero(hits), 1)),
+        "stable_edge_ratio": float(np.count_nonzero(core) / max(int(np.count_nonzero(hits)), 1)),
         "orientation_consistent_edge_count": int(np.count_nonzero(core)),
         "orientation_consistency": summary(orientation[core].tolist()),
         "mask_population": int(values.size),
@@ -89,13 +105,14 @@ def raw_scores(images: list[np.ndarray], template: np.ndarray, mask: np.ndarray)
 
 def training_medoid(
     training: list[np.ndarray], mask: np.ndarray, threshold: float,
-) -> tuple[np.ndarray, dict]:
+) -> tuple[np.ndarray, dict[str, Any]]:
     """Select one observed reference using training-only, non-self raw NCC.
 
     No score threshold or mask is adjusted. Ties use cross-frame median then
     earliest training index; holdout pixels cannot select a reference.
     """
-    rows, templates = [], []
+    rows: list[dict[str, Any]] = []
+    templates = []
     for index, image in enumerate(training):
         template = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         scores = raw_scores(training[:index] + training[index + 1:], template, mask)
@@ -112,26 +129,22 @@ def training_medoid(
                                  "training_reference_candidates": rows}
 
 
-def compare(images: list[np.ndarray], threshold: float, *,
-            template_strategy: str = "median",
-            edge_similarity_diagnostic: bool = False) -> tuple[dict, tuple | None]:
+def compare(
+    images: list[np.ndarray], threshold: float, *, template_strategy: str = "median",
+    edge_similarity_diagnostic: bool = False,
+) -> tuple[dict[str, Any], tuple[np.ndarray, np.ndarray] | None]:
     if template_strategy not in {"median", "training_medoid"}:
         raise ValueError("unsupported diagnostic template strategy")
-    baseline = {}
+    baseline: dict[str, Any] = {}
     _validated_candidate(images, baseline, threshold)
     training, holdout = images[::2], images[1::2]
-    candidate = edge_candidate(training)
+    candidate = edge_candidate(training, template_strategy=template_strategy, threshold=threshold)
     result = {"current_mask": baseline, "production_qualified": False, "threshold": threshold,
               "template_strategy": template_strategy}
     if candidate is None:
         result["experiment"] = {"status": "training_structure_insufficient"}
         return result, None
     template, mask, statistics = candidate
-    if template_strategy == "training_medoid":
-        template, selection = training_medoid(training, mask, threshold)
-        statistics.update(selection)
-        statistics["median_template_contrast_std"] = statistics["selected_contrast_std"]
-        statistics["selected_contrast_std"] = float(template[mask > 0].std())
     train_scores = raw_scores(training, template, mask)
     test_scores = raw_scores(holdout, template, mask)
     train_support = sum(score >= threshold for score in train_scores)
@@ -142,7 +155,7 @@ def compare(images: list[np.ndarray], threshold: float, *,
     # Synthetic stress only; not an independent real-video negative qualification.
     negatives = [np.full_like(holdout[0], 70), np.roll(holdout[0], 12, axis=1)]
     if edge_similarity_diagnostic:
-        def measurements(frames: list[np.ndarray]) -> list[dict]:
+        def measurements(frames: list[np.ndarray]) -> list[dict[str, Any]]:
             return [geometry_edge_similarity.measure(
                 template, cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY), mask) for frame in frames]
         result["edge_similarity_diagnostic"] = {
@@ -164,7 +177,7 @@ def compare(images: list[np.ndarray], threshold: float, *,
 
 
 def replay_geometry(images: list[np.ndarray], layout: HudLayout,
-                    profile: HudTemplateProfile) -> dict:
+                    profile: HudTemplateProfile) -> dict[str, Any]:
     """Exercise unchanged runtime matching; no identity, events or retained geometry.
 
     Crop handling mirrors runtime's matching-resolution metadata policy. It is
@@ -241,11 +254,13 @@ def main() -> None:
     validate_review_pts([frame.time_sec for frame in frames], metadata.duration_sec)
     if any(not bounds[0] <= frame.time_sec < bounds[1] for frame in frames):
         raise ValueError("actual frame outside development sampling window")
-    images = [cv2.imdecode(np.frombuffer(frame.path.read_bytes(), np.uint8), cv2.IMREAD_COLOR)
+    decoded = [cv2.imdecode(np.frombuffer(frame.path.read_bytes(), np.uint8), cv2.IMREAD_COLOR)
               for frame in frames]
     if any(image is None or image.shape[:2] != (metadata.height, metadata.width)
-           for image in images) or layout.reference_resolution != (metadata.width, metadata.height):
+           for image in decoded) or layout.reference_resolution != (
+               metadata.width, metadata.height):
         raise ValueError("diagnostic geometry input resolution mismatch")
+    images = [image for image in decoded if image is not None]
     anchors = {}
     replay_specs = {}
     for name in ANCHORS:
