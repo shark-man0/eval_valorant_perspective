@@ -1,0 +1,43 @@
+<!doctype html><html lang="ja"><meta charset="utf-8"><title>1分ずつの原動画レビュー</title>
+<style>body{font:17px system-ui;max-width:1050px;margin:25px auto;background:#f8f8f8;color:#111}video{width:100%;background:#111}button,select,input,textarea{font:inherit;padding:8px}label{display:block;margin:14px 0}textarea{width:95%;height:65px}fieldset{margin:22px 0}li{margin:8px 0}.notice{padding:14px;background:#fff1c8}</style>
+<h1 id="heading"></h1><p id="range"></p>
+<p class="notice">原動画を先頭から1分ずつ確認します。自動判定は使っていません。ここで保存するのは進捗と発見メモです。まだ正解データにはしません。時刻やハッシュの技術項目は入力不要です。</p>
+<video id="video" controls preload="metadata"></video>
+<p><button id="restart">この窓を最初から再生</button> <button id="back">1秒戻る</button> <span id="time"></span></p>
+<p>最後まで見ても自動で完了にはしません。途中で飛ばした、判断できない場面を見直したい、という場合は「未完了」または「要再確認」で保存してください。</p>
+<fieldset><legend>見付けた場面をメモする</legend>
+<p>気付いたら一時停止して、種類を選び「この位置をメモ」を押します。細かな境界は、後で短い証拠画像を見て確認します。</p>
+<select id="kind">
+<option value="round_start">購入フェーズが終わり、戦闘ラウンドが始まった</option><option value="round_end">勝利・敗北などラウンドの結果表示</option><option value="next_round">次ラウンドへの移行</option><option value="score_change">スコアの変化</option><option value="clock_change">時計の変化</option>
+<option value="self_death">操作中の自分が死亡したように見える</option><option value="self_killer">自分が敵を倒した</option><option value="nonself_death">他のプレイヤーが死亡した</option><option value="spectator">味方を観戦している</option><option value="respawn">復活した／再び操作できる状態に戻った</option><option value="combat_report_first">死亡レポートが初めて出た</option><option value="report_persistence">既にあった死亡レポートが残っている</option><option value="report_redisplay">同じ死亡レポートの再表示</option><option value="natural_negative">結果表示・新しい自分の死亡ではない対照場面</option><option value="unknown">何が起きたか分からない</option><option value="source_discontinuity">映像が飛んだ／連続性を確認したい</option></select>
+<label>見えたもの・分からない理由（短い一言で可）<textarea id="cue_note"></textarea></label>
+<button type="button" id="mark">この位置をメモ</button><ol id="cues"></ol>
+<p>スコアが変わっただけ、動画が終わっただけ、死亡レポートが出ただけではラウンド終了を確定しません。他人の死亡や敵を倒した場面を、自分の死亡と混同しません。</p></fieldset>
+<form id="form"><fieldset><legend>この1分の進捗</legend>
+<select id="status"><option value="INCOMPLETE">未完了（途中まで・後で続ける）</option><option value="COMPLETE">この窓を全部確認した</option><option value="NEEDS_RECHECK">要再確認（見直す必要がある）</option></select>
+<label><input type="checkbox" id="full"> この窓の先頭から末尾まで、途中を飛ばさず確認した</label>
+<label><input type="checkbox" id="round"> ラウンドの開始・終了・次ラウンドと、スコア・時計の変化を探した</label>
+<label><input type="checkbox" id="death"> 自分の死亡、他人の死亡、観戦、死亡レポートの変化を探した</label>
+<label>続ける位置、見直したい理由、補足など<textarea id="notes"></textarea></label>
+<label><input type="checkbox" id="human"> 私本人がこの原動画を見て回答した</label>
+<label><input type="checkbox" id="blind"> 自動判定の予測・候補を見ずに確認した</label>
+<button type="submit">進捗とメモをファイルに保存</button><p id="result"></p></fieldset></form>
+<p>保存したJSONのパスをCodexに伝えてください。メモがあれば必要な短い区間の証拠画像を取得し、人間による確認へ進めます。未確認メモや見ていない区間を正例・負例にしません。</p>
+<script>
+const DATA=__PAYLOAD__, $=id=>document.getElementById(id), video=$('video');
+const response=DATA.response;let cues=[];
+const clock=s=>`${Math.floor(s/60)}:${Math.floor(s%60).toString().padStart(2,'0')}`;
+$('heading').textContent=`窓 ${response.window_index} / ${DATA.window_count} のレビュー`;
+$('range').textContent=`原動画の ${clock(DATA.begin)} ～ ${clock(DATA.end)}（この窓の全区間を確認します）`;
+video.src=DATA.video_uri+`#t=${DATA.begin},${DATA.end}`;
+video.onloadedmetadata=()=>{video.currentTime=DATA.begin;};
+video.ontimeupdate=()=>{if(video.currentTime<DATA.begin)video.currentTime=DATA.begin;if(video.currentTime>=DATA.end){video.pause();if(video.currentTime>DATA.end)video.currentTime=DATA.end;}$('time').textContent=`原動画 ${clock(video.currentTime)} / 窓内 ${Math.max(0,video.currentTime-DATA.begin).toFixed(1)} 秒`;};
+$('restart').onclick=()=>{video.currentTime=DATA.begin;video.play().catch(()=>{});};
+$('back').onclick=()=>{video.pause();video.currentTime=Math.max(DATA.begin,video.currentTime-1);};
+function render(){const list=$('cues');list.replaceChildren();cues.forEach((cue,i)=>{const li=document.createElement('li');li.textContent=`${clock(Number(cue.approx_source_sec))} — ${cue.name} ${cue.note}`;const button=document.createElement('button');button.type='button';button.textContent='このメモを取り消す';button.onclick=()=>{cues.splice(i,1);render();};li.append(button);list.append(li);});}
+$('mark').onclick=()=>{video.pause();const kind=$('kind').value,note=$('cue_note').value.trim();if(['unknown','source_discontinuity'].includes(kind)&&!note){$('result').textContent='分からない理由・気になる点を一言記入してください';return;}cues.push({kind,approx_source_sec:(Math.floor(Math.max(DATA.begin,Math.min(DATA.end,video.currentTime))*1000)/1000).toFixed(3),note,name:$('kind').selectedOptions[0].textContent});$('cue_note').value='';render();};
+$('form').onsubmit=event=>{event.preventDefault();try{if(!$('human').checked||!$('blind').checked)throw Error('人間が原動画を見たことと、自動判定を使っていないことを確認してください');
+const status=$('status').value;if(status==='COMPLETE'&&!['full','round','death'].every(id=>$(id).checked))throw Error('完了には、全区間を見たことと2項目を探したことの確認が必要です');if(status==='NEEDS_RECHECK'&&!$('notes').value.trim())throw Error('見直したい理由を一言記入してください');
+Object.assign(response,{status,human_source_review_confirmed:true,predictions_consulted:false,full_interval_reviewed:$('full').checked,round_searched:$('round').checked,death_searched:$('death').checked,notes:$('notes').value,cues:cues.map(({kind,approx_source_sec,note})=>({kind,approx_source_sec,note}))});
+const blob=new Blob([JSON.stringify(response,null,2)+'\n'],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`window_${String(response.window_index).padStart(3,'0')}_human_review.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);$('result').textContent='保存しました。ファイルのパスをCodexに伝えてください。まだGT登録はされていません。';}catch(error){$('result').textContent=error.message;}};
+</script></html>

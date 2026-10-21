@@ -90,7 +90,14 @@ def human_response(acq, domain="round", verdict="unknown"):
             label["case"] = "confirmed_alive"
     elif verdict == "positive":
         if domain == "round":
-            label.update(last_old_frame_pts=0, first_new_frame_pts=1)
+            label.update(
+                last_old_frame_pts=0,
+                first_new_frame_pts=1,
+                first_complete_caption_pts=1,
+                caption_state="complete",
+                caption_type="WON",
+                caption_literal="WON",
+            )
         else:
             label.update(
                 case="self_death",
@@ -290,10 +297,10 @@ def test_contract_rejection_does_not_publish_an_accepted_receipt(session, tmp_pa
     )
     raw = tmp_path / "human.json"
     raw.write_text(json.dumps(response), encoding="utf-8")
-    with pytest.raises(ContractError, match="complete_caption_literal"):
+    with pytest.raises(ContractError, match="independent_visible_round_result"):
         review.record_response(session, "pilot", raw)
     assert not (session / "pilot/human_receipt.json").exists()
-    assert (session / "pilot/human_receipt.pending.json").exists()
+    assert not (session / "pilot/human_receipt.pending.json").exists()
     assert (
         read_json(review.export_dataset(session) / "public_counts.json")["human_round_reviews"] == 0
     )
@@ -359,3 +366,58 @@ def test_automatic_development_exposure_reuses_journal_and_rejects_evaluation(se
                 source_id=row["video_id"],
             )
     assert path.read_bytes() == original
+
+
+@pytest.mark.parametrize(
+    "caption_field,value",
+    [
+        ("caption_state", "unknown"),
+        ("caption_type", "UNKNOWN"),
+        ("first_complete_caption_pts", None),
+    ],
+)
+def test_score_change_eof_or_report_without_result_cannot_be_positive(
+    session, caption_field, value
+):
+    acq = acquire(session)
+    response = human_response(acq, verdict="positive")
+    response["round"].update(
+        score_before=[1, 0],
+        score_after=[2, 0],
+        uncertainty="Score changed; no independent result evidence",
+    )
+    response["round"][caption_field] = value
+    with pytest.raises(ContractError, match="independent_visible_round_result"):
+        review.validate_response(acq, response)
+
+
+def test_round_start_witness_does_not_imply_positive_round_end(session, tmp_path):
+    acq = acquire(session)
+    response = human_response(acq)
+    response["round"].update(
+        last_old_frame_pts=0,
+        first_new_frame_pts=1,
+        active_start_pts=1,
+        uncertainty="Human selected buy-to-active witnesses; End unknown",
+    )
+    raw = tmp_path / "human.json"
+    raw.write_text(json.dumps(response), encoding="utf-8")
+    snapshot = review.record_response(session, "pilot", raw)
+    data = read_json(snapshot / "round_dataset.json")
+    assert data["annotations"][0]["active_start_pts"] == 1
+    assert data["annotations"][0]["verdict"] == "unknown"
+    assert read_json(snapshot / "public_counts.json")["human_round_positive_physical_events"] == 0
+
+
+def test_report_first_context_does_not_imply_positive_self_death(session, tmp_path):
+    acq = acquire(session)
+    response = human_response(acq, "death")
+    response["death"].update(case="combat_report_first", combat_report="first")
+    raw = tmp_path / "human.json"
+    raw.write_text(json.dumps(response), encoding="utf-8")
+    snapshot = review.record_response(session, "pilot", raw)
+    label = read_json(snapshot / "self_death_annotations.json")["annotations"][0]
+    assert label["combat_report"] == "first" and label["verdict"] == "unknown"
+    assert (
+        read_json(snapshot / "public_counts.json")["human_self_death_positive_physical_events"] == 0
+    )

@@ -2,7 +2,7 @@
 <title>非公開 Source-only 人間レビュー</title>
 <style>body{font:16px system-ui;max-width:1120px;margin:24px auto;background:#f5f5f5;color:#111}img{width:100%;background:#111}button,input,select,textarea{font:inherit;padding:6px}textarea{width:95%;min-height:65px}label{display:block;margin:12px 0}fieldset{margin:20px 0}table{width:100%}td{padding:5px}td:first-child{width:38%}#pts{white-space:pre-wrap}summary,button{cursor:pointer}.notice{background:#fff3c4;padding:14px}</style>
 <h1>映像を見て「分かることだけ」記録する</h1>
-<p>この試行は冒頭の短い場面です。勝敗や死亡が映っていなかったり、短すぎて判断できない場合は「分からない」で大丈夫です。
+<p>ここは短い証拠区間です。勝敗や死亡が映っていなかったり、短すぎて判断できない場合は「分からない」で大丈夫です。
 時刻・ハッシュ・PTSなどの技術項目はツールが記録します。入力する必要はありません。</p>
 <p class="notice">DEVELOPMENTの1試合のみ。予測は表示していません。初期値はすべて未確認です。
 原映像の観測だけを記録してください。Report表示、他人の死亡、観戦を本人死亡と混同しないでください。
@@ -18,7 +18,7 @@
 <details><summary>同じ開発用原動画を連続再生して全時間軸を確認する</summary><p>視聴範囲の意味判断は人間が行います。再生時刻はGTのPTSではありません。イベントの証拠は別途nativeフレームで取得します。</p><video id="source" controls preload="none" style="width:100%"></video></details>
 <form id="form">
 <fieldset><legend>1. この場面で、ラウンドの結果が新たに表示されましたか？</legend>
-<p>例：1回の攻守が終わり、勝利・敗北の文字やスコアの変化が現れる場面です。</p>
+<p>勝利・敗北など、ラウンドの結果を示す文字の出現を確認します。スコアの変化だけ、動画末尾、死亡レポートだけでは終了にしません。</p>
 <label><input id="simple_round_reviewed" type="checkbox"> この場面を見て、この質問に回答する</label>
 <select id="simple_round_verdict"><option value="unknown">分からない</option value="positive">結果が新たに表示された</option><option value="negative">この区間では表示されなかった</option></select>
 <label>「分からない」の理由（選ぶだけでも可）<select id="simple_round_reason"><option value="">選んでください</option><option>場面が短く、ラウンドの結果が出たか判断できない</option><option>映像を見たが、どれがラウンドの結果表示か分からない</option><option>画像が見えない・読み取れない</option></select></label>
@@ -26,8 +26,16 @@
 <details><summary>「表示された」と判断できる場合だけ：変化の前後を指定</summary>
 <p>上の画像を前後に動かし、それぞれのボタンで画像を記録します。</p>
 <button type="button" id="mark_round_old">表示される直前の最後の画像</button><span id="round_old_mark"></span>
-<button type="button" id="mark_round_new">表示された最初の画像</button><span id="round_new_mark"></span></details>
+<button type="button" id="mark_round_new">完全な結果文字が最初に読める画像</button><span id="round_new_mark"></span>
+<label>その画像で読める結果文字<select id="simple_end_caption"><option value="UNKNOWN">分からない・読めない</option><option>WON</option><option>LOST</option><option>CLUTCH</option><option>TEAM ACE</option></select></label>
+<label><input type="checkbox" id="simple_end_confirmed"> 選んだ結果文字が、この画像で完全に読めることを確認した</label></details>
 <label>「表示されなかった」場合の画面<select id="simple_round_context"><option value="">分からない</option><option value="buy">購入画面</option><option value="menu">メニュー</option><option value="spectator">観戦画面</option><option value="clock_only">時計だけ変化</option><option value="score_only">スコアだけの場面</option><option value="stale_caption">既にあった結果表示が残っている</option></select></label></fieldset>
+<fieldset><legend>ラウンド開始・次ラウンドも記録する場合（任意）</legend>
+<p>表示中の画像を指定します。ラウンド開始を、ラウンド終了の正例にはしません。</p>
+<button type="button" id="phase_before">購入フェーズ中と確認できる最後の画像</button><span id="phase_before_mark"></span>
+<button type="button" id="phase_start">購入が終わり、戦闘ラウンドが始まった最初の画像</button><span id="phase_start_mark"></span>
+<button type="button" id="phase_next">次のラウンド／購入画面に移った最初の画像</button><span id="phase_next_mark"></span>
+<p>判断できないボタンは押さず、理由を補足に記録してください。</p></fieldset>
 <fieldset><legend>2. この場面で、操作している自分が新たに死亡しましたか？</legend>
 <p>他のプレイヤーの死亡や、自分が敵を倒した場面は「自分の死亡」とは別です。死亡レポートが出ているだけでは確定しません。</p>
 <label><input id="simple_death_reviewed" type="checkbox"> この場面を見て、この質問に回答する</label>
@@ -39,8 +47,11 @@
 <button type="button" id="mark_alive">生きている最後の画像</button><span id="alive_mark"></span>
 <button type="button" id="mark_dead">死亡した最初の画像</button><span id="dead_mark"></span></details>
 <label>「新たな死亡は起きなかった」場合の場面<select id="simple_death_context"><option value="">分からない</option><option value="confirmed_alive">自分が生存して操作していた</option><option value="nonself_victim">他人が倒された</option><option value="self_killer">自分が敵を倒した</option><option value="spectator">味方を観戦していた</option><option value="report_persistence">既に表示されていた死亡レポートが残った</option><option value="report_redisplay">既知の死亡レポートを再表示した</option></select></label></fieldset>
+<fieldset><legend>観戦・レポートなど、画面の状態（任意）</legend>
+<label>今の画面<select id="observed_view"><option value="unknown">分からない</option><option value="self_control">操作中の自分</option><option value="self_to_spectator">自分から味方観戦への移行</option><option value="spectator">味方を観戦中</option><option value="respawn">復活／操作への復帰</option><option value="menu">メニュー</option></select></label>
+<label>死亡レポート<select id="observed_report"><option value="unknown">分からない</option><option value="absent">表示されていない</option><option value="first">この区間で初めて現れた（表示前後を確認）</option><option value="persistent">以前の表示が残っている</option><option value="redisplay">同じレポートを再表示した</option></select></label></fieldset>
 <label><input id="simple_full" type="checkbox"> この取得区間の画像をすべて順番に確認した（「起きなかった」の記録に必要）</label>
-<label><input id="simple_unique" type="checkbox"> この出来事／区間を別のレビューでまだ登録していない（positive/negativeに必要）</label>
+<label><input id="simple_unique" type="checkbox"> 同じ出来事を、証拠画像を使った正解データとしてまだ登録していない（前の発見メモは含めません）</label>
 <label><input id="human" type="checkbox"> 私本人がこの映像を見て回答した</label>
 <label><input id="blind" type="checkbox"> 自動判定の予測・候補を見ずに回答した</label>
 <details><summary>詳しい観測項目（任意・専門項目）</summary><label><input id="expert" type="checkbox"> 以下の専門項目を使って保存する（通常は不要）</label><div id="domains"></div></details><p>同じ出来事を2回数えないため、前に登録していないか確認します。
@@ -65,6 +76,7 @@ else if(enums[key]){input=document.createElement('select');for(const x of enums[
 else{input=document.createElement('textarea');input.value=(value!==null&&typeof value==='object')?JSON.stringify(value):value??'';}
 input.id=domain+'_'+key;td.prepend(input);tr.append(name,td);table.append(tr);}$('domains').append(box);}
 let timer=null;
+for(const [button,key,mark] of [['phase_before','last_old_frame_pts','phase_before_mark'],['phase_start','active_start_pts','phase_start_mark'],['phase_next','next_round_pts','phase_next_mark']])$(button).onclick=()=>{$('round_'+key).value=String(frames[index].tick);if(button==='phase_start')$('round_first_new_frame_pts').value=String(frames[index].tick);$('simple_round_reviewed').checked=true;$(mark).textContent='画像 '+(index+1)+' を記録';};
 $('play').onclick=()=>{if(timer){clearInterval(timer);timer=null;return;}show(0);timer=setInterval(()=>{if(index===frames.length-1){clearInterval(timer);timer=null;}else show(index+1);},120);};
 for(const [button,key,domain,mark] of [['mark_round_old','last_old_frame_pts','round','round_old_mark'],['mark_round_new','first_new_frame_pts','round','round_new_mark'],['mark_alive','last_confirmed_alive_tick','death','alive_mark'],['mark_dead','first_confirmed_dead_tick','death','dead_mark']])$(button).onclick=()=>{$(domain+'_'+key).value=String(frames[index].tick);$(mark).textContent='画像 '+(index+1)+' を記録';};
 function guided(){for(const domain of ['round','death']){
@@ -73,18 +85,29 @@ const verdict=$('simple_'+domain+'_verdict').value;$(domain+'_verdict').value=ve
 $(domain+'_uncertainty').value=[verdict==='unknown'?'':$('simple_'+domain+'_verdict').selectedOptions[0].textContent,$('simple_'+domain+'_reason').value,$('simple_'+domain+'_note').value].filter(Boolean).join(' / ');
 $(domain+'_interval_fully_reviewed').checked=$('simple_full').checked;
 $(domain+'_physical_identity_verified').checked=$('simple_unique').checked;
-$(domain+'_physical_event_key').value=verdict==='unknown'?'':DATA.acquisition_id+'_'+domain;
+$(domain+'_physical_event_key').value=verdict==='unknown'&&!$('simple_unique').checked?'':DATA.acquisition_id+'_'+domain;
 if($(domain+'_reviewed').checked&&verdict!=='unknown'){
 if(!$('simple_unique').checked)throw Error('同じ出来事をまだ登録していないことを確認してください。分からない場合は「分からない」を選んでください。');
 if(verdict==='negative'&&(!$('simple_full').checked||!$('simple_'+domain+'_context').value))throw Error('「起きなかった」には区間全体の確認と画面の種類の指定が必要です。不明なら「分からない」を選んでください。');
 if(verdict==='positive'&&domain==='round'&&(!$('round_last_old_frame_pts').value||!$('round_first_new_frame_pts').value))throw Error('結果が出る前と出た後の画像を、上のボタンで指定してください。判断できなければ「分からない」で保存できます。');
 if(verdict==='positive'&&domain==='death'&&(!$('simple_self').checked||!$('death_last_confirmed_alive_tick').value||!$('death_first_confirmed_dead_tick').value))throw Error('自分であることの確認と、生存・死亡の前後の画像指定が必要です。不明なら「分からない」で保存できます。');
-}}if($('simple_round_verdict').value==='negative')$('round_negative_class').value=$('simple_round_context').value;
+}}if($('simple_round_verdict').value==='positive'){
+const caption=$('simple_end_caption').value;if(caption==='UNKNOWN'||!$('simple_end_confirmed').checked)throw Error('独立した結果表示を読めない場合は「分からない」で保存してください。スコア変化だけでは確定できません。');
+$('round_caption_state').value='complete';$('round_caption_type').value=caption;$('round_caption_literal').value=caption;$('round_first_complete_caption_pts').value=$('round_first_new_frame_pts').value;
+}if($('round_active_start_pts').value||$('round_next_round_pts').value){
+if(!$('simple_unique').checked)throw Error('このラウンド開始／移行をまだ登録していないことを確認してください');
+const observations=[];if($('round_active_start_pts').value)observations.push('購入終了・戦闘ラウンド開始の最初の画像を指定');if($('round_next_round_pts').value)observations.push('次ラウンドへの移行の最初の画像を指定');$('round_uncertainty').value=[$('round_uncertainty').value,...observations].filter(Boolean).join(' / ');
+}if($('simple_round_verdict').value==='negative')$('round_negative_class').value=$('simple_round_context').value;
 const d=$('simple_death_verdict').value,context=$('simple_death_context').value;
 $('death_case').value=d==='positive'?'self_death':d==='negative'?context:'unknown';
 $('death_self_identity_confirmed').checked=$('simple_self').checked;
 $('death_victim_role').value=d==='positive'?'self':context==='nonself_victim'||context==='self_killer'?'nonself':'unknown';
 $('death_killer_role').value=context==='self_killer'?'self':'unknown';
+$('death_view_context').value=$('observed_view').value;
+const report=$('observed_report').value;$('death_combat_report').value=report;
+if(d==='unknown'&&report!=='unknown'&&report!=='absent')$('death_case').value={first:'combat_report_first',persistent:'report_persistence',redisplay:'report_redisplay'}[report];
+if(report!=='unknown')$('death_uncertainty').value=[$('death_uncertainty').value,$('observed_report').selectedOptions[0].textContent].filter(Boolean).join(' / ');
+if($('observed_view').value!=='unknown')$('death_uncertainty').value=[$('death_uncertainty').value,$('observed_view').selectedOptions[0].textContent].filter(Boolean).join(' / ');
 }
 $('form').onsubmit=e=>{e.preventDefault();try{if(!$('expert').checked)guided();if(!$('human').checked||!$('blind').checked)throw Error('人間による確認と予測未使用の確認が必要です');
 for(const domain of ['round','death'])for(const [key,value]of Object.entries(response[domain])){const input=$(domain+'_'+key);let v=input.value;
@@ -95,5 +118,5 @@ response[domain][key]=v;}
 response.human_source_review_confirmed=true;response.predictions_consulted=false;
 if(!response.round.reviewed&&!response.death.reviewed)throw Error('確認した領域を選択してください');
 for(const d of ['round','death'])if(response[d].reviewed&&!response[d].uncertainty.trim())throw Error('理由を選ぶか、見えたものを一言記入してください');
-const blob=new Blob([JSON.stringify(response,null,2)+'\n'],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='human_source_response.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);$('result').textContent='保存しました。検証とGT登録にはrecord CLIが必要です。';}catch(error){$('result').textContent=error.message;}};
+const blob=new Blob([JSON.stringify(response,null,2)+'\n'],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=DATA.acquisition_id+'_human_source_response.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);$('result').textContent='保存しました。検証とGT登録にはrecord CLIが必要です。';}catch(error){$('result').textContent=error.message;}};
 </script></html>

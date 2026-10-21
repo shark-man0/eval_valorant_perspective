@@ -443,6 +443,13 @@ def validate_response(acq: dict[str, Any], response: dict[str, Any]) -> None:
                     ),
                     "observed_round_bracket_required",
                 )
+                require(
+                    label["caption_state"] == "complete"
+                    and label["caption_type"] in {"WON", "LOST", "CLUTCH", "TEAM ACE"}
+                    and label["caption_literal"] == label["caption_type"]
+                    and label["first_complete_caption_pts"] is not None,
+                    "independent_visible_round_result_required",
+                )
             if label["verdict"] == "negative":
                 require(label["negative_class"] in NEGATIVE_CLASSES, "reviewed_natural_negative")
             for left, right in (
