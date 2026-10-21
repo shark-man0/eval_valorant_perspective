@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Development Self Death label companion to existing Temporal GT",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "temporal_dataset_sha256",
+    "annotations"
+  ],
+  "properties": {
+    "version": {
+      "const": "self-death-source-annotations-v1"
+    },
+    "temporal_dataset_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "annotations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "event_id",
+          "source_sha256",
+          "epoch",
+          "time_base",
+          "verdict",
+          "status",
+          "reviewer_id",
+          "review_order",
+          "provenance_ids",
+          "uncertainty",
+          "interval_fully_reviewed",
+          "case",
+          "last_confirmed_alive_tick",
+          "first_confirmed_dead_tick",
+          "self_identity_confirmed",
+          "victim_role",
+          "killer_role",
+          "view_context",
+          "combat_report",
+          "source_discontinuity"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "event_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "epoch": {
+            "type": "string",
+            "minLength": 1
+          },
+          "time_base": {
+            "type": "string",
+            "pattern": "^[1-9][0-9]*/[1-9][0-9]*$"
+          },
+          "verdict": {
+            "enum": [
+              "positive",
+              "negative",
+              "unknown"
+            ]
+          },
+          "status": {
+            "const": "historical_source_review"
+          },
+          "reviewer_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "review_order": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "provenance_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "uncertainty": {
+            "type": "string",
+            "minLength": 1
+          },
+          "interval_fully_reviewed": {
+            "type": "boolean"
+          },
+          "case": {
+            "enum": [
+              "self_death",
+              "confirmed_alive",
+              "nonself_victim",
+              "self_killer",
+              "spectator",
+              "combat_report_first",
+              "report_persistence",
+              "report_redisplay",
+              "respawn",
+              "menu",
+              "source_discontinuity",
+              "unknown"
+            ]
+          },
+          "last_confirmed_alive_tick": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "first_confirmed_dead_tick": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "self_identity_confirmed": {
+            "type": "boolean"
+          },
+          "victim_role": {
+            "enum": [
+              "self",
+              "nonself",
+              "unknown"
+            ]
+          },
+          "killer_role": {
+            "enum": [
+              "self",
+              "nonself",
+              "unknown"
+            ]
+          },
+          "view_context": {
+            "enum": [
+              "self_control",
+              "self_to_spectator",
+              "spectator",
+              "respawn",
+              "menu",
+              "unknown"
+            ]
+          },
+          "combat_report": {
+            "enum": [
+              "first",
+              "persistent",
+              "redisplay",
+              "absent",
+              "unknown"
+            ]
+          },
+          "source_discontinuity": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
