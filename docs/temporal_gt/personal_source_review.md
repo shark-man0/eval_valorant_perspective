@@ -54,6 +54,30 @@ A sparse set of endpoints cannot prove no event occurred. Review progress is not
 automatically inferred from playback or frame acquisition. Until a complete window
 has an explicit reviewed artifact, its schedule status stays UNREVIEWED.
 
+Whole-window coverage is saved separately from the immutable plan and event GT:
+
+```sh
+python -m scripts.temporal_gt.review_windows prepare \
+  --session "$PRIVATE_SESSION" --window-index 1 --output "$PRIVATE_WINDOW_PAGE"
+python -m scripts.temporal_gt.review_windows record \
+  --session "$PRIVATE_SESSION" --response "$HUMAN_WINDOW_JSON" --receipt-id window_001_v001
+python -m scripts.temporal_gt.review_windows summary --session "$PRIVATE_SESSION"
+```
+
+The local source player is bounded to the requested planned window. COMPLETE
+requires the human to explicitly confirm the whole interval and both Round/Death
+searches; playback time does not establish review. INCOMPLETE and NEEDS_RECHECK
+remain distinct, and earlier receipts are never overwritten. Windows are prepared
+and completed in timeline order. The legacy one-second pilot is partial coverage,
+not a complete first minute. All windows must be COMPLETE before whole-match
+coverage is complete; coverage alone never establishes complete event annotation.
+
+Discovery cues contain approximate player times only. They are pending native
+human review, are not integer-PTS witnesses, and never count as positive/negative
+GT. UNKNOWN and source-discontinuity cues need human reasons; source continuity
+remains UNVERIFIED. Review receipts preserve raw bytes and bind to source/plan
+hashes and appended source-only Exposure evidence. Existing event GT is unchanged.
+
 For a discovered event, acquire a bounded window around its visible transition.
 Each call is at most 2 seconds / 180 frames / 256 MiB of PNGs. The session permits
 512 MiB total; acquisition can fail earlier for complex native images. Reduce the
@@ -91,7 +115,9 @@ JSON. None of these confirmations is preselected. Unknown is the default.
 Round observations include Active/Start and next-round witnesses when available,
 old/new score and clock, last partial/first complete caption, literal round result,
 source discontinuity and context. Use positive only with a witnessed transition
-bracket. Use negative only after the complete interval is reviewed, with an
+bracket and a native witness of a complete, human-read result caption. A score
+change, EOF or Combat Report alone is insufficient; unreadable/unsupported result
+text stays UNKNOWN. Use negative only after the complete interval is reviewed, with an
 existing natural-negative class (buy/menu/spectator, score/clock-only, stale or
 partial caption, etc.). Record false End contexts without treating a prediction
 as truth. Missing transition/context evidence remains UNKNOWN.
