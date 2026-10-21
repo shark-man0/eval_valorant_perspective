@@ -345,6 +345,29 @@ def test_alias_cannot_recount_a_death_in_another_session(session, tmp_path):
     assert not (second / "pilot/human_response.json").exists()
 
 
+def test_automatic_development_exposure_reuses_journal_and_rejects_evaluation(session, tmp_path):
+    evidence = tmp_path / "automatic_plan.json"
+    evidence.write_text("{}", encoding="utf-8")
+    rows = read_json(session.parent / "manifest.json")["records"]
+    development = [r for r in rows if r["split"] == "DEVELOPMENT"]
+    for row in development:
+        review.append_exposure(
+            session, "prediction", evidence, "Synthetic automatic analysis",
+            source_id=row["video_id"],
+        )
+    path = session.parent / "exposure_journal.jsonl"
+    original = path.read_bytes()
+    entries = [json.loads(line) for line in original.splitlines()]
+    assert {e["event"]["source_id"] for e in entries} == {r["video_id"] for r in development}
+    for row in [r for r in rows if r["split"] != "DEVELOPMENT"]:
+        with pytest.raises(ContractError, match="development_exposure_only"):
+            review.append_exposure(
+                session, "prediction", evidence, "Must not be recorded",
+                source_id=row["video_id"],
+            )
+    assert path.read_bytes() == original
+
+
 @pytest.mark.parametrize(
     "caption_field,value",
     [
