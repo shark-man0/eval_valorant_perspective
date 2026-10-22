@@ -8,7 +8,7 @@ import pytest
 
 from valorant_ai_coach.visual.pixels import PixelMeasurementExtractor
 from valorant_ai_coach.visual.runtime import load_visual_profile
-from valorant_ai_coach.visual.self_marker import SelfMarkerTracker
+from valorant_ai_coach.visual.self_marker import MarkerReferenceInspector, SelfMarkerTracker
 
 
 @pytest.fixture
@@ -40,6 +40,38 @@ def test_textured_position_and_contiguous_track_without_identity_promotion(marke
     assert {r.track_id for r in results} == {0}
     assert {r.identity for r in results} == {"UNKNOWN"}
     assert {r.qualification for r in results} == {"development_only"}
+
+
+def test_reference_inspector_separates_controls_without_ownership(marker_case):
+    spec, crop = marker_case
+    result = MarkerReferenceInspector().inspect(crop, spec)
+    assert result["ownership"] == "UNKNOWN"
+    assert result["truncated"] is False
+    by_category = {p["reference_category"]: p for p in result["matches"]}
+    assert set(by_category) == {"self_reference_appearance", "nonself_control_appearance"}
+    assert by_category["self_reference_appearance"]["x_roi_norm"] == pytest.approx(48/120)
+    assert by_category["nonself_control_appearance"]["x_roi_norm"] == pytest.approx(88/120)
+    assert all(p["ownership"] == "UNKNOWN" for p in result["matches"])
+
+
+def test_inspector_cannot_resolve_identical_references_or_duplicate_subjects(marker_case):
+    spec, crop = marker_case
+    inspector = MarkerReferenceInspector()
+    spec["negative_templates"] = spec["positive_templates"]
+    result = inspector.inspect(crop, spec)
+    assert {p["reference_category"] for p in result["matches"]} == {"unseparated_appearance"}
+    assert result["ownership"] == "UNKNOWN"
+
+
+def test_inspector_refreshes_changed_references_and_rejects_missing_controls(marker_case):
+    spec, crop = marker_case
+    inspector = MarkerReferenceInspector()
+    assert inspector.inspect(crop, spec)["matches"]
+    spec["positive_templates"] = spec["negative_templates"]
+    assert {p["reference_category"] for p in inspector.inspect(crop, spec)["matches"]} == {
+        "unseparated_appearance"}
+    spec["negative_templates"] = []
+    assert inspector.inspect(crop, spec)["matches"] == []
 
 
 def test_duplicate_icons_are_unknown_even_after_tracking(marker_case):

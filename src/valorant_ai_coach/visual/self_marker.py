@@ -59,6 +59,12 @@ class SelfMarkerTracker:
     def reset(self) -> None:
         self._previous = None
 
+    @property
+    def reference_fingerprint(self) -> str | None:
+        if self._key is None or not self._references:
+            return None
+        return hashlib.sha256(repr(self._key).encode("utf-8")).hexdigest()
+
     def _load(self, spec: dict[str, Any]) -> bool:
         if not isinstance(spec, dict):
             return False
@@ -199,3 +205,56 @@ class SelfMarkerTracker:
             "tracked" if streak >= 3 else "candidate", "appearance_only", count,
             point[0], point[1], float(best), identifier,
         )
+
+
+class MarkerReferenceInspector:
+    """Contrast self-reference and nonself-control appearances at each local peak.
+
+    This separate opt-in inspection path supplies observed ROI evidence, including
+    in blocked views. A positive reference can depict a spectated subject; a
+    control can resemble another agent. Neither category assigns actor ownership.
+    It never supplies coordinates to SelfMarkerTracker, calibration or Facts.
+    """
+
+    def __init__(self) -> None:
+        self._loader = SelfMarkerTracker()
+
+    def inspect(self, crop: Image, spec: dict[str, Any]) -> dict[str, Any]:
+        envelope: dict[str, Any] = {
+            "qualification": "development_only", "ownership": "UNKNOWN", "matches": [],
+        }
+        loader = self._loader
+        if not isinstance(crop, np.ndarray) or not loader._load(spec):
+            return {**envelope, "reason": "invalid_reference_or_roi"}
+        h, w = loader._references[0].shape[:2]
+        if (crop.ndim != 3 or crop.dtype != np.uint8 or crop.shape[2] != 3
+                or crop.shape[0] < h or crop.shape[1] < w):
+            return {**envelope, "reason": "invalid_reference_or_roi"}
+
+        def scores(references: list[Image]) -> Image:
+            raw = np.maximum.reduce([loader._scores(crop, ref) for ref in references])
+            bounded: Image = np.clip(np.nan_to_num(raw, nan=-1, posinf=-1, neginf=-1), -1, 1)
+            return bounded
+
+        positive, negative = scores(loader._references), scores(loader._negatives)
+        remaining = np.maximum(positive, negative)
+        # Bounded observed appearance proposals, with no tracking-based ranking.
+        for _ in range(32):
+            _, best, _, (x, y) = cv2.minMaxLoc(remaining)
+            if best < .80:
+                break
+            p, n = float(positive[y, x]), float(negative[y, x])
+            category = ("self_reference_appearance" if p-n >= .12
+                        else "nonself_control_appearance" if n-p >= .12
+                        else "unseparated_appearance")
+            envelope["matches"].append({
+                "reference_category": category, "positive_similarity": p,
+                "nonself_control_similarity": n,
+                "x_roi_norm": (x+w//2)/crop.shape[1],
+                "y_roi_norm": (y+h//2)/crop.shape[0],
+                "ownership": "UNKNOWN", "qualification": "development_only",
+            })
+            remaining[max(0, y-h//2):y+h//2+1, max(0, x-w//2):x+w//2+1] = -1
+        return {**envelope, "reason": "appearance_comparison_only",
+                "reference_fingerprint": loader.reference_fingerprint,
+                "truncated": bool(float(remaining.max()) >= .80)}

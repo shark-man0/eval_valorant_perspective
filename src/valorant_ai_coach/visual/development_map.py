@@ -23,7 +23,7 @@ from valorant_ai_coach.resources import resource_path
 from valorant_ai_coach.video.geometry import normalized_roi_bounds
 
 from .map_pipeline import MapTimeline
-from .self_marker import SelfMarkerTracker
+from .self_marker import MarkerPosition, MarkerReferenceInspector, SelfMarkerTracker
 
 
 def bind_development_registry() -> MapRegistry:
@@ -33,7 +33,8 @@ def bind_development_registry() -> MapRegistry:
 
 
 class DevelopmentMapTimeline:
-    def __init__(self, profile: dict[str, Any], *, registry: MapRegistry | None = None) -> None:
+    def __init__(self, profile: dict[str, Any], *, registry: MapRegistry | None = None,
+                 inspect_reference_appearances: bool = False) -> None:
         self.registry = registry if registry is not None else bind_development_registry()
         self.profile = profile
         self.timeline = MapTimeline(profile, registry=self.registry)
@@ -46,6 +47,7 @@ class DevelopmentMapTimeline:
         self._candidate_zone: str | None = None
         self._context: tuple[Any, ...] | None = None
         self.marker = SelfMarkerTracker()
+        self.inspector = MarkerReferenceInspector() if inspect_reference_appearances else None
         self.previous: tuple[float, tuple[float, float], int | None] | None = None
         self.next_segment = 0
         self.segment: int | None = None
@@ -139,6 +141,17 @@ class DevelopmentMapTimeline:
             frame[top:bottom, left:right], time_sec, self.profile["minimap_self_marker"],
             ownership_eligible=eligible,
         )
+        reference_evidence = self.inspector.inspect(
+            frame[top:bottom, left:right], self.profile["minimap_self_marker"],
+        ) if self.inspector is not None else None
+        if (reference_evidence is not None and appearance.x_roi_norm is not None
+                and reference_evidence.get("reference_fingerprint")
+                != self.marker.reference_fingerprint):
+            # Two readers must not silently associate different reference bytes
+            # if a private reference file is replaced during this observation.
+            self.marker.reset()
+            self._break()
+            appearance = MarkerPosition("unknown", "reference_changed_during_observation")
         calibration = self.timeline.calibrate(frame)
         point = None
         if calibration is not None and appearance.x_roi_norm is not None:
@@ -206,11 +219,32 @@ class DevelopmentMapTimeline:
         # Nested data must also retain its boundary when copied independently
         # of this envelope. Extra keys intentionally fail the formal schema.
         resolution = {**resolution, "qualification": "development_only", "ownership": "UNKNOWN"}
+        region = None
+        candidates = resolution["candidate_zone_ids"]
+        if (point is not None and len(candidates) == 1
+                and resolution["boundary_state"] != "ambiguous"
+                and not resolution["held_from_previous"]):
+            # Preserve the Resolver's low-confidence / pending candidate without
+            # raising its cap or converting it into an accepted named Zone.
+            zone_definition = next(z for z in definition.data["zones"]
+                                   if z["zone_id"] == candidates[0])
+            region = {
+                "region_id": candidates[0], "region_name": zone_definition["zone_name"],
+                "resolver_scope": resolution["resolution_scope"],
+                "geometry_confidence_cap": zone_definition["geometry_confidence_cap"],
+                "qualification": "development_only", "ownership": "UNKNOWN",
+            }
         return {
             "qualification": "development_only", "formal_self_position_fact": None,
+            "source_id": source_id, "acquisition_id": acquisition_id,
+            "context_sha256": hashlib.sha256(
+                repr(context_key).encode("utf-8")
+            ).hexdigest(),
             "time_sec": time_sec, "frame_index": frame_index,
             "appearance": appearance.to_dict(),
+            "marker_reference_evidence": reference_evidence,
             "ownership": {"identity": "UNKNOWN", "view_eligible": eligible,
+                          "observed_view": view.get("primary_state", "unknown"),
                           "view_evidence_kind": evidence_kind,
                           "reference_identity_confirmed": bool(
                               self.profile.get("reference_identity_confirmed", False))},
@@ -218,6 +252,7 @@ class DevelopmentMapTimeline:
             "calibration": context, "map_position_norm": list(point) if point else None,
             "map_segment": self.segment, "map_speed_norm_per_sec": velocity,
             "zone_resolution": resolution,
+            "development_region_candidate": region,
             "development_events": events,
             "diagnostics": diagnostics,
         }
