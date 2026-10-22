@@ -1,9 +1,13 @@
 # Minimap / Bind pre-integration technical review
 
+Later development adds partial interiors and a candidate-path viewer; see
+[development_map_paths.md](development_map_paths.md). Results below describe the
+pre-extension review baseline.
+
 The review keeps the existing development-only boundary: no qualified self
 identity, Production Self Position Fact, gameplay event or GOOD/IMPROVE score.
 The default Production registry, event contract, schemas and HUD components
-are unchanged. Bind still contains only the reviewed shaded plant footprints.
+are unchanged. The review baseline contained only the reviewed shaded plant footprints.
 
 ## Confirmed findings and fixes
 

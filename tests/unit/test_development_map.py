@@ -53,7 +53,9 @@ def bind_case(tmp_path):
 def test_registered_public_geometry_is_limited_and_not_default_production(bind_case):
     registry, definition, _, _, _ = bind_case
     assert registry.registry["maps"]["bind"]["production"] is False
-    assert {z["zone_id"] for z in definition.data["zones"]} == {"bind_a_plant", "bind_b_plant"}
+    assert {z["zone_id"] for z in definition.data["zones"]} == {
+        "bind_a_plant", "bind_b_plant", "bind_defender_spawn_interior", "bind_b_long_interior",
+        "bind_b_window_interior", "bind_a_lamps_interior", "bind_a_shower_interior"}
     assert definition.data["topology_edges"] == []
     assert definition.callouts["records"] == {}
     assert json.loads((registry.root/"provenance.json").read_text(encoding="utf-8"))[
@@ -64,6 +66,104 @@ def test_registered_public_geometry_is_limited_and_not_default_production(bind_c
     with pytest.raises(MapRegistryError):
         MapRegistry(registry.root)  # Cannot silently activate via ordinary custom-root API.
     assert registry.runtime == MapRegistry().runtime
+
+
+def test_partial_interiors_are_inside_public_floor_without_claiming_full_callouts(bind_case):
+    registry, definition, _, _, _ = bind_case
+    floor = cv2.imread(str(registry.root/"assets/bind_visible_floor.png"), cv2.IMREAD_GRAYSCALE)
+    for zone in definition.data["zones"][2:]:
+        assert zone["site_id"] is None
+        assert zone["geometry_confidence_cap"] == .7
+        points = np.array([[round(142+p[0]*819), round(12+p[1]*969)]
+                           for p in zone["polygon_norm"]], np.int32)
+        support = np.zeros_like(floor)
+        cv2.fillPoly(support, [points], 255)
+        assert np.all(floor[support > 0] > 0)
+
+
+def test_private_path_cli_connects_real_cv_frames_to_viewer_without_fact(bind_case, tmp_path):
+    from scripts.development_map_path import build
+
+    _, _, frame, profile, _ = bind_case
+    image = tmp_path/"synthetic.png"
+    assert cv2.imwrite(str(image), frame)
+    profile_path = tmp_path/"profile.json"
+    profile_path.write_text(json.dumps(profile), encoding="utf-8")
+    manifest = {
+        "source_split": "DEVELOPMENT", "qualification": "development_only",
+        "source_id": "synthetic", "acquisition_id": "one-window",
+        "view_evidence_kind": "source_review", "profile_path": str(profile_path),
+        "inspect_reference_appearances": True,
+        "observations": [{"image_path": str(image), "time_sec": i*.2, "frame_index": i,
+                          "view": {"primary_state": "live_first_person",
+                                   "values": {"player_specific_hud_valid": True}}}
+                         for i in range(6)],
+    }
+    path = tmp_path/"manifest.json"
+    path.write_text(json.dumps(manifest), encoding="utf-8")
+    result = build(path, tmp_path/"private")
+    assert len(result["segments"]) == 1
+    assert result["segments"][0]["observed_span_sec"] == pytest.approx(1)
+    assert (tmp_path/"private/path_PRIVATE.html").is_file()
+    assert result["formal_self_position_fact"] is None
+    assert all(p["marker_reference_evidence"]["ownership"] == "UNKNOWN"
+               for p in result["samples"])
+    manifest["source_split"] = "FINAL_HOLDOUT_CANDIDATE"
+    path.write_text(json.dumps(manifest), encoding="utf-8")
+    with pytest.raises(ValueError, match="DEVELOPMENT"):
+        build(path, tmp_path/"must-not-exist")
+    assert not (tmp_path/"must-not-exist").exists()
+
+
+def test_coarse_patch_keeps_resolver_threshold_and_is_aggregated_separately(bind_case):
+    from valorant_ai_coach.visual.development_trajectory import analyze_candidate_path
+
+    registry, definition, _, profile, _ = bind_case
+    frame = np.zeros((427, 455, 3), np.uint8)
+    frame[9:419, 21:431] = cv2.resize(cv2.imread(str(definition.reference_asset)), (410, 410))
+    x, y = round(330*410/1024+21), round(430*410/1024+9)
+    frame[y-8:y+9, x-8:x+9] = cv2.imread(profile["minimap_self_marker"]["positive_templates"][0])
+    pipeline = DevelopmentMapTimeline(profile, registry=registry,
+                                      inspect_reference_appearances=True)
+    records = [pipeline.observe(
+        frame, i*.2, i, view={"primary_state": "live_first_person",
+                              "values": {"player_specific_hud_valid": True}},
+        evidence_kind="source_review", source_id="synthetic", acquisition_id="coarse",
+    ) for i in range(8)]
+    assert all(r["zone_resolution"]["zone_id"] is None for r in records)
+    assert records[-1]["zone_resolution"]["resolution_scope"] == "coarse_role"
+    assert records[-1]["development_region_candidate"]["geometry_confidence_cap"] == .7
+    path = analyze_candidate_path(records, reference_size_px=(819, 969))
+    assert path["zone_observation_spans_sec"] == {}
+    assert path["region_candidate_observation_spans_sec"] == {
+        "bind_b_window_interior": pytest.approx(1.4)}
+    blocked = pipeline.observe(
+        frame, 1.6, 8, view={"primary_state": "spectator_first_person"},
+        evidence_kind="source_review", source_id="synthetic", acquisition_id="coarse",
+    )
+    assert blocked["marker_reference_evidence"]["matches"]
+    assert blocked["map_position_norm"] is None
+    assert blocked["development_region_candidate"] is None
+    assert blocked["formal_self_position_fact"] is None
+
+
+def test_separate_inspector_cannot_mix_changed_reference_with_old_position(bind_case, monkeypatch):
+    registry, _, frame, profile, _ = bind_case
+    pipeline = DevelopmentMapTimeline(profile, registry=registry,
+                                      inspect_reference_appearances=True)
+    assert pipeline.inspector is not None
+    monkeypatch.setattr(pipeline.inspector, "inspect", lambda *args: {
+        "reference_fingerprint": "different-content", "matches": [],
+        "ownership": "UNKNOWN", "qualification": "development_only"})
+    result = pipeline.observe(
+        frame, 0, 0, view={"primary_state": "live_first_person",
+                          "values": {"player_specific_hud_valid": True}},
+        evidence_kind="source_review", source_id="synthetic", acquisition_id="changed-ref",
+    )
+    assert result["appearance"]["reason"] == "reference_changed_during_observation"
+    assert result["map_position_norm"] is None
+    assert result["map_segment"] is None
+    assert result["development_region_candidate"] is None
 
 
 def test_whole_outline_calibration_recovers_known_synthetic_transform(bind_case):
@@ -211,6 +311,7 @@ def test_unknown_owner_zone_transition_never_emits_player_contract(bind_case, mo
     registry, definition, frame, profile, (x, y) = bind_case
     profile["validated"] = True  # Cannot authorize ownership or formal events.
     synthetic = copy.deepcopy(definition)
+    synthetic.data["zones"] = synthetic.data["zones"][:2]
     # Synthetic adjacent zones within visible floor, never registered geometry.
     for zone, left, right in zip(synthetic.data["zones"], [.66, .73], [.73, .81], strict=True):
         zone["polygon_norm"] = [[left, .30], [right, .30], [right, .39], [left, .39]]

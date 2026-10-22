@@ -320,12 +320,12 @@
     }
   ],
   "limitations": [
-    "Only visible A/B shaded plant footprints are mapped; this is not full Site callout geometry.",
-    "Every other position is zone UNKNOWN; no invented corridor, spawn or detailed callout boundary.",
-    "Topology has no edges because no complete connecting zones have been authored.",
+    "Only two shaded plant footprints and five locally reviewed coarse interior measurement patches are mapped; none are complete Site/callout footprints.",
+    "Patch borders are explicit measurement-region limits inside public visible floor, not exact game callout boundaries. Review confirmed approximate semantics only.",
+    "All other positions remain Zone UNKNOWN; active Callout labels and Topology edges remain empty.",
     "Visible-floor raster preserves 2D texture support; it does not establish 3D walkability or line of sight.",
-    "Operational QA mask covers only an independently eroded A plant core; not whole-map zone coverage.",
-    "Published asset version unknown; recording build is checked privately and runtime alignment is mandatory."
+    "Operational QA mask still covers only independently eroded A plant core, not full-map zone coverage.",
+    "Published asset/client correspondence remains unverified; every frame requires runtime alignment."
   ],
   "visible_floor_sha256": "071049cab754b964978ee0fb3c8cea81b394e092f5dc29d0d649fac4da6b4269",
   "semantic_review": {
@@ -333,5 +333,159 @@
     "region_scope": "A/B visible plant footprints confirmed; not full Site boundaries",
     "reference_asset_is_public": true,
     "recognition_qualification": false
+  },
+  "interior_patches": {
+    "status": "coarse locally reviewed semantics, not surveyed callout boundaries",
+    "source": "same public texture and public metadata callout anchors; no private coordinates/frames",
+    "method": "Explicit conservative interior regions drawn from visible walls and labelled public anchor context. Initial mislabelled Lamps entrance rejected; corrected upper room reviewed. No whole-callout extrapolation.",
+    "geometry_confidence_cap": 0.7,
+    "regions": [
+      {
+        "zone_id": "bind_defender_spawn_interior",
+        "polygon_reference_px": [
+          [
+            488,
+            75
+          ],
+          [
+            574,
+            75
+          ],
+          [
+            574,
+            151
+          ],
+          [
+            488,
+            151
+          ]
+        ]
+      },
+      {
+        "zone_id": "bind_b_long_interior",
+        "polygon_reference_px": [
+          [
+            182,
+            476
+          ],
+          [
+            209,
+            476
+          ],
+          [
+            209,
+            546
+          ],
+          [
+            182,
+            546
+          ]
+        ]
+      },
+      {
+        "zone_id": "bind_b_window_interior",
+        "polygon_reference_px": [
+          [
+            303,
+            377
+          ],
+          [
+            303,
+            426
+          ],
+          [
+            309,
+            426
+          ],
+          [
+            310,
+            427
+          ],
+          [
+            310,
+            446
+          ],
+          [
+            309,
+            447
+          ],
+          [
+            303,
+            447
+          ],
+          [
+            303,
+            494
+          ],
+          [
+            345,
+            494
+          ],
+          [
+            345,
+            377
+          ]
+        ]
+      },
+      {
+        "zone_id": "bind_a_lamps_interior",
+        "polygon_reference_px": [
+          [
+            590,
+            317
+          ],
+          [
+            625,
+            317
+          ],
+          [
+            625,
+            344
+          ],
+          [
+            590,
+            344
+          ]
+        ]
+      },
+      {
+        "zone_id": "bind_a_shower_interior",
+        "polygon_reference_px": [
+          [
+            766,
+            420
+          ],
+          [
+            891,
+            420
+          ],
+          [
+            891,
+            436
+          ],
+          [
+            879,
+            436
+          ],
+          [
+            879,
+            490
+          ],
+          [
+            844,
+            490
+          ],
+          [
+            844,
+            441
+          ],
+          [
+            766,
+            441
+          ]
+        ]
+      }
+    ],
+    "review_scope": "Recording owner accepted corrected Window/Lamps/Shower locations approximately; actual regions follow map floor, not rectangular whole-room claims."
   }
 }

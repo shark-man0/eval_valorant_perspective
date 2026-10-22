@@ -29,7 +29,7 @@
       "callout_registry_file": "config/maps/bind_callout_registry_v3.json",
       "peek_registry_file": "config/maps/bind_peek_exposure_registry_v2.json",
       "coverage_mask_file": "config/maps/bind_operational_mask_v1.json",
-      "geometry_version": "bind_public_plant_footprints_2026-10-22_v1",
+      "geometry_version": "bind_public_partial_interiors_2026-10-23_v2",
       "reference_asset": "assets/bind_reference.png",
       "reference_sha256": "84f5ff72aa58bf677617ab5792def847c1c154b38f6e7458f7234121baa3507f",
       "production": false
