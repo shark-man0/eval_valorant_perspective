@@ -1,4 +1,5 @@
 """Offline association must preserve unknowns, native gaps and source bindings."""
+import os
 from copy import deepcopy
 from pathlib import Path
 
@@ -180,7 +181,9 @@ def test_cli_enforces_development_binding_and_exclusive_private_output(tmp_path,
     monkeypatch.setattr(module, "append_exposure", lambda *a, **k: calls.append((a, k)))
     report = module.run(tmp_path, inp, out)
     assert report["formal_events"] == [] and len(calls) == 1
-    assert out.stat().st_mode & 0o777 == 0o600
+    # POSIX mode bits do not describe Windows inherited ACL permissions.
+    if os.name != "nt":
+        assert out.stat().st_mode & 0o777 == 0o600
     with pytest.raises(FileExistsError):
         module.run(tmp_path, inp, out)
     assert len(calls) == 1
