@@ -162,3 +162,67 @@ Menu/Spectator/Death state, HUD scale, crop variation, or true HUD coordinates
 were independently qualified. Retain the structural selector only as a next
 offline semantic-validation candidate; do not tune reference selection further
 on these samples or adopt it in production.
+
+## Semantic verification and short-window diagnostics
+
+Keep the PR70 reference assets, localizers, thresholds and geometry policy frozen.
+Existing known DEVELOPMENT witnesses can be reused for diagnostics; evaluation
+candidates remain excluded. Calibration consistency and agreement with the
+expected layout are not independent evidence of the actual HUD coordinates.
+
+`scripts/diagnostics/hud_semantic_review.py` accounts for a small private review
+packet and observed native-frame displacement. It does not decode videos, fit
+references, modify a Matcher, write GT, or publish events. Bind each private case
+to source SHA, integer PTS/rational timebase, acquisition epoch, frame hash, and
+the frozen methods' predicted boxes. The response is bound to the canonical
+packet hash, exact case/anchor identities, explicit review status and reviewer.
+Default answers are UNKNOWN; detector success and AI descriptions cannot supply
+human confirmations. The caller must obtain the response from the human user:
+the `origin` field is a declaration, not human authentication.
+
+Show the raw image before boxes, keep method identity concealed where practical,
+and use plain names (clock, top match bar, HP/armor, abilities). A human may answer
+CORRECT / INCORRECT / UNKNOWN for each displayed box. Unreviewed cases remain
+UNKNOWN. A rejected candidate does not count as an accepted false calibration.
+An accepted result is confirmed correct only when all its predicted boxes are
+confirmed and at least three exist; any confirmed incorrect box flags it for
+investigation. Partial answers remain unknown. Report only the reviewed output
+agreement and its denominator; targeted success/failure selection cannot
+estimate population accuracy.
+
+Spectator, Death and overlay screens may contain genuine HUD elements. State
+alone never proves a geometry error, self identity, or a natural negative. Record
+human-confirmed state observations separately from AI provisional descriptions
+and from Round/Self Death GT. Do not infer self death from a Combat Report.
+
+For short-window stability, retain bounded native witnesses from a predeclared
+schedule. `position_stability` requires one source/acquisition/timebase and
+strictly increasing integer PTS. Missing positions are not stable observations;
+the output reports coverage, displacement and geometry toggles. Even zero
+displacement cannot verify HUD semantics or source continuity. Cross-window,
+cross-epoch and unreviewed time ranges must not become continuous evidence.
+
+The current semantic study uses the known173 witnesses plus two fixed half-second
+windows per DEVELOPMENT source, retaining at most three witnesses per window.
+Human review is optional and limited to ten targeted cases across five sources.
+Without human confirmations, semantic accuracy and confirmed natural-negative
+counts stay unmeasured. Continue automatic diagnostics, preserve uncertainty,
+and defer production adoption. A self-supervised learning PoC has not been run;
+the review/accounting infrastructure is not evidence of such a PoC or its gains.
+
+In the targeted ten-case human review, the structural method's five accepted
+outputs included four with all boxes confirmed correct and one with an UNKNOWN
+ability box. No incorrect calibration was confirmed. NCC accepted none in this
+targeted cohort; eight of its partial candidate boxes were confirmed, versus 23
+structural boxes. This is evidence for particular coordinates, not comparative
+population precision. The human-labelled Menu and HUD-hidden cases were rejected
+by both methods; neither state proves that every HUD element was absent.
+
+The 30 short-window observations yielded 4 NCC and 20 structural geometry
+successes. Each method toggled geometry three times. Observed positions did not
+move when present, but missing anchors still interrupted calibration. Ten center
+witnesses overlap the known173 with identical encoded hashes; only 20 temporal
+context witnesses are new. These are not 30 independent new samples. Spectator,
+Death, transition, overlay and real crop/scale safety remain unqualified. A
+single primary-state question cannot capture overlapping gameplay and overlays;
+retain AI overlay flags separately instead of overwriting human answers.
