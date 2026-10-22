@@ -20,6 +20,9 @@ def method():
 
 @pytest.mark.parametrize("text,score,expected", [
     (" TEAM  ACE ", .95, "TEAM ACE"), ("victory", .90, "VICTORY"),
+    ("WON", .95, "WON"), (" lost ", .90, "LOST"),
+    ("WON", .899, None), ("LOST!", .99, None), ("W0N", .99, None),
+    ("YOU WON", .99, None), ("LOST CONNECTION", .99, None),
     ("TEAM ACF", .99, None), ("TEAM ACE!", .99, None), ("TEAM ACE", .899, None),
     ("TEAM AGE", .96, None),
     (None, 1.0, None), ("TEAM ACE", True, None), ("ACE", float("nan"), None),
@@ -55,7 +58,8 @@ def test_rawline_is_a_separate_frozen_method_not_an_override(tmp_path, version, 
             diagnostic.load_method(path)
 
 
-def fixture(tmp_path, monkeypatch, *, mutate_model=False, language="eng", rawline=False):
+def fixture(tmp_path, monkeypatch, *, mutate_model=False, language="eng", rawline=False,
+            result_text="TEAM ACE"):
     video, native, layout, declared = inputs(tmp_path)
     declaration = method()
     if rawline:
@@ -86,7 +90,7 @@ def fixture(tmp_path, monkeypatch, *, mutate_model=False, language="eng", rawlin
             assert roi.size > 0
             if mutate_model:
                 model.write_bytes(b"changed")
-            return ReaderResult("アビリティー" if language == "jpn" else "TEAM ACE",
+            return ReaderResult("アビリティー" if language == "jpn" else result_text,
                                 .95, ("synthetic OCR",))
 
     monkeypatch.setattr(diagnostic, "TesseractTextReader", Reader)
@@ -104,6 +108,15 @@ def test_text_recognition_never_emits_events_or_installs_profile(tmp_path, monke
                for window in result["windows"] for row in window["rows"])
     assert (args[4] / "selection.json").exists()
     assert (args[4] / "results.json").exists()
+
+
+@pytest.mark.parametrize("text", ["WON", "LOST"])
+def test_short_result_display_is_diagnostic_only(tmp_path, monkeypatch, text):
+    result = diagnostic.run(*fixture(tmp_path, monkeypatch, result_text=text))
+    assert result["events_emitted"] == 0
+    assert not result["qualification_created"] and not result["profile_adopted"]
+    assert all(row["accepted_result_text"] == text and not row["round_end_emitted"]
+               for window in result["windows"] for row in window["rows"])
 
 
 def test_rawline_mode_reaches_reader_without_promoting_result(tmp_path, monkeypatch):
