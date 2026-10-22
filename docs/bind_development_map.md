@@ -2,7 +2,10 @@
 
 The opt-in `DevelopmentMapTimeline` now extracts measured portrait candidates
 from real DEVELOPMENT footage, converts them into registered Bind map-mask
-coordinates, and feeds the existing `ZoneResolver` and `MapEventConsumer`.
+coordinates, and feeds the existing `ZoneResolver`. Candidate transitions are
+isolated from `MapEventConsumer` and the Production Event contract. See the
+[pre-integration review](minimap_map_review.md) for the subsequent safety and
+performance changes; the bounded experiment below preserves the earlier timing.
 The separate development envelope always retains `identity=UNKNOWN`,
 `qualification=development_only`, and `formal_self_position_fact=null`.
 Human confirmation of a few source examples is recorded separately; it is
@@ -33,12 +36,16 @@ buy/end banners and nonself/unknown views block it. The experiment supplied
 view evidence through source inspection, not a qualified HUD recognizer.
 Coordinates are normalized within the registered reference-mask bounding box;
 they are distinct from ROI coordinates and are not world meters or a 3D map.
-Points outside the public visible-floor raster are rejected.
+Points outside the public visible-floor raster are rejected. Source and
+acquisition identity are required for every call. A source/acquisition, profile,
+ROI, frame shape or geometry change resets continuity. Invalid calls discard
+tracking state before raising. Changing the selected Map requires a new
+timeline; replacing map options cannot keep the previous Bind transform.
 
 Tracks break on absent measurements, gaps >0.3 seconds, out-of-order time,
 changed appearance tracks, or jumps >0.4 normalized map units/second. Missing
 intervals are never interpolated. Zone dwell and the existing consumer reset
-on gaps; the consumer also resets while Zone is UNKNOWN. The speed threshold
+on gaps; the candidate observer also resets while Zone is UNKNOWN. The speed threshold
 is a development guard rather than a physical player-speed model.
 
 ## Registration and provenance
@@ -89,13 +96,17 @@ result = timeline.observe(
     frame, source_time_sec, source_frame_index,
     view=independently_observed_view,
     evidence_kind="source_review",  # or "unqualified_hud_observation"
+    source_id=private_source_identity,
+    acquisition_id=private_acquisition_identity,
 )
 # Persist only as private development evidence, separately from formal facts.
 ```
 
 `view` uses existing `primary_state`, `values.player_specific_hud_valid` and
 `state_flags`. Callers must not derive it from the portrait prediction.
-Freeze profile/reference hashes, model/config/asset hashes, source exposure and
+Reference contents are checked even on template-cache hits; replacing, deleting
+or corrupting the same path cannot silently retain old pixels. Freeze
+profile/reference hashes, model/config/asset hashes, source exposure and
 view-evidence provenance before evaluation. The standalone API does not create
 VisualObservations, RoundPackages, production self/Zone facts or coach scores.
 

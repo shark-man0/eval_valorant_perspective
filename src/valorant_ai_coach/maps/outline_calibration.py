@@ -7,6 +7,7 @@ without using marker positions, predicted zones, or previous transforms.
 
 from __future__ import annotations
 
+import hashlib
 from typing import Any
 
 import cv2
@@ -18,6 +19,22 @@ from .registry import MapDefinition
 
 
 class OutlineMinimapCalibrator(MinimapCalibrator):
+    def __init__(
+        self, *, cache_reference: bool = True, expected_reference_sha256: str | None = None,
+    ) -> None:
+        super().__init__()
+        self.cache_reference = cache_reference
+        self.expected_reference_sha256 = expected_reference_sha256
+        self.clear_reference_cache()
+
+    def clear_reference_cache(self) -> None:
+        """Discard immutable preprocessing, never preserve a frame transform."""
+        self._clear_alignment()
+        self._outline_key: tuple[Any, ...] | None = None
+        self._outline_reference: NDArray[Any] | None = None
+        self._outline_features: dict[int, tuple[NDArray[Any], float]] = {}
+        self._outline_feature_bytes = 0
+
     def analyze(
         self,
         frame: NDArray[Any],
@@ -50,13 +67,26 @@ class OutlineMinimapCalibrator(MinimapCalibrator):
         # coordinates, dynamic rotation, or partial-map recovery is attempted.
         if not min(target.shape) >= 64 or max(target.shape) > 1024:
             return failed("outline_roi_size_unsupported")
-        reference = cv2.imread(str(definition.reference_asset), cv2.IMREAD_GRAYSCALE)
-        if reference is None:
+        try:
+            content = definition.reference_asset.read_bytes()
+        except OSError:
             return failed("reference_asset_unavailable")
+        digest = hashlib.sha256(content).hexdigest()
+        if self.expected_reference_sha256 and digest != self.expected_reference_sha256:
+            return failed("reference_asset_hash_mismatch")
         x0, y0, x1, y1 = map(int, box)
-        if not (0 <= x0 < x1 <= reference.shape[1] and 0 <= y0 < y1 <= reference.shape[0]):
-            return failed("invalid_reference_mask_bbox")
-        reference = reference[y0:y1, x0:x1]
+        key = (str(definition.reference_asset), digest, version, box, target.shape)
+        if not self.cache_reference or key != self._outline_key:
+            self.clear_reference_cache()
+            reference = cv2.imdecode(np.frombuffer(content, np.uint8), cv2.IMREAD_GRAYSCALE)
+            if reference is None:
+                return failed("reference_asset_unavailable")
+            if not (0 <= x0 < x1 <= reference.shape[1] and 0 <= y0 < y1 <= reference.shape[0]):
+                return failed("invalid_reference_mask_bbox")
+            self._outline_reference = reference[y0:y1, x0:x1]
+            self._outline_key = key
+        reference = self._outline_reference
+        assert reference is not None
         edges = cv2.Canny(target, 60, 160)
         if np.count_nonzero(edges) < 100:
             return failed("outline_runtime_edges_missing")
@@ -69,13 +99,21 @@ class OutlineMinimapCalibrator(MinimapCalibrator):
         scales = np.linspace(.35, maximum, min(92, int((maximum-.35)/.002)+2))
         best: tuple[float, float, int, int, NDArray[Any]] | None = None
         alternatives: list[tuple[float, float, int, int]] = []
-        for scale in scales:
+        for index, scale in enumerate(scales):
             w, h = round(reference.shape[1]*scale), round(reference.shape[0]*scale)
             if not (32 <= w <= target.shape[1] and 32 <= h <= target.shape[0]):
                 continue
-            resized = cv2.resize(reference, (w, h), interpolation=cv2.INTER_AREA)
-            weights = (cv2.Canny(resized, 60, 160) > 0).astype(np.float32)
-            population = float(weights.sum())
+            feature = self._outline_features.get(index)
+            if feature is None:
+                resized = cv2.resize(reference, (w, h), interpolation=cv2.INTER_AREA)
+                weights = (cv2.Canny(resized, 60, 160) > 0).astype(np.float32)
+                population = float(weights.sum())
+                # Bounded single-key cache; larger grids recompute the suffix.
+                if self.cache_reference and self._outline_feature_bytes+weights.nbytes <= 64*2**20:
+                    self._outline_features[index] = weights, population
+                    self._outline_feature_bytes += weights.nbytes
+            else:
+                weights, population = feature
             if population < 100:
                 continue
             costs = (cv2.matchTemplate(distance, weights, cv2.TM_CCORR)/population).astype(

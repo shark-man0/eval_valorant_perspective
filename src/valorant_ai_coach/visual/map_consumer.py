@@ -24,9 +24,15 @@ class MapEventConsumer:
         self.rotation: dict[str, Any] | None = None
         self.allies: dict[str, dict[str, Any]] = {}
 
+    @staticmethod
+    def _unqualified(resolution: Mapping[str, Any]) -> bool:
+        return (resolution.get("qualification") == "development_only"
+                or resolution.get("ownership") == "UNKNOWN")
+
     def _usable(self, resolution: Mapping[str, Any]) -> bool:
         return bool(
             self.definition
+            and not self._unqualified(resolution)
             and resolution.get("map_id") == self.definition.map_id
             and resolution.get("geometry_version") == self.definition.geometry_version
             and resolution.get("calibration_status") == "ok"
@@ -47,6 +53,9 @@ class MapEventConsumer:
     ) -> list[dict[str, Any]]:
         out: list[dict[str, Any]] = []
         if self.definition is None:
+            return out
+        if self._unqualified(resolution):
+            self.reset()
             return out
         t = float(resolution["time_sec"])
         if resolution.get("calibration_status") in {"failed", "calibration_required"}:
@@ -168,6 +177,9 @@ class MapEventConsumer:
         active = set()
         for track, ally in allies:
             active.add(track)
+            if self._unqualified(ally):
+                self.allies.pop(track, None)
+                continue
             if not self._usable(ally):
                 if ally.get("calibration_status") in {"failed", "calibration_required"}:
                     self.allies.pop(track, None)
