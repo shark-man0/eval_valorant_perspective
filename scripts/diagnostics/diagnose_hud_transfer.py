@@ -139,7 +139,8 @@ def _structural(image: np.ndarray, layout: HudLayout, name: str, ref: Reference)
 
 
 def observe(image: np.ndarray, layout: HudLayout,
-            bank: dict[str, list[Reference]]) -> dict[str, Any]:
+            bank: dict[str, list[Reference]], *,
+            reference_stats: dict[str, Any] | None = None) -> dict[str, Any]:
     if image.dtype != np.uint8 or image.ndim != 3 or image.shape[2] != 3:
         raise ValueError('unchanged uint8 BGR frame required')
     height, width = image.shape[:2]
@@ -150,8 +151,12 @@ def observe(image: np.ndarray, layout: HudLayout,
     resolution_ok = layout.reference_resolution == (width, height)
     for name, references in bank.items():
         if not resolution_ok or not references:
-            rows[name] = {'classification': 'resolution_mismatch' if not resolution_ok
-                          else 'reference_structure_insufficient',
+            reason = (reference_stats or {}).get(name, {}).get('reason')
+            missing = {
+                'reference_structure_insufficient': 'reference_structure_insufficient',
+                'training_support_missing': 'reference_training_support_missing',
+            }.get(reason, 'reference_unavailable')
+            rows[name] = {'classification': missing if resolution_ok else 'resolution_mismatch',
                           'reference_count': len(references)}
             continue
         ncc, structural = [], []

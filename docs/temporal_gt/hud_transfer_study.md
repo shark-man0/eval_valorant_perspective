@@ -29,7 +29,8 @@ bank, reference_stats = freeze_bank(training_images, layout, existing_profile_ra
                                     new_private_asset_directory)
 frozen = bank_fingerprint(bank)
 # Freeze source/frame roles and persist reference/input hashes before this loop.
-rows = [observe(image, layout, bank) for image in development_check_images]
+rows = [observe(image, layout, bank, reference_stats=reference_stats)
+        for image in development_check_images]
 assert bank_fingerprint(bank) == frozen
 ```
 
@@ -59,9 +60,13 @@ mismatches must not become events or verified negatives. Unmodified scene labels
 
 Compare the frozen previous Profiles separately from methods trained on the new
 cohort: reference-data changes and matcher changes are different experiments.
-Report per-source/per-anchor support, reference failure, observed-edge shortage,
+Report per-source/per-anchor support, reference-structure failure, missing
+non-self NCC training support, observed-edge shortage,
 structure mismatch, structure-supported NCC rejection and geometry rejection.
-Generic edges are not proof of HUD presence. Record fit/replay time and process
+Generic edges are not proof of HUD presence. Pass the frozen generation stats
+to distinguish absent reference structure from a structured proposal rejected
+by training NCC support. Without those stats, a missing reference is UNKNOWN
+(`reference_unavailable`), never an assertion that structure was absent. Record fit/replay time and process
 peak RSS, source-five regressions and known-invalid transform challenges.
 
 In the fixed study, frozen previous Profiles reproduced 18/85 and 19/85 but both

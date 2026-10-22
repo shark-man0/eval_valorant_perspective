@@ -77,7 +77,10 @@ def test_flat_training_is_unknown_and_does_not_create_references(tmp_path):
     bank, stats = freeze_bank([np.full_like(image, 70)] * 8, layout, {}, tmp_path)
     assert not any(bank.values())
     assert all(v['reason'] == 'reference_structure_insufficient' for v in stats.values())
-    assert not observe(image, layout, bank)['structure_multi']['geometry_consistent']
+    result = observe(image, layout, bank, reference_stats=stats)
+    assert not result['structure_multi']['geometry_consistent']
+    assert all(v['classification'] == 'reference_structure_insufficient'
+               for v in result['anchors'].values())
 
 
 def test_multiple_references_cover_contrast_modes_without_relaxing_ncc(tmp_path):
@@ -108,3 +111,30 @@ def test_wrong_dtype_or_resolution_cannot_generate_a_reference_bank(tmp_path):
         with pytest.raises(ValueError, match='reference-resolution'):
             freeze_bank([frame] * 8, layout, {}, tmp_path)
     assert not list(tmp_path.iterdir())
+
+
+def test_persistent_structure_with_no_nonself_ncc_support_is_not_missing_structure(tmp_path):
+    image, layout = scene()
+    training = []
+    for code in range(8):
+        frame = image.copy()
+        patch = np.empty((40, 80, 3), np.uint8)
+        for cell in range(8):
+            tile = np.full((20, 20, 3), 40, np.uint8)
+            cv2.rectangle(tile, (5, 5), (14, 14), (215,) * 3, 2)
+            if (code & cell).bit_count() % 2:
+                tile = 255 - tile
+            row, col = divmod(cell, 4)
+            patch[row * 20:(row + 1) * 20, col * 20:(col + 1) * 20] = tile
+        for roi in layout.regions.values():
+            x, y, r, b = roi.pixel_bounds(480, 240)
+            frame[y:b, x:r] = patch
+        training.append(frame)
+    bank, stats = freeze_bank(training, layout, {}, tmp_path)
+    assert all(not refs for refs in bank.values())
+    assert all(v['mask_population'] >= 64 and v['reason'] == 'training_support_missing'
+               for v in stats.values())
+    result = observe(image, layout, bank, reference_stats=stats)
+    assert all(v['classification'] == 'reference_training_support_missing'
+               for v in result['anchors'].values())
+    assert not result['structure_multi']['geometry_consistent']
