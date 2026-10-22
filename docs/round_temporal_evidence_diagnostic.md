@@ -147,3 +147,59 @@ WON/LOST must also agree with which declared ally/enemy Score role incremented.
 A disagreement remains UNKNOWN. This check assumes the Profile's role bindings;
 it does not verify team identity on a Spectator screen. Unknown or wrong role
 ownership still prevents semantic correctness/qualification claims.
+
+## End through purchase and the next active clock
+
+`scripts.diagnostics.round_lifecycle_evidence` extends the same private input and
+DEVELOPMENT admission/Exposure/output contracts. It reuses the End integrator;
+it does not change its Result/Score/Timer guards or publish runtime events:
+
+```sh
+python -m scripts.diagnostics.round_lifecycle_evidence \
+  --review-session /private/review-session \
+  --input /private/native-observations.json \
+  --output /private/new-lifecycle-evidence.json
+```
+
+Supply the complete native coverage ledger for an explicitly bounded acquisition.
+Frames not analysed have null reader values and unknown geometry; they are not
+negatives. Retain every PTS/hash/epoch even if only a fixed fraction of native
+frames are saved and read. Existing observations may be reused only after source,
+PTS, timebase and decoded pixel hash agree with the new acquisition. Preserve
+their original witnesses; a new epoch comes from a new continuous acquisition,
+never from relabelling separate old windows. PTS regularity does not prove visual
+continuity. Source cuts, missing frames and different epochs split association.
+
+After the existing Score/Result End proposal, the offline assembler looks for
+repeated purchase-banner observations with accepted Score, trusted geometry and
+a clock from 0 through 45 seconds. It keeps the same Score until the next clock
+reset. Purchase countdown and next-active-clock observations must agree with
+elapsed native time and clock quantization. Two observations no more than one
+second apart support a phase; association stops after 90 seconds. These are
+explicit offline bounds, not changes to canonical tolerances or runtime policy.
+A later accepted different Score stops search; missing Score stays visible as
+UNKNOWN. Timer contradictions, untrusted geometry, incomplete End or unavailable
+purchase/start evidence keep the lifecycle UNKNOWN.
+
+The output distinguishes a purchase support interval from true purchase onset,
+and the last accepted countdown/first repeated active clock bracket from actual
+Round Start. A clock of at least 60 seconds is only an active-display hypothesis.
+A partial Result, first readable word, reviewed complete word, Score bracket and
+next clock bracket remain separate. Internal End/Start timestamps are always
+null. No meaning is assigned to unanalysed frames or hidden menu contents.
+
+`review_scores(packet, response)` validates a packet-bound human transcription of
+screen-left/right Score digits. No predictions are used as default answers. The
+import workflow checks original frame hashes before using the returned witness.
+Optional `human_score_observation` retains that witness and receipt on an exact
+source/PTS/timebase/pixel match. A known human/reader disagreement vetoes the
+lifecycle; human digits never replace reader values or certify missing geometry.
+Unknown digits stay unknown. Targeted DEVELOPMENT confirmation is not population
+digit accuracy, team ownership, Human GT creation or independent qualification.
+
+A bounded real DEVELOPMENT acquisition associated one known End proposal with
+purchase and a next-clock reset using unchanged global calibration. Short old
+acquisitions remain incomplete. Acquisition-local upper-HUD support was tested
+privately but did not improve this lifecycle and was not adopted. Menu occlusion
+and dynamic top-HUD changes therefore still produce UNKNOWN geometry. No
+Production Matcher/Profile, threshold, Canonical GT or ownership rule changed.

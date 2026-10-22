@@ -11,6 +11,7 @@ import json
 import math
 import re
 from collections import defaultdict
+from collections.abc import Callable
 from copy import deepcopy
 from fractions import Fraction
 from pathlib import Path
@@ -395,7 +396,9 @@ def integrate(rows: list[dict[str, Any]]) -> dict[str, Any]:
             "formal_events": [], "qualification_created": False, "approved_gt": False}
 
 
-def run(session: Path, input_path: Path, output: Path) -> dict[str, Any]:
+def run(session: Path, input_path: Path, output: Path, *,
+        integrator: Callable[[list[dict[str, Any]]], dict[str, Any]] = integrate,
+        ) -> dict[str, Any]:
     _check_output_privacy(output.resolve())
     before = sha256_file(input_path)
     raw = json.loads(input_path.read_bytes())
@@ -406,7 +409,7 @@ def run(session: Path, input_path: Path, output: Path) -> dict[str, Any]:
     if any(f["source_id"] != raw["source_id"]
            or f["source_sha256"] != raw["source_sha256"] for f in raw["rows"]):
         raise ValueError("frame source differs from declared source")
-    report = integrate(raw["rows"])
+    report = integrator(raw["rows"])
     if sha256_file(input_path) != before:
         raise ValueError("input evidence changed")
     report.update(input_sha256=before, implementation_sha256=sha256_file(Path(__file__)))
