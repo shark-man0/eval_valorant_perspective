@@ -7,6 +7,7 @@ Recognized text is not a qualified round-end event, including at a content cut.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 from pathlib import Path
@@ -15,8 +16,10 @@ from typing import Any, cast
 import cv2
 
 from scripts.diagnostics.diagnose_round_lifecycle import sha256_file
+from scripts.diagnostics.result_title_region import title_region
 from valorant_ai_coach.hud.calibrate_temporal import _check_output_privacy
 from valorant_ai_coach.hud.layout import HudLayout, NormalizedRoi
+from valorant_ai_coach.hud.readers import ReaderResult
 from valorant_ai_coach.hud.templates import TesseractTextReader
 from valorant_ai_coach.hud.timer_glyphs import ImageU8
 
@@ -70,15 +73,51 @@ def load_method(path: Path) -> dict[str, Any]:
             or not 0 <= bounds[0] < bounds[2] <= 1
             or not 0 <= bounds[1] < bounds[3] <= 1):
         raise ValueError("invalid configured text subregion")
+    strategy = raw.get("region_strategy", "configured_subregion")
+    if not isinstance(strategy, str) or strategy not in {
+        "configured_subregion", "structured_title_v1",
+    } or (
+        strategy == "structured_title_v1" and (
+            raw["roi"] != "round_end_banner" or raw["language"] != "eng"
+            or raw["psm"] != 7 or bounds != [0, 0, 1, 1]
+            or raw["version"] != "semantic_result_ocr_diagnostic_v1"
+        )
+    ):
+        raise ValueError("unsupported frozen result region strategy")
     return raw
+
+
+def text_region(image: ImageU8, layout: HudLayout,
+                method: dict[str, Any]) -> tuple[ImageU8 | None, dict[str, Any]]:
+    """Pixel-preserving region selection; no OCR result or expected label input."""
+    x1, y1, x2, y2 = layout.normalized_roi(method["roi"]).pixel_bounds(
+        image.shape[1], image.shape[0],
+    )
+    crop = image[y1:y2, x1:x2]
+    if method.get("region_strategy") == "structured_title_v1":
+        diagnostic = title_region(crop)
+        if diagnostic["status"] != "PROPOSAL":
+            return None, diagnostic
+        a, b, c, d = diagnostic["bounds"]
+    else:
+        left, top, right, bottom = method["subregion_norm"]
+        a, b, c, d = NormalizedRoi(left, top, right - left, bottom - top).pixel_bounds(
+            crop.shape[1], crop.shape[0],
+        )
+        diagnostic = {"method": "configured_subregion", "status": "PROPOSAL"}
+    pixels = crop[b:d, a:c]
+    return pixels, {**diagnostic, "outer_pixel_bounds": [x1, y1, x2, y2],
+                    "text_pixel_bounds": [x1 + a, y1 + b, x1 + c, y1 + d],
+                    "crop_pixel_sha256": hashlib.sha256(pixels.tobytes()).hexdigest()}
 
 
 def run(video: Path, native_run: Path, layout_path: Path, method_path: Path,
         output_dir: Path, tessdata_dir: Path) -> dict[str, Any]:
     _check_output_privacy(output_dir.resolve() / "results.json")
     reader_implementation = Path(__file__).parents[2] / "src/valorant_ai_coach/hud/templates.py"
+    region_implementation = Path(__file__).with_name("result_title_region.py")
     paths = (video, native_run / "results.json", layout_path, method_path,
-             Path(__file__), reader_implementation)
+             Path(__file__), reader_implementation, region_implementation)
     hashes = [sha256_file(path) for path in paths]
     source = json.loads(paths[1].read_bytes())
     if (source.get("native_pts_coverage_verified") is not True
@@ -87,7 +126,7 @@ def run(video: Path, native_run: Path, layout_path: Path, method_path: Path,
         raise ValueError("verified native source frames and matching video required")
     method = load_method(method_path)
     layout = HudLayout.load(layout_path)
-    roi = layout.normalized_roi(method["roi"])
+    layout.normalized_roi(method["roi"])
     reader = TesseractTextReader(language=method["language"], psm=method["psm"],
                                 tessdata_dir=str(tessdata_dir))
     if reader.diagnostics or reader.executable is None:
@@ -104,6 +143,7 @@ def run(video: Path, native_run: Path, layout_path: Path, method_path: Path,
         "method_sha256": hashes[3], "method": method,
         "diagnostic_implementation_sha256": hashes[4],
         "reader_implementation_sha256": hashes[5],
+        "region_implementation_sha256": hashes[6],
         "executable_sha256": executable_hash,
         "trained_language_sha256": model_hash,
         "vocabulary": sorted(REPORT_VOCABULARY if report_role else VOCABULARY),
@@ -134,20 +174,22 @@ def run(video: Path, native_run: Path, layout_path: Path, method_path: Path,
             image = cv2.imread(str(path))
             if image is None:
                 raise ValueError("native frame unreadable")
-            x1, y1, x2, y2 = roi.pixel_bounds(image.shape[1], image.shape[0])
-            crop = image[y1:y2, x1:x2]
-            left, top, right, bottom = method["subregion_norm"]
-            sub = NormalizedRoi(left, top, right - left, bottom - top)
-            a, b, c, d = sub.pixel_bounds(crop.shape[1], crop.shape[0])
-            text_crop = crop[b:d, a:c]
+            text_crop, region = text_region(cast(ImageU8, image), layout, method)
             preprocessing = method.get("preprocessing", "gray_v1")
-            if preprocessing in {"white210_v1", "white210_horizontal2_v1"}:
+            if text_crop is not None and preprocessing in {
+                "white210_v1", "white210_horizontal2_v1",
+            }:
                 gray = cv2.cvtColor(text_crop, cv2.COLOR_BGR2GRAY)
-                _, text_crop = cv2.threshold(gray, 210, 255, cv2.THRESH_BINARY_INV)
+                _, processed = cv2.threshold(gray, 210, 255, cv2.THRESH_BINARY_INV)
+                text_crop = cast(ImageU8, processed)
                 if preprocessing == "white210_horizontal2_v1":
-                    text_crop = cv2.resize(text_crop, (text_crop.shape[1] * 2, text_crop.shape[0]),
-                                           interpolation=cv2.INTER_NEAREST)
-            result = reader.read(cast(ImageU8, image), cast(ImageU8, text_crop))
+                    text_crop = cast(ImageU8, cv2.resize(
+                        text_crop, (text_crop.shape[1] * 2, text_crop.shape[0]),
+                        interpolation=cv2.INTER_NEAREST,
+                    ))
+            result = (ReaderResult(None, 0.0, ("result_title_region_unknown",))
+                      if text_crop is None else
+                      reader.read(cast(ImageU8, image), text_crop))
             if sha256_file(path) != row["frame_sha256"]:
                 raise ValueError("native frame changed during OCR")
             results.append({
@@ -161,6 +203,8 @@ def run(video: Path, native_run: Path, layout_path: Path, method_path: Path,
                     accepted_report_text(result.value, result.confidence) if report_role else None
                 ),
                 "round_end_emitted": False,
+                **({"region_diagnostics": region}
+                   if method.get("region_strategy") == "structured_title_v1" else {}),
             })
         windows.append({"window_sec": window["window_sec"], "rows": results})
     if (hashes != [sha256_file(path) for path in paths]
