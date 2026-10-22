@@ -86,7 +86,8 @@ def test_blank_color_only_and_nonself_controls_do_not_supply_position(marker_cas
     assert result.reason == "nonself_not_separated"
 
 
-@pytest.mark.parametrize("state", ["spectator_first_person", "unknown", "remote_control_view"])
+@pytest.mark.parametrize("state", ["spectator_first_person", "unknown", "remote_control_view",
+                                  "buy_menu_open", "expanded_tactical_map"])
 def test_pixel_integration_blocks_nonself_states_and_production_values(marker_case, state):
     spec, crop = marker_case
     profile = {
@@ -186,3 +187,54 @@ def test_missing_player_hud_and_transition_reset_even_matching_appearance(marker
         raw = result["measurement_meta"]["minimap_self_observation"]
         assert raw["reason"] == "ownership_blocked"
         assert raw["x_roi_norm"] is None
+
+
+def test_empty_negative_references_fail_closed(marker_case):
+    spec, crop = marker_case
+    result = SelfMarkerTracker().observe(
+        crop, 0, dict(spec, negative_templates=[]), ownership_eligible=True,
+    )
+    assert result.reason == "invalid_reference_profile"
+    assert result.x_roi_norm is None
+
+
+@pytest.mark.parametrize("replacement", ["changed", "deleted", "corrupt"])
+def test_same_path_reference_updates_cannot_reuse_old_pixels(marker_case, replacement):
+    from pathlib import Path
+
+    spec, crop = marker_case
+    tracker = SelfMarkerTracker()
+    assert tracker.observe(crop, 0, spec, ownership_eligible=True).x_roi_norm is not None
+    path = Path(spec["positive_templates"][0])
+    if replacement == "changed":
+        assert cv2.imwrite(str(path), np.random.default_rng(77).integers(
+            0, 256, (17, 17, 3), np.uint8,
+        ))
+    elif replacement == "deleted":
+        path.unlink()
+    else:
+        path.write_bytes(b"broken png")
+    result = tracker.observe(crop, .2, spec, ownership_eligible=True)
+    assert result.x_roi_norm is None
+    assert result.track_id is None
+
+
+def test_malformed_mode_is_unknown_instead_of_type_error(marker_case):
+    spec, crop = marker_case
+    result = SelfMarkerTracker().observe(
+        crop, 0, dict(spec, mode=[]), ownership_eligible=True,
+    )
+    assert result.reason == "invalid_reference_profile"
+
+
+@pytest.mark.parametrize("invalid", [None, "bad-time"])
+def test_non_numeric_time_fails_closed(marker_case, invalid):
+    spec, crop = marker_case
+    result = SelfMarkerTracker().observe(crop, invalid, spec, ownership_eligible=True)
+    assert result.reason == "invalid_time"
+
+
+def test_failed_decoder_roi_is_unknown(marker_case):
+    spec, _ = marker_case
+    result = SelfMarkerTracker().observe(None, 0, spec, ownership_eligible=True)
+    assert result.reason == "invalid_roi"

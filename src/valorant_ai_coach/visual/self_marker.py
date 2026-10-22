@@ -8,6 +8,7 @@ identity even when it can measure and track an appearance position.
 
 from __future__ import annotations
 
+import hashlib
 import math
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -63,25 +64,35 @@ class SelfMarkerTracker:
             return False
         positive = spec.get("positive_templates", [])
         negative = spec.get("negative_templates", [])
+        mode = spec.get("mode")
         if (
-            spec.get("mode") not in {"appearance_v1", "portrait_v2"}
+            not isinstance(mode, str) or mode not in {"appearance_v1", "portrait_v2"}
             or not isinstance(positive, list) or not isinstance(negative, list)
             or not 1 <= len(positive) <= 4 or not 1 <= len(negative) <= 8
             or any(not isinstance(p, str) or not p for p in positive + negative)
         ):
             return False
-        key = (str(spec["mode"]),) + tuple(positive) + ("",) + tuple(negative)
+        contents = []
+        try:
+            for path in positive + negative:
+                # Bounded reads, including on cache hits: a path/mtime is not
+                # evidence that the reference pixels are unchanged.
+                with Path(path).open("rb") as source:
+                    content = source.read(1_000_001)
+                if len(content) > 1_000_000:
+                    return False
+                contents.append(content)
+        except (OSError, ValueError):
+            self._key, self._references, self._negatives = None, [], []
+            return False
+        key = ((mode,) + tuple(positive) + ("",) + tuple(negative)
+               + tuple(hashlib.sha256(content).hexdigest() for content in contents))
         if key == self._key:
             return bool(self._references)
         self.reset()
         self._key, self._references, self._negatives = key, [], []
         images = []
-        for path in positive + negative:
-            # Reject unreasonable image files before decoding them.
-            file = Path(path)
-            if not file.is_file() or file.stat().st_size > 1_000_000:
-                return False
-            content = file.read_bytes()
+        for content in contents:
             if len(content) < 24 or content[:16] != b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR":
                 return False
             width, height = int.from_bytes(content[16:20]), int.from_bytes(content[20:24])
@@ -122,8 +133,14 @@ class SelfMarkerTracker:
 
         if not ownership_eligible:
             return unknown("ownership_blocked")
-        if not math.isfinite(time_sec) or time_sec < 0:
+        try:
+            valid_time = math.isfinite(time_sec) and time_sec >= 0
+        except (TypeError, ValueError):
+            valid_time = False
+        if not valid_time:
             return unknown("invalid_time")
+        if not isinstance(crop, np.ndarray):
+            return unknown("invalid_roi")
         if not self._load(spec):
             return unknown("invalid_reference_profile")
         h, w = self._references[0].shape[:2]
