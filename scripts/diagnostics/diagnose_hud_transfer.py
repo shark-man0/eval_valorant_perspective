@@ -17,8 +17,12 @@ from typing import Any
 import cv2
 import numpy as np
 
-from scripts.diagnostics.diagnose_geometry_edges import edge_candidate, raw_scores
-from scripts.diagnostics.geometry_edge_similarity import measure
+from scripts.diagnostics.diagnose_geometry_edges import (
+    edge_candidate,
+    persistent_structure,
+    raw_scores,
+)
+from scripts.diagnostics.geometry_edge_similarity import features, measure
 from valorant_ai_coach.hud.analyzers import _detect_letterbox
 from valorant_ai_coach.hud.calibrate_temporal import ANCHORS, _check_output_privacy
 from valorant_ai_coach.hud.layout import HudLayout, NormalizedRoi
@@ -34,10 +38,35 @@ class Reference:
     training_index: int
 
 
+def _specific_structure(template: np.ndarray, mask: np.ndarray) -> bool:
+    """Reject sparse/localized edges and generic one/two-direction contours.
+
+    This is only a frozen diagnostic specificity gate, never semantic HUD proof.
+    """
+    edges, real, imaginary = features(template, mask)
+    if int(edges.sum()) < 32:
+        return False
+    angle = np.mod(np.arctan2(imaginary, real) / 2, np.pi)
+    bins = np.floor(np.mod(angle + np.pi / 8, np.pi) / (np.pi / 4)).astype(int)
+    counts = np.bincount(bins[edges], minlength=4)
+    height, width = edges.shape
+    ys, xs = np.nonzero(edges)
+    cells = set(zip(np.minimum(ys * 4 // height, 3),
+                    np.minimum(xs * 4 // width, 3), strict=True))
+    return int(np.count_nonzero(counts >= 8)) >= 3 and len(cells) >= 4
+
+
 def freeze_bank(training: list[np.ndarray], layout: HudLayout, base: dict[str, Any],
-                output: Path) -> tuple[dict[str, list[Reference]], dict[str, Any]]:
+                output: Path, *, selection: str = 'ncc',
+                training_groups: list[str] | None = None,
+                ) -> tuple[dict[str, list[Reference]], dict[str, Any]]:
     """Max three references, ranked by non-self training support; no test input."""
     _check_output_privacy(output)
+    if selection not in {'ncc', 'structure'}:
+        raise ValueError('unsupported offline reference selection')
+    if selection == 'structure' and (training_groups is None or
+            len(training_groups) != len(training) or len(set(training_groups)) < 2):
+        raise ValueError('structure selection requires aligned multi-source training groups')
     if len(training) < 8 or layout.reference_resolution is None:
         raise ValueError('at least eight training images and a reference resolution required')
     width, height = layout.reference_resolution
@@ -57,20 +86,35 @@ def freeze_bank(training: list[np.ndarray], layout: HudLayout, base: dict[str, A
         if type(threshold) not in (int, float) or not math.isfinite(threshold) or not .90 <= (
                 threshold) <= 1:
             raise ValueError('unchanged NCC threshold >=0.90 required')
-        proposal = edge_candidate(crops, template_strategy='training_medoid', threshold=threshold)
+        proposal = (edge_candidate(crops, template_strategy='training_medoid', threshold=threshold)
+                    if selection == 'ncc' else None)
+        structure = persistent_structure(crops) if selection == 'structure' else None
+        if structure is not None and structure[1]['mask_population'] >= 64:
+            proposal = (np.empty(0), *structure)
         if proposal is None:
             stats[name] = {'reason': 'reference_structure_insufficient', 'reference_count': 0}
             continue
         _, mask, details = proposal
         templates = [cv2.cvtColor(im, cv2.COLOR_BGR2GRAY) for im in crops]
-        support = [raw_scores(crops, template, mask) for template in templates]
+        # The structural path never invokes raw_scores or the NCC medoid selector.
+        eligible = ([True] * len(templates) if selection == 'ncc' else
+                    [_specific_structure(template, mask) for template in templates])
+        support = ([raw_scores(crops, template, mask) for template in templates]
+                   if selection == 'ncc' else
+                   [[float(measure(template, other, mask)['score'] or 0.)
+                     for other in templates] for template in templates])
+        support_threshold = threshold if selection == 'ncc' else .90
         selected: list[int] = []
         covered: set[int] = set()
         for _ in range(3):
             choices = []
             for i, scores in enumerate(support):
-                hits = {j for j, score in enumerate(scores) if j != i and score >= threshold}
-                if i not in selected and len(hits) >= 3 and len(hits - covered) >= 3:
+                hits = {j for j, score in enumerate(scores) if j != i
+                        and score >= support_threshold and eligible[j]}
+                group_ok = selection == 'ncc' or len({(training_groups or [])[j]
+                                                     for j in hits}) >= 2
+                if (eligible[i] and group_ok and i not in selected and len(hits) >= 3
+                        and len(hits - covered) >= 3):
                     choices.append((len(hits - covered), len(hits),
                                     float(np.median(scores[:i] + scores[i + 1:])), -i, hits))
             if not choices:
@@ -104,10 +148,20 @@ def freeze_bank(training: list[np.ndarray], layout: HudLayout, base: dict[str, A
             bank[name].append(Reference(template, reference_mask, profile, search, index))
         stats[name] = {**details, 'reference_count': len(selected),
                        'selected_training_indices': selected,
-                       'reason': ('frozen_training_support' if selected
-                                  else 'training_support_missing'),
+                       'reason': ('frozen_training_support' if selected else
+                                  'training_support_missing' if selection == 'ncc' else
+                                  'reference_structure_nonspecific' if not any(eligible) else
+                                  'structural_training_support_missing'),
                        'threshold': threshold, 'selection_excludes_self': True,
                        'semantic_label': 'UNKNOWN'}
+        if selection == 'structure':
+            stats[name].update(selection='structure', ncc_used_for_selection=False,
+                               eligible_candidates=sum(eligible),
+                               structural_nonself_support=[
+                                   sum(j != i and score >= .90 and eligible[j]
+                                       for j, score in enumerate(scores))
+                                   for i, scores in enumerate(support)],
+                               structural_threshold=.90, supporter_source_groups_min=2)
     return bank, stats
 
 
@@ -155,6 +209,8 @@ def observe(image: np.ndarray, layout: HudLayout,
             missing = {
                 'reference_structure_insufficient': 'reference_structure_insufficient',
                 'training_support_missing': 'reference_training_support_missing',
+                'structural_training_support_missing': 'reference_structural_support_missing',
+                'reference_structure_nonspecific': 'reference_structure_nonspecific',
             }.get(reason, 'reference_unavailable')
             rows[name] = {'classification': missing if resolution_ok else 'resolution_mismatch',
                           'reference_count': len(references)}

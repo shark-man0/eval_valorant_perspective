@@ -138,3 +138,128 @@ def test_persistent_structure_with_no_nonself_ncc_support_is_not_missing_structu
     assert all(v['classification'] == 'reference_training_support_missing'
                for v in result['anchors'].values())
     assert not result['structure_multi']['geometry_consistent']
+
+
+def structural_modes():
+    image, layout = scene()
+    training = []
+    for code in range(8):
+        patch = np.empty((40, 80, 3), np.uint8)
+        for cell in range(8):
+            tile = np.full((20, 20, 3), 40, np.uint8)
+            cv2.rectangle(tile, (3, 3), (16, 16), (215,) * 3, 1)
+            cv2.line(tile, (5, 5), (14, 14), (180,) * 3, 1)
+            if (code & cell).bit_count() % 2:
+                tile = 255 - tile
+            row, col = divmod(cell, 4)
+            patch[row * 20:(row + 1) * 20, col * 20:(col + 1) * 20] = tile
+        frame = image.copy()
+        for roi in layout.regions.values():
+            x, y, r, b = roi.pixel_bounds(480, 240)
+            frame[y:b, x:r] = patch
+        training.append(frame)
+    return training, layout
+
+
+def test_structure_selection_removes_ncc_gate_without_calling_ncc(tmp_path, monkeypatch):
+    from scripts.diagnostics import diagnose_hud_transfer as diagnostic
+    training, layout = structural_modes()
+    legacy, stats = freeze_bank(training, layout, {}, tmp_path)
+    assert not any(legacy.values())
+    assert all(s['reason'] == 'training_support_missing' for s in stats.values())
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError('NCC must never participate in structural selection')
+
+    monkeypatch.setattr(diagnostic, 'raw_scores', forbidden)
+    monkeypatch.setattr(diagnostic, 'edge_candidate', forbidden)
+    dest = tmp_path / 'structure'
+    dest.mkdir()
+    bank, stats = freeze_bank(training, layout, {}, dest, selection='structure',
+                              training_groups=['a', 'b'] * 4)
+    assert all(len(refs) == 1 for refs in bank.values())
+    assert all(not s['ncc_used_for_selection'] and s['eligible_candidates'] == 8
+               for s in stats.values())
+    result = observe(training[1], layout, bank, reference_stats=stats)
+    assert result['structure_multi']['geometry_consistent']
+    assert not result['ncc_multi']['geometry_consistent']
+    assert result['semantic_label'] == 'UNKNOWN'
+    assert not result['production_qualified'] and not result['formal_events']
+
+
+@pytest.mark.parametrize('kind', ['rectangle', 'one_line', 'blank', 'noise'])
+def test_structure_selection_rejects_generic_or_absent_reference_features(tmp_path, kind):
+    image, layout = scene()
+    for roi in layout.regions.values():
+        x, y, r, b = roi.pixel_bounds(480, 240)
+        patch = np.full((b - y, r - x, 3), 50, np.uint8)
+        if kind == 'rectangle':
+            cv2.rectangle(patch, (8, 8), (70, 32), (220,) * 3, 1)
+        elif kind == 'one_line':
+            cv2.line(patch, (4, 20), (75, 20), (220,) * 3, 1)
+        image[y:b, x:r] = patch
+    training = ([np.random.default_rng(i).integers(0, 256, image.shape, dtype=np.uint8)
+                 for i in range(8)] if kind == 'noise' else [image] * 8)
+    bank, stats = freeze_bank(training, layout, {}, tmp_path, selection='structure',
+                              training_groups=['a', 'b'] * 4)
+    assert not any(bank.values())
+    assert all(s['reason'] in {'reference_structure_insufficient',
+                              'reference_structure_nonspecific'} for s in stats.values())
+    assert not observe(image, layout, bank, reference_stats=stats)[
+        'structure_multi']['geometry_consistent']
+
+
+def test_structure_selection_requires_cross_source_support_and_rejects_bad_positions(tmp_path):
+    training, layout = structural_modes()
+    for groups in [None, ['a'] * 8, ['a', 'b']]:
+        with pytest.raises(ValueError, match='training groups'):
+            freeze_bank(training, layout, {}, tmp_path, selection='structure',
+                        training_groups=groups)
+    base = {'anchors': {name: {'search_region': [0, 0, 1, 1]} for name in layout.regions}}
+    bank, _ = freeze_bank(training, layout, base, tmp_path, selection='structure',
+                          training_groups=['a', 'b'] * 4)
+    result = observe(training[0], layout, bank)
+    assert not result['structure_multi']['geometry_consistent']
+    assert not result['ncc_multi']['geometry_consistent']
+
+
+def test_structure_selection_is_training_only_frozen_and_write_once(tmp_path):
+    from scripts.diagnostics.diagnose_hud_transfer import bank_fingerprint
+    training, layout = structural_modes()
+    bank, stats = freeze_bank(training, layout, {}, tmp_path, selection='structure',
+                              training_groups=['a', 'b'] * 4)
+    before = bank_fingerprint(bank)
+    for image in [training[0], np.full_like(training[0], 70), 255 - training[0]]:
+        observe(image, layout, bank, reference_stats=stats)
+    assert bank_fingerprint(bank) == before
+    assert all(ref.profile.raw['anchors'][name]['threshold'] == .90
+               for name, refs in bank.items() for ref in refs)
+    with pytest.raises(FileExistsError):
+        freeze_bank(training, layout, {}, tmp_path, selection='structure',
+                    training_groups=['a', 'b'] * 4)
+
+
+def test_structure_support_from_only_one_source_cannot_select_a_reference(tmp_path, monkeypatch):
+    from scripts.diagnostics import diagnose_hud_transfer as diagnostic
+    modes, layout = structural_modes()
+    training = [modes[0]] * 4 + [modes[1]] * 4
+    # Each pattern has three non-self supporters, all from its own source.
+    monkeypatch.setattr(diagnostic, 'measure', lambda a, b, m: {
+        'score': 1. if np.array_equal(a, b) else 0.,
+    })
+    bank, stats = freeze_bank(training, layout, {}, tmp_path, selection='structure',
+                              training_groups=['a'] * 4 + ['b'] * 4)
+    assert not any(bank.values())
+    assert all(s['reason'] == 'structural_training_support_missing' for s in stats.values())
+    result = observe(modes[0], layout, bank, reference_stats=stats)
+    assert all(a['classification'] == 'reference_structural_support_missing'
+               for a in result['anchors'].values())
+
+
+def test_structural_selection_cannot_relax_ncc_matching_threshold(tmp_path):
+    training, layout = structural_modes()
+    base = {'anchors': {name: {'threshold': .89} for name in layout.regions}}
+    with pytest.raises(ValueError, match='unchanged NCC threshold'):
+        freeze_bank(training, layout, base, tmp_path, selection='structure',
+                    training_groups=['a', 'b'] * 4)
+    assert not list(tmp_path.iterdir())
