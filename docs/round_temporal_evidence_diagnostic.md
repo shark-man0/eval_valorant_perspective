@@ -98,3 +98,52 @@ Production Matcher/Profile, Canonical GT/tolerances, Self Death and Map/Visual
 code are outside this diagnostic. Private frames, timestamps, responses and
 Profiles must not be committed. Continue the HUD development branch without
 merging to main until a functional milestone is ready.
+
+## Score/Result ordering and residual-display safety
+
+The same diagnostic now searches on both sides of the adjacent Score boundary.
+Backward search is limited to the same measured pre-change score and the existing
+six-second horizon. An unread Score, another Score, acquisition boundary, native
+gap or source discontinuity stops that backward search. Exact words before and
+after Score belong to one proposal keyed by the same native Score bracket; they
+are not counted as two physical transitions.
+
+Pre-Score OCR needs a reviewed absent-display witness before its first word.
+Otherwise it might be residual Result from an earlier transition and the proposal
+remains `UNKNOWN` (`pre_result_onset_unverified`). An unread OCR result is never
+absence. This additional safety condition does not request new human reviews:
+automatic diagnosis and UNKNOWN reports continue without them. Geometry-supported
+word repetition, score endpoint geometry and Timer evidence still apply. Two
+consecutive observations of each Score state are required around the boundary to
+reject transient Score flicker. This is an offline evidence guard, not a change
+to a reader threshold or Canonical GT tolerance. Stable but wrong Score readings
+remain possible; persistence is not digit correctness or qualification.
+
+Optional `visual_result` observations retain `state` (`NONE`, `PARTIAL`,
+`COMPLETE`, `UNKNOWN`), optional exact `word`, `origin: human`, `reviewer` and
+`review_sha256`. The importing workflow must validate the original review packet,
+receipt and frame hashes before adding these observations. These receipt-bound
+observations remain separate from OCR supports. An unspecified partial word has
+`UNKNOWN_CONTENT`: it records temporal context but does not establish that it is
+the same textual Result. No partial label is completed or converted into a word.
+Reviewed NONE-to-PARTIAL intervals are observations, not guaranteed first onset.
+Reviewed complete points likewise do not establish the earliest complete display.
+
+The output separately records pre/post word ticks, ordering, partial observation
+brackets, score persistence, endpoint timer values and original visual receipts.
+Words with unread Score retain per-frame UNKNOWN and cannot support a proposal.
+Two remaining trusted word observations are still required. Buy-phase overlap,
+conflicting visual words, insufficient support, Timer reversal/reset or a word
+episode shared by multiple Score increments keeps the proposal UNKNOWN. Cross-Score clock drops are recorded without inferring an internal End;
+clock increases remain contradictory. Result support is never borrowed from a
+different acquisition. Replays retain their own witnesses, without stitching.
+
+A Result-only window, missing last Active or unobserved next purchase phase is
+still incomplete evidence. Spectator/Death/Menu safety is not established merely
+by regular native cadence or successful geometry. Use the private companion
+ledger to retain those UNKNOWN states and separate acquisitions.
+
+WON/LOST must also agree with which declared ally/enemy Score role incremented.
+A disagreement remains UNKNOWN. This check assumes the Profile's role bindings;
+it does not verify team identity on a Spectator screen. Unknown or wrong role
+ownership still prevents semantic correctness/qualification claims.

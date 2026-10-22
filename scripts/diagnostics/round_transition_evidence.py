@@ -110,6 +110,37 @@ def _bracket(a: dict[str, Any], b: dict[str, Any]) -> dict[str, Any]:
             "before": _witness(a), "after": _witness(b)}
 
 
+def _visual(f: dict[str, Any]) -> dict[str, Any] | None:
+    """Optional reviewed display observation, separate from reader support/GT.
+
+    The caller must retain the review receipt and bind it to this frame's hashes.
+    An unread OCR value must never be converted into a NONE observation.
+    """
+    v = f.get("visual_result")
+    if v is None:
+        return None
+    if (not isinstance(v, dict) or v.get("state") not in {"NONE", "PARTIAL", "COMPLETE", "UNKNOWN"}
+            or v.get("origin") != "human" or not isinstance(v.get("reviewer"), str)
+            or not v["reviewer"] or not isinstance(v.get("review_sha256"), str)
+            or re.fullmatch(r"[0-9a-f]{64}", v["review_sha256"]) is None
+            or (v.get("word") is not None and accepted_result(v["word"], 1) is None)
+            or (v["state"] == "NONE" and v.get("word") is not None)):
+        raise ValueError("invalid visual Result provenance")
+    return v
+
+
+def _timer_conflicts(frames: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    timers = [f for f in frames if _timer(f) is not None]
+    conflicts = []
+    for before, after in zip(timers, timers[1:], strict=False):
+        earlier, later = _timer(before), _timer(after)
+        assert earlier is not None and later is not None
+        elapsed = (after["tick"] - before["tick"]) * Fraction(after["time_base"])
+        if not 0 <= earlier - later <= elapsed + 1:
+            conflicts.append(_bracket(before, after))
+    return conflicts
+
+
 def _segments(
     rows: list[dict[str, Any]],
 ) -> tuple[list[list[dict[str, Any]]], list[dict[str, Any]]]:
@@ -134,6 +165,7 @@ def _segments(
             for key in ("ally_score", "enemy_score", "timer", "result"):
                 if not isinstance(f[key], dict):
                     raise ValueError("reader evidence mapping required")
+            _visual(f)
             sources.add((f["source_id"], f["source_sha256"], base))
             groups[f["epoch"]].append(f)
         except (KeyError, TypeError, ZeroDivisionError) as exc:
@@ -178,28 +210,90 @@ def _candidate(segment: list[dict[str, Any]], index: int) -> dict[str, Any]:
             score_conflicts.append(_witness(f))
             break
         end += 1
-    window = segment[index:end]
+    # Walk backward only through the same observed pre-change score. Unknown
+    # scores and native segment boundaries are barriers, never interpolation.
+    start = index - 1
+    while start > 0:
+        f = segment[start - 1]
+        if ((b["tick"] - f["tick"]) * base > ASSOCIATION_SECONDS
+                or _score(f) != _score(a)):
+            break
+        start -= 1
+    window = segment[start:end]
     raw_support = [f for f in window if _word(f)]
-    support = [f for f in raw_support if f["geometry_consistent"]]
+    support = [f for f in raw_support if f["geometry_consistent"]
+               and _score(f) == _score(a if f["tick"] < b["tick"] else b)]
+    unknown_word_scores = [f for f in raw_support if _score(f) is None]
     words = sorted({word for f in raw_support if (word := _word(f)) is not None})
     reasons = ["conflicting_score_observation"] if score_conflicts else []
     if len(words) > 1:
         reasons.append("conflicting_result_words")
+    before_score, after_score = _score(a), _score(b)
+    assert before_score is not None and after_score is not None
+    if (("WON" in words and after_score[0] != before_score[0] + 1)
+            or ("LOST" in words and after_score[1] != before_score[1] + 1)):
+        reasons.append("result_score_direction_conflict")
     if len(support) < 2:
         reasons.append("insufficient_result_support")
+    if unknown_word_scores and len(support) < 2:
+        reasons.append("result_score_unknown")
     if not a["geometry_consistent"] or not b["geometry_consistent"]:
         reasons.append("score_geometry_unknown")
-    if any(f.get("buy_phase") is True for f in raw_support):
+    # Score flicker must not become an End merely because Result is nearby.
+    stable_before = index >= 2 and _score(segment[index - 2]) == _score(a)
+    stable_after = index + 1 < len(segment) and _score(segment[index + 1]) == _score(b)
+    if not stable_before or not stable_after:
+        reasons.append("score_persistence_unverified")
+    pre_support = [f for f in raw_support if f["tick"] < b["tick"]]
+    post_support = [f for f in raw_support if f["tick"] >= b["tick"]]
+    # A word already present before Score may be an older residual banner.
+    # OCR failure is not verified absence, so require a retained human NONE
+    # witness before the first pre-score word; no condition is relaxed here.
+    if pre_support and not any(
+        f["tick"] < pre_support[0]["tick"] and (v := _visual(f)) and v["state"] == "NONE"
+        for f in window
+    ):
+        reasons.append("pre_result_onset_unverified")
+    visual = []
+    partial_brackets = []
+    last_clear = None
+    for f in window:
+        v = _visual(f)
+        if v is None:
+            continue
+        consistent_word = v.get("word") is not None and v["word"] in words
+        association = "MATCHING_CONTENT" if consistent_word else "UNKNOWN_CONTENT"
+        if v["state"] == "NONE":
+            association = "CLEARANCE_CONTEXT"
+            last_clear = f
+            if _word(f) is not None:
+                reasons.append("visual_result_conflicts_with_reader")
+        elif v.get("word") is not None and words and not consistent_word:
+            reasons.append("visual_result_conflicts_with_reader")
+        if v["state"] == "PARTIAL" and last_clear is not None:
+            partial_brackets.append({**_bracket(last_clear, f),
+                                     "meaning": "reviewed NONE to PARTIAL; onset may be earlier",
+                                     "content_status": association})
+            last_clear = None
+        visual.append({**_witness(f), **v, "association": association})
+    visible = raw_support + [f for f in window if (v := _visual(f))
+                             and v["state"] in {"PARTIAL", "COMPLETE"}]
+    first_tick = min((f["tick"] for f in visible), default=b["tick"])
+    last = max((f["tick"] for f in visible), default=b["tick"])
+    if any(f.get("buy_phase") is True for f in window
+           if min(first_tick, a["tick"]) <= f["tick"] <= max(last, b["tick"])):
         reasons.append("preparation_overlaps_result")
-    last = raw_support[-1]["tick"] if raw_support else b["tick"]
-    timers = [f for f in window if f["tick"] <= last and _timer(f) is not None]
-    timer_conflicts = []
-    for before, after in zip(timers, timers[1:], strict=False):
-        earlier, later = _timer(before), _timer(after)
-        assert earlier is not None and later is not None
-        elapsed = (after["tick"] - before["tick"]) * base
-        if not 0 <= earlier - later <= elapsed + 1:
-            timer_conflicts.append(_bracket(before, after))
+    # A legitimate clock change across Score is recorded separately. Neither
+    # its direction nor a clock reset alone proves an End or a next Round.
+    timer_end = max(last, segment[min(index + 1, len(segment) - 1)]["tick"])
+    after_frames = [f for f in window if b["tick"] <= f["tick"] <= timer_end]
+    timers = [f for f in after_frames if _timer(f) is not None]
+    timer_conflicts = _timer_conflicts(after_frames) + _timer_conflicts(
+        [f for f in window if first_tick <= f["tick"] < b["tick"]])
+    before_timer, after_timer = _timer(a), _timer(b)
+    if before_timer is not None and after_timer is not None and after_timer > before_timer:
+        timer_conflicts.append(_bracket(a, b))
+        reasons.append("timer_reset_at_score_boundary")
     if timer_conflicts:
         reasons.append("timer_contradiction")
     elif len(timers) < 2:
@@ -218,18 +312,33 @@ def _candidate(segment: list[dict[str, Any]], index: int) -> dict[str, Any]:
             "reasons": reasons, "score_boundary": score_boundary,
             "score_before": _score(a), "score_after": _score(b),
             "score_conflicts": score_conflicts,
+            "result_order": ("BOTH_SIDES" if pre_support and post_support else
+                             "BEFORE_SCORE" if pre_support else
+                             "AFTER_SCORE" if post_support else "UNOBSERVED"),
+            "result_before_score_ticks": [f["tick"] for f in pre_support],
+            "result_after_score_ticks": [f["tick"] for f in post_support],
+            "visual_result_observations": visual,
+            "partial_display_brackets": partial_brackets,
+            "score_persistence": {"before": stable_before, "after": stable_after},
+            "score_endpoint_timer_values": [_timer(a), _timer(b)],
             "result_words": words, "result_support_ticks": [f["tick"] for f in support],
             "unread_result_ticks_between_support": unknown_ticks,
             "result_support_witnesses": [_witness(f) for f in support],
             "raw_result_witnesses": [_witness(f) for f in raw_support],
-            "geometry_rejected_word_observations": len(raw_support) - len(support),
+            "geometry_rejected_word_observations": sum(
+                not f["geometry_consistent"] for f in raw_support),
+            "unknown_score_word_observations": [
+                {**_witness(f), "status": "UNKNOWN", "reason": "result_score_unknown"}
+                for f in unknown_word_scores],
             "first_word_bracket": bracket,
             "timer_status": "CONTRADICTORY" if timer_conflicts else (
                 "CONSISTENT" if len(timers) >= 2 else "UNKNOWN"),
             "timer_conflicts": timer_conflicts, "timer_observation_count": len(timers),
             "complete_display_status": "UNVERIFIED", "internal_End_tick": None,
             "physical_event_id": None, "source_continuity": "UNVERIFIED",
-            "acquisitions": [{"epoch": b["epoch"], "score_boundary": score_boundary}],
+            "acquisitions": [{"epoch": b["epoch"], "score_boundary": score_boundary,
+                              "raw_result_witnesses": [_witness(f) for f in raw_support],
+                              "visual_result_observations": visual}],
             "formal_events": []}
 
 
@@ -257,6 +366,18 @@ def integrate(rows: list[dict[str, Any]]) -> dict[str, Any]:
                 existing["acquisitions"].extend(c["acquisitions"])
             else:
                 candidates[c["candidate_id"]] = c
+    owners: dict[tuple[str, int], set[str]] = defaultdict(set)
+    for key, c in candidates.items():
+        for f in c["raw_result_witnesses"]:
+            owners[(f["epoch"], f["tick"])].add(key)
+    for keys in owners.values():
+        if len(keys) > 1:
+            for key in keys:
+                c = candidates[key]
+                c["status"] = "UNKNOWN"
+                reason = "result_shared_between_score_boundaries"
+                if reason not in c["reasons"]:
+                    c["reasons"].append(reason)
     orphan_groups: dict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
     for f in rows:
         word = _word(f)
