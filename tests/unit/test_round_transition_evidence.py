@@ -136,7 +136,8 @@ def score_profile(tmp_path: Path):
         cv2.imwrite(str(tmp_path / f"{i}.png"), im)
     path = tmp_path / "profile.json"
     path.write_text(json.dumps({"schema_version": "1.0",
-                               "readers": {n: spec for n in ["ally_score", "enemy_score"]}}))
+                               "readers": {n: spec for n in ["ally_score", "enemy_score"]}}),
+                    encoding="utf-8")
     return path
 
 
@@ -174,7 +175,7 @@ def test_cli_enforces_development_binding_and_exclusive_private_output(tmp_path,
 
     inp, out = tmp_path / "input.json", tmp_path / "output.json"
     inp.write_text(json.dumps({"source_id": "dev", "source_sha256": "a" * 64,
-                               "rows": transition()}))
+                               "rows": transition()}), encoding="utf-8")
     calls = []
     monkeypatch.setattr(module, "development_sources", lambda _: [
         {"video_id": "dev", "source_sha256": "a" * 64}])

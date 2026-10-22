@@ -213,7 +213,7 @@ def _candidate(segment: list[dict[str, Any]], index: int) -> dict[str, Any]:
                      and raw_support[0]["tick"] < f["tick"] < raw_support[-1]["tick"]
                      and _word(f) is None]
     key = json.dumps([b["source_sha256"], str(base), a["tick"], b["tick"], _score(b)])
-    return {"candidate_id": hashlib.sha256(key.encode()).hexdigest(),
+    return {"candidate_id": hashlib.sha256(key.encode("utf-8")).hexdigest(),
             "status": "UNKNOWN" if reasons else "DEVELOPMENT_TRANSITION_CANDIDATE",
             "reasons": reasons, "score_boundary": score_boundary,
             "score_before": _score(a), "score_after": _score(b),
