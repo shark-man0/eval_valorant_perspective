@@ -10,6 +10,7 @@ if str(ROOT) not in sys.path:
 
 from scripts.diagnostics import diagnose_result_text as diagnostic  # noqa: E402
 from tests.unit.test_native_scene_correspondence_diagnostic import inputs  # noqa: E402
+from tests.unit.test_result_title_region import banner  # noqa: E402
 from valorant_ai_coach.hud.readers import ReaderResult  # noqa: E402
 
 
@@ -117,6 +118,58 @@ def test_short_result_display_is_diagnostic_only(tmp_path, monkeypatch, text):
     assert not result["qualification_created"] and not result["profile_adopted"]
     assert all(row["accepted_result_text"] == text and not row["round_end_emitted"]
                for window in result["windows"] for row in window["rows"])
+
+
+def structured_inputs(tmp_path, monkeypatch, *, clipped=False):
+    import cv2
+
+    args = fixture(tmp_path, monkeypatch, result_text="LOST")
+    layout = json.loads(args[2].read_text(encoding="utf-8"))
+    layout["regions"] = {"round_end_banner": {"x": 0, "y": 0, "width": 1, "height": 1}}
+    args[2].write_text(json.dumps(layout), encoding="utf-8")
+    data = json.loads((args[1] / "results.json").read_bytes())
+    for number, row in enumerate(data["windows"][0]["rows"], 1):
+        path = args[1] / "window-000" / f"frame_{number:06d}.png"
+        assert cv2.imwrite(str(path), banner(x=420 if clipped else 85))
+        row["frame_sha256"] = diagnostic.sha256_file(path)
+    (args[1] / "results.json").write_text(json.dumps(data), encoding="utf-8")
+    args[3].write_text(json.dumps({**method(), "roi": "round_end_banner",
+                                  "region_strategy": "structured_title_v1"}), encoding="utf-8")
+    return args
+
+
+def test_structured_region_reuses_native_hash_checks_and_never_emits(tmp_path, monkeypatch):
+    result = diagnostic.run(*structured_inputs(tmp_path, monkeypatch))
+    assert result["events_emitted"] == 0 and not result["qualification_created"]
+    assert not result["profile_adopted"]
+    for window in result["windows"]:
+        for row in window["rows"]:
+            assert row["accepted_result_text"] == "LOST"
+            assert row["region_diagnostics"]["status"] == "PROPOSAL"
+            assert row["region_diagnostics"]["semantic_completeness"] == "UNKNOWN"
+            assert not row["round_end_emitted"]
+
+
+def test_clipped_outer_glyphs_skip_ocr_instead_of_repairing_a_word(tmp_path, monkeypatch):
+    args = structured_inputs(tmp_path, monkeypatch, clipped=True)
+    # The fixture OCR would confidently return LOST; it must never be consulted.
+    def forbidden(*args):
+        raise AssertionError("clipped region must stay unknown before OCR")
+    monkeypatch.setattr(diagnostic.TesseractTextReader, "read", forbidden)
+    result = diagnostic.run(*args)
+    assert all(row["accepted_result_text"] is None and row["reader_confidence"] == 0
+               for window in result["windows"] for row in window["rows"])
+
+
+@pytest.mark.parametrize("change", [{"roi": "combat_report"}, {"region_strategy": []},
+                                   {"subregion_norm": [.1, 0, 1, 1]}, {"psm": 13}])
+def test_structured_title_strategy_is_explicit_and_result_only(tmp_path, change):
+    path = tmp_path / "method.json"
+    path.write_text(json.dumps({**method(), "roi": "round_end_banner",
+                               "region_strategy": "structured_title_v1", **change}),
+                    encoding="utf-8")
+    with pytest.raises(ValueError):
+        diagnostic.load_method(path)
 
 
 def test_rawline_mode_reaches_reader_without_promoting_result(tmp_path, monkeypatch):
