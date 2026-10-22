@@ -10,6 +10,7 @@ import argparse
 import json
 import math
 from pathlib import Path
+from typing import Any, cast
 
 import cv2
 
@@ -17,8 +18,11 @@ from scripts.diagnostics.diagnose_round_lifecycle import sha256_file
 from valorant_ai_coach.hud.calibrate_temporal import _check_output_privacy
 from valorant_ai_coach.hud.layout import HudLayout, NormalizedRoi
 from valorant_ai_coach.hud.templates import TesseractTextReader
+from valorant_ai_coach.hud.timer_glyphs import ImageU8
 
-VOCABULARY = frozenset({"TEAM ACE", "VICTORY", "DEFEAT", "FLAWLESS", "THRIFTY", "ACE"})
+VOCABULARY = frozenset({
+    "TEAM ACE", "VICTORY", "DEFEAT", "FLAWLESS", "THRIFTY", "ACE", "WON", "LOST",
+})
 REPORT_VOCABULARY = frozenset({"ラウンドが進行中", "アビリティー"})
 
 
@@ -40,8 +44,8 @@ def accepted_report_text(text: str | None, confidence: float) -> str | None:
     return normalized if normalized in REPORT_VOCABULARY else None
 
 
-def load_method(path: Path) -> dict:
-    raw = json.loads(path.read_bytes())
+def load_method(path: Path) -> dict[str, Any]:
+    raw: dict[str, Any] = json.loads(path.read_bytes())
     valid_role = (
         raw.get("version") == "semantic_result_ocr_diagnostic_v1"
         and raw.get("language") == "eng"
@@ -70,7 +74,7 @@ def load_method(path: Path) -> dict:
 
 
 def run(video: Path, native_run: Path, layout_path: Path, method_path: Path,
-        output_dir: Path, tessdata_dir: Path) -> dict:
+        output_dir: Path, tessdata_dir: Path) -> dict[str, Any]:
     _check_output_privacy(output_dir.resolve() / "results.json")
     reader_implementation = Path(__file__).parents[2] / "src/valorant_ai_coach/hud/templates.py"
     paths = (video, native_run / "results.json", layout_path, method_path,
@@ -86,7 +90,7 @@ def run(video: Path, native_run: Path, layout_path: Path, method_path: Path,
     roi = layout.normalized_roi(method["roi"])
     reader = TesseractTextReader(language=method["language"], psm=method["psm"],
                                 tessdata_dir=str(tessdata_dir))
-    if reader.diagnostics:
+    if reader.diagnostics or reader.executable is None:
         raise ValueError("configured OCR unavailable: " + ",".join(reader.diagnostics))
     report_role = method["version"] == "combat_report_text_ocr_diagnostic_v1"
     model_path = tessdata_dir / f"{method['language']}.traineddata"
@@ -143,7 +147,7 @@ def run(video: Path, native_run: Path, layout_path: Path, method_path: Path,
                 if preprocessing == "white210_horizontal2_v1":
                     text_crop = cv2.resize(text_crop, (text_crop.shape[1] * 2, text_crop.shape[0]),
                                            interpolation=cv2.INTER_NEAREST)
-            result = reader.read(image, text_crop)
+            result = reader.read(cast(ImageU8, image), cast(ImageU8, text_crop))
             if sha256_file(path) != row["frame_sha256"]:
                 raise ValueError("native frame changed during OCR")
             results.append({
