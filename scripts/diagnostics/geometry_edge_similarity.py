@@ -8,6 +8,7 @@ this explicitly measures pixel-scale rendering jitter, not geometric alignment.
 from __future__ import annotations
 
 import math
+from typing import Any
 
 import cv2
 import numpy as np
@@ -25,7 +26,8 @@ def features(gray: np.ndarray, mask: np.ndarray) -> tuple[np.ndarray, np.ndarray
     return edges, (gx * gx - gy * gy) / denominator, 2 * gx * gy / denominator
 
 
-def _coverage(source: tuple, target: tuple) -> float:
+def _coverage(source: tuple[np.ndarray, np.ndarray, np.ndarray],
+              target: tuple[np.ndarray, np.ndarray, np.ndarray]) -> float:
     edges, real, imaginary = source
     other, other_real, other_imaginary = target
     best = np.zeros(edges.shape, np.float32)
@@ -43,7 +45,7 @@ def _coverage(source: tuple, target: tuple) -> float:
     return float(best[edges].mean()) if edges.any() else 0.0
 
 
-def measure(template: np.ndarray, image: np.ndarray, mask: np.ndarray) -> dict:
+def measure(template: np.ndarray, image: np.ndarray, mask: np.ndarray) -> dict[str, Any]:
     if template.shape != image.shape:
         raise ValueError("edge comparison does not rescale or align images")
     reference, observed = features(template, mask), features(image, mask)
