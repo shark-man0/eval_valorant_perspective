@@ -37,14 +37,8 @@ def summary(values: list[float]) -> dict[str, Any]:
     return {"min": min(values), "median": float(np.median(values)), "max": max(values)}
 
 
-def edge_candidate(
-    images: list[np.ndarray], *, template_strategy: str = "median", threshold: float = .90,
-) -> tuple[np.ndarray, np.ndarray, dict[str, Any]] | None:
-    """Frozen experimental proposal; no holdout pixels or state labels accepted."""
-    if template_strategy not in {"median", "training_medoid"}:
-        raise ValueError("unsupported diagnostic template strategy")
-    if not math.isfinite(threshold) or not .90 <= threshold <= 1:
-        raise ValueError("diagnostic NCC threshold must remain >=0.90")
+def persistent_structure(images: list[np.ndarray]) -> tuple[np.ndarray, dict[str, Any]] | None:
+    """Training-only edge/orientation mask; no template ranking or NCC calls."""
     if len(images) < 8 or any(image.shape != images[0].shape for image in images):
         return None
     gray = [cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) for image in images]
@@ -68,6 +62,32 @@ def edge_candidate(
     core[:, :2] = core[:, -2:] = False
     # Include both sides of an edge for informative raw-pixel NCC contrast.
     mask = cv2.dilate(core.astype(np.uint8), np.ones((3, 3), np.uint8)) * 255
+    return mask, {
+        "edge_count": int(np.count_nonzero(hits)),
+        "persistent_edge_count": int(np.count_nonzero(persistence >= .65)),
+        "stable_edge_ratio": float(np.count_nonzero(core) / max(int(np.count_nonzero(hits)), 1)),
+        "orientation_consistent_edge_count": int(np.count_nonzero(core)),
+        "orientation_consistency": summary(orientation[core].tolist()) if core.any() else None,
+        "mask_population": int(np.count_nonzero(mask)),
+        "mask_ratio": float(np.count_nonzero(mask) / mask.size),
+    }
+
+
+def edge_candidate(
+    images: list[np.ndarray], *, template_strategy: str = "median", threshold: float = .90,
+) -> tuple[np.ndarray, np.ndarray, dict[str, Any]] | None:
+    """Frozen experimental proposal; no holdout pixels or state labels accepted."""
+    if template_strategy not in {"median", "training_medoid"}:
+        raise ValueError("unsupported diagnostic template strategy")
+    if not math.isfinite(threshold) or not .90 <= threshold <= 1:
+        raise ValueError("diagnostic NCC threshold must remain >=0.90")
+    if len(images) < 8 or any(image.shape != images[0].shape for image in images):
+        return None
+    structure = persistent_structure(images)
+    if structure is None:
+        return None
+    mask, structure_details = structure
+    gray = [cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) for image in images]
     template = np.median(np.stack(gray), axis=0).astype(np.uint8)
     median_contrast = float(template[mask > 0].std()) if np.any(mask) else 0.0
     selection: dict[str, Any] = {}
@@ -82,13 +102,7 @@ def edge_candidate(
         **selection,
         "template_strategy": template_strategy,
         "median_template_contrast_std": median_contrast,
-        "edge_count": int(np.count_nonzero(hits)),
-        "persistent_edge_count": int(np.count_nonzero(persistence >= .65)),
-        "stable_edge_ratio": float(np.count_nonzero(core) / max(int(np.count_nonzero(hits)), 1)),
-        "orientation_consistent_edge_count": int(np.count_nonzero(core)),
-        "orientation_consistency": summary(orientation[core].tolist()),
-        "mask_population": int(values.size),
-        "mask_ratio": float(values.size / mask.size),
+        **structure_details,
         "selected_contrast_std": float(values.std()),
     }
     return template, mask, diagnostics
