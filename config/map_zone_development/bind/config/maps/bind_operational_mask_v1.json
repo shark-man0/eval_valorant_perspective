@@ -1,0 +1,48 @@
+{
+  "version": "1.0",
+  "mask_id": "bind_a_plant_core_qa_v1",
+  "map_id": "bind",
+  "purpose": "QA scope is only the A shaded plant core, not whole map operational coverage.",
+  "authoring_basis": "Independent erosion of source texture gold region by 4px, not generated from zone polygon union. Whole visible-floor raster stored separately.",
+  "reference_asset": "assets/bind_reference.png",
+  "reference_sha256": "84f5ff72aa58bf677617ab5792def847c1c154b38f6e7458f7234121baa3507f",
+  "polygon_norm": [
+    [
+      0.6788766788766789,
+      0.28792569659442724
+    ],
+    [
+      0.6788766788766789,
+      0.32714138286893707
+    ],
+    [
+      0.7203907203907204,
+      0.3281733746130031
+    ],
+    [
+      0.7191697191697192,
+      0.3539731682146543
+    ],
+    [
+      0.6788766788766789,
+      0.3539731682146543
+    ],
+    [
+      0.6788766788766789,
+      0.3797729618163055
+    ],
+    [
+      0.7863247863247863,
+      0.3797729618163055
+    ],
+    [
+      0.7863247863247863,
+      0.28792569659442724
+    ]
+  ],
+  "limits": {
+    "not_official_geometry": true,
+    "not_for_los": true,
+    "not_for_gameplay_event_generation": true
+  }
+}

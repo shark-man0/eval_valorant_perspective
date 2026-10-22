@@ -53,6 +53,7 @@ class SelfMarkerTracker:
         self._previous: tuple[float, tuple[float, float], int] | None = None
         self._next_id = 0
         self._shape: tuple[int, ...] | None = None
+        self._mask: Image | None = None
 
     def reset(self) -> None:
         self._previous = None
@@ -63,13 +64,13 @@ class SelfMarkerTracker:
         positive = spec.get("positive_templates", [])
         negative = spec.get("negative_templates", [])
         if (
-            spec.get("mode") != "appearance_v1"
+            spec.get("mode") not in {"appearance_v1", "portrait_v2"}
             or not isinstance(positive, list) or not isinstance(negative, list)
             or not 1 <= len(positive) <= 4 or not 1 <= len(negative) <= 8
             or any(not isinstance(p, str) or not p for p in positive + negative)
         ):
             return False
-        key = tuple(positive) + ("",) + tuple(negative)
+        key = (str(spec["mode"]),) + tuple(positive) + ("",) + tuple(negative)
         if key == self._key:
             return bool(self._references)
         self.reset()
@@ -100,7 +101,17 @@ class SelfMarkerTracker:
             return False
         self._references = images[:len(positive)]
         self._negatives = images[len(positive):]
+        self._mask = None
+        if spec["mode"] == "portrait_v2":
+            h, w = images[0].shape[:2]
+            self._mask = np.zeros((h, w), np.uint8)
+            cv2.circle(self._mask, (w//2, h//2), round(min(w, h)*.35), 255, -1)
         return True
+
+    def _scores(self, image: Image, template: Image) -> Image:
+        if self._mask is None:
+            return cv2.matchTemplate(image, template, cv2.TM_CCOEFF_NORMED)
+        return cv2.matchTemplate(image, template, cv2.TM_CCOEFF_NORMED, mask=self._mask)
 
     def observe(
         self, crop: Image, time_sec: float, spec: dict[str, Any], *, ownership_eligible: bool
@@ -125,10 +136,10 @@ class SelfMarkerTracker:
             self.reset()
             self._shape = crop.shape
         scores = np.maximum.reduce([
-            cv2.matchTemplate(crop, reference, cv2.TM_CCOEFF_NORMED)
+            self._scores(crop, reference)
             for reference in self._references
         ])
-        scores = np.nan_to_num(scores, nan=-1, posinf=-1, neginf=-1)
+        scores = np.clip(np.nan_to_num(scores, nan=-1, posinf=-1, neginf=-1), -1, 1)
         _, best, _, peak = cv2.minMaxLoc(scores)
         if best < 0.80:
             return unknown("appearance_below_threshold")
@@ -145,7 +156,7 @@ class SelfMarkerTracker:
             return unknown("appearance_ambiguous", count)
         patch = crop[y:y+h, x:x+w]
         nonself = max(
-            float(cv2.matchTemplate(patch, ref, cv2.TM_CCOEFF_NORMED)[0, 0])
+            float(self._scores(patch, ref)[0, 0])
             for ref in self._negatives
         )
         if not math.isfinite(nonself) or best - nonself < 0.12:

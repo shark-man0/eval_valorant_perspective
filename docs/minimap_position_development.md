@@ -1,5 +1,10 @@
 # Minimap appearance positions: development experiment
 
+This page preserves the initial appearance-v1 milestone and its original
+measurements. The subsequent portrait-v2 / Bind coordinate milestone is in
+[Bind development map](bind_development_map.md). Its isolated development map
+does not change the production registry described below.
+
 The current default path has no self-marker profile. Static map calibration
 cannot supply a player point, and the production registry contains only Summit.
 Two bounded DEVELOPMENT recordings also have different minimap geometry from

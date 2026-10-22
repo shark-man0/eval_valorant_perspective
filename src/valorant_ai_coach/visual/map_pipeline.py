@@ -14,11 +14,13 @@ from valorant_ai_coach.maps.resolver import ZoneResolver
 
 
 class MapTimeline:
-    def __init__(self, profile: dict[str, Any]) -> None:
+    def __init__(self, profile: dict[str, Any], *, registry: MapRegistry | None = None) -> None:
         self.profile = profile
         self.options = profile.get("map_zone", {})
         root = self.options.get("registry_root")
-        self.registry = MapRegistry(Path(root) if root else None)
+        self.registry = (
+            registry if registry is not None else MapRegistry(Path(root) if root else None)
+        )
         selected = self.registry.select(
             manual_map_id=self.options.get("manual_map_id") or None,
             map_label=self.options.get("trusted_map_label"),

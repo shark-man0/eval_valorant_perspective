@@ -1,0 +1,157 @@
+{
+  "version": "3.0",
+  "map_id": "bind",
+  "display_name": "Bind (development: plant footprints only)",
+  "geometry_version": "bind_public_plant_footprints_2026-10-22_v1",
+  "geometry_status": "development_public_texture_partial_regions",
+  "geometry_confidence_cap": 0.9,
+  "observed_client_builds": [],
+  "validity_policy": {
+    "status": "provisional_until_runtime_alignment_passes",
+    "invalidate_when": "reference minimap mask alignment fails persistently or known map geometry changes",
+    "on_invalidate": "calibration_required; do not resolve named zones"
+  },
+  "coordinate_system": {
+    "space": "normalized_map_canvas",
+    "definition": "Public Bind reference texture visible floor bounding box; x/y normalized to this bbox, never ROI or world meters.",
+    "x_range": [
+      0,
+      1
+    ],
+    "y_range": [
+      0,
+      1
+    ],
+    "origin": "top_left",
+    "orientation": "fixed public texture orientation: defender spawn above, A on right, B on left",
+    "reference_minimap_roi_px_1920x1080": [
+      0,
+      0,
+      1024,
+      1024
+    ],
+    "reference_map_mask_bbox_within_roi_px": [
+      142,
+      12,
+      961,
+      981
+    ],
+    "calibration_note": "The 1024x1024 public asset is an authoring canvas, not a 1920x1080 HUD ROI. Runtime uses explicit actual ROI and whole-outline calibration."
+  },
+  "minimap_runtime_profile": {
+    "mvp_supported_orientation": "fixed_map_orientation",
+    "require_full_static_map_mask_visible": true,
+    "dynamic_rotation_supported": false,
+    "player_centered_dynamic_crop_supported": false,
+    "zoom_or_hud_scale_change_behavior": "recalibrate static mask; if stable alignment cannot be recovered -> calibration_required",
+    "runtime_alignment_reference_asset": "assets/bind_reference.png"
+  },
+  "coverage_mask_file": "config/maps/bind_operational_mask_v1.json",
+  "resolution_priority": [
+    "location_label",
+    "polygon",
+    "coarse_fallback",
+    "unknown"
+  ],
+  "zones": [
+    {
+      "zone_id": "bind_b_plant",
+      "zone_name": "B plant footprint",
+      "kind": "site",
+      "site_id": "B",
+      "site_affinity": [
+        "B"
+      ],
+      "priority": 100,
+      "polygon_norm": [
+        [
+          0.1391941391941392,
+          0.24664602683178535
+        ],
+        [
+          0.1391941391941392,
+          0.3157894736842105
+        ],
+        [
+          0.2442002442002442,
+          0.31475748194014447
+        ],
+        [
+          0.2442002442002442,
+          0.24664602683178535
+        ]
+      ],
+      "display_group": "B_PLANT_FOOTPRINT",
+      "geometry_confidence_cap": 0.9
+    },
+    {
+      "zone_id": "bind_a_plant",
+      "zone_name": "A plant footprint",
+      "kind": "site",
+      "site_id": "A",
+      "site_affinity": [
+        "A"
+      ],
+      "priority": 100,
+      "polygon_norm": [
+        [
+          0.673992673992674,
+          0.2837977296181631
+        ],
+        [
+          0.673992673992674,
+          0.33126934984520123
+        ],
+        [
+          0.7155067155067155,
+          0.3323013415892673
+        ],
+        [
+          0.7142857142857143,
+          0.3498452012383901
+        ],
+        [
+          0.673992673992674,
+          0.3498452012383901
+        ],
+        [
+          0.673992673992674,
+          0.38390092879256965
+        ],
+        [
+          0.7912087912087912,
+          0.38390092879256965
+        ],
+        [
+          0.7912087912087912,
+          0.2837977296181631
+        ]
+      ],
+      "display_group": "A_PLANT_FOOTPRINT",
+      "geometry_confidence_cap": 0.9
+    }
+  ],
+  "sites": [
+    {
+      "site_id": "A",
+      "zone_ids": [
+        "bind_a_plant"
+      ]
+    },
+    {
+      "site_id": "B",
+      "zone_ids": [
+        "bind_b_plant"
+      ]
+    }
+  ],
+  "topology_edges": [],
+  "authoring_limits": [
+    "Only visible A/B shaded plant footprints are mapped; this is not full Site callout geometry.",
+    "Every other position is zone UNKNOWN; no invented corridor, spawn or detailed callout boundary.",
+    "Topology has no edges because no complete connecting zones have been authored.",
+    "Visible-floor raster preserves 2D texture support; it does not establish 3D walkability or line of sight.",
+    "Operational QA mask covers only an independently eroded A plant core; not whole-map zone coverage.",
+    "Published asset version unknown; recording build is checked privately and runtime alignment is mandatory."
+  ]
+}
