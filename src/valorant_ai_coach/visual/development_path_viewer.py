@@ -117,6 +117,7 @@ $('frameStatus').textContent=D.frames[index]?
 const edge=R.edges.find(e=>e.to_index===index);
 const boundary=s.region_candidate_evidence;
 const evidence=s.ownership_evidence;const reviewed=s.position_review;
+const recorder=s.recorder_view_evidence;const viewReview=s.view_review;
 const matches=s.marker_reference_evidence?.matches||[];
 const selfMatches=matches.filter(m=>m.reference_category==='self_reference_appearance').length;
 const controlMatches=matches.filter(m=>m.reference_category==='nonself_control_appearance').length;
@@ -132,7 +133,10 @@ $('detail').textContent=`本人所有: UNKNOWN / 経路区間: ${s.segment??'な
 `${boundary?.assumed_error_radius_reference_px??'未指定'} px（精度保証ではありません）\n`+
 `独立画面の根拠候補: ${evidence?.view_candidate??'未測定'} `+
 `/ ${evidence?.reasons?.join(', ')??'なし'}\n`+
-`この観測の人間確認: ${reviewed?.human_reviewed_role??'未確認'} / ROI中心との差 `+
+`録画者agentとの対応: ${recorder?.association??'未測定'} / 現在の表示候補 `+
+`${recorder?.visible_agent_candidate??'UNKNOWN'}（アカウント所有は未確定）\n`+
+`人間が確認した現在視点: ${viewReview?.human_view_role??'未確認'}（この観測のみ）\n`+
+`この観測のマーカー確認: ${reviewed?.human_reviewed_role??'未確認'} / ROI中心との差 `+
 `${reviewed?.roi_center_difference_px?.toFixed(2)??'未測定'} px / 近似Map参照との差 `+
 `${reviewed?.map_affine_reference_difference_px?.toFixed(2)??'未測定'} px（他の点へ適用しません）`;
 document.querySelectorAll('tr[data-segment]').forEach(tr=>tr.classList.toggle('active',Number(tr.dataset.segment)===s.segment));}
@@ -160,6 +164,13 @@ Object.entries(R.motion_observation_spans_sec).map(([k,v])=>
 `Zone変更が観測された区間: ${R.zone_change_brackets.length}\n`+
 `座標比較済み: ${R.coordinate_review_coverage?.reviewed_position_observations??0}点 / `+
 `未確認: ${R.coordinate_review_coverage?.unreviewed_position_observations??0}点 `+
-`（全経路の座標精度は未測定）`;
+`（全経路の座標精度は未測定）\n`+
+`録画者agent対応の位置候補: ${R.recorder_view_support?.supported_position_observations??0}点 `+
+`/ 両端対応の観測時間: `+
+`${R.recorder_view_support?.both_endpoints_supported_span_sec?.toFixed(3)??'0'} s `+
+`（自動本人所有の資格は未成立）\n`+
+`人間確認の生存視点にある位置: `+
+`${R.recorder_view_support?.human_self_live_position_observations??0}点 `+
+`（表示した観測だけ。観測間の所有・経路は保証しません）`;
 image.onload=draw;image.src=D.reference;draw();
 </script></html>'''

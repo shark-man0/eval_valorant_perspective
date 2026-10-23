@@ -619,13 +619,22 @@ def test_reusable_benchmark_freezes_inputs_and_blind_review_packet(bind_case, tm
     packet['reviews'][0].update(
         status='human_confirmed', role='SELF', source_tolerance_px=2, reference_tolerance_px=2,
         center_roi_px=[200, 200], landmark_roi_px=[[10, 10], [400, 10], [10, 400]],
-        landmark_reference_px=[[0, 0], [1024, 0], [0, 1024]])
+        landmark_reference_px=[[0, 0], [1024, 0], [0, 1024]], include_boundary_comparison=True)
+    packet['view_reviews'] = []
+    for row in packet['reviews'][:2]:
+        packet['view_reviews'].append({**row, 'status': 'human_confirmed',
+            'role': 'SELF_LIVE', 'label_origin': 'source_frame_view_review'})
     reviews_path = tmp_path/'reviews.json'
     reviews_path.write_text(json.dumps(packet), encoding='utf-8')
     source = tmp_path/'private/variant_observations_PRIVATE.json'
     frozen_bytes = source.read_bytes()
     reviewed = apply_reviews(source, reviews_path, tmp_path/'reviewed')
     assert len(reviewed['comparisons']) == 1
+    assert len(reviewed['view_comparisons']) == 2
+    assert reviewed['comparisons'][0]['reference_polygon_review'][
+        'joint_annotation_error_bound'] is None
+    assert reviewed['trajectory']['recorder_view_support'][
+        'human_self_live_position_observations'] == 2
     assert reviewed['trajectory']['coordinate_review_coverage'][
         'reviewed_position_observations'] == 1
     assert source.read_bytes() == frozen_bytes
@@ -636,3 +645,21 @@ def test_reusable_benchmark_freezes_inputs_and_blind_review_packet(bind_case, tm
     path.write_text(json.dumps(manifest), encoding='utf-8')
     with pytest.raises(ValueError, match='tick/time'):
         build(path, tmp_path/'invalid')
+
+
+@pytest.mark.parametrize('bad_frame', [3, 2])
+def test_duplicate_or_reversed_frame_cannot_extend_pipeline_track(bind_case, bad_frame):
+    _, _, frame, profile, _ = bind_case
+    timeline = DevelopmentMapTimeline(profile)
+    args = {'view': {'primary_state': 'live_first_person',
+                     'values': {'player_specific_hud_valid': True}},
+            'evidence_kind': 'source_review', 'source_id': 'synthetic',
+            'acquisition_id': 'ordered'}
+    before = timeline.observe(frame, 0, 3, **args)
+    assert before['map_position_norm'] is not None
+    with pytest.raises(ValueError, match='frame order'):
+        timeline.observe(frame, .2, bad_frame, **args)
+    after = timeline.observe(frame, .4, 4, **args)
+    assert after['map_segment'] != before['map_segment']
+    assert after['map_speed_norm_per_sec'] is None
+    assert after['zone_resolution']['zone_id'] is None

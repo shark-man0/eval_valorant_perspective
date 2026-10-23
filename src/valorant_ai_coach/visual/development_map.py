@@ -24,6 +24,7 @@ from valorant_ai_coach.video.geometry import normalized_roi_bounds
 
 from .development_boundary import candidate_boundary_evidence, validate_assumed_error_radius
 from .development_ownership import DevelopmentOwnershipEvidence
+from .development_recorder_view import DevelopmentRecorderView
 from .development_view import DevelopmentViewVeto
 from .map_pipeline import MapTimeline
 from .self_marker import MarkerPosition, MarkerReferenceInspector, SelfMarkerTracker
@@ -60,8 +61,10 @@ class DevelopmentMapTimeline:
         self.marker = SelfMarkerTracker()
         self.view_veto = DevelopmentViewVeto()
         self.ownership_evidence = DevelopmentOwnershipEvidence()
+        self.recorder_view = DevelopmentRecorderView()
         self.inspector = MarkerReferenceInspector() if inspect_reference_appearances else None
         self.previous: tuple[float, tuple[float, float], int | None] | None = None
+        self._last_order: tuple[float, int] | None = None
         self.next_segment = 0
         self.segment: int | None = None
         path = self.registry.root / "provenance.json"
@@ -90,23 +93,29 @@ class DevelopmentMapTimeline:
         self._break()
         self.marker.reset()
         self._context = None
+        self._last_order = None
         assert isinstance(self.timeline.calibrator, OutlineMinimapCalibrator)
         self.timeline.calibrator.clear_reference_cache()
 
     def observe(
         self, frame: NDArray[Any], time_sec: float, frame_index: int, *,
         view: dict[str, Any], evidence_kind: str, source_id: str, acquisition_id: str,
+        source_sha256: str | None = None,
     ) -> dict[str, Any]:
         if evidence_kind not in {"source_review", "unqualified_hud_observation"}:
             self.reset()
             raise ValueError("Explicit source of view evidence is required")
         try:
-            valid_time = math.isfinite(time_sec) and time_sec >= 0
+            valid_time = (not isinstance(time_sec, bool) and math.isfinite(time_sec)
+                          and time_sec >= 0)
         except (TypeError, ValueError):
             valid_time = False
         if not valid_time:
             self.reset()
             raise ValueError("Finite non-negative source time required")
+        if not isinstance(frame_index, int) or isinstance(frame_index, bool) or frame_index < 0:
+            self.reset()
+            raise ValueError("Non-negative integer source frame index required")
         if (not isinstance(source_id, str) or not source_id
                 or not isinstance(acquisition_id, str) or not acquisition_id):
             self.reset()
@@ -147,22 +156,36 @@ class DevelopmentMapTimeline:
             source_id=source_id, acquisition_id=acquisition_id, time_sec=time_sec,
             frame_index=frame_index,
         )
+        recorder_view = self.recorder_view.inspect(
+            frame, self.profile.get("development_recorder_view"), minimap_roi=roi,
+            source_id=source_id, source_sha256=source_sha256, acquisition_id=acquisition_id,
+        )
         context_key: tuple[Any, ...] = (
             source_id, acquisition_id, frame.shape, bounds,
             json.dumps(self.profile, sort_keys=True), json.dumps(definition.data, sort_keys=True),
         )
         if ownership_evidence["status"] != "disabled":
             context_key += (ownership_evidence["reference_fingerprint"],)
+        if recorder_view["status"] != "disabled":
+            context_key += (source_sha256, recorder_view["reference_fingerprint"])
         if context_key != self._context:
             self._break()
             self.marker.reset()
             assert isinstance(self.timeline.calibrator, OutlineMinimapCalibrator)
             self.timeline.calibrator.clear_reference_cache()
             self._context = context_key
+            self._last_order = None
+        if self._last_order is not None and (
+            time_sec <= self._last_order[0] or frame_index <= self._last_order[1]
+        ):
+            self.reset()
+            raise ValueError("Source time/frame order must increase within an acquisition")
+        self._last_order = time_sec, frame_index
         view_veto = self.view_veto.inspect(frame, self.profile.get("development_view_veto"))
         eligible = (
             not view_veto["veto"]
             and not ownership_evidence["block_position_candidate"]
+            and not recorder_view["block_position_candidate"]
             and view.get("primary_state") == "live_first_person"
             and view.get("values", {}).get("player_specific_hud_valid") is True
             and not set(view.get("state_flags", [])) & {
@@ -172,6 +195,13 @@ class DevelopmentMapTimeline:
         ownership_evidence["declared_view_conflict"] = (
             view.get("primary_state") == "live_first_person"
             and ownership_evidence["block_position_candidate"]
+        )
+        recorder_view["positive_view_support"] = (
+            recorder_view.get("positive_agent_association") is True and eligible
+        )
+        recorder_view["declared_phase"] = (
+            "purchase" if "buy_phase_banner" in view.get("state_flags", []) else
+            view.get("primary_state", "unknown")
         )
         appearance = self.marker.observe(
             frame[top:bottom, left:right], time_sec, self.profile["minimap_self_marker"],
@@ -286,6 +316,8 @@ class DevelopmentMapTimeline:
             "marker_reference_evidence": reference_evidence,
             "development_view_veto": view_veto,
             "ownership_evidence": ownership_evidence,
+            **({"recorder_view_evidence": recorder_view, "source_sha256": source_sha256}
+               if recorder_view["status"] != "disabled" else {}),
             "ownership": {"identity": "UNKNOWN", "view_eligible": eligible,
                           "observed_view": view.get("primary_state", "unknown"),
                           "view_evidence_kind": evidence_kind,

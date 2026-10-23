@@ -26,7 +26,9 @@ from valorant_ai_coach.visual.development_position_review import (
     fixed_review_indices,
     observation_fingerprint,
 )
+from valorant_ai_coach.visual.development_review_boundary import compare_review_boundaries
 from valorant_ai_coach.visual.development_trajectory import analyze_candidate_path
+from valorant_ai_coach.visual.development_view_review import compare_view_review
 
 
 def _sha(path: Path) -> str:
@@ -89,6 +91,7 @@ def build(manifest_path: Path, output: Path) -> dict[str, Any]:
                 image, frame["time_sec"], frame["frame_index"], view=frame["view"],
                 evidence_kind=manifest["view_evidence_kind"], source_id=manifest["source_id"],
                 acquisition_id=manifest["acquisition_id"],
+                source_sha256=manifest.get("source_sha256"),
             )
             elapsed += time.perf_counter()-started
             if _sha(image_path) != frame["image_sha256"]:
@@ -187,7 +190,12 @@ def apply_reviews(observations: Path, reviews_path: Path, output: Path) -> dict[
     records = saved["records"]
     if not 1 <= len(records) <= 5000:
         raise ValueError("Bounded saved observations required")
-    reviews = json.loads(reviews_path.read_text(encoding="utf-8"))["reviews"]
+    responses = json.loads(reviews_path.read_text(encoding="utf-8"))
+    reviews = responses.get("reviews", [])
+    view_reviews = responses.get("view_reviews", [])
+    if not isinstance(view_reviews, list) or len(view_reviews) > len(records):
+        raise ValueError("View review count must be bounded by acquired observations")
+    definition = development_registry(records[0]["map_id"]).load(records[0]["map_id"])
     if not isinstance(reviews, list) or len(reviews) > len(records):
         raise ValueError("Review count must be bounded by acquired observations")
     compared = []
@@ -205,15 +213,32 @@ def apply_reviews(observations: Path, reviews_path: Path, output: Path) -> dict[
         geometry = record["benchmark_geometry"]
         if _sha(Path(record["acquired_frame_path"])) != record["acquired_frame_sha256"]:
             raise ValueError("Reviewed image changed after prediction freeze")
-        result = compare_position_review(
+        kwargs = {"zones": definition.data["zones"]} if review.get(
+            "include_boundary_comparison") is True else {}
+        compare = compare_review_boundaries if kwargs else compare_position_review
+        result = compare(
             record, review, frame_sha256=record["acquired_frame_sha256"],
             reference_sha256=geometry["reference_sha256"],
             roi_size_px=tuple(geometry["roi_size_px"]),
-            reference_bbox=tuple(geometry["reference_bbox"]),
+            reference_bbox=tuple(geometry["reference_bbox"]), **kwargs,
         )
         record["position_review"] = result
         compared.append(result)
-    definition = development_registry(records[0]["map_id"]).load(records[0]["map_id"])
+    view_seen = set()
+    for review in view_reviews:
+        if review.get("status") == "pending":
+            continue
+        matches = [r for r in records if all(r.get(k) == review.get(k) for k in (
+            "source_id", "acquisition_id", "time_sec", "frame_index", "map_id",
+            "geometry_version"))]
+        if len(matches) != 1 or review.get("prediction_sha256") in view_seen:
+            raise ValueError("View review must identify a unique frozen observation")
+        record = matches[0]
+        view_seen.add(review["prediction_sha256"])
+        if _sha(Path(record["acquired_frame_path"])) != record["acquired_frame_sha256"]:
+            raise ValueError("Reviewed view image changed after prediction freeze")
+        record["view_review"] = compare_view_review(
+            record, review, frame_sha256=record["acquired_frame_sha256"])
     assert definition.reference_asset is not None
     bbox = records[0]["benchmark_geometry"]["reference_bbox"]
     if any(r["geometry_version"] != definition.geometry_version
@@ -239,7 +264,9 @@ def apply_reviews(observations: Path, reviews_path: Path, output: Path) -> dict[
         previews.append(data.tobytes())
     _prepare_output(output)
     result = {"qualification": "development_only", "ownership": "UNKNOWN",
-              "comparisons": compared, "records": records, "trajectory": trajectory,
+              "comparisons": compared,
+              "view_comparisons": [r["view_review"] for r in records if r.get("view_review")],
+              "records": records, "trajectory": trajectory,
               "source_predictions_sha256": _sha(observations),
               "reviews_file_sha256": _sha(reviews_path),
               "qualification_or_error_bound_established": False}

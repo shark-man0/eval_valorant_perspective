@@ -17,7 +17,7 @@ import numpy as np
 
 def observation_fingerprint(record: dict[str, Any]) -> str:
     # Review metadata is an attachment to the frozen prediction, not a new one.
-    data = {k: v for k, v in record.items() if k != "position_review"}
+    data = {k: v for k, v in record.items() if k not in {"position_review", "view_review"}}
     return hashlib.sha256(json.dumps(data, sort_keys=True, allow_nan=False).encode()).hexdigest()
 
 

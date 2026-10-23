@@ -63,6 +63,15 @@ def analyze_candidate_path(
         point: Any = record.get("map_position_norm")
         evidence = record.get("ownership_evidence") or {}
         review = record.get("position_review") or {}
+        recorder_view = record.get("recorder_view_evidence") or {}
+        view_review = record.get("view_review") or {}
+        if view_review and (
+            view_review.get("qualification") != "development_only"
+            or view_review.get("ownership") != "UNKNOWN"
+            or view_review.get("sample_scope") != "this_observation_only"
+            or view_review.get("prediction_sha256") != observation_fingerprint(record)
+        ):
+            raise ValueError("Human view review must match this frozen observation")
         if review and (
             review.get("qualification") != "development_only"
             or review.get("ownership") != "UNKNOWN"
@@ -72,6 +81,9 @@ def analyze_candidate_path(
             raise ValueError("Coordinate review must match this frozen prediction")
         reason = None
         if (evidence.get("block_position_candidate") is True
+                or recorder_view.get("block_position_candidate") is True
+                or view_review.get("human_view_role") in {
+                    "SPECTATOR", "DEATH", "SELF_PURCHASE", "PURCHASE"}
                 or review.get("human_reviewed_role") in {"NONSELF", "SPECTATOR", "DEATH"}):
             reason = "independent_context_or_review_blocks_candidate"
         elif record.get("ownership", {}).get("view_eligible") is not True:
@@ -103,6 +115,8 @@ def analyze_candidate_path(
             "observed_view": record.get("ownership", {}).get("observed_view", "unknown"),
             "marker_reference_evidence": record.get("marker_reference_evidence"),
             "ownership_evidence": evidence or None, "position_review": review or None,
+            **({"recorder_view_evidence": recorder_view} if recorder_view else {}),
+            **({"view_review": view_review} if view_review else {}),
             "ownership": "UNKNOWN", "qualification": "development_only",
         }
         region = record.get("development_region_candidate") or {}
@@ -213,6 +227,22 @@ def analyze_candidate_path(
                 if not samples[e["from_index"]]["position_review"]
                 or not samples[e["to_index"]]["position_review"]),
             "transferable_coordinate_accuracy_bound": "unmeasured",
+        },
+        "recorder_view_support": {
+            "supported_observations": sum(bool(s.get("recorder_view_evidence", {}).get(
+                "positive_view_support")) for s in samples),
+            "supported_position_observations": sum(s["point_norm"] is not None and bool(
+                s.get("recorder_view_evidence", {}).get("positive_view_support")) for s in samples),
+            "both_endpoints_supported_span_sec": sum(e["observed_span_sec"] for e in edges
+                if all(samples[i].get("recorder_view_evidence", {}).get("positive_view_support")
+                       is True for i in [e["from_index"], e["to_index"]])),
+            "human_self_live_position_observations": sum(s["point_norm"] is not None and
+                s.get("view_review", {}).get("human_view_role") == "SELF_LIVE" for s in samples),
+            "both_endpoints_human_self_live_span_sec": sum(e["observed_span_sec"] for e in edges
+                if all(samples[i].get("view_review", {}).get("human_view_role") == "SELF_LIVE"
+                       for i in [e["from_index"], e["to_index"]])),
+            "qualified_self_observations": 0,
+            "scope": "Unqualified recorder-agent association, not current account ownership",
         },
         "motion_observation_spans_sec": {
             name: sum(e["observed_span_sec"] for e in edges if e["motion"] == name)
