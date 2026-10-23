@@ -22,20 +22,30 @@ from valorant_ai_coach.maps.resolver import ZoneResolver
 from valorant_ai_coach.resources import resource_path
 from valorant_ai_coach.video.geometry import normalized_roi_bounds
 
+from .development_boundary import candidate_boundary_evidence, validate_assumed_error_radius
+from .development_view import DevelopmentViewVeto
 from .map_pipeline import MapTimeline
 from .self_marker import MarkerPosition, MarkerReferenceInspector, SelfMarkerTracker
 
 
-def bind_development_registry() -> MapRegistry:
+def development_registry(map_id: str) -> MapRegistry:
+    if map_id not in {"bind", "haven"}:
+        raise ValueError("An explicitly registered development map is required")
     canonical = resource_path("config/map_zone_v3/config/map_registry_v1.json").parents[1]
-    root = resource_path("config/map_zone_development/bind/config/map_registry_v1.json").parents[1]
+    root = resource_path(
+        f"config/map_zone_development/{map_id}/config/map_registry_v1.json").parents[1]
     return MapRegistry(root, schema_root=canonical / "schemas")
+
+
+def bind_development_registry() -> MapRegistry:
+    return development_registry("bind")
 
 
 class DevelopmentMapTimeline:
     def __init__(self, profile: dict[str, Any], *, registry: MapRegistry | None = None,
                  inspect_reference_appearances: bool = False) -> None:
-        self.registry = registry if registry is not None else bind_development_registry()
+        self.registry = registry if registry is not None else development_registry(
+            profile.get("map_zone", {}).get("manual_map_id", "bind"))
         self.profile = profile
         self.timeline = MapTimeline(profile, registry=self.registry)
         if self.timeline.definition is None:
@@ -47,6 +57,7 @@ class DevelopmentMapTimeline:
         self._candidate_zone: str | None = None
         self._context: tuple[Any, ...] | None = None
         self.marker = SelfMarkerTracker()
+        self.view_veto = DevelopmentViewVeto()
         self.inspector = MarkerReferenceInspector() if inspect_reference_appearances else None
         self.previous: tuple[float, tuple[float, float], int | None] | None = None
         self.next_segment = 0
@@ -56,7 +67,10 @@ class DevelopmentMapTimeline:
         self.timeline.calibrator = OutlineMinimapCalibrator(
             expected_reference_sha256=provenance["reference_sha256"],
         )
-        mask_path = self.registry.root / "assets/bind_visible_floor.png"
+        mask_path = self.registry.root / provenance.get(
+            "visible_floor_asset", "assets/bind_visible_floor.png")
+        if not mask_path.resolve().is_relative_to(self.registry.root.resolve()):
+            raise MapRegistryError("Development visible-floor path escapes bundle")
         if hashlib.sha256(mask_path.read_bytes()).hexdigest() != provenance["visible_floor_sha256"]:
             raise MapRegistryError("Development visible-floor raster hash mismatch")
         self.floor = cv2.imread(str(mask_path), cv2.IMREAD_GRAYSCALE)
@@ -109,6 +123,12 @@ class DevelopmentMapTimeline:
         assert definition is not None
         options = self.profile.get("map_zone", {})
         try:
+            error_radius = validate_assumed_error_radius(
+                options.get("candidate_error_radius_reference_px"))
+        except ValueError:
+            self.reset()
+            raise
+        try:
             selected = self.registry.select(
                 manual_map_id=options.get("manual_map_id") or None,
                 map_label=options.get("trusted_map_label"),
@@ -130,8 +150,10 @@ class DevelopmentMapTimeline:
             assert isinstance(self.timeline.calibrator, OutlineMinimapCalibrator)
             self.timeline.calibrator.clear_reference_cache()
             self._context = context_key
+        view_veto = self.view_veto.inspect(frame, self.profile.get("development_view_veto"))
         eligible = (
-            view.get("primary_state") == "live_first_person"
+            not view_veto["veto"]
+            and view.get("primary_state") == "live_first_person"
             and view.get("values", {}).get("player_specific_hud_valid") is True
             and not set(view.get("state_flags", [])) & {
                 "visual_transition", "buy_phase_banner", "round_end_banner",
@@ -234,6 +256,11 @@ class DevelopmentMapTimeline:
                 "geometry_confidence_cap": zone_definition["geometry_confidence_cap"],
                 "qualification": "development_only", "ownership": "UNKNOWN",
             }
+            region.update(candidate_boundary_evidence(
+                point, zone_definition["polygon_norm"],
+                reference_size_px=(x1-x0, y1-y0),
+                assumed_error_radius_px=error_radius,
+            ))
         return {
             "qualification": "development_only", "formal_self_position_fact": None,
             "source_id": source_id, "acquisition_id": acquisition_id,
@@ -243,6 +270,7 @@ class DevelopmentMapTimeline:
             "time_sec": time_sec, "frame_index": frame_index,
             "appearance": appearance.to_dict(),
             "marker_reference_evidence": reference_evidence,
+            "development_view_veto": view_veto,
             "ownership": {"identity": "UNKNOWN", "view_eligible": eligible,
                           "observed_view": view.get("primary_state", "unknown"),
                           "view_evidence_kind": evidence_kind,

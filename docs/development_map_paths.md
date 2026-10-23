@@ -159,3 +159,102 @@ these single-run timings are not a controlled benchmark or a new calibration
 speedup claim. Disable inspection when only paths are needed. Coordinate and
 tracking results were identical in both runs. Private hashes, per-observation
 comparisons, sensitivity results and playback evidence remain outside Git.
+
+## Haven transfer and boundary sensitivity
+
+The opt-in development loader now accepts explicit `manual_map_id: haven` as well
+as Bind. Neither Map is installed in the ordinary Production registry. The
+[public Haven texture](https://media.valorant-api.com/maps/2bee0dc9-4ffe-519b-1cbd-7fbe763a6047/displayicon.png)
+and [published Site anchor metadata](https://valorant-api.com/v1/maps/2bee0dc9-4ffe-519b-1cbd-7fbe763a6047)
+are recorded in `config/map_zone_development/haven/provenance.json`. A lossless
+90-degree counterclockwise authoring transform puts A left, B centre and C right;
+this does not add runtime rotation recovery. Reference/floor SHA-256 and the
+visible-floor bbox are explicit. Only three shaded plant footprint **exteriors**
+are registered, not whole Sites, exact plantability, obstacle holes, Callouts or
+Topology. Client build correspondence remains unverified. Calibration acceptance
+is not coordinate ground truth. Unregistered Maps are still rejected.
+
+`portrait_consensus_v3` is an optional experimental marker mode. When the circular
+core is below 0.80, a unique full-icon match of at least 0.80 may propose a position
+only if the unique core peak agrees within one pixel and both comparisons separate
+nonself references by 0.12. Whole-icon spatial ambiguity is still rejected. The
+selected full-icon coordinate and `consensus_appearance_only` reason are recorded;
+this is a changed **appearance proposal** policy, never ownership evidence.
+Existing `portrait_v2` remains available unchanged. Temporal continuity never
+selects the subject. Reference fingerprints include mode and actual file bytes.
+
+A private profile can optionally configure `development_view_veto` with mode
+`spectator_switch_v1`, `template_path`, normalized `roi`, and integer
+`reference_frame_size_px: [1920, 1080]`. A reviewed switch-player UI glyph is
+matched only in that authored screen region at 0.90 NCC. A match vetoes even
+erroneous upstream live eligibility and breaks the position track. Invalid or
+missing configured references also veto. Each output retains declared view and
+separate `development_view_veto` evidence; absence of the pattern never authorizes
+live/self ownership. This source-specific prototype is not a general spectator,
+death or menu classifier. It does not modify or replace the Production HUD code.
+
+Set optional `map_zone.candidate_error_radius_reference_px` to a finite
+non-negative **assumption** to inspect boundary sensitivity. Each region candidate
+then records signed distance to its actual polygon border in anisotropic reference
+pixels and whether the assumed error disk intersects that border. An unspecified
+radius stays unmeasured. `region_interior_spans_under_assumption_sec` separately
+counts only adjacent, otherwise eligible same-region endpoints whose entire disks
+are interior, using the same radius. This is not a calibrated confidence interval,
+continuous occupancy, an accepted Zone, or an ownership claim. The viewer exposes
+these fields alongside the original, unchanged candidate and named-Zone spans.
+
+### Bounded second-source development comparison
+
+A fixed map/context scout of the three remaining DEVELOPMENT recordings found no
+additional Bind recording. The first new source was Haven (owner-confirmed),
+another supplied spectator controls, and the remaining Map stayed unregistered.
+Protected evaluation candidates were not opened. A single fitting scout supplied
+one owner-confirmed self and two ally portrait references. Those labels apply only
+to that observation. Fit and validation windows were declared before predictions;
+selected native timestamps agree between bounded ffprobe and decoder output.
+Private images, Profiles, times, individual paths and HTML remain local.
+
+| New-source window | Circular core v2 | Consensus v3 + UI veto |
+|---|---:|---:|
+| Fitting, 20 observations: ROI / Map positions | 15 / 15 | 17 / 17 |
+| Validation, 50 observations: ROI / Map positions | 40 / 40 | 40 / 40 |
+| Validation calibration acceptance | 50 | 50 |
+| Validation named Zones | 0 | 0 |
+| Spectator control, 20: blocked by UI pattern | 0 | 15 |
+
+The two recovered fitting observations extend its longest connected span from
+0.8 to 2.0 seconds. **Held-window recognition did not improve**: seven validation
+segments (including two isolated points), longest 2.6 seconds, total adjacent
+observation span 6.4 seconds, ten appearance-threshold UNKNOWNs. A separate
+exploratory replay of the unchanged whole-icon v1 mode gave 29/50 positions;
+this comparison is not another independent qualification. All automatic ownership
+remains UNKNOWN. Known scout labels and sparse visual context cannot label every
+later marker. No formal Facts, Player Events or coaching scores are emitted.
+
+The 20 spectator controls already yielded zero accepted positions with these
+references before the veto. Afterward 15 explicitly block by UI pattern; five
+lack that detection and still reject the appearance. No reduction in observed
+false attribution or population false-positive rate is established. Even a
+counterfactual spectated-subject reference stress replay yielded zero positions
+before and after, so it is not evidence of recovered ownership accuracy.
+
+The fitting window has five B-plant polygon candidates, with 0.4 seconds bracketed
+by same-region endpoints, but all five touch a 7/14/21px assumed error disk: guarded
+spans remain zero. Validation never produces a plant-region candidate. On the
+existing Bind data, the unchanged raw A/B-Window candidate spans of 1.2/3.2 seconds
+reduce to 1.0/0.8 seconds under a 7px interior assumption and zero under 14 or 21px.
+This exposes boundary sensitivity rather than certifying continuous dwell time.
+
+New-source validation processing was 12.67 seconds with v2, 12.75 with consensus,
+and 13.09 with consensus plus veto; same-process peak RSS reached 157.6 MiB across
+all runs. These are single bounded runs, not isolated speed or memory benchmarks.
+The frozen 198 observations retain ROI112, calibration149, Map70, named Zones3,
+seven segments and longest5.4 seconds, with no changed recognition/coordinate/
+tracking fields. Inspector-enabled replay took35.85 seconds and164.3 MiB recognition
+peak RSS, versus historical39.55 seconds/161.9 MiB; no speedup claim is made.
+
+Haven exact world-position accuracy, stationary jitter, all-frame self ownership,
+false-attribution rates, general spectator recognition and another Bind-source
+transfer remain unmeasured. Few fixed marker/landmark proposals were prepared
+independently of acceptance for optional human verification; unconfirmed points
+are not GT. Geometry and view-context evidence still limit tactical interpretation.

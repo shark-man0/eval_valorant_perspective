@@ -448,3 +448,99 @@ def test_changed_map_selection_cannot_keep_old_bind_transform(bind_case):
     profile["map_zone"] = {"manual_map_id": "unregistered"}
     with pytest.raises(ValueError, match="Map selection"):
         timeline.observe(frame, .2, 1, **args)
+
+
+def test_haven_is_isolated_hashed_and_limited_to_public_shaded_plants():
+    import hashlib
+
+    from shapely.geometry import Polygon
+
+    from valorant_ai_coach.visual.development_map import development_registry
+
+    registry = development_registry('haven')
+    definition = registry.load('haven')
+    provenance = json.loads((registry.root/'provenance.json').read_text(encoding='utf-8'))
+    assert hashlib.sha256(definition.reference_asset.read_bytes()).hexdigest() == (
+        provenance['reference_sha256'])
+    floor = registry.root/provenance['visible_floor_asset']
+    assert hashlib.sha256(floor.read_bytes()).hexdigest() == provenance['visible_floor_sha256']
+    transform = provenance['reference_authoring_transform']
+    assert transform['runtime_dynamic_rotation_supported'] is False
+    assert {z['zone_id'] for z in definition.data['zones']} == {
+        'haven_a_plant', 'haven_b_plant', 'haven_c_plant'}
+    assert all(Polygon(z['polygon_norm']).is_valid for z in definition.data['zones'])
+    assert definition.callouts['records'] == {} and definition.data['topology_edges'] == []
+    assert registry.registry['maps']['haven']['production'] is False
+    with pytest.raises(KeyError):
+        MapRegistry().select(manual_map_id='haven')
+    with pytest.raises(ValueError):
+        development_registry('lotus')
+    with pytest.raises(MapRegistryError):
+        MapRegistry(registry.root)
+
+
+def test_configured_veto_breaks_track_even_with_live_upstream_view(bind_case, tmp_path):
+    _, _, frame, profile, _ = bind_case
+    timeline = DevelopmentMapTimeline(profile)
+    view = {'primary_state': 'live_first_person', 'values': {'player_specific_hud_valid': True}}
+
+    def observe(t):
+        return timeline.observe(frame, t, round(t*5), view=view, evidence_kind='source_review',
+                                source_id='synthetic', acquisition_id='same')
+
+    before = observe(0)
+    assert before['map_position_norm'] is not None
+    glyph = frame[30:55, 100:261].copy()
+    path = tmp_path/'switch.png'
+    cv2.imwrite(str(path), glyph)
+    profile['development_view_veto'] = {
+        'mode': 'spectator_switch_v1', 'template_path': str(path),
+        'reference_frame_size_px': [455, 427], 'roi': [90/455, 20/427, 270/455, 65/427]}
+    blocked = observe(.2)
+    assert blocked['development_view_veto']['status'] == 'spectator_ui'
+    assert blocked['ownership']['observed_view'] == 'live_first_person'
+    assert blocked['ownership']['view_eligible'] is False
+    assert blocked['map_position_norm'] is None and blocked['map_segment'] is None
+    assert blocked['appearance']['reason'] == 'ownership_blocked'
+    assert blocked['development_events'] == []
+    profile.pop('development_view_veto')
+    resumed = observe(.4)
+    assert resumed['map_segment'] != before['map_segment']
+    assert resumed['formal_self_position_fact'] is None
+
+
+def test_invalid_boundary_assumption_resets_state(bind_case):
+    _, _, frame, profile, _ = bind_case
+    timeline = DevelopmentMapTimeline(profile)
+    view = {'primary_state': 'live_first_person', 'values': {'player_specific_hud_valid': True}}
+
+    def observe(t):
+        return timeline.observe(frame, t, round(t*5), view=view, evidence_kind='source_review',
+                                source_id='synthetic', acquisition_id='same')
+
+    old = observe(0)
+    profile['map_zone']['candidate_error_radius_reference_px'] = -1
+    with pytest.raises(ValueError):
+        observe(.2)
+    assert timeline.previous is None and timeline.segment is None
+    profile['map_zone'].pop('candidate_error_radius_reference_px')
+    assert observe(.4)['map_segment'] != old['map_segment']
+
+
+def test_haven_fixed_outline_roundtrip_and_wrong_map_rejection():
+    from valorant_ai_coach.visual.development_map import development_registry
+
+    definition = development_registry('haven').load('haven')
+    source = cv2.imread(str(definition.reference_asset))
+    frame = np.zeros((427, 455, 3), np.uint8)
+    frame[9:419, 21:431] = cv2.resize(source, (410, 410), interpolation=cv2.INTER_AREA)
+    calibrator = OutlineMinimapCalibrator()
+    result = calibrator.analyze(frame, [0, 0, 1, 1], definition)
+    assert result.status == 'ok'
+    x0, y0, x1, y1 = definition.data['coordinate_system'][
+        'reference_map_mask_bbox_within_roi_px']
+    for x, y in [(173, 611), (513, 612), (841, 595)]:
+        actual = result.transform((21+x*410/1024)/455, (9+y*410/1024)/427)
+        assert actual == pytest.approx(((x-x0)/(x1-x0), (y-y0)/(y1-y0)), abs=.008)
+    wrong = calibrator.analyze(frame, [0, 0, 1, 1], bind_development_registry().load('bind'))
+    assert wrong.status != 'ok'

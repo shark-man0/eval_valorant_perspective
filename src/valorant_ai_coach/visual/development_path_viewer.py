@@ -115,6 +115,7 @@ $('frameStatus').textContent=D.frames[index]?
 '同時刻の入力画像。R=本人参照の外観一致、N=非本人参照の外観一致。所有者は全件UNKNOWN。':
 'この観測には入力画像が付属していません';
 const edge=R.edges.find(e=>e.to_index===index);
+const boundary=s.region_candidate_evidence;
 const matches=s.marker_reference_evidence?.matches||[];
 const selfMatches=matches.filter(m=>m.reference_category==='self_reference_appearance').length;
 const controlMatches=matches.filter(m=>m.reference_category==='nonself_control_appearance').length;
@@ -124,7 +125,10 @@ $('detail').textContent=`本人所有: UNKNOWN / 経路区間: ${s.segment??'な
 `途切れ・不明理由: ${s.break_reason||s.appearance_reason}\n`+
 `運動の候補: ${edge?motionName[edge.motion]:'UNKNOWN'}\n`+
 `隣接観測の変位: ${edge?edge.chord_reference_px.toFixed(2)+' px':'未測定'}\n`+
-`本人参照の外観一致: ${selfMatches} / 非本人参照の外観一致: ${controlMatches}`;
+`本人参照の外観一致: ${selfMatches} / 非本人参照の外観一致: ${controlMatches}\n`+
+`候補領域の境界: ${boundary?.boundary_assessment??'未測定'} / 境界まで `+
+`${boundary?.boundary_clearance_reference_px?.toFixed(2)??'未測定'} px / 仮定誤差半径 `+
+`${boundary?.assumed_error_radius_reference_px??'未指定'} px（精度保証ではありません）`;
 document.querySelectorAll('tr[data-segment]').forEach(tr=>tr.classList.toggle('active',Number(tr.dataset.segment)===s.segment));}
 function stop(){clearTimeout(timer);timer=null;$('play').textContent='再生'}
 function step(){if(index+1>=S.length||context(S[index+1])!==context(S[index])){stop();return}
@@ -140,6 +144,8 @@ $('summary').textContent=`位置UNKNOWN: ${R.position_unknown_observations}観�
 `同じZoneが両端で観測された時間: ${spans(R.zone_observation_spans_sec)||'なし'}\n`+
 `同じ候補領域が両端で観測された時間: `+
 `${spans(R.region_candidate_observation_spans_sec)||'なし'}\n`+
+`仮定誤差円が両端で領域内に収まる観測時間: `+
+`${spans(R.region_interior_spans_under_assumption_sec)||'なし'}\n`+
 `運動の候補別の観測時間: `+
 Object.entries(R.motion_observation_spans_sec).map(([k,v])=>
 `${motionName[k]} ${v.toFixed(3)} s`).join(' / ')+

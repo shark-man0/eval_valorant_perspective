@@ -270,3 +270,31 @@ def test_failed_decoder_roi_is_unknown(marker_case):
     spec, _ = marker_case
     result = SelfMarkerTracker().observe(None, 0, spec, ownership_eligible=True)
     assert result.reason == "invalid_roi"
+
+
+def test_consensus_recovers_degraded_core_with_whole_icon_and_controls(marker_case):
+    spec, crop = marker_case
+    spec['mode'] = 'portrait_consensus_v3'
+    positive = crop[30:47, 40:57].copy()
+    rng = np.random.default_rng(190)
+    noise = rng.integers(0, 256, positive.shape, np.uint8)
+    mask = np.zeros((17, 17), np.uint8)
+    cv2.circle(mask, (8, 8), 6, 255, -1)
+    patch = positive.copy()
+    patch[mask > 0] = ((positive.astype(float)*.5 + noise.astype(float)*.5)[mask > 0])
+    crop[30:47, 40:57] = patch
+    baseline = SelfMarkerTracker().observe(crop, 0, dict(spec, mode='portrait_v2'),
+                                          ownership_eligible=True)
+    assert baseline.reason == 'appearance_below_threshold'
+    tracker = SelfMarkerTracker()
+    result = tracker.observe(crop, 0, spec, ownership_eligible=True)
+    assert result.reason == 'consensus_appearance_only'
+    assert result.x_roi_norm == pytest.approx(48/120)
+    assert result.identity == 'UNKNOWN'
+    # A second identical icon cannot be disambiguated by continuity.
+    crop[5:22, 80:97] = patch
+    assert tracker.observe(crop, .2, spec, ownership_eligible=True).x_roi_norm is None
+    # A positive duplicated in the negative bank is never rescued.
+    spec['negative_templates'] = spec['positive_templates']
+    crop[5:22, 80:97] = 100
+    assert tracker.observe(crop, .4, spec, ownership_eligible=True).x_roi_norm is None

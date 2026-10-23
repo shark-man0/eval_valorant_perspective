@@ -44,6 +44,7 @@ def analyze_candidate_path(
     window: list[dict[str, Any]] = []
     zone_spans: Counter[str] = Counter()
     region_spans: Counter[str] = Counter()
+    interior_spans: Counter[str] = Counter()
     for index, record in enumerate(records):
         if (record.get("qualification") != "development_only"
                 or record.get("ownership", {}).get("identity") != "UNKNOWN"
@@ -151,6 +152,15 @@ def analyze_candidate_path(
                     zone_spans[zone_id] += dt
                 if region_id is not None and region_id == previous["region_candidate_id"]:
                     region_spans[region_id] += dt
+                    before = previous.get("region_candidate_evidence") or {}
+                    radius = region.get("assumed_error_radius_reference_px")
+                    if (_number(radius) and radius >= 0
+                            and before.get("assumed_error_radius_reference_px") == radius
+                            and all(r.get("boundary_assessment") == "interior_under_assumption"
+                                    and _number(r.get("boundary_clearance_reference_px"))
+                                    and r["boundary_clearance_reference_px"] > radius
+                                    for r in (before, region))):
+                        interior_spans[region_id] += dt
             if zone_id is not None:
                 if last_zone is not None and last_zone["zone_id"] != zone_id:
                     transitions.append({
@@ -175,6 +185,7 @@ def analyze_candidate_path(
         "zone_change_brackets": transitions,
         "zone_observation_spans_sec": dict(zone_spans),
         "region_candidate_observation_spans_sec": dict(region_spans),
+        "region_interior_spans_under_assumption_sec": dict(interior_spans),
         "motion_observation_spans_sec": {
             name: sum(e["observed_span_sec"] for e in edges if e["motion"] == name)
             for name in ("moving_candidate", "low_displacement_candidate", "indeterminate")},

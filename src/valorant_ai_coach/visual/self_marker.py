@@ -72,7 +72,8 @@ class SelfMarkerTracker:
         negative = spec.get("negative_templates", [])
         mode = spec.get("mode")
         if (
-            not isinstance(mode, str) or mode not in {"appearance_v1", "portrait_v2"}
+            not isinstance(mode, str)
+            or mode not in {"appearance_v1", "portrait_v2", "portrait_consensus_v3"}
             or not isinstance(positive, list) or not isinstance(negative, list)
             or not 1 <= len(positive) <= 4 or not 1 <= len(negative) <= 8
             or any(not isinstance(p, str) or not p for p in positive + negative)
@@ -119,7 +120,7 @@ class SelfMarkerTracker:
         self._references = images[:len(positive)]
         self._negatives = images[len(positive):]
         self._mask = None
-        if spec["mode"] == "portrait_v2":
+        if spec["mode"] in {"portrait_v2", "portrait_consensus_v3"}:
             h, w = images[0].shape[:2]
             self._mask = np.zeros((h, w), np.uint8)
             cv2.circle(self._mask, (w//2, h//2), round(min(w, h)*.35), 255, -1)
@@ -164,6 +165,27 @@ class SelfMarkerTracker:
         ])
         scores = np.clip(np.nan_to_num(scores, nan=-1, posinf=-1, neginf=-1), -1, 1)
         _, best, _, peak = cv2.minMaxLoc(scores)
+        full_fallback = False
+        if best < .80 and spec.get("mode") == "portrait_consensus_v3":
+            # Restore only a strong, unique whole-icon observation whose peak
+            # agrees within one pixel with the unique core peak (sampling
+            # quantization). No similarity threshold is lowered,
+            # and temporal continuity cannot select either appearance.
+            core = scores.copy()
+            x, y = peak
+            core[max(0, y-h//2):y+h//2+1, max(0, x-w//2):x+w//2+1] = -1
+            whole = np.maximum.reduce([
+                cv2.matchTemplate(crop, ref, cv2.TM_CCOEFF_NORMED) for ref in self._references
+            ])
+            whole = np.clip(np.nan_to_num(whole, nan=-1, posinf=-1, neginf=-1), -1, 1)
+            _, whole_best, _, whole_peak = cv2.minMaxLoc(whole)
+            if (max(abs(a-b) for a, b in zip(whole_peak, peak, strict=True)) <= 1
+                    and best-float(core.max()) >= .12 and whole_best >= .80):
+                patch = crop[y:y+h, x:x+w]
+                core_negative = max(float(self._scores(patch, ref)[0, 0])
+                                    for ref in self._negatives)
+                if math.isfinite(core_negative) and best-core_negative >= .12:
+                    scores, best, peak, full_fallback = whole, whole_best, whole_peak, True
         if best < 0.80:
             return unknown("appearance_below_threshold")
         x, y = peak
@@ -179,7 +201,8 @@ class SelfMarkerTracker:
             return unknown("appearance_ambiguous", count)
         patch = crop[y:y+h, x:x+w]
         nonself = max(
-            float(self._scores(patch, ref)[0, 0])
+            float((cv2.matchTemplate(patch, ref, cv2.TM_CCOEFF_NORMED)
+                   if full_fallback else self._scores(patch, ref))[0, 0])
             for ref in self._negatives
         )
         if not math.isfinite(nonself) or best - nonself < 0.12:
@@ -202,7 +225,8 @@ class SelfMarkerTracker:
             streak = previous[2] + 1
         self._previous = time_sec, point, streak
         return MarkerPosition(
-            "tracked" if streak >= 3 else "candidate", "appearance_only", count,
+            "tracked" if streak >= 3 else "candidate",
+            "consensus_appearance_only" if full_fallback else "appearance_only", count,
             point[0], point[1], float(best), identifier,
         )
 

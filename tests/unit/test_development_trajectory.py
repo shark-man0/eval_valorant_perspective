@@ -134,3 +134,19 @@ def test_viewer_escapes_metadata_and_preserves_unknown_slots(tmp_path):
         write_candidate_path_html(target, report, reference_png=b"synthetic",
                                   reference_bbox=(0, 0, 800, 1000), zones=[],
                                   source_frames_jpeg=[b"one frame"])
+
+
+def test_region_spans_under_assumption_require_both_endpoints_and_same_radius():
+    records = [observation(i) for i in range(5)]
+    for record in records:
+        record['development_region_candidate'] = {
+            'qualification': 'development_only', 'ownership': 'UNKNOWN', 'region_id': 'A',
+            'boundary_assessment': 'interior_under_assumption',
+            'assumed_error_radius_reference_px': 14, 'boundary_clearance_reference_px': 20}
+    records[2]['development_region_candidate']['boundary_assessment'] = (
+        'boundary_intersects_assumed_error')
+    records[4]['development_region_candidate']['assumed_error_radius_reference_px'] = 7
+    result = analyze(records)
+    assert result['region_candidate_observation_spans_sec'] == {'A': pytest.approx(.8)}
+    assert result['region_interior_spans_under_assumption_sec'] == {'A': pytest.approx(.2)}
+    assert result['formal_self_position_fact'] is None
