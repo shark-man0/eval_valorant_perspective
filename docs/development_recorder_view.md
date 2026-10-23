@@ -161,7 +161,8 @@ same-region endpoint spans, but no accepted namedZone. Its three fixed reviewed
 points have ROI differences1/1/2px and approximate Map-reference differences
 4.00/4.13/5.31 referencepx, without affine extrapolation. All three agree on the
 registered B polygon, but two change membership under a single-coordinate2px
-annotation perturbation. The14px assumed boundary disk yields no interior span.
+annotation perturbation. The14px assumed boundary disk yields0.4s of interior endpoint spans, still only
+under that assumption and not verified dwell.
 This does not establish true Site-boundary accuracy or continuous dwell.
 
 Across10 boundary frames, two fixed ROI probes are accepted each time and their
